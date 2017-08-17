@@ -86,6 +86,7 @@ public class ExperimenterHomeController extends SubPaneController{
         apiService.setStage(getMainController().getPrimaryStage());
 
         this.mainController.getMainFrame().setCenter(root);
+        test();
         initRunListLayout();
         showRunList();
 
@@ -113,65 +114,8 @@ public class ExperimenterHomeController extends SubPaneController{
         CompletableFuture<PagedRun> getPagedRun = new CompletableFuture<>();
         getPagedRun.supplyAsync(() -> {
             HttpClientResponse response = null;
+            Map<String, Object> params = new HashMap<>();
             try {
-                Map<String, Object> params = new HashMap<>();
-                try {
-                    params.put("name", "blablabla1");
-                    params.put("sequencingPlatform", "MISEQ");
-                    response = apiService.post("/runs", params, null, true);
-                    Run run1 = response.getObjectBeforeConvertResponseToJSON(Run.class);
-                    logger.info(run1.toString());
-                } catch (Exception e) {
-
-                }
-                try {
-                    params.put("name", "blablabla2");
-                    response = apiService.post("/runs", params, null, true);
-                    Run run2 = response.getObjectBeforeConvertResponseToJSON(Run.class);
-                    logger.info(run2.toString());
-                } catch(Exception e) {
-
-                }
-                try {
-                    params.put("name", "blablabla3");
-                    response = apiService.post("/runs", params, null, true);
-                    Run run2 = response.getObjectBeforeConvertResponseToJSON(Run.class);
-                    logger.info(run2.toString());
-                } catch(Exception e) {
-
-                }
-                try {
-                    params.put("name", "blablabla4");
-                    response = apiService.post("/runs", params, null, true);
-                    Run run2 = response.getObjectBeforeConvertResponseToJSON(Run.class);
-                    logger.info(run2.toString());
-                } catch(Exception e) {
-
-                }
-                try {
-                    params.put("name", "blablabla5");
-                    response = apiService.post("/runs", params, null, true);
-                    Run run2 = response.getObjectBeforeConvertResponseToJSON(Run.class);
-                    logger.info(run2.toString());
-                } catch(Exception e) {
-
-                }
-                try {
-                    params.put("name", "blablabla6");
-                    response = apiService.post("/runs", params, null, true);
-                    Run run2 = response.getObjectBeforeConvertResponseToJSON(Run.class);
-                    logger.info(run2.toString());
-                } catch(Exception e) {
-
-                }
-                try {
-                    params.put("name", "blablabla7");
-                    response = apiService.post("/runs", params, null, true);
-                    Run run2 = response.getObjectBeforeConvertResponseToJSON(Run.class);
-                    logger.info(run2.toString());
-                } catch(Exception e) {
-
-                }
                 params.clear();
                 params.put("limit", runListGridPane.getRowConstraints().size());
                 params.put("offset", 0);
@@ -213,6 +157,67 @@ public class ExperimenterHomeController extends SubPaneController{
             }
         } catch (Exception e) {
             logger.error("HOME -> initRunListLayout", e);
+        }
+    }
+    private void test() {
+        Map<String, Object> params = new HashMap<>();
+        HttpClientResponse response = null;
+        try {
+            params.put("name", "blablabla1");
+            params.put("sequencingPlatform", "MISEQ");
+            response = apiService.post("/runs", params, null, true);
+            Run run1 = response.getObjectBeforeConvertResponseToJSON(Run.class);
+            logger.info(run1.toString());
+        } catch (Exception e) {
+
+        }
+        try {
+            params.put("name", "blablabla2");
+            response = apiService.post("/runs", params, null, true);
+            Run run2 = response.getObjectBeforeConvertResponseToJSON(Run.class);
+            logger.info(run2.toString());
+        } catch(Exception e) {
+
+        }
+        try {
+            params.put("name", "blablabla3");
+            response = apiService.post("/runs", params, null, true);
+            Run run2 = response.getObjectBeforeConvertResponseToJSON(Run.class);
+            logger.info(run2.toString());
+        } catch(Exception e) {
+
+        }
+        try {
+            params.put("name", "blablabla4");
+            response = apiService.post("/runs", params, null, true);
+            Run run2 = response.getObjectBeforeConvertResponseToJSON(Run.class);
+            logger.info(run2.toString());
+        } catch(Exception e) {
+
+        }
+        try {
+            params.put("name", "blablabla5");
+            response = apiService.post("/runs", params, null, true);
+            Run run2 = response.getObjectBeforeConvertResponseToJSON(Run.class);
+            logger.info(run2.toString());
+        } catch(Exception e) {
+
+        }
+        try {
+            params.put("name", "blablabla6");
+            response = apiService.post("/runs", params, null, true);
+            Run run2 = response.getObjectBeforeConvertResponseToJSON(Run.class);
+            logger.info(run2.toString());
+        } catch(Exception e) {
+
+        }
+        try {
+            params.put("name", "blablabla7");
+            response = apiService.post("/runs", params, null, true);
+            Run run2 = response.getObjectBeforeConvertResponseToJSON(Run.class);
+            logger.info(run2.toString());
+        } catch(Exception e) {
+
         }
     }
 }
