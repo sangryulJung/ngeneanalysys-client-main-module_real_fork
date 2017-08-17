@@ -91,9 +91,9 @@ public class ExperimenterHomeController extends SubPaneController{
     public void showUploadFASTQ() {
         try {
             // Load the fxml file and create a new stage for the popup dialog
-            FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.ANALYSIS_SAMPLE_UPLOAD_FIRST);
+            FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.ANALYSIS_SAMPLE_UPLOAD_MAIN);
             Pane page = loader.load();
-            SampleUploadScreenFirst controller = loader.getController();
+            SampleUploadController controller = loader.getController();
             controller.setMainController(this.mainController);
             controller.setExperimentHomeController(this);
             CompletableFuture<PagedRun> getPagedRun = new CompletableFuture<>();
@@ -101,16 +101,16 @@ public class ExperimenterHomeController extends SubPaneController{
                 HttpClientResponse response = null;
                 try {
                     Map<String, Object> params = new HashMap<>();
-                    //            params.put("name", "blablabla1");
-                    //            params.put("sequencingPlatform", "MISEQ");
-                    //            response = apiService.post("/runs", params, null, true);
-                    //            Run run1 = response.getObjectBeforeConvertResponseToJSON(Run.class);
-                    //            logger.info(run1.toString());
-                    //            params.put("name", "blablabla2");
-                    //            response = apiService.post("/runs", params, null, true);
-                    //            Run run2 = response.getObjectBeforeConvertResponseToJSON(Run.class);
-                    //            logger.info(run2.toString());
-                    //            params.clear();
+                                /*params.put("name", "blablabla1");
+                                params.put("sequencingPlatform", "MISEQ");
+                                response = apiService.post("/runs", params, null, true);
+                                Run run1 = response.getObjectBeforeConvertResponseToJSON(Run.class);
+                                logger.info(run1.toString());
+                                params.put("name", "blablabla2");
+                                response = apiService.post("/runs", params, null, true);
+                                Run run2 = response.getObjectBeforeConvertResponseToJSON(Run.class);
+                                logger.info(run2.toString());
+                                params.clear();*/
                     params.put("limit", 5);
                     params.put("offset", 0);
 
@@ -127,16 +127,7 @@ public class ExperimenterHomeController extends SubPaneController{
 
             try {
                 PagedRun p = getPagedRun.get();
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            controller.show(page);
-                        } catch (IOException e) {
-                            logger.error("error", e);
-                        }
-                    }
-                });
+                controller.show(page);
             } catch (Exception e){
 
             }
