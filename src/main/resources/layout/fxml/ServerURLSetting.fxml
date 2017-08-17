@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="600.0" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.ServerURLSettingController">
+  <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <Pane prefHeight="155.0" prefWidth="590.0">
+         <children>
+            <Label alignment="CENTER" layoutY="30.0" prefHeight="30.0" prefWidth="590.0" styleClass="font_size_12" text="* Please Enter the Server URL Of BRCA Analysis System" textAlignment="CENTER" />
+            <Label layoutX="59.0" layoutY="70.0" styleClass="font_size_12" text="URL">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="inputURL" layoutX="106.0" layoutY="68.0" prefHeight="32.0" prefWidth="379.0" promptText="https://" />
+            <Button fx:id="btnConfirm" layoutX="492.0" layoutY="66.0" mnemonicParsing="false" onAction="#confirm" prefHeight="36.0" prefWidth="75.0" styleClass="btn_setting_save" text="Confirm" />
+            <Button fx:id="btnSave" disable="true" layoutX="449.0" layoutY="112.0" mnemonicParsing="false" onAction="#save" prefHeight="39.0" prefWidth="119.0" styleClass="btn_setting_save" text="Save">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </Pane>
+   </children>
+</GridPane>

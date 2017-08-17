@@ -1,0 +1,5 @@
+.run_status_cell {
+-fx-border-color : black;
+-fx-background-color : white;
+-fx-border-width : 0 0 1 0;
+}

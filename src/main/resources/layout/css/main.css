@@ -1,0 +1,260 @@
+.layoutGrid {
+	-fx-border-width:0;
+}
+
+.brdNW {
+	-fx-background-color:#262b33;
+}
+
+.brdN {
+	-fx-background-color:#262b33;
+}
+
+.brdNE {
+	-fx-background-color:#262b33;
+}
+
+.brdW {
+	-fx-background-color:#262b33;
+}
+
+.brdE {
+	-fx-background-color:#262b33;
+}
+
+.brdSW {
+	-fx-background-color:#262b33;
+}
+
+.brdS {
+	-fx-background-color:#262b33;
+}
+
+.brdSE {
+	-fx-background-color:#262b33;
+}
+
+.windowTopBar {
+	-fx-background-color: #262b33;
+}
+
+.windowTopBar .label {
+	-fx-text-fill:#fff;
+	-fx-font-size:14;
+}
+
+.windowTopBar .button {
+	-fx-background-color:none;
+}
+
+.windowTopBar #btnWindowMinimize {
+	-fx-background-image:url('../images/btn_min.png');
+	-fx-padding:6;
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center;
+}
+.windowTopBar #btnWindowMinimize:hover {
+	-fx-background-image:url('../images/btn_min_on.png');
+}
+
+.windowTopBar #btnWindowMaxmize {
+	-fx-background-image:url('../images/btn_max.png');
+	-fx-padding:6;
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center;
+}
+
+.windowTopBar #btnWindowMaxmize:hover {
+	-fx-background-image:url('../images/btn_max_on.png');
+}
+
+.windowTopBar #btnWindowNormal {
+	-fx-background-image:url('../images/btn_normal.png');
+	-fx-padding:7;
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center;
+}
+
+.windowTopBar #btnWindowNormal:hover {
+	-fx-background-image:url('../images/btn_normal_on.png');
+}
+
+.windowTopBar #btnWindowClose {
+	-fx-background-image:url('../images/btn_close.png');
+	-fx-padding:5;
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center;
+}
+
+.windowTopBar #btnWindowClose:hover {
+	-fx-background-image:url('../images/btn_close_on.png');
+}
+
+#mainHeader #userMenuBar {
+	-fx-background-color:transparent;
+}
+
+#mainHeader #userMenuBar:hover {
+	-fx-background-color:transparent;
+}
+
+#mainHeader #userMenuBar .menu {
+	-fx-background-image:url('../images/btn_user_set.png');
+	-fx-background-color:transparent ;
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center;	
+}
+
+#mainHeader #userMenuBar .menu:hover {
+	-fx-background-color:transparent ;
+}
+
+#mainHeader #userMenuBar .menu .menu-item .label {
+	-fx-font-size:12px;
+}
+
+#mainHeader {
+	-fx-background-color:#5d5d5d;
+	-fx-background-image:url('../images/bg_main_header.png');
+	-fx-background-position:right ;
+}
+.user_name {
+	-fx-text-fill:#868686;
+}
+#mainHeader .scroll-pane {
+}
+
+#mainHeader #topMenuArea {
+	-fx-padding: 5 0 0 0;		
+}
+
+#mainHeader #topMenuArea .group {
+	-fx-pref-width: 150;
+}
+
+#mainHeader #topMenuArea Region {
+	-fx-background-color:#737373;
+	-fx-background-radius:3 3 0 0;
+	-fx-border-width:0;
+	-fx-pref-width:145;
+	-fx-pref-height:40;
+}
+
+#mainHeader #topMenuArea Region#addMenu {
+	-fx-background-color:#737373;
+	-fx-background-radius:3 3 0 0;
+	-fx-border-width:0;
+	-fx-pref-width:180;
+	-fx-pref-height:40;
+}
+
+#mainHeader #topMenuArea .label {
+	-fx-font-size: 14;
+	-fx-text-fill:#ffffff;
+	-fx-alignment:center;
+	-fx-padding:0 0 0 10;
+	-fx-pref-width:145;
+	-fx-pref-height:20;
+}
+
+#mainHeader #topMenuArea .label#addMenuLabel {
+	-fx-font-size: 12;
+	-fx-text-fill:#ffffff;
+	-fx-alignment:center-left;
+}
+
+#mainHeader #topMenuArea .scroll_left_btn {
+	-fx-background-color:none;
+	-fx-background-image:url('../images/btn_move_left.png');
+	-fx-background-repeat:no-repeat;
+}
+
+#mainHeader #topMenuArea .scroll_left_btn:hover {
+	-fx-background-image:url('../images/btn_move_left_on.png');
+}
+
+#mainHeader #topMenuArea .scroll_right_btn {
+	-fx-background-color:none;
+	-fx-background-image:url('../images/btn_move_right.png');
+	-fx-background-repeat:no-repeat;
+}
+
+#mainHeader #topMenuArea .scroll_right_btn:hover {
+	-fx-background-image:url('../images/btn_move_right_on.png');
+}
+
+#mainHeader #topMenuArea .close_btn {
+	-fx-background-color:#DADADA;
+	-fx-background-image:url('../images/btn_tab_close.png');
+	-fx-padding:0 10;
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center;
+}
+#mainHeader #topMenuArea .close_btn:hover {
+	-fx-background-image:url('../images/btn_tab_close_on.png');	
+}
+#mainHeader #topMenuArea #selectedMenu Region {
+	-fx-background-color: #ffffff;
+	/* top-left top-right bottom-right bottom-left */
+	-fx-background-radius:3 3 0 0;
+	-fx-border-width:0;
+}
+
+#mainHeader #topMenuArea #selectedMenu .label {
+	-fx-font-size: 14;
+	-fx-font-weight:bold; 
+	-fx-text-fill: #000000;
+	-fx-alignment:center;
+}
+
+#mainHeader #topMenuArea #selectedMenu Region#addMenu {
+	-fx-background-color: #ffffff;
+	-fx-background-radius:3 3 0 0;
+	-fx-border-width:0;
+}
+
+#mainHeader #topMenuArea #selectedMenu .label#addMenuLabel {
+	-fx-font-size: 12;
+	-fx-font-weight:bold; 
+	-fx-text-fill: #000000;
+	-fx-alignment:center-left;
+}
+
+#mainFooter {
+	-fx-background-color:#5d5d5d;
+}
+
+#mainFooter #progressTaskLabel {
+	-fx-font-size:12;
+	-fx-text-fill:#99cbe4;
+}
+
+#mainFooter #labelSystemBuild {
+	-fx-font-size:12;
+	-fx-text-fill:#d2d2d2;
+}
+
+#mainFooter .general_progress {
+	-fx-alignment:center-left;
+	-fx-min-height:25;
+	-fx-pref-height:25;
+	-fx-max-height:25;
+	-fx-padding:2 0 0 0;
+}
+
+#mainFooter .general_progress .label {
+	-fx-text-fill:#fff;
+}
+
+#mainFooter .general_progress .progress-bar {
+	-fx-min-height:15;
+	-fx-pref-height:15;
+	-fx-max-height:15;
+}
+
+.bg_main_header_logo {
+	-fx-background-image:url('../images/ngenebio_logo_small.png');
+	-fx-background-repeat:no-repeat ;
+	-fx-alignment:center ;
+	-fx-max-height:21;
+}

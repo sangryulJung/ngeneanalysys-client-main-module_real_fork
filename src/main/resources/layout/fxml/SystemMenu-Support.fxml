@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="500.0" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemMenuSupportController">
+   <children>
+      <GridPane layoutX="20.0" layoutY="20.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="230.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="230.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="-Infinity" prefHeight="110.0" valignment="TOP" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <VBox prefWidth="220.0" GridPane.valignment="TOP">
+               <children>
+                  <Hyperlink focusTraversable="false" layoutX="60.0" layoutY="39.0" onAction="#openOperationManual" text="Operation Manual">
+                     <styleClass>
+                        <String fx:value="txt_support_label" />
+                        <String fx:value="txt" />
+                     </styleClass>
+                  </Hyperlink>
+                  <Hyperlink focusTraversable="false" layoutX="10.0" layoutY="31.0" onAction="#openReleaseNotes" text="Show latest release notes">
+                     <styleClass>
+                        <String fx:value="txt_support_label" />
+                        <String fx:value="txt" />
+                     </styleClass>
+                  </Hyperlink>
+               </children>
+            </VBox>
+            <VBox alignment="TOP_RIGHT" prefWidth="230.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+               <children>
+                  <Label minHeight="-Infinity" prefHeight="28.0" styleClass="font_size_14" text="Contact">
+                     <VBox.margin>
+                        <Insets right="5.0" />
+                     </VBox.margin>
+                  </Label>
+                  <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="28.0">
+                     <children>
+                        <Label text="Office">
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin>
+                           <styleClass>
+                              <String fx:value="txt_black" />
+                              <String fx:value="font_size_12" />
+                           </styleClass>
+                        </Label>
+                        <Label styleClass="font_size_13" text="+82 2 883 9787">
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="20.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="28.0" prefWidth="200.0">
+                     <children>
+                        <Label text="Email">
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin>
+                           <styleClass>
+                              <String fx:value="txt_black" />
+                              <String fx:value="font_size_12" />
+                           </styleClass>
+                        </Label>
+                        <Hyperlink focusTraversable="false" styleClass="txt_support_label" text="support@ngenebio.com" />
+                     </children>
+                     <VBox.margin>
+                        <Insets left="20.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </GridPane>
+   </children>
+</AnchorPane>
