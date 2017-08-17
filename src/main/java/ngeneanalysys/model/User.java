@@ -49,7 +49,7 @@ public class User implements Serializable {
     @JsonProperty("created_at")
     private DateTime createdAt;
     /** 수정일시 */
-    @JsonProperty("updated_at")
+    @JsonProperty(value = "updated_at")
     private DateTime updatedAt;
     /** 삭제일시 */
     @JsonProperty("deleted_at")

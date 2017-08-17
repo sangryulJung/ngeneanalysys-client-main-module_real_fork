@@ -336,7 +336,7 @@ public class APIService {
         headers.put("Content-Type", "application/json");
         if(tokenContain) {
             LoginSession loginSession = (LoginSession) cacheMemoryService.getCacheObject(CommonConstants.SESSION_CACHE_SET_NAME, CommonConstants.SESSION_CACHE_KEY_NAME);
-            headers.put("authorization", "Token " + loginSession.getToken());
+            headers.put("authorization", "Bearer " + loginSession.getToken());
         }
         return headers;
     }

@@ -10,11 +10,16 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
+import ngeneanalysys.exceptions.WebAPIException;
+import ngeneanalysys.model.PagedRun;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
+import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Jang
@@ -68,6 +73,17 @@ public class ExperimenterHomeController extends SubPaneController{
         apiService.setStage(getMainController().getPrimaryStage());
 
         this.mainController.getMainFrame().setCenter(root);
+        Map<String, Object> params = new HashMap<>();
+        params.put("limit", 5);
+        params.put("offset", 0);
+        HttpClientResponse response = null;
+        try {
+            response = apiService.get("/runs", params, null, false);
+            PagedRun pagedRun = response.getObjectBeforeConvertResponseToJSON(PagedRun.class);
+            logger.info(pagedRun.getCount().toString());
+        } catch (WebAPIException wae) {
+            logger.error(wae.getMessage());
+        }
     }
 
     /**
@@ -83,6 +99,7 @@ public class ExperimenterHomeController extends SubPaneController{
             controller.setMainController(this.mainController);
             controller.setExperimentHomeController(this);
             controller.show(page);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
