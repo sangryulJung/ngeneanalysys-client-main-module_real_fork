@@ -12,6 +12,7 @@ import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.PagedRun;
+import ngeneanalysys.model.Run;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
@@ -73,14 +74,25 @@ public class ExperimenterHomeController extends SubPaneController{
         apiService.setStage(getMainController().getPrimaryStage());
 
         this.mainController.getMainFrame().setCenter(root);
-        Map<String, Object> params = new HashMap<>();
-        params.put("limit", 5);
-        params.put("offset", 0);
+
         HttpClientResponse response = null;
         try {
+            Map<String, Object> params = new HashMap<>();
+//            params.put("name", "blablabla1");
+//            params.put("sequencingPlatform", "MISEQ");
+//            response = apiService.post("/runs", params, null, true);
+//            Run run1 = response.getObjectBeforeConvertResponseToJSON(Run.class);
+//            logger.info(run1.toString());
+//            params.put("name", "blablabla2");
+//            response = apiService.post("/runs", params, null, true);
+//            Run run2 = response.getObjectBeforeConvertResponseToJSON(Run.class);
+//            logger.info(run2.toString());
+//            params.clear();
+            params.put("limit", 5);
+            params.put("offset", 0);
             response = apiService.get("/runs", params, null, false);
             PagedRun pagedRun = response.getObjectBeforeConvertResponseToJSON(PagedRun.class);
-            logger.info(pagedRun.getCount().toString());
+            logger.info(pagedRun.toString());
         } catch (WebAPIException wae) {
             logger.error(wae.getMessage());
         }

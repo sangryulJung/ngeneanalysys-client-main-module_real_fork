@@ -1,46 +1,39 @@
 package ngeneanalysys.model;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 
 public class Run implements Serializable {
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty("id")
     private Integer id;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty("memberId")
     private Integer memberId;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(value = "memberGroupId")
     private Integer memberGroupId;
 
     private String name;
 
     private String sequencingPlatform;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String status;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private String statusMsg;
+   private String statusMsg;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Timestamp createdAt;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Timestamp startedAt;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Timestamp completedAt;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Timestamp updatedAt;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Timestamp deletedAt;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer deleted;
 
     public Integer getId() {
@@ -97,5 +90,24 @@ public class Run implements Serializable {
 
     public Integer getDeleted() {
         return deleted;
+    }
+
+    @Override
+    public String toString() {
+        return "Run{" +
+                "id=" + id +
+                ", memberId=" + memberId +
+                ", memberGroupId=" + memberGroupId +
+                ", name='" + name + '\'' +
+                ", sequencingPlatform='" + sequencingPlatform + '\'' +
+                ", status='" + status + '\'' +
+                ", statusMsg='" + statusMsg + '\'' +
+                ", createdAt=" + createdAt +
+                ", startedAt=" + startedAt +
+                ", completedAt=" + completedAt +
+                ", updatedAt=" + updatedAt +
+                ", deletedAt=" + deletedAt +
+                ", deleted=" + deleted +
+                '}';
     }
 }
