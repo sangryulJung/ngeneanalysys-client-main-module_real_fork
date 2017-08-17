@@ -1,7 +1,7 @@
 package ngeneanalysys.code.enums;
 
 /**
- * Sample Source 코드
+ * SampleSheet Source 코드
  * 
  * @author gjyoo
  * @since 2016. 5. 24. 오전 10:31:15

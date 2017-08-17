@@ -109,7 +109,7 @@
             <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="run" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
             <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="status" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
             <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="panel" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
-            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="15.0" prefWidth="134.0" styleClass="header" text="sample" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
+            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="15.0" prefWidth="134.0" styleClass="header" text="sampleSheet" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
          </children>
       </GridPane>
       <GridPane fx:id="listHeaderGrid1" style="-fx-border-color: red; -fx-background-color: gold;" GridPane.columnIndex="4" GridPane.rowIndex="3">
@@ -122,7 +122,7 @@
             <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="NEVER" />
          </rowConstraints>
          <children>
-            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="sample" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
+            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="sampleSheet" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
             <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="status" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
             <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="panel" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
          </children>

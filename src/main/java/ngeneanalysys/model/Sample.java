@@ -1,141 +1,335 @@
 package ngeneanalysys.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.joda.time.DateTime;
+
+import java.util.List;
+
 /**
  * @author Jang
- * @since 2017-08-11
+ * @since 2017-08-17
  */
 public class Sample {
-    private String sampleID;
-    private String sampleName;
-    private String samplePlate;
-    private String sampleWell;
-    private String i7IndexID;
-    private String index;
-    private String sampleProject;
-    private String description;
 
-    public Sample() {    }
+    @JsonProperty("id")
+    private Integer id;
 
-    public Sample(String sampleID, String sampleName, String samplePlate, String sampleWell, String i7IndexID, String index, String sampleProject, String description) {
-        this.sampleID = sampleID;
-        this.sampleName = sampleName;
-        this.samplePlate = samplePlate;
-        this.sampleWell = sampleWell;
-        this.i7IndexID = i7IndexID;
-        this.index = index;
-        this.sampleProject = sampleProject;
-        this.description = description;
+    @JsonProperty("runId")
+    private Integer runId;
+
+    @JsonProperty("memberId")
+    private Integer memberId;
+
+    @JsonProperty("memberGroupId")
+    private Integer memberGroupId;
+
+    @JsonProperty("name")
+    private String name;
+
+    @JsonProperty("paitentId")
+    private String paitentId;
+
+    @JsonProperty("panelId")
+    private Integer panelId;
+
+    @JsonProperty("diseaseId")
+    private Integer diseaseId;
+
+    @JsonProperty("analysisType")
+    private String analysisType;
+
+    @JsonProperty("sampleSource")
+    private String sampleSource;
+
+    @JsonProperty("qcResult")
+    private String qcResult;
+
+    @JsonProperty("inputFType")
+    private String inputFType;
+
+    @JsonProperty("sampleStatus")
+    private SampleStatus sampleStatus;
+
+    @JsonProperty("createdAt")
+    private DateTime createdAt;
+
+    @JsonProperty("updatedAt")
+    private DateTime updatedAt;
+
+    @JsonProperty("deletedAt")
+    private DateTime deletedAt;
+
+    @JsonProperty("deleted")
+    private Integer deleted;
+
+    @JsonProperty("sampleSheet")
+    private SampleSheet sampleSheet;
+
+    private QCData qcData;
+
+    /**
+     * @return id
+     */
+    public Integer getId() {
+        return id;
     }
 
     /**
-     * @return sampleID
+     * @param id
      */
-    public String getSampleID() {
-        return sampleID;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     /**
-     * @param sampleID
+     * @return runId
      */
-    public void setSampleID(String sampleID) {
-        this.sampleID = sampleID;
+    public Integer getRunId() {
+        return runId;
     }
 
     /**
-     * @return sampleName
+     * @param runId
      */
-    public String getSampleName() {
-        return sampleName;
+    public void setRunId(Integer runId) {
+        this.runId = runId;
     }
 
     /**
-     * @param sampleName
+     * @return memberId
      */
-    public void setSampleName(String sampleName) {
-        this.sampleName = sampleName;
+    public Integer getMemberId() {
+        return memberId;
     }
 
     /**
-     * @return samplePlate
+     * @param memberId
      */
-    public String getSamplePlate() {
-        return samplePlate;
+    public void setMemberId(Integer memberId) {
+        this.memberId = memberId;
     }
 
     /**
-     * @param samplePlate
+     * @return memberGroupId
      */
-    public void setSamplePlate(String samplePlate) {
-        this.samplePlate = samplePlate;
+    public Integer getMemberGroupId() {
+        return memberGroupId;
     }
 
     /**
-     * @return sampleWell
+     * @param memberGroupId
      */
-    public String getSampleWell() {
-        return sampleWell;
+    public void setMemberGroupId(Integer memberGroupId) {
+        this.memberGroupId = memberGroupId;
     }
 
     /**
-     * @param sampleWell
+     * @return name
      */
-    public void setSampleWell(String sampleWell) {
-        this.sampleWell = sampleWell;
+    public String getName() {
+        return name;
     }
 
     /**
-     * @return i7IndexID
+     * @param name
      */
-    public String getI7IndexID() {
-        return i7IndexID;
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
-     * @param i7IndexID
+     * @return paitentId
      */
-    public void setI7IndexID(String i7IndexID) {
-        this.i7IndexID = i7IndexID;
+    public String getPaitentId() {
+        return paitentId;
     }
 
     /**
-     * @return index
+     * @param paitentId
      */
-    public String getIndex() {
-        return index;
+    public void setPaitentId(String paitentId) {
+        this.paitentId = paitentId;
     }
 
     /**
-     * @param index
+     * @return panelId
      */
-    public void setIndex(String index) {
-        this.index = index;
+    public Integer getPanelId() {
+        return panelId;
     }
 
     /**
-     * @return sampleProject
+     * @param panelId
      */
-    public String getSampleProject() {
-        return sampleProject;
+    public void setPanelId(Integer panelId) {
+        this.panelId = panelId;
     }
 
     /**
-     * @param sampleProject
+     * @return diseaseId
      */
-    public void setSampleProject(String sampleProject) {
-        this.sampleProject = sampleProject;
+    public Integer getDiseaseId() {
+        return diseaseId;
     }
 
     /**
-     * @return description
+     * @param diseaseId
      */
-    public String getDescription() {
-        return description;
+    public void setDiseaseId(Integer diseaseId) {
+        this.diseaseId = diseaseId;
     }
 
     /**
-     * @param description
+     * @return analysisType
      */
-    public void setDescription(String description) {
-        this.description = description;
+    public String getAnalysisType() {
+        return analysisType;
+    }
+
+    /**
+     * @param analysisType
+     */
+    public void setAnalysisType(String analysisType) {
+        this.analysisType = analysisType;
+    }
+
+    /**
+     * @return sampleSource
+     */
+    public String getSampleSource() {
+        return sampleSource;
+    }
+
+    /**
+     * @param sampleSource
+     */
+    public void setSampleSource(String sampleSource) {
+        this.sampleSource = sampleSource;
+    }
+
+    /**
+     * @return qcResult
+     */
+    public String getQcResult() {
+        return qcResult;
+    }
+
+    /**
+     * @param qcResult
+     */
+    public void setQcResult(String qcResult) {
+        this.qcResult = qcResult;
+    }
+
+    /**
+     * @return inputFType
+     */
+    public String getInputFType() {
+        return inputFType;
+    }
+
+    /**
+     * @param inputFType
+     */
+    public void setInputFType(String inputFType) {
+        this.inputFType = inputFType;
+    }
+
+    /**
+     * @return sampleStatus
+     */
+    public SampleStatus getSampleStatus() {
+        return sampleStatus;
+    }
+
+    /**
+     * @param sampleStatus
+     */
+    public void setSampleStatus(SampleStatus sampleStatus) {
+        this.sampleStatus = sampleStatus;
+    }
+
+    /**
+     * @return createdAt
+     */
+    public DateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    /**
+     * @param createdAt
+     */
+    public void setCreatedAt(DateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    /**
+     * @return updatedAt
+     */
+    public DateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    /**
+     * @param updatedAt
+     */
+    public void setUpdatedAt(DateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    /**
+     * @return deletedAt
+     */
+    public DateTime getDeletedAt() {
+        return deletedAt;
+    }
+
+    /**
+     * @param deletedAt
+     */
+    public void setDeletedAt(DateTime deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
+    /**
+     * @return deleted
+     */
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    /**
+     * @param deleted
+     */
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
+
+    /**
+     * @return sampleSheet
+     */
+    public SampleSheet getSampleSheet() {
+        return sampleSheet;
+    }
+
+    /**
+     * @param sampleSheet
+     */
+    public void setSampleSheet(SampleSheet sampleSheet) {
+        this.sampleSheet = sampleSheet;
+    }
+
+    /**
+     * @return qcData
+     */
+    public QCData getQcData() {
+        return qcData;
+    }
+
+    /**
+     * @param qcData
+     */
+    public void setQcData(QCData qcData) {
+        this.qcData = qcData;
     }
 }

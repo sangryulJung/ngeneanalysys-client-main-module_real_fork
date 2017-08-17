@@ -3,11 +3,8 @@
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -15,122 +12,94 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="contentWrapper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="900.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SampleUploadScreenSecond">
+<VBox fx:id="contentWrapper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="900.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SampleUploadScreenSecondController">
 	<children>
-		<GridPane layoutX="35.0" layoutY="25.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="880.0">
-			<columnConstraints>
-				<ColumnConstraints hgrow="SOMETIMES" percentWidth="15.0" />
-				<ColumnConstraints hgrow="SOMETIMES" percentWidth="35.0" />
-				<ColumnConstraints hgrow="SOMETIMES" percentWidth="15.0" />
-				<ColumnConstraints hgrow="SOMETIMES" percentWidth="35.0" />
-			</columnConstraints>
-			<rowConstraints>
-				<RowConstraints percentHeight="20.0" valignment="CENTER" vgrow="SOMETIMES" />
-				<RowConstraints percentHeight="20.0" vgrow="SOMETIMES" />
-				<RowConstraints percentHeight="20.0" vgrow="SOMETIMES" />
-				<RowConstraints percentHeight="20.0" vgrow="SOMETIMES" />
-				<RowConstraints percentHeight="20.0" vgrow="SOMETIMES" />
-			</rowConstraints>
-			<children>
-				<Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="formTitleLabel" text="Run Name">
-					<GridPane.margin>
-						<Insets right="20.0" />
-					</GridPane.margin>
-				</Label>
-				<Label fx:id="labelSequencer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="formTitleLabel" text="illumina MiSeq" GridPane.columnIndex="1" GridPane.rowIndex="1">
-					<GridPane.margin>
-						<Insets right="20.0" />
-					</GridPane.margin>
-				</Label>
-				<Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="formTitleLabel" text="Request date" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
-					<GridPane.margin>
-						<Insets right="20.0" />
-					</GridPane.margin>
-				</Label>
-
-				<HBox alignment="CENTER_RIGHT" GridPane.columnIndex="3" GridPane.halignment="LEFT">
-					<children>
-						<DatePicker fx:id="datePickerRequestDate" focusTraversable="false" maxWidth="1.7976931348623157E308" prefHeight="32.0" promptText="Choose Date" showWeekNumbers="true" styleClass="field_height" HBox.hgrow="ALWAYS" />
-						<Label styleClass="help_tooltip">
-							<tooltip>
-								<Tooltip text="Choose analysis requested date (default: present date)" />
-							</tooltip>
-							<HBox.margin>
-								<Insets left="5.0" />
-							</HBox.margin>
-						</Label>
-					</children>
-					<GridPane.margin>
-						<Insets right="20.0" />
-					</GridPane.margin>
-				</HBox>
-
-				<HBox alignment="CENTER_LEFT" GridPane.columnIndex="3" GridPane.rowIndex="4">
-					<children>
-						<Label alignment="CENTER_RIGHT" styleClass="help_tooltip">
-							<tooltip>
-								<Tooltip text="Choose FASTQ sequencing data file" />
-							</tooltip>
-							<HBox.margin>
-								<Insets left="5.0" />
-							</HBox.margin>
-						</Label>
-					</children>
-					<GridPane.margin>
-						<Insets right="20.0" />
-					</GridPane.margin>
-				</HBox>
-				<HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.valignment="CENTER">
-					<children>
-						<TextField fx:id="textFieldRunName" focusTraversable="false" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" promptText="Enter the Run Name" styleClass="field_height" HBox.hgrow="ALWAYS" />
-						<Label styleClass="help_tooltip">
-							<HBox.margin>
-								<Insets left="5.0" />
-							</HBox.margin>
-							<tooltip>
-								<Tooltip text="Enter Run Name (default: present date and time)" />
-							</tooltip>
-						</Label>
-					</children>
-					<padding>
-						<Insets right="20.0" />
-					</padding>
-				</HBox>
-				<HBox alignment="CENTER_LEFT" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-				<Label fx:id="labelExperimentType" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Experiment Type" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1">
-					<GridPane.margin>
-						<Insets right="20.0" />
-					</GridPane.margin>
-				</Label>
-				<Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="formTitleLabel" text="Sequencer" GridPane.rowIndex="1">
-					<GridPane.margin>
-						<Insets right="20.0" />
-					</GridPane.margin>
-				</Label>
-						<Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="formTitleLabel" text="Experiment Type" GridPane.columnIndex="2" GridPane.rowIndex="1">
-							<GridPane.margin>
-								<Insets right="20.0" />
-							</GridPane.margin>
-						</Label>
-			</children>
-			<VBox.margin>
-				<Insets bottom="5.0" left="20.0" top="20.0" />
-			</VBox.margin>
-		</GridPane>
-		<TableView fx:id="tableViewRegistForm" fixedCellSize="45.0" focusTraversable="false" layoutX="14.0" layoutY="287.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="225.0" prefWidth="660.0">
-			<columns>
-				<TableColumn fx:id="tableColumnSample" editable="false" maxWidth="63.20001220703125" minWidth="30.0" prefWidth="63.20001220703125" resizable="false" sortable="false" text="Sample" />
-				<TableColumn fx:id="tableColumnDNAQC" editable="false" prefWidth="89.79998779296875" resizable="false" sortable="false" text="DNA QC" />
-            <TableColumn fx:id="tableColumnLibraryQC" prefWidth="94.20001220703125" text="Library QC" />
-            <TableColumn fx:id="tableColumnSeqClusterDensity" prefWidth="125.79998779296875" text="Seq.Cluster Density" />
-				<TableColumn fx:id="tableColumnSeqQ30" editable="false" minWidth="6.79998779296875" prefWidth="101.79998779296875" resizable="false" sortable="false" text="Seq. &gt;= Q30" />
-				<TableColumn fx:id="tableColumnSeqClusterPF" editable="false" prefWidth="105.00006103515625" resizable="false" sortable="false" text="Seq.Cluster PF" />
-            <TableColumn fx:id="tableColumnSeqIndexing" prefWidth="175.4000244140625" text="Seq. Indexing PF CV" />
-			</columns>
-			<VBox.margin>
-				<Insets left="20.0" right="20.0" />
-			</VBox.margin>
-		</TableView>
+      <GridPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="880.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" percentWidth="15.0" />
+            <ColumnConstraints hgrow="SOMETIMES" percentWidth="35.0" />
+            <ColumnConstraints hgrow="SOMETIMES" percentWidth="15.0" />
+            <ColumnConstraints hgrow="SOMETIMES" percentWidth="35.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints percentHeight="100.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="formTitleLabel" text="Choose Files">
+               <GridPane.margin>
+                  <Insets right="20.0" />
+               </GridPane.margin>
+            </Label>
+            <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1">
+               <children>
+                  <Button fx:id="buttonFileOpen" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showFileFindWindow" prefHeight="32.0" styleClass="field_height" text="Upload File" />
+                  <Label alignment="CENTER_RIGHT" styleClass="help_tooltip">
+                     <tooltip>
+                        <Tooltip text="Choose FASTQ sequencing data file" />
+                     </tooltip>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <GridPane.margin>
+                  <Insets right="20.0" />
+               </GridPane.margin>
+            </HBox>
+         </children>
+         <VBox.margin>
+            <Insets bottom="5.0" left="20.0" top="20.0" />
+         </VBox.margin>
+      </GridPane>
+      <GridPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="225.0" prefWidth="880.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="104.60000610351562" minHeight="10.0" prefHeight="29.800018310546875" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="193.39999389648438" minHeight="10.0" prefHeight="188.19998168945312" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <GridPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="23.0" prefWidth="900.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Label text="Sample" />
+                  <Label text="Seq. Cluster Density" GridPane.columnIndex="3" />
+                  <Label text="Seq. &gt;=Q30" GridPane.columnIndex="4" />
+                  <Label text="DNA QC" GridPane.columnIndex="1" />
+                  <Label text="Library QC" GridPane.columnIndex="2" />
+                  <Label text="Seq. Cluster PF" GridPane.columnIndex="5" />
+                  <Label text="Seq. Indexing PF CV" GridPane.columnIndex="6" />
+               </children>
+            </GridPane>
+            <ScrollPane fx:id="qcScrollPane" GridPane.rowIndex="1">
+               <content>
+                  <GridPane fx:id="qcGridPane" maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="192.0" prefWidth="898.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                  </GridPane>
+               </content>
+            </ScrollPane>
+         </children>
+      </GridPane>
 		<HBox alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="57.0" prefWidth="698.0" spacing="10.0" VBox.vgrow="ALWAYS">
 			<children>
 				<HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
