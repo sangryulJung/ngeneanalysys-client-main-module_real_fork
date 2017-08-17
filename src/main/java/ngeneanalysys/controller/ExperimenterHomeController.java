@@ -1,5 +1,7 @@
 package ngeneanalysys.controller;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,6 +23,10 @@ import org.slf4j.Logger;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
+
+import static java.lang.Thread.sleep;
 
 /**
  * @author Jang
@@ -75,27 +81,7 @@ public class ExperimenterHomeController extends SubPaneController{
 
         this.mainController.getMainFrame().setCenter(root);
 
-        HttpClientResponse response = null;
-        try {
-            Map<String, Object> params = new HashMap<>();
-//            params.put("name", "blablabla1");
-//            params.put("sequencingPlatform", "MISEQ");
-//            response = apiService.post("/runs", params, null, true);
-//            Run run1 = response.getObjectBeforeConvertResponseToJSON(Run.class);
-//            logger.info(run1.toString());
-//            params.put("name", "blablabla2");
-//            response = apiService.post("/runs", params, null, true);
-//            Run run2 = response.getObjectBeforeConvertResponseToJSON(Run.class);
-//            logger.info(run2.toString());
-//            params.clear();
-            params.put("limit", 5);
-            params.put("offset", 0);
-            response = apiService.get("/runs", params, null, false);
-            PagedRun pagedRun = response.getObjectBeforeConvertResponseToJSON(PagedRun.class);
-            logger.info(pagedRun.toString());
-        } catch (WebAPIException wae) {
-            logger.error(wae.getMessage());
-        }
+
     }
 
     /**
@@ -110,11 +96,52 @@ public class ExperimenterHomeController extends SubPaneController{
             SampleUploadScreenFirst controller = loader.getController();
             controller.setMainController(this.mainController);
             controller.setExperimentHomeController(this);
-            controller.show(page);
+            CompletableFuture<PagedRun> getPagedRun = new CompletableFuture<>();
+            getPagedRun.supplyAsync(() -> {
+                HttpClientResponse response = null;
+                try {
+                    Map<String, Object> params = new HashMap<>();
+                    //            params.put("name", "blablabla1");
+                    //            params.put("sequencingPlatform", "MISEQ");
+                    //            response = apiService.post("/runs", params, null, true);
+                    //            Run run1 = response.getObjectBeforeConvertResponseToJSON(Run.class);
+                    //            logger.info(run1.toString());
+                    //            params.put("name", "blablabla2");
+                    //            response = apiService.post("/runs", params, null, true);
+                    //            Run run2 = response.getObjectBeforeConvertResponseToJSON(Run.class);
+                    //            logger.info(run2.toString());
+                    //            params.clear();
+                    params.put("limit", 5);
+                    params.put("offset", 0);
 
+                    response = apiService.get("/runs", params, null, false);
+
+                    PagedRun pagedRun = response.getObjectBeforeConvertResponseToJSON(PagedRun.class);
+                    logger.info(pagedRun.toString());
+                    getPagedRun.complete(pagedRun);
+                } catch (Exception e) {
+                    getPagedRun.completeExceptionally(e);
+                }
+                return getPagedRun;
+            });
+
+            try {
+                PagedRun p = getPagedRun.get();
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            controller.show(page);
+                        } catch (IOException e) {
+                            logger.error("error", e);
+                        }
+                    }
+                });
+            } catch (Exception e){
+
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }
