@@ -24,13 +24,13 @@ Button#buttonUpload:hover {
 	-fx-background-image:url('../images/btn_run_on.png');
 }
 
-#listHeaderGrid, #listHeaderGrid1, #listHeaderGrid2 {
+#runListHeaderGridPane, #sampleListHeaderGridPane {
 	-fx-border-color:#000;
 	-fx-border-width:2 0 0 0;
 	-fx-background-color:#75848c;
 }
 
-#listHeaderGrid .header, #listHeaderGrid1 .header, #listHeaderGrid2 .header {
+#runListHeaderGridPane .header, #sampleListHeaderGridPane .header {
 	-fx-font-size:12;
 	-fx-text-fill:#fff;
 	-fx-font-weight:bold;

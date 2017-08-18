@@ -96,7 +96,7 @@
             </VBox>
          </children>
       </VBox>
-      <GridPane fx:id="listHeaderGrid" prefHeight="36.0" prefWidth="420.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
+      <GridPane fx:id="runListHeaderGridPane" prefHeight="36.0" prefWidth="420.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="300.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="100.0" />
@@ -105,11 +105,11 @@
             <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="NEVER" />
          </rowConstraints>
          <children>
-            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="run" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
-            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="status" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
+            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="RUN" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
+            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="STATUS" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
          </children>
       </GridPane>
-      <GridPane fx:id="runListHeaderGridPane" maxWidth="500.0" style="-fx-border-color: red; -fx-background-color: gold;" GridPane.columnIndex="5" GridPane.rowIndex="3">
+      <GridPane fx:id="sampleListHeaderGridPane" maxWidth="500.0" GridPane.columnIndex="5" GridPane.rowIndex="3">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="300.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="300.0" />
@@ -119,9 +119,9 @@
             <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="NEVER" />
          </rowConstraints>
          <children>
-            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="name" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
-            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="status" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
-            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="panel" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
+            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="SAMPLE" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
+            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="STATUS" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
+            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="PANEL" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
          </children>
       </GridPane>
       <GridPane fx:id="runListGridPane" GridPane.columnIndex="3" GridPane.rowIndex="4">
@@ -185,7 +185,7 @@
                   <Insets left="8.0" top="4.0" />
                </HBox.margin>
             </Label>
-            <Label styleClass="font_size_10" text="(Running : ">
+            <Label styleClass="font_size_10" text="(running : ">
                <HBox.margin>
                   <Insets left="5.0" top="7.0" />
                </HBox.margin>
@@ -200,7 +200,7 @@
                   <Insets top="7.0" />
                </HBox.margin>
             </Label>
-            <Label styleClass="font_size_10" text="/ Queued : ">
+            <Label styleClass="font_size_10" text="/ queued : ">
                <HBox.margin>
                   <Insets top="7.0" />
                </HBox.margin>
@@ -215,7 +215,7 @@
                   <Insets top="7.0" />
                </HBox.margin>
             </Label>
-            <Label layoutX="407.0" layoutY="10.0" styleClass="font_size_10" text=" / Failed : ">
+            <Label layoutX="407.0" layoutY="10.0" styleClass="font_size_10" text=" / failed : ">
                <HBox.margin>
                   <Insets top="7.0" />
                </HBox.margin>
@@ -257,10 +257,10 @@
                <styleClass>
                   <String fx:value="h2" />
                   <String fx:value="weight_bold" />
-                  <String fx:value="txt_black" />
+                  <String fx:value="txt_blue" />
                </styleClass>
             </Label>
-            <Label styleClass="font_size_10" text="(Running : ">
+            <Label styleClass="font_size_10" text="(running : ">
                <HBox.margin>
                   <Insets left="5.0" top="7.0" />
                </HBox.margin>
@@ -275,7 +275,7 @@
                   <String fx:value="font_size_10" />
                </styleClass>
             </Label>
-            <Label styleClass="font_size_10" text="/ Queued : ">
+            <Label styleClass="font_size_10" text="/ queued : ">
                <HBox.margin>
                   <Insets top="7.0" />
                </HBox.margin>
@@ -300,7 +300,7 @@
    </children>
    <stylesheets>
       <URL value="@../css/experimenter.css" />
-      <URL value="@../css/common.css" />
       <URL value="@../css/home.css" />
+      <URL value="@../css/common.css" />
    </stylesheets>
 </GridPane>
