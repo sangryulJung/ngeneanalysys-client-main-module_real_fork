@@ -26,8 +26,8 @@ public class Sample {
     @JsonProperty("name")
     private String name;
 
-    @JsonProperty("paitentId")
-    private String paitentId;
+    @JsonProperty("patientId")
+    private String patientId;
 
     @JsonProperty("panelId")
     private Integer panelId;
@@ -141,14 +141,14 @@ public class Sample {
      * @return paitentId
      */
     public String getPaitentId() {
-        return paitentId;
+        return patientId;
     }
 
     /**
      * @param paitentId
      */
     public void setPaitentId(String paitentId) {
-        this.paitentId = paitentId;
+        this.patientId = paitentId;
     }
 
     /**
@@ -331,5 +331,30 @@ public class Sample {
      */
     public void setQcData(QCData qcData) {
         this.qcData = qcData;
+    }
+
+    @Override
+    public String toString() {
+        return "Sample{" +
+                "id=" + id +
+                ", runId=" + runId +
+                ", memberId=" + memberId +
+                ", memberGroupId=" + memberGroupId +
+                ", name='" + name + '\'' +
+                ", patientId='" + patientId + '\'' +
+                ", panelId=" + panelId +
+                ", diseaseId=" + diseaseId +
+                ", analysisType='" + analysisType + '\'' +
+                ", sampleSource='" + sampleSource + '\'' +
+                ", qcResult='" + qcResult + '\'' +
+                ", inputFType='" + inputFType + '\'' +
+                ", sampleStatus=" + sampleStatus +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", deletedAt=" + deletedAt +
+                ", deleted=" + deleted +
+                ", sampleSheet=" + sampleSheet +
+                ", qcData=" + qcData +
+                '}';
     }
 }

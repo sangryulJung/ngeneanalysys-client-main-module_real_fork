@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Pagination;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -15,7 +16,9 @@ import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.PagedRun;
+import ngeneanalysys.model.PagedSample;
 import ngeneanalysys.model.Run;
+import ngeneanalysys.model.Sample;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
@@ -51,7 +54,7 @@ public class ExperimenterHomeController extends SubPaneController{
     private GridPane runListGridPane;
 
     @FXML
-    private GridPane sampleGrid;
+    private GridPane sampleListGridPane;
 
     @FXML
     private Label runCount;
@@ -71,12 +74,16 @@ public class ExperimenterHomeController extends SubPaneController{
     @FXML
     private Button buttonUpload;
 
+    @FXML
+    private Pagination sampleListPagination;
+
     /** API Service */
     private APIService apiService;
 
     private List<TextField> runNameFields;
     private List<VBox> runStatusFields;
-    private List<TextField> runPanelFields;
+    private List<TextField> sampleNameFields;
+    private List<TextField> samplePanelFields;
 
     @Override
     public void show(Parent root) throws IOException {
@@ -86,10 +93,10 @@ public class ExperimenterHomeController extends SubPaneController{
         apiService.setStage(getMainController().getPrimaryStage());
 
         this.mainController.getMainFrame().setCenter(root);
-        test();
+        testAddRuns();
         initRunListLayout();
+        initSampleListLayout();
         showRunList();
-
     }
 
     /**
@@ -111,13 +118,14 @@ public class ExperimenterHomeController extends SubPaneController{
     }
 
     private void showRunList() {
+        final int maxRunNumberOfPage = runListGridPane.getRowConstraints().size();
         CompletableFuture<PagedRun> getPagedRun = new CompletableFuture<>();
         getPagedRun.supplyAsync(() -> {
             HttpClientResponse response = null;
             Map<String, Object> params = new HashMap<>();
             try {
                 params.clear();
-                params.put("limit", runListGridPane.getRowConstraints().size());
+                params.put("limit", maxRunNumberOfPage);
                 params.put("offset", 0);
 
                 response = apiService.get("/runs", params, null, false);
@@ -132,25 +140,41 @@ public class ExperimenterHomeController extends SubPaneController{
         });
         try {
             PagedRun pagedRun = getPagedRun.get();
-            for(int i = 0; i < pagedRun.getCount(); i++) {
-                runNameFields.get(i).setText(pagedRun.getResult().get(i).getName());
+            int runCount = pagedRun.getResult().size();
+            for(int i = 0; i < runCount; i++) {
+                Run run = pagedRun.getResult().get(i);
+                runNameFields.get(i).setText(run.getName());
+                runNameFields.get(i).setOnMouseClicked(e -> {
+                    //showSampleList(run.getId(), 0);
+                    sampleListPagination.setPageFactory((page) -> {
+                        showSampleList(run.getId(), page);
+                        return new VBox();
+                    });
+                    sampleListPagination.setCurrentPageIndex(0);
+                });
+
                 runStatusFields.get(i).setBorder(new Border(new BorderStroke(Color.BLUE, BorderStrokeStyle.DASHED, new CornerRadii(5), new BorderWidths(5))));
             }
-            for(int i = pagedRun.getCount(); i < runListGridPane.getRowConstraints().size(); i++){
+            for(int i = runCount; i < maxRunNumberOfPage; i++){
                 runNameFields.get(i).setText("");
+                runNameFields.get(i).setOnMouseClicked(null);
                 runStatusFields.get(i).setBorder(null);
             }
+
         } catch (Exception e) {
             logger.error("HOME -> SHOW RUN LIST", e);
         }
     }
 
     private void initRunListLayout() {
+        final int maxRunNumberOfPage = runListGridPane.getRowConstraints().size();
         try {
             runNameFields = new ArrayList<>();
             runStatusFields = new ArrayList<>();
-            for (int i = 0; i < runListGridPane.getRowConstraints().size(); i++) {
-                runNameFields.add(new TextField());
+            for (int i = 0; i < maxRunNumberOfPage; i++) {
+                TextField runNameField = new TextField();
+                runNameField.setEditable(false);
+                runNameFields.add(runNameField);
                 runListGridPane.add(runNameFields.get(i), 0, i);
                 runStatusFields.add(new VBox());
                 runListGridPane.add(runStatusFields.get(i), 1, i);
@@ -159,65 +183,103 @@ public class ExperimenterHomeController extends SubPaneController{
             logger.error("HOME -> initRunListLayout", e);
         }
     }
-    private void test() {
+
+    private void initSampleListLayout() {
+        final int maxItemNumberOfPage = sampleListGridPane.getRowConstraints().size() - 1;
+        try {
+            sampleNameFields = new ArrayList<>();
+            samplePanelFields = new ArrayList<>();
+            for (int i = 0; i < maxItemNumberOfPage; i++) {
+                TextField sampleNameField = new TextField();
+                sampleNameField.setEditable(false);
+                sampleNameFields.add(sampleNameField);
+                TextField samplePanelField = new TextField();
+                samplePanelField.setEditable(false);
+                samplePanelFields.add(samplePanelField);
+                sampleListGridPane.add(sampleNameField, 0, i);
+                sampleListGridPane.add(samplePanelField, 1, i);
+            }
+
+        } catch (Exception e) {
+            logger.error("HOME -> initSampleListLayout", e);
+        }
+    }
+    private void showSampleList(int runId, int pageIndex){
+        final int maxItemNumberOfPage = sampleListGridPane.getRowConstraints().size() - 1;
+        CompletableFuture<PagedSample> getPagedSample = new CompletableFuture<>();
+        getPagedSample.supplyAsync(() -> {
+            HttpClientResponse response = null;
+            Map<String, Object> params = new HashMap<>();
+            try {
+                params.clear();
+                params.put("runId", runId);
+                params.put("limit", maxItemNumberOfPage);
+                params.put("offset", maxItemNumberOfPage * pageIndex);
+                response = apiService.get("/samples", params, null, false);
+
+                PagedSample pagedSample = response.getObjectBeforeConvertResponseToJSON(PagedSample.class);
+                logger.info(pagedSample.toString());
+                getPagedSample.complete(pagedSample);
+            } catch (Exception e) {
+                getPagedSample.completeExceptionally(e);
+            }
+            return getPagedSample;
+        });
+        try {
+            PagedSample pagedSample = getPagedSample.get();
+            sampleListPagination.setCurrentPageIndex(pageIndex);
+            sampleListPagination.setMaxPageIndicatorCount(3);
+            sampleListPagination.setPageCount(pagedSample.getCount() / maxItemNumberOfPage);
+            int sampleCount = pagedSample.getResult().size();
+            for(int i = 0; i < sampleCount; i++) {
+                Sample sample = pagedSample.getResult().get(i);
+                sampleNameFields.get(i).setText(sample.getName());
+                samplePanelFields.get(i).setText(sample.getPanelId().toString());
+            }
+            for(int i = sampleCount; i < maxItemNumberOfPage; i++){
+                sampleNameFields.get(i).setText("");
+                samplePanelFields.get(i).setText("");
+            }
+        } catch (Exception e) {
+            logger.error("HOME -> SHOW RUN LIST", e);
+        }
+    }
+    private void testAddRuns() {
         Map<String, Object> params = new HashMap<>();
         HttpClientResponse response = null;
-        try {
-            params.put("name", "blablabla1");
-            params.put("sequencingPlatform", "MISEQ");
-            response = apiService.post("/runs", params, null, true);
-            Run run1 = response.getObjectBeforeConvertResponseToJSON(Run.class);
-            logger.info(run1.toString());
-        } catch (Exception e) {
+        for(int i = 0; i < 10; i ++) {
+            try {
+                params.put("name", "RUN NAME_" + i);
+                params.put("sequencingPlatform", "MISEQ");
+                response = apiService.post("/runs", params, null, true);
+                Run run = response.getObjectBeforeConvertResponseToJSON(Run.class);
+                logger.info(run.toString());
+                testAddSamples(run.getId());
+            } catch (Exception e) {
 
+            }
         }
-        try {
-            params.put("name", "blablabla2");
-            response = apiService.post("/runs", params, null, true);
-            Run run2 = response.getObjectBeforeConvertResponseToJSON(Run.class);
-            logger.info(run2.toString());
-        } catch(Exception e) {
+    }
+    private void testAddSamples(int runId) {
+        Map<String, Object> params = new HashMap<>();
+        HttpClientResponse response = null;
+        for(int i = 0; i < 100; i++) {
+            try {
+                params.put("runId", runId);
+                params.put("name", "sample_" + i + "_" + "RUN_" + runId);
+                params.put("patientId", "PAT_" + i + "_" + runId);
+                params.put("panelId", 1);
+                params.put("diseaseId", 1);
+                params.put("analysisType", "SOMATIC");
+                params.put("sampleSource", "FFPE");
+                params.put("inputFType", "FASTQ.GZ");
+                response = apiService.post("/samples", params, null, true);
+                Sample run1 = response.getObjectBeforeConvertResponseToJSON(Sample.class);
+                logger.info(run1.toString());
+            } catch (Exception e) {
 
+            }
         }
-        try {
-            params.put("name", "blablabla3");
-            response = apiService.post("/runs", params, null, true);
-            Run run2 = response.getObjectBeforeConvertResponseToJSON(Run.class);
-            logger.info(run2.toString());
-        } catch(Exception e) {
 
-        }
-        try {
-            params.put("name", "blablabla4");
-            response = apiService.post("/runs", params, null, true);
-            Run run2 = response.getObjectBeforeConvertResponseToJSON(Run.class);
-            logger.info(run2.toString());
-        } catch(Exception e) {
-
-        }
-        try {
-            params.put("name", "blablabla5");
-            response = apiService.post("/runs", params, null, true);
-            Run run2 = response.getObjectBeforeConvertResponseToJSON(Run.class);
-            logger.info(run2.toString());
-        } catch(Exception e) {
-
-        }
-        try {
-            params.put("name", "blablabla6");
-            response = apiService.post("/runs", params, null, true);
-            Run run2 = response.getObjectBeforeConvertResponseToJSON(Run.class);
-            logger.info(run2.toString());
-        } catch(Exception e) {
-
-        }
-        try {
-            params.put("name", "blablabla7");
-            response = apiService.post("/runs", params, null, true);
-            Run run2 = response.getObjectBeforeConvertResponseToJSON(Run.class);
-            logger.info(run2.toString());
-        } catch(Exception e) {
-
-        }
     }
 }
