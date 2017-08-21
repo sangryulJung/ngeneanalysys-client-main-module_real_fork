@@ -110,6 +110,7 @@ public class ExperimenterHomeController extends SubPaneController{
             Pane page = loader.load();
             SampleUploadController controller = loader.getController();
             controller.setMainController(this.mainController);
+
             controller.setExperimentHomeController(this);
             controller.show(page);
         } catch (IOException e) {

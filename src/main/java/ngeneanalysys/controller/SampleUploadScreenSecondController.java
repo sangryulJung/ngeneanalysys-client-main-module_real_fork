@@ -1,24 +1,26 @@
 package ngeneanalysys.controller;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import ngeneanalysys.code.constants.CommonConstants;
-import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.BaseStageController;
+import ngeneanalysys.exceptions.ExcelParseException;
+import ngeneanalysys.model.QCData;
+import ngeneanalysys.model.Sample;
 import ngeneanalysys.model.SampleSheet;
-import ngeneanalysys.util.FXMLLoadUtil;
-import ngeneanalysys.util.LoggerUtil;
+import ngeneanalysys.model.render.ComboBoxConverter;
+import ngeneanalysys.model.render.ComboBoxItem;
+import ngeneanalysys.util.*;
 import org.slf4j.Logger;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Jang
@@ -30,20 +32,27 @@ public class SampleUploadScreenSecondController extends BaseStageController {
     /** 메인 화면 컨트롤러 객체 */
     private MainController mainController;
 
+    private SampleUploadController sampleUploadController;
+
     /** 작업 Dialog Window Stage Object */
     private Stage currentStage;
 
-    private List<SampleSheet> sampleSheetArrayList;
+    private List<Sample> sampleArrayList;
 
     @FXML
     private GridPane qcGridPane;
 
     /**
-     * @param sampleSheetArrayList
+     * @param sampleUploadController
      */
-    public void setSampleSheetArrayList(List<SampleSheet> sampleSheetArrayList) {
-        this.sampleSheetArrayList = sampleSheetArrayList;
+    public void setSampleUploadController(SampleUploadController sampleUploadController) {
+        this.sampleUploadController = sampleUploadController;
+        if(sampleUploadController.getSamples() != null &&!sampleUploadController.getSamples().isEmpty()) {
+            sampleArrayList = sampleUploadController.getSamples();
+            tableEdit();
+        }
     }
+
 
     /**
      * @param mainController
@@ -56,43 +65,112 @@ public class SampleUploadScreenSecondController extends BaseStageController {
 
     @Override
     public void show(Parent root) throws IOException {
-        // Create the dialog Stage
-        currentStage = new Stage();
-        currentStage.initStyle(StageStyle.DECORATED);
-        currentStage.initModality(Modality.APPLICATION_MODAL);
-        currentStage.setTitle(CommonConstants.SYSTEM_NAME + " > New Analysis Request");
-        // OS가 Window인 경우 아이콘 출력.
-        if (System.getProperty("os.name").toLowerCase().contains("window")) {
-            currentStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
-        }
-        currentStage.initOwner(getMainApp().getPrimaryStage());
 
-        Scene scene = new Scene(root);
-        currentStage.setScene(scene);
-        currentStage.showAndWait();
+    }
+
+    public void tableEdit() {
+        qcGridPane.getChildren().clear();
+        qcGridPane.setPrefHeight(0);
+
+        int row = 0;
+
+        for(Sample sample : sampleArrayList) {
+            SampleSheet item = sample.getSampleSheet();
+            qcGridPane.setPrefHeight(qcGridPane.getPrefHeight() + 26);
+
+            TextField sampleName = new TextField();
+            sampleName.setStyle("-fx-text-inner-color: black;");
+            sampleName.setText(!StringUtils.isEmpty(item.getSampleName()) ?  item.getSampleName() : item.getSampleID());
+
+            ComboBox<ComboBoxItem>  dnaQc = new ComboBox<>();
+            qcSetting(dnaQc);
+            if(sample.getQcData() != null && "F".equals(sample.getQcData().getDnaQC()))
+                dnaQc.getSelectionModel().select(1);
+
+            ComboBox<ComboBoxItem>  libraryQc = new ComboBox<>();
+            qcSetting(libraryQc);
+            if(sample.getQcData() != null && "F".equals(sample.getQcData().getLibraryQC()))
+                libraryQc.getSelectionModel().select(1);
+
+            ComboBox<ComboBoxItem>  seqClusterDensity = new ComboBox<>();
+            qcSetting(seqClusterDensity);
+            if(sample.getQcData() != null && "F".equals(sample.getQcData().getSeqClusterDensity()))
+                seqClusterDensity.getSelectionModel().select(1);
+
+            ComboBox<ComboBoxItem>  seqQ30 = new ComboBox<>();
+            qcSetting(seqQ30);
+            if(sample.getQcData() != null && "F".equals(sample.getQcData().getSeqQ30()))
+                seqQ30.getSelectionModel().select(1);
+
+            ComboBox<ComboBoxItem>  seqClusterPF = new ComboBox<>();
+            qcSetting(seqClusterPF);
+            if(sample.getQcData() != null && "F".equals(sample.getQcData().getSeqClusterPF()))
+                seqClusterPF.getSelectionModel().select(1);
+
+            ComboBox<ComboBoxItem>  seqIndexingPFCV = new ComboBox<>();
+            qcSetting(seqIndexingPFCV);
+            if(sample.getQcData() != null && "F".equals(sample.getQcData().getSeqIndexingPFCV()))
+                seqIndexingPFCV.getSelectionModel().select(1);
+
+            qcGridPane.addRow(row, sampleName, dnaQc, libraryQc, seqClusterDensity, seqQ30, seqClusterPF, seqIndexingPFCV);
+
+            row++;
+        }
+
+    }
+
+    public void qcSetting(ComboBox<ComboBoxItem> qc) {
+        qc.setConverter(new ComboBoxConverter());
+        qc.getItems().add(new ComboBoxItem("P", "P"));
+        qc.getItems().add(new ComboBoxItem("F", "F"));
+        qc.getSelectionModel().selectFirst();
     }
 
     @FXML
-    public void closeDialog() { currentStage.close(); }
+    public void closeDialog() { if(sampleUploadController != null) sampleUploadController.closeDialog(); }
 
     @FXML
     public void back() throws IOException {
-        if(currentStage != null) {
-            currentStage.close();
-        }
-
-        FXMLLoader loader = FXMLLoadUtil.load(FXMLConstants.ANALYSIS_SAMPLE_UPLOAD_FIRST);
-        VBox box = loader.load();
-        SampleUploadScreenFirstController controller = loader.getController();
-        controller.setMainController(mainController);
-        controller.setSampleSheetArrayList(sampleSheetArrayList);
-        controller.show((Parent) box);
+        sampleUploadController.pageSetting(1);
     }
 
     @FXML
-    public void next() {
-
+    public void next() throws IOException {
+        sampleUploadController.pageSetting(3);
     }
 
+    @FXML
+    public void showFileFindWindow() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose qcData File");
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        fileChooser.getExtensionFilters()
+                .addAll(new FileChooser.ExtensionFilter("xlsx", "*.xlsx"));
+        File file = fileChooser.showOpenDialog(currentStage);
+
+        if(file != null && file.getName().equalsIgnoreCase("qcInfo.xlsx")) {
+            try {
+                Map<String, QCData> qcList = WorksheetUtil.readQCDataExcelSheet(file);
+                for(Sample sample : sampleArrayList) {
+                    String name = (!StringUtils.isEmpty(sample.getSampleSheet().getSampleName()))
+                            ? sample.getSampleSheet().getSampleName() : sample.getSampleSheet().getSampleID();
+                    QCData qc = qcList.get("B815");
+                    if(qcList.get(name) != null) {
+                        logger.info(name);
+                    } else {
+                        DialogUtil.alert("찾을 수 없음", name + " 샘플에 대한 QC 정보를 찾을 수 없음", sampleUploadController.getCurrentStage(), true);
+                    }
+                }
+                logger.info(qcList.size() + "");
+                tableEdit();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ExcelParseException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+    }
 
 }

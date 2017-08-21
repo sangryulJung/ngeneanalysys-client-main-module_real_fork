@@ -1,8 +1,10 @@
 package ngeneanalysys.controller;
 
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -36,7 +38,35 @@ public class SampleUploadController extends BaseStageController{
 
     private List<Sample>  samples;
 
-    private VBox tableArea;
+    @FXML
+    private Pane tableRegion;
+
+    private SampleUploadScreenFirstController sampleUploadScreenFirstController;
+
+    private SampleUploadScreenSecondController sampleUploadScreenSecondController;
+
+    private SampleUploadScreenThirdController sampleUploadScreenThirdController;
+
+    /**
+     * @return currentStage
+     */
+    public Stage getCurrentStage() {
+        return currentStage;
+    }
+
+    /**
+     * @return samples
+     */
+    public List<Sample> getSamples() {
+        return samples;
+    }
+
+    /**
+     * @param samples
+     */
+    public void setSamples(List<Sample> samples) {
+        this.samples = samples;
+    }
 
     /**
      * @param mainController
@@ -59,6 +89,7 @@ public class SampleUploadController extends BaseStageController{
     public void show(Parent root) throws IOException {
         // Create the dialog Stage
         currentStage = new Stage();
+        currentStage.setResizable(false);
         currentStage.initStyle(StageStyle.DECORATED);
         currentStage.initModality(Modality.APPLICATION_MODAL);
         currentStage.setTitle(CommonConstants.SYSTEM_NAME + " > New Analysis Request");
@@ -67,7 +98,10 @@ public class SampleUploadController extends BaseStageController{
             currentStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
         }
         currentStage.initOwner(getMainApp().getPrimaryStage());
-
+        /*currentStage.setMinHeight(510);
+        currentStage.setMinWidth(900);
+        currentStage.setMaxHeight(510);
+        currentStage.setMaxWidth(900);*/
         pageSetting(1);
 
         // Scene Init
@@ -78,7 +112,46 @@ public class SampleUploadController extends BaseStageController{
     }
 
     public void pageSetting(int scene) throws IOException {
-        
+        tableRegion.getChildren().clear();
+        FXMLLoader loader = null;
+        VBox box = null;
+
+        switch (scene) {
+            case 1 :
+                loader = FXMLLoadUtil.load(FXMLConstants.ANALYSIS_SAMPLE_UPLOAD_FIRST);
+                box = loader.load();
+                sampleUploadScreenFirstController = loader.getController();
+                sampleUploadScreenFirstController.setMainController(mainController);
+                sampleUploadScreenFirstController.setSampleUploadController(this);
+
+                tableRegion.getChildren().add(box);
+                break;
+            case 2 :
+                loader = FXMLLoadUtil.load(FXMLConstants.ANALYSIS_SAMPLE_UPLOAD_SECOND);
+                box = loader.load();
+
+                sampleUploadScreenSecondController = loader.getController();
+                sampleUploadScreenSecondController.setMainController(mainController);
+                sampleUploadScreenSecondController.setSampleUploadController(this);
+
+                tableRegion.getChildren().add(box);
+                break;
+            case 3 :
+                loader = FXMLLoadUtil.load(FXMLConstants.ANALYSIS_SAMPLE_UPLOAD_THIRD);
+                box = loader.load();
+                sampleUploadScreenThirdController = loader.getController();
+                sampleUploadScreenThirdController.setMainController(mainController);
+                sampleUploadScreenThirdController.setSampleUploadController(this);
+
+                tableRegion.getChildren().add(box);
+                break;
+            default:
+                break;
+        }
+
+
 
     }
+
+    public void closeDialog() { currentStage.close(); }
 }

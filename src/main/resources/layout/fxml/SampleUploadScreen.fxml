@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="contentWrapper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="900.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SampleUploadScreenFirstController">
+<VBox fx:id="contentWrapper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="900.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SampleUploadScreenFirstController">
 	<children>
 		<GridPane layoutX="35.0" layoutY="25.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="880.0">
 			<columnConstraints>
@@ -49,7 +49,7 @@
 				</HBox>
 			</children>
 			<VBox.margin>
-				<Insets bottom="5.0" left="20.0" top="20.0" />
+				<Insets bottom="5.0" left="20.0" />
 			</VBox.margin>
 		</GridPane>
       <GridPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="225.0" prefWidth="880.0">
@@ -108,7 +108,7 @@
 				<Button fx:id="buttonNext" maxHeight="36.0" mnemonicParsing="false" onAction="#next" prefHeight="36.0" prefWidth="85.0" styleClass="btn_next" text="Next" />
 			</children>
 			<padding>
-				<Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
+				<Insets bottom="20.0" left="20.0" right="20.0" top="2.0" />
 			</padding>
 		</HBox>
 	</children>

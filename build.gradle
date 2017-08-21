@@ -35,6 +35,8 @@ dependencies {
     compile group: 'com.sparkjava', name: 'spark-core', version: '2.5'
     // https://mvnrepository.com/artifact/com.opencsv/opencsv
     compile group: 'com.opencsv', name: 'opencsv', version: '3.8'
+    // https://mvnrepository.com/artifact/net.sf.jxls/jxls-core
+    compile group: 'net.sf.jxls', name: 'jxls-core', version: '1.0.6'
 
 
 
