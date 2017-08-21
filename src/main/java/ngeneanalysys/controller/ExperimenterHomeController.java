@@ -84,6 +84,7 @@ public class ExperimenterHomeController extends SubPaneController{
     private List<VBox> runStatusFields;
     private List<TextField> sampleNameFields;
     private List<TextField> samplePanelFields;
+    private List<SampleAnalysisJobStatusBox> sampleStatusFields;
 
     @Override
     public void show(Parent root) throws IOException {
@@ -190,15 +191,22 @@ public class ExperimenterHomeController extends SubPaneController{
         try {
             sampleNameFields = new ArrayList<>();
             samplePanelFields = new ArrayList<>();
+            sampleStatusFields = new ArrayList<>();
             for (int i = 0; i < maxItemNumberOfPage; i++) {
                 TextField sampleNameField = new TextField();
                 sampleNameField.setEditable(false);
                 sampleNameFields.add(sampleNameField);
+                SampleAnalysisJobStatusBox sampleStatusField = new SampleAnalysisJobStatusBox();
+                sampleStatusFields.add(sampleStatusField);
+                sampleStatusField.setStyle("-fx-alignment:center");
+
                 TextField samplePanelField = new TextField();
                 samplePanelField.setEditable(false);
                 samplePanelField.getStyleClass().add("font_size_8");
                 samplePanelFields.add(samplePanelField);
+
                 sampleListGridPane.add(sampleNameField, 0, i);
+                sampleListGridPane.add(sampleStatusField, 1, i);
                 sampleListGridPane.add(samplePanelField, 2, i);
             }
 
@@ -252,10 +260,13 @@ public class ExperimenterHomeController extends SubPaneController{
             for(int i = 0; i < sampleCount; i++) {
                 Sample sample = pagedSample.getResult().get(i);
                 sampleNameFields.get(i).setText(sample.getName());
+                sampleStatusFields.get(i).setStatus(sample.getSampleStatus());
+                sampleStatusFields.get(i).setVisible(true);
                 samplePanelFields.get(i).setText(mapPanels.get(sample.getPanelId()).getName());
             }
             for(int i = sampleCount; i < maxItemNumberOfPage; i++){
                 sampleNameFields.get(i).setText("");
+                sampleStatusFields.get(i).setVisible(false);
                 samplePanelFields.get(i).setText("");
             }
         } catch (Exception e) {
@@ -317,5 +328,22 @@ public class ExperimenterHomeController extends SubPaneController{
             }
         }
 
+    }
+
+    class SampleAnalysisJobStatusBox extends VBox {
+        private HBox statusBox;
+        private Label statusLabel;
+        SampleAnalysisJobStatusBox() {
+            super();
+            statusBox = new HBox();
+            statusLabel = new Label();
+            statusBox.getChildren().add(statusLabel);
+            this.getChildren().add(statusBox);
+            statusBox.setStyle("-fx-alignment:center");
+        }
+        protected void setStatus(SampleStatus status) {
+            statusLabel.setText(status.getUploadStatus());
+            statusLabel.setId("jobStatus_RUNNING");// + status.getUploadStatus());
+        }
     }
 }
