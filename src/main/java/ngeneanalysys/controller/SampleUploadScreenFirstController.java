@@ -230,7 +230,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
             TextField index = new TextField();
             index.setStyle("-fx-text-inner-color: black;");
-            index.setText(item.getIndex());
+            index.setText(item.getSampleIndex());
 
             TextField sampleProject = new TextField();
             sampleProject.setStyle("-fx-text-inner-color: black;");

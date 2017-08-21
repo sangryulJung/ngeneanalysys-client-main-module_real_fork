@@ -10,20 +10,20 @@ public class SampleSheet {
     private String samplePlate;
     private String sampleWell;
     private String i7IndexId;
-    private String index;
+    private String sampleIndex;
     private String sampleProject;
     private String description;
 
     public SampleSheet() {    }
 
-    public SampleSheet(String sampleId, String sampleName, String samplePlate, String sampleWell, String i7IndexId, String index, String sampleProject, String description) {
+    public SampleSheet(String sampleId, String sampleName, String samplePlate, String sampleWell, String i7IndexId, String sampleIndex, String sampleProject, String description) {
         this.sampleId = sampleId;
 
         this.sampleName = sampleName;
         this.samplePlate = samplePlate;
         this.sampleWell = sampleWell;
         this.i7IndexId = i7IndexId;
-        this.index = index;
+        this.sampleIndex = sampleIndex;
         this.sampleProject = sampleProject;
         this.description = description;
     }
@@ -99,17 +99,17 @@ public class SampleSheet {
     }
 
     /**
-     * @return index
+     * @return sampleIndex
      */
-    public String getIndex() {
-        return index;
+    public String getSampleIndex() {
+        return sampleIndex;
     }
 
     /**
-     * @param index
+     * @param sampleIndex
      */
-    public void setIndex(String index) {
-        this.index = index;
+    public void setSampleIndex(String sampleIndex) {
+        this.sampleIndex = sampleIndex;
     }
 
     /**
@@ -148,7 +148,7 @@ public class SampleSheet {
                 ", samplePlate='" + samplePlate + '\'' +
                 ", sampleWell='" + sampleWell + '\'' +
                 ", i7IndexId='" + i7IndexId + '\'' +
-                ", index='" + index + '\'' +
+                ", index='" + sampleIndex + '\'' +
                 ", sampleProject='" + sampleProject + '\'' +
                 ", description='" + description + '\'' +
                 '}';
