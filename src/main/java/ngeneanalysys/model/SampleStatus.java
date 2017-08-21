@@ -203,4 +203,22 @@ public class SampleStatus {
     public void setJobFinishedAt(DateTime jobFinishedAt) {
         this.jobFinishedAt = jobFinishedAt;
     }
+
+    @Override
+    public String toString() {
+        return "SampleStatus{" +
+                "uploadStatus='" + uploadStatus + '\'' +
+                ", pipelineStatus='" + pipelineStatus + '\'' +
+                ", reportStatus='" + reportStatus + '\'' +
+                ", statusMsg='" + statusMsg + '\'' +
+                ", uploadStartedAt=" + uploadStartedAt +
+                ", uploadFinishedAt=" + uploadFinishedAt +
+                ", pipelineStartedAt=" + pipelineStartedAt +
+                ", pipelineFinishedAt=" + pipelineFinishedAt +
+                ", reportStartedAt=" + reportStartedAt +
+                ", reportFinishedAt=" + reportFinishedAt +
+                ", jobStartedAt=" + jobStartedAt +
+                ", jobFinishedAt=" + jobFinishedAt +
+                '}';
+    }
 }

@@ -15,15 +15,14 @@ import javafx.scene.paint.Color;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
-import ngeneanalysys.model.PagedRun;
-import ngeneanalysys.model.PagedSample;
-import ngeneanalysys.model.Run;
-import ngeneanalysys.model.Sample;
+import ngeneanalysys.model.*;
+import ngeneanalysys.model.Panel;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 import static java.lang.Thread.sleep;
 
@@ -91,7 +91,7 @@ public class ExperimenterHomeController extends SubPaneController{
 
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
-
+        getMainController().getPrimaryStage().setMaxWidth(1000);
         this.mainController.getMainFrame().setCenter(root);
         testAddRuns();
         initRunListLayout();
@@ -195,9 +195,10 @@ public class ExperimenterHomeController extends SubPaneController{
                 sampleNameFields.add(sampleNameField);
                 TextField samplePanelField = new TextField();
                 samplePanelField.setEditable(false);
+                samplePanelField.getStyleClass().add("font_size_8");
                 samplePanelFields.add(samplePanelField);
                 sampleListGridPane.add(sampleNameField, 0, i);
-                sampleListGridPane.add(samplePanelField, 1, i);
+                sampleListGridPane.add(samplePanelField, 2, i);
             }
 
         } catch (Exception e) {
@@ -206,11 +207,25 @@ public class ExperimenterHomeController extends SubPaneController{
     }
     private void showSampleList(int runId, int pageIndex){
         final int maxItemNumberOfPage = sampleListGridPane.getRowConstraints().size() - 1;
+        CompletableFuture<List<Panel>> getPanels = new CompletableFuture<>();
+        getPanels.supplyAsync(() -> {
+            HttpClientResponse response = null;
+            try {
+                response = apiService.get("/panels", null, null, false);
+                List<Panel> panels = (List<Panel>)response.getMultiObjectBeforeConvertResponseToJSON(Panel.class, false);
+                getPanels.complete(panels);
+            } catch (Exception e) {
+                getPanels.completeExceptionally(e);
+            }
+            return getPanels;
+        });
+
         CompletableFuture<PagedSample> getPagedSample = new CompletableFuture<>();
         getPagedSample.supplyAsync(() -> {
             HttpClientResponse response = null;
             Map<String, Object> params = new HashMap<>();
             try {
+
                 params.clear();
                 params.put("runId", runId);
                 params.put("limit", maxItemNumberOfPage);
@@ -226,6 +241,8 @@ public class ExperimenterHomeController extends SubPaneController{
             return getPagedSample;
         });
         try {
+            List<Panel> panels = getPanels.get();
+            Map<Integer, Panel> mapPanels = panels.stream().collect(Collectors.toMap(Panel::getId, p -> p));
             PagedSample pagedSample = getPagedSample.get();
             sampleListPagination.setCurrentPageIndex(pageIndex);
             sampleListPagination.setMaxPageIndicatorCount(3);
@@ -234,7 +251,7 @@ public class ExperimenterHomeController extends SubPaneController{
             for(int i = 0; i < sampleCount; i++) {
                 Sample sample = pagedSample.getResult().get(i);
                 sampleNameFields.get(i).setText(sample.getName());
-                samplePanelFields.get(i).setText(sample.getPanelId().toString());
+                samplePanelFields.get(i).setText(mapPanels.get(sample.getPanelId()).getName());
             }
             for(int i = sampleCount; i < maxItemNumberOfPage; i++){
                 sampleNameFields.get(i).setText("");
