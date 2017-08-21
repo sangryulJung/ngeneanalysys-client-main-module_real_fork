@@ -5,41 +5,41 @@ package ngeneanalysys.model;
  * @since 2017-08-11
  */
 public class SampleSheet {
-    private String sampleID;
+    private String sampleId;
     private String sampleName;
     private String samplePlate;
     private String sampleWell;
-    private String i7IndexID;
+    private String i7IndexId;
     private String index;
     private String sampleProject;
     private String description;
 
     public SampleSheet() {    }
 
-    public SampleSheet(String sampleID, String sampleName, String samplePlate, String sampleWell, String i7IndexID, String index, String sampleProject, String description) {
-        this.sampleID = sampleID;
+    public SampleSheet(String sampleId, String sampleName, String samplePlate, String sampleWell, String i7IndexId, String index, String sampleProject, String description) {
+        this.sampleId = sampleId;
 
         this.sampleName = sampleName;
         this.samplePlate = samplePlate;
         this.sampleWell = sampleWell;
-        this.i7IndexID = i7IndexID;
+        this.i7IndexId = i7IndexId;
         this.index = index;
         this.sampleProject = sampleProject;
         this.description = description;
     }
 
     /**
-     * @return sampleID
+     * @return sampleId
      */
-    public String getSampleID() {
-        return sampleID;
+    public String getSampleId() {
+        return sampleId;
     }
 
     /**
-     * @param sampleID
+     * @param sampleId
      */
-    public void setSampleID(String sampleID) {
-        this.sampleID = sampleID;
+    public void setSampleId(String sampleId) {
+        this.sampleId = sampleId;
     }
 
     /**
@@ -85,17 +85,17 @@ public class SampleSheet {
     }
 
     /**
-     * @return i7IndexID
+     * @return i7IndexId
      */
-    public String getI7IndexID() {
-        return i7IndexID;
+    public String getI7IndexId() {
+        return i7IndexId;
     }
 
     /**
-     * @param i7IndexID
+     * @param i7IndexId
      */
-    public void setI7IndexID(String i7IndexID) {
-        this.i7IndexID = i7IndexID;
+    public void setI7IndexId(String i7IndexId) {
+        this.i7IndexId = i7IndexId;
     }
 
     /**
@@ -138,5 +138,19 @@ public class SampleSheet {
      */
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "SampleSheet{" +
+                "sampleId='" + sampleId + '\'' +
+                ", sampleName='" + sampleName + '\'' +
+                ", samplePlate='" + samplePlate + '\'' +
+                ", sampleWell='" + sampleWell + '\'' +
+                ", i7IndexId='" + i7IndexId + '\'' +
+                ", index='" + index + '\'' +
+                ", sampleProject='" + sampleProject + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

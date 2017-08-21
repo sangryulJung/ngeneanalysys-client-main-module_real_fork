@@ -219,7 +219,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
             TextField sampleName = new TextField();
             sampleName.setStyle("-fx-text-inner-color: black;");
-            sampleName.setText(!StringUtils.isEmpty(item.getSampleName()) ?  item.getSampleName() : item.getSampleID());
+            sampleName.setText(!StringUtils.isEmpty(item.getSampleName()) ?  item.getSampleName() : item.getSampleId());
             sampleName.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
 
             });
