@@ -102,6 +102,9 @@ public class SampleUploadScreenThirdController extends BaseStageController{
                 int rowNum = i / 6;
                 Sample sample = sampleArrayList.get(rowNum);
 
+                Object obj = standardDataGridPane.getChildren().get(i);
+                obj.toString();
+
 
 
             }

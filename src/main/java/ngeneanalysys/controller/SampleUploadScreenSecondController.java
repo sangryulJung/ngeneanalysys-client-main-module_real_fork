@@ -80,7 +80,7 @@ public class SampleUploadScreenSecondController extends BaseStageController {
 
             TextField sampleName = new TextField();
             sampleName.setStyle("-fx-text-inner-color: black;");
-            sampleName.setText(!StringUtils.isEmpty(item.getSampleName()) ?  item.getSampleName() : item.getSampleID());
+            sampleName.setText(!StringUtils.isEmpty(item.getSampleName()) ?  item.getSampleName() : item.getSampleId());
 
             ComboBox<ComboBoxItem>  dnaQc = new ComboBox<>();
             qcSetting(dnaQc);
@@ -153,7 +153,7 @@ public class SampleUploadScreenSecondController extends BaseStageController {
                 Map<String, QCData> qcList = WorksheetUtil.readQCDataExcelSheet(file);
                 for(Sample sample : sampleArrayList) {
                     String name = (!StringUtils.isEmpty(sample.getSampleSheet().getSampleName()))
-                            ? sample.getSampleSheet().getSampleName() : sample.getSampleSheet().getSampleID();
+                            ? sample.getSampleSheet().getSampleName() : sample.getSampleSheet().getSampleId();
                     QCData qc = qcList.get("B815");
                     if(qcList.get(name) != null) {
                         logger.info(name);
