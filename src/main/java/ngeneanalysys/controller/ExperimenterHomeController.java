@@ -81,7 +81,7 @@ public class ExperimenterHomeController extends SubPaneController{
     private APIService apiService;
 
     private List<TextField> runNameFields;
-    private List<VBox> runStatusFields;
+    private List<RunAnalysisJobStatusBox> runStatusFields;
     private List<TextField> sampleNameFields;
     private List<TextField> samplePanelFields;
     private List<SampleAnalysisJobStatusBox> sampleStatusFields;
@@ -155,7 +155,7 @@ public class ExperimenterHomeController extends SubPaneController{
                     sampleListPagination.setCurrentPageIndex(0);
                 });
 
-                runStatusFields.get(i).setBorder(new Border(new BorderStroke(Color.BLUE, BorderStrokeStyle.DASHED, new CornerRadii(5), new BorderWidths(5))));
+                runStatusFields.get(i).setStatus(run.getStatus());
             }
             for(int i = runCount; i < maxRunNumberOfPage; i++){
                 runNameFields.get(i).setText("");
@@ -176,9 +176,12 @@ public class ExperimenterHomeController extends SubPaneController{
             for (int i = 0; i < maxRunNumberOfPage; i++) {
                 TextField runNameField = new TextField();
                 runNameField.setEditable(false);
+                runNameField.setStyle("-fx-font-size:9;");
+                runNameField.setStyle("-fx-border-width:0;");
                 runNameFields.add(runNameField);
                 runListGridPane.add(runNameFields.get(i), 0, i);
-                runStatusFields.add(new VBox());
+                runStatusFields.add(new RunAnalysisJobStatusBox());
+                runStatusFields.get(i).setStyle("-fx-alignment:center");
                 runListGridPane.add(runStatusFields.get(i), 1, i);
             }
         } catch (Exception e) {
@@ -202,7 +205,6 @@ public class ExperimenterHomeController extends SubPaneController{
 
                 TextField samplePanelField = new TextField();
                 samplePanelField.setEditable(false);
-                samplePanelField.getStyleClass().add("font_size_8");
                 samplePanelFields.add(samplePanelField);
 
                 sampleListGridPane.add(sampleNameField, 0, i);
@@ -329,6 +331,22 @@ public class ExperimenterHomeController extends SubPaneController{
         }
 
     }
+    class RunAnalysisJobStatusBox extends VBox {
+        private HBox statusBox;
+        private Label statusLabel;
+        RunAnalysisJobStatusBox() {
+            super();
+            statusBox = new HBox();
+            statusLabel = new Label();
+            statusBox.getChildren().add(statusLabel);
+            this.getChildren().add(statusBox);
+            statusBox.setStyle("-fx-alignment:center");
+        }
+        protected void setStatus(String status) {
+            statusLabel.setText(status);
+            statusLabel.setId("jobStatus_" + status);
+        }
+    }
 
     class SampleAnalysisJobStatusBox extends VBox {
         private HBox statusBox;
@@ -342,8 +360,8 @@ public class ExperimenterHomeController extends SubPaneController{
             statusBox.setStyle("-fx-alignment:center");
         }
         protected void setStatus(SampleStatus status) {
-            statusLabel.setText(status.getUploadStatus());
-            statusLabel.setId("jobStatus_RUNNING");// + status.getUploadStatus());
+            statusLabel.setText(status.getStep());
+            statusLabel.setId("jobStatus_" + status.getStatus());// + status.getUploadStatus());
         }
     }
 }

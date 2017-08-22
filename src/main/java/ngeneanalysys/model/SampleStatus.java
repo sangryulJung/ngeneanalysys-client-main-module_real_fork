@@ -9,14 +9,9 @@ import org.joda.time.DateTime;
  */
 public class SampleStatus {
 
-    @JsonProperty("uploadStatus")
-    private String uploadStatus;
+    private String step;
 
-    @JsonProperty("pipelineStatus")
-    private String pipelineStatus;
-
-    @JsonProperty("reportStatus")
-    private String reportStatus;
+    private String status;
 
     private String statusMsg;
 
@@ -36,46 +31,20 @@ public class SampleStatus {
 
     private DateTime jobFinishedAt;
 
-    /**
-     * @return uploadStatus
-     */
-    public String getUploadStatus() {
-        return uploadStatus;
+    public String getStep() {
+        return step;
     }
 
-    /**
-     * @param uploadStatus
-     */
-    public void setUploadStatus(String uploadStatus) {
-        this.uploadStatus = uploadStatus;
+    public void setStep(String step) {
+        this.step = step;
     }
 
-    /**
-     * @return pipelineStatus
-     */
-    public String getPipelineStatus() {
-        return pipelineStatus;
+    public String getStatus() {
+        return status;
     }
 
-    /**
-     * @param pipelineStatus
-     */
-    public void setPipelineStatus(String pipelineStatus) {
-        this.pipelineStatus = pipelineStatus;
-    }
-
-    /**
-     * @return reportStatus
-     */
-    public String getReportStatus() {
-        return reportStatus;
-    }
-
-    /**
-     * @param reportStatus
-     */
-    public void setReportStatus(String reportStatus) {
-        this.reportStatus = reportStatus;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     /**
@@ -204,21 +173,5 @@ public class SampleStatus {
         this.jobFinishedAt = jobFinishedAt;
     }
 
-    @Override
-    public String toString() {
-        return "SampleStatus{" +
-                "uploadStatus='" + uploadStatus + '\'' +
-                ", pipelineStatus='" + pipelineStatus + '\'' +
-                ", reportStatus='" + reportStatus + '\'' +
-                ", statusMsg='" + statusMsg + '\'' +
-                ", uploadStartedAt=" + uploadStartedAt +
-                ", uploadFinishedAt=" + uploadFinishedAt +
-                ", pipelineStartedAt=" + pipelineStartedAt +
-                ", pipelineFinishedAt=" + pipelineFinishedAt +
-                ", reportStartedAt=" + reportStartedAt +
-                ", reportFinishedAt=" + reportFinishedAt +
-                ", jobStartedAt=" + jobStartedAt +
-                ", jobFinishedAt=" + jobFinishedAt +
-                '}';
-    }
+
 }

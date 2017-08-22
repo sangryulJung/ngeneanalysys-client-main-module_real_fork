@@ -494,7 +494,7 @@ Button {
 	-fx-border-color:#c1c1c1;
 	-fx-border-radius:10;
 	-fx-text-fill:#656565;
-	-fx-font-size:11;
+	-fx-font-size:9;
 	-fx-padding:0 10;
 }
 
@@ -508,7 +508,7 @@ Button {
 	-fx-border-color:#f4c73c;
 	-fx-border-radius:10;
 	-fx-text-fill:#fff;
-	-fx-font-size:11;
+	-fx-font-size:9;
 	-fx-font-weight:bold;
 	-fx-padding:0 10 0 21;
 }
@@ -523,7 +523,7 @@ Button {
 	-fx-border-color:#68BC4B;
 	-fx-border-radius:10;
 	-fx-text-fill:#fff;
-	-fx-font-size:11;
+	-fx-font-size:9;
 	-fx-font-weight:bold;
 	-fx-padding:0 10 0 21;
 }
@@ -535,7 +535,7 @@ Button {
 	-fx-border-color:#426579;
 	-fx-border-radius:10;
 	-fx-text-fill:#fff;
-	-fx-font-size:11;
+	-fx-font-size:9;
 	-fx-font-weight:bold;
 	-fx-padding:0 10;
 }
@@ -547,7 +547,7 @@ Button {
 	-fx-border-color:#ff7e79;
 	-fx-border-radius:10;
 	-fx-text-fill:#fff;
-	-fx-font-size:11;
+	-fx-font-size:9;
 	-fx-font-weight:bold;
 	-fx-padding:0 10;
 }
