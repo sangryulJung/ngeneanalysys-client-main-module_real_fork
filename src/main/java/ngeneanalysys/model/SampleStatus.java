@@ -173,5 +173,20 @@ public class SampleStatus {
         this.jobFinishedAt = jobFinishedAt;
     }
 
-
+    @Override
+    public String toString() {
+        return "SampleStatus{" +
+                "step='" + step + '\'' +
+                ", status='" + status + '\'' +
+                ", statusMsg='" + statusMsg + '\'' +
+                ", uploadStartedAt=" + uploadStartedAt +
+                ", uploadFinishedAt=" + uploadFinishedAt +
+                ", pipelineStartedAt=" + pipelineStartedAt +
+                ", pipelineFinishedAt=" + pipelineFinishedAt +
+                ", reportStartedAt=" + reportStartedAt +
+                ", reportFinishedAt=" + reportFinishedAt +
+                ", jobStartedAt=" + jobStartedAt +
+                ", jobFinishedAt=" + jobFinishedAt +
+                '}';
+    }
 }

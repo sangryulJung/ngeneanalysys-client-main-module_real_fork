@@ -24,14 +24,13 @@ import org.slf4j.Logger;
 
 import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
+import static java.lang.Double.MAX_VALUE;
 import static java.lang.Thread.sleep;
 
 /**
@@ -176,12 +175,16 @@ public class ExperimenterHomeController extends SubPaneController{
             for (int i = 0; i < maxRunNumberOfPage; i++) {
                 TextField runNameField = new TextField();
                 runNameField.setEditable(false);
-                runNameField.setStyle("-fx-font-size:9;");
-                runNameField.setStyle("-fx-border-width:0;");
+                runNameField.setStyle("-fx-font-size:11;");
+                runNameField.setStyle(runNameField.getStyle() + "-fx-border-width: 0 1 0 1;");
+                runNameField.setStyle(runNameField.getStyle() + "-fx-border-color:blue;");
+                runNameField.setStyle(runNameField.getStyle() + "-fx-border-radius:0;");
+                runNameField.setStyle(runNameField.getStyle() + "-fx-background-color:transparent;");
+                runNameField.setStyle(runNameField.getStyle() + "-fx-max-height:30;");
                 runNameFields.add(runNameField);
                 runListGridPane.add(runNameFields.get(i), 0, i);
                 runStatusFields.add(new RunAnalysisJobStatusBox());
-                runStatusFields.get(i).setStyle("-fx-alignment:center");
+                runStatusFields.get(i).setStyle(runStatusFields.get(i).getStyle() + "-fx-alignment:center;");
                 runListGridPane.add(runStatusFields.get(i), 1, i);
             }
         } catch (Exception e) {
@@ -259,8 +262,16 @@ public class ExperimenterHomeController extends SubPaneController{
             sampleListPagination.setMaxPageIndicatorCount(3);
             sampleListPagination.setPageCount(pagedSample.getCount() / maxItemNumberOfPage);
             int sampleCount = pagedSample.getResult().size();
+            List<Sample> sortedSamples = pagedSample.getResult().stream().sorted((s1, s2) -> {
+                if (s1.getId() > s2.getId()) {
+                    return 0;
+                }
+                else {
+                    return -1;
+                }
+            }).collect(Collectors.toList());
             for(int i = 0; i < sampleCount; i++) {
-                Sample sample = pagedSample.getResult().get(i);
+                Sample sample = sortedSamples.get(i);
                 sampleNameFields.get(i).setText(sample.getName());
                 sampleStatusFields.get(i).setStatus(sample.getSampleStatus());
                 sampleStatusFields.get(i).setVisible(true);
@@ -294,7 +305,7 @@ public class ExperimenterHomeController extends SubPaneController{
     private void testAddSamples(int runId) {
         Map<String, Object> params = new HashMap<>();
         HttpClientResponse response = null;
-        for(int i = 0; i < 100; i++) {
+        for(int i = 0; i < 20; i++) {
             try {
                 params.put("runId", runId);
                 params.put("name", "sample_" + i + "_" + "RUN_" + runId);
@@ -323,8 +334,17 @@ public class ExperimenterHomeController extends SubPaneController{
                 qcData.put("seqIndexingPFCV", "");
                 params.put("qcData", qcData);
                 response = apiService.post("/samples", params, null, true);
-                Sample run1 = response.getObjectBeforeConvertResponseToJSON(Sample.class);
-                logger.info(run1.toString());
+                Sample sample = response.getObjectBeforeConvertResponseToJSON(Sample.class);
+                if (i == 0) {
+                    params.clear();
+                    params.put("sampleId", sample.getId());
+                    params.put("name", "1234.fastq.gz");
+
+                    params.put("fileSize", 1234567890);
+                    params.put("fileType", "FASTQ.GZ");
+                    response = apiService.post("/analysisFiles", params, null, true);
+                }
+                logger.info(sample.toString());
             } catch (Exception e) {
 
             }
