@@ -1,5 +1,8 @@
 package ngeneanalysys.controller;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -12,6 +15,7 @@ import javafx.scene.control.Pagination;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
@@ -80,6 +84,8 @@ public class ExperimenterHomeController extends SubPaneController{
     private Button runListRefreshButton;
     /** API Service */
     private APIService apiService;
+    /** Timer */
+    public Timeline autoRefreshTimeline;
 
     private List<TextField> runNameFields;
     private List<RunAnalysisJobStatusBox> runStatusFields;
@@ -99,6 +105,11 @@ public class ExperimenterHomeController extends SubPaneController{
         initRunListLayout();
         initSampleListLayout();
         showRunList();
+        autoRefreshTimeline = new Timeline(new KeyFrame(Duration.millis(10000),
+                ae -> showRunList()));
+        autoRefreshTimeline.setCycleCount(Animation.INDEFINITE);
+        autoRefreshTimeline.play();
+
         runListRefreshButton.setOnMouseClicked(e -> {
             showRunList();
         });
