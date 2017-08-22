@@ -299,6 +299,7 @@
                   <Insets top="7.0" />
                </HBox.margin>
             </Label>
+            <Button fx:id="runListRefreshButton" mnemonicParsing="false" text="Refresh" />
          </children>
       </HBox>
    </children>

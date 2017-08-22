@@ -76,6 +76,8 @@ public class ExperimenterHomeController extends SubPaneController{
     @FXML
     private Pagination sampleListPagination;
 
+    @FXML
+    private Button runListRefreshButton;
     /** API Service */
     private APIService apiService;
 
@@ -97,6 +99,9 @@ public class ExperimenterHomeController extends SubPaneController{
         initRunListLayout();
         initSampleListLayout();
         showRunList();
+        runListRefreshButton.setOnMouseClicked(e -> {
+            showRunList();
+        });
     }
 
     /**
