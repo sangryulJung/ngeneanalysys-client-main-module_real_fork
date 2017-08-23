@@ -41,7 +41,7 @@ import static java.lang.Thread.sleep;
  * @author Jang
  * @since 2017-08-10
  */
-public class ExperimenterHomeController extends SubPaneController{
+public class HomeController extends SubPaneController{
     private static Logger logger = LoggerUtil.getLogger();
 
     @FXML

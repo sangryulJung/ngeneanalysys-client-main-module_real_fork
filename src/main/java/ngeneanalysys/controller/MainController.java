@@ -264,19 +264,25 @@ public class MainController extends BaseStageController {
      */
     public void initDefaultTopMenu(String role) {
         if(UserTypeBit.ADMIN.name().equalsIgnoreCase(role)) {
-            topMenus = new TopMenu[1];
+            topMenus = new TopMenu[2];
             topMenuContent = new Node[topMenus.length];
         } else {
-            topMenus = new TopMenu[1];
+            topMenus = new TopMenu[2];
             topMenuContent = new Node[topMenus.length];
         }
         TopMenu menu = new TopMenu();
         menu.setMenuName("HOME");
-        menu.setFxmlPath(FXMLConstants.EXPERIMENTER_HOME);
+        menu.setFxmlPath(FXMLConstants.HOME);
         menu.setDisplayOrder(0);
         menu.setStaticMenu(true);
         topMenus[0] = menu;
 
+        menu = new TopMenu();
+        menu.setMenuName("Past Result");
+        menu.setFxmlPath(FXMLConstants.PAST_RESULTS);
+        menu.setDisplayOrder(0);
+        menu.setStaticMenu(true);
+        topMenus[0] = menu;
     }
 
     /**
@@ -470,7 +476,7 @@ public class MainController extends BaseStageController {
                 isFirstShow = true;
 
                 switch (menu.getFxmlPath()) {
-                    case FXMLConstants.EXPERIMENTER_HOME:
+                    case FXMLConstants.HOME:
                         experimenterHomeController = loader.getController();
                         experimenterHomeController.setMainController(this);
                         experimenterHomeController.setParamMap(menu.getParamMap());

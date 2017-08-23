@@ -37,13 +37,10 @@ public class FXMLConstants {
 	public static final String MAIN = "/layout/fxml/Main.fxml";
 
 	/** 분석자(실험자) Home 화면 */
-	public static final String EXPERIMENTER_HOME = "/layout/fxml/ExperimenterHome.fxml";
+	public static final String HOME = "/layout/fxml/Home.fxml";
 
 	/** 분석자(실험자) Past Results (최근 완료 분석건) 화면 */
-	public static final String EXPERIMENTER_PAST_RESULTS = "/layout/fxml/ExperimenterPastResults.fxml";
-	
-	/** 리뷰어(의사) Home 화면 */
-	public static final String DOCTOR_HOME = "/layout/fxml/DoctorHome.fxml";
+	public static final String PAST_RESULTS = "/layout/fxml/PastResults.fxml";
 
 	/** 환자 DB 화면 */
 	public static final String PATIENT_DB = "/layout/fxml/PatientDB.fxml";
