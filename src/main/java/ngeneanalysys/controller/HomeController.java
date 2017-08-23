@@ -185,12 +185,11 @@ public class HomeController extends SubPaneController{
             for (int i = 0; i < maxRunNumberOfPage; i++) {
                 TextField runNameField = new TextField();
                 runNameField.setEditable(false);
-                runNameField.setStyle("-fx-font-size:11;");
-                runNameField.setStyle(runNameField.getStyle() + "-fx-border-width: 0 1 0 1;");
-                runNameField.setStyle(runNameField.getStyle() + "-fx-border-color:blue;");
-                runNameField.setStyle(runNameField.getStyle() + "-fx-border-radius:0;");
-                runNameField.setStyle(runNameField.getStyle() + "-fx-background-color:transparent;");
-                runNameField.setStyle(runNameField.getStyle() + "-fx-max-height:30;");
+                StringBuilder style = new StringBuilder("-fx-font-size:11;");
+                style.append("-fx-border-width: 0 0 1 0;-fx-border-color:black;");
+                style.append("-fx-border-radius:0;-fx-background-color:transparent;");
+                style.append("-fx-max-height:30;");
+                runNameField.setStyle(style.toString());
                 runNameFields.add(runNameField);
                 runListGridPane.add(runNameFields.get(i), 0, i);
                 runStatusFields.add(new RunAnalysisJobStatusBox());
@@ -212,19 +211,25 @@ public class HomeController extends SubPaneController{
                 TextField sampleNameField = new TextField();
                 sampleNameField.setEditable(false);
                 sampleNameFields.add(sampleNameField);
+                StringBuilder style = new StringBuilder("-fx-font-size:11;");
+                style.append("-fx-border-width: 0 0 1 0;-fx-border-color:black;");
+                style.append("-fx-border-radius:0;-fx-background-color:transparent;");
+                style.append("-fx-max-height:30;");
+                sampleNameField.setStyle(style.toString());
                 SampleAnalysisJobStatusBox sampleStatusField = new SampleAnalysisJobStatusBox();
                 sampleStatusFields.add(sampleStatusField);
                 sampleStatusField.setStyle("-fx-alignment:center");
 
                 TextField samplePanelField = new TextField();
                 samplePanelField.setEditable(false);
+                samplePanelField.setStyle(style.toString());
                 samplePanelFields.add(samplePanelField);
 
                 sampleListGridPane.add(sampleNameField, 0, i);
                 sampleListGridPane.add(sampleStatusField, 1, i);
                 sampleListGridPane.add(samplePanelField, 2, i);
             }
-
+            sampleListPagination.setVisible(false);
         } catch (Exception e) {
             logger.error("HOME -> initSampleListLayout", e);
         }
@@ -271,6 +276,10 @@ public class HomeController extends SubPaneController{
             sampleListPagination.setCurrentPageIndex(pageIndex);
             sampleListPagination.setMaxPageIndicatorCount(3);
             sampleListPagination.setPageCount(pagedSample.getCount() / maxItemNumberOfPage);
+            if (sampleListPagination.getPageCount() < 2)
+                sampleListPagination.setVisible(false);
+            else
+                sampleListPagination.setVisible(true);
             int sampleCount = pagedSample.getResult().size();
             List<Sample> sortedSamples = pagedSample.getResult().stream().sorted((s1, s2) -> {
                 if (s1.getId() > s2.getId()) {
@@ -381,16 +390,26 @@ public class HomeController extends SubPaneController{
     class SampleAnalysisJobStatusBox extends VBox {
         private HBox statusBox;
         private Label statusLabel;
+        private TextField statusMsgTextField;
         SampleAnalysisJobStatusBox() {
             super();
             statusBox = new HBox();
+            statusBox.setSpacing(5.0);
             statusLabel = new Label();
+            statusMsgTextField = new TextField();
+            StringBuilder style = new StringBuilder("-fx-font-size:9;");
+            style.append("-fx-border-width: 0 0 1 0;-fx-border-color:black;");
+            style.append("-fx-border-radius:0;-fx-background-color:transparent;");
+            style.append("-fx-max-height:30;");
+            statusMsgTextField.setStyle(style.toString());
             statusBox.getChildren().add(statusLabel);
+            statusBox.getChildren().add(statusMsgTextField);
             this.getChildren().add(statusBox);
             statusBox.setStyle("-fx-alignment:center");
         }
         protected void setStatus(SampleStatus status) {
             statusLabel.setText(status.getStep());
+            statusMsgTextField.setText(status.getStatusMsg());
             statusLabel.setId("jobStatus_" + status.getStatus());// + status.getUploadStatus());
         }
     }

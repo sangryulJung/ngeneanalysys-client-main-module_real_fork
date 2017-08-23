@@ -326,7 +326,7 @@ public class PastResultsController extends SubPaneController {
 		param.put("offset", offset);
 		
 		try {
-			HttpClientResponse response = apiService.get("/analysis_progress_state/filter", param, null, false);
+			HttpClientResponse response = apiService.get("/searchSamples", param, null, false);
 
 			if (response != null) {
 //				AnalysisProgressStateForPaging analysisProgressState = response
