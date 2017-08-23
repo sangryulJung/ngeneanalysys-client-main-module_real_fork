@@ -39,7 +39,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     private Stage currentStage;
 
     /** 분석자 진행현황 화면 컨트롤러 객체 */
-    private ExperimenterHomeController experimentHomeController;
+    private HomeController homeController;
 
     @FXML
     private TextField textFieldRunName;
@@ -63,6 +63,13 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     @FXML
     private ScrollPane sampleSheetScrollPane;
+
+    /**
+     * @param homeController
+     */
+    public void setHomeController(HomeController homeController) {
+        this.homeController = homeController;
+    }
 
     /**
      * @param sampleUploadController
@@ -92,13 +99,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         setMainApp(this.mainController.getMainApp());
     }
 
-    /**
-     * @param experimentHomeController
-     *            the experimentHomeController to set
-     */
-    public void setExperimentHomeController(ExperimenterHomeController experimentHomeController) {
-        this.experimentHomeController = experimentHomeController;
-    }
 
     @Override
     public void show(Parent root) throws IOException {
@@ -137,7 +137,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     @FXML
     public void showFileFindWindow() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Choose SampleSheet Files");
+        fileChooser.setTitle("Choose SampleSheet File");
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
         fileChooser.getExtensionFilters()
                 .addAll(new FileChooser.ExtensionFilter("csv", "*.csv"));
@@ -214,6 +214,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
             TextField sampleName = new TextField();
             sampleName.setStyle("-fx-text-inner-color: black;");
+            sampleName.getStyleClass().add("font_size_9");
             sampleName.setText(!StringUtils.isEmpty(item.getSampleName()) ?  item.getSampleName() : item.getSampleId());
 
             TextField samplePlate = new TextField();

@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -31,12 +32,15 @@ public class SampleUploadController extends BaseStageController{
     private MainController mainController;
 
     /** 분석자 진행현황 화면 컨트롤러 객체 */
-    private ExperimenterHomeController experimentHomeController;
+    private HomeController homeController;
 
     /** 작업 Dialog Window Stage Object */
     private Stage currentStage;
 
     private List<Sample>  samples;
+
+    @FXML
+    private TextField textFieldRunName;
 
     @FXML
     private Pane tableRegion;
@@ -46,6 +50,20 @@ public class SampleUploadController extends BaseStageController{
     private SampleUploadScreenSecondController sampleUploadScreenSecondController;
 
     private SampleUploadScreenThirdController sampleUploadScreenThirdController;
+
+    /**
+     * @return homeController
+     */
+    public HomeController getHomeController() {
+        return homeController;
+    }
+
+    /**
+     * @param homeController
+     */
+    public void setHomeController(HomeController homeController) {
+        this.homeController = homeController;
+    }
 
     /**
      * @return currentStage
@@ -77,13 +95,6 @@ public class SampleUploadController extends BaseStageController{
         setMainApp(this.mainController.getMainApp());
     }
 
-    /**
-     * @param experimentHomeController
-     *            the experimentHomeController to set
-     */
-    public void setExperimentHomeController(ExperimenterHomeController experimentHomeController) {
-        this.experimentHomeController = experimentHomeController;
-    }
 
     @Override
     public void show(Parent root) throws IOException {
@@ -149,8 +160,10 @@ public class SampleUploadController extends BaseStageController{
                 break;
         }
 
+    }
 
-
+    public String getRunName() {
+        return textFieldRunName.getText();
     }
 
     public void closeDialog() { currentStage.close(); }

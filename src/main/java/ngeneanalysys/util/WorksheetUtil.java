@@ -7,10 +7,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import ngeneanalysys.exceptions.ExcelParseException;
 import ngeneanalysys.model.QCData;
@@ -168,7 +165,7 @@ public class WorksheetUtil {
 		int lastRowNum = sheet.getLastRowNum();
 		String errorMessagePrefix = "\nPlease refer to the software manual.";
 		String errorMessage = null;
-		Map<String, QCData> list = new HashMap<>();
+		Map<String, QCData> list = new TreeMap<>();
 		//First Header Row Check
 		boolean isMatchCode = false;
 		if(lastRowNum <= 0) {
@@ -220,6 +217,10 @@ public class WorksheetUtil {
 		for(int i = 1 ; i <= lastRowNum ; i++) {
 			XSSFRow row = sheet.getRow(i);
 			QCData qcData = new QCData();
+
+			if(row.getCell(0).toString().equals("")) {
+				break;
+			}
 
 			if(!("Pass".equals(row.getCell(6).toString()) || "Fail".equals(row.getCell(6).toString()))) {
 				errorMessage = "Invalid : " + row.getCell(6).toString();

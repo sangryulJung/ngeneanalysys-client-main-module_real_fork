@@ -61,7 +61,7 @@ public class ExportVariantDataTask extends Task<Void> {
 		this.searchedSamples = searchedSamples;
 		this.mainApp = mainApp;
 		// api service init..
-		apiService = (APIService) mainApp.getApplicationContext().getBean("apiService");
+		apiService = APIService.getInstance();
 		apiService.setStage(mainApp.getPrimaryStage());		
 	}
 

@@ -37,6 +37,9 @@ dependencies {
     compile group: 'com.opencsv', name: 'opencsv', version: '3.8'
     // https://mvnrepository.com/artifact/net.sf.jxls/jxls-core
     compile group: 'net.sf.jxls', name: 'jxls-core', version: '1.0.6'
+    // https://mvnrepository.com/artifact/org.apache.httpcomponents/httpmime
+    compile group: 'org.apache.httpcomponents', name: 'httpmime', version: '4.5.2'
+
 
 
 

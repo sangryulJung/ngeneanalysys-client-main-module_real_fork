@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Jang
@@ -136,6 +137,16 @@ public class SampleUploadScreenSecondController extends BaseStageController {
 
     @FXML
     public void next() throws IOException {
+
+        if(sampleArrayList != null && sampleArrayList.size() > 0) {
+            for (Sample sample : sampleArrayList) {
+                QCData qcData = sample.getQcData();
+                if (qcData == null) qcData = new QCData();
+
+                sample.setQcData(qcData);
+            }
+        }
+
         sampleUploadController.pageSetting(3);
     }
 
@@ -151,17 +162,17 @@ public class SampleUploadScreenSecondController extends BaseStageController {
         if(file != null && file.getName().equalsIgnoreCase("qcInfo.xlsx")) {
             try {
                 Map<String, QCData> qcList = WorksheetUtil.readQCDataExcelSheet(file);
+
                 for(Sample sample : sampleArrayList) {
                     String name = (!StringUtils.isEmpty(sample.getSampleSheet().getSampleName()))
                             ? sample.getSampleSheet().getSampleName() : sample.getSampleSheet().getSampleId();
-                    QCData qc = qcList.get("B815");
                     if(qcList.get(name) != null) {
                         logger.info(name);
                     } else {
                         DialogUtil.alert("찾을 수 없음", name + " 샘플에 대한 QC 정보를 찾을 수 없음", sampleUploadController.getCurrentStage(), true);
                     }
                 }
-                logger.info(qcList.size() + "");
+
                 tableEdit();
             } catch (IOException e) {
                 e.printStackTrace();

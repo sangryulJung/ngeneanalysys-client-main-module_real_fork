@@ -127,7 +127,7 @@ public class HomeController extends SubPaneController{
             SampleUploadController controller = loader.getController();
             controller.setMainController(this.mainController);
 
-            controller.setExperimentHomeController(this);
+            controller.setHomeController(this);
             controller.show(page);
         } catch (IOException e) {
             e.printStackTrace();

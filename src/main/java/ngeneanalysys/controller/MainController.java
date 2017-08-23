@@ -279,9 +279,9 @@ public class MainController extends BaseStageController {
         menu = new TopMenu();
         menu.setMenuName("Past Result");
         menu.setFxmlPath(FXMLConstants.PAST_RESULTS);
-        menu.setDisplayOrder(0);
+        menu.setDisplayOrder(1);
         menu.setStaticMenu(true);
-        topMenus[0] = menu;
+        topMenus[1] = menu;
     }
 
     /**
