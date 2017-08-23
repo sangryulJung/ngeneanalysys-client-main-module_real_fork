@@ -361,9 +361,9 @@ public class PastResultsController extends SubPaneController {
 			// DialogUtil.error(null, "Running and Recent Samples Search
 			// Error.", getMainApp().getPrimaryStage(),true);
 			DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
-					getMainApp().getPrimaryStage(), true);
+					getMainApp().getPrimaryStage(), false);
 		} catch (Exception e) {
-			DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+			DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), false);
 		}
 		maskerPane.setVisible(false);
 	}

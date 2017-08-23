@@ -56,6 +56,8 @@ public class MainController extends BaseStageController {
     private String currentShowFrameId;
     /** 분석자 HOME 컨트롤러 */
     private HomeController homeController;
+    /** 분석자 Past Results 컨트롤러*/
+    private PastResultsController pastResultsController;
 
     /** 메인 레이아웃 화면 Stage */
     private Stage primaryStage;
@@ -480,6 +482,12 @@ public class MainController extends BaseStageController {
                         homeController.setMainController(this);
                         homeController.setParamMap(menu.getParamMap());
                         homeController.show((Parent) node);
+                        break;
+                    case FXMLConstants.PAST_RESULTS:	// 분석자 Past Results
+                        pastResultsController = (PastResultsController) loader.getController();
+                        pastResultsController.setMainController(this);
+                        pastResultsController.setParamMap(menu.getParamMap());
+                        pastResultsController.show((Parent) node);
                         break;
                     default:
                         break;
