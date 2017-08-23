@@ -1,7 +1,6 @@
 package ngeneanalysys.controller;
 
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
@@ -56,7 +55,7 @@ public class MainController extends BaseStageController {
     /** 이전 화면 정보 */
     private String currentShowFrameId;
     /** 분석자 HOME 컨트롤러 */
-    private ExperimenterHomeController experimenterHomeController;
+    private HomeController homeController;
 
     /** 메인 레이아웃 화면 Stage */
     private Stage primaryStage;
@@ -477,10 +476,10 @@ public class MainController extends BaseStageController {
 
                 switch (menu.getFxmlPath()) {
                     case FXMLConstants.HOME:
-                        experimenterHomeController = loader.getController();
-                        experimenterHomeController.setMainController(this);
-                        experimenterHomeController.setParamMap(menu.getParamMap());
-                        experimenterHomeController.show((Parent) node);
+                        homeController = loader.getController();
+                        homeController.setMainController(this);
+                        homeController.setParamMap(menu.getParamMap());
+                        homeController.show((Parent) node);
                         break;
                     default:
                         break;
