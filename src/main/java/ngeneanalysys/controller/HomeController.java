@@ -80,8 +80,6 @@ public class HomeController extends SubPaneController{
     @FXML
     private Pagination sampleListPagination;
 
-    @FXML
-    private Button runListRefreshButton;
     /** API Service */
     private APIService apiService;
     /** Timer */
@@ -109,10 +107,6 @@ public class HomeController extends SubPaneController{
                 ae -> showRunList()));
         autoRefreshTimeline.setCycleCount(Animation.INDEFINITE);
         autoRefreshTimeline.play();
-
-        runListRefreshButton.setOnMouseClicked(e -> {
-            showRunList();
-        });
     }
 
     /**

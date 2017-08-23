@@ -29,8 +29,8 @@
   </columnConstraints>
   <rowConstraints>
     <RowConstraints maxHeight="203.4000244140625" minHeight="0.0" prefHeight="33.59999084472656" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="417.0" minHeight="10.0" prefHeight="99.40000915527344" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="388.3999786376953" minHeight="9.4000244140625" prefHeight="25.800018310546875" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="417.0" minHeight="10.0" prefHeight="92.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="388.3999786376953" minHeight="9.4000244140625" prefHeight="42.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="419.5999755859375" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="430.79998779296875" minHeight="10.0" prefHeight="414.0" vgrow="SOMETIMES" />
   </rowConstraints>
@@ -264,42 +264,6 @@
                   <String fx:value="txt_blue" />
                </styleClass>
             </Label>
-            <Label styleClass="font_size_10" text="(running : ">
-               <HBox.margin>
-                  <Insets left="5.0" top="7.0" />
-               </HBox.margin>
-            </Label>
-            <Label fx:id="runCount" layoutX="388.0" layoutY="10.0" text="10">
-               <HBox.margin>
-                  <Insets top="7.0" />
-               </HBox.margin>
-               <styleClass>
-                  <String fx:value="txt_sample_count" />
-                  <String fx:value="weight_bold" />
-                  <String fx:value="font_size_10" />
-               </styleClass>
-            </Label>
-            <Label styleClass="font_size_10" text="/ queued : ">
-               <HBox.margin>
-                  <Insets top="7.0" />
-               </HBox.margin>
-            </Label>
-            <Label fx:id="runQueuedCount" text="10">
-               <styleClass>
-                  <String fx:value="txt_sample_count" />
-                  <String fx:value="weight_bold" />
-                  <String fx:value="font_size_10" />
-               </styleClass>
-               <HBox.margin>
-                  <Insets top="7.0" />
-               </HBox.margin>
-            </Label>
-            <Label layoutX="493.0" layoutY="18.0" styleClass="font_size_10" text=" )">
-               <HBox.margin>
-                  <Insets top="7.0" />
-               </HBox.margin>
-            </Label>
-            <Button fx:id="runListRefreshButton" mnemonicParsing="false" text="Refresh" />
          </children>
       </HBox>
    </children>
