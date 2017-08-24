@@ -128,6 +128,13 @@ public class PastResultsController extends SubPaneController {
 	
 	/** Timer */
 	public Timeline autoRefreshTimeline;
+	private int itemCountPerPage;
+	private List<SampleNameFieldVBox> sampleNameFields = new ArrayList<>();
+	private List<RunFieldVBox> runFields = new ArrayList<>();
+	private List<AssayTargetFieldVBox> assayTargetFieldVBoxes = new ArrayList<>();
+	private List<AnalysisResultOverviewVBox> analysisResultOverviewVBoxes = new ArrayList<>();
+	private List<QcResultVBox> qcResultVBoxes = new ArrayList<>();
+	private List<DetailFieldVBox> detailFieldVBoxes = new ArrayList<>();
 
 	/**
 	 * 화면 출력
@@ -136,7 +143,7 @@ public class PastResultsController extends SubPaneController {
 	@Override
 	public void show(Parent root) throws IOException {
 		logger.info("ExperimenterPastResultsController show..");
-
+		itemCountPerPage = listGrid.getRowConstraints().size();
 		// api service init..
 		apiService = APIService.getInstance();
 		apiService.setStage(getMainController().getPrimaryStage());
@@ -207,7 +214,7 @@ public class PastResultsController extends SubPaneController {
 				}
 			}
 		});
-
+		initSampleListLayout();
 		// 페이지 이동 이벤트 바인딩
 		paginationList.setPageFactory(new Callback<Integer, Node>() {
 			@Override
@@ -216,7 +223,7 @@ public class PastResultsController extends SubPaneController {
 				return new VBox();
 			}
 		});
-		
+
 		// 시스템 설정에서 자동 새로고침 설정이 true 인경우 자동 새로고팀 실행
 		startAutoRefresh();
 		
@@ -308,13 +315,11 @@ public class PastResultsController extends SubPaneController {
 		maskerPane.setVisible(true);
 		
 		int totalCount = 0;
-		// 화면 출력 row수
-		int limit = 5;
 		// 조회 시작 index
-		int offset = (page - 1) * limit;
+		int offset = (page - 1) * itemCountPerPage;
 
 		Map<String, Object> param = getSearchParam();
-		param.put("limit", limit);
+		param.put("limit", itemCountPerPage);
 		param.put("offset", offset);
 		
 		try {
@@ -331,8 +336,8 @@ public class PastResultsController extends SubPaneController {
 				int pageCount = 0;
 				if (totalCount > 0) {
 					paginationList.setCurrentPageIndex(page - 1);
-					pageCount = totalCount / limit;
-					if (totalCount % limit > 0) {
+					pageCount = totalCount / itemCountPerPage;
+					if (totalCount % itemCountPerPage > 0) {
 						pageCount++;
 					}
 				}
@@ -410,6 +415,39 @@ public class PastResultsController extends SubPaneController {
 		return param;
 	}
 
+	public void initSampleListLayout() {
+		for(int i = 0; i < listGrid.getRowConstraints().size(); i++){
+			SampleNameFieldVBox jobVBox = new SampleNameFieldVBox();
+			jobVBox.setVisible(false);
+			sampleNameFields.add(jobVBox);
+			listGrid.add(jobVBox, 0, i);
+
+			RunFieldVBox runFieldVBox = new RunFieldVBox();
+			runFieldVBox.setVisible(false);
+			runFields.add(runFieldVBox);
+			listGrid.add(runFieldVBox, 1, i);
+
+			AssayTargetFieldVBox assayTargetFieldVBox = new AssayTargetFieldVBox();
+			assayTargetFieldVBox.setVisible(false);
+			assayTargetFieldVBoxes.add(assayTargetFieldVBox);
+			listGrid.add(assayTargetFieldVBox, 2, i);
+
+			AnalysisResultOverviewVBox analysisResultOverviewVBox = new AnalysisResultOverviewVBox();
+			analysisResultOverviewVBox.setVisible(false);
+			analysisResultOverviewVBoxes.add(analysisResultOverviewVBox);
+			listGrid.add(analysisResultOverviewVBox, 3, i);
+
+			QcResultVBox qcResultVBox = new QcResultVBox();
+			qcResultVBox.setVisible(false);
+			qcResultVBoxes.add(qcResultVBox);
+			listGrid.add(qcResultVBox, 4, i);
+
+			DetailFieldVBox detailFieldVBox = new DetailFieldVBox();
+			detailFieldVBox.setVisible(false);
+			detailFieldVBoxes.add(detailFieldVBox);
+			listGrid.add(detailFieldVBox, 5, i);
+		}
+	}
 	/**
 	 * 샘플 목록 화면 출력
 	 * 
@@ -417,143 +455,23 @@ public class PastResultsController extends SubPaneController {
 	 */
 	public void renderSampleList(List<SampleView> list) {
 		if (list != null && list.size() > 0) {
-			// 기존 화면에 출력된 데이터 제거
-			listGrid.getChildren().clear();
-
-			int idx = 0;
-			for(SampleView sample : list) {
-				String submittedDate = "-";
-				String startedDate = "-";
-				String fastQC = sample.getQcResult();
-				//fastQC = (StringUtils.isEmpty(fastQC) && sample.getAnalysisResultSummary() != null) ? sample.getAnalysisResultSummary().getQualityControl() : fastQC;
-				//fastQC = (!StringUtils.isEmpty(fastQC)) ? fastQC.toUpperCase() : "NONE";
-
-				if(sample.getSampleStatus() != null) {
-					submittedDate = DateFormatUtils.format(sample.getCreatedAt().toDate(), "yyyy-MM-dd HH:mm:ss");
-					if(sample.getSampleStatus().getPipelineStartedAt() != null) {
-						startedDate = DateFormatUtils.format(sample.getSampleStatus().getPipelineStartedAt().toDate(), "yyyy-MM-dd HH:mm:ss");
-					}
-				}
-
-				HBox hBox = new HBox();
-				hBox.setId("item");
-
-				// Job Column Box
-				VBox jobVBox = new VBox();
-				jobVBox.setId("jobArea");
-				jobVBox.getStyleClass().add("colunmn");
-				// sample job name
-				Label jobLabel = new Label(sample.getName());
-				jobLabel.setId("job");
-				// 요청일시 라벨
-				Label submittedLabel = new Label("Submitted : " + submittedDate);
-				submittedLabel.setId("submitted");
-				// 작업 시작일시 라벨
-				Label startedLabel = new Label("Started : " + startedDate);
-				startedLabel.setId("started");
-				jobVBox.getChildren().setAll(jobLabel, submittedLabel, startedLabel);
-
-				// 목록 Grid 영역에 추가
-				listGrid.add(jobVBox, 0, idx);
-
-				// 시퀀스 장비 column box
-				VBox groupVBox = new VBox();
-				groupVBox.setId("groupArea");
-				groupVBox.getStyleClass().add("colunmn");
-				Label refName = new Label(sample.getRunName());
-				refName.setId("refName");
-				refName.getStyleClass().add("font_size_12");
-				HBox sampleSourceHBox = new HBox();
-				sampleSourceHBox.setId("sampleSource");
-				Label sampleSource = new Label(sample.getSampleSource());
-				sampleSource.getStyleClass().add(sample.getSampleSource());
-				sampleSourceHBox.getChildren().setAll(new Label("Sample : "), sampleSource);
-				groupVBox.getChildren().setAll(refName, sampleSourceHBox);
-
-				// 목록 Grid 영역에 추가
-				listGrid.add(groupVBox, 1, idx);
-
-				// Assay Target (사용패널키트) Column Box
-				VBox assayTargetPlatformVBox = new VBox();
-				assayTargetPlatformVBox.getStyleClass().add("colunmn");
-				assayTargetPlatformVBox.setId("assayTargetPlatformArea");
-				Label assayTarget = new Label(sample.getPanelName());
-				assayTarget.setId("assayTarget");
-				assayTarget.getStyleClass().add("font_size_12");
-				Label platform = new Label("Illumina MiSeq DX");
-				platform.setId("platform");
-				platform.getStyleClass().add("font_size_12");
-				assayTargetPlatformVBox.getChildren().setAll(assayTarget, platform);
-
-				// 목록 Grid 영역에 추가
-				listGrid.add(assayTargetPlatformVBox, 2, idx);
-
-				// Result Overview Column Box
-				//AnalysisJobResultOverview jobResultOverview = new AnalysisJobResultOverview();
-				VBox jobResultOverviewVBox = new VBox();//jobResultOverview.getResultOverview(sample);
-				jobResultOverviewVBox.getStyleClass().add("colunmn");
-
-				// 목록 Grid 영역에 추가
-				listGrid.add(jobResultOverviewVBox, 3, idx);
-
-				// fastqc column box
-				VBox qcVBox = new VBox();
-				qcVBox.setId("qcArea");
-				qcVBox.getStyleClass().add("colunmn");
-
-				Image img = resourceUtil.getImage("/layout/images/icon_qc_" + fastQC.toLowerCase() + ".png");
-				if (img != null) {
-					ImageView imgVw = new ImageView(img);
-					qcVBox.getChildren().setAll(imgVw);
-				}
-				if (!"NONE".equals(fastQC)) {
-					Label qcLabel = null;
-					if("WARN".equals(fastQC)) {
-						qcLabel = new Label("WARNING");
-					} else {
-						qcLabel = new Label(fastQC);
-					}
-					qcLabel.setId(fastQC.toLowerCase());
-					qcLabel.getStyleClass().add("font_size_12");
-					qcVBox.getChildren().add(qcLabel);
-				}
-
-				// 목록 Grid 영역에 추가
-				listGrid.add(qcVBox, 4, idx);
-
-				VBox detailVBox = new VBox();
-				detailVBox.setId("detailArea");
-				detailVBox.getStyleClass().add("colunmn");
-				Button btn = new Button("Detail");
-				btn.getStyleClass().add("btn_detail");
-//				if(sample.getAnalysisResultSummary() != null) {
-//					btn.setOnAction(e -> {
-//						Map<String,Object> detailViewParamMap = new HashMap<String,Object>();
-//						detailViewParamMap.put("id", sample.getId());
-//
-//						TopMenu menu = new TopMenu();
-//						menu.setId("sample_" + sample.getId());
-//						menu.setMenuName(sample.getName());
-//						menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_LAYOUT);
-//						menu.setParamMap(detailViewParamMap);
-//						menu.setStaticMenu(false);
-//						mainController.addTopMenu(menu, 2, true);
-//					});
-//				} else {
-//					btn.setOnAction(e -> {
-//						DialogUtil.alert("Incomplete analysis of cases", "You can not browse the analytical work which has not been completed.", getMainApp().getPrimaryStage(), true);
-//					});
-//				}
-				detailVBox.getChildren().add(btn);
-
-				// 목록 Grid 영역에 추가
-				listGrid.add(detailVBox, 5, idx);
-
-				idx++;
+			for(int idx = 0; idx < list.size(); idx++) {
+				SampleView sample = list.get(idx);
+				sampleNameFields.get(idx).setSampleView(sample);
+				runFields.get(idx).setSampleView(sample);
+				assayTargetFieldVBoxes.get(idx).setSampleView(sample);
+				analysisResultOverviewVBoxes.get(idx).setSampleView(sample);
+				qcResultVBoxes.get(idx).setSampleView(sample);
+			}
+			for(int idx = list.size(); idx < itemCountPerPage; idx++) {
+				sampleNameFields.get(idx).setVisible(false);
+				runFields.get(idx).setVisible(false);
+				assayTargetFieldVBoxes.get(idx).setVisible(false);
+				analysisResultOverviewVBoxes.get(idx).setVisible(false);
+				qcResultVBoxes.get(idx).setVisible(false);
 			}
 		} else {
-			// 기존 화면에 출력된 데이터 제거
-			listGrid.getChildren().clear();
+
 		}
 	}
 	
@@ -671,4 +589,155 @@ public class PastResultsController extends SubPaneController {
 					this.mainApp.getPrimaryStage(), false);			
 		}
 	}
+	class SampleNameFieldVBox extends VBox {
+		// 샘플명
+		private Label jobLabel;
+		// 요청일시 라벨
+		private Label submittedLabel;
+		// 작업 시작일시 라벨
+		Label startedLabel;
+
+		protected  SampleNameFieldVBox() {
+			super();
+			this.setId("jobArea");
+			this.getStyleClass().add("colunmn");
+			jobLabel = new Label();
+			jobLabel.setId("job");
+			submittedLabel = new Label();
+			submittedLabel.setId("submitted");
+			startedLabel = new Label();
+			startedLabel.setId("started");
+			this.getChildren().setAll(jobLabel, submittedLabel, startedLabel);
+		}
+		protected void setSampleView(final SampleView sample) {
+			this.setVisible(true);
+			jobLabel.setText(sample.getName());
+			submittedLabel.setText("Submitted : "
+					+ DateFormatUtils.format(sample.getCreatedAt().toDate(), "yyyy-MM-dd HH:mm:ss"));
+			String startedDate = "-";
+			if (sample.getSampleStatus().getPipelineStartedAt() != null) {
+				startedDate = DateFormatUtils.format(sample.getSampleStatus().getPipelineStartedAt().toDate(), "yyyy-MM-dd HH:mm:ss");
+			}
+			startedLabel.setText("Started : " +  startedDate);
+		}
+	}
+	class RunFieldVBox extends VBox {
+		private Label runName;
+		private Label sampleSource;
+		RunFieldVBox() {
+			super();
+			// 시퀀스 장비 column box
+			this.setId("groupArea");
+			this.getStyleClass().add("colunmn");
+			runName = new Label();
+			runName.setId("refName");
+			runName.getStyleClass().add("font_size_12");
+			HBox sampleSourceHBox = new HBox();
+			sampleSourceHBox.setId("sampleSource");
+			sampleSource = new Label();
+			sampleSourceHBox.getChildren().setAll(new Label("Sample : "), sampleSource);
+			this.getChildren().setAll(runName, sampleSourceHBox);
+		}
+		protected void setSampleView(SampleView sample) {
+			this.setVisible(true);
+			runName.setText(sample.getRunName());
+			sampleSource.setText(sample.getSampleSource());
+			sampleSource.getStyleClass().clear();
+			sampleSource.getStyleClass().add(sample.getSampleSource());
+		}
+	}
+	class AssayTargetFieldVBox extends VBox {
+		private Label assayTarget;
+		private Label platform;
+
+		AssayTargetFieldVBox() {
+			super();
+			// Assay Target (사용패널키트) Column Box
+			this.getStyleClass().add("colunmn");
+			this.setId("assayTargetPlatformArea");
+			assayTarget = new Label();
+			assayTarget.setId("assayTarget");
+			assayTarget.getStyleClass().add("font_size_12");
+			platform = new Label("Illumina MiSeq DX");
+			platform.setId("platform");
+			platform.getStyleClass().add("font_size_12");
+			this.getChildren().setAll(assayTarget, platform);
+		}
+		protected void setSampleView(SampleView sample) {
+			this.setVisible(true);
+			assayTarget.setText(sample.getPanelName());
+		}
+	}
+	class AnalysisResultOverviewVBox extends VBox {
+		AnalysisResultOverviewVBox() {
+			super();
+			// Result Overview Column Box
+			this.getStyleClass().add("colunmn");
+		}
+		protected  void setSampleView(SampleView sample) {
+			setVisible(true);
+		}
+	}
+	class QcResultVBox extends VBox {
+		QcResultVBox() {
+			// fastqc column box
+			this.setId("qcArea");
+			this.getStyleClass().add("colunmn");
+		}
+
+		protected  void setSampleView(SampleView sample){
+			setVisible(true);
+			this.getChildren().clear();
+			String fastQC = sample.getQcResult();
+			//fastQC = (StringUtils.isEmpty(fastQC) && sample.getAnalysisResultSummary() != null) ? sample.getAnalysisResultSummary().getQualityControl() : fastQC;
+			//fastQC = (!StringUtils.isEmpty(fastQC)) ? fastQC.toUpperCase() : "NONE";
+			Image img = resourceUtil.getImage("/layout/images/icon_qc_" + fastQC.toLowerCase() + ".png");
+			if (img != null) {
+				ImageView imgVw = new ImageView(img);
+				this.getChildren().setAll(imgVw);
+			}
+			if (!"NONE".equals(fastQC)) {
+				Label qcLabel = null;
+				if("WARN".equals(fastQC)) {
+					qcLabel = new Label("WARNING");
+				} else {
+					qcLabel = new Label(fastQC);
+				}
+				qcLabel.setId(fastQC.toLowerCase());
+				qcLabel.getStyleClass().add("font_size_12");
+				this.getChildren().add(qcLabel);
+			}
+		}
+	}
+	class DetailFieldVBox extends VBox {
+		DetailFieldVBox() {
+			this.setId("detailArea");
+			this.getStyleClass().add("colunmn");
+			Button btn = new Button("Detail");
+			btn.getStyleClass().add("btn_detail");
+//				if(sample.getAnalysisResultSummary() != null) {
+//					btn.setOnAction(e -> {
+//						Map<String,Object> detailViewParamMap = new HashMap<String,Object>();
+//						detailViewParamMap.put("id", sample.getId());
+//
+//						TopMenu menu = new TopMenu();
+//						menu.setId("sample_" + sample.getId());
+//						menu.setMenuName(sample.getName());
+//						menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_LAYOUT);
+//						menu.setParamMap(detailViewParamMap);
+//						menu.setStaticMenu(false);
+//						mainController.addTopMenu(menu, 2, true);
+//					});
+//				} else {
+//					btn.setOnAction(e -> {
+//						DialogUtil.alert("Incomplete analysis of cases", "You can not browse the analytical work which has not been completed.", getMainApp().getPrimaryStage(), true);
+//					});
+//				}
+			this.getChildren().add(btn);
+		}
+		protected void setSampleView(SampleView sample) {
+			this.setVisible(true);
+		}
+	}
+
 }
