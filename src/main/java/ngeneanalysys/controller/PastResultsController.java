@@ -591,23 +591,25 @@ public class PastResultsController extends SubPaneController {
 	}
 	class SampleNameFieldVBox extends VBox {
 		// 샘플명
-		private Label jobLabel;
+		private TextField jobLabel;
 		// 요청일시 라벨
-		private Label submittedLabel;
+		private TextField submittedLabel;
 		// 작업 시작일시 라벨
-		Label startedLabel;
+		private TextField startedLabel;
 
 		protected  SampleNameFieldVBox() {
 			super();
 			this.setId("jobArea");
 			this.getStyleClass().add("colunmn");
-			jobLabel = new Label();
+			jobLabel = new TextField();
+			jobLabel.setEditable(false);
 			jobLabel.setId("job");
-			submittedLabel = new Label();
+			submittedLabel = new TextField();
 			submittedLabel.setId("submitted");
-			startedLabel = new Label();
+			startedLabel = new TextField();
 			startedLabel.setId("started");
-			this.getChildren().setAll(jobLabel, submittedLabel, startedLabel);
+			//this.getChildren().setAll(jobLabel, submittedLabel, startedLabel);
+			this.getChildren().setAll(jobLabel, submittedLabel);
 		}
 		protected void setSampleView(final SampleView sample) {
 			this.setVisible(true);
@@ -622,16 +624,16 @@ public class PastResultsController extends SubPaneController {
 		}
 	}
 	class RunFieldVBox extends VBox {
-		private Label runName;
+		private TextField runName;
 		private Label sampleSource;
 		RunFieldVBox() {
 			super();
 			// 시퀀스 장비 column box
 			this.setId("groupArea");
 			this.getStyleClass().add("colunmn");
-			runName = new Label();
+			runName = new TextField();
 			runName.setId("refName");
-			runName.getStyleClass().add("font_size_12");
+			//runName.getStyleClass().add("font_size_12");
 			HBox sampleSourceHBox = new HBox();
 			sampleSourceHBox.setId("sampleSource");
 			sampleSource = new Label();

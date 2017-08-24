@@ -45,7 +45,7 @@ Button#buttonUpload:hover {
 }
 
 #listGrid .colunmn {
-	-fx-padding:3 10;
+	-fx-padding:0;
 	-fx-border-color:#d2d2d2;
 	-fx-border-width:0 0 1 0;
 }
@@ -55,19 +55,28 @@ Button#buttonUpload:hover {
 }
 
 #listGrid #jobArea #job {
-	-fx-font-size:16;
+	-fx-font-size:10;
 	-fx-font-weight:bold;
 	-fx-text-fill:#000;
+	-fx-border-width:0;
+	-fx-min-height:16;
+    	-fx-pref-height:16;
+    	-fx-max-height:16;
 }
 
 #listGrid #jobArea #submitted {
-	-fx-font-size:12;
+	-fx-font-size:8;
 	-fx-text-fill:#848484;
+	-fx-border-width:0;
+	-fx-min-height:16;
+        	-fx-pref-height:16;
+        	-fx-max-height:16;
 }
 
 #listGrid #jobArea #started {
-	-fx-font-size:12;
+	-fx-font-size:8;
 	-fx-text-fill:#848484;
+	-fx-border-width:0;
 }
 
 #listGrid #groupArea {
@@ -75,12 +84,13 @@ Button#buttonUpload:hover {
 }
 
 #listGrid #groupArea #refName {
-	-fx-font-size:14;
+	-fx-font-size:10;
 	-fx-font-weight:bold;
 	-fx-text-fill:#000;
+	-fx-border-width:0;
 }
 #listGrid #groupArea .label {
-	-fx-font-size:12px;
+	-fx-font-size:8;
 }
 
 #listGrid #groupArea #sampleSource {
@@ -88,18 +98,20 @@ Button#buttonUpload:hover {
 }
 
 #listGrid #groupArea #sampleSource .label {
-	-fx-font-size:11px;
+	-fx-font-size:8;
 	-fx-text-fill:#656565;
 }
 
 #listGrid #groupArea #sampleSource .BLOOD {
 	-fx-font-weight:bold;
 	-fx-text-fill:#000;
+	-fx-font-size:8;
 }
 
 #listGrid #groupArea #sampleSource .FFPE {
 	-fx-font-weight:bold;
 	-fx-text-fill:#000;
+	-fx-font-size:8;
 }
 
 #listGrid #jobStatusArea {

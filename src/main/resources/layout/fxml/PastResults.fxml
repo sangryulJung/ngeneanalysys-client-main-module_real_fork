@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
@@ -18,16 +25,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="experimentPastResultsWrapper" prefHeight="625.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.PastResultsController">
+<GridPane fx:id="experimentPastResultsWrapper" prefHeight="625.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.PastResultsController">
    <columnConstraints>
       <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="20.0" />
       <ColumnConstraints hgrow="SOMETIMES" prefWidth="1240.0" />
       <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="20.0" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" valignment="TOP" vgrow="NEVER" />
-      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="85.0" vgrow="NEVER" />
-      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="45.0" valignment="CENTER" vgrow="NEVER" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" valignment="TOP" vgrow="NEVER" />
+      <RowConstraints maxHeight="99.0" minHeight="-Infinity" prefHeight="99.0" vgrow="NEVER" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" valignment="CENTER" vgrow="NEVER" />
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" valignment="TOP" vgrow="NEVER" />
       <RowConstraints prefHeight="360.0" valignment="TOP" vgrow="ALWAYS" />
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="45.0" valignment="TOP" vgrow="NEVER" />
@@ -41,11 +48,8 @@
                      <image>
                         <Image url="@../images/icon_03.png" />
                      </image>
-                     <HBox.margin>
-                        <Insets top="9.0" />
-                     </HBox.margin>
                   </ImageView>
-                  <Label alignment="TOP_LEFT" layoutX="60.0" layoutY="31.0" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="168.0" text="Sample Filter">
+                  <Label alignment="TOP_LEFT" layoutX="60.0" layoutY="31.0" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="116.0" text="Sample Filter">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
@@ -53,20 +57,16 @@
                         <Insets left="8.0" />
                      </HBox.margin>
                      <styleClass>
-                        <String fx:value="h1" />
+                        <String fx:value="h2" />
                         <String fx:value="weight_bold" />
                         <String fx:value="txt_black" />
                      </styleClass>
                   </Label>
                </children>
             </HBox>
-            <HBox alignment="BOTTOM_RIGHT">
+            <HBox alignment="CENTER">
                <children>
-                  <Button fx:id="buttonResetForm" mnemonicParsing="false" onAction="#resetSearchForm" prefWidth="60.0" styleClass="btn_refresh" text="Reset">
-                     <HBox.margin>
-                        <Insets bottom="5.0" />
-                     </HBox.margin>
-                  </Button>
+                  <Button fx:id="buttonResetForm" mnemonicParsing="false" onAction="#resetSearchForm" prefWidth="60.0" styleClass="btn_refresh" text="Reset" />
                </children>
             </HBox>
          </children>
@@ -220,7 +220,7 @@
       </GridPane>
       <HBox alignment="CENTER_LEFT" layoutX="20.0" layoutY="186.0" prefHeight="30.0" prefWidth="1240.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
          <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="38.0" prefWidth="900.0" HBox.hgrow="ALWAYS">
+            <HBox alignment="CENTER_LEFT" minWidth="-Infinity" prefHeight="38.0" prefWidth="900.0" HBox.hgrow="ALWAYS">
                <children>
                   <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -235,7 +235,7 @@
                         <Font name="System Bold" size="24.0" />
                      </font>
                      <styleClass>
-                        <String fx:value="h1" />
+                        <String fx:value="h2" />
                         <String fx:value="weight_bold" />
                         <String fx:value="txt_black" />
                      </styleClass>
@@ -243,7 +243,7 @@
                         <Insets left="8.0" top="4.0" />
                      </HBox.margin>
                   </Label>
-                  <Label styleClass="h2" text="(">
+                  <Label styleClass="font_size_12" text="(">
                      <HBox.margin>
                         <Insets left="5.0" top="7.0" />
                      </HBox.margin>
@@ -252,13 +252,13 @@
                      <styleClass>
                         <String fx:value="txt_sample_count" />
                         <String fx:value="weight_bold" />
-                        <String fx:value="h2" />
+                        <String fx:value="font_size_12" />
                      </styleClass>
                      <HBox.margin>
                         <Insets top="7.0" />
                      </HBox.margin>
                   </Label>
-                  <Label layoutX="407.0" layoutY="10.0" styleClass="h2" text=" Samples)">
+                  <Label layoutX="407.0" layoutY="10.0" styleClass="font_size_12" text=" Samples)">
                      <HBox.margin>
                         <Insets top="7.0" />
                      </HBox.margin>
@@ -279,9 +279,6 @@
                      </HBox.margin>
                   </Button>
                </children>
-               <HBox.margin>
-                  <Insets top="10.0" />
-               </HBox.margin>
             </HBox>
          </children>
       </HBox>
@@ -316,11 +313,16 @@
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="6.0" prefWidth="100.0" />
          </columnConstraints>
          <rowConstraints>
-            <RowConstraints prefHeight="72.0" valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints prefHeight="72.0" valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints prefHeight="72.0" valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints prefHeight="72.0" valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints prefHeight="72.0" valignment="CENTER" vgrow="ALWAYS" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" valignment="CENTER" vgrow="ALWAYS" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" valignment="CENTER" vgrow="ALWAYS" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" valignment="CENTER" vgrow="ALWAYS" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" valignment="CENTER" vgrow="ALWAYS" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" valignment="CENTER" vgrow="ALWAYS" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" valignment="CENTER" vgrow="ALWAYS" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" valignment="CENTER" vgrow="ALWAYS" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" valignment="CENTER" vgrow="ALWAYS" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" valignment="CENTER" vgrow="ALWAYS" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" valignment="CENTER" vgrow="ALWAYS" />
          </rowConstraints>
       </GridPane>
       <Pagination fx:id="paginationList" focusTraversable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="1240.0" GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.valignment="TOP" GridPane.vgrow="NEVER" />
