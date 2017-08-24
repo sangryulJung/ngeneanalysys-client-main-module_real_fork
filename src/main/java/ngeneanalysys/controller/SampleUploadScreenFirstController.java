@@ -103,23 +103,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     @Override
     public void show(Parent root) throws IOException {
 
-        // Create the dialog Stage
-        //currentStage = new Stage();
-        //currentStage.initStyle(StageStyle.DECORATED);
-        //currentStage.initModality(Modality.APPLICATION_MODAL);
-        //currentStage.setTitle(CommonConstants.SYSTEM_NAME + " > New Analysis Request");
-        // OS가 Window인 경우 아이콘 출력.
-        //if (System.getProperty("os.name").toLowerCase().contains("window")) {
-        //    currentStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
-        //}
-        //currentStage.initOwner(getMainApp().getPrimaryStage());
-
-        //sampleSheetScrollPane.setFitToHeight(true);
-
-        // Scene Init
-        //Scene scene = new Scene(root);
-        //currentStage.setScene(scene);
-        //currentStage.showAndWait();
         toggleNextBtnActivation();
     }
 

@@ -122,23 +122,24 @@ public class SampleUploadScreenThirdController extends BaseStageController{
                         .addAll(new FileChooser.ExtensionFilter("fastq", "*.fastq", "*.fastq.gz"));
                 List<File> files = fileChooser.showOpenMultipleDialog(currentStage);
 
+                if(files != null) {
+                    String name = null;
+                    if (sampleName.getText() != null && !"".equals(sampleName.getText())) {
+                        name = sampleName.getText();
+                    }
+                    Long fileSize = 0L;
+                    for (File file : files) {
+                        Map<String, Object> fileMap = new HashMap<>();
+                        fileMap.put("sampleName", name);
+                        fileMap.put("name", file.getName());
+                        fileMap.put("fileSize", file.length());
+                        fileMap.put("fileType", "FASTQ.GZ");
+                        this.fileMap.put(file.getName(), fileMap);
 
-                String name = null;
-                if(sampleName.getText() != null && !"".equals(sampleName.getText())) {
-                    name = sampleName.getText();
+                    }
+
+                    uploadFileList.addAll(files);
                 }
-                Long fileSize = 0L;
-                for(File file : files) {
-                    Map<String, Object> fileMap = new HashMap<>();
-                    fileMap.put("sampleName", name);
-                    fileMap.put("name", file.getName());
-                    fileMap.put("fileSize", file.length());
-                    fileMap.put("fileType", "FASTQ.GZ");
-                    this.fileMap.put(file.getName(), fileMap);
-
-                }
-
-                uploadFileList.addAll(files);
 
             });
 
