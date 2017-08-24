@@ -1,5 +1,6 @@
 package ngeneanalysys.controller;
 
+import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import ngeneanalysys.controller.extend.SubPaneController;
 
@@ -13,6 +14,16 @@ public class SystemMenuSupportController extends SubPaneController {
 
     @Override
     public void show(Parent root) throws IOException {
+
+    }
+
+    @FXML
+    public void openOperationManual() {
+
+    }
+
+    @FXML
+    public void openReleaseNotes() {
 
     }
 }

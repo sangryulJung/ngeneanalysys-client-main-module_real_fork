@@ -20,6 +20,8 @@ import ngeneanalysys.util.JsonUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 
 import java.io.File;
@@ -120,7 +122,36 @@ public class SampleUploadScreenThirdController extends BaseStageController{
                 fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
                 fileChooser.getExtensionFilters()
                         .addAll(new FileChooser.ExtensionFilter("fastq", "*.fastq", "*.fastq.gz"));
-                List<File> files = fileChooser.showOpenMultipleDialog(currentStage);
+                File file = fileChooser.showOpenDialog(currentStage);
+
+                if(file != null) {
+                    String name = null;
+                    if (sampleName.getText() != null && !"".equals(sampleName.getText())) {
+                        name = sampleName.getText();
+                    }
+
+                    String fastqFilePairName = FileUtil.getFASTQFilePairName(file.getName());
+                    String chooseDirectoryPath = FilenameUtils.getFullPath(file.getAbsolutePath());
+                    logger.info(String.format("directory path of choose file : %s", chooseDirectoryPath));
+                    File directory = new File(chooseDirectoryPath);
+                    //선택한 파일의 폴더 내 모든 파일의 수
+                    List<File> fastqFilesInFolder = (List<File>) FileUtils.listFiles(directory, new String[]{"fastq.gz"}, false);
+
+                    for(File fastqFile : fastqFilesInFolder) {
+                        if(fastqFilePairName.equals(FileUtil.getFASTQFilePairName(fastqFile.getName()))) {
+                            Map<String, Object> fileMap = new HashMap<>();
+                            fileMap.put("sampleName", name);
+                            fileMap.put("name", fastqFile.getName());
+                            fileMap.put("fileSize", fastqFile.length());
+                            fileMap.put("fileType", "FASTQ.GZ");
+                            this.fileMap.put(fastqFile.getName(), fileMap);
+                            uploadFileList.add(fastqFile);
+                        }
+                    }
+
+                }
+
+                /*List<File> files = fileChooser.showOpenMultipleDialog(currentStage);
 
                 if(files != null) {
                     String name = null;
@@ -139,7 +170,7 @@ public class SampleUploadScreenThirdController extends BaseStageController{
                     }
 
                     uploadFileList.addAll(files);
-                }
+                }*/
 
             });
 

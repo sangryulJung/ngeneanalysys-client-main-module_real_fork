@@ -24,6 +24,7 @@ import ngeneanalysys.model.LoginSession;
 import ngeneanalysys.model.TopMenu;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.CacheMemoryService;
+import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.LoginSessionUtil;
 import ngeneanalysys.util.StringUtils;
@@ -558,10 +559,66 @@ public class MainController extends BaseStageController {
     }
 
     public void logout() {
+        boolean isLogoutContinue = false;
+        String alertHeaderText = null;
+        String alertContentText = "Do you want to log out?";
+
+        // 진행중인 분석 요청건이 있는지 확인
+        if(progressTaskContentArea.getChildren() != null && progressTaskContentArea.getChildren().size() > 0) {
+            alertHeaderText = "There is a work of analysis request in progress.";
+        }
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initOwner((Window) this.primaryStage);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText(alertHeaderText);
+        alert.setContentText(alertContentText);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            // 진행중인 분석 요청건이 있는 경우 정지 처리
+            if(progressTaskContentArea.getChildren() != null && progressTaskContentArea.getChildren().size() > 0) {
+                if(this.analysisSampleUploadProgressTaskController != null) {
+                    this.analysisSampleUploadProgressTaskController.pauseUpload();
+                    this.analysisSampleUploadProgressTaskController.interruptForce();
+                }
+            }
+            isLogoutContinue = true;
+        } else {
+            alert.close();
+        }
+
+        if(isLogoutContinue) {
+            logoutForce();
+        }
 
     }
 
     public void logoutForce() {
+        try {
+
+            // 세션 캐쉬 메모리 삭제
+            if(!cacheMemoryService.isEmpty(CommonConstants.SESSION_CACHE_SET_NAME, CommonConstants.SESSION_CACHE_KEY_NAME)) {
+                cacheMemoryService.removeCacheKey(CommonConstants.SESSION_CACHE_SET_NAME, CommonConstants.SESSION_CACHE_KEY_NAME);
+            }
+
+            // 분석자 HOME 자동 새로고침 기능 중지
+            if(homeController != null && homeController.autoRefreshTimeline != null) {
+                homeController.autoRefreshTimeline.stop();
+            }
+
+            // 분석자 Past Results 자동 새로고침 기능 중지
+            /*if(pastResultsController != null) {
+                pastResultsController.stopAutoRefresh();
+            }*/
+
+            // 로그인 화면으로 전환
+            this.mainApp.showLogin();
+        } catch (Exception e) {
+            logger.error("logout fail.." + e.getMessage());
+            DialogUtil.error(null, "Sorry, Logout Failed.", this.mainApp.getPrimaryStage(), false);
+            e.printStackTrace();
+        }
 
     }
 

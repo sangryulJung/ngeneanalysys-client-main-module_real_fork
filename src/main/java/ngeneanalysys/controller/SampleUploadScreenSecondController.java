@@ -85,32 +85,37 @@ public class SampleUploadScreenSecondController extends BaseStageController {
 
             ComboBox<ComboBoxItem>  dnaQc = new ComboBox<>();
             qcSetting(dnaQc);
-            if(sample.getQcData() != null && "F".equals(sample.getQcData().getDnaQC()))
+            //if(sample.getQcData() != null && "Fail".equals(sample.getQcData().getDnaQC()))
+            if(sample.getQcData() != null && sample.getQcData().getDnaQC().startsWith("F"))
                 dnaQc.getSelectionModel().select(1);
 
             ComboBox<ComboBoxItem>  libraryQc = new ComboBox<>();
             qcSetting(libraryQc);
-            if(sample.getQcData() != null && "F".equals(sample.getQcData().getLibraryQC()))
+            //if(sample.getQcData() != null && "Fail".equals(sample.getQcData().getLibraryQC()))
+            if(sample.getQcData() != null && sample.getQcData().getLibraryQC().startsWith("F"))
                 libraryQc.getSelectionModel().select(1);
 
             ComboBox<ComboBoxItem>  seqClusterDensity = new ComboBox<>();
             qcSetting(seqClusterDensity);
-            if(sample.getQcData() != null && "F".equals(sample.getQcData().getSeqClusterDensity()))
+            if(sample.getQcData() != null && sample.getQcData().getSeqClusterDensity().startsWith("F"))
                 seqClusterDensity.getSelectionModel().select(1);
 
             ComboBox<ComboBoxItem>  seqQ30 = new ComboBox<>();
             qcSetting(seqQ30);
-            if(sample.getQcData() != null && "F".equals(sample.getQcData().getSeqQ30()))
+            //if(sample.getQcData() != null && "Fail".equals(sample.getQcData().getSeqQ30()))
+            if(sample.getQcData() != null && sample.getQcData().getSeqQ30().startsWith("F"))
                 seqQ30.getSelectionModel().select(1);
 
             ComboBox<ComboBoxItem>  seqClusterPF = new ComboBox<>();
             qcSetting(seqClusterPF);
-            if(sample.getQcData() != null && "F".equals(sample.getQcData().getSeqClusterPF()))
+            //if(sample.getQcData() != null && "Fail".equals(sample.getQcData().getSeqClusterPF()))
+            if(sample.getQcData() != null && sample.getQcData().getSeqClusterPF().startsWith("F"))
                 seqClusterPF.getSelectionModel().select(1);
 
             ComboBox<ComboBoxItem>  seqIndexingPFCV = new ComboBox<>();
             qcSetting(seqIndexingPFCV);
-            if(sample.getQcData() != null && "F".equals(sample.getQcData().getSeqIndexingPFCV()))
+            //if(sample.getQcData() != null && "Fail".equals(sample.getQcData().getSeqIndexingPFCV()))
+            if(sample.getQcData() != null && sample.getQcData().getSeqIndexingPFCV().startsWith("F"))
                 seqIndexingPFCV.getSelectionModel().select(1);
 
             qcGridPane.addRow(row, sampleName, dnaQc, libraryQc, seqClusterDensity, seqQ30, seqClusterPF, seqIndexingPFCV);
@@ -127,11 +132,47 @@ public class SampleUploadScreenSecondController extends BaseStageController {
         qc.getSelectionModel().selectFirst();
     }
 
+    public void saveQCData() {
+        for (int i = 0; i < qcGridPane.getChildren().size(); i += 7) {
+            int indexNumber = i / 7;
+            Sample sample = sampleArrayList.get(indexNumber);
+
+            QCData qcData = sample.getQcData();
+
+            if(qcData == null) {
+                qcData = new QCData();
+                sample.setQcData(qcData);
+            }
+
+            ComboBox<ComboBoxItem> dnaQC = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(i + 1);
+            qcData.setDnaQC(dnaQC.getSelectionModel().getSelectedItem().getValue());
+
+            ComboBox<ComboBoxItem> libraryQc = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(i + 2);
+            qcData.setLibraryQC(libraryQc.getSelectionModel().getSelectedItem().getValue());
+
+            ComboBox<ComboBoxItem> seqClusterDensity = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(i + 3);
+            qcData.setSeqClusterDensity(seqClusterDensity.getSelectionModel().getSelectedItem().getValue());
+
+            ComboBox<ComboBoxItem> seqQ30 = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(i + 4);
+            qcData.setSeqQ30(seqQ30.getSelectionModel().getSelectedItem().getValue());
+
+            ComboBox<ComboBoxItem> seqClusterPF = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(i + 5);
+            qcData.setSeqClusterPF(seqClusterPF.getSelectionModel().getSelectedItem().getValue());
+
+            ComboBox<ComboBoxItem> seqIndexingPFCV = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(i + 6);
+            qcData.setSeqIndexingPFCV(seqIndexingPFCV.getSelectionModel().getSelectedItem().getValue());
+
+        }
+    }
+
     @FXML
     public void closeDialog() { if(sampleUploadController != null) sampleUploadController.closeDialog(); }
 
     @FXML
     public void back() throws IOException {
+        if(sampleArrayList != null && sampleArrayList.size() > 0) {
+            saveQCData();
+        }
         sampleUploadController.pageSetting(1);
     }
 
@@ -139,12 +180,7 @@ public class SampleUploadScreenSecondController extends BaseStageController {
     public void next() throws IOException {
 
         if(sampleArrayList != null && sampleArrayList.size() > 0) {
-            for (Sample sample : sampleArrayList) {
-                QCData qcData = sample.getQcData();
-                if (qcData == null) qcData = new QCData();
-
-                sample.setQcData(qcData);
-            }
+            saveQCData();
         }
 
         sampleUploadController.pageSetting(3);
@@ -166,8 +202,12 @@ public class SampleUploadScreenSecondController extends BaseStageController {
                 for(Sample sample : sampleArrayList) {
                     String name = (!StringUtils.isEmpty(sample.getSampleSheet().getSampleName()))
                             ? sample.getSampleSheet().getSampleName() : sample.getSampleSheet().getSampleId();
+
+                    QCData excelQCData = qcList.get(name);
+
                     if(qcList.get(name) != null) {
                         logger.info(name);
+                        sample.setQcData(excelQCData);
                     } else {
                         DialogUtil.alert("찾을 수 없음", name + " 샘플에 대한 QC 정보를 찾을 수 없음", sampleUploadController.getCurrentStage(), true);
                     }

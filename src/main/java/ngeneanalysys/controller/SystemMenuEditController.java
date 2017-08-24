@@ -1,5 +1,6 @@
 package ngeneanalysys.controller;
 
+import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import ngeneanalysys.controller.extend.SubPaneController;
 
@@ -14,5 +15,15 @@ public class SystemMenuEditController extends SubPaneController {
     @Override
     public void show(Parent root) throws IOException {
 
+    }
+
+    @FXML
+    public void save() {
+
+    }
+
+    @FXML
+    public void closeDialog() {
+        
     }
 }

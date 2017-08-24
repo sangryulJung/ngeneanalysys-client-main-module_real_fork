@@ -53,16 +53,11 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     @FXML
     private Button buttonCancel;
 
-    /** 분석 샘플 정보 목록 객체 */
-    private ObservableList<SampleSheet> sampleSheetList;
-
     private List<Sample> sampleArrayList = null;
 
     @FXML
     private GridPane sampleSheetGridPane;
 
-    @FXML
-    private ScrollPane sampleSheetScrollPane;
 
     /**
      * @param homeController
@@ -164,24 +159,68 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     @FXML
     public void next() throws IOException{
         if(sampleArrayList != null && sampleArrayList.size() > 0) sampleUploadController.setSamples(sampleArrayList);
+        //saveSampleSheetData();
         sampleUploadController.pageSetting(2);
 
     }
 
+    /*public void saveSampleSheetData() {
+        if(sampleArrayList != null) sampleArrayList = new ArrayList<>();
+
+        int totalSampleSize = sampleSheetGridPane.getChildren().size() / 7;
+
+        for(int i = 0; i < totalSampleSize ; i += 7) {
+
+            TextField sampleTextField = (TextField) sampleSheetGridPane.getChildren().get(i);
+            String sampleName = sampleTextField.getText();
+            if(!StringUtils.isEmpty(sampleName)) {
+                //파일에는 없으나 추가하는 정보이거나 파일 없이 직접 입력한 정보
+                int rowIndex = i % 7;
+                SampleSheet sampleSheet = null;
+                boolean newItem = false;
+                if(sampleArrayList.size() < rowIndex + 1) {
+                    Sample sample = new Sample();
+                    sampleSheet = new SampleSheet();
+                    sample.setSampleSheet(sampleSheet);
+                    sampleArrayList.add(sample);
+                    newItem = true;
+                } else {
+                    //파일에서 읽어온 정보를 갱신할 때
+                    Sample sample = sampleArrayList.get(rowIndex);
+                    sampleSheet = sample.getSampleSheet();
+                }
+                //샘플시트 수정, 추가 사항 ArrayList에 저장
+                if(!StringUtils.isEmpty(sampleSheet.getSampleName()) || newItem) {
+                    sampleSheet.setSampleName(sampleName);
+                } else {
+                    sampleSheet.setSampleId(sampleName);
+                }
+
+                TextField i7IndexIdTextField = (TextField) sampleSheetGridPane.getChildren().get(i);
+                sampleSheet.setI7IndexId(i7IndexIdTextField.getText());
+
+                TextField indexTextField = (TextField) sampleSheetGridPane.getChildren().get(i);
+                sampleSheet.setSampleIndex(indexTextField.getText());
+
+                TextField samplePlateTextField = (TextField) sampleSheetGridPane.getChildren().get(i);
+                sampleSheet.setSamplePlate(samplePlateTextField.getText());
+
+                TextField sampleWellTextField = (TextField) sampleSheetGridPane.getChildren().get(i);
+                sampleSheet.setSampleWell(sampleWellTextField.getText());
+
+                TextField sampleProjectTextField = (TextField) sampleSheetGridPane.getChildren().get(i);
+                sampleSheet.setSampleProject(sampleProjectTextField.getText());
+
+                TextField descriptionTextField = (TextField) sampleSheetGridPane.getChildren().get(i);
+                sampleSheet.setDescription(descriptionTextField.getText());
+
+            }
+        }
+    }*/
+
     @FXML
     public void closeDialog() {
         if(sampleUploadController != null) sampleUploadController.closeDialog();
-    }
-
-    /**
-     * 샘플 목록 출력 새로고침
-     */
-    public void refreshSampleListTableView() {
-        // 목록 데이터 새로 삽입
-        tableViewSampleSheetForm.setItems(null);
-        tableViewSampleSheetForm.setItems((ObservableList<SampleSheet>) this.sampleSheetList);
-        // 목록 화면 갱신
-        tableViewSampleSheetForm.getProperties().put(TableViewSkinBase.RECREATE, Boolean.TRUE);
     }
 
     //선택된 sampleSheet 내용 화면 출력

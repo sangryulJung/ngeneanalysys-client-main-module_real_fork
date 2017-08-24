@@ -123,6 +123,7 @@ public class HomeController extends SubPaneController{
 
             controller.setHomeController(this);
             controller.show(page);
+            showRunList();
         } catch (IOException e) {
             e.printStackTrace();
         }
