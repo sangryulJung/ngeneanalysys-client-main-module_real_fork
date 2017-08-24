@@ -273,7 +273,7 @@ public class SampleUploadScreenThirdController extends BaseStageController{
         fileName.stream().forEach(file -> {
             Map<String, Object> fileInfo = fileMap.get(file);
 
-            if(fileInfo.get("sampleName").toString().equals(name)) {
+            if(fileInfo.get("sampleName") != null && fileInfo.get("sampleName").toString().equals(name)) {
                 fileInfo.put("sampleId", sampleData.getId());
                 fileInfo.put("sampleName", null);
                 fileInfo.remove("sampleName");
