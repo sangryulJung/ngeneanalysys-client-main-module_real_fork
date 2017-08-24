@@ -10,10 +10,12 @@ import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ngeneanalysys.controller.extend.BaseStageController;
+import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.util.FileUtil;
 import ngeneanalysys.util.JsonUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
@@ -23,10 +25,7 @@ import org.slf4j.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Jang
@@ -56,6 +55,10 @@ public class SampleUploadScreenThirdController extends BaseStageController{
 
     Map<String, Map<String, Object>> fileMap = new HashMap<>();
 
+    List<File> uploadFileList = new ArrayList<>();
+
+    List<AnalysisFile> uploadFileData = new ArrayList<>();
+
     /**
      * @param mainController
      */
@@ -76,28 +79,7 @@ public class SampleUploadScreenThirdController extends BaseStageController{
         }
     }
 
-    /**
-     * FASTQ 파일 Pair명 추출
-     *
-     * @param fileName
-     * @return
-     */
-    public String getFASTQFilePairName(String fileName) {
-        String pairName = "";
-        if (fileName.contains("_")) {
-            String[] arr = fileName.split("_");
-            int idx = 0;
-            for (String name : arr) {
-                if (idx < arr.length - 2) {
-                    if (idx > 0)
-                        pairName += "_";
-                    pairName += name;
-                }
-                idx++;
-            }
-        }
-        return pairName;
-    }
+
 
     @Override
     public void show(Parent root) throws IOException {
@@ -140,23 +122,23 @@ public class SampleUploadScreenThirdController extends BaseStageController{
                         .addAll(new FileChooser.ExtensionFilter("fastq", "*.fastq", "*.fastq.gz"));
                 List<File> files = fileChooser.showOpenMultipleDialog(currentStage);
 
-                Map<String, Object> fileMap = new HashMap<>();
+
                 String name = null;
                 if(sampleName.getText() != null && !"".equals(sampleName.getText())) {
                     name = sampleName.getText();
                 }
                 Long fileSize = 0L;
                 for(File file : files) {
-                    fileSize +=  file.length();
+                    Map<String, Object> fileMap = new HashMap<>();
+                    fileMap.put("sampleName", name);
+                    fileMap.put("name", file.getName());
+                    fileMap.put("fileSize", file.length());
+                    fileMap.put("fileType", "FASTQ.GZ");
+                    this.fileMap.put(file.getName(), fileMap);
+
                 }
 
-                String fileName = getFASTQFilePairName(files.get(0).getName());
-
-                fileMap.put("name", fileName);
-                fileMap.put("fileSize", fileSize);
-                fileMap.put("fileType", "FASTQ.GZ");
-                this.fileMap.put(name, fileMap);
-
+                uploadFileList.addAll(files);
 
             });
 
@@ -231,7 +213,7 @@ public class SampleUploadScreenThirdController extends BaseStageController{
                     sample.setSampleSource((sampleSource.getText() == null || sampleSource.getText().equals(""))
                             ? "FFPE" : sampleSource.getText());
 
-                    //sampleUpload(sample);
+                    sampleUpload(sample);
 
                 }
             }
@@ -239,6 +221,7 @@ public class SampleUploadScreenThirdController extends BaseStageController{
             e.printStackTrace();
         }
 
+        this.mainController.runningAnalysisRequestUpload(uploadFileData, uploadFileList);
 
 
         logger.info("submit");
@@ -285,14 +268,29 @@ public class SampleUploadScreenThirdController extends BaseStageController{
         String name = (!StringUtils.isEmpty(sample.getSampleSheet().getSampleName()))
                 ? sample.getSampleSheet().getSampleName() : sample.getSampleSheet().getSampleId();
 
-        Map<String, Object> fileData = fileMap.get(name);
+        Set<String> fileName = fileMap.keySet();
 
-        if(fileData != null) {
-            fileData.put("sampleId", sampleData.getId());
-            response = apiService.post("/analysisFiles", fileData, null, true);
-            AnalysisFile file = response.getObjectBeforeConvertResponseToJSON(AnalysisFile.class);
-            logger.info(file.getName());
-        }
+        fileName.stream().forEach(file -> {
+            Map<String, Object> fileInfo = fileMap.get(file);
+
+            if(fileInfo.get("sampleName").toString().equals(name)) {
+                fileInfo.put("sampleId", sampleData.getId());
+                fileInfo.put("sampleName", null);
+                fileInfo.remove("sampleName");
+                HttpClientResponse fileResponse = null;
+                try {
+                    fileResponse = apiService.post("/analysisFiles", fileInfo, null, true);
+                    AnalysisFile fileData = fileResponse.getObjectBeforeConvertResponseToJSON(AnalysisFile.class);
+                    logger.info(fileData.getName());
+                    uploadFileData.add(fileData);
+                } catch (WebAPIException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
 
     }
 

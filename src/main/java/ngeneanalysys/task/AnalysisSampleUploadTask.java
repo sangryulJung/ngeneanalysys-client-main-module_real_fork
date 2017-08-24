@@ -3,15 +3,24 @@ package ngeneanalysys.task;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import ngeneanalysys.controller.AnalysisSampleUploadProgressTaskController;
+import ngeneanalysys.exceptions.WebAPIException;
+import ngeneanalysys.model.AnalysisFile;
 import ngeneanalysys.service.AnalysisRequestService;
+import ngeneanalysys.util.DialogUtil;
+import ngeneanalysys.util.FileUtil;
 import ngeneanalysys.util.LoggerUtil;
+import ngeneanalysys.util.LoginSessionUtil;
 import org.slf4j.Logger;
+
+import java.io.File;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Jang
  * @since 2017-08-23
  */
-public class AnalysysSampleUploadTask extends Task<Void>{
+public class AnalysisSampleUploadTask extends Task<Void>{
     Logger logger = LoggerUtil.getLogger();
 
     /** Main Controller Application Object */
@@ -38,7 +47,7 @@ public class AnalysysSampleUploadTask extends Task<Void>{
 
     private boolean taskStatus = true;
 
-    public void AnalysisSampleUploadTask(AnalysisSampleUploadProgressTaskController analysisSampleUploadProgressTaskController) {
+    public AnalysisSampleUploadTask(AnalysisSampleUploadProgressTaskController analysisSampleUploadProgressTaskController) {
         if(analysisSampleUploadProgressTaskController != null) {
             this.analysisSampleUploadProgressTaskController = analysisSampleUploadProgressTaskController;
             this.analysisRequestService = AnalysisRequestService.getInstance();
@@ -89,6 +98,25 @@ public class AnalysysSampleUploadTask extends Task<Void>{
     protected Void call() throws Exception {
         logger.info("start upload task...");
 
+        String loginId = LoginSessionUtil.getAccessLoginId();
+
+        List<AnalysisFile> fileDataList = (List<AnalysisFile>) analysisSampleUploadProgressTaskController.getParamMap().get("fileMap");
+
+        List<File> fileList = (List<File>) analysisSampleUploadProgressTaskController.getParamMap().get("fileList");
+
+        for(AnalysisFile fileData : fileDataList) {
+
+            fileList.stream().forEach(file -> {
+                if(fileData.getName().equals(file.getName())) {
+                    try {
+                        analysisRequestService.uploadFile(fileData.getId(), file);
+                    } catch (WebAPIException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+        }
 
         return null;
     }
@@ -104,7 +132,30 @@ public class AnalysysSampleUploadTask extends Task<Void>{
 
     @Override
     protected void succeeded() {
-        super.succeeded();
+        Platform.runLater(() -> {
+            this.analysisSampleUploadProgressTaskController.clearWhenUploadTaskSucceeded();
+        });
+
+        // 업로드 작업 중단
+        if(this.analysisSampleUploadProgressTaskController.isCancel) {
+            logger.warn("complete stop upload work..!!");
+            // 취소 완료 Alert창 출력
+            this.analysisSampleUploadProgressTaskController.showCancelCompleteDialog();
+        } else {
+            if(!this.analysisSampleUploadProgressTaskController.isStop) {
+                logger.info("upload task work finished!!");
+
+                if(this.taskStatus) {
+                    // 완료 메시지 출력
+                    DialogUtil.alert("Analysis Request Upload Finished", "The analysis request has been completed.", this.analysisSampleUploadProgressTaskController.getMainController().getPrimaryStage(), false);
+                } else {
+                    // 오류 발생시 실패 메시지 출력
+                    DialogUtil.error("Upload Failed", String.format("[%s] %s", this.msgDialogHeader, this.msgDialogContent), analysisSampleUploadProgressTaskController.getMainController().getPrimaryStage(), false);
+                }
+            } else {
+                logger.info("upload task work stop!!");
+            }
+        }
     }
 
 

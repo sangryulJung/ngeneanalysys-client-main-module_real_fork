@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Optional;
 
 import ngeneanalysys.controller.extend.SubPaneController;
+import ngeneanalysys.service.AnalysisRequestService;
+import ngeneanalysys.task.AnalysisSampleUploadTask;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import org.slf4j.Logger;
@@ -58,6 +60,9 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 	@FXML
 	public ProgressIndicator progressIndicator;
 
+	/** 분석 요청 서비스 */
+	private AnalysisRequestService analysisRequestService;
+
 	/** progress task object */
 	private Task<?> task;
 	/** running progress task thread  */
@@ -67,7 +72,6 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 	private Integer currentUploadGroupId;
 	/** 현재 업로드중인 분석 요청 그룹명 */
 	private String currentUploadGroupRefName;
-
 	
 	/** 작업 일시정지 여부 */
 	public boolean isPause = false;
@@ -107,12 +111,29 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 	@SuppressWarnings("static-access")
 	@Override
 	public void show(Parent root) throws IOException {
+		this.analysisRequestService = AnalysisRequestService.getInstance();
+
+		boolean isWorkStart = false;
+		this.progressIndicator.setProgress(new ProgressBar().getProgress());
+
+
+		this.task = new AnalysisSampleUploadTask(this);
+
+		progressBar.progressProperty().bind(this.task.progressProperty());
+		completeCount.textProperty().bind(this.task.messageProperty());
+
+		// 쓰레드 실행.
+		thread = new Thread(this.task);
+		thread.setDaemon(true);
+		thread.start();
+		this.mainController.getProgressTaskContentArea().getChildren().add(root);
 
 	}
 	
 	/**
 	 * 업로드 시작 처리
 	 */
+
 	@FXML
 	public void startUpload() {
 		logger.info("resume from task controller..");
@@ -218,6 +239,8 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 	 * 업로드 작업 관련 화면 출력 정리
 	 */
 	public void clearWhenUploadTaskSucceeded() {
+
+		this.mainController.clearProgressTaskArea();
 
 	}
 

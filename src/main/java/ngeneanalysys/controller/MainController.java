@@ -19,6 +19,7 @@ import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.SystemMenuCode;
 import ngeneanalysys.code.enums.UserTypeBit;
 import ngeneanalysys.controller.extend.BaseStageController;
+import ngeneanalysys.model.AnalysisFile;
 import ngeneanalysys.model.LoginSession;
 import ngeneanalysys.model.TopMenu;
 import ngeneanalysys.service.APIService;
@@ -31,7 +32,11 @@ import org.slf4j.Logger;
 
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -58,6 +63,9 @@ public class MainController extends BaseStageController {
     private HomeController homeController;
     /** 분석자 Past Results 컨트롤러*/
     private PastResultsController pastResultsController;
+
+    /** 분석 요청 작업 Task 관리 컨트롤러 */
+    private AnalysisSampleUploadProgressTaskController analysisSampleUploadProgressTaskController;
 
     /** 메인 레이아웃 화면 Stage */
     private Stage primaryStage;
@@ -557,5 +565,48 @@ public class MainController extends BaseStageController {
 
     }
 
+
+    /**
+     * 분석 요청 업로드 작업 실행
+     */
+    public void runningAnalysisRequestUpload(List<AnalysisFile> uploadFileData, List<File> fileList) {
+        try {
+            FXMLLoader loader = mainApp.load(FXMLConstants.ANALYSIS_SAMPLE_UPLOAD_PROGRESS_TASK);
+            HBox box = (HBox) loader.load();
+            this.analysisSampleUploadProgressTaskController = loader.getController();
+            this.analysisSampleUploadProgressTaskController.setMainController(this);
+            if(uploadFileData != null && uploadFileData.size() > 0) {
+                Map<String,Object> param = new HashMap<>();
+                param.put("fileMap", uploadFileData);
+                param.put("fileList", fileList);
+                this.analysisSampleUploadProgressTaskController.setParamMap(param);
+            }
+            this.analysisSampleUploadProgressTaskController.show(box);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * @return the progressTaskContentArea
+     */
+    public HBox getProgressTaskContentArea() {
+        return progressTaskContentArea;
+    }
+
+    /**
+     * @return the analysisSampleUploadProgressTaskController
+     */
+    public AnalysisSampleUploadProgressTaskController getAnalysisSampleUploadProgressTaskController() {
+        return analysisSampleUploadProgressTaskController;
+    }
+
+    /**
+     * 진행 상태 출력 영역 초기화
+     */
+    public void clearProgressTaskArea() {
+        this.analysisSampleUploadProgressTaskController = null;
+        progressTaskContentArea.getChildren().removeAll(progressTaskContentArea.getChildren());
+    }
 
 }
