@@ -2,15 +2,13 @@ package ngeneanalysys.util;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import ngeneanalysys.exceptions.ExcelParseException;
-import ngeneanalysys.model.QCData;
+import ngeneanalysys.model.QcData;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
@@ -159,13 +157,13 @@ public class WorksheetUtil {
 		return result;
 	}
 
-	public static Map<String, QCData> readQCDataExcelSheet(File file) throws IOException, ExcelParseException {
+	public static Map<String, QcData> readQCDataExcelSheet(File file) throws IOException, ExcelParseException {
 		XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(file));
 		XSSFSheet sheet = workbook.getSheetAt(0);
 		int lastRowNum = sheet.getLastRowNum();
 		String errorMessagePrefix = "\nPlease refer to the software manual.";
 		String errorMessage = null;
-		Map<String, QCData> list = new TreeMap<>();
+		Map<String, QcData> list = new TreeMap<>();
 		//First Header Row Check
 		boolean isMatchCode = false;
 		if(lastRowNum <= 0) {
@@ -216,7 +214,7 @@ public class WorksheetUtil {
 
 		for(int i = 1 ; i <= lastRowNum ; i++) {
 			XSSFRow row = sheet.getRow(i);
-			QCData qcData = new QCData();
+			QcData qcData = new QcData();
 
 			if(row.getCell(0).toString().equals("")) {
 				break;

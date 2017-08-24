@@ -9,7 +9,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ngeneanalysys.controller.extend.BaseStageController;
 import ngeneanalysys.exceptions.ExcelParseException;
-import ngeneanalysys.model.QCData;
+import ngeneanalysys.model.QcData;
 import ngeneanalysys.model.Sample;
 import ngeneanalysys.model.SampleSheet;
 import ngeneanalysys.model.render.ComboBoxConverter;
@@ -21,7 +21,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Jang
@@ -137,10 +136,10 @@ public class SampleUploadScreenSecondController extends BaseStageController {
             int indexNumber = i / 7;
             Sample sample = sampleArrayList.get(indexNumber);
 
-            QCData qcData = sample.getQcData();
+            QcData qcData = sample.getQcData();
 
             if(qcData == null) {
-                qcData = new QCData();
+                qcData = new QcData();
                 sample.setQcData(qcData);
             }
 
@@ -197,13 +196,13 @@ public class SampleUploadScreenSecondController extends BaseStageController {
 
         if(file != null && file.getName().equalsIgnoreCase("qcInfo.xlsx")) {
             try {
-                Map<String, QCData> qcList = WorksheetUtil.readQCDataExcelSheet(file);
+                Map<String, QcData> qcList = WorksheetUtil.readQCDataExcelSheet(file);
 
                 for(Sample sample : sampleArrayList) {
                     String name = (!StringUtils.isEmpty(sample.getSampleSheet().getSampleName()))
                             ? sample.getSampleSheet().getSampleName() : sample.getSampleSheet().getSampleId();
 
-                    QCData excelQCData = qcList.get(name);
+                    QcData excelQCData = qcList.get(name);
 
                     if(qcList.get(name) != null) {
                         logger.info(name);

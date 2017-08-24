@@ -4,7 +4,7 @@ package ngeneanalysys.model;
  * @author Jang
  * @since 2017-08-17
  */
-public class QCData {
+public class QcData {
 
     private String dnaQC;
 

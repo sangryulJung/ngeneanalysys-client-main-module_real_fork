@@ -3,8 +3,6 @@ package ngeneanalysys.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.joda.time.DateTime;
 
-import java.util.List;
-
 /**
  * @author Jang
  * @since 2017-08-17
@@ -65,7 +63,7 @@ public class Sample {
     @JsonProperty("sampleSheet")
     private SampleSheet sampleSheet;
 
-    private QCData qcData;
+    private QcData qcData;
 
     /**
      * @return id
@@ -322,14 +320,14 @@ public class Sample {
     /**
      * @return qcData
      */
-    public QCData getQcData() {
+    public QcData getQcData() {
         return qcData;
     }
 
     /**
      * @param qcData
      */
-    public void setQcData(QCData qcData) {
+    public void setQcData(QcData qcData) {
         this.qcData = qcData;
     }
 
