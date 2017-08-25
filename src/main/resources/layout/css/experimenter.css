@@ -59,24 +59,27 @@ Button#buttonUpload:hover {
 	-fx-font-weight:bold;
 	-fx-text-fill:#000;
 	-fx-border-width:0;
-	-fx-min-height:16;
-    	-fx-pref-height:16;
-    	-fx-max-height:16;
+	-fx-min-height:20;
+    -fx-pref-height:20;
+    -fx-max-height:20;
 }
 
 #listGrid #jobArea #submitted {
 	-fx-font-size:8;
 	-fx-text-fill:#848484;
 	-fx-border-width:0;
-	-fx-min-height:16;
-        	-fx-pref-height:16;
-        	-fx-max-height:16;
+	-fx-min-height:15;
+    -fx-pref-height:15;
+    -fx-max-height:15;
 }
 
 #listGrid #jobArea #started {
 	-fx-font-size:8;
 	-fx-text-fill:#848484;
 	-fx-border-width:0;
+	-fx-min-height:15;
+    -fx-pref-height:15;
+    -fx-max-height:15;
 }
 
 #listGrid #groupArea {
@@ -88,6 +91,9 @@ Button#buttonUpload:hover {
 	-fx-font-weight:bold;
 	-fx-text-fill:#000;
 	-fx-border-width:0;
+	-fx-min-height:20;
+    -fx-pref-height:20;
+    -fx-max-height:20;
 }
 #listGrid #groupArea .label {
 	-fx-font-size:8;
