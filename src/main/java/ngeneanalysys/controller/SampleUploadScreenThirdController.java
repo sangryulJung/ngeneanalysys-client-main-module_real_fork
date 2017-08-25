@@ -110,8 +110,6 @@ public class SampleUploadScreenThirdController extends BaseStageController{
             sampleName.setStyle("-fx-text-inner-color: black;");
             sampleName.setText(!StringUtils.isEmpty(item.getSampleName()) ? item.getSampleName() : item.getSampleId());
 
-            /*TextField select = new TextField();
-            select.setStyle("-fx-text-inner-color: black;");*/
             Button select = new Button();
             select.setText("SELECT");
             select.setOnAction(e -> {
@@ -120,7 +118,7 @@ public class SampleUploadScreenThirdController extends BaseStageController{
                 fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
                 fileChooser.getExtensionFilters()
                         .addAll(new FileChooser.ExtensionFilter("fastq", "*.fastq", "*.fastq.gz"));
-                File file = fileChooser.showOpenDialog(currentStage);
+                File file = fileChooser.showOpenDialog(sampleUploadController.getCurrentStage());
 
                 if(file != null) {
                     String name = null;

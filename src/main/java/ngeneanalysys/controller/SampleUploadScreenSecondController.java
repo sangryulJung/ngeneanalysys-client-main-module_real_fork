@@ -34,9 +34,6 @@ public class SampleUploadScreenSecondController extends BaseStageController {
 
     private SampleUploadController sampleUploadController;
 
-    /** 작업 Dialog Window Stage Object */
-    private Stage currentStage;
-
     private List<Sample> sampleArrayList;
 
     @FXML
@@ -192,9 +189,9 @@ public class SampleUploadScreenSecondController extends BaseStageController {
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
         fileChooser.getExtensionFilters()
                 .addAll(new FileChooser.ExtensionFilter("xlsx", "*.xlsx"));
-        File file = fileChooser.showOpenDialog(currentStage);
+        File file = fileChooser.showOpenDialog(sampleUploadController.getCurrentStage());
 
-        if(file != null && file.getName().equalsIgnoreCase("qcInfo.xlsx")) {
+        if(file != null && file.getName().equalsIgnoreCase("qcInfo.xlsx") && sampleArrayList != null) {
             try {
                 Map<String, QcData> qcList = WorksheetUtil.readQCDataExcelSheet(file);
 

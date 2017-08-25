@@ -35,9 +35,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     private SampleUploadController sampleUploadController;
 
-    /** 작업 Dialog Window Stage Object */
-    private Stage currentStage;
-
     /** 분석자 진행현황 화면 컨트롤러 객체 */
     private HomeController homeController;
 
@@ -119,7 +116,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
         fileChooser.getExtensionFilters()
                 .addAll(new FileChooser.ExtensionFilter("csv", "*.csv"));
-        File file = fileChooser.showOpenDialog(currentStage);
+        File file = fileChooser.showOpenDialog(sampleUploadController.getCurrentStage());
 
         if(file != null && file.getName().equalsIgnoreCase("samplesheet.csv")) {
 
@@ -158,24 +155,24 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     @FXML
     public void next() throws IOException{
-        if(sampleArrayList != null && sampleArrayList.size() > 0) sampleUploadController.setSamples(sampleArrayList);
-        //saveSampleSheetData();
+        //if(sampleArrayList != null && sampleArrayList.size() > 0)
+        saveSampleSheetData();
         sampleUploadController.pageSetting(2);
 
     }
 
-    /*public void saveSampleSheetData() {
-        if(sampleArrayList != null) sampleArrayList = new ArrayList<>();
+    public void saveSampleSheetData() {
+        if(sampleArrayList == null) sampleArrayList = new ArrayList<>();
 
-        int totalSampleSize = sampleSheetGridPane.getChildren().size() / 7;
+        //int totalSampleSize = sampleSheetGridPane.getChildren().size() / 7;
 
-        for(int i = 0; i < totalSampleSize ; i += 7) {
+        for(int i = 0; i < sampleSheetGridPane.getChildren().size() ; i += 7) {
 
             TextField sampleTextField = (TextField) sampleSheetGridPane.getChildren().get(i);
             String sampleName = sampleTextField.getText();
             if(!StringUtils.isEmpty(sampleName)) {
                 //파일에는 없으나 추가하는 정보이거나 파일 없이 직접 입력한 정보
-                int rowIndex = i % 7;
+                int rowIndex = i / 7;
                 SampleSheet sampleSheet = null;
                 boolean newItem = false;
                 if(sampleArrayList.size() < rowIndex + 1) {
@@ -196,27 +193,29 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                     sampleSheet.setSampleId(sampleName);
                 }
 
-                TextField i7IndexIdTextField = (TextField) sampleSheetGridPane.getChildren().get(i);
+                TextField i7IndexIdTextField = (TextField) sampleSheetGridPane.getChildren().get(i + 1);
                 sampleSheet.setI7IndexId(i7IndexIdTextField.getText());
 
-                TextField indexTextField = (TextField) sampleSheetGridPane.getChildren().get(i);
+                TextField indexTextField = (TextField) sampleSheetGridPane.getChildren().get(i + 2);
                 sampleSheet.setSampleIndex(indexTextField.getText());
 
-                TextField samplePlateTextField = (TextField) sampleSheetGridPane.getChildren().get(i);
+                TextField samplePlateTextField = (TextField) sampleSheetGridPane.getChildren().get(i + 3);
                 sampleSheet.setSamplePlate(samplePlateTextField.getText());
 
-                TextField sampleWellTextField = (TextField) sampleSheetGridPane.getChildren().get(i);
+                TextField sampleWellTextField = (TextField) sampleSheetGridPane.getChildren().get(i + 4);
                 sampleSheet.setSampleWell(sampleWellTextField.getText());
 
-                TextField sampleProjectTextField = (TextField) sampleSheetGridPane.getChildren().get(i);
+                TextField sampleProjectTextField = (TextField) sampleSheetGridPane.getChildren().get(i + 5);
                 sampleSheet.setSampleProject(sampleProjectTextField.getText());
 
-                TextField descriptionTextField = (TextField) sampleSheetGridPane.getChildren().get(i);
+                TextField descriptionTextField = (TextField) sampleSheetGridPane.getChildren().get(i + 6);
                 sampleSheet.setDescription(descriptionTextField.getText());
 
             }
         }
-    }*/
+
+        sampleUploadController.setSamples(sampleArrayList);
+    }
 
     @FXML
     public void closeDialog() {
