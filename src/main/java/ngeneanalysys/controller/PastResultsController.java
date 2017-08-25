@@ -462,6 +462,7 @@ public class PastResultsController extends SubPaneController {
 				assayTargetFieldVBoxes.get(idx).setSampleView(sample);
 				analysisResultOverviewVBoxes.get(idx).setSampleView(sample);
 				qcResultVBoxes.get(idx).setSampleView(sample);
+				detailFieldVBoxes.get(idx).setSampleView(sample);
 			}
 			for(int idx = list.size(); idx < itemCountPerPage; idx++) {
 				sampleNameFields.get(idx).setVisible(false);
@@ -469,6 +470,7 @@ public class PastResultsController extends SubPaneController {
 				assayTargetFieldVBoxes.get(idx).setVisible(false);
 				analysisResultOverviewVBoxes.get(idx).setVisible(false);
 				qcResultVBoxes.get(idx).setVisible(false);
+				detailFieldVBoxes.get(idx).setVisible(false);
 			}
 		} else {
 
@@ -625,7 +627,7 @@ public class PastResultsController extends SubPaneController {
 	}
 	class RunFieldVBox extends VBox {
 		private TextField runName;
-		private Label sampleSource;
+		private TextField sampleSource;
 		RunFieldVBox() {
 			super();
 			// 시퀀스 장비 column box
@@ -636,7 +638,7 @@ public class PastResultsController extends SubPaneController {
 			//runName.getStyleClass().add("font_size_12");
 			HBox sampleSourceHBox = new HBox();
 			sampleSourceHBox.setId("sampleSource");
-			sampleSource = new Label();
+			sampleSource = new TextField();
 			sampleSourceHBox.getChildren().setAll(new Label("Sample : "), sampleSource);
 			this.getChildren().setAll(runName, sampleSourceHBox);
 		}
@@ -717,6 +719,9 @@ public class PastResultsController extends SubPaneController {
 			this.getStyleClass().add("colunmn");
 			Button btn = new Button("Detail");
 			btn.getStyleClass().add("btn_detail");
+			btn.setOnAction(e -> {
+				DialogUtil.alert("개발중", "개발중입니다.", getMainApp().getPrimaryStage(), false);
+				});
 //				if(sample.getAnalysisResultSummary() != null) {
 //					btn.setOnAction(e -> {
 //						Map<String,Object> detailViewParamMap = new HashMap<String,Object>();
