@@ -7,8 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.HBox;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.model.PagedSampleView;
@@ -16,6 +19,7 @@ import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.TopMenu;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.controlsfx.control.PopOver;
 import org.slf4j.Logger;
 
 import ngeneanalysys.code.AnalysisJobStatusCode;
@@ -271,7 +275,8 @@ public class PastResultsController extends SubPaneController {
 		boolean isAutoRefreshOn = "true".equals(config.getProperty("analysis.job.auto.refresh"));
 		// 기능 실행중인 상태인 경우 실행
 		if(autoRefreshTimeline != null && isAutoRefreshOn) {
-			logger.info(String.format("[%s] timeline status : %s", this.getClass().getName(), autoRefreshTimeline.getStatus()));
+			logger.info(String.format("[%s] timeline status : %s", this.getClass().getName(),
+					autoRefreshTimeline.getStatus()));
 			// 일시정지
 			if(autoRefreshTimeline.getStatus() == Animation.Status.RUNNING) {
 				autoRefreshTimeline.pause();
@@ -287,7 +292,8 @@ public class PastResultsController extends SubPaneController {
 		boolean isAutoRefreshOn = "true".equals(config.getProperty("analysis.job.auto.refresh"));
 		// 기능 실행중인 상태인 경우 실행
 		if(autoRefreshTimeline != null && isAutoRefreshOn) {
-			logger.info(String.format("[%s] timeline status : %s", this.getClass().getName(), autoRefreshTimeline.getStatus()));
+			logger.info(String.format("[%s] timeline status : %s", this.getClass().getName(),
+					autoRefreshTimeline.getStatus()));
 			// 시작
 			if(autoRefreshTimeline.getStatus() == Animation.Status.PAUSED) {
 				autoRefreshTimeline.play();
@@ -325,7 +331,8 @@ public class PastResultsController extends SubPaneController {
 		param.put("offset", offset);
 		
 		try {
-			HttpClientResponse response = apiService.get("/searchSamples", param, null, false);
+			HttpClientResponse response = apiService.get("/searchSamples", param, null,
+					false);
 
 			if (response != null) {
 				PagedSampleView searchedSamples = response
@@ -362,7 +369,8 @@ public class PastResultsController extends SubPaneController {
 			DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
 					getMainApp().getPrimaryStage(), false);
 		} catch (Exception e) {
-			DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), false);
+			DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(),
+					false);
 		}
 		maskerPane.setVisible(false);
 	}
@@ -663,7 +671,7 @@ public class PastResultsController extends SubPaneController {
 			this.setId("assayTargetPlatformArea");
 			assayTarget = new Label();
 			assayTarget.setId("assayTarget");
-			assayTarget.getStyleClass().add("font_size_12");
+			assayTarget.getStyleClass().add("font_size_9");
 			platform = new Label("Illumina MiSeq DX");
 			platform.setId("platform");
 			platform.getStyleClass().add("font_size_12");
@@ -674,11 +682,139 @@ public class PastResultsController extends SubPaneController {
 			assayTarget.setText(sample.getPanelName());
 		}
 	}
+
 	class AnalysisResultOverviewVBox extends VBox {
+		private Label geneCountValueLabel = new Label();
+		private Label depthMinValueLabel = new Label();
+		private Label depthMaxValueLabel = new Label();
+		private Label totalVariantCountValueLabel = new Label();
+		private Label warningVariantCountValueLabel = new Label();
+		private Button roiCoverageButton;
+		private Label roiCoverageValueLabel = new Label();
+		private Button meanReadQualityButton;
+		private Label meanReadQualityValueLabel = new Label();
+		private Button retainedReadsButton;
+		private Label retainedReadsValueButton = new Label();
+		private Button coverageUniformityButton;
+		private Label coverageUniformityValueLabel = new Label();
+		private Label reportLabel = new Label();
+
 		AnalysisResultOverviewVBox() {
 			super();
 			// Result Overview Column Box
 			this.getStyleClass().add("colunmn");
+			this.setId("result_overview");
+			GridPane gridPane = new GridPane();
+			ColumnConstraints col1 = new ColumnConstraints();
+			col1.setPercentWidth(20);
+			ColumnConstraints col2 = new ColumnConstraints();
+			col2.setPercentWidth(20);
+			ColumnConstraints col3 = new ColumnConstraints();
+			col3.setPercentWidth(20);
+			ColumnConstraints col4 = new ColumnConstraints();
+			col4.setPercentWidth(20);
+			ColumnConstraints col5 = new ColumnConstraints();
+			col5.setPercentWidth(20);
+			gridPane.getColumnConstraints().addAll(col1, col2, col3, col4, col5);
+
+			// min depth count
+			HBox depthMinHBox = getCountInfo("DEPTH MIN : ", depthMinValueLabel);
+				gridPane.add(depthMinHBox, 0, 0);
+
+			// max depth count
+			HBox depthMaxHBox = getCountInfo("DEPTH MAX : ", depthMaxValueLabel);
+			gridPane.add(depthMaxHBox, 1, 0);
+
+			// gene count
+			HBox geneCountHBox = getCountInfo("GENES : ", geneCountValueLabel);
+			gridPane.add(geneCountHBox, 2, 0);
+
+
+			// total variant count
+			HBox variantsHBox = getCountInfo("VARIANTS : ", totalVariantCountValueLabel);
+			gridPane.add(variantsHBox, 3, 0);
+
+			// warnings count
+			HBox warnHBox = getCountInfo("WARNING : ", warningVariantCountValueLabel);
+			gridPane.add(warnHBox, 4, 0);
+
+			// qc flag box
+			HBox qcFlagHbox = new HBox();
+			qcFlagHbox.getStyleClass().add("alignment_center_left");
+
+			roiCoverageButton = getQCIcon("ROI Coverage",
+					"Percentage of ROI region\nwith coverage of least 20X (\u2265 100%)",
+					roiCoverageValueLabel);
+			meanReadQualityButton = getQCIcon("Mean Read Quality",
+					"Percentage of reads\nwith mean Phred base quality above 30 (\u2265 90%)",
+					meanReadQualityValueLabel);
+			retainedReadsButton = getQCIcon("Retained Reads",
+					"Percentage of QC passed reads (\u2265 80%)",
+					retainedReadsValueButton);
+			coverageUniformityButton = getQCIcon("Coverage Uniformity",
+					"Percentage of bases\ncovered at \u2265 20% of the mean coverage",
+					coverageUniformityValueLabel);
+
+			qcFlagHbox.getChildren().addAll(roiCoverageButton, meanReadQualityButton, retainedReadsButton,
+					coverageUniformityButton);
+			qcFlagHbox.setMargin(meanReadQualityButton, new Insets(0, 0, 0, 5));
+			qcFlagHbox.setMargin(retainedReadsButton, new Insets(0, 0, 0, 5));
+			qcFlagHbox.setMargin(coverageUniformityButton, new Insets(0, 0, 0, 5));
+
+			qcFlagHbox.getChildren().add(reportLabel);
+			qcFlagHbox.setMargin(reportLabel, new Insets(0, 0, 0, 5));
+
+			this.getChildren().addAll(gridPane, qcFlagHbox);
+			this.setMargin(qcFlagHbox, new Insets(0, 0, 0, 0));
+		}
+
+		private HBox getCountInfo(String title, Label valueLabel) {
+			HBox hBox = new HBox();
+			Label titleLabel = new Label(title);
+			titleLabel.getStyleClass().add("font_size_10");
+			titleLabel.getStyleClass().add("txt_gray");
+			valueLabel.setText("0");
+			valueLabel.getStyleClass().add("txt_black");
+			valueLabel.getStyleClass().add("weight_bold");
+			valueLabel.getStyleClass().add("font_size_10");
+			hBox.getChildren().addAll(titleLabel, valueLabel);
+			hBox.setMargin(valueLabel, new Insets(0, 10, 0, 0));
+			return hBox;
+		}
+		private Button getQCIcon(String title, String contents, Label percentageLabel) {
+			Button qcButton = new Button();
+			qcButton.getStyleClass().add("bullet_green");
+			qcButton.setOnAction(event -> {
+				PopOver popOver = new PopOver();
+				popOver.setArrowLocation(PopOver.ArrowLocation.BOTTOM_CENTER);
+				popOver.setHeaderAlwaysVisible(true);
+				popOver.setAutoHide(true);
+				popOver.setAutoFix(true);
+				popOver.setDetachable(true);
+				popOver.setArrowSize(15);
+				popOver.setArrowIndent(30);
+
+				VBox box = new VBox();
+				box.setStyle("-fx-padding:5;");
+				box.setAlignment(Pos.BOTTOM_RIGHT);
+				Label titleLabel = new Label(title);
+				titleLabel.getStyleClass().add("font_size_10");
+				titleLabel.getStyleClass().add("weight_bold");
+				titleLabel.getStyleClass().add("txt_gray_656565");
+				percentageLabel.getStyleClass().add("font_size_10");
+				percentageLabel.getStyleClass().add("weight_bold");
+				percentageLabel.getStyleClass().add("txt_black");
+				Label contentsLabel = new Label(contents);
+				contentsLabel.getStyleClass().add("font_size_9");
+				contentsLabel.getStyleClass().add("txt_gray_656565");
+				box.getChildren().addAll(titleLabel, percentageLabel, contentsLabel);
+				box.setMargin(percentageLabel, new Insets(5, 0, 0, 0));
+				box.setMargin(contentsLabel, new Insets(5, 0, 0, 0));
+
+				popOver.setContentNode(box);
+				popOver.show((Node) qcButton);
+				});
+			return qcButton;
 		}
 		protected  void setSampleView(SampleView sample) {
 			setVisible(true);
