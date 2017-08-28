@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.GridPane?>
+
+<GridPane fx:id="analysisDetailWrapper" prefHeight="625.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailLayoutController">
+   <children>
+      <HBox fx:id="summaryBgHBox" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="64.0" prefWidth="1280.0" scaleZ="3.0" styleClass="topHeaderTabBg" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="NEVER" />
+      <HBox fx:id="summaryHBox" alignment="CENTER_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="1278.0" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="NEVER">
+      	 <GridPane.margin>
+            <Insets top="15.0" />
+         </GridPane.margin>
+         <children>
+            <Label fx:id="sampleIdLabel" text="#0001" textFill="#262b33" HBox.hgrow="ALWAYS">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </Label>
+            <Separator maxHeight="11.0" minHeight="11.0" orientation="VERTICAL" prefHeight="11.0">
+               <HBox.margin>
+                  <Insets left="9.0" right="9.0" />
+               </HBox.margin>
+            </Separator>
+            <Label fx:id="kitLabel" layoutX="1243.0" layoutY="20.0" text="BRCA Panel Name" textFill="#262b33">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </Label>
+            <Separator layoutX="1274.0" layoutY="10.0" maxHeight="11.0" minHeight="11.0" orientation="VERTICAL" prefHeight="11.0">
+               <HBox.margin>
+                  <Insets left="9.0" right="9.0" />
+               </HBox.margin>
+            </Separator>
+            <Label fx:id="experimentLabel" layoutX="1243.0" layoutY="20.0" text="germline" textFill="#262b33">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </Label>
+            <Separator layoutX="1274.0" layoutY="10.0" maxHeight="11.0" minHeight="11.0" orientation="VERTICAL" prefHeight="11.0">
+               <HBox.margin>
+                  <Insets left="9.0" right="9.0" />
+               </HBox.margin>
+            </Separator>
+            <Label fx:id="sampleNameLabel" text="2016-05-19-12-38" textFill="#dc4b33">
+               <font>
+                  <Font name="System Bold" size="11.0" />
+               </font>
+            </Label>
+            <HBox alignment="TOP_RIGHT" maxHeight="20.0" maxWidth="121.0" minHeight="20.0" minWidth="121.0" prefHeight="20.0" prefWidth="121.0" HBox.hgrow="NEVER">
+               <HBox.margin>
+                  <Insets left="10.0" right="20.0" />
+               </HBox.margin>
+               <children>
+                  <Label maxHeight="20.0" minHeight="20.0" prefHeight="20.0" text="QC : " HBox.hgrow="NEVER">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="qcLabel" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" text="Label">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Label>
+                  <ImageView fx:id="qcImageView" fitHeight="21.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </ImageView>
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+      <TabPane fx:id="topTabPane" focusTraversable="false" layoutY="25.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="1280.0" scaleZ="2.0" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
+         <GridPane.margin>
+            <Insets top="5.0" />
+         </GridPane.margin>
+      </TabPane>
+   </children>
+   <stylesheets>
+      <URL value="@../css/common.css" />
+      <URL value="@../css/analysisDetail.css" />
+   </stylesheets>
+   <columnConstraints>
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+   </rowConstraints>
+</GridPane>

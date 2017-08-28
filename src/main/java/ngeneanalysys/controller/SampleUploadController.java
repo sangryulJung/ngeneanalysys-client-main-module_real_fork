@@ -134,13 +134,13 @@ public class SampleUploadController extends BaseStageController{
                 sampleUploadScreenFirstController = loader.getController();
                 sampleUploadScreenFirstController.setMainController(mainController);
                 sampleUploadScreenFirstController.setSampleUploadController(this);
+                sampleUploadScreenFirstController.show((Parent) box);
 
                 tableRegion.getChildren().add(box);
                 break;
             case 2 :
                 loader = FXMLLoadUtil.load(FXMLConstants.ANALYSIS_SAMPLE_UPLOAD_SECOND);
                 box = loader.load();
-
                 sampleUploadScreenSecondController = loader.getController();
                 sampleUploadScreenSecondController.setMainController(mainController);
                 sampleUploadScreenSecondController.setSampleUploadController(this);

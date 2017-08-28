@@ -10,8 +10,10 @@ import java.util.Map;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.model.PagedSampleView;
 import ngeneanalysys.model.SampleView;
+import ngeneanalysys.model.TopMenu;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
@@ -720,8 +722,18 @@ public class PastResultsController extends SubPaneController {
 			Button btn = new Button("Detail");
 			btn.getStyleClass().add("btn_detail");
 			btn.setOnAction(e -> {
-				DialogUtil.alert("개발중", "개발중입니다.", getMainApp().getPrimaryStage(), false);
-				});
+				//DialogUtil.alert("개발중", "개발중입니다.", getMainApp().getPrimaryStage(), false);
+				Map<String,Object> detailViewParamMap = new HashMap<String,Object>();
+
+				TopMenu menu = new TopMenu();
+				menu.setId("temp");
+				menu.setMenuName("temp");
+				menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_LAYOUT);
+				menu.setParamMap(detailViewParamMap);
+				menu.setStaticMenu(false);
+				mainController.addTopMenu(menu, 2, true);
+
+			});
 //				if(sample.getAnalysisResultSummary() != null) {
 //					btn.setOnAction(e -> {
 //						Map<String,Object> detailViewParamMap = new HashMap<String,Object>();

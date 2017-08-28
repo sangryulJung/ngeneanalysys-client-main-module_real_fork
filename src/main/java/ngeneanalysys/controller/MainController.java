@@ -493,13 +493,33 @@ public class MainController extends BaseStageController {
                         homeController.show((Parent) node);
                         break;
                     case FXMLConstants.PAST_RESULTS:	// 분석자 Past Results
-                        pastResultsController = (PastResultsController) loader.getController();
+                        pastResultsController = loader.getController();
                         pastResultsController.setMainController(this);
                         pastResultsController.setParamMap(menu.getParamMap());
                         pastResultsController.show((Parent) node);
                         break;
+                    case FXMLConstants.ANALYSIS_DETAIL_LAYOUT:
+                        AnalysisDetailLayoutController analysisDetailLayoutController = loader.getController();
+                        analysisDetailLayoutController.setMainController(this);
+                        analysisDetailLayoutController.setParamMap(menu.getParamMap());
+                        analysisDetailLayoutController.show((Parent) node);
+                        break;
                     default:
                         break;
+                }
+
+                if("experimentHomeWrapper".equals(currentShowFrameId)) {	// 이전 화면이 분석자 HOME인 경우 자동 새로고침 토글
+                    homeController.autoRefreshTimeline.stop();
+                } else if("experimentPastResultsWrapper".equals(currentShowFrameId)) {	// 이전 화면이 분석자 Past Results인 경우 자동 새로고침 토글
+                    pastResultsController.pauseAutoRefresh();
+                }
+
+                if("experimentHomeWrapper".equals(mainFrame.getCenter().getId())) {	// 현재 출력화면이 분석자 HOME 화면인 경우 다른 화면의 자동 새로고침 실행 토글 처리
+                    // 최초 화면 출력이 아닌 경우 분석자 HOME 화면 자동 새로고침 기능 시작
+                    if(!isFirstShow) homeController.autoRefreshTimeline.play();
+                } else if("experimentPastResultsWrapper".equals(mainFrame.getCenter().getId())) {	// 현재 출력화면이 분석자 Past Results 화면인 경우 다른 화면의 자동 새로고침 실행 토글 처리
+                    // 최초 화면 출력이 아닌 경우 분석자 Past Results 화면 자동 새로고침 기능 시작
+                    if(!isFirstShow) pastResultsController.resumeAutoRefresh();
                 }
 
                 currentShowFrameId = mainFrame.getCenter().getId();
@@ -507,6 +527,8 @@ public class MainController extends BaseStageController {
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
         }
+
+
 
 
     }
