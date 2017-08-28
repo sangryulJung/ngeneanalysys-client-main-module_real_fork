@@ -9,18 +9,18 @@ public class AnalysisResultSummary implements Serializable {
     private static final long serialVersionUID = 8336098024552988388L;
 
     private Integer sampleId;
-    private String qualityControl;
-    private String depthMin;
-    private String depthMax;
+    private String qualityControlStatus;
+    private Integer depthMin;
+    private Integer depthMax;
     private BigDecimal depthMean;
-    private String allVariantCount;
-    private String warningVariantCount;
+    private Integer geneCount;
+    private Integer allVariantCount;
+    private Integer warningVariantCount;
     private Integer level1VariantCount;
     private Integer level2VariantCount;
     private Integer level3VariantCount;
     private Integer level4VariantCount;
     private Integer level5VariantCount;
-    private Integer geneCount;
     private BigDecimal meanReadQualityPercentage;
     private String meanReadQualityStatus;
     private BigDecimal retainedReadsPercentage;
@@ -34,15 +34,15 @@ public class AnalysisResultSummary implements Serializable {
         return sampleId;
     }
 
-    public String getQualityControl() {
-        return qualityControl;
+    public String getQualityControlStatus() {
+        return qualityControlStatus;
     }
 
-    public String getDepthMin() {
+    public Integer getDepthMin() {
         return depthMin;
     }
 
-    public String getDepthMax() {
+    public Integer getDepthMax() {
         return depthMax;
     }
 
@@ -50,11 +50,11 @@ public class AnalysisResultSummary implements Serializable {
         return depthMean;
     }
 
-    public String getAllVariantCount() {
+    public Integer getAllVariantCount() {
         return allVariantCount;
     }
 
-    public String getWarningVariantCount() {
+    public Integer getWarningVariantCount() {
         return warningVariantCount;
     }
 
@@ -118,7 +118,7 @@ public class AnalysisResultSummary implements Serializable {
     public String toString() {
         return "AnalysisResultSummary{" +
                 "sampleId=" + sampleId +
-                ", qualityControl='" + qualityControl + '\'' +
+                ", qualityControl='" + qualityControlStatus + '\'' +
                 ", depthMin='" + depthMin + '\'' +
                 ", depthMax='" + depthMax + '\'' +
                 ", depthMean=" + depthMean +
