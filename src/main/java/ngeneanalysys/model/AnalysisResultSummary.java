@@ -13,7 +13,7 @@ public class AnalysisResultSummary implements Serializable {
     private String depthMin;
     private String depthMax;
     private BigDecimal depthMean;
-    private String totalVariantCount;
+    private String allVariantCount;
     private String warningVariantCount;
     private Integer level1VariantCount;
     private Integer level2VariantCount;
@@ -50,8 +50,8 @@ public class AnalysisResultSummary implements Serializable {
         return depthMean;
     }
 
-    public String getTotalVariantCount() {
-        return totalVariantCount;
+    public String getAllVariantCount() {
+        return allVariantCount;
     }
 
     public String getWarningVariantCount() {
@@ -122,7 +122,7 @@ public class AnalysisResultSummary implements Serializable {
                 ", depthMin='" + depthMin + '\'' +
                 ", depthMax='" + depthMax + '\'' +
                 ", depthMean=" + depthMean +
-                ", totalVariantCount='" + totalVariantCount + '\'' +
+                ", totalVariantCount='" + allVariantCount + '\'' +
                 ", warningVariantCount='" + warningVariantCount + '\'' +
                 ", level1VariantCount=" + level1VariantCount +
                 ", level2VariantCount=" + level2VariantCount +
