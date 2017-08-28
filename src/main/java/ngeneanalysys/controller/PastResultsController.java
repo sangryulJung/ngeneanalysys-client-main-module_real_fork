@@ -669,7 +669,7 @@ public class PastResultsController extends SubPaneController {
 			this.setId("assayTargetPlatformArea");
 			assayTarget = new Label();
 			assayTarget.setId("assayTarget");
-			assayTarget.getStyleClass().add("font_size_12");
+			assayTarget.getStyleClass().add("font_size_9");
 			platform = new Label("Illumina MiSeq DX");
 			platform.setId("platform");
 			platform.getStyleClass().add("font_size_12");
@@ -769,14 +769,14 @@ public class PastResultsController extends SubPaneController {
 		private HBox getCountInfo(String title, Label valueLabel) {
 			HBox hBox = new HBox();
 			Label titleLabel = new Label(title);
-			titleLabel.getStyleClass().add("font_size_11");
+			titleLabel.getStyleClass().add("font_size_10");
 			titleLabel.getStyleClass().add("txt_gray");
 			valueLabel.setText("0");
 			valueLabel.getStyleClass().add("txt_black");
 			valueLabel.getStyleClass().add("weight_bold");
-			valueLabel.getStyleClass().add("font_size_11");
+			valueLabel.getStyleClass().add("font_size_10");
 			hBox.getChildren().addAll(titleLabel, valueLabel);
-			hBox.setMargin(valueLabel, new Insets(0, 15, 0, 0));
+			hBox.setMargin(valueLabel, new Insets(0, 10, 0, 0));
 			return hBox;
 		}
 		private Button getQCIcon(String title, String contents, Label percentageLabel) {
@@ -793,17 +793,17 @@ public class PastResultsController extends SubPaneController {
 				popOver.setArrowIndent(30);
 
 				VBox box = new VBox();
-				box.setStyle("-fx-padding:10;");
+				box.setStyle("-fx-padding:5;");
 				box.setAlignment(Pos.BOTTOM_RIGHT);
 				Label titleLabel = new Label(title);
-				titleLabel.getStyleClass().add("font_size_12");
+				titleLabel.getStyleClass().add("font_size_10");
 				titleLabel.getStyleClass().add("weight_bold");
 				titleLabel.getStyleClass().add("txt_gray_656565");
-				percentageLabel.getStyleClass().add("font_size_14");
+				percentageLabel.getStyleClass().add("font_size_10");
 				percentageLabel.getStyleClass().add("weight_bold");
 				percentageLabel.getStyleClass().add("txt_black");
 				Label contentsLabel = new Label(contents);
-				contentsLabel.getStyleClass().add("font_size_11");
+				contentsLabel.getStyleClass().add("font_size_9");
 				contentsLabel.getStyleClass().add("txt_gray_656565");
 				box.getChildren().addAll(titleLabel, percentageLabel, contentsLabel);
 				box.setMargin(percentageLabel, new Insets(5, 0, 0, 0));
