@@ -18,6 +18,7 @@ public class SampleView {
     private SampleStatus sampleStatus;
     private SampleSheet sampleSheet;
     private QcData qcData;
+    private AnalysisResultSummary analysisResultSummary;
     private DateTime createdAt;
     private DateTime updatedAt;
     private DateTime deletedAt;
@@ -83,6 +84,10 @@ public class SampleView {
         return qcData;
     }
 
+    public AnalysisResultSummary getAnalysisResultSummary() {
+        return analysisResultSummary;
+    }
+
     public DateTime getCreatedAt() {
         return createdAt;
     }
@@ -117,6 +122,7 @@ public class SampleView {
                 ", sampleStatus=" + sampleStatus +
                 ", sampleSheet=" + sampleSheet +
                 ", qcData=" + qcData +
+                ", analysisResultSummary=" + analysisResultSummary +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", deletedAt=" + deletedAt +
