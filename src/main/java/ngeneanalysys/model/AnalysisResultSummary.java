@@ -118,18 +118,18 @@ public class AnalysisResultSummary implements Serializable {
     public String toString() {
         return "AnalysisResultSummary{" +
                 "sampleId=" + sampleId +
-                ", qualityControl='" + qualityControlStatus + '\'' +
-                ", depthMin='" + depthMin + '\'' +
-                ", depthMax='" + depthMax + '\'' +
+                ", qualityControlStatus='" + qualityControlStatus + '\'' +
+                ", depthMin=" + depthMin +
+                ", depthMax=" + depthMax +
                 ", depthMean=" + depthMean +
-                ", totalVariantCount='" + allVariantCount + '\'' +
-                ", warningVariantCount='" + warningVariantCount + '\'' +
+                ", geneCount=" + geneCount +
+                ", allVariantCount=" + allVariantCount +
+                ", warningVariantCount=" + warningVariantCount +
                 ", level1VariantCount=" + level1VariantCount +
                 ", level2VariantCount=" + level2VariantCount +
                 ", level3VariantCount=" + level3VariantCount +
                 ", level4VariantCount=" + level4VariantCount +
                 ", level5VariantCount=" + level5VariantCount +
-                ", geneCount=" + geneCount +
                 ", meanReadQualityPercentage=" + meanReadQualityPercentage +
                 ", meanReadQualityStatus='" + meanReadQualityStatus + '\'' +
                 ", retainedReadsPercentage=" + retainedReadsPercentage +

@@ -8,7 +8,9 @@ public class Panel {
     private Integer id;
     private String name;
     private String code;
-    private String panelType;
+    private String target;
+    private String analysisType;
+    private String sampleSource;
     private Integer deleted;
 
     public Integer getId() {
@@ -19,14 +21,22 @@ public class Panel {
         return name;
     }
 
-    public String getPanelType() {
-        return panelType;
-    }
-
     public String getCode() {
         return code;
     }
-    @JsonIgnore
+
+    public String getTarget() {
+        return target;
+    }
+
+    public String getAnalysisType() {
+        return analysisType;
+    }
+
+    public String getSampleSource() {
+        return sampleSource;
+    }
+
     public Integer getDeleted() {
         return deleted;
     }
@@ -37,7 +47,10 @@ public class Panel {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", code='" + code + '\'' +
-                ", panelType='" + panelType + '\'' +
+                ", target='" + target + '\'' +
+                ", analysisType='" + analysisType + '\'' +
+                ", sampleSource='" + sampleSource + '\'' +
+                ", deleted=" + deleted +
                 '}';
     }
 }
