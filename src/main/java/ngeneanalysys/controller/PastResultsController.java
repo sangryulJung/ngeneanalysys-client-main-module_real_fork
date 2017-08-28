@@ -763,7 +763,7 @@ public class PastResultsController extends SubPaneController {
 			qcFlagHbox.setMargin(reportLabel, new Insets(0, 0, 0, 5));
 
 			this.getChildren().addAll(gridPane, qcFlagHbox);
-			this.setMargin(qcFlagHbox, new Insets(5, 0, 0, 0));
+			this.setMargin(qcFlagHbox, new Insets(0, 0, 0, 0));
 		}
 
 		private HBox getCountInfo(String title, Label valueLabel) {
