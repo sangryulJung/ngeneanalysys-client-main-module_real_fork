@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<GridPane fx:id="experimentPastResultsWrapper" prefHeight="558.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailOverviewController">
+   <columnConstraints>
+      <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="20.0" />
+      <ColumnConstraints hgrow="SOMETIMES" prefWidth="1240.0" />
+      <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="20.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints maxHeight="45.600006103515625" minHeight="-Infinity" prefHeight="35.19999694824219" valignment="TOP" vgrow="NEVER" />
+      <RowConstraints maxHeight="99.80000305175781" minHeight="-Infinity" prefHeight="81.19999694824219" vgrow="NEVER" />
+      <RowConstraints maxHeight="48.80000305175781" minHeight="-Infinity" prefHeight="20.20001220703125" valignment="TOP" vgrow="NEVER" />
+      <RowConstraints maxHeight="179.79998779296875" minHeight="137.60000610351562" prefHeight="137.60000610351562" valignment="TOP" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="59.399993896484375" minHeight="10.0" prefHeight="37.399993896484375" valignment="TOP" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="178.39999389648438" minHeight="10.0" prefHeight="173.60000610351562" valignment="TOP" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="62.20001220703125" minHeight="-Infinity" prefHeight="62.20001220703125" valignment="TOP" vgrow="NEVER" />
+   </rowConstraints>
+   <children>
+      <HBox alignment="CENTER_LEFT" layoutX="20.0" layoutY="31.0" prefHeight="30.0" GridPane.columnIndex="1">
+         <children>
+            <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label alignment="TOP_LEFT" layoutX="60.0" layoutY="31.0" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="326.0" text="Detected Variants Summary">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="8.0" />
+                     </HBox.margin>
+                     <styleClass>
+                        <String fx:value="h1" />
+                        <String fx:value="weight_bold" />
+                        <String fx:value="txt_black" />
+                     </styleClass>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox alignment="BOTTOM_RIGHT" />
+         </children>
+      </HBox>
+      <GridPane fx:id="searchArea" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" percentWidth="20.0" prefWidth="120.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0" spacing="40.0">
+               <children>
+                  <VBox prefHeight="100.0" prefWidth="167.0" style="-fx-border-color: blue;">
+                     <children>
+                        <HBox prefHeight="27.0" prefWidth="167.0">
+                           <children>
+                              <Label style="-fx-background-color: cyan;" text="Tier I" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="25.0" prefWidth="167.0">
+                           <children>
+                              <Label text="Variants Count :" />
+                              <Label text="0" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="21.0" prefWidth="155.0">
+                           <children>
+                              <Label text="Genes Count :" />
+                              <Label text="0" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label text="Therapeutic :" />
+                              <Label text="0" />
+                           </children>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                     </padding>
+                  </VBox>
+                  <VBox prefHeight="100.0" prefWidth="167.0" style="-fx-border-color: blue;">
+                     <children>
+                        <HBox prefHeight="27.0" prefWidth="167.0">
+                           <children>
+                              <Label style="-fx-background-color: cyan;" text="Tier I" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="25.0" prefWidth="167.0">
+                           <children>
+                              <Label text="Variants Count :" />
+                              <Label text="0" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="21.0" prefWidth="155.0">
+                           <children>
+                              <Label text="Genes Count :" />
+                              <Label text="0" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label text="Therapeutic :" />
+                              <Label text="0" />
+                           </children>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                     </padding>
+                  </VBox>
+                  <VBox prefHeight="100.0" prefWidth="167.0" style="-fx-border-color: blue;">
+                     <children>
+                        <HBox prefHeight="27.0" prefWidth="167.0">
+                           <children>
+                              <Label style="-fx-background-color: cyan;" text="Tier I" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="25.0" prefWidth="167.0">
+                           <children>
+                              <Label text="Variants Count :" />
+                              <Label text="0" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="21.0" prefWidth="155.0">
+                           <children>
+                              <Label text="Genes Count :" />
+                              <Label text="0" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label text="Therapeutic :" />
+                              <Label text="0" />
+                           </children>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                     </padding>
+                  </VBox>
+                  <VBox prefHeight="100.0" prefWidth="167.0" style="-fx-border-color: blue;">
+                     <children>
+                        <HBox prefHeight="27.0" prefWidth="167.0">
+                           <children>
+                              <Label style="-fx-background-color: cyan;" text="Tier I" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="25.0" prefWidth="167.0">
+                           <children>
+                              <Label text="Variants Count :" />
+                              <Label text="0" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="21.0" prefWidth="155.0">
+                           <children>
+                              <Label text="Genes Count :" />
+                              <Label text="0" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label text="Therapeutic :" />
+                              <Label text="0" />
+                           </children>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                     </padding>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </GridPane>
+      <TableView fx:id="geneTable" prefHeight="149.0" prefWidth="966.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+         <columns>
+            <TableColumn prefWidth="75.0" text="Tier" />
+            <TableColumn prefWidth="100.0" text="Gene" />
+            <TableColumn prefWidth="200.0" text="Variant" />
+            <TableColumn prefWidth="500.0" text="Therapeutic drug and prognosis" />
+         </columns>
+      </TableView>
+      <TableView fx:id="ngeativesTable" prefHeight="105.0" prefWidth="962.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+         <columns>
+            <TableColumn prefWidth="75.0" text="Gene" />
+            <TableColumn prefWidth="75.0" text="Variant" />
+            <TableColumn prefWidth="100.0" text="Variant Type" />
+            <TableColumn prefWidth="657.0" text="Cause" />
+         </columns>
+      </TableView>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+         <children>
+            <VBox prefHeight="63.0" prefWidth="268.0">
+               <children>
+                  <Label text="QC">
+                     <padding>
+                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                     </padding>
+                  </Label>
+                  <GridPane gridLinesVisible="true">
+                     <columnConstraints>
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <Label text="read depth" />
+                        <Label text="pass" GridPane.rowIndex="1" />
+                        <Label text="coverage" GridPane.columnIndex="1" />
+                        <Label text="pass" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label text="read quality" GridPane.columnIndex="2" />
+                        <Label text="pass" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                     </children>
+                  </GridPane>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <Label alignment="TOP_LEFT" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="326.0" text="Negatives" GridPane.columnIndex="1" GridPane.rowIndex="4">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+         <styleClass>
+            <String fx:value="h1" />
+            <String fx:value="weight_bold" />
+            <String fx:value="txt_black" />
+         </styleClass>
+      </Label>
+   </children>
+   <stylesheets>
+      <URL value="@../css/common.css" />
+      <URL value="@../css/experimenter.css" />
+   </stylesheets>
+</GridPane>

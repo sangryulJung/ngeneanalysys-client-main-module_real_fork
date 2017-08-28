@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<GridPane fx:id="experimentPastResultsWrapper" prefHeight="558.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailVariantsController">
+   <columnConstraints>
+      <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="20.0" />
+      <ColumnConstraints hgrow="SOMETIMES" prefWidth="1240.0" />
+      <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="20.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints maxHeight="45.600006103515625" minHeight="-Infinity" prefHeight="35.19999694824219" valignment="TOP" vgrow="NEVER" />
+      <RowConstraints maxHeight="99.80000305175781" minHeight="-Infinity" prefHeight="81.19999694824219" vgrow="NEVER" />
+      <RowConstraints maxHeight="48.80000305175781" minHeight="-Infinity" prefHeight="20.20001220703125" valignment="TOP" vgrow="NEVER" />
+      <RowConstraints maxHeight="179.79998779296875" minHeight="137.60000610351562" prefHeight="137.60000610351562" valignment="TOP" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="59.399993896484375" minHeight="10.0" prefHeight="37.399993896484375" valignment="TOP" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="178.39999389648438" minHeight="10.0" prefHeight="173.60000610351562" valignment="TOP" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="62.20001220703125" minHeight="-Infinity" prefHeight="62.20001220703125" valignment="TOP" vgrow="NEVER" />
+   </rowConstraints>
+   <children>
+      <HBox alignment="CENTER_LEFT" layoutX="20.0" layoutY="31.0" prefHeight="30.0" GridPane.columnIndex="1">
+         <children>
+            <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label alignment="TOP_LEFT" layoutX="60.0" layoutY="31.0" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="326.0" text="filter">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="8.0" />
+                     </HBox.margin>
+                     <styleClass>
+                        <String fx:value="h1" />
+                        <String fx:value="weight_bold" />
+                        <String fx:value="txt_black" />
+                     </styleClass>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox alignment="BOTTOM_RIGHT" />
+         </children>
+      </HBox>
+      <GridPane fx:id="searchArea" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" percentWidth="20.0" prefWidth="120.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="40.0">
+               <children>
+                  <ComboBox prefWidth="150.0" />
+                  <ComboBox prefWidth="150.0" />
+                  <TextField />
+                  <Button mnemonicParsing="false" text="Button" />
+               </children>
+            </HBox>
+         </children>
+      </GridPane>
+      <TableView fx:id="geneTable" prefHeight="149.0" prefWidth="966.0" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.rowSpan="3">
+         <columns>
+            <TableColumn prefWidth="75.0" text="Gene" />
+            <TableColumn prefWidth="359.20001220703125" text="Tier">
+               <columns>
+                  <TableColumn prefWidth="75.0" text="I" />
+                  <TableColumn prefWidth="75.0" text="II" />
+                  <TableColumn prefWidth="75.0" text="III" />
+                  <TableColumn prefWidth="75.0" text="IV" />
+               </columns></TableColumn>
+            <TableColumn prefWidth="380.0" text="Variants">
+               <columns>
+                  <TableColumn prefWidth="75.0" text="SNV" />
+                  <TableColumn prefWidth="75.0" text="Indels" />
+                  <TableColumn prefWidth="75.0" text="Fusion" />
+                  <TableColumn prefWidth="75.0" text="CNV" />
+               </columns></TableColumn>
+            <TableColumn minWidth="0.0" prefWidth="118.0" text="Open Details" />
+         </columns>
+      </TableView>
+   </children>
+   <stylesheets>
+      <URL value="@../css/common.css" />
+      <URL value="@../css/experimenter.css" />
+   </stylesheets>
+</GridPane>

@@ -117,4 +117,10 @@ public class FXMLConstants {
 	/** 분석 요청 그룹 검색 Dialog 화면 */
 	public static final String ANALYSIS_JOB_RUN_GROUP_SEARCH_DIALOG = "/layout/fxml/AnalysisJobRunGroupSearch.fxml";
 
+	/** 분석 상세 > OverView 화면 */
+	public static final String ANALYSIS_DETAIL_OVERVIEW = "/layout/fxml/AnalysisDetail-Overview.fxml";
+
+	/** 분석 상세 > Variants 화면 */
+	public static final String ANALYSIS_DETAIL_VARIANTS = "/layout/fxml/AnalysisDetail-Variants.fxml";
+
 }

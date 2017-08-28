@@ -68,10 +68,10 @@ public class SampleUploadScreenFirstController extends BaseStageController{
      */
     public void setSampleUploadController(SampleUploadController sampleUploadController) {
         this.sampleUploadController = sampleUploadController;
-        if(sampleUploadController.getSamples() != null) {
+        /*if(sampleUploadController.getSamples() != null) {
             sampleArrayList = sampleUploadController.getSamples();
             tableEdit();
-        }
+        }*/
     }
 
     /**
@@ -94,8 +94,41 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     @Override
     public void show(Parent root) throws IOException {
+        sampleSheetGridPane.getChildren().clear();
+        sampleSheetGridPane.setPrefHeight(0);
 
-        toggleNextBtnActivation();
+        for(int row  = 0 ; row < 23 ; row++) {
+            sampleSheetGridPane.setPrefHeight(sampleSheetGridPane.getPrefHeight() + 26);
+
+            TextField sampleName = new TextField();
+            sampleName.setStyle("-fx-text-inner-color: black;");
+            sampleName.getStyleClass().add("font_size_9");
+
+            TextField samplePlate = new TextField();
+            samplePlate.setStyle("-fx-text-inner-color: black;");
+
+            TextField sampleWell = new TextField();
+            sampleWell.setStyle("-fx-text-inner-color: black;");
+
+            TextField i7IndexId = new TextField();
+            i7IndexId.setStyle("-fx-text-inner-color: black;");
+
+            TextField index = new TextField();
+            index.setStyle("-fx-text-inner-color: black;");
+
+            TextField sampleProject = new TextField();
+            sampleProject.setStyle("-fx-text-inner-color: black;");
+
+            TextField description = new TextField();
+            description.setStyle("-fx-text-inner-color: black;");
+
+            sampleSheetGridPane.addRow(row, sampleName, i7IndexId, index, samplePlate, sampleWell, sampleProject, description);
+
+        }
+        if(sampleUploadController.getSamples() != null) {
+            sampleArrayList = sampleUploadController.getSamples();
+            tableEdit();
+        }
     }
 
     /**
@@ -135,11 +168,8 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                     }
                 }
 
-                //sampleSheetList = FXCollections.observableList(list);
                 sampleArrayList = list;
-                //refreshSampleListTableView();
                 tableEdit();
-                toggleNextBtnActivation();
 
             } catch (IOException e) {
 
@@ -149,13 +179,8 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     }
 
-    public void convertSampleSheet(File sampleSheets) {
-
-    }
-
     @FXML
     public void next() throws IOException{
-        //if(sampleArrayList != null && sampleArrayList.size() > 0)
         saveSampleSheetData();
         sampleUploadController.pageSetting(2);
 
@@ -163,8 +188,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     public void saveSampleSheetData() {
         if(sampleArrayList == null) sampleArrayList = new ArrayList<>();
-
-        //int totalSampleSize = sampleSheetGridPane.getChildren().size() / 7;
 
         for(int i = 0; i < sampleSheetGridPane.getChildren().size() ; i += 7) {
 
@@ -224,7 +247,40 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     //선택된 sampleSheet 내용 화면 출력
     public void tableEdit() {
-        sampleSheetGridPane.getChildren().clear();
+
+        int rowIndex = 0;
+        int totalIndex = 0;
+        for(Sample sample : sampleArrayList) {
+            //입력가능한 샘플의 총 양은 23개
+            if(22 < rowIndex) break;
+
+            SampleSheet item = sample.getSampleSheet();
+            TextField sampleName = (TextField) sampleSheetGridPane.getChildren().get(totalIndex);
+            sampleName.setText(!StringUtils.isEmpty(item.getSampleName()) ?  item.getSampleName() : item.getSampleId());
+
+            TextField i7IndexId = (TextField) sampleSheetGridPane.getChildren().get(totalIndex + 1);
+            i7IndexId.setText(item.getI7IndexId());
+
+            TextField index = (TextField) sampleSheetGridPane.getChildren().get(totalIndex + 2);
+            index.setText(item.getSampleIndex());
+
+            TextField samplePlate = (TextField) sampleSheetGridPane.getChildren().get(totalIndex + 3);
+            samplePlate.setText(item.getSamplePlate());
+
+            TextField sampleWell = (TextField) sampleSheetGridPane.getChildren().get(totalIndex + 4);
+            sampleWell.setText(item.getSampleWell());
+
+            TextField sampleProject = (TextField) sampleSheetGridPane.getChildren().get(totalIndex + 5);
+            sampleProject.setText(item.getSampleProject());
+
+            TextField description = (TextField) sampleSheetGridPane.getChildren().get(totalIndex + 6);
+            description.setText(item.getDescription());
+
+            totalIndex += 7;
+            rowIndex++;
+        }
+
+        /*sampleSheetGridPane.getChildren().clear();
         sampleSheetGridPane.setPrefHeight(0);
 
         int row = 0;
@@ -265,7 +321,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             sampleSheetGridPane.addRow(row, sampleName, i7IndexId, index, samplePlate, sampleWell, sampleProject, description);
 
             row++;
-        }
+        }*/
     }
 
 }

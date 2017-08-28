@@ -1,0 +1,512 @@
+.topHeaderTabBg {
+	-fx-background-color:linear-gradient(#f9f9f9, #dedede);
+	-fx-border-color:#9e9e9e;
+	-fx-border-width: 0 0 1 0;
+}
+
+#summaryHBox .label {
+	-fx-font-size:11px;
+}
+
+/** 탭 상단 */
+#topTabPane.tab-pane:top>.tab-header-area {
+	-fx-padding:4 5 0 5;
+}
+
+/** 탭 상단 배경 */
+#topTabPane.tab-pane:top>.tab-header-area>.tab-header-background {
+	-fx-background-color: transparent;
+	-fx-border-width:0;
+	-fx-background-insets: 0;
+	-fx-min-height: 40px;
+	-fx-pref-height: 40px;
+	-fx-max-height: 40px;
+}
+
+/** 탭메뉴 : 미선택 */
+#topTabPane.tab-pane:top>.tab-header-area>.headers-region {
+	-fx-alignment: bottom-center;
+	-fx-min-height: 37px;
+	-fx-pref-height: 37px;
+	-fx-max-height: 37px;
+}
+#topTabPane.tab-pane:top>.tab-header-area>.headers-region>.tab:top {
+	-fx-background-color: transparent;
+	-fx-background-insets: 0;
+	-fx-border-width:0;
+	-fx-padding:0 0 0 4;
+	-fx-min-height: 34px;
+	-fx-pref-height: 34px;
+	-fx-max-height: 34px;
+	-fx-focus-traversable: false;
+}
+
+/** 탭메뉴 컨테이너 : 미선택 */
+#topTabPane.tab-pane:top>.tab-header-area>.headers-region>.tab:top>.tab-container {
+	-fx-background-color:linear-gradient(#fff, #e5e5e5);
+	-fx-background-radius:1 1 0 0;
+	-fx-border-color: #dbdbdb #dbdbdb #9e9e9e #dbdbdb;
+	-fx-border-radius: 1 1 0 0;
+	-fx-border-width:1 1 1 1;
+	-fx-cursor:hand;
+}
+
+/** 탭메뉴 라벨 : 미선택 */
+#topTabPane.tab-pane:top>.tab-header-area>.headers-region>.tab:top>.tab-container>.tab-label{
+	-fx-alignment: CENTER;
+	-fx-text-fill: #7d7d7d;
+	-fx-font-size:15px;
+	-fx-padding:0 12;
+}
+
+/** 탭메뉴 : 선택 */
+#topTabPane.tab-pane:top>.tab-header-area>.headers-region>.tab:selected:top {
+	-fx-background-color: transparent;
+	-fx-background-insets: 0;
+	-fx-border-width:0;
+	-fx-padding:0 0 0 4;
+	-fx-min-height: 37px;
+	-fx-pref-height: 37px;
+	-fx-max-height: 37px;
+	-fx-focus-traversable: false;
+}
+
+/** 탭메뉴 컨테이너 : 선택 */
+#topTabPane.tab-pane:top>.tab-header-area>.headers-region>.tab:selected>.tab-container {
+	-fx-background-color:linear-gradient(#fff, #d6dde0);
+	-fx-background-radius:1 1 0 0;
+	/* top right bottom left  */
+	-fx-border-color:#9e9e9e #9e9e9e #dedede #9e9e9e;
+	/* top-left top-right bottom-right bottom-left */
+	-fx-border-radius: 1 1 0 0;
+	/* top right bottom left  */
+	-fx-border-width:1 1 1 1;
+	-fx-cursor:hand;
+}
+
+/** 탭메뉴 라벨 : 선택 */
+#topTabPane.tab-pane:top>.tab-header-area>.headers-region>.tab:selected>.tab-container>.tab-label {
+	-fx-alignment: CENTER;
+	-fx-text-fill: #0469b0;
+	-fx-font-weight: bold;
+	-fx-font-size:15px;
+	-fx-padding:0 12;
+	-fx-min-height: 37px;
+	-fx-pref-height: 37px;
+	-fx-max-height: 37px;
+}
+
+/** 탭메뉴 닫기 버튼 : 선택 */
+#topTabPane.tab-pane:top>.tab-header-area>.headers-region>.tab>.tab-container>.focus-indicator {
+	-fx-border-width:0;
+}
+
+#filterArea {
+	-fx-background-color:#d6dde0;
+	-fx-border-width:0 0 1 0;
+	-fx-border-color:#bac6cd;
+}
+
+#filterArea .label#filterTitle {
+	-fx-font-size:13px;
+	-fx-font-weight:bold;
+	-fx-text-fill:#5a6971;
+}
+
+#filterArea #filterList VBox.TOTAL_VARIANT {
+	-fx-background-color:#555C5F;
+	-fx-background-radius:2;
+	-fx-padding:2 3;
+	-fx-pref-width:112;
+	-fx-min-height:50;
+	-fx-pref-height:50;
+	-fx-max-height:50;
+	-fx-cursor: hand;
+	-fx-alignment:center;
+	-fx-border-width:0;
+	-fx-alignment:center;
+}
+#filterArea #filterList VBox.PRE_FILTERED {
+	-fx-background-color:#7C878B;
+	-fx-background-radius:15;	
+	-fx-padding:2 3;
+	-fx-pref-width:80;
+	-fx-min-height:50;
+	-fx-pref-height:50;
+	-fx-max-height:50;
+	-fx-cursor: hand;
+	-fx-border-radius:15;
+	-fx-border-width:0;
+	-fx-alignment:center;	
+}
+#filterArea #filterList VBox.LOW_CONFIDENCE {
+	-fx-background-color:#7C878B;
+	-fx-background-radius:15;
+	-fx-padding:2 3;
+	-fx-max-width:80;
+	-fx-min-height:50;
+	-fx-pref-height:50;
+	-fx-max-height:50;
+	-fx-cursor: hand;
+	-fx-border-radius:15;
+	-fx-border-width:0;
+	-fx-alignment:center;
+}
+#filterArea #filterList VBox.PREDICTION_A {
+	-fx-background-color:white;
+	-fx-padding:2 3;
+	-fx-pref-width:112;
+	-fx-min-height:50;
+	-fx-pref-height:50;
+	-fx-max-height:50;
+	-fx-cursor: hand;
+}
+#filterArea #filterList VBox.PREDICTION_B {
+	-fx-background-color:white;
+	-fx-padding:2 3;
+	-fx-pref-width:112;
+	-fx-min-height:50;
+	-fx-pref-height:50;
+	-fx-max-height:50;
+	-fx-cursor: hand;
+}
+#filterArea #filterList VBox.PREDICTION_C {
+	-fx-background-color:white;
+	-fx-padding:2 3;
+	-fx-pref-width:112;
+	-fx-min-height:50;
+	-fx-pref-height:50;
+	-fx-max-height:50;
+	-fx-cursor: hand;
+}
+#filterArea #filterList VBox.PREDICTION_D {
+	-fx-background-color:white;
+	-fx-padding:2 3;
+	-fx-pref-width:112;
+	-fx-min-height:50;
+	-fx-pref-height:50;
+	-fx-max-height:50;
+	-fx-cursor: hand;
+}
+#filterArea #filterList VBox.PREDICTION_E {
+	-fx-background-color:white;
+	-fx-padding:2 3;
+	-fx-pref-width:112;
+	-fx-min-height:50;
+	-fx-pref-height:50;
+	-fx-max-height:50;
+	-fx-cursor: hand;
+}
+
+#filterArea #filterList VBox.selected, #filterArea #filterList VBox:hover {
+	-fx-background-color:linear-gradient(#fff, #eaeaea);
+	-fx-effect: dropshadow(three-pass-box, rgba(114,114,114,0.6) , 7, 0, 1, 1);
+}
+#filterArea #filterList #LOW_CONFIDENCE.selected, #filterArea #filterList #LOW_CONFIDENCE:hover {
+	-fx-background-color:linear-gradient(#000, #eaeaea);
+	-fx-effect: dropshadow(three-pass-box, rgba(114,114,114,0.6) , 7, 0, 1, 1);
+}
+#filterArea #filterList #PRE_FILTERED.selected, #filterArea #filterList #PRE_FILTERED:hover {
+	-fx-background-color:linear-gradient(#000, #eaeaea);
+	-fx-effect: dropshadow(three-pass-box, rgba(114,114,114,0.6) , 7, 0, 1, 1);
+}
+#filterArea #filterList #TOTAL_VARIANT.selected, #filterArea #filterList #TOTAL_VARIANT:hover {
+	-fx-background-color:linear-gradient(#000, #eaeaea);
+	-fx-effect: dropshadow(three-pass-box, rgba(114,114,114,0.6) , 7, 0, 1, 1);
+}
+
+#filterArea #filterList VBox Label.alias_ALL {
+	-fx-background-color:#a5adb2;
+	-fx-border-color:#a5adb2;
+	-fx-background-radius:2;
+	-fx-border-radius:2;
+	-fx-border-width:0;
+	-fx-min-height:20;
+	-fx-min-width:20;
+	-fx-max-height:20;
+	-fx-max-width:20;
+	-fx-alignment: center;
+	-fx-text-alignment:center;
+}
+
+#filterArea #filterList VBox Region.level_ALL {
+	-fx-background-color:#ff7e79;
+	-fx-border-color:#ff7e79;
+}
+
+
+#filterArea #filterList VBox .level_TOTAL_VARIANT {
+	-fx-font-size:10;
+	-fx-text-fill:white;
+	-fx-padding:3 0 0 0;
+	-fx-pref-height:15;
+}
+#filterArea #filterList VBox .level_PRE_FILTERED {
+	-fx-font-size:10;
+	-fx-text-fill:white;
+	-fx-padding:3 0 0 0;
+	-fx-pref-height:15;	
+}
+#filterArea #filterList VBox .level_LOW_CONFIDENCE {
+	-fx-font-size:10;
+	-fx-text-fill:white;
+	-fx-padding:3 0 0 0;
+	-fx-pref-height:15;
+}
+#filterArea #filterList VBox .level_PREDICTION_A {
+	-fx-font-size:10;
+	-fx-text-fill:#838383;
+	-fx-padding:3 0 0 0;
+	-fx-pref-height:15;
+}
+#filterArea #filterList VBox .level_PREDICTION_B {
+	-fx-font-size:10;
+	-fx-text-fill:#838383;
+	-fx-padding:3 0 0 0;
+	-fx-pref-height:15;
+}
+#filterArea #filterList VBox .level_PREDICTION_C {
+	-fx-font-size:10;
+	-fx-text-fill:#838383;
+	-fx-padding:3 0 0 0;
+	-fx-pref-height:15;
+}
+#filterArea #filterList VBox .level_PREDICTION_D {
+	-fx-font-size:10;
+	-fx-text-fill:#838383;
+	-fx-padding:3 0 0 0;
+	-fx-pref-height:15;
+}
+#filterArea #filterList VBox .level_PREDICTION_E {
+	-fx-font-size:10;
+	-fx-text-fill:#838383;
+	-fx-padding:3 0 0 0;
+	-fx-pref-height:15;
+}
+
+#filterArea #filterList VBox .count_TOTAL_VARIANT {
+	-fx-alignment:center;
+	-fx-font-size:18;
+	-fx-text-fill:white;
+	-fx-font-weight:bold;
+	-fx-padding:0;
+	-fx-label-padding:-4 0 0 0;
+	-fx-min-width:80;
+	-fx-pref-width:80;
+	-fx-max-width:80;
+	-fx-min-height:24;
+	-fx-pref-height:24;
+	-fx-max-height:24;
+}
+#filterArea #filterList VBox .count_PRE_FILTERED {
+	-fx-alignment:center;
+	-fx-font-size:18;
+	-fx-text-fill:white;
+	-fx-font-weight:bold;
+	-fx-padding:0;
+	-fx-label-padding:-4 0 0 0;
+	-fx-min-width:80;
+	-fx-pref-width:80;
+	-fx-max-width:80;
+	-fx-min-height:24;
+	-fx-pref-height:24;
+	-fx-max-height:24;
+}
+#filterArea #filterList VBox .count_LOW_CONFIDENCE {
+	-fx-alignment:center;
+	-fx-font-size:18;
+	-fx-text-fill:white;
+	-fx-font-weight:bold;
+	-fx-padding:0;
+	-fx-label-padding:-4 0 0 0;
+	-fx-min-width:80;
+	-fx-pref-width:80;
+	-fx-max-width:80;
+	-fx-min-height:24;
+	-fx-pref-height:24;
+	-fx-max-height:24;
+}
+#filterArea #filterList VBox .count_PREDICTION_A {
+	-fx-alignment:center-right;
+	-fx-font-size:18;
+	-fx-text-fill:#000;
+	-fx-font-weight:bold;
+	-fx-padding:0;
+	-fx-label-padding:-4 0 0 0;
+	-fx-min-width:80;
+	-fx-pref-width:80;
+	-fx-max-width:80;
+	-fx-min-height:24;
+	-fx-pref-height:24;
+	-fx-max-height:24;
+}
+#filterArea #filterList VBox .count_PREDICTION_B {
+	-fx-alignment:center-right;
+	-fx-font-size:18;
+	-fx-text-fill:#000;
+	-fx-font-weight:bold;
+	-fx-padding:0;
+	-fx-label-padding:-4 0 0 0;
+	-fx-min-width:80;
+	-fx-pref-width:80;
+	-fx-max-width:80;
+	-fx-min-height:24;
+	-fx-pref-height:24;
+	-fx-max-height:24;
+}
+#filterArea #filterList VBox .count_PREDICTION_C {
+	-fx-alignment:center-right;
+	-fx-font-size:18;
+	-fx-text-fill:#000;
+	-fx-font-weight:bold;
+	-fx-padding:0;
+	-fx-label-padding:-4 0 0 0;
+	-fx-min-width:80;
+	-fx-pref-width:80;
+	-fx-max-width:80;
+	-fx-min-height:24;
+	-fx-pref-height:24;
+	-fx-max-height:24;
+}
+#filterArea #filterList VBox .count_PREDICTION_D {
+	-fx-alignment:center-right;
+	-fx-font-size:18;
+	-fx-text-fill:#000;
+	-fx-font-weight:bold;
+	-fx-padding:0;
+	-fx-label-padding:-4 0 0 0;
+	-fx-min-width:80;
+	-fx-pref-width:80;
+	-fx-max-width:80;
+	-fx-min-height:24;
+	-fx-pref-height:24;
+	-fx-max-height:24;
+}
+#filterArea #filterList VBox .count_PREDICTION_E {
+	-fx-alignment:center-right;
+	-fx-font-size:18;
+	-fx-text-fill:#000;
+	-fx-font-weight:bold;
+	-fx-padding:0;
+	-fx-label-padding:-4 0 0 0;
+	-fx-min-width:80;
+	-fx-pref-width:80;
+	-fx-max-width:80;
+	-fx-min-height:24;
+	-fx-pref-height:24;
+	-fx-max-height:24;
+}
+
+#filterArea #filterList VBox Label.alias_PRE_FILTERED {
+	-fx-background-color:#a5adb2;
+	-fx-border-color:#a5adb2;
+}
+
+#filterArea #filterList VBox Label.alias_PREDICTION_A {
+	-fx-background-color:#F6545C;
+	-fx-text-fill:#ffffff;
+}
+
+#filterArea #filterList VBox Label.alias_PREDICTION_B {
+	-fx-background-color:#FF9482;
+	-fx-text-fill:#ffffff
+}
+
+#filterArea #filterList VBox Label.alias_PREDICTION_C {
+	-fx-background-color:#70ACF5;
+	-fx-text-fill:#ffffff
+}
+
+#filterArea #filterList VBox Label.alias_PREDICTION_D {
+	-fx-background-color:#1F2D87;
+	-fx-text-fill:#ffffff
+}
+
+#filterArea #filterList VBox Label.alias_PREDICTION_E {
+	-fx-background-color: #5a64a5;
+	-fx-text-fill:#ffffff
+}
+
+.detail_base_bg {
+	-fx-background-image:url('../images/bg_detail_top.png');
+	-fx-background-repeat:repeat-x;
+	-fx-background-position:top;
+	-fx-background-color:#f3f3f3;
+}
+
+.pathogenic_review_checkbox {
+	-fx-spacing:5;
+	-fx-padding:10;
+}
+.pathogenic_review_checkbox .check-box {
+	-fx-padding:5;
+	-fx-background-radius:5;
+	-fx-border-width:0;
+	-fx-text-fill:white;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+}
+.pathogenic_review_checkbox .check-box .text {
+	-fx-text-fill:white;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+}
+.pathogenic_review_checkbox .check-box .box {
+	-fx-pref-width:10;
+	-fx-pref-height:10;
+	-fx-background-color:white;
+	-fx-border-width:2;
+	-fx-border-color:white;
+	-fx-border-radius:2;
+}
+
+#addToReportCheckBox {
+	-fx-background-color:#FB4952;
+}
+
+#setToFalseCheckBox {
+	-fx-background-color:#6B6B6B;
+}
+#reportedLabel {
+	-fx-background-color:#5DA4FB;
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-text-alignment:center ;
+	-fx-alignment:center;
+}
+
+#linkArea {
+	-fx-min-width:150;
+	-fx-pref-width:150;
+	-fx-max-width:150;
+	-fx-background-color:#ffffff;
+	-fx-padding:10;
+	-fx-alignment:center;
+}
+#linkArea .button {
+	-fx-alignment:top-center;
+}
+#linkArea .button.link {
+	-fx-background-color:#fff;
+	-fx-background-image:url('../images/icon_link_enable.png');
+	-fx-background-position:50% 80% ;
+	-fx-background-repeat:no-repeat ;		
+	-fx-background-radius:3;
+	-fx-border-radius:3;
+	-fx-border-color:#CACACA;
+	-fx-font-size:11px;
+	-fx-text-fill:#000000;
+	-fx-padding:0;
+	
+}
+
+#linkArea .button.link:hover {
+	-fx-background-image:url('../images/icon_link_over.png');
+}
+
+#linkArea .button.link:disabled {
+	-fx-background-image:url('../images/icon_link_disable.png');
+}
