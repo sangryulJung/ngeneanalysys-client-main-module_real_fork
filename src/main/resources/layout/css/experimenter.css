@@ -212,7 +212,7 @@ Button#buttonUpload:hover {
 }
 
 #listGrid #detailArea .button {
-	-fx-pref-width:75;
+	-fx-pref-width:55;
 }
 
 #searchArea {
