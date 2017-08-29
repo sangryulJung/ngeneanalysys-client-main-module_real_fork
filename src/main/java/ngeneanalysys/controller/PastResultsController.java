@@ -852,23 +852,25 @@ public class PastResultsController extends SubPaneController {
 		}
 	}
 	class DetailFieldVBox extends VBox {
+		SampleView sample = null;
 		DetailFieldVBox() {
 			this.setId("detailArea");
-			this.getStyleClass().add("colunmn");
+			this.getStyleClass().add("column");
 			Button btn = new Button("Detail");
 			btn.getStyleClass().add("btn_detail");
 			btn.setOnAction(e -> {
-				//DialogUtil.alert("개발중", "개발중입니다.", getMainApp().getPrimaryStage(), false);
-				Map<String,Object> detailViewParamMap = new HashMap<String,Object>();
+				if(sample != null) {
+					Map<String, Object> detailViewParamMap = new HashMap<>();
+					detailViewParamMap.put("id", sample.getId());
 
-				TopMenu menu = new TopMenu();
-				menu.setId("temp");
-				menu.setMenuName("temp");
-				menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_LAYOUT);
-				menu.setParamMap(detailViewParamMap);
-				menu.setStaticMenu(false);
-				mainController.addTopMenu(menu, 2, true);
-
+					TopMenu menu = new TopMenu();
+					menu.setId("sample_" + sample.getId());
+					menu.setMenuName(sample.getName());
+					menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_LAYOUT);
+					menu.setParamMap(detailViewParamMap);
+					menu.setStaticMenu(false);
+					mainController.addTopMenu(menu, 2, true);
+				}
 			});
 //				if(sample.getAnalysisResultSummary() != null) {
 //					btn.setOnAction(e -> {
@@ -891,6 +893,7 @@ public class PastResultsController extends SubPaneController {
 			this.getChildren().add(btn);
 		}
 		protected void setSampleView(SampleView sample) {
+			this.sample = sample;
 			this.setVisible(true);
 		}
 	}

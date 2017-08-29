@@ -10,13 +10,14 @@ import java.io.IOException;
 
 /**
  * @author Jang
- * @since 2017-08-28
+ * @since 2017-08-29
  */
-public class AnalysisDetailVariantsController extends AnalysisDetailCommonController {
+public class AnalysisDetailRawDataController extends AnalysisDetailCommonController {
     private static Logger logger = LoggerUtil.getLogger();
 
     /** API 서버 통신 서비스 */
     private APIService apiService;
+
 
     @Override
     public void show(Parent root) throws IOException {

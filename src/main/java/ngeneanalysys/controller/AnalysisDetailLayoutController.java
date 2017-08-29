@@ -66,11 +66,8 @@ public class AnalysisDetailLayoutController extends SubPaneController {
 
     private AnalysisDetailOverviewController analysisDetailOverviewController;
 
-    /** SNPs-INDELs Tab Controller */
-    private AnalysisDetailSNPsINDELsController sNPsINDELsController;
-
-    /** SNPs-INDELs Tab Controller */
-    private AnalysisDetailVariantsController variantsController;
+    /** target Tab Controller */
+    private AnalysisDetailTargetController targetController;
 
     /** API 서버 통신 서비스 */
     private APIService apiService;
@@ -80,6 +77,8 @@ public class AnalysisDetailLayoutController extends SubPaneController {
         logger.info("show..");
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
+
+        sampleId = (int) getParamMap().get("id");
 
         // 권한별 탭메뉴 추가
         int idx = 0;
@@ -132,19 +131,11 @@ public class AnalysisDetailLayoutController extends SubPaneController {
                             analysisDetailOverviewController.setParamMap(getParamMap());
                             analysisDetailOverviewController.show((Parent) node);
                             break;
-                        case FXMLConstants.ANALYSIS_DETAIL_SNPS_INDELS_LAYOUT:
-                            sNPsINDELsController = loader.getController();
-                            sNPsINDELsController.setAnalysisDetailLayoutController(this);
-                            sNPsINDELsController.setParamMap(getParamMap());
-                            sNPsINDELsController.show((Parent) node);
-                            break;
-                        case FXMLConstants.ANALYSIS_DETAIL_VARIANTS:
-                            variantsController = loader.getController();
-                            variantsController.setAnalysisDetailLayoutController(this);
-                            variantsController.setParamMap(getParamMap());
-                            variantsController.show((Parent) node);
-                            break;
-                        case FXMLConstants.ANALYSIS_DETAIL_RAW_DATA :
+                        case FXMLConstants.ANALYSIS_DETAIL_TARGET:
+                            targetController = loader.getController();
+                            targetController.setAnalysisDetailLayoutController(this);
+                            targetController.setParamMap(getParamMap());
+                            targetController.show((Parent) node);
                             break;
                         case FXMLConstants.ANALYSIS_DETAIL_REPORT :
                             break;
@@ -162,7 +153,6 @@ public class AnalysisDetailLayoutController extends SubPaneController {
             }
         }
     }
-
 
     /**
      * 지정탭이 선택시 마다 새로 갱신해야하는 부분이 있는 경우 실행함.

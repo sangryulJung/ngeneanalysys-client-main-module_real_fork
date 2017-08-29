@@ -72,19 +72,19 @@
                         <HBox prefHeight="25.0" prefWidth="167.0">
                            <children>
                               <Label text="Variants Count :" />
-                              <Label text="0" />
+                              <Label fx:id="tierOneVariantsCountLabel" text="0" />
                            </children>
                         </HBox>
                         <HBox prefHeight="21.0" prefWidth="155.0">
                            <children>
                               <Label text="Genes Count :" />
-                              <Label text="0" />
+                              <Label fx:id="tierOneGenesCountLabel" text="0" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <Label text="Therapeutic :" />
-                              <Label text="0" />
+                              <Label fx:id="tierOneTherapeuticLabel" text="0" />
                            </children>
                         </HBox>
                      </children>
@@ -96,25 +96,25 @@
                      <children>
                         <HBox prefHeight="27.0" prefWidth="167.0">
                            <children>
-                              <Label style="-fx-background-color: cyan;" text="Tier I" />
+                              <Label style="-fx-background-color: cyan;" text="Tier II" />
                            </children>
                         </HBox>
                         <HBox prefHeight="25.0" prefWidth="167.0">
                            <children>
                               <Label text="Variants Count :" />
-                              <Label text="0" />
+                              <Label fx:id="tierTwoVariantsCountLabel" text="0" />
                            </children>
                         </HBox>
                         <HBox prefHeight="21.0" prefWidth="155.0">
                            <children>
                               <Label text="Genes Count :" />
-                              <Label text="0" />
+                              <Label fx:id="tierTwoGenesCountLabel" text="0" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <Label text="Therapeutic :" />
-                              <Label text="0" />
+                              <Label fx:id="tierTwoTherapeuticLabel" text="0" />
                            </children>
                         </HBox>
                      </children>
@@ -126,25 +126,25 @@
                      <children>
                         <HBox prefHeight="27.0" prefWidth="167.0">
                            <children>
-                              <Label style="-fx-background-color: cyan;" text="Tier I" />
+                              <Label style="-fx-background-color: cyan;" text="Tier III" />
                            </children>
                         </HBox>
                         <HBox prefHeight="25.0" prefWidth="167.0">
                            <children>
                               <Label text="Variants Count :" />
-                              <Label text="0" />
+                              <Label fx:id="tierThreeVariantsCountLabel" text="0" />
                            </children>
                         </HBox>
                         <HBox prefHeight="21.0" prefWidth="155.0">
                            <children>
                               <Label text="Genes Count :" />
-                              <Label text="0" />
+                              <Label fx:id="tierThreeGenesCountLabel" text="0" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <Label text="Therapeutic :" />
-                              <Label text="0" />
+                              <Label fx:id="tierThreeTherapeuticLabel" text="0" />
                            </children>
                         </HBox>
                      </children>
@@ -156,25 +156,25 @@
                      <children>
                         <HBox prefHeight="27.0" prefWidth="167.0">
                            <children>
-                              <Label style="-fx-background-color: cyan;" text="Tier I" />
+                              <Label style="-fx-background-color: cyan;" text="Tier IV" />
                            </children>
                         </HBox>
                         <HBox prefHeight="25.0" prefWidth="167.0">
                            <children>
                               <Label text="Variants Count :" />
-                              <Label text="0" />
+                              <Label fx:id="tierFourVariantsCountLabel" text="0" />
                            </children>
                         </HBox>
                         <HBox prefHeight="21.0" prefWidth="155.0">
                            <children>
                               <Label text="Genes Count :" />
-                              <Label text="0" />
+                              <Label fx:id="tierFourGenesCountLabel" text="0" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <Label text="Therapeutic :" />
-                              <Label text="0" />
+                              <Label fx:id="tierFourTherapeuticLabel" text="0" />
                            </children>
                         </HBox>
                      </children>
@@ -186,20 +186,20 @@
             </HBox>
          </children>
       </GridPane>
-      <TableView fx:id="geneTable" prefHeight="149.0" prefWidth="966.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+      <TableView fx:id="tierTable" prefHeight="149.0" prefWidth="966.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
          <columns>
-            <TableColumn prefWidth="75.0" text="Tier" />
-            <TableColumn prefWidth="100.0" text="Gene" />
-            <TableColumn prefWidth="200.0" text="Variant" />
-            <TableColumn prefWidth="500.0" text="Therapeutic drug and prognosis" />
+            <TableColumn fx:id="tierColumn" editable="false" prefWidth="75.0" sortable="false" text="Tier" />
+            <TableColumn fx:id="geneColumn" editable="false" prefWidth="100.0" sortable="false" text="Gene" />
+            <TableColumn fx:id="variantColumn" editable="false" prefWidth="200.0" sortable="false" text="Variant" />
+            <TableColumn fx:id="therapeuticColumn" editable="false" prefWidth="500.0" sortable="false" text="Therapeutic drug and prognosis" />
          </columns>
       </TableView>
       <TableView fx:id="ngeativesTable" prefHeight="105.0" prefWidth="962.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
          <columns>
-            <TableColumn prefWidth="75.0" text="Gene" />
-            <TableColumn prefWidth="75.0" text="Variant" />
-            <TableColumn prefWidth="100.0" text="Variant Type" />
-            <TableColumn prefWidth="657.0" text="Cause" />
+            <TableColumn fx:id="negativeGeneColumn" editable="false" prefWidth="75.0" sortable="false" text="Gene" />
+            <TableColumn fx:id="negativeVariantColumn" editable="false" prefWidth="75.0" sortable="false" text="Variant" />
+            <TableColumn fx:id="negativeVariantTypeColumn" editable="false" prefWidth="100.0" sortable="false" text="Variant Type" />
+            <TableColumn fx:id="negativeCauseColumn" prefWidth="657.0" text="Cause" />
          </columns>
       </TableView>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
@@ -234,7 +234,7 @@
             </VBox>
          </children>
       </HBox>
-      <Label alignment="TOP_LEFT" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="326.0" text="Negatives" GridPane.columnIndex="1" GridPane.rowIndex="4">
+      <Label alignment="TOP_LEFT" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="326.0" text="Pertinent Negatives" GridPane.columnIndex="1" GridPane.rowIndex="4">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>

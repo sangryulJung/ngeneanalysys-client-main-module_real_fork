@@ -690,4 +690,24 @@ public class MainController extends BaseStageController {
         progressTaskContentArea.getChildren().removeAll(progressTaskContentArea.getChildren());
     }
 
+    /**
+     * 상단 탭 메뉴 스크롤 왼족으로 이동
+     */
+    @FXML
+    public void moveScrollLeft() {
+        double moveLength = topMenuScrollPane.getWidth()/topMenuArea.getWidth();
+        logger.info(String.format("scroll move [left] H-value : %s, move length : %s", topMenuScrollPane.getHvalue(), moveLength));
+        topMenuScrollPane.setHvalue(topMenuScrollPane.getHvalue() - moveLength);
+    }
+
+    /**
+     * 상단 탭 메뉴 스크롤 오른족으로 이동
+     */
+    @FXML
+    public void moveScrollRight() {
+        double moveLength = topMenuScrollPane.getWidth()/topMenuArea.getWidth();
+        logger.info(String.format("scroll move [right] H-value : %s, move length : %s", topMenuScrollPane.getHvalue(), moveLength));
+        topMenuScrollPane.setHvalue(topMenuScrollPane.getHvalue() + moveLength);
+    }
+
 }

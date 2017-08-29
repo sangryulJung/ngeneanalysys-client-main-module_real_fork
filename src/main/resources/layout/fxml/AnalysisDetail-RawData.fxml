@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.net.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane prefHeight="558.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailRawDataController">
+   <stylesheets>
+      <URL value="@../css/common.css" />
+      <URL value="@../css/raw_data.css" />
+      <URL value="@../css/analysisDetail.css" />
+   </stylesheets>
+   <top>
+      <HBox fx:id="filterArea" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="63.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox fx:id="filterTitleArea" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="62.0" prefWidth="70.0">
+               <children>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/icon_05.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="filterTitle" text="Filter">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox fx:id="filterList" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="62.0" prefWidth="1176.0" HBox.hgrow="ALWAYS" />
+         </children>
+         <padding>
+            <Insets left="19.0" right="15.0" />
+         </padding>
+      </HBox>
+   </top>
+   <center>
+      <TableView fx:id="rawListTableView" prefHeight="200.0" prefWidth="1250.0" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn fx:id="typeColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="200.0" resizable="false" text="Type" />
+          <TableColumn fx:id="filenameColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="688.0" text="Filename" />
+            <TableColumn fx:id="sizeColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="100.0" resizable="false" text="Size" />
+            <TableColumn fx:id="createdColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="150.0" resizable="false" text="Created" />
+            <TableColumn fx:id="downloadColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="90.0" resizable="false" text="Download" />
+        </columns>
+         <BorderPane.margin>
+            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+         </BorderPane.margin>
+      </TableView>
+   </center>
+</BorderPane>

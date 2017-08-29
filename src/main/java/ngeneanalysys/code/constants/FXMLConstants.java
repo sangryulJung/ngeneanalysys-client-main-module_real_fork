@@ -121,6 +121,6 @@ public class FXMLConstants {
 	public static final String ANALYSIS_DETAIL_OVERVIEW = "/layout/fxml/AnalysisDetail-Overview.fxml";
 
 	/** 분석 상세 > Variants 화면 */
-	public static final String ANALYSIS_DETAIL_VARIANTS = "/layout/fxml/AnalysisDetail-Variants.fxml";
+	public static final String ANALYSIS_DETAIL_TARGET = "/layout/fxml/AnalysisDetail-Target.fxml";
 
 }
