@@ -24,6 +24,5 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
 
-        this.mainController.getMainFrame().setCenter(root);
     }
 }

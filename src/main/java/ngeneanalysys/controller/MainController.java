@@ -480,32 +480,38 @@ public class MainController extends BaseStageController {
         boolean isFirstShow = false;
         try {
             if (!StringUtils.isEmpty(menu.getFxmlPath())) {
-                logger.info("mainFrame dispaly fxmlPath : " + menu.getMenuName());
-                FXMLLoader loader = mainApp.load(menu.getFxmlPath());
-                Node node = (Node) loader.load();
-                isFirstShow = true;
+                logger.info("mainFrame display fxmlPath : " + menu.getMenuName());
 
-                switch (menu.getFxmlPath()) {
-                    case FXMLConstants.HOME:
-                        homeController = loader.getController();
-                        homeController.setMainController(this);
-                        homeController.setParamMap(menu.getParamMap());
-                        homeController.show((Parent) node);
-                        break;
-                    case FXMLConstants.PAST_RESULTS:	// 분석자 Past Results
-                        pastResultsController = loader.getController();
-                        pastResultsController.setMainController(this);
-                        pastResultsController.setParamMap(menu.getParamMap());
-                        pastResultsController.show((Parent) node);
-                        break;
-                    case FXMLConstants.ANALYSIS_DETAIL_LAYOUT:
-                        AnalysisDetailLayoutController analysisDetailLayoutController = loader.getController();
-                        analysisDetailLayoutController.setMainController(this);
-                        analysisDetailLayoutController.setParamMap(menu.getParamMap());
-                        analysisDetailLayoutController.show((Parent) node);
-                        break;
-                    default:
-                        break;
+                if(topMenuContent[menu.getDisplayOrder()] == null) {
+                    FXMLLoader loader = mainApp.load(menu.getFxmlPath());
+                    Node node = (Node) loader.load();
+                    isFirstShow = true;
+
+                    switch (menu.getFxmlPath()) {
+                        case FXMLConstants.HOME:
+                            homeController = loader.getController();
+                            homeController.setMainController(this);
+                            homeController.setParamMap(menu.getParamMap());
+                            homeController.show((Parent) node);
+                            break;
+                        case FXMLConstants.PAST_RESULTS:    // 분석자 Past Results
+                            pastResultsController = loader.getController();
+                            pastResultsController.setMainController(this);
+                            pastResultsController.setParamMap(menu.getParamMap());
+                            pastResultsController.show((Parent) node);
+                            break;
+                        case FXMLConstants.ANALYSIS_DETAIL_LAYOUT:
+                            AnalysisDetailLayoutController analysisDetailLayoutController = loader.getController();
+                            analysisDetailLayoutController.setMainController(this);
+                            analysisDetailLayoutController.setParamMap(menu.getParamMap());
+                            analysisDetailLayoutController.show((Parent) node);
+                            break;
+                        default:
+                            break;
+                    }
+                    topMenuContent[menu.getDisplayOrder()] = mainFrame.getCenter();
+                } else {
+                    mainFrame.setCenter(topMenuContent[menu.getDisplayOrder()]);
                 }
 
                 if("experimentHomeWrapper".equals(currentShowFrameId)) {	// 이전 화면이 분석자 HOME인 경우 자동 새로고침 토글
@@ -527,10 +533,6 @@ public class MainController extends BaseStageController {
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
         }
-
-
-
-
     }
 
     /**

@@ -25,7 +25,6 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
 
-        this.mainController.getMainFrame().setCenter(root);
     }
 
 

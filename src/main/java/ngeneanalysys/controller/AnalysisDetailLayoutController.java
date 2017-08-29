@@ -1,6 +1,5 @@
 package ngeneanalysys.controller;
 
-import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -85,7 +84,7 @@ public class AnalysisDetailLayoutController extends SubPaneController {
         // 권한별 탭메뉴 추가
         int idx = 0;
         for (AnalysisDetailTabMenuCode code : AnalysisDetailTabMenuCode.values()) {
-            AnalysisDetailTabItem item = (AnalysisDetailTabItem) code.getItem();
+            AnalysisDetailTabItem item = code.getItem();
             Tab tab = new Tab();
             tab.setId(item.getNodeId());
             tab.setText(item.getTabName());
@@ -144,6 +143,10 @@ public class AnalysisDetailLayoutController extends SubPaneController {
                             variantsController.setAnalysisDetailLayoutController(this);
                             variantsController.setParamMap(getParamMap());
                             variantsController.show((Parent) node);
+                            break;
+                        case FXMLConstants.ANALYSIS_DETAIL_RAW_DATA :
+                            break;
+                        case FXMLConstants.ANALYSIS_DETAIL_REPORT :
                             break;
                         default:
                             break;
