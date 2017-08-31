@@ -514,13 +514,13 @@ public class MainController extends BaseStageController {
                     mainFrame.setCenter(topMenuContent[menu.getDisplayOrder()]);
                 }
 
-                if("experimentHomeWrapper".equals(currentShowFrameId)) {	// 이전 화면이 분석자 HOME인 경우 자동 새로고침 토글
+                if("homeWrapper".equals(currentShowFrameId)) {	// 이전 화면이 분석자 HOME인 경우 자동 새로고침 토글
                     homeController.autoRefreshTimeline.stop();
                 } else if("experimentPastResultsWrapper".equals(currentShowFrameId)) {	// 이전 화면이 분석자 Past Results인 경우 자동 새로고침 토글
                     pastResultsController.pauseAutoRefresh();
                 }
 
-                if("experimentHomeWrapper".equals(mainFrame.getCenter().getId())) {	// 현재 출력화면이 분석자 HOME 화면인 경우 다른 화면의 자동 새로고침 실행 토글 처리
+                if("homeWrapper".equals(mainFrame.getCenter().getId())) {	// 현재 출력화면이 분석자 HOME 화면인 경우 다른 화면의 자동 새로고침 실행 토글 처리
                     // 최초 화면 출력이 아닌 경우 분석자 HOME 화면 자동 새로고침 기능 시작
                     if(!isFirstShow) homeController.autoRefreshTimeline.play();
                 } else if("experimentPastResultsWrapper".equals(mainFrame.getCenter().getId())) {	// 현재 출력화면이 분석자 Past Results 화면인 경우 다른 화면의 자동 새로고침 실행 토글 처리

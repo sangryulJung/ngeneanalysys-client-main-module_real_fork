@@ -12,10 +12,12 @@ import javafx.scene.layout.HBox;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.AnalysisDetailTabMenuCode;
 import ngeneanalysys.controller.extend.SubPaneController;
+import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.render.AnalysisDetailTabItem;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.FXMLLoadUtil;
 import ngeneanalysys.util.LoggerUtil;
+import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -79,6 +81,13 @@ public class AnalysisDetailLayoutController extends SubPaneController {
         apiService.setStage(getMainController().getPrimaryStage());
 
         sampleId = (int) getParamMap().get("id");
+
+        try {
+            HttpClientResponse response = apiService.get("samples/" + sampleId, null, null, true);
+            logger.info(response.toString());
+        } catch (WebAPIException e) {
+            e.printStackTrace();
+        }
 
         // 권한별 탭메뉴 추가
         int idx = 0;

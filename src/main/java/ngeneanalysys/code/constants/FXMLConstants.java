@@ -101,6 +101,9 @@ public class FXMLConstants {
 	
 	/** 분석 상세 > SNPs-INDELs > WARNINGS TAB 화면 */
 	public static final String ANALYSIS_DETAIL_SNPS_INDELS_WARNINGS = "/layout/fxml/AnalysisDetail-SNPs-INDELs-Warnings.fxml";
+
+	/** 분석 상세 > SNPs-INDELs > WARNINGS TAB 화면 */
+	public static final String ANALYSIS_DETAIL_FUSION = "/layout/fxml/AnalysisDetail-Fusion.fxml";
 	
 	/** 분석 상세 > Genes 화면 */
 	public static final String ANALYSIS_DETAIL_GENES = "/layout/fxml/AnalysisDetail-Genes.fxml";

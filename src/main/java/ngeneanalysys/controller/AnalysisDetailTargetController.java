@@ -31,7 +31,7 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
     }
 
     /**
-     * 분석 요청 Dialog 창 출력
+     * SNP/Indels Dialog 창 출력
      */
     @FXML
     public void showSnpIndels() {
@@ -40,6 +40,25 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
             FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_SNPS_INDELS_LAYOUT);
             BorderPane page = loader.load();
             AnalysisDetailSNPsINDELsController controller = loader.getController();
+            controller.setMainController(this.mainController);
+
+            //controller.setHomeController(this);
+            controller.show(page);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Fusion Dialog 창 출력
+     */
+    @FXML
+    public void showFusion() {
+        try {
+            // Load the fxml file and create a new stage for the popup dialog
+            FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_FUSION);
+            BorderPane page = loader.load();
+            AnalysisDetailFusionController controller = loader.getController();
             controller.setMainController(this.mainController);
 
             //controller.setHomeController(this);

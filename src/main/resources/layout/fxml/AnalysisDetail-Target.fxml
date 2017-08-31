@@ -70,10 +70,18 @@
                   <Button mnemonicParsing="false" text="Button" />
                </children>
             </HBox>
-            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" GridPane.columnIndex="1">
                <children>
                   <Button mnemonicParsing="false" onAction="#showSnpIndels" text="SNP/INDELs" />
+                  <Button mnemonicParsing="false" onAction="#showFusion" text="Fusion">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Button>
                </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
             </HBox>
          </children>
       </GridPane>

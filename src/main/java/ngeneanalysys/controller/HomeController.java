@@ -54,6 +54,9 @@ public class HomeController extends SubPaneController{
     private Canvas hddCanvas;
 
     @FXML
+    private GridPane homeWrapper;
+
+    @FXML
     private GridPane runListGridPane;
 
     @FXML
