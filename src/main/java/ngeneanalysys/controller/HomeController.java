@@ -219,6 +219,7 @@ public class HomeController extends SubPaneController{
                 style.append("-fx-border-width: 0 0 1 0;-fx-border-color:black;");
                 style.append("-fx-border-radius:0;-fx-background-color:transparent;");
                 style.append("-fx-max-height:30;");
+                style.append("-fx-min-height:30;");
                 sampleNameField.setStyle(style.toString());
                 SampleAnalysisJobStatusBox sampleStatusField = new SampleAnalysisJobStatusBox();
                 sampleStatusFields.add(sampleStatusField);
@@ -405,6 +406,7 @@ public class HomeController extends SubPaneController{
             style.append("-fx-border-width: 0 0 1 0;-fx-border-color:black;");
             style.append("-fx-border-radius:0;-fx-background-color:transparent;");
             style.append("-fx-max-height:30;");
+            style.append("-fx-min-height:30;");
             statusMsgTextField.setStyle(style.toString());
             statusBox.getChildren().add(statusLabel);
             statusBox.getChildren().add(statusMsgTextField);
