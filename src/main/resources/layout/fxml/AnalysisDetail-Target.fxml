@@ -67,7 +67,7 @@
                   <ComboBox prefWidth="150.0" />
                   <ComboBox prefWidth="150.0" />
                   <TextField />
-                  <Button mnemonicParsing="false" text="Button" />
+                  <Button mnemonicParsing="false" text="Search" />
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" GridPane.columnIndex="1">

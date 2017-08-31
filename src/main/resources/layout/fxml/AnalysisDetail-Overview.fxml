@@ -184,6 +184,11 @@
                   </VBox>
                </children>
             </HBox>
+            <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0" spacing="10.0" GridPane.columnIndex="1">
+               <children>
+                  <Label text="Patient disease" />
+               </children>
+            </VBox>
          </children>
       </GridPane>
       <TableView fx:id="tierTable" prefHeight="149.0" prefWidth="966.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
@@ -194,7 +199,7 @@
             <TableColumn fx:id="therapeuticColumn" editable="false" prefWidth="500.0" sortable="false" text="Therapeutic drug and prognosis" />
          </columns>
       </TableView>
-      <TableView fx:id="ngeativesTable" prefHeight="105.0" prefWidth="962.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+      <TableView fx:id="pertinentNegativesTable" prefHeight="105.0" prefWidth="962.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
          <columns>
             <TableColumn fx:id="negativeGeneColumn" editable="false" prefWidth="75.0" sortable="false" text="Gene" />
             <TableColumn fx:id="negativeVariantColumn" editable="false" prefWidth="75.0" sortable="false" text="Variant" />
@@ -204,7 +209,7 @@
       </TableView>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
          <children>
-            <VBox prefHeight="63.0" prefWidth="268.0">
+            <VBox prefHeight="63.0" prefWidth="371.0">
                <children>
                   <Label text="QC">
                      <padding>
@@ -216,18 +221,21 @@
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                      </columnConstraints>
                      <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <Label text="read depth" />
-                        <Label text="pass" GridPane.rowIndex="1" />
-                        <Label text="coverage" GridPane.columnIndex="1" />
-                        <Label text="pass" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label text="read quality" GridPane.columnIndex="2" />
-                        <Label text="pass" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Label text="Sample QC" />
+                        <Label fx:id="sampleQCResultLabel" text="pass" GridPane.rowIndex="1" />
+                        <Label text="Library QC" GridPane.columnIndex="1" />
+                        <Label fx:id="libraryQCResultLabel" text="pass" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label text="Sequencing QC" GridPane.columnIndex="2" />
+                        <Label fx:id="sequencingQCResultLabel" text="pass" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Label text="Analysis QC" GridPane.columnIndex="3" />
+                        <Label fx:id="analysisQCResultLabel" text="pass" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
                </children>

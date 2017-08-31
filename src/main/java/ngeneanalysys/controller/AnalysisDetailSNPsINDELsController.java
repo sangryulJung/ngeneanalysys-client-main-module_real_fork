@@ -44,6 +44,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         }
         currentStage.initOwner(getMainApp().getPrimaryStage());
 
+
         // Scene Init
         Scene scene = new Scene(root);
         currentStage.setScene(scene);

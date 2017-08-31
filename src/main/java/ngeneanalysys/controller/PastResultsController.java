@@ -329,6 +329,7 @@ public class PastResultsController extends SubPaneController {
 		Map<String, Object> param = getSearchParam();
 		param.put("limit", itemCountPerPage);
 		param.put("offset", offset);
+		param.put("ordering", "DESC");
 		
 		try {
 			HttpClientResponse response = apiService.get("/searchSamples", param, null,

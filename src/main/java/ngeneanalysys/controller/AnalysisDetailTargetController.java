@@ -40,9 +40,9 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
             FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_SNPS_INDELS_LAYOUT);
             BorderPane page = loader.load();
             AnalysisDetailSNPsINDELsController controller = loader.getController();
+            controller.setParamMap(getParamMap());
             controller.setMainController(this.mainController);
 
-            //controller.setHomeController(this);
             controller.show(page);
         } catch (IOException e) {
             e.printStackTrace();
@@ -59,9 +59,9 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
             FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_FUSION);
             BorderPane page = loader.load();
             AnalysisDetailFusionController controller = loader.getController();
+            controller.setParamMap(getParamMap());
             controller.setMainController(this.mainController);
 
-            //controller.setHomeController(this);
             controller.show(page);
         } catch (IOException e) {
             e.printStackTrace();

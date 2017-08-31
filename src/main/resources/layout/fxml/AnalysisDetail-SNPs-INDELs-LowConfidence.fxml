@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.shape.*?>
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.GridPane?>
+
+<GridPane fx:id="warningsWrapper" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="272.0" prefWidth="1070.0" styleClass="bg_white" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNPsINDELsLowConfidenceController">
+   <columnConstraints>
+      <ColumnConstraints hgrow="ALWAYS" minWidth="-Infinity" percentWidth="100.0" prefWidth="1070.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints fillHeight="false" minHeight="-Infinity" prefHeight="272.0" valignment="TOP" />
+   </rowConstraints>
+   <children>
+      <VBox>
+         <children>
+            <HBox alignment="CENTER_LEFT">
+               <children>
+                  <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="font_size_12" text="Low Variant Coverage Depth : ">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="lowVariantCoverageDepthLabel" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="-" GridPane.rowIndex="1">
+                     <styleClass>
+                        <String fx:value="weight_bold" />
+                        <String fx:value="font_size_12" />
+                     </styleClass></Label>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT">
+               <children>
+                  <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="font_size_12" text="Low Variant Fraction : " GridPane.columnIndex="1">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="lowVariantFractionLabel" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <styleClass>
+                        <String fx:value="weight_bold" />
+                        <String fx:value="font_size_12" />
+                     </styleClass></Label>
+               </children>
+               <VBox.margin>
+                  <Insets top="3.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER_LEFT">
+               <children>
+                  <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="font_size_12" text="Homopolymer Region : " GridPane.columnIndex="3">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="homopolymerRegionLabel" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="-" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                     <styleClass>
+                        <String fx:value="weight_bold" />
+                        <String fx:value="font_size_12" />
+                     </styleClass></Label>
+               </children>
+               <VBox.margin>
+                  <Insets top="3.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER_LEFT">
+               <children>
+                  <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="font_size_12" text="Soft-clipped amplicon : " GridPane.columnIndex="2">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="softClippedAmpliconLabel" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="-" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <styleClass>
+                        <String fx:value="weight_bold" />
+                        <String fx:value="font_size_12" />
+                     </styleClass></Label>
+               </children>
+               <VBox.margin>
+                  <Insets top="3.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER_LEFT">
+               <children>
+                  <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="font_size_12" text="Primer region deletion : " GridPane.columnIndex="4">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="primerRegionDeletionLabel" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="-" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                     <styleClass>
+                        <String fx:value="weight_bold" />
+                        <String fx:value="font_size_12" />
+                     </styleClass></Label>
+               </children>
+               <VBox.margin>
+                  <Insets top="3.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+         <GridPane.margin>
+            <Insets left="10.0" top="10.0" />
+         </GridPane.margin>
+      </VBox>
+   </children>
+</GridPane>

@@ -13,10 +13,12 @@ import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.AnalysisDetailTabMenuCode;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
+import ngeneanalysys.model.Sample;
 import ngeneanalysys.model.render.AnalysisDetailTabItem;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.FXMLLoadUtil;
 import ngeneanalysys.util.LoggerUtil;
+import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
@@ -66,6 +68,8 @@ public class AnalysisDetailLayoutController extends SubPaneController {
     /** 현재 샘플의 고유 아아디 */
     private Integer sampleId;
 
+    private Sample sample;
+
     private AnalysisDetailOverviewController analysisDetailOverviewController;
 
     /** target Tab Controller */
@@ -84,7 +88,26 @@ public class AnalysisDetailLayoutController extends SubPaneController {
 
         try {
             HttpClientResponse response = apiService.get("samples/" + sampleId, null, null, true);
-            logger.info(response.toString());
+
+            sample = response.getObjectBeforeConvertResponseToJSON(Sample.class);
+
+            getParamMap().put("sample", sample);
+
+            sampleIdLabel.setText(String.format("#%s", sample.getId()));
+            //kitLabel.setText(PanelKitCode.valueOf(sample.getKit()).getDescription());
+            experimentLabel.setText(sample.getAnalysisType());
+            sampleNameLabel.setText(sample.getName());
+
+            String fastQC = sample.getQcResult();
+            /*fastQC = (StringUtils.isEmpty(fastQC) && sample.getQcData() != null)
+                    ? sample.getAnalysisResultSummary().getQualityControl() : fastQC;*/
+            fastQC = (!StringUtils.isEmpty(fastQC)) ? fastQC.toUpperCase() : "NONE";
+            qcLabel.setText(fastQC);
+            qcLabel.getStyleClass().add("font_size_12");
+            qcLabel.getStyleClass().add(String.format("FASTQC_%s", fastQC.toUpperCase()));
+            qcImageView.setImage(resourceUtil.getImage("/layout/images/icon_qc_" + fastQC.toLowerCase() + ".png"));
+
+
         } catch (WebAPIException e) {
             e.printStackTrace();
         }
@@ -93,6 +116,11 @@ public class AnalysisDetailLayoutController extends SubPaneController {
         int idx = 0;
         for (AnalysisDetailTabMenuCode code : AnalysisDetailTabMenuCode.values()) {
             AnalysisDetailTabItem item = code.getItem();
+
+            if(sample.getAnalysisType() != null && "GERMLINE".equals(sample.getAnalysisType())
+                    && "OVERVIEW".equals(item.getTabName())){
+                continue;
+            }
             Tab tab = new Tab();
             tab.setId(item.getNodeId());
             tab.setText(item.getTabName());

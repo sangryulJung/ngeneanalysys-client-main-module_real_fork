@@ -196,7 +196,7 @@ public class SampleUploadScreenThirdController extends BaseStageController{
     @FXML
     public void submit() {
         try {
-            if (sampleArrayList != null) {
+            if (sampleArrayList != null && standardDataGridPane.getChildren().size() > 0) {
 
                 Map<String, Object> params = new HashMap<>();
                 HttpClientResponse response = null;
@@ -244,17 +244,13 @@ public class SampleUploadScreenThirdController extends BaseStageController{
                     sampleUpload(sample);
 
                 }
+                this.mainController.runningAnalysisRequestUpload(uploadFileData, uploadFileList);
+                logger.info("submit");
+                closeDialog();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        this.mainController.runningAnalysisRequestUpload(uploadFileData, uploadFileList);
-
-
-        logger.info("submit");
-
-        closeDialog();
     }
 
     public void sampleUpload(Sample sample) throws  Exception {
