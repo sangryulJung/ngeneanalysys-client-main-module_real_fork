@@ -39,6 +39,8 @@ dependencies {
     compile group: 'net.sf.jxls', name: 'jxls-core', version: '1.0.6'
     // https://mvnrepository.com/artifact/org.apache.httpcomponents/httpmime
     compile group: 'org.apache.httpcomponents', name: 'httpmime', version: '4.5.2'
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-compress
+    compile group: 'org.apache.commons', name: 'commons-compress', version: '1.12'
 
     compile 'org.controlsfx:controlsfx:8.40.13'
 

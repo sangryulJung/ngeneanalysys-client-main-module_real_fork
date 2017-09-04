@@ -16,24 +16,34 @@ public class Run implements Serializable {
     @JsonProperty(value = "memberGroupId")
     private Integer memberGroupId;
 
+    @JsonProperty(value = "name")
     private String name;
 
+    @JsonProperty(value = "sequencingPlatform")
     private String sequencingPlatform;
 
+    @JsonProperty(value = "status")
     private String status;
 
+    @JsonProperty(value = "statusMsg")
    private String statusMsg;
 
+    @JsonProperty(value = "createdAt")
     private Timestamp createdAt;
 
+    @JsonProperty(value = "startedAt")
     private Timestamp startedAt;
 
+    @JsonProperty(value = "completedAt")
     private Timestamp completedAt;
 
+    @JsonProperty(value = "updatedAt")
     private Timestamp updatedAt;
 
+    @JsonProperty(value = "deletedAt")
     private Timestamp deletedAt;
 
+    @JsonProperty(value = "deleted")
     private Integer deleted;
 
     public Integer getId() {

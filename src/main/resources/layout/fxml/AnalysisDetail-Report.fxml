@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane prefHeight="558.0" prefWidth="1280.0" styleClass="detail_base_bg" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailReportController">
+   <columnConstraints>
+      <ColumnConstraints maxWidth="-Infinity" minWidth="-Infinity" prefWidth="20.0" />
+      <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" prefWidth="405.0" />
+      <ColumnConstraints maxWidth="-Infinity" minWidth="-Infinity" prefWidth="10.0" />
+      <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" minWidth="-Infinity" prefWidth="405.0" />
+      <ColumnConstraints maxWidth="-Infinity" minWidth="-Infinity" prefWidth="10.0" />
+      <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" minWidth="-Infinity" prefWidth="405.0" />
+      <ColumnConstraints maxWidth="-Infinity" minWidth="-Infinity" prefWidth="20.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="15.0" />
+      <RowConstraints maxHeight="95.60000610351562" minHeight="10.0" prefHeight="33.20001220703125" valignment="BOTTOM" />
+      <RowConstraints maxHeight="95.60000610351562" minHeight="-Infinity" prefHeight="86.79998779296875" valignment="BOTTOM" />
+      <RowConstraints minHeight="-Infinity" prefHeight="134.0" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" valignment="BOTTOM" />
+      <RowConstraints minHeight="-Infinity" prefHeight="134.0" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" valignment="BOTTOM" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="15.0" />
+   </rowConstraints>
+   <children>
+      <HBox fx:id="workBtnBox" alignment="BOTTOM_RIGHT" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="BOTTOM">
+         <children>
+            <Button mnemonicParsing="false" onAction="#save" prefHeight="35.0" prefWidth="95.0" styleClass="btn_patient_search1" text="Save" GridPane.columnIndex="5" GridPane.rowIndex="7" />
+            <Button layoutX="1155.0" layoutY="20.0" mnemonicParsing="false" onAction="#createPDFAsDraft" prefHeight="35.0" prefWidth="150.0" styleClass="btn_create_draft_report" text="Create Draft Report">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+            </Button>
+            <Button layoutX="1155.0" layoutY="20.0" mnemonicParsing="false" onAction="#createPDFAsFinal" prefHeight="35.0" prefWidth="150.0" styleClass="btn_create_final_report" text="Create Final Report" />
+         </children>
+      </HBox>
+      <HBox fx:id="completeBtnBox" alignment="BOTTOM_RIGHT" layoutX="30.0" layoutY="508.0" visible="false" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="6">
+         <children>
+            <Button layoutX="1155.0" layoutY="20.0" mnemonicParsing="false" onAction="#confirmPDFAsFinal" prefHeight="35.0" prefWidth="156.0" styleClass="btn_blue_sm" text="Confirm Final Report" />
+         </children>
+      </HBox>
+      <ScrollPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="2" GridPane.rowSpan="4" GridPane.valignment="CENTER">
+         <content>
+            <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1240.0">
+              <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="409.199951171875" minWidth="0.0" prefWidth="0.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="1162.0" minWidth="10.0" prefWidth="1162.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="172.4000244140625" minWidth="0.0" prefWidth="0.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <TitledPane animated="false" text="Conclusions" GridPane.columnIndex="1">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TextArea layoutY="7.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="1000.0" />
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </TitledPane>
+                  <TitledPane animated="false" text="Tier I Variants" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TableView layoutY="-4.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="1000.0">
+                                <columns>
+                                  <TableColumn prefWidth="75.0" text="Gene" />
+                                  <TableColumn prefWidth="75.0" text="Variants" />
+                                    <TableColumn prefWidth="150.0" text="Therapeutic" />
+                                    <TableColumn minWidth="100.0" prefWidth="0.0" text="Drug" />
+                                    <TableColumn prefWidth="101.0" text="리포트에서 제외" />
+                                </columns>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </TitledPane>
+                  <TitledPane animated="false" text="Tier II Variants" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TableView prefHeight="140.0" prefWidth="1000.0">
+                                <columns>
+                                  <TableColumn prefWidth="75.0" text="Gene" />
+                                  <TableColumn prefWidth="75.0" text="Variants" />
+                                    <TableColumn prefWidth="75.0" text="Therapeutic" />
+                                    <TableColumn prefWidth="75.0" text="Drug" />
+                                    <TableColumn prefWidth="75.0" text="리포트에서 제외" />
+                                </columns>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </TitledPane>
+                  <TitledPane animated="false" text="Negatives" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TableView prefHeight="140.0" prefWidth="1000.0">
+                                 <columns>
+                                    <TableColumn prefWidth="75.0" text="Gene" />
+                                    <TableColumn prefWidth="75.0" text="Variants" />
+                                    <TableColumn prefWidth="75.0" text="Cause" />
+                                    <TableColumn prefWidth="75.0" text="리포트에서 제외" />
+                                 </columns>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </TitledPane>
+                  <TitledPane animated="false" text="QC Result" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TableView prefHeight="140.0" prefWidth="1000.0">
+                                 <columns>
+                                    <TableColumn prefWidth="75.0" text="Gene" />
+                                    <TableColumn prefWidth="75.0" text="Variants" />
+                                    <TableColumn prefWidth="75.0" text="Cause" />
+                                    <TableColumn prefWidth="75.0" text="리포트에서 제외" />
+                                 </columns>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </TitledPane>
+               </children>
+            </GridPane>
+         </content>
+      </ScrollPane>
+      <HBox prefHeight="23.0" prefWidth="740.0" spacing="10.0" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="1">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="23.0" prefWidth="153.0" style="-fx-border-color: red;">
+               <children>
+                  <Label text="Patient ID : " />
+                  <Label text="123456789" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="23.0" prefWidth="235.0" style="-fx-border-color: red;">
+               <children>
+                  <Label text="Patient Disease : " />
+                  <Label text="bla bla bla" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="23.0" prefWidth="235.0" style="-fx-border-color: red;">
+               <children>
+                  <Label text="Panel : " />
+                  <Label text="고형암 I" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+         </children>
+      </HBox>
+   </children>
+   <stylesheets>
+      <URL value="@../../../../../../../../git/ngenebio_guiclient/src/main/resources/layout/css/common.css" />
+      <URL value="@../../../../../../../../git/ngenebio_guiclient/src/main/resources/layout/css/analysisDetail.css" />
+      <URL value="@../../../../../../../../git/ngenebio_guiclient/src/main/resources/layout/css/snps_indels.css" />
+   </stylesheets>
+</GridPane>

@@ -13,7 +13,12 @@ public enum ACMGFilterCode {
 	PREDICTION_C("Uncertain Significance", "Uncertain Significance", "C", "US"),
 	PREDICTION_D("Likely Benign", "Likely Benign", "D", "LB"),
 	PREDICTION_E("Benign", "Benign", "E", "B"),
-	LOW_CONFIDENCE("Low Confidence", "Low Confidence", "yes", null);
+	LOW_CONFIDENCE("Low Confidence", "Low Confidence", "yes", null),
+	//임시
+	TIER_ONE("Tier I", "Tier I", "yes", null),
+	TIER_TWO("Tier II", "Tier II", "yes", null),
+	TIER_THREE("Tier III", "Tier III", "yes", null),
+	TIER_FOUR("Tier IV", "Tier IV", "yes", null);
 
 	private String description;
 	private String detail;

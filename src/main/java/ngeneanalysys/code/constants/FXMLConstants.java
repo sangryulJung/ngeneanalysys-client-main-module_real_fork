@@ -94,13 +94,13 @@ public class FXMLConstants {
 	public static final String ANALYSIS_DETAIL_SNPS_INDELS_DATA_SUMMARY = "/layout/fxml/AnalysisDetail-SNPs-INDELs-DataSummary.fxml";
 	
 	/** 분석 상세 > SNPs-INDELs > Comment TAB 화면 */
-	public static final String ANALYSIS_DETAIL_SNPS_INDELS_COMMENT = "/layout/fxml/AnalysisDetail-SNPs-INDELs-Comment.fxml";
+	public static final String ANALYSIS_DETAIL_SNPS_INDELS_MEMO = "/layout/fxml/AnalysisDetail-SNPs-INDELs-Memo.fxml";
 	
 	/** 분석 상세 > SNPs-INDELs > VIEWER TAB 화면 */
 	public static final String ANALYSIS_DETAIL_SNPS_INDELS_VIEWER = "/layout/fxml/AnalysisDetail-SNPs-INDELs-Viewer.fxml";
 	
 	/** 분석 상세 > SNPs-INDELs > WARNINGS TAB 화면 */
-	public static final String ANALYSIS_DETAIL_SNPS_INDELS_WARNINGS = "/layout/fxml/AnalysisDetail-SNPs-INDELs-Warnings.fxml";
+	public static final String ANALYSIS_DETAIL_SNPS_INDELS_LOW_CONFIDENCE = "/layout/fxml/AnalysisDetail-SNPs-INDELs-LowConfidence.fxml";
 
 	/** 분석 상세 > SNPs-INDELs > WARNINGS TAB 화면 */
 	public static final String ANALYSIS_DETAIL_FUSION = "/layout/fxml/AnalysisDetail-Fusion.fxml";
@@ -125,5 +125,26 @@ public class FXMLConstants {
 
 	/** 분석 상세 > Variants 화면 */
 	public static final String ANALYSIS_DETAIL_TARGET = "/layout/fxml/AnalysisDetail-Target.fxml";
+
+	/** 시스템 매니저 화면 */
+	public static final String SYSTEM_MANAGER_HOME = "/layout/fxml/SystemManagerHome.fxml";
+
+	/** 시스템 매니저 사용자 정보 화면 */
+	public static final String SYSTEM_MANAGER_USER_ACCOUNT = "/layout/fxml/systemManager/SystemManagerUserAccount.fxml";
+
+	/** 시스템 매니저 서버 정보 화면 */
+	public static final String SYSTEM_MANAGER_SERVER_STATUS = "/layout/fxml/systemManager/SystemManagerServerStatus.fxml";
+
+	/** 시스템 매니저 분석 상태 화면 */
+	public static final String SYSTEM_MANAGER_ANALYSIS_STATUS = "/layout/fxml/systemManager/SystemManagerAnalysisStatus.fxml";
+
+	/** 시스템 매니저 로그 정보 화면 */
+	public static final String SYSTEM_MANAGER_LOG_LIST = "/layout/fxml/systemManager/SystemManagerSystemLogs.fxml";
+
+	/** 사용자 추가/수정 화면 */
+	public static final String USER_ACCOUNT = "/layout/fxml/systemManager/UserAccount.fxml";
+
+	/** 사용자 추가/수정 화면 */
+	public static final String GROUP_ADD = "/layout/fxml/systemManager/GroupAdd.fxml";
 
 }

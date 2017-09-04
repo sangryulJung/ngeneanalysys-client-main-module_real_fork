@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Pagination?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="558.0" stylesheets="@../../css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemManagerSystemLogsController">
+   <children>
+      <VBox layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="592.0" prefWidth="1180.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox prefHeight="74.0" prefWidth="900.0">
+               <children>
+                  <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="900.0" VBox.vgrow="NEVER">
+                     <children>
+                        <Label text="System Log " />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="1.0">
+                     <children>
+                        <Button fx:id="resetBtn" mnemonicParsing="false" onAction="#reset" styleClass="btn_refresh" text="Reset" />
+                        <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="33.0" prefWidth="170.0" spacing="5.0">
+                           <children>
+                              <Label text="Log Type" />
+                              <ComboBox fx:id="searchLogType" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="100.0" />
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="33.0" prefWidth="150.0" spacing="5.0">
+                           <children>
+                              <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Log Msg" HBox.hgrow="NEVER" />
+                              <TextField fx:id="logMsgText" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="23.0" prefWidth="78.0" HBox.hgrow="NEVER" />
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="162.0" spacing="5.0">
+                           <children>
+                              <Label text="User ID" />
+                              <TextField fx:id="userIdText" prefHeight="23.0" prefWidth="100.0" />
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="220.0" spacing="5.0">
+                           <children>
+                              <Label text="User Login ID" />
+                              <TextField fx:id="userLoginIdText" prefHeight="23.0" prefWidth="127.0" />
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="33.0" prefWidth="175.0" spacing="5.0">
+                           <children>
+                              <Label text="User Type" />
+                              <ComboBox fx:id="searchUserType" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="100.0" />
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="180.0" spacing="5.0">
+                           <children>
+                              <Label text="User Name" />
+                              <TextField fx:id="userNameText" prefHeight="23.0" prefWidth="100.0" />
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                        <Button fx:id="searchBtn" mnemonicParsing="false" onAction="#search" styleClass="btn_patient_search1" text="Search" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <TableView fx:id="logListTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+               <columns>
+                  <TableColumn fx:id="logId" prefWidth="100.0" text="Log ID" />
+                  <TableColumn fx:id="logType" prefWidth="100.0" text="Log Type" />
+                  <TableColumn fx:id="logMsg" prefWidth="150.0" text="Log Msg" />
+                  <TableColumn fx:id="userId" prefWidth="75.0" text="User ID" />
+                  <TableColumn fx:id="userLoginId" prefWidth="150.0" text="User Login ID" />
+                  <TableColumn fx:id="userType" prefWidth="150.0" text="User Type" />
+                  <TableColumn fx:id="name" prefWidth="100.0" text="Name" />
+                  <TableColumn fx:id="createdAt" prefWidth="150.0" text="Created At" />
+               </columns>
+            </TableView>
+            <HBox alignment="CENTER" prefHeight="48.0" prefWidth="900.0" spacing="5.0" VBox.vgrow="NEVER">
+               <children>
+                  <Button fx:id="prevBtn" mnemonicParsing="false" onAction="#prevMove" text="&lt;&lt;" />
+                  <Pagination fx:id="paginationList" pageCount="100" />
+                  <Button fx:id="nextBtn" mnemonicParsing="false" onAction="#nextMove" text="&gt;&gt;" />
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+                     <children>
+                        <Label text="page" />
+                        <TextField fx:id="pageText" prefHeight="23.0" prefWidth="74.0" />
+                        <Button fx:id="pageBtn" mnemonicParsing="false" onAction="#pageMove" prefHeight="23.0" prefWidth="41.0" text="go" />
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

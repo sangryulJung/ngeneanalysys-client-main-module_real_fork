@@ -64,10 +64,10 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="40.0">
                <children>
-                  <ComboBox prefWidth="150.0" />
-                  <ComboBox prefWidth="150.0" />
-                  <TextField />
-                  <Button mnemonicParsing="false" text="Search" />
+                  <ComboBox fx:id="virtualPanelComboBox" prefWidth="150.0" />
+                  <ComboBox fx:id="tierComboBox" prefWidth="150.0" />
+                  <TextField fx:id="geneNameTextField" />
+                  <Button mnemonicParsing="false" onAction="#searchGene" text="Search" />
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" GridPane.columnIndex="1">
@@ -85,38 +85,38 @@
             </HBox>
          </children>
       </GridPane>
-      <TableView fx:id="geneTable" prefHeight="149.0" prefWidth="966.0" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.rowSpan="3">
+      <TableView fx:id="geneTable" onMouseClicked="#cellSelectEvent" prefHeight="149.0" prefWidth="966.0" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.rowSpan="3">
          <columns>
-            <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Gene" />
+            <TableColumn fx:id="geneColumn" editable="false" prefWidth="75.0" sortable="false" text="Gene" />
             <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Tier I">
                <columns>
-                  <TableColumn editable="false" prefWidth="75.0" sortable="false" text="SNV" />
-                  <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Indels" />
-                  <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Fusion" />
+                  <TableColumn fx:id="tierOneSnvColumn" editable="false" prefWidth="75.0" sortable="false" text="SNV" />
+                  <TableColumn fx:id="tierOneIndelsColumn" editable="false" prefWidth="75.0" sortable="false" text="Indels" />
+                  <TableColumn fx:id="tierOneFusionColumn" editable="false" prefWidth="75.0" sortable="false" text="Fusion" />
                </columns>
             </TableColumn>
             <TableColumn prefWidth="75.0" text="Tier II">
                <columns>
-                  <TableColumn editable="false" prefWidth="75.0" sortable="false" text="SNV" />
-                  <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Indels" />
-                  <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Fusion" />
+                  <TableColumn fx:id="tierTwoSnvColumn" editable="false" prefWidth="75.0" sortable="false" text="SNV" />
+                  <TableColumn fx:id="tierTwoIndelsColumn" editable="false" prefWidth="75.0" sortable="false" text="Indels" />
+                  <TableColumn fx:id="tierTwoFusionColumn" editable="false" prefWidth="75.0" sortable="false" text="Fusion" />
                </columns>
             </TableColumn>
             <TableColumn prefWidth="75.0" text="Tier III">
                <columns>
-                  <TableColumn editable="false" prefWidth="75.0" sortable="false" text="SNV" />
-                  <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Indels" />
-                  <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Fusion" />
+                  <TableColumn fx:id="tierThreeSnvColumn" editable="false" prefWidth="75.0" sortable="false" text="SNV" />
+                  <TableColumn fx:id="tierThreeIndelsColumn" editable="false" prefWidth="75.0" sortable="false" text="Indels" />
+                  <TableColumn fx:id="tierThreeFusionColumn" editable="false" prefWidth="75.0" sortable="false" text="Fusion" />
                </columns>
             </TableColumn>
             <TableColumn prefWidth="75.0" text="Tier IV">
                <columns>
-                  <TableColumn editable="false" prefWidth="75.0" sortable="false" text="SNV" />
-                  <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Indels" />
-                  <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Fusion" />
+                  <TableColumn fx:id="tierFourSnvColumn" editable="false" prefWidth="75.0" sortable="false" text="SNV" />
+                  <TableColumn fx:id="tierFourIndelsColumn" editable="false" prefWidth="75.0" sortable="false" text="Indels" />
+                  <TableColumn fx:id="tierFourFusionColumn" editable="false" prefWidth="75.0" sortable="false" text="Fusion" />
                </columns>
             </TableColumn>
-            <TableColumn editable="false" minWidth="0.0" prefWidth="118.0" sortable="false" text="Open Details" />
+            <TableColumn fx:id="openDetailsColumn" editable="false" minWidth="0.0" prefWidth="118.0" sortable="false" text="Open Details" />
          </columns>
       </TableView>
    </children>

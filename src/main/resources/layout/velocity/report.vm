@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">
+	<!-- Layout setting -->
+	<fo:layout-master-set>
+		<fo:simple-page-master master-name="first"  margin-top="5mm" margin-bottom="5mm" margin-left="5mm" margin-right="5mm" page-height="297mm" page-width="210mm">
+			<fo:region-body region-name="body-first" margin-top="20mm" margin-bottom="25mm" margin-left="10mm" margin-right="10mm" />
+			<fo:region-after region-name="footer-first" extent="25mm" />
+		</fo:simple-page-master>
+		<fo:simple-page-master master-name="rest" page-height="210mm" page-width="297mm" margin-top="5mm" margin-bottom="5mm" margin-left="5mm" margin-right="5mm">
+			<fo:region-body region-name="body-rest" margin-top="10mm" margin-bottom="10mm" margin-left="25mm" margin-right="25mm" />
+			<fo:region-start region-name="start-rest" extent="15mm" />
+			<fo:region-end region-name="end-rest" extent="25mm" />
+		</fo:simple-page-master>
+		<fo:simple-page-master master-name="all-pages" margin-top="5mm" margin-bottom="5mm" margin-left="5mm" margin-right="5mm" page-width="210mm" page-height="297mm">
+			<fo:region-body region-name="xsl-region-body" margin-top="20mm" margin-bottom="25mm" margin-left="10mm" margin-right="10mm" />
+			<fo:region-before region-name="xsl-region-before" display-align="after" extent="15mm" />
+			<fo:region-after region-name="xsl-region-after" display-align="before" extent="25mm" />
+		</fo:simple-page-master>
+		<fo:page-sequence-master master-name="default-sequence">
+			<fo:repeatable-page-master-alternatives>
+				<fo:conditional-page-master-reference page-position="first" master-reference="first"/>
+				<fo:conditional-page-master-reference page-position="any" master-reference="all-pages"/>
+				<fo:conditional-page-master-reference page-position="rest" master-reference="rest"/>
+			</fo:repeatable-page-master-alternatives>
+		</fo:page-sequence-master>
+	</fo:layout-master-set>
+	
+	<fo:page-sequence master-reference="first">
+		<fo:static-content flow-name="footer-first">
+			<fo:block text-align="center" font-size="9pt"><fo:page-number/> </fo:block>
+		</fo:static-content>
+		
+		<!-- title page-->	
+		<fo:flow flow-name="body-first">
+			<fo:table table-layout="fixed" width="100%" height="100%" margin-top="3mm" margin-bottom="3mm" margin-left="3mm" margin-right="3mm">
+				<fo:table-column column-width="proportional-column-width(1)"/>
+				<fo:table-body>
+					<fo:table-row height="150mm">
+						<fo:table-cell display-align="center">
+							<fo:block text-align="center" font-size="18pt" margin-bottom="3mm">
+								Quality Report of
+							</fo:block>
+							<fo:block text-align="center" font-size="13pt" margin-bottom="10mm">
+								Report ID:
+							</fo:block>
+							<fo:block text-align="center">
+								
+								<fo:table table-layout="fixed" width="95%">
+									<fo:table-column column-width="50%" />
+									<fo:table-column column-width="proportional-column-width(1)" />
+									<fo:table-body>
+										<fo:table-row>
+											<fo:table-cell display-align="center" padding-after="20mm" padding="2mm">
+												<fo:block font-size="9pt" text-align="left" border-top-style="solid" border-top-width="0.5pt" padding="1mm">
+												Analysis Manager
+												</fo:block>
+											</fo:table-cell>
+											<fo:table-cell display-align="center" padding-after="20mm" padding="2mm">
+												<fo:block font-size="9pt" text-align="left" border-top-style="solid" border-top-width="0.5pt" padding="1mm">
+												Date
+												</fo:block>
+											</fo:table-cell>
+										</fo:table-row>
+										<fo:table-row>
+											<fo:table-cell display-align="center" padding-after="10mm" padding="2mm">
+												<fo:block font-size="9pt" text-align="left" border-top-style="solid" border-top-width="0.5pt" padding="1mm">
+												Bioinformatics Manager
+												</fo:block>
+											</fo:table-cell>
+											<fo:table-cell display-align="center" padding-after="10mm" padding="2mm">
+												<fo:block font-size="9pt" text-align="left" border-top-style="solid" border-top-width="0.5pt" padding="1mm">
+												Date
+												</fo:block>
+											</fo:table-cell>
+										</fo:table-row>
+										<fo:table-row>
+											<fo:table-cell display-align="center" number-columns-spanned="2">
+												<fo:block font-size="9pt" text-align="center">
+													<fo:external-graphic src="https://archive.apache.org/dist/xmlgraphics/fop/images/fop_logo.jpg" content-height="50pt" content-width="50pt"/>
+												</fo:block>
+											</fo:table-cell>
+										</fo:table-row>
+									</fo:table-body>
+								</fo:table>
+											
+							</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+				</fo:table-body>
+			</fo:table>
+				
+		</fo:flow>
+	</fo:page-sequence>
+
+	<!-- Page Contents -->
+	<fo:page-sequence master-reference="all-pages" margin-left="3mm" margin-right="3mm">
+		<!-- header contents -->
+		<fo:static-content flow-name="xsl-region-before">
+			<fo:block font-size="7pt" text-align="left" border-width="0">
+				<fo:table table-layout="fixed" width="100%" margin-top="3mm" margin-bottom="3mm" margin-left="3mm" margin-right="3mm">
+					<fo:table-column column-width="100mm" />
+					<fo:table-column column-width="proportional-column-width(1)" />
+					<fo:table-column column-width="80mm" />
+					<fo:table-body>
+						<fo:table-row>
+							<fo:table-cell column-number="1">
+								<fo:block text-align="left">
+									<!--<fo:external-graphic src="${ngenebioLogo}" content-width="35mm" content-height="6mm"/>-->
+								</fo:block>
+								<fo:block text-align="left">
+									<!--$contents.panelName ($contents.panelCode) Clinical Report(#$contents.reportID) -->
+									hello
+								</fo:block>
+							</fo:table-cell>
+						</fo:table-row>
+					</fo:table-body>
+				</fo:table>
+			</fo:block>
+		</fo:static-content>
+		<!-- End header contents -->
+
+		<!-- footer contents -->
+		<fo:static-content flow-name="xsl-region-after">
+			<fo:block margin="5mm" font-size="7pt" text-align="left" border-width="0pt">
+				<fo:table table-layout="fixed" width="100%">
+					<fo:table-column column-width="80%" />
+					<fo:table-column column-width="proportional-column-width(1)" />
+					<fo:table-body>
+						<fo:table-row>
+							<fo:table-cell>
+								<fo:block text-align="left">NGeneBio. 1104, Hanhwa Bizmetro, 242, Digital-ro, Guro-gu, Seoul, Korea</fo:block>
+								<fo:block text-align="left">Phone: +82-2-867-9787 E-mail: support@ngenebio.com</fo:block>
+								<fo:block text-align="left">www.ngenebio.com</fo:block>
+							</fo:table-cell>
+							<fo:table-cell>
+								<fo:block text-align="right"><fo:page-number/> of <fo:page-number-citation ref-id="lastPage"/></fo:block>
+							</fo:table-cell>
+						</fo:table-row>
+					</fo:table-body>
+				</fo:table>
+			</fo:block>
+		</fo:static-content>
+		<!-- End footer contents -->
+
+		<!-- Contents Area -->
+		<fo:flow flow-name="xsl-region-body">
+			
+			<!-- contents page -->
+			<fo:block break-before="page">
+				<fo:block font-size="11pt" text-align="right" margin-bottom="10mm">CONTENTS</fo:block>
+				<fo:block font-size="15pt" margin-bottom="10mm">Contents</fo:block>
+				<fo:table table-layout="fixed">
+					<fo:table-column column-width="5mm" />
+					<fo:table-column column-width="proportional-column-width(1)" />
+					<fo:table-column column-width="5mm" />
+					<fo:table-body font-size="10.5pt">
+						<fo:table-row padding-bottom="10mm">
+							<fo:table-cell>
+								<fo:block>1</fo:block>
+							</fo:table-cell>
+							<fo:table-cell>
+								<fo:block text-align-last="justify">
+									blahblah
+									<fo:leader leader-pattern="rule" />
+								</fo:block>
+							</fo:table-cell>
+							<fo:table-cell text-align="right">
+								<fo:block>
+									<fo:page-number-citation ref-id="{generate-id(.)}" />
+								</fo:block>
+							</fo:table-cell>
+						</fo:table-row>
+						<fo:table-row>
+							<fo:table-cell>
+								<fo:block>11</fo:block>
+							</fo:table-cell>
+							<fo:table-cell>
+								<fo:block text-align-last="justify">
+									blahblah
+									<fo:leader leader-pattern="rule" />
+								</fo:block>
+							</fo:table-cell>
+							<fo:table-cell text-align="right">
+								<fo:block>
+									1<fo:page-number-citation ref-id="{generate-id(.)}" />
+								</fo:block>
+							</fo:table-cell>
+						</fo:table-row>
+					</fo:table-body>
+				</fo:table>
+				<fo:block page-break-before="always"> </fo:block>
+			</fo:block>
+
+			
+			
+			
+			<!-- Analysis Informaion -->
+			<fo:block id="{generate-id(.)}" margin-bottom="10mm" font-size="10pt">
+				<fo:block font-size="15pt" text-align-last="justify">
+					1 blah blah
+					<fo:leader leader-pattern="rule" />
+				</fo:block>
+				<fo:list-block provisional-distance-between-starts="0.4cm" provisional-label-separation="0.15cm">
+					<fo:list-item>
+						<fo:list-item-label end-indent="label-end()">
+							<fo:block>
+								&#x2022;
+							</fo:block>
+						</fo:list-item-label>
+						<fo:list-item-body start-indent="body-start()">
+							<fo:block>
+								aiosdjfioas
+							</fo:block>
+						</fo:list-item-body>
+					</fo:list-item>
+				</fo:list-block>
+			</fo:block>
+
+			<!-- Raw Reads Quality -->
+			<fo:block id="{generate-id(1)}" font-size="10pt">
+				<fo:block font-size="15pt" text-align-last="justify">
+					1 blah blah
+					<fo:leader leader-pattern="rule" />
+				</fo:block>
+				<fo:list-block provisional-distance-between-starts="0.4cm" provisional-label-separation="0.15cm">
+					<fo:list-item>
+						<fo:list-item-label end-indent="label-end()">
+							<fo:block>
+								&#x2022;
+							</fo:block>
+						</fo:list-item-label>
+						<fo:list-item-body start-indent="body-start()">
+							<fo:block>
+								aiosdjfioas
+								
+								<fo:list-block provisional-distance-between-starts="0.7cm" provisional-label-separation="0.15cm">
+									<fo:list-item start-indent="0.5cm">
+										<fo:list-item-label end-indent="label-end()">
+											<fo:block text-align="end" font-size="7pt">&#x2022;</fo:block>
+										</fo:list-item-label>
+										<fo:list-item-body start-indent="body-start()">
+											<fo:block text-align="justify">
+											nested list item 
+												<fo:list-block provisional-distance-between-starts="0.7cm" provisional-label-separation="0.15cm">
+													<fo:list-item start-indent="1cm">
+														<fo:list-item-label end-indent="label-end()">
+															<fo:block text-align="end">*</fo:block>
+														</fo:list-item-label>
+														<fo:list-item-body start-indent="body-start()">
+															<fo:block text-align="justify">
+															blah blah blah blah
+															</fo:block>
+														</fo:list-item-body>
+													</fo:list-item>
+													<fo:list-item start-indent="1cm">
+														<fo:list-item-label end-indent="label-end()">
+															<fo:block text-align="end">*</fo:block>
+														</fo:list-item-label>
+														<fo:list-item-body start-indent="body-start()">
+															<fo:block text-align="justify">
+															blah blah blah blah
+															</fo:block>
+														</fo:list-item-body>
+													</fo:list-item>
+												</fo:list-block>
+											</fo:block>
+										</fo:list-item-body>
+									</fo:list-item>
+								[more item in nested list ...]
+								</fo:list-block >
+							</fo:block>
+							
+						</fo:list-item-body>
+					</fo:list-item>
+				</fo:list-block>
+			</fo:block>
+		</fo:flow>
+		
+		
+	</fo:page-sequence>
+	
+	<fo:page-sequence master-reference="rest">
+		<fo:static-content flow-name="end-rest">
+			<fo:block-container reference-orientation="270">
+				<fo:block font-size="7pt" text-align="left" border-width="0">
+					<fo:table table-layout="fixed" width="100%" margin-top="3mm" margin-bottom="3mm" margin-left="3mm" margin-right="3mm">
+						<fo:table-column column-width="100mm" />
+						<fo:table-column column-width="proportional-column-width(1)" />
+						<fo:table-column column-width="80mm" />
+						<fo:table-body>
+							<fo:table-row>
+								<fo:table-cell column-number="1">
+									<fo:block text-align="left">
+										<!--<fo:external-graphic src="${ngenebioLogo}" content-width="35mm" content-height="6mm"/>-->
+									</fo:block>
+									<!--$contents.panelName ($contents.panelCode) Clinical Report(#$contents.reportID) -->
+									<fo:block text-align="left">hello</fo:block>
+								</fo:table-cell>
+							</fo:table-row>
+						</fo:table-body>
+					</fo:table>
+				</fo:block>
+			</fo:block-container>
+		</fo:static-content>
+		
+		<!-- footer contents -->
+		<fo:static-content flow-name="start-rest">
+			<fo:block-container reference-orientation="270">
+				<!-- <fo:block margin="5mm" font-size="7pt" text-align="left" border-width="0pt"> -->
+				<fo:block margin-top="5mm" margin-left="5mm" margin-bottom="10mm" margin-right="5mm" font-size="7pt" text-align="left" border-width="0pt">
+					<fo:table table-layout="fixed" width="100%">
+						<fo:table-column column-width="80%" />
+						<fo:table-column column-width="proportional-column-width(1)" />
+						<fo:table-body>
+							<fo:table-row>
+								<fo:table-cell>
+										<fo:block text-align="left">NGeneBio. 1104, Hanhwa Bizmetro, 242, Digital-ro, Guro-gu, Seoul, Korea</fo:block>
+										<fo:block text-align="left">Phone: +82-2-867-9787 E-mail: support@ngenebio.com</fo:block>
+										<fo:block text-align="left">www.ngenebio.com</fo:block>
+								</fo:table-cell>
+								<fo:table-cell>
+										<fo:block text-align="right"><fo:page-number/> of <fo:page-number-citation ref-id="lastPage"/></fo:block>
+								</fo:table-cell>
+							</fo:table-row>
+						</fo:table-body>
+					</fo:table>
+				</fo:block>
+			</fo:block-container>
+		</fo:static-content>
+		<!-- End footer contents -->
+				
+		<fo:flow flow-name="body-rest">
+			<fo:block text-align="center" font-size="9pt">
+				<fo:block font-size="13pt" text-align-last="justify" padding-after="10pt">
+					1 blah blah
+					<fo:leader leader-pattern="rule" />
+				</fo:block>
+				<fo:table table-layout="fixed">
+					<fo:table-column column-number="1" column-width="proportional-column-width(20)" />
+					<fo:table-column column-number="2" column-width="proportional-column-width(12)" />
+					<fo:table-column column-number="3" column-width="proportional-column-width(12)" />
+					<fo:table-column column-number="4" column-width="proportional-column-width(12)" />
+					<fo:table-column column-number="5" column-width="proportional-column-width(44)" />
+					<fo:table-body>	
+						<fo:table-row border-top-style="solid" border-top-width="0.5pt" border-bottom-style="solid" border-bottom-width="0.5pt">
+							<fo:table-cell>	
+								<fo:block>Software</fo:block>
+							</fo:table-cell>
+							<fo:table-cell>
+								<fo:block>Version</fo:block>
+							</fo:table-cell>
+							<fo:table-cell>
+								<fo:block>Release</fo:block>
+							</fo:table-cell>
+							<fo:table-cell>
+								<fo:block>License</fo:block>
+							</fo:table-cell>
+							<fo:table-cell>
+								<fo:block>Source</fo:block>
+							</fo:table-cell>
+						</fo:table-row>
+						
+						<fo:table-row>
+							<fo:table-cell>
+								<fo:block>FastQC</fo:block>
+							</fo:table-cell>
+							<fo:table-cell>
+								<fo:block>v0.11.3</fo:block>
+							</fo:table-cell>
+							<fo:table-cell>
+								<fo:block> </fo:block>
+							</fo:table-cell>
+							<fo:table-cell>
+								<fo:block>GPLv3 or later</fo:block>
+							</fo:table-cell>
+							<fo:table-cell>
+								<fo:block>http://www.bioinformatics.babraham.ac.uk/projects/fastqc/</fo:block>
+							</fo:table-cell>
+						</fo:table-row>
+					</fo:table-body>
+				</fo:table>
+			</fo:block>
+			<fo:block id="lastPage"> </fo:block>
+		</fo:flow>
+		
+	</fo:page-sequence>
+</fo:root>

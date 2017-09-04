@@ -65,6 +65,8 @@ public class MainController extends BaseStageController {
     /** 분석자 Past Results 컨트롤러*/
     private PastResultsController pastResultsController;
 
+    private SystemManagerHomeController systemManagerHomeController;
+
     /** 분석 요청 작업 Task 관리 컨트롤러 */
     private AnalysisSampleUploadProgressTaskController analysisSampleUploadProgressTaskController;
 
@@ -274,14 +276,20 @@ public class MainController extends BaseStageController {
      */
     public void initDefaultTopMenu(String role) {
         if(UserTypeBit.ADMIN.name().equalsIgnoreCase(role)) {
-            topMenus = new TopMenu[2];
+            topMenus = new TopMenu[3];
             topMenuContent = new Node[topMenus.length];
+            TopMenu menu = new TopMenu();
+            menu.setMenuName("System Manager");
+            menu.setFxmlPath(FXMLConstants.SYSTEM_MANAGER_HOME);
+            menu.setDisplayOrder(2);
+            menu.setStaticMenu(true);
+            topMenus[2] = menu;
         } else {
             topMenus = new TopMenu[2];
             topMenuContent = new Node[topMenus.length];
         }
         TopMenu menu = new TopMenu();
-        menu.setMenuName("HOME");
+        menu.setMenuName("Home");
         menu.setFxmlPath(FXMLConstants.HOME);
         menu.setDisplayOrder(0);
         menu.setStaticMenu(true);
@@ -506,6 +514,12 @@ public class MainController extends BaseStageController {
                             analysisDetailLayoutController.setParamMap(menu.getParamMap());
                             analysisDetailLayoutController.show((Parent) node);
                             break;
+                        case FXMLConstants.SYSTEM_MANAGER_HOME:
+                            systemManagerHomeController= loader.getController();
+                            systemManagerHomeController.setMainController(this);
+                            systemManagerHomeController.setParamMap(menu.getParamMap());
+                            systemManagerHomeController.show((Parent) node);
+                            break;
                         default:
                             break;
                     }
@@ -517,6 +531,9 @@ public class MainController extends BaseStageController {
                 if("homeWrapper".equals(currentShowFrameId)) {	// 이전 화면이 분석자 HOME인 경우 자동 새로고침 토글
                     homeController.autoRefreshTimeline.stop();
                 } else if("experimentPastResultsWrapper".equals(currentShowFrameId)) {	// 이전 화면이 분석자 Past Results인 경우 자동 새로고침 토글
+                    pastResultsController.pauseAutoRefresh();
+                } else if ("systemManagerHomeWrapper".equals(currentShowFrameId)) {
+                    homeController.autoRefreshTimeline.stop();
                     pastResultsController.pauseAutoRefresh();
                 }
 
@@ -708,6 +725,23 @@ public class MainController extends BaseStageController {
         double moveLength = topMenuScrollPane.getWidth()/topMenuArea.getWidth();
         logger.info(String.format("scroll move [right] H-value : %s, move length : %s", topMenuScrollPane.getHvalue(), moveLength));
         topMenuScrollPane.setHvalue(topMenuScrollPane.getHvalue() + moveLength);
+    }
+
+    /**
+     * 지정 아이디에 해당하는 객체 삭제
+     * @param id
+     */
+    public void removeProgressTaskItemById(String id) {
+        if(this.progressTaskContentArea.getChildren() != null && this.progressTaskContentArea.getChildren().size() > 0) {
+            int idx = 0;
+            for(Node node : this.progressTaskContentArea.getChildren()) {
+                if(!StringUtils.isEmpty(node.getId()) && id.equals(node.getId())) {
+                    break;
+                }
+                idx++;
+            }
+            this.progressTaskContentArea.getChildren().remove(idx);
+        }
     }
 
 }

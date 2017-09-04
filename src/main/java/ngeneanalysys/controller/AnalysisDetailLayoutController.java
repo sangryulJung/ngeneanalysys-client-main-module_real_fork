@@ -75,6 +75,8 @@ public class AnalysisDetailLayoutController extends SubPaneController {
     /** target Tab Controller */
     private AnalysisDetailTargetController targetController;
 
+    private AnalysisDetailReportController analysisDetailReportController;
+
     /** API 서버 통신 서비스 */
     private APIService apiService;
 
@@ -175,6 +177,11 @@ public class AnalysisDetailLayoutController extends SubPaneController {
                             targetController.show((Parent) node);
                             break;
                         case FXMLConstants.ANALYSIS_DETAIL_REPORT :
+                            analysisDetailReportController = loader.getController();
+                            analysisDetailReportController.setAnalysisDetailLayoutController(this);
+                            analysisDetailReportController.setParamMap(getParamMap());
+                            analysisDetailReportController.show((Parent) node);
+
                             break;
                         default:
                             break;
@@ -202,4 +209,5 @@ public class AnalysisDetailLayoutController extends SubPaneController {
             //reportController.setVariantList();
         }
     }
+
 }

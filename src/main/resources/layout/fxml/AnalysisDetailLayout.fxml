@@ -21,7 +21,10 @@
             <Insets top="15.0" />
          </GridPane.margin>
          <children>
-            <Button mnemonicParsing="false" text="Button" />
+            <Button fx:id="rawDataDownload" mnemonicParsing="false" text="RawData">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets></Button>
             <Separator maxHeight="11.0" minHeight="11.0" orientation="VERTICAL" prefHeight="11.0" />
             <Label fx:id="sampleIdLabel" text="#0001" textFill="#262b33" HBox.hgrow="ALWAYS">
                <font>

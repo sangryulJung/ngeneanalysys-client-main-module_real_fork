@@ -244,7 +244,9 @@ public class SampleUploadScreenThirdController extends BaseStageController{
                     sampleUpload(sample);
 
                 }
-                this.mainController.runningAnalysisRequestUpload(uploadFileData, uploadFileList);
+                if((uploadFileData != null && uploadFileData.size() > 0) &&
+                        (uploadFileList != null && uploadFileList.size() > 0))
+                    this.mainController.runningAnalysisRequestUpload(uploadFileData, uploadFileList);
                 logger.info("submit");
                 closeDialog();
             }
@@ -262,7 +264,7 @@ public class SampleUploadScreenThirdController extends BaseStageController{
         params.put("patientId", sample.getPaitentId());
         params.put("panelId", sample.getPanelId());
         params.put("diseaseId", sample.getDiseaseId());
-        params.put("analysisType", "SOMATIC");
+        params.put("analysisType", "GERMLINE");
         params.put("sampleSource", sample.getSampleSource());
         params.put("inputFType", "FASTQ.GZ");
         Map<String, String> sampleSheet = new HashMap<>();

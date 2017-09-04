@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Polyline?>
 
-<GridPane fx:id="overviewWrapper" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="272.0" prefWidth="1105.0" styleClass="bg_white" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailOverviewController">
+<GridPane fx:id="overviewWrapper" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="272.0" prefWidth="1105.0" styleClass="bg_white" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNPsINDELsOverviewController">
 	<columnConstraints>
 		<ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="271.0" minWidth="-Infinity" prefWidth="171.0" />
 		<ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="388.0" minWidth="-Infinity" prefWidth="288.0" />
