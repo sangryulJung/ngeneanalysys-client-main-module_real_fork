@@ -329,15 +329,24 @@ public class HomeController extends SubPaneController{
     private void testAddSamples(int runId) {
         Map<String, Object> params = new HashMap<>();
         HttpClientResponse response = null;
-        for(int i = 0; i < 20; i++) {
+        for(int i = 0; i < 10; i++) {
             try {
                 params.put("runId", runId);
                 params.put("name", "sample_" + i + "_" + "RUN_" + runId);
                 params.put("patientId", "PAT_" + i + "_" + runId);
-                params.put("panelId", 1);
+                int panelId = (runId % 3) + 1;
+                params.put("panelId", panelId);
                 params.put("diseaseId", 1);
-                params.put("analysisType", "SOMATIC");
-                params.put("sampleSource", "FFPE");
+                if(panelId == 1) {
+                    params.put("analysisType", "GERMLINE");
+                } else {
+                    params.put("analysisType", "SOMATIC");
+                }
+                if (panelId == 2) {
+                    params.put("sampleSource", "FFPE");
+                } else {
+                    params.put("sampleSource", "BLOOD");
+                }
                 params.put("inputFType", "FASTQ.GZ");
                 Map<String, String> sampleSheet = new HashMap<>();
                 sampleSheet.put("sampleId", "");
