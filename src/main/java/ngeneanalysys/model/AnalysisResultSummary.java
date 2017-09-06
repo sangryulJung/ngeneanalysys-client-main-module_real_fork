@@ -30,6 +30,30 @@ public class AnalysisResultSummary implements Serializable {
     private BigDecimal coverageUniformityPercentage;
     private String coverageUniformityStatus;
 
+    public AnalysisResultSummary(Integer sampleId, String qualityControlStatus, Integer depthMin, Integer depthMax, BigDecimal depthMean, Integer geneCount, Integer allVariantCount, Integer warningVariantCount, Integer level1VariantCount, Integer level2VariantCount, Integer level3VariantCount, Integer level4VariantCount, Integer level5VariantCount, BigDecimal meanReadQualityPercentage, String meanReadQualityStatus, BigDecimal retainedReadsPercentage, String retainedReadsStatus, BigDecimal roiCoveragePercentage, String roiCoverageStatus, BigDecimal coverageUniformityPercentage, String coverageUniformityStatus) {
+        this.sampleId = sampleId;
+        this.qualityControlStatus = qualityControlStatus;
+        this.depthMin = depthMin;
+        this.depthMax = depthMax;
+        this.depthMean = depthMean;
+        this.geneCount = geneCount;
+        this.allVariantCount = allVariantCount;
+        this.warningVariantCount = warningVariantCount;
+        this.level1VariantCount = level1VariantCount;
+        this.level2VariantCount = level2VariantCount;
+        this.level3VariantCount = level3VariantCount;
+        this.level4VariantCount = level4VariantCount;
+        this.level5VariantCount = level5VariantCount;
+        this.meanReadQualityPercentage = meanReadQualityPercentage;
+        this.meanReadQualityStatus = meanReadQualityStatus;
+        this.retainedReadsPercentage = retainedReadsPercentage;
+        this.retainedReadsStatus = retainedReadsStatus;
+        this.roiCoveragePercentage = roiCoveragePercentage;
+        this.roiCoverageStatus = roiCoverageStatus;
+        this.coverageUniformityPercentage = coverageUniformityPercentage;
+        this.coverageUniformityStatus = coverageUniformityStatus;
+    }
+
     public Integer getSampleId() {
         return sampleId;
     }

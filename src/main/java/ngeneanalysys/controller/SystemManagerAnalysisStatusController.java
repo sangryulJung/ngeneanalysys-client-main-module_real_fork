@@ -1,5 +1,7 @@
 package ngeneanalysys.controller;
 
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -111,6 +113,15 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
             setList(pageIndex + 1);
             return new VBox();
         });
+
+        id.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
+        runName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
+        status.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
+        userId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getMemberGroupId()).asObject());
+        createAt.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCreatedAt().toString()));
+        sc.setCellValueFactory(cellData -> new SimpleIntegerProperty(
+                cellData.getValue().getId()).asObject());
+        userName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
 
 
         this.mainController.getMainFrame().setCenter(root);

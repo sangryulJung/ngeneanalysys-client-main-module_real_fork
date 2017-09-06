@@ -21,6 +21,7 @@ import javafx.scene.shape.Polyline;
 import ngeneanalysys.animaition.ClinicalSignificantTimer;
 import ngeneanalysys.animaition.VariantStatisticsTimer;
 import ngeneanalysys.controller.extend.SubPaneController;
+import ngeneanalysys.model.AnalysisResultSummary;
 import ngeneanalysys.model.Sample;
 import ngeneanalysys.model.render.SNPsINDELsOverviewRadarGraph;
 import ngeneanalysys.service.APIService;
@@ -224,21 +225,21 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
         this.graphAnimationIconDisplay = "true".equals(config.getProperty("graph.animation.icon.display"));
 
         // Depth 그래프 값 입력 및 화면 출력
-        //showDepth();
+        showDepth();
 
         // Fracion 그래프 값 입력 및 화면 출력
-        //showFration();
+        showFraction();
 
         // Variant Nomenclature 값 설정 및 화면 출력
-        //showVariantIdentification();
+        showVariantIdentification();
 
         // 템플릿 차트 삭제
         populationFrequencyGraphGridPane.getChildren().removeAll(populationFrequencyGraphGridPane.getChildren());
         // 주요 기관 발현 빈도수(Population Frequencies) 그래프 화면 출력
-        //showPopulationFrequency();
+        showPopulationFrequency();
 
         // 변이 발견 빈도수(Variant Frequency) 게이지 그래프 화면 출력
-        //showVariantStatistics();
+        showVariantStatistics();
 
         // 링크 목록 화면 출력
         //showLink();
@@ -249,7 +250,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
             significantArea.setVisible(false);
         } else {
             // SIGNIFICANT 레이더 차트 화면 출력
-            //showClinicalSignificantGraph();
+            showClinicalSignificantGraph();
         }
 
         analysisDetailSNPsINDELsController.subTabOverview.setContent(root);
@@ -262,15 +263,12 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
      */
     @SuppressWarnings("unchecked")
     public void showDepth() {
-        //AnalysisResultSummary summary = (AnalysisResultSummary) sample.getAnalysisResultSummary();
+        AnalysisResultSummary summary = (AnalysisResultSummary) paramMap.get("analysisResultSummary");
         Map<String,Object> alleleMap = (Map<String,Object>) paramMap.get("allele");
 
-        /*double depthMin = Double.parseDouble(StringUtils.defaultIfEmpty(summary.getDepthMin(), "0"));
-        double depthMax = Double.parseDouble(StringUtils.defaultIfEmpty(summary.getDepthMax(), "0"));
-        double depthMean = Double.parseDouble(StringUtils.defaultIfEmpty(summary.getDepthMean(), "0"));*/
-        double depthMin = 0;
-        double depthMax = 0;
-        double depthMean = 0;
+        double depthMin = summary.getDepthMin();
+        double depthMax = summary.getDepthMax();
+        double depthMean = Double.parseDouble(summary.getDepthMean().toString() );
         double depth = 0;
         if(alleleMap != null && !alleleMap.isEmpty() && alleleMap.size() > 0) {
             depth = (alleleMap.containsKey("total_read_depth")) ? (int) alleleMap.get("total_read_depth") : 0;
@@ -324,7 +322,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
      * Fracion 그래프 값 입력 및 화면 출력
      */
     @SuppressWarnings("unchecked")
-    public void showFration() {
+    public void showFraction() {
         Map<String,Object> alleleMap = (Map<String,Object>) paramMap.get("allele");
         Map<String,Object> variantInformationMap = (Map<String,Object>) paramMap.get("variantInformation");
 

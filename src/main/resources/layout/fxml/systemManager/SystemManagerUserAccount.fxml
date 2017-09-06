@@ -126,7 +126,7 @@
                         <TableColumn fx:id="id" minWidth="0.0" prefWidth="27.0" text="Id" visible="false" />
                         <TableColumn fx:id="loginId" prefWidth="74.0" text="Login Id" />
                         <TableColumn fx:id="name" prefWidth="71.0" text="Name" />
-                        <TableColumn fx:id="userType" prefWidth="82.0" text="User Type" />
+                        <TableColumn fx:id="role" prefWidth="82.0" text="User Type" />
                         <TableColumn fx:id="groupId" prefWidth="75.0" text="Group Id" visible="false" />
                         <TableColumn fx:id="groupName" prefWidth="92.0" text="Group Name" />
                         <TableColumn fx:id="createdAt" prefWidth="97.0" text="Created At" />

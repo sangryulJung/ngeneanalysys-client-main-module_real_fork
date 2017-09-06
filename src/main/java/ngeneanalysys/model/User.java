@@ -16,20 +16,20 @@ public class User implements Serializable {
     @JsonProperty("id")
     private Integer id;
     /** 아이디 */
-    @JsonProperty("login_id")
+    @JsonProperty("loginId")
     private String loginId;
     /** 비밀번호 */
-    @JsonProperty("login_password")
+    @JsonProperty("loginPassword")
     private String loginPassword;
     /** 사용자명 */
     @JsonProperty("name")
     private String name;
     /** 사용자 구분 [리뷰어, 분석자] */
-    @JsonProperty("user_type")
-    private String userType;
+    @JsonProperty("role")
+    private String role;
     /** 사용자 그룹 고유번호 */
-    @JsonProperty("user_group")
-    private Integer userGroup;
+    @JsonProperty("memberGroupId")
+    private Integer memberGroupId;
     /** organization */
     @JsonProperty("organization")
     private String organization;
@@ -46,13 +46,13 @@ public class User implements Serializable {
     @JsonProperty("email")
     private String email;
     /** 생성일시 */
-    @JsonProperty("created_at")
+    @JsonProperty("createdAt")
     private DateTime createdAt;
     /** 수정일시 */
-    @JsonProperty(value = "updated_at")
+    @JsonProperty(value = "updatedAt")
     private DateTime updatedAt;
     /** 삭제일시 */
-    @JsonProperty("deleted_at")
+    @JsonProperty("deletedAt")
     private DateTime deletedAt;
     /** 삭제여부 [0:미삭제, 1:삭제] */
     @JsonProperty("deleted")
@@ -90,20 +90,20 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public String getUserType() {
-        return userType;
+    public String getRole() {
+        return role;
     }
 
-    public void setUserType(String userType) {
-        this.userType = userType;
+    public void setRole(String role) {
+        this.role = role;
     }
 
-    public Integer getUserGroup() {
-        return userGroup;
+    public Integer getMemberGroupId() {
+        return memberGroupId;
     }
 
-    public void setUserGroup(Integer userGroup) {
-        this.userGroup = userGroup;
+    public void setMemberGroupId(Integer memberGroupId) {
+        this.memberGroupId = memberGroupId;
     }
 
     public String getOrganization() {

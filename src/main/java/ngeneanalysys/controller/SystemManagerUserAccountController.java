@@ -1,21 +1,194 @@
 package ngeneanalysys.controller;
 
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import ngeneanalysys.controller.extend.SubPaneController;
+import ngeneanalysys.exceptions.WebAPIException;
+import ngeneanalysys.model.SystemManagerUserGroupPaging;
+import ngeneanalysys.model.SystemManagerUserInfoPaging;
 import ngeneanalysys.model.User;
+import ngeneanalysys.model.UserGroup;
+import ngeneanalysys.model.render.ComboBoxConverter;
+import ngeneanalysys.model.render.ComboBoxItem;
+import ngeneanalysys.service.APIService;
+import ngeneanalysys.util.DialogUtil;
+import ngeneanalysys.util.LoggerUtil;
+import ngeneanalysys.util.StringUtils;
+import ngeneanalysys.util.httpclient.HttpClientResponse;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author Jang
  * @since 2017-09-04
  */
 public class SystemManagerUserAccountController extends SubPaneController{
+    private static Logger logger = LoggerUtil.getLogger();
+
+    /** Resource Util */
+    //protected ResourceUtil resourceUtil = new ResourceUtil();
+
+    @FXML
+    private TableView<User> userListTable;
+
+    @FXML
+    private TableView<UserGroup> groupListTable;
+
+    /** 목록 페이징 */
+    @FXML
+    private Pagination paginationList;
+
+    @FXML
+    private Pagination groupPaginationList;
+
+    private APIService apiService;
+
+    @FXML
+    private TableColumn<User, Integer> id;
+
+    @FXML
+    private TableColumn<User, String> loginId;
+
+    @FXML
+    private TableColumn<User, String> name;
+
+    @FXML
+    private TableColumn<User, String> role;
+
+    @FXML
+    private TableColumn<User, Integer> groupId;
+
+    @FXML
+    private TableColumn<User, String> groupName;
+
+    @FXML
+    private TableColumn<User, String> createdAt;
+
+    @FXML
+    private TableColumn<User, String> updatedAt;
+
+    @FXML
+    private TableColumn<User, String> deletedAt;
+
+    @FXML
+    private TableColumn<User, String> deleted;
+
+    @FXML
+    private TableColumn<User, Boolean> userModify;
+
+    @FXML
+    private TableColumn<User, Boolean> userCheckBox;
+
+    @FXML
+    private TableColumn<User, Boolean> userDelete;
+
+    @FXML
+    private Button resetBtn;
+
+    @FXML
+    private TextField userIdText;
+
+    @FXML
+    private TextField userNameText;
+
+    @FXML
+    private ComboBox<ComboBoxItem> searchUserType;
+
+    @FXML
+    private ComboBox<ComboBoxItem> searchGroupName;
+
+    @FXML
+    private TableColumn<UserGroup, Integer> userGroupId;
+
+    @FXML
+    private TableColumn<UserGroup, String> userGroupName;
+
+    @FXML
+    private TableColumn<UserGroup, String> userGroupDeleted;
+
+    @FXML
+    private TableColumn<UserGroup, Boolean> userGroupModify;
+
+    @FXML
+    private TextField groupNameText;
+
+    @FXML
+    private Button groupSearchBtn;
+
+    @FXML
+    private Button groupAddBtn;
+
+    @FXML
+    private Button userAddBtn;
 
     @Override
     public void show(Parent root) throws IOException {
 
+        apiService = APIService.getInstance();
+
+        id.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
+        loginId.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLoginId()));
+        name.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
+        role.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRole()));
+        groupId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getMemberGroupId()).asObject());
+        //groupName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUserGroupName()));
+        createdAt.setCellValueFactory(cellData -> new SimpleStringProperty(timeConvertString(cellData.getValue().getCreatedAt())));
+        updatedAt.setCellValueFactory(cellData -> new SimpleStringProperty(timeConvertString(cellData.getValue().getUpdatedAt())));
+        deletedAt.setCellValueFactory(cellData -> new SimpleStringProperty(timeConvertString(cellData.getValue().getDeletedAt())));
+        deleted.setCellValueFactory(cellData -> new SimpleStringProperty(
+                deletedShowString(cellData.getValue().getDeleted())));
+
+        /**
+         * UserGroup TableView
+         */
+        userGroupId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
+        userGroupName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
+        userGroupDeleted.setCellValueFactory(cellData -> new SimpleStringProperty(
+                deletedShowString(cellData.getValue().getDeleted())));
+
+        userGroupModify.setSortable(false);
+        userGroupModify.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
+        userGroupModify.setCellFactory(param -> new UserGroupButton());
+
+        paginationList.setPageFactory(pageIndex -> {
+            setList(pageIndex + 1);
+            return new VBox();
+        });
+
+        groupPaginationList.setPageFactory(pageIndex -> {
+            setGroupList(pageIndex + 1);
+            return new VBox();
+        });
+
+    }
+
+    public String timeConvertString(DateTime date) {
+        if(date == null)
+            return "-";
+
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+        return fmt.print(date);
+    }
+
+    public String deletedShowString(int deleted) {
+        return (deleted == 0) ? "N" : "Y";
     }
 
     @FXML
@@ -25,7 +198,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
 
     @FXML
     public void groupSearch() {
-
+        setGroupList(1);
     }
 
     @FXML
@@ -45,5 +218,278 @@ public class SystemManagerUserAccountController extends SubPaneController{
 
     public void userControllerInit(String type, User user) {
 
+    }
+
+    public void setList(int page) {
+
+        int totalCount = 0;
+        int limit = 17;
+        int offset = (page - 1)  * limit;
+
+        HttpClientResponse response = null;
+
+        try {
+            Map<String, Object> param = getUserSearchParam();
+            param.put("limit", limit);
+            param.put("offset", offset);
+
+            response = apiService.get("/admin/members", param, null, false);
+            logger.info(response.getContentString());
+
+            if(response != null) {
+                SystemManagerUserInfoPaging systemManagerUserInfoPaging =
+                        response.getObjectBeforeConvertResponseToJSON(SystemManagerUserInfoPaging.class);
+                List<User> list = null;
+
+                if(systemManagerUserInfoPaging != null) {
+                    totalCount = systemManagerUserInfoPaging.getCount();
+                    list = systemManagerUserInfoPaging.getList();
+                }
+
+                int pageCount = 0;
+
+                if(totalCount > 0) {
+                    pageCount = totalCount / limit;
+                    paginationList.setCurrentPageIndex(page - 1);
+                    if(totalCount % limit > 0) {
+                        pageCount++;
+                    }
+                }
+
+                userListTable.setItems((FXCollections.observableList(list)));
+
+                logger.info(String.format("total count : %s, page count : %s", totalCount, pageCount));
+
+                if (pageCount > 0) {
+                    paginationList.setVisible(true);
+                    paginationList.setPageCount(pageCount);
+                } else {
+                    paginationList.setVisible(false);
+                }
+            }
+
+        } catch (WebAPIException wae) {
+            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+                    getMainApp().getPrimaryStage(), true);
+        } catch (Exception e) {
+            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+        }
+    }
+
+    public void setGroupList(int page) {
+
+        int totalCount = 0;
+        int limit = 5;
+        int offset = (page - 1)  * limit;
+
+        HttpClientResponse response = null;
+
+        try {
+            Map<String, Object> param = getGroupSearchParam();
+            param.put("limit", limit);
+            param.put("offset", offset);
+
+            response = apiService.get("/admin/member_groups", param, null, false);
+            logger.info(response.getContentString());
+
+            if(response != null) {
+                SystemManagerUserGroupPaging systemManagerUserGroupPaging =
+                        response.getObjectBeforeConvertResponseToJSON(SystemManagerUserGroupPaging.class);
+                List<UserGroup> list = null;
+
+                if(systemManagerUserGroupPaging != null) {
+                    totalCount = systemManagerUserGroupPaging.getCount();
+                    list = systemManagerUserGroupPaging.getList();
+                }
+
+                int pageCount = 0;
+
+                if(totalCount > 0) {
+                    pageCount = totalCount / limit;
+                    paginationList.setCurrentPageIndex(page - 1);
+                    if(totalCount % limit > 0) {
+                        pageCount++;
+                    }
+                }
+
+                groupListTable.setItems((FXCollections.observableList(list)));
+
+                logger.info(String.format("total count : %s, page count : %s", totalCount, pageCount));
+
+                if (pageCount > 0) {
+                    groupPaginationList.setVisible(true);
+                    groupPaginationList.setPageCount(pageCount);
+                } else {
+                    groupPaginationList.setVisible(false);
+                }
+            }
+
+        } catch (WebAPIException wae) {
+            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+                    getMainApp().getPrimaryStage(), true);
+        } catch (Exception e) {
+            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+        }
+
+    }
+
+    public Map<String, Object> getUserSearchParam() {
+        Map<String, Object> param = new HashMap<>();
+        param.put("format", "json");
+        param.put("ordering", "-id");
+
+        if(searchUserType.getSelectionModel().getSelectedIndex() != -1 && searchUserType.getValue() != null) {
+
+            param.put("user_type", searchUserType.getValue().getValue());
+        }
+        if(searchGroupName.getSelectionModel().getSelectedIndex() != -1 && searchGroupName.getValue() != null) {
+            param.put("group_name", searchGroupName.getValue().getValue());
+        }
+        if(!StringUtils.isEmpty(userIdText.getText()) && userIdText.getText().trim().length() != 0){
+            param.put("login_id", userIdText.getText());
+        }
+        if(!StringUtils.isEmpty(userNameText.getText()) && userNameText.getText().trim().length() != 0){
+            param.put("name", userNameText.getText());
+        }
+
+        return param;
+    }
+
+    public Map<String, Object> getGroupSearchParam() {
+        Map<String, Object> param = new HashMap<>();
+        param.put("format", "json");
+        param.put("ordering", "-id");
+
+        if(!StringUtils.isEmpty(groupNameText.getText()) && groupNameText.getText().trim().length() != 0){
+            param.put("name", groupNameText.getText());
+        }
+
+        return param;
+    }
+
+
+    /** 그룹 삭제 */
+    public void deleteGroup(Integer id) {
+        try {
+            apiService.delete("/users/group/"+id);
+            groupListTable.getItems().clear();
+            groupSearch();
+        } catch (WebAPIException wae) {
+            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+                    getMainApp().getPrimaryStage(), true);
+        } catch (Exception e) {
+            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+        }
+    }
+
+    public void groupControllerInit(String type, UserGroup group) {
+        /*try {
+            FXMLLoader loader = null;
+            loader = mainApp.load(FXMLConstants.GROUP_ADD);
+            Node root = loader.load();
+            GroupAddController groupAddController = loader.getController();
+            groupAddController.init(type, group);
+            groupAddController.setMainController(this.getMainController());
+            groupAddController.show((Parent) root);
+            userSearch();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+    }
+
+    @SuppressWarnings("unchecked")
+    public void groupNameComboBoxCreate() {
+        searchGroupName.setConverter(new ComboBoxConverter());
+        searchGroupName.getItems().add(new ComboBoxItem());
+
+        HttpClientResponse response = null;
+
+        try {
+            Map<String, Object> param = new HashMap<>();
+            param.put("format", "json");
+
+            response = apiService.get("/users/name", param, null, false);
+            logger.info(response.getContentString());
+            if(response != null) {
+                List<UserGroup> list = (List<UserGroup>) response.getMultiObjectBeforeConvertResponseToJSON(UserGroup.class, false);
+
+                for(UserGroup group : list) {
+                    searchGroupName.getItems().add(new ComboBoxItem(
+                            group.getName(), group.getName()));
+                }
+
+                searchGroupName.getSelectionModel().selectFirst();
+            }
+
+        } catch (WebAPIException wae) {
+            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+                    getMainApp().getPrimaryStage(), true);
+        } catch (Exception e) {
+            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+        }
+    }
+
+
+    private class UserGroupButton extends TableCell<UserGroup, Boolean> {
+        HBox box = null;
+        final ImageView img1 = new ImageView(resourceUtil.getImage("/layout/images/icon_pathogenicity_1.png"));
+        final ImageView img2 = new ImageView(resourceUtil.getImage("/layout/images/icon_pathogenicity_2.png"));
+
+        public UserGroupButton() {
+
+            img1.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                UserGroup group = UserGroupButton.this.getTableView().getItems().get(
+                        UserGroupButton.this.getIndex());
+
+                groupControllerInit("modify", group);
+
+                groupListTable.getItems().clear();
+                groupSearch();
+                searchGroupName.getSelectionModel().clearSelection();
+                searchGroupName.getItems().clear();
+                groupNameComboBoxCreate();
+            });
+
+            img2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+                String alertHeaderText = null;
+                String alertContentText = "Are you sure to delete this group?";
+
+                alert.setTitle("Confirmation Dialog");
+                UserGroup group = UserGroupButton.this.getTableView().getItems().get(
+                        UserGroupButton.this.getIndex());
+                alert.setHeaderText(group.getName());
+                alert.setContentText(alertContentText);
+                logger.info(group.getId() + " : present id");
+                Optional<ButtonType> result = alert.showAndWait();
+                if(result.get() == ButtonType.OK) {
+                    deleteGroup(group.getId());
+                } else {
+                    logger.info(result.get() + " : button select");
+                    alert.close();
+                }
+            });
+
+        }
+
+        @Override
+        protected void updateItem(Boolean item, boolean empty) {
+            super.updateItem(item, empty);
+            if(item == null) {
+                setGraphic(null);
+                return;
+            }
+
+            box = new HBox();
+
+            box.setSpacing(10);
+
+            box.getChildren().add(img1);
+            box.getChildren().add(img2);
+
+            setGraphic(box);
+
+        }
     }
 }

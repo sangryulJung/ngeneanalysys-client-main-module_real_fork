@@ -13,7 +13,7 @@ public class RunGroupForPaging extends CommonPagination implements Serializable 
     private static final long serialVersionUID = -1285015411935459072L;
 
     /** 목록 */
-    @JsonProperty("results")
+    @JsonProperty("result")
     private List<Run> list;
 
     /**

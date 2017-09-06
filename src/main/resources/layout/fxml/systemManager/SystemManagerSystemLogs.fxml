@@ -92,7 +92,7 @@
                   <TableColumn fx:id="logMsg" prefWidth="150.0" text="Log Msg" />
                   <TableColumn fx:id="userId" prefWidth="75.0" text="User ID" />
                   <TableColumn fx:id="userLoginId" prefWidth="150.0" text="User Login ID" />
-                  <TableColumn fx:id="userType" prefWidth="150.0" text="User Type" />
+                  <TableColumn fx:id="role" prefWidth="150.0" text="User Type" />
                   <TableColumn fx:id="name" prefWidth="100.0" text="Name" />
                   <TableColumn fx:id="createdAt" prefWidth="150.0" text="Created At" />
                </columns>
