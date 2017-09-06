@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import ngeneanalysys.code.UserTypeCode;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
@@ -82,26 +83,6 @@ public class UserAccountController extends SubPaneController {
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("show..");
-
-		/*
-		apiService = (APIService) getApplicationContext().getBean("apiService");
-		apiService.setStage(getMainController().getPrimaryStage());
-
-		selectUserType.setConverter(new ComboBoxConverter());
-		selectUserType.getItems().add(new ComboBoxItem());
-		selectUserType.getItems().add(new ComboBoxItem(
-				LogListStatusCode.USER_TYPE_ADMIN, LogListStatusCode.USER_TYPE_ADMIN));
-		selectUserType.getItems().add(new ComboBoxItem(
-				LogListStatusCode.USER_TYPE_DOCTOR, LogListStatusCode.USER_TYPE_DOCTOR));
-		selectUserType.getItems().add(new ComboBoxItem(
-				LogListStatusCode.USER_TYPE_EXPERIMENTER, LogListStatusCode.USER_TYPE_EXPERIMENTER));
-		selectUserType.getItems().add(new ComboBoxItem(
-				LogListStatusCode.USER_TYPE_RESEARCHER, LogListStatusCode.USER_TYPE_RESEARCHER));
-		selectUserType.getSelectionModel().selectFirst();
-
-		groupNameComboBoxCreate();
-		*/
         // Create the dialog Stage
         dialogStage = new Stage();
         dialogStage.initStyle(StageStyle.DECORATED);
@@ -126,17 +107,17 @@ public class UserAccountController extends SubPaneController {
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
 
-        /*selectUserType.setConverter(new ComboBoxConverter());
+        selectUserType.setConverter(new ComboBoxConverter());
         selectUserType.getItems().add(new ComboBoxItem());
         selectUserType.getItems().add(new ComboBoxItem(
-                LogListStatusCode.USER_TYPE_ADMIN, LogListStatusCode.USER_TYPE_ADMIN));
+                UserTypeCode.USER_TYPE_ADMIN, UserTypeCode.USER_TYPE_ADMIN));
         selectUserType.getItems().add(new ComboBoxItem(
-                LogListStatusCode.USER_TYPE_DOCTOR, LogListStatusCode.USER_TYPE_DOCTOR));
+                UserTypeCode.USER_TYPE_DOCTOR, UserTypeCode.USER_TYPE_DOCTOR));
         selectUserType.getItems().add(new ComboBoxItem(
-                LogListStatusCode.USER_TYPE_EXPERIMENTER, LogListStatusCode.USER_TYPE_EXPERIMENTER));
+                UserTypeCode.USER_TYPE_EXPERIMENTER, UserTypeCode.USER_TYPE_EXPERIMENTER));
         selectUserType.getItems().add(new ComboBoxItem(
-                LogListStatusCode.USER_TYPE_RESEARCHER, LogListStatusCode.USER_TYPE_RESEARCHER));
-        selectUserType.getSelectionModel().selectFirst();*/
+                UserTypeCode.USER_TYPE_RESEARCHER, UserTypeCode.USER_TYPE_RESEARCHER));
+        selectUserType.getSelectionModel().selectFirst();
 
         groupNameComboBoxCreate();
 
@@ -213,11 +194,11 @@ public class UserAccountController extends SubPaneController {
 
             try {
                 if("add".equalsIgnoreCase(type)) {
-                    apiService.post("/users/create", params, null, true);
+                    apiService.post("/admin/members", params, null, true);
                     DialogUtil.alert("Create User Account Success", "A user account has been created.",
                             dialogStage, true);
                 } else {
-                    apiService.patch("/users/update/" + user.getId(), params, null, true);
+                    apiService.patch("/admin/members/" + user.getId(), params, null, true);
                     DialogUtil.alert("Modify User Account Success", "A user account has been modified.",
                             dialogStage, true);
                 }
@@ -259,7 +240,7 @@ public class UserAccountController extends SubPaneController {
             Map<String, Object> param = new HashMap<>();
             param.put("format", "json");
 
-            response = apiService.get("/users/group_name", param, null, false);
+            response = apiService.get("/admin/group_name", param, null, false);
             logger.info(response.getContentString());
             if(response != null) {
                 List<UserGroup> list = (List<UserGroup>) response.getMultiObjectBeforeConvertResponseToJSON(UserGroup.class, false);
@@ -283,6 +264,11 @@ public class UserAccountController extends SubPaneController {
     public void modifySetting() {
         titleLabel.setText("User Modify");
         logger.info("in modify");
+    }
+
+    @FXML
+    public void closeDialog() {
+        dialogStage.close();
     }
 
 }

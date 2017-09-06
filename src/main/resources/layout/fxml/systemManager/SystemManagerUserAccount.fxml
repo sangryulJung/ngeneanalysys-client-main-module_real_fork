@@ -134,7 +134,6 @@
                         <TableColumn fx:id="deletedAt" prefWidth="108.0" text="Deleted At" visible="false" />
                         <TableColumn fx:id="deleted" prefWidth="49.0" text="Deleted" />
                         <TableColumn fx:id="userModify" prefWidth="83.0" text="User Modify" />
-                        <TableColumn fx:id="userDelete" prefWidth="75.0" text="User Delete" />
                      </columns>
                   </TableView>
                   <HBox alignment="CENTER_RIGHT" prefHeight="48.0" prefWidth="900.0" spacing="5.0" VBox.vgrow="NEVER">

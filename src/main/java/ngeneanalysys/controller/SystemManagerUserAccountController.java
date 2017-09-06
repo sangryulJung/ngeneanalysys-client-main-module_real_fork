@@ -5,12 +5,15 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.SystemManagerUserGroupPaging;
@@ -193,7 +196,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
 
     @FXML
     public void userSearch() {
-
+        setList(1);
     }
 
     @FXML
@@ -203,12 +206,15 @@ public class SystemManagerUserAccountController extends SubPaneController{
 
     @FXML
     public void reset() {
-
+        userIdText.setText(null);
+        userNameText.setText(null);
+        searchUserType.setValue(new ComboBoxItem());
+        searchGroupName.setValue(new ComboBoxItem());
     }
 
     @FXML
     public void groupAdd() {
-
+        groupControllerInit("Add", null);
     }
 
     @FXML
@@ -217,7 +223,18 @@ public class SystemManagerUserAccountController extends SubPaneController{
     }
 
     public void userControllerInit(String type, User user) {
-
+        try {
+            FXMLLoader loader = null;
+            loader = mainApp.load(FXMLConstants.USER_ACCOUNT);
+            Node root = (Node) loader.load();
+            UserAccountController userAccountController = loader.getController();
+            userAccountController.setMainController(this.getMainController());
+            userAccountController.init(type, user);
+            userAccountController.show((Parent) root);
+            userSearch();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setList(int page) {
@@ -383,7 +400,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
     }
 
     public void groupControllerInit(String type, UserGroup group) {
-        /*try {
+        try {
             FXMLLoader loader = null;
             loader = mainApp.load(FXMLConstants.GROUP_ADD);
             Node root = loader.load();
@@ -391,10 +408,10 @@ public class SystemManagerUserAccountController extends SubPaneController{
             groupAddController.init(type, group);
             groupAddController.setMainController(this.getMainController());
             groupAddController.show((Parent) root);
-            userSearch();
+            groupSearch();
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -470,7 +487,6 @@ public class SystemManagerUserAccountController extends SubPaneController{
                     alert.close();
                 }
             });
-
         }
 
         @Override

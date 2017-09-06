@@ -161,7 +161,7 @@
             <HBox alignment="CENTER_LEFT" prefHeight="23.0" prefWidth="235.0" style="-fx-border-color: red;">
                <children>
                   <Label text="Patient Disease : " />
-                  <Label text="bla bla bla" />
+                  <Label fx:id="patientDiseaseLabel" text="bla bla bla" />
                </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -170,7 +170,7 @@
             <HBox alignment="CENTER_LEFT" prefHeight="23.0" prefWidth="235.0" style="-fx-border-color: red;">
                <children>
                   <Label text="Panel : " />
-                  <Label text="고형암 I" />
+                  <Label fx:id="panelLabel" text="고형암 I" />
                </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -180,8 +180,8 @@
       </HBox>
    </children>
    <stylesheets>
-      <URL value="@../../../../../../../../git/ngenebio_guiclient/src/main/resources/layout/css/common.css" />
-      <URL value="@../../../../../../../../git/ngenebio_guiclient/src/main/resources/layout/css/analysisDetail.css" />
-      <URL value="@../../../../../../../../git/ngenebio_guiclient/src/main/resources/layout/css/snps_indels.css" />
+      <URL value="@../css/common.css" />
+      <URL value="@../css/analysisDetail.css" />
+      <URL value="@../css/snps_indels.css" />
    </stylesheets>
 </GridPane>

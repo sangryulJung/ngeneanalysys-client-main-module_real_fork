@@ -21,7 +21,7 @@
             <Insets top="15.0" />
          </GridPane.margin>
          <children>
-            <Button fx:id="rawDataDownload" mnemonicParsing="false" text="RawData">
+            <Button fx:id="rawDataDownload" mnemonicParsing="false" onAction="#rawDataDownloadButton" text="RawData">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets></Button>

@@ -78,7 +78,7 @@ public class WorksheetUtil {
 				}
 
 				// Contents Row Create
-				if (contentsList != null && contentsList.size() > 0) {
+				if (contentsList != null && !contentsList.isEmpty()) {
 					// 내용 스타일 지정
 					style = workbook.createCellStyle();
 					style.setBorderTop(style.BORDER_THIN);

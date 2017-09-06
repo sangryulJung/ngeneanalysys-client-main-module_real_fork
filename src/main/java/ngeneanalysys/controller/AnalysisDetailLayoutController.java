@@ -210,4 +210,9 @@ public class AnalysisDetailLayoutController extends SubPaneController {
         }
     }
 
+    @FXML
+    private void rawDataDownloadButton() {
+        logger.info("click raw data download");
+    }
+
 }

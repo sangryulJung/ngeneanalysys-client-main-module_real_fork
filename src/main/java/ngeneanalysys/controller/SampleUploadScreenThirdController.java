@@ -1,5 +1,6 @@
 package ngeneanalysys.controller;
 
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -144,37 +145,11 @@ public class SampleUploadScreenThirdController extends BaseStageController{
                             uploadFileList.add(fastqFile);
                         }
                     }
-
                 }
-
-                /*List<File> files = fileChooser.showOpenMultipleDialog(currentStage);
-
-                if(files != null) {
-                    String name = null;
-                    if (sampleName.getText() != null && !"".equals(sampleName.getText())) {
-                        name = sampleName.getText();
-                    }
-                    Long fileSize = 0L;
-                    for (File file : files) {
-                        Map<String, Object> fileMap = new HashMap<>();
-                        fileMap.put("sampleName", name);
-                        fileMap.put("name", file.getName());
-                        fileMap.put("fileSize", file.length());
-                        fileMap.put("fileType", "FASTQ.GZ");
-                        this.fileMap.put(file.getName(), fileMap);
-
-                    }
-
-                    uploadFileList.addAll(files);
-                }*/
-
             });
 
             TextField paitentId = new TextField();
             paitentId.setStyle("-fx-text-inner-color: black;");
-
-            /*TextField disease = new TextField();
-            disease.setStyle("-fx-text-inner-color: black;");*/
 
             ComboBox<ComboBoxItem> disease  = new ComboBox<>();
             diseasesSetting(disease);
@@ -183,6 +158,7 @@ public class SampleUploadScreenThirdController extends BaseStageController{
             panelSetting(panel);
 
             TextField source = new TextField();
+            source.setEditable(false);
             source.setStyle("-fx-text-inner-color: black;");
             source.setText("FFPE");
 
@@ -234,12 +210,17 @@ public class SampleUploadScreenThirdController extends BaseStageController{
                     ComboBox<ComboBoxItem> diseaseId = (ComboBox<ComboBoxItem>) standardDataGridPane.getChildren().get(i + 3);
                     sample.setDiseaseId(Integer.parseInt(diseaseId.getSelectionModel().getSelectedItem().getValue()));
 
-                    ComboBox<ComboBoxItem> panelId = (ComboBox<ComboBoxItem>) standardDataGridPane.getChildren().get(i + 4);
-                    sample.setPanelId(Integer.parseInt(panelId.getSelectionModel().getSelectedItem().getValue()));
+                    ComboBox<ComboBoxItem> panelIdComboBox = (ComboBox<ComboBoxItem>) standardDataGridPane.getChildren().get(i + 4);
+                    Integer panelId = Integer.parseInt(panelIdComboBox.getSelectionModel().getSelectedItem().getValue());
+                    sample.setPanelId(panelId);
 
+                    Optional<Panel> panel = panels.stream().filter(item -> item.getId().equals(panelId)).findFirst();
+                    Panel p = panel.get();
+                    sample.setAnalysisType(p.getAnalysisType());
                     TextField sampleSource = (TextField) standardDataGridPane.getChildren().get(i + 5);
-                    sample.setSampleSource((sampleSource.getText() == null || sampleSource.getText().equals(""))
-                            ? "FFPE" : sampleSource.getText());
+                    //sample.setSampleSource((sampleSource.getText() == null || sampleSource.getText().equals(""))
+                    //        ? "FFPE" : sampleSource.getText());
+                    sample.setSampleSource(p.getSampleSource());
 
                     sampleUpload(sample);
 
@@ -264,7 +245,7 @@ public class SampleUploadScreenThirdController extends BaseStageController{
         params.put("patientId", sample.getPaitentId());
         params.put("panelId", sample.getPanelId());
         params.put("diseaseId", sample.getDiseaseId());
-        params.put("analysisType", "GERMLINE");
+        params.put("analysisType", sample.getAnalysisType());
         params.put("sampleSource", sample.getSampleSource());
         params.put("inputFType", "FASTQ.GZ");
         Map<String, String> sampleSheet = new HashMap<>();
@@ -334,6 +315,11 @@ public class SampleUploadScreenThirdController extends BaseStageController{
             panelBox.getItems().add(new ComboBoxItem(panel.getId().toString(), panel.getName()));
         }
         panelBox.getSelectionModel().selectFirst();
+        panelBox.valueProperty().addListener((ov, oldValue, newValue) -> {
+
+            ComboBoxItem item = newValue;
+
+        });
     }
 
     @FXML

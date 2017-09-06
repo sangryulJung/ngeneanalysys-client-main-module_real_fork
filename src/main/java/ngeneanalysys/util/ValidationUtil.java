@@ -14,6 +14,8 @@ import javafx.stage.Stage;
  * @since 2016. 9. 28. 오전 9:32:35
  */
 public class ValidationUtil {
+
+	private ValidationUtil() {throw new IllegalAccessError("Utility class");}
 	
 	/**
 	 * 문자열 유효성 체크 [존재 여부 기본 체크]
