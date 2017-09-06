@@ -145,11 +145,10 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
     public void sampleTableViewAdd() {
 
         ObservableList<VariantInformation> variantInformation = FXCollections.observableArrayList(
-                new VariantInformation(1, "temp1", "tempVariant1", "NONE"),
-                new VariantInformation(1, "temp2", "tempVariant2", "NONE"),
-                new VariantInformation(2, "temp3", "tempVariant3", "NONE"),
-                new VariantInformation(2, "temp4", "tempVariant4", "NONE"),
-                new VariantInformation(2, "temp5", "tempVariant5", "NONE")
+                new VariantInformation(1, "IDH2", "c.516G>A (R172K)", "Enasidenib (IDHIFA)"),
+                new VariantInformation(1, "NPM1", "c.863_864insTCTG (W288fs*12)", "Gemtuzumab ozogamicin"),
+                new VariantInformation(2, "DNMT3A", "c.2645G>A (R882H)", ""),
+                new VariantInformation(2, "SRSF2", "c.284C>T (P95L)", "")
         );
 
         tierColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier()));
@@ -161,11 +160,8 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
 
 
         ObservableList<PertinentNegatives> pertinentNegatives = FXCollections.observableArrayList(
-                new PertinentNegatives("temp10", "tempVariant10", "type0", "cause1"),
-                new PertinentNegatives("temp11", "tempVariant11", "type1", "cause2"),
-                new PertinentNegatives("temp12", "tempVariant12", "type2", "cause3"),
-                new PertinentNegatives("temp13", "tempVariant13", "type3", "cause4"),
-                new PertinentNegatives("temp14", "tempVariant14", "type4", "cause5"));
+                new PertinentNegatives("FLT-ITD", "c.1803_1804insGATTTCAGAGAATATGAATATGATCTC (p.K602delinsDFREYEYDLK)", "Ins", ""),
+                new PertinentNegatives("c-KIT", "c.2447A>T (D816V)", "SNV", ""));
 
         negativeGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getGene()));
         negativeVariantColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant()));

@@ -8,12 +8,12 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="analysisDetailWrapper" prefHeight="625.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemManagerHomeController">
+<GridPane fx:id="analysisDetailWrapper" prefHeight="625.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemManagerHomeController">
    <children>
       <HBox fx:id="summaryBgHBox" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="64.0" prefWidth="1280.0" scaleZ="3.0" styleClass="topHeaderTabBg" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="NEVER" />
-      <TabPane fx:id="topTabPane" focusTraversable="false" layoutY="25.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="1280.0" scaleZ="2.0" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
+      <TabPane fx:id="topTabPane" focusTraversable="false" layoutY="25.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="1280.0" scaleZ="2.0" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
          <GridPane.margin>
-            <Insets top="5.0" />
+            <Insets top="25.0" />
          </GridPane.margin>
       </TabPane>
    </children>

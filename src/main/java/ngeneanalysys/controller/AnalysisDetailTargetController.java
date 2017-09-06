@@ -186,10 +186,12 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
     public void addDummyData() {
 
         ObservableList<VariantPerGene> variantPerGene = FXCollections.observableArrayList(
-                new VariantPerGene(1 , (Integer)getParamMap().get("sampleId"),"NO", "sample Gene 1",2,0,2,0,2,2,2,0,0,0,2,0,2,1,0,2),
-                new VariantPerGene(2 , (Integer)getParamMap().get("sampleId"),"NO", "sample Gene 2",0,2,2,0,2,0,0,2,0,2,0,2,0,1,2,0),
-                new VariantPerGene(3 , (Integer)getParamMap().get("sampleId"),"NO", "sample Gene 3",0,0,2,2,0,0,2,0,0,0,2,2,0,1,2,0),
-                new VariantPerGene(4 , (Integer)getParamMap().get("sampleId"),"NO", "sample Gene 4",2,0,2,2,0,2,0,2,0,2,0,0,2,1,0,2)
+                new VariantPerGene(1 , (Integer)getParamMap().get("sampleId"),"NO", "IDH2",2,0,2,0,2,2,2,0,0,0,2,0,2,1,0,2),
+                new VariantPerGene(2 , (Integer)getParamMap().get("sampleId"),"NO", "NPM1",0,2,2,0,2,0,0,2,0,2,0,2,0,1,2,0),
+                new VariantPerGene(3 , (Integer)getParamMap().get("sampleId"),"NO", "DNMT3A",0,0,2,2,0,0,2,0,0,0,2,2,0,1,2,0),
+                new VariantPerGene(4 , (Integer)getParamMap().get("sampleId"),"NO", "SRSF2",2,0,2,2,0,2,0,2,0,2,0,0,2,1,0,2),
+                new VariantPerGene(4 , (Integer)getParamMap().get("sampleId"),"NO", "FLT-ITD",2,0,2,2,0,2,0,2,0,2,0,0,2,1,0,2),
+                new VariantPerGene(4 , (Integer)getParamMap().get("sampleId"),"NO", "C-KIT",2,0,2,2,0,2,0,2,0,2,0,0,2,1,0,2)
         );
 
         geneTable.setItems(variantPerGene);

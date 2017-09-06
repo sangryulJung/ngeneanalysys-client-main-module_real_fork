@@ -334,7 +334,7 @@ public class HomeController extends SubPaneController{
                 params.put("runId", runId);
                 params.put("name", "sample_" + i + "_" + "RUN_" + runId);
                 params.put("patientId", "PAT_" + i + "_" + runId);
-                int panelId = (runId % 3) + 1;
+                int panelId = 3;//(runId % 3) + 1;
                 params.put("panelId", panelId);
                 params.put("diseaseId", 1);
                 if(panelId == 1) {

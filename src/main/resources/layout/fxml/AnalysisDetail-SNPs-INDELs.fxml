@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="558.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNPsINDELsController">
+<BorderPane prefHeight="558.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNPsINDELsController">
 	<top>
 		<HBox fx:id="filterArea" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="63.0" prefWidth="1278.0" BorderPane.alignment="CENTER">
 			<padding>
@@ -114,11 +114,11 @@
 				</HBox>
 				<TableView fx:id="variantListTableView" tableMenuButtonVisible="true" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
 					<columns>
-						<TableColumn fx:id="predictionColumn" editable="false" maxWidth="500.0" minWidth="-Infinity" prefWidth="55.0" styleClass="alignment_center" text="Prediction" />
-						<TableColumn fx:id="pathgenicColumn" editable="false" maxWidth="500.0" minWidth="-Infinity" prefWidth="70.0" styleClass="alignment_center" text="Pathogenicity" />
+						<TableColumn fx:id="predictionColumn" editable="false" maxWidth="500.0" minWidth="-Infinity" prefWidth="55.0" styleClass="alignment_center" text="Tier" />
+						<TableColumn fx:id="pathgenicColumn" editable="false" maxWidth="500.0" minWidth="-Infinity" prefWidth="70.0" styleClass="alignment_center" text="Tier(User)" />
 						<TableColumn fx:id="warningColumn" editable="false" maxWidth="1000.0" minWidth="-Infinity" prefWidth="40.0" styleClass="alignment_center" text="Warn" />
 						<TableColumn fx:id="reportColumn" editable="false" minWidth="-Infinity" prefWidth="50.0" styleClass="alignment_center" text="Report" />
-						<TableColumn fx:id="falseColumn" editable="false" minWidth="-Infinity" prefWidth="40.0" styleClass="alignment_center" text="False" />
+						<TableColumn fx:id="falseColumn" editable="false" minWidth="-Infinity" prefWidth="40.0" styleClass="alignment_center" text="False" visible="false" />
 						<TableColumn fx:id="variantIdColumn" editable="false" maxWidth="500.0" minWidth="-Infinity" prefWidth="31.0" styleClass="alignment_center" text="ID" visible="false" />
 						<TableColumn fx:id="typeColumn" editable="false" minWidth="-Infinity" prefWidth="40.0" styleClass="alignment_center" text="Type" />
 						<TableColumn fx:id="codingConsequenceColumn" editable="false" minWidth="-Infinity" prefWidth="84.0" text="Cod.Cons" />

@@ -13,20 +13,20 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="experimentPastResultsWrapper" prefHeight="558.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailOverviewController">
+<GridPane fx:id="experimentPastResultsWrapper" prefHeight="558.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailOverviewController">
    <columnConstraints>
       <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="20.0" />
       <ColumnConstraints hgrow="SOMETIMES" prefWidth="1240.0" />
       <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="20.0" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints maxHeight="45.600006103515625" minHeight="-Infinity" prefHeight="35.19999694824219" valignment="TOP" vgrow="NEVER" />
-      <RowConstraints maxHeight="99.80000305175781" minHeight="-Infinity" prefHeight="81.19999694824219" vgrow="NEVER" />
-      <RowConstraints maxHeight="48.80000305175781" minHeight="-Infinity" prefHeight="20.20001220703125" valignment="TOP" vgrow="NEVER" />
-      <RowConstraints maxHeight="179.79998779296875" minHeight="137.60000610351562" prefHeight="137.60000610351562" valignment="TOP" vgrow="ALWAYS" />
-      <RowConstraints maxHeight="59.399993896484375" minHeight="10.0" prefHeight="37.399993896484375" valignment="TOP" vgrow="ALWAYS" />
-      <RowConstraints maxHeight="178.39999389648438" minHeight="10.0" prefHeight="173.60000610351562" valignment="TOP" vgrow="ALWAYS" />
-      <RowConstraints maxHeight="62.20001220703125" minHeight="-Infinity" prefHeight="62.20001220703125" valignment="TOP" vgrow="NEVER" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.19999694824219" valignment="CENTER" vgrow="NEVER" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="81.19999694824219" vgrow="NEVER" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" valignment="TOP" vgrow="NEVER" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="137.60000610351562" valignment="TOP" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="37.399993896484375" valignment="CENTER" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="150.0" valignment="TOP" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="75.0" valignment="TOP" vgrow="NEVER" />
    </rowConstraints>
    <children>
       <HBox alignment="CENTER_LEFT" layoutX="20.0" layoutY="31.0" prefHeight="30.0" GridPane.columnIndex="1">
@@ -41,7 +41,7 @@
                         <Insets left="8.0" />
                      </HBox.margin>
                      <styleClass>
-                        <String fx:value="h1" />
+                        <String fx:value="h2" />
                         <String fx:value="weight_bold" />
                         <String fx:value="txt_black" />
                      </styleClass>
@@ -66,7 +66,7 @@
                      <children>
                         <HBox prefHeight="27.0" prefWidth="167.0">
                            <children>
-                              <Label style="-fx-background-color: cyan;" text="Tier I" />
+                              <Label text="Tier I" />
                            </children>
                         </HBox>
                         <HBox prefHeight="25.0" prefWidth="167.0">
@@ -96,7 +96,7 @@
                      <children>
                         <HBox prefHeight="27.0" prefWidth="167.0">
                            <children>
-                              <Label style="-fx-background-color: cyan;" text="Tier II" />
+                              <Label text="Tier II" />
                            </children>
                         </HBox>
                         <HBox prefHeight="25.0" prefWidth="167.0">
@@ -126,7 +126,7 @@
                      <children>
                         <HBox prefHeight="27.0" prefWidth="167.0">
                            <children>
-                              <Label style="-fx-background-color: cyan;" text="Tier III" />
+                              <Label text="Tier III" />
                            </children>
                         </HBox>
                         <HBox prefHeight="25.0" prefWidth="167.0">
@@ -156,7 +156,7 @@
                      <children>
                         <HBox prefHeight="27.0" prefWidth="167.0">
                            <children>
-                              <Label style="-fx-background-color: cyan;" text="Tier IV" />
+                              <Label text="Tier IV" />
                            </children>
                         </HBox>
                         <HBox prefHeight="25.0" prefWidth="167.0">
@@ -242,12 +242,12 @@
             </VBox>
          </children>
       </HBox>
-      <Label alignment="TOP_LEFT" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="326.0" text="Pertinent Negatives" GridPane.columnIndex="1" GridPane.rowIndex="4">
+      <Label maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="326.0" text="Pertinent Negatives" GridPane.columnIndex="1" GridPane.rowIndex="4">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
          <styleClass>
-            <String fx:value="h1" />
+            <String fx:value="h2" />
             <String fx:value="weight_bold" />
             <String fx:value="txt_black" />
          </styleClass>
