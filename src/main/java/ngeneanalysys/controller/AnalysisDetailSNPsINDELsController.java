@@ -27,8 +27,10 @@ import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.*;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
+import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.AnalysisResultSummary;
 import ngeneanalysys.model.AnalysisResultVariant;
+import ngeneanalysys.model.AnalysisResultVariantList;
 import ngeneanalysys.model.Sample;
 import ngeneanalysys.model.render.SNPsINDELsList;
 import ngeneanalysys.service.ALAMUTService;
@@ -314,8 +316,6 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
     Sample sample = null;
 
-    AnalysisResultSummary analysisResultSummary = null;
-
     @Override
     public void show(Parent root) throws IOException {
         logger.info("show SNPs-INDELs");
@@ -323,7 +323,9 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         apiService.setStage(getMainController().getPrimaryStage());
 
         sample = (Sample)paramMap.get("sample");
-        dummyDataCreated();
+        if(sample.getAnalysisResultSummary() == null) {
+            dummyDataCreated();
+        }
 
         // igv service init
         igvService = IGVService.getInstance();
@@ -576,27 +578,29 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
     }
 
     public void setTierFilterBox() {
-        VBox totalVariantBox = getFilterBox(ACMGFilterCode.TOTAL_VARIANT, 1);
+        AnalysisResultSummary summary = sample.getAnalysisResultSummary();
+
+        VBox totalVariantBox = getFilterBox(ACMGFilterCode.TOTAL_VARIANT, summary.getAllVariantCount());
         filterList.getChildren().add(totalVariantBox);
         filterList.setMargin(totalVariantBox, new Insets(0, 0, 0, 5));
 
-        // prediction A
-        VBox predictionABox = getFilterBox(ACMGFilterCode.TIER_ONE, 2);
+        // Tier I
+        VBox predictionABox = getFilterBox(ACMGFilterCode.TIER_ONE, summary.getLevel1VariantCount());
         filterList.getChildren().add(predictionABox);
         filterList.setMargin(predictionABox, new Insets(0, 0, 0, 5));
 
-        // prediction B
-        VBox predictionBBox = getFilterBox(ACMGFilterCode.TIER_TWO, 3);
+        // Tier II
+        VBox predictionBBox = getFilterBox(ACMGFilterCode.TIER_TWO, summary.getLevel2VariantCount());
         filterList.getChildren().add(predictionBBox);
         filterList.setMargin(predictionBBox, new Insets(0, 0, 0, 5));
 
-        // prediction C
-        VBox predictionCBox = getFilterBox(ACMGFilterCode.TIER_THREE, 4);
+        // Tier III
+        VBox predictionCBox = getFilterBox(ACMGFilterCode.TIER_THREE, summary.getLevel3VariantCount());
         filterList.getChildren().add(predictionCBox);
         filterList.setMargin(predictionCBox, new Insets(0, 0, 0, 5));
 
-        // prediction D
-        VBox predictionDBox = getFilterBox(ACMGFilterCode.TIER_FOUR, 5);
+        // Tier IV
+        VBox predictionDBox = getFilterBox(ACMGFilterCode.TIER_FOUR, summary.getLevel4VariantCount());
         filterList.getChildren().add(predictionDBox);
         filterList.setMargin(predictionDBox, new Insets(0, 0, 0, 5));
 
@@ -607,7 +611,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
      */
     @SuppressWarnings("static-access")
     public void setFilterBox() {
-        AnalysisResultSummary summary = analysisResultSummary;
+        AnalysisResultSummary summary = sample.getAnalysisResultSummary();
 
         // total variant count
         VBox totalVariantBox = getFilterBox(ACMGFilterCode.TOTAL_VARIANT, summary.getAllVariantCount());
@@ -708,22 +712,22 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
     public void showVariantList(ACMGFilterCode acmgFilterCode, int selectedIdx) {
         selectedPredictionCodeFilter = acmgFilterCode;
 
-        Map<String,Object> paramMap = new HashMap<>();
+        /*Map<String,Object> paramMap = new HashMap<>();
         if(acmgFilterCode != null && acmgFilterCode != ACMGFilterCode.TOTAL_VARIANT) {
             if (acmgFilterCode == ACMGFilterCode.LOW_CONFIDENCE) {
                 paramMap.put("warning", acmgFilterCode.getCode());
             } else {
                 paramMap.put("prediction", acmgFilterCode.getCode());
             }
-        }
+        }*/
         try {
             // API 서버 조회
-            HttpClientResponse response = /*apiService.get("/analysis_result/variant_list/", paramMap,
-                    null, false);*/null;
+            HttpClientResponse response = apiService.get("/analysisResults/"+ sample.getId()  + "/variants", null,
+                    null, false);
+            AnalysisResultVariantList analysisResultVariantList = response.getObjectBeforeConvertResponseToJSON(AnalysisResultVariantList.class);
 
-            //List<AnalysisResultVariant> list = (List<AnalysisResultVariant>) response
-            //        .getMultiObjectBeforeConvertResponseToJSON(AnalysisResultVariant.class, false);
-            List<AnalysisResultVariant> list = dummyVariantList();
+            List<AnalysisResultVariant> list = null;
+            if(list == null || list.isEmpty()) list = dummyVariantList();
             ObservableList<AnalysisResultVariant> displayList = null;
 
             // 하단 탭 활성화 토글
@@ -761,11 +765,11 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                 setDetailTabActivationToggle(false);
             }
 
-        } /*catch (WebAPIException wae) {
-            //variantListTableView.setItems(null);
+        } catch (WebAPIException wae) {
+            variantListTableView.setItems(null);
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
-        }*/ catch (Exception e) {
+        } catch (Exception e) {
             variantListTableView.setItems(null);
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
@@ -918,7 +922,6 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             paramMap.put("enigma", enigmaMap);
             paramMap.put("build", buildMap);
             paramMap.put("genomicCoordinate", genomicCoordinateMap);
-            paramMap.put("analysisResultSummary", analysisResultSummary);
 
             FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_SNPS_INDELS_OVERVIEW);
             Node node = loader.load();
@@ -1028,10 +1031,10 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
     private void dummyDataCreated() {
         AnalysisResultSummary analysisResultSummary = new AnalysisResultSummary(sample.getId(),"warn",281,768,
                 new BigDecimal("438"),2,5,0,0,0,0,0,5
-        ,new BigDecimal(98.13662348939866),"pass",new BigDecimal(100.0),"pass",new BigDecimal(100),"pass",
+                ,new BigDecimal(98.13662348939866),"pass",new BigDecimal(100.0),"pass",new BigDecimal(100),"pass",
                 new BigDecimal(100.0),"pass");
-        this.analysisResultSummary = analysisResultSummary;
-        paramMap.put("analysisResultSummary", analysisResultSummary);
+
+        sample.setAnalysisResultSummary(analysisResultSummary);
 
     }
 

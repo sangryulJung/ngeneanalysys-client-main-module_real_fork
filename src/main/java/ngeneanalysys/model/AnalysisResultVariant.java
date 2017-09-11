@@ -24,7 +24,7 @@ import ngeneanalysys.util.JsonUtil;
  */
 public class AnalysisResultVariant implements Serializable {
 	private static final long serialVersionUID = -5728637480602616382L;
-	
+
 	/** variant system unique id */
 	@JsonProperty("id")
 	private Integer id;
@@ -168,7 +168,7 @@ public class AnalysisResultVariant implements Serializable {
 	/** Flagging > False Y/N */
 	@JsonProperty("pathogenic_false_yn")
 	private String pathogenicFalseYn;
-	
+
 	/** enigma */
 	@JsonProperty("enigma")
 	private String enigma;
@@ -223,13 +223,13 @@ public class AnalysisResultVariant implements Serializable {
 	private String zygosity;
 	@JsonIgnore
 	private String cDNAbic;
-	
+
 	/** Clinical Information */
 	@JsonIgnore
 	private VariantClinical variantClinical;
-	
+
 	/**
-	 * warning flag가 yes 인 경우 Warning Reason 값 반환 
+	 * warning flag가 yes 인 경우 Warning Reason 값 반환
 	 * @return
 	 */
 	public String getWarningReasonIfWarningIsYes() {
@@ -287,7 +287,7 @@ public class AnalysisResultVariant implements Serializable {
 	public void setPathogenic(String pathogenic) {
 		this.pathogenic = pathogenic;
 	}
-	
+
 	public String getPathogenicAlias() {
 		String value = null;
 		if (this.pathogenic != null) {
@@ -304,7 +304,7 @@ public class AnalysisResultVariant implements Serializable {
 			}
 		}
 		return value;
-		
+
 	}
 	/**
 	 * @return the variantId
@@ -611,7 +611,7 @@ public class AnalysisResultVariant implements Serializable {
 			}
 			if (clinicalMap.containsKey("variant_disease_db_name")){
 				variantClinical1.setVariantDiseaseDbName((String)clinicalMap.get("variant_disease_db_name"));
-			}			
+			}
 			setVariantClinical(variantClinical1);
 		}
 	}
@@ -798,19 +798,19 @@ public class AnalysisResultVariant implements Serializable {
 	 * @return the cDNAbic
 	 */
 	public String getcDNAbic() {
-		this.cDNAbic = this.cDNA; 
-		if (this.cDNAbic != null 
-				&& !this.cDNAbic.isEmpty() 
-				&& this.gene != null 
+		this.cDNAbic = this.cDNA;
+		if (this.cDNAbic != null
+				&& !this.cDNAbic.isEmpty()
+				&& this.gene != null
 				&& (this.gene.toUpperCase().equals("BRCA1") || this.gene.toUpperCase().equals("BRCA2"))) {
-			List<String> findCDNANums = new ArrayList<String>();  
+			List<String> findCDNANums = new ArrayList<String>();
 			Pattern p = Pattern.compile("\\d+");
-			Matcher m = p.matcher(cDNAbic);			
+			Matcher m = p.matcher(cDNAbic);
 			while (m.find()) {
 				findCDNANums.add(m.group());
 			}
 			int cdnaNum = 0;
-			for(String cdnaItem : findCDNANums){				
+			for(String cdnaItem : findCDNANums){
 				try {
 					cdnaNum = Integer.parseInt(cdnaItem);
 					if(this.gene.toUpperCase().equals("BRCA1")){
@@ -818,14 +818,14 @@ public class AnalysisResultVariant implements Serializable {
 					} else if (this.gene.toUpperCase().equals("BRCA2")){
 						this.cDNAbic = this.cDNAbic.replace(cdnaItem, String.valueOf(cdnaNum+228));
 					} else {
-						
+
 					}
 				} catch (NumberFormatException e){
 					return "cDNA parsing error. " + cdnaItem;
-				}				
+				}
 			}
 			return this.cDNAbic;
-		}		 
+		}
 		return "";
 	}
 
@@ -1156,7 +1156,7 @@ public class AnalysisResultVariant implements Serializable {
 	 */
 	public void setBePathBic(String bePathBic) {
 		this.bePathBic = bePathBic;
-	}	
+	}
 
 	/**
 	 * @return the zygosity

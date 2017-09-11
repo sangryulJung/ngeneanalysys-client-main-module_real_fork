@@ -154,7 +154,7 @@ public class ExportVariantDataTask extends Task<Void> {
 	 * @throws WebAPIException 
 	 */
 	public List<String[]> getSpreadSheetContentsList(List<Map<String, Object>> searchedSamples) throws WebAPIException {
-		
+
 		List<String[]> spreadSheetList = new ArrayList<String[]>();
 		if (searchedSamples == null || searchedSamples.size() <= 0 ) {
 			return null;
@@ -173,7 +173,7 @@ public class ExportVariantDataTask extends Task<Void> {
 			@SuppressWarnings("unchecked")
 			List<AnalysisResultVariant> list = (List<AnalysisResultVariant>) response
 					.getMultiObjectBeforeConvertResponseToJSON(AnalysisResultVariant.class, false);
-			if(list != null && list.size() > 0) {				
+			if(list != null && list.size() > 0) {
 				for(AnalysisResultVariant item : list) {
 					String[] contents = new String[spreadSheetHeaders.length];
 					contents[0] = runName;
@@ -188,7 +188,7 @@ public class ExportVariantDataTask extends Task<Void> {
 					// reported
 					contents[5] = StringUtils.defaultIfEmpty(item.getPathogenicReportYn(), "");
 					// set flase
-					contents[6] = StringUtils.defaultIfEmpty(item.getPathogenicFalseYn(), "");				
+					contents[6] = StringUtils.defaultIfEmpty(item.getPathogenicFalseYn(), "");
 					// variant id
 					contents[7] = StringUtils.defaultIfEmpty(item.getVariantId(), "");
 					// snp type
@@ -233,7 +233,7 @@ public class ExportVariantDataTask extends Task<Void> {
 					contents[27] = StringUtils.defaultIfEmpty(item.getVariantDepth(), "");
 					// allele fraction
 					contents[28] = String.format("%.2f", Double.parseDouble(StringUtils.defaultIfEmpty(item.getAlleleFraction(), "0")));
-					// snp				
+					// snp
 					contents[29] = StringUtils.defaultIfEmpty(item.getSnp(), "");
 					// 1000genomes allele frequency
 					contents[30] = StringUtils.defaultIfEmpty(item.getThousandGenomics(), "");
@@ -312,10 +312,10 @@ public class ExportVariantDataTask extends Task<Void> {
 			}
 			completeCount++;
 			this.updateProgress(completeCount, searchedSamples.size());
-			this.updateMessage("Variant Data Download : " + completeCount + "/" + searchedSamples.size());			
+			this.updateMessage("Variant Data Download : " + completeCount + "/" + searchedSamples.size());
 		}
 		return spreadSheetList;
 	}
-	
+
 
 }

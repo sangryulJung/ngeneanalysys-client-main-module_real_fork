@@ -23,6 +23,7 @@ import ngeneanalysys.animaition.VariantStatisticsTimer;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.model.AnalysisResultSummary;
 import ngeneanalysys.model.Sample;
+import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.render.SNPsINDELsOverviewRadarGraph;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
@@ -202,6 +203,8 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
 
     private AnalysisDetailSNPsINDELsController analysisDetailSNPsINDELsController;
 
+    private Sample sample;
+
     /**
      * @return the analysisDetailSNPsINDELsController
      */
@@ -218,8 +221,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
 
     @Override
     public void show(Parent root) throws IOException {
-
-        Sample sample = (Sample) paramMap.get("sample");
+        sample = (Sample) paramMap.get("sample");
 
         // 그래프 애니메이션 아이콘 출력여부 체크
         this.graphAnimationIconDisplay = "true".equals(config.getProperty("graph.animation.icon.display"));
@@ -263,7 +265,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
      */
     @SuppressWarnings("unchecked")
     public void showDepth() {
-        AnalysisResultSummary summary = (AnalysisResultSummary) paramMap.get("analysisResultSummary");
+        AnalysisResultSummary summary =  sample.getAnalysisResultSummary();
         Map<String,Object> alleleMap = (Map<String,Object>) paramMap.get("allele");
 
         double depthMin = summary.getDepthMin();

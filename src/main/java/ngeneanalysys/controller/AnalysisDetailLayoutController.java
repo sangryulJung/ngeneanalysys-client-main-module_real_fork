@@ -13,6 +13,7 @@ import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.AnalysisDetailTabMenuCode;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
+import ngeneanalysys.model.AnalysisResultSummary;
 import ngeneanalysys.model.Sample;
 import ngeneanalysys.model.render.AnalysisDetailTabItem;
 import ngeneanalysys.service.APIService;
@@ -92,6 +93,10 @@ public class AnalysisDetailLayoutController extends SubPaneController {
             HttpClientResponse response = apiService.get("samples/" + sampleId, null, null, true);
 
             sample = response.getObjectBeforeConvertResponseToJSON(Sample.class);
+
+            response = apiService.get("analysisResults/" + sampleId + "/summary", null, null, true);
+
+            sample.setAnalysisResultSummary(response.getObjectBeforeConvertResponseToJSON(AnalysisResultSummary.class));
 
             getParamMap().put("sample", sample);
 

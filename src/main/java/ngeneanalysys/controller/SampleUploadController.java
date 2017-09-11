@@ -144,7 +144,7 @@ public class SampleUploadController extends BaseStageController{
                 sampleUploadScreenSecondController = loader.getController();
                 sampleUploadScreenSecondController.setMainController(mainController);
                 sampleUploadScreenSecondController.setSampleUploadController(this);
-
+                sampleUploadScreenSecondController.show((Parent) box);
                 tableRegion.getChildren().add(box);
                 break;
             case 3 :

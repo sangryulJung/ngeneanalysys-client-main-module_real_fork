@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -44,12 +45,7 @@ public class SampleUploadScreenSecondController extends BaseStageController {
      */
     public void setSampleUploadController(SampleUploadController sampleUploadController) {
         this.sampleUploadController = sampleUploadController;
-        if(sampleUploadController.getSamples() != null &&!sampleUploadController.getSamples().isEmpty()) {
-            sampleArrayList = sampleUploadController.getSamples();
-            tableEdit();
-        }
     }
-
 
     /**
      * @param mainController
@@ -62,11 +58,95 @@ public class SampleUploadScreenSecondController extends BaseStageController {
 
     @Override
     public void show(Parent root) throws IOException {
+        qcGridPane.getChildren().clear();
+        qcGridPane.setPrefHeight(0);
+
+        for(int row  = 0 ; row < 23 ; row++) {
+            qcGridPane.setPrefHeight(qcGridPane.getPrefHeight() + 26);
+
+            TextField sampleName = new TextField();
+            sampleName.setStyle("-fx-text-inner-color: black;");
+
+            ComboBox<ComboBoxItem>  dnaQc = new ComboBox<>();
+            qcSetting(dnaQc);
+            //if(sample.getQcData() != null && "Fail".equals(sample.getQcData().getDnaQC()))
+
+            ComboBox<ComboBoxItem>  libraryQc = new ComboBox<>();
+            qcSetting(libraryQc);
+            //if(sample.getQcData() != null && "Fail".equals(sample.getQcData().getLibraryQC()))
+
+            ComboBox<ComboBoxItem>  seqClusterDensity = new ComboBox<>();
+            qcSetting(seqClusterDensity);
+
+            ComboBox<ComboBoxItem>  seqQ30 = new ComboBox<>();
+            qcSetting(seqQ30);
+            //if(sample.getQcData() != null && "Fail".equals(sample.getQcData().getSeqQ30()))
+
+            ComboBox<ComboBoxItem>  seqClusterPF = new ComboBox<>();
+            qcSetting(seqClusterPF);
+            //if(sample.getQcData() != null && "Fail".equals(sample.getQcData().getSeqClusterPF()))
+
+            ComboBox<ComboBoxItem>  seqIndexingPFCV = new ComboBox<>();
+            qcSetting(seqIndexingPFCV);
+            //if(sample.getQcData() != null && "Fail".equals(sample.getQcData().getSeqIndexingPFCV()))
+
+            qcGridPane.addRow(row, sampleName, dnaQc, libraryQc, seqClusterDensity, seqQ30, seqClusterPF, seqIndexingPFCV);
+        }
+
+        if(sampleUploadController.getSamples() != null) {
+            sampleArrayList = sampleUploadController.getSamples();
+            tableEdit();
+        }
 
     }
 
     public void tableEdit() {
-        qcGridPane.getChildren().clear();
+        int rowIndex = 0;
+        int totalIndex = 0;
+        for(Sample sample : sampleArrayList) {
+            //입력가능한 샘플의 총 양은 23개
+            if (22 < rowIndex) break;
+
+            QcData qcData = sample.getQcData();
+
+            if(qcData == null) {
+                sample.setQcData(new QcData());
+                qcData = sample.getQcData();
+            }
+
+            TextField sampleName = (TextField) qcGridPane.getChildren().get(totalIndex);
+            sampleName.setText(!StringUtils.isEmpty(sample.getSampleSheet().getSampleName())
+                    ?  sample.getSampleSheet().getSampleName() : sample.getSampleSheet().getSampleId());
+
+            ComboBox<ComboBoxItem> dnaQc = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(totalIndex + 1);
+            dnaQc.getSelectionModel().select((qcData.getDnaQC() != null && "F".equals(qcData.getDnaQC())) ?
+            1 : 0);
+
+            ComboBox<ComboBoxItem> libraryQc = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(totalIndex + 2);
+            libraryQc.getSelectionModel().select((qcData.getLibraryQC() != null && "F".equals(qcData.getLibraryQC())) ?
+                    1 : 0);
+
+            ComboBox<ComboBoxItem> seqClusterDensity = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(totalIndex + 3);
+            seqClusterDensity.getSelectionModel().select((qcData.getSeqClusterDensity() != null && "F".equals(qcData.getSeqClusterDensity())) ?
+                    1 : 0);
+
+            ComboBox<ComboBoxItem> seqQ30 = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(totalIndex + 4);
+            seqQ30.getSelectionModel().select((qcData.getSeqQ30() != null && "F".equals(qcData.getSeqQ30())) ?
+                    1 : 0);
+
+            ComboBox<ComboBoxItem> seqClusterPF = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(totalIndex + 5);
+            seqClusterPF.getSelectionModel().select((qcData.getSeqClusterPF() != null && "F".equals(qcData.getSeqClusterPF())) ?
+                    1 : 0);
+
+            ComboBox<ComboBoxItem> seqIndexingPFCV = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(totalIndex + 6);
+            seqIndexingPFCV.getSelectionModel().select((qcData.getSeqIndexingPFCV() != null && "F".equals(qcData.getSeqIndexingPFCV())) ?
+                    1 : 0);
+
+            totalIndex += 7;
+            rowIndex++;
+        }
+
+        /*qcGridPane.getChildren().clear();
         qcGridPane.setPrefHeight(0);
 
         int row = 0;
@@ -117,7 +197,7 @@ public class SampleUploadScreenSecondController extends BaseStageController {
             qcGridPane.addRow(row, sampleName, dnaQc, libraryQc, seqClusterDensity, seqQ30, seqClusterPF, seqIndexingPFCV);
 
             row++;
-        }
+        }*/
 
     }
 
@@ -129,15 +209,39 @@ public class SampleUploadScreenSecondController extends BaseStageController {
     }
 
     public void saveQCData() {
+        if(sampleArrayList == null) sampleArrayList = new ArrayList<>();
+
         for (int i = 0; i < qcGridPane.getChildren().size(); i += 7) {
+            boolean isNewItem = false;
+            TextField sampleNameTextField = (TextField) qcGridPane.getChildren().get(i);
+            String sampleName = sampleNameTextField.getText();
+
+            if(sampleName.isEmpty()) continue;
+
             int indexNumber = i / 7;
-            Sample sample = sampleArrayList.get(indexNumber);
+
+            Sample sample = null;
+            if(indexNumber > sampleArrayList.size() - 1) {
+                isNewItem = true;
+                sample = new Sample();
+                SampleSheet sampleSheet = new SampleSheet();
+                sample.setSampleSheet(sampleSheet);
+                sampleArrayList.add(sample);
+            } else {
+                sample = sampleArrayList.get(indexNumber);
+            }
 
             QcData qcData = sample.getQcData();
 
             if(qcData == null) {
                 qcData = new QcData();
                 sample.setQcData(qcData);
+            }
+
+            if(isNewItem || !sample.getSampleSheet().getSampleName().isEmpty()) {
+                sample.getSampleSheet().setSampleName(sampleName);
+            } else {
+                sample.getSampleSheet().setSampleId(sampleName);
             }
 
             ComboBox<ComboBoxItem> dnaQC = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(i + 1);

@@ -65,6 +65,22 @@ public class Sample {
 
     private QcData qcData;
 
+    private AnalysisResultSummary analysisResultSummary;
+
+    /**
+     * @return analysisResultSummary
+     */
+    public AnalysisResultSummary getAnalysisResultSummary() {
+        return analysisResultSummary;
+    }
+
+    /**
+     * @param analysisResultSummary
+     */
+    public void setAnalysisResultSummary(AnalysisResultSummary analysisResultSummary) {
+        this.analysisResultSummary = analysisResultSummary;
+    }
+
     /**
      * @return id
      */

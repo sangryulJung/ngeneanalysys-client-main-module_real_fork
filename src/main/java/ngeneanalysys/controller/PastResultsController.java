@@ -14,9 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.HBox;
 import ngeneanalysys.code.constants.FXMLConstants;
-import ngeneanalysys.model.PagedSampleView;
-import ngeneanalysys.model.SampleView;
-import ngeneanalysys.model.TopMenu;
+import ngeneanalysys.model.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.controlsfx.control.PopOver;
@@ -222,12 +220,9 @@ public class PastResultsController extends SubPaneController {
 		});
 		initSampleListLayout();
 		// 페이지 이동 이벤트 바인딩
-		paginationList.setPageFactory(new Callback<Integer, Node>() {
-			@Override
-			public Node call(Integer pageIndex) {
+		paginationList.setPageFactory(pageIndex -> {
 				setList(pageIndex + 1);
 				return new VBox();
-			}
 		});
 
 		// 시스템 설정에서 자동 새로고침 설정이 true 인경우 자동 새로고팀 실행
@@ -560,7 +555,7 @@ public class PastResultsController extends SubPaneController {
 	
 	@SuppressWarnings("unchecked")
 	private void exportVariantData(String fileType){
-		List<Map<String, Object>> searchedSamples = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> searchedSamples = new ArrayList<>();
 		Map<String, Object> param = getSearchParam();
 		param.put("fields", "id,name,job_run_group_ref_name");
 		try {
@@ -585,7 +580,7 @@ public class PastResultsController extends SubPaneController {
 						WorkProgressController<Void> workProgressController = new WorkProgressController<Void>(this.getMainApp(), "Export variant List", task);
 						FXMLLoader loader = this.mainApp.load("/layout/fxml/WorkProgress.fxml");
 						loader.setController(workProgressController);
-						Node root = (Node) loader.load();
+						Node root = loader.load();
 						workProgressController.show((Parent) root);
 						exportDataThread.start();
 					}
@@ -818,6 +813,17 @@ public class PastResultsController extends SubPaneController {
 			return qcButton;
 		}
 		protected  void setSampleView(SampleView sample) {
+			if(sample.getAnalysisResultSummary() != null) {
+				AnalysisResultSummary analysisResultSummary = sample.getAnalysisResultSummary();
+				depthMinValueLabel.setText(analysisResultSummary.getDepthMin().toString());
+				depthMaxValueLabel.setText(analysisResultSummary.getDepthMax().toString());
+				geneCountValueLabel.setText(analysisResultSummary.getGeneCount().toString());
+				totalVariantCountValueLabel.setText(analysisResultSummary.getAllVariantCount().toString());
+				warningVariantCountValueLabel.setText(analysisResultSummary.getWarningVariantCount().toString());
+				roiCoverageValueLabel.setText(analysisResultSummary.getRoiCoveragePercentage().toString());
+				meanReadQualityValueLabel.setText(analysisResultSummary.getMeanReadQualityPercentage().toString());
+				coverageUniformityValueLabel.setText(analysisResultSummary.getCoverageUniformityPercentage().toString());
+			}
 			setVisible(true);
 		}
 	}
@@ -832,8 +838,8 @@ public class PastResultsController extends SubPaneController {
 			setVisible(true);
 			this.getChildren().clear();
 			String fastQC = sample.getQcResult();
-			//fastQC = (StringUtils.isEmpty(fastQC) && sample.getAnalysisResultSummary() != null) ? sample.getAnalysisResultSummary().getQualityControl() : fastQC;
-			//fastQC = (!StringUtils.isEmpty(fastQC)) ? fastQC.toUpperCase() : "NONE";
+			fastQC = (StringUtils.isEmpty(fastQC) && sample.getAnalysisResultSummary() != null) ? sample.getAnalysisResultSummary().getQualityControlStatus() : fastQC;
+			fastQC = (!StringUtils.isEmpty(fastQC)) ? fastQC.toUpperCase() : "NONE";
 			Image img = resourceUtil.getImage("/layout/images/icon_qc_" + fastQC.toLowerCase() + ".png");
 			if (img != null) {
 				ImageView imgVw = new ImageView(img);

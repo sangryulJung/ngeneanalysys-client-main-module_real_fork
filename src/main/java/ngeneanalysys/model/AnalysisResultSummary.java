@@ -30,6 +30,8 @@ public class AnalysisResultSummary implements Serializable {
     private BigDecimal coverageUniformityPercentage;
     private String coverageUniformityStatus;
 
+    public AnalysisResultSummary() { }
+
     public AnalysisResultSummary(Integer sampleId, String qualityControlStatus, Integer depthMin, Integer depthMax, BigDecimal depthMean, Integer geneCount, Integer allVariantCount, Integer warningVariantCount, Integer level1VariantCount, Integer level2VariantCount, Integer level3VariantCount, Integer level4VariantCount, Integer level5VariantCount, BigDecimal meanReadQualityPercentage, String meanReadQualityStatus, BigDecimal retainedReadsPercentage, String retainedReadsStatus, BigDecimal roiCoveragePercentage, String roiCoverageStatus, BigDecimal coverageUniformityPercentage, String coverageUniformityStatus) {
         this.sampleId = sampleId;
         this.qualityControlStatus = qualityControlStatus;

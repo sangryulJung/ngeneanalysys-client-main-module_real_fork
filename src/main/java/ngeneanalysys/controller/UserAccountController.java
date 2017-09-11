@@ -152,9 +152,9 @@ public class UserAccountController extends SubPaneController {
 
         if(selectUserType.getSelectionModel().getSelectedIndex() == 0 || selectUserType.getValue() == null) {
             selectUserType.requestFocus();
-        } else if(selectUserGroup.getSelectionModel().getSelectedIndex() == 0 || selectUserGroup.getValue() == null) {
+        } /*else if(selectUserGroup.getSelectionModel().getSelectedIndex() == 0 || selectUserGroup.getValue() == null) {
             selectUserGroup.requestFocus();
-        } else if(ValidationUtil.text(loginIdTextField.getText(), "login ID", 4, 8, null, null, true, dialogStage) > 0) {
+        }*/ else if(ValidationUtil.text(loginIdTextField.getText(), "login ID", 4, 8, null, null, true, dialogStage) > 0) {
             loginIdTextField.requestFocus();
         } else if(ValidationUtil.text(nameTextField.getText(), "name", 4, 8, null, null, true, dialogStage) > 0) {
             nameTextField.requestFocus();
@@ -170,10 +170,11 @@ public class UserAccountController extends SubPaneController {
             emailTextField.requestFocus();
         } else if(validPwdInput()) {
             params = new HashMap<>();
-            params.put("user_type", selectUserType.getSelectionModel().getSelectedItem().getValue());
-            params.put("user_group", selectUserGroup.getSelectionModel().getSelectedItem().getValue());
-            params.put("login_id", loginIdTextField.getText());
-            params.put("login_password", passwordField.getText());
+            params.put("role", selectUserType.getSelectionModel().getSelectedItem().getValue());
+            //params.put("user_group", selectUserGroup.getSelectionModel().getSelectedItem().getValue());
+            params.put("memberGroupId", 1);
+            params.put("loginId", loginIdTextField.getText());
+            params.put("loginPassword", passwordField.getText());
             params.put("name", nameTextField.getText());
 
             if(!StringUtils.isEmpty(organizationTextField.getText())) {

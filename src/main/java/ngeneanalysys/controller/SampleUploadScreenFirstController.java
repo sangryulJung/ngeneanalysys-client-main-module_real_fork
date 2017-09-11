@@ -158,7 +158,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 boolean tableData = false;
                 List<Sample> list = new ArrayList<>();
                 while((s = csvReader.readNext()) != null) {
-                    if (tableData) {
+                    if (tableData && list.size() < 23) {
                         Sample sample = new Sample();
                         SampleSheet sampleSheet = new SampleSheet(s[0], s[1], s[2], s[3], s[4], s[5], s[6], s[7]);
                         sample.setSampleSheet(sampleSheet);

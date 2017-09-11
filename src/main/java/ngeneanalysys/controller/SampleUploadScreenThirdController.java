@@ -105,7 +105,7 @@ public class SampleUploadScreenThirdController extends BaseStageController{
 
         for(Sample sample : sampleArrayList) {
             SampleSheet item = sample.getSampleSheet();
-            standardDataGridPane.setPrefHeight(standardDataGridPane.getPrefHeight() + 26);
+            standardDataGridPane.setPrefHeight(standardDataGridPane.getPrefHeight() + 27);
 
             TextField sampleName = new TextField();
             sampleName.setStyle("-fx-text-inner-color: black;");
