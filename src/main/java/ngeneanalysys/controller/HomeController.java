@@ -102,7 +102,7 @@ public class HomeController extends SubPaneController{
         apiService.setStage(getMainController().getPrimaryStage());
         getMainController().getPrimaryStage().setMaxWidth(1000);
         this.mainController.getMainFrame().setCenter(root);
-        testAddRuns();
+        //testAddRuns();
         initRunListLayout();
         initSampleListLayout();
         showRunList();
