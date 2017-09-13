@@ -155,11 +155,11 @@ public class ExportVariantDataTask extends Task<Void> {
 	 */
 	public List<String[]> getSpreadSheetContentsList(List<Map<String, Object>> searchedSamples) throws WebAPIException {
 
-		List<String[]> spreadSheetList = new ArrayList<String[]>();
+		List<String[]> spreadSheetList = new ArrayList<>();
 		if (searchedSamples == null || searchedSamples.size() <= 0 ) {
 			return null;
 		}
-		int completeCount = 0;
+		/*int completeCount = 0;
 		for(Map<String, Object> sample : searchedSamples){
 			if (this.isCancelled()){
 				return null;
@@ -313,7 +313,7 @@ public class ExportVariantDataTask extends Task<Void> {
 			completeCount++;
 			this.updateProgress(completeCount, searchedSamples.size());
 			this.updateMessage("Variant Data Download : " + completeCount + "/" + searchedSamples.size());
-		}
+		}*/
 		return spreadSheetList;
 	}
 

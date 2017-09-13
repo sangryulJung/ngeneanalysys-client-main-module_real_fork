@@ -744,4 +744,25 @@ public class MainController extends BaseStageController {
         }
     }
 
+    /**
+     * 자동 새로고침 설정 저장 내용 적용
+     */
+    public void applyAutoRefreshSettings() {
+        // 현재 화면에 출력중인 화면이 분석자 HOME 화면인 경우
+        if("HomeWrapper".equals(currentShowFrameId)) {
+            homeController.autoRefreshTimeline.play();
+            if(pastResultsController != null) {
+                pastResultsController.startAutoRefresh();
+            }
+        }
+
+        // 현재 화면에 출력중인 화면이 분석자 Past Results 화면인 경우
+        if("PastResultsWrapper".equals(currentShowFrameId)) {
+            pastResultsController.startAutoRefresh();
+            if(homeController != null) {
+                homeController.autoRefreshTimeline.play();
+            }
+        }
+    }
+
 }

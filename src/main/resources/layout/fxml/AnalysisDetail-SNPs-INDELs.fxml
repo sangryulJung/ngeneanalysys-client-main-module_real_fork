@@ -6,7 +6,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -17,7 +16,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="558.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNPsINDELsController">
+<BorderPane prefHeight="558.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNPsINDELsController">
 	<top>
 		<HBox fx:id="filterArea" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="63.0" prefWidth="1278.0" BorderPane.alignment="CENTER">
 			<padding>
@@ -113,72 +112,6 @@
 					</children>
 				</HBox>
 				<TableView fx:id="variantListTableView" tableMenuButtonVisible="true" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
-					<columns>
-						<TableColumn fx:id="predictionColumn" editable="false" maxWidth="500.0" minWidth="-Infinity" prefWidth="55.0" styleClass="alignment_center" text="Tier" />
-						<TableColumn fx:id="pathgenicColumn" editable="false" maxWidth="500.0" minWidth="-Infinity" prefWidth="70.0" styleClass="alignment_center" text="Tier(User)" />
-						<TableColumn fx:id="warningColumn" editable="false" maxWidth="1000.0" minWidth="-Infinity" prefWidth="40.0" styleClass="alignment_center" text="Warn" />
-						<TableColumn fx:id="reportColumn" editable="false" minWidth="-Infinity" prefWidth="50.0" styleClass="alignment_center" text="Report" />
-						<TableColumn fx:id="falseColumn" editable="false" minWidth="-Infinity" prefWidth="40.0" styleClass="alignment_center" text="False" visible="false" />
-						<TableColumn fx:id="variantIdColumn" editable="false" maxWidth="500.0" minWidth="-Infinity" prefWidth="31.0" styleClass="alignment_center" text="ID" visible="false" />
-						<TableColumn fx:id="typeColumn" editable="false" minWidth="-Infinity" prefWidth="40.0" styleClass="alignment_center" text="Type" />
-						<TableColumn fx:id="codingConsequenceColumn" editable="false" minWidth="-Infinity" prefWidth="84.0" text="Cod.Cons" />
-						<TableColumn fx:id="geneColumn" editable="false" minWidth="-Infinity" prefWidth="46.0" text="Gene" />
-						<TableColumn fx:id="geneStrandColumn" editable="false" minWidth="-Infinity" prefWidth="49.0" styleClass="alignment_center" text="Strand" />
-						<TableColumn fx:id="refSeqIdColumn" editable="false" minWidth="-Infinity" text="Transcript" />
-						<TableColumn fx:id="cDNAColumn" editable="false" minWidth="-Infinity" text="NT change" />
-						<TableColumn fx:id="proteinColumn" editable="false" prefWidth="90.0" text="AA change" />
-                  <TableColumn fx:id="cDNAbicColumn" editable="false" maxWidth="1000.0" minWidth="-Infinity" text="NT change(BIC)" />
-						<TableColumn fx:id="referenceGenomeColumn" editable="false" styleClass="alignment_center" text="ref.genome" visible="false" />
-						<TableColumn fx:id="chromosomeColumn" editable="false" prefWidth="44.0" styleClass="alignment_center" text="Chr" />
-						<TableColumn fx:id="refColumn" editable="false" prefWidth="50.0" styleClass="alignment_center" text="Ref" />
-						<TableColumn fx:id="altColumn" editable="false" prefWidth="50.0" styleClass="alignment_center" text="Alt" />
-						<TableColumn fx:id="zygosityColumn" editable="false" prefWidth="92.0" styleClass="alignment_center" text="Zygosity" />
-						<TableColumn fx:id="genomicPositionColumn" editable="false" prefWidth="65.0" styleClass="alignment_center_right" text="g.pos" />
-						<TableColumn fx:id="genomicEndPositionColumn" editable="false" prefWidth="65.0" styleClass="alignment_center_right" text="g.pos.end" visible="false" />
-						<TableColumn fx:id="exonIdColumn" editable="false" prefWidth="45.0" styleClass="alignment_center_right" text="Exon" />
-                  <TableColumn fx:id="exonIdBICColumn" editable="false" prefWidth="60.0" styleClass="alignment_center_right" text="Exon(BIC)" />
-						<TableColumn fx:id="referenceNumberColumn" editable="false" prefWidth="45.0" styleClass="alignment_center_right" text="ref.num" />
-						<TableColumn fx:id="alternateNumberColumn" editable="false" prefWidth="45.0" styleClass="alignment_center_right" text="alt.num" />
-						<TableColumn fx:id="variantDepthColumn" editable="false" prefWidth="40.0" styleClass="alignment_center_right" text="depth" />
-						<TableColumn fx:id="alleleFractionColumn" editable="false" prefWidth="40.0" styleClass="alignment_center_right" text="fraction" />
-						<TableColumn fx:id="snpColumn" editable="false" prefWidth="70.0" text="dbSNP" visible="false" />
-						<TableColumn fx:id="thousandGenomicsColumn" editable="false" prefWidth="30.0" styleClass="alignment_center_right" text="1KG" />
-						<TableColumn fx:id="exacColumn" editable="false" prefWidth="30.0" styleClass="alignment_center_right" text="ExAC" />
-						<TableColumn fx:id="esp6500Column" editable="false" prefWidth="45.0" styleClass="alignment_center_right" text="Esp6500" />
-						<TableColumn fx:id="koreaExomeColumn" editable="false" prefWidth="40.0" styleClass="alignment_center_right" text="Korean" />
-						<TableColumn fx:id="clinvarAccessionColumn" editable="false" prefWidth="250.0" text="ClinVar.Acc" />
-						<TableColumn fx:id="clinvarDiseaseColumn" editable="false" prefWidth="200.0" text="ClinVar.disease" visible="false" />
-						<TableColumn fx:id="clinvarClassColumn" editable="false" prefWidth="250.0" text="ClinVar.Class" />
-						<TableColumn fx:id="bicCategoryColumn" editable="false" prefWidth="120.0" text="BIC.Cat" visible="false" />
-						<TableColumn fx:id="bicImportanceColumn" editable="false" prefWidth="100.0" text="BIC.Importance" visible="false" />
-						<TableColumn fx:id="bicClassificationColumn" editable="false" prefWidth="120.0" text="BIC.Class" />
-						<TableColumn fx:id="experimentTypeColumn" editable="false" prefWidth="75.0" styleClass="alignment_center" text="Experiment" visible="false" />
-                  <TableColumn fx:id="bicDesignationColumn" editable="false" prefWidth="75.0" styleClass="alignment_center" text="BIC.Designation" />
-                  <TableColumn fx:id="bicNTColumn" editable="false" prefWidth="75.0" styleClass="alignment_center" text="BIC.NT" />
-						<TableColumn fx:id="kohbraPatientColumn" editable="false" text="KOHBRA.patient" />
-						<TableColumn fx:id="kohbraFrequencyColumn" editable="false" prefWidth="100.0" text="KOHBRA.frequency" />
-						<TableColumn fx:id="beClinUpdateColumn" editable="false" prefWidth="90.0" text="Be.clinvar.update" visible="false" />
-						<TableColumn fx:id="beClinOriginColumn" editable="false" prefWidth="90.0" text="Be.clinvar.origin" visible="false" />
-						<TableColumn fx:id="beClinMethColumn" editable="false" prefWidth="90.0" text="Be.clinvar.method" visible="false" />
-						<TableColumn fx:id="beBicCateColumn" editable="false" prefWidth="90.0" text="Be.BIC.category" visible="false" />
-						<TableColumn fx:id="beBicNatColumn" editable="false" prefWidth="90.0" text="Be.BIC.nationality" visible="false" />
-						<TableColumn fx:id="beBicEthColumn" editable="false" prefWidth="90.0" text="Be.BIC.ethnic" visible="false" />
-						<TableColumn fx:id="bePathBicColumn" editable="false" prefWidth="90.0" text="Be.BIC.patho" visible="false" />
-						<TableColumn fx:id="beRefColumn" editable="false" prefWidth="90.0" text="Be.transcript" visible="false" />
-						<TableColumn fx:id="beNucColumn" editable="false" prefWidth="90.0" text="Be.nt" visible="false" />
-						<TableColumn fx:id="beGeneColumn" editable="false" prefWidth="70.0" text="Be.gene" visible="false" />
-						<TableColumn fx:id="beEniCondColumn" editable="false" prefWidth="110.0" text="Be.enigma.condition" visible="false" />
-						<TableColumn fx:id="beEniUpdateColumn" editable="false" prefWidth="90.0" text="Be.enigma.update" visible="false" />
-						<TableColumn fx:id="enigmaColumn" editable="false" prefWidth="75.0" text="enigma" visible="false" />
-						<TableColumn fx:id="beEniCommColumn" editable="false" prefWidth="90.0" text="Be.exLOVD.class" visible="false" />
-						<TableColumn fx:id="bePathClinColumn" editable="false" prefWidth="90.0" text="Be.clinvar.patho" visible="false" />
-						<TableColumn fx:id="bePathEniColumn" editable="false" prefWidth="90.0" text="Be.enigma.patho" visible="false" />
-						<TableColumn fx:id="polyphen2Column" editable="false" prefWidth="60.0" text="polyphen2" />
-						<TableColumn fx:id="siftColumn" editable="false" prefWidth="35.0" text="sift" />
-                  <TableColumn fx:id="mutationtasterColumn" editable="false" prefWidth="75.0" text="mutationtaster" />
-						<TableColumn fx:id="leftSeqColumn" editable="false" prefWidth="180.0" text="Left.seq" visible="false" />
-						<TableColumn fx:id="rightSeqColumn" editable="false" prefWidth="180.0" text="Right.seq" visible="false" />
-					</columns>
 					<padding>
 						<Insets bottom="10.0" />
 					</padding>

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -85,200 +86,6 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
     @FXML
     private TableView<AnalysisResultVariant> variantListTableView;
     /** Variant List Column > prediction */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> predictionColumn;
-    /** Variant List Column > pathogenic */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> pathgenicColumn;
-    /** Variant List Column > add to report flag */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> reportColumn;
-    /** Variant List Column > set to false flag */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> falseColumn;
-    /** Variant List Column > pre filtered */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> filteredColumn;
-    /** Variant List Column > variant id */
-    @FXML
-    private TableColumn<AnalysisResultVariant,Number> variantIdColumn;
-    /** Variant List Column > type */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> typeColumn;
-    /** Variant List Column > coding consequence */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> codingConsequenceColumn;
-    /** Variant List Column > gene */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> geneColumn;
-    /** Variant List Column > refSeqId */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> refSeqIdColumn;
-    /** Variant List Column > c.DNA */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> cDNAColumn;
-    /** Variant List Column > c.DNA(BIC) */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> cDNAbicColumn;
-    /** Variant List Column > protein */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> proteinColumn;
-    /** Variant List Column > zygosity */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> zygosityColumn;
-    /** Variant List Column > ref */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> refColumn;
-    /** Variant List Column > alt */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> altColumn;
-    /** Variant List Column > left seq */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> leftSeqColumn;
-    /** Variant List Column > right seq */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> rightSeqColumn;
-    /** Variant List Column > chromosome */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> chromosomeColumn;
-    /** Variant List Column > snp */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> snpColumn;
-    /** Variant List Column > exon id */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> exonIdColumn;
-    /** Variant List Column > exon id */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> exonIdBICColumn;
-    /** Variant List Column > variant depth */
-    @FXML
-    private TableColumn<AnalysisResultVariant,Number> variantDepthColumn;
-    /** Variant List Column > allele fraction */
-    @FXML
-    private TableColumn<AnalysisResultVariant,Number> alleleFractionColumn;
-    /** Variant List Column > reference number */
-    @FXML
-    private TableColumn<AnalysisResultVariant,Number> referenceNumberColumn;
-    /** Variant List Column > alternate number */
-    @FXML
-    private TableColumn<AnalysisResultVariant,Number> alternateNumberColumn;
-    /** Variant List Column > genomic position */
-    @FXML
-    private TableColumn<AnalysisResultVariant,Number> genomicPositionColumn;
-    /** Variant List Column > genomic end position */
-    @FXML
-    private TableColumn<AnalysisResultVariant,Number> genomicEndPositionColumn;
-    /** Variant List Column > reference genome */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> referenceGenomeColumn;
-    /** Variant List Column > gene strand */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> geneStrandColumn;
-    /** Variant List Column > warning */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> warningColumn;
-    /** Variant List Column > sift */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> siftColumn;
-    /** Variant List Column > polyphen2 */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> polyphen2Column;
-    /** Variant List Column > mutationtaster */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> mutationtasterColumn;
-    /** Variant List Column > esp5400 */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> esp6500Column;
-    /** Variant List Column > exac */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> exacColumn;
-    /** Variant List Column > 1000 genomes  */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> thousandGenomicsColumn;
-    /** Variant List Column > Korean Exome */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> koreaExomeColumn;
-    /** Variant List Column > clinvar accession */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> clinvarAccessionColumn;
-    /** Variant List Column > clinvar disease */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> clinvarDiseaseColumn;
-    /** Variant List Column > clinvar class */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> clinvarClassColumn;
-    /** Variant List Column > bic category */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> bicCategoryColumn;
-    /** Variant List Column > bic importance */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> bicImportanceColumn;
-    /** Variant List Column > bic classification */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> bicClassificationColumn;
-    /** Variant List Column > bic designation */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> bicDesignationColumn;
-    /** Variant List Column > bic NT */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> bicNTColumn;
-    /** Variant List Column > kohbra patient */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> kohbraPatientColumn;
-    /** Variant List Column > kohbra frequency */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> kohbraFrequencyColumn;
-    /** Variant List Column > Experiment Type */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> experimentTypeColumn;
-    /** Variant List Column > enigma */
-    @FXML
-    private TableColumn<AnalysisResultVariant,String> enigmaColumn;
-    /** Variant List Column > be.clin.update */
-    @FXML
-    private TableColumn<AnalysisResultVariant, String> beClinUpdateColumn;
-    /** Variant List Column > be.clin.origin */
-    @FXML
-    private TableColumn<AnalysisResultVariant, String> beClinOriginColumn;
-    /** Variant List Column > be.clin.meth */
-    @FXML
-    private TableColumn<AnalysisResultVariant, String> beClinMethColumn;
-    /** Variant List Column > be.bic.cate */
-    @FXML
-    private TableColumn<AnalysisResultVariant, String> beBicCateColumn;
-    /** Variant List Column > be.bic.eth */
-    @FXML
-    private TableColumn<AnalysisResultVariant, String> beBicEthColumn;
-    /** Variant List Column > be.bic.nat */
-    @FXML
-    private TableColumn<AnalysisResultVariant, String> beBicNatColumn;
-    /** Variant List Column > be.ref */
-    @FXML
-    private TableColumn<AnalysisResultVariant, String> beRefColumn;
-    /** Variant List Column > be.nuc */
-    @FXML
-    private TableColumn<AnalysisResultVariant, String> beNucColumn;
-    /** Variant List Column > be.gene */
-    @FXML
-    private TableColumn<AnalysisResultVariant, String> beGeneColumn;
-    /** Variant List Column > be.eni_cond */
-    @FXML
-    private TableColumn<AnalysisResultVariant, String> beEniCondColumn;
-    /** Variant List Column > be.eni.update */
-    @FXML
-    private TableColumn<AnalysisResultVariant, String> beEniUpdateColumn;
-    /** Variant List Column > be.eni.comm */
-    @FXML
-    private TableColumn<AnalysisResultVariant, String> beEniCommColumn;
-    /** Variant List Column > be.path.clin */
-    @FXML
-    private TableColumn<AnalysisResultVariant, String> bePathClinColumn;
-    /** Variant List Column > be.path.eni */
-    @FXML
-    private TableColumn<AnalysisResultVariant, String> bePathEniColumn;
-    /** Variant List Column > be.path.bic */
-    @FXML
-    private TableColumn<AnalysisResultVariant, String> bePathBicColumn;
 
     @FXML
     private Label filterTitle;
@@ -335,6 +142,8 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         alamutService = ALAMUTService.getInstance();
         alamutService.setMainController(getMainController());
 
+        setTableViewColumn();
+
         // 목록 클릭 시 변이 상세정보 출력 이벤트 바인딩
         variantListTableView.setRowFactory(tv -> {
             TableRow<AnalysisResultVariant> row = new TableRow<>();
@@ -368,141 +177,6 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         ruoImgView.setFitHeight(50);
         iconAreaHBox.getChildren().add(ruoImgView);
 
-        // 변이 목록 TableView Column Value Setting...
-        predictionColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPrediction()));
-        predictionColumn.setCellFactory(param -> {
-                TableCell<AnalysisResultVariant,String> cell = new TableCell<AnalysisResultVariant, String>() {
-                    @Override
-                    public void updateItem(String item, boolean empty) {
-                        Label label = null;
-                        if(item != null) {
-                            //PredictionTypeCode code = PredictionTypeCode.getByCode(item);
-                            String alias = PredictionTypeCode.getAliasFromCode(item);
-                            if(alias != null && !"NONE".equals(alias)) {
-                                label = new Label(alias);
-                                label.getStyleClass().add("prediction_" + item);
-                            }
-                        }
-                        setGraphic(label);
-                    }
-                };
-                return cell;
-        });
-        pathgenicColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPathogenic()));
-        pathgenicColumn.setCellFactory(param -> {
-                TableCell<AnalysisResultVariant,String> cell = new TableCell<AnalysisResultVariant, String>() {
-                    @Override
-                    public void updateItem(String item, boolean empty) {
-                        Label label = null;
-                        if(item != null && !"NONE".equals(item) && !"-1".equals(item)) {
-                            String alias = PathogenicTypeCode.getAliasFromCode(item);
-                            label = new Label(alias);
-                            label.getStyleClass().add("pathogenic_" + item);
-                        }
-                        setGraphic(label);
-                    }
-                };
-                return cell;
-        });
-        reportColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPathogenicReportYn()));
-        reportColumn.setCellFactory(param -> {
-                TableCell<AnalysisResultVariant,String> cell = new TableCell<AnalysisResultVariant, String>() {
-                    @Override
-                    public void updateItem(String item, boolean empty) {
-                        Label label = null;
-                        if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
-                            label = new Label("R");
-                            label.getStyleClass().add("prediction_E");
-                        }
-                        setGraphic(label);
-                    }
-                };
-                return cell;
-        });
-        falseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPathogenicFalseYn()));
-        falseColumn.setCellFactory(param -> {
-                TableCell<AnalysisResultVariant,String> cell = new TableCell<AnalysisResultVariant, String>() {
-                    @Override
-                    public void updateItem(String item, boolean empty) {
-                        Label label = null;
-                        if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
-                            label = new Label("F");
-                            label.getStyleClass().addAll("bullet_red", "brd_radius_2");
-                        }
-                        setGraphic(label);
-                    }
-                };
-                return cell;
-        });
-        warningColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getWarningReasonIfWarningIsYes()));
-        warningColumn.setCellFactory(param -> {
-                TableCell<AnalysisResultVariant,String> cell = new TableCell<AnalysisResultVariant, String>() {
-                    @Override
-                    public void updateItem(String item, boolean empty) {
-                        setGraphic((!StringUtils.isEmpty(item)) ? SNPsINDELsList.getWarningReasonPopOver(item) : null);
-                    }
-                };
-                return cell;
-        });
-        variantIdColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(Integer.parseInt(cellData.getValue().getVariantId())));
-        typeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getType()));
-        codingConsequenceColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCodingConsequence()));
-        geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getGene()));
-        refSeqIdColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRefSeqId()));
-        cDNAColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getcDNA()));
-        cDNAbicColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getcDNAbic()));
-        proteinColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getProtein()));
-        zygosityColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getZygosity()));
-        refColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRef()));
-        altColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAlt()));
-        chromosomeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getChromosome()));
-        snpColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnp()));
-        exonIdColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getExonId()));
-        exonIdBICColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getExonIdBIC()));
-        variantDepthColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(Integer.parseInt(cellData.getValue().getVariantDepth())));
-        alleleFractionColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(Double.parseDouble(ConvertUtil.convertFormatNumber("%.2f", cellData.getValue().getAlleleFraction(), "0"))));
-        referenceNumberColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(Integer.parseInt(cellData.getValue().getReferenceNumber())));
-        alternateNumberColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(Integer.parseInt(cellData.getValue().getAlternateNumber())));
-        genomicPositionColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(Integer.parseInt(cellData.getValue().getGenomicPosition())));
-        genomicEndPositionColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(Integer.parseInt(cellData.getValue().getGenomicEndPosition())));
-        referenceGenomeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getReferenceGenome()));
-        geneStrandColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getGeneStrand()));
-        siftColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSift()));
-        polyphen2Column.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPolyphen2()));
-        mutationtasterColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getMutationtaster()));
-        esp6500Column.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEsp6500() == null || cellData.getValue().getEsp6500().isEmpty() ? "" : String.valueOf(Double.parseDouble(ConvertUtil.convertFormatNumber("%.2f", cellData.getValue().getEsp6500(), "")))));
-        exacColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getExac() == null || cellData.getValue().getExac().isEmpty() ? "" : String.valueOf(Double.parseDouble(ConvertUtil.convertFormatNumber("%.2f", cellData.getValue().getExac(), "")))));
-        thousandGenomicsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getThousandGenomics() == null || cellData.getValue().getThousandGenomics().isEmpty() ? "" : String.valueOf(Double.parseDouble(ConvertUtil.convertFormatNumber("%.2f", cellData.getValue().getThousandGenomics(), "")))));
-        koreaExomeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getKoreanExome() == null || cellData.getValue().getKoreanExome().isEmpty() ? "" : String.valueOf(Double.parseDouble(ConvertUtil.convertFormatNumber("%.2f", cellData.getValue().getKoreanExome(), "")))));
-        clinvarAccessionColumn.setCellValueFactory(cellData -> new SimpleStringProperty((cellData.getValue().getVariantClinical() != null) ? cellData.getValue().getVariantClinical().getClinvarAccession() : null));
-        clinvarDiseaseColumn.setCellValueFactory(cellData -> new SimpleStringProperty((cellData.getValue().getVariantClinical() != null) ? cellData.getValue().getVariantClinical().getVariantDiseaseDbName() : null));
-        clinvarClassColumn.setCellValueFactory(cellData -> new SimpleStringProperty((cellData.getValue().getVariantClinical() != null) ? cellData.getValue().getVariantClinical().getClassification() : null));
-        bicCategoryColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBicCategory()));
-        bicImportanceColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBicImportance()));
-        bicClassificationColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBicClassification()));
-        bicDesignationColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBicDesignation()));
-        bicNTColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBicNT()));
-        kohbraPatientColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getKohbraPatient()));
-        kohbraFrequencyColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getKohbraFrequency()));
-        experimentTypeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getExperimentType()));
-        leftSeqColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLeftSeq()));
-        rightSeqColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRightSeq()));
-        enigmaColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEnigma()));
-        beClinUpdateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBeClinUpdate()));
-        beClinOriginColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBeClinOrigin()));
-        beClinMethColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBeClinMeth()));
-        beBicCateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBeBicCate()));
-        beBicEthColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBeBicEth()));
-        beBicNatColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBeBicNat()));
-        beRefColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBeRef()));
-        beNucColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBeNuc()));
-        beGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBeGene()));
-        beEniCondColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBeEniCond()));
-        beEniUpdateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBeEniUpdate()));
-        beEniCommColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBeEniComm()));
-        bePathClinColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBePathClin()));
-        bePathEniColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBePathEni()));
-        bePathBicColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBePathBic()));
 
         // 목록 정렬 설정 트래킹
         variantListTableView.getSortOrder().addListener(new ListChangeListener<TableColumn<AnalysisResultVariant,?>>() {
@@ -726,7 +400,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                     null, false);
             AnalysisResultVariantList analysisResultVariantList = response.getObjectBeforeConvertResponseToJSON(AnalysisResultVariantList.class);
 
-            List<AnalysisResultVariant> list = null;
+            List<AnalysisResultVariant> list = analysisResultVariantList.getResult();
             if(list == null || list.isEmpty()) list = dummyVariantList();
             ObservableList<AnalysisResultVariant> displayList = null;
 
@@ -750,7 +424,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             // 화면 출력
             if (displayList != null && displayList.size() > 0) {
                 // report & false variant 카운트 집계
-                for (AnalysisResultVariant item : displayList) {
+                /*for (AnalysisResultVariant item : displayList) {
                     if (!StringUtils.isEmpty(item.getPathogenicReportYn())
                             && "Y".equals(item.getPathogenicReportYn())) {
                         reportCount++;
@@ -758,7 +432,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                     if (!StringUtils.isEmpty(item.getPathogenicFalseYn()) && "Y".equals(item.getPathogenicFalseYn())) {
                         falseCount++;
                     }
-                }
+                }*/
                 variantListTableView.getSelectionModel().select(selectedIdx);
                 showVariantDetail(displayList.get(selectedIdx));
             } else {
@@ -1038,6 +712,262 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
     }
 
+    public void setTableViewColumn() {
+        if("somatic".equalsIgnoreCase(sample.getAnalysisType())) {
+            TableColumn<AnalysisResultVariant, String> swTier = new TableColumn<>("Tier");
+            swTier.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSwTier()));
+
+            TableColumn<AnalysisResultVariant, String> expertTier = new TableColumn<>("Tier(User)");
+            expertTier.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getExpertTier()));
+
+            variantListTableView.getColumns().addAll(swTier, expertTier);
+        } else {
+            TableColumn<AnalysisResultVariant, String> swPathogenicityLevel = new TableColumn<>("Pathogenic");
+            swPathogenicityLevel.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSwPathogenicityLevel()));
+            swPathogenicityLevel.setPrefWidth(55);
+            swPathogenicityLevel.setCellFactory(param -> {
+                    TableCell<AnalysisResultVariant,String> cell = new TableCell<AnalysisResultVariant, String>() {
+                        @Override
+                        public void updateItem(String item, boolean empty) {
+                            Label label = null;
+                            if(item != null) {
+                                String code = PredictionTypeCode.getCodeFromAlias(item);
+                                if(code != null && !"NONE".equals(code)) {
+                                    label = new Label(item);
+                                    label.getStyleClass().clear();
+                                    swPathogenicityLevel.getStyleClass().add("alignment_center");
+                                    label.getStyleClass().add("prediction_" + code);
+                                }
+                            }
+                            setGraphic(label);
+                        }
+                    };
+                    return cell;
+            });
+
+            TableColumn<AnalysisResultVariant, String> expertPathogenicityLevel = new TableColumn<>("Pathogenic(User)");
+            expertPathogenicityLevel.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getExpertPathogenicityLevel()));
+            expertPathogenicityLevel.setPrefWidth(80);
+            variantListTableView.getColumns().addAll(swPathogenicityLevel, expertPathogenicityLevel);
+        }
+
+        TableColumn<AnalysisResultVariant, Integer> warn = new TableColumn<>("Warn");
+        warn.setCellValueFactory(cellData -> new SimpleObjectProperty<Integer>(cellData.getValue().getHasWarning()));
+
+        TableColumn<AnalysisResultVariant, Integer> report = new TableColumn<>("Report");
+        report.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSkipReport()).asObject());
+
+        TableColumn<AnalysisResultVariant, String> type = new TableColumn<>("Type");
+        type.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getVariantType()));
+
+        TableColumn<AnalysisResultVariant, String> codCons = new TableColumn<>("Cod.Cons");
+        codCons.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getCodingConsequence()));
+
+        TableColumn<AnalysisResultVariant, String> gene = new TableColumn<>("Gene");
+        gene.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getGene()));
+
+        TableColumn<AnalysisResultVariant, String> strand = new TableColumn<>("Strand");
+        strand.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getStrand()));
+
+        TableColumn<AnalysisResultVariant, String> transcript = new TableColumn<>("Transcript");
+        transcript.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getTranscript()));
+
+        TableColumn<AnalysisResultVariant, String> ntChange = new TableColumn<>("NT change");
+        ntChange.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getNtChange()));
+
+        TableColumn<AnalysisResultVariant, String> aaChange = new TableColumn<>("AA change");
+        aaChange.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getAaChange()));
+
+        TableColumn<AnalysisResultVariant, String> ntChangeBIC = new TableColumn<>("NT change(BIC)");
+        ntChangeBIC.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getNtChangeBic()));
+
+        TableColumn<AnalysisResultVariant, String> chr = new TableColumn<>("Chr");
+        chr.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getChromosome()));
+
+        TableColumn<AnalysisResultVariant, String> ref = new TableColumn<>("Ref");
+        ref.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getRefSequence()));
+
+        TableColumn<AnalysisResultVariant, String> alt = new TableColumn<>("Alt");
+        alt.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getAltSequence()));
+
+        TableColumn<AnalysisResultVariant, String> zigosity = new TableColumn<>("Zigosity");
+        zigosity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getZygosity()));
+
+        TableColumn<AnalysisResultVariant, String> exon = new TableColumn<>("Exon");
+        exon.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getExonNum()));
+
+        TableColumn<AnalysisResultVariant, String> exonBic = new TableColumn<>("Exon(BIC)");
+        exonBic.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getExonNumBic()));
+
+        TableColumn<AnalysisResultVariant, Integer> refNum = new TableColumn<>("ref.num");
+        refNum.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getReadInfo().getRefReadNum()).asObject());
+
+        TableColumn<AnalysisResultVariant, Integer> altNum = new TableColumn<>("alt.num");
+        altNum.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getReadInfo().getAltReadNum()).asObject());
+
+        TableColumn<AnalysisResultVariant, Integer> depth = new TableColumn<>("depth");
+        depth.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getReadInfo().getReadDepth()).asObject());
+
+        TableColumn<AnalysisResultVariant, String> fraction = new TableColumn<>("fraction");
+        fraction.setCellValueFactory(cellData -> new SimpleStringProperty(
+                cellData.getValue().getReadInfo().getAlleleFraction() != null ? String.valueOf(Double.parseDouble(ConvertUtil.convertFormatNumber("%.2f",cellData.getValue().getReadInfo().getAlleleFraction().toString(), ""))) : ""));
+
+        TableColumn<AnalysisResultVariant, String> thousandGenomics = new TableColumn<>("1KG");
+        thousandGenomics.setCellValueFactory(cellData -> new SimpleStringProperty(
+                cellData.getValue().getPopulationFrequency().getG1000() != null ? String.valueOf(Double.parseDouble(ConvertUtil.convertFormatNumber("%.2f",cellData.getValue().getPopulationFrequency().getG1000().toString(), ""))) : ""));
+
+        TableColumn<AnalysisResultVariant, String> exac = new TableColumn<>("ExAC");
+        exac.setCellValueFactory(cellData -> new SimpleStringProperty(
+                cellData.getValue().getPopulationFrequency().getExac() != null ? String.valueOf(Double.parseDouble(ConvertUtil.convertFormatNumber("%.2f",cellData.getValue().getPopulationFrequency().getExac().toString(), ""))) : ""));
+
+        TableColumn<AnalysisResultVariant, String> esp = new TableColumn<>("Esp6500");
+        esp.setCellValueFactory(cellData -> new SimpleStringProperty(
+                cellData.getValue().getPopulationFrequency().getEsp6500() != null ? String.valueOf(Double.parseDouble(ConvertUtil.convertFormatNumber("%.2f",cellData.getValue().getPopulationFrequency().getEsp6500().toString(), ""))) : ""));
+
+        TableColumn<AnalysisResultVariant, String> korean = new TableColumn<>("Korean");
+        korean.setCellValueFactory(cellData -> new SimpleStringProperty(
+                cellData.getValue().getPopulationFrequency().getKorean() != null ? String.valueOf(Double.parseDouble(ConvertUtil.convertFormatNumber("%.2f",cellData.getValue().getPopulationFrequency().getKorean().toString(), ""))) : ""));
+
+        TableColumn<AnalysisResultVariant, String> clinVarAcc = new TableColumn<>("ClinVar.Acc");
+        clinVarAcc.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getClinVar().getClinVarAcc()));
+
+        TableColumn<AnalysisResultVariant, String> clinVarClass = new TableColumn<>("ClinVar.Class");
+        clinVarClass.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getClinVar().getClinVarClass()));
+
+        TableColumn<AnalysisResultVariant, String> bicClass = new TableColumn<>("BIC.Class");
+        clinVarClass.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBic().getBicClass()));
+
+        TableColumn<AnalysisResultVariant, String> bicDesignation = new TableColumn<>("BIC.Designation");
+        bicDesignation.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBic().getBicDesignation()));
+
+        TableColumn<AnalysisResultVariant, String> bicNt = new TableColumn<>("BIC.NT");
+        bicNt.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBic().getBicNt()));
+
+        TableColumn<AnalysisResultVariant, String> kohbraPatient = new TableColumn<>("KOHBRA.patient");
+        kohbraPatient.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getKohbraPatient()));
+
+        TableColumn<AnalysisResultVariant, String> kohbraFrequency = new TableColumn<>("KOHBRA.frequency");
+        kohbraFrequency.setCellValueFactory(cellData -> new SimpleStringProperty(
+                cellData.getValue().getPopulationFrequency().getKohbraFreq() != null ? String.valueOf(Double.parseDouble(ConvertUtil.convertFormatNumber("%.2f",cellData.getValue().getPopulationFrequency().getKohbraFreq().toString(), ""))) : ""));
+
+        TableColumn<AnalysisResultVariant, String> polyphen2 = new TableColumn<>("polyphen2");
+        polyphen2.setCellValueFactory(cellData -> new SimpleStringProperty(
+                cellData.getValue().getClinicalSignificant().getPolyphen2() != null ? String.valueOf(Double.parseDouble(ConvertUtil.convertFormatNumber("%.2f",cellData.getValue().getClinicalSignificant().getPolyphen2().toString(), ""))) : ""));
+
+        TableColumn<AnalysisResultVariant, String> sift = new TableColumn<>("sift");
+        sift.setCellValueFactory(cellData -> new SimpleStringProperty(
+                cellData.getValue().getClinicalSignificant().getSift() != null ? String.valueOf(Double.parseDouble(ConvertUtil.convertFormatNumber("%.2f",cellData.getValue().getClinicalSignificant().getSift().toString(), ""))) : ""));
+
+        TableColumn<AnalysisResultVariant, String> mutationTaster = new TableColumn<>("mutationtaster");
+        mutationTaster.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getMutationTaster()));
+
+        TableColumn<AnalysisResultVariant, Integer> variantNum = new TableColumn<>("variantNum");
+        variantNum.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getVariantNum()).asObject());
+        variantNum.setVisible(false);
+
+        TableColumn<AnalysisResultVariant, String> refGenomeVer = new TableColumn<>("refGenomeVer");
+        refGenomeVer.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getRefGenomeVer()));
+        refGenomeVer.setVisible(false);
+
+        TableColumn<AnalysisResultVariant, String> leftSequence = new TableColumn<>("leftSequence");
+        leftSequence.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getLeftSequence()));
+        leftSequence.setVisible(false);
+
+        TableColumn<AnalysisResultVariant, String> rightSequence = new TableColumn<>("rightSequence");
+        rightSequence.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getRightSequence()));
+        rightSequence.setVisible(false);
+
+        TableColumn<AnalysisResultVariant, Integer> genomicCoordinate = new TableColumn<>("genomicCoordinate");
+        genomicCoordinate.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSequenceInfo().getGenomicCoordinate()).asObject());
+        genomicCoordinate.setVisible(false);
+
+        TableColumn<AnalysisResultVariant, String> dbSnpRsId = new TableColumn<>("snpRsId");
+        dbSnpRsId.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPopulationFrequency().getDbsnpRsId()));
+        dbSnpRsId.setVisible(false);
+
+        TableColumn<AnalysisResultVariant, String> clinVarDisease = new TableColumn<>("clinVar.Disease");
+        clinVarDisease.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getClinVar().getClinVarDisease()));
+        clinVarDisease.setVisible(false);
+
+        TableColumn<AnalysisResultVariant, String> bicCategory = new TableColumn<>("BIC.Category");
+        bicCategory.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBic().getBicCategory()));
+        bicCategory.setVisible(false);
+
+        TableColumn<AnalysisResultVariant, String> bicImportance = new TableColumn<>("BIC.Importance");
+        bicImportance.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBic().getBicImportance()));
+        bicImportance.setVisible(false);
+
+        TableColumn<AnalysisResultVariant, String> beClinVarUpdate = new TableColumn<>("Be.ClinVar.Update");
+        beClinVarUpdate.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBe().getBeClinVarUpdate()));
+        beClinVarUpdate.setVisible(false);
+
+        TableColumn<AnalysisResultVariant, String> beClinVarOrigin = new TableColumn<>("Be.ClinVar.Origin");
+        beClinVarOrigin.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBe().getBeClinVarOrigin()));
+        beClinVarOrigin.setVisible(false);
+
+        TableColumn<AnalysisResultVariant, String> beClinVarMethod = new TableColumn<>("Be.ClinVar.Method");
+        beClinVarMethod.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBe().getBeClinVarMethod()));
+        beClinVarMethod.setVisible(false);
+
+        TableColumn<AnalysisResultVariant, String> beBicCategory = new TableColumn<>("Be.BIC.Category");
+        beBicCategory.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBe().getBeBicCategory()));
+        beBicCategory.setVisible(false);
+
+        TableColumn<AnalysisResultVariant, String> beBicNationality = new TableColumn<>("Be.BIC.Nationality");
+        beBicNationality.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBe().getBeBicNationality()));
+        beBicNationality.setVisible(false);
+
+        TableColumn<AnalysisResultVariant, String> beBicEthnic = new TableColumn<>("Be.BIC.Ethnic");
+        beBicEthnic.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBe().getBeBicNationality()));
+        beBicEthnic.setVisible(false);
+
+        TableColumn<AnalysisResultVariant, String> beBicPathogenicity = new TableColumn<>("Be.BIC.Pathogenicity");
+        beBicPathogenicity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBe().getBeBicPathogenicity()));
+        beBicPathogenicity.setVisible(false);
+
+        TableColumn<AnalysisResultVariant, String> beTranscript = new TableColumn<>("Be.Transcript");
+        beTranscript.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBe().getBeTranscript()));
+        beTranscript.setVisible(false);
+
+        TableColumn<AnalysisResultVariant, String> beNt = new TableColumn<>("Be.NT");
+        beNt.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBe().getBeNt()));
+        beNt.setVisible(false);
+
+        TableColumn<AnalysisResultVariant, String> beGene = new TableColumn<>("Be.Gene");
+        beGene.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBe().getBeGene()));
+        beGene.setVisible(false);
+
+        TableColumn<AnalysisResultVariant, String> beEnigmaCondition = new TableColumn<>("Be.Enigma.Condition");
+        beEnigmaCondition.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBe().getBeEnigmaCondition()));
+        beEnigmaCondition.setVisible(false);
+
+        TableColumn<AnalysisResultVariant, String> beEnigmaUpdate = new TableColumn<>("Be.Enigma.Update");
+        beEnigmaUpdate.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBe().getBeEnigmaUpdate()));
+        beEnigmaUpdate.setVisible(false);
+
+        TableColumn<AnalysisResultVariant, String> beClinVarPathogenicity = new TableColumn<>("Be.ClinVar.Pathogenicity");
+        beClinVarPathogenicity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBe().getBeClinVarPathogenicity()));
+        beClinVarPathogenicity.setVisible(false);
+
+        TableColumn<AnalysisResultVariant, String> beEnigmaPathogenicity = new TableColumn<>("Be.Enigma.Pathogenicity");
+        beEnigmaPathogenicity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBe().getBeEnigmaPathogenicity()));
+        beEnigmaPathogenicity.setVisible(false);
+
+        TableColumn<AnalysisResultVariant, String> enigma = new TableColumn<>("enigma");
+        enigma.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBe().getBeEnigmaPathogenicity()));
+        enigma.setVisible(false);
+
+
+        variantListTableView.getColumns().addAll(warn, report, type , codCons, gene, strand, transcript, ntChange, aaChange, ntChangeBIC, chr
+            ,alt, zigosity, exon, exonBic, refNum, altNum, depth, thousandGenomics, exac, esp, korean, clinVarAcc, clinVarClass, bicClass, bicDesignation
+            ,kohbraPatient, kohbraFrequency, polyphen2, sift, mutationTaster, variantNum, refGenomeVer, leftSequence, rightSequence
+            ,genomicCoordinate, dbSnpRsId, clinVarDisease, bicCategory, bicImportance, beClinVarUpdate, beClinVarOrigin, beClinVarMethod
+            ,beBicCategory, beBicNationality, beBicEthnic, beBicPathogenicity, beTranscript, beNt, beGene, beEnigmaCondition, beEnigmaUpdate
+            ,beClinVarPathogenicity, beEnigmaPathogenicity, enigma);
+
+    }
+
+
     @SuppressWarnings("unchecked")
     private List<AnalysisResultVariant> dummyVariantList() {
         List<AnalysisResultVariant> variantsList = null;
@@ -1061,15 +991,15 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
     private String dummyVariantDetail(int id) {
         String data = null;
-        if(id == 25924) {
+        if(id % 5 == 0) {
             data = "{\"experiment\":{\"sequencer\":\"Illumina MiSeq\",\"specimen_type\":\"blood\",\"experiment_user\":\"Changbum Hong\",\"experiment_type\":\"germline\"},\"same_variant_sample_count_in_usergroup\":8,\"total_sample_count_in_usergroup\":8,\"variant_classifier\":{\"radar\":\"1\",\"grade\":\"E\",\"result\":\"benign\"},\"variant_information\":{\"type\":\"snp\",\"alt\":\"G\",\"start\":32911888,\"vcf_format\":\"chr13 32911888.A G.\",\"stop\":32911888,\"ucsc_format\":\"chr13:32,911,888-32,911,888\",\"1kg_url\":\"\",\"brca_exchange_url\":\"http://brcaexchange.org/variants?search=chr13:g.32911888\",\"rs_id\":\"rs1801406\",\"size\":\"1bp\",\"esp_url\":\"\",\"ucsc_url\":\"http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&highlight=hg19.chr13%3A32,911,888-32,911,888&position=chr13%3A32911858-32911918\",\"filter\":\"None\",\"ncbi_url\":\"http://www.ncbi.nlm.nih.gov/gene/675\",\"exac_format\":\"13-32911888-A-G\",\"ref\":\"A\",\"right_22_bp\":\"CCAAGCTACATATTGCAGAAGA\",\"exac_url\":\"http://exac.broadinstitute.org/variant/13-32911888-A-G\",\"clinvar_url\":\"http://www.ncbi.nlm.nih.gov/clinvar?term=rs1801406\",\"left_22_bp\":\"TTGAATTTACTCAGTTTAGAAA\"},\"assay\":{\"amplicon\":\"\",\"pipeline\":\"444\",\"company\":\"NGeneBio\",\"assay_name\":\"NGB_BRCAccuTest\"},\"korean_hereditary_breast_cancer_study\":{\"high_risk_breast_cancer_patient_in_kohbra\":\"\",\"high_risk_breast_cancer_frequency_in_kohbra\":\"\"},\"breast_cancer_information_core\":{\"exon\":\"11\",\"nt\":\"3624\",\"mutation_category_bic\":\"Synonymous(Syn)\",\"clinical_importance\":\"no\",\"clinical_classification\":\"Likely not pathogenic/little clinical significance\",\"bic_designation\":\"3624A>G\",\"radar\":\"2\"},\"build\":{\"dbsnp_build\":\"dbSNP 147\",\"ESP6500\":\"ESP6500SI-V2-SSA137\",\"ExAc\":\"0.31\",\"1000_genomes\":\"20150218 phase3\",\"ref_genome\":\"GRCh37/hg19\",\"ESP5400\":\"0.3\",\"clinvar_build\":\"20160502\"},\"in_silico_prediction\":{\"SIFT\":{\"text\":\"\",\"type\":\"Protein effect\",\"test\":\"SIFT\",\"reference range\":\"0-1\",\"score\":\"\",\"radar\":\"\",\"desc\":\"dbNSFP annotation, SIFT score (SIFTori)\"},\"mt\":{\"text\":\"\",\"score\":\"\",\"radar\":\"\"},\"PolyPhen2\":{\"text\":\"\",\"type\":\"Protein effect\",\"test\":\"PolyPhen2\",\"reference range\":\"0-1\",\"score\":\"\",\"radar\":\"\",\"desc\":\"dbNSFP annotation, Polyphen2 score based on HumVar\"}},\"gene\":{\"default_transcript\":\"NM_000059.3\",\"strand\":\"+\",\"entrez_gene_summary\":\"Inherited mutations in BRCA1 and this gene, BRCA2, confer increased lifetime risk of developing breast or ovarian cancer. Both BRCA1 and BRCA2 are involved in maintenance of genome stability, specifically the homolog     ous recombination pathway for double-strand DNA repair. The BRCA2 protein contains several copies of a 70 aa motif called the BRC motif, and these motifs mediate binding to the RAD51 recombinase which functions in DNA repair. BRCA2 is considered a tumor suppre     ssor gene, as tumors with BRCA2 mutations generally exhibit loss of heterozygosity (LOH) of the wild-type allele. [provided by RefSeq, Dec 2008]\",\"gene_symbol\":\"BRCA2\",\"gene_name\":\"BRCA2\",\"transcript\":{\"0\":{\"transcript_name\":\"NM_000059.3\",\"exon_number/total\":\"11/27\",\"hgvs.c\":\"c.3396A>G\",\"strand\":\"+\",\"aa_abbreviation\":\"\",\"genome_37\":\"chr13:g.32911888:A>G\",\"coding_consequence\":\"synonymous\",\"solvebio_format\":\"NM_000059.3(BRCA2):c.3396A>G(p.(=))\",\"hgvs.p\":\"p.(=)\",\"gene_symbol\":\"BRCA2\"}}},\"BRCA_Exchange\":{\"Condition_ID_Value_ENIGMA\":\"BREAST-OVARIAN CANCER  FAMILIAL  SUSCEPTIBILITY TO  2  BROVCA2 (612555)\",\"Functional_analysis_result_LOVD\":\"predicted_neutral_-_?\",\"Patient_nationality_BIC\":\"USA German Spanish - Austria Sri Lankan Polish\",\"Comment_on_Clinical_significance_ENIGMA\":\"Class 1 not pathogenic based on frequency >1% in an outbred sampleset. Frequency 0.3846 (Asian)  0.1646 (African)  0.2942 (European)  derived from 1000 genomes (2012-04-30).\",\"Has_Discordant_Evidence\":\"Concordant\",\"Allele_Origin_ClinVar\":\"germline,unknown\",\"Date_last_evaluated_ENIGMA\":\"1/12/15\",\"Condition_ID_Type_ENIGMA\":\"OMIM\",\"Gene_Symbol\":\"BRCA2\",\"Allele_Origin_BIC\":\"G\",\"Mutation_category_BIC\":\"Syn\",\"Protein\":\"NP_000050.2:p.(eq)\",\"Nucleotide\":\"NM_000059.3:c.3396A>G\",\"ID\":\"1087\",\"Date_last_updated_ClinVar\":\"2004-02-20_2014-01-02_2014-10-30_2011-03-17_2015-01-12_2014-11-07_2013-09-04\",\"Ethnicity_BIC\":\"Global,-,Causian,Sinhalese,Polish,Caucasian\",\"Pathogenicity\":{\"BIC\":\"Class 1 (BIC)\",\"ENIGMA\":\"Benign(ENIGMA)\",\"ClinVar\":\"Benign (ClinVar)\"},\"Analysis_Method_ClinVar\":\"curation,clinical,testing,literature,only\",\"Reference_cDNA_Sequence\":\"NM_000059.3\"},\"genomic_coordinate\":{\"chromosome\":\"chr13\",\"g.pos\":32911888,\"build\":\"GRCh37\"},\"clinical\":{\"gene_info\":{\"0\":\"BRCA2:675\"},\"alternate_allele\":\"2\",\"hgvs\":\"NC_000013.10:g.32911888A>G\",\"clinical_channel\":{\"channel\":\"Breast_Cancer_Information_Core_(BRCA2)\",\"channel_id\":\"3624&base_change=A_to_G\"},\"clinvar_accession\":\"RCV000113169.1, RCV000113170.4|RCV000114982.2|RCV000130987.2|RCV000152873.3\",\"radar\":\"1\",\"database_source\":{\"database\":\"GeneReviews:MedGen:OMIM:Orphanet|GeneReviews:MedGen:OMIM:SNOMED_CT|MedGen:SNOMED_CT|MedGen\",\"database_id\":\"NBK1247:C2675520:612555:ORPHA145|NBK1247:C0346153:114480:254843006|C0027672:699346009|CN169374\"},\"classification\":\"Benign, Benign|Benign|Benign|Benign\",\"allele_orign\":{\"0\":\"Both\"},\"total_rcv\":2,\"review_status\":\"Reviewed by expert panel|Criteria provided single submitter|Criteria provided single submitter|Criteria provided single submitter\",\"variant_disease_db_name\":\"Breast-ovarian cancer,familial 2|Familial cancer of breast|Hereditary cancer-predisposing syndrome|not specified\"},\"allele\":{\"type_of_allele\":\"snp\",\"zygosity_dp\":\"0\",\"total_read_depth\":436,\"alternate\":\"G\",\"alternate_allele_observation\":435,\"reference_allele_observation\":\"1\",\"allele_fraction\":99.77064220183486,\"zygosity\":\"homozygote\",\"reference\":\"A\"},\"same_panel_same_variant_sample_count_in_usergroup\":0,\"same_variant_sample_count_in_run\":1,\"id\":1,\"total_sample_count_in_run\":1,\"ENIGMA\":{\"has\":\"yes\",\"pathogenic\":\"Benign(ENIGMA)\",\"radar\":\"1\"},\"population_frequency\":{\"Korean_exome\":{\"ALL\":{\"allele_frequency\":0.38648,\"allele_count\":2678,\"allele_number\":1035,\"type\":\"Common\",\"population\":\"All Korean Genomes\",\"homozygote_count\":\"\",\"hemizygote_count\":\"\",\"code\":\"ALL\"}},\"1000_genomes\":{\"European\":{\"allele_frequency\":0.2753,\"allele_count\":\"\",\"allele_number\":\"\",\"type\":\"Common\",\"population\":\"European\",\"homozygote_count\":\"\",\"hemizygote_count\":\"\",\"code\":\"EUR\"},\"American\":{\"allele_frequency\":0.2378,\"allele_count\":\"\",\"allele_number\":\"\",\"type\":\"Common\",\"population\":\"American\",\"homozygote_count\":\"\",\"hemizygote_count\":\"\",\"code\":\"AMR\"},\"African\":{\"allele_frequency\":0.2095,\"allele_count\":\"\",\"allele_number\":\"\",\"type\":\"Common\",\"population\":\"African\",\"homozygote_count\":\"\",\"hemizygote_count\":\"\",\"code\":\"AFR\"},\"South_Asian\":{\"allele_frequency\":0.2515,\"allele_count\":\"\",\"allele_number\":\"\",\"type\":\"Common\",\"population\":\"South Asian\",\"homozygote_count\":\"\",\"hemizygote_count\":\"\",\"code\":\"SAS\"},\"ALL\":{\"allele_frequency\":0.266773,\"allele_count\":\"\",\"allele_number\":\"\",\"type\":\"Common\",\"population\":\"All 1000 Genomes\",\"homozygote_count\":\"\",\"hemizygote_count\":\"\",\"code\":\"ALL\"},\"East_Asian\":{\"allele_frequency\":0.3681,\"allele_count\":\"\",\"allele_number\":\"\",\"type\":\"Common\",\"population\":\"East Asian\",\"homozygote_count\":\"\",\"hemizygote_count\":\"\",\"code\":\"EAS\"}},\"ESP6500\":{\"AA\":{\"allele_frequency\":0.22605537902859738,\"allele_count\":\"996\",\"allele_number\":4406,\"type\":\"Common\",\"population\":\"African American\",\"homozygote_count\":\"\",\"hemizygote_count\":\"\",\"code\":\"AA\"},\"EA\":{\"allele_frequency\":0.3073970690858339,\"allele_count\":\"2643\",\"allele_number\":8598,\"type\":\"Common\",\"population\":\"European American\",\"homozygote_count\":\"\",\"hemizygote_count\":\"\",\"code\":\"EA\"},\"ALL\":{\"allele_frequency\":0.27983697323900336,\"allele_count\":\"3639\",\"allele_number\":13004,\"type\":\"Common\",\"population\":\"ALL\",\"homozygote_count\":\"\",\"hemizygote_count\":\"\",\"code\":\"All ESP6500\"}},\"ExAC\":{\"Latino\":{\"allele_frequency\":0.20869489760499826,\"allele_count\":\"2405\",\"allele_number\":\"11524\",\"type\":\"Common\",\"population\":\"Latino\",\"homozygote_count\":\"256\",\"hemizygote_count\":\"\",\"code\":\"AMR\"},\"African\":{\"allele_frequency\":0.22917897223862965,\"allele_count\":\"2328\",\"allele_number\":\"10158\",\"type\":\"Common\",\"population\":\"African\",\"homozygote_count\":\"273\",\"hemizygote_count\":\"\",\"code\":\"AFR\"},\"South_Asian\":{\"allele_frequency\":0.29242074577918137,\"allele_count\":\"4815\",\"allele_number\":\"16466\",\"type\":\"Common\",\"population\":\"South Asian\",\"homozygote_count\":\"718\",\"hemizygote_count\":\"\",\"code\":\"SAS\"},\"Europena(Non-Finnish)\":{\"allele_frequency\":0.30639968708629195,\"allele_count\":\"20367\",\"allele_number\":\"66472\",\"type\":\"Common\",\"population\":\"Europena(Non-Finnish)\",\"homozygote_count\":\"3115\",\"hemizygote_count\":\"\",\"code\":\"NFE\"},\"Europena(Finnish)\":{\"allele_frequency\":0.30898366606170596,\"allele_count\":\"2043\",\"allele_number\":\"6612\",\"type\":\"Common\",\"population\":\"European(Finnish)\",\"homozygote_count\":\"324\",\"hemizygote_count\":\"\",\"code\":\"FIN\"},\"ALL\":{\"allele_frequency\":0.29338121437749154,\"population\":\"All ExAC\",\"allele_number\":\"121412\",\"type\":\"Common\",\"allele_count\":\"35620\",\"code\":\"ALL\"},\"East_Asian\":{\"allele_frequency\":0.3847846225104215,\"allele_count\":\"3323\",\"allele_number\":\"8636\",\"type\":\"Common\",\"population\":\"East Asian\",\"homozygote_count\":\"663\",\"hemizygote_count\":\"\",\"code\":\"EAS\"},\"Other\":{\"allele_frequency\":0.3148558758314856,\"allele_count\":\"284\",\"allele_number\":\"902\",\"type\":\"Common\",\"population\":\"Other\",\"homozygote_count\":\"42\",\"hemizygote_count\":\"\",\"code\":\"OTH\"}}},\"total_same_panel_sample_count_in_usergroup\":0,\"flag\":{\"soft_clipped_amplicon\":\"no\",\"roi_region\":\"yes\",\"low_coverage\":\"no\",\"low_variant_coverage_depth\":\"no\",\"primer_deletion\":\"no\",\"is_primer\":\"no\",\"low_confidence\":\"no\",\"homopolymer_region\":\"no\",\"warning\":\"no\",\"pre_filter\":\"no\",\"is_control\":\"no\",\"low_variant_fraction\":\"no\"}}";
-        } else if(id == 25925) {
+        } else if(id % 5 == 1) {
             data = "{\"assay\":{\"amplicon\":\"\",\"assay_name\":\"NGB_BRCAccuTest\",\"company\":\"NGeneBio\",\"pipeline\":\"444\"},\"variant_classifier\":{\"result\":\"benign\",\"grade\":\"E\",\"radar\":\"1\"},\"total_sample_count_in_run\":1,\"genomic_coordinate\":{\"chromosome\":\"chr13\",\"build\":\"GRCh37\",\"g.pos\":32913055},\"same_variant_sample_count_in_run\":1,\"same_variant_sample_count_in_usergroup\":8,\"population_frequency\":{\"Korean_exome\":{\"ALL\":{\"population\":\"All Korean Genomes\",\"type\":\"Common\",\"allele_number\":2678,\"code\":\"ALL\",\"allele_count\":2678,\"allele_frequency\":1.0,\"hemizygote_count\":\"\",\"homozygote_count\":\"\"}},\"1000_genomes\":{\"South_Asian\":{\"population\":\"South Asian\",\"type\":\"Common\",\"allele_number\":\"\",\"code\":\"SAS\",\"allele_count\":\"\",\"allele_frequency\":1.0,\"hemizygote_count\":\"\",\"homozygote_count\":\"\"},\"African\":{\"population\":\"African\",\"type\":\"Common\",\"allele_number\":\"\",\"code\":\"AFR\",\"allele_count\":\"\",\"allele_frequency\":0.9039,\"hemizygote_count\":\"\",\"homozygote_count\":\"\"},\"European\":{\"population\":\"European\",\"type\":\"Common\",\"allele_number\":\"\",\"code\":\"EUR\",\"allele_count\":\"\",\"allele_frequency\":0.999,\"hemizygote_count\":\"\",\"homozygote_count\":\"\"},\"American\":{\"population\":\"American\",\"type\":\"Common\",\"allele_number\":\"\",\"code\":\"AMR\",\"allele_count\":\"\",\"allele_frequency\":0.9971,\"hemizygote_count\":\"\",\"homozygote_count\":\"\"},\"ALL\":{\"population\":\"All 1000 Genomes\",\"type\":\"Common\",\"allele_number\":\"\",\"code\":\"ALL\",\"allele_count\":\"\",\"allele_frequency\":0.974042,\"hemizygote_count\":\"\",\"homozygote_count\":\"\"},\"East_Asian\":{\"population\":\"East Asian\",\"type\":\"Common\",\"allele_number\":\"\",\"code\":\"EAS\",\"allele_count\":\"\",\"allele_frequency\":1.0,\"hemizygote_count\":\"\",\"homozygote_count\":\"\"}},\"ExAC\":{\"Europena(Finnish)\":{\"population\":\"European(Finnish)\",\"type\":\"Common\",\"allele_number\":\"6612\",\"code\":\"FIN\",\"allele_count\":\"6612\",\"allele_frequency\":1.0,\"hemizygote_count\":\"\",\"homozygote_count\":\"3306\"},\"Europena(Non-Finnish)\":{\"population\":\"Europena(Non-Finnish)\",\"type\":\"Common\",\"allele_number\":\"66426\",\"code\":\"NFE\",\"allele_count\":\"66395\",\"allele_frequency\":0.999533315268118,\"hemizygote_count\":\"\",\"homozygote_count\":\"33182\"},\"Other\":{\"population\":\"Other\",\"type\":\"Common\",\"allele_number\":\"904\",\"code\":\"OTH\",\"allele_count\":\"903\",\"allele_frequency\":0.9988938053097345,\"hemizygote_count\":\"\",\"homozygote_count\":\"451\"},\"South_Asian\":{\"population\":\"South Asian\",\"type\":\"Common\",\"allele_number\":\"16496\",\"code\":\"SAS\",\"allele_count\":\"16495\",\"allele_frequency\":0.999939379243453,\"hemizygote_count\":\"\",\"homozygote_count\":\"8247\"},\"African\":{\"population\":\"African\",\"type\":\"Common\",\"allele_number\":\"10300\",\"code\":\"AFR\",\"allele_count\":\"9542\",\"allele_frequency\":0.9264077669902913,\"hemizygote_count\":\"\",\"homozygote_count\":\"4417\"},\"Latino\":{\"population\":\"Latino\",\"type\":\"Common\",\"allele_number\":\"11564\",\"code\":\"AMR\",\"allele_count\":\"11526\",\"allele_frequency\":0.9967139398132134,\"hemizygote_count\":\"\",\"homozygote_count\":\"5744\"},\"ALL\":{\"population\":\"All ExAC\",\"type\":\"Common\",\"allele_number\":\"121398\",\"code\":\"ALL\",\"allele_count\":\"120555\",\"allele_frequency\":0.9930558987792221},\"East_Asian\":{\"population\":\"East Asian\",\"type\":\"Common\",\"allele_number\":\"8652\",\"code\":\"EAS\",\"allele_count\":\"8651\",\"allele_frequency\":0.9998844197873324,\"hemizygote_count\":\"\",\"homozygote_count\":\"4325\"}},\"ESP6500\":{\"AA\":{\"population\":\"African American\",\"type\":\"Common\",\"allele_number\":4404,\"code\":\"AA\",\"allele_count\":\"4094\",\"allele_frequency\":0.9296094459582198,\"hemizygote_count\":\"\",\"homozygote_count\":\"\"},\"EA\":{\"population\":\"European American\",\"type\":\"Common\",\"allele_number\":8598,\"code\":\"EA\",\"allele_count\":\"8593\",\"allele_frequency\":0.999418469411491,\"hemizygote_count\":\"\",\"homozygote_count\":\"\"},\"ALL\":{\"population\":\"ALL\",\"type\":\"Common\",\"allele_number\":13002,\"code\":\"All ESP6500\",\"allele_count\":\"12687\",\"allele_frequency\":0.9757729580064606,\"hemizygote_count\":\"\",\"homozygote_count\":\"\"}}},\"breast_cancer_information_core\":{\"clinical_classification\":\"\",\"clinical_importance\":\"\",\"mutation_category_bic\":\"\",\"radar\":\"0\"},\"clinical\":{\"allele_orign\":{\"0\":\"Germline\"},\"total_rcv\":3,\"radar\":\"2\",\"hgvs\":\"NC_000013.10:g.32913055A>G\",\"variant_disease_db_name\":\"Breast-ovarian cancer,familial 2|Familial cancer of breast|Hereditary cancer-predisposing syndrome|not specified\",\"alternate_allele\":\"2\",\"database_source\":{\"database_id\":\"NBK1247:C2675520:612555:ORPHA145|NBK1247:C0346153:114480:254843006|C0027672:699346009|CN169374\",\"database\":\"GeneReviews:MedGen:OMIM:Orphanet|GeneReviews:MedGen:OMIM:SNOMED_CT|MedGen:SNOMED_CT|MedGen\"},\"review_status\":\"Reviewed by expert panel|Criteria provided single submitter|Criteria provided single submitter|Criteria provided single submitter\",\"clinical_channel\":{\"channel_id\":\"None\",\"channel\":\"None\"},\"gene_info\":{\"0\":\"BRCA2:675\"},\"classification\":\"Benign, Benign|Likely benign|Likely benign, Benign|Benign|Benign|Benign\",\"clinvar_accession\":\"RCV000113321.1, RCV000160224.1|RCV000164515.1|RCV000198429.1, RCV000119245.2|RCV000123972.2|RCV000132170.2|RCV000152875.4\"},\"BRCA_Exchange\":{\"Pathogenicity\":{\"ENIGMA\":\"Benign(ENIGMA)\",\"ClinVar\":\"Benign (ClinVar)\"},\"Patient_nationality_BIC\":\"-\",\"Gene_Symbol\":\"BRCA2\",\"ID\":\"11886\",\"Protein\":\"NP_000050.2:p.(eq)\",\"Allele_Origin_BIC\":\"-\",\"Nucleotide\":\"NM_000059.3:c.4563A>G\",\"Allele_Origin_ClinVar\":\"germline,unknown\",\"Reference_cDNA_Sequence\":\"NM_000059.3\",\"Analysis_Method_ClinVar\":\"curation,clinical,testing,literature,only\",\"Date_last_evaluated_ENIGMA\":\"1/12/15\",\"Condition_ID_Type_ENIGMA\":\"OMIM\",\"Date_last_updated_ClinVar\":\"None_2014-01-02_2014-11-19_2013-11-13_2014-10-15_2015-01-12\",\"Condition_ID_Value_ENIGMA\":\"BREAST-OVARIAN CANCER  FAMILIAL  SUSCEPTIBILITY TO  2  BROVCA2 (612555)\",\"Functional_analysis_result_LOVD\":\"-\",\"Comment_on_Clinical_significance_ENIGMA\":\"Class 1 not pathogenic based on frequency >1% in an outbred sampleset. Frequency 0.8902 (African)  derived from 1000 genomes (2012-04-30).\",\"Ethnicity_BIC\":\"-\",\"Has_Discordant_Evidence\":\"Concordant\",\"Mutation_category_BIC\":\"-\"},\"id\":2,\"experiment\":{\"experiment_user\":\"Changbum Hong\",\"specimen_type\":\"blood\",\"experiment_type\":\"germline\",\"sequencer\":\"Illumina MiSeq\"},\"total_same_panel_sample_count_in_usergroup\":0,\"in_silico_prediction\":{\"mt\":{\"text\":\"\",\"score\":\"\",\"radar\":\"\"},\"PolyPhen2\":{\"text\":\"\",\"test\":\"PolyPhen2\",\"desc\":\"dbNSFP annotation, Polyphen2 score based on HumVar\",\"radar\":\"\",\"reference range\":\"0-1\",\"type\":\"Protein effect\",\"score\":\"\"},\"SIFT\":{\"text\":\"\",\"test\":\"SIFT\",\"desc\":\"dbNSFP annotation, SIFT score (SIFTori)\",\"radar\":\"\",\"reference range\":\"0-1\",\"type\":\"Protein effect\",\"score\":\"\"}},\"korean_hereditary_breast_cancer_study\":{\"high_risk_breast_cancer_patient_in_kohbra\":\"\",\"high_risk_breast_cancer_frequency_in_kohbra\":\"\"},\"flag\":{\"is_primer\":\"no\",\"warning\":\"no\",\"primer_deletion\":\"no\",\"low_variant_fraction\":\"no\",\"homopolymer_region\":\"no\",\"is_control\":\"no\",\"roi_region\":\"yes\",\"low_coverage\":\"no\",\"low_variant_coverage_depth\":\"no\",\"low_confidence\":\"no\",\"pre_filter\":\"yes\",\"soft_clipped_amplicon\":\"no\"},\"allele\":{\"reference\":\"A\",\"type_of_allele\":\"snp\",\"alternate_allele_observation\":281,\"zygosity\":\"homozygote\",\"alternate\":\"G\",\"reference_allele_observation\":\"0\",\"allele_fraction\":100.0,\"zygosity_dp\":\"0\",\"total_read_depth\":281},\"same_panel_same_variant_sample_count_in_usergroup\":0,\"gene\":{\"entrez_gene_summary\":\"Inherited mutations in BRCA1 and this gene, BRCA2, confer increased lifetime risk of developing breast or ovarian cancer. Both BRCA1 and BRCA2 are involved in maintenance of genome stability, specifically the homolog     ous recombination pathway for double-strand DNA repair. The BRCA2 protein contains several copies of a 70 aa motif called the BRC motif, and these motifs mediate binding to the RAD51 recombinase which functions in DNA repair. BRCA2 is considered a tumor suppre     ssor gene, as tumors with BRCA2 mutations generally exhibit loss of heterozygosity (LOH) of the wild-type allele. [provided by RefSeq, Dec 2008]\",\"transcript\":{\"0\":{\"hgvs.p\":\"p.(=)\",\"transcript_name\":\"NM_000059.3\",\"coding_consequence\":\"synonymous\",\"gene_symbol\":\"BRCA2\",\"genome_37\":\"chr13:g.32913055:A>G\",\"hgvs.c\":\"c.4563A>G\",\"strand\":\"+\",\"solvebio_format\":\"NM_000059.3(BRCA2):c.4563A>G(p.(=))\",\"exon_number/total\":\"11/27\",\"aa_abbreviation\":\"\"}},\"gene_symbol\":\"BRCA2\",\"gene_name\":\"BRCA2\",\"default_transcript\":\"NM_000059.3\",\"strand\":\"+\"},\"build\":{\"ref_genome\":\"GRCh37/hg19\",\"1000_genomes\":\"20150218 phase3\",\"ESP6500\":\"ESP6500SI-V2-SSA137\",\"dbsnp_build\":\"dbSNP 147\",\"clinvar_build\":\"20160502\",\"ESP5400\":\"0.3\",\"ExAc\":\"0.31\"},\"total_sample_count_in_usergroup\":8,\"ENIGMA\":{\"has\":\"yes\",\"pathogenic\":\"Benign(ENIGMA)\",\"radar\":\"1\"},\"variant_information\":{\"exac_url\":\"http://exac.broadinstitute.org/variant/13-32913055-A-G\",\"rs_id\":\"rs206075\",\"start\":32913055,\"alt\":\"G\",\"exac_format\":\"13-32913055-A-G\",\"left_22_bp\":\"AAAAGATCAAAGAACCTACTCT\",\"vcf_format\":\"chr13 32913055.A G.\",\"ucsc_format\":\"chr13:32,913,055-32,913,055\",\"type\":\"snp\",\"right_22_bp\":\"TTGGGTTTTCATACAGCTAGCG\",\"size\":\"1bp\",\"clinvar_url\":\"http://www.ncbi.nlm.nih.gov/clinvar?term=rs206075\",\"esp_url\":\"\",\"1kg_url\":\"\",\"filter\":\"None\",\"stop\":32913055,\"brca_exchange_url\":\"http://brcaexchange.org/variants?search=chr13:g.32913055\",\"ncbi_url\":\"http://www.ncbi.nlm.nih.gov/gene/675\",\"ucsc_url\":\"http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&highlight=hg19.chr13%3A32,913,055-32,913,055&position=chr13%3A32913025-32913085\",\"ref\":\"A\"}}";
-        } else if(id == 25926) {
+        } else if(id % 5 == 2) {
             data = "{\"experiment\":{\"sequencer\":\"Illumina MiSeq\",\"specimen_type\":\"blood\",\"experiment_user\":\"Changbum Hong\",\"experiment_type\":\"germline\"},\"same_variant_sample_count_in_usergroup\":8,\"total_sample_count_in_usergroup\":8,\"variant_classifier\":{\"radar\":\"1\",\"grade\":\"E\",\"result\":\"benign\"},\"variant_information\":{\"type\":\"snp\",\"alt\":\"C\",\"start\":32915005,\"vcf_format\":\"chr13 32915005.G C.\",\"stop\":32915005,\"ucsc_format\":\"chr13:32,915,005-32,915,005\",\"1kg_url\":\"\",\"brca_exchange_url\":\"http://brcaexchange.org/variants?search=chr13:g.32915005\",\"rs_id\":\"rs206076\",\"size\":\"1bp\",\"esp_url\":\"\",\"ucsc_url\":\"http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&highlight=hg19.chr13%3A32,915,005-32,915,005&position=chr13%3A32914975-32915035\",\"filter\":\"None\",\"ncbi_url\":\"http://www.ncbi.nlm.nih.gov/gene/675\",\"exac_format\":\"13-32915005-G-C\",\"ref\":\"G\",\"right_22_bp\":\"TCACTTGTTGAGAACATTCATG\",\"exac_url\":\"http://exac.broadinstitute.org/variant/13-32915005-G-C\",\"clinvar_url\":\"http://www.ncbi.nlm.nih.gov/clinvar?term=rs206076\",\"left_22_bp\":\"AGTTGGTATTAGGAACCAAAGT\"},\"assay\":{\"amplicon\":\"\",\"pipeline\":\"444\",\"company\":\"NGeneBio\",\"assay_name\":\"NGB_BRCAccuTest\"},\"korean_hereditary_breast_cancer_study\":{\"high_risk_breast_cancer_patient_in_kohbra\":\"\",\"high_risk_breast_cancer_frequency_in_kohbra\":\"\"},\"breast_cancer_information_core\":{\"clinical_importance\":\"\",\"clinical_classification\":\"\",\"mutation_category_bic\":\"\",\"radar\":\"0\"},\"build\":{\"dbsnp_build\":\"dbSNP 147\",\"ESP6500\":\"ESP6500SI-V2-SSA137\",\"ExAc\":\"0.31\",\"1000_genomes\":\"20150218 phase3\",\"ref_genome\":\"GRCh37/hg19\",\"ESP5400\":\"0.3\",\"clinvar_build\":\"20160502\"},\"in_silico_prediction\":{\"SIFT\":{\"text\":\"\",\"type\":\"Protein effect\",\"test\":\"SIFT\",\"reference range\":\"0-1\",\"score\":\"\",\"radar\":\"\",\"desc\":\"dbNSFP annotation, SIFT score (SIFTori)\"},\"mt\":{\"text\":\"\",\"score\":\"\",\"radar\":\"\"},\"PolyPhen2\":{\"text\":\"\",\"type\":\"Protein effect\",\"test\":\"PolyPhen2\",\"reference range\":\"0-1\",\"score\":\"\",\"radar\":\"\",\"desc\":\"dbNSFP annotation, Polyphen2 score based on HumVar\"}},\"gene\":{\"default_transcript\":\"NM_000059.3\",\"strand\":\"+\",\"entrez_gene_summary\":\"Inherited mutations in BRCA1 and this gene, BRCA2, confer increased lifetime risk of developing breast or ovarian cancer. Both BRCA1 and BRCA2 are involved in maintenance of genome stability, specifically the homolog     ous recombination pathway for double-strand DNA repair. The BRCA2 protein contains several copies of a 70 aa motif called the BRC motif, and these motifs mediate binding to the RAD51 recombinase which functions in DNA repair. BRCA2 is considered a tumor suppre     ssor gene, as tumors with BRCA2 mutations generally exhibit loss of heterozygosity (LOH) of the wild-type allele. [provided by RefSeq, Dec 2008]\",\"gene_symbol\":\"BRCA2\",\"gene_name\":\"BRCA2\",\"transcript\":{\"0\":{\"transcript_name\":\"NM_000059.3\",\"exon_number/total\":\"11/27\",\"hgvs.c\":\"c.6513G>C\",\"strand\":\"+\",\"aa_abbreviation\":\"\",\"genome_37\":\"chr13:g.32915005:G>C\",\"coding_consequence\":\"synonymous\",\"solvebio_format\":\"NM_000059.3(BRCA2):c.6513G>C(p.(=))\",\"hgvs.p\":\"p.(=)\",\"gene_symbol\":\"BRCA2\"}}},\"BRCA_Exchange\":{\"Condition_ID_Value_ENIGMA\":\"BREAST-OVARIAN CANCER  FAMILIAL  SUSCEPTIBILITY TO  2  BROVCA2 (612555)\",\"Functional_analysis_result_LOVD\":\"-\",\"Patient_nationality_BIC\":\"-\",\"Comment_on_Clinical_significance_ENIGMA\":\"Class 1 not pathogenic based on frequency >1% in an outbred sampleset. Frequency 0.8902 (African)  derived from 1000 genomes (2012-04-30).\",\"Has_Discordant_Evidence\":\"Concordant\",\"Allele_Origin_ClinVar\":\"germline,unknown\",\"Date_last_evaluated_ENIGMA\":\"1/12/15\",\"Condition_ID_Type_ENIGMA\":\"OMIM\",\"Gene_Symbol\":\"BRCA2\",\"Allele_Origin_BIC\":\"-\",\"Mutation_category_BIC\":\"-\",\"Protein\":\"NP_000050.2:p.(eq)\",\"Nucleotide\":\"NM_000059.3:c.6513G>C\",\"ID\":\"11205\",\"Date_last_updated_ClinVar\":\"None_2014-01-02_2014-06-23_2014-11-19_2014-10-15_2015-01-12\",\"Ethnicity_BIC\":\"-\",\"Pathogenicity\":{\"ENIGMA\":\"Benign(ENIGMA)\",\"ClinVar\":\"Benign (ClinVar)\"},\"Analysis_Method_ClinVar\":\"curation,clinical,testing,literature,only\",\"Reference_cDNA_Sequence\":\"NM_000059.3\"},\"genomic_coordinate\":{\"chromosome\":\"chr13\",\"g.pos\":32915005,\"build\":\"GRCh37\"},\"clinical\":{\"gene_info\":{\"0\":\"BRCA2:675\"},\"alternate_allele\":\"2\",\"hgvs\":\"NC_000013.10:g.32915005G>T\",\"clinical_channel\":{\"channel\":\"None\",\"channel_id\":\"None\"},\"clinvar_accession\":\"RCV000113602.1, RCV000119246.2|RCV000123985.2|RCV000152878.4|RCV000162377.1, RCV000160234.1|RCV000163332.1|RCV000168590.1|RCV000173959.1|RCV000195987.1\",\"radar\":\"3\",\"database_source\":{\"database\":\"GeneReviews:MedGen:OMIM:SNOMED_CT|MedGen:SNOMED_CT|MedGen|MedGen|GeneReviews:MedGen\",\"database_id\":\"NBK1247:C0346153:114480:254843006|C0027672:699346009|CN169374|CN221809|NBK1247:C0677776\"},\"classification\":\"not provided, Benign|Benign|Benign|Benign, Benign|Likely benign|Uncertain significance|Uncertain significance|Likely benign\",\"allele_orign\":{\"0\":\"Germline\"},\"total_rcv\":3,\"review_status\":\"Criteria provided single submitter|Criteria provided single submitter|No assertion criteria provided|Criteria provided single submitter|Criteria provided single submitter\",\"variant_disease_db_name\":\"Familial cancer of breast|Hereditary cancer-predisposing syndrome|not specified|not provided|BRCA1 and BRCA2 Hereditary Breast and Ovarian Cancer\"},\"allele\":{\"type_of_allele\":\"snp\",\"zygosity_dp\":\"0\",\"total_read_depth\":419,\"alternate\":\"C\",\"alternate_allele_observation\":419,\"reference_allele_observation\":\"0\",\"allele_fraction\":100.0,\"zygosity\":\"homozygote\",\"reference\":\"G\"},\"same_panel_same_variant_sample_count_in_usergroup\":0,\"same_variant_sample_count_in_run\":1,\"id\":3,\"total_sample_count_in_run\":1,\"ENIGMA\":{\"has\":\"yes\",\"pathogenic\":\"Benign(ENIGMA)\",\"radar\":\"1\"},\"population_frequency\":{\"Korean_exome\":{\"ALL\":{\"allele_frequency\":1.0,\"allele_count\":2678,\"allele_number\":2678,\"type\":\"Common\",\"population\":\"All Korean Genomes\",\"homozygote_count\":\"\",\"hemizygote_count\":\"\",\"code\":\"ALL\"}},\"1000_genomes\":{\"European\":{\"allele_frequency\":0.999,\"allele_count\":\"\",\"allele_number\":\"\",\"type\":\"Common\",\"population\":\"European\",\"homozygote_count\":\"\",\"hemizygote_count\":\"\",\"code\":\"EUR\"},\"American\":{\"allele_frequency\":0.9971,\"allele_count\":\"\",\"allele_number\":\"\",\"type\":\"Common\",\"population\":\"American\",\"homozygote_count\":\"\",\"hemizygote_count\":\"\",\"code\":\"AMR\"},\"African\":{\"allele_frequency\":0.9024,\"allele_count\":\"\",\"allele_number\":\"\",\"type\":\"Common\",\"population\":\"African\",\"homozygote_count\":\"\",\"hemizygote_count\":\"\",\"code\":\"AFR\"},\"South_Asian\":{\"allele_frequency\":1.0,\"allele_count\":\"\",\"allele_number\":\"\",\"type\":\"Common\",\"population\":\"South Asian\",\"homozygote_count\":\"\",\"hemizygote_count\":\"\",\"code\":\"SAS\"},\"ALL\":{\"allele_frequency\":0.973642,\"allele_count\":\"\",\"allele_number\":\"\",\"type\":\"Common\",\"population\":\"All 1000 Genomes\",\"homozygote_count\":\"\",\"hemizygote_count\":\"\",\"code\":\"ALL\"},\"East_Asian\":{\"allele_frequency\":1.0,\"allele_count\":\"\",\"allele_number\":\"\",\"type\":\"Common\",\"population\":\"East Asian\",\"homozygote_count\":\"\",\"hemizygote_count\":\"\",\"code\":\"EAS\"}},\"ESP6500\":{\"AA\":{\"allele_frequency\":0.9287335451656832,\"allele_count\":\"4092\",\"allele_number\":4406,\"type\":\"Common\",\"population\":\"African American\",\"homozygote_count\":\"\",\"hemizygote_count\":\"\",\"code\":\"AA\"},\"EA\":{\"allele_frequency\":0.9994186046511628,\"allele_count\":\"8595\",\"allele_number\":8600,\"type\":\"Common\",\"population\":\"European American\",\"homozygote_count\":\"\",\"hemizygote_count\":\"\",\"code\":\"EA\"},\"ALL\":{\"allele_frequency\":0.975472858680609,\"allele_count\":\"12687\",\"allele_number\":13006,\"type\":\"Common\",\"population\":\"ALL\",\"homozygote_count\":\"\",\"hemizygote_count\":\"\",\"code\":\"All ESP6500\"}},\"ExAC\":{\"Latino\":{\"allele_frequency\":0.9967128027681661,\"allele_count\":\"11522\",\"allele_number\":\"11560\",\"type\":\"Common\",\"population\":\"Latino\",\"homozygote_count\":\"5742\",\"hemizygote_count\":\"\",\"code\":\"AMR\"},\"African\":{\"allele_frequency\":0.9252772913018097,\"allele_count\":\"9510\",\"allele_number\":\"10278\",\"type\":\"Common\",\"population\":\"African\",\"homozygote_count\":\"4398\",\"hemizygote_count\":\"\",\"code\":\"AFR\"},\"South_Asian\":{\"allele_frequency\":0.9998168721767794,\"allele_count\":\"16379\",\"allele_number\":\"16382\",\"type\":\"Common\",\"population\":\"South Asian\",\"homozygote_count\":\"8188\",\"hemizygote_count\":\"\",\"code\":\"SAS\"},\"Europena(Non-Finnish)\":{\"allele_frequency\":0.9995195772279606,\"allele_count\":\"66576\",\"allele_number\":\"66608\",\"type\":\"Common\",\"population\":\"Europena(Non-Finnish)\",\"homozygote_count\":\"33272\",\"hemizygote_count\":\"\",\"code\":\"NFE\"},\"Europena(Finnish)\":{\"allele_frequency\":1.0,\"allele_count\":\"6610\",\"allele_number\":\"6610\",\"type\":\"Common\",\"population\":\"European(Finnish)\",\"homozygote_count\":\"3305\",\"hemizygote_count\":\"\",\"code\":\"FIN\"},\"ALL\":{\"allele_frequency\":0.9930139062808937,\"population\":\"All ExAC\",\"allele_number\":\"121384\",\"type\":\"Common\",\"allele_count\":\"120536\",\"code\":\"ALL\"},\"East_Asian\":{\"allele_frequency\":0.999884286044897,\"allele_count\":\"8641\",\"allele_number\":\"8642\",\"type\":\"Common\",\"population\":\"East Asian\",\"homozygote_count\":\"4320\",\"hemizygote_count\":\"\",\"code\":\"EAS\"},\"Other\":{\"allele_frequency\":0.9988962472406181,\"allele_count\":\"905\",\"allele_number\":\"906\",\"type\":\"Common\",\"population\":\"Other\",\"homozygote_count\":\"452\",\"hemizygote_count\":\"\",\"code\":\"OTH\"}}},\"total_same_panel_sample_count_in_usergroup\":0,\"flag\":{\"soft_clipped_amplicon\":\"no\",\"roi_region\":\"yes\",\"low_coverage\":\"no\",\"low_variant_coverage_depth\":\"no\",\"primer_deletion\":\"no\",\"is_primer\":\"no\",\"low_confidence\":\"no\",\"homopolymer_region\":\"no\",\"warning\":\"no\",\"pre_filter\":\"yes\",\"is_control\":\"no\",\"low_variant_fraction\":\"no\"}}";
-        } else if (id == 25927) {
+        } else if (id % 5 == 3) {
             data = "{\"flag\":{\"low_confidence\":\"no\",\"low_coverage\":\"no\",\"low_variant_coverage_depth\":\"no\",\"warning\":\"no\",\"is_control\":\"no\",\"is_primer\":\"no\",\"primer_deletion\":\"no\",\"soft_clipped_amplicon\":\"no\",\"homopolymer_region\":\"no\",\"low_variant_fraction\":\"no\",\"roi_region\":\"yes\",\"pre_filter\":\"yes\"},\"total_sample_count_in_run\":1,\"breast_cancer_information_core\":{\"clinical_classification\":\"\",\"radar\":\"0\",\"clinical_importance\":\"\",\"mutation_category_bic\":\"\"},\"same_variant_sample_count_in_run\":1,\"clinical\":{\"alternate_allele\":\"1\",\"database_source\":{\"database\":\"MedGen\",\"database_id\":\"CN169374\"},\"classification\":\"Benign|Benign|Benign, Benign\",\"radar\":\"1\",\"review_status\":\"Criteria provided single submitter\",\"variant_disease_db_name\":\"not specified\",\"allele_orign\":{\"0\":\"Germline\"},\"hgvs\":\"NC_000013.10:g.32929387T>C\",\"clinical_channel\":{\"channel\":\"HGMD\",\"channel_id\":\"CM960194\"},\"total_rcv\":2,\"gene_info\":{\"0\":\"BRCA2:675\"},\"clinvar_accession\":\"RCV000045197.3|RCV000113751.2|RCV000168597.1, RCV000120357.4\"},\"experiment\":{\"experiment_type\":\"germline\",\"specimen_type\":\"blood\",\"sequencer\":\"Illumina MiSeq\",\"experiment_user\":\"Changbum Hong\"},\"total_same_panel_sample_count_in_usergroup\":0,\"id\":5,\"population_frequency\":{\"ExAC\":{\"Europena(Finnish)\":{\"allele_count\":\"6614\",\"population\":\"European(Finnish)\",\"type\":\"Common\",\"allele_number\":\"6614\",\"code\":\"FIN\",\"allele_frequency\":1.0,\"homozygote_count\":\"3307\",\"hemizygote_count\":\"\"},\"South_Asian\":{\"allele_count\":\"16505\",\"population\":\"South Asian\",\"type\":\"Common\",\"allele_number\":\"16508\",\"code\":\"SAS\",\"allele_frequency\":0.999818269929731,\"homozygote_count\":\"8251\",\"hemizygote_count\":\"\"},\"East_Asian\":{\"allele_count\":\"8649\",\"population\":\"East Asian\",\"type\":\"Common\",\"allele_number\":\"8650\",\"code\":\"EAS\",\"allele_frequency\":0.9998843930635838,\"homozygote_count\":\"4324\",\"hemizygote_count\":\"\"},\"Latino\":{\"allele_count\":\"11537\",\"population\":\"Latino\",\"type\":\"Common\",\"allele_number\":\"11572\",\"code\":\"AMR\",\"allele_frequency\":0.996975458002074,\"homozygote_count\":\"5751\",\"hemizygote_count\":\"\"},\"Other\":{\"allele_count\":\"907\",\"population\":\"Other\",\"type\":\"Common\",\"allele_number\":\"908\",\"code\":\"OTH\",\"allele_frequency\":0.998898678414097,\"homozygote_count\":\"453\",\"hemizygote_count\":\"\"},\"Europena(Non-Finnish)\":{\"allele_count\":\"66634\",\"population\":\"Europena(Non-Finnish)\",\"type\":\"Common\",\"allele_number\":\"66660\",\"code\":\"NFE\",\"allele_frequency\":0.9996099609960996,\"homozygote_count\":\"33304\",\"hemizygote_count\":\"\"},\"ALL\":{\"allele_count\":\"120636\",\"population\":\"All ExAC\",\"type\":\"Common\",\"code\":\"ALL\",\"allele_frequency\":0.9937231255869124,\"allele_number\":\"121398\"},\"African\":{\"allele_count\":\"9696\",\"population\":\"African\",\"type\":\"Common\",\"allele_number\":\"10392\",\"code\":\"AFR\",\"allele_frequency\":0.9330254041570438,\"homozygote_count\":\"4522\",\"hemizygote_count\":\"\"}},\"Korean_exome\":{\"ALL\":{\"allele_count\":2678,\"population\":\"All Korean Genomes\",\"type\":\"Common\",\"allele_number\":2678,\"code\":\"ALL\",\"allele_frequency\":1.0,\"homozygote_count\":\"\",\"hemizygote_count\":\"\"}},\"ESP6500\":{\"AA\":{\"allele_count\":\"4119\",\"population\":\"African American\",\"type\":\"Common\",\"allele_number\":4404,\"code\":\"AA\",\"allele_frequency\":0.9352861035422343,\"homozygote_count\":\"\",\"hemizygote_count\":\"\"},\"EA\":{\"allele_count\":\"8593\",\"population\":\"European American\",\"type\":\"Common\",\"allele_number\":8598,\"code\":\"EA\",\"allele_frequency\":0.999418469411491,\"homozygote_count\":\"\",\"hemizygote_count\":\"\"},\"ALL\":{\"allele_count\":\"12712\",\"population\":\"ALL\",\"type\":\"Common\",\"allele_number\":13002,\"code\":\"All ESP6500\",\"allele_frequency\":0.9776957391170589,\"homozygote_count\":\"\",\"hemizygote_count\":\"\"}},\"1000_genomes\":{\"European\":{\"allele_count\":\"\",\"population\":\"European\",\"type\":\"Common\",\"allele_number\":\"\",\"code\":\"EUR\",\"allele_frequency\":0.999,\"homozygote_count\":\"\",\"hemizygote_count\":\"\"},\"South_Asian\":{\"allele_count\":\"\",\"population\":\"South Asian\",\"type\":\"Common\",\"allele_number\":\"\",\"code\":\"SAS\",\"allele_frequency\":1.0,\"homozygote_count\":\"\",\"hemizygote_count\":\"\"},\"American\":{\"allele_count\":\"\",\"population\":\"American\",\"type\":\"Common\",\"allele_number\":\"\",\"code\":\"AMR\",\"allele_frequency\":0.9971,\"homozygote_count\":\"\",\"hemizygote_count\":\"\"},\"East_Asian\":{\"allele_count\":\"\",\"population\":\"East Asian\",\"type\":\"Common\",\"allele_number\":\"\",\"code\":\"EAS\",\"allele_frequency\":1.0,\"homozygote_count\":\"\",\"hemizygote_count\":\"\"},\"ALL\":{\"allele_count\":\"\",\"population\":\"All 1000 Genomes\",\"type\":\"Common\",\"allele_number\":\"\",\"code\":\"ALL\",\"allele_frequency\":0.975839,\"homozygote_count\":\"\",\"hemizygote_count\":\"\"},\"African\":{\"allele_count\":\"\",\"population\":\"African\",\"type\":\"Common\",\"allele_number\":\"\",\"code\":\"AFR\",\"allele_frequency\":0.9107,\"homozygote_count\":\"\",\"hemizygote_count\":\"\"}}},\"variant_classifier\":{\"result\":\"benign\",\"grade\":\"E\",\"radar\":\"1\"},\"ENIGMA\":{},\"korean_hereditary_breast_cancer_study\":{\"high_risk_breast_cancer_frequency_in_kohbra\":\"\",\"high_risk_breast_cancer_patient_in_kohbra\":\"\"},\"same_panel_same_variant_sample_count_in_usergroup\":0,\"assay\":{\"amplicon\":\"\",\"pipeline\":\"444\",\"company\":\"NGeneBio\",\"assay_name\":\"NGB_BRCAccuTest\"},\"variant_information\":{\"left_22_bp\":\"AAAAACAACTCCAATCAAGCAG\",\"esp_url\":\"\",\"brca_exchange_url\":\"http://brcaexchange.org/variants?search=chr13:g.32929387\",\"ucsc_format\":\"chr13:32,929,387-32,929,387\",\"clinvar_url\":\"http://www.ncbi.nlm.nih.gov/clinvar?term=rs169547\",\"exac_url\":\"http://exac.broadinstitute.org/variant/13-32929387-T-C\",\"alt\":\"C\",\"start\":32929387,\"ncbi_url\":\"http://www.ncbi.nlm.nih.gov/gene/675\",\"ref\":\"T\",\"vcf_format\":\"chr13 32929387.T C.\",\"filter\":\"None\",\"type\":\"snp\",\"stop\":32929387,\"ucsc_url\":\"http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&highlight=hg19.chr13%3A32,929,387-32,929,387&position=chr13%3A32929357-32929417\",\"exac_format\":\"13-32929387-T-C\",\"size\":\"1bp\",\"right_22_bp\":\"AGCTGTAACTTTCACAAAGTGT\",\"1kg_url\":\"\",\"rs_id\":\"rs169547\"},\"gene\":{\"default_transcript\":\"NM_000059.3\",\"gene_symbol\":\"BRCA2\",\"entrez_gene_summary\":\"Inherited mutations in BRCA1 and this gene, BRCA2, confer increased lifetime risk of developing breast or ovarian cancer. Both BRCA1 and BRCA2 are involved in maintenance of genome stability, specifically the homolog     ous recombination pathway for double-strand DNA repair. The BRCA2 protein contains several copies of a 70 aa motif called the BRC motif, and these motifs mediate binding to the RAD51 recombinase which functions in DNA repair. BRCA2 is considered a tumor suppre     ssor gene, as tumors with BRCA2 mutations generally exhibit loss of heterozygosity (LOH) of the wild-type allele. [provided by RefSeq, Dec 2008]\",\"strand\":\"+\",\"transcript\":{\"0\":{\"aa_abbreviation\":\"\",\"gene_symbol\":\"BRCA2\",\"genome_37\":\"chr13:g.32929387:T>C\",\"hgvs.c\":\"c.7397T>C\",\"hgvs.p\":\"p.(=)\",\"coding_consequence\":\"missense\",\"exon_number/total\":\"14/27\",\"transcript_name\":\"NM_000059.3\",\"strand\":\"+\",\"solvebio_format\":\"NM_000059.3(BRCA2):c.7397T>C(p.(=))\"}},\"gene_name\":\"BRCA2\"},\"same_variant_sample_count_in_usergroup\":8,\"build\":{\"dbsnp_build\":\"dbSNP 147\",\"ref_genome\":\"GRCh37/hg19\",\"1000_genomes\":\"20150218 phase3\",\"ESP5400\":\"0.3\",\"ESP6500\":\"ESP6500SI-V2-SSA137\",\"ExAc\":\"0.31\",\"clinvar_build\":\"20160502\"},\"in_silico_prediction\":{\"mt\":{\"score\":\"1.0\",\"text\":\"P:polymorphism automatic\",\"radar\":\"2\"},\"PolyPhen2\":{\"score\":\"\",\"test\":\"PolyPhen2\",\"radar\":\"\",\"reference range\":\"0-1\",\"text\":\"\",\"type\":\"Protein effect\",\"desc\":\"dbNSFP annotation, Polyphen2 score based on HumVar\"},\"SIFT\":{\"score\":\"1.0\",\"test\":\"SIFT\",\"radar\":\"1\",\"reference range\":\"0-1\",\"text\":\"tolerated\",\"type\":\"Protein effect\",\"desc\":\"dbNSFP annotation, SIFT score (SIFTori)\"}},\"allele\":{\"type_of_allele\":\"snp\",\"total_read_depth\":286,\"zygosity\":\"homozygote\",\"alternate\":\"C\",\"alternate_allele_observation\":286,\"reference_allele_observation\":\"0\",\"zygosity_dp\":\"0\",\"reference\":\"T\",\"allele_fraction\":100.0},\"BRCA_Exchange\":{\"ID\":\"9742\",\"Condition_ID_Type_ENIGMA\":\"-\",\"Date_last_updated_ClinVar\":\"2014-10-15\",\"Condition_ID_Value_ENIGMA\":\"-\",\"Analysis_Method_ClinVar\":\"clinical,testing\",\"Pathogenicity\":{\"ClinVar\":\"Benign (ClinVar)\"},\"Comment_on_Clinical_significance_ENIGMA\":\"-\",\"Functional_analysis_result_LOVD\":\"-\",\"Allele_Origin_ClinVar\":\"germline\",\"Nucleotide\":\"NM_000059.3:c.7397T>C\",\"Gene_Symbol\":\"BRCA2\",\"Mutation_category_BIC\":\"-\",\"Allele_Origin_BIC\":\"-\",\"Patient_nationality_BIC\":\"-\",\"Protein\":\"NP_000050.2:p.(eq)\",\"Ethnicity_BIC\":\"-\",\"Reference_cDNA_Sequence\":\"NM_000059.3\",\"Has_Discordant_Evidence\":\"Concordant\",\"Date_last_evaluated_ENIGMA\":\"-\"},\"genomic_coordinate\":{\"build\":\"GRCh37\",\"g.pos\":32929387,\"chromosome\":\"chr13\"},\"total_sample_count_in_usergroup\":8}";
-        } else if (id == 25928) {
+        } else if (id % 5 == 4) {
             data = "{\"assay\":{\"amplicon\":\"\",\"assay_name\":\"NGB_BRCAccuTest\",\"company\":\"NGeneBio\",\"pipeline\":\"444\"},\"variant_classifier\":{\"result\":\"benign\",\"grade\":\"E\",\"radar\":\"1\"},\"total_sample_count_in_run\":1,\"genomic_coordinate\":{\"chromosome\":\"chr13\",\"build\":\"GRCh37\",\"g.pos\":32929232},\"same_variant_sample_count_in_run\":1,\"same_variant_sample_count_in_usergroup\":2,\"population_frequency\":{\"Korean_exome\":{\"ALL\":{\"population\":\"All Korean Genomes\",\"type\":\"Common\",\"allele_number\":1031,\"code\":\"ALL\",\"allele_count\":2678,\"allele_frequency\":0.38499,\"hemizygote_count\":\"\",\"homozygote_count\":\"\"}},\"1000_genomes\":{\"South_Asian\":{\"population\":\"South Asian\",\"type\":\"Common\",\"allele_number\":\"\",\"code\":\"SAS\",\"allele_count\":\"\",\"allele_frequency\":0.1748,\"hemizygote_count\":\"\",\"homozygote_count\":\"\"},\"African\":{\"population\":\"African\",\"type\":\"Common\",\"allele_number\":\"\",\"code\":\"AFR\",\"allele_count\":\"\",\"allele_frequency\":0.2073,\"hemizygote_count\":\"\",\"homozygote_count\":\"\"},\"European\":{\"population\":\"European\",\"type\":\"Common\",\"allele_number\":\"\",\"code\":\"EUR\",\"allele_count\":\"\",\"allele_frequency\":0.2087,\"hemizygote_count\":\"\",\"homozygote_count\":\"\"},\"American\":{\"population\":\"American\",\"type\":\"Common\",\"allele_number\":\"\",\"code\":\"AMR\",\"allele_count\":\"\",\"allele_frequency\":0.1988,\"hemizygote_count\":\"\",\"homozygote_count\":\"\"},\"ALL\":{\"population\":\"All 1000 Genomes\",\"type\":\"Common\",\"allele_number\":\"\",\"code\":\"ALL\",\"allele_count\":\"\",\"allele_frequency\":0.232628,\"hemizygote_count\":\"\",\"homozygote_count\":\"\"},\"East_Asian\":{\"population\":\"East Asian\",\"type\":\"Common\",\"allele_number\":\"\",\"code\":\"EAS\",\"allele_count\":\"\",\"allele_frequency\":0.369,\"hemizygote_count\":\"\",\"homozygote_count\":\"\"}},\"ExAC\":{\"Europena(Finnish)\":{\"population\":\"European(Finnish)\",\"type\":\"Common\",\"allele_number\":\"6612\",\"code\":\"FIN\",\"allele_count\":\"1562\",\"allele_frequency\":0.23623714458560194,\"hemizygote_count\":\"\",\"homozygote_count\":\"178\"},\"Europena(Non-Finnish)\":{\"population\":\"Europena(Non-Finnish)\",\"type\":\"Common\",\"allele_number\":\"66678\",\"code\":\"NFE\",\"allele_count\":\"14287\",\"allele_frequency\":0.2142685743423618,\"hemizygote_count\":\"\",\"homozygote_count\":\"1556\"},\"Other\":{\"population\":\"Other\",\"type\":\"Common\",\"allele_number\":\"908\",\"code\":\"OTH\",\"allele_count\":\"207\",\"allele_frequency\":0.22797356828193832,\"hemizygote_count\":\"\",\"homozygote_count\":\"22\"},\"South_Asian\":{\"population\":\"South Asian\",\"type\":\"Common\",\"allele_number\":\"16504\",\"code\":\"SAS\",\"allele_count\":\"3566\",\"allele_frequency\":0.2160688317983519,\"hemizygote_count\":\"\",\"homozygote_count\":\"388\"},\"African\":{\"population\":\"African\",\"type\":\"Common\",\"allele_number\":\"10392\",\"code\":\"AFR\",\"allele_count\":\"2199\",\"allele_frequency\":0.21160508083140878,\"hemizygote_count\":\"\",\"homozygote_count\":\"231\"},\"Latino\":{\"population\":\"Latino\",\"type\":\"Common\",\"allele_number\":\"11556\",\"code\":\"AMR\",\"allele_count\":\"2075\",\"allele_frequency\":0.17956040152301836,\"hemizygote_count\":\"\",\"homozygote_count\":\"188\"},\"ALL\":{\"population\":\"All ExAC\",\"type\":\"Common\",\"allele_number\":\"121408\",\"code\":\"ALL\",\"allele_count\":\"27233\",\"allele_frequency\":0.22430976541908276},\"East_Asian\":{\"population\":\"East Asian\",\"type\":\"Common\",\"allele_number\":\"8638\",\"code\":\"EAS\",\"allele_count\":\"3323\",\"allele_frequency\":0.384695531373003,\"hemizygote_count\":\"\",\"homozygote_count\":\"665\"}},\"ESP6500\":{\"AA\":{\"population\":\"African American\",\"type\":\"Common\",\"allele_number\":4406,\"code\":\"AA\",\"allele_count\":\"915\",\"allele_frequency\":0.20767135724012709,\"hemizygote_count\":\"\",\"homozygote_count\":\"\"},\"EA\":{\"population\":\"European American\",\"type\":\"Common\",\"allele_number\":8600,\"code\":\"EA\",\"allele_count\":\"1834\",\"allele_frequency\":0.21325581395348836,\"hemizygote_count\":\"\",\"homozygote_count\":\"\"},\"ALL\":{\"population\":\"ALL\",\"type\":\"Common\",\"allele_number\":13006,\"code\":\"All ESP6500\",\"allele_count\":\"2749\",\"allele_frequency\":0.21136398585268337,\"hemizygote_count\":\"\",\"homozygote_count\":\"\"}}},\"breast_cancer_information_core\":{\"clinical_classification\":\"Likely not pathogenic/little clinical significance\",\"bic_designation\":\"7470A>G\",\"nt\":\"7470\",\"mutation_category_bic\":\"Synonymous(Syn)\",\"clinical_importance\":\"no\",\"radar\":\"2\",\"exon\":\"14\"},\"clinical\":{\"allele_orign\":{\"0\":\"Germline\"},\"total_rcv\":1,\"radar\":\"1\",\"hgvs\":\"NC_000013.10:g.32929232A>G\",\"variant_disease_db_name\":\"Breast-ovarian cancer,familial 2|Familial cancer of breast|Hereditary cancer-predisposing syndrome|not specified\",\"alternate_allele\":\"1\",\"database_source\":{\"database_id\":\"NBK1247:C2675520:612555:ORPHA145|NBK1247:C0346153:114480:254843006|C0027672:699346009|CN169374\",\"database\":\"GeneReviews:MedGen:OMIM:Orphanet|GeneReviews:MedGen:OMIM:SNOMED_CT|MedGen:SNOMED_CT|MedGen\"},\"review_status\":\"Reviewed by expert panel|Criteria provided single submitter|Criteria provided single submitter|Criteria provided single submitter\",\"clinical_channel\":{\"channel_id\":\"7470&base_change=A_to_G\",\"channel\":\"Breast_Cancer_Information_Core_(BRCA2)\"},\"gene_info\":{\"0\":\"BRCA2:675\"},\"classification\":\"Benign|Benign|Benign|Benign\",\"clinvar_accession\":\"RCV000113739.4|RCV000123992.2|RCV000130994.2|RCV000152882.3\"},\"BRCA_Exchange\":{\"Pathogenicity\":{\"BIC\":\"Class 1 (BIC)\",\"ClinVar\":\"Benign (ClinVar)\",\"ENIGMA\":\"Benign(ENIGMA)\"},\"Patient_nationality_BIC\":\"USA German Sri Lankan - Austria Spanish Polish Omanis Belgian\",\"Gene_Symbol\":\"BRCA2\",\"ID\":\"5758\",\"Protein\":\"NP_000050.2:p.(eq)\",\"Allele_Origin_BIC\":\"G\",\"Nucleotide\":\"NM_000059.3:c.7242A>G\",\"Allele_Origin_ClinVar\":\"germline,unknown\",\"Reference_cDNA_Sequence\":\"NM_000059.3\",\"Analysis_Method_ClinVar\":\"curation,clinical,testing,literature,only\",\"Date_last_evaluated_ENIGMA\":\"1/12/15\",\"Condition_ID_Type_ENIGMA\":\"OMIM\",\"Date_last_updated_ClinVar\":\"2014-12-08_2014-01-02_2014-11-19_2011-03-17_2002-05-29_2015-01-12_2013-09-04\",\"Condition_ID_Value_ENIGMA\":\"BREAST-OVARIAN CANCER  FAMILIAL  SUSCEPTIBILITY TO  2  BROVCA2 (612555)\",\"Functional_analysis_result_LOVD\":\"predicted_neutral_-_?\",\"Comment_on_Clinical_significance_ENIGMA\":\"Class 1 not pathogenic based on frequency >1% in an outbred sampleset. Frequency 0.3864 (Asian)  0.1585 (African)  0.219 (European)  derived from 1000 genomes (2012-04-30).\",\"Ethnicity_BIC\":\"Global,-,Arab,Sinhalese,Polish,Caucasian\",\"Has_Discordant_Evidence\":\"Concordant\",\"Mutation_category_BIC\":\"Syn\"},\"id\":4,\"experiment\":{\"experiment_user\":\"Changbum Hong\",\"specimen_type\":\"blood\",\"experiment_type\":\"germline\",\"sequencer\":\"Illumina MiSeq\"},\"total_same_panel_sample_count_in_usergroup\":0,\"in_silico_prediction\":{\"mt\":{\"text\":\"\",\"score\":\"\",\"radar\":\"\"},\"PolyPhen2\":{\"text\":\"\",\"test\":\"PolyPhen2\",\"desc\":\"dbNSFP annotation, Polyphen2 score based on HumVar\",\"radar\":\"\",\"reference range\":\"0-1\",\"type\":\"Protein effect\",\"score\":\"\"},\"SIFT\":{\"text\":\"\",\"test\":\"SIFT\",\"desc\":\"dbNSFP annotation, SIFT score (SIFTori)\",\"radar\":\"\",\"reference range\":\"0-1\",\"type\":\"Protein effect\",\"score\":\"\"}},\"korean_hereditary_breast_cancer_study\":{\"high_risk_breast_cancer_patient_in_kohbra\":\"\",\"high_risk_breast_cancer_frequency_in_kohbra\":\"\"},\"flag\":{\"is_primer\":\"no\",\"warning\":\"no\",\"primer_deletion\":\"no\",\"low_variant_fraction\":\"no\",\"homopolymer_region\":\"no\",\"is_control\":\"no\",\"roi_region\":\"yes\",\"low_coverage\":\"no\",\"low_variant_coverage_depth\":\"no\",\"low_confidence\":\"no\",\"pre_filter\":\"no\",\"soft_clipped_amplicon\":\"no\"},\"allele\":{\"reference\":\"A\",\"type_of_allele\":\"snp\",\"alternate_allele_observation\":768,\"zygosity\":\"homozygote\",\"alternate\":\"G\",\"reference_allele_observation\":\"0\",\"allele_fraction\":100.0,\"zygosity_dp\":\"0\",\"total_read_depth\":768},\"same_panel_same_variant_sample_count_in_usergroup\":0,\"gene\":{\"entrez_gene_summary\":\"Inherited mutations in BRCA1 and this gene, BRCA2, confer increased lifetime risk of developing breast or ovarian cancer. Both BRCA1 and BRCA2 are involved in maintenance of genome stability, specifically the homolog     ous recombination pathway for double-strand DNA repair. The BRCA2 protein contains several copies of a 70 aa motif called the BRC motif, and these motifs mediate binding to the RAD51 recombinase which functions in DNA repair. BRCA2 is considered a tumor suppre     ssor gene, as tumors with BRCA2 mutations generally exhibit loss of heterozygosity (LOH) of the wild-type allele. [provided by RefSeq, Dec 2008]\",\"transcript\":{\"0\":{\"hgvs.p\":\"p.(=)\",\"transcript_name\":\"NM_000059.3\",\"coding_consequence\":\"synonymous\",\"gene_symbol\":\"BRCA2\",\"genome_37\":\"chr13:g.32929232:A>G\",\"hgvs.c\":\"c.7242A>G\",\"strand\":\"+\",\"solvebio_format\":\"NM_000059.3(BRCA2):c.7242A>G(p.(=))\",\"exon_number/total\":\"14/27\",\"aa_abbreviation\":\"\"}},\"gene_symbol\":\"BRCA2\",\"gene_name\":\"BRCA2\",\"default_transcript\":\"NM_000059.3\",\"strand\":\"+\"},\"build\":{\"ref_genome\":\"GRCh37/hg19\",\"1000_genomes\":\"20150218 phase3\",\"ESP6500\":\"ESP6500SI-V2-SSA137\",\"dbsnp_build\":\"dbSNP 147\",\"clinvar_build\":\"20160502\",\"ESP5400\":\"0.3\",\"ExAc\":\"0.31\"},\"total_sample_count_in_usergroup\":8,\"ENIGMA\":{\"has\":\"yes\",\"pathogenic\":\"Benign(ENIGMA)\",\"radar\":\"1\"},\"variant_information\":{\"exac_url\":\"http://exac.broadinstitute.org/variant/13-32929232-A-G\",\"rs_id\":\"rs1799955\",\"start\":32929232,\"alt\":\"G\",\"exac_format\":\"13-32929232-A-G\",\"left_22_bp\":\"TTCCACCTTTTAAAACTAAATC\",\"vcf_format\":\"chr13 32929232.A G.\",\"ucsc_format\":\"chr13:32,929,232-32,929,232\",\"type\":\"snp\",\"right_22_bp\":\"CATTTTCACAGAGTTGAACAGT\",\"size\":\"1bp\",\"clinvar_url\":\"http://www.ncbi.nlm.nih.gov/clinvar?term=rs1799955\",\"esp_url\":\"\",\"1kg_url\":\"\",\"filter\":\"None\",\"stop\":32929232,\"brca_exchange_url\":\"http://brcaexchange.org/variants?search=chr13:g.32929232\",\"ncbi_url\":\"http://www.ncbi.nlm.nih.gov/gene/675\",\"ucsc_url\":\"http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&highlight=hg19.chr13%3A32,929,232-32,929,232&position=chr13%3A32929202-32929262\",\"ref\":\"A\"}}";
         }
         return data;

@@ -279,49 +279,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             totalIndex += 7;
             rowIndex++;
         }
-
-        /*sampleSheetGridPane.getChildren().clear();
-        sampleSheetGridPane.setPrefHeight(0);
-
-        int row = 0;
-
-        for(Sample sample : sampleArrayList) {
-            SampleSheet item = sample.getSampleSheet();
-            sampleSheetGridPane.setPrefHeight(sampleSheetGridPane.getPrefHeight() + 26);
-
-            TextField sampleName = new TextField();
-            sampleName.setStyle("-fx-text-inner-color: black;");
-            sampleName.getStyleClass().add("font_size_9");
-            sampleName.setText(!StringUtils.isEmpty(item.getSampleName()) ?  item.getSampleName() : item.getSampleId());
-
-            TextField samplePlate = new TextField();
-            samplePlate.setStyle("-fx-text-inner-color: black;");
-            samplePlate.setText(item.getSamplePlate());
-
-            TextField sampleWell = new TextField();
-            sampleWell.setStyle("-fx-text-inner-color: black;");
-            sampleWell.setText(item.getSampleWell());
-
-            TextField i7IndexId = new TextField();
-            i7IndexId.setStyle("-fx-text-inner-color: black;");
-            i7IndexId.setText(item.getI7IndexId());
-
-            TextField index = new TextField();
-            index.setStyle("-fx-text-inner-color: black;");
-            index.setText(item.getSampleIndex());
-
-            TextField sampleProject = new TextField();
-            sampleProject.setStyle("-fx-text-inner-color: black;");
-            sampleProject.setText(item.getSampleProject());
-
-            TextField description = new TextField();
-            description.setStyle("-fx-text-inner-color: black;");
-            description.setText(item.getDescription());
-
-            sampleSheetGridPane.addRow(row, sampleName, i7IndexId, index, samplePlate, sampleWell, sampleProject, description);
-
-            row++;
-        }*/
     }
 
 }

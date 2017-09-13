@@ -134,7 +134,7 @@ public class SampleUploadController extends BaseStageController{
                 sampleUploadScreenFirstController = loader.getController();
                 sampleUploadScreenFirstController.setMainController(mainController);
                 sampleUploadScreenFirstController.setSampleUploadController(this);
-                sampleUploadScreenFirstController.show((Parent) box);
+                sampleUploadScreenFirstController.show(box);
 
                 tableRegion.getChildren().add(box);
                 break;
@@ -144,7 +144,7 @@ public class SampleUploadController extends BaseStageController{
                 sampleUploadScreenSecondController = loader.getController();
                 sampleUploadScreenSecondController.setMainController(mainController);
                 sampleUploadScreenSecondController.setSampleUploadController(this);
-                sampleUploadScreenSecondController.show((Parent) box);
+                sampleUploadScreenSecondController.show(box);
                 tableRegion.getChildren().add(box);
                 break;
             case 3 :
@@ -153,7 +153,7 @@ public class SampleUploadController extends BaseStageController{
                 sampleUploadScreenThirdController = loader.getController();
                 sampleUploadScreenThirdController.setMainController(mainController);
                 sampleUploadScreenThirdController.setSampleUploadController(this);
-
+                sampleUploadScreenThirdController.show(box);
                 tableRegion.getChildren().add(box);
                 break;
             default:

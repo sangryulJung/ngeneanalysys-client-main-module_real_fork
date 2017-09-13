@@ -5,6 +5,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
 import ngeneanalysys.controller.MainController;
+import ngeneanalysys.model.LoginSession;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
@@ -16,14 +17,19 @@ import java.util.Map;
  */
 public abstract class SubPaneController extends BaseStageController {
 
+
     /** 메인화면 컨트롤러 객체 */
     protected MainController mainController;
 
     /** 화면 컨트롤 관련 부모 화면에서 전달된 파라미터 정보 */
-    protected Map<String, Object> paramMap;
+    protected Map<String,Object> paramMap;
+
+    /** 로그인 세션 객체 */
+    protected LoginSession loginSession;
 
     /**
      * 메인 화면 컨트롤러 객체 세팅
+     *
      * @param mainController
      */
     public void setMainController(MainController mainController) {
@@ -32,27 +38,25 @@ public abstract class SubPaneController extends BaseStageController {
     }
 
     /**
-     *
-     * @return
+     * @return the mainController
      */
     public MainController getMainController() {
         return mainController;
     }
 
     /**
-     *
-     * @return
+     * 파라미터 정보 삽입
+     * @param param
      */
-    public Map<String, Object> getParamMap() {
-        return paramMap;
+    public void setParamMap(Map<String,Object> param) {
+        this.paramMap = param;
     }
 
     /**
-     *
-     * @param paramMap
+     * @return the paramMap
      */
-    public void setParamMap(Map<String, Object> paramMap) {
-        this.paramMap = paramMap;
+    public Map<String, Object> getParamMap() {
+        return paramMap;
     }
 
     /**

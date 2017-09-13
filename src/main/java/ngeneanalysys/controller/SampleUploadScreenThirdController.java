@@ -1,6 +1,5 @@
 package ngeneanalysys.controller;
 
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -8,7 +7,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import ngeneanalysys.controller.extend.BaseStageController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
@@ -42,9 +40,6 @@ public class SampleUploadScreenThirdController extends BaseStageController{
 
     private List<Sample> sampleArrayList = null;
 
-    /** 작업 Dialog Window Stage Object */
-    private Stage currentStage;
-
     @FXML
     private GridPane standardDataGridPane;
 
@@ -60,6 +55,18 @@ public class SampleUploadScreenThirdController extends BaseStageController{
 
     List<AnalysisFile> uploadFileData = new ArrayList<>();
 
+    List<TextField> sampleNameTextFieldList = new ArrayList<>();
+
+    List<Button> fileSelectButtonList = new ArrayList<>();
+
+    List<TextField> patientIdTextFieldList = new ArrayList<>();
+
+    List<ComboBox<ComboBoxItem>> diseaseComboBoxList = new ArrayList<>();
+
+    List<ComboBox<ComboBoxItem>> panelComboBoxList = new ArrayList<>();
+
+    List<TextField> sampleSourceTextFieldList = new ArrayList<>();
+
     /**
      * @param mainController
      */
@@ -74,23 +81,13 @@ public class SampleUploadScreenThirdController extends BaseStageController{
      */
     public void setSampleUploadController(SampleUploadController sampleUploadController) {
         this.sampleUploadController = sampleUploadController;
-        if(sampleUploadController.getSamples() != null) {
-            sampleArrayList = sampleUploadController.getSamples();
-            tableEdit();
-        }
     }
-
-
 
     @Override
     public void show(Parent root) throws IOException {
-    }
-
-    public void tableEdit() {
         standardDataGridPane.getChildren().clear();
         standardDataGridPane.setPrefHeight(0);
 
-        int row = 0;
         HttpClientResponse response = null;
         try {
             response = apiService.get("/panels", null, null, false);
@@ -102,16 +99,15 @@ public class SampleUploadScreenThirdController extends BaseStageController{
             e.printStackTrace();
         }
 
-
-        for(Sample sample : sampleArrayList) {
-            SampleSheet item = sample.getSampleSheet();
+        for(int row  = 0 ; row < 23 ; row++) {
             standardDataGridPane.setPrefHeight(standardDataGridPane.getPrefHeight() + 27);
 
             TextField sampleName = new TextField();
             sampleName.setStyle("-fx-text-inner-color: black;");
-            sampleName.setText(!StringUtils.isEmpty(item.getSampleName()) ? item.getSampleName() : item.getSampleId());
+            sampleNameTextFieldList.add(sampleName);
 
             Button select = new Button();
+            fileSelectButtonList.add(select);
             select.setText("SELECT");
             select.setOnAction(e -> {
                 FileChooser fileChooser = new FileChooser();
@@ -150,29 +146,63 @@ public class SampleUploadScreenThirdController extends BaseStageController{
 
             TextField paitentId = new TextField();
             paitentId.setStyle("-fx-text-inner-color: black;");
+            patientIdTextFieldList.add(paitentId);
 
             ComboBox<ComboBoxItem> disease  = new ComboBox<>();
+            diseaseComboBoxList.add(disease);
             diseasesSetting(disease);
 
             ComboBox<ComboBoxItem> panel  = new ComboBox<>();
+            panelComboBoxList.add(panel);
             panelSetting(panel);
+            panel.setOnAction(event -> {
+                ComboBox<ComboBoxItem> obj = (ComboBox<ComboBoxItem>) event.getSource();
+                if(panelComboBoxList.contains(obj)) {
+                    int index  = panelComboBoxList.indexOf(obj);
+                    ComboBoxItem item = obj.getSelectionModel().getSelectedItem();
+                    logger.info(item.getText());
+                    panels.stream().forEach(panelItem -> {
+                        if(panelItem.getId() == Integer.parseInt(item.getValue())) {
+                            sampleSourceTextFieldList.get(index).setText(panelItem.getSampleSource());
+                        }
+                    });
+                }
+            });
 
             TextField source = new TextField();
+            sampleSourceTextFieldList.add(source);
             source.setEditable(false);
             source.setStyle("-fx-text-inner-color: black;");
-            source.setText("FFPE");
+            source.setText(panels.get(0).getSampleSource());
 
             standardDataGridPane.addRow(row, sampleName, select, paitentId, disease, panel, source);
+        }
+
+        if(sampleUploadController.getSamples() != null) {
+            sampleArrayList = sampleUploadController.getSamples();
+            tableEdit();
+        }
+    }
+
+    public void tableEdit() {
+        int row = 0;
+
+        for(Sample sample : sampleArrayList) {
+            //샘플의 총 갯수는 23개로 한정
+            if(row > 22) break;
+
+            SampleSheet item = sample.getSampleSheet();
+
+            sampleNameTextFieldList.get(row).setText(!StringUtils.isEmpty(item.getSampleName()) ? item.getSampleName() : item.getSampleId());
 
             row++;
         }
-
     }
 
     @FXML
     public void submit() {
         try {
-            if (sampleArrayList != null && standardDataGridPane.getChildren().size() > 0) {
+            if (sampleArrayList != null && sampleArrayList.size() != 0) {
 
                 Map<String, Object> params = new HashMap<>();
                 HttpClientResponse response = null;
@@ -193,13 +223,20 @@ public class SampleUploadScreenThirdController extends BaseStageController{
 
                 }
 
-
                 for (int i = 0; i < standardDataGridPane.getChildren().size(); i += 6) {
                     int rowNum = i / 6;
-                    Sample sample = sampleArrayList.get(rowNum);
+                    Sample sample = null;
+                    if(sampleArrayList.size() > rowNum) {
+                        sample = sampleArrayList.get(rowNum);
+                    } else {
+                        sample = new Sample();
+                        sample.setQcData(new QcData());
+                        sample.setSampleSheet(new SampleSheet());
+                    }
                     sample.setRunId(run.getId());
 
                     TextField sampleName = (TextField) standardDataGridPane.getChildren().get(i);
+                    if(sampleName.getText().isEmpty()) continue;
                     sample.setName(sampleName.getText() + "RUN_" + rowNum);
 
                     Button fileName = (Button) standardDataGridPane.getChildren().get(i + 1);
