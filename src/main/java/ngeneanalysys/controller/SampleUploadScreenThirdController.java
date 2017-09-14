@@ -88,16 +88,8 @@ public class SampleUploadScreenThirdController extends BaseStageController{
         standardDataGridPane.getChildren().clear();
         standardDataGridPane.setPrefHeight(0);
 
-        HttpClientResponse response = null;
-        try {
-            response = apiService.get("/panels", null, null, false);
-            panels = (List<Panel>)response.getMultiObjectBeforeConvertResponseToJSON(Panel.class, false);
-            response = null;
-            response = apiService.get("/diseases", null, null, false);
-            diseases = (List<Diseases>)response.getMultiObjectBeforeConvertResponseToJSON(Diseases.class, false);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        panels = (List<Panel>)mainController.getBasicInformationMap().get("panels");
+        diseases = (List<Diseases>)mainController.getBasicInformationMap().get("diseases");
 
         for(int row  = 0 ; row < 23 ; row++) {
             standardDataGridPane.setPrefHeight(standardDataGridPane.getPrefHeight() + 27);

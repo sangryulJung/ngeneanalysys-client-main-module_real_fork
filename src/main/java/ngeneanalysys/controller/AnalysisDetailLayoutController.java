@@ -103,7 +103,7 @@ public class AnalysisDetailLayoutController extends SubPaneController {
             getParamMap().put("sample", sample);
 
             sampleIdLabel.setText(String.format("#%s", sample.getId()));
-            List<Panel> panels = (List<Panel>) paramMap.get("panels");
+            List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
             if(panels != null && !panels.isEmpty()) {
                 kitLabel.setText(panels.stream().filter(panel -> panel.getId().equals(sample.getPanelId())).findFirst().get().getName());
             }

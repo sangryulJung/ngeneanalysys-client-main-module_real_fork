@@ -118,7 +118,9 @@ public class SystemMenuEditController extends SubPaneController {
         });
         try {
             // 사용자 정보 조회
-            HttpClientResponse response = apiService.get("/users/detail/" + loginSession.getLoginId(), null, null,
+            Map<String, Object> params = new HashMap<>();
+
+            HttpClientResponse response = apiService.get("/member", getParamMap(), null,
                     false);
 
             user = response.getObjectBeforeConvertResponseToJSON(User.class);
@@ -236,7 +238,7 @@ public class SystemMenuEditController extends SubPaneController {
                 emailTextField.requestFocus();
             } else {
                 // 사용자 정보 수정
-                params = new HashMap<String,Object>();
+                params = new HashMap<>();
                 params.put("organization", organizationTextField.getText());
                 params.put("department", departmentTextField.getText());
                 params.put("address", addressTextField.getText());

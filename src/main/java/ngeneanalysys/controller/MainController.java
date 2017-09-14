@@ -19,15 +19,15 @@ import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.SystemMenuCode;
 import ngeneanalysys.code.enums.UserTypeBit;
 import ngeneanalysys.controller.extend.BaseStageController;
-import ngeneanalysys.model.AnalysisFile;
-import ngeneanalysys.model.LoginSession;
-import ngeneanalysys.model.TopMenu;
+import ngeneanalysys.exceptions.WebAPIException;
+import ngeneanalysys.model.*;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.CacheMemoryService;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.LoginSessionUtil;
 import ngeneanalysys.util.StringUtils;
+import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 
@@ -108,6 +108,15 @@ public class MainController extends BaseStageController {
     /** 클라이언트 빌드 정보 라벨 */
     @FXML
     private Label labelSystemBuild;
+
+    private Map<String, Object> basicInformationMap = new HashMap<>();
+
+    /**
+     * @return basicInformationMap
+     */
+    public Map<String, Object> getBasicInformationMap() {
+        return basicInformationMap;
+    }
 
     /**
      * 메인 컨텐츠 프레임 Pane Node 객체 반환
@@ -237,6 +246,21 @@ public class MainController extends BaseStageController {
 
         // 중단된 분석 요청 작업이 있는지 체크
 
+        // 기본 정보 로드
+        HttpClientResponse response = null;
+        try {
+            response = apiService.get("/panels", null, null, false);
+            final List<Panel> panels = (List<Panel>) response.getMultiObjectBeforeConvertResponseToJSON(Panel.class, false);
+            basicInformationMap.put("panels", panels);
+
+            response = null;
+            response = apiService.get("/diseases", null, null, false);
+            List<Diseases> diseases = (List<Diseases>)response.getMultiObjectBeforeConvertResponseToJSON(Diseases.class, false);
+            basicInformationMap.put("diseases", diseases);
+
+        } catch (WebAPIException e) {
+            logger.info(e.getMessage());
+        }
     }
 
     /**
@@ -530,16 +554,21 @@ public class MainController extends BaseStageController {
 
                 if("homeWrapper".equals(currentShowFrameId)) {	// 이전 화면이 분석자 HOME인 경우 자동 새로고침 토글
                     homeController.autoRefreshTimeline.stop();
+                    homeController.sampleListAutoRefreshTimeline.stop();
                 } else if("experimentPastResultsWrapper".equals(currentShowFrameId)) {	// 이전 화면이 분석자 Past Results인 경우 자동 새로고침 토글
                     pastResultsController.pauseAutoRefresh();
                 } else if ("systemManagerHomeWrapper".equals(currentShowFrameId)) {
                     homeController.autoRefreshTimeline.stop();
+                    homeController.sampleListAutoRefreshTimeline.stop();
                     pastResultsController.pauseAutoRefresh();
                 }
 
                 if("homeWrapper".equals(mainFrame.getCenter().getId())) {	// 현재 출력화면이 분석자 HOME 화면인 경우 다른 화면의 자동 새로고침 실행 토글 처리
                     // 최초 화면 출력이 아닌 경우 분석자 HOME 화면 자동 새로고침 기능 시작
-                    if(!isFirstShow) homeController.autoRefreshTimeline.play();
+                    if(!isFirstShow) {
+                        homeController.autoRefreshTimeline.play();
+                        homeController.sampleListAutoRefreshTimeline.play();
+                    }
                 } else if("experimentPastResultsWrapper".equals(mainFrame.getCenter().getId())) {	// 현재 출력화면이 분석자 Past Results 화면인 경우 다른 화면의 자동 새로고침 실행 토글 처리
                     // 최초 화면 출력이 아닌 경우 분석자 Past Results 화면 자동 새로고침 기능 시작
                     if(!isFirstShow) pastResultsController.resumeAutoRefresh();
@@ -757,7 +786,7 @@ public class MainController extends BaseStageController {
         }
 
         // 현재 화면에 출력중인 화면이 분석자 Past Results 화면인 경우
-        if("PastResultsWrapper".equals(currentShowFrameId)) {
+        if("experimentPastResultsWrapper".equals(currentShowFrameId)) {
             pastResultsController.startAutoRefresh();
             if(homeController != null) {
                 homeController.autoRefreshTimeline.play();

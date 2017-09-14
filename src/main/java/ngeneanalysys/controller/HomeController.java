@@ -88,11 +88,16 @@ public class HomeController extends SubPaneController{
     /** Timer */
     public Timeline autoRefreshTimeline;
 
+    public Timeline sampleListAutoRefreshTimeline;
+
     private List<TextField> runNameFields;
     private List<RunAnalysisJobStatusBox> runStatusFields;
     private List<TextField> sampleNameFields;
     private List<TextField> samplePanelFields;
     private List<SampleAnalysisJobStatusBox> sampleStatusFields;
+
+    private int currentRunId = -1;
+    private int currentPage = -1;
 
     @Override
     public void show(Parent root) throws IOException {
@@ -100,15 +105,6 @@ public class HomeController extends SubPaneController{
 
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
-
-        HttpClientResponse response = null;
-        try {
-            response = apiService.get("/panels", null, null, false);
-            List<Panel> panels = (List<Panel>)response.getMultiObjectBeforeConvertResponseToJSON(Panel.class, false);
-            paramMap.put("panels", panels);
-        } catch (Exception e) {
-            logger.info(e.getMessage());
-        }
 
         getMainController().getPrimaryStage().setMaxWidth(1000);
         this.mainController.getMainFrame().setCenter(root);
@@ -120,6 +116,17 @@ public class HomeController extends SubPaneController{
                 ae -> showRunList()));
         autoRefreshTimeline.setCycleCount(Animation.INDEFINITE);
         autoRefreshTimeline.play();
+
+        sampleListAutoRefreshTimeline = new Timeline(new KeyFrame(Duration.millis(1000),
+                ae -> autoUpdateSampleList()));
+        sampleListAutoRefreshTimeline.setCycleCount(Animation.INDEFINITE);
+        sampleListAutoRefreshTimeline.play();
+    }
+
+    public void autoUpdateSampleList() {
+        if(currentPage != -1 && currentRunId != -1) {
+            showSampleList(currentRunId, currentPage);
+        }
     }
 
     /**
@@ -174,9 +181,10 @@ public class HomeController extends SubPaneController{
                     if(e.getClickCount() == 1) {
                         sampleListPagination.setPageFactory((page) -> {
                             showSampleList(run.getId(), page);
+                            currentRunId = run.getId();
+                            currentPage = page;
                             return new VBox();
                         });
-                        sampleListPagination.setCurrentPageIndex(0);
                     } else if(e.getClickCount() == 2) {
                         logger.info("click count 2");
                     }
@@ -255,7 +263,7 @@ public class HomeController extends SubPaneController{
     }
     private void showSampleList(int runId, int pageIndex){
         final int maxItemNumberOfPage = sampleListGridPane.getRowConstraints().size() - 1;
-        CompletableFuture<List<Panel>> getPanels = new CompletableFuture<>();
+        /*CompletableFuture<List<Panel>> getPanels = new CompletableFuture<>();
         getPanels.supplyAsync(() -> {
             HttpClientResponse response = null;
             try {
@@ -265,12 +273,8 @@ public class HomeController extends SubPaneController{
             } catch (Exception e) {
                 getPanels.completeExceptionally(e);
             }
-
-            /*List<Panel> panels = (List<Panel>) paramMap.get("panels");
-            getPanels.complete(panels);*/
-
             return getPanels;
-        });
+        });*/
 
         CompletableFuture<PagedSample> getPagedSample = new CompletableFuture<>();
         getPagedSample.supplyAsync(() -> {
@@ -293,12 +297,12 @@ public class HomeController extends SubPaneController{
             return getPagedSample;
         });
         try {
-            List<Panel> panels = getPanels.get();
+            List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");//getPanels.get();
             Map<Integer, Panel> mapPanels = panels.stream().collect(Collectors.toMap(Panel::getId, p -> p));
             PagedSample pagedSample = getPagedSample.get();
             sampleListPagination.setCurrentPageIndex(pageIndex);
             sampleListPagination.setMaxPageIndicatorCount(3);
-            sampleListPagination.setPageCount(pagedSample.getCount() / maxItemNumberOfPage);
+            sampleListPagination.setPageCount((int)Math.ceil((double)pagedSample.getCount() / maxItemNumberOfPage));
             if (sampleListPagination.getPageCount() < 2)
                 sampleListPagination.setVisible(false);
             else

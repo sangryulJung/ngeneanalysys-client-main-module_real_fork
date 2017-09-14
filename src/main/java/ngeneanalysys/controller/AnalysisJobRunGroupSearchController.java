@@ -1,5 +1,8 @@
 package ngeneanalysys.controller;
 
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,6 +17,8 @@ import ngeneanalysys.code.enums.SampleSourceCode;
 import ngeneanalysys.code.enums.SequencerCode;
 import ngeneanalysys.controller.extend.BaseStageController;
 import ngeneanalysys.exceptions.WebAPIException;
+import ngeneanalysys.model.Run;
+import ngeneanalysys.model.RunGroupForPaging;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.model.render.DatepickerConverter;
@@ -61,46 +66,46 @@ public class AnalysisJobRunGroupSearchController extends BaseStageController {
     @FXML
     private Button searchButton;
 
-/*
-    */
-/** 목록 *//*
+
+
+/** 목록 */
 
     @FXML
-    private TableView<AnalysisJob> list;
+    private TableView<Run> list;
 
-    */
-/** 목록 > 그룹명 컬럼 *//*
 
-    @FXML
-    private TableColumn<AnalysisJob, String> columnRefName;
+/** 목록 > 그룹명 컬럼 */
 
     @FXML
-    private TableColumn<AnalysisJob, String> columnSamples;
-
-    */
-/** 목록 > 시퀀서 정보 컬럼 *//*
+    private TableColumn<Run, String> columnRefName;
 
     @FXML
-    private TableColumn<AnalysisJob, String> columnPlatform;
+    private TableColumn<Run, String> columnSamples;
 
-    */
-/** 목록 > 샘플 소스 컬럼 *//*
 
-    @FXML
-    private TableColumn<AnalysisJob, String> columnSampleSource;
-
-    */
-/** 목록 > 요청일 컬럼 *//*
+/** 목록 > 시퀀서 정보 컬럼 */
 
     @FXML
-    private TableColumn<AnalysisJob, String> columnRequestDate;
+    private TableColumn<Run, String> columnPlatform;
 
-    */
-/** 목록 > 선택컬럼 *//*
+
+/** 목록 > 샘플 소스 컬럼 */
 
     @FXML
-    private TableColumn<AnalysisJob, String> columnSelect;
-*/
+    private TableColumn<Run, String> columnSampleSource;
+
+
+/** 목록 > 요청일 컬럼 */
+
+    @FXML
+    private TableColumn<Run, String> columnRequestDate;
+
+
+/** 목록 > 선택컬럼 */
+
+    @FXML
+    private TableColumn<Run, Boolean> columnSelect;
+
 
     /** 페이징 목록 */
     @FXML
@@ -152,16 +157,14 @@ public class AnalysisJobRunGroupSearchController extends BaseStageController {
         chooseSampleSource.getSelectionModel().selectFirst();
 
         // 목록 컬럼 설정
-        /*columnRefName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRefName()));
-        columnSamples.setCellValueFactory(cellData -> new SimpleStringProperty((cellData.getValue().getSamples() != null) ? String.valueOf(cellData.getValue().getSamples().length) : "0"));
-        columnPlatform.setCellValueFactory(cellData -> new SimpleStringProperty(SequencerCode.valueOf(cellData.getValue().getSequencer()).getDescription()));
-        columnSampleSource.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSource()));
-        columnRequestDate.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRequestDate()));
-        columnSelect.setCellValueFactory(cellData -> cellData.getValue().toJSONString());
-        columnSelect.setCellFactory(new Callback<TableColumn<AnalysisJob, String>, TableCell<AnalysisJob, String>>() {
-            @Override
-            public TableCell<AnalysisJob, String> call(TableColumn<AnalysisJob, String> param) {
-                TableCell<AnalysisJob,String> cell = new TableCell<AnalysisJob, String>() {
+        columnRefName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
+        //columnSamples.setCellValueFactory(cellData -> new SimpleStringProperty((cellData.getValue().getSamples() != null) ? String.valueOf(cellData.getValue().getSamples().length) : "0"));
+        columnPlatform.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequencingPlatform()));
+        //columnSampleSource.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get));
+        columnRequestDate.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCreatedAt().toString()));
+        columnSelect.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue() != null));
+        /*columnSelect.setCellFactory(param -> {
+                TableCell<Run,String> cell = new TableCell<Run, String>() {
                     @Override
                     public void updateItem(String jsonString, boolean empty) {
                         if(!StringUtils.isEmpty(jsonString)) {
@@ -178,9 +181,8 @@ public class AnalysisJobRunGroupSearchController extends BaseStageController {
                     }
                 };
                 return cell;
-            }
-        });
-*/
+        });*/
+
         // 페이지 이동 이벤트 바인딩
         paginationList.setPageFactory(pageIndex -> {
                 setList(pageIndex + 1);
@@ -254,16 +256,15 @@ public class AnalysisJobRunGroupSearchController extends BaseStageController {
             param.put("ref_name", inputRefName.getText());
         }
         /** End 검색 항목 설정 */
-        List<Map<String, Object>> searchedSamples = new ArrayList<>();
         try {
             HttpClientResponse response = apiService.get("/runs", param, null, false);
 
             logger.info(response.toString());
-            /*if (response != null) {
-                searchedSamples = response.getObjectBeforeConvertResponseToJSON(searchedSamples.getClass());
-                if (analysisJobRunGroup != null) {
-                    totalCount = analysisJobRunGroup.getCount();
-                    this.list.setItems(FXCollections.observableArrayList(analysisJobRunGroup.getList()));
+            if (response != null) {
+                RunGroupForPaging runGroup = response.getObjectBeforeConvertResponseToJSON(RunGroupForPaging.class);
+                if (runGroup != null) {
+                    totalCount = runGroup.getCount();
+                    this.list.setItems(FXCollections.observableArrayList(runGroup.getList()));
                 } else {
                     this.list.setItems(null);
                 }
@@ -277,7 +278,7 @@ public class AnalysisJobRunGroupSearchController extends BaseStageController {
             } else { //검색 결과가 없는 경우 에러 아님.
                 this.list.setItems(null);
                 paginationList.setPageCount(0);
-            }*/
+            }
         } catch (WebAPIException wae) {
             // DialogUtil.error(null, "Running and Recent Samples Search
             // Error.", getMainApp().getPrimaryStage(), true);

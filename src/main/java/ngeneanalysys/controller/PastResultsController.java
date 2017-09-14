@@ -158,10 +158,9 @@ public class PastResultsController extends SubPaneController {
 		logger.info("choosePanel init..");
 		choosePanel.setConverter(new ComboBoxConverter());
 		choosePanel.getItems().add(new ComboBoxItem());
-		for (PanelKitCode code : PanelKitCode.values()) {
-			if (code.isAvailable()) {
-				choosePanel.getItems().add(new ComboBoxItem(code.name(), code.getDescription()));
-			}
+		List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
+		for (Panel panel : panels) {
+				choosePanel.getItems().add(new ComboBoxItem(panel.getId().toString(), panel.getName()));
 		}
 		choosePanel.getSelectionModel().selectFirst();
 		
@@ -373,16 +372,16 @@ public class PastResultsController extends SubPaneController {
 		
 		/** 검색 항목 설정 Start */
 		// Assay Target
-		if(choosePanel.getSelectionModel().getSelectedIndex() > -1 && choosePanel.getValue() != null) {
-			param.put("kit", choosePanel.getValue().getValue());
+		if(choosePanel.getSelectionModel().getSelectedIndex() > 0 && choosePanel.getValue() != null) {
+			param.put("panelIds", choosePanel.getValue().getValue());
 		}
 		// Sample Source
-		if(chooseSampleSource.getSelectionModel().getSelectedIndex() > -1 && chooseSampleSource.getValue() != null) {
-			param.put("job_run_group_source", chooseSampleSource.getValue().getValue());
+		if(chooseSampleSource.getSelectionModel().getSelectedIndex() > 0 && chooseSampleSource.getValue() != null) {
+			param.put("sampleSource", chooseSampleSource.getValue().getValue());
 		}
 		// Status chooseStatus
-		if(chooseStatus.getSelectionModel().getSelectedIndex() > -1 && chooseStatus.getValue() != null) {
-			param.put("step_report", chooseStatus.getValue().getValue());
+		if(chooseStatus.getSelectionModel().getSelectedIndex() > 0 && chooseStatus.getValue() != null) {
+			param.put("status", chooseStatus.getValue().getValue());
 		}
 		// Experiment
 		if(chooseExperimenter.getSelectionModel().getSelectedIndex() > -1 && chooseExperimenter.getValue() != null) {
@@ -396,13 +395,13 @@ public class PastResultsController extends SubPaneController {
 		if(!StringUtils.isEmpty(minCreateAt)) {
 			// 로컬 타임 표준시로 변환
 			String minCreateAtUTCDate = ConvertUtil.convertLocalTimeToUTC(minCreateAt + " 00:00:00", "yyyy-MM-dd HH:mm:ss", null);
-			param.put("min_created_at", minCreateAtUTCDate);
+			param.put("createdAtFrom", minCreateAtUTCDate);
 		}
 		// Submitted [end]
 		if(!StringUtils.isEmpty(maxCreateAt)) {
 			// 로컬 타임 표준시로 변환
 			String maxCreateAtUTCDate = ConvertUtil.convertLocalTimeToUTC(maxCreateAt + " 23:59:59", "yyyy-MM-dd HH:mm:ss", null);
-			param.put("max_created_at", maxCreateAtUTCDate);
+			param.put("createdAtTo", maxCreateAtUTCDate);
 		}
 		// sampleName
 		if(!StringUtils.isEmpty(sampleNameTextField.getText())) {
@@ -474,7 +473,14 @@ public class PastResultsController extends SubPaneController {
 				detailFieldVBoxes.get(idx).setVisible(false);
 			}
 		} else {
-
+			for(int idx = 0; idx < itemCountPerPage; idx++) {
+				sampleNameFields.get(idx).setVisible(false);
+				runFields.get(idx).setVisible(false);
+				assayTargetFieldVBoxes.get(idx).setVisible(false);
+				analysisResultOverviewVBoxes.get(idx).setVisible(false);
+				qcResultVBoxes.get(idx).setVisible(false);
+				detailFieldVBoxes.get(idx).setVisible(false);
+			}
 		}
 	}
 	
