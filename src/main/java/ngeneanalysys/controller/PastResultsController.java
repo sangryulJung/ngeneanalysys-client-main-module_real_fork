@@ -11,8 +11,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.model.*;
 import org.apache.commons.lang3.StringUtils;
@@ -50,8 +49,6 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
 import javafx.util.Duration;
@@ -172,9 +169,7 @@ public class PastResultsController extends SubPaneController {
 		chooseSampleSource.setConverter(new ComboBoxConverter());
 		chooseSampleSource.getItems().add(new ComboBoxItem());
 		for (SampleSourceCode code : SampleSourceCode.values()) {
-			if (code.equals(SampleSourceCode.BLOOD)) {
 				chooseSampleSource.getItems().add(new ComboBoxItem(code.name(), code.getDescription()));
-			}
 		}
 		chooseSampleSource.getSelectionModel().selectFirst();
 		
@@ -488,19 +483,19 @@ public class PastResultsController extends SubPaneController {
 	 */
 	@FXML
 	public void openGroupChooseDialog() {
-//		try {
-//			this.hiddenJobRunGroupId = 0;
-//			this.inputJobRunGroup.setText(null);
-//
-//			FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_JOB_RUN_GROUP_SEARCH_DIALOG);
-//			Pane dialogPane = (Pane) loader.load();
-//			AnalysisJobRunGroupSearchController controller = loader.getController();
-//			controller.setMainApp(getMainApp());
-//			controller.setExperimenterPastResultsController(this);
-//			controller.show(dialogPane);
-//		} catch (Exception e) {
-//			logger.error("job run group search dialog open fail.." + e.getMessage());
-//		}
+		try {
+			this.hiddenJobRunGroupId = 0;
+			this.inputJobRunGroup.setText(null);
+
+			FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_JOB_RUN_GROUP_SEARCH_DIALOG);
+			Pane dialogPane = (Pane) loader.load();
+			AnalysisJobRunGroupSearchController controller = loader.getController();
+			controller.setMainApp(getMainApp());
+			controller.setPastResultsController(this);
+			controller.show(dialogPane);
+		} catch (Exception e) {
+			logger.error("job run group search dialog open fail.." + e.getMessage());
+		}
 	}
 	
 	/**

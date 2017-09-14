@@ -958,8 +958,8 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         enigma.setVisible(false);
 
 
-        variantListTableView.getColumns().addAll(warn, report, type , codCons, gene, strand, transcript, ntChange, aaChange, ntChangeBIC, chr
-            ,alt, zigosity, exon, exonBic, refNum, altNum, depth, thousandGenomics, exac, esp, korean, clinVarAcc, clinVarClass, bicClass, bicDesignation
+        variantListTableView.getColumns().addAll(warn, report, type, codCons, gene, strand, transcript, ntChange, aaChange, ntChangeBIC, chr
+            ,alt, zigosity, exon, exonBic, fraction ,refNum, altNum, depth, thousandGenomics, exac, esp, korean, clinVarAcc, clinVarClass, bicClass, bicDesignation
             ,kohbraPatient, kohbraFrequency, polyphen2, sift, mutationTaster, variantNum, refGenomeVer, leftSequence, rightSequence
             ,genomicCoordinate, dbSnpRsId, clinVarDisease, bicCategory, bicImportance, beClinVarUpdate, beClinVarOrigin, beClinVarMethod
             ,beBicCategory, beBicNationality, beBicEthnic, beBicPathogenicity, beTranscript, beNt, beGene, beEnigmaCondition, beEnigmaUpdate

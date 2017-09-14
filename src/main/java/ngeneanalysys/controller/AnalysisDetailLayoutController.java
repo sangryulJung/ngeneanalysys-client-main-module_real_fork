@@ -14,6 +14,7 @@ import ngeneanalysys.code.enums.AnalysisDetailTabMenuCode;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.AnalysisResultSummary;
+import ngeneanalysys.model.Panel;
 import ngeneanalysys.model.Sample;
 import ngeneanalysys.model.render.AnalysisDetailTabItem;
 import ngeneanalysys.service.APIService;
@@ -24,6 +25,7 @@ import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author Jang
@@ -101,7 +103,10 @@ public class AnalysisDetailLayoutController extends SubPaneController {
             getParamMap().put("sample", sample);
 
             sampleIdLabel.setText(String.format("#%s", sample.getId()));
-            //kitLabel.setText(PanelKitCode.valueOf(sample.getKit()).getDescription());
+            List<Panel> panels = (List<Panel>) paramMap.get("panels");
+            if(panels != null && !panels.isEmpty()) {
+                kitLabel.setText(panels.stream().filter(panel -> panel.getId().equals(sample.getPanelId())).findFirst().get().getName());
+            }
             experimentLabel.setText(sample.getAnalysisType());
             sampleNameLabel.setText(sample.getName());
 

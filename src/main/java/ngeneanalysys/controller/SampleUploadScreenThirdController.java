@@ -188,7 +188,7 @@ public class SampleUploadScreenThirdController extends BaseStageController{
         int row = 0;
 
         for(Sample sample : sampleArrayList) {
-            //샘플의 총 갯수는 23개로 한정
+            //샘플의
             if(row > 22) break;
 
             SampleSheet item = sample.getSampleSheet();

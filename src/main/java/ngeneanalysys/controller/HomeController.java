@@ -100,6 +100,16 @@ public class HomeController extends SubPaneController{
 
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
+
+        HttpClientResponse response = null;
+        try {
+            response = apiService.get("/panels", null, null, false);
+            List<Panel> panels = (List<Panel>)response.getMultiObjectBeforeConvertResponseToJSON(Panel.class, false);
+            paramMap.put("panels", panels);
+        } catch (Exception e) {
+            logger.info(e.getMessage());
+        }
+
         getMainController().getPrimaryStage().setMaxWidth(1000);
         this.mainController.getMainFrame().setCenter(root);
         //testAddRuns();
@@ -161,11 +171,15 @@ public class HomeController extends SubPaneController{
                 runNameFields.get(i).setText(run.getName());
                 runNameFields.get(i).setOnMouseClicked(e -> {
                     //showSampleList(run.getId(), 0);
-                    sampleListPagination.setPageFactory((page) -> {
-                        showSampleList(run.getId(), page);
-                        return new VBox();
-                    });
-                    sampleListPagination.setCurrentPageIndex(0);
+                    if(e.getClickCount() == 1) {
+                        sampleListPagination.setPageFactory((page) -> {
+                            showSampleList(run.getId(), page);
+                            return new VBox();
+                        });
+                        sampleListPagination.setCurrentPageIndex(0);
+                    } else if(e.getClickCount() == 2) {
+                        logger.info("click count 2");
+                    }
                 });
 
                 runStatusFields.get(i).setStatus(run.getStatus());
@@ -251,6 +265,10 @@ public class HomeController extends SubPaneController{
             } catch (Exception e) {
                 getPanels.completeExceptionally(e);
             }
+
+            /*List<Panel> panels = (List<Panel>) paramMap.get("panels");
+            getPanels.complete(panels);*/
+
             return getPanels;
         });
 

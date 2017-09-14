@@ -820,18 +820,12 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
                 polyphenCanvas.getGraphicsContext2D(), polyphenValue, "POLYPHEN2", String.format("%7s", polyphenScore), this.gaugeSpeed);
         AnimationTimer mtTimer1 = new ClinicalSignificantTimer(
                 mtCanvas.getGraphicsContext2D(), mtValue, "MUTATIONTASTER", mtText, this.gaugeSpeed);
-        siftCanvas.setOnMouseEntered(event ->
-                siftTimer1.start());
-        siftCanvas.setOnMouseExited(event ->
-                siftTimer.start());
-        polyphenCanvas.setOnMouseEntered(event ->
-                polyphenTimer1.start());
-        polyphenCanvas.setOnMouseExited(event ->
-                polyphenTimer.start());
-        mtCanvas.setOnMouseEntered(event ->
-                mtTimer1.start());
-        mtCanvas.setOnMouseExited(event ->
-                mtTimer.start());
+        siftCanvas.setOnMouseEntered(event -> siftTimer1.start());
+        siftCanvas.setOnMouseExited(event -> siftTimer.start());
+        polyphenCanvas.setOnMouseEntered(event -> polyphenTimer1.start());
+        polyphenCanvas.setOnMouseExited(event -> polyphenTimer.start());
+        mtCanvas.setOnMouseEntered(event -> mtTimer1.start());
+        mtCanvas.setOnMouseExited(event -> mtTimer.start());
 //		SNPsINDELsOverviewRadarGraph significantRadarGraph = new SNPsINDELsOverviewRadarGraph(significantRadarGraphArea,
 //				significantGraphPolyline, significantPercent0, significantPercent1, significantPercent2,
 //				significantPercent3, significantPercent4, significantPercent5);
