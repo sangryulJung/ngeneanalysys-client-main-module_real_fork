@@ -97,6 +97,18 @@ public class SampleUploadScreenThirdController extends BaseStageController{
             TextField sampleName = new TextField();
             sampleName.setStyle("-fx-text-inner-color: black;");
             sampleNameTextFieldList.add(sampleName);
+            sampleName.textProperty().addListener((observable, oldValue, newValue) -> {
+                Set<String> fileName = fileMap.keySet();
+
+                fileName.stream().forEach(file -> {
+                    Map<String, Object> fileInfo = fileMap.get(file);
+
+                    if (fileInfo.get("sampleName") != null && fileInfo.get("sampleName").toString().equals(oldValue)) {
+                        fileInfo.put("sampleName", newValue);
+                    }
+                });
+            });
+
 
             Button select = new Button();
             fileSelectButtonList.add(select);
@@ -229,7 +241,7 @@ public class SampleUploadScreenThirdController extends BaseStageController{
 
                     TextField sampleName = (TextField) standardDataGridPane.getChildren().get(i);
                     if(sampleName.getText().isEmpty()) continue;
-                    sample.setName(sampleName.getText() + "RUN_" + rowNum);
+                    sample.setName(sampleName.getText());
 
                     Button fileName = (Button) standardDataGridPane.getChildren().get(i + 1);
 
@@ -309,7 +321,7 @@ public class SampleUploadScreenThirdController extends BaseStageController{
         fileName.stream().forEach(file -> {
             Map<String, Object> fileInfo = fileMap.get(file);
 
-            if(fileInfo.get("sampleName") != null && fileInfo.get("sampleName").toString().equals(name)) {
+            if(fileInfo.get("sampleName") != null && fileInfo.get("sampleName").toString().equals(sample.getName())) {
                 fileInfo.put("sampleId", sampleData.getId());
                 fileInfo.put("sampleName", null);
                 fileInfo.remove("sampleName");
