@@ -19,11 +19,9 @@
             <TextField fx:id="inputRefName" layoutX="80.0" layoutY="15.0" prefHeight="27.0" prefWidth="200.0" />
             <Label layoutX="295.0" layoutY="19.0" text="Request date" />
             <Label layoutX="15.0" layoutY="58.0" text="Platform" />
-            <Label layoutX="295.0" layoutY="56.0" text="Specimen" />
             <Button fx:id="searchButton" layoutX="545.0" layoutY="16.0" mnemonicParsing="false" onAction="#search" prefHeight="65.0" prefWidth="110.0" styleClass="btn_search" text="Search" />
             <DatePicker fx:id="datePickerRequestDate" layoutX="380.0" layoutY="15.0" prefWidth="150.0" />
             <ComboBox fx:id="choosePlatform" layoutX="80.0" layoutY="53.0" prefWidth="150.0" />
-            <ComboBox fx:id="chooseSampleSource" layoutX="380.0" layoutY="53.0" prefWidth="150.0" />
          </children>
       </Pane>
       <TableView fx:id="list" fixedCellSize="30.0" layoutX="15.0" layoutY="125.0" prefHeight="332.0" prefWidth="668.0">
@@ -31,7 +29,6 @@
             <TableColumn fx:id="columnRefName" editable="false" minWidth="-Infinity" prefWidth="170.0" sortable="false" text="Run" />
             <TableColumn fx:id="columnSamples" prefWidth="64.0" text="Samples" />
             <TableColumn fx:id="columnPlatform" editable="false" maxWidth="200.0" minWidth="-Infinity" prefWidth="160.0" sortable="false" text="Platform" />
-            <TableColumn fx:id="columnSampleSource" editable="false" maxWidth="80.0" minWidth="80.0" sortable="false" text="Specimen" />
             <TableColumn fx:id="columnRequestDate" editable="false" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" sortable="false" text="Request Date" />
             <TableColumn fx:id="columnSelect" editable="false" maxWidth="86.0" minWidth="86.0" prefWidth="86.0" sortable="false" text="Select" />
          </columns>

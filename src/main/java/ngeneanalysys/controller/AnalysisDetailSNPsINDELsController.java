@@ -401,7 +401,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             AnalysisResultVariantList analysisResultVariantList = response.getObjectBeforeConvertResponseToJSON(AnalysisResultVariantList.class);
 
             List<AnalysisResultVariant> list = analysisResultVariantList.getResult();
-            if(list == null || list.isEmpty()) list = dummyVariantList();
+            //if(list == null || list.isEmpty()) list = dummyVariantList();
             ObservableList<AnalysisResultVariant> displayList = null;
 
             // 하단 탭 활성화 토글

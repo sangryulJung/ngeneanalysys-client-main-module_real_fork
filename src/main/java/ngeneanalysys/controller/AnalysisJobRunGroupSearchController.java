@@ -58,15 +58,9 @@ public class AnalysisJobRunGroupSearchController extends BaseStageController {
     @FXML
     private ComboBox<ComboBoxItem> choosePlatform;
 
-    /** 검색박스 > 샘플소스 */
-    @FXML
-    private ComboBox<ComboBoxItem> chooseSampleSource;
-
     /** 검색박스 > 검색 버튼 */
     @FXML
     private Button searchButton;
-
-
 
 /** 목록 */
 
@@ -79,21 +73,10 @@ public class AnalysisJobRunGroupSearchController extends BaseStageController {
     @FXML
     private TableColumn<Run, String> columnRefName;
 
-    @FXML
-    private TableColumn<Run, String> columnSamples;
-
-
 /** 목록 > 시퀀서 정보 컬럼 */
 
     @FXML
     private TableColumn<Run, String> columnPlatform;
-
-
-/** 목록 > 샘플 소스 컬럼 */
-
-    @FXML
-    private TableColumn<Run, String> columnSampleSource;
-
 
 /** 목록 > 요청일 컬럼 */
 
@@ -148,31 +131,23 @@ public class AnalysisJobRunGroupSearchController extends BaseStageController {
         }
         choosePlatform.getSelectionModel().selectFirst();
 
-        logger.info("chooseSampleSource init..");
-        chooseSampleSource.setConverter(new ComboBoxConverter());
-        chooseSampleSource.getItems().add(new ComboBoxItem());
-        for (SampleSourceCode code : SampleSourceCode.values()) {
-            chooseSampleSource.getItems().add(new ComboBoxItem(code.name(), code.getDescription()));
-        }
-        chooseSampleSource.getSelectionModel().selectFirst();
-
         // 목록 컬럼 설정
         columnRefName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
         //columnSamples.setCellValueFactory(cellData -> new SimpleStringProperty((cellData.getValue().getSamples() != null) ? String.valueOf(cellData.getValue().getSamples().length) : "0"));
         columnPlatform.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequencingPlatform()));
-        //columnSampleSource.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get));
         columnRequestDate.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCreatedAt().toString()));
         columnSelect.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue() != null));
-        /*columnSelect.setCellFactory(param -> {
-                TableCell<Run,String> cell = new TableCell<Run, String>() {
+        columnSelect.setCellFactory(param -> {
+                TableCell<Run,Boolean> cell = new TableCell<Run, Boolean>() {
                     @Override
-                    public void updateItem(String jsonString, boolean empty) {
-                        if(!StringUtils.isEmpty(jsonString)) {
+                    public void updateItem(Boolean value, boolean empty) {
+                        if(!empty) {
                             Button button = new Button("CHOOSE");
                             button.setPrefWidth(65);
                             button.getStyleClass().add("btn_choose");
                             button.setOnAction(e -> {
-                                returnJobRunGroup(jsonString);
+                                Run run = param.getTableView().getItems().get(this.getIndex());
+                                returnJobRunGroup(run);
                             });
                             setGraphic(button);
                         } else {
@@ -181,7 +156,7 @@ public class AnalysisJobRunGroupSearchController extends BaseStageController {
                     }
                 };
                 return cell;
-        });*/
+        });
 
         // 페이지 이동 이벤트 바인딩
         paginationList.setPageFactory(pageIndex -> {
@@ -243,10 +218,7 @@ public class AnalysisJobRunGroupSearchController extends BaseStageController {
         if(choosePlatform.getSelectionModel().getSelectedIndex() > -1 && choosePlatform.getValue() != null) {
             param.put("sequencer", choosePlatform.getValue().getValue());
         }
-        // Sample Source
-        if(chooseSampleSource.getSelectionModel().getSelectedIndex() > -1 && chooseSampleSource.getValue() != null) {
-            param.put("source", chooseSampleSource.getValue().getValue());
-        }
+
         // request date
         if(datePickerRequestDate.getValue() != null && !StringUtils.isEmpty(datePickerRequestDate.getValue().toString())) {
             param.put("request_date", datePickerRequestDate.getValue().toString());
@@ -292,10 +264,10 @@ public class AnalysisJobRunGroupSearchController extends BaseStageController {
 
     /**
      * 선택 분석 요청 그룹 부모창 컨트롤러로 리턴
-     * @param jsonString
+     * @param run
      */
-    public void returnJobRunGroup(String jsonString) {
-        this.pastResultsController.setSearchJobRunGroupInfo(jsonString);
+    public void returnJobRunGroup(Run run) {
+        this.pastResultsController.setSearchJobRunGroupInfo(run.getId(), run.getName());
         // dialog close
         ((Stage) searchButton.getScene().getWindow()).close();
     }

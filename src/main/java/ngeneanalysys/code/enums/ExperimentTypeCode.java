@@ -7,8 +7,8 @@ package ngeneanalysys.code.enums;
  * @since 2016. 5. 24. 오전 10:32:36
  */
 public enum ExperimentTypeCode {
-	GERMLINE("germline"),
-	SOMATIC("somatic");
+	GERMLINE("GERMLINE"),
+	SOMATIC("SOMATIC");
 	
 	private String description;
 	

@@ -13,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import ngeneanalysys.code.constants.FXMLConstants;
+import ngeneanalysys.code.enums.ExperimentTypeCode;
 import ngeneanalysys.model.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -20,7 +21,6 @@ import org.controlsfx.control.PopOver;
 import org.slf4j.Logger;
 
 import ngeneanalysys.code.AnalysisJobStatusCode;
-import ngeneanalysys.code.enums.PanelKitCode;
 import ngeneanalysys.code.enums.SampleSourceCode;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
@@ -50,7 +50,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
-import javafx.util.Callback;
 import javafx.util.Duration;
 
 /**
@@ -74,7 +73,7 @@ public class PastResultsController extends SubPaneController {
 	private ComboBox<ComboBoxItem> chooseSampleSource;
 	/** status choose box */
 	@FXML
-	private ComboBox<ComboBoxItem> chooseStatus;
+	private ComboBox<ComboBoxItem> chooseAnalysisType;
 	/** Experimenter search label */
 	@FXML
 	private Label experimenterSearchLabel;
@@ -172,12 +171,11 @@ public class PastResultsController extends SubPaneController {
 		}
 		chooseSampleSource.getSelectionModel().selectFirst();
 		
-		chooseStatus.setConverter(new ComboBoxConverter());
-		chooseStatus.getItems().add(new ComboBoxItem());
-		chooseStatus.getItems().add(new ComboBoxItem(AnalysisJobStatusCode.SAMPLE_JOB_STATUS_COMPLETE, "Reported"));
-		chooseStatus.getItems().add(new ComboBoxItem(AnalysisJobStatusCode.SAMPLE_JOB_STATUS_RUNNING, "Reviewing"));
-		chooseStatus.getItems().add(new ComboBoxItem(AnalysisJobStatusCode.SAMPLE_JOB_STATUS_NONE, "Not Reported"));
-		chooseStatus.getSelectionModel().selectFirst();
+		chooseAnalysisType.setConverter(new ComboBoxConverter());
+		chooseAnalysisType.getItems().add(new ComboBoxItem());
+		chooseAnalysisType.getItems().add(new ComboBoxItem(ExperimentTypeCode.GERMLINE.getDescription(), ExperimentTypeCode.GERMLINE.getDescription()));
+		chooseAnalysisType.getItems().add(new ComboBoxItem(ExperimentTypeCode.SOMATIC.getDescription(), ExperimentTypeCode.SOMATIC.getDescription()));
+		chooseAnalysisType.getSelectionModel().selectFirst();
 		
 		logger.info("chooseExperimenter init..");
 		chooseExperimenter.setConverter(new ComboBoxConverter());
@@ -368,7 +366,8 @@ public class PastResultsController extends SubPaneController {
 	private Map<String, Object> getSearchParam() {
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("format", "json");		
-		param.put("step", "PIPELINE");
+		//param.put("step", "PIPELINE");
+		//param.put("status", AnalysisJobStatusCode.JOB_RUN_GROUP_COMPLETE);
 		
 		/** 검색 항목 설정 Start */
 		// Assay Target
@@ -379,9 +378,9 @@ public class PastResultsController extends SubPaneController {
 		if(chooseSampleSource.getSelectionModel().getSelectedIndex() > 0 && chooseSampleSource.getValue() != null) {
 			param.put("sampleSource", chooseSampleSource.getValue().getValue());
 		}
-		// Status chooseStatus
-		if(chooseStatus.getSelectionModel().getSelectedIndex() > 0 && chooseStatus.getValue() != null) {
-			param.put("status", chooseStatus.getValue().getValue());
+		// Status chooseAnalysisType
+		if(chooseAnalysisType.getSelectionModel().getSelectedIndex() > 0 && chooseAnalysisType.getValue() != null) {
+			param.put("analysisType", chooseAnalysisType.getValue().getValue());
 		}
 		// Experiment
 		if(chooseExperimenter.getSelectionModel().getSelectedIndex() > -1 && chooseExperimenter.getValue() != null) {
@@ -409,7 +408,7 @@ public class PastResultsController extends SubPaneController {
 		}
 		// job run group
 		if(this.hiddenJobRunGroupId > 0 && !StringUtils.isEmpty(inputJobRunGroup.getText())) {
-			param.put("job_run_group_id", this.hiddenJobRunGroupId);
+			param.put("runId", this.hiddenJobRunGroupId);
 		}
 		/** End 검색 항목 설정 */
 		return param;
@@ -506,12 +505,12 @@ public class PastResultsController extends SubPaneController {
 	
 	/**
 	 * 검색 대상 분석 요청 그룹 정보 설정
-	 * @param jsonString
+	 * @param runId
+	 * @param runName
 	 */
-	public void setSearchJobRunGroupInfo(String jsonString) {
-//		AnalysisJob analysisJob = JsonUtil.fromJson(jsonString, AnalysisJob.class);
-//		this.hiddenJobRunGroupId = analysisJob.getId();
-//		this.inputJobRunGroup.setText(analysisJob.getRefName());
+	public void setSearchJobRunGroupInfo(int runId,String runName) {
+		this.hiddenJobRunGroupId = runId;
+		this.inputJobRunGroup.setText(runName);
 	}
 	
 	/**
@@ -529,7 +528,7 @@ public class PastResultsController extends SubPaneController {
 	public void resetSearchForm() {
 		choosePanel.setValue(new ComboBoxItem());
 		chooseSampleSource.setValue(new ComboBoxItem());
-		chooseStatus.setValue(new ComboBoxItem());
+		chooseAnalysisType.setValue(new ComboBoxItem());
 		chooseExperimenter.setValue(new ComboBoxItem());
 		submittedStartDatePicker.setValue(null);
 		submittedEndDatePicker.setValue(null);

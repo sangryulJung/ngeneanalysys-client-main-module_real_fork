@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
@@ -25,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="experimentPastResultsWrapper" prefHeight="625.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.PastResultsController">
+<GridPane fx:id="experimentPastResultsWrapper" prefHeight="625.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.PastResultsController">
    <columnConstraints>
       <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="20.0" />
       <ColumnConstraints hgrow="SOMETIMES" prefWidth="1240.0" />
@@ -170,7 +163,7 @@
                            <HBox.margin>
                               <Insets right="15.0" />
                            </HBox.margin></DatePicker>
-                        <Label alignment="CENTER_RIGHT" prefWidth="60.0" text="Status">
+                        <Label alignment="CENTER_RIGHT" prefWidth="60.0" text="Type">
                            <styleClass>
                               <String fx:value="txt_black" />
                               <String fx:value="font_size_12" />
@@ -179,7 +172,7 @@
                               <Insets right="10.0" />
                            </HBox.margin>
                         </Label>
-                        <ComboBox fx:id="chooseStatus" prefWidth="120.0">
+                        <ComboBox fx:id="chooseAnalysisType" prefWidth="120.0">
                            <HBox.margin>
                               <Insets right="15.0" />
                            </HBox.margin>
