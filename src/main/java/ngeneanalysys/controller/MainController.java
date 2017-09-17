@@ -675,12 +675,13 @@ public class MainController extends BaseStageController {
             // 분석자 HOME 자동 새로고침 기능 중지
             if(homeController != null && homeController.autoRefreshTimeline != null) {
                 homeController.autoRefreshTimeline.stop();
+                homeController.sampleListAutoRefreshTimeline.stop();
             }
 
             // 분석자 Past Results 자동 새로고침 기능 중지
-            /*if(pastResultsController != null) {
-                pastResultsController.stopAutoRefresh();
-            }*/
+            if(pastResultsController != null) {
+                pastResultsController.autoRefreshTimeline.stop();
+            }
 
             // 로그인 화면으로 전환
             this.mainApp.showLogin();
