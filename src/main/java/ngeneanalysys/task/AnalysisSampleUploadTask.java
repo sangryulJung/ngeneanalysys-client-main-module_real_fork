@@ -116,6 +116,15 @@ public class AnalysisSampleUploadTask extends Task<Void>{
                 }
             });
 
+            // 업로드 작업 중단
+            if(this.analysisSampleUploadProgressTaskController.isCancel) {
+                Thread.sleep(100);
+                if(currentUploadGroupId > 0) {
+                    // 현재 업로드중인 분석 요청 그룹 데이터 삭제
+                    analysisRequestService.removeRequestedJob(currentUploadGroupServerId);
+                }
+            }
+
         }
 
         return null;
@@ -155,6 +164,22 @@ public class AnalysisSampleUploadTask extends Task<Void>{
             } else {
                 logger.info("upload task work stop!!");
             }
+        }
+    }
+
+    /**
+     * 현재 업로드 진행중인 분석 요청 그룹 정보 전달 [MainController 화면]
+     */
+    private void updateCurrentUploadGroupInfo() {
+        logger.info("updateCurrentUploadGroupInfo..");
+        try {
+            Thread.sleep(100);
+            Platform.runLater(() -> {
+                this.analysisSampleUploadProgressTaskController.setCurrentUploadGroupId(currentUploadGroupId);
+                this.analysisSampleUploadProgressTaskController.setCurrentUploadGroupRefName(currentUploadGroupRefName);
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

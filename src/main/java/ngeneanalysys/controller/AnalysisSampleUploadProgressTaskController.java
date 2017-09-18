@@ -1,13 +1,19 @@
 package ngeneanalysys.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.Pane;
+import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.service.AnalysisRequestService;
 import ngeneanalysys.task.AnalysisSampleUploadTask;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
+import ngeneanalysys.util.StringUtils;
 import org.slf4j.Logger;
 
 import javafx.concurrent.Task;
@@ -72,6 +78,9 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 	private Integer currentUploadGroupId;
 	/** 현재 업로드중인 분석 요청 그룹명 */
 	private String currentUploadGroupRefName;
+
+	/** 분석 요청 작업 상세 진행 창 컨트롤러 클래스 객체 */
+	private AnalysisSampleUploadProgressDetailController detailDialogController;
 	
 	/** 작업 일시정지 여부 */
 	public boolean isPause = false;
@@ -115,7 +124,6 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 
 		boolean isWorkStart = false;
 		this.progressIndicator.setProgress(new ProgressBar().getProgress());
-
 
 		this.task = new AnalysisSampleUploadTask(this);
 
@@ -185,14 +193,36 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 	 */
 	@FXML
 	public void openDetailDialog() {
+		try {
+			Thread.sleep(100);
+			logger.info("openDetailDialog..");
 
+			//if(currentUploadGroupId > 0 && !StringUtils.isEmpty(this.currentUploadGroupRefName)) {
+				// parameter setting
+				Map<String,Object> paramMap = new HashMap<>();
+				paramMap.put("currentUploadGroupId", this.currentUploadGroupId);
+				paramMap.put("currentUploadGroupRefName", this.currentUploadGroupRefName);
+
+				// Load the fxml file and create a new stage for the popup dialog
+				FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.ANALYSIS_SAMPLE_UPLOAD_PROGRESS_DETAIL);
+				Pane page = loader.load();
+				this.detailDialogController = loader.getController();
+				this.detailDialogController.setTaskController(this);
+				this.detailDialogController.setParam(paramMap);
+				this.detailDialogController.show(page);
+			//}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
 	 * 업로드 진행 상세 정보 Dialog 창 종료 시 처리
 	 */
 	public void setDetailDialogCloseInfo() {
-
+		this.detailDialogController = null;
 	}
 	
 	/**
@@ -229,17 +259,21 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 	/**
 	 * 진행 상세 정보창 진행률 정보 갱신
 	 * @param sampleFileId
-	 * @param progressPecent
+	 * @param progressPercent
 	 */
-	public void updateProgressInfoTargetDetailDialog(int sampleFileId, double progressPecent) {
-
+	public void updateProgressInfoTargetDetailDialog(int sampleFileId, double progressPercent) {
+		if(this.detailDialogController != null) {
+			this.detailDialogController.update(sampleFileId, progressPercent);
+		}
 	}
 	
 	/**
 	 * 업로드 작업 관련 화면 출력 정리
 	 */
 	public void clearWhenUploadTaskSucceeded() {
-
+		if(this.detailDialogController != null) {
+			this.detailDialogController.windowDialogClose();
+		}
 		this.mainController.clearProgressTaskArea();
 
 	}

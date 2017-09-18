@@ -145,6 +145,13 @@ public class SampleUploadScreenThirdController extends BaseStageController{
                             uploadFileList.add(fastqFile);
                         }
                     }
+
+                    /*Button button = (Button) e.getSource();
+                    if(fileSelectButtonList.contains(button)) {
+                        int rowIndex = fileSelectButtonList.indexOf(button);
+                        TextField sampleNameTextField = sampleNameTextFieldList.get(rowIndex);
+                        sampleNameTextField.setText(fastqFilePairName);
+                    }*/
                 }
             });
 

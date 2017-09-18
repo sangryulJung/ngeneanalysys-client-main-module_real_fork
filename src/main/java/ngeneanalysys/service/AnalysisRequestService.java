@@ -101,5 +101,7 @@ public class AnalysisRequestService {
         return result;
     }
 
-
+    public HttpClientResponse removeRequestedJob(int id) throws WebAPIException {
+        return apiService.delete("/runs/" + id);
+    }
 }

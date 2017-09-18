@@ -37,7 +37,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         diseaseLabel.setText(diseaseName);
 
         List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
-        String panelName = panels.stream().filter(panel -> panel.getId() == sample.getPanelId()).findFirst().get().getName();
+        String panelName = panels.stream().filter(panel -> panel.getId().equals(sample.getPanelId())).findFirst().get().getName();
         panelLabel.setText(panelName);
 
     }
