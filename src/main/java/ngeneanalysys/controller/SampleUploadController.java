@@ -19,6 +19,7 @@ import ngeneanalysys.util.LoggerUtil;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,7 +38,7 @@ public class SampleUploadController extends BaseStageController{
     /** 작업 Dialog Window Stage Object */
     private Stage currentStage;
 
-    private List<Sample>  samples;
+    private List<Sample>  samples = new ArrayList<>(23);
 
     @FXML
     private TextField textFieldRunName;
@@ -135,7 +136,6 @@ public class SampleUploadController extends BaseStageController{
                 sampleUploadScreenFirstController.setMainController(mainController);
                 sampleUploadScreenFirstController.setSampleUploadController(this);
                 sampleUploadScreenFirstController.show(box);
-
                 tableRegion.getChildren().add(box);
                 break;
             case 2 :
@@ -145,6 +145,7 @@ public class SampleUploadController extends BaseStageController{
                 sampleUploadScreenSecondController.setMainController(mainController);
                 sampleUploadScreenSecondController.setSampleUploadController(this);
                 sampleUploadScreenSecondController.show(box);
+
                 tableRegion.getChildren().add(box);
                 break;
             case 3 :

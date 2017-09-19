@@ -21,9 +21,7 @@ import javafx.scene.shape.Polyline;
 import ngeneanalysys.animaition.ClinicalSignificantTimer;
 import ngeneanalysys.animaition.VariantStatisticsTimer;
 import ngeneanalysys.controller.extend.SubPaneController;
-import ngeneanalysys.model.AnalysisResultSummary;
-import ngeneanalysys.model.Sample;
-import ngeneanalysys.model.SampleView;
+import ngeneanalysys.model.*;
 import ngeneanalysys.model.render.SNPsINDELsOverviewRadarGraph;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
@@ -31,6 +29,7 @@ import ngeneanalysys.util.StringUtils;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Map;
 
 /**
@@ -205,6 +204,8 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
 
     private Sample sample;
 
+    private AnalysisResultVariant variant;
+
     /**
      * @return the analysisDetailSNPsINDELsController
      */
@@ -222,6 +223,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
     @Override
     public void show(Parent root) throws IOException {
         sample = (Sample) paramMap.get("sample");
+        variant = (AnalysisResultVariant) paramMap.get("variant");
 
         // 그래프 애니메이션 아이콘 출력여부 체크
         this.graphAnimationIconDisplay = "true".equals(config.getProperty("graph.animation.icon.display"));
@@ -233,7 +235,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
         showFraction();
 
         // Variant Nomenclature 값 설정 및 화면 출력
-        showVariantIdentification();
+        //showVariantIdentification();
 
         // 템플릿 차트 삭제
         populationFrequencyGraphGridPane.getChildren().removeAll(populationFrequencyGraphGridPane.getChildren());
@@ -241,7 +243,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
         showPopulationFrequency();
 
         // 변이 발견 빈도수(Variant Frequency) 게이지 그래프 화면 출력
-        showVariantStatistics();
+        //showVariantStatistics();
 
         // 링크 목록 화면 출력
         //showLink();
@@ -252,7 +254,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
             significantArea.setVisible(false);
         } else {
             // SIGNIFICANT 레이더 차트 화면 출력
-            showClinicalSignificantGraph();
+            //showClinicalSignificantGraph();
         }
 
         analysisDetailSNPsINDELsController.subTabOverview.setContent(root);
@@ -272,10 +274,11 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
         double depthMax = summary.getDepthMax();
         double depthMean = Double.parseDouble(summary.getDepthMean().toString() );
         double depth = 0;
-        if(alleleMap != null && !alleleMap.isEmpty() && alleleMap.size() > 0) {
+        /*if(alleleMap != null && !alleleMap.isEmpty() && alleleMap.size() > 0) {
             depth = (alleleMap.containsKey("total_read_depth")) ? (int) alleleMap.get("total_read_depth") : 0;
-        }
 
+        }*/
+        depth = variant.getReadInfo().getReadDepth();
         depthLegendImageView.setVisible(this.graphAnimationIconDisplay);
         depthMinLabel.setText(String.valueOf(Math.round(depthMin)));
         depthMaxLabel.setText(String.valueOf(Math.round(depthMax)));
@@ -325,16 +328,20 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
      */
     @SuppressWarnings("unchecked")
     public void showFraction() {
-        Map<String,Object> alleleMap = (Map<String,Object>) paramMap.get("allele");
+        /*Map<String,Object> alleleMap = (Map<String,Object>) paramMap.get("allele");
         Map<String,Object> variantInformationMap = (Map<String,Object>) paramMap.get("variantInformation");
 
         String ref = (String) variantInformationMap.get("ref");
-        String alt = (String) variantInformationMap.get("alt");
+        String alt = (String) variantInformationMap.get("alt");*/
+        String ref = variant.getSequenceInfo().getRefSequence();
+        String alt = variant.getSequenceInfo().getAltSequence();
         double alleleFraction = 0;
 
-        if(alleleMap != null && !alleleMap.isEmpty() && alleleMap.size() > 0) {
+        /*if(alleleMap != null && !alleleMap.isEmpty() && alleleMap.size() > 0) {
             alleleFraction = (alleleMap.containsKey("allele_fraction")) ? (double) alleleMap.get("allele_fraction") : 0;
-        }
+        }*/
+        BigDecimal allele = variant.getReadInfo().getAlleleFraction();
+        alleleFraction = (allele != null) ? allele.doubleValue() : 0;
 
         fractionLegendImageView.setVisible(this.graphAnimationIconDisplay);
         fractionRef.setText(ref);
@@ -510,16 +517,20 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
      * 주요 기관 발현 빈도수(Population Frequencies) 그래프 화면 출력
      */
     public void showPopulationFrequency() {
-        double populationFrequencyESP6500 = getPopulationFrequencyByParam("ESP6500", "ALL");
+        //double populationFrequencyESP6500 = getPopulationFrequencyByParam("ESP6500", "ALL");
+        double populationFrequencyESP6500 = (variant.getPopulationFrequency().getEsp6500() != null) ? variant.getPopulationFrequency().getEsp6500().doubleValue() : -1d;
         addPopulationFrequencyGraph(0, 0, "ESP6500 ", populationFrequencyESP6500);
 
-        double populationFrequency1000Genomes = getPopulationFrequencyByParam("1000_genomes", "ALL");
+        //double populationFrequency1000Genomes = getPopulationFrequencyByParam("1000_genomes", "ALL");
+        double populationFrequency1000Genomes = (variant.getPopulationFrequency().getG1000() != null) ?variant.getPopulationFrequency().getG1000().doubleValue() : -1d;
         addPopulationFrequencyGraph(0, 1, "1KG ", populationFrequency1000Genomes);
 
-        double populationFrequencyExAC = getPopulationFrequencyByParam("ExAC", "ALL");
+        //double populationFrequencyExAC = getPopulationFrequencyByParam("ExAC", "ALL");
+        double populationFrequencyExAC = (variant.getPopulationFrequency().getExac() != null) ? variant.getPopulationFrequency().getExac().doubleValue() : -1d;
         addPopulationFrequencyGraph(1, 0, "ExAC ", populationFrequencyExAC);
 
-        double populationFrequencyKorean = getPopulationFrequencyByParam("Korean_exome", "ALL");
+        //double populationFrequencyKorean = getPopulationFrequencyByParam("Korean_exome", "ALL");
+        double populationFrequencyKorean = (variant.getPopulationFrequency().getKorean() != null) ? variant.getPopulationFrequency().getKorean().doubleValue() : -1d;
         addPopulationFrequencyGraph(1, 1, "Korean ", populationFrequencyKorean);
     }
 

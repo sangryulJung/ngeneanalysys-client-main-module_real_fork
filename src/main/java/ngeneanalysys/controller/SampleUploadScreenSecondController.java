@@ -1,33 +1,33 @@
 package ngeneanalysys.controller;
 
+import com.opencsv.CSVReader;
+import com.sun.javafx.scene.control.skin.TableViewSkinBase;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ngeneanalysys.controller.extend.BaseStageController;
-import ngeneanalysys.exceptions.ExcelParseException;
-import ngeneanalysys.model.QcData;
 import ngeneanalysys.model.Sample;
 import ngeneanalysys.model.SampleSheet;
-import ngeneanalysys.model.render.ComboBoxConverter;
-import ngeneanalysys.model.render.ComboBoxItem;
-import ngeneanalysys.util.*;
+import ngeneanalysys.util.LoggerUtil;
+import ngeneanalysys.util.StringUtils;
 import org.slf4j.Logger;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Jang
  * @since 2017-08-10
  */
-public class SampleUploadScreenSecondController extends BaseStageController {
+public class SampleUploadScreenSecondController extends BaseStageController{
     private static Logger logger = LoggerUtil.getLogger();
 
     /** 메인 화면 컨트롤러 객체 */
@@ -35,16 +35,51 @@ public class SampleUploadScreenSecondController extends BaseStageController {
 
     private SampleUploadController sampleUploadController;
 
-    private List<Sample> sampleArrayList;
+    /** 분석자 진행현황 화면 컨트롤러 객체 */
+    private HomeController homeController;
 
     @FXML
-    private GridPane qcGridPane;
+    private TextField textFieldRunName;
+
+    @FXML
+    private TableView<SampleSheet> tableViewSampleSheetForm;
+
+    @FXML
+    private Button buttonNext;
+
+    @FXML
+    private Button buttonCancel;
+
+    private List<Sample> sampleArrayList = null;
+
+    @FXML
+    private GridPane sampleSheetGridPane;
+
+
+    /**
+     * @param homeController
+     */
+    public void setHomeController(HomeController homeController) {
+        this.homeController = homeController;
+    }
 
     /**
      * @param sampleUploadController
      */
     public void setSampleUploadController(SampleUploadController sampleUploadController) {
         this.sampleUploadController = sampleUploadController;
+        /*if(sampleUploadController.getSamples() != null) {
+            sampleArrayList = sampleUploadController.getSamples();
+            tableEdit();
+        }*/
+    }
+
+    /**
+     * @param sampleArrayList
+     */
+    public void setSampleArrayList(List<Sample> sampleArrayList) {
+        this.sampleArrayList = sampleArrayList;
+        tableEdit();
     }
 
     /**
@@ -56,217 +91,198 @@ public class SampleUploadScreenSecondController extends BaseStageController {
         setMainApp(this.mainController.getMainApp());
     }
 
+
     @Override
     public void show(Parent root) throws IOException {
-        qcGridPane.getChildren().clear();
-        qcGridPane.setPrefHeight(0);
+        sampleSheetGridPane.getChildren().clear();
+        sampleSheetGridPane.setPrefHeight(0);
 
         for(int row  = 0 ; row < 23 ; row++) {
-            qcGridPane.setPrefHeight(qcGridPane.getPrefHeight() + 26);
+            sampleSheetGridPane.setPrefHeight(sampleSheetGridPane.getPrefHeight() + 26);
 
             TextField sampleName = new TextField();
             sampleName.setStyle("-fx-text-inner-color: black;");
+            sampleName.getStyleClass().add("font_size_9");
 
-            ComboBox<ComboBoxItem>  dnaQc = new ComboBox<>();
-            qcSetting(dnaQc);
-            //if(sample.getQcData() != null && "Fail".equals(sample.getQcData().getDnaQC()))
+            TextField samplePlate = new TextField();
+            samplePlate.setStyle("-fx-text-inner-color: black;");
 
-            ComboBox<ComboBoxItem>  libraryQc = new ComboBox<>();
-            qcSetting(libraryQc);
-            //if(sample.getQcData() != null && "Fail".equals(sample.getQcData().getLibraryQC()))
+            TextField sampleWell = new TextField();
+            sampleWell.setStyle("-fx-text-inner-color: black;");
 
-            ComboBox<ComboBoxItem>  seqClusterDensity = new ComboBox<>();
-            qcSetting(seqClusterDensity);
+            TextField i7IndexId = new TextField();
+            i7IndexId.setStyle("-fx-text-inner-color: black;");
 
-            ComboBox<ComboBoxItem>  seqQ30 = new ComboBox<>();
-            qcSetting(seqQ30);
-            //if(sample.getQcData() != null && "Fail".equals(sample.getQcData().getSeqQ30()))
+            TextField index = new TextField();
+            index.setStyle("-fx-text-inner-color: black;");
 
-            ComboBox<ComboBoxItem>  seqClusterPF = new ComboBox<>();
-            qcSetting(seqClusterPF);
-            //if(sample.getQcData() != null && "Fail".equals(sample.getQcData().getSeqClusterPF()))
+            TextField sampleProject = new TextField();
+            sampleProject.setStyle("-fx-text-inner-color: black;");
 
-            ComboBox<ComboBoxItem>  seqIndexingPFCV = new ComboBox<>();
-            qcSetting(seqIndexingPFCV);
-            //if(sample.getQcData() != null && "Fail".equals(sample.getQcData().getSeqIndexingPFCV()))
+            TextField description = new TextField();
+            description.setStyle("-fx-text-inner-color: black;");
 
-            qcGridPane.addRow(row, sampleName, dnaQc, libraryQc, seqClusterDensity, seqQ30, seqClusterPF, seqIndexingPFCV);
+            sampleSheetGridPane.addRow(row, sampleName, i7IndexId, index, samplePlate, sampleWell, sampleProject, description);
+
         }
-
         if(sampleUploadController.getSamples() != null) {
             sampleArrayList = sampleUploadController.getSamples();
             tableEdit();
         }
     }
 
-    public void tableEdit() {
-        int rowIndex = 0;
-        int totalIndex = 0;
-        for(Sample sample : sampleArrayList) {
-            //입력가능한 샘플의 총 양은 23개
-            if (22 < rowIndex) break;
-
-            QcData qcData = sample.getQcData();
-
-            if(qcData == null) {
-                sample.setQcData(new QcData());
-                qcData = sample.getQcData();
-            }
-
-            TextField sampleName = (TextField) qcGridPane.getChildren().get(totalIndex);
-            sampleName.setText(!StringUtils.isEmpty(sample.getSampleSheet().getSampleName())
-                    ?  sample.getSampleSheet().getSampleName() : sample.getSampleSheet().getSampleId());
-
-            ComboBox<ComboBoxItem> dnaQc = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(totalIndex + 1);
-            dnaQc.getSelectionModel().select((qcData.getDnaQC() != null && "F".equals(qcData.getDnaQC())) ?
-            1 : 0);
-
-            ComboBox<ComboBoxItem> libraryQc = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(totalIndex + 2);
-            libraryQc.getSelectionModel().select((qcData.getLibraryQC() != null && "F".equals(qcData.getLibraryQC())) ?
-                    1 : 0);
-
-            ComboBox<ComboBoxItem> seqClusterDensity = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(totalIndex + 3);
-            seqClusterDensity.getSelectionModel().select((qcData.getSeqClusterDensity() != null && "F".equals(qcData.getSeqClusterDensity())) ?
-                    1 : 0);
-
-            ComboBox<ComboBoxItem> seqQ30 = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(totalIndex + 4);
-            seqQ30.getSelectionModel().select((qcData.getSeqQ30() != null && "F".equals(qcData.getSeqQ30())) ?
-                    1 : 0);
-
-            ComboBox<ComboBoxItem> seqClusterPF = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(totalIndex + 5);
-            seqClusterPF.getSelectionModel().select((qcData.getSeqClusterPF() != null && "F".equals(qcData.getSeqClusterPF())) ?
-                    1 : 0);
-
-            ComboBox<ComboBoxItem> seqIndexingPFCV = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(totalIndex + 6);
-            seqIndexingPFCV.getSelectionModel().select((qcData.getSeqIndexingPFCV() != null && "F".equals(qcData.getSeqIndexingPFCV())) ?
-                    1 : 0);
-
-            totalIndex += 7;
-            rowIndex++;
+    /**
+     * [Next] 버튼 활성/비활성 토글
+     */
+    public void toggleNextBtnActivation() {
+        boolean isActivationNextBtn = true;
+        if (sampleArrayList == null || sampleArrayList.size() < 1) {
+            isActivationNextBtn = false;
         }
-    }
-
-    public void qcSetting(ComboBox<ComboBoxItem> qc) {
-        qc.setConverter(new ComboBoxConverter());
-        qc.getItems().add(new ComboBoxItem("P", "P"));
-        qc.getItems().add(new ComboBoxItem("F", "F"));
-        qc.getSelectionModel().selectFirst();
-    }
-
-    public void saveQCData() {
-        if(sampleArrayList == null) sampleArrayList = new ArrayList<>();
-
-        for (int i = 0; i < qcGridPane.getChildren().size(); i += 7) {
-            boolean isNewItem = false;
-            TextField sampleNameTextField = (TextField) qcGridPane.getChildren().get(i);
-            String sampleName = sampleNameTextField.getText();
-
-            if(sampleName.isEmpty()) continue;
-
-            int indexNumber = i / 7;
-
-            Sample sample = null;
-            if(indexNumber > sampleArrayList.size() - 1) {
-                isNewItem = true;
-                sample = new Sample();
-                SampleSheet sampleSheet = new SampleSheet();
-                sample.setSampleSheet(sampleSheet);
-                sampleArrayList.add(sample);
-            } else {
-                sample = sampleArrayList.get(indexNumber);
-            }
-
-            QcData qcData = sample.getQcData();
-
-            if(qcData == null) {
-                qcData = new QcData();
-                sample.setQcData(qcData);
-            }
-
-            if(isNewItem || !sample.getSampleSheet().getSampleName().isEmpty()) {
-                sample.getSampleSheet().setSampleName(sampleName);
-            } else {
-                sample.getSampleSheet().setSampleId(sampleName);
-            }
-
-            ComboBox<ComboBoxItem> dnaQC = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(i + 1);
-            qcData.setDnaQC(dnaQC.getSelectionModel().getSelectedItem().getValue());
-
-            ComboBox<ComboBoxItem> libraryQc = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(i + 2);
-            qcData.setLibraryQC(libraryQc.getSelectionModel().getSelectedItem().getValue());
-
-            ComboBox<ComboBoxItem> seqClusterDensity = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(i + 3);
-            qcData.setSeqClusterDensity(seqClusterDensity.getSelectionModel().getSelectedItem().getValue());
-
-            ComboBox<ComboBoxItem> seqQ30 = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(i + 4);
-            qcData.setSeqQ30(seqQ30.getSelectionModel().getSelectedItem().getValue());
-
-            ComboBox<ComboBoxItem> seqClusterPF = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(i + 5);
-            qcData.setSeqClusterPF(seqClusterPF.getSelectionModel().getSelectedItem().getValue());
-
-            ComboBox<ComboBoxItem> seqIndexingPFCV = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(i + 6);
-            qcData.setSeqIndexingPFCV(seqIndexingPFCV.getSelectionModel().getSelectedItem().getValue());
-
-        }
-    }
-
-    @FXML
-    public void closeDialog() { if(sampleUploadController != null) sampleUploadController.closeDialog(); }
-
-    @FXML
-    public void back() throws IOException {
-        if(sampleArrayList != null && sampleArrayList.size() > 0) {
-            saveQCData();
-        }
-        sampleUploadController.pageSetting(1);
-    }
-
-    @FXML
-    public void next() throws IOException {
-
-        if(sampleArrayList != null && sampleArrayList.size() > 0) {
-            saveQCData();
-        }
-
-        sampleUploadController.pageSetting(3);
+        buttonNext.setDisable(!isActivationNextBtn);
     }
 
     @FXML
     public void showFileFindWindow() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Choose qcData File");
+        fileChooser.setTitle("Choose SampleSheet File");
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
         fileChooser.getExtensionFilters()
-                .addAll(new FileChooser.ExtensionFilter("xlsx", "*.xlsx"));
+                .addAll(new FileChooser.ExtensionFilter("csv", "*.csv"));
         File file = fileChooser.showOpenDialog(sampleUploadController.getCurrentStage());
 
-        if(file != null && file.getName().equalsIgnoreCase("qcInfo.xlsx") && sampleArrayList != null) {
-            try {
-                Map<String, QcData> qcList = WorksheetUtil.readQCDataExcelSheet(file);
+        if(file != null && file.getName().equalsIgnoreCase("samplesheet.csv")) {
 
-                for(Sample sample : sampleArrayList) {
-                    String name = (!StringUtils.isEmpty(sample.getSampleSheet().getSampleName()))
-                            ? sample.getSampleSheet().getSampleName() : sample.getSampleSheet().getSampleId();
-
-                    QcData excelQCData = qcList.get(name);
-
-                    if(qcList.get(name) != null) {
-                        logger.info(name);
-                        sample.setQcData(excelQCData);
-                    } else {
-                        DialogUtil.alert("찾을 수 없음", name + " 샘플에 대한 QC 정보를 찾을 수 없음", sampleUploadController.getCurrentStage(), true);
+            try(CSVReader csvReader = new CSVReader(new InputStreamReader(new FileInputStream(file)))) {
+                String[] s;
+                boolean tableData = false;
+                List<Sample> list = new ArrayList<>();
+                while((s = csvReader.readNext()) != null) {
+                    if (tableData && list.size() < 23) {
+                        Sample sample = new Sample();
+                        SampleSheet sampleSheet = new SampleSheet(s[0], s[1], s[2], s[3], s[4], s[5], s[6], s[7]);
+                        sample.setSampleSheet(sampleSheet);
+                        list.add(sample);
+                    } else if(s[0].equalsIgnoreCase("Sample_ID")) {
+                        tableData = true;
                     }
                 }
 
+                sampleArrayList = list;
                 tableEdit();
+
             } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ExcelParseException e) {
-                e.printStackTrace();
+
             }
 
         }
 
+    }
+
+    @FXML
+    public void next() throws IOException {
+        saveSampleSheetData();
+        sampleUploadController.pageSetting(3);
+    }
+
+    @FXML
+    public void back() throws IOException {
+        sampleUploadController.pageSetting(1);
+    }
+
+    public void saveSampleSheetData() {
+        if(sampleArrayList == null) sampleArrayList = new ArrayList<>();
+
+        for(int i = 0; i < sampleSheetGridPane.getChildren().size() ; i += 7) {
+
+            TextField sampleTextField = (TextField) sampleSheetGridPane.getChildren().get(i);
+            String sampleName = sampleTextField.getText();
+            if(!StringUtils.isEmpty(sampleName)) {
+                //파일에는 없으나 추가하는 정보이거나 파일 없이 직접 입력한 정보
+                int rowIndex = i / 7;
+                SampleSheet sampleSheet = null;
+                boolean newItem = false;
+                if(sampleArrayList.size() < rowIndex + 1) {
+                    Sample sample = new Sample();
+                    sampleSheet = new SampleSheet();
+                    sample.setSampleSheet(sampleSheet);
+                    sampleArrayList.add(sample);
+                    newItem = true;
+                } else {
+                    //파일에서 읽어온 정보를 갱신할 때
+                    Sample sample = sampleArrayList.get(rowIndex);
+                    sampleSheet = sample.getSampleSheet();
+                }
+                //샘플시트 수정, 추가 사항 ArrayList에 저장
+                if(!StringUtils.isEmpty(sampleSheet.getSampleName()) || newItem) {
+                    sampleSheet.setSampleName(sampleName);
+                } else {
+                    sampleSheet.setSampleId(sampleName);
+                }
+
+                TextField i7IndexIdTextField = (TextField) sampleSheetGridPane.getChildren().get(i + 1);
+                sampleSheet.setI7IndexId(i7IndexIdTextField.getText());
+
+                TextField indexTextField = (TextField) sampleSheetGridPane.getChildren().get(i + 2);
+                sampleSheet.setSampleIndex(indexTextField.getText());
+
+                TextField samplePlateTextField = (TextField) sampleSheetGridPane.getChildren().get(i + 3);
+                sampleSheet.setSamplePlate(samplePlateTextField.getText());
+
+                TextField sampleWellTextField = (TextField) sampleSheetGridPane.getChildren().get(i + 4);
+                sampleSheet.setSampleWell(sampleWellTextField.getText());
+
+                TextField sampleProjectTextField = (TextField) sampleSheetGridPane.getChildren().get(i + 5);
+                sampleSheet.setSampleProject(sampleProjectTextField.getText());
+
+                TextField descriptionTextField = (TextField) sampleSheetGridPane.getChildren().get(i + 6);
+                sampleSheet.setDescription(descriptionTextField.getText());
+
+            }
+        }
+
+        sampleUploadController.setSamples(sampleArrayList);
+    }
+
+    @FXML
+    public void closeDialog() {
+        if(sampleUploadController != null) sampleUploadController.closeDialog();
+    }
+
+    //선택된 sampleSheet 내용 화면 출력
+    public void tableEdit() {
+
+        int rowIndex = 0;
+        int totalIndex = 0;
+        for(Sample sample : sampleArrayList) {
+            //입력가능한 샘플의 총 양은 23개
+            if(22 < rowIndex) break;
+
+            SampleSheet item = sample.getSampleSheet();
+            TextField sampleName = (TextField) sampleSheetGridPane.getChildren().get(totalIndex);
+            sampleName.setText(!StringUtils.isEmpty(item.getSampleName()) ?  item.getSampleName() : item.getSampleId());
+
+            TextField i7IndexId = (TextField) sampleSheetGridPane.getChildren().get(totalIndex + 1);
+            i7IndexId.setText(item.getI7IndexId());
+
+            TextField index = (TextField) sampleSheetGridPane.getChildren().get(totalIndex + 2);
+            index.setText(item.getSampleIndex());
+
+            TextField samplePlate = (TextField) sampleSheetGridPane.getChildren().get(totalIndex + 3);
+            samplePlate.setText(item.getSamplePlate());
+
+            TextField sampleWell = (TextField) sampleSheetGridPane.getChildren().get(totalIndex + 4);
+            sampleWell.setText(item.getSampleWell());
+
+            TextField sampleProject = (TextField) sampleSheetGridPane.getChildren().get(totalIndex + 5);
+            sampleProject.setText(item.getSampleProject());
+
+            TextField description = (TextField) sampleSheetGridPane.getChildren().get(totalIndex + 6);
+            description.setText(item.getDescription());
+
+            totalIndex += 7;
+            rowIndex++;
+        }
     }
 
 }

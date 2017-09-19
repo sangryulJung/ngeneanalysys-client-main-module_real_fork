@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -13,20 +14,43 @@
 
 <VBox fx:id="contentWrapper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="900.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SampleUploadScreenThirdController">
 	<children>
-		<GridPane layoutX="35.0" layoutY="25.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="880.0">
-			<columnConstraints>
-				<ColumnConstraints hgrow="SOMETIMES" percentWidth="15.0" />
-				<ColumnConstraints hgrow="SOMETIMES" percentWidth="35.0" />
-				<ColumnConstraints hgrow="SOMETIMES" percentWidth="15.0" />
-				<ColumnConstraints hgrow="SOMETIMES" percentWidth="35.0" />
-			</columnConstraints>
-			<rowConstraints>
-				<RowConstraints percentHeight="100.0" vgrow="SOMETIMES" />
-			</rowConstraints>
-			<VBox.margin>
-				<Insets bottom="5.0" left="20.0" />
-			</VBox.margin>
-		</GridPane>
+      <GridPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="880.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" percentWidth="15.0" />
+            <ColumnConstraints hgrow="SOMETIMES" percentWidth="35.0" />
+            <ColumnConstraints hgrow="SOMETIMES" percentWidth="15.0" />
+            <ColumnConstraints hgrow="SOMETIMES" percentWidth="35.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints percentHeight="100.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="formTitleLabel" text="Choose Files">
+               <GridPane.margin>
+                  <Insets right="20.0" />
+               </GridPane.margin>
+            </Label>
+            <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1">
+               <children>
+                  <Button fx:id="buttonFileOpen" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showFileFindWindow" prefHeight="32.0" styleClass="field_height" text="Upload File" />
+                  <Label alignment="CENTER_RIGHT" styleClass="help_tooltip">
+                     <tooltip>
+                        <Tooltip text="Choose FASTQ sequencing data file" />
+                     </tooltip>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <GridPane.margin>
+                  <Insets right="20.0" />
+               </GridPane.margin>
+            </HBox>
+         </children>
+         <VBox.margin>
+            <Insets bottom="5.0" left="20.0" />
+         </VBox.margin>
+      </GridPane>
       <GridPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="225.0" prefWidth="880.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -44,23 +68,26 @@
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
                   <Label text="Sample" />
-                  <Label text="disease" GridPane.columnIndex="3" />
-                  <Label text="panel" GridPane.columnIndex="4" />
-                  <Label text="Select" GridPane.columnIndex="1" />
-                  <Label text="Patient id" GridPane.columnIndex="2" />
-                  <Label text="source" GridPane.columnIndex="5" />
+                  <Label text="Seq. Cluster Density" GridPane.columnIndex="3" />
+                  <Label text="Seq. &gt;=Q30" GridPane.columnIndex="4" />
+                  <Label text="DNA QC" GridPane.columnIndex="1" />
+                  <Label text="Library QC" GridPane.columnIndex="2" />
+                  <Label text="Seq. Cluster PF" GridPane.columnIndex="5" />
+                  <Label text="Seq. Indexing PF CV" GridPane.columnIndex="6" />
                </children>
             </GridPane>
-            <ScrollPane GridPane.rowIndex="1">
+            <ScrollPane fx:id="qcScrollPane" GridPane.rowIndex="1">
                <content>
-                  <GridPane fx:id="standardDataGridPane" maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="192.0" prefWidth="898.0">
+                  <GridPane fx:id="qcGridPane" maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="192.0" prefWidth="898.0">
                      <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -78,7 +105,6 @@
 				<HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
 				<Button fx:id="buttonCancel" mnemonicParsing="false" onAction="#closeDialog" prefHeight="35.0" prefWidth="85.0" styleClass="btn_cancel" text="Cancel" />
 				<Button fx:id="buttonBack" maxHeight="36.0" mnemonicParsing="false" onAction="#back" prefHeight="36.0" prefWidth="85.0" styleClass="btn_next" text="Back" />
-            <Button fx:id="buttonSubmit" maxHeight="36.0" mnemonicParsing="false" onAction="#submit" prefHeight="36.0" prefWidth="85.0" styleClass="btn_next" text="Submit" />
 			</children>
 			<padding>
 				<Insets bottom="20.0" left="20.0" right="20.0" top="2.0" />

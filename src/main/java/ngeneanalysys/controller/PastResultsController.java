@@ -364,10 +364,10 @@ public class PastResultsController extends SubPaneController {
 	}
 
 	private Map<String, Object> getSearchParam() {
-		Map<String, Object> param = new HashMap<String, Object>();
+		Map<String, Object> param = new HashMap<>();
 		param.put("format", "json");		
-		//param.put("step", "PIPELINE");
-		//param.put("status", AnalysisJobStatusCode.SAMPLE_JOB_STATUS_COMPLETE);
+		param.put("step", AnalysisJobStatusCode.JOB_RUN_GROUP_PIPELINE);
+		param.put("status", AnalysisJobStatusCode.SAMPLE_JOB_STATUS_COMPLETE);
 		
 		/** 검색 항목 설정 Start */
 		// Assay Target

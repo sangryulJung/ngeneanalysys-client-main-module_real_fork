@@ -2,35 +2,32 @@ package ngeneanalysys.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import ngeneanalysys.controller.extend.BaseStageController;
-import ngeneanalysys.exceptions.WebAPIException;
-import ngeneanalysys.model.*;
+import ngeneanalysys.exceptions.ExcelParseException;
+import ngeneanalysys.model.QcData;
+import ngeneanalysys.model.Sample;
+import ngeneanalysys.model.SampleSheet;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
-import ngeneanalysys.service.APIService;
-import ngeneanalysys.util.FileUtil;
-import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.StringUtils;
-import ngeneanalysys.util.httpclient.HttpClientResponse;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
+import ngeneanalysys.util.*;
 import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Jang
  * @since 2017-08-10
  */
-public class SampleUploadScreenThirdController extends BaseStageController{
+public class SampleUploadScreenThirdController extends BaseStageController {
     private static Logger logger = LoggerUtil.getLogger();
 
     /** 메인 화면 컨트롤러 객체 */
@@ -38,43 +35,10 @@ public class SampleUploadScreenThirdController extends BaseStageController{
 
     private SampleUploadController sampleUploadController;
 
-    private List<Sample> sampleArrayList = null;
+    private List<Sample> sampleArrayList;
 
     @FXML
-    private GridPane standardDataGridPane;
-
-    private APIService apiService;
-
-    List<Panel> panels = null;
-
-    List<Diseases> diseases = null;
-
-    Map<String, Map<String, Object>> fileMap = new HashMap<>();
-
-    List<File> uploadFileList = new ArrayList<>();
-
-    List<AnalysisFile> uploadFileData = new ArrayList<>();
-
-    List<TextField> sampleNameTextFieldList = new ArrayList<>();
-
-    List<Button> fileSelectButtonList = new ArrayList<>();
-
-    List<TextField> patientIdTextFieldList = new ArrayList<>();
-
-    List<ComboBox<ComboBoxItem>> diseaseComboBoxList = new ArrayList<>();
-
-    List<ComboBox<ComboBoxItem>> panelComboBoxList = new ArrayList<>();
-
-    List<TextField> sampleSourceTextFieldList = new ArrayList<>();
-
-    /**
-     * @param mainController
-     */
-    public void setMainController(MainController mainController) {
-        this.mainController = mainController;
-        setMainApp(this.mainController.getMainApp());
-        apiService = APIService.getInstance();
-    }
+    private GridPane qcGridPane;
 
     /**
      * @param sampleUploadController
@@ -83,110 +47,50 @@ public class SampleUploadScreenThirdController extends BaseStageController{
         this.sampleUploadController = sampleUploadController;
     }
 
+    /**
+     * @param mainController
+     *            the mainController to set
+     */
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
+        setMainApp(this.mainController.getMainApp());
+    }
+
     @Override
     public void show(Parent root) throws IOException {
-        standardDataGridPane.getChildren().clear();
-        standardDataGridPane.setPrefHeight(0);
-
-        panels = (List<Panel>)mainController.getBasicInformationMap().get("panels");
-        diseases = (List<Diseases>)mainController.getBasicInformationMap().get("diseases");
+        qcGridPane.getChildren().clear();
+        qcGridPane.setPrefHeight(0);
 
         for(int row  = 0 ; row < 23 ; row++) {
-            standardDataGridPane.setPrefHeight(standardDataGridPane.getPrefHeight() + 27);
+            qcGridPane.setPrefHeight(qcGridPane.getPrefHeight() + 26);
 
             TextField sampleName = new TextField();
             sampleName.setStyle("-fx-text-inner-color: black;");
-            sampleNameTextFieldList.add(sampleName);
-            sampleName.textProperty().addListener((observable, oldValue, newValue) -> {
-                Set<String> fileName = fileMap.keySet();
 
-                fileName.stream().forEach(file -> {
-                    Map<String, Object> fileInfo = fileMap.get(file);
+            ComboBox<ComboBoxItem>  dnaQc = new ComboBox<>();
+            qcSetting(dnaQc);
+            //if(sample.getQcData() != null && "Fail".equals(sample.getQcData().getDnaQC()))
 
-                    if (fileInfo.get("sampleName") != null && fileInfo.get("sampleName").toString().equals(oldValue)) {
-                        fileInfo.put("sampleName", newValue);
-                    }
-                });
-            });
+            ComboBox<ComboBoxItem>  libraryQc = new ComboBox<>();
+            qcSetting(libraryQc);
+            //if(sample.getQcData() != null && "Fail".equals(sample.getQcData().getLibraryQC()))
 
+            ComboBox<ComboBoxItem>  seqClusterDensity = new ComboBox<>();
+            qcSetting(seqClusterDensity);
 
-            Button select = new Button();
-            fileSelectButtonList.add(select);
-            select.setText("SELECT");
-            select.setOnAction(e -> {
-                FileChooser fileChooser = new FileChooser();
-                fileChooser.setTitle("Choose FASTQ File");
-                fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-                fileChooser.getExtensionFilters()
-                        .addAll(new FileChooser.ExtensionFilter("fastq", "*.fastq", "*.fastq.gz"));
-                File file = fileChooser.showOpenDialog(sampleUploadController.getCurrentStage());
+            ComboBox<ComboBoxItem>  seqQ30 = new ComboBox<>();
+            qcSetting(seqQ30);
+            //if(sample.getQcData() != null && "Fail".equals(sample.getQcData().getSeqQ30()))
 
-                if(file != null) {
-                    String name = null;
-                    if (sampleName.getText() != null && !"".equals(sampleName.getText())) {
-                        name = sampleName.getText();
-                    }
+            ComboBox<ComboBoxItem>  seqClusterPF = new ComboBox<>();
+            qcSetting(seqClusterPF);
+            //if(sample.getQcData() != null && "Fail".equals(sample.getQcData().getSeqClusterPF()))
 
-                    String fastqFilePairName = FileUtil.getFASTQFilePairName(file.getName());
-                    String chooseDirectoryPath = FilenameUtils.getFullPath(file.getAbsolutePath());
-                    logger.info(String.format("directory path of choose file : %s", chooseDirectoryPath));
-                    File directory = new File(chooseDirectoryPath);
-                    //선택한 파일의 폴더 내 모든 파일의 수
-                    List<File> fastqFilesInFolder = (List<File>) FileUtils.listFiles(directory, new String[]{"fastq.gz"}, false);
+            ComboBox<ComboBoxItem>  seqIndexingPFCV = new ComboBox<>();
+            qcSetting(seqIndexingPFCV);
+            //if(sample.getQcData() != null && "Fail".equals(sample.getQcData().getSeqIndexingPFCV()))
 
-                    for(File fastqFile : fastqFilesInFolder) {
-                        if(fastqFilePairName.equals(FileUtil.getFASTQFilePairName(fastqFile.getName()))) {
-                            Map<String, Object> fileMap = new HashMap<>();
-                            fileMap.put("sampleName", name);
-                            fileMap.put("name", fastqFile.getName());
-                            fileMap.put("fileSize", fastqFile.length());
-                            fileMap.put("fileType", "FASTQ.GZ");
-                            this.fileMap.put(fastqFile.getName(), fileMap);
-                            uploadFileList.add(fastqFile);
-                        }
-                    }
-
-                    /*Button button = (Button) e.getSource();
-                    if(fileSelectButtonList.contains(button)) {
-                        int rowIndex = fileSelectButtonList.indexOf(button);
-                        TextField sampleNameTextField = sampleNameTextFieldList.get(rowIndex);
-                        sampleNameTextField.setText(fastqFilePairName);
-                    }*/
-                }
-            });
-
-            TextField paitentId = new TextField();
-            paitentId.setStyle("-fx-text-inner-color: black;");
-            patientIdTextFieldList.add(paitentId);
-
-            ComboBox<ComboBoxItem> disease  = new ComboBox<>();
-            diseaseComboBoxList.add(disease);
-            diseasesSetting(disease);
-
-            ComboBox<ComboBoxItem> panel  = new ComboBox<>();
-            panelComboBoxList.add(panel);
-            panelSetting(panel);
-            panel.setOnAction(event -> {
-                ComboBox<ComboBoxItem> obj = (ComboBox<ComboBoxItem>) event.getSource();
-                if(panelComboBoxList.contains(obj)) {
-                    int index  = panelComboBoxList.indexOf(obj);
-                    ComboBoxItem item = obj.getSelectionModel().getSelectedItem();
-                    logger.info(item.getText());
-                    panels.stream().forEach(panelItem -> {
-                        if(panelItem.getId() == Integer.parseInt(item.getValue())) {
-                            sampleSourceTextFieldList.get(index).setText(panelItem.getSampleSource());
-                        }
-                    });
-                }
-            });
-
-            TextField source = new TextField();
-            sampleSourceTextFieldList.add(source);
-            source.setEditable(false);
-            source.setStyle("-fx-text-inner-color: black;");
-            source.setText(panels.get(0).getSampleSource());
-
-            standardDataGridPane.addRow(row, sampleName, select, paitentId, disease, panel, source);
+            qcGridPane.addRow(row, sampleName, dnaQc, libraryQc, seqClusterDensity, seqQ30, seqClusterPF, seqIndexingPFCV);
         }
 
         if(sampleUploadController.getSamples() != null) {
@@ -196,183 +100,163 @@ public class SampleUploadScreenThirdController extends BaseStageController{
     }
 
     public void tableEdit() {
-        int row = 0;
-
+        int rowIndex = 0;
+        int totalIndex = 0;
         for(Sample sample : sampleArrayList) {
-            //샘플의
-            if(row > 22) break;
+            //입력가능한 샘플의 총 양은 23개
+            if (22 < rowIndex) break;
 
-            SampleSheet item = sample.getSampleSheet();
+            QcData qcData = sample.getQcData();
 
-            sampleNameTextFieldList.get(row).setText(!StringUtils.isEmpty(item.getSampleName()) ? item.getSampleName() : item.getSampleId());
-
-            row++;
-        }
-    }
-
-    @FXML
-    public void submit() {
-        try {
-            if (sampleArrayList != null && sampleArrayList.size() != 0) {
-
-                Map<String, Object> params = new HashMap<>();
-                HttpClientResponse response = null;
-                Run run = null;
-                try {
-                    if(sampleUploadController.getRunName() == null || "".equals(sampleUploadController.getRunName())) {
-                        Date date = new Date();
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd.hh:mm:ss");
-                        params.put("name", "RUN NAME_" + sdf.format(date));
-                    } else {
-                        params.put("name", sampleUploadController.getRunName());
-                    }
-                    params.put("sequencingPlatform", "MISEQ");
-                    response = apiService.post("/runs", params, null, true);
-                    run = response.getObjectBeforeConvertResponseToJSON(Run.class);
-                    logger.info(run.toString());
-                } catch (Exception e) {
-
-                }
-
-                for (int i = 0; i < standardDataGridPane.getChildren().size(); i += 6) {
-                    int rowNum = i / 6;
-                    Sample sample = null;
-                    if(sampleArrayList.size() > rowNum) {
-                        sample = sampleArrayList.get(rowNum);
-                    } else {
-                        sample = new Sample();
-                        sample.setQcData(new QcData());
-                        sample.setSampleSheet(new SampleSheet());
-                    }
-                    sample.setRunId(run.getId());
-
-                    TextField sampleName = (TextField) standardDataGridPane.getChildren().get(i);
-                    if(sampleName.getText().isEmpty()) continue;
-                    sample.setName(sampleName.getText());
-
-                    Button fileName = (Button) standardDataGridPane.getChildren().get(i + 1);
-
-                    TextField patientId = (TextField) standardDataGridPane.getChildren().get(i + 2);
-                    sample.setPaitentId(patientId.getText());
-
-                    ComboBox<ComboBoxItem> diseaseId = (ComboBox<ComboBoxItem>) standardDataGridPane.getChildren().get(i + 3);
-                    sample.setDiseaseId(Integer.parseInt(diseaseId.getSelectionModel().getSelectedItem().getValue()));
-
-                    ComboBox<ComboBoxItem> panelIdComboBox = (ComboBox<ComboBoxItem>) standardDataGridPane.getChildren().get(i + 4);
-                    Integer panelId = Integer.parseInt(panelIdComboBox.getSelectionModel().getSelectedItem().getValue());
-                    sample.setPanelId(panelId);
-
-                    Optional<Panel> panel = panels.stream().filter(item -> item.getId().equals(panelId)).findFirst();
-                    Panel p = panel.get();
-                    sample.setAnalysisType(p.getAnalysisType());
-                    TextField sampleSource = (TextField) standardDataGridPane.getChildren().get(i + 5);
-                    //sample.setSampleSource((sampleSource.getText() == null || sampleSource.getText().equals(""))
-                    //        ? "FFPE" : sampleSource.getText());
-                    sample.setSampleSource(p.getSampleSource());
-
-                    sampleUpload(sample);
-
-                }
-                if((uploadFileData != null && uploadFileData.size() > 0) &&
-                        (uploadFileList != null && uploadFileList.size() > 0))
-                    this.mainController.runningAnalysisRequestUpload(uploadFileData, uploadFileList);
-                logger.info("submit");
-                closeDialog();
+            if(qcData == null) {
+                sample.setQcData(new QcData());
+                qcData = sample.getQcData();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+            TextField sampleName = (TextField) qcGridPane.getChildren().get(totalIndex);
+            sampleName.setText(!StringUtils.isEmpty(sample.getSampleSheet().getSampleName())
+                    ?  sample.getSampleSheet().getSampleName() : sample.getSampleSheet().getSampleId());
+
+            ComboBox<ComboBoxItem> dnaQc = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(totalIndex + 1);
+            dnaQc.getSelectionModel().select((qcData.getDnaQC() != null && "F".equals(qcData.getDnaQC())) ?
+            1 : 0);
+
+            ComboBox<ComboBoxItem> libraryQc = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(totalIndex + 2);
+            libraryQc.getSelectionModel().select((qcData.getLibraryQC() != null && "F".equals(qcData.getLibraryQC())) ?
+                    1 : 0);
+
+            ComboBox<ComboBoxItem> seqClusterDensity = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(totalIndex + 3);
+            seqClusterDensity.getSelectionModel().select((qcData.getSeqClusterDensity() != null && "F".equals(qcData.getSeqClusterDensity())) ?
+                    1 : 0);
+
+            ComboBox<ComboBoxItem> seqQ30 = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(totalIndex + 4);
+            seqQ30.getSelectionModel().select((qcData.getSeqQ30() != null && "F".equals(qcData.getSeqQ30())) ?
+                    1 : 0);
+
+            ComboBox<ComboBoxItem> seqClusterPF = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(totalIndex + 5);
+            seqClusterPF.getSelectionModel().select((qcData.getSeqClusterPF() != null && "F".equals(qcData.getSeqClusterPF())) ?
+                    1 : 0);
+
+            ComboBox<ComboBoxItem> seqIndexingPFCV = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(totalIndex + 6);
+            seqIndexingPFCV.getSelectionModel().select((qcData.getSeqIndexingPFCV() != null && "F".equals(qcData.getSeqIndexingPFCV())) ?
+                    1 : 0);
+
+            totalIndex += 7;
+            rowIndex++;
         }
     }
 
-    public void sampleUpload(Sample sample) throws  Exception {
-        Map<String, Object> params = new HashMap<>();
-        HttpClientResponse response = null;
+    public void qcSetting(ComboBox<ComboBoxItem> qc) {
+        qc.setConverter(new ComboBoxConverter());
+        qc.getItems().add(new ComboBoxItem("P", "P"));
+        qc.getItems().add(new ComboBoxItem("F", "F"));
+        qc.getSelectionModel().selectFirst();
+    }
 
-        params.put("runId", sample.getRunId());
-        params.put("name", sample.getName());
-        params.put("patientId", sample.getPaitentId());
-        params.put("panelId", sample.getPanelId());
-        params.put("diseaseId", sample.getDiseaseId());
-        params.put("analysisType", sample.getAnalysisType());
-        params.put("sampleSource", sample.getSampleSource());
-        params.put("inputFType", "FASTQ.GZ");
-        Map<String, String> sampleSheet = new HashMap<>();
-        SampleSheet sampleSheet1 = sample.getSampleSheet();
-        sampleSheet.put("sampleId", sampleSheet1.getSampleId());
-        sampleSheet.put("sampleName", sampleSheet1.getSampleName());
-        sampleSheet.put("samplePlate", sampleSheet1.getSamplePlate());
-        sampleSheet.put("sampleWell", sampleSheet1.getSampleWell());
-        sampleSheet.put("i7IndexId", sampleSheet1.getI7IndexId());
-        sampleSheet.put("sampleIndex", sampleSheet1.getSampleIndex());
-        sampleSheet.put("sampleProject", sampleSheet1.getSampleProject());
-        sampleSheet.put("description", sampleSheet1.getDescription());
-        params.put("sampleSheet", sampleSheet);
-        Map<String, String> qcData = new HashMap<>();
-        QcData qcData1 = sample.getQcData();
-        qcData.put("dnaQC", qcData1.getDnaQC());
-        qcData.put("libraryQC", qcData1.getLibraryQC());
-        qcData.put("seqClusterDensity", qcData1.getSeqClusterDensity());
-        qcData.put("seqQ30", qcData1.getSeqQ30());
-        qcData.put("seqClusterPF", qcData1.getSeqClusterPF());
-        qcData.put("seqIndexingPFCV", qcData1.getSeqIndexingPFCV());
-        params.put("qcData", qcData);
-        response = apiService.post("/samples", params, null, true);
-        Sample sampleData = response.getObjectBeforeConvertResponseToJSON(Sample.class);
-        logger.info(sampleData.toString());
+    public void saveQCData() {
+        if(sampleArrayList == null) sampleArrayList = new ArrayList<>();
 
-        String name = (!StringUtils.isEmpty(sample.getSampleSheet().getSampleName()))
-                ? sample.getSampleSheet().getSampleName() : sample.getSampleSheet().getSampleId();
+        for (int i = 0; i < qcGridPane.getChildren().size(); i += 7) {
+            boolean isNewItem = false;
+            TextField sampleNameTextField = (TextField) qcGridPane.getChildren().get(i);
+            String sampleName = sampleNameTextField.getText();
 
-        Set<String> fileName = fileMap.keySet();
+            if(sampleName.isEmpty()) continue;
 
-        fileName.stream().forEach(file -> {
-            Map<String, Object> fileInfo = fileMap.get(file);
+            int indexNumber = i / 7;
 
-            if(fileInfo.get("sampleName") != null && fileInfo.get("sampleName").toString().equals(sample.getName())) {
-                fileInfo.put("sampleId", sampleData.getId());
-                fileInfo.put("sampleName", null);
-                fileInfo.remove("sampleName");
-                HttpClientResponse fileResponse = null;
-                try {
-                    fileResponse = apiService.post("/analysisFiles", fileInfo, null, true);
-                    AnalysisFile fileData = fileResponse.getObjectBeforeConvertResponseToJSON(AnalysisFile.class);
-                    logger.info(fileData.getName());
-                    uploadFileData.add(fileData);
-                } catch (WebAPIException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
+            Sample sample = null;
+            if(indexNumber > sampleArrayList.size() - 1) {
+                isNewItem = true;
+                sample = new Sample();
+                SampleSheet sampleSheet = new SampleSheet();
+                sample.setSampleSheet(sampleSheet);
+                sampleArrayList.add(sample);
+            } else {
+                sample = sampleArrayList.get(indexNumber);
+            }
+
+            QcData qcData = sample.getQcData();
+
+            if(qcData == null) {
+                qcData = new QcData();
+                sample.setQcData(qcData);
+            }
+
+            if(isNewItem || !sample.getSampleSheet().getSampleName().isEmpty()) {
+                sample.getSampleSheet().setSampleName(sampleName);
+            } else {
+                sample.getSampleSheet().setSampleId(sampleName);
+            }
+
+            ComboBox<ComboBoxItem> dnaQC = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(i + 1);
+            qcData.setDnaQC(dnaQC.getSelectionModel().getSelectedItem().getValue());
+
+            ComboBox<ComboBoxItem> libraryQc = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(i + 2);
+            qcData.setLibraryQC(libraryQc.getSelectionModel().getSelectedItem().getValue());
+
+            ComboBox<ComboBoxItem> seqClusterDensity = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(i + 3);
+            qcData.setSeqClusterDensity(seqClusterDensity.getSelectionModel().getSelectedItem().getValue());
+
+            ComboBox<ComboBoxItem> seqQ30 = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(i + 4);
+            qcData.setSeqQ30(seqQ30.getSelectionModel().getSelectedItem().getValue());
+
+            ComboBox<ComboBoxItem> seqClusterPF = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(i + 5);
+            qcData.setSeqClusterPF(seqClusterPF.getSelectionModel().getSelectedItem().getValue());
+
+            ComboBox<ComboBoxItem> seqIndexingPFCV = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(i + 6);
+            qcData.setSeqIndexingPFCV(seqIndexingPFCV.getSelectionModel().getSelectedItem().getValue());
+
+        }
+    }
+
+    @FXML
+    public void closeDialog() { if(sampleUploadController != null) sampleUploadController.closeDialog(); }
+
+    @FXML
+    public void back() throws IOException {
+        if(sampleArrayList != null && sampleArrayList.size() > 0) {
+            saveQCData();
+        }
+        sampleUploadController.pageSetting(2);
+    }
+
+    @FXML
+    public void showFileFindWindow() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose qcData File");
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        fileChooser.getExtensionFilters()
+                .addAll(new FileChooser.ExtensionFilter("xlsx", "*.xlsx"));
+        File file = fileChooser.showOpenDialog(sampleUploadController.getCurrentStage());
+
+        if(file != null && file.getName().equalsIgnoreCase("qcInfo.xlsx") && sampleArrayList != null) {
+            try {
+                Map<String, QcData> qcList = WorksheetUtil.readQCDataExcelSheet(file);
+
+                for(Sample sample : sampleArrayList) {
+                    String name = (!StringUtils.isEmpty(sample.getSampleSheet().getSampleName()))
+                            ? sample.getSampleSheet().getSampleName() : sample.getSampleSheet().getSampleId();
+
+                    QcData excelQCData = qcList.get(name);
+
+                    if(qcList.get(name) != null) {
+                        logger.info(name);
+                        sample.setQcData(excelQCData);
+                    } else {
+                        DialogUtil.alert("찾을 수 없음", name + " 샘플에 대한 QC 정보를 찾을 수 없음", sampleUploadController.getCurrentStage(), true);
+                    }
                 }
 
+                tableEdit();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ExcelParseException e) {
+                e.printStackTrace();
             }
-        });
 
-    }
-
-    public void diseasesSetting(ComboBox<ComboBoxItem> diseaseBox) {
-        diseaseBox.setConverter(new ComboBoxConverter());
-        for(Diseases disease :  diseases) {
-            diseaseBox.getItems().add(new ComboBoxItem(disease.getId().toString(), disease.getName()));
         }
-        diseaseBox.getSelectionModel().selectFirst();
+
     }
 
-    public void panelSetting(ComboBox<ComboBoxItem> panelBox) {
-        panelBox.setConverter(new ComboBoxConverter());
-        for(Panel panel :  panels) {
-            panelBox.getItems().add(new ComboBoxItem(panel.getId().toString(), panel.getName()));
-        }
-        panelBox.getSelectionModel().selectFirst();
-        panelBox.valueProperty().addListener((ov, oldValue, newValue) -> {
-
-            ComboBoxItem item = newValue;
-
-        });
-    }
-
-    @FXML
-    public void back() throws IOException { sampleUploadController.pageSetting(2); }
-
-    @FXML
-    public void closeDialog() { sampleUploadController.closeDialog(); }
 }
