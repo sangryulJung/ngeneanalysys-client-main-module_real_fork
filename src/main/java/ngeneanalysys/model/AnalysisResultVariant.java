@@ -27,6 +27,7 @@ public class AnalysisResultVariant implements Serializable {
 
 	private Integer id;
 	private Integer sampleId;
+	private String serialNumber;
 	private String swPathogenicityLevel;
 	private String expertPathogenicityLevel;
 	private String swTier;
@@ -131,6 +132,14 @@ public class AnalysisResultVariant implements Serializable {
 		this.sampleId = sampleId;
 	}
 
+	public String getSerialNumber() {
+		return serialNumber;
+	}
+
+	public void setSerialNumber(String serialNumber) {
+		this.serialNumber = serialNumber;
+	}
+	
 	/**
 	 * @return swPathogenicityLevel
 	 */

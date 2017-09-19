@@ -7,6 +7,7 @@ package ngeneanalysys.model;
 public class Variant {
     private Integer id;
     private Integer sampleId;
+
     private String swPathogenicityLevel;
     private String expertPathogenicityLevel;
     private String swTier;
