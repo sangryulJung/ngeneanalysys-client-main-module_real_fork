@@ -143,6 +143,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                             fileMap.put("sampleName", fastqFilePairName);
                             fileMap.put("name", fastqFile.getName());
                             fileMap.put("fileSize", fastqFile.length());
+                            fileMap.put("isInput", true);
                             fileMap.put("fileType", "FASTQ.GZ");
                             this.fileMap.put(fastqFile.getName(), fileMap);
                         }

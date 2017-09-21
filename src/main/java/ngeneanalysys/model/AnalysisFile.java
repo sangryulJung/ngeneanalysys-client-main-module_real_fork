@@ -16,6 +16,8 @@ public class AnalysisFile {
 
     private Long size;
 
+    private Boolean isInput;
+
     private String fileType;
 
     private String status;
@@ -78,6 +80,19 @@ public class AnalysisFile {
         this.size = size;
     }
 
+    /**
+     * @return isInput
+     */
+    public Boolean getIsInput() {
+        return this.isInput;
+    }
+
+    /**
+     * @param isInput
+     */
+    public void setIsInput(Boolean isInput) {
+        this.isInput = isInput;
+    }
     /**
      * @return fileType
      */
