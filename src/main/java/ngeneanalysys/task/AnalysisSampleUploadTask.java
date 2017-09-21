@@ -98,33 +98,72 @@ public class AnalysisSampleUploadTask extends Task<Void>{
     protected Void call() throws Exception {
         logger.info("start upload task...");
 
-        String loginId = LoginSessionUtil.getAccessLoginId();
+        try {
 
-        List<AnalysisFile> fileDataList = (List<AnalysisFile>) analysisSampleUploadProgressTaskController.getParamMap().get("fileMap");
+            String loginId = LoginSessionUtil.getAccessLoginId();
 
-        List<File> fileList = (List<File>) analysisSampleUploadProgressTaskController.getParamMap().get("fileList");
+            List<AnalysisFile> fileDataList = (List<AnalysisFile>) analysisSampleUploadProgressTaskController.getParamMap().get("fileMap");
 
-        for(AnalysisFile fileData : fileDataList) {
+            List<File> fileList = (List<File>) analysisSampleUploadProgressTaskController.getParamMap().get("fileList");
 
-            fileList.stream().forEach(file -> {
-                if(fileData.getName().equals(file.getName())) {
-                    try {
-                        analysisRequestService.uploadFile(fileData.getId(), file);
-                    } catch (WebAPIException e) {
-                        e.printStackTrace();
+            for (AnalysisFile fileData : fileDataList) {
+
+                fileList.stream().forEach(file -> {
+
+                    if (this.analysisSampleUploadProgressTaskController.isStop) {
+                       return;
+                    }
+
+                    updateCurrentUploadGroupInfo();
+
+                    if (fileData.getName().equals(file.getName())) {
+                        try {
+                            analysisRequestService.uploadFile(fileData.getId(), file);
+                        } catch (WebAPIException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    // Task 실행 Controller 객체의 업로드 일시정지 실행 여부 동기화하면서 일시정지 기능 실행.
+                    synchronized (this.analysisSampleUploadProgressTaskController) {
+                        long preCheckTimeMillis = System.currentTimeMillis();
+                        while (this.analysisSampleUploadProgressTaskController.isPause) {
+                            // 10초 마다 체크?
+                            if((System.currentTimeMillis() - preCheckTimeMillis) == 10000) {
+                                logger.warn("pause : " + this.analysisSampleUploadProgressTaskController.isPause);
+                                preCheckTimeMillis = System.currentTimeMillis();
+                            }
+                            if(this.analysisSampleUploadProgressTaskController.isStop) {
+                                logger.warn("upload work stop call.");
+                                break;
+                            }
+                        }
+                    }
+
+                    // 일시정지, 재시작 대기 상태인 경우
+                    if(this.analysisSampleUploadProgressTaskController.progressIndicator.isVisible()) {
+                        this.analysisSampleUploadProgressTaskController.progressIndicator.setVisible(false);
+                    }
+
+                    if (this.analysisSampleUploadProgressTaskController.isStop) {
+                        return;
+                    }
+
+                });
+
+                // 업로드 작업 중단
+                if (this.analysisSampleUploadProgressTaskController.isCancel) {
+                    Thread.sleep(100);
+                    if (currentUploadGroupId > 0) {
+                        // 현재 업로드중인 분석 요청 그룹 데이터 삭제
+                        analysisRequestService.removeRequestedJob(currentUploadGroupServerId);
                     }
                 }
-            });
 
-            // 업로드 작업 중단
-            if(this.analysisSampleUploadProgressTaskController.isCancel) {
-                Thread.sleep(100);
-                if(currentUploadGroupId > 0) {
-                    // 현재 업로드중인 분석 요청 그룹 데이터 삭제
-                    analysisRequestService.removeRequestedJob(currentUploadGroupServerId);
-                }
             }
-
+        } catch (Exception e) {
+            logger.info(e.getMessage());
+            e.printStackTrace();
         }
 
         return null;

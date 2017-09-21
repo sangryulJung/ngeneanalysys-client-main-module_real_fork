@@ -13,14 +13,21 @@ import javafx.stage.StageStyle;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.BaseStageController;
+import ngeneanalysys.model.AnalysisFile;
+import ngeneanalysys.model.PagedSample;
 import ngeneanalysys.model.Sample;
+import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.FXMLLoadUtil;
 import ngeneanalysys.util.LoggerUtil;
+import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Jang
@@ -28,6 +35,8 @@ import java.util.List;
  */
 public class SampleUploadController extends BaseStageController{
     private static Logger logger = LoggerUtil.getLogger();
+
+    private Integer runId = -1;
 
     /** 메인 화면 컨트롤러 객체 */
     private MainController mainController;
@@ -38,7 +47,7 @@ public class SampleUploadController extends BaseStageController{
     /** 작업 Dialog Window Stage Object */
     private Stage currentStage;
 
-    private List<Sample>  samples = new ArrayList<>(23);
+    private List<Sample> samples = new ArrayList<>(23);
 
     @FXML
     private TextField textFieldRunName;
@@ -51,6 +60,48 @@ public class SampleUploadController extends BaseStageController{
     private SampleUploadScreenSecondController sampleUploadScreenSecondController;
 
     private SampleUploadScreenThirdController sampleUploadScreenThirdController;
+
+    private Map<String, Map<String, Object>> fileMap = new HashMap<>();
+
+    private List<File> uploadFileList = new ArrayList<>();
+
+    private List<AnalysisFile> uploadFileData = new ArrayList<>();
+
+    /**
+     * @return fileMap
+     */
+    public Map<String, Map<String, Object>> getFileMap() {
+        return fileMap;
+    }
+
+    /**
+     * @return uploadFileList
+     */
+    public List<File> getUploadFileList() {
+        return uploadFileList;
+    }
+
+    /**
+     * @return uploadFileData
+     */
+    public List<AnalysisFile> getUploadFileData() {
+        return uploadFileData;
+    }
+
+    /**
+     * @return runId
+     */
+    public Integer getRunId() {
+        return runId;
+    }
+
+    /**
+     * @param runId
+     */
+    public void setRunId(Integer runId) {
+        this.runId = runId;
+        sampleLoad();
+    }
 
     /**
      * @return homeController
@@ -168,4 +219,23 @@ public class SampleUploadController extends BaseStageController{
     }
 
     public void closeDialog() { currentStage.close(); }
+
+    public void sampleLoad() {
+        HttpClientResponse response = null;
+        Map<String, Object> params = new HashMap<>();
+        try {
+            APIService apiService = APIService.getInstance();
+            params.clear();
+            params.put("runId", runId);
+            params.put("limit", 23);
+            params.put("offset", 0);
+            response = apiService.get("/samples", params, null, false);
+
+            PagedSample pagedSample = response.getObjectBeforeConvertResponseToJSON(PagedSample.class);
+            samples = pagedSample.getResult();
+            logger.info(pagedSample.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

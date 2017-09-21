@@ -157,6 +157,9 @@ public class SystemManagerUserAccountController extends SubPaneController{
         deletedAt.setCellValueFactory(cellData -> new SimpleStringProperty(timeConvertString(cellData.getValue().getDeletedAt())));
         deleted.setCellValueFactory(cellData -> new SimpleStringProperty(
                 deletedShowString(cellData.getValue().getDeleted())));
+        userModify.setSortable(false);
+        userModify.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
+        userModify.setCellFactory(param -> new UserButton());
 
         /**
          * UserGroup TableView
@@ -384,7 +387,6 @@ public class SystemManagerUserAccountController extends SubPaneController{
         return param;
     }
 
-
     /** 그룹 삭제 */
     public void deleteGroup(Integer id) {
         try {
@@ -508,4 +510,68 @@ public class SystemManagerUserAccountController extends SubPaneController{
 
         }
     }
+
+    private class UserButton extends TableCell<User, Boolean> {
+        HBox box = null;
+        final ImageView img1 = new ImageView(resourceUtil.getImage("/layout/images/icon_pathogenicity_1.png"));
+        final ImageView img2 = new ImageView(resourceUtil.getImage("/layout/images/icon_pathogenicity_2.png"));
+
+        public UserButton() {
+
+            img1.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                User user = UserButton.this.getTableView().getItems().get(
+                        UserButton.this.getIndex());
+
+                userControllerInit("modify", user);
+
+                groupListTable.getItems().clear();
+                groupSearch();
+                searchGroupName.getSelectionModel().clearSelection();
+                searchGroupName.getItems().clear();
+                groupNameComboBoxCreate();
+            });
+
+            img2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+                String alertHeaderText = null;
+                String alertContentText = "Are you sure to delete this user?";
+
+                alert.setTitle("Confirmation Dialog");
+                User user = UserButton.this.getTableView().getItems().get(
+                        UserButton.this.getIndex());
+                alert.setHeaderText(user.getName());
+                alert.setContentText(alertContentText);
+                logger.info(user.getId() + " : present id");
+                Optional<ButtonType> result = alert.showAndWait();
+                if(result.get() == ButtonType.OK) {
+                    //deleteUser(user.getId());
+                } else {
+                    logger.info(result.get() + " : button select");
+                    alert.close();
+                }
+            });
+        }
+
+        @Override
+        protected void updateItem(Boolean item, boolean empty) {
+            super.updateItem(item, empty);
+            if(item == null) {
+                setGraphic(null);
+                return;
+            }
+
+            box = new HBox();
+
+            box.setSpacing(10);
+
+            box.getChildren().add(img1);
+            box.getChildren().add(img2);
+
+            setGraphic(box);
+
+        }
+    }
+
+
 }

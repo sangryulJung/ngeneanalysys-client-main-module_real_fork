@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import ngeneanalysys.code.AnalysisJobStatusCode;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.enums.SampleSourceCode;
 import ngeneanalysys.code.enums.SequencerCode;
@@ -213,6 +214,8 @@ public class AnalysisJobRunGroupSearchController extends BaseStageController {
         param.put("format", "json");
         param.put("limit", limit);
         param.put("offset", offset);
+        param.put("step", AnalysisJobStatusCode.JOB_RUN_GROUP_PIPELINE);
+        param.put("status", AnalysisJobStatusCode.SAMPLE_JOB_STATUS_COMPLETE);
         /** 검색 항목 설정 Start */
         // Platform
         if(choosePlatform.getSelectionModel().getSelectedIndex() > -1 && choosePlatform.getValue() != null) {

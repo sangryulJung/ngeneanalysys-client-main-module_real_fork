@@ -18,7 +18,6 @@ public class SampleSheet {
 
     public SampleSheet(String sampleId, String sampleName, String samplePlate, String sampleWell, String i7IndexId, String sampleIndex, String sampleProject, String description) {
         this.sampleId = sampleId;
-
         this.sampleName = sampleName;
         this.samplePlate = samplePlate;
         this.sampleWell = sampleWell;

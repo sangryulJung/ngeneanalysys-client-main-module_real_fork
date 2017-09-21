@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Jang
@@ -55,7 +56,6 @@ public class SampleUploadScreenSecondController extends BaseStageController{
     @FXML
     private GridPane sampleSheetGridPane;
 
-
     /**
      * @param homeController
      */
@@ -68,10 +68,6 @@ public class SampleUploadScreenSecondController extends BaseStageController{
      */
     public void setSampleUploadController(SampleUploadController sampleUploadController) {
         this.sampleUploadController = sampleUploadController;
-        /*if(sampleUploadController.getSamples() != null) {
-            sampleArrayList = sampleUploadController.getSamples();
-            tableEdit();
-        }*/
     }
 
     /**
@@ -156,19 +152,28 @@ public class SampleUploadScreenSecondController extends BaseStageController{
             try(CSVReader csvReader = new CSVReader(new InputStreamReader(new FileInputStream(file)))) {
                 String[] s;
                 boolean tableData = false;
-                List<Sample> list = new ArrayList<>();
                 while((s = csvReader.readNext()) != null) {
-                    if (tableData && list.size() < 23) {
-                        Sample sample = new Sample();
-                        SampleSheet sampleSheet = new SampleSheet(s[0], s[1], s[2], s[3], s[4], s[5], s[6], s[7]);
-                        sample.setSampleSheet(sampleSheet);
-                        list.add(sample);
+                    if (tableData && sampleArrayList.size() < 23) {
+                        final String sampleId = s[0];
+                        final String sampleName = s[1];
+                        Optional<Sample> sampleOptional = sampleArrayList.stream().filter(item ->
+                        item.getName().equals(sampleId) || item.getName().equals(sampleName)).findFirst();
+                        if(sampleOptional.isPresent()) {
+                            Sample sample = sampleOptional.get();
+                            sample.getSampleSheet().setSampleId(s[0]);
+                            sample.getSampleSheet().setSampleName(s[1]);
+                            sample.getSampleSheet().setSamplePlate(s[2]);
+                            sample.getSampleSheet().setSampleWell(s[3]);
+                            sample.getSampleSheet().setI7IndexId(s[4]);
+                            sample.getSampleSheet().setSampleIndex(s[5]);
+                            sample.getSampleSheet().setSampleProject(s[6]);
+                            sample.getSampleSheet().setDescription(s[7]);
+                        }
                     } else if(s[0].equalsIgnoreCase("Sample_ID")) {
                         tableData = true;
                     }
                 }
 
-                sampleArrayList = list;
                 tableEdit();
 
             } catch (IOException e) {
@@ -260,7 +265,7 @@ public class SampleUploadScreenSecondController extends BaseStageController{
 
             SampleSheet item = sample.getSampleSheet();
             TextField sampleName = (TextField) sampleSheetGridPane.getChildren().get(totalIndex);
-            sampleName.setText(!StringUtils.isEmpty(item.getSampleName()) ?  item.getSampleName() : item.getSampleId());
+            sampleName.setText(sample.getName());
 
             TextField i7IndexId = (TextField) sampleSheetGridPane.getChildren().get(totalIndex + 1);
             i7IndexId.setText(item.getI7IndexId());

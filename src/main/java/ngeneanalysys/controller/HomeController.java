@@ -140,7 +140,6 @@ public class HomeController extends SubPaneController{
             Pane page = loader.load();
             SampleUploadController controller = loader.getController();
             controller.setMainController(this.mainController);
-
             controller.setHomeController(this);
             controller.show(page);
             showRunList();
@@ -186,7 +185,19 @@ public class HomeController extends SubPaneController{
                             return new VBox();
                         });
                     } else if(e.getClickCount() == 2) {
-                        logger.info("click count 2");
+                        try {
+                            // Load the fxml file and create a new stage for the popup dialog
+                            FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.ANALYSIS_SAMPLE_UPLOAD_MAIN);
+                            Pane page = loader.load();
+                            SampleUploadController controller = loader.getController();
+                            controller.setRunId(run.getId());
+                            controller.setMainController(this.mainController);
+                            controller.setHomeController(this);
+                            controller.show(page);
+                            showRunList();
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
                     }
                 });
 

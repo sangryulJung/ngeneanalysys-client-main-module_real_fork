@@ -6,7 +6,7 @@ package ngeneanalysys.model;
  */
 public class VariantTranscript {
     private Integer variantId;
-    private Integer transcriptId;
+    private String transcriptId;
     private String geneSymbol;
     private String codingDna;
     private String protein;
@@ -30,14 +30,14 @@ public class VariantTranscript {
     /**
      * @return transcriptId
      */
-    public Integer getTranscriptId() {
+    public String getTranscriptId() {
         return transcriptId;
     }
 
     /**
      * @param transcriptId
      */
-    public void setTranscriptId(Integer transcriptId) {
+    public void setTranscriptId(String transcriptId) {
         this.transcriptId = transcriptId;
     }
 

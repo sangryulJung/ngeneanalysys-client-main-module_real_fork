@@ -30,7 +30,9 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author Jang
@@ -235,7 +237,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
         showFraction();
 
         // Variant Nomenclature 값 설정 및 화면 출력
-        //showVariantIdentification();
+        showVariantIdentification();
 
         // 템플릿 차트 삭제
         populationFrequencyGraphGridPane.getChildren().removeAll(populationFrequencyGraphGridPane.getChildren());
@@ -243,7 +245,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
         showPopulationFrequency();
 
         // 변이 발견 빈도수(Variant Frequency) 게이지 그래프 화면 출력
-        //showVariantStatistics();
+        showVariantStatistics();
 
         // 링크 목록 화면 출력
         //showLink();
@@ -397,65 +399,61 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
      */
     @SuppressWarnings("unchecked")
     public void showVariantIdentification() {
-        Map<String,Object> variantInformationMap = (Map<String,Object>) paramMap.get("variantInformation");
-        Map<String,Object> geneMap = (Map<String,Object>) paramMap.get("gene");
+        List<VariantTranscript> transcriptDataList = (List<VariantTranscript>) paramMap.get("variantTranscripts");
 
-        String ref = (String) variantInformationMap.get("ref");
-        String alt = (String) variantInformationMap.get("alt");
-        String left22Bp = (String) variantInformationMap.get("left_22_bp");
-        String right22Bp = (String) variantInformationMap.get("right_22_bp");
-        String genePositionStart = String.valueOf((int) variantInformationMap.get("start"));
-        String transcriptAltType = (String) variantInformationMap.get("type");
-        String defaultTranscript = (String) geneMap.get("default_transcript");
+        String ref = variant.getSequenceInfo().getRefSequence();
+        String alt = variant.getSequenceInfo().getAltSequence();
+        String left22Bp = variant.getSequenceInfo().getLeftSequence();
+        String right22Bp = variant.getSequenceInfo().getRightSequence();
+        String genePositionStart = String.valueOf(variant.getSequenceInfo().getGenomicCoordinate());
+        String transcriptAltType = variant.getVariantExpression().getVariantType();
+        String defaultTranscript = null;
         // transcript 콤보박스 설정
-        if(geneMap != null && !geneMap.isEmpty() && geneMap.containsKey("transcript")) {
             // variant identification transcript data map
-            Map<String,Map<String,String>> transcriptDataMap = (Map<String,Map<String,String>>) geneMap.get("transcript");
 
-            if(!transcriptDataMap.isEmpty() && transcriptDataMap.size() > 0) {
-                ObservableList<String> comboItemList = FXCollections.observableArrayList();
-                // 콤보박스 아이템 목록 생성
-                int transcriptKeySize = transcriptDataMap.keySet().size();
-                for (int i = 0; i < transcriptKeySize; i++ ) {
-                    Map<String,String> map = transcriptDataMap.get(String.valueOf(i));
-                    if(map != null && map.containsKey("transcript_name")) {
-                        comboItemList.add(map.get("transcript_name"));
+        if(!transcriptDataList.isEmpty() && transcriptDataList.size() > 0) {
+            ObservableList<String> comboItemList = FXCollections.observableArrayList();
+            // 콤보박스 아이템 목록 생성
+            for(VariantTranscript variantTranscript : transcriptDataList) {
+                comboItemList.add(variantTranscript.getTranscriptId());
+                if("Y".equalsIgnoreCase(variantTranscript.getIsDefault())) {
+                    defaultTranscript = variantTranscript.getTranscriptId();
+                }
+            }
+
+            // 콤보박스 아이템 삽입
+            transcriptComboBox.setItems(comboItemList);
+
+            // 콤보박스 Onchange 이벤트 바인딩
+            transcriptComboBox.getSelectionModel().selectedIndexProperty().addListener((ov, oldIdx, newIdx) -> {
+                if(oldIdx != newIdx) {
+                    Optional<VariantTranscript> transcriptOptional = transcriptDataList.stream().filter(item ->
+                            item.getTranscriptId().equals(transcriptComboBox.getItems().get((int)newIdx))).findFirst();
+                    if(transcriptOptional.isPresent()) {
+                        VariantTranscript transcript = transcriptOptional.get();
+                        String geneSymbol = (!StringUtils.isEmpty(transcript.getGeneSymbol())) ? transcript.getGeneSymbol() : "N/A";
+                        String transcriptName = (!StringUtils.isEmpty(transcript.getTranscriptId())) ? transcript.getTranscriptId() : "N/A";
+                        String codingDNA = (!StringUtils.isEmpty(transcript.getCodingDna())) ? transcript.getCodingDna() : "N/A";
+                        String protein = (!StringUtils.isEmpty(transcript.getProtein())) ? transcript.getProtein() : "N/A";
+                        String genomicDNA = (!StringUtils.isEmpty(transcript.getGenomicDna())) ? transcript.getGenomicDna() : "N/A";
+
+
+                        logger.info(String.format("variant identification choose '%s' option idx [%s]", transcriptName, newIdx));
+
+                        geneSymbolTextField.setText(geneSymbol); //Gene Symbol
+                        if(!StringUtils.isEmpty(geneSymbol)) geneSymbolTextField.setTooltip(new Tooltip(geneSymbol));
+                        hgvspTextField.setText(protein); //Protein
+                        if(!StringUtils.isEmpty(protein)) hgvspTextField.setTooltip(new Tooltip(protein));
+                        hgvscTextField.setText(codingDNA); //Coding DNA
+                        if(!StringUtils.isEmpty(codingDNA)) hgvscTextField.setTooltip(new Tooltip(codingDNA));
+                        grch37TextField.setText(genomicDNA); //Genomic DNA
+                        if(!StringUtils.isEmpty(genomicDNA)) grch37TextField.setTooltip(new Tooltip(genomicDNA));
                     }
                 }
-                // 콤보박스 아이템 삽입
-                transcriptComboBox.setItems(comboItemList);
+            });
 
-                // 콤보박스 Onchange 이벤트 바인딩
-                transcriptComboBox.getSelectionModel().selectedIndexProperty().addListener((ov, oldIdx, newIdx) -> {
-                        if(oldIdx != newIdx) {
-                            Map<String,String> map = transcriptDataMap.get(String.valueOf(newIdx));
-                            if(!map.isEmpty() && map.size() > 0) {
-                                String geneSymbol = map.containsKey("gene_symbol") ? map.get("gene_symbol") : "N/A";
-                                String transcriptName = map.containsKey("transcript_name") ? map.get("transcript_name") : "N/A";
-                                String hgvsc = map.containsKey("hgvs.c") ? map.get("hgvs.c") : "N/A";
-                                String hgvsp = map.containsKey("hgvs.p") ? map.get("hgvs.p") : "N/A";
-                                String aaMutation = map.containsKey("aa_abbreviation") ? map.get("aa_abbreviation") : "N/A";
-                                String grch37 = map.containsKey("genome_37") ? map.get("genome_37") : "N/A";
-                                //String aminoAcid = (!StringUtils.isEmpty(map.get("amino_acid_1"))) ? map.get("amino_acid_1").replaceAll(",", "→") : "";
-
-
-                                logger.info(String.format("variant identification choose '%s' option idx [%s]", transcriptName, newIdx));
-
-                                geneSymbolTextField.setText(geneSymbol); //Gene Symbol
-                                if(!StringUtils.isEmpty(geneSymbol)) geneSymbolTextField.setTooltip(new Tooltip(geneSymbol));
-                                hgvspTextField.setText(hgvsp); //Protein
-                                if(!StringUtils.isEmpty(hgvsp)) hgvspTextField.setTooltip(new Tooltip(hgvsp));
-                                hgvscTextField.setText(hgvsc); //Coding DNA
-                                if(!StringUtils.isEmpty(hgvsc)) hgvscTextField.setTooltip(new Tooltip(hgvsc));
-                                grch37TextField.setText(grch37); //Genomic DNA
-                                if(!StringUtils.isEmpty(grch37)) grch37TextField.setTooltip(new Tooltip(grch37));
-                            }
-                        }
-                });
-
-                // 첫번째 아이템 선택 처리
-                transcriptComboBox.getSelectionModel().select(defaultTranscript);
-            }
+            // 첫번째 아이템 선택 처리
+            transcriptComboBox.getSelectionModel().select(defaultTranscript);
         }
 
         // 레퍼런스 앞문자열 끝에서부터 9글자만 출력함.
@@ -596,55 +594,58 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
      * 변이 발견 빈도수(Variant Frequency) 게이지 그래프 화면 출력
      */
     public void showVariantStatistics() {
-        int variantFrequencyRunCount = (paramMap.containsKey("sameVariantSampleCountInRun")) ? (int) paramMap.get("sameVariantSampleCountInRun") : 0;
-        int variantFrequencyRunTotalCount = (paramMap.containsKey("totalSampleCountInRun")) ? (int) paramMap.get("totalSampleCountInRun") : 0;
-        int variantFrequencyPanelCount = (paramMap.containsKey("samePanelSameVariantSampleCountInUsergroup")) ? (int) paramMap.get("samePanelSameVariantSampleCountInUsergroup") : 0;
-        int variantFrequencyPanelTotalCount = (paramMap.containsKey("totalSamePanelSampleCountInUsergroup")) ? (int) paramMap.get("totalSamePanelSampleCountInUsergroup") : 0;
-        int variantFrequencyAccountCount = (paramMap.containsKey("sameVariantSampleCountInUsergroup")) ? (int) paramMap.get("sameVariantSampleCountInUsergroup") : 0;
-        int variantFrequencyAccountTotalCount = (paramMap.containsKey("totalSampleCountInUsergroup")) ? (int) paramMap.get("totalSampleCountInUsergroup") : 0;
+        VariantStatistics variantStatistics = (VariantStatistics) paramMap.get("variantStatistics");
+        if(variantStatistics != null) {
+            int variantFrequencyRunCount = variantStatistics.getSameVariantSampleCountInRun();
+            int variantFrequencyRunTotalCount = variantStatistics.getTotalSampleCountInRun();
+            int variantFrequencyPanelCount = variantStatistics.getSamePanelSameVariantSampleCountInMemberGroup();
+            int variantFrequencyPanelTotalCount = variantStatistics.getTotalSamePanelSampleCountInMemberGroup();
+            int variantFrequencyAccountCount = variantStatistics.getTotalSampleCountInMemberGroup();
+            int variantFrequencyAccountTotalCount = variantStatistics.getTotalSampleCountInMemberGroup();
 
-        double variantFrequencyRun = (double) variantFrequencyRunCount / (double) variantFrequencyRunTotalCount;
-        double variantFrequencyPanel = (double) variantFrequencyPanelCount / (double) variantFrequencyPanelTotalCount;
-        double variantFrequencyAccount = (double) variantFrequencyAccountCount / (double) variantFrequencyAccountTotalCount;
+            double variantFrequencyRun = (double) variantFrequencyRunCount / (double) variantFrequencyRunTotalCount;
+            double variantFrequencyPanel = (double) variantFrequencyPanelCount / (double) variantFrequencyPanelTotalCount;
+            double variantFrequencyAccount = (double) variantFrequencyAccountCount / (double) variantFrequencyAccountTotalCount;
 
 //		logger.info(String.format("run count : %s, total : %s", variantFrequencyRunCount, variantFrequencyRunTotalCount));
 //		logger.info(String.format("panel count : %s, total : %s", variantFrequencyPanelCount, variantFrequencyPanelTotalCount));
 //		logger.info(String.format("account count : %s, total : %s", variantFrequencyAccountCount, variantFrequencyAccountTotalCount));
 //		logger.info(String.format("run : %s, panel : %s, account : %s", variantFrequencyRun, variantFrequencyPanel, variantFrequencyAccount));
 
-        AnimationTimer variantStatisticsRunTimer = new VariantStatisticsTimer(
-                canvasVariantStatisticsRun.getGraphicsContext2D(), variantFrequencyRun, "RUN",
-                String.format("%.2f%%", variantFrequencyRun * 100.0), this.gaugeSpeed);
-        AnimationTimer variantStatisticsPanelTimer = new VariantStatisticsTimer(
-                canvasVariantStatisticsPanel.getGraphicsContext2D(), variantFrequencyPanel, "PANEL",
-                String.format("%.2f%%", variantFrequencyPanel * 100.0), this.gaugeSpeed);
-        AnimationTimer variantStatisticsGroupTimer = new VariantStatisticsTimer(
-                canvasVariantStatisticsGroup.getGraphicsContext2D(), variantFrequencyAccount, "GROUP",
-                String.format("%.2f%%", variantFrequencyAccount * 100.0), this.gaugeSpeed);
-        variantStatisticsRunTimer.start();
-        variantStatisticsPanelTimer.start();
-        variantStatisticsGroupTimer.start();
-        AnimationTimer variantStatisticsRunTimer1 = new VariantStatisticsTimer(
-                canvasVariantStatisticsRun.getGraphicsContext2D(), variantFrequencyRun, "RUN",
-                (int) variantFrequencyRunCount + "/" + (int) variantFrequencyRunTotalCount, gaugeSpeed);
-        AnimationTimer variantStatisticsPanelTimer1 = new VariantStatisticsTimer(
-                canvasVariantStatisticsPanel.getGraphicsContext2D(), variantFrequencyPanel, "PANEL",
-                (int) variantFrequencyPanelCount + "/" + (int) variantFrequencyPanelTotalCount, gaugeSpeed);
-        AnimationTimer variantStatisticsGroupTimer1 = new VariantStatisticsTimer(
-                canvasVariantStatisticsGroup.getGraphicsContext2D(), variantFrequencyAccount, "GROUP",
-                (int) variantFrequencyAccountCount + "/" + (int) variantFrequencyAccountTotalCount, gaugeSpeed);
-        canvasVariantStatisticsRun.setOnMouseEntered(event ->
-                variantStatisticsRunTimer1.start());
-        canvasVariantStatisticsRun.setOnMouseExited(event ->
-                variantStatisticsRunTimer.start());
-        canvasVariantStatisticsPanel.setOnMouseEntered(event ->
-                variantStatisticsPanelTimer1.start());
-        canvasVariantStatisticsPanel.setOnMouseExited(event ->
-                variantStatisticsPanelTimer.start());
-        canvasVariantStatisticsGroup.setOnMouseEntered(event ->
-                variantStatisticsGroupTimer1.start());
-        canvasVariantStatisticsGroup.setOnMouseExited(event ->
-                variantStatisticsGroupTimer.start());
+            AnimationTimer variantStatisticsRunTimer = new VariantStatisticsTimer(
+                    canvasVariantStatisticsRun.getGraphicsContext2D(), variantFrequencyRun, "RUN",
+                    String.format("%.2f%%", variantFrequencyRun * 100.0), this.gaugeSpeed);
+            AnimationTimer variantStatisticsPanelTimer = new VariantStatisticsTimer(
+                    canvasVariantStatisticsPanel.getGraphicsContext2D(), variantFrequencyPanel, "PANEL",
+                    String.format("%.2f%%", variantFrequencyPanel * 100.0), this.gaugeSpeed);
+            AnimationTimer variantStatisticsGroupTimer = new VariantStatisticsTimer(
+                    canvasVariantStatisticsGroup.getGraphicsContext2D(), variantFrequencyAccount, "GROUP",
+                    String.format("%.2f%%", variantFrequencyAccount * 100.0), this.gaugeSpeed);
+            variantStatisticsRunTimer.start();
+            variantStatisticsPanelTimer.start();
+            variantStatisticsGroupTimer.start();
+            AnimationTimer variantStatisticsRunTimer1 = new VariantStatisticsTimer(
+                    canvasVariantStatisticsRun.getGraphicsContext2D(), variantFrequencyRun, "RUN",
+                    (int) variantFrequencyRunCount + "/" + (int) variantFrequencyRunTotalCount, gaugeSpeed);
+            AnimationTimer variantStatisticsPanelTimer1 = new VariantStatisticsTimer(
+                    canvasVariantStatisticsPanel.getGraphicsContext2D(), variantFrequencyPanel, "PANEL",
+                    (int) variantFrequencyPanelCount + "/" + (int) variantFrequencyPanelTotalCount, gaugeSpeed);
+            AnimationTimer variantStatisticsGroupTimer1 = new VariantStatisticsTimer(
+                    canvasVariantStatisticsGroup.getGraphicsContext2D(), variantFrequencyAccount, "GROUP",
+                    (int) variantFrequencyAccountCount + "/" + (int) variantFrequencyAccountTotalCount, gaugeSpeed);
+            canvasVariantStatisticsRun.setOnMouseEntered(event ->
+                    variantStatisticsRunTimer1.start());
+            canvasVariantStatisticsRun.setOnMouseExited(event ->
+                    variantStatisticsRunTimer.start());
+            canvasVariantStatisticsPanel.setOnMouseEntered(event ->
+                    variantStatisticsPanelTimer1.start());
+            canvasVariantStatisticsPanel.setOnMouseExited(event ->
+                    variantStatisticsPanelTimer.start());
+            canvasVariantStatisticsGroup.setOnMouseEntered(event ->
+                    variantStatisticsGroupTimer1.start());
+            canvasVariantStatisticsGroup.setOnMouseExited(event ->
+                    variantStatisticsGroupTimer.start());
+        }
     }
 
     /**

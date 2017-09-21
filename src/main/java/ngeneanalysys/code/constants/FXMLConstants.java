@@ -88,7 +88,10 @@ public class FXMLConstants {
 	public static final String ANALYSIS_DETAIL_SNPS_INDELS_OVERVIEW = "/layout/fxml/AnalysisDetail-SNPs-INDELs-Overview.fxml";
 	
 	/** 분석 상세 > SNPs-INDELs > OVERVIEW TAB 화면 > BRCA 파이프라인 Link 화면 */
-	public static final String ANALYSIS_DETAIL_SNPS_INDELS_OVERVIEW_LIMK_BRCA = "/layout/fxml/AnalysisDetail-SNPs-INDELs-Overview-Link-BRACA.fxml";
+	public static final String ANALYSIS_DETAIL_SNPS_INDELS_OVERVIEW_LINK_BRCA = "/layout/fxml/AnalysisDetail-SNPs-INDELs-Overview-Link-BRCA.fxml";
+
+	/** 분석 상세 > SNPs-INDELs > OVERVIEW TAB 화면 > BRCA 파이프라인 Link 화면 */
+	public static final String ANALYSIS_DETAIL_SNPS_INDELS_OVERVIEW_LINK_SOMATIC = "/layout/fxml/AnalysisDetail-SNPs-INDELs-Overview-Link-SOMATIC.fxml";
 	
 	/** 분석 상세 > SNPs-INDELs > DATA SUMMARY TAB 화면 */
 	public static final String ANALYSIS_DETAIL_SNPS_INDELS_DATA_SUMMARY = "/layout/fxml/AnalysisDetail-SNPs-INDELs-DataSummary.fxml";

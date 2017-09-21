@@ -40,7 +40,7 @@ public class CommonConstants {
 	public static final String DEFAULT_SERVER_HOST_KEY = "default.server.host";
 	
 	/** 시스템명 */
-	public static final String SYSTEM_NAME = "NGene AnalySys";
+	public static final String SYSTEM_NAME = "NGeneAnalySys";
 	
 	/** 시스템 Favicon Image 경로 */
 	public static final String SYSTEM_FAVICON_PATH = "/layout/images/icon_bi.png";

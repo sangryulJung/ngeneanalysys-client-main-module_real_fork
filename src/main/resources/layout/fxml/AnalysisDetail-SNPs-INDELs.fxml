@@ -63,20 +63,11 @@
 			</children>
 		</HBox>
 	</top>
-	<right>
-		<VBox alignment="BOTTOM_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefWidth="160.0">
-			<children>
-				<VBox fx:id="linkArea" maxWidth="-Infinity" minWidth="140.0" prefHeight="132.0" prefWidth="130.0" />
-			</children>
-			<BorderPane.margin>
-				<Insets bottom="15.0" />
-			</BorderPane.margin>
-		</VBox>
-	</right>
 	<center>
 		<GridPane fx:id="mainGridPane" BorderPane.alignment="CENTER">
 			<columnConstraints>
 				<ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" prefWidth="1070.0" />
+            <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" minWidth="10.0" prefWidth="120.0" />
 			</columnConstraints>
 			<rowConstraints>
 				<RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="NEVER" />
@@ -84,7 +75,7 @@
 				<RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="304.0" valignment="TOP" vgrow="NEVER" />
 			</rowConstraints>
 			<children>
-				<HBox GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="NEVER">
+				<HBox GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="NEVER">
 					<children>
 						<HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
 							<children>
@@ -99,22 +90,28 @@
 								<HBox fx:id="sortListBox" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="32.0" prefWidth="750.0" styleClass="list_title" HBox.hgrow="SOMETIMES" />
 							</children>
 						</HBox>
-						<HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="170.0">
-							<children>
-								<Button layoutX="965.0" layoutY="2.0" maxHeight="26.0" maxWidth="90.0" minHeight="26.0" minWidth="54.0" mnemonicParsing="false" onAction="#saveExcel" prefHeight="26.0" prefWidth="60.0" styleClass="btn_refresh" text="EXCEL">
-									<HBox.margin>
-										<Insets right="5.0" />
-									</HBox.margin>
-								</Button>
-								<Button layoutX="1026.0" layoutY="2.0" maxHeight="26.0" maxWidth="57.0" minHeight="26.0" minWidth="45.0" mnemonicParsing="false" onAction="#saveCSV" prefHeight="26.0" prefWidth="60.0" styleClass="btn_refresh" text="CSV" />
-							</children>
-						</HBox>
+      						<HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="170.0">
+      							<children>
+      								<Button layoutX="965.0" layoutY="2.0" maxHeight="26.0" maxWidth="90.0" minHeight="26.0" minWidth="54.0" mnemonicParsing="false" onAction="#saveExcel" prefHeight="26.0" prefWidth="60.0" styleClass="btn_refresh" text="EXCEL">
+      									<HBox.margin>
+      										<Insets right="5.0" />
+      									</HBox.margin>
+      								</Button>
+      								<Button layoutX="1026.0" layoutY="2.0" maxHeight="26.0" maxWidth="57.0" minHeight="26.0" minWidth="45.0" mnemonicParsing="false" onAction="#saveCSV" prefHeight="26.0" prefWidth="60.0" styleClass="btn_refresh" text="CSV" />
+      							</children>
+      						</HBox>
 					</children>
+               <GridPane.margin>
+                  <Insets right="5.0" />
+               </GridPane.margin>
 				</HBox>
-				<TableView fx:id="variantListTableView" tableMenuButtonVisible="true" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+				<TableView fx:id="variantListTableView" tableMenuButtonVisible="true" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
 					<padding>
 						<Insets bottom="10.0" />
 					</padding>
+               <GridPane.margin>
+                  <Insets right="5.0" />
+               </GridPane.margin>
 				</TableView>
 				<TabPane fx:id="tabArea" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="304.0" prefWidth="1071.0" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="2">
 					<tabs>
@@ -133,6 +130,15 @@
                   </Button>
                </children>
             </HBox>
+            <VBox alignment="BOTTOM_LEFT" prefHeight="320.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+      				<VBox fx:id="linkArea" maxWidth="-Infinity" minWidth="140.0" prefHeight="132.0" prefWidth="130.0">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </VBox>
+               </children>
+            </VBox>
 			</children>
 			<BorderPane.margin>
 				<Insets bottom="15.0" left="15.0" top="12.0" />

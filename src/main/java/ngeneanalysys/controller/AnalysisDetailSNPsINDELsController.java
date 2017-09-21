@@ -1,7 +1,5 @@
 package ngeneanalysys.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.joda.JodaModule;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -19,6 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -28,10 +27,7 @@ import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.*;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
-import ngeneanalysys.model.AnalysisResultSummary;
-import ngeneanalysys.model.AnalysisResultVariant;
-import ngeneanalysys.model.AnalysisResultVariantList;
-import ngeneanalysys.model.Sample;
+import ngeneanalysys.model.*;
 import ngeneanalysys.service.ALAMUTService;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.IGVService;
@@ -44,6 +40,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Jang
@@ -128,9 +125,9 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         apiService.setStage(getMainController().getPrimaryStage());
 
         sample = (Sample)paramMap.get("sample");
-        if(sample.getAnalysisResultSummary() == null) {
+        /*if(sample.getAnalysisResultSummary() == null) {
             dummyDataCreated();
-        }
+        }*/
 
         // igv service init
         igvService = IGVService.getInstance();
@@ -490,38 +487,32 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         }
 
         try {
-            // Comment 데이터 API 요청
-            Map<String, Object> commentParamMap = new HashMap<>();
-            commentParamMap.put("variant", selectedAnalysisResultVariant.getId());
-            //HttpClientResponse responseMemo = apiService.get("/analysis_result/pathogenic_comment_list", commentParamMap, null, false);
+            // Memo 데이터 API 요청
+            //Map<String, Object> commentParamMap = new HashMap<>();
+            HttpClientResponse responseMemo = apiService.get("/analysisResults/variantInterpretationLogs/" + selectedAnalysisResultVariant.getId() , null, null, false);
 
             // Flagging Comment 데이터 요청이 정상 요청된 경우 진행.
+            VariantInterpretationLogsList memoList = responseMemo.getObjectBeforeConvertResponseToJSON(VariantInterpretationLogsList.class);
 
-            //ObservableList<AnalysisResultPathogenicComment> commentList = (ObservableList<AnalysisResultPathogenicComment>) responseComment
-            //        .getMultiObjectBeforeConvertResponseToJSON(AnalysisResultPathogenicComment.class, true);
-            /*if(commentList != null){
+            if(memoList != null){
                 //코드 값을 별칭으로 변경함.
-                for(AnalysisResultPathogenicComment comment : commentList) {
-                    if (comment.getCommentType().equals(PathogenicReviewFlagTypeCode.PATHOGENICITY.name())) {
-                        comment.setPrevValue(PathogenicTypeCode.getAliasFromCode(comment.getPrevValue()));
-                        comment.setValue(PathogenicTypeCode.getAliasFromCode(comment.getValue()));
-                    }
+                for(VariantInterpretationLogs memo : memoList.getResult()) {
+                    /*if (memo.getCommentType().equals(PathogenicReviewFlagTypeCode.PATHOGENICITY.name())) {
+                        memo.setPrevValue(PathogenicTypeCode.getAliasFromCode(memo.getPrevValue()));
+                        memo.setValue(PathogenicTypeCode.getAliasFromCode(memo.getValue()));
+                    }*/
                 }
             }
-            String reportYn = StringUtils.defaultIfEmpty(selectedAnalysisResultVariant.getPathogenicReportYn(), "N");
-            String falseYn = StringUtils.defaultIfEmpty(selectedAnalysisResultVariant.getPathogenicFalseYn(), "N");
 
             // 우측 Pathogenic Review 화면 설정
-            showPathogenicReview(selectedAnalysisResultVariant.getPrediction(),
-                    selectedAnalysisResultVariant.getPathogenic(), reportYn, falseYn);*/
             // comment tab 화면 출력
             if (subTabMemo != null)
-                showCommentTab();
-        } /*catch (WebAPIException wae) {
+                showMemoTab(FXCollections.observableList(memoList.getResult()));
+        } catch (WebAPIException wae) {
             wae.printStackTrace();
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
-        } */catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
@@ -560,9 +551,14 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
         try {
 
-            HttpClientResponse response = apiService.get(
-                    "/analysisResults/variantTranscripts/" + analysisResultVariant.getId(), null, null, false);
+            HttpClientResponse response = apiService.get("/analysisResults/variantTranscripts/" + analysisResultVariant.getId(), null, null, false);
+            List<VariantTranscript> variantTranscripts = (List<VariantTranscript>) response.getMultiObjectBeforeConvertResponseToJSON(VariantTranscript.class, false);
+            paramMap.put("variantTranscripts", variantTranscripts);
 
+            response = null;
+            response = apiService.get("/analysisResults/variantStatistics/" + analysisResultVariant.getId(), null, null, false);
+            VariantStatistics variantStatistics = response.getObjectBeforeConvertResponseToJSON(VariantStatistics.class);
+            paramMap.put("variantStatistics", variantStatistics);
 
         } catch(WebAPIException e) {
             logger.info(e.getMessage());
@@ -577,7 +573,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             overviewController.setAnalysisDetailSNPsINDELsController(this);
             overviewController.setParamMap(paramMap);
             overviewController.show((Parent) node);
-            //showLink(paramMap);
+            showLink();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -636,7 +632,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             overviewController.setAnalysisDetailSNPsINDELsController(this);
             overviewController.setParamMap(paramMap);
             overviewController.show((Parent) node);
-            //showLink(paramMap);
+            showLink();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -645,7 +641,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
     /**
      * Memo 탭 화면 출력
      */
-    public void showCommentTab(/*ObservableList<AnalysisResultPathogenicComment> commentList*/) {
+    public void showMemoTab(ObservableList<VariantInterpretationLogs> memoList) {
         try {
             FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_SNPS_INDELS_MEMO);
             Node node = loader.load();
@@ -653,7 +649,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             controller.setMainController(this.getMainController());
             controller.setAnalysisDetailSNPsINDELsController(this);
             controller.show((Parent) node);
-            //controller.displayList(commentList);
+            controller.displayList(memoList);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -734,14 +730,164 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         showVariantList(selectedPredictionCodeFilter, selectedVariantIndex);
     }
 
-    private void dummyDataCreated() {
+    /*private void dummyDataCreated() {
         AnalysisResultSummary analysisResultSummary = new AnalysisResultSummary(sample.getId(),"warn",281,768,
                 new BigDecimal("438"),2,5,0,0,0,0,0,5
                 ,new BigDecimal(98.13662348939866),"pass",new BigDecimal(100.0),"pass",new BigDecimal(100),"pass",
                 new BigDecimal(100.0),"pass");
 
         sample.setAnalysisResultSummary(analysisResultSummary);
+    }*/
 
+    @SuppressWarnings("unchecked")
+    public void showLink() {
+        Sample sample = (Sample) paramMap.get("sample");
+        String analysisType = sample.getAnalysisType();
+        FXMLLoader loader = null;
+        Pane linkBox = null;
+
+        try {
+            // SOMATIC 인 경우
+            if(analysisType.equals(ExperimentTypeCode.SOMATIC.getDescription())) {
+                loader = FXMLLoadUtil.load(FXMLConstants.ANALYSIS_DETAIL_SNPS_INDELS_OVERVIEW_LINK_SOMATIC);
+                linkBox = loader.load();
+                linkArea.getChildren().removeAll(linkArea.getChildren());
+                linkArea.getChildren().add(linkBox);
+            }
+
+            /*if(linkBox != null && kit.equals(ExperimentTypeCode.SOMATIC)) {
+                Map<String,Object> variantInformationMap = (Map<String,Object>) paramMap.get("variantInformation");
+                AnalysisResultVariant analysisResultVariant = (AnalysisResultVariant) paramMap.get("analysisResultVariant");
+
+                //logger.info("init overview link button event binding..");
+                String urlExAC = (variantInformationMap.containsKey("exac_url")) ? (String) variantInformationMap.get("exac_url") : null;
+                String urlBRCAExchange = (variantInformationMap.containsKey("brca_exchange_url")) ? (String) variantInformationMap.get("brca_exchange_url") : null;
+                String urlClinvar = (variantInformationMap.containsKey("clinvar_url")) ? (String) variantInformationMap.get("clinvar_url") : null;
+                String urlNCBI = (variantInformationMap.containsKey("ncbi_url")) ? (String) variantInformationMap.get("ncbi_url") : null;
+                String urlUCSC = (variantInformationMap.containsKey("ucsc_url")) ? (String) variantInformationMap.get("ucsc_url") : null;
+
+                for(Node node : linkBox.getChildren()) {
+                    if(node != null) {
+                        String id = node.getId();
+                        //logger.info(String.format("button id : %s", id));
+
+                        // exACButton
+                        if("exACButton".equals(id)) {
+                            Button exACButton = (Button) node;
+                            if(!StringUtils.isEmpty(urlExAC)) {
+                                exACButton.setOnAction(event -> {
+                                    logger.info(String.format("OPEN EXTERNAL LINK [%s][%s]", id, urlExAC));
+                                    getMainApp().getHostServices().showDocument(urlExAC);
+                                });
+                                exACButton.setDisable(false);
+                            }
+                        }
+
+                        // igvButton
+                        if("igvButton".equals(id)) {
+                            Button igvButton = (Button) node;
+
+                            String sampleId = sample.getId().toString();
+                            String variantId = analysisResultVariant.getVariantId();
+                            String gene = analysisResultVariant.getGene();
+                            String locus = String.format("%s:%,d-%,d", analysisResultVariant.getChromosome(), Integer.parseInt(analysisResultVariant.getGenomicPosition()), Integer.parseInt(analysisResultVariant.getGenomicEndPosition()));
+                            String refGenome = analysisResultVariant.getReferenceGenome();
+                            String humanGenomeVersion = (refGenome.contains("hg19")) ? "hg19" : "hg18";
+
+                            igvButton.setOnAction(event -> {
+                                try {
+                                    loadIGV(sampleId, sample.getName(),	variantId, gene, locus, humanGenomeVersion);
+                                } catch (WebAPIException wae) {
+                                    DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+                                            getMainApp().getPrimaryStage(), true);
+                                } catch (Exception e) {
+                                    DialogUtil.generalShow(AlertType.ERROR, "IGV launch fail", "IGV software doesn't launch.",
+                                            getMainApp().getPrimaryStage(), true);
+                                }
+                            });
+
+                            igvButton.setDisable(false);
+                        }
+
+                        // brcaExchangeButton
+                        if("brcaExchangeButton".equals(id)) {
+                            Button brcaExchangeButton = (Button) node;
+                            if(!StringUtils.isEmpty(urlBRCAExchange)) {
+                                brcaExchangeButton.setOnAction(event -> {
+                                    logger.info(String.format("OPEN EXTERNAL LINK [%s][%s]", id, urlBRCAExchange));
+                                    getMainApp().getHostServices().showDocument(urlBRCAExchange);
+                                });
+                                brcaExchangeButton.setDisable(false);
+                            }
+                        }
+
+                        // clinvarButton
+                        if("clinvarButton".equals(id)) {
+                            Button clinvarButton = (Button) node;
+                            if(!StringUtils.isEmpty(urlClinvar)) {
+                                clinvarButton.setOnAction(event -> {
+                                    logger.info(String.format("OPEN EXTERNAL LINK [%s][%s]", id, urlClinvar));
+                                    getMainApp().getHostServices().showDocument(urlClinvar);
+                                });
+                                clinvarButton.setDisable(false);
+                            }
+                        }
+
+                        // ncbiButton
+                        if("ncbiButton".equals(id)) {
+                            Button ncbiButton = (Button) node;
+                            if(!StringUtils.isEmpty(urlNCBI)) {
+                                ncbiButton.setOnAction(event -> {
+                                    logger.info(String.format("OPEN EXTERNAL LINK [%s][%s]", id, urlNCBI));
+                                    getMainApp().getHostServices().showDocument(urlNCBI);
+                                });
+                                ncbiButton.setDisable(false);
+                            }
+                        }
+
+                        // ucscButton
+                        if("ucscButton".equals(id)) {
+                            Button ucscButton = (Button) node;
+                            if(!StringUtils.isEmpty(urlUCSC)) {
+                                ucscButton.setOnAction(event -> {
+                                    logger.info(String.format("OPEN EXTERNAL LINK [%s][%s]", id, urlUCSC));
+                                    getMainApp().getHostServices().showDocument(urlUCSC);
+                                });
+                                ucscButton.setDisable(false);
+                            }
+                        }
+
+                        // alamutButton
+                        if("alamutButton".equals(id)) {
+                            Button alamutButton = (Button) node;
+
+                            // variant identification transcript data map
+                            Map<String,Object> geneMap = (Map<String,Object>) paramMap.get("gene");
+                            if(geneMap != null && !geneMap.isEmpty() && geneMap.containsKey("transcript")) {
+                                Map<String,Map<String,String>> transcriptDataMap = (Map<String,Map<String,String>>) geneMap.get("transcript");
+                                if(!transcriptDataMap.isEmpty() && transcriptDataMap.size() > 0) {
+                                    alamutButton.setOnAction(event -> {
+                                        int selectedIdx = this.overviewController.getTranscriptComboBoxSelectedIndex();
+                                        logger.info(String.format("selected transcript combobox idx : %s", selectedIdx));
+                                        Map<String,String> map = transcriptDataMap.get(String.valueOf(selectedIdx));
+                                        if(!map.isEmpty() && map.size() > 0) {
+                                            String transcript = (String) map.get("transcript_name");
+                                            String cDNA = (String) map.get("hgvs.c");
+                                            String sampleId = sample.getId().toString();
+                                            String bamFileName = sample.getName() + "_final.bam";
+                                            loadAlamut(transcript, cDNA, sampleId, bamFileName);
+                                        }
+                                    });
+                                    alamutButton.setDisable(false);
+                                }
+                            }
+                        }
+                    }
+                }
+            }*/
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void setTableViewColumn() {

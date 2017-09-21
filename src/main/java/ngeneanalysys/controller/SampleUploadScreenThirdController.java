@@ -114,8 +114,7 @@ public class SampleUploadScreenThirdController extends BaseStageController {
             }
 
             TextField sampleName = (TextField) qcGridPane.getChildren().get(totalIndex);
-            sampleName.setText(!StringUtils.isEmpty(sample.getSampleSheet().getSampleName())
-                    ?  sample.getSampleSheet().getSampleName() : sample.getSampleSheet().getSampleId());
+            sampleName.setText(sample.getName());
 
             ComboBox<ComboBoxItem> dnaQc = (ComboBox<ComboBoxItem>) qcGridPane.getChildren().get(totalIndex + 1);
             dnaQc.getSelectionModel().select((qcData.getDnaQC() != null && "F".equals(qcData.getDnaQC())) ?
@@ -183,7 +182,7 @@ public class SampleUploadScreenThirdController extends BaseStageController {
                 sample.setQcData(qcData);
             }
 
-            if(isNewItem || !sample.getSampleSheet().getSampleName().isEmpty()) {
+            if(isNewItem || !StringUtils.isEmpty(sample.getSampleSheet().getSampleName())) {
                 sample.getSampleSheet().setSampleName(sampleName);
             } else {
                 sample.getSampleSheet().setSampleId(sampleName);
@@ -235,8 +234,7 @@ public class SampleUploadScreenThirdController extends BaseStageController {
                 Map<String, QcData> qcList = WorksheetUtil.readQCDataExcelSheet(file);
 
                 for(Sample sample : sampleArrayList) {
-                    String name = (!StringUtils.isEmpty(sample.getSampleSheet().getSampleName()))
-                            ? sample.getSampleSheet().getSampleName() : sample.getSampleSheet().getSampleId();
+                    String name = sample.getName();
 
                     QcData excelQCData = qcList.get(name);
 

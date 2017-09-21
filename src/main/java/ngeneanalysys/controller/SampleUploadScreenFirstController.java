@@ -15,6 +15,7 @@ import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.FileUtil;
+import ngeneanalysys.util.JsonUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
@@ -52,11 +53,11 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     List<Diseases> diseases = null;
 
-    Map<String, Map<String, Object>> fileMap = new HashMap<>();
+    Map<String, Map<String, Object>> fileMap = null;
 
-    List<File> uploadFileList = new ArrayList<>();
+    List<File> uploadFileList = null;
 
-    List<AnalysisFile> uploadFileData = new ArrayList<>();
+    List<AnalysisFile> uploadFileData = null;
 
     List<TextField> sampleNameTextFieldList = new ArrayList<>();
 
@@ -90,6 +91,9 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     public void show(Parent root) throws IOException {
         standardDataGridPane.getChildren().clear();
         standardDataGridPane.setPrefHeight(0);
+        fileMap = sampleUploadController.getFileMap();
+        uploadFileList = sampleUploadController.getUploadFileList();
+        uploadFileData= sampleUploadController.getUploadFileData();
 
         panels = (List<Panel>)mainController.getBasicInformationMap().get("panels");
         diseases = (List<Diseases>)mainController.getBasicInformationMap().get("diseases");
@@ -102,7 +106,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             sampleNameTextFieldList.add(sampleName);
             sampleName.textProperty().addListener((observable, oldValue, newValue) -> {
                 Set<String> fileName = fileMap.keySet();
-
                 fileName.stream().forEach(file -> {
                     Map<String, Object> fileInfo = fileMap.get(file);
 
@@ -111,7 +114,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                     }
                 });
             });
-
 
             Button select = new Button();
             fileSelectButtonList.add(select);
@@ -213,12 +215,78 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
             //sampleNameTextFieldList.get(row).setText(!StringUtils.isEmpty(item.getSampleName()) ? item.getSampleName() : item.getSampleId());
             sampleNameTextFieldList.get(row).setText(sample.getName());
+            patientIdTextFieldList.get(row).setText((sample.getPaitentId() != null) ? sample.getPaitentId().toString() : "");
+
+            if(sample.getDiseaseId() != null) {
+                ComboBox<ComboBoxItem> disease = diseaseComboBoxList.get(row);
+                disease.getItems().forEach(diseaseItem ->{
+                    if(diseaseItem.getValue().equals(sample.getDiseaseId().toString())) {
+                        disease.getSelectionModel().select(diseaseItem);
+                        return;
+                    }
+                });
+            }
+
+            if(sample.getPanelId() != null) {
+                ComboBox<ComboBoxItem> panel = panelComboBoxList.get(row);
+                panel.getItems().forEach(panelItem ->{
+                    if(panelItem.getValue().equals(sample.getPanelId().toString())) {
+                        panel.getSelectionModel().select(panelItem);
+                        return;
+                    }
+                });
+            }
+
+            sampleSourceTextFieldList.get(row).setText((sample.getSampleSource() != null) ? sample.getSampleSource() : "FFPE" );
+
             row++;
+        }
+    }
+
+    public void saveSampleData() {
+        for (int i = 0; i < standardDataGridPane.getChildren().size(); i += 6) {
+            int rowNum = i / 6;
+            Sample sample = null;
+            if(sampleArrayList.size() > rowNum) {
+                sample = sampleArrayList.get(rowNum);
+            } else {
+                sample = new Sample();
+                sample.setQcData(new QcData());
+                sample.setSampleSheet(new SampleSheet());
+            }
+
+            TextField sampleName = (TextField) standardDataGridPane.getChildren().get(i);
+            if(sampleName.getText().isEmpty()) continue;
+            sample.setName(sampleName.getText());
+
+            TextField patientId = (TextField) standardDataGridPane.getChildren().get(i + 2);
+            sample.setPaitentId(patientId.getText());
+
+            ComboBox<ComboBoxItem> diseaseId = (ComboBox<ComboBoxItem>) standardDataGridPane.getChildren().get(i + 3);
+            sample.setDiseaseId(Integer.parseInt(diseaseId.getSelectionModel().getSelectedItem().getValue()));
+
+            ComboBox<ComboBoxItem> panelIdComboBox = (ComboBox<ComboBoxItem>) standardDataGridPane.getChildren().get(i + 4);
+            Integer panelId = Integer.parseInt(panelIdComboBox.getSelectionModel().getSelectedItem().getValue());
+            sample.setPanelId(panelId);
+
+            Optional<Panel> panel = panels.stream().filter(item -> item.getId().equals(panelId)).findFirst();
+            Panel p = panel.get();
+            sample.setAnalysisType(p.getAnalysisType());
+            TextField sampleSource = (TextField) standardDataGridPane.getChildren().get(i + 5);
+            //sample.setSampleSource((sampleSource.getText() == null || sampleSource.getText().equals(""))
+            //        ? "FFPE" : sampleSource.getText());
+            sample.setSampleSource(p.getSampleSource());
+
         }
     }
 
     @FXML
     public void submit() {
+
+        if(sampleUploadController.getRunId() != -1) {
+            return;
+        }
+
         try {
             if (sampleArrayList != null && sampleArrayList.size() != 0) {
 
@@ -237,47 +305,18 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                     response = apiService.post("/runs", params, null, true);
                     run = response.getObjectBeforeConvertResponseToJSON(Run.class);
                     logger.info(run.toString());
-                } catch (Exception e) {
 
-                }
+                    saveSampleData();
 
-                for (int i = 0; i < standardDataGridPane.getChildren().size(); i += 6) {
-                    int rowNum = i / 6;
-                    Sample sample = null;
-                    if(sampleArrayList.size() > rowNum) {
-                        sample = sampleArrayList.get(rowNum);
-                    } else {
-                        sample = new Sample();
-                        sample.setQcData(new QcData());
-                        sample.setSampleSheet(new SampleSheet());
+                    for (Sample sample : sampleArrayList) {
+                        sample.setRunId(run.getId());
+                        sampleUpload(sample);
                     }
-                    sample.setRunId(run.getId());
 
-                    TextField sampleName = (TextField) standardDataGridPane.getChildren().get(i);
-                    if(sampleName.getText().isEmpty()) continue;
-                    sample.setName(sampleName.getText());
-
-                    TextField patientId = (TextField) standardDataGridPane.getChildren().get(i + 2);
-                    sample.setPaitentId(patientId.getText());
-
-                    ComboBox<ComboBoxItem> diseaseId = (ComboBox<ComboBoxItem>) standardDataGridPane.getChildren().get(i + 3);
-                    sample.setDiseaseId(Integer.parseInt(diseaseId.getSelectionModel().getSelectedItem().getValue()));
-
-                    ComboBox<ComboBoxItem> panelIdComboBox = (ComboBox<ComboBoxItem>) standardDataGridPane.getChildren().get(i + 4);
-                    Integer panelId = Integer.parseInt(panelIdComboBox.getSelectionModel().getSelectedItem().getValue());
-                    sample.setPanelId(panelId);
-
-                    Optional<Panel> panel = panels.stream().filter(item -> item.getId().equals(panelId)).findFirst();
-                    Panel p = panel.get();
-                    sample.setAnalysisType(p.getAnalysisType());
-                    TextField sampleSource = (TextField) standardDataGridPane.getChildren().get(i + 5);
-                    //sample.setSampleSource((sampleSource.getText() == null || sampleSource.getText().equals(""))
-                    //        ? "FFPE" : sampleSource.getText());
-                    sample.setSampleSource(p.getSampleSource());
-
-                    sampleUpload(sample);
-
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+
                 if((uploadFileData != null && uploadFileData.size() > 0) &&
                         (uploadFileList != null && uploadFileList.size() > 0))
                     this.mainController.runningAnalysisRequestUpload(uploadFileData, uploadFileList);
@@ -325,8 +364,9 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         Sample sampleData = response.getObjectBeforeConvertResponseToJSON(Sample.class);
         logger.info(sampleData.toString());
 
-        String name = (!StringUtils.isEmpty(sample.getSampleSheet().getSampleName()))
-                ? sample.getSampleSheet().getSampleName() : sample.getSampleSheet().getSampleId();
+        /*String name = (!StringUtils.isEmpty(sample.getSampleSheet().getSampleName()))
+                ? sample.getSampleSheet().getSampleName() : sample.getSampleSheet().getSampleId();*/
+        String name = sample.getName();
 
         Set<String> fileName = fileMap.keySet();
 
@@ -376,7 +416,9 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     }
 
     @FXML
-    public void next() throws IOException { sampleUploadController.pageSetting(2); }
+    public void next() throws IOException {
+        saveSampleData();
+        sampleUploadController.pageSetting(2); }
 
     @FXML
     public void closeDialog() { sampleUploadController.closeDialog(); }

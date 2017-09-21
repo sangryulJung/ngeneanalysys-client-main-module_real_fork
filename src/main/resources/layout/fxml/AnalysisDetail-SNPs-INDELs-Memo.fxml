@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.shape.*?>
-<?import java.net.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.geometry.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="overviewWrapper" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="272.0" prefWidth="1070.0" styleClass="bg_white" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNPsINDELsMemoController">
+<GridPane fx:id="overviewWrapper" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="272.0" prefWidth="1070.0" styleClass="bg_white" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNPsINDELsMemoController">
    <columnConstraints>
       <ColumnConstraints hgrow="ALWAYS" minWidth="-Infinity" percentWidth="100.0" prefWidth="1070.0" />
    </columnConstraints>
@@ -18,7 +15,7 @@
       <RowConstraints fillHeight="false" minHeight="-Infinity" prefHeight="272.0" />
    </rowConstraints>
    <children>
-      <TableView fx:id="commentListTableView" minHeight="-Infinity" prefHeight="252.0" prefWidth="200.0" styleClass="sub_table" tableMenuButtonVisible="true">
+      <TableView fx:id="memoListTableView" minHeight="-Infinity" prefHeight="252.0" prefWidth="200.0" styleClass="sub_table" tableMenuButtonVisible="true">
         <columns>
           <TableColumn fx:id="dateColumn" prefWidth="130.0" styleClass="alignment_center" text="date" />
           <TableColumn fx:id="typeColumn" prefWidth="120.0" styleClass="alignment_center" text="type" />
