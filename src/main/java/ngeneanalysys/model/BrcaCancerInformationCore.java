@@ -11,7 +11,6 @@ public class BrcaCancerInformationCore {
     private String bicDesignation;
     private String bicNt;
 
-
     /**
      * @return bicCategory
      */

@@ -40,12 +40,6 @@ public class SampleUploadScreenSecondController extends BaseStageController{
     private HomeController homeController;
 
     @FXML
-    private TextField textFieldRunName;
-
-    @FXML
-    private TableView<SampleSheet> tableViewSampleSheetForm;
-
-    @FXML
     private Button buttonNext;
 
     @FXML
@@ -207,15 +201,16 @@ public class SampleUploadScreenSecondController extends BaseStageController{
                 int rowIndex = i / 7;
                 SampleSheet sampleSheet = null;
                 boolean newItem = false;
+                Sample sample = null;
                 if(sampleArrayList.size() < rowIndex + 1) {
-                    Sample sample = new Sample();
+                    sample = new Sample();
                     sampleSheet = new SampleSheet();
                     sample.setSampleSheet(sampleSheet);
                     sampleArrayList.add(sample);
                     newItem = true;
                 } else {
                     //파일에서 읽어온 정보를 갱신할 때
-                    Sample sample = sampleArrayList.get(rowIndex);
+                    sample = sampleArrayList.get(rowIndex);
                     sampleSheet = sample.getSampleSheet();
                 }
                 //샘플시트 수정, 추가 사항 ArrayList에 저장
@@ -224,6 +219,8 @@ public class SampleUploadScreenSecondController extends BaseStageController{
                 } else {
                     sampleSheet.setSampleId(sampleName);
                 }
+
+                sample.setName(sampleName);
 
                 TextField i7IndexIdTextField = (TextField) sampleSheetGridPane.getChildren().get(i + 1);
                 sampleSheet.setI7IndexId(i7IndexIdTextField.getText());
