@@ -1,10 +1,8 @@
 package ngeneanalysys.controller;
 
 import javafx.animation.AnimationTimer;
-import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -23,7 +21,6 @@ import ngeneanalysys.animaition.VariantStatisticsTimer;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.render.SNPsINDELsOverviewRadarGraph;
-import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
 import org.slf4j.Logger;

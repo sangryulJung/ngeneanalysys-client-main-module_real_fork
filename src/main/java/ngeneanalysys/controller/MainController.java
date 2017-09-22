@@ -197,7 +197,7 @@ public class MainController extends BaseStageController {
         //로그인 사용자 세션
         LoginSession loginSession = LoginSessionUtil.getCurrentLoginSession();
         String role = loginSession.getRole();
-        String loginId = loginSession.getLoginId();
+        //String loginId = loginSession.getLoginId();
 
         //우상단 로그인 사용자명 삽입
         loginUserName.setText(loginSession.getName());
@@ -253,7 +253,6 @@ public class MainController extends BaseStageController {
             final List<Panel> panels = (List<Panel>) response.getMultiObjectBeforeConvertResponseToJSON(Panel.class, false);
             basicInformationMap.put("panels", panels);
 
-            response = null;
             response = apiService.get("/diseases", null, null, false);
             List<Diseases> diseases = (List<Diseases>)response.getMultiObjectBeforeConvertResponseToJSON(Diseases.class, false);
             basicInformationMap.put("diseases", diseases);
@@ -390,9 +389,7 @@ public class MainController extends BaseStageController {
 
                 // 마우스 커서 타입 설정
                 menu.setCursor(Cursor.HAND);
-                menu.setOnMouseClicked(event -> {
-                    showTopMenuContents(topMenu, 0);
-                });
+                menu.setOnMouseClicked(event -> showTopMenuContents(topMenu, 0));
 
                 topMenuGroups[idx] = menu;
                 idx++;
@@ -475,8 +472,8 @@ public class MainController extends BaseStageController {
     private void removeTopMenu(int removeIdx) {
         if(topMenus != null && topMenus.length > 0) {
             int idx = 0;
-            TopMenu[] newTopMenus = (TopMenu[]) ArrayUtils.remove(topMenus, removeIdx);
-            topMenuContent = (Node[]) ArrayUtils.remove(topMenuContent, removeIdx);
+            TopMenu[] newTopMenus = ArrayUtils.remove(topMenus, removeIdx);
+            topMenuContent = ArrayUtils.remove(topMenuContent, removeIdx);
             for (TopMenu topMenu : newTopMenus) {
                 topMenu.setDisplayOrder(idx);
                 newTopMenus[idx] = topMenu;
@@ -645,7 +642,7 @@ public class MainController extends BaseStageController {
         alert.setContentText(alertContentText);
 
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK){
+        if (result.isPresent() &&result.get() == ButtonType.OK){
             // 진행중인 분석 요청건이 있는 경우 정지 처리
             if(progressTaskContentArea.getChildren() != null && progressTaskContentArea.getChildren().size() > 0) {
                 if(this.analysisSampleUploadProgressTaskController != null) {
@@ -697,16 +694,17 @@ public class MainController extends BaseStageController {
     /**
      * 분석 요청 업로드 작업 실행
      */
-    public void runningAnalysisRequestUpload(List<AnalysisFile> uploadFileData, List<File> fileList) {
+    public void runningAnalysisRequestUpload(List<AnalysisFile> uploadFileData, List<File> fileList, Run run) {
         try {
             FXMLLoader loader = mainApp.load(FXMLConstants.ANALYSIS_SAMPLE_UPLOAD_PROGRESS_TASK);
-            HBox box = (HBox) loader.load();
+            HBox box = loader.load();
             this.analysisSampleUploadProgressTaskController = loader.getController();
             this.analysisSampleUploadProgressTaskController.setMainController(this);
-            if(uploadFileData != null && uploadFileData.size() > 0) {
+            if(uploadFileData != null && !uploadFileData.isEmpty()) {
                 Map<String,Object> param = new HashMap<>();
                 param.put("fileMap", uploadFileData);
                 param.put("fileList", fileList);
+                param.put("run", run);
                 this.analysisSampleUploadProgressTaskController.setParamMap(param);
             }
             this.analysisSampleUploadProgressTaskController.show(box);

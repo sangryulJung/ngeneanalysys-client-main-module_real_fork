@@ -1,14 +1,11 @@
 package ngeneanalysys.controller;
 
 import com.opencsv.CSVReader;
-import com.sun.javafx.scene.control.skin.TableViewSkinBase;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import ngeneanalysys.controller.extend.BaseStageController;
 import ngeneanalysys.model.Sample;
 import ngeneanalysys.model.SampleSheet;
@@ -36,9 +33,6 @@ public class SampleUploadScreenSecondController extends BaseStageController{
 
     private SampleUploadController sampleUploadController;
 
-    /** 분석자 진행현황 화면 컨트롤러 객체 */
-    private HomeController homeController;
-
     @FXML
     private Button buttonNext;
 
@@ -49,13 +43,6 @@ public class SampleUploadScreenSecondController extends BaseStageController{
 
     @FXML
     private GridPane sampleSheetGridPane;
-
-    /**
-     * @param homeController
-     */
-    public void setHomeController(HomeController homeController) {
-        this.homeController = homeController;
-    }
 
     /**
      * @param sampleUploadController
@@ -91,26 +78,27 @@ public class SampleUploadScreenSecondController extends BaseStageController{
             sampleSheetGridPane.setPrefHeight(sampleSheetGridPane.getPrefHeight() + 26);
 
             TextField sampleName = new TextField();
-            sampleName.setStyle("-fx-text-inner-color: black;");
+            String style = "-fx-text-inner-color: black;";
+            sampleName.setStyle(style);
             sampleName.getStyleClass().add("font_size_9");
 
             TextField samplePlate = new TextField();
-            samplePlate.setStyle("-fx-text-inner-color: black;");
+            samplePlate.setStyle(style);
 
             TextField sampleWell = new TextField();
-            sampleWell.setStyle("-fx-text-inner-color: black;");
+            sampleWell.setStyle(style);
 
             TextField i7IndexId = new TextField();
-            i7IndexId.setStyle("-fx-text-inner-color: black;");
+            i7IndexId.setStyle(style);
 
             TextField index = new TextField();
-            index.setStyle("-fx-text-inner-color: black;");
+            index.setStyle(style);
 
             TextField sampleProject = new TextField();
-            sampleProject.setStyle("-fx-text-inner-color: black;");
+            sampleProject.setStyle(style);
 
             TextField description = new TextField();
-            description.setStyle("-fx-text-inner-color: black;");
+            description.setStyle(style);
 
             sampleSheetGridPane.addRow(row, sampleName, i7IndexId, index, samplePlate, sampleWell, sampleProject, description);
 

@@ -15,16 +15,13 @@ import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.FileUtil;
-import ngeneanalysys.util.JsonUtil;
 import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -141,12 +138,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                         addUploadFile(fastqFilesInFolder, fastqFilePairName);
                     }
 
-                    /*Button button = (Button) e.getSource();
-                    if(fileSelectButtonList.contains(button)) {
-                        int rowIndex = fileSelectButtonList.indexOf(button);
-                        TextField sampleNameTextField = sampleNameTextFieldList.get(rowIndex);
-                        sampleNameTextField.setText(fastqFilePairName);
-                    }*/
                     tableEdit();
                 }
             });
@@ -198,7 +189,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             //샘플의
             if(row > 22) break;
 
-            SampleSheet item = sample.getSampleSheet();
+            //SampleSheet item = sample.getSampleSheet();
 
             //sampleNameTextFieldList.get(row).setText(!StringUtils.isEmpty(item.getSampleName()) ? item.getSampleName() : item.getSampleId());
             sampleNameTextFieldList.get(row).setText(sample.getName());
@@ -257,13 +248,14 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             sample.setPanelId(panelId);
 
             Optional<Panel> panel = panels.stream().filter(item -> item.getId().equals(panelId)).findFirst();
-            Panel p = panel.get();
-            sample.setAnalysisType(p.getAnalysisType());
-            TextField sampleSource = (TextField) standardDataGridPane.getChildren().get(i + 5);
-            //sample.setSampleSource((sampleSource.getText() == null || sampleSource.getText().equals(""))
-            //        ? "FFPE" : sampleSource.getText());
-            sample.setSampleSource(p.getSampleSource());
-
+            if(panel.isPresent()) {
+                Panel p = panel.get();
+                sample.setAnalysisType(p.getAnalysisType());
+                TextField sampleSource = (TextField) standardDataGridPane.getChildren().get(i + 5);
+                //sample.setSampleSource((sampleSource.getText() == null || sampleSource.getText().equals(""))
+                //        ? "FFPE" : sampleSource.getText());
+                sample.setSampleSource(p.getSampleSource());
+            }
         }
     }
 
@@ -275,7 +267,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         }
 
         try {
-            if (sampleArrayList != null && sampleArrayList.size() != 0) {
+            if (sampleArrayList != null && !sampleArrayList.isEmpty()) {
 
                 Map<String, Object> params = new HashMap<>();
                 HttpClientResponse response = null;
@@ -304,9 +296,9 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                     e.printStackTrace();
                 }
 
-                if((uploadFileData != null && uploadFileData.size() > 0) &&
-                        (uploadFileList != null && uploadFileList.size() > 0))
-                    this.mainController.runningAnalysisRequestUpload(uploadFileData, uploadFileList);
+                if((uploadFileData != null && !uploadFileData.isEmpty()) &&
+                        (uploadFileList != null && !uploadFileList.isEmpty()))
+                    this.mainController.runningAnalysisRequestUpload(uploadFileData, uploadFileList, run);
                 logger.info("submit");
                 closeDialog();
             }
@@ -396,9 +388,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         }
         panelBox.getSelectionModel().selectFirst();
         panelBox.valueProperty().addListener((ov, oldValue, newValue) -> {
-
             ComboBoxItem item = newValue;
-
         });
     }
 
@@ -424,13 +414,12 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             List<File> fileList = new ArrayList<>(Arrays.asList(fileArray));
             fileList = fileList.stream().filter(file -> file.getName().endsWith(".fastq.gz")).collect(Collectors.toList());
 
-            while(fileList.size() > 0) {
+            while(!fileList.isEmpty()) {
                 File fastqFile = fileList.get(0);
                 String fastqFilePairName = FileUtil.getFASTQFilePairName(fastqFile.getName());
 
                 List<File> pairFileList = fileList.stream().filter(file ->
                     file.getName().startsWith(fastqFilePairName)).collect(Collectors.toList());
-
 
                 if(pairFileList.size() == 2 && !checkSameSample(fastqFilePairName)) {
                     addUploadFile(pairFileList, fastqFilePairName);
@@ -462,13 +451,13 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     private void addUploadFile(List<File> fileList, String fastqFilePairName) {
         for (File fastqFile : fileList) {
-            Map<String, Object> fileMap = new HashMap<>();
-            fileMap.put("sampleName", fastqFilePairName);
-            fileMap.put("name", fastqFile.getName());
-            fileMap.put("fileSize", fastqFile.length());
-            fileMap.put("isInput", true);
-            fileMap.put("fileType", "FASTQ.GZ");
-            this.fileMap.put(fastqFile.getName(), fileMap);
+            Map<String, Object> file = new HashMap<>();
+            file.put("sampleName", fastqFilePairName);
+            file.put("name", fastqFile.getName());
+            file.put("fileSize", fastqFile.length());
+            file.put("isInput", true);
+            file.put("fileType", "FASTQ.GZ");
+            this.fileMap.put(fastqFile.getName(), file);
         }
         uploadFileList.addAll(fileList);
         Sample sample = new Sample();

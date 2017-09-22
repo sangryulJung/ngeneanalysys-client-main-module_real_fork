@@ -15,7 +15,6 @@ import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.BaseStageController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.LoginSession;
-import ngeneanalysys.model.User;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.CacheMemoryService;
 import ngeneanalysys.util.DialogUtil;

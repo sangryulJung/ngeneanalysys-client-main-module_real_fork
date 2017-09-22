@@ -13,7 +13,6 @@ import ngeneanalysys.service.AnalysisRequestService;
 import ngeneanalysys.task.AnalysisSampleUploadTask;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.StringUtils;
 import org.slf4j.Logger;
 
 import javafx.concurrent.Task;

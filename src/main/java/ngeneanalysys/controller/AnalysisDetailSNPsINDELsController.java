@@ -36,11 +36,9 @@ import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author Jang
@@ -158,8 +156,8 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         });
 
         // 본 샘플의 FASTQC 결과가 "pass"가 아닌 경우 아이콘 출력함.
-        String fastQC = "PASS";//sample.getQc();
-        fastQC = "PASS";/*(StringUtils.isEmpty(fastQC) && sample.getAnalysisResultSummary() != null) ? sample.getAnalysisResultSummary().getQualityControl() : fastQC;*/
+        String fastQC = sample.getQcResult();
+        fastQC = (StringUtils.isEmpty(fastQC) && sample.getAnalysisResultSummary() != null) ? sample.getAnalysisResultSummary().getQualityControlStatus() : fastQC;
         fastQC = (!StringUtils.isEmpty(fastQC)) ? fastQC.toUpperCase() : "NONE";
         if(StringUtils.isEmpty(fastQC) || !"PASS".endsWith(fastQC.toUpperCase())) {
             ImageView imgView = new ImageView(resourceUtil.getImage("/layout/images/icon_warn_big.png"));
@@ -563,7 +561,6 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         } catch(WebAPIException e) {
             logger.info(e.getMessage());
         }
-
 
         try {
             FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_SNPS_INDELS_OVERVIEW);

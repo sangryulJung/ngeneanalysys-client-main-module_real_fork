@@ -6,7 +6,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import ngeneanalysys.controller.extend.BaseStageController;
 import ngeneanalysys.exceptions.ExcelParseException;
 import ngeneanalysys.model.QcData;

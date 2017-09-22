@@ -5,6 +5,7 @@ import javafx.concurrent.Task;
 import ngeneanalysys.controller.AnalysisSampleUploadProgressTaskController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.AnalysisFile;
+import ngeneanalysys.model.Run;
 import ngeneanalysys.service.AnalysisRequestService;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.FileUtil;
@@ -106,6 +107,11 @@ public class AnalysisSampleUploadTask extends Task<Void>{
 
             List<File> fileList = (List<File>) analysisSampleUploadProgressTaskController.getParamMap().get("fileList");
 
+            Run run = (Run)analysisSampleUploadProgressTaskController.getParamMap().get("run");
+
+            currentUploadGroupId = run.getId();
+            currentUploadGroupRefName = run.getName();
+
             for (AnalysisFile fileData : fileDataList) {
 
                 fileList.stream().forEach(file -> {
@@ -156,10 +162,9 @@ public class AnalysisSampleUploadTask extends Task<Void>{
                     Thread.sleep(100);
                     if (currentUploadGroupId > 0) {
                         // 현재 업로드중인 분석 요청 그룹 데이터 삭제
-                        analysisRequestService.removeRequestedJob(currentUploadGroupServerId);
+                        //analysisRequestService.removeRequestedJob(currentUploadGroupId);
                     }
                 }
-
             }
         } catch (Exception e) {
             logger.info(e.getMessage());

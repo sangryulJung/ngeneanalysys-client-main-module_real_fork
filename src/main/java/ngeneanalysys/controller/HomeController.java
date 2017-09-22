@@ -3,8 +3,6 @@ package ngeneanalysys.controller;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,11 +12,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
-import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.Panel;
 import ngeneanalysys.service.APIService;
@@ -26,12 +22,10 @@ import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 import static java.lang.Double.MAX_VALUE;
@@ -117,7 +111,7 @@ public class HomeController extends SubPaneController{
         autoRefreshTimeline.setCycleCount(Animation.INDEFINITE);
         autoRefreshTimeline.play();
 
-        sampleListAutoRefreshTimeline = new Timeline(new KeyFrame(Duration.millis(1000),
+        sampleListAutoRefreshTimeline = new Timeline(new KeyFrame(Duration.millis(3000),
                 ae -> autoUpdateSampleList()));
         sampleListAutoRefreshTimeline.setCycleCount(Animation.INDEFINITE);
         sampleListAutoRefreshTimeline.play();
@@ -162,7 +156,7 @@ public class HomeController extends SubPaneController{
                 response = apiService.get("/runs", params, null, false);
 
                 PagedRun pagedRun = response.getObjectBeforeConvertResponseToJSON(PagedRun.class);
-                logger.info(pagedRun.toString());
+                //logger.info(pagedRun.toString());
                 getPagedRun.complete(pagedRun);
             } catch (Exception e) {
                 getPagedRun.completeExceptionally(e);
@@ -207,6 +201,7 @@ public class HomeController extends SubPaneController{
                 runNameFields.get(i).setText("");
                 runNameFields.get(i).setOnMouseClicked(null);
                 runStatusFields.get(i).setBorder(null);
+                runStatusFields.get(i).setStatus(null);
             }
 
         } catch (Exception e) {
@@ -300,7 +295,8 @@ public class HomeController extends SubPaneController{
                 response = apiService.get("/samples", params, null, false);
 
                 PagedSample pagedSample = response.getObjectBeforeConvertResponseToJSON(PagedSample.class);
-                logger.info(pagedSample.toString());
+                //logger.info(pagedSample.toString());
+                logger.info(pagedSample.getCount() + "");
                 getPagedSample.complete(pagedSample);
             } catch (Exception e) {
                 getPagedSample.completeExceptionally(e);
