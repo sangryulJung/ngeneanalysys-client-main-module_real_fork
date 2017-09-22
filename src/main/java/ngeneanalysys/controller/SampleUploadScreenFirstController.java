@@ -138,21 +138,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
                     //파일은 반드시 짝을 이루어야만 함
                     if(fastqFilesInFolder.size() == 2 && !checkSameSample(fastqFilePairName)) {
-                        for (File fastqFile : fastqFilesInFolder) {
-                            Map<String, Object> fileMap = new HashMap<>();
-                            fileMap.put("sampleName", fastqFilePairName);
-                            fileMap.put("name", fastqFile.getName());
-                            fileMap.put("fileSize", fastqFile.length());
-                            fileMap.put("isInput", true);
-                            fileMap.put("fileType", "FASTQ.GZ");
-                            this.fileMap.put(fastqFile.getName(), fileMap);
-                        }
-                        uploadFileList.addAll(fastqFilesInFolder);
-                        Sample sample = new Sample();
-                        sample.setName(fastqFilePairName);
-                        sample.setSampleSheet(new SampleSheet());
-                        sample.setQcData(new QcData());
-                        sampleArrayList.add(sample);
+                        addUploadFile(fastqFilesInFolder, fastqFilePairName);
                     }
 
                     /*Button button = (Button) e.getSource();
@@ -447,21 +433,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
 
                 if(pairFileList.size() == 2 && !checkSameSample(fastqFilePairName)) {
-                    for(File pairFile : pairFileList) {
-                        Map<String, Object> fileMap = new HashMap<>();
-                        fileMap.put("sampleName", fastqFilePairName);
-                        fileMap.put("name", pairFile.getName());
-                        fileMap.put("fileSize", pairFile.length());
-                        fileMap.put("fileType", "FASTQ.GZ");
-                        this.fileMap.put(pairFile.getName(), fileMap);
-                    }
-                    uploadFileList.addAll(pairFileList);
-                    fileList.removeAll(pairFileList);
-                    Sample sample = new Sample();
-                    sample.setName(fastqFilePairName);
-                    sample.setSampleSheet(new SampleSheet());
-                    sample.setQcData(new QcData());
-                    sampleArrayList.add(sample);
+                    addUploadFile(pairFileList, fastqFilePairName);
                 } else {
                     fileList.removeAll(pairFileList);
                 }
@@ -478,13 +450,31 @@ public class SampleUploadScreenFirstController extends BaseStageController{
      * @return
      */
     private boolean checkSameSample(String name) {
-        boolean overlabCehck = false;
+        boolean overlapCheck = false;
         for(Sample sample : sampleArrayList) {
             if(sample.getName().equals(name)) {
-                overlabCehck = true;
+                overlapCheck = true;
                 break;
             }
         }
-        return overlabCehck;
+        return overlapCheck;
+    }
+
+    private void addUploadFile(List<File> fileList, String fastqFilePairName) {
+        for (File fastqFile : fileList) {
+            Map<String, Object> fileMap = new HashMap<>();
+            fileMap.put("sampleName", fastqFilePairName);
+            fileMap.put("name", fastqFile.getName());
+            fileMap.put("fileSize", fastqFile.length());
+            fileMap.put("isInput", true);
+            fileMap.put("fileType", "FASTQ.GZ");
+            this.fileMap.put(fastqFile.getName(), fileMap);
+        }
+        uploadFileList.addAll(fileList);
+        Sample sample = new Sample();
+        sample.setName(fastqFilePairName);
+        sample.setSampleSheet(new SampleSheet());
+        sample.setQcData(new QcData());
+        sampleArrayList.add(sample);
     }
 }
