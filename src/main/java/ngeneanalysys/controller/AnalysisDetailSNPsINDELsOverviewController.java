@@ -413,7 +413,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
             // 콤보박스 아이템 목록 생성
             for(VariantTranscript variantTranscript : transcriptDataList) {
                 comboItemList.add(variantTranscript.getTranscriptId());
-                if("Y".equalsIgnoreCase(variantTranscript.getIsDefault())) {
+                if(variantTranscript.getIsDefault()) {
                     defaultTranscript = variantTranscript.getTranscriptId();
                 }
             }

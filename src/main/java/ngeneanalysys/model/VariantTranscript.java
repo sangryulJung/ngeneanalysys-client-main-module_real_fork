@@ -11,7 +11,7 @@ public class VariantTranscript {
     private String codingDna;
     private String protein;
     private String genomicDna;
-    private String isDefault;
+    private Boolean isDefault;
 
     /**
      * @return variantId
@@ -100,14 +100,14 @@ public class VariantTranscript {
     /**
      * @return isDefault
      */
-    public String getIsDefault() {
+    public Boolean getIsDefault() {
         return isDefault;
     }
 
     /**
      * @param isDefault
      */
-    public void setIsDefault(String isDefault) {
+    public void setIsDefault(Boolean isDefault) {
         this.isDefault = isDefault;
     }
 }
