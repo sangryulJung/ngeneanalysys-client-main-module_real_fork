@@ -39,6 +39,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Jang
@@ -397,6 +398,11 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             //if(list == null || list.isEmpty()) list = dummyVariantList();
             ObservableList<AnalysisResultVariant> displayList = null;
 
+            if(acmgFilterCode != null && sample.getAnalysisType().equals(ExperimentTypeCode.GERMLINE.getDescription())) {
+                list = list.stream().filter(variant ->
+                        variant.getSwPathogenicityLevel().equals(acmgFilterCode.getAlias())).collect(Collectors.toList());
+            }
+
             // 하단 탭 활성화 토글
             setDetailTabActivationToggle(true);
 
@@ -548,12 +554,10 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         paramMap.put("variant", analysisResultVariant);
 
         try {
-
             HttpClientResponse response = apiService.get("/analysisResults/variantTranscripts/" + analysisResultVariant.getId(), null, null, false);
             List<VariantTranscript> variantTranscripts = (List<VariantTranscript>) response.getMultiObjectBeforeConvertResponseToJSON(VariantTranscript.class, false);
             paramMap.put("variantTranscripts", variantTranscripts);
 
-            response = null;
             response = apiService.get("/analysisResults/variantStatistics/" + analysisResultVariant.getId(), null, null, false);
             VariantStatistics variantStatistics = response.getObjectBeforeConvertResponseToJSON(VariantStatistics.class);
             paramMap.put("variantStatistics", variantStatistics);
