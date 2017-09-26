@@ -48,6 +48,9 @@ public class AnalysisResultVariant implements Serializable {
 
 	private PopulationFrequency populationFrequency;
 
+	private Interpretation interpretation;
+
+
 	/**
 	 * @return sequenceInfo
 	 */
@@ -278,5 +281,13 @@ public class AnalysisResultVariant implements Serializable {
 	 */
 	public void setVariantExpression(VariantExpression variantExpression) {
 		this.variantExpression = variantExpression;
+	}
+
+	public Interpretation getInterpretation() {
+		return interpretation;
+	}
+
+	public void setInterpretation(Interpretation interpretation) {
+		this.interpretation = interpretation;
 	}
 }

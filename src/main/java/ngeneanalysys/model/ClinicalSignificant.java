@@ -11,9 +11,6 @@ public class ClinicalSignificant {
     private BrcaCancerInformationCore bic;
     private String kohbraPatient;
     private String enigma;
-    private BigDecimal polyphen2;
-    private BigDecimal sift;
-    private String mutationTaster;
     private BrcaExchange be;
 
     /**
@@ -70,48 +67,6 @@ public class ClinicalSignificant {
      */
     public void setEnigma(String enigma) {
         this.enigma = enigma;
-    }
-
-    /**
-     * @return polyphen2
-     */
-    public BigDecimal getPolyphen2() {
-        return polyphen2;
-    }
-
-    /**
-     * @param polyphen2
-     */
-    public void setPolyphen2(BigDecimal polyphen2) {
-        this.polyphen2 = polyphen2;
-    }
-
-    /**
-     * @return sift
-     */
-    public BigDecimal getSift() {
-        return sift;
-    }
-
-    /**
-     * @param sift
-     */
-    public void setSift(BigDecimal sift) {
-        this.sift = sift;
-    }
-
-    /**
-     * @return mutationTaster
-     */
-    public String getMutationTaster() {
-        return mutationTaster;
-    }
-
-    /**
-     * @param mutationTaster
-     */
-    public void setMutationTaster(String mutationTaster) {
-        this.mutationTaster = mutationTaster;
     }
 
     /**

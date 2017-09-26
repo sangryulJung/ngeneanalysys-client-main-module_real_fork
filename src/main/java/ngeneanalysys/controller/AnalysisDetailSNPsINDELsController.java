@@ -1038,17 +1038,6 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         kohbraFrequency.setCellValueFactory(cellData -> new SimpleStringProperty(
                 cellData.getValue().getPopulationFrequency().getKohbraFreq() != null ? String.valueOf(Double.parseDouble(ConvertUtil.convertFormatNumber("%.2f",cellData.getValue().getPopulationFrequency().getKohbraFreq().toString(), ""))) : ""));
 
-        TableColumn<AnalysisResultVariant, String> polyphen2 = new TableColumn<>("polyphen2");
-        polyphen2.setCellValueFactory(cellData -> new SimpleStringProperty(
-                cellData.getValue().getClinicalSignificant().getPolyphen2() != null ? String.valueOf(Double.parseDouble(ConvertUtil.convertFormatNumber("%.2f",cellData.getValue().getClinicalSignificant().getPolyphen2().toString(), ""))) : ""));
-
-        TableColumn<AnalysisResultVariant, String> sift = new TableColumn<>("sift");
-        sift.setCellValueFactory(cellData -> new SimpleStringProperty(
-                cellData.getValue().getClinicalSignificant().getSift() != null ? String.valueOf(Double.parseDouble(ConvertUtil.convertFormatNumber("%.2f",cellData.getValue().getClinicalSignificant().getSift().toString(), ""))) : ""));
-
-        TableColumn<AnalysisResultVariant, String> mutationTaster = new TableColumn<>("mutationtaster");
-        mutationTaster.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getMutationTaster()));
-
         TableColumn<AnalysisResultVariant, Integer> variantNum = new TableColumn<>("variantNum");
         variantNum.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getVariantNum()).asObject());
         variantNum.setVisible(false);
@@ -1077,7 +1066,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         clinVarDisease.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getClinVar().getClinVarDisease()));
         clinVarDisease.setVisible(false);
 
-        variantListTableView.getColumns().addAll(kohbraPatient, kohbraFrequency, polyphen2, sift, mutationTaster, variantNum, refGenomeVer, leftSequence, rightSequence
+        variantListTableView.getColumns().addAll(kohbraPatient, kohbraFrequency, variantNum, refGenomeVer, leftSequence, rightSequence
                 ,genomicCoordinate, dbSnpRsId, clinVarDisease);
 
         if(panel != null && ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
