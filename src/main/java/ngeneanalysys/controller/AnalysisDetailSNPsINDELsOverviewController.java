@@ -248,6 +248,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
         //showLink();
 
 
+/*
 
         if("SOMATIC".equals(sample.getAnalysisType())) {
             significantArea.setVisible(false);
@@ -255,6 +256,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
             // SIGNIFICANT 레이더 차트 화면 출력
             //showClinicalSignificantGraph();
         }
+*/
 
         analysisDetailSNPsINDELsController.subTabOverview.setContent(root);
 

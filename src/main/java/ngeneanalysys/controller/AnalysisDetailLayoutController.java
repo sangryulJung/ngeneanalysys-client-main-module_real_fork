@@ -16,6 +16,7 @@ import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.AnalysisResultSummary;
 import ngeneanalysys.model.Panel;
 import ngeneanalysys.model.Sample;
+import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.render.AnalysisDetailTabItem;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.FXMLLoadUtil;
@@ -71,7 +72,9 @@ public class AnalysisDetailLayoutController extends SubPaneController {
     /** 현재 샘플의 고유 아아디 */
     private Integer sampleId;
 
-    private Sample sample;
+    private SampleView sample;
+
+    private AnalysisResultSummary analysisResultSummary;
 
     private AnalysisDetailOverviewController analysisDetailOverviewController;
 
@@ -94,19 +97,22 @@ public class AnalysisDetailLayoutController extends SubPaneController {
         try {
             HttpClientResponse response = apiService.get("samples/" + sampleId, null, null, true);
 
-            sample = response.getObjectBeforeConvertResponseToJSON(Sample.class);
+            sample = response.getObjectBeforeConvertResponseToJSON(SampleView.class);
 
             response = apiService.get("analysisResults/" + sampleId + "/summary", null, null, true);
 
-            sample.setAnalysisResultSummary(response.getObjectBeforeConvertResponseToJSON(AnalysisResultSummary.class));
+            analysisResultSummary = response.getObjectBeforeConvertResponseToJSON(AnalysisResultSummary.class);
+
+            //sample.setAnalysisResultSummary(response.getObjectBeforeConvertResponseToJSON(AnalysisResultSummary.class));
 
             getParamMap().put("sample", sample);
 
             sampleIdLabel.setText(String.format("#%s", sample.getId()));
             List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
-            if(panels != null && !panels.isEmpty()) {
+            /*if(panels != null && !panels.isEmpty()) {
                 kitLabel.setText(panels.stream().filter(panel -> panel.getId().equals(sample.getPanelId())).findFirst().get().getName());
-            }
+            }*/
+            kitLabel.setText(sample.getPanelName());
             experimentLabel.setText(sample.getAnalysisType());
             sampleNameLabel.setText(sample.getName());
 

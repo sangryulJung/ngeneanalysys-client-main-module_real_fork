@@ -33,12 +33,6 @@ public class Sample {
     @JsonProperty("diseaseId")
     private Integer diseaseId;
 
-    @JsonProperty("analysisType")
-    private String analysisType;
-
-    @JsonProperty("sampleSource")
-    private String sampleSource;
-
     @JsonProperty("qcResult")
     private String qcResult;
 
@@ -194,34 +188,6 @@ public class Sample {
     }
 
     /**
-     * @return analysisType
-     */
-    public String getAnalysisType() {
-        return analysisType;
-    }
-
-    /**
-     * @param analysisType
-     */
-    public void setAnalysisType(String analysisType) {
-        this.analysisType = analysisType;
-    }
-
-    /**
-     * @return sampleSource
-     */
-    public String getSampleSource() {
-        return sampleSource;
-    }
-
-    /**
-     * @param sampleSource
-     */
-    public void setSampleSource(String sampleSource) {
-        this.sampleSource = sampleSource;
-    }
-
-    /**
      * @return qcResult
      */
     public String getQcResult() {
@@ -358,8 +324,6 @@ public class Sample {
                 ", patientId='" + patientId + '\'' +
                 ", panelId=" + panelId +
                 ", diseaseId=" + diseaseId +
-                ", analysisType='" + analysisType + '\'' +
-                ", sampleSource='" + sampleSource + '\'' +
                 ", qcResult='" + qcResult + '\'' +
                 ", inputFType='" + inputFType + '\'' +
                 ", sampleStatus=" + sampleStatus +

@@ -207,15 +207,21 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
             if(sample.getPanelId() != null) {
                 ComboBox<ComboBoxItem> panel = panelComboBoxList.get(row);
+                TextField sampleSource = sampleSourceTextFieldList.get(row);
                 panel.getItems().forEach(panelItem ->{
                     if(panelItem.getValue().equals(sample.getPanelId().toString())) {
                         panel.getSelectionModel().select(panelItem);
+                        if(panels != null && !panels.isEmpty()) {
+                            final Optional<Panel> selectPanel = panels.stream().filter(item -> item.getId().equals(sample.getPanelId())).findFirst();
+                            if(selectPanel.isPresent())
+                                sampleSource.setText(selectPanel.get().getSampleSource());
+                        }
                         return;
                     }
                 });
             }
 
-            sampleSourceTextFieldList.get(row).setText((sample.getSampleSource() != null) ? sample.getSampleSource() : "FFPE" );
+            //sampleSourceTextFieldList.get(row).setText((sample.getSampleSource() != null) ? sample.getSampleSource() : "FFPE" );
 
             row++;
         }
@@ -250,11 +256,11 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             Optional<Panel> panel = panels.stream().filter(item -> item.getId().equals(panelId)).findFirst();
             if(panel.isPresent()) {
                 Panel p = panel.get();
-                sample.setAnalysisType(p.getAnalysisType());
+                //sample.setAnalysisType(p.getAnalysisType());
                 TextField sampleSource = (TextField) standardDataGridPane.getChildren().get(i + 5);
                 //sample.setSampleSource((sampleSource.getText() == null || sampleSource.getText().equals(""))
                 //        ? "FFPE" : sampleSource.getText());
-                sample.setSampleSource(p.getSampleSource());
+                //sample.setSampleSource(p.getSampleSource());
             }
         }
     }
@@ -316,8 +322,8 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         params.put("patientId", sample.getPaitentId());
         params.put("panelId", sample.getPanelId());
         params.put("diseaseId", sample.getDiseaseId());
-        params.put("analysisType", sample.getAnalysisType());
-        params.put("sampleSource", sample.getSampleSource());
+//        params.put("analysisType", sample.getAnalysisType());
+//        params.put("sampleSource", sample.getSampleSource());
         params.put("inputFType", "FASTQ.GZ");
         Map<String, String> sampleSheet = new HashMap<>();
         SampleSheet sampleSheet1 = sample.getSampleSheet();

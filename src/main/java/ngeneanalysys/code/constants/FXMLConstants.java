@@ -144,6 +144,9 @@ public class FXMLConstants {
 	/** 시스템 매니저 로그 정보 화면 */
 	public static final String SYSTEM_MANAGER_LOG_LIST = "/layout/fxml/systemManager/SystemManagerSystemLogs.fxml";
 
+	/** 시스템 매니저 분석 상태 화면 */
+	public static final String SYSTEM_MANAGER_PANEL = "/layout/fxml/systemManager/SystemManagerPanel.fxml";
+
 	/** 사용자 추가/수정 화면 */
 	public static final String USER_ACCOUNT = "/layout/fxml/systemManager/UserAccount.fxml";
 

@@ -229,12 +229,12 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         tabArea.getTabs().add(subTabLowConfidence);
 
         //필터 박스 출력
-        if("GERMLINE".equals(sample.getAnalysisType())) {
+        /*if("GERMLINE".equals(sample.getAnalysisType())) {
             setFilterBox();
         } else {
             filterTitle.setText("Tier Filter");
             setTierFilterBox();
-        }
+        }*/
 
 
         showVariantList(null, 0);
@@ -398,10 +398,10 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             //if(list == null || list.isEmpty()) list = dummyVariantList();
             ObservableList<AnalysisResultVariant> displayList = null;
 
-            if(acmgFilterCode != null && sample.getAnalysisType().equals(ExperimentTypeCode.GERMLINE.getDescription())) {
+            /*if(acmgFilterCode != null && sample.getAnalysisType().equals(ExperimentTypeCode.GERMLINE.getDescription())) {
                 list = list.stream().filter(variant ->
                         variant.getSwPathogenicityLevel().equals(acmgFilterCode.getAlias())).collect(Collectors.toList());
-            }
+            }*/
 
             // 하단 탭 활성화 토글
             setDetailTabActivationToggle(true);
@@ -743,7 +743,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
     @SuppressWarnings("unchecked")
     public void showLink() {
         Sample sample = (Sample) paramMap.get("sample");
-        String analysisType = sample.getAnalysisType();
+        String analysisType = null;//sample.getAnalysisType();
         FXMLLoader loader = null;
         Pane linkBox = null;
 
@@ -892,7 +892,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
     }
 
     public void setTableViewColumn() {
-        if(ExperimentTypeCode.SOMATIC.getDescription().equalsIgnoreCase(sample.getAnalysisType())) {
+        if(ExperimentTypeCode.SOMATIC.getDescription().equalsIgnoreCase(""/*sample.getAnalysisType()*/)) {
             TableColumn<AnalysisResultVariant, String> swTier = new TableColumn<>("Tier");
             swTier.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSwTier()));
 
@@ -1016,7 +1016,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         variantListTableView.getColumns().addAll(warn, report, type, codCons, gene, strand, transcript, ntChange, aaChange, ntChangeBIC, chr, ref
                 ,alt, zigosity, exon, exonBic, fraction ,refNum, altNum, depth, thousandGenomics, exac, esp, korean, clinVarAcc, clinVarClass);
 
-        if(ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(sample.getAnalysisType())) {
+        if(ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(""/*sample.getAnalysisType()*/)) {
             TableColumn<AnalysisResultVariant, String> bicClass = new TableColumn<>("BIC.Class");
             clinVarClass.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBic().getBicClass()));
 
@@ -1078,7 +1078,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         variantListTableView.getColumns().addAll(kohbraPatient, kohbraFrequency, polyphen2, sift, mutationTaster, variantNum, refGenomeVer, leftSequence, rightSequence
                 ,genomicCoordinate, dbSnpRsId, clinVarDisease);
 
-        if(ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(sample.getAnalysisType())) {
+        if(ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(/*sample.getAnalysisType()*/"")) {
             TableColumn<AnalysisResultVariant, String> bicCategory = new TableColumn<>("BIC.Category");
             bicCategory.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBic().getBicCategory()));
             bicCategory.setVisible(false);
