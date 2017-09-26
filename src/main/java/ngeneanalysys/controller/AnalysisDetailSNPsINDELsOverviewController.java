@@ -203,6 +203,8 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
 
     private Sample sample;
 
+    private Panel panel;
+
     private AnalysisResultVariant variant;
 
     /**
@@ -222,6 +224,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
     @Override
     public void show(Parent root) throws IOException {
         sample = (Sample) paramMap.get("sample");
+        panel = (Panel) paramMap.get("panel");
         variant = (AnalysisResultVariant) paramMap.get("variant");
 
         // 그래프 애니메이션 아이콘 출력여부 체크
@@ -248,15 +251,13 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
         //showLink();
 
 
-/*
 
-        if("SOMATIC".equals(sample.getAnalysisType())) {
+        if(panel != null && "SOMATIC".equals(panel.getAnalysisType())) {
             significantArea.setVisible(false);
         } else {
             // SIGNIFICANT 레이더 차트 화면 출력
             //showClinicalSignificantGraph();
         }
-*/
 
         analysisDetailSNPsINDELsController.subTabOverview.setContent(root);
 

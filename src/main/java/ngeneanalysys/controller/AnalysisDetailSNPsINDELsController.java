@@ -116,6 +116,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
     private final double overviewExpandedHeight = 304;
 
     Sample sample = null;
+    Panel panel = null;
 
     @Override
     public void show(Parent root) throws IOException {
@@ -124,6 +125,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         apiService.setStage(getMainController().getPrimaryStage());
 
         sample = (Sample)paramMap.get("sample");
+        panel = (Panel)paramMap.get("panel");
         /*if(sample.getAnalysisResultSummary() == null) {
             dummyDataCreated();
         }*/
@@ -229,12 +231,12 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         tabArea.getTabs().add(subTabLowConfidence);
 
         //필터 박스 출력
-        /*if("GERMLINE".equals(sample.getAnalysisType())) {
+        if(panel != null &&"GERMLINE".equals(panel.getAnalysisType())) {
             setFilterBox();
         } else {
             filterTitle.setText("Tier Filter");
             setTierFilterBox();
-        }*/
+        }
 
 
         showVariantList(null, 0);
@@ -398,10 +400,10 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             //if(list == null || list.isEmpty()) list = dummyVariantList();
             ObservableList<AnalysisResultVariant> displayList = null;
 
-            /*if(acmgFilterCode != null && sample.getAnalysisType().equals(ExperimentTypeCode.GERMLINE.getDescription())) {
+            if(acmgFilterCode != null && panel != null && ExperimentTypeCode.GERMLINE.getDescription().equals(panel.getAnalysisType())) {
                 list = list.stream().filter(variant ->
                         variant.getSwPathogenicityLevel().equals(acmgFilterCode.getAlias())).collect(Collectors.toList());
-            }*/
+            }
 
             // 하단 탭 활성화 토글
             setDetailTabActivationToggle(true);
@@ -743,7 +745,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
     @SuppressWarnings("unchecked")
     public void showLink() {
         Sample sample = (Sample) paramMap.get("sample");
-        String analysisType = null;//sample.getAnalysisType();
+        String analysisType = (panel != null) ? panel.getAnalysisType() : "";
         FXMLLoader loader = null;
         Pane linkBox = null;
 
@@ -892,7 +894,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
     }
 
     public void setTableViewColumn() {
-        if(ExperimentTypeCode.SOMATIC.getDescription().equalsIgnoreCase(""/*sample.getAnalysisType()*/)) {
+        if(panel != null && ExperimentTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             TableColumn<AnalysisResultVariant, String> swTier = new TableColumn<>("Tier");
             swTier.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSwTier()));
 
@@ -1016,7 +1018,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         variantListTableView.getColumns().addAll(warn, report, type, codCons, gene, strand, transcript, ntChange, aaChange, ntChangeBIC, chr, ref
                 ,alt, zigosity, exon, exonBic, fraction ,refNum, altNum, depth, thousandGenomics, exac, esp, korean, clinVarAcc, clinVarClass);
 
-        if(ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(""/*sample.getAnalysisType()*/)) {
+        if(panel != null && ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             TableColumn<AnalysisResultVariant, String> bicClass = new TableColumn<>("BIC.Class");
             clinVarClass.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBic().getBicClass()));
 
@@ -1078,7 +1080,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         variantListTableView.getColumns().addAll(kohbraPatient, kohbraFrequency, polyphen2, sift, mutationTaster, variantNum, refGenomeVer, leftSequence, rightSequence
                 ,genomicCoordinate, dbSnpRsId, clinVarDisease);
 
-        if(ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(/*sample.getAnalysisType()*/"")) {
+        if(panel != null && ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             TableColumn<AnalysisResultVariant, String> bicCategory = new TableColumn<>("BIC.Category");
             bicCategory.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBic().getBicCategory()));
             bicCategory.setVisible(false);

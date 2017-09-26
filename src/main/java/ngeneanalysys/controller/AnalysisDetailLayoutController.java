@@ -16,7 +16,6 @@ import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.AnalysisResultSummary;
 import ngeneanalysys.model.Panel;
 import ngeneanalysys.model.Sample;
-import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.render.AnalysisDetailTabItem;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.FXMLLoadUtil;
@@ -27,6 +26,7 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Jang
@@ -72,9 +72,9 @@ public class AnalysisDetailLayoutController extends SubPaneController {
     /** 현재 샘플의 고유 아아디 */
     private Integer sampleId;
 
-    private SampleView sample;
+    private Sample sample;
 
-    private AnalysisResultSummary analysisResultSummary;
+    private Panel panel;
 
     private AnalysisDetailOverviewController analysisDetailOverviewController;
 
@@ -97,23 +97,26 @@ public class AnalysisDetailLayoutController extends SubPaneController {
         try {
             HttpClientResponse response = apiService.get("samples/" + sampleId, null, null, true);
 
-            sample = response.getObjectBeforeConvertResponseToJSON(SampleView.class);
+            sample = response.getObjectBeforeConvertResponseToJSON(Sample.class);
 
             response = apiService.get("analysisResults/" + sampleId + "/summary", null, null, true);
 
-            analysisResultSummary = response.getObjectBeforeConvertResponseToJSON(AnalysisResultSummary.class);
-
-            //sample.setAnalysisResultSummary(response.getObjectBeforeConvertResponseToJSON(AnalysisResultSummary.class));
+            sample.setAnalysisResultSummary(response.getObjectBeforeConvertResponseToJSON(AnalysisResultSummary.class));
 
             getParamMap().put("sample", sample);
 
             sampleIdLabel.setText(String.format("#%s", sample.getId()));
             List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
-            /*if(panels != null && !panels.isEmpty()) {
-                kitLabel.setText(panels.stream().filter(panel -> panel.getId().equals(sample.getPanelId())).findFirst().get().getName());
-            }*/
-            kitLabel.setText(sample.getPanelName());
-            experimentLabel.setText(sample.getAnalysisType());
+            if(panels != null && !panels.isEmpty()) {
+                Optional<Panel> optionalPanel = panels.stream().filter(panel -> panel.getId().equals(sample.getPanelId())).findFirst();
+                if(optionalPanel.isPresent()) {
+                    this.panel = optionalPanel.get();
+                    getParamMap().put("panel", panel);
+                    kitLabel.setText(optionalPanel.get().getName());
+                    experimentLabel.setText(optionalPanel.get().getAnalysisType());
+                }
+            }
+            /*experimentLabel.setText(sample.getAnalysisType());*/
             sampleNameLabel.setText(sample.getName());
 
             String fastQC = sample.getQcResult();
@@ -135,7 +138,7 @@ public class AnalysisDetailLayoutController extends SubPaneController {
         for (AnalysisDetailTabMenuCode code : AnalysisDetailTabMenuCode.values()) {
             AnalysisDetailTabItem item = code.getItem();
 
-            if(sample.getAnalysisType() != null && "GERMLINE".equals(sample.getAnalysisType())
+            if(panel.getAnalysisType() != null && "GERMLINE".equals(panel.getAnalysisType())
                     && "OVERVIEW".equals(item.getTabName())){
                 continue;
             }
