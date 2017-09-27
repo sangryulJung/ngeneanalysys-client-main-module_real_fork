@@ -3,6 +3,7 @@ package ngeneanalysys.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.joda.time.DateTime;
 
 public class Panel {
     private Integer id;
@@ -11,6 +12,7 @@ public class Panel {
     private String target;
     private String analysisType;
     private String sampleSource;
+    private DateTime createdAt;
     private Integer deleted;
 
     public Integer getId() {
@@ -39,6 +41,14 @@ public class Panel {
 
     public Integer getDeleted() {
         return deleted;
+    }
+
+    public DateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(DateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override
