@@ -118,6 +118,9 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
     Sample sample = null;
     Panel panel = null;
 
+    //VariantList
+    List<AnalysisResultVariant> list = null;
+
     @Override
     public void show(Parent root) throws IOException {
         logger.info("show SNPs-INDELs");
@@ -230,6 +233,8 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         subTabLowConfidence = new Tab(SNPsINDELsTabMenuCode.LOWCONFIDENCE.getMenuName());
         tabArea.getTabs().add(subTabLowConfidence);
 
+        showVariantList(null, 0);
+
         //필터 박스 출력
         if(panel != null &&"GERMLINE".equals(panel.getAnalysisType())) {
             setFilterBox();
@@ -237,9 +242,6 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             filterTitle.setText("Tier Filter");
             setTierFilterBox();
         }
-
-
-        showVariantList(null, 0);
 
         // Scene Init
         Scene scene = new Scene(root);
@@ -250,27 +252,29 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
     public void setTierFilterBox() {
         AnalysisResultSummary summary = sample.getAnalysisResultSummary();
 
-        VBox totalVariantBox = getFilterBox(ACMGFilterCode.TOTAL_VARIANT, summary.getAllVariantCount());
+        Map<String, Long> count = list.stream().collect(Collectors.groupingBy(AnalysisResultVariant::getSwTier, Collectors.counting()));
+
+        VBox totalVariantBox = getFilterBox(ACMGFilterCode.TOTAL_VARIANT, list.size());
         filterList.getChildren().add(totalVariantBox);
         filterList.setMargin(totalVariantBox, new Insets(0, 0, 0, 5));
 
         // Tier I
-        VBox predictionABox = getFilterBox(ACMGFilterCode.TIER_ONE, summary.getLevel1VariantCount());
+        VBox predictionABox = getFilterBox(ACMGFilterCode.TIER_ONE, (count.get("T1") != null ? count.get("T1").intValue() : 0));
         filterList.getChildren().add(predictionABox);
         filterList.setMargin(predictionABox, new Insets(0, 0, 0, 5));
 
         // Tier II
-        VBox predictionBBox = getFilterBox(ACMGFilterCode.TIER_TWO, summary.getLevel2VariantCount());
+        VBox predictionBBox = getFilterBox(ACMGFilterCode.TIER_TWO, (count.get("T2") != null ? count.get("T2").intValue() : 0));
         filterList.getChildren().add(predictionBBox);
         filterList.setMargin(predictionBBox, new Insets(0, 0, 0, 5));
 
         // Tier III
-        VBox predictionCBox = getFilterBox(ACMGFilterCode.TIER_THREE, summary.getLevel3VariantCount());
+        VBox predictionCBox = getFilterBox(ACMGFilterCode.TIER_THREE, (count.get("T3") != null ? count.get("T3").intValue() : 0));
         filterList.getChildren().add(predictionCBox);
         filterList.setMargin(predictionCBox, new Insets(0, 0, 0, 5));
 
         // Tier IV
-        VBox predictionDBox = getFilterBox(ACMGFilterCode.TIER_FOUR, summary.getLevel4VariantCount());
+        VBox predictionDBox = getFilterBox(ACMGFilterCode.TIER_FOUR, (count.get("T4") != null ? count.get("T4").intValue() : 0));
         filterList.getChildren().add(predictionDBox);
         filterList.setMargin(predictionDBox, new Insets(0, 0, 0, 5));
 
@@ -397,12 +401,17 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             AnalysisResultVariantList analysisResultVariantList = response.getObjectBeforeConvertResponseToJSON(AnalysisResultVariantList.class);
 
             List<AnalysisResultVariant> list = analysisResultVariantList.getResult();
+            this.list = list;
+
             //if(list == null || list.isEmpty()) list = dummyVariantList();
             ObservableList<AnalysisResultVariant> displayList = null;
 
             if(acmgFilterCode != null && panel != null && ExperimentTypeCode.GERMLINE.getDescription().equals(panel.getAnalysisType())) {
                 list = list.stream().filter(variant ->
                         variant.getSwPathogenicityLevel().equals(acmgFilterCode.getAlias())).collect(Collectors.toList());
+            } else if(acmgFilterCode != null && panel != null && ExperimentTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType())) {
+                list = list.stream().filter(variant ->
+                        variant.getSwTier().equals(acmgFilterCode.getAlias())).collect(Collectors.toList());
             }
 
             // 하단 탭 활성화 토글
@@ -758,6 +767,39 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                 linkArea.getChildren().add(linkBox);
             }
 
+
+            if(linkBox != null && analysisType.equals(ExperimentTypeCode.SOMATIC.getDescription())) {
+                for(Node node : linkBox.getChildren()) {
+                    if (node != null) {
+                        String id = node.getId();
+                        if ("igvButton".equals(id)) {
+                            Button igvButton = (Button) node;
+
+                            String sampleId = sample.getId().toString();
+                            String variantId = selectedAnalysisResultVariant.getId().toString();
+                            String gene = selectedAnalysisResultVariant.getSequenceInfo().getGene();
+                            String locus = "chr13:32,911,888-32,911,888";//String.format("%s:%,d-%,d", selectedAnalysisResultVariant.getSequenceInfo().getChromosome(), Integer.parseInt(analysisResultVariant.getGenomicPosition()), Integer.parseInt(analysisResultVariant.getGenomicEndPosition()));
+                            String refGenome = selectedAnalysisResultVariant.getSequenceInfo().getRefGenomeVer();
+                            String humanGenomeVersion = (refGenome.contains("hg19")) ? "hg19" : "hg18";
+
+                            igvButton.setOnAction(event -> {
+                                try {
+                                    loadIGV(sampleId, sample.getName(), variantId, gene, locus, humanGenomeVersion);
+                                } catch (WebAPIException wae) {
+                                    DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+                                            getMainApp().getPrimaryStage(), true);
+                                } catch (Exception e) {
+                                    DialogUtil.generalShow(Alert.AlertType.ERROR, "IGV launch fail", "IGV software doesn't launch.",
+                                            getMainApp().getPrimaryStage(), true);
+                                }
+                            });
+
+                            igvButton.setDisable(false);
+                        }
+                    }
+                }
+            }
+
             /*if(linkBox != null && kit.equals(ExperimentTypeCode.SOMATIC)) {
                 Map<String,Object> variantInformationMap = (Map<String,Object>) paramMap.get("variantInformation");
                 AnalysisResultVariant analysisResultVariant = (AnalysisResultVariant) paramMap.get("analysisResultVariant");
@@ -959,8 +1001,13 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         TableColumn<AnalysisResultVariant, String> aaChange = new TableColumn<>("AA change");
         aaChange.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getAaChange()));
 
-        TableColumn<AnalysisResultVariant, String> ntChangeBIC = new TableColumn<>("NT change(BIC)");
-        ntChangeBIC.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getNtChangeBic()));
+        variantListTableView.getColumns().addAll(warn, report, type, codCons, gene, strand, transcript, ntChange, aaChange);
+
+        if(panel != null && ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
+            TableColumn<AnalysisResultVariant, String> ntChangeBIC = new TableColumn<>("NT change(BIC)");
+            ntChangeBIC.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getNtChangeBic()));
+            variantListTableView.getColumns().addAll(ntChangeBIC);
+        }
 
         TableColumn<AnalysisResultVariant, String> chr = new TableColumn<>("Chr");
         chr.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getChromosome()));
@@ -974,11 +1021,17 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         TableColumn<AnalysisResultVariant, String> zigosity = new TableColumn<>("Zigosity");
         zigosity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getZygosity()));
 
+
         TableColumn<AnalysisResultVariant, String> exon = new TableColumn<>("Exon");
         exon.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getExonNum()));
 
-        TableColumn<AnalysisResultVariant, String> exonBic = new TableColumn<>("Exon(BIC)");
-        exonBic.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getExonNumBic()));
+        variantListTableView.getColumns().addAll(chr, ref, alt, zigosity, exon);
+
+        if(panel != null && ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
+            TableColumn<AnalysisResultVariant, String> exonBic = new TableColumn<>("Exon(BIC)");
+            exonBic.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getExonNumBic()));
+            variantListTableView.getColumns().addAll(exonBic);
+        }
 
         TableColumn<AnalysisResultVariant, Integer> refNum = new TableColumn<>("ref.num");
         refNum.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getReadInfo().getRefReadNum()).asObject());
@@ -1015,8 +1068,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         TableColumn<AnalysisResultVariant, String> clinVarClass = new TableColumn<>("ClinVar.Class");
         clinVarClass.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getClinVar().getClinVarClass()));
 
-        variantListTableView.getColumns().addAll(warn, report, type, codCons, gene, strand, transcript, ntChange, aaChange, ntChangeBIC, chr, ref
-                ,alt, zigosity, exon, exonBic, fraction ,refNum, altNum, depth, thousandGenomics, exac, esp, korean, clinVarAcc, clinVarClass);
+        variantListTableView.getColumns().addAll(fraction ,refNum, altNum, depth, thousandGenomics, exac, esp, korean, clinVarAcc, clinVarClass);
 
         if(panel != null && ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             TableColumn<AnalysisResultVariant, String> bicClass = new TableColumn<>("BIC.Class");
@@ -1037,6 +1089,17 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         TableColumn<AnalysisResultVariant, String> kohbraFrequency = new TableColumn<>("KOHBRA.frequency");
         kohbraFrequency.setCellValueFactory(cellData -> new SimpleStringProperty(
                 cellData.getValue().getPopulationFrequency().getKohbraFreq() != null ? String.valueOf(Double.parseDouble(ConvertUtil.convertFormatNumber("%.2f",cellData.getValue().getPopulationFrequency().getKohbraFreq().toString(), ""))) : ""));
+
+        /*TableColumn<AnalysisResultVariant, String> polyphen2 = new TableColumn<>("polyphen2");
+        polyphen2.setCellValueFactory(cellData -> new SimpleStringProperty(
+                cellData.getValue().getClinicalSignificant().getPolyphen2() != null ? String.valueOf(Double.parseDouble(ConvertUtil.convertFormatNumber("%.2f",cellData.getValue().getClinicalSignificant().getPolyphen2().toString(), ""))) : ""));
+
+        TableColumn<AnalysisResultVariant, String> sift = new TableColumn<>("sift");
+        sift.setCellValueFactory(cellData -> new SimpleStringProperty(
+                cellData.getValue().getClinicalSignificant().getSift() != null ? String.valueOf(Double.parseDouble(ConvertUtil.convertFormatNumber("%.2f",cellData.getValue().getClinicalSignificant().getSift().toString(), ""))) : ""));
+
+        TableColumn<AnalysisResultVariant, String> mutationTaster = new TableColumn<>("mutationtaster");
+        mutationTaster.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getMutationTaster()));*/
 
         TableColumn<AnalysisResultVariant, Integer> variantNum = new TableColumn<>("variantNum");
         variantNum.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getVariantNum()).asObject());
@@ -1066,7 +1129,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         clinVarDisease.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getClinVar().getClinVarDisease()));
         clinVarDisease.setVisible(false);
 
-        variantListTableView.getColumns().addAll(kohbraPatient, kohbraFrequency, variantNum, refGenomeVer, leftSequence, rightSequence
+        variantListTableView.getColumns().addAll(kohbraPatient, kohbraFrequency,/* polyphen2, sift, mutationTaster,*/ variantNum, refGenomeVer, leftSequence, rightSequence
                 ,genomicCoordinate, dbSnpRsId, clinVarDisease);
 
         if(panel != null && ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
