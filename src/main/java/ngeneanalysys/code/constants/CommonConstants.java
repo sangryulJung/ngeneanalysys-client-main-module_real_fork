@@ -70,10 +70,10 @@ public class CommonConstants {
 	public static final int HTTP_PROXY_SERVER_PORT = 19798;
 	
 	/** IGV File name */
-	public static final String IGV_FILE_NAME = "IGV.zip";
+	public static final String IGV_FILE_NAME = "IGV_2.4.1.zip";
 	
 	/** [Windows] JRE Package File name */
-	public static final String JRE_FILE_NAME_FOR_WIN = "jre-8u131-windows-i586.tar.gz";
+	public static final String JRE_FILE_NAME_FOR_WIN = "jre-8u144-windows-i586.tar.gz";
 	
 	/** [Windows] JRE Package Path */
 	public static final String JRE_PATH_FOR_WIN = "jre1.8.0_131";
@@ -82,7 +82,7 @@ public class CommonConstants {
 	public static final String JRE_BIN_PATH_FOR_WIN = JRE_PATH_FOR_WIN + "/bin";
 	
 	/** [MAC OS] JRE Package File name */
-	public static final String JRE_FILE_NAME_FOR_MAC = "jre-8u131-macosx-x64.tar.gz";
+	public static final String JRE_FILE_NAME_FOR_MAC = "jre-8u144-macosx-x64.tar.gz";
 	
 	/** [MAC OS] JRE Package Path */
 	public static final String JRE_PATH_FOR_MAC = "jre1.8.0_131.jre";

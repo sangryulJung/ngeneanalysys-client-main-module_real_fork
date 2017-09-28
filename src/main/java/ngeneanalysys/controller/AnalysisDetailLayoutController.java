@@ -4,13 +4,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.AnalysisDetailTabMenuCode;
@@ -88,6 +88,9 @@ public class AnalysisDetailLayoutController extends SubPaneController {
 
     /** API 서버 통신 서비스 */
     private APIService apiService;
+
+    @FXML
+    private Button rawDataDownload;
 
     @Override
     public void show(Parent root) throws IOException {
@@ -168,7 +171,10 @@ public class AnalysisDetailLayoutController extends SubPaneController {
         });
 
         topTabPane.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            int x = (int)rawDataDownload.getLayoutX();
+            int y = (int)rawDataDownload.getLayoutY();
             logger.info(event.getSceneX() + ", " + event.getSceneY());
+            logger.info(x + ", " + y);
             if((event.getSceneX() >= 718 && event.getSceneX() <= 782) && (
                     event.getSceneY() >= 64 && event.getSceneY() <= 86)) {
                 try {

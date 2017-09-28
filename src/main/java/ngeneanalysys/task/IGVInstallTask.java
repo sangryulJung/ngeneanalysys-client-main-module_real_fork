@@ -122,7 +122,8 @@ public class IGVInstallTask extends Task<Void> {
             CloseableHttpClient httpclient = null;
             CloseableHttpResponse response = null;
             try {
-                String connectURL = apiService.getConvertConnectURL(String.format("/igv/igv_download/%s", saveFile.getName()));
+                //String connectURL = apiService.getConvertConnectURL(String.format("/igv/igv_download/%s", saveFile.getName()));
+                String connectURL = apiService.getConvertConnectURL(String.format("/clientTools/%s", saveFile.getName()));
 
                 // 헤더 삽입 정보 설정
                 Map<String,Object> headerMap = apiService.getDefaultHeaders(true);
