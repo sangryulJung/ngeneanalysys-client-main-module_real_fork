@@ -56,107 +56,101 @@ public class SparkHttpProxyServer {
             return "Hello..";
         });
 
-        get("/bam/:sample/:name", (request, response) -> {
+        get("/analysisFiles/:sample/:name", (request, response) -> {
                 String sample = request.params(":sample");
                 String name = request.params(":name");
+                String url = String.format("%s/analysisFiles/%s/%s", getApiServerHost(), sample, name);
+                logger.info(String.format("URL = %s", url));
+                //HttpsURLConnection conn = null;
+                HttpURLConnection conn = null;
+                try {
+//                    TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+//                        @Override
+//                        public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+//                        }
+//
+//                        @Override
+//                        public void checkServerTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+//                        }
+//
+//                        @Override
+//                        public X509Certificate[] getAcceptedIssuers() {
+//                            return new X509Certificate[]{};
+//                        }
+//                    } };
+//
+//                    SSLContext sc = SSLContext.getDefault().getInstance("SSL");
+//                    sc.init(null, trustAllCerts, new SecureRandom());
+//                    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
 
-                if(name.endsWith("bam.bai")) {
-                    name = name.replaceAll("bam.bai", "bai");
+                    URL obj = new URL(url);
+                    //conn = (HttpsURLConnection) obj.openConnection();
+                    conn = (HttpURLConnection) obj.openConnection();
+//                    conn.setDefaultSSLSocketFactory(sc.getSocketFactory());
+//                    conn.setHostnameVerifier(new HostnameVerifier() {
+//                        @Override
+//                        public boolean verify(String s, SSLSession sslSession) {
+//                            return true;
+//                        }
+//                    });
+                    conn.setDefaultUseCaches(false);
+                    conn.setUseCaches(false);
+                    conn.setRequestMethod("GET");
 
-                    String url = String.format("%s/analysis_files/result_file_tag_filename/%s/BAM/%s", getApiServerHost(), sample, name);
+                    Long bytes = calculateBytes(request.headers("Range"));
 
-                    HttpsURLConnection conn = null;
-                    try {
-                        TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
-                            @Override
-                            public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
-                            }
-
-                            @Override
-                            public void checkServerTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
-                            }
-
-                            @Override
-                            public X509Certificate[] getAcceptedIssuers() {
-                                return new X509Certificate[]{};
-                            }
-                        } };
-
-                        SSLContext sc = SSLContext.getDefault().getInstance("SSL");
-                        sc.init(null, trustAllCerts, new SecureRandom());
-                        HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-
-                        URL obj = new URL(url);
-                        conn = (HttpsURLConnection) obj.openConnection();
-                        conn.setDefaultSSLSocketFactory(sc.getSocketFactory());
-                        conn.setHostnameVerifier(new HostnameVerifier() {
-                            @Override
-                            public boolean verify(String s, SSLSession sslSession) {
-                                return true;
-                            }
-                        });
-                        conn.setDefaultUseCaches(false);
-                        conn.setUseCaches(false);
-                        conn.setRequestMethod("GET");
-
-                        Long bytes = calculateBytes(request.headers("Range"));
-
-                        /**
-                         Accept : text/plain
-                         Cache-Control : no-cache
-                         Connection : keep-alive
-                         Host : 127.0.0.1:9090
-                         Pragma : no-cache
-                         Range : bytes=0-10
-                         User-Agent : IGV Version 2.3.74 (111)05/25/2016 04:14 PM
-                         */
-                        if(request.headers() != null) {
-                            for(String key : request.headers()) {
-                                if(key.equalsIgnoreCase("range")) {
-                                    conn.setRequestProperty("Range", request.headers(key));
-                                } else {
-                                    conn.setRequestProperty(key, request.headers(key));
-                                }
+                    /**
+                     Accept : text/plain
+                     Cache-Control : no-cache
+                     Connection : keep-alive
+                     Host : 127.0.0.1:9090
+                     Pragma : no-cache
+                     Range : bytes=0-10
+                     User-Agent : IGV Version 2.3.74 (111)05/25/2016 04:14 PM
+                     */
+                    if(request.headers() != null) {
+                        for(String key : request.headers()) {
+                            if(key.equalsIgnoreCase("range")) {
+                                conn.setRequestProperty("Range", request.headers(key));
+                            } else {
+                                conn.setRequestProperty(key, request.headers(key));
                             }
                         }
-
-                        conn.setRequestProperty("Connection", "Keep-Alive");
-                        conn.setRequestProperty("Authorization", "Token " + getAuthToken());
-                        conn.setRequestProperty("Accept", "application/json");
-
-                        conn.setDoOutput(true);
-                        conn.setDoInput(true);
-                        response.header("Transfer-Encoding", "chunked");
-                        logger.info(String.format("request bam data [%s][%s][range:%s][total:%s]", conn.getResponseCode(), url, request.headers("Range"), bytes));
-
-                        if(conn.getResponseCode() >= 400) {
-                            response.status(206);
-                        } else {
-                            response.status(conn.getResponseCode());
-                            try (OutputStream outputStream = new BufferedOutputStream(response.raw().getOutputStream());
-                                 BufferedInputStream bufferedInputStream = new BufferedInputStream(conn.getInputStream())) {
-                                byte[] buffer = new byte[1024];
-                                int len;
-                                while ((len = bufferedInputStream.read(buffer)) > 0) {
-                                    outputStream.write(buffer, 0, len);
-                                }
-                                outputStream.flush();
-                                outputStream.close();
-                            }
-                        }
-
-                        response.type("application/octet-stream;charset=UTF-8");
-                        response.header("Content-Transfer-Encoding", "binary");
-                        response.header("Content-Length", conn.getHeaderField("Content-Length"));
-                        response.header("Content-Range", conn.getHeaderField("Content-Range"));
-                        response.header("Range", (String) conn.getRequestProperty("Range"));
-
-
-
-                    } catch (Exception e) {
-                        logger.error(e.getMessage(), e);
                     }
+
+                    conn.setRequestProperty("Connection", "Keep-Alive");
+                    conn.setRequestProperty("Authorization", "Bearer " + getAuthToken());
+                    conn.setRequestProperty("Accept", "application/json");
+
+                    conn.setDoOutput(true);
+                    conn.setDoInput(true);
+                    response.header("Transfer-Encoding", "chunked");
+                    logger.info(String.format("request bam data [%s][%s][range:%s][total:%s]", conn.getResponseCode(), url, request.headers("Range"), bytes));
+
+                    if(conn.getResponseCode() >= 400) {
+                        response.status(206);
+                    } else {
+                        response.status(conn.getResponseCode());
+                        try (OutputStream outputStream = new BufferedOutputStream(response.raw().getOutputStream());
+                             BufferedInputStream bufferedInputStream = new BufferedInputStream(conn.getInputStream())) {
+                            byte[] buffer = new byte[1024];
+                            int len;
+                            while ((len = bufferedInputStream.read(buffer)) > 0) {
+                                outputStream.write(buffer, 0, len);
+                            }
+                            outputStream.flush();
+                            outputStream.close();
+                        }
+                    }
+                    response.type("application/octet-stream;charset=UTF-8");
+                    response.header("Content-Transfer-Encoding", "binary");
+                    response.header("Content-Length", conn.getHeaderField("Content-Length"));
+                    response.header("Content-Range", conn.getHeaderField("Content-Range"));
+                    response.header("Range", (String) conn.getRequestProperty("Range"));
+                } catch (Exception e) {
+                    logger.error(e.getMessage(), e);
                 }
+
                 return response;
         });
 

@@ -47,7 +47,7 @@ public class IGVProcessExecuteTask extends Task<Void> {
             // java 실행 경로
             File jreBinPath = new File(CommonConstants.BASE_FULL_PATH, (CommonConstants.IS_WINDOWS) ? CommonConstants.JRE_BIN_PATH_FOR_WIN : CommonConstants.JRE_BIN_PATH_FOR_MAC);
             // igv jar 파일 경로
-            File igvPath = new File(CommonConstants.BASE_FULL_PATH, "IGV");
+            File igvPath = new File(CommonConstants.BASE_FULL_PATH, "IGV_2.4.1");
             // igv jar list array
             String[] jarArr = new String[]{"batik-codec__V1.7.jar", "goby-io-igv__V1.0.jar", "igv.jar"};
 

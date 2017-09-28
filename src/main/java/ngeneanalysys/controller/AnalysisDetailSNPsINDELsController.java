@@ -778,7 +778,10 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                             String sampleId = sample.getId().toString();
                             String variantId = selectedAnalysisResultVariant.getId().toString();
                             String gene = selectedAnalysisResultVariant.getSequenceInfo().getGene();
-                            String locus = "chr13:32,911,888-32,911,888";//String.format("%s:%,d-%,d", selectedAnalysisResultVariant.getSequenceInfo().getChromosome(), Integer.parseInt(analysisResultVariant.getGenomicPosition()), Integer.parseInt(analysisResultVariant.getGenomicEndPosition()));
+                            String locus = String.format("%s:%,d-%,d",
+                                    selectedAnalysisResultVariant.getSequenceInfo().getChromosome(),
+                                    selectedAnalysisResultVariant.getSequenceInfo().getGenomicCoordinate(),
+                                    selectedAnalysisResultVariant.getSequenceInfo().getGenomicCoordinate());
                             String refGenome = selectedAnalysisResultVariant.getSequenceInfo().getRefGenomeVer();
                             String humanGenomeVersion = (refGenome.contains("hg19")) ? "hg19" : "hg18";
 

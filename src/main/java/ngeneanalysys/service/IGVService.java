@@ -259,7 +259,7 @@ public class IGVService {
             logger.info(String.format("request igv [sample id : %s, bam file : %s, genome : %s, locus : %s, gene : %s]", this.sampleId, this.bamFileName, this.genome, this.locus, this.gene));
 
             String name = String.format("[%s:%s:%s]", this.sampleId, this.sampleName, this.variantId);
-            String file = String.format("http://127.0.0.1:%s/bam/%s/%s", CommonConstants.HTTP_PROXY_SERVER_PORT, this.sampleId, this.bamFileName);
+            String file = String.format("http://127.0.0.1:%s/analysisFiles/%s/%s", CommonConstants.HTTP_PROXY_SERVER_PORT, this.sampleId, this.bamFileName);
 
             Map<String,Object> params = new HashMap<>();
             params.put("file", file);

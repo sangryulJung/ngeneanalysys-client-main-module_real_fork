@@ -106,7 +106,7 @@ public class ALAMUTService {
                     conn.setUseCaches(false);
 
                     if(conn.getResponseCode() >= 200 && conn.getResponseCode() < 300) {
-                        url = new URL(host + "?" + String.format("request=BAM<http://127.0.0.1:%s/bam/%s/%s", CommonConstants.HTTP_PROXY_SERVER_PORT, sampleId, bamFileName));
+                        url = new URL(host + "?" + String.format("request=BAM<http://127.0.0.1:%s/analysisFiles/%s/%s", CommonConstants.HTTP_PROXY_SERVER_PORT, sampleId, bamFileName));
                         logger.info("second step url : " + url.toString());
 
                         conn = (HttpURLConnection) url.openConnection();
