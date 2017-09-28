@@ -168,7 +168,8 @@ public class AnalysisDetailLayoutController extends SubPaneController {
         });
 
         topTabPane.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            if((event.getSceneX() >= 746 && event.getSceneX() <= 812) && (
+            logger.info(event.getSceneX() + ", " + event.getSceneY());
+            if((event.getSceneX() >= 718 && event.getSceneX() <= 782) && (
                     event.getSceneY() >= 64 && event.getSceneY() <= 86)) {
                 try {
                     // Load the fxml file and create a new stage for the popup dialog
