@@ -155,7 +155,7 @@ public class IGVInstallTask extends Task<Void> {
                     HttpEntity entity = response.getEntity();
                     InputStream content = entity.getContent();
                     long fileLength = entity.getContentLength();
-
+                    logger.info("파일 크기 = " + fileLength);
                     try (InputStream is = content; OutputStream os = Files.newOutputStream(Paths.get(saveFile.toURI()))) {
                         long nread = 0L;
                         byte[] buf = new byte[8192];
@@ -174,6 +174,13 @@ public class IGVInstallTask extends Task<Void> {
                 }
             } catch (Exception e) {
                 logger.error("file download", e);
+            } finally {
+                if (httpclient != null)
+                    try {
+                        httpclient.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
             }
         }
     }
