@@ -85,11 +85,17 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
     @FXML
     private TableColumn<VariantPerGene, Boolean> openDetailsColumn;
 
+    @FXML
+    private Button fusionButton;
+
     @Override
     public void show(Parent root) throws IOException {
         logger.info("show..");
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
+
+        fusionButton.setDisable(true);
+        fusionButton.setVisible(false);
 
         geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getGene()));
         tierOneSnvColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getT1SnpCount()).asObject());

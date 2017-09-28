@@ -8,6 +8,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.AnalysisDetailTabMenuCode;
@@ -161,6 +164,24 @@ public class AnalysisDetailLayoutController extends SubPaneController {
             // 탭 화면 선택시 마다 갱신해야하는 부분이 있는 경우 갱신 실행을 위한 메소드 실행.
             if (newValue.getContent() != null) {
                 executeReloadByTab(newValue);
+            }
+        });
+
+        topTabPane.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            if((event.getSceneX() >= 746 && event.getSceneX() <= 812) && (
+                    event.getSceneY() >= 64 && event.getSceneY() <= 86)) {
+                try {
+                    // Load the fxml file and create a new stage for the popup dialog
+                    FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_RAW_DATA);
+                    BorderPane page = loader.load();
+                    AnalysisDetailRawDataController controller = loader.getController();
+                    controller.setParamMap(getParamMap());
+                    controller.setMainController(this.mainController);
+
+                    controller.show(page);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 

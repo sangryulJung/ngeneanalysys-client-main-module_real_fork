@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="experimentPastResultsWrapper" prefHeight="558.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailOverviewController">
+<GridPane fx:id="experimentPastResultsWrapper" prefHeight="558.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailOverviewController">
    <columnConstraints>
       <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="20.0" />
       <ColumnConstraints hgrow="SOMETIMES" prefWidth="1240.0" />
@@ -203,7 +203,6 @@
          <columns>
             <TableColumn fx:id="negativeGeneColumn" editable="false" prefWidth="75.0" sortable="false" text="Gene" />
             <TableColumn fx:id="negativeVariantColumn" editable="false" prefWidth="75.0" sortable="false" text="Variant" />
-            <TableColumn fx:id="negativeVariantTypeColumn" editable="false" prefWidth="100.0" sortable="false" text="Variant Type" />
             <TableColumn fx:id="negativeCauseColumn" prefWidth="657.0" text="Cause" />
          </columns>
       </TableView>

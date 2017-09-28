@@ -250,7 +250,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
     }
 
     public void setTierFilterBox() {
-        AnalysisResultSummary summary = sample.getAnalysisResultSummary();
+            AnalysisResultSummary summary = sample.getAnalysisResultSummary();
 
         Map<String, Long> count = list.stream().collect(Collectors.groupingBy(AnalysisResultVariant::getSwTier, Collectors.counting()));
 
@@ -406,10 +406,10 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             //if(list == null || list.isEmpty()) list = dummyVariantList();
             ObservableList<AnalysisResultVariant> displayList = null;
 
-            if(acmgFilterCode != null && panel != null && ExperimentTypeCode.GERMLINE.getDescription().equals(panel.getAnalysisType())) {
+            if(acmgFilterCode != null && acmgFilterCode.getAlias() != null && panel != null && ExperimentTypeCode.GERMLINE.getDescription().equals(panel.getAnalysisType())) {
                 list = list.stream().filter(variant ->
                         variant.getSwPathogenicityLevel().equals(acmgFilterCode.getAlias())).collect(Collectors.toList());
-            } else if(acmgFilterCode != null && panel != null && ExperimentTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType())) {
+            } else if(acmgFilterCode != null && acmgFilterCode.getAlias() != null && panel != null && ExperimentTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType())) {
                 list = list.stream().filter(variant ->
                         variant.getSwTier().equals(acmgFilterCode.getAlias())).collect(Collectors.toList());
             }

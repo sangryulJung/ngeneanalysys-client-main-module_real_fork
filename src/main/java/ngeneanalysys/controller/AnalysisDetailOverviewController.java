@@ -9,14 +9,20 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import ngeneanalysys.code.enums.SequencerCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
-import ngeneanalysys.model.PertinentNegatives;
-import ngeneanalysys.model.VariantInformation;
+import ngeneanalysys.model.*;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
+import ngeneanalysys.util.StringUtils;
+import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Jang
@@ -62,34 +68,31 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
     private Label tierFourTherapeuticLabel;
 
     @FXML
-    private TableView<VariantInformation> tierTable;
+    private TableView<AnalysisResultVariant> tierTable;
 
     @FXML
-    private TableColumn<VariantInformation, Number> tierColumn;
+    private TableColumn<AnalysisResultVariant, String> tierColumn;
 
     @FXML
-    private TableColumn<VariantInformation, String> geneColumn;
+    private TableColumn<AnalysisResultVariant, String> geneColumn;
 
     @FXML
-    private TableColumn<VariantInformation, String> variantColumn;
+    private TableColumn<AnalysisResultVariant, String> variantColumn;
 
     @FXML
-    private TableColumn<VariantInformation, String> therapeuticColumn;
+    private TableColumn<AnalysisResultVariant, String> therapeuticColumn;
 
     @FXML
-    private TableView<PertinentNegatives> pertinentNegativesTable;
+    private TableView<AnalysisResultVariant> pertinentNegativesTable;
 
     @FXML
-    private TableColumn<PertinentNegatives, String> negativeGeneColumn;
+    private TableColumn<AnalysisResultVariant, String> negativeGeneColumn;
 
     @FXML
-    private TableColumn<PertinentNegatives, String> negativeVariantColumn;
+    private TableColumn<AnalysisResultVariant, String> negativeVariantColumn;
 
     @FXML
-    private TableColumn<PertinentNegatives, String> negativeVariantTypeColumn;
-
-    @FXML
-    private TableColumn<PertinentNegatives, String> negativeCauseColumn;
+    private TableColumn<AnalysisResultVariant, String> negativeCauseColumn;
 
     @FXML
     private Label sampleQCResultLabel;
@@ -112,10 +115,172 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
 
+        Sample sample = (Sample) getParamMap().get("sample");
+
+        //Tier Table Setting
+        tierColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSwTier()));
+        geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getGene()));
+        variantColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getNtChange()));
+        therapeuticColumn.setCellValueFactory(cellData -> {
+            Interpretation interpretation = cellData.getValue().getInterpretation();
+            String text = "";
+
+            if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceA()))
+                text += interpretation.getInterpretationEvidenceA() + ", ";
+            if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceB()))
+                text += interpretation.getInterpretationEvidenceB() + ", ";
+            if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceC()))
+                text += interpretation.getInterpretationEvidenceC() + ", ";
+            if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceD()))
+                text += interpretation.getInterpretationEvidenceD() + ", ";
+
+            if(!"".equals(text)) {
+                text = text.substring(0, text.length() - 2);
+            }
+
+            return new SimpleStringProperty(text);
+            });
+
+        //Negative Table Setting
+        negativeGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getGene()));
+        negativeVariantColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getNtChange()));
+        negativeCauseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getInterpretation().getInterpretationNegativeTesult()));
+
+        try {
+            HttpClientResponse response = apiService.get("/analysisResults/"+ sample.getId()  + "/variants", null,
+                    null, false);
+
+            AnalysisResultVariantList analysisResultVariantList = response.getObjectBeforeConvertResponseToJSON(AnalysisResultVariantList.class);
+
+            List<AnalysisResultVariant> list = analysisResultVariantList.getResult();
+
+            //negative list만 가져옴
+            List<AnalysisResultVariant> negativeList = list.stream().filter(item -> !StringUtils.isEmpty(item.getInterpretation().getInterpretationNegativeTesult())).collect(Collectors.toList());
+
+            //그 이후 list에서 negative list를 제거
+            //list.removeAll(negativeList);
+            //list = list.stream().filter(item -> item.getInterpretation().getInterpretationNegativeTesult() == null).collect(Collectors.toList());
+
+            Map<String, List<AnalysisResultVariant>> variantTierMap = list.stream().collect(Collectors.groupingBy(AnalysisResultVariant::getSwTier));
+
+            List<AnalysisResultVariant> tierOne = variantTierMap.get("T1");
+
+
+            if(tierOne != null) {
+                tierTable.getItems().addAll(FXCollections.observableArrayList(tierOne));
+                tierOneVariantsCountLabel.setText(String.valueOf(tierOne.size()));
+                List<SequenceInfo> sequenceInfos = new ArrayList<>();
+                tierOne.stream().forEach(item -> {
+                    if (item.getSequenceInfo() != null)
+                        sequenceInfos.add(item.getSequenceInfo());
+                });
+
+                tierOneGenesCountLabel.setText(sequenceInfos.stream().collect(Collectors.groupingBy(SequenceInfo::getGene)).size() + "");
+
+                List<Interpretation> interpretations = new ArrayList<>();
+                tierOne.stream().forEach(item -> {
+                    if (item.getInterpretation() != null)
+                        interpretations.add(item.getInterpretation());
+                });
+
+                long count = interpretations.stream().filter(item -> (!StringUtils.isEmpty(item.getInterpretationEvidenceA()) ||
+                        !StringUtils.isEmpty(item.getInterpretationEvidenceB()) ||
+                        !StringUtils.isEmpty(item.getInterpretationEvidenceC()) ||
+                        !StringUtils.isEmpty(item.getInterpretationEvidenceD()))).count();
+                tierOneTherapeuticLabel.setText(String.valueOf(count));
+            }
+
+            List<AnalysisResultVariant> tierTwo = variantTierMap.get("T2");
+
+            if(tierTwo != null) {
+                tierTable.getItems().addAll(FXCollections.observableArrayList(tierTwo));
+                tierTwoVariantsCountLabel.setText(String.valueOf(tierTwo.size()));
+
+                List<SequenceInfo> sequenceInfos = new ArrayList<>();
+                tierTwo.stream().forEach(item -> {
+                    if (item.getSequenceInfo() != null)
+                        sequenceInfos.add(item.getSequenceInfo());
+                });
+
+                tierTwoGenesCountLabel.setText(sequenceInfos.stream().collect(Collectors.groupingBy(SequenceInfo::getGene)).size() + "");
+
+                List<Interpretation> interpretations = new ArrayList<>();
+                tierTwo.stream().forEach(item -> {
+                    if (item.getInterpretation() != null)
+                        interpretations.add(item.getInterpretation());
+                });
+
+                long count = interpretations.stream().filter(item -> (!StringUtils.isEmpty(item.getInterpretationEvidenceA()) ||
+                        !StringUtils.isEmpty(item.getInterpretationEvidenceB()) ||
+                        !StringUtils.isEmpty(item.getInterpretationEvidenceC()) ||
+                        !StringUtils.isEmpty(item.getInterpretationEvidenceD()))).count();
+                tierTwoTherapeuticLabel.setText(String.valueOf(count));
+            }
+
+            List<AnalysisResultVariant> tierThree  = variantTierMap.get("T3");
+
+            if(tierThree != null) {
+                tierThreeVariantsCountLabel.setText(String.valueOf(tierThree.size()));
+
+                List<SequenceInfo> sequenceInfos = new ArrayList<>();
+                tierThree.stream().forEach(item -> {
+                    if (item.getSequenceInfo() != null)
+                        sequenceInfos.add(item.getSequenceInfo());
+                });
+
+                tierThreeGenesCountLabel.setText(sequenceInfos.stream().collect(Collectors.groupingBy(SequenceInfo::getGene)).size() + "");
+
+                List<Interpretation> interpretations = new ArrayList<>();
+                tierThree.stream().forEach(item -> {
+                    if (item.getInterpretation() != null)
+                        interpretations.add(item.getInterpretation());
+                });
+
+                long count = interpretations.stream().filter(item -> (!StringUtils.isEmpty(item.getInterpretationEvidenceA()) ||
+                        !StringUtils.isEmpty(item.getInterpretationEvidenceB()) ||
+                        !StringUtils.isEmpty(item.getInterpretationEvidenceC()) ||
+                        !StringUtils.isEmpty(item.getInterpretationEvidenceD()))).count();
+                tierThreeTherapeuticLabel.setText(String.valueOf(count));
+            }
+
+            List<AnalysisResultVariant> tierFour  = variantTierMap.get("T4");
+
+            if(tierFour != null) {
+                tierFourVariantsCountLabel.setText(String.valueOf(tierFour.size()));
+
+                List<SequenceInfo> sequenceInfos = new ArrayList<>();
+                tierFour.stream().forEach(item -> {
+                    if (item.getSequenceInfo() != null)
+                        sequenceInfos.add(item.getSequenceInfo());
+                });
+
+                tierFourGenesCountLabel.setText(sequenceInfos.stream().collect(Collectors.groupingBy(SequenceInfo::getGene)).size() + "");
+
+                List<Interpretation> interpretations = new ArrayList<>();
+                tierFour.stream().forEach(item -> {
+                    if (item.getInterpretation() != null)
+                        interpretations.add(item.getInterpretation());
+                });
+
+                long count = interpretations.stream().filter(item -> (!StringUtils.isEmpty(item.getInterpretationEvidenceA()) ||
+                        !StringUtils.isEmpty(item.getInterpretationEvidenceB()) ||
+                        !StringUtils.isEmpty(item.getInterpretationEvidenceC()) ||
+                        !StringUtils.isEmpty(item.getInterpretationEvidenceD()))).count();
+                tierFourTherapeuticLabel.setText(String.valueOf(count));
+            }
+
+            if(negativeList != null) {
+                pertinentNegativesTable.setItems(FXCollections.observableArrayList(negativeList));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         //기본 초기화
-        settingDetectedVariantsSummary();
+        //settingDetectedVariantsSummary();
         settingOverallQC();
-        sampleTableViewAdd();
+        //sampleTableViewAdd();
 
     }
 
@@ -142,7 +307,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
 
     }
 
-    public void sampleTableViewAdd() {
+    /*public void sampleTableViewAdd() {
 
         ObservableList<VariantInformation> variantInformation = FXCollections.observableArrayList(
                 new VariantInformation(1, "IDH2", "c.516G>A (R172K)", "Enasidenib (IDHIFA)"),
@@ -169,5 +334,5 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         negativeCauseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCause()));
 
         pertinentNegativesTable.setItems(pertinentNegatives);
-    }
+    }*/
 }
