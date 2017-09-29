@@ -71,6 +71,8 @@ public class CommonConstants {
 	
 	/** IGV File name */
 	public static final String IGV_FILE_NAME = "IGV_2.4.1.zip";
+
+	public static final String IGV_PATH = "IGV_2.4.1";
 	
 	/** [Windows] JRE Package File name */
 	public static final String JRE_FILE_NAME_FOR_WIN = "jre-8u144-windows-i586.tar.gz";

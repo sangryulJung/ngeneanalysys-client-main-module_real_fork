@@ -34,7 +34,7 @@ public class IGVService {
     private MainController mainController;
 
     /** igv library path */
-    private File igvPath = new File(CommonConstants.BASE_FULL_PATH, "IGV");
+    private File igvPath = new File(CommonConstants.BASE_FULL_PATH, CommonConstants.IGV_PATH);
 
     /** jre bin path */
     private File jreBinPath = new File(CommonConstants.BASE_FULL_PATH, (CommonConstants.IS_WINDOWS) ? CommonConstants.JRE_BIN_PATH_FOR_WIN : CommonConstants.JRE_BIN_PATH_FOR_MAC);

@@ -112,6 +112,13 @@ public class SparkHttpProxyServer {
                         for(String key : request.headers()) {
                             if(key.equalsIgnoreCase("range")) {
                                 conn.setRequestProperty("Range", request.headers(key));
+                            }
+                            else if(key.equalsIgnoreCase("User-Agent")) {
+                                //Akka-Http 서버가 기본 User-Agent 헤더값을 잘못된 헤더값으로 인식함.
+                                conn.setRequestProperty("User-Agent", "NGeneAnalySys-IGV");
+                            }
+                            else if(key.equalsIgnoreCase("accept")) {
+                                // 기본 Accept 헤더를 사용하면 Akka-Http 서버에서 거부함.
                             } else {
                                 conn.setRequestProperty(key, request.headers(key));
                             }
@@ -120,7 +127,6 @@ public class SparkHttpProxyServer {
 
                     conn.setRequestProperty("Connection", "Keep-Alive");
                     conn.setRequestProperty("Authorization", "Bearer " + getAuthToken());
-                    conn.setRequestProperty("Accept", "application/json");
 
                     conn.setDoOutput(true);
                     conn.setDoInput(true);
