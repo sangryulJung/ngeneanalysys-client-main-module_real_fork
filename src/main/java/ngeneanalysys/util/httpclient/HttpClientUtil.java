@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -24,6 +25,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.ssl.SSLContexts;
 import org.slf4j.Logger;
 
@@ -49,7 +51,10 @@ public class HttpClientUtil {
 	public static SSLConnectionSocketFactory getSSLSocketFactory() {
 		SSLConnectionSocketFactory factory = null;
 		try {
-			SSLContext sslcontext = SSLContexts.custom().loadTrustMaterial(null, new TrustSelfSignedStrategy()).useProtocol("TLS").build();
+			KeyStore ks = KeyStore.getInstance("JKS");
+			InputStream keystore = new HttpClientUtil().getClass().getClassLoader().getResourceAsStream("example.com.jks");
+			ks.load(keystore, "abcdefg".toCharArray());
+			SSLContext sslcontext = SSLContexts.custom().loadTrustMaterial(ks, new TrustSelfSignedStrategy()).useProtocol("TLS").build();
 			factory = new SSLConnectionSocketFactory(sslcontext, NoopHostnameVerifier.INSTANCE);
 		} catch (Exception e) {
 			logger.error("HttpClient SSL Connection Socket Factory Create Fail!!!");
