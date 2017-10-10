@@ -175,7 +175,7 @@ public class AnalysisDetailLayoutController extends SubPaneController {
             int y = (int)rawDataDownload.getLayoutY();
             logger.info(event.getSceneX() + ", " + event.getSceneY());
             logger.info(x + ", " + y);
-            if((event.getSceneX() >= 718 && event.getSceneX() <= 782) && (
+            if((event.getSceneX() >= x && event.getSceneX() <= (x + 64)) && (
                     event.getSceneY() >= 64 && event.getSceneY() <= 86)) {
                 try {
                     // Load the fxml file and create a new stage for the popup dialog

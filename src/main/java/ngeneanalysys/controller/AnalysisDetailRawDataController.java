@@ -1,9 +1,11 @@
 package ngeneanalysys.controller;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -13,6 +15,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -23,19 +26,21 @@ import ngeneanalysys.model.AnalysisFile;
 import ngeneanalysys.model.AnalysisFileList;
 import ngeneanalysys.model.Sample;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.task.AnalysisResultFileDownloadTask;
 import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author Jang
@@ -134,26 +139,19 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
         sizeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.convertFileSizeFormat(cellData.getValue().getSize().longValue())));
         createdColumn.setCellValueFactory(cellData -> new SimpleStringProperty(DateFormatUtils.format(cellData.getValue().getCreatedAt().toDate(), "yyyy-MM-dd HH:mm:ss")));
         downloadColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue()));
-        downloadColumn.setCellFactory(param -> {
-            TableCell<AnalysisFile, Object> cell = new TableCell<AnalysisFile, Object>() {
-                @Override
-                public void updateItem(Object item, boolean empty) {
-                    if (item != null) {
-                        Button button = new Button("Download");
-                        button.getStyleClass().add("btn_raw_data_download");
-                        button.setOnAction(event -> {
-                            //download((AnalysisResultFile) item);
-                        });
-                        setGraphic(button);
-                    } else {
-                        setGraphic(null);
-                    }
+        downloadColumn.setCellFactory(param -> new TableCell<AnalysisFile, Object>() {
+            @Override
+            public void updateItem(Object item, boolean empty) {
+                if (item != null) {
+                    Button button = new Button("Download");
+                    button.getStyleClass().add("btn_raw_data_download");
+                    button.setOnAction(event -> download((AnalysisFile) item));
+                    setGraphic(button);
+                } else {
+                    setGraphic(null);
                 }
-            };
-            return cell;
+            }
         });
-
-
 
         currentStage = new Stage();
         currentStage.setResizable(false);
@@ -176,7 +174,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
      */
     @SuppressWarnings("static-access")
     public void addFilterBox() {
-        if(totalList != null && totalList.size() > 0) {
+        if(totalList != null && !totalList.isEmpty()) {
             this.filterMap = new HashMap<>();
             for(AnalysisFile item : totalList) {
                 Integer count = (filterMap.containsKey(item.getFileType())) ? filterMap.get(item.getFileType()) : 0;
@@ -259,11 +257,11 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
         ObservableList<AnalysisFile> displayList = null;
 
         if(StringUtils.isEmpty(tag) || "ALL".equals(tag)) {
-            if(totalList != null && totalList.size() > 0) {
+            if(totalList != null && !totalList.isEmpty()) {
                 displayList = FXCollections.observableArrayList(totalList);
             }
         } else {
-            if(totalList != null && totalList.size() > 0) {
+            if(totalList != null && !totalList.isEmpty()) {
                 displayList = FXCollections.observableArrayList();
                 for (AnalysisFile item : totalList) {
                     if(tag.equals(item.getFileType())) {
@@ -279,4 +277,87 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
         }
         rawListTableView.setItems(displayList);
     }
+
+    /**
+     * 파일 다운로드
+     * @param resultFile
+     */
+    @SuppressWarnings("static-access")
+    public void download(AnalysisFile resultFile) {
+        logger.info(resultFile.getName());
+        String fileExtension = FilenameUtils.getExtension(resultFile.getName());
+        String extensionFilterTypeName = String.format("%s (*.%s)", fileExtension.toUpperCase(), fileExtension);
+        String extensionFilterName = String.format("*.%s", fileExtension);
+
+        // Show save file dialog
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialFileName(resultFile.getName());
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter(extensionFilterTypeName, extensionFilterName));
+        File file = fileChooser.showSaveDialog(this.getMainApp().getPrimaryStage());
+
+        try {
+            if(file != null) {
+                logger.info(String.format("start download..[%s]", file.getName()));
+
+                Task<Void> task = new AnalysisResultFileDownloadTask(this, resultFile, file);
+                final Thread downloadThread = new Thread(task);
+                HBox mainProgressTaskPane = getMainController().getProgressTaskContentArea();
+                String progressBoxId = "DOWN_" + resultFile.getSampleId() + "_" + resultFile.getId();
+
+                HBox box = new HBox();
+                box.setId(progressBoxId);
+                box.getStyleClass().add("general_progress");
+
+                if(mainProgressTaskPane.getChildren().size() > 0) {
+                    Label separatorLabel = new Label("|");
+                    box.getChildren().add(separatorLabel);
+                    box.setMargin(separatorLabel, new Insets(0, 0, 0, 5));
+                }
+
+                Label titleLabel = new Label("Download File : " + resultFile.getName());
+                ProgressBar progressBar = new ProgressBar();
+                progressBar.progressProperty().bind(task.progressProperty());
+                Label messageLabel = new Label();
+                messageLabel.textProperty().bind(task.messageProperty());
+                Button cancelButton = new Button("cancel");
+                cancelButton.getStyleClass().add("btn_cancel_normal");
+                cancelButton.setOnAction(event -> {
+                    if(downloadThread != null) {
+                        try {
+                            logger.error(String.format("download cancel..[%s]", file.getName()));
+                            Thread.sleep(100);
+                            Platform.runLater(() -> {
+                                downloadThread.interrupt();
+                                task.cancel();
+                                getMainController().removeProgressTaskItemById(progressBoxId);
+                            });
+                        } catch (Exception e) {
+                            logger.error("download cancel failed!!");
+                            DialogUtil.error("Failed File Download Cancel.", "An error occurred during the canceling file download.", getMainController().getPrimaryStage(), false);
+                        }
+                    }
+                });
+
+                box.getChildren().add(titleLabel);
+                box.setMargin(titleLabel, new Insets(0, 0, 0, 5));
+                box.getChildren().add(progressBar);
+                box.setMargin(progressBar, new Insets(0, 0, 0, 5));
+                box.getChildren().add(messageLabel);
+                box.setMargin(messageLabel, new Insets(0, 0, 0, 5));
+                box.getChildren().add(cancelButton);
+                box.setMargin(cancelButton, new Insets(0, 0, 0, 5));
+
+                // 메인 화면 Progress Task 영역에 화면 출력
+                mainProgressTaskPane.getChildren().add(box);
+
+                // Thread 실행
+                downloadThread.setDaemon(true);
+                downloadThread.start();
+            }
+        } catch (Exception e) {
+            DialogUtil.error("Save Fail.", "An error occurred during the download.", getMainController().getPrimaryStage(), false);
+            e.printStackTrace();
+        }
+    }
+
 }

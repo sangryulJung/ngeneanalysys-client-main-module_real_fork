@@ -10,12 +10,14 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Polyline?>
@@ -521,266 +523,308 @@
 		</VBox>
 		<VBox fx:id="significantArea" alignment="TOP_CENTER" layoutX="572.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="272.0" prefWidth="265.0" styleClass="border_left" GridPane.columnIndex="3">
 			<children>
-				<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="201.0" prefWidth="270.0">
-					<children>
-						<Label styleClass="title1" text="CLINICAL SIGNIFICANT">
-							<padding>
-								<Insets top="-5.0" />
-							</padding>
-						</Label>
-						<TabPane fx:id="clinicalTabPane" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pickOnBounds="false" prefHeight="243.0" prefWidth="260.0" tabClosingPolicy="UNAVAILABLE">
-							<tabs>
-								<Tab closable="false" text="PATHOGENICITY">
-									<content>
-										<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="215.0" prefWidth="260.0" styleClass="clinical_significant_pathogenicity_vbox">
-											<children>
-												<HBox fx:id="pathogenicityPredictionHBox" prefHeight="33.0" styleClass="clinical_significant_pathogenicity_hbox">
-													<children>
-														<Label fx:id="clinicalSignificantPathogenicityPredictionLabel" styleClass="clinical_significant_pathogenicity_label" text="PREDICTION" />
-														<Label styleClass="prediction_none" text="P" />
-														<Label styleClass="prediction_none" text="LP" />
-														<Label styleClass="prediction_none" text="US" />
-														<Label styleClass="prediction_none" text="LB" />
-														<Label styleClass="prediction_none" text="B" />
-													</children>
-												</HBox>
-												<HBox fx:id="pathogenicityBicHBox" prefHeight="33.0" prefWidth="260.0" styleClass="clinical_significant_pathogenicity_hbox">
-													<children>
-														<Label fx:id="clinicalSignificantPathogenicityBicLabel" styleClass="clinical_significant_pathogenicity_label" text="BIC" />
-														<Label styleClass="prediction_none" text="P" />
-														<Label styleClass="prediction_none" text="LP" />
-														<Label styleClass="prediction_none" text="US" />
-														<Label styleClass="prediction_none" text="LB" />
-														<Label styleClass="prediction_none" text="B" />
-													</children>
-												</HBox>
-												<HBox fx:id="pathogenicityClinVarHBox" prefHeight="33.0" prefWidth="260.0" styleClass="clinical_significant_pathogenicity_hbox">
-													<children>
-														<Label fx:id="clinicalSignificantPathogenicityClinVarLabel" styleClass="clinical_significant_pathogenicity_label" text="CLINVAR" />
-														<Label styleClass="prediction_none" text="P" />
-														<Label styleClass="prediction_none" text="LP" />
-														<Label styleClass="prediction_none" text="US" />
-														<Label styleClass="prediction_none" text="LB" />
-														<Label styleClass="prediction_none" text="B" />
-													</children>
-												</HBox>
-												<HBox fx:id="pathogenicityEnigmaHBox" prefHeight="33.0" prefWidth="260.0" styleClass="clinical_significant_pathogenicity_hbox">
-													<children>
-														<Label fx:id="clinicalSignificantPathogenicityEnigmaLabel" styleClass="clinical_significant_pathogenicity_label" text="ENIGMA" />
-														<Label styleClass="prediction_none" text="P" />
-														<Label styleClass="prediction_none" text="LP" />
-														<Label styleClass="prediction_none" text="US" />
-														<Label styleClass="prediction_none" text="LB" />
-														<Label styleClass="prediction_none" text="B" />
-													</children>
-												</HBox>
-												<HBox prefHeight="100.0" prefWidth="200.0">
-													<children>
-														<Canvas fx:id="polyphenCanvas" height="100.0" width="80.0">
-															<HBox.margin>
-																<Insets top="10.0" />
-															</HBox.margin>
-														</Canvas>
-														<Canvas fx:id="siftCanvas" height="100.0" width="80.0">
-															<HBox.margin>
-																<Insets top="10.0" />
-															</HBox.margin>
-														</Canvas>
-														<Canvas fx:id="mtCanvas" height="100.0" width="80.0">
-															<HBox.margin>
-																<Insets top="10.0" />
-															</HBox.margin>
-														</Canvas>
-													</children>
-												</HBox>
-											</children>
-										</VBox>
-									</content>
-								</Tab>
-								<Tab closable="false" text="POPULATION FREQUENCY">
-									<content>
-										<GridPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="140.0">
-											<columnConstraints>
-												<ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" prefWidth="200.0" />
-											</columnConstraints>
-											<rowConstraints>
-												<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="200.0" valignment="TOP" vgrow="NEVER" />
-											</rowConstraints>
-											<children>
-												<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="250.0">
-													<children>
-														<VBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="200.0">
-															<children>
-																<Label fx:id="frequencies0Label" text="1KG EAS">
-																	<styleClass>
-																		<String fx:value="txt_gray_656565" />
-																		<String fx:value="font_size_10" />
-																	</styleClass>
-																</Label>
-																<Label fx:id="frequencies0ValueLabel" alignment="CENTER" text="N/A">
-																	<HBox.margin>
-																		<Insets left="5.0" />
-																	</HBox.margin>
-																	<styleClass>
-																		<String fx:value="percent" />
-																		<String fx:value="font_size_9" />
-																	</styleClass>
-																</Label>
-															</children>
-															<VBox.margin>
-																<Insets bottom="1.0" top="5.0" />
-															</VBox.margin>
-														</VBox>
-														<HBox prefHeight="100.0" prefWidth="200.0">
-															<children>
-																<VBox alignment="TOP_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="116.0" prefWidth="75.0">
-																	<children>
-																		<Label fx:id="frequencies5Label" text="1KG EUR">
-																			<styleClass>
-																				<String fx:value="txt_gray_656565" />
-																				<String fx:value="font_size_10" />
-																			</styleClass>
-																			<VBox.margin>
-																				<Insets right="5.0" />
-																			</VBox.margin>
-																		</Label>
-																		<Label fx:id="frequencies5ValueLabel" text="N/A">
-																			<styleClass>
-																				<String fx:value="percent" />
-																				<String fx:value="font_size_9" />
-																			</styleClass>
-																			<VBox.margin>
-																				<Insets right="5.0" />
-																			</VBox.margin>
-																		</Label>
-																		<Label fx:id="frequencies4Label" text="ExAC SAS">
-																			<styleClass>
-																				<String fx:value="txt_gray_656565" />
-																				<String fx:value="font_size_10" />
-																			</styleClass>
-																			<VBox.margin>
-																				<Insets right="5.0" top="25.0" />
-																			</VBox.margin>
-																		</Label>
-																		<Label fx:id="frequencies4ValueLabel" text="N/A">
-																			<styleClass>
-																				<String fx:value="percent" />
-																				<String fx:value="font_size_9" />
-																			</styleClass>
-																			<VBox.margin>
-																				<Insets right="5.0" />
-																			</VBox.margin>
-																		</Label>
-																	</children>
-																	<padding>
-																		<Insets top="21.0" />
-																	</padding>
-																</VBox>
-																<VBox fx:id="frequenciesRadarGraphArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="116.0" prefWidth="100.0">
-																	<children>
-																		<Polyline fx:id="frequenciesGraphPolyline" fill="#ff9482" opacity="0.3" stroke="#ae200b" strokeType="INSIDE" strokeWidth="2.0" VBox.vgrow="NEVER">
-																			<points>
-																				<Double fx:value="-50.0" />
-																				<Double fx:value="-40.0" />
-																				<Double fx:value="50.0" />
-																				<Double fx:value="-40.0" />
-																				<Double fx:value="0.0" />
-																				<Double fx:value="60.0" />
-																				<Double fx:value="-50.0" />
-																				<Double fx:value="-40.0" />
-																			</points>
-																			<VBox.margin>
-																				<Insets />
-																			</VBox.margin>
-																		</Polyline>
-																	</children>
-																</VBox>
-																<VBox maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="116.0" prefWidth="75.0">
-																	<children>
-																		<Label fx:id="frequencies1Label" text="1KG SAS">
-																			<styleClass>
-																				<String fx:value="txt_gray_656565" />
-																				<String fx:value="font_size_10" />
-																			</styleClass>
-																			<VBox.margin>
-																				<Insets left="5.0" />
-																			</VBox.margin>
-																		</Label>
-																		<Label fx:id="frequencies1ValueLabel" text="N/A">
-																			<styleClass>
-																				<String fx:value="percent" />
-																				<String fx:value="font_size_9" />
-																			</styleClass>
-																			<VBox.margin>
-																				<Insets left="5.0" />
-																			</VBox.margin>
-																		</Label>
-																		<Label fx:id="frequencies2Label" text="ExAC NFE">
-																			<styleClass>
-																				<String fx:value="txt_gray_656565" />
-																				<String fx:value="font_size_10" />
-																			</styleClass>
-																			<VBox.margin>
-																				<Insets left="5.0" top="25.0" />
-																			</VBox.margin>
-																		</Label>
-																		<Label fx:id="frequencies2ValueLabel" text="N/A">
-																			<styleClass>
-																				<String fx:value="percent" />
-																				<String fx:value="font_size_9" />
-																			</styleClass>
-																			<VBox.margin>
-																				<Insets left="5.0" />
-																			</VBox.margin>
-																		</Label>
-																	</children>
-																	<padding>
-																		<Insets top="21.0" />
-																	</padding>
-																</VBox>
-															</children>
-															<VBox.margin>
-																<Insets />
-															</VBox.margin>
-														</HBox>
-														<VBox alignment="TOP_CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="200.0">
-															<children>
-																<Label fx:id="frequencies3Label" text="ExAC EAS">
-																	<styleClass>
-																		<String fx:value="txt_gray_656565" />
-																		<String fx:value="font_size_10" />
-																	</styleClass>
-																</Label>
-																<Label fx:id="frequencies3ValueLabel" alignment="CENTER" text="N/A">
-																	<styleClass>
-																		<String fx:value="percent" />
-																		<String fx:value="font_size_9" />
-																	</styleClass>
-																</Label>
-															</children>
-															<VBox.margin>
-																<Insets />
-															</VBox.margin>
-														</VBox>
-													</children>
-													<GridPane.margin>
-														<Insets top="4.0" />
-													</GridPane.margin>
-												</VBox>
-											</children>
-										</GridPane>
-									</content>
-								</Tab>
-							</tabs>
-							<VBox.margin>
-								<Insets />
-							</VBox.margin>
-						</TabPane>
-					</children>
-					<VBox.margin>
-						<Insets bottom="4.0" />
-					</VBox.margin>
-				</VBox>
+            <Pane prefHeight="270.0" prefWidth="264.0">
+               <children>
+                  <Pane prefHeight="200.0" prefWidth="264.0">
+                     <children>
+                        <VBox fx:id="variantInterpretation" prefHeight="200.0" prefWidth="264.0" styleClass="clinical_significant_pathogenicity_vbox">
+                           <children>
+                              <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label styleClass="title1" text="VARIANT INTERPRETATION" />
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="pathogenicityPredictionHBox1" prefHeight="33.0" styleClass="clinical_significant_pathogenicity_hbox">
+                                 <children>
+                                    <Label fx:id="clinicalSignificantPathogenicityPredictionLabel1" styleClass="clinical_significant_pathogenicity_label" text="SW TIER" />
+                                    <Label styleClass="prediction_none" text="I" />
+                                    <Label fx:id="clinicalSignificantPathogenicityPredictionLabel11" styleClass="clinical_significant_pathogenicity_label" text="USER TIER" />
+                                    <Label styleClass="prediction_none" text="I" />
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="pathogenicityPredictionHBox12" prefHeight="33.0" styleClass="clinical_significant_pathogenicity_hbox">
+                                 <children>
+                                    <Label fx:id="clinicalSignificantPathogenicityPredictionLabel12" styleClass="clinical_significant_pathogenicity_label" text="EVIDENCE" />
+                                    <Label styleClass="prediction_none" text="A" />
+                                    <Label styleClass="prediction_none" text="B" />
+                                    <Label styleClass="prediction_none" text="C" />
+                                    <Label styleClass="prediction_none" text="D" />
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="pathogenicityPredictionHBox121" prefHeight="33.0" styleClass="clinical_significant_pathogenicity_hbox">
+                                 <children>
+                                    <Label fx:id="clinicalSignificantPathogenicityPredictionLabel121" styleClass="clinical_significant_pathogenicity_label" text="NEGATIVE" />
+                                    <Label styleClass="prediction_none" text="N" />
+                                 </children>
+                              </HBox>
+                              <TextArea prefHeight="200.0" prefWidth="200.0" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </Pane>
+                  <Pane prefHeight="258.0" prefWidth="264.0">
+                     <children>
+            				<VBox fx:id="clinicalSignificant" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="258.0" prefWidth="270.0" visible="false">
+            					<children>
+            						<Label styleClass="title1" text="CLINICAL SIGNIFICANT">
+            							<padding>
+            								<Insets top="-5.0" />
+            							</padding>
+            						</Label>
+            						<TabPane fx:id="clinicalTabPane" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pickOnBounds="false" prefHeight="243.0" prefWidth="260.0" tabClosingPolicy="UNAVAILABLE">
+            							<tabs>
+            								<Tab closable="false" text="PATHOGENICITY">
+            									<content>
+            										<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="215.0" prefWidth="260.0" styleClass="clinical_significant_pathogenicity_vbox">
+            											<children>
+            												<HBox fx:id="pathogenicityPredictionHBox" prefHeight="33.0" styleClass="clinical_significant_pathogenicity_hbox">
+            													<children>
+            														<Label fx:id="clinicalSignificantPathogenicityPredictionLabel" styleClass="clinical_significant_pathogenicity_label" text="PREDICTION" />
+            														<Label styleClass="prediction_none" text="P" />
+            														<Label styleClass="prediction_none" text="LP" />
+            														<Label styleClass="prediction_none" text="US" />
+            														<Label styleClass="prediction_none" text="LB" />
+            														<Label styleClass="prediction_none" text="B" />
+            													</children>
+            												</HBox>
+            												<HBox fx:id="pathogenicityBicHBox" prefHeight="33.0" prefWidth="260.0" styleClass="clinical_significant_pathogenicity_hbox">
+            													<children>
+            														<Label fx:id="clinicalSignificantPathogenicityBicLabel" styleClass="clinical_significant_pathogenicity_label" text="BIC" />
+            														<Label styleClass="prediction_none" text="P" />
+            														<Label styleClass="prediction_none" text="LP" />
+            														<Label styleClass="prediction_none" text="US" />
+            														<Label styleClass="prediction_none" text="LB" />
+            														<Label styleClass="prediction_none" text="B" />
+            													</children>
+            												</HBox>
+            												<HBox fx:id="pathogenicityClinVarHBox" prefHeight="33.0" prefWidth="260.0" styleClass="clinical_significant_pathogenicity_hbox">
+            													<children>
+            														<Label fx:id="clinicalSignificantPathogenicityClinVarLabel" styleClass="clinical_significant_pathogenicity_label" text="CLINVAR" />
+            														<Label styleClass="prediction_none" text="P" />
+            														<Label styleClass="prediction_none" text="LP" />
+            														<Label styleClass="prediction_none" text="US" />
+            														<Label styleClass="prediction_none" text="LB" />
+            														<Label styleClass="prediction_none" text="B" />
+            													</children>
+            												</HBox>
+            												<HBox fx:id="pathogenicityEnigmaHBox" prefHeight="33.0" prefWidth="260.0" styleClass="clinical_significant_pathogenicity_hbox">
+            													<children>
+            														<Label fx:id="clinicalSignificantPathogenicityEnigmaLabel" styleClass="clinical_significant_pathogenicity_label" text="ENIGMA" />
+            														<Label styleClass="prediction_none" text="P" />
+            														<Label styleClass="prediction_none" text="LP" />
+            														<Label styleClass="prediction_none" text="US" />
+            														<Label styleClass="prediction_none" text="LB" />
+            														<Label styleClass="prediction_none" text="B" />
+            													</children>
+            												</HBox>
+            												<HBox prefHeight="100.0" prefWidth="200.0">
+            													<children>
+            														<Canvas fx:id="polyphenCanvas" height="100.0" width="80.0">
+            															<HBox.margin>
+            																<Insets top="10.0" />
+            															</HBox.margin>
+            														</Canvas>
+            														<Canvas fx:id="siftCanvas" height="100.0" width="80.0">
+            															<HBox.margin>
+            																<Insets top="10.0" />
+            															</HBox.margin>
+            														</Canvas>
+            														<Canvas fx:id="mtCanvas" height="100.0" width="80.0">
+            															<HBox.margin>
+            																<Insets top="10.0" />
+            															</HBox.margin>
+            														</Canvas>
+            													</children>
+            												</HBox>
+            											</children>
+            										</VBox>
+            									</content>
+            								</Tab>
+            								<Tab closable="false" text="POPULATION FREQUENCY">
+            									<content>
+            										<GridPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="140.0">
+            											<columnConstraints>
+            												<ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" prefWidth="200.0" />
+            											</columnConstraints>
+            											<rowConstraints>
+            												<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="200.0" valignment="TOP" vgrow="NEVER" />
+            											</rowConstraints>
+            											<children>
+            												<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="250.0">
+            													<children>
+            														<VBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="200.0">
+            															<children>
+            																<Label fx:id="frequencies0Label" text="1KG EAS">
+            																	<styleClass>
+            																		<String fx:value="txt_gray_656565" />
+            																		<String fx:value="font_size_10" />
+            																	</styleClass>
+            																</Label>
+            																<Label fx:id="frequencies0ValueLabel" alignment="CENTER" text="N/A">
+            																	<HBox.margin>
+            																		<Insets left="5.0" />
+            																	</HBox.margin>
+            																	<styleClass>
+            																		<String fx:value="percent" />
+            																		<String fx:value="font_size_9" />
+            																	</styleClass>
+            																</Label>
+            															</children>
+            															<VBox.margin>
+            																<Insets bottom="1.0" top="5.0" />
+            															</VBox.margin>
+            														</VBox>
+            														<HBox prefHeight="100.0" prefWidth="200.0">
+            															<children>
+            																<VBox alignment="TOP_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="116.0" prefWidth="75.0">
+            																	<children>
+            																		<Label fx:id="frequencies5Label" text="1KG EUR">
+            																			<styleClass>
+            																				<String fx:value="txt_gray_656565" />
+            																				<String fx:value="font_size_10" />
+            																			</styleClass>
+            																			<VBox.margin>
+            																				<Insets right="5.0" />
+            																			</VBox.margin>
+            																		</Label>
+            																		<Label fx:id="frequencies5ValueLabel" text="N/A">
+            																			<styleClass>
+            																				<String fx:value="percent" />
+            																				<String fx:value="font_size_9" />
+            																			</styleClass>
+            																			<VBox.margin>
+            																				<Insets right="5.0" />
+            																			</VBox.margin>
+            																		</Label>
+            																		<Label fx:id="frequencies4Label" text="ExAC SAS">
+            																			<styleClass>
+            																				<String fx:value="txt_gray_656565" />
+            																				<String fx:value="font_size_10" />
+            																			</styleClass>
+            																			<VBox.margin>
+            																				<Insets right="5.0" top="25.0" />
+            																			</VBox.margin>
+            																		</Label>
+            																		<Label fx:id="frequencies4ValueLabel" text="N/A">
+            																			<styleClass>
+            																				<String fx:value="percent" />
+            																				<String fx:value="font_size_9" />
+            																			</styleClass>
+            																			<VBox.margin>
+            																				<Insets right="5.0" />
+            																			</VBox.margin>
+            																		</Label>
+            																	</children>
+            																	<padding>
+            																		<Insets top="21.0" />
+            																	</padding>
+            																</VBox>
+            																<VBox fx:id="frequenciesRadarGraphArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="116.0" prefWidth="100.0">
+            																	<children>
+            																		<Polyline fx:id="frequenciesGraphPolyline" fill="#ff9482" opacity="0.3" stroke="#ae200b" strokeType="INSIDE" strokeWidth="2.0" VBox.vgrow="NEVER">
+            																			<points>
+            																				<Double fx:value="-50.0" />
+            																				<Double fx:value="-40.0" />
+            																				<Double fx:value="50.0" />
+            																				<Double fx:value="-40.0" />
+            																				<Double fx:value="0.0" />
+            																				<Double fx:value="60.0" />
+            																				<Double fx:value="-50.0" />
+            																				<Double fx:value="-40.0" />
+            																			</points>
+            																			<VBox.margin>
+            																				<Insets />
+            																			</VBox.margin>
+            																		</Polyline>
+            																	</children>
+            																</VBox>
+            																<VBox maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="116.0" prefWidth="75.0">
+            																	<children>
+            																		<Label fx:id="frequencies1Label" text="1KG SAS">
+            																			<styleClass>
+            																				<String fx:value="txt_gray_656565" />
+            																				<String fx:value="font_size_10" />
+            																			</styleClass>
+            																			<VBox.margin>
+            																				<Insets left="5.0" />
+            																			</VBox.margin>
+            																		</Label>
+            																		<Label fx:id="frequencies1ValueLabel" text="N/A">
+            																			<styleClass>
+            																				<String fx:value="percent" />
+            																				<String fx:value="font_size_9" />
+            																			</styleClass>
+            																			<VBox.margin>
+            																				<Insets left="5.0" />
+            																			</VBox.margin>
+            																		</Label>
+            																		<Label fx:id="frequencies2Label" text="ExAC NFE">
+            																			<styleClass>
+            																				<String fx:value="txt_gray_656565" />
+            																				<String fx:value="font_size_10" />
+            																			</styleClass>
+            																			<VBox.margin>
+            																				<Insets left="5.0" top="25.0" />
+            																			</VBox.margin>
+            																		</Label>
+            																		<Label fx:id="frequencies2ValueLabel" text="N/A">
+            																			<styleClass>
+            																				<String fx:value="percent" />
+            																				<String fx:value="font_size_9" />
+            																			</styleClass>
+            																			<VBox.margin>
+            																				<Insets left="5.0" />
+            																			</VBox.margin>
+            																		</Label>
+            																	</children>
+            																	<padding>
+            																		<Insets top="21.0" />
+            																	</padding>
+            																</VBox>
+            															</children>
+            															<VBox.margin>
+            																<Insets />
+            															</VBox.margin>
+            														</HBox>
+            														<VBox alignment="TOP_CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="200.0">
+            															<children>
+            																<Label fx:id="frequencies3Label" text="ExAC EAS">
+            																	<styleClass>
+            																		<String fx:value="txt_gray_656565" />
+            																		<String fx:value="font_size_10" />
+            																	</styleClass>
+            																</Label>
+            																<Label fx:id="frequencies3ValueLabel" alignment="CENTER" text="N/A">
+            																	<styleClass>
+            																		<String fx:value="percent" />
+            																		<String fx:value="font_size_9" />
+            																	</styleClass>
+            																</Label>
+            															</children>
+            															<VBox.margin>
+            																<Insets />
+            															</VBox.margin>
+            														</VBox>
+            													</children>
+            													<GridPane.margin>
+            														<Insets top="4.0" />
+            													</GridPane.margin>
+            												</VBox>
+            											</children>
+            										</GridPane>
+            									</content>
+            								</Tab>
+            							</tabs>
+            							<VBox.margin>
+            								<Insets />
+            							</VBox.margin>
+            						</TabPane>
+            					</children>
+            				</VBox>
+                     </children>
+                  </Pane>
+               </children>
+            </Pane>
 			</children>
 			<padding>
 				<Insets top="14.0" />

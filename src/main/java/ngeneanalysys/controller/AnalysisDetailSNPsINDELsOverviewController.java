@@ -196,6 +196,10 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
     private Canvas siftCanvas;
     @FXML
     private Canvas mtCanvas;
+    @FXML
+    private VBox variantInterpretation;
+    @FXML
+    private VBox clinicalSignificant;
 
     @FXML private VBox significantArea;
 
@@ -253,8 +257,11 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
 
 
         if(panel != null && "SOMATIC".equals(panel.getAnalysisType())) {
-            significantArea.setVisible(false);
+            variantInterpretation.setVisible(true);
+            clinicalSignificant.setVisible(false);
         } else {
+            variantInterpretation.setVisible(false);
+            clinicalSignificant.setVisible(true);
             // SIGNIFICANT 레이더 차트 화면 출력
             //showClinicalSignificantGraph();
         }

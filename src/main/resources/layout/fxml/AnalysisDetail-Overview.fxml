@@ -186,7 +186,7 @@
             </HBox>
             <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0" spacing="10.0" GridPane.columnIndex="1">
                <children>
-                  <Label text="Patient disease" />
+                  <Label fx:id="diseaseLabel" text="Patient disease" />
                </children>
             </VBox>
          </children>
