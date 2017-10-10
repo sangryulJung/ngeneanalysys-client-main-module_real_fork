@@ -1,16 +1,18 @@
 package ngeneanalysys.util.httpclient;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.security.KeyStore;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import javafx.scene.control.Alert;
 import ngeneanalysys.exceptions.WebAPIException;
@@ -51,11 +53,26 @@ public class HttpClientUtil {
 	public static SSLConnectionSocketFactory getSSLSocketFactory() {
 		SSLConnectionSocketFactory factory = null;
 		try {
-			KeyStore ks = KeyStore.getInstance("JKS");
-			InputStream keystore = new HttpClientUtil().getClass().getClassLoader().getResourceAsStream("example.com.jks");
-			ks.load(keystore, "abcdefg".toCharArray());
-			SSLContext sslcontext = SSLContexts.custom().loadTrustMaterial(ks, new TrustSelfSignedStrategy()).useProtocol("TLS").build();
-			factory = new SSLConnectionSocketFactory(sslcontext, NoopHostnameVerifier.INSTANCE);
+			SSLContext sslcontext = SSLContexts.custom().loadTrustMaterial(null, new TrustSelfSignedStrategy()).build();
+			TrustManager[] trustAllCerts = new TrustManager[] {
+					new X509TrustManager() {
+                        @Override
+                        public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+                        }
+
+                        @Override
+                        public void checkServerTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+                        }
+
+                        @Override
+                        public X509Certificate[] getAcceptedIssuers() {
+                            return new X509Certificate[]{};
+                        }
+                    } };
+
+                    SSLContext sc = SSLContext.getDefault().getInstance("SSL");
+                    sc.init(null, trustAllCerts, new SecureRandom());
+			factory = new SSLConnectionSocketFactory(sc, NoopHostnameVerifier.INSTANCE);
 		} catch (Exception e) {
 			logger.error("HttpClient SSL Connection Socket Factory Create Fail!!!");
 		}
