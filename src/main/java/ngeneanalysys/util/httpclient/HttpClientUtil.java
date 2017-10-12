@@ -1,7 +1,6 @@
 package ngeneanalysys.util.httpclient;
 
 import java.io.*;
-import java.security.KeyStore;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -27,7 +26,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
 import org.apache.http.ssl.SSLContexts;
 import org.slf4j.Logger;
 

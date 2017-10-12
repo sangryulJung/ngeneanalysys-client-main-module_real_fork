@@ -74,7 +74,7 @@
                            <HBox.margin>
                               <Insets right="10.0" />
                            </HBox.margin></Button>
-                        <Button fx:id="panelAddBtn1" mnemonicParsing="false" onAction="#panelAdd" text="panel add" />
+                        <Button fx:id="panelAddBtn" mnemonicParsing="false" onAction="#panelAdd" text="panel add" />
                      </children>
                   </HBox>
                </children>

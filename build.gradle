@@ -5,6 +5,18 @@ apply plugin: 'java'
 
 sourceCompatibility = 1.8
 
+jar {
+    baseName = 'ngeneanalysys'
+    version = version
+    archiveName = 'ngeneanalysys-0.9.jar'
+    manifest {
+        attributes 'Main-Class': 'ngeneanalysys.MainApp',
+                'Implementation-Title': 'myapp',
+                'Implementation-Version': version
+    }
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
 repositories {
     mavenCentral()
 }
@@ -41,6 +53,9 @@ dependencies {
     compile group: 'org.apache.httpcomponents', name: 'httpmime', version: '4.5.2'
     // https://mvnrepository.com/artifact/org.apache.commons/commons-compress
     compile group: 'org.apache.commons', name: 'commons-compress', version: '1.12'
+    // https://mvnrepository.com/artifact/org.apache.xmlgraphics/fop
+    compile group: 'org.apache.xmlgraphics', name: 'fop', version: '2.1'
+
 
     compile 'org.controlsfx:controlsfx:8.40.13'
 

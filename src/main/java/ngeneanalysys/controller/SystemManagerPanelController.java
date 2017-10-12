@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 import ngeneanalysys.code.enums.ExperimentTypeCode;
 import ngeneanalysys.code.enums.SampleSourceCode;
 import ngeneanalysys.controller.extend.SubPaneController;
@@ -15,6 +16,7 @@ import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -79,9 +81,13 @@ public class SystemManagerPanelController extends SubPaneController {
     @FXML
     private TableColumn<Panel, Boolean> modify;
 
+    File file = null;
+
     @Override
     public void show(Parent root) throws IOException {
         apiService = APIService.getInstance();
+
+        panelAddBtn.setDisable(true);
 
         panelId.setCellValueFactory(item -> new SimpleIntegerProperty(item.getValue().getId()).asObject());
         panelName.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getName()));
@@ -114,6 +120,8 @@ public class SystemManagerPanelController extends SubPaneController {
         String panelName = panelNameTextField.getText();
         String code = panelCodeTextField.getText();
         if(!StringUtils.isEmpty(panelName) &&  !StringUtils.isEmpty(code)) {
+            if(file == null) return;
+
             Map<String,Object> params = new HashMap<>();
             params.put("name", panelName);
             params.put("code", code);
@@ -123,14 +131,21 @@ public class SystemManagerPanelController extends SubPaneController {
 
             HttpClientResponse response = null;
             try {
-                apiService.post("admin/panels", params, null, true);
+                response = apiService.post("admin/panels", params, null, true);
+                Panel newPanel = response.getObjectBeforeConvertResponseToJSON(Panel.class);
 
-                response = apiService.get("/panels", null, null, false);
+
+
+                /*response = apiService.get("/panels", null, null, false);
                 final List<Panel> panels = (List<Panel>) response.getMultiObjectBeforeConvertResponseToJSON(Panel.class, false);
-                mainController.getBasicInformationMap().put("panels", panels);
+                mainController.getBasicInformationMap().put("panels", panels);*/
+                List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
+                panels.add(newPanel);
 
                 panelListTable.getItems().clear();
                 panelListTable.getItems().addAll(panels);
+
+                panelAddBtn.setDisable(true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -139,6 +154,16 @@ public class SystemManagerPanelController extends SubPaneController {
 
     @FXML
     public void fileSelect() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose FASTQ File");
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        fileChooser.getExtensionFilters()
+                .addAll(new FileChooser.ExtensionFilter("bed", "*.bed"));
+        File file = fileChooser.showOpenDialog(mainController.getPrimaryStage());
 
+        if(file != null && file.getName().toLowerCase().endsWith(".bed")) {
+            this.file = file;
+            panelAddBtn.setDisable(false);
+        }
     }
 }
