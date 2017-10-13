@@ -61,38 +61,36 @@ public class SparkHttpProxyServer {
                 String name = request.params(":name");
                 String url = String.format("%s/analysisFiles/%s/%s", getApiServerHost(), sample, name);
                 logger.info(String.format("URL = %s", url));
-                //HttpsURLConnection conn = null;
-                HttpURLConnection conn = null;
+                HttpsURLConnection conn = null;
                 try {
-//                    TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
-//                        @Override
-//                        public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
-//                        }
-//
-//                        @Override
-//                        public void checkServerTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
-//                        }
-//
-//                        @Override
-//                        public X509Certificate[] getAcceptedIssuers() {
-//                            return new X509Certificate[]{};
-//                        }
-//                    } };
-//
-//                    SSLContext sc = SSLContext.getDefault().getInstance("SSL");
-//                    sc.init(null, trustAllCerts, new SecureRandom());
-//                    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+                    TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+                        @Override
+                        public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+                        }
+
+                        @Override
+                        public void checkServerTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+                        }
+
+                        @Override
+                        public X509Certificate[] getAcceptedIssuers() {
+                            return new X509Certificate[]{};
+                        }
+                    } };
+
+                    SSLContext sc = SSLContext.getDefault().getInstance("SSL");
+                    sc.init(null, trustAllCerts, new SecureRandom());
+                    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
 
                     URL obj = new URL(url);
-                    //conn = (HttpsURLConnection) obj.openConnection();
-                    conn = (HttpURLConnection) obj.openConnection();
-//                    conn.setDefaultSSLSocketFactory(sc.getSocketFactory());
-//                    conn.setHostnameVerifier(new HostnameVerifier() {
-//                        @Override
-//                        public boolean verify(String s, SSLSession sslSession) {
-//                            return true;
-//                        }
-//                    });
+                    conn = (HttpsURLConnection) obj.openConnection();
+                    conn.setDefaultSSLSocketFactory(sc.getSocketFactory());
+                    conn.setHostnameVerifier(new HostnameVerifier() {
+                        @Override
+                        public boolean verify(String s, SSLSession sslSession) {
+                            return true;
+                        }
+                    });
                     conn.setDefaultUseCaches(false);
                     conn.setUseCaches(false);
                     conn.setRequestMethod("GET");
