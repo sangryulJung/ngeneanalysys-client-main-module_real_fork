@@ -1,6 +1,5 @@
 package ngeneanalysys.controller;
 
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -11,15 +10,25 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import ngeneanalysys.code.AnalysisJobStatusCode;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
-import ngeneanalysys.model.VariantPerGene;
+import ngeneanalysys.exceptions.WebAPIException;
+import ngeneanalysys.model.RunGroupForPaging;
+import ngeneanalysys.model.Sample;
+import ngeneanalysys.model.VariantCountByGene;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
+import ngeneanalysys.util.StringUtils;
+import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Jang
@@ -38,52 +47,43 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
     private ComboBox<ComboBoxItem> tierComboBox;
 
     @FXML
-    private TextField geneNameTextField;
+    private TextField geneListTextField;
 
     @FXML
-    private TableView<VariantPerGene> geneTable;
+    private TableView<VariantCountByGene> geneTable;
 
     @FXML
-    private TableColumn<VariantPerGene, String> geneColumn;
+    private TableColumn<VariantCountByGene, String> geneColumn;
 
     @FXML
-    private TableColumn<VariantPerGene, Integer> tierOneSnvColumn;
+    private TableColumn<VariantCountByGene, Integer> tier1SnvColumn;
 
     @FXML
-    private TableColumn<VariantPerGene, Integer> tierOneIndelsColumn;
+    private TableColumn<VariantCountByGene, Integer> tier1IndelsColumn;
 
     @FXML
-    private TableColumn<VariantPerGene, Integer> tierOneFusionColumn;
+    private TableColumn<VariantCountByGene, Integer> tier2SnvColumn;
 
     @FXML
-    private TableColumn<VariantPerGene, Integer> tierTwoSnvColumn;
+    private TableColumn<VariantCountByGene, Integer> tier2IndelsColumn;
 
     @FXML
-    private TableColumn<VariantPerGene, Integer> tierTwoIndelsColumn;
+    private TableColumn<VariantCountByGene, Integer> tier3SnvColumn;
 
     @FXML
-    private TableColumn<VariantPerGene, Integer> tierTwoFusionColumn;
+    private TableColumn<VariantCountByGene, Integer> tier3IndelsColumn;
 
     @FXML
-    private TableColumn<VariantPerGene, Integer> tierThreeSnvColumn;
+    private TableColumn<VariantCountByGene, Integer> tier4SnvColumn;
 
     @FXML
-    private TableColumn<VariantPerGene, Integer> tierThreeIndelsColumn;
+    private TableColumn<VariantCountByGene, Integer> tier4IndelsColumn;
 
     @FXML
-    private TableColumn<VariantPerGene, Integer> tierThreeFusionColumn;
+    private TableColumn<VariantCountByGene, Integer> tierNSnvColumn;
 
     @FXML
-    private TableColumn<VariantPerGene, Integer> tierFourSnvColumn;
-
-    @FXML
-    private TableColumn<VariantPerGene, Integer> tierFourIndelsColumn;
-
-    @FXML
-    private TableColumn<VariantPerGene, Integer> tierFourFusionColumn;
-
-    @FXML
-    private TableColumn<VariantPerGene, Boolean> openDetailsColumn;
+    private TableColumn<VariantCountByGene, Integer> tierNIndelsColumn;
 
     @FXML
     private Button fusionButton;
@@ -97,23 +97,19 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
         fusionButton.setDisable(true);
         fusionButton.setVisible(false);
 
-        geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getGene()));
-        tierOneSnvColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getT1SnpCount()).asObject());
-        tierOneIndelsColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getT1SnpCount()).asObject());
-        tierOneFusionColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getT1FusionCount()).asObject());
-        tierTwoSnvColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getT2SnpCount()).asObject());
-        tierTwoIndelsColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getT2SnpCount()).asObject());
-        tierTwoFusionColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getT2FusionCount()).asObject());
-        tierThreeSnvColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getT3SnpCount()).asObject());
-        tierThreeIndelsColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getT3SnpCount()).asObject());
-        tierThreeFusionColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getT3FusionCount()).asObject());
-        tierFourSnvColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getT4SnpCount()).asObject());
-        tierFourIndelsColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getT4SnpCount()).asObject());
-        tierFourFusionColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getT4FusionCount()).asObject());
-        openDetailsColumn.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue() != null));
-        openDetailsColumn.setCellFactory(cellData -> new OpenDetailButton());
+        geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getGeneSymbol()));
+        tier1SnvColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier1SnpCount()).asObject());
+        tier1IndelsColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier1SnpCount()).asObject());
+        tier2SnvColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier2SnpCount()).asObject());
+        tier2IndelsColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier2SnpCount()).asObject());
+        tier3SnvColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier3SnpCount()).asObject());
+        tier3IndelsColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier3SnpCount()).asObject());
+        tier4SnvColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier4SnpCount()).asObject());
+        tier4IndelsColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier4SnpCount()).asObject());
+        tierNSnvColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTierNSnpCount()).asObject());
+        tierNIndelsColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTierNSnpCount()).asObject());
 
-        addDummyData();
+        showVariantCountByGeneData();
 
     }
 
@@ -155,7 +151,7 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
         }
     }
 
-    private class OpenDetailButton extends TableCell<VariantPerGene, Boolean> {
+    private class OpenDetailButton extends TableCell<VariantCountByGene, Boolean> {
         final Button button = new Button("open");
 
         public OpenDetailButton() {
@@ -176,31 +172,50 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
 
     @FXML
     public void searchGene() {
-
+        Sample sample = (Sample)getParamMap().get("sample");
+        ObservableList<VariantCountByGene> VariantCountByGene = getVariantcountByGeneData(sample.getId(),
+                    geneListTextField.getText());
+        geneTable.setItems(VariantCountByGene);
     }
 
     @FXML
     public void cellSelectEvent(MouseEvent event){
         if(event.getClickCount() == 2) {
             String obj = geneTable.getSelectionModel().getSelectedCells().get(0).getTableColumn().getText();
-            VariantPerGene gene = geneTable.getSelectionModel().getSelectedItem();
-            logger.info(obj.toString() + " gene : " + gene.getGene());
+            VariantCountByGene gene = geneTable.getSelectionModel().getSelectedItem();
+            logger.info(obj.toString() + " gene : " + gene.getGeneSymbol());
         }
     }
 
 
-    public void addDummyData() {
+    private void showVariantCountByGeneData() {
+        Sample sample = (Sample)getParamMap().get("sample");
+        ObservableList<VariantCountByGene> VariantCountByGene = getVariantcountByGeneData(sample.getId(), null);
+        geneTable.setItems(VariantCountByGene);
+    }
 
-        ObservableList<VariantPerGene> variantPerGene = FXCollections.observableArrayList(
-                new VariantPerGene(1 , (Integer)getParamMap().get("sampleId"),"NO", "IDH2",2,0,2,0,2,2,2,0,0,0,2,0,2,1,0,2),
-                new VariantPerGene(2 , (Integer)getParamMap().get("sampleId"),"NO", "NPM1",0,2,2,0,2,0,0,2,0,2,0,2,0,1,2,0),
-                new VariantPerGene(3 , (Integer)getParamMap().get("sampleId"),"NO", "DNMT3A",0,0,2,2,0,0,2,0,0,0,2,2,0,1,2,0),
-                new VariantPerGene(4 , (Integer)getParamMap().get("sampleId"),"NO", "SRSF2",2,0,2,2,0,2,0,2,0,2,0,0,2,1,0,2),
-                new VariantPerGene(4 , (Integer)getParamMap().get("sampleId"),"NO", "FLT-ITD",2,0,2,2,0,2,0,2,0,2,0,0,2,1,0,2),
-                new VariantPerGene(4 , (Integer)getParamMap().get("sampleId"),"NO", "C-KIT",2,0,2,2,0,2,0,2,0,2,0,0,2,1,0,2)
-        );
-
-        geneTable.setItems(variantPerGene);
-
+    private ObservableList<VariantCountByGene> getVariantcountByGeneData(int sampleId, String geneList) {
+        Map<String, Object> param = new HashMap<>();
+        ObservableList<VariantCountByGene> variantCountByGenes = null;
+        if (geneList != null && geneList.trim().length() > 0) {
+            param.put("geneSymbols", geneList);
+        }
+        try {
+            HttpClientResponse response = apiService.get("/analysisResults/variantCountByGene/" + sampleId,
+                    param, null, false);
+            logger.info(response.toString());
+            if (response != null) {
+                variantCountByGenes = (ObservableList<VariantCountByGene>) response
+                        .getMultiObjectBeforeConvertResponseToJSON(VariantCountByGene.class,
+                                true);
+            }
+        } catch (WebAPIException wae) {
+            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+                    getMainApp().getPrimaryStage(), true);
+        } catch (Exception e) {
+            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(),
+                    true);
+        }
+        return variantCountByGenes;
     }
 }

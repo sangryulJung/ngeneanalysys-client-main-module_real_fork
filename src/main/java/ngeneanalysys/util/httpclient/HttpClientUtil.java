@@ -556,7 +556,7 @@ public class HttpClientUtil {
 	 */
 	public static List<NameValuePair> convertParam(Map<String, Object> params) {
 		List<NameValuePair> paramList = new ArrayList<NameValuePair>();
-		if (params != null) {
+		if (params != null && params.size() > 0) {
 			Iterator<String> keys = params.keySet().iterator();
 			while (keys.hasNext()) {
 				String key = keys.next();
