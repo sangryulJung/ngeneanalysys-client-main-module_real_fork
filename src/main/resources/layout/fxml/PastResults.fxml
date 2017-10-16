@@ -241,7 +241,7 @@
                         <Insets left="5.0" top="7.0" />
                      </HBox.margin>
                   </Label>
-                  <Label fx:id="sampleCount" layoutX="388.0" layoutY="10.0" text="10">
+                  <Label fx:id="sampleCountLabel" layoutX="388.0" layoutY="10.0" text="0">
                      <styleClass>
                         <String fx:value="txt_sample_count" />
                         <String fx:value="weight_bold" />

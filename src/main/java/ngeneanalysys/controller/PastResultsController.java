@@ -107,7 +107,7 @@ public class PastResultsController extends SubPaneController {
 	
 	/** 샘플 수 출력 */
 	@FXML
-	private Label sampleCount;
+	private Label sampleCountLabel;
 	
 	/** 목록 새로고침 버튼 */
 	@FXML
@@ -336,7 +336,7 @@ public class PastResultsController extends SubPaneController {
 					}
 				}
 				logger.info(String.format("total count : %s, page count : %s", totalCount, pageCount));
-				sampleCount.setText(String.valueOf(totalCount));
+				sampleCountLabel.setText(String.valueOf(totalCount));
 				renderSampleList(list);
 				if (pageCount > 0) {
 					paginationList.setVisible(true);
