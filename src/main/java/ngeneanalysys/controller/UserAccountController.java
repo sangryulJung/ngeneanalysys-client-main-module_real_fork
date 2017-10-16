@@ -14,6 +14,7 @@ import ngeneanalysys.code.UserTypeCode;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
+import ngeneanalysys.model.SystemManagerUserGroupPaging;
 import ngeneanalysys.model.User;
 import ngeneanalysys.model.UserGroup;
 import ngeneanalysys.model.render.ComboBoxConverter;
@@ -151,9 +152,9 @@ public class UserAccountController extends SubPaneController {
 
         if(selectUserType.getSelectionModel().getSelectedIndex() == 0 || selectUserType.getValue() == null) {
             selectUserType.requestFocus();
-        } /*else if(selectUserGroup.getSelectionModel().getSelectedIndex() == 0 || selectUserGroup.getValue() == null) {
+        } else if(selectUserGroup.getSelectionModel().getSelectedIndex() == 0 || selectUserGroup.getValue() == null) {
             selectUserGroup.requestFocus();
-        }*/ else if(ValidationUtil.text(loginIdTextField.getText(), "login ID", 4, 8, null, null, true, dialogStage) > 0) {
+        } else if(ValidationUtil.text(loginIdTextField.getText(), "login ID", 4, 8, null, null, true, dialogStage) > 0) {
             loginIdTextField.requestFocus();
         } else if(ValidationUtil.text(nameTextField.getText(), "name", 4, 8, null, null, true, dialogStage) > 0) {
             nameTextField.requestFocus();
@@ -170,8 +171,7 @@ public class UserAccountController extends SubPaneController {
         } else if(validPwdInput()) {
             params = new HashMap<>();
             params.put("role", selectUserType.getSelectionModel().getSelectedItem().getValue());
-            //params.put("user_group", selectUserGroup.getSelectionModel().getSelectedItem().getValue());
-            params.put("memberGroupId", 1);
+            params.put("memberGroupId", Integer.parseInt(selectUserGroup.getSelectionModel().getSelectedItem().getValue()));
             params.put("loginId", loginIdTextField.getText());
             params.put("loginPassword", passwordField.getText());
             params.put("name", nameTextField.getText());
@@ -240,15 +240,17 @@ public class UserAccountController extends SubPaneController {
             Map<String, Object> param = new HashMap<>();
             param.put("format", "json");
 
-            response = apiService.get("/admin/group_name", param, null, false);
+            response = apiService.get("/admin/memberGroups", param, null, false);
             logger.info(response.getContentString());
             if(response != null) {
-                List<UserGroup> list = (List<UserGroup>) response.getMultiObjectBeforeConvertResponseToJSON(UserGroup.class, false);
+                SystemManagerUserGroupPaging systemManagerUserGroupPaging =
+                        response.getObjectBeforeConvertResponseToJSON(SystemManagerUserGroupPaging.class);
+                List<UserGroup> list = systemManagerUserGroupPaging.getList();
 
-                /*for(UserGroup group : list) {
+                for(UserGroup group : list) {
                     selectUserGroup.getItems().add(new ComboBoxItem(
-                            group.getId().toString(), group.getGroup_name()));
-                }*/
+                            group.getId().toString(), group.getName()));
+                }
 
                 selectUserGroup.getSelectionModel().selectFirst();
             }

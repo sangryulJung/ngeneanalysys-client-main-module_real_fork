@@ -66,7 +66,7 @@
 		<fo:flow flow-name="xsl-region-body">
 
 			<!-- contents page -->
-			<fo:block text-align="center" margin-top="10mm" font-family="Noto Sans CJK KR Bold" font-weight="bold" font-size="16pt">Clinical Report</fo:block>
+			<fo:block text-align="center" margin-top="10mm" font-family="Noto Sans CJK KR Bold" font-weight="bold" font-size="17pt" margin-bottom="5mm">Clinical Report</fo:block>
 
 			<!-- General Information -->
 			<fo:block margin-bottom="10mm" font-size="10pt">
@@ -81,7 +81,7 @@
 							<fo:table-row>
 								<fo:table-cell display-align="center">
 									<fo:block-container height="25mm" border-style="solid" border-width="0.5pt" text-align="center" background-color="#ed7d31">
-										<fo:block padding-bottom="20pt">
+										<fo:block padding-bottom="20pt" font-weight="bold" color="#FFFFFF">
 											Patient Code
 										</fo:block>
 										<fo:block font-weight="bold" font-size="12pt" color="#FFFFFF">
@@ -91,7 +91,7 @@
 								</fo:table-cell>
 								<fo:table-cell display-align="center">
 									<fo:block-container height="25mm" border-style="solid" border-width="0.5pt" text-align="center" background-color="#ffc000">
-										<fo:block padding-bottom="20pt">
+										<fo:block padding-bottom="20pt" font-weight="bold" color="#FFFFFF">
 											Sample Source
 										</fo:block>
 										<fo:block font-weight="bold" font-size="12pt" color="#FFFFFF">
@@ -101,7 +101,7 @@
 								</fo:table-cell>
 								<fo:table-cell display-align="center">
 									<fo:block-container height="25mm" border-style="solid" border-width="0.5pt" text-align="center" background-color="#70ad47">
-										<fo:block padding-bottom="20pt">
+										<fo:block padding-bottom="20pt" font-weight="bold" color="#FFFFFF">
 											Disease Name
 										</fo:block>
 										<fo:block font-weight="bold" font-size="12pt" color="#FFFFFF">
@@ -111,7 +111,7 @@
 								</fo:table-cell>
 								<fo:table-cell display-align="center">
 									<fo:block-container height="25mm" border-style="solid" border-width="0.5pt" text-align="center" background-color="#5b9bd5">
-										<fo:block padding-bottom="20pt">
+										<fo:block padding-bottom="20pt" font-weight="bold" color="#FFFFFF">
 											Panel
 										</fo:block>
 										<fo:block font-weight="bold" font-size="12pt" color="#FFFFFF">
@@ -127,7 +127,7 @@
 			</fo:block>
 
 			<!-- Variants of Strong/Potential Clinical Significance -->
-			<fo:block font-size="10pt">
+			<fo:block font-size="10pt" padding-bottom="5mm">
 				<fo:block font-size="13pt">2. Variants of Strong/Potential Clinical Significance</fo:block>
 				<fo:block>
 					<fo:table table-layout="fixed" width="100%">
@@ -139,49 +139,49 @@
 						<fo:table-body>
 							<fo:table-row height="10mm" display-align="center" text-align="center">
 								<fo:table-cell border-style="solid" border-width="0.5pt" number-rows-spanned="2">
-									<fo:block>Genomic Alternations</fo:block>
+									<fo:block font-weight="bold">Genomic Alternations</fo:block>
 								</fo:table-cell>
 								<fo:table-cell border-style="solid" border-width="0.5pt" number-columns-spanned="2">
-									<fo:block>Tier 1</fo:block>
+									<fo:block font-weight="bold">Tier 1</fo:block>
 									<fo:block>(Strong Clinical Significance)</fo:block>
 								</fo:table-cell>
 								<fo:table-cell border-style="solid" border-width="0.5pt" number-columns-spanned="2">
-									<fo:block>Tier 2</fo:block>
+									<fo:block font-weight="bold">Tier 2</fo:block>
 									<fo:block>(Potential Clinical Significance)</fo:block>
 								</fo:table-cell>
 							</fo:table-row>
-							<fo:table-row height="10mm">
+							<fo:table-row height="10mm" font-size="9pt">
 								<fo:table-cell border-style="solid" border-width="0.5pt">
-									<fo:block>Level A Evidence</fo:block>
+									<fo:block font-weight="bold">Level A Evidence</fo:block>
 									<fo:block><![CDATA[FDA-approved therapy & Included in professional guidelines]]></fo:block>
 								</fo:table-cell>
 								<fo:table-cell border-style="solid" border-width="0.5pt">
-									<fo:block>Level B Evidence</fo:block>
+									<fo:block font-weight="bold">Level B Evidence</fo:block>
 									<fo:block>Well-powered studies with consensus from experts in the field</fo:block>
 								</fo:table-cell>
 								<fo:table-cell border-style="solid" border-width="0.5pt">
-									<fo:block>Level A Evidence</fo:block>
-									<fo:block><![CDATA[FDA-approved therapy & Included in professional guidelines]]></fo:block>
+									<fo:block font-weight="bold">Level C Evidence</fo:block>
+									<fo:block><![CDATA[FDA-approved therapies (off label) & Multiple small published studies with some consensus]]></fo:block>
 								</fo:table-cell>
 								<fo:table-cell border-style="solid" border-width="0.5pt">
-									<fo:block>Level B Evidence</fo:block>
-									<fo:block>Well-powered studies with consensus from experts in the field</fo:block>
+									<fo:block font-weight="bold">Level D Evidence</fo:block>
+									<fo:block>Preclinical trials or a few case reports without consensus</fo:block>
 								</fo:table-cell>
 							</fo:table-row>
-							<fo:table-row text-align="center">
-								<fo:table-cell border-style="solid" border-width="0.5pt">
-									<fo:block>Total Count</fo:block>
+							<fo:table-row text-align="center" height="10mm">
+								<fo:table-cell border-style="solid" border-width="0.5pt" display-align="center">
+									<fo:block font-weight="bold">Total Count</fo:block>
 								</fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt">
+								<fo:table-cell border-style="solid" border-width="0.5pt" display-align="center">
 									<fo:block>1</fo:block>
 								</fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt">
+								<fo:table-cell border-style="solid" border-width="0.5pt" display-align="center">
 									<fo:block>1</fo:block>
 								</fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt">
+								<fo:table-cell border-style="solid" border-width="0.5pt" display-align="center">
 									<fo:block>1</fo:block>
 								</fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt">
+								<fo:table-cell border-style="solid" border-width="0.5pt" display-align="center">
 									<fo:block>1</fo:block>
 								</fo:table-cell>
 							</fo:table-row>
@@ -241,7 +241,7 @@
 
 
 			<!-- Variant Details -->
-			<fo:block text-align="center" margin-top="10mm" font-family="Noto Sans CJK KR Bold" font-weight="bold" font-size="16pt">NgeneAnalySyS Final Report</fo:block>
+			<fo:block text-align="center" margin-top="10mm" margin-bottom="5mm" font-family="Noto Sans CJK KR Bold" font-weight="bold" font-size="17pt">Variant Details</fo:block>
 			<fo:block margin-bottom="10mm" font-size="10pt">
 				<fo:block>
 					<fo:table table-layout="fixed" width="100%">
@@ -308,7 +308,7 @@
 				<fo:block page-break-before="always"> </fo:block>
 			</fo:block>
 
-			<fo:block text-align="center" margin-top="10mm" font-family="Noto Sans CJK KR Bold" font-weight="bold" font-size="16pt">Test Details</fo:block>
+			<fo:block text-align="center" margin-top="10mm" font-family="Noto Sans CJK KR Bold" font-weight="bold" font-size="17pt" margin-bottom="5mm">Test Details</fo:block>
 
 			<!-- Test Details -->
 			<fo:block margin-bottom="10mm" font-size="10pt">
@@ -696,7 +696,7 @@
 					</fo:table>
 				</fo:block>
 			</fo:block>
-
+			<fo:block id="lastPage"> </fo:block>
 		</fo:flow>
 
 

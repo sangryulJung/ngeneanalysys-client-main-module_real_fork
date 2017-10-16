@@ -1,21 +1,28 @@
 package ngeneanalysys.controller;
 
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
-import ngeneanalysys.model.Diseases;
-import ngeneanalysys.model.Panel;
-import ngeneanalysys.model.Sample;
-import ngeneanalysys.model.User;
+import ngeneanalysys.model.*;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.service.PDFCreateService;
+import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
+import ngeneanalysys.util.StringUtils;
+import ngeneanalysys.util.VelocityUtil;
+import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Jang
@@ -24,8 +31,15 @@ import java.util.List;
 public class AnalysisDetailReportController extends AnalysisDetailCommonController {
     private static Logger logger = LoggerUtil.getLogger();
 
+    private static final String CONFIRMATION_DIALOG = "Confirmation Dialog";
+
     /** api service */
     private APIService apiService;
+
+    private PDFCreateService pdfCreateService;
+
+    /** Velocity Util */
+    private VelocityUtil velocityUtil = new VelocityUtil();
 
     @FXML
     private Label diseaseLabel;
@@ -35,6 +49,14 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
     Sample sample = null;
 
+    List<AnalysisResultVariant> tierOne = null;
+
+    List<AnalysisResultVariant> tierTwo = null;
+
+    List<AnalysisResultVariant> tierThree = null;
+
+    List<AnalysisResultVariant> negativeVariant = null;
+
     @Override
     public void show(Parent root) throws IOException {
         logger.info("show..");
@@ -42,6 +64,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         // API 서비스 클래스 init
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
+
+        pdfCreateService = PDFCreateService.getInstance();
 
         sample = (Sample)paramMap.get("sample");
 
@@ -54,6 +78,63 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
         String panelName = panels.stream().filter(panel -> panel.getId().equals(sample.getPanelId())).findFirst().get().getName();
         panelLabel.setText(panelName);
+
+        try {
+            HttpClientResponse response = apiService.get("/analysisResults/"+ sample.getId()  + "/variants", null,
+                    null, false);
+
+            AnalysisResultVariantList analysisResultVariantList = response.getObjectBeforeConvertResponseToJSON(AnalysisResultVariantList.class);
+
+            List<AnalysisResultVariant> list = analysisResultVariantList.getResult();
+
+            //negative list만 가져옴
+            List<AnalysisResultVariant> negativeList = list.stream().filter(item -> !StringUtils.isEmpty(item.getInterpretation().getInterpretationNegativeTesult())).collect(Collectors.toList());
+
+            Map<String, List<AnalysisResultVariant>> variantTierMap = list.stream().collect(Collectors.groupingBy(AnalysisResultVariant::getSwTier));
+
+            tierOne = variantTierMap.get("T1");
+
+            if(tierOne != null) {
+                //tierTable.getItems().addAll(FXCollections.observableArrayList(tierOne));
+                List<SequenceInfo> sequenceInfos = new ArrayList<>();
+                tierOne.stream().forEach(item -> {
+                    if (item.getSequenceInfo() != null)
+                        sequenceInfos.add(item.getSequenceInfo());
+                });
+
+                List<Interpretation> interpretations = new ArrayList<>();
+                tierOne.stream().forEach(item -> {
+                    if (item.getInterpretation() != null)
+                        interpretations.add(item.getInterpretation());
+                });
+
+            }
+
+            tierTwo = variantTierMap.get("T2");
+
+            if(tierTwo != null) {
+                //tierTable.getItems().addAll(FXCollections.observableArrayList(tierTwo));
+                List<SequenceInfo> sequenceInfos = new ArrayList<>();
+                tierTwo.stream().forEach(item -> {
+                    if (item.getSequenceInfo() != null)
+                        sequenceInfos.add(item.getSequenceInfo());
+                });
+
+                List<Interpretation> interpretations = new ArrayList<>();
+                tierTwo.stream().forEach(item -> {
+                    if (item.getInterpretation() != null)
+                        interpretations.add(item.getInterpretation());
+                });
+
+            }
+
+            if(negativeList != null) {
+                //pertinentNegativesTable.setItems(FXCollections.observableArrayList(negativeList));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -74,7 +155,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
     @FXML
     public void createPDFAsDraft() {
-
+        createPDF(true, false);
     }
 
     @FXML
@@ -100,6 +181,47 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf"));
         fileChooser.setInitialFileName(baseSaveName);
         File file = fileChooser.showSaveDialog(this.getMainApp().getPrimaryStage());
+
+        try {
+            if(file != null) {
+                String draftImageStr = String.format("url('%s')", this.getClass().getClassLoader().getResource("layout/images/DRAFT.png"));
+                String ngenebioLogo = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/ngenebio_logo_small.png"));
+
+                Map<String, Object> model = new HashMap<>();
+                model.put("isDraft", isDraft);
+                //model.put("qcResult", sample.getQc());
+                model.put("draftImageURL", draftImageStr);
+                model.put("ngenebioLogo", ngenebioLogo);
+                //model.put("contents", contentsMap);
+
+                String contents = velocityUtil.getContents("/layout/velocity/report.vm", "UTF-8", model);
+
+                created = pdfCreateService.createPDF(file, contents);
+                if (created) {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.initOwner(getMainController().getPrimaryStage());
+                    alert.setTitle(CONFIRMATION_DIALOG);
+                    alert.setHeaderText("Creating the report document was completed.");
+                    alert.setContentText("Do you want to check the report document?");
+
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.get() == ButtonType.OK) {
+                        getMainApp().getHostServices().showDocument(file.toURI().toURL().toExternalForm());
+                    } else {
+                        alert.close();
+                    }
+                } else {
+                    DialogUtil.error("Save Fail.", "An error occurred during the creation of the report document.",
+                            getMainApp().getPrimaryStage(), false);
+                }
+            }
+        } catch(FileNotFoundException fnfe){
+            DialogUtil.error("Save Fail.", fnfe.getMessage(), getMainApp().getPrimaryStage(), false);
+        } catch (Exception e) {
+            DialogUtil.error("Save Fail.", "An error occurred during the creation of the report document.", getMainApp().getPrimaryStage(), false);
+            e.printStackTrace();
+            created = false;
+        }
 
         return created;
     }

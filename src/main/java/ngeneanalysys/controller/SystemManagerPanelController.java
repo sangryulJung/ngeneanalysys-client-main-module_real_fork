@@ -2,6 +2,7 @@ package ngeneanalysys.controller;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -13,6 +14,8 @@ import ngeneanalysys.model.Panel;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.service.BedFileService;
+import ngeneanalysys.task.BedFileUploadTask;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 
@@ -134,7 +137,11 @@ public class SystemManagerPanelController extends SubPaneController {
                 response = apiService.post("admin/panels", params, null, true);
                 Panel newPanel = response.getObjectBeforeConvertResponseToJSON(Panel.class);
 
+                Task task = new BedFileUploadTask(newPanel.getId(), file);
 
+                Thread thread = new Thread(task);
+                thread.setDaemon(true);
+                thread.start();
 
                 /*response = apiService.get("/panels", null, null, false);
                 final List<Panel> panels = (List<Panel>) response.getMultiObjectBeforeConvertResponseToJSON(Panel.class, false);

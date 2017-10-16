@@ -37,6 +37,15 @@ public class PDFCreateService {
     /** FOP 사용 Font 목록 */
     private String[] fontList = new String[]{"NanumSquareR.ttf", "NanumSquareB.ttf","NotoSansCJKkr-Regular.otf", "NotoSansCJKkr-Bold.otf"};
 
+    private static class PDFCreateHelper{
+        private PDFCreateHelper() {}
+        private static final PDFCreateService INSTANCE = new PDFCreateService();
+    }
+
+    public static PDFCreateService getInstance() {
+        return PDFCreateHelper.INSTANCE;
+    }
+
     /**
      * 환경 체크
      * 	- FOP 관련 설정 XML 및 폰트 파일들이 .ngenebio_analysys_gui 경로 하위에 복사되어 있는지 체크
