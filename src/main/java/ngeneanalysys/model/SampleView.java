@@ -5,6 +5,7 @@ import org.joda.time.DateTime;
 public class SampleView {
     private Integer id;
     private String name;
+    private Integer runId;
     private String runName;
     private String memberName;
     private String memberGroupName;
@@ -26,6 +27,10 @@ public class SampleView {
 
     public Integer getId() {
         return id;
+    }
+
+    public Integer getRunId() {
+        return runId;
     }
 
     public String getName() {
@@ -109,6 +114,7 @@ public class SampleView {
         return "SampleView{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", runId=" + runId +
                 ", runName='" + runName + '\'' +
                 ", memberName='" + memberName + '\'' +
                 ", memberGroupName='" + memberGroupName + '\'' +
