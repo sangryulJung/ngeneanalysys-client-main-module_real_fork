@@ -4,7 +4,7 @@ package ngeneanalysys.model;
  * @author Jang
  * @since 2017-09-01
  */
-public class VariantCountByGene {
+public class VariantCountByGene implements Comparable<VariantCountByGene> {
     private String geneSymbol;
     private Integer tier1SnpCount;
     private Integer tier1IndelCount;
@@ -103,5 +103,79 @@ public class VariantCountByGene {
 
     public void setTierNIndelCount(Integer tierNIndelCount) {
         this.tierNIndelCount = tierNIndelCount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        VariantCountByGene that = (VariantCountByGene) o;
+
+        if (geneSymbol != null ? !geneSymbol.equals(that.geneSymbol) : that.geneSymbol != null) return false;
+        if (tier1SnpCount != null ? !tier1SnpCount.equals(that.tier1SnpCount) : that.tier1SnpCount != null)
+            return false;
+        if (tier1IndelCount != null ? !tier1IndelCount.equals(that.tier1IndelCount) : that.tier1IndelCount != null)
+            return false;
+        if (tier2SnpCount != null ? !tier2SnpCount.equals(that.tier2SnpCount) : that.tier2SnpCount != null)
+            return false;
+        if (tier2IndelCount != null ? !tier2IndelCount.equals(that.tier2IndelCount) : that.tier2IndelCount != null)
+            return false;
+        if (tier3SnpCount != null ? !tier3SnpCount.equals(that.tier3SnpCount) : that.tier3SnpCount != null)
+            return false;
+        if (tier3IndelCount != null ? !tier3IndelCount.equals(that.tier3IndelCount) : that.tier3IndelCount != null)
+            return false;
+        if (tier4SnpCount != null ? !tier4SnpCount.equals(that.tier4SnpCount) : that.tier4SnpCount != null)
+            return false;
+        if (tier4IndelCount != null ? !tier4IndelCount.equals(that.tier4IndelCount) : that.tier4IndelCount != null)
+            return false;
+        if (tierNSnpCount != null ? !tierNSnpCount.equals(that.tierNSnpCount) : that.tierNSnpCount != null)
+            return false;
+        return tierNIndelCount != null ? tierNIndelCount.equals(that.tierNIndelCount) : that.tierNIndelCount == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = geneSymbol != null ? geneSymbol.hashCode() : 0;
+        result = 31 * result + (tier1SnpCount != null ? tier1SnpCount.hashCode() : 0);
+        result = 31 * result + (tier1IndelCount != null ? tier1IndelCount.hashCode() : 0);
+        result = 31 * result + (tier2SnpCount != null ? tier2SnpCount.hashCode() : 0);
+        result = 31 * result + (tier2IndelCount != null ? tier2IndelCount.hashCode() : 0);
+        result = 31 * result + (tier3SnpCount != null ? tier3SnpCount.hashCode() : 0);
+        result = 31 * result + (tier3IndelCount != null ? tier3IndelCount.hashCode() : 0);
+        result = 31 * result + (tier4SnpCount != null ? tier4SnpCount.hashCode() : 0);
+        result = 31 * result + (tier4IndelCount != null ? tier4IndelCount.hashCode() : 0);
+        result = 31 * result + (tierNSnpCount != null ? tierNSnpCount.hashCode() : 0);
+        result = 31 * result + (tierNIndelCount != null ? tierNIndelCount.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public int compareTo(VariantCountByGene o) {
+        if(this.tier1SnpCount + this.tier1IndelCount > o.tier1SnpCount + o.tier1IndelCount) {
+            return 1;
+        } else if(this.tier1SnpCount + this.tier1IndelCount < o.tier1SnpCount + o.tier1IndelCount) {
+            return -1;
+        } else {
+            if (this.tier2SnpCount + this.tier2IndelCount > o.tier2SnpCount + o.tier2IndelCount) {
+                return 1;
+            } else if (this.tier2SnpCount + this.tier2IndelCount < o.tier2SnpCount + o.tier2IndelCount) {
+                return -1;
+            } else {
+                if (this.tier3SnpCount + this.tier3IndelCount > o.tier3SnpCount + o.tier3IndelCount) {
+                    return 1;
+                } else if (this.tier3SnpCount + this.tier3IndelCount < o.tier3SnpCount + o.tier3IndelCount) {
+                    return -1;
+                } else {
+                    if (this.tier4SnpCount + this.tier4IndelCount > o.tier4SnpCount + o.tier4IndelCount) {
+                        return 1;
+                    } else if (this.tier4SnpCount + this.tier4IndelCount < o.tier4SnpCount + o.tier4IndelCount) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                }
+            }
+        }
     }
 }

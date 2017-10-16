@@ -26,9 +26,11 @@ import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Jang
@@ -167,7 +169,6 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
             }
             setGraphic(button);
         }
-
     }
 
     @FXML
@@ -216,6 +217,10 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(),
                     true);
         }
-        return variantCountByGenes;
+        return variantCountByGenes
+                .stream()
+                .sorted(Comparator.reverseOrder())
+                .collect(Collectors.collectingAndThen(Collectors.toList(),
+                        items -> FXCollections.observableArrayList(items)));
     }
 }
