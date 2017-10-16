@@ -57,19 +57,16 @@ public class HomeController extends SubPaneController{
     private GridPane sampleListGridPane;
 
     @FXML
-    private Label runCount;
+    private Label runningSampleAnalysisJobCount;
 
     @FXML
-    private Label runQueuedCount;
+    private Label queuedSampleAnalysisJobCount;
 
     @FXML
-    private Label sampleCount;
+    private Label completedSampleAnalysisJobCount;
 
     @FXML
-    private Label sampleQueuedCount;
-
-    @FXML
-    private Label sampleFailCount;
+    private Label failedSampleAnalysisJobCount;
 
     @FXML
     private Button buttonUpload;
@@ -287,7 +284,6 @@ public class HomeController extends SubPaneController{
             HttpClientResponse response = null;
             Map<String, Object> params = new HashMap<>();
             try {
-
                 params.clear();
                 params.put("runId", runId);
                 params.put("limit", maxItemNumberOfPage);
@@ -307,6 +303,14 @@ public class HomeController extends SubPaneController{
             List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");//getPanels.get();
             Map<Integer, Panel> mapPanels = panels.stream().collect(Collectors.toMap(Panel::getId, p -> p));
             PagedSample pagedSample = getPagedSample.get();
+            runningSampleAnalysisJobCount.setText(
+                    pagedSample.getSampleAnalysisJobCount().getRunningSampleCount().toString());
+            completedSampleAnalysisJobCount.setText(
+                    pagedSample.getSampleAnalysisJobCount().getCompletedSampleCount().toString());
+            queuedSampleAnalysisJobCount.setText(
+                    pagedSample.getSampleAnalysisJobCount().getQueuedSampleCount().toString());
+            failedSampleAnalysisJobCount.setText(
+                    pagedSample.getSampleAnalysisJobCount().getFailedSampleCount().toString());
             sampleListPagination.setCurrentPageIndex(pageIndex);
             sampleListPagination.setMaxPageIndicatorCount(3);
             sampleListPagination.setPageCount((int)Math.ceil((double)pagedSample.getCount() / maxItemNumberOfPage));
