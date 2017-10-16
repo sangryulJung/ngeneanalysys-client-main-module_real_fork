@@ -99,13 +99,13 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
 
         geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getGeneSymbol()));
         tier1SnvColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier1SnpCount()).asObject());
-        tier1IndelsColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier1SnpCount()).asObject());
+        tier1IndelsColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier1IndelCount()).asObject());
         tier2SnvColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier2SnpCount()).asObject());
-        tier2IndelsColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier2SnpCount()).asObject());
+        tier2IndelsColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier2IndelCount()).asObject());
         tier3SnvColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier3SnpCount()).asObject());
-        tier3IndelsColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier3SnpCount()).asObject());
+        tier3IndelsColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier3IndelCount()).asObject());
         tier4SnvColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier4SnpCount()).asObject());
-        tier4IndelsColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier4SnpCount()).asObject());
+        tier4IndelsColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier4IndelCount()).asObject());
         tierNSnvColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTierNSnpCount()).asObject());
         tierNIndelsColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTierNSnpCount()).asObject());
 
