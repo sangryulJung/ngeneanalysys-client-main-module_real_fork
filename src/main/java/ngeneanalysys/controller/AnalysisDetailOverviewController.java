@@ -1,16 +1,14 @@
 package ngeneanalysys.controller;
 
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import ngeneanalysys.code.enums.SequencerCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
+import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
@@ -22,6 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -95,16 +94,25 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
     private TableColumn<AnalysisResultVariant, String> negativeCauseColumn;
 
     @FXML
-    private Label sampleQCResultLabel;
+    private Label totalBaseLabel;
 
     @FXML
-    private Label libraryQCResultLabel;
+    private Label q30Label;
 
     @FXML
-    private Label sequencingQCResultLabel;
+    private Label mappedLabel;
 
     @FXML
-    private Label analysisQCResultLabel;
+    private Label onTargetLabel;
+
+    @FXML
+    private Label onTargetCoverageLabel;
+
+    @FXML
+    private Label duplicatedReadsLabel;
+
+    @FXML
+    private Label roiCoverageLabel;
 
     /** API 서버 통신 서비스 */
     private APIService apiService;
@@ -278,61 +286,45 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         }
 
         //기본 초기화
-        //settingDetectedVariantsSummary();
-        settingOverallQC();
-        //sampleTableViewAdd();
+        settingOverallQC(sample.getId());
 
     }
 
-    public void settingDetectedVariantsSummary() {
-        tierOneVariantsCountLabel.setText("2");
-        tierOneGenesCountLabel.setText("4");
-        tierOneTherapeuticLabel.setText("5");
-        tierTwoVariantsCountLabel.setText("3");
-        tierTwoGenesCountLabel.setText("1");
-        tierTwoTherapeuticLabel.setText("2");
-        tierThreeVariantsCountLabel.setText("1");
-        tierThreeGenesCountLabel.setText("1");
-        tierThreeTherapeuticLabel.setText("3");
-        tierFourVariantsCountLabel.setText("3");
-        tierFourGenesCountLabel.setText("3");
-        tierFourTherapeuticLabel.setText("3");
+    public void settingOverallQC(int sampleId) {
+
+        List<SampleQC> qcList = null;
+
+        try {
+            HttpClientResponse response = apiService.get("/analysisResults/"+ sampleId + "/sampleQCs", null,
+                    null, false);
+
+            qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
+
+            totalBaseLabel.setText(findQCResult(qcList, "total_base"));
+            q30Label.setText(findQCResult(qcList, "q30_trimmed_base"));
+            mappedLabel.setText(findQCResult(qcList, "mapped_base"));
+            onTargetLabel.setText(findQCResult(qcList, "on_target"));
+            onTargetCoverageLabel.setText(findQCResult(qcList, "on_target_coverage"));
+            duplicatedReadsLabel.setText(findQCResult(qcList, "duplicated_reads"));
+            roiCoverageLabel.setText(findQCResult(qcList, "roi_coverage"));
+
+        } catch(WebAPIException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void settingOverallQC() {
-        sampleQCResultLabel.setText("pass");
-        libraryQCResultLabel.setText("fail");
-        sequencingQCResultLabel.setText("pass");
-        analysisQCResultLabel.setText("pass");
+    //qcList에서 해당 qc 결과를 반환
+    private String findQCResult(List<SampleQC> qcList, String qc) {
+        String result = "none";
 
+        if(qcList != null && !qcList.isEmpty()) {
+            Optional<SampleQC> findQC = qcList.stream().filter(sampleQC -> sampleQC.getQcType().equalsIgnoreCase(qc)).findFirst();
+            if(findQC.isPresent()) {
+                result = findQC.get().getQcResult();
+            }
+        }
+
+        return result;
     }
 
-    /*public void sampleTableViewAdd() {
-
-        ObservableList<VariantInformation> variantInformation = FXCollections.observableArrayList(
-                new VariantInformation(1, "IDH2", "c.516G>A (R172K)", "Enasidenib (IDHIFA)"),
-                new VariantInformation(1, "NPM1", "c.863_864insTCTG (W288fs*12)", "Gemtuzumab ozogamicin"),
-                new VariantInformation(2, "DNMT3A", "c.2645G>A (R882H)", ""),
-                new VariantInformation(2, "SRSF2", "c.284C>T (P95L)", "")
-        );
-
-        tierColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier()));
-        geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getGene()));
-        variantColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant()));
-        therapeuticColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTherapeutic()));
-
-        tierTable.setItems(variantInformation);
-
-
-        ObservableList<PertinentNegatives> pertinentNegatives = FXCollections.observableArrayList(
-                new PertinentNegatives("FLT-ITD", "c.1803_1804insGATTTCAGAGAATATGAATATGATCTC (p.K602delinsDFREYEYDLK)", "Ins", ""),
-                new PertinentNegatives("c-KIT", "c.2447A>T (D816V)", "SNV", ""));
-
-        negativeGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getGene()));
-        negativeVariantColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant()));
-        negativeVariantTypeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantType()));
-        negativeCauseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCause()));
-
-        pertinentNegativesTable.setItems(pertinentNegatives);
-    }*/
 }

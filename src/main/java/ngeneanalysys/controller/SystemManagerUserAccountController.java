@@ -229,7 +229,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
         try {
             FXMLLoader loader = null;
             loader = mainApp.load(FXMLConstants.USER_ACCOUNT);
-            Node root = (Node) loader.load();
+            Node root = loader.load();
             UserAccountController userAccountController = loader.getController();
             userAccountController.setMainController(this.getMainController());
             userAccountController.init(type, user);

@@ -208,15 +208,18 @@
       </TableView>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
          <children>
-            <VBox prefHeight="63.0" prefWidth="371.0">
+            <VBox prefHeight="75.0" prefWidth="816.0">
                <children>
                   <Label text="QC">
                      <padding>
                         <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                      </padding>
                   </Label>
-                  <GridPane gridLinesVisible="true">
+                  <GridPane gridLinesVisible="true" prefWidth="533.0">
                      <columnConstraints>
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -227,14 +230,20 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <Label text="Sample QC" />
-                        <Label fx:id="sampleQCResultLabel" text="pass" GridPane.rowIndex="1" />
-                        <Label text="Library QC" GridPane.columnIndex="1" />
-                        <Label fx:id="libraryQCResultLabel" text="pass" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label text="Sequencing QC" GridPane.columnIndex="2" />
-                        <Label fx:id="sequencingQCResultLabel" text="pass" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <Label text="Analysis QC" GridPane.columnIndex="3" />
-                        <Label fx:id="analysisQCResultLabel" text="pass" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <Label text="Total base" />
+                        <Label fx:id="totalBaseLabel" text="pass" GridPane.rowIndex="1" />
+                        <Label text="q30 trimmed base" GridPane.columnIndex="1" />
+                        <Label fx:id="q30Label" text="pass" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label text="Mapped base" GridPane.columnIndex="2" />
+                        <Label fx:id="mappedLabel" text="pass" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Label text="On target" GridPane.columnIndex="3" />
+                        <Label fx:id="onTargetLabel" text="pass" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <Label text="On target coverage" GridPane.columnIndex="4" />
+                        <Label text="Duplicated reads" GridPane.columnIndex="5" />
+                        <Label text="Roi coverage" GridPane.columnIndex="6" />
+                        <Label fx:id="onTargetCoverageLabel" text="pass" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                        <Label fx:id="duplicatedReadsLabel" text="pass" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                        <Label fx:id="roiCoverageLabel" text="pass" GridPane.columnIndex="6" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
                </children>

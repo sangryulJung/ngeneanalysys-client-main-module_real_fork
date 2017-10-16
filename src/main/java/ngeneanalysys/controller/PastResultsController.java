@@ -2,10 +2,7 @@ package ngeneanalysys.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -685,14 +682,42 @@ public class PastResultsController extends SubPaneController {
 		private Label depthMaxValueLabel = new Label();
 		private Label totalVariantCountValueLabel = new Label();
 		private Label warningVariantCountValueLabel = new Label();
+
+		private Button totalBaseButton;
+		private Label totalBaseTitleLabel = new Label();
+		private Label totalBaseContentsLabel = new Label();
+		private Label totalBaseValueLabel = new Label();
+
+		private Button q30TrimmedBaseButton;
+		private Label q30TrimmedBaseTitleLabel = new Label();
+		private Label q30TrimmedBaseContentsLabel = new Label();
+		private Label q30TrimmedBaseValueLabel = new Label();
+
+		private Button mappedBaseButton;
+		private Label mappedBaseTitleLabel = new Label();
+		private Label mappedBaseContentsLabel = new Label();
+		private Label mappedBaseValueLabel = new Label();
+
+		private Button ontTargetButton;
+		private Label onTargetTitleLabel = new Label();
+		private Label onTargetContentsLabel = new Label();
+		private Label onTargetValueLabel = new Label();
+
+		private Button onTargetCoverageButton;
+		private Label onTargetCoverageTitleLabel = new Label();
+		private Label onTargetCoverageContentsLabel = new Label();
+		private Label onTargetCoverageValueLabel = new Label();
+
+		private Button duplicatedReadsButton;
+		private Label duplicatedReadsTitleLabel = new Label();
+		private Label duplicatedReadsContentsLabel = new Label();
+		private Label duplicatedReadsValueLabel = new Label();
+
 		private Button roiCoverageButton;
+		private Label roiCoverageTitleLabel = new Label();
+		private Label roiCoverageContentsLabel = new Label();
 		private Label roiCoverageValueLabel = new Label();
-		private Button meanReadQualityButton;
-		private Label meanReadQualityValueLabel = new Label();
-		private Button retainedReadsButton;
-		private Label retainedReadsValueButton = new Label();
-		private Button coverageUniformityButton;
-		private Label coverageUniformityValueLabel = new Label();
+
 		private Label reportLabel = new Label();
 
 		AnalysisResultOverviewVBox() {
@@ -738,24 +763,36 @@ public class PastResultsController extends SubPaneController {
 			HBox qcFlagHbox = new HBox();
 			qcFlagHbox.getStyleClass().add("alignment_center_left");
 
-			roiCoverageButton = getQCIcon("ROI Coverage",
-					"Percentage of ROI region\nwith coverage of least 20X (\u2265 100%)",
-					roiCoverageValueLabel);
-			meanReadQualityButton = getQCIcon("Mean Read Quality",
-					"Percentage of reads\nwith mean Phred base quality above 30 (\u2265 90%)",
-					meanReadQualityValueLabel);
-			retainedReadsButton = getQCIcon("Retained Reads",
-					"Percentage of QC passed reads (\u2265 80%)",
-					retainedReadsValueButton);
-			coverageUniformityButton = getQCIcon("Coverage Uniformity",
-					"Percentage of bases\ncovered at \u2265 20% of the mean coverage",
-					coverageUniformityValueLabel);
+			totalBaseButton = getQCIcon(totalBaseTitleLabel, totalBaseContentsLabel,
+					totalBaseValueLabel);
 
-			qcFlagHbox.getChildren().addAll(roiCoverageButton, meanReadQualityButton, retainedReadsButton,
-					coverageUniformityButton);
-			qcFlagHbox.setMargin(meanReadQualityButton, new Insets(0, 0, 0, 5));
-			qcFlagHbox.setMargin(retainedReadsButton, new Insets(0, 0, 0, 5));
-			qcFlagHbox.setMargin(coverageUniformityButton, new Insets(0, 0, 0, 5));
+			q30TrimmedBaseButton = getQCIcon(q30TrimmedBaseTitleLabel, q30TrimmedBaseContentsLabel,
+					q30TrimmedBaseValueLabel);
+
+			mappedBaseButton = getQCIcon(mappedBaseTitleLabel, mappedBaseContentsLabel,
+					mappedBaseValueLabel);
+
+			ontTargetButton = getQCIcon(onTargetTitleLabel, onTargetContentsLabel,
+					onTargetValueLabel);
+
+			onTargetCoverageButton = getQCIcon(onTargetCoverageTitleLabel, onTargetCoverageContentsLabel,
+					onTargetCoverageValueLabel);
+
+			duplicatedReadsButton = getQCIcon(duplicatedReadsTitleLabel, duplicatedReadsContentsLabel,
+					duplicatedReadsValueLabel);
+
+			roiCoverageButton = getQCIcon(roiCoverageTitleLabel, roiCoverageContentsLabel,
+					roiCoverageValueLabel);
+
+			qcFlagHbox.getChildren().addAll(totalBaseButton, q30TrimmedBaseButton, mappedBaseButton,
+					ontTargetButton, onTargetCoverageButton, duplicatedReadsButton, roiCoverageButton);
+			qcFlagHbox.setMargin(totalBaseButton, new Insets(0, 0, 0, 5));
+			qcFlagHbox.setMargin(q30TrimmedBaseButton, new Insets(0, 0, 0, 5));
+			qcFlagHbox.setMargin(mappedBaseButton, new Insets(0, 0, 0, 5));
+			qcFlagHbox.setMargin(ontTargetButton, new Insets(0, 0, 0, 5));
+			qcFlagHbox.setMargin(onTargetCoverageButton, new Insets(0, 0, 0, 5));
+			qcFlagHbox.setMargin(duplicatedReadsButton, new Insets(0, 0, 0, 5));
+			qcFlagHbox.setMargin(roiCoverageButton, new Insets(0, 0, 0, 5));
 
 			qcFlagHbox.getChildren().add(reportLabel);
 			qcFlagHbox.setMargin(reportLabel, new Insets(0, 0, 0, 5));
@@ -777,7 +814,7 @@ public class PastResultsController extends SubPaneController {
 			hBox.setMargin(valueLabel, new Insets(0, 10, 0, 0));
 			return hBox;
 		}
-		private Button getQCIcon(String title, String contents, Label percentageLabel) {
+		private Button getQCIcon(Label title, Label contents, Label percentageLabel) {
 			Button qcButton = new Button();
 			qcButton.getStyleClass().add("bullet_green");
 			qcButton.setOnAction(event -> {
@@ -793,22 +830,20 @@ public class PastResultsController extends SubPaneController {
 				VBox box = new VBox();
 				box.setStyle("-fx-padding:5;");
 				box.setAlignment(Pos.BOTTOM_RIGHT);
-				Label titleLabel = new Label(title);
-				titleLabel.getStyleClass().add("font_size_10");
-				titleLabel.getStyleClass().add("weight_bold");
-				titleLabel.getStyleClass().add("txt_gray_656565");
-				percentageLabel.getStyleClass().add("font_size_10");
+				title.getStyleClass().add("font_size_12");
+				title.getStyleClass().add("weight_bold");
+				title.getStyleClass().add("txt_gray_656565");
+				percentageLabel.getStyleClass().add("font_size_12");
 				percentageLabel.getStyleClass().add("weight_bold");
-				percentageLabel.getStyleClass().add("txt_black");
-				Label contentsLabel = new Label(contents);
-				contentsLabel.getStyleClass().add("font_size_9");
-				contentsLabel.getStyleClass().add("txt_gray_656565");
-				box.getChildren().addAll(titleLabel, percentageLabel, contentsLabel);
+				percentageLabel.getStyleClass().add("txt_black");;
+				contents.getStyleClass().add("font_size_11");
+				contents.getStyleClass().add("txt_gray_656565");
+				box.getChildren().addAll(title, percentageLabel, contents);
 				box.setMargin(percentageLabel, new Insets(5, 0, 0, 0));
-				box.setMargin(contentsLabel, new Insets(5, 0, 0, 0));
+				box.setMargin(contents, new Insets(5, 0, 0, 0));
 
 				popOver.setContentNode(box);
-				popOver.show((Node) qcButton);
+				popOver.show(qcButton);
 				});
 			return qcButton;
 		}
@@ -820,11 +855,83 @@ public class PastResultsController extends SubPaneController {
 				geneCountValueLabel.setText(analysisResultSummary.getGeneCount().toString());
 				totalVariantCountValueLabel.setText(analysisResultSummary.getAllVariantCount().toString());
 				warningVariantCountValueLabel.setText(analysisResultSummary.getWarningVariantCount().toString());
-				roiCoverageValueLabel.setText(analysisResultSummary.getRoiCoveragePercentage().toString());
-				meanReadQualityValueLabel.setText(analysisResultSummary.getMeanReadQualityPercentage().toString());
-				coverageUniformityValueLabel.setText(analysisResultSummary.getCoverageUniformityPercentage().toString());
+
+				List<SampleQC> qcList = null;
+
+				try {
+					HttpClientResponse response = apiService.get("/analysisResults/"+ sample.getId() + "/sampleQCs", null,
+							null, false);
+
+					qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
+
+					SampleQC totalBase = findQCResult(qcList, "total_base");
+					if(totalBase != null) {
+						totalBaseTitleLabel.setText(totalBase.getQcType());
+						totalBaseContentsLabel.setText(totalBase.getQcDescription() + " " + totalBase.getQcThreshold());
+						totalBaseValueLabel.setText(totalBase.getQcValue().toString());
+					}
+
+					SampleQC q30TrimmedBase = findQCResult(qcList, "q30_trimmed_base");
+					if(q30TrimmedBase != null) {
+						q30TrimmedBaseTitleLabel.setText(q30TrimmedBase.getQcType());
+						q30TrimmedBaseContentsLabel.setText(q30TrimmedBase.getQcDescription() + " " + q30TrimmedBase.getQcThreshold());
+						q30TrimmedBaseValueLabel.setText(q30TrimmedBase.getQcValue().toString());
+					}
+
+					SampleQC mappedBase = findQCResult(qcList, "mapped_base");
+					if(mappedBase != null) {
+						mappedBaseTitleLabel.setText(mappedBase.getQcType());
+						mappedBaseContentsLabel.setText(mappedBase.getQcDescription() + " " + mappedBase.getQcThreshold());
+						mappedBaseValueLabel.setText(mappedBase.getQcValue().toString());
+					}
+
+					SampleQC onTarget = findQCResult(qcList, "on_target");
+					if(onTarget != null) {
+						onTargetTitleLabel.setText(onTarget.getQcType());
+						onTargetContentsLabel.setText(onTarget.getQcDescription() + " " + onTarget.getQcThreshold());
+						onTargetValueLabel.setText(onTarget.getQcValue().toString());
+					}
+
+					SampleQC onTargetCoverage = findQCResult(qcList, "on_target_coverage");
+					if(onTargetCoverage != null) {
+						onTargetCoverageTitleLabel.setText(onTargetCoverage.getQcType());
+						onTargetCoverageContentsLabel.setText(onTargetCoverage.getQcDescription() + " " + onTargetCoverage.getQcThreshold());
+						onTargetCoverageValueLabel.setText(onTargetCoverage.getQcValue().toString());
+					}
+
+					SampleQC duplicatedReads = findQCResult(qcList, "duplicated_reads");
+					if(duplicatedReads != null) {
+						duplicatedReadsTitleLabel.setText(duplicatedReads.getQcType());
+						duplicatedReadsContentsLabel.setText(duplicatedReads.getQcDescription() + " " + duplicatedReads.getQcThreshold());
+						duplicatedReadsValueLabel.setText(duplicatedReads.getQcValue().toString());
+					}
+
+					SampleQC roiCoverage = findQCResult(qcList, "roi_coverage");
+					if(roiCoverage != null) {
+						roiCoverageTitleLabel.setText(roiCoverage.getQcType());
+						roiCoverageContentsLabel.setText(roiCoverage.getQcDescription() + " " + roiCoverage.getQcThreshold());
+						roiCoverageValueLabel.setText(roiCoverage.getQcValue().toString());
+					}
+
+				} catch(WebAPIException e) {
+					e.printStackTrace();
+				}
+
+				/*roiCoverageValueLabel.setText(analysisResultSummary.getRoiCoveragePercentage().toString());
+				totalBaseValueLabel.setText(analysisResultSummary.getMeanReadQualityPercentage().toString());
+				mappedBaseValueLabel.setText(analysisResultSummary.getCoverageUniformityPercentage().toString());*/
 			}
 			setVisible(true);
+		}
+
+		private SampleQC findQCResult(List<SampleQC> qcList, String qc) {
+			if(qcList != null && !qcList.isEmpty()) {
+				Optional<SampleQC> findQC = qcList.stream().filter(sampleQC -> sampleQC.getQcType().equalsIgnoreCase(qc)).findFirst();
+				if(findQC.isPresent()) {
+					return findQC.get();
+				}
+			}
+			return null;
 		}
 	}
 	class QcResultVBox extends VBox {

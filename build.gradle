@@ -55,7 +55,10 @@ dependencies {
     compile group: 'org.apache.commons', name: 'commons-compress', version: '1.12'
     // https://mvnrepository.com/artifact/org.apache.xmlgraphics/fop
     compile group: 'org.apache.xmlgraphics', name: 'fop', version: '2.1'
-
+    // https://mvnrepository.com/artifact/org.apache.velocity/velocity
+    compile group: 'org.apache.velocity', name: 'velocity', version: '1.7'
+    // https://mvnrepository.com/artifact/org.apache.pdfbox/fontbox
+    compile group: 'org.apache.pdfbox', name: 'fontbox', version: '1.8.13'
 
     compile 'org.controlsfx:controlsfx:8.40.13'
 
