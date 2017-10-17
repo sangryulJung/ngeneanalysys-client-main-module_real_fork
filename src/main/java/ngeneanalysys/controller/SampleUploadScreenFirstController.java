@@ -1,6 +1,9 @@
 package ngeneanalysys.controller;
 
 import javafx.fxml.FXML;
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -97,9 +100,9 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
         for(int row  = 0 ; row < 23 ; row++) {
             standardDataGridPane.setPrefHeight(standardDataGridPane.getPrefHeight() + 27);
-
             TextField sampleName = new TextField();
             sampleName.setStyle("-fx-text-inner-color: black;");
+            sampleName.setMaxWidth(Double.MAX_VALUE);
             sampleNameTextFieldList.add(sampleName);
             sampleName.textProperty().addListener((observable, oldValue, newValue) -> {
                 Set<String> fileName = fileMap.keySet();
@@ -112,45 +115,51 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 });
             });
 
-            Button select = new Button();
-            fileSelectButtonList.add(select);
-            select.setText("SELECT");
-            select.setOnAction(e -> {
-                FileChooser fileChooser = new FileChooser();
-                fileChooser.setTitle("Choose FASTQ File");
-                fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-                fileChooser.getExtensionFilters()
-                        .addAll(new FileChooser.ExtensionFilter("fastq", "*.fastq", "*.fastq.gz"));
-                File file = fileChooser.showOpenDialog(sampleUploadController.getCurrentStage());
-
-                if(file != null) {
-                    String fastqFilePairName = FileUtil.getFASTQFilePairName(file.getName());
-                    String chooseDirectoryPath = FilenameUtils.getFullPath(file.getAbsolutePath());
-                    logger.info(String.format("directory path of choose file : %s", chooseDirectoryPath));
-                    File directory = new File(chooseDirectoryPath);
-                    //선택한 파일의 폴더 내 모든 파일
-                    List<File> fastqFilesInFolder = (List<File>) FileUtils.listFiles(directory, new String[]{"fastq.gz"}, false);
-                    //선택한 파일과 동일한 샘플명을 가지는 파일만 리스트로 남김
-                    fastqFilesInFolder = fastqFilesInFolder.stream().filter(fileItem -> fastqFilePairName.equals(FileUtil.getFASTQFilePairName(fileItem.getName()))).collect(Collectors.toList());
-
-                    //파일은 반드시 짝을 이루어야만 함
-                    if(fastqFilesInFolder.size() == 2 && !checkSameSample(fastqFilePairName)) {
-                        addUploadFile(fastqFilesInFolder, fastqFilePairName);
-                    }
-
-                    tableEdit();
-                }
-            });
+//            Button select = new Button();
+//            fileSelectButtonList.add(select);
+//            select.setText("+");
+//            select.setStyle("-fx-font-size:9;");
+//            GridPane.setValignment(select, VPos.CENTER);
+//            GridPane.setHalignment(select, HPos.CENTER);
+//            select.setOnAction(e -> {
+//                FileChooser fileChooser = new FileChooser();
+//                fileChooser.setTitle("Choose FASTQ File");
+//                fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+//                fileChooser.getExtensionFilters()
+//                        .addAll(new FileChooser.ExtensionFilter("fastq", "*.fastq", "*.fastq.gz"));
+//                File file = fileChooser.showOpenDialog(sampleUploadController.getCurrentStage());
+//
+//                if(file != null) {
+//                    String fastqFilePairName = FileUtil.getFASTQFilePairName(file.getName());
+//                    String chooseDirectoryPath = FilenameUtils.getFullPath(file.getAbsolutePath());
+//                    logger.info(String.format("directory path of choose file : %s", chooseDirectoryPath));
+//                    File directory = new File(chooseDirectoryPath);
+//                    //선택한 파일의 폴더 내 모든 파일
+//                    List<File> fastqFilesInFolder = (List<File>) FileUtils.listFiles(directory, new String[]{"fastq.gz"}, false);
+//                    //선택한 파일과 동일한 샘플명을 가지는 파일만 리스트로 남김
+//                    fastqFilesInFolder = fastqFilesInFolder.stream().filter(fileItem -> fastqFilePairName.equals(FileUtil.getFASTQFilePairName(fileItem.getName()))).collect(Collectors.toList());
+//
+//                    //파일은 반드시 짝을 이루어야만 함
+//                    if(fastqFilesInFolder.size() == 2 && !checkSameSample(fastqFilePairName)) {
+//                        addUploadFile(fastqFilesInFolder, fastqFilePairName);
+//                    }
+//
+//                    tableEdit();
+//                }
+//            });
 
             TextField paitentId = new TextField();
             paitentId.setStyle("-fx-text-inner-color: black;");
+            paitentId.setMaxWidth(Double.MAX_VALUE);
             patientIdTextFieldList.add(paitentId);
 
             ComboBox<ComboBoxItem> disease  = new ComboBox<>();
+            disease.setMaxWidth(Double.MAX_VALUE);
             diseaseComboBoxList.add(disease);
             diseasesSetting(disease);
 
             ComboBox<ComboBoxItem> panel  = new ComboBox<>();
+            panel.setMaxWidth(Double.MAX_VALUE);
             panelComboBoxList.add(panel);
             panelSetting(panel);
             panel.setOnAction(event -> {
@@ -168,12 +177,14 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             });
 
             TextField source = new TextField();
+            source.setMaxWidth(Double.MAX_VALUE);
             sampleSourceTextFieldList.add(source);
             source.setEditable(false);
             source.setStyle("-fx-text-inner-color: black;");
             source.setText(panels.get(0).getSampleSource());
 
-            standardDataGridPane.addRow(row, sampleName, select, paitentId, disease, panel, source);
+            //standardDataGridPane.addRow(row, sampleName, select, panel, source, disease, paitentId);
+            standardDataGridPane.addRow(row, sampleName, panel, source, disease, paitentId);
         }
 
         if(sampleUploadController.getSamples() != null) {

@@ -82,3 +82,18 @@
 	-fx-pref-height:16;
 	-fx-max-height:16;
 }
+
+#sampleSettingHeader {
+	-fx-border-color:#000;
+	-fx-border-width:2 0 0 0;
+	-fx-background-color:#75848c;
+}
+
+#sampleSettingHeader .header {
+	-fx-font-size:12;
+	-fx-text-fill:#fff;
+	-fx-font-weight:bold;
+	-fx-min-height:30;
+	-fx-pref-height:30;
+	-fx-max-height:30;
+	-fx-padding:0 0 0 0;
