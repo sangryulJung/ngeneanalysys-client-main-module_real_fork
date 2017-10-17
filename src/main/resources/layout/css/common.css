@@ -489,6 +489,8 @@ Button {
 /** Job Status Icon Label */
 #jobStatus_NONE {
 	-fx-min-height: 20;
+	-fx-min-width: 80;
+	-fx-alignment:center;
 	-fx-background-color:#fff;
 	-fx-background-radius:10;
 	-fx-border-color:#c1c1c1;
@@ -500,6 +502,8 @@ Button {
 
 #jobStatus_QUEUED {
 	-fx-min-height: 20;
+	-fx-min-width: 80;
+    -fx-alignment:center;
 	-fx-background-image: url('../images/job_status_queued_animation.gif');
 	-fx-background-repeat: no-repeat;
 	-fx-background-position:6px 3px;
@@ -515,6 +519,8 @@ Button {
 
 #jobStatus_RUNNING {
 	-fx-min-height: 20;
+	-fx-min-width: 80;
+    -fx-alignment:center;
 	-fx-background-image: url('../images/job_status_running_animation.gif');
 	-fx-background-repeat: no-repeat;
 	-fx-background-position:6px 3px;
@@ -530,6 +536,8 @@ Button {
 
 #jobStatus_COMPLETE {
 	-fx-min-height: 20;
+	-fx-min-width: 80;
+    -fx-alignment:center;
 	-fx-background-color:#426579;
 	-fx-background-radius:10;
 	-fx-border-color:#426579;
@@ -542,6 +550,8 @@ Button {
 
 #jobStatus_FAIL {
 	-fx-min-height: 20;
+	-fx-min-width: 80;
+    -fx-alignment:center;
 	-fx-background-color:#ff7e79;
 	-fx-background-radius:10;
 	-fx-border-color:#ff7e79;

@@ -20,19 +20,21 @@ public class AnalysisJobStatusCode {
 	public static final String JOB_RUN_GROUP_FAIL = "FAIL";
 	
 	/** sample status : NONE */
-	public static final String SAMPLE_JOB_STATUS_NONE = "NONE";
+	public static final String SAMPLE_ANALYSIS_STATUS_NONE = "NONE";
 	/** sample status : QUEUED */
-	public static final String SAMPLE_JOB_STATUS_QUEUED = "QUEUED";
+	public static final String SAMPLE_ANALYSIS_STATUS_QUEUED = "QUEUED";
 	/** sample status : RUNNING */
-	public static final String SAMPLE_JOB_STATUS_RUNNING = "RUNNING";
+	public static final String SAMPLE_ANALYSIS_STATUS_RUNNING = "RUNNING";
 	/** sample status : COMPLETE */
-	public static final String SAMPLE_JOB_STATUS_COMPLETE = "COMPLETE";
+	public static final String SAMPLE_ANALYSIS_STATUS_COMPLETE = "COMPLETE";
 	/** sample status : FAIL */
-	public static final String SAMPLE_JOB_STATUS_FAIL = "FAIL";
+	public static final String SAMPLE_ANALYSIS_STATUS_FAIL = "FAIL";
 	
 	/** sample file meta status : UPLOAD */
 	public static final String SAMPLE_FILE_META_UPLOAD = "UPLOAD";
 	/** sample file meta status : ACTIVE */
 	public static final String SAMPLE_FILE_META_ACTIVE = "ACTIVE";
-	
+
+	public static final String SAMPLE_ANALYSIS_STEP_UPLOAD = "UPLOAD";
+	public static final String SAMPLE_ANALYSIS_STEP_PIPELINE = "PIPELINE";
 }

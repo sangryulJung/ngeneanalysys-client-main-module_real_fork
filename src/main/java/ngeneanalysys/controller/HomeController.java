@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 import ngeneanalysys.code.constants.FXMLConstants;
@@ -23,6 +24,8 @@ import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -30,6 +33,7 @@ import java.util.stream.Collectors;
 
 import static java.lang.Double.MAX_VALUE;
 import static java.lang.Thread.sleep;
+import static ngeneanalysys.code.AnalysisJobStatusCode.*;
 
 /**
  * @author Jang
@@ -83,6 +87,7 @@ public class HomeController extends SubPaneController{
 
     private List<TextField> runNameFields;
     private List<RunAnalysisJobStatusBox> runStatusFields;
+    private List<TextField> runDateFields;
     private List<TextField> sampleNameFields;
     private List<TextField> samplePanelFields;
     private List<SampleAnalysisJobStatusBox> sampleStatusFields;
@@ -193,10 +198,13 @@ public class HomeController extends SubPaneController{
                 });
 
                 runStatusFields.get(i).setStatus(run.getStatus());
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                runDateFields.get(i).setText(format.format(run.getCreatedAt().toDate()));
             }
             for(int i = runCount; i < maxRunNumberOfPage; i++){
                 runNameFields.get(i).setText("");
                 runNameFields.get(i).setOnMouseClicked(null);
+                runDateFields.get(i).setText("");
                 runStatusFields.get(i).setBorder(null);
                 runStatusFields.get(i).setStatus(null);
             }
@@ -211,19 +219,26 @@ public class HomeController extends SubPaneController{
         try {
             runNameFields = new ArrayList<>();
             runStatusFields = new ArrayList<>();
+            runDateFields = new ArrayList<>();
             for (int i = 0; i < maxRunNumberOfPage; i++) {
                 TextField runNameField = new TextField();
                 runNameField.setEditable(false);
+                TextField runDateField = new TextField();
+                runDateField.setEditable(false);
                 StringBuilder style = new StringBuilder("-fx-font-size:11;");
                 style.append("-fx-border-width: 0 0 1 0;-fx-border-color:black;");
                 style.append("-fx-border-radius:0;-fx-background-color:transparent;");
                 style.append("-fx-max-height:30;");
                 runNameField.setStyle(style.toString());
+                runDateField.setStyle(style.toString());
                 runNameFields.add(runNameField);
                 runListGridPane.add(runNameFields.get(i), 0, i);
                 runStatusFields.add(new RunAnalysisJobStatusBox());
                 runStatusFields.get(i).setStyle(runStatusFields.get(i).getStyle() + "-fx-alignment:center;");
                 runListGridPane.add(runStatusFields.get(i), 1, i);
+                runDateField.setStyle(runDateField.getStyle() + "-fx-alignment:center;");
+                runDateFields.add(runDateField);
+                runListGridPane.add(runDateFields.get(i), 2, i);
             }
         } catch (Exception e) {
             logger.error("HOME -> initRunListLayout", e);
@@ -436,29 +451,58 @@ public class HomeController extends SubPaneController{
 
     class SampleAnalysisJobStatusBox extends VBox {
         private HBox statusBox;
-        private Label statusLabel;
+        private Label statusLabelUpload;
+        private Label statusLabelPipeline;
+        private Label statusLabelComplete;
         private TextField statusMsgTextField;
         SampleAnalysisJobStatusBox() {
             super();
+            setVisible(false);
             statusBox = new HBox();
             statusBox.setSpacing(5.0);
-            statusLabel = new Label();
+            statusLabelUpload = new Label();
+            statusLabelPipeline = new Label();
+            statusLabelComplete = new Label();
             statusMsgTextField = new TextField();
             StringBuilder style = new StringBuilder("-fx-font-size:9;");
-            style.append("-fx-border-width: 0 0 1 0;-fx-border-color:black;");
+            style.append("-fx-border-width: 0 0 0 0;-fx-border-color:black;");
             style.append("-fx-border-radius:0;-fx-background-color:transparent;");
             style.append("-fx-max-height:30;");
             style.append("-fx-min-height:30;");
             statusMsgTextField.setStyle(style.toString());
-            statusBox.getChildren().add(statusLabel);
+            statusBox.getChildren().add(statusLabelUpload);
+            statusBox.getChildren().add(new ImageView(resourceUtil.getImage("/layout/images/icon-arrow_margin.png")));
+            statusBox.getChildren().add(statusLabelPipeline);
+            statusBox.getChildren().add(new ImageView(resourceUtil.getImage("/layout/images/icon-arrow_margin.png")));
+            statusBox.getChildren().add(statusLabelComplete);
             statusBox.getChildren().add(statusMsgTextField);
             this.getChildren().add(statusBox);
-            statusBox.setStyle("-fx-alignment:center");
+            statusBox.setStyle("-fx-alignment:center;");
         }
         protected void setStatus(SampleStatus status) {
-            statusLabel.setText(status.getStep());
+            if (status.getStep().equals(SAMPLE_ANALYSIS_STEP_UPLOAD)) {
+                statusLabelUpload.setText(SAMPLE_ANALYSIS_STEP_UPLOAD);
+                statusLabelUpload.setId("jobStatus_" + status.getStatus());
+                statusLabelPipeline.setText(SAMPLE_ANALYSIS_STEP_PIPELINE);
+                statusLabelPipeline.setId("jobStatus_" + SAMPLE_ANALYSIS_STATUS_NONE);
+                statusLabelComplete.setText("COMPLETE");
+                statusLabelComplete.setId("jobStatus_" + SAMPLE_ANALYSIS_STATUS_NONE);
+            } else if (status.getStep().equals(SAMPLE_ANALYSIS_STEP_PIPELINE)) {
+                statusLabelUpload.setText(SAMPLE_ANALYSIS_STEP_UPLOAD);
+                statusLabelUpload.setId("jobStatus_" + SAMPLE_ANALYSIS_STATUS_COMPLETE);
+                if (status.getStatus().equals(SAMPLE_ANALYSIS_STATUS_COMPLETE)) {
+                    statusLabelPipeline.setText(SAMPLE_ANALYSIS_STEP_PIPELINE);
+                    statusLabelPipeline.setId("jobStatus_" + SAMPLE_ANALYSIS_STATUS_COMPLETE);
+                    statusLabelComplete.setText("COMPLETE");
+                    statusLabelComplete.setId("jobStatus_" + SAMPLE_ANALYSIS_STATUS_COMPLETE);
+                } else {
+                    statusLabelPipeline.setText(SAMPLE_ANALYSIS_STEP_PIPELINE);
+                    statusLabelPipeline.setId("jobStatus_" + status.getStatus());
+                    statusLabelComplete.setText("COMPLETE");
+                    statusLabelComplete.setId("jobStatus_" + SAMPLE_ANALYSIS_STATUS_NONE);
+                }
+            }
             statusMsgTextField.setText(status.getStatusMsg());
-            statusLabel.setId("jobStatus_" + status.getStatus());// + status.getUploadStatus());
         }
     }
 }

@@ -2,6 +2,7 @@ package ngeneanalysys.model;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.joda.time.DateTime;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -29,19 +30,19 @@ public class Run implements Serializable {
    private String statusMsg;
 
     @JsonProperty(value = "createdAt")
-    private Timestamp createdAt;
+    private DateTime createdAt;
 
     @JsonProperty(value = "startedAt")
-    private Timestamp startedAt;
+    private DateTime startedAt;
 
     @JsonProperty(value = "completedAt")
-    private Timestamp completedAt;
+    private DateTime completedAt;
 
     @JsonProperty(value = "updatedAt")
-    private Timestamp updatedAt;
+    private DateTime updatedAt;
 
     @JsonProperty(value = "deletedAt")
-    private Timestamp deletedAt;
+    private DateTime deletedAt;
 
     @JsonProperty(value = "deleted")
     private Integer deleted;
@@ -78,23 +79,23 @@ public class Run implements Serializable {
         return statusMsg;
     }
 
-    public Timestamp getCreatedAt() {
+    public DateTime getCreatedAt() {
         return createdAt;
     }
 
-    public Timestamp getStartedAt() {
+    public DateTime getStartedAt() {
         return startedAt;
     }
 
-    public Timestamp getCompletedAt() {
+    public DateTime getCompletedAt() {
         return completedAt;
     }
 
-    public Timestamp getUpdatedAt() {
+    public DateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public Timestamp getDeletedAt() {
+    public DateTime getDeletedAt() {
         return deletedAt;
     }
 
