@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="experimentPastResultsWrapper" prefHeight="558.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailTargetController">
+<GridPane fx:id="experimentPastResultsWrapper" prefHeight="558.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailTargetController">
    <columnConstraints>
       <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="20.0" />
       <ColumnConstraints hgrow="SOMETIMES" prefWidth="1240.0" />
@@ -91,35 +91,35 @@
       </GridPane>
       <TableView fx:id="geneTable" onMouseClicked="#cellSelectEvent" prefHeight="149.0" prefWidth="966.0" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.rowSpan="3">
          <columns>
-            <TableColumn fx:id="geneColumn" editable="false" prefWidth="75.0" sortable="false" text="Gene" />
+            <TableColumn fx:id="geneColumn" editable="false" prefWidth="75.0" sortable="false" style="-fx-alignment: center;" text="Gene" />
             <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Tier I">
                <columns>
-                  <TableColumn fx:id="tier1SnvColumn" editable="false" prefWidth="75.0" sortable="false" text="SNV" />
-                  <TableColumn fx:id="tier1IndelsColumn" editable="false" prefWidth="75.0" sortable="false" text="Indels" />
+                  <TableColumn fx:id="tier1SnvColumn" editable="false" prefWidth="75.0" sortable="false" style="-fx-alignment: CENTER;" text="SNV" />
+                  <TableColumn fx:id="tier1IndelsColumn" editable="false" prefWidth="75.0" sortable="false" style="-fx-alignment: center;" text="Indels" />
                </columns>
             </TableColumn>
             <TableColumn prefWidth="75.0" text="Tier II">
                <columns>
-                  <TableColumn fx:id="tier2SnvColumn" editable="false" prefWidth="75.0" sortable="false" text="SNV" />
-                  <TableColumn fx:id="tier2IndelsColumn" editable="false" prefWidth="75.0" sortable="false" text="Indels" />
+                  <TableColumn fx:id="tier2SnvColumn" editable="false" prefWidth="75.0" sortable="false" style="-fx-alignment: center;" text="SNV" />
+                  <TableColumn fx:id="tier2IndelsColumn" editable="false" prefWidth="75.0" sortable="false" style="-fx-alignment: center;" text="Indels" />
                </columns>
             </TableColumn>
             <TableColumn prefWidth="75.0" text="Tier III">
                <columns>
-                  <TableColumn fx:id="tier3SnvColumn" editable="false" prefWidth="75.0" sortable="false" text="SNV" />
-                  <TableColumn fx:id="tier3IndelsColumn" editable="false" prefWidth="75.0" sortable="false" text="Indels" />
+                  <TableColumn fx:id="tier3SnvColumn" editable="false" prefWidth="75.0" sortable="false" style="-fx-alignment: center;" text="SNV" />
+                  <TableColumn fx:id="tier3IndelsColumn" editable="false" prefWidth="75.0" sortable="false" style="-fx-alignment: center;" text="Indels" />
                </columns>
             </TableColumn>
             <TableColumn prefWidth="75.0" text="Tier IV">
                <columns>
-                  <TableColumn fx:id="tier4SnvColumn" editable="false" prefWidth="75.0" sortable="false" text="SNV" />
-                  <TableColumn fx:id="tier4IndelsColumn" editable="false" prefWidth="75.0" sortable="false" text="Indels" />
+                  <TableColumn fx:id="tier4SnvColumn" editable="false" prefWidth="75.0" sortable="false" style="-fx-alignment: center;" text="SNV" />
+                  <TableColumn fx:id="tier4IndelsColumn" editable="false" prefWidth="75.0" sortable="false" style="-fx-alignment: center;" text="Indels" />
                </columns>
             </TableColumn>
             <TableColumn prefWidth="75.0" text="Negative Only">
                <columns>
-                  <TableColumn fx:id="tierNSnvColumn" editable="false" prefWidth="75.0" sortable="false" text="SNV" />
-                  <TableColumn fx:id="tierNIndelsColumn" editable="false" prefWidth="75.0" sortable="false" text="Indels" />
+                  <TableColumn fx:id="tierNSnvColumn" editable="false" prefWidth="75.0" sortable="false" style="-fx-alignment: center;" text="SNV" />
+                  <TableColumn fx:id="tierNIndelsColumn" editable="false" prefWidth="75.0" sortable="false" style="-fx-alignment: center;" text="Indels" />
                </columns>
             </TableColumn>
          </columns>
