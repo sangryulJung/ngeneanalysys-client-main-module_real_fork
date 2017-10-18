@@ -630,7 +630,7 @@ Button {
 .FASTQC_NONE {-fx-text-fill:#656565;}
 .FASTQC_PASS {-fx-text-fill:#68BC4B;}
 .FASTQC_RETURN {-fx-text-fill:#f4c73c;}
-.FASTQC_WARN {-fx-text-fill:#e62a2a;}
+.FASTQC_WARNING {-fx-text-fill:#e62a2a;}
 .FASTQC_FAIL {-fx-text-fill:#1F2D87;}
 
 /** Flagging Icon CSS */
