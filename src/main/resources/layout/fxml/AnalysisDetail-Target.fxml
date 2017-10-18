@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="experimentPastResultsWrapper" prefHeight="558.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailTargetController">
+<GridPane fx:id="experimentPastResultsWrapper" prefHeight="558.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailTargetController">
    <columnConstraints>
       <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="20.0" />
       <ColumnConstraints hgrow="SOMETIMES" prefWidth="1240.0" />
@@ -78,7 +78,10 @@
                         <Insets />
                      </opaqueInsets>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#showSnpIndels" prefHeight="24.0" prefWidth="74.0" styleClass="btn_snp_indel" text="SNP/INDELs" />
+                  <Button mnemonicParsing="false" onAction="#showSnpIndels" prefHeight="24.0" prefWidth="74.0" styleClass="btn_snp_indel" text="SNP/INDELs">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin></Button>
                </children>
                <opaqueInsets>
                   <Insets />
