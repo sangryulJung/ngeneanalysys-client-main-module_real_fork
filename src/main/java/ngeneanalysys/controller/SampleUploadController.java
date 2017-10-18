@@ -4,8 +4,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -54,7 +54,7 @@ public class SampleUploadController extends BaseStageController{
     private TextField textFieldRunName;
 
     @FXML
-    private RadioButton sequencerType;
+    private ToggleGroup sequencerType;
 
     @FXML
     private Pane tableRegion;

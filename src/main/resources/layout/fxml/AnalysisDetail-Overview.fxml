@@ -81,8 +81,8 @@
                         <Label text="Tier II" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
                         <Label text="Tier III" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
                         <Label text="Tier IV" GridPane.columnIndex="4" GridPane.halignment="CENTER" />
-                        <Label text="Variants Count" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                        <Label text="Genes Count" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                        <Label text="Variants " GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                        <Label text="Genes" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
                         <Label text="Therapeutic" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
                         <Label fx:id="tierFourVariantsCountLabel" text="0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                         <Label fx:id="tierFourGenesCountLabel" text="0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
