@@ -200,7 +200,7 @@ Button#buttonUpload:hover {
 #listGrid #qcArea .label#return {
 	-fx-text-fill:#f69242;
 }
-#listGrid #qcArea .label#warn {
+#listGrid #qcArea .label#warning {
 	-fx-text-fill:#f35353;
 }
 #listGrid #qcArea .label#fail {

@@ -952,19 +952,14 @@ public class PastResultsController extends SubPaneController {
 				ImageView imgVw = new ImageView(img);
 				imgVw.setFitHeight(15.0);
 				imgVw.setFitWidth(15.0);
-				HBox.setMargin(imgVw, new Insets(10.0));
+				HBox.setMargin(imgVw, new Insets(0, 10.0, 0, 0));
 				this.getChildren().setAll(imgVw);
 			}
 			if (!"NONE".equals(fastQC)) {
-				Label qcLabel = null;
-				if("WARN".equals(fastQC)) {
-					qcLabel = new Label("WARNING");
-				} else {
-					qcLabel = new Label(fastQC);
-				}
+				Label qcLabel = new Label(fastQC);
 				qcLabel.setId(fastQC.toLowerCase());
 				qcLabel.setPrefWidth(80.0);
-				qcLabel.getStyleClass().add("font_size_12");
+				qcLabel.getStyleClass().add("font_size_9");
 				this.getChildren().add(qcLabel);
 			}
 		}

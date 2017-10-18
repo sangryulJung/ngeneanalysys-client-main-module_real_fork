@@ -271,8 +271,8 @@ public class HomeController extends SubPaneController{
                 samplePanelFields.add(samplePanelField);
 
                 sampleListGridPane.add(sampleNameField, 0, i);
-                sampleListGridPane.add(sampleStatusField, 1, i);
-                sampleListGridPane.add(samplePanelField, 2, i);
+                sampleListGridPane.add(sampleStatusField, 2, i);
+                sampleListGridPane.add(samplePanelField, 1, i);
             }
             sampleListPagination.setVisible(false);
         } catch (Exception e) {
