@@ -72,7 +72,7 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TextArea layoutY="7.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="1000.0" />
+                              <TextArea fx:id="conclusionsTextArea" layoutY="7.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="1160.0" styleClass="txt_black" />
                            </children>
                         </AnchorPane>
                     </content>
@@ -81,13 +81,12 @@
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TableView layoutY="-4.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="1000.0">
+                              <TableView fx:id="tierOneVariantsTable" layoutY="-4.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="1160.0" styleClass="txt_black">
                                 <columns>
-                                  <TableColumn prefWidth="75.0" text="Gene" />
-                                  <TableColumn prefWidth="75.0" text="Variants" />
-                                    <TableColumn prefWidth="150.0" text="Therapeutic" />
-                                    <TableColumn minWidth="100.0" prefWidth="0.0" text="Drug" />
-                                    <TableColumn prefWidth="101.0" text="리포트에서 제외" />
+                                  <TableColumn fx:id="tierOneGeneColumn" prefWidth="75.0" styleClass="txt_black" text="Gene" />
+                                  <TableColumn fx:id="tierOneVariantsColumn" prefWidth="75.0" styleClass="txt_black" text="Variants" />
+                                    <TableColumn fx:id="tierOneTherapeuticColumn" prefWidth="924.0" styleClass="txt_black" text="Therapeutic" />
+                                    <TableColumn fx:id="tierOneExceptColumn" prefWidth="85.0" styleClass="txt_black" text="Exclude" />
                                 </columns>
                               </TableView>
                            </children>
@@ -98,13 +97,12 @@
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TableView prefHeight="140.0" prefWidth="1000.0">
+                              <TableView fx:id="tierTwoVariantsTable" prefHeight="140.0" prefWidth="1160.0" styleClass="txt_black">
                                 <columns>
-                                  <TableColumn prefWidth="75.0" text="Gene" />
-                                  <TableColumn prefWidth="75.0" text="Variants" />
-                                    <TableColumn prefWidth="75.0" text="Therapeutic" />
-                                    <TableColumn prefWidth="75.0" text="Drug" />
-                                    <TableColumn prefWidth="75.0" text="리포트에서 제외" />
+                                  <TableColumn fx:id="tierTwoGeneColumn" prefWidth="75.0" styleClass="txt_black" text="Gene" />
+                                  <TableColumn fx:id="tierTwoVariantsColumn" prefWidth="75.0" styleClass="txt_black" text="Variants" />
+                                    <TableColumn fx:id="tierTwoTherapeuticColumn" prefWidth="924.0" styleClass="txt_black" text="Therapeutic" />
+                                    <TableColumn fx:id="tierTwoExceptColumn" prefWidth="85.0" styleClass="txt_black" text="Exclude" />
                                 </columns>
                               </TableView>
                            </children>
@@ -115,12 +113,12 @@
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TableView prefHeight="140.0" prefWidth="1000.0">
+                              <TableView fx:id="negativeVariantsTable" prefHeight="140.0" prefWidth="1160.0">
                                  <columns>
-                                    <TableColumn prefWidth="75.0" text="Gene" />
-                                    <TableColumn prefWidth="75.0" text="Variants" />
-                                    <TableColumn prefWidth="75.0" text="Cause" />
-                                    <TableColumn prefWidth="75.0" text="리포트에서 제외" />
+                                    <TableColumn fx:id="negativeGeneColumn" prefWidth="75.0" styleClass="txt_black" text="Gene" />
+                                    <TableColumn fx:id="negativeVariantsColumn" prefWidth="75.0" styleClass="txt_black" text="Variants" />
+                                    <TableColumn fx:id="negativeCauseColumn" prefWidth="924.0" styleClass="txt_black" text="Cause" />
+                                    <TableColumn fx:id="negativeExceptColumn" prefWidth="85.0" styleClass="txt_black" text="Exclude" />
                                  </columns>
                               </TableView>
                            </children>
@@ -131,12 +129,12 @@
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TableView prefHeight="140.0" prefWidth="1000.0">
+                              <TableView prefHeight="140.0" prefWidth="1160.0">
                                  <columns>
-                                    <TableColumn prefWidth="75.0" text="Gene" />
-                                    <TableColumn prefWidth="75.0" text="Variants" />
-                                    <TableColumn prefWidth="75.0" text="Cause" />
-                                    <TableColumn prefWidth="75.0" text="리포트에서 제외" />
+                                    <TableColumn prefWidth="75.0" styleClass="txt_black" text="Gene" />
+                                    <TableColumn prefWidth="75.0" styleClass="txt_black" text="Variants" />
+                                    <TableColumn prefWidth="924.0" styleClass="txt_black" text="Cause" />
+                                    <TableColumn prefWidth="85.0" styleClass="txt_black" text="exclude" />
                                  </columns>
                               </TableView>
                            </children>

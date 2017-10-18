@@ -65,20 +65,20 @@
                <children>
                   <Label text="Genes" />
                   <TextField fx:id="geneListTextField" prefWidth="661.0" promptText="EGFR,MAP2K1,PIK3CA" />
-                  <Button mnemonicParsing="false" onAction="#searchGene" text="Search" />
+                  <Button mnemonicParsing="false" onAction="#searchGene" prefHeight="24.0" prefWidth="55.0" styleClass="btn_search_small" text="Search" />
                </children>
                <padding>
                   <Insets left="20.0" />
                </padding>
             </HBox>
-            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" GridPane.columnIndex="1">
+            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" GridPane.columnIndex="1">
                <children>
-                  <Button mnemonicParsing="false" onAction="#showSnpIndels" text="SNP/INDELs" />
-                  <Button fx:id="fusionButton" mnemonicParsing="false" onAction="#showFusion" text="Fusion">
+                  <Button fx:id="fusionButton" mnemonicParsing="false" onAction="#showFusion" prefHeight="24.0" prefWidth="55.0" styleClass="btn_snp_indel" text="Fusion">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
                   </Button>
+                  <Button mnemonicParsing="false" onAction="#showSnpIndels" prefHeight="24.0" prefWidth="74.0" styleClass="btn_snp_indel" text="SNP/INDELs" />
                </children>
                <opaqueInsets>
                   <Insets />

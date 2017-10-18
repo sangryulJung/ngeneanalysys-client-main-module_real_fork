@@ -11,6 +11,7 @@ import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
@@ -126,7 +127,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         Sample sample = (Sample) getParamMap().get("sample");
 
         //Tier Table Setting
-        tierColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSwTier()));
+        tierColumn.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.tierConvert(cellData.getValue().getSwTier())));
         geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getGene()));
         variantColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getNtChange()));
         therapeuticColumn.setCellValueFactory(cellData -> {

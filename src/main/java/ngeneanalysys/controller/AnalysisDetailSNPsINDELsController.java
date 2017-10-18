@@ -941,10 +941,10 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
     public void setTableViewColumn() {
         if(panel != null && ExperimentTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             TableColumn<AnalysisResultVariant, String> swTier = new TableColumn<>("Tier");
-            swTier.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSwTier()));
+            swTier.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.tierConvert(cellData.getValue().getSwTier())));
 
             TableColumn<AnalysisResultVariant, String> expertTier = new TableColumn<>("Tier(User)");
-            expertTier.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getExpertTier()));
+            expertTier.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.tierConvert(cellData.getValue().getExpertTier())));
 
             variantListTableView.getColumns().addAll(swTier, expertTier);
         } else {
@@ -1036,16 +1036,16 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             variantListTableView.getColumns().addAll(exonBic);
         }
 
-        TableColumn<AnalysisResultVariant, Integer> refNum = new TableColumn<>("ref.num");
+        TableColumn<AnalysisResultVariant, Integer> refNum = new TableColumn<>("Ref.num");
         refNum.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getReadInfo().getRefReadNum()).asObject());
 
-        TableColumn<AnalysisResultVariant, Integer> altNum = new TableColumn<>("alt.num");
+        TableColumn<AnalysisResultVariant, Integer> altNum = new TableColumn<>("Alt.num");
         altNum.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getReadInfo().getAltReadNum()).asObject());
 
-        TableColumn<AnalysisResultVariant, Integer> depth = new TableColumn<>("depth");
+        TableColumn<AnalysisResultVariant, Integer> depth = new TableColumn<>("Depth");
         depth.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getReadInfo().getReadDepth()).asObject());
 
-        TableColumn<AnalysisResultVariant, String> fraction = new TableColumn<>("fraction");
+        TableColumn<AnalysisResultVariant, String> fraction = new TableColumn<>("Fraction");
         fraction.setCellValueFactory(cellData -> new SimpleStringProperty(
                 cellData.getValue().getReadInfo().getAlleleFraction() != null ? String.valueOf(Double.parseDouble(ConvertUtil.convertFormatNumber("%.2f",cellData.getValue().getReadInfo().getAlleleFraction().toString(), ""))) : ""));
 
@@ -1104,31 +1104,31 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         TableColumn<AnalysisResultVariant, String> mutationTaster = new TableColumn<>("mutationtaster");
         mutationTaster.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getMutationTaster()));*/
 
-        TableColumn<AnalysisResultVariant, Integer> variantNum = new TableColumn<>("variantNum");
+        TableColumn<AnalysisResultVariant, Integer> variantNum = new TableColumn<>("VariantNum");
         variantNum.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getVariantNum()).asObject());
         variantNum.setVisible(false);
 
-        TableColumn<AnalysisResultVariant, String> refGenomeVer = new TableColumn<>("refGenomeVer");
+        TableColumn<AnalysisResultVariant, String> refGenomeVer = new TableColumn<>("RefGenomeVer");
         refGenomeVer.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getRefGenomeVer()));
         refGenomeVer.setVisible(false);
 
-        TableColumn<AnalysisResultVariant, String> leftSequence = new TableColumn<>("leftSequence");
+        TableColumn<AnalysisResultVariant, String> leftSequence = new TableColumn<>("LeftSequence");
         leftSequence.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getLeftSequence()));
         leftSequence.setVisible(false);
 
-        TableColumn<AnalysisResultVariant, String> rightSequence = new TableColumn<>("rightSequence");
+        TableColumn<AnalysisResultVariant, String> rightSequence = new TableColumn<>("RightSequence");
         rightSequence.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getRightSequence()));
         rightSequence.setVisible(false);
 
-        TableColumn<AnalysisResultVariant, Integer> genomicCoordinate = new TableColumn<>("genomicCoordinate");
+        TableColumn<AnalysisResultVariant, Integer> genomicCoordinate = new TableColumn<>("GenomicCoordinate");
         genomicCoordinate.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSequenceInfo().getGenomicCoordinate()).asObject());
         genomicCoordinate.setVisible(false);
 
-        TableColumn<AnalysisResultVariant, String> dbSnpRsId = new TableColumn<>("snpRsId");
+        TableColumn<AnalysisResultVariant, String> dbSnpRsId = new TableColumn<>("SnpRsId");
         dbSnpRsId.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPopulationFrequency().getDbsnpRsId()));
         dbSnpRsId.setVisible(false);
 
-        TableColumn<AnalysisResultVariant, String> clinVarDisease = new TableColumn<>("clinVar.Disease");
+        TableColumn<AnalysisResultVariant, String> clinVarDisease = new TableColumn<>("ClinVar.Disease");
         clinVarDisease.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getClinVar().getClinVarDisease()));
         clinVarDisease.setVisible(false);
 
@@ -1200,7 +1200,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             beEnigmaPathogenicity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBe().getBeEnigmaPathogenicity()));
             beEnigmaPathogenicity.setVisible(false);
 
-            TableColumn<AnalysisResultVariant, String> enigma = new TableColumn<>("enigma");
+            TableColumn<AnalysisResultVariant, String> enigma = new TableColumn<>("Enigma");
             enigma.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBe().getBeEnigmaPathogenicity()));
             enigma.setVisible(false);
 

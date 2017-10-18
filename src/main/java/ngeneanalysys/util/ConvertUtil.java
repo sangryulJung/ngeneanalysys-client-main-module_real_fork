@@ -112,4 +112,17 @@ public class ConvertUtil {
 			return text;
 		}		
 	}
+
+	public static String tierConvert(String tier) {
+		String convertTier = "";
+		if(tier != null) {
+			if (tier.equalsIgnoreCase("T1")) convertTier = "Tier I";
+			else if (tier.equalsIgnoreCase("T2")) convertTier = "Tier II";
+			else if (tier.equalsIgnoreCase("T3")) convertTier = "Tier III";
+			else if (tier.equalsIgnoreCase("T4")) convertTier = "Tier IV";
+		}
+
+		return convertTier;
+	}
+
 }

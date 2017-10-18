@@ -1,11 +1,10 @@
 package ngeneanalysys.controller;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.model.*;
@@ -47,7 +46,63 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     @FXML
     private Label panelLabel;
 
+    @FXML
+    private TextArea conclusionsTextArea;
+
+    @FXML
+    private TableView<AnalysisResultVariant> tierOneVariantsTable;
+
+    @FXML
+    private TableColumn<AnalysisResultVariant, String> tierOneGeneColumn;
+
+    @FXML
+    private TableColumn<AnalysisResultVariant, String> tierOneVariantsColumn;
+
+    @FXML
+    private TableColumn<AnalysisResultVariant, String> tierOneTherapeuticColumn;
+
+    @FXML
+    private TableColumn<AnalysisResultVariant, String> tierOneDrugColumn;
+
+    @FXML
+    private TableColumn<AnalysisResultVariant, Boolean> tierOneExceptColumn;
+
+    @FXML
+    private TableView<AnalysisResultVariant> tierTwoVariantsTable;
+
+    @FXML
+    private TableColumn<AnalysisResultVariant, String> tierTwoGeneColumn;
+
+    @FXML
+    private TableColumn<AnalysisResultVariant, String> tierTwoVariantsColumn;
+
+    @FXML
+    private TableColumn<AnalysisResultVariant, String> tierTwoTherapeuticColumn;
+
+    @FXML
+    private TableColumn<AnalysisResultVariant, String> tierTwoDrugColumn;
+
+    @FXML
+    private TableColumn<AnalysisResultVariant, Boolean> tierTwoExceptColumn;
+
+    @FXML
+    private TableView<AnalysisResultVariant> negativeVariantsTable;
+
+    @FXML
+    private TableColumn<AnalysisResultVariant, String> negativeGeneColumn;
+
+    @FXML
+    private TableColumn<AnalysisResultVariant, String> negativeVariantsColumn;
+
+    @FXML
+    private TableColumn<AnalysisResultVariant, String> negativeCauseColumn;
+
+    @FXML
+    private TableColumn<AnalysisResultVariant, Boolean> negativeExceptColumn;
+
     Sample sample = null;
+
+    Panel panel = null;
 
     List<AnalysisResultVariant> tierOne = null;
 
@@ -56,6 +111,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     List<AnalysisResultVariant> tierThree = null;
 
     List<AnalysisResultVariant> negativeVariant = null;
+
+    List<AnalysisResultVariant> negativeList = null;
 
     @Override
     public void show(Parent root) throws IOException {
@@ -69,6 +126,54 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
         sample = (Sample)paramMap.get("sample");
 
+        tierOneGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getGene()));
+        tierOneVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getNtChange()));
+        tierOneTherapeuticColumn.setCellValueFactory(cellData -> {
+            Interpretation interpretation = cellData.getValue().getInterpretation();
+            String text = "";
+
+            if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceA()))
+                text += interpretation.getInterpretationEvidenceA() + ", ";
+            if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceB()))
+                text += interpretation.getInterpretationEvidenceB() + ", ";
+            if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceC()))
+                text += interpretation.getInterpretationEvidenceC() + ", ";
+            if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceD()))
+                text += interpretation.getInterpretationEvidenceD() + ", ";
+
+            if(!"".equals(text)) {
+                text = text.substring(0, text.length() - 2);
+            }
+
+            return new SimpleStringProperty(text);
+        });
+
+        tierTwoGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getGene()));
+        tierTwoVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getNtChange()));
+        tierTwoTherapeuticColumn.setCellValueFactory(cellData -> {
+            Interpretation interpretation = cellData.getValue().getInterpretation();
+            String text = "";
+
+            if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceA()))
+                text += interpretation.getInterpretationEvidenceA() + ", ";
+            if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceB()))
+                text += interpretation.getInterpretationEvidenceB() + ", ";
+            if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceC()))
+                text += interpretation.getInterpretationEvidenceC() + ", ";
+            if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceD()))
+                text += interpretation.getInterpretationEvidenceD() + ", ";
+
+            if(!"".equals(text)) {
+                text = text.substring(0, text.length() - 2);
+            }
+
+            return new SimpleStringProperty(text);
+        });
+
+        negativeGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getGene()));
+        negativeVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getNtChange()));
+        negativeCauseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getInterpretation().getInterpretationNegativeTesult()));
+
         logger.info(sample.toString());
 
         List<Diseases> diseases = (List<Diseases>) mainController.getBasicInformationMap().get("diseases");
@@ -76,7 +181,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         diseaseLabel.setText(diseaseName);
 
         List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
-        String panelName = panels.stream().filter(panel -> panel.getId().equals(sample.getPanelId())).findFirst().get().getName();
+        panel = panels.stream().filter(panel -> panel.getId().equals(sample.getPanelId())).findFirst().get();
+        String panelName = panel.getName();
         panelLabel.setText(panelName);
 
         try {
@@ -88,48 +194,26 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             List<AnalysisResultVariant> list = analysisResultVariantList.getResult();
 
             //negative list만 가져옴
-            List<AnalysisResultVariant> negativeList = list.stream().filter(item -> !StringUtils.isEmpty(item.getInterpretation().getInterpretationNegativeTesult())).collect(Collectors.toList());
+            negativeList = list.stream().filter(item -> !StringUtils.isEmpty(item.getInterpretation().getInterpretationNegativeTesult())).collect(Collectors.toList());
 
             Map<String, List<AnalysisResultVariant>> variantTierMap = list.stream().collect(Collectors.groupingBy(AnalysisResultVariant::getSwTier));
 
             tierOne = variantTierMap.get("T1");
 
             if(tierOne != null) {
-                //tierTable.getItems().addAll(FXCollections.observableArrayList(tierOne));
-                List<SequenceInfo> sequenceInfos = new ArrayList<>();
-                tierOne.stream().forEach(item -> {
-                    if (item.getSequenceInfo() != null)
-                        sequenceInfos.add(item.getSequenceInfo());
-                });
-
-                List<Interpretation> interpretations = new ArrayList<>();
-                tierOne.stream().forEach(item -> {
-                    if (item.getInterpretation() != null)
-                        interpretations.add(item.getInterpretation());
-                });
+                tierOneVariantsTable.getItems().addAll(FXCollections.observableArrayList(tierOne));
 
             }
 
             tierTwo = variantTierMap.get("T2");
 
             if(tierTwo != null) {
-                //tierTable.getItems().addAll(FXCollections.observableArrayList(tierTwo));
-                List<SequenceInfo> sequenceInfos = new ArrayList<>();
-                tierTwo.stream().forEach(item -> {
-                    if (item.getSequenceInfo() != null)
-                        sequenceInfos.add(item.getSequenceInfo());
-                });
-
-                List<Interpretation> interpretations = new ArrayList<>();
-                tierTwo.stream().forEach(item -> {
-                    if (item.getInterpretation() != null)
-                        interpretations.add(item.getInterpretation());
-                });
+                tierTwoVariantsTable.getItems().addAll(FXCollections.observableArrayList(tierTwo));
 
             }
 
             if(negativeList != null) {
-                //pertinentNegativesTable.setItems(FXCollections.observableArrayList(negativeList));
+                negativeVariantsTable.setItems(FXCollections.observableArrayList(negativeList));
             }
 
         } catch (Exception e) {
@@ -186,13 +270,36 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             if(file != null) {
                 String draftImageStr = String.format("url('%s')", this.getClass().getClassLoader().getResource("layout/images/DRAFT.png"));
                 String ngenebioLogo = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/ngenebio_logo_small.png"));
+                Map<String,Object> contentsMap = new HashMap<>();
+                contentsMap.put("panelName", panelLabel.getText());
+                contentsMap.put("diseaseName", diseaseLabel.getText());
+                contentsMap.put("sampleSource", panel.getSampleSource());
+
+                List<AnalysisResultVariant> variantList = new ArrayList<>();
+                if(tierOne != null && !tierOne.isEmpty()) variantList.addAll(tierOne);
+                if(tierTwo != null && !tierTwo.isEmpty()) variantList.addAll(tierTwo);
+
+                if(!variantList.isEmpty()) {
+                    variantList = variantList.stream().filter(item -> item.getSkipReport() == 0).collect(Collectors.toList());
+                }
+
+                Long evidenceACount = variantList.stream().filter(item -> !StringUtils.isEmpty(item.getInterpretation().getInterpretationEvidenceA())).count();
+                Long evidenceBCount = variantList.stream().filter(item -> !StringUtils.isEmpty(item.getInterpretation().getInterpretationEvidenceB())).count();
+                Long evidenceCCount = variantList.stream().filter(item -> !StringUtils.isEmpty(item.getInterpretation().getInterpretationEvidenceC())).count();
+                Long evidenceDCount = variantList.stream().filter(item -> !StringUtils.isEmpty(item.getInterpretation().getInterpretationEvidenceD())).count();
+
+                contentsMap.put("variantList", variantList);
+                contentsMap.put("evidenceACount", evidenceACount);
+                contentsMap.put("evidenceBCount", evidenceBCount);
+                contentsMap.put("evidenceCCount", evidenceCCount);
+                contentsMap.put("evidenceDCount", evidenceDCount);
 
                 Map<String, Object> model = new HashMap<>();
                 model.put("isDraft", isDraft);
                 //model.put("qcResult", sample.getQc());
                 model.put("draftImageURL", draftImageStr);
                 model.put("ngenebioLogo", ngenebioLogo);
-                //model.put("contents", contentsMap);
+                model.put("contents", contentsMap);
 
                 String contents = velocityUtil.getContents("/layout/velocity/report.vm", "UTF-8", model);
 

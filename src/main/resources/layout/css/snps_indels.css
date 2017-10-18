@@ -341,3 +341,7 @@
 .btn_fold:hover {
 	-fx-background-image:url('../images/btn_fold_over.png');
 }
+
+.table-view .column-header.header {
+    -fx-font-size: 15;
+}

@@ -29,7 +29,7 @@
 								</fo:block>
 								<fo:block text-align="left">
 									<!--$contents.panelName ($contents.panelCode) Clinical Report(#$contents.reportID) -->
-									hello
+									ngenebio
 								</fo:block>
 							</fo:table-cell>
 						</fo:table-row>
@@ -95,7 +95,7 @@
 											Sample Source
 										</fo:block>
 										<fo:block font-weight="bold" font-size="12pt" color="#FFFFFF">
-											Biopsy
+											$contents.sampleSource
 										</fo:block>
 									</fo:block-container>
 								</fo:table-cell>
@@ -105,7 +105,7 @@
 											Disease Name
 										</fo:block>
 										<fo:block font-weight="bold" font-size="12pt" color="#FFFFFF">
-											NSCLC
+											$contents.diseaseName
 										</fo:block>
 									</fo:block-container>
 								</fo:table-cell>
@@ -115,7 +115,7 @@
 											Panel
 										</fo:block>
 										<fo:block font-weight="bold" font-size="12pt" color="#FFFFFF">
-											NGB-Solid-V3
+											$contents.panelName
 										</fo:block>
 									</fo:block-container>
 								</fo:table-cell>
@@ -173,39 +173,38 @@
 									<fo:block font-weight="bold">Total Count</fo:block>
 								</fo:table-cell>
 								<fo:table-cell border-style="solid" border-width="0.5pt" display-align="center">
-									<fo:block>1</fo:block>
+									<fo:block>$contents.evidenceACount</fo:block>
 								</fo:table-cell>
 								<fo:table-cell border-style="solid" border-width="0.5pt" display-align="center">
-									<fo:block>1</fo:block>
+									<fo:block>$contents.evidenceBCount</fo:block>
 								</fo:table-cell>
 								<fo:table-cell border-style="solid" border-width="0.5pt" display-align="center">
-									<fo:block>1</fo:block>
+									<fo:block>$contents.evidenceCCount</fo:block>
 								</fo:table-cell>
 								<fo:table-cell border-style="solid" border-width="0.5pt" display-align="center">
-									<fo:block>1</fo:block>
+									<fo:block>$contents.evidenceDCount</fo:block>
 								</fo:table-cell>
 							</fo:table-row>
-							<fo:table-row text-align="center">
-								<fo:table-cell border-style="solid" border-width="0.5pt">
-									<fo:block>EGFR</fo:block>
-									<fo:block>blah blah</fo:block>
-								</fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt">
-									<fo:block>1</fo:block>
-									<fo:block>2</fo:block>
-									<fo:block>3</fo:block>
-									<fo:block>4</fo:block>
-								</fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt">
-									<fo:block></fo:block>
-								</fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt">
-									<fo:block></fo:block>
-								</fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt">
-									<fo:block></fo:block>
-								</fo:table-cell>
-							</fo:table-row>
+							#foreach($variant in $contents.variantList)
+								<fo:table-row text-align="center">
+									<fo:table-cell border-style="solid" border-width="0.5pt">
+										<fo:block text-align="left" font-weight="bold">$variant.sequenceInfo.gene</fo:block>
+										<fo:block text-align="left">blah blah</fo:block>
+									</fo:table-cell>
+									<fo:table-cell border-style="solid" border-width="0.5pt">
+											<fo:block>$variant.interpretation.interpretationEvidenceA</fo:block>
+									</fo:table-cell>
+									<fo:table-cell border-style="solid" border-width="0.5pt">
+										<fo:block>$variant.interpretation.interpretationEvidenceB</fo:block>
+									</fo:table-cell>
+									<fo:table-cell border-style="solid" border-width="0.5pt">
+										<fo:block>$variant.interpretation.interpretationEvidenceC</fo:block>
+									</fo:table-cell>
+									<fo:table-cell border-style="solid" border-width="0.5pt">
+										<fo:block>$variant.interpretation.interpretationEvidenceD</fo:block>
+									</fo:table-cell>
+								</fo:table-row>
+							#end
 						</fo:table-body>
 					</fo:table>
 				</fo:block>
