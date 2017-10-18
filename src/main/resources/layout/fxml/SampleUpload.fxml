@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="contentWrapper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SampleUploadController">
+<VBox fx:id="contentWrapper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SampleUploadController">
 	<children>
 		<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="500.0">
 			<columnConstraints>
@@ -55,11 +55,6 @@
 						<Insets right="20.0" />
 					</GridPane.margin>
 				</Label>
-						<Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="formTitleLabel" text="Analysis Type" GridPane.rowIndex="2">
-							<GridPane.margin>
-								<Insets right="20.0" />
-							</GridPane.margin>
-						</Label>
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
                   <RadioButton mnemonicParsing="false" text="Illumina MiSeq DX">
@@ -68,16 +63,6 @@
                      </toggleGroup>
                   </RadioButton>
                   <RadioButton mnemonicParsing="false" text="Illumina MiSeq" toggleGroup="$sequencerType" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-               <children>
-                  <RadioButton mnemonicParsing="false" text="Somatic">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="analysysType" />
-                     </toggleGroup>
-                  </RadioButton>
-                  <RadioButton mnemonicParsing="false" text="Germline" toggleGroup="$analysysType" />
                </children>
             </HBox>
 			</children>
