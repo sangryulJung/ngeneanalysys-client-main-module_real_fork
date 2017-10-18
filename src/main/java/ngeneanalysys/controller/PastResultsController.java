@@ -130,7 +130,7 @@ public class PastResultsController extends SubPaneController {
 	private List<RunFieldVBox> runFields = new ArrayList<>();
 	private List<AssayTargetFieldVBox> assayTargetFieldVBoxes = new ArrayList<>();
 	private List<AnalysisResultOverviewVBox> analysisResultOverviewVBoxes = new ArrayList<>();
-	private List<QcResultVBox> qcResultVBoxes = new ArrayList<>();
+	private List<QcResultHBox> qcResultHBoxes = new ArrayList<>();
 	private List<DetailFieldVBox> detailFieldVBoxes = new ArrayList<>();
 
 	/**
@@ -433,10 +433,10 @@ public class PastResultsController extends SubPaneController {
 			analysisResultOverviewVBoxes.add(analysisResultOverviewVBox);
 			listGrid.add(analysisResultOverviewVBox, 3, i);
 
-			QcResultVBox qcResultVBox = new QcResultVBox();
-			qcResultVBox.setVisible(false);
-			qcResultVBoxes.add(qcResultVBox);
-			listGrid.add(qcResultVBox, 4, i);
+			QcResultHBox qcResultHBox = new QcResultHBox();
+			qcResultHBox.setVisible(false);
+			qcResultHBoxes.add(qcResultHBox);
+			listGrid.add(qcResultHBox, 4, i);
 
 			DetailFieldVBox detailFieldVBox = new DetailFieldVBox();
 			detailFieldVBox.setVisible(false);
@@ -457,7 +457,7 @@ public class PastResultsController extends SubPaneController {
 				runFields.get(idx).setSampleView(sample);
 				assayTargetFieldVBoxes.get(idx).setSampleView(sample);
 				analysisResultOverviewVBoxes.get(idx).setSampleView(sample);
-				qcResultVBoxes.get(idx).setSampleView(sample);
+				qcResultHBoxes.get(idx).setSampleView(sample);
 				detailFieldVBoxes.get(idx).setSampleView(sample);
 			}
 			for(int idx = list.size(); idx < itemCountPerPage; idx++) {
@@ -465,7 +465,7 @@ public class PastResultsController extends SubPaneController {
 				runFields.get(idx).setVisible(false);
 				assayTargetFieldVBoxes.get(idx).setVisible(false);
 				analysisResultOverviewVBoxes.get(idx).setVisible(false);
-				qcResultVBoxes.get(idx).setVisible(false);
+				qcResultHBoxes.get(idx).setVisible(false);
 				detailFieldVBoxes.get(idx).setVisible(false);
 			}
 		} else {
@@ -474,7 +474,7 @@ public class PastResultsController extends SubPaneController {
 				runFields.get(idx).setVisible(false);
 				assayTargetFieldVBoxes.get(idx).setVisible(false);
 				analysisResultOverviewVBoxes.get(idx).setVisible(false);
-				qcResultVBoxes.get(idx).setVisible(false);
+				qcResultHBoxes.get(idx).setVisible(false);
 				detailFieldVBoxes.get(idx).setVisible(false);
 			}
 		}
@@ -934,8 +934,8 @@ public class PastResultsController extends SubPaneController {
 			return null;
 		}
 	}
-	class QcResultVBox extends VBox {
-		QcResultVBox() {
+	class QcResultHBox extends HBox {
+		QcResultHBox() {
 			// fastqc column box
 			this.setId("qcArea");
 			this.getStyleClass().add("colunmn");
@@ -950,6 +950,9 @@ public class PastResultsController extends SubPaneController {
 			Image img = resourceUtil.getImage("/layout/images/icon_qc_" + fastQC.toLowerCase() + ".png");
 			if (img != null) {
 				ImageView imgVw = new ImageView(img);
+				imgVw.setFitHeight(15.0);
+				imgVw.setFitWidth(15.0);
+				HBox.setMargin(imgVw, new Insets(10.0));
 				this.getChildren().setAll(imgVw);
 			}
 			if (!"NONE".equals(fastQC)) {
@@ -960,6 +963,7 @@ public class PastResultsController extends SubPaneController {
 					qcLabel = new Label(fastQC);
 				}
 				qcLabel.setId(fastQC.toLowerCase());
+				qcLabel.setPrefWidth(80.0);
 				qcLabel.getStyleClass().add("font_size_12");
 				this.getChildren().add(qcLabel);
 			}
