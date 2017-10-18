@@ -1,5 +1,5 @@
 group 'ngenebio'
-version '0.9'
+version '1.2.20171018'
 
 apply plugin: 'java'
 
@@ -8,7 +8,7 @@ sourceCompatibility = 1.8
 jar {
     baseName = 'ngeneanalysys'
     version = version
-    archiveName = 'ngeneanalysys-0.9.jar'
+    archiveName = version + '.jar'
     manifest {
         attributes 'Main-Class': 'ngeneanalysys.MainApp',
                 'Implementation-Title': 'myapp',
