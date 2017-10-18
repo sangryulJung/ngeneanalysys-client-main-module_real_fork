@@ -978,7 +978,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         }
 
         TableColumn<AnalysisResultVariant, Integer> warn = new TableColumn<>("Warn");
-        warn.setCellValueFactory(cellData -> new SimpleObjectProperty<Integer>(cellData.getValue().getHasWarning()));
+        warn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getHasWarning()));
 
         TableColumn<AnalysisResultVariant, Integer> report = new TableColumn<>("Report");
         report.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSkipReport()).asObject());

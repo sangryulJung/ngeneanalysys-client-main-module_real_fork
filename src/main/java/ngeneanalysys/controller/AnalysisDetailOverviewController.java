@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Tooltip;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
@@ -115,6 +116,30 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
     @FXML
     private Label roiCoverageLabel;
 
+    @FXML
+    private Tooltip totalBaseTooltip;
+
+    @FXML
+    private Tooltip q30Tooltip;
+
+    @FXML
+    private Tooltip mappedBaseTooltip;
+
+    @FXML
+    private Tooltip onTargetTooltip;
+
+    @FXML
+    private Tooltip onTargetCoverageTooltip;
+
+    @FXML
+    private Tooltip duplicatedReadsTooltip;
+
+    @FXML
+    private Tooltip roiCoverageTooltip;
+
+    @FXML
+    private Label diseaseLabel;
+
     /** API 서버 통신 서비스 */
     private APIService apiService;
 
@@ -125,6 +150,10 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         apiService.setStage(getMainController().getPrimaryStage());
 
         Sample sample = (Sample) getParamMap().get("sample");
+
+        List<Diseases> diseases = (List<Diseases>) mainController.getBasicInformationMap().get("diseases");
+        String diseaseName = diseases.stream().filter(disease -> disease.getId() == sample.getDiseaseId()).findFirst().get().getName();
+        diseaseLabel.setText(diseaseName);
 
         //Tier Table Setting
         tierColumn.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.tierConvert(cellData.getValue().getSwTier())));
@@ -302,12 +331,19 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
             qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
 
             totalBaseLabel.setText(findQCResult(qcList, "total_base"));
+            totalBaseTooltip.setText(findQCTooltipString(qcList, "total_base"));
             q30Label.setText(findQCResult(qcList, "q30_trimmed_base"));
+            q30Tooltip.setText(findQCTooltipString(qcList, "q30_trimmed_base"));
             mappedLabel.setText(findQCResult(qcList, "mapped_base"));
+            mappedBaseTooltip.setText(findQCTooltipString(qcList, "mapped_base"));
             onTargetLabel.setText(findQCResult(qcList, "on_target"));
+            onTargetTooltip.setText(findQCTooltipString(qcList, "on_target"));
             onTargetCoverageLabel.setText(findQCResult(qcList, "on_target_coverage"));
+            onTargetCoverageTooltip.setText(findQCTooltipString(qcList, "on_target_coverage"));
             duplicatedReadsLabel.setText(findQCResult(qcList, "duplicated_reads"));
+            duplicatedReadsTooltip.setText(findQCTooltipString(qcList, "duplicated_reads"));
             roiCoverageLabel.setText(findQCResult(qcList, "roi_coverage"));
+            roiCoverageTooltip.setText(findQCTooltipString(qcList, "roi_coverage"));
 
         } catch(WebAPIException e) {
             e.printStackTrace();
@@ -322,6 +358,20 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
             Optional<SampleQC> findQC = qcList.stream().filter(sampleQC -> sampleQC.getQcType().equalsIgnoreCase(qc)).findFirst();
             if(findQC.isPresent()) {
                 result = findQC.get().getQcResult();
+            }
+        }
+
+        return result;
+    }
+
+    //qcList에서 해당 qc 결과를 반환
+    private String findQCTooltipString(List<SampleQC> qcList, String qc) {
+        String result = "";
+
+        if(qcList != null && !qcList.isEmpty()) {
+            Optional<SampleQC> findQC = qcList.stream().filter(sampleQC -> sampleQC.getQcType().equalsIgnoreCase(qc)).findFirst();
+            if(findQC.isPresent()) {
+                result = findQC.get().getQcDescription() + " " + findQC.get().getQcThreshold();
             }
         }
 

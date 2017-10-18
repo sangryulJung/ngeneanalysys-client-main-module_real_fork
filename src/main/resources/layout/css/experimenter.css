@@ -287,3 +287,15 @@ Button#buttonUpload:hover {
 .btn_snp_indel:hover {
 	-fx-background-color: #3C81D4;
 }
+
+.help_tooltip {
+	-fx-background-image:url('../images/icon_help.png');
+	-fx-background-color:transparent;
+	-fx-background-repeat:no-repeat;
+	-fx-min-width:15;
+	-fx-pref-width:15;
+	-fx-max-width:15;
+	-fx-min-height:15;
+	-fx-pref-height:15;
+	-fx-max-height:15;
+}

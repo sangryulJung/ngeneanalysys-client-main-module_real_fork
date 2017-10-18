@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -102,7 +103,12 @@
             </HBox>
             <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0" spacing="10.0" GridPane.columnIndex="1">
                <children>
-                  <Label fx:id="diseaseLabel" text="Patient disease" />
+                  <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label fx:id="diseaseLabel" text="Patient disease : " />
+                        <Label fx:id="diseaseLabel" text="disease" />
+                     </children>
+                  </HBox>
                </children>
             </VBox>
          </children>
@@ -124,14 +130,14 @@
       </TableView>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
          <children>
-            <VBox prefHeight="75.0" prefWidth="816.0">
+            <VBox prefHeight="75.0" prefWidth="864.0">
                <children>
                   <Label text="QC">
                      <padding>
                         <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                      </padding>
                   </Label>
-                  <GridPane gridLinesVisible="true" prefWidth="533.0">
+                  <GridPane gridLinesVisible="true" prefWidth="862.0">
                      <columnConstraints>
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -146,17 +152,80 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <Label text="Total base" />
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label text="Total base" />
+                              <Label styleClass="help_tooltip">
+                                 <tooltip>
+                                    <Tooltip fx:id="totalBaseTooltip" styleClass="help_tooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                              </Label>
+                           </children>
+                        </HBox>
                         <Label fx:id="totalBaseLabel" text="pass" GridPane.rowIndex="1" />
-                        <Label text="q30 trimmed base" GridPane.columnIndex="1" />
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+                           <children>
+                              <Label text="q30 trimmed base" />
+                              <Label styleClass="help_tooltip">
+                                 <tooltip>
+                                    <Tooltip fx:id="q30Tooltip" styleClass="help_tooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                              </Label>
+                           </children>
+                        </HBox>
                         <Label fx:id="q30Label" text="pass" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label text="Mapped base" GridPane.columnIndex="2" />
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
+                           <children>
+                              <Label text="Mapped base" />
+                              <Label styleClass="help_tooltip">
+                                 <tooltip>
+                                    <Tooltip fx:id="mappedBaseTooltip" styleClass="help_tooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                              </Label>
+                           </children>
+                        </HBox>
                         <Label fx:id="mappedLabel" text="pass" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <Label text="On target" GridPane.columnIndex="3" />
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3">
+                           <children>
+                              <Label text="On target" />
+                              <Label styleClass="help_tooltip">
+                                 <tooltip>
+                                    <Tooltip fx:id="onTargetTooltip" styleClass="help_tooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                              </Label>
+                           </children>
+                        </HBox>
                         <Label fx:id="onTargetLabel" text="pass" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                        <Label text="On target coverage" GridPane.columnIndex="4" />
-                        <Label text="Duplicated reads" GridPane.columnIndex="5" />
-                        <Label text="Roi coverage" GridPane.columnIndex="6" />
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4">
+                           <children>
+                              <Label text="On target coverage" />
+                              <Label styleClass="help_tooltip">
+                                 <tooltip>
+                                    <Tooltip fx:id="onTargetCoverageTooltip" styleClass="help_tooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5">
+                           <children>
+                              <Label text="Duplicated reads" />
+                              <Label styleClass="help_tooltip">
+                                 <tooltip>
+                                    <Tooltip fx:id="duplicatedReadsTooltip" styleClass="help_tooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6">
+                           <children>
+                              <Label text="Roi coverage" />
+                              <Label styleClass="help_tooltip">
+                                 <tooltip>
+                                    <Tooltip fx:id="roiCoverageTooltip" styleClass="help_tooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                              </Label>
+                           </children>
+                        </HBox>
                         <Label fx:id="onTargetCoverageLabel" text="pass" GridPane.columnIndex="4" GridPane.rowIndex="1" />
                         <Label fx:id="duplicatedReadsLabel" text="pass" GridPane.columnIndex="5" GridPane.rowIndex="1" />
                         <Label fx:id="roiCoverageLabel" text="pass" GridPane.columnIndex="6" GridPane.rowIndex="1" />
