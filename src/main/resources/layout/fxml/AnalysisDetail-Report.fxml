@@ -54,7 +54,7 @@
       </HBox>
       <ScrollPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="2" GridPane.rowSpan="4" GridPane.valignment="CENTER">
          <content>
-            <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1240.0">
+            <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="1200.0">
               <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="409.199951171875" minWidth="0.0" prefWidth="0.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="1162.0" minWidth="10.0" prefWidth="1162.0" />
@@ -64,7 +64,6 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
@@ -119,22 +118,6 @@
                                     <TableColumn fx:id="negativeVariantsColumn" prefWidth="75.0" styleClass="txt_black" text="Variants" />
                                     <TableColumn fx:id="negativeCauseColumn" prefWidth="924.0" styleClass="txt_black" text="Cause" />
                                     <TableColumn fx:id="negativeExceptColumn" prefWidth="85.0" styleClass="txt_black" text="Exclude" />
-                                 </columns>
-                              </TableView>
-                           </children>
-                        </AnchorPane>
-                     </content>
-                  </TitledPane>
-                  <TitledPane animated="false" text="QC Result" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <TableView prefHeight="140.0" prefWidth="1160.0">
-                                 <columns>
-                                    <TableColumn prefWidth="75.0" styleClass="txt_black" text="Gene" />
-                                    <TableColumn prefWidth="75.0" styleClass="txt_black" text="Variants" />
-                                    <TableColumn prefWidth="924.0" styleClass="txt_black" text="Cause" />
-                                    <TableColumn prefWidth="85.0" styleClass="txt_black" text="exclude" />
                                  </columns>
                               </TableView>
                            </children>
