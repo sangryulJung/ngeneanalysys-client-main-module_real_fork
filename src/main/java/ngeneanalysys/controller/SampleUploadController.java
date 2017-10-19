@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Pane;
@@ -52,6 +53,15 @@ public class SampleUploadController extends BaseStageController{
 
     @FXML
     private TextField textFieldRunName;
+
+    public ToggleGroup getSequencerType() {
+        return sequencerType;
+    }
+    @FXML
+    private RadioButton sequencerMiSeqDXRadioButton;
+
+    @FXML
+    private RadioButton sequencerMiSeqRadioButton;
 
     @FXML
     private ToggleGroup sequencerType;
@@ -182,6 +192,14 @@ public class SampleUploadController extends BaseStageController{
         tableRegion.getChildren().clear();
         FXMLLoader loader = null;
         VBox box = null;
+        sequencerType.setUserData(sequencerMiSeqDXRadioButton.getText());
+        sequencerMiSeqDXRadioButton.setOnAction(ev ->{
+            sequencerType.setUserData(sequencerMiSeqDXRadioButton.getText());
+        });
+
+        sequencerMiSeqRadioButton.setOnAction(ev ->{
+            sequencerType.setUserData(sequencerMiSeqRadioButton.getText());
+        });
 
         switch (scene) {
             case 1 :

@@ -239,7 +239,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     }
 
     public void saveSampleData() {
-        for (int i = 0; i < standardDataGridPane.getChildren().size(); i += 6) {
+        for (int i = 0; i < standardDataGridPane.getChildren().size(); i += 5) {
             int rowNum = i / 6;
             Sample sample = null;
             if(sampleArrayList.size() > rowNum) {
@@ -249,20 +249,19 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 sample.setQcData(new QcData());
                 sample.setSampleSheet(new SampleSheet());
             }
-
             TextField sampleName = (TextField) standardDataGridPane.getChildren().get(i);
             if(sampleName.getText().isEmpty()) continue;
             sample.setName(sampleName.getText());
 
-            TextField patientId = (TextField) standardDataGridPane.getChildren().get(i + 2);
-            sample.setPaitentId(patientId.getText());
+            ComboBox<ComboBoxItem> panelIdComboBox = (ComboBox<ComboBoxItem>) standardDataGridPane.getChildren().get(i + 1);
+            Integer panelId = Integer.parseInt(panelIdComboBox.getSelectionModel().getSelectedItem().getValue());
+            sample.setPanelId(panelId);
 
             ComboBox<ComboBoxItem> diseaseId = (ComboBox<ComboBoxItem>) standardDataGridPane.getChildren().get(i + 3);
             sample.setDiseaseId(Integer.parseInt(diseaseId.getSelectionModel().getSelectedItem().getValue()));
 
-            ComboBox<ComboBoxItem> panelIdComboBox = (ComboBox<ComboBoxItem>) standardDataGridPane.getChildren().get(i + 4);
-            Integer panelId = Integer.parseInt(panelIdComboBox.getSelectionModel().getSelectedItem().getValue());
-            sample.setPanelId(panelId);
+            TextField patientId = (TextField) standardDataGridPane.getChildren().get(i + 4);
+            sample.setPaitentId(patientId.getText());
 
             Optional<Panel> panel = panels.stream().filter(item -> item.getId().equals(panelId)).findFirst();
             if(panel.isPresent()) {
@@ -297,7 +296,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                     } else {
                         params.put("name", sampleUploadController.getRunName());
                     }
-                    params.put("sequencingPlatform", "MISEQ");
+                    params.put("sequencingPlatform", sampleUploadController.getSequencerType().getUserData());
                     response = apiService.post("/runs", params, null, true);
                     run = response.getObjectBeforeConvertResponseToJSON(Run.class);
                     logger.info(run.toString());
