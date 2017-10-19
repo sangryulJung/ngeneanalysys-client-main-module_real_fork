@@ -309,7 +309,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
             param.put("limit", limit);
             param.put("offset", offset);
 
-            response = apiService.get("/admin/member_groups", param, null, false);
+            response = apiService.get("/admin/memberGroups", param, null, false);
             logger.info(response.getContentString());
 
             if(response != null) {

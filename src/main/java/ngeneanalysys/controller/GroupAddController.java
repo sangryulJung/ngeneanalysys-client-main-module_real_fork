@@ -100,7 +100,7 @@ public class GroupAddController extends SubPaneController{
 
             try {
                 if("add".equalsIgnoreCase(type)) {
-                    apiService.post("/admin/member_groups", params, null, true);
+                    apiService.post("/admin/memberGroups", params, null, true);
                     DialogUtil.alert("Create User Group Success", "A user group has been created.",
                             dialogStage, true);
                 } else {

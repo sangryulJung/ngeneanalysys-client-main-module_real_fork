@@ -186,10 +186,15 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         panelLabel.setText(panelName);
 
         try {
-            HttpClientResponse response = apiService.get("/analysisResults/"+ sample.getId()  + "/variants", null,
+            HttpClientResponse response = apiService.get("/analysisResults/" + sample.getId()  + "/variants", null,
                     null, false);
 
             AnalysisResultVariantList analysisResultVariantList = response.getObjectBeforeConvertResponseToJSON(AnalysisResultVariantList.class);
+
+            response = apiService.get("/runs/" + sample.getRunId(), null,
+                    null, false);
+
+            Run run = response.getObjectBeforeConvertResponseToJSON(Run.class);
 
             List<AnalysisResultVariant> list = analysisResultVariantList.getResult();
 
@@ -211,6 +216,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 tierTwoVariantsTable.getItems().addAll(FXCollections.observableArrayList(tierTwo));
 
             }
+
+            tierThree = variantTierMap.get("T3");
 
             if(negativeList != null) {
                 negativeVariantsTable.setItems(FXCollections.observableArrayList(negativeList));
@@ -279,6 +286,12 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 if(tierOne != null && !tierOne.isEmpty()) variantList.addAll(tierOne);
                 if(tierTwo != null && !tierTwo.isEmpty()) variantList.addAll(tierTwo);
 
+                List<AnalysisResultVariant> negativeResult = new ArrayList<>();
+                //리포트에서 제외된 negative 정보를 제거
+                if(negativeList != null && !negativeList.isEmpty()) {
+                    negativeResult.addAll(negativeList.stream().filter(item -> item.getSkipReport() == 0).collect(Collectors.toList()));
+                }
+                //리포트에서 제외된 variant를 제거
                 if(!variantList.isEmpty()) {
                     variantList = variantList.stream().filter(item -> item.getSkipReport() == 0).collect(Collectors.toList());
                 }
@@ -289,10 +302,12 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 Long evidenceDCount = variantList.stream().filter(item -> !StringUtils.isEmpty(item.getInterpretation().getInterpretationEvidenceD())).count();
 
                 contentsMap.put("variantList", variantList);
+                contentsMap.put("tierThreeVariantList", tierThree);
                 contentsMap.put("evidenceACount", evidenceACount);
                 contentsMap.put("evidenceBCount", evidenceBCount);
                 contentsMap.put("evidenceCCount", evidenceCCount);
                 contentsMap.put("evidenceDCount", evidenceDCount);
+                contentsMap.put("negativeList", negativeResult);
 
                 Map<String, Object> model = new HashMap<>();
                 model.put("isDraft", isDraft);

@@ -189,7 +189,7 @@
 								<fo:table-row text-align="center">
 									<fo:table-cell border-style="solid" border-width="0.5pt">
 										<fo:block text-align="left" font-weight="bold">$variant.sequenceInfo.gene</fo:block>
-										<fo:block text-align="left">blah blah</fo:block>
+										<fo:block text-align="left">$variant.variantExpression.ntChange</fo:block>
 									</fo:table-cell>
 									<fo:table-cell border-style="solid" border-width="0.5pt">
 											<fo:block>$variant.interpretation.interpretationEvidenceA</fo:block>
@@ -217,21 +217,24 @@
 						<fo:table-column column-width="proportional-column-width(0.2)" />
 						<fo:table-column column-width="proportional-column-width(0.8)" />
 						<fo:table-body>
-							<fo:table-row>
+							<fo:table-row height="6mm" display-align="center">
 								<fo:table-cell border-style="solid" border-width="0.5pt" number-columns-spanned="2">
 									<fo:block>
 										NON-Small Cell Lung Cancer related or hotspot genes with NO RESULT
 									</fo:block>
 								</fo:table-cell>
 							</fo:table-row>
-							<fo:table-row>
-								<fo:table-cell border-style="solid" border-width="0.5pt">
-									<fo:block>hi</fo:block>
-								</fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt">
-									<fo:block>bye</fo:block>
-								</fo:table-cell>
-							</fo:table-row>
+							#foreach($negative in $contents.negativeList)
+								<fo:table-row>
+									<fo:table-cell border-style="solid" border-width="0.5pt">
+										<fo:block text-align="left" font-weight="bold">$negative.sequenceInfo.gene</fo:block>
+										<fo:block text-align="left">$negative.variantExpression.ntChange</fo:block>
+									</fo:table-cell>
+									<fo:table-cell border-style="solid" border-width="0.5pt">
+										<fo:block>$negative.interpretation.interpretationNegativeTesult</fo:block>
+									</fo:table-cell>
+								</fo:table-row>
+							#end
 						</fo:table-body>
 					</fo:table>
 				</fo:block>
@@ -242,8 +245,9 @@
 			<!-- Variant Details -->
 			<fo:block text-align="center" margin-top="10mm" margin-bottom="5mm" font-family="Noto Sans CJK KR Bold" font-weight="bold" font-size="17pt">Variant Details</fo:block>
 			<fo:block margin-bottom="10mm" font-size="10pt">
-				<fo:block>
-					<fo:table table-layout="fixed" width="100%">
+				<fo:block margin-bottom="5mm">
+					#foreach($variant in $contents.variantList)
+					<fo:table table-layout="fixed" width="100%" margin-bottom="2mm">
 						<fo:table-column column-width="proportional-column-width(0.1)" />
 						<fo:table-column column-width="proportional-column-width(0.1)" />
 						<fo:table-column column-width="proportional-column-width(0.25)" />
@@ -251,20 +255,30 @@
 						<fo:table-column column-width="proportional-column-width(0.1)" />
 						<fo:table-column column-width="proportional-column-width(0.35)" />
 						<fo:table-body>
-							<fo:table-row>
+							<fo:table-row height="6mm" display-align="center">
 								<fo:table-cell border-style="solid" border-width="0.5pt">
-									<fo:block>ALK</fo:block>
+									<fo:block>$variant.sequenceInfo.gene</fo:block>
 								</fo:table-cell>
 								<fo:table-cell number-columns-spanned="3" border-style="solid" border-width="0.5pt">
-									<fo:block>NM_004304:c.3586C>A(L1196M)</fo:block>
+									<fo:block>$variant.variantExpression.transcript:<![CDATA[$variant.variantExpression.ntChange]]>(<![CDATA[$variant.variantExpression.aaChange]]>)</fo:block>
 								</fo:table-cell>
 								<fo:table-cell number-columns-spanned="2" border-style="solid" border-width="0.5pt">
-									<fo:block>Tier 1</fo:block>
+									<fo:block>Tier #if($variant.swTier == "T1") 1
+													#elseif($variant.swTier == "T2") 2
+													#elseif($variant.swTier == "T3") 3
+													#end
+									</fo:block>
 								</fo:table-cell>
 							</fo:table-row>
 							<fo:table-row>
 								<fo:table-cell number-columns-spanned="6" border-style="solid" border-width="0.5pt">
-									<fo:block>[Level B]Well-powered studies with consensus from experts in the field : Crizotinib(COSM99137)</fo:block>
+									<fo:block font-weight="bold">
+										#if((! $variant.interpretation.interpretationEvidenceA) && ("$!variant.interpretation.interpretationEvidenceA" == "")) $variant.interpretation.interpretationEvidenceA
+										#elseif((! $variant.interpretation.interpretationEvidenceB) && ("$!variant.interpretation.interpretationEvidenceB" == "")) $variant.interpretation.interpretationEvidenceB
+										#elseif((! $variant.interpretation.interpretationEvidenceC) && ("$!variant.interpretation.interpretationEvidenceC" == "")) $variant.interpretation.interpretationEvidenceC
+										#elseif((! $variant.interpretation.interpretationEvidenceD) && ("$!variant.interpretation.interpretationEvidenceD" == "")) $variant.interpretation.interpretationEvidenceD
+										#end
+									</fo:block>
 								</fo:table-cell>
 							</fo:table-row>
 							<fo:table-row>
@@ -300,9 +314,9 @@
 									<fo:block>COSMIC:COSM99137(occurence: Lung=5, Autonomic ganglia=3)</fo:block>
 								</fo:table-cell>
 							</fo:table-row>
-
 						</fo:table-body>
 					</fo:table>
+					#end
 				</fo:block>
 				<fo:block page-break-before="always"> </fo:block>
 			</fo:block>
@@ -311,7 +325,7 @@
 
 			<!-- Test Details -->
 			<fo:block margin-bottom="10mm" font-size="10pt">
-				<fo:block font-size="13pt">1. Genes in Panel</fo:block>
+				<fo:block font-size="13pt" font-weight="bold">1. Genes in Panel</fo:block>
 				<fo:block>
 					<fo:table table-layout="fixed" width="100%">
 						<fo:table-column column-width="proportional-column-width(0.33)" />
@@ -589,7 +603,7 @@
 				</fo:block>
 
 
-				<fo:block font-size="13pt">2. Overall QC</fo:block>
+				<fo:block font-size="13pt" padding-top="10mm" font-weight="bold">2. Overall QC</fo:block>
 				<fo:block>
 					<fo:table table-layout="fixed" width="100%">
 						<fo:table-column column-width="proportional-column-width(0.25)" />
@@ -597,21 +611,21 @@
 						<fo:table-column column-width="proportional-column-width(0.25)" />
 						<fo:table-column column-width="proportional-column-width(0.25)" />
 						<fo:table-body>
-							<fo:table-row text-align="center">
+							<fo:table-row text-align="center" height="6mm" display-align="center">
 								<fo:table-cell border-style="solid" border-width="0.5pt">
-									<fo:block>Sample QC</fo:block>
+									<fo:block font-weight="bold">Sample QC</fo:block>
 								</fo:table-cell>
 								<fo:table-cell border-style="solid" border-width="0.5pt">
-									<fo:block>Library QC</fo:block>
+									<fo:block font-weight="bold">Library QC</fo:block>
 								</fo:table-cell>
 								<fo:table-cell border-style="solid" border-width="0.5pt">
-									<fo:block>Sequencing QC</fo:block>
+									<fo:block font-weight="bold">Sequencing QC</fo:block>
 								</fo:table-cell>
 								<fo:table-cell border-style="solid" border-width="0.5pt">
-									<fo:block>Analysis QC</fo:block>
+									<fo:block font-weight="bold">Analysis QC</fo:block>
 								</fo:table-cell>
 							</fo:table-row>
-							<fo:table-row text-align="center">
+							<fo:table-row text-align="center" height="6mm" display-align="center">
 								<fo:table-cell border-style="solid" border-width="0.5pt">
 									<fo:block>FAIL</fo:block>
 								</fo:table-cell>
@@ -629,25 +643,25 @@
 					</fo:table>
 				</fo:block>
 
-				<fo:block font-size="13pt">3. Material Information</fo:block>
+				<fo:block font-size="13pt" padding-top="10mm" font-weight="bold">3. Material Information</fo:block>
 				<fo:block>
 					<fo:table table-layout="fixed" width="100%">
 						<fo:table-column column-width="proportional-column-width(0.33)" />
 						<fo:table-column column-width="proportional-column-width(0.33)" />
 						<fo:table-column column-width="proportional-column-width(0.33)" />
 						<fo:table-body>
-							<fo:table-row text-align="center">
+							<fo:table-row text-align="center" height="6mm" display-align="center">
 								<fo:table-cell border-style="solid" border-width="0.5pt">
-									<fo:block>Panel</fo:block>
+									<fo:block font-weight="bold">Panel</fo:block>
 								</fo:table-cell>
 								<fo:table-cell border-style="solid" border-width="0.5pt">
-									<fo:block>Reagent Kit</fo:block>
+									<fo:block font-weight="bold">Reagent Kit</fo:block>
 								</fo:table-cell>
 								<fo:table-cell border-style="solid" border-width="0.5pt">
-									<fo:block>Sequencer</fo:block>
+									<fo:block font-weight="bold">Sequencer</fo:block>
 								</fo:table-cell>
 							</fo:table-row>
-							<fo:table-row text-align="center">
+							<fo:table-row text-align="center" height="6mm" display-align="center">
 								<fo:table-cell border-style="solid" border-width="0.5pt">
 									<fo:block>NgeneBio-SolidCancer-V3</fo:block>
 								</fo:table-cell>
@@ -662,25 +676,25 @@
 					</fo:table>
 				</fo:block>
 
-				<fo:block font-size="13pt">4. Analysis Information</fo:block>
+				<fo:block font-size="13pt" padding-top="10mm" font-weight="bold">4. Analysis Information</fo:block>
 				<fo:block>
 					<fo:table table-layout="fixed" width="100%">
 						<fo:table-column column-width="proportional-column-width(0.33)" />
 						<fo:table-column column-width="proportional-column-width(0.33)" />
 						<fo:table-column column-width="proportional-column-width(0.33)" />
 						<fo:table-body>
-							<fo:table-row text-align="center">
+							<fo:table-row text-align="center" height="6mm" display-align="center">
 								<fo:table-cell border-style="solid" border-width="0.5pt">
-									<fo:block>Min.Read Depth at ROI</fo:block>
+									<fo:block font-weight="bold">Min.Read Depth at ROI</fo:block>
 								</fo:table-cell>
 								<fo:table-cell border-style="solid" border-width="0.5pt">
-									<fo:block>Coverage Rate at ROI</fo:block>
+									<fo:block font-weight="bold">Coverage Rate at ROI</fo:block>
 								</fo:table-cell>
 								<fo:table-cell border-style="solid" border-width="0.5pt">
-									<fo:block>Unique Mapping Quality</fo:block>
+									<fo:block font-weight="bold">Unique Mapping Quality</fo:block>
 								</fo:table-cell>
 							</fo:table-row>
-							<fo:table-row text-align="center">
+							<fo:table-row text-align="center" height="6mm" display-align="center">
 								<fo:table-cell border-style="solid" border-width="0.5pt">
 									<fo:block>105(PASS)</fo:block>
 								</fo:table-cell>

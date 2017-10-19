@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.constants.FXMLConstants;
+import ngeneanalysys.code.enums.SequencerCode;
 import ngeneanalysys.controller.extend.BaseStageController;
 import ngeneanalysys.model.AnalysisFile;
 import ngeneanalysys.model.PagedSample;
@@ -192,13 +193,13 @@ public class SampleUploadController extends BaseStageController{
         tableRegion.getChildren().clear();
         FXMLLoader loader = null;
         VBox box = null;
-        sequencerType.setUserData(sequencerMiSeqDXRadioButton.getText());
+        sequencerType.setUserData(SequencerCode.MISEQ_DX.getDescription());
         sequencerMiSeqDXRadioButton.setOnAction(ev ->{
-            sequencerType.setUserData(sequencerMiSeqDXRadioButton.getText());
+            sequencerType.setUserData(SequencerCode.MISEQ_DX.getDescription());
         });
 
         sequencerMiSeqRadioButton.setOnAction(ev ->{
-            sequencerType.setUserData(sequencerMiSeqRadioButton.getText());
+            sequencerType.setUserData(SequencerCode.MISEQ.getDescription());
         });
 
         switch (scene) {
