@@ -495,6 +495,11 @@ public class HomeController extends SubPaneController{
                     statusLabelPipeline.setId("jobStatus_" + SAMPLE_ANALYSIS_STATUS_COMPLETE);
                     statusLabelComplete.setText("COMPLETE");
                     statusLabelComplete.setId("jobStatus_" + SAMPLE_ANALYSIS_STATUS_COMPLETE);
+                } else if (status.getStatus().equals(SAMPLE_ANALYSIS_STATUS_FAIL)){
+                    statusLabelPipeline.setText(SAMPLE_ANALYSIS_STEP_PIPELINE);
+                    statusLabelPipeline.setId("jobStatus_" + SAMPLE_ANALYSIS_STATUS_FAIL);
+                    statusLabelComplete.setText(SAMPLE_ANALYSIS_STATUS_FAIL);
+                    statusLabelComplete.setId("jobStatus_" + SAMPLE_ANALYSIS_STATUS_FAIL);
                 } else {
                     statusLabelPipeline.setText(SAMPLE_ANALYSIS_STEP_PIPELINE);
                     statusLabelPipeline.setId("jobStatus_" + status.getStatus());
