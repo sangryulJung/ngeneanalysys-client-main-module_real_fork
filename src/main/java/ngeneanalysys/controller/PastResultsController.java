@@ -552,46 +552,34 @@ public class PastResultsController extends SubPaneController {
 	
 	@SuppressWarnings("unchecked")
 	private void exportVariantData(String fileType){
-		List<Map<String, Object>> searchedSamples = new ArrayList<>();
-		Map<String, Object> param = getSearchParam();
-		param.put("fields", "id,name,job_run_group_ref_name");
 		try {
-			HttpClientResponse response = apiService.get("/analysis_progress_state/filter", param, null, false);
-
-			if (response != null) {
-				searchedSamples = response.getObjectBeforeConvertResponseToJSON(searchedSamples.getClass());
-				if (searchedSamples != null && searchedSamples.size() > 0) {
-					// Show save file dialog
-					FileChooser fileChooser = new FileChooser();
-					if ("Excel".equals(fileType)) {
-						fileChooser.getExtensionFilters()
-								.addAll(new FileChooser.ExtensionFilter("Microsoft Worksheet(*.xlsx)", "*.xlsx"));						
-					} else {
-						fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("CSV (*.csv)", "*.csv"));						
-					}
-					fileChooser.setTitle("export variants to " + fileType + " format file");
-					File file = fileChooser.showSaveDialog(this.mainApp.getPrimaryStage());
-					if (file != null) {						
-						Task<Void> task = new ExportVariantDataTask(this.getMainApp(), fileType, file, searchedSamples);
-						Thread exportDataThread = new Thread(task);
-						WorkProgressController<Void> workProgressController = new WorkProgressController<Void>(this.getMainApp(), "Export variant List", task);
-						FXMLLoader loader = this.mainApp.load("/layout/fxml/WorkProgress.fxml");
-						loader.setController(workProgressController);
-						Node root = loader.load();
-						workProgressController.show((Parent) root);
-						exportDataThread.start();
-					}
-				} else {
-					return;
-				}
+			Map<String, Object> param = getSearchParam();
+			// Show save file dialog
+			FileChooser fileChooser = new FileChooser();
+			if ("Excel".equals(fileType)) {
+				fileChooser.getExtensionFilters()
+						.addAll(new FileChooser.ExtensionFilter("Microsoft Worksheet(*.xlsx)", "*.xlsx"));
+				param.put("dataType", "EXCEL");
+			} else {
+				fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("CSV (*.csv)", "*.csv"));
+				param.put("dataType", "CSV");
 			}
-		} catch (WebAPIException wae) {
-			DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
-					this.mainApp.getPrimaryStage(), true);
+			fileChooser.setTitle("export variants to " + fileType + " format file");
+			File file = fileChooser.showSaveDialog(this.mainApp.getPrimaryStage());
+			if (file != null) {
+				Task<Void> task = new ExportVariantDataTask(this.getMainApp(), fileType, file, param);
+				Thread exportDataThread = new Thread(task);
+				WorkProgressController<Void> workProgressController = new WorkProgressController<Void>(this.getMainApp(), "Export variant List", task);
+				FXMLLoader loader = this.mainApp.load("/layout/fxml/WorkProgress.fxml");
+				loader.setController(workProgressController);
+				Node root = loader.load();
+				workProgressController.show((Parent) root);
+				exportDataThread.start();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			DialogUtil.error("Save Fail.", "An error occurred during the creation of the " + fileType + " document." + e.getMessage(),
-					this.mainApp.getPrimaryStage(), false);			
+					this.mainApp.getPrimaryStage(), false);
 		}
 	}
 	class SampleNameFieldVBox extends VBox {

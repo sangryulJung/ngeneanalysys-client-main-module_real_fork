@@ -1,12 +1,20 @@
 package ngeneanalysys.task;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 
+import ngeneanalysys.util.httpclient.HttpClientUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 
 import ngeneanalysys.MainApp;
@@ -37,10 +45,9 @@ public class ExportVariantDataTask extends Task<Void> {
 	private MainApp mainApp;
 	private String fileType;
 	private File file;
-	private List<Map<String, Object>> searchedSamples;
+	private Map<String, Object> params;
 	/** API Service */
 	private APIService apiService;
-	private boolean createExportFile = false;
 	/** Excel, CSV 헤더 배열 */
 	private String[] spreadSheetHeaders = new String[] { "Run", "Sample",
 			"Prediction", "Pathogenicity", "Warn", "Report", "False", "ID",
@@ -55,10 +62,10 @@ public class ExportVariantDataTask extends Task<Void> {
 			"Be.enigma.patho", "polyphen2", "sift", "mutationtaster",			
 			"Left.seq", "Right.seq" };
 	private WebAPIException wae;
-	public ExportVariantDataTask(MainApp mainApp, String fileType, File file, List<Map<String, Object>> searchedSamples) {
+	public ExportVariantDataTask(MainApp mainApp, String fileType, File file, Map<String, Object> params) {
 		this.fileType = fileType;
 		this.file = file;
-		this.searchedSamples = searchedSamples;
+		this.params = params;
 		this.mainApp = mainApp;
 		// api service init..
 		apiService = APIService.getInstance();
@@ -69,28 +76,78 @@ public class ExportVariantDataTask extends Task<Void> {
 	protected Void call() throws Exception {
 		updateProgress(0, 1);
 		updateMessage("");
-		try{			
-			if (this.searchedSamples != null && this.searchedSamples.size() > 0) {
-				List<String[]> variantData = getSpreadSheetContentsList(searchedSamples);
-				if (variantData == null || variantData.size() == 0) {
-					return null;
+		CloseableHttpClient httpclient = null;
+		CloseableHttpResponse response = null;
+		String downloadUrl = "/analysisResults/exportVariantData";
+
+		OutputStream os = null;
+		InputStream is = null;
+		try {
+			String connectURL = apiService.getConvertConnectURL(downloadUrl);
+
+			// 헤더 삽입 정보 설정
+			Map<String,Object> headerMap = apiService.getDefaultHeaders(true);
+
+			HttpGet get = new HttpGet(connectURL);
+			logger.info("GET:" + get.getURI());
+
+			// 지정된 헤더 삽입 정보가 있는 경우 추가
+			if(headerMap != null && headerMap.size() > 0) {
+				Iterator<String> keys = headerMap.keySet().iterator();
+				while (keys.hasNext()) {
+					String key = keys.next();
+					get.setHeader(key, headerMap.get(key).toString());
 				}
-				this.updateMessage("Wrting data to file.");
-				if ("Excel".equals(fileType)) {
-					logger.info(String.format("start create xlsx..[%s]", file.getName()));
-					createExportFile= WorksheetUtil.createXlsxFile(file, "Variants", spreadSheetHeaders, variantData);
-				} else {
-					logger.info(String.format("start create CSV..[%s]", file.getName()));
-					createExportFile= WorksheetUtil.createCSVFile(file, spreadSheetHeaders, variantData);
-				}
-			} else {
-				this.updateMessage("Empty samples");
 			}
-		} catch (WebAPIException wae) {
-			this.wae = wae;			
-		} catch (Exception e) {
+
+			httpclient = HttpClients.custom().setSSLSocketFactory(HttpClientUtil.getSSLSocketFactory()).build();
+			if (httpclient != null)
+				response = httpclient.execute(get);
+			if (response == null){
+				logger.error("httpclient response is null");
+				throw new NullPointerException();
+			}
+			int status = response.getStatusLine().getStatusCode();
+
+			if(status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				is = entity.getContent();
+				long fileLength = entity.getContentLength();
+				os = Files.newOutputStream(Paths.get(file.toURI()));
+
+				long nread = 0L;
+				byte[] buf = new byte[8192];
+				int n;
+				while ((n = is.read(buf)) > 0) {
+					if (isCancelled()) {
+						break;
+					}
+					os.write(buf, 0, n);
+					nread += n;
+					updateProgress(nread, fileLength);
+					updateMessage(String.valueOf(Math.round(((double) nread / (double) fileLength) * 100)) + "%");
+				}
+			}
+		} catch (IOException e) {
 			e.printStackTrace();
-			this.updateMessage("An error occurred during the creation of the " + fileType + " document.");			
+			throw e;
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (Exception e){}
+
+			}
+			if(os != null) {
+				try {
+					os.close();
+				} catch (Exception e) {}
+			}
+			if(httpclient != null) {
+				try {
+					httpclient.close();
+				} catch (Exception e){}
+			}
 		}
 		return null;
 	}
@@ -113,27 +170,20 @@ public class ExportVariantDataTask extends Task<Void> {
 			return;
 		}
 		try {
-			if (createExportFile) {
-				Alert alert = new Alert(AlertType.CONFIRMATION);
-				alert.initOwner((Window) this.mainApp.getPrimaryStage());
-				alert.setTitle("Confirmation Dialog");
-				alert.setHeaderText("Creating the " + fileType + " document was completed.");
-				alert.setContentText("Do you want to check the " + fileType + " document?");							
-	
-				Optional<ButtonType> result = alert.showAndWait();
-				if (result.get() == ButtonType.OK) {
-					this.mainApp.getHostServices().showDocument(file.toURI().toURL().toExternalForm());
-				} else {
-					alert.close();
-				}
-			} else if(wae != null) {
-				DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(), this.mainApp.getPrimaryStage(), false);
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.initOwner((Window) this.mainApp.getPrimaryStage());
+			alert.setTitle("Confirmation Dialog");
+			alert.setHeaderText("Creating the " + fileType + " document was completed.");
+			alert.setContentText("Do you want to check the " + fileType + " document?");
+
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() == ButtonType.OK) {
+				this.mainApp.getHostServices().showDocument(file.toURI().toURL().toExternalForm());
 			} else {
-				DialogUtil.error("Save Fail.",
-						"An error occurred during the creation of the " + fileType + " document.\n" + this.getMessage(),
-						this.mainApp.getPrimaryStage(), false);
+				alert.close();
 			}
 		} catch (Exception e){
+			e.printStackTrace();
 			DialogUtil.error("Save Fail.",
 					"An error occurred during the creation of the " + fileType + " document.\n" + e.getMessage(),
 					this.mainApp.getPrimaryStage(), false);
@@ -147,6 +197,7 @@ public class ExportVariantDataTask extends Task<Void> {
 	protected void failed() {
 		logger.info("failed");
 		super.failed();
+		DialogUtil.error("Variant Data Export Fail.", getException().getMessage(), this.mainApp.getPrimaryStage(), false);
 	}
 	/**
 	 * Spread Sheet Contents Return.
