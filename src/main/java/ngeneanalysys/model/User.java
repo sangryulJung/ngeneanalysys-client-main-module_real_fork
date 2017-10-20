@@ -18,15 +18,15 @@ public class User implements Serializable {
     /** 아이디 */
     @JsonProperty("loginId")
     private String loginId;
-    /** 비밀번호 */
-    @JsonProperty("loginPassword")
-    private String loginPassword;
     /** 사용자명 */
     @JsonProperty("name")
     private String name;
     /** 사용자 구분 [리뷰어, 분석자] */
     @JsonProperty("role")
     private String role;
+    /** 사용자 그룹 고유번호 */
+    @JsonProperty("memberGroupName")
+    private String memberGroupName;
     /** 사용자 그룹 고유번호 */
     @JsonProperty("memberGroupId")
     private Integer memberGroupId;
@@ -74,12 +74,12 @@ public class User implements Serializable {
         this.loginId = loginId;
     }
 
-    public String getLoginPassword() {
-        return loginPassword;
+    public String getMemberGroupName() {
+        return memberGroupName;
     }
 
-    public void setLoginPassword(String loginPassword) {
-        this.loginPassword = loginPassword;
+    public void setMemberGroupName(String memberGroupName) {
+        this.memberGroupName = memberGroupName;
     }
 
     public String getName() {
