@@ -151,7 +151,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
         name.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
         role.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRole()));
         groupId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getMemberGroupId()).asObject());
-        //groupName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUserGroupName()));
+        groupName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getMemberGroupName()));
         createdAt.setCellValueFactory(cellData -> new SimpleStringProperty(timeConvertString(cellData.getValue().getCreatedAt())));
         updatedAt.setCellValueFactory(cellData -> new SimpleStringProperty(timeConvertString(cellData.getValue().getUpdatedAt())));
         deletedAt.setCellValueFactory(cellData -> new SimpleStringProperty(timeConvertString(cellData.getValue().getDeletedAt())));
@@ -425,14 +425,14 @@ public class SystemManagerUserAccountController extends SubPaneController{
 
         try {
             Map<String, Object> param = new HashMap<>();
-            param.put("format", "json");
 
-            response = apiService.get("/users/name", param, null, false);
+            response = apiService.get("/admin/memberGroups", null, null, false);
             logger.info(response.getContentString());
             if(response != null) {
-                List<UserGroup> list = (List<UserGroup>) response.getMultiObjectBeforeConvertResponseToJSON(UserGroup.class, false);
+                SystemManagerUserGroupPaging systemManagerUserGroupPaging =
+                        response.getObjectBeforeConvertResponseToJSON(SystemManagerUserGroupPaging.class);
 
-                for(UserGroup group : list) {
+                for(UserGroup group : systemManagerUserGroupPaging.getList()) {
                     searchGroupName.getItems().add(new ComboBoxItem(
                             group.getName(), group.getName()));
                 }
