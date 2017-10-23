@@ -116,7 +116,7 @@
                   <TableColumn fx:id="tier4IndelsColumn" editable="false" prefWidth="75.0" sortable="false" style="-fx-alignment: center;" text="Indels" />
                </columns>
             </TableColumn>
-            <TableColumn prefWidth="75.0" text="Negative Only">
+            <TableColumn prefWidth="75.0" text="Tier Negative">
                <columns>
                   <TableColumn fx:id="tierNSnvColumn" editable="false" prefWidth="75.0" sortable="false" style="-fx-alignment: center;" text="SNV" />
                   <TableColumn fx:id="tierNIndelsColumn" editable="false" prefWidth="75.0" sortable="false" style="-fx-alignment: center;" text="Indels" />

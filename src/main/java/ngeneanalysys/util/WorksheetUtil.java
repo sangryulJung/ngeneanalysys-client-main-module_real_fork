@@ -528,7 +528,7 @@ public class WorksheetUtil {
 		try {
 			// Show save file dialog
 			FileChooser fileChooser = new FileChooser();
-			if ("Excel".equals(fileType)) {
+			if ("EXCEL".equals(fileType)) {
 				fileChooser.getExtensionFilters()
 						.addAll(new FileChooser.ExtensionFilter("Microsoft Worksheet(*.xlsx)", "*.xlsx"));
 				params.put("dataType", fileType);
