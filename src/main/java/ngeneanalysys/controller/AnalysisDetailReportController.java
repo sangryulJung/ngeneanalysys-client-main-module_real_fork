@@ -293,7 +293,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 }
                 //리포트에서 제외된 variant를 제거
                 if(!variantList.isEmpty()) {
-                    variantList = variantList.stream().filter(item -> item.getSkipReport() == 0).collect(Collectors.toList());
+                    variantList = variantList.stream().filter(item -> item.getIncludedInReport().equals("Y")).collect(Collectors.toList());
                 }
 
                 Long evidenceACount = variantList.stream().filter(item -> !StringUtils.isEmpty(item.getInterpretation().getInterpretationEvidenceA())).count();

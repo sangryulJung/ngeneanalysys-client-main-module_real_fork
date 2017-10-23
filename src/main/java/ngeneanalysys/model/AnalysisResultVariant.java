@@ -32,8 +32,8 @@ public class AnalysisResultVariant implements Serializable {
 	private String expertPathogenicityLevel;
 	private String swTier;
 	private String expertTier;
-	private Integer skipReport;
-	private Integer hasWarning;
+	private String includedInReport;
+	private String hasWarning;
 	private String warningReason;
 	private Integer variantNum;
 	private String comment;
@@ -200,30 +200,30 @@ public class AnalysisResultVariant implements Serializable {
 	}
 
 	/**
-	 * @return skipReport
+	 * @return includedInReport
 	 */
-	public Integer getSkipReport() {
-		return skipReport;
+	public String getIncludedInReport() {
+		return includedInReport;
 	}
 
 	/**
-	 * @param skipReport
+	 * @param includedInReport
 	 */
-	public void setSkipReport(Integer skipReport) {
-		this.skipReport = skipReport;
+	public void setIncludedInReport(String includedInReport) {
+		this.includedInReport = includedInReport;
 	}
 
 	/**
 	 * @return hasWarning
 	 */
-	public Integer getHasWarning() {
+	public String getHasWarning() {
 		return hasWarning;
 	}
 
 	/**
 	 * @param hasWarning
 	 */
-	public void setHasWarning(Integer hasWarning) {
+	public void setHasWarning(String hasWarning) {
 		this.hasWarning = hasWarning;
 	}
 
