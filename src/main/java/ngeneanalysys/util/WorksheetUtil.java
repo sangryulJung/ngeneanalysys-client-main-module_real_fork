@@ -7,8 +7,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
+import javafx.concurrent.Task;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.stage.FileChooser;
+import ngeneanalysys.MainApp;
+import ngeneanalysys.controller.WorkProgressController;
 import ngeneanalysys.exceptions.ExcelParseException;
 import ngeneanalysys.model.QcData;
+import ngeneanalysys.task.ExportVariantDataTask;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
@@ -516,4 +524,36 @@ public class WorksheetUtil {
 		return patients;
 	}*/
 
+	public void exportVariantData(String fileType, Map<String, Object> params, MainApp mainApp){
+		try {
+			// Show save file dialog
+			FileChooser fileChooser = new FileChooser();
+			if ("Excel".equals(fileType)) {
+				fileChooser.getExtensionFilters()
+						.addAll(new FileChooser.ExtensionFilter("Microsoft Worksheet(*.xlsx)", "*.xlsx"));
+				params.put("dataType", fileType);
+			} else {
+				fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("CSV (*.csv)", "*.csv"));
+				params.put("dataType", fileType);
+			}
+			fileChooser.setTitle("export variants to " + fileType + " format file");
+			File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
+			if (file != null) {
+				Task<Void> task = new ExportVariantDataTask(mainApp, fileType, file, params);
+				Thread exportDataThread = new Thread(task);
+				WorkProgressController<Void> workProgressController = new WorkProgressController<Void>(mainApp, "Export variant List", task);
+				FXMLLoader loader = mainApp.load("/layout/fxml/WorkProgress.fxml");
+				loader.setController(workProgressController);
+				Node root = loader.load();
+				workProgressController.show((Parent) root);
+				exportDataThread.start();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			DialogUtil.error("Save Fail.",
+					"An error occurred during the creation of the " + fileType + " document."
+							+ e.getMessage(),
+					mainApp.getPrimaryStage(), false);
+		}
+	}
 }

@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -19,6 +20,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -31,10 +33,12 @@ import ngeneanalysys.model.*;
 import ngeneanalysys.service.ALAMUTService;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.IGVService;
+import ngeneanalysys.task.ExportVariantDataTask;
 import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -553,12 +557,18 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
     @FXML
     public void saveExcel() {
-
+        Map<String, Object> params = new HashMap<>();
+        params.put("sampleId", sample.getId());
+        WorksheetUtil worksheetUtil = new WorksheetUtil();
+        worksheetUtil.exportVariantData("Excel", params, this.getMainApp());
     }
 
     @FXML
     public void saveCSV() {
-
+        Map<String, Object> params = new HashMap<>();
+        params.put("sampleId", sample.getId());
+        WorksheetUtil worksheetUtil = new WorksheetUtil();
+        worksheetUtil.exportVariantData("CSV", params, this.getMainApp());
     }
 
     public void showOverviewTab(AnalysisResultVariant analysisResultVariant) {
@@ -977,11 +987,11 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             variantListTableView.getColumns().addAll(swPathogenicityLevel, expertPathogenicityLevel);
         }
 
-        TableColumn<AnalysisResultVariant, Integer> warn = new TableColumn<>("Warn");
+        TableColumn<AnalysisResultVariant, String> warn = new TableColumn<>("Warn");
         warn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getHasWarning()));
 
-        TableColumn<AnalysisResultVariant, Integer> report = new TableColumn<>("Report");
-        report.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSkipReport()).asObject());
+        TableColumn<AnalysisResultVariant, String> report = new TableColumn<>("Report");
+        report.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getIncludedInReport()));
 
         TableColumn<AnalysisResultVariant, String> type = new TableColumn<>("Type");
         type.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getVariantType()));

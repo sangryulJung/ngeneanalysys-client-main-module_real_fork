@@ -12,6 +12,7 @@ import javafx.scene.layout.*;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.ExperimentTypeCode;
 import ngeneanalysys.model.*;
+import ngeneanalysys.util.WorksheetUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.controlsfx.control.PopOver;
@@ -539,7 +540,9 @@ public class PastResultsController extends SubPaneController {
 	 */
 	@FXML
 	public void saveExcel(ActionEvent event) {
-		exportVariantData("Excel");
+		Map<String, Object> params = getSearchParam();
+		WorksheetUtil worksheetUtil = new WorksheetUtil();
+		worksheetUtil.exportVariantData("EXCEL", params, this.getMainApp());
 	}
 	
 	/**
@@ -547,41 +550,11 @@ public class PastResultsController extends SubPaneController {
 	 */
 	@FXML
 	public void saveCSV(ActionEvent event) {
-		exportVariantData("CSV");
+		Map<String, Object> params = getSearchParam();
+		WorksheetUtil worksheetUtil = new WorksheetUtil();
+		worksheetUtil.exportVariantData("CSV", params, this.getMainApp());
 	}
-	
-	@SuppressWarnings("unchecked")
-	private void exportVariantData(String fileType){
-		try {
-			Map<String, Object> param = getSearchParam();
-			// Show save file dialog
-			FileChooser fileChooser = new FileChooser();
-			if ("Excel".equals(fileType)) {
-				fileChooser.getExtensionFilters()
-						.addAll(new FileChooser.ExtensionFilter("Microsoft Worksheet(*.xlsx)", "*.xlsx"));
-				param.put("dataType", "EXCEL");
-			} else {
-				fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("CSV (*.csv)", "*.csv"));
-				param.put("dataType", "CSV");
-			}
-			fileChooser.setTitle("export variants to " + fileType + " format file");
-			File file = fileChooser.showSaveDialog(this.mainApp.getPrimaryStage());
-			if (file != null) {
-				Task<Void> task = new ExportVariantDataTask(this.getMainApp(), fileType, file, param);
-				Thread exportDataThread = new Thread(task);
-				WorkProgressController<Void> workProgressController = new WorkProgressController<Void>(this.getMainApp(), "Export variant List", task);
-				FXMLLoader loader = this.mainApp.load("/layout/fxml/WorkProgress.fxml");
-				loader.setController(workProgressController);
-				Node root = loader.load();
-				workProgressController.show((Parent) root);
-				exportDataThread.start();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			DialogUtil.error("Save Fail.", "An error occurred during the creation of the " + fileType + " document." + e.getMessage(),
-					this.mainApp.getPrimaryStage(), false);
-		}
-	}
+
 	class SampleNameFieldVBox extends VBox {
 		// 샘플명
 		private TextField jobLabel;

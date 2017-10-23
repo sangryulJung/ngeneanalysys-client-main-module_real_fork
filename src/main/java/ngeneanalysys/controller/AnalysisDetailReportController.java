@@ -280,7 +280,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 if(tierTwo != null && !tierTwo.isEmpty()) variantList.addAll(tierTwo);
 
                 if(!variantList.isEmpty()) {
-                    variantList = variantList.stream().filter(item -> item.getSkipReport() == 0).collect(Collectors.toList());
+                    variantList = variantList.stream().filter(item -> item.getIncludedInReport().equals("Y")).collect(Collectors.toList());
                 }
 
                 Long evidenceACount = variantList.stream().filter(item -> !StringUtils.isEmpty(item.getInterpretation().getInterpretationEvidenceA())).count();
