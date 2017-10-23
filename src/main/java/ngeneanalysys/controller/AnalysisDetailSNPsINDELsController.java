@@ -24,6 +24,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Callback;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.*;
@@ -992,6 +993,23 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
         TableColumn<AnalysisResultVariant, String> report = new TableColumn<>("Report");
         report.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getIncludedInReport()));
+        report.setCellFactory(new Callback<TableColumn<AnalysisResultVariant, String>, TableCell<AnalysisResultVariant, String>>() {
+            @Override
+            public TableCell<AnalysisResultVariant, String> call(TableColumn<AnalysisResultVariant, String> param) {
+                TableCell<AnalysisResultVariant,String> cell = new TableCell<AnalysisResultVariant, String>() {
+                    @Override
+                    public void updateItem(String item, boolean empty) {
+                        Label label = null;
+                        if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
+                            label = new Label("R");
+                            label.getStyleClass().add("prediction_E");
+                        }
+                        setGraphic(label);
+                    }
+                };
+                return cell;
+            }
+        });
 
         TableColumn<AnalysisResultVariant, String> type = new TableColumn<>("Type");
         type.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getVariantType()));
