@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
+import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.PDFCreateService;
@@ -289,7 +290,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 List<AnalysisResultVariant> negativeResult = new ArrayList<>();
                 //리포트에서 제외된 negative 정보를 제거
                 if(negativeList != null && !negativeList.isEmpty()) {
-                    negativeResult.addAll(negativeList.stream().filter(item -> item.getSkipReport() == 0).collect(Collectors.toList()));
+                    negativeResult.addAll(negativeList.stream().filter(item -> item.getIncludedInReport().equals("Y")).collect(Collectors.toList()));
                 }
                 //리포트에서 제외된 variant를 제거
                 if(!variantList.isEmpty()) {
@@ -308,6 +309,31 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 contentsMap.put("evidenceCCount", evidenceCCount);
                 contentsMap.put("evidenceDCount", evidenceDCount);
                 contentsMap.put("negativeList", negativeResult);
+
+                //Genes in panel
+                try {
+                    HttpClientResponse response = apiService.get("/analysisResults/variantCountByGene/" + sample.getId(),
+                            null, null, false);
+                    logger.info(response.toString());
+                    if (response != null) {
+                        List<VariantCountByGene> variantCountByGenes = (List<VariantCountByGene>) response
+                                .getMultiObjectBeforeConvertResponseToJSON(VariantCountByGene.class,
+                                        false);
+
+                        int tableOneSize = (int)Math.ceil((double)variantCountByGenes.size() / 3);
+                        int tableTwoSize = (int)Math.ceil((double)(variantCountByGenes.size() - tableOneSize) / 2);
+
+                        Object[] genesInPanelTableOne = variantCountByGenes.toArray();
+                        //Gene List를 3등분함
+                        contentsMap.put("genesInPanelTableOne", Arrays.copyOfRange(genesInPanelTableOne, 0, tableOneSize));
+                        contentsMap.put("genesInPanelTableTwo", Arrays.copyOfRange(genesInPanelTableOne, tableOneSize, tableOneSize + tableTwoSize));
+                        contentsMap.put("genesInPanelTableThree", Arrays.copyOfRange(genesInPanelTableOne, tableOneSize + tableTwoSize, variantCountByGenes.size()));
+
+                    }
+                } catch (WebAPIException wae) {
+                    DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+                            getMainApp().getPrimaryStage(), true);
+                }
 
                 Map<String, Object> model = new HashMap<>();
                 model.put("isDraft", isDraft);

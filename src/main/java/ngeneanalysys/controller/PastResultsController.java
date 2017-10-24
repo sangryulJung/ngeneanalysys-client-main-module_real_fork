@@ -829,49 +829,49 @@ public class PastResultsController extends SubPaneController {
 					if(totalBase != null) {
 						totalBaseTitleLabel.setText(totalBase.getQcType());
 						totalBaseContentsLabel.setText(totalBase.getQcDescription() + " " + totalBase.getQcThreshold());
-						totalBaseValueLabel.setText(totalBase.getQcValue().toString());
+						totalBaseValueLabel.setText(totalBase.getQcValue().toString() + totalBase.getQcUnit());
 					}
 
 					SampleQC q30TrimmedBase = findQCResult(qcList, "q30_trimmed_base");
 					if(q30TrimmedBase != null) {
 						q30TrimmedBaseTitleLabel.setText(q30TrimmedBase.getQcType());
 						q30TrimmedBaseContentsLabel.setText(q30TrimmedBase.getQcDescription() + " " + q30TrimmedBase.getQcThreshold());
-						q30TrimmedBaseValueLabel.setText(q30TrimmedBase.getQcValue().toString());
+						q30TrimmedBaseValueLabel.setText(q30TrimmedBase.getQcValue().toString() + q30TrimmedBase.getQcUnit());
 					}
 
 					SampleQC mappedBase = findQCResult(qcList, "mapped_base");
 					if(mappedBase != null) {
 						mappedBaseTitleLabel.setText(mappedBase.getQcType());
 						mappedBaseContentsLabel.setText(mappedBase.getQcDescription() + " " + mappedBase.getQcThreshold());
-						mappedBaseValueLabel.setText(mappedBase.getQcValue().toString());
+						mappedBaseValueLabel.setText(mappedBase.getQcValue().toString() + mappedBase.getQcUnit());
 					}
 
 					SampleQC onTarget = findQCResult(qcList, "on_target");
 					if(onTarget != null) {
 						onTargetTitleLabel.setText(onTarget.getQcType());
 						onTargetContentsLabel.setText(onTarget.getQcDescription() + " " + onTarget.getQcThreshold());
-						onTargetValueLabel.setText(onTarget.getQcValue().toString());
+						onTargetValueLabel.setText(onTarget.getQcValue().toString() + onTarget.getQcUnit());
 					}
 
 					SampleQC onTargetCoverage = findQCResult(qcList, "on_target_coverage");
 					if(onTargetCoverage != null) {
 						onTargetCoverageTitleLabel.setText(onTargetCoverage.getQcType());
 						onTargetCoverageContentsLabel.setText(onTargetCoverage.getQcDescription() + " " + onTargetCoverage.getQcThreshold());
-						onTargetCoverageValueLabel.setText(onTargetCoverage.getQcValue().toString());
+						onTargetCoverageValueLabel.setText(onTargetCoverage.getQcValue().toString() + onTargetCoverage.getQcUnit());
 					}
 
 					SampleQC duplicatedReads = findQCResult(qcList, "duplicated_reads");
 					if(duplicatedReads != null) {
 						duplicatedReadsTitleLabel.setText(duplicatedReads.getQcType());
 						duplicatedReadsContentsLabel.setText(duplicatedReads.getQcDescription() + " " + duplicatedReads.getQcThreshold());
-						duplicatedReadsValueLabel.setText(duplicatedReads.getQcValue().toString());
+						duplicatedReadsValueLabel.setText(duplicatedReads.getQcValue().toString() + duplicatedReads.getQcUnit());
 					}
 
 					SampleQC roiCoverage = findQCResult(qcList, "roi_coverage");
 					if(roiCoverage != null) {
 						roiCoverageTitleLabel.setText(roiCoverage.getQcType());
 						roiCoverageContentsLabel.setText(roiCoverage.getQcDescription() + " " + roiCoverage.getQcThreshold());
-						roiCoverageValueLabel.setText(roiCoverage.getQcValue().toString());
+						roiCoverageValueLabel.setText(roiCoverage.getQcValue().toString() + roiCoverage.getQcUnit());
 					}
 
 				} catch(WebAPIException e) {

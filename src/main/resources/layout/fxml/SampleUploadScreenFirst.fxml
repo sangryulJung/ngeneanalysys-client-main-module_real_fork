@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -17,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="contentWrapper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="850.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SampleUploadScreenFirstController">
+<VBox fx:id="contentWrapper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="850.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SampleUploadScreenFirstController">
 	<children>
 		<GridPane layoutX="35.0" layoutY="25.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="800.0">
 			<columnConstraints>
@@ -51,7 +46,7 @@
                   </Label>
                </children>
             </HBox>
-            <Button alignment="TOP_LEFT" mnemonicParsing="false" text="+" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+            <Button alignment="TOP_LEFT" mnemonicParsing="false" onAction="#fastqAdd" styleClass="field_height" text="+" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
                <GridPane.margin>
                   <Insets right="20.0" />
                </GridPane.margin>

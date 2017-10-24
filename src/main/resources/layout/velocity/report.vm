@@ -70,7 +70,7 @@
 
 			<!-- General Information -->
 			<fo:block margin-bottom="10mm" font-size="10pt">
-				<fo:block font-size="13pt">1. General Information</fo:block>
+				<fo:block font-size="13pt" font-weight="bold" margin-bottom="1mm">1. General Information</fo:block>
 				<fo:block>
 					<fo:table table-layout="fixed" width="100%">
 						<fo:table-column column-width="proportional-column-width(0.25)"/>
@@ -114,7 +114,7 @@
 										<fo:block padding-bottom="20pt" font-weight="bold" color="#FFFFFF">
 											Panel
 										</fo:block>
-										<fo:block font-weight="bold" font-size="12pt" color="#FFFFFF">
+										<fo:block font-weight="bold" font-size="9pt" color="#FFFFFF">
 											$contents.panelName
 										</fo:block>
 									</fo:block-container>
@@ -128,79 +128,79 @@
 
 			<!-- Variants of Strong/Potential Clinical Significance -->
 			<fo:block font-size="10pt" padding-bottom="5mm">
-				<fo:block font-size="13pt">2. Variants of Strong/Potential Clinical Significance</fo:block>
+				<fo:block font-size="13pt" font-weight="bold" margin-bottom="1mm">2. Variant(s) with Clinical Significance</fo:block>
 				<fo:block>
-					<fo:table table-layout="fixed" width="100%">
+					<fo:table table-layout="fixed" width="100%" border="solid 0.5mm white">
 						<fo:table-column column-width="proportional-column-width(0.2)" />
 						<fo:table-column column-width="proportional-column-width(0.2)" />
 						<fo:table-column column-width="proportional-column-width(0.2)" />
 						<fo:table-column column-width="proportional-column-width(0.2)" />
 						<fo:table-column column-width="proportional-column-width(0.2)" />
 						<fo:table-body>
-							<fo:table-row height="10mm" display-align="center" text-align="center">
-								<fo:table-cell border-style="solid" border-width="0.5pt" number-rows-spanned="2">
+							<fo:table-row height="10mm" display-align="center" text-align="center" border="solid 0.5mm white">
+								<fo:table-cell border-style="solid" border-width="0.5pt" number-rows-spanned="2" background-color="#e7e7e7" border="solid 0.5mm white">
 									<fo:block font-weight="bold">Genomic Alternations</fo:block>
 								</fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt" number-columns-spanned="2">
+								<fo:table-cell border-style="solid" border-width="0.5pt" number-columns-spanned="2" background-color="#fbe5d6" border="solid 0.5mm white">
 									<fo:block font-weight="bold">Tier 1</fo:block>
 									<fo:block>(Strong Clinical Significance)</fo:block>
 								</fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt" number-columns-spanned="2">
+								<fo:table-cell border-style="solid" border-width="0.5pt" number-columns-spanned="2" background-color="#fff2cc" border="solid 0.5mm white">
 									<fo:block font-weight="bold">Tier 2</fo:block>
 									<fo:block>(Potential Clinical Significance)</fo:block>
 								</fo:table-cell>
 							</fo:table-row>
-							<fo:table-row height="10mm" font-size="9pt">
-								<fo:table-cell border-style="solid" border-width="0.5pt">
+							<fo:table-row height="10mm" font-size="9pt" border="solid 0.5mm white">
+								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#fbe5d6" border="solid 0.5mm white">
 									<fo:block font-weight="bold">Level A Evidence</fo:block>
 									<fo:block><![CDATA[FDA-approved therapy & Included in professional guidelines]]></fo:block>
 								</fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt">
+								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#fbe5d6" border="solid 0.5mm white">
 									<fo:block font-weight="bold">Level B Evidence</fo:block>
 									<fo:block>Well-powered studies with consensus from experts in the field</fo:block>
 								</fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt">
+								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#fff2cc" border="solid 0.5mm white">
 									<fo:block font-weight="bold">Level C Evidence</fo:block>
 									<fo:block><![CDATA[FDA-approved therapies (off label) & Multiple small published studies with some consensus]]></fo:block>
 								</fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt">
+								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#fff2cc" border="solid 0.5mm white">
 									<fo:block font-weight="bold">Level D Evidence</fo:block>
 									<fo:block>Preclinical trials or a few case reports without consensus</fo:block>
 								</fo:table-cell>
 							</fo:table-row>
-							<fo:table-row text-align="center" height="10mm">
-								<fo:table-cell border-style="solid" border-width="0.5pt" display-align="center">
+							<fo:table-row text-align="center" height="10mm" border="solid 0.5mm white">
+								<fo:table-cell border-style="solid" border-width="0.5pt" display-align="center" background-color="#bfbfbf" border="solid 0.5mm white">
 									<fo:block font-weight="bold">Total Count</fo:block>
 								</fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt" display-align="center">
+								<fo:table-cell border-style="solid" border-width="0.5pt" display-align="center" background-color="#f8cbad" border="solid 0.5mm white">
 									<fo:block>$contents.evidenceACount</fo:block>
 								</fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt" display-align="center">
+								<fo:table-cell border-style="solid" border-width="0.5pt" display-align="center" background-color="#f8cbad" border="solid 0.5mm white">
 									<fo:block>$contents.evidenceBCount</fo:block>
 								</fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt" display-align="center">
+								<fo:table-cell border-style="solid" border-width="0.5pt" display-align="center" background-color="#ffe699" border="solid 0.5mm white">
 									<fo:block>$contents.evidenceCCount</fo:block>
 								</fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt" display-align="center">
+								<fo:table-cell border-style="solid" border-width="0.5pt" display-align="center" background-color="#ffe699" border="solid 0.5mm white">
 									<fo:block>$contents.evidenceDCount</fo:block>
 								</fo:table-cell>
 							</fo:table-row>
 							#foreach($variant in $contents.variantList)
-								<fo:table-row text-align="center">
-									<fo:table-cell border-style="solid" border-width="0.5pt">
+								<fo:table-row text-align="center" border="solid 0.5mm white">
+									<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#e7e7e7" border="solid 0.5mm white">
 										<fo:block text-align="left" font-weight="bold">$variant.sequenceInfo.gene</fo:block>
 										<fo:block text-align="left">$variant.variantExpression.ntChange</fo:block>
 									</fo:table-cell>
-									<fo:table-cell border-style="solid" border-width="0.5pt">
+									<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#fbe5d6" border="solid 0.5mm white">
 											<fo:block>$variant.interpretation.interpretationEvidenceA</fo:block>
 									</fo:table-cell>
-									<fo:table-cell border-style="solid" border-width="0.5pt">
+									<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#fbe5d6" border="solid 0.5mm white">
 										<fo:block>$variant.interpretation.interpretationEvidenceB</fo:block>
 									</fo:table-cell>
-									<fo:table-cell border-style="solid" border-width="0.5pt">
+									<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#fff2cc" border="solid 0.5mm white">
 										<fo:block>$variant.interpretation.interpretationEvidenceC</fo:block>
 									</fo:table-cell>
-									<fo:table-cell border-style="solid" border-width="0.5pt">
+									<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#fff2cc" border="solid 0.5mm white">
 										<fo:block>$variant.interpretation.interpretationEvidenceD</fo:block>
 									</fo:table-cell>
 								</fo:table-row>
@@ -211,26 +211,26 @@
 			</fo:block>
 
 			<fo:block font-size="10pt">
-				<fo:block font-size="13pt">3. Negative Result</fo:block>
+				<fo:block font-size="13pt" font-weight="bold" margin-bottom="1mm">3. Negative Result</fo:block>
 				<fo:block>
-					<fo:table table-layout="fixed" width="100%">
+					<fo:table table-layout="fixed" width="100%" border="solid 0.5mm white">
 						<fo:table-column column-width="proportional-column-width(0.2)" />
 						<fo:table-column column-width="proportional-column-width(0.8)" />
 						<fo:table-body>
-							<fo:table-row height="6mm" display-align="center">
-								<fo:table-cell border-style="solid" border-width="0.5pt" number-columns-spanned="2">
-									<fo:block>
+							<fo:table-row height="7mm" display-align="center">
+								<fo:table-cell border-style="solid" border-width="0.5pt" number-columns-spanned="2" background-color="#bfbfbf" border="solid 0.5mm white">
+									<fo:block font-weight="bold">
 										NON-Small Cell Lung Cancer related or hotspot genes with NO RESULT
 									</fo:block>
 								</fo:table-cell>
 							</fo:table-row>
 							#foreach($negative in $contents.negativeList)
 								<fo:table-row>
-									<fo:table-cell border-style="solid" border-width="0.5pt">
+									<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#e7e7e7" border="solid 0.5mm white">
 										<fo:block text-align="left" font-weight="bold">$negative.sequenceInfo.gene</fo:block>
 										<fo:block text-align="left">$negative.variantExpression.ntChange</fo:block>
 									</fo:table-cell>
-									<fo:table-cell border-style="solid" border-width="0.5pt">
+									<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#e7e7e7" border="solid 0.5mm white">
 										<fo:block>$negative.interpretation.interpretationNegativeTesult</fo:block>
 									</fo:table-cell>
 								</fo:table-row>
@@ -247,7 +247,7 @@
 			<fo:block margin-bottom="10mm" font-size="10pt">
 				<fo:block margin-bottom="5mm">
 					#foreach($variant in $contents.variantList)
-					<fo:table table-layout="fixed" width="100%" margin-bottom="2mm">
+					<fo:table table-layout="fixed" width="100%" margin-bottom="4mm">
 						<fo:table-column column-width="proportional-column-width(0.1)" />
 						<fo:table-column column-width="proportional-column-width(0.1)" />
 						<fo:table-column column-width="proportional-column-width(0.25)" />
@@ -270,35 +270,49 @@
 									</fo:block>
 								</fo:table-cell>
 							</fo:table-row>
-							<fo:table-row>
+							<fo:table-row border-bottom="1mm" border-top="1mm" display-align="center">
 								<fo:table-cell number-columns-spanned="6" border-style="solid" border-width="0.5pt">
 									<fo:block font-weight="bold">
-										#if((! $variant.interpretation.interpretationEvidenceA) && ("$!variant.interpretation.interpretationEvidenceA" == "")) $variant.interpretation.interpretationEvidenceA
-										#elseif((! $variant.interpretation.interpretationEvidenceB) && ("$!variant.interpretation.interpretationEvidenceB" == "")) $variant.interpretation.interpretationEvidenceB
-										#elseif((! $variant.interpretation.interpretationEvidenceC) && ("$!variant.interpretation.interpretationEvidenceC" == "")) $variant.interpretation.interpretationEvidenceC
-										#elseif((! $variant.interpretation.interpretationEvidenceD) && ("$!variant.interpretation.interpretationEvidenceD" == "")) $variant.interpretation.interpretationEvidenceD
+										#if ($variant.interpretation.interpretationEvidenceA && !($variant.interpretation.interpretationEvidenceA == "")) <![CDATA[[LEVEL A]]]> $variant.interpretation.interpretationEvidenceA
+										#elseif ($variant.interpretation.interpretationEvidenceB && !($variant.interpretation.interpretationEvidenceB == "")) <![CDATA[[LEVEL B]]]> $variant.interpretation.interpretationEvidenceB
+										#elseif ($variant.interpretation.interpretationEvidenceC && !($variant.interpretation.interpretationEvidenceC == "")) <![CDATA[[LEVEL C]]]> $variant.interpretation.interpretationEvidenceC
+										#elseif ($variant.interpretation.interpretationEvidenceD && !($variant.interpretation.interpretationEvidenceD == "")) <![CDATA[[LEVEL D]]]> $variant.interpretation.interpretationEvidenceD
 										#end
 									</fo:block>
 								</fo:table-cell>
 							</fo:table-row>
-							<fo:table-row>
-								<fo:table-cell number-columns-spanned="2" border-style="solid" border-width="0.5pt"><fo:block>Variant Type</fo:block></fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt"><fo:block>SNV(missense variant)</fo:block></fo:table-cell>
-								<fo:table-cell number-columns-spanned="2" border-style="solid" border-width="0.5pt"><fo:block>dbSNP</fo:block></fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt"><fo:block>rs1057519784</fo:block></fo:table-cell>
+							<fo:table-row display-align="center" height="6mm">
+								<fo:table-cell number-columns-spanned="2" border-style="solid" border-width="0.5pt"><fo:block font-weight="bold">Variant Type</fo:block></fo:table-cell>
+								<fo:table-cell border-style="solid" border-width="0.5pt"><fo:block>SNV($variant.variantExpression.codingConsequence variant)</fo:block></fo:table-cell>
+								<fo:table-cell number-columns-spanned="2" border-style="solid" border-width="0.5pt"><fo:block font-weight="bold">dbSNP</fo:block></fo:table-cell>
+								<fo:table-cell border-style="solid" border-width="0.5pt"><fo:block>$variant.populationFrequency.dbsnpRsId</fo:block></fo:table-cell>
 							</fo:table-row>
-							<fo:table-row>
-								<fo:table-cell number-columns-spanned="2" border-style="solid" border-width="0.5pt"><fo:block>Variant Type</fo:block></fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt"><fo:block>SNV(missense variant)</fo:block></fo:table-cell>
-								<fo:table-cell number-columns-spanned="2" border-style="solid" border-width="0.5pt"><fo:block>dbSNP</fo:block></fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt"><fo:block>rs1057519784</fo:block></fo:table-cell>
+							<fo:table-row display-align="center" height="6mm">
+								<fo:table-cell number-columns-spanned="2" border-style="solid" border-width="0.5pt"><fo:block font-weight="bold" font-size="9pt">Variant Frequency</fo:block></fo:table-cell>
+								<fo:table-cell border-style="solid" border-width="0.5pt"><fo:block>0.509</fo:block></fo:table-cell>
+								<fo:table-cell number-columns-spanned="2" border-style="solid" border-width="0.5pt"><fo:block font-weight="bold">Zygosity</fo:block></fo:table-cell>
+								<fo:table-cell border-style="solid" border-width="0.5pt">
+									<fo:block>#if($variant.variantExpression.zygosity && !($variant.variantExpression.zygosity == "")) $variant.variantExpression.zygosity
+												#else Not-determied
+												#end
+									</fo:block>
+								</fo:table-cell>
 							</fo:table-row>
 							<fo:table-row>
 								<fo:table-cell number-columns-spanned="2" border-style="solid" border-width="0.5pt"><fo:block>Population DB (MAF)</fo:block></fo:table-cell>
 								<fo:table-cell number-columns-spanned="4" border-style="solid" border-width="0.5pt">
-									<fo:block>ESP6500:no frequency data</fo:block>
-									<fo:block>ESP6500:no frequency data</fo:block>
-									<fo:block>ESP6500:no frequency data</fo:block>
+									<fo:block>ESP6500: #if($variant.populationFrequency.esp6500) $variant.populationFrequency.esp6500
+														#else no frequency data
+														#end
+									</fo:block>
+									<fo:block>1000G: #if($variant.populationFrequency.g1000) $variant.populationFrequency.g1000
+										#else no frequency data
+										#end
+									</fo:block>
+									<fo:block>ExAC: #if($variant.populationFrequency.exac) $variant.populationFrequency.exac
+										#else no frequency data
+										#end
+									</fo:block>
 								</fo:table-cell>
 							</fo:table-row>
 							<fo:table-row>
@@ -336,87 +350,34 @@
 								<fo:table-cell>
 									<fo:block>
 										<fo:table table-layout="fixed" width="100%">
-											<fo:table-column column-width="proportional-column-width(0.33)" />
-											<fo:table-column column-width="proportional-column-width(0.33)" />
-											<fo:table-column column-width="proportional-column-width(0.33)" />
+											<fo:table-column column-width="proportional-column-width(0.4)" />
+											<fo:table-column column-width="proportional-column-width(0.3)" />
+											<fo:table-column column-width="proportional-column-width(0.3)" />
 											<fo:table-body>
-												<fo:table-row>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>Gene</fo:block>
+												<fo:table-row display-align="center" height="5mm">
+													<fo:table-cell border-style="solid" border-width="0.3pt">
+														<fo:block text-align="center">Gene</fo:block>
 													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>Variant</fo:block>
+													<fo:table-cell border-style="solid" border-width="0.3pt">
+														<fo:block text-align="center">Variant</fo:block>
 													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>Report</fo:block>
-													</fo:table-cell>
-												</fo:table-row>
-												<fo:table-row>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>EGFR</fo:block>
-													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>10</fo:block>
-													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>1</fo:block>
+													<fo:table-cell border-style="solid" border-width="0.3pt">
+														<fo:block text-align="center">Report</fo:block>
 													</fo:table-cell>
 												</fo:table-row>
-												<fo:table-row>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>EGFR</fo:block>
+												#foreach($gene in $contents.genesInPanelTableOne)
+												<fo:table-row display-align="center" height="5mm">
+													<fo:table-cell border-style="solid" border-width="0.3pt">
+														<fo:block>$gene.geneSymbol</fo:block>
 													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>10</fo:block>
+													<fo:table-cell border-style="solid" border-width="0.3pt">
+														<fo:block text-align="center">10</fo:block>
 													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>1</fo:block>
-													</fo:table-cell>
-												</fo:table-row>
-												<fo:table-row>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>EGFR</fo:block>
-													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>10</fo:block>
-													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>1</fo:block>
+													<fo:table-cell border-style="solid" border-width="0.3pt">
+														<fo:block text-align="center">1</fo:block>
 													</fo:table-cell>
 												</fo:table-row>
-												<fo:table-row>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>EGFR</fo:block>
-													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>10</fo:block>
-													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>1</fo:block>
-													</fo:table-cell>
-												</fo:table-row>
-												<fo:table-row>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>EGFR</fo:block>
-													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>10</fo:block>
-													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>1</fo:block>
-													</fo:table-cell>
-												</fo:table-row>
-												<fo:table-row>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>EGFR</fo:block>
-													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>10</fo:block>
-													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>1</fo:block>
-													</fo:table-cell>
-												</fo:table-row>
+												#end
 											</fo:table-body>
 										</fo:table>
 									</fo:block>
@@ -424,87 +385,34 @@
 								<fo:table-cell>
 									<fo:block>
 										<fo:table table-layout="fixed" width="100%">
-											<fo:table-column column-width="proportional-column-width(0.33)" />
-											<fo:table-column column-width="proportional-column-width(0.33)" />
-											<fo:table-column column-width="proportional-column-width(0.33)" />
+											<fo:table-column column-width="proportional-column-width(0.4)" />
+											<fo:table-column column-width="proportional-column-width(0.3)" />
+											<fo:table-column column-width="proportional-column-width(0.3)" />
 											<fo:table-body>
-												<fo:table-row>
+												<fo:table-row display-align="center" height="5mm">
 													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>Gene</fo:block>
+														<fo:block text-align="center">Gene</fo:block>
 													</fo:table-cell>
 													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>Variant</fo:block>
+														<fo:block text-align="center">Variant</fo:block>
 													</fo:table-cell>
 													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>Report</fo:block>
-													</fo:table-cell>
-												</fo:table-row>
-												<fo:table-row>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>EGFR</fo:block>
-													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>10</fo:block>
-													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>1</fo:block>
+														<fo:block text-align="center">Report</fo:block>
 													</fo:table-cell>
 												</fo:table-row>
-												<fo:table-row>
+												#foreach($gene in $contents.genesInPanelTableTwo)
+												<fo:table-row display-align="center" height="5mm">
 													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>EGFR</fo:block>
+														<fo:block>$gene.geneSymbol</fo:block>
 													</fo:table-cell>
 													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>10</fo:block>
+														<fo:block text-align="center">10</fo:block>
 													</fo:table-cell>
 													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>1</fo:block>
-													</fo:table-cell>
-												</fo:table-row>
-												<fo:table-row>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>EGFR</fo:block>
-													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>10</fo:block>
-													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>1</fo:block>
+														<fo:block text-align="center">1</fo:block>
 													</fo:table-cell>
 												</fo:table-row>
-												<fo:table-row>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>EGFR</fo:block>
-													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>10</fo:block>
-													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>1</fo:block>
-													</fo:table-cell>
-												</fo:table-row>
-												<fo:table-row>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>EGFR</fo:block>
-													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>10</fo:block>
-													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>1</fo:block>
-													</fo:table-cell>
-												</fo:table-row>
-												<fo:table-row>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>EGFR</fo:block>
-													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>10</fo:block>
-													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>1</fo:block>
-													</fo:table-cell>
-												</fo:table-row>
+												#end
 											</fo:table-body>
 										</fo:table>
 									</fo:block>
@@ -512,87 +420,34 @@
 								<fo:table-cell>
 									<fo:block>
 										<fo:table table-layout="fixed" width="100%">
-											<fo:table-column column-width="proportional-column-width(0.33)" />
-											<fo:table-column column-width="proportional-column-width(0.33)" />
-											<fo:table-column column-width="proportional-column-width(0.33)" />
+											<fo:table-column column-width="proportional-column-width(0.4)" />
+											<fo:table-column column-width="proportional-column-width(0.3)" />
+											<fo:table-column column-width="proportional-column-width(0.3)" />
 											<fo:table-body>
-												<fo:table-row>
+												<fo:table-row display-align="center" height="5mm">
 													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>Gene</fo:block>
+														<fo:block text-align="center">Gene</fo:block>
 													</fo:table-cell>
 													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>Variant</fo:block>
+														<fo:block text-align="center">Variant</fo:block>
 													</fo:table-cell>
 													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>Report</fo:block>
-													</fo:table-cell>
-												</fo:table-row>
-												<fo:table-row>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>EGFR</fo:block>
-													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>10</fo:block>
-													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>1</fo:block>
+														<fo:block text-align="center">Report</fo:block>
 													</fo:table-cell>
 												</fo:table-row>
-												<fo:table-row>
+												#foreach($gene in $contents.genesInPanelTableThree)
+												<fo:table-row display-align="center" height="5mm">
 													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>EGFR</fo:block>
+														<fo:block>$gene.geneSymbol</fo:block>
 													</fo:table-cell>
 													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>10</fo:block>
+														<fo:block text-align="center">10</fo:block>
 													</fo:table-cell>
 													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>1</fo:block>
-													</fo:table-cell>
-												</fo:table-row>
-												<fo:table-row>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>EGFR</fo:block>
-													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>10</fo:block>
-													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>1</fo:block>
+														<fo:block text-align="center">1</fo:block>
 													</fo:table-cell>
 												</fo:table-row>
-												<fo:table-row>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>EGFR</fo:block>
-													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>10</fo:block>
-													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>1</fo:block>
-													</fo:table-cell>
-												</fo:table-row>
-												<fo:table-row>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>EGFR</fo:block>
-													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>10</fo:block>
-													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>1</fo:block>
-													</fo:table-cell>
-												</fo:table-row>
-												<fo:table-row>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>EGFR</fo:block>
-													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>10</fo:block>
-													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt">
-														<fo:block>1</fo:block>
-													</fo:table-cell>
-												</fo:table-row>
+												#end
 											</fo:table-body>
 										</fo:table>
 									</fo:block>

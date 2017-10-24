@@ -9,7 +9,6 @@ import java.nio.file.Paths;
 import java.util.*;
 
 import ngeneanalysys.util.httpclient.HttpClientUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -18,14 +17,10 @@ import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 
 import ngeneanalysys.MainApp;
-import ngeneanalysys.code.enums.PredictionTypeCode;
 import ngeneanalysys.exceptions.WebAPIException;
-import ngeneanalysys.model.AnalysisResultVariant;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.WorksheetUtil;
-import ngeneanalysys.util.httpclient.HttpClientResponse;
 
 import javafx.concurrent.Task;
 import javafx.scene.control.Alert;

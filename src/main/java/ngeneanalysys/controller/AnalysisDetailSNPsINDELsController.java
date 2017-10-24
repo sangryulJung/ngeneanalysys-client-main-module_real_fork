@@ -153,7 +153,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             TableRow<AnalysisResultVariant> row = new TableRow<>();
             row.setOnMouseClicked(e -> {
                 if (e.getClickCount() == 1 && (!row.isEmpty())) {
-                     showVariantDetail(variantListTableView.getSelectionModel().getSelectedItem());
+                    showVariantDetail(variantListTableView.getSelectionModel().getSelectedItem());
                 }
             });
             return row;
@@ -208,13 +208,13 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         });
 
         overviewFoldButton.setOnMouseClicked(event -> {
-                if (overviewFoldButton.getStyleClass().get(0) == null){
-                    return;
-                } else if(overviewFoldButton.getStyleClass().get(0).equals("btn_fold")){
-                    foldOverview();
-                } else {
-                    expandOverview();
-                }
+            if (overviewFoldButton.getStyleClass().get(0) == null){
+                return;
+            } else if(overviewFoldButton.getStyleClass().get(0).equals("btn_fold")){
+                foldOverview();
+            } else {
+                expandOverview();
+            }
         });
 
 
@@ -255,7 +255,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
     }
 
     public void setTierFilterBox() {
-            AnalysisResultSummary summary = sample.getAnalysisResultSummary();
+        AnalysisResultSummary summary = sample.getAnalysisResultSummary();
 
         Map<String, Long> count = list.stream().collect(Collectors.groupingBy(AnalysisResultVariant::getSwTier, Collectors.counting()));
 
@@ -422,13 +422,13 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             // 하단 탭 활성화 토글
             setDetailTabActivationToggle(true);
 
-           if (list != null && list.size() > 0) {
+            if (list != null && list.size() > 0) {
                 displayList = FXCollections.observableArrayList(list);
                 logger.info(displayList.size() + "");
             }
 
             // 리스트 삽입
-          if (variantListTableView.getItems() != null && variantListTableView.getItems().size() > 0) {
+            if (variantListTableView.getItems() != null && variantListTableView.getItems().size() > 0) {
                 variantListTableView.getItems().clear();
             }
             variantListTableView.setItems(displayList);
@@ -491,11 +491,11 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                 }
             }*/
 
-           if(analysisResultVariant != null) {
-               if (subTabOverview != null){
-                   showOverviewTab(analysisResultVariant);
-               }
-           }
+            if(analysisResultVariant != null) {
+                if (subTabOverview != null){
+                    showOverviewTab(analysisResultVariant);
+                }
+            }
         } /*catch (WebAPIException wae) {
             wae.printStackTrace();
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
@@ -758,7 +758,6 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                 new BigDecimal("438"),2,5,0,0,0,0,0,5
                 ,new BigDecimal(98.13662348939866),"pass",new BigDecimal(100.0),"pass",new BigDecimal(100),"pass",
                 new BigDecimal(100.0),"pass");
-
         sample.setAnalysisResultSummary(analysisResultSummary);
     }*/
 
@@ -817,19 +816,16 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             /*if(linkBox != null && kit.equals(ExperimentTypeCode.SOMATIC)) {
                 Map<String,Object> variantInformationMap = (Map<String,Object>) paramMap.get("variantInformation");
                 AnalysisResultVariant analysisResultVariant = (AnalysisResultVariant) paramMap.get("analysisResultVariant");
-
                 //logger.info("init overview link button event binding..");
                 String urlExAC = (variantInformationMap.containsKey("exac_url")) ? (String) variantInformationMap.get("exac_url") : null;
                 String urlBRCAExchange = (variantInformationMap.containsKey("brca_exchange_url")) ? (String) variantInformationMap.get("brca_exchange_url") : null;
                 String urlClinvar = (variantInformationMap.containsKey("clinvar_url")) ? (String) variantInformationMap.get("clinvar_url") : null;
                 String urlNCBI = (variantInformationMap.containsKey("ncbi_url")) ? (String) variantInformationMap.get("ncbi_url") : null;
                 String urlUCSC = (variantInformationMap.containsKey("ucsc_url")) ? (String) variantInformationMap.get("ucsc_url") : null;
-
                 for(Node node : linkBox.getChildren()) {
                     if(node != null) {
                         String id = node.getId();
                         //logger.info(String.format("button id : %s", id));
-
                         // exACButton
                         if("exACButton".equals(id)) {
                             Button exACButton = (Button) node;
@@ -841,18 +837,15 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                                 exACButton.setDisable(false);
                             }
                         }
-
                         // igvButton
                         if("igvButton".equals(id)) {
                             Button igvButton = (Button) node;
-
                             String sampleId = sample.getId().toString();
                             String variantId = analysisResultVariant.getVariantId();
                             String gene = analysisResultVariant.getGene();
                             String locus = String.format("%s:%,d-%,d", analysisResultVariant.getChromosome(), Integer.parseInt(analysisResultVariant.getGenomicPosition()), Integer.parseInt(analysisResultVariant.getGenomicEndPosition()));
                             String refGenome = analysisResultVariant.getReferenceGenome();
                             String humanGenomeVersion = (refGenome.contains("hg19")) ? "hg19" : "hg18";
-
                             igvButton.setOnAction(event -> {
                                 try {
                                     loadIGV(sampleId, sample.getName(),	variantId, gene, locus, humanGenomeVersion);
@@ -864,10 +857,8 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                                             getMainApp().getPrimaryStage(), true);
                                 }
                             });
-
                             igvButton.setDisable(false);
                         }
-
                         // brcaExchangeButton
                         if("brcaExchangeButton".equals(id)) {
                             Button brcaExchangeButton = (Button) node;
@@ -879,7 +870,6 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                                 brcaExchangeButton.setDisable(false);
                             }
                         }
-
                         // clinvarButton
                         if("clinvarButton".equals(id)) {
                             Button clinvarButton = (Button) node;
@@ -891,7 +881,6 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                                 clinvarButton.setDisable(false);
                             }
                         }
-
                         // ncbiButton
                         if("ncbiButton".equals(id)) {
                             Button ncbiButton = (Button) node;
@@ -903,7 +892,6 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                                 ncbiButton.setDisable(false);
                             }
                         }
-
                         // ucscButton
                         if("ucscButton".equals(id)) {
                             Button ucscButton = (Button) node;
@@ -915,11 +903,9 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                                 ucscButton.setDisable(false);
                             }
                         }
-
                         // alamutButton
                         if("alamutButton".equals(id)) {
                             Button alamutButton = (Button) node;
-
                             // variant identification transcript data map
                             Map<String,Object> geneMap = (Map<String,Object>) paramMap.get("gene");
                             if(geneMap != null && !geneMap.isEmpty() && geneMap.containsKey("transcript")) {
@@ -963,23 +949,23 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             swPathogenicityLevel.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSwPathogenicityLevel()));
             swPathogenicityLevel.setPrefWidth(55);
             swPathogenicityLevel.setCellFactory(param -> {
-                    TableCell<AnalysisResultVariant,String> cell = new TableCell<AnalysisResultVariant, String>() {
-                        @Override
-                        public void updateItem(String item, boolean empty) {
-                            Label label = null;
-                            if(item != null) {
-                                String code = PredictionTypeCode.getCodeFromAlias(item);
-                                if(code != null && !"NONE".equals(code)) {
-                                    label = new Label(item);
-                                    label.getStyleClass().clear();
-                                    swPathogenicityLevel.getStyleClass().add("alignment_center");
-                                    label.getStyleClass().add("prediction_" + code);
-                                }
+                TableCell<AnalysisResultVariant,String> cell = new TableCell<AnalysisResultVariant, String>() {
+                    @Override
+                    public void updateItem(String item, boolean empty) {
+                        Label label = null;
+                        if(item != null) {
+                            String code = PredictionTypeCode.getCodeFromAlias(item);
+                            if(code != null && !"NONE".equals(code)) {
+                                label = new Label(item);
+                                label.getStyleClass().clear();
+                                swPathogenicityLevel.getStyleClass().add("alignment_center");
+                                label.getStyleClass().add("prediction_" + code);
                             }
-                            setGraphic(label);
                         }
-                    };
-                    return cell;
+                        setGraphic(label);
+                    }
+                };
+                return cell;
             });
 
             TableColumn<AnalysisResultVariant, String> expertPathogenicityLevel = new TableColumn<>("Pathogenic(User)");
@@ -1124,11 +1110,9 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         /*TableColumn<AnalysisResultVariant, String> polyphen2 = new TableColumn<>("polyphen2");
         polyphen2.setCellValueFactory(cellData -> new SimpleStringProperty(
                 cellData.getValue().getClinicalSignificant().getPolyphen2() != null ? String.valueOf(Double.parseDouble(ConvertUtil.convertFormatNumber("%.2f",cellData.getValue().getClinicalSignificant().getPolyphen2().toString(), ""))) : ""));
-
         TableColumn<AnalysisResultVariant, String> sift = new TableColumn<>("sift");
         sift.setCellValueFactory(cellData -> new SimpleStringProperty(
                 cellData.getValue().getClinicalSignificant().getSift() != null ? String.valueOf(Double.parseDouble(ConvertUtil.convertFormatNumber("%.2f",cellData.getValue().getClinicalSignificant().getSift().toString(), ""))) : ""));
-
         TableColumn<AnalysisResultVariant, String> mutationTaster = new TableColumn<>("mutationtaster");
         mutationTaster.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getMutationTaster()));*/
 

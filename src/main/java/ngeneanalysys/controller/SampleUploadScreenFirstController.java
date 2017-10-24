@@ -71,6 +71,9 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     List<TextField> sampleSourceTextFieldList = new ArrayList<>();
 
+    //화면에 표시될 row 수
+    private int totalRow = 0;
+
     /**
      * @param mainController
      */
@@ -98,95 +101,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         panels = (List<Panel>)mainController.getBasicInformationMap().get("panels");
         diseases = (List<Diseases>)mainController.getBasicInformationMap().get("diseases");
 
-        for(int row  = 0 ; row < 23 ; row++) {
-            standardDataGridPane.setPrefHeight(standardDataGridPane.getPrefHeight() + 27);
-            TextField sampleName = new TextField();
-            sampleName.setStyle("-fx-text-inner-color: black;");
-            sampleName.setMaxWidth(Double.MAX_VALUE);
-            sampleNameTextFieldList.add(sampleName);
-            sampleName.textProperty().addListener((observable, oldValue, newValue) -> {
-                Set<String> fileName = fileMap.keySet();
-                fileName.stream().forEach(file -> {
-                    Map<String, Object> fileInfo = fileMap.get(file);
-
-                    if (fileInfo.get("sampleName") != null && fileInfo.get("sampleName").toString().equals(oldValue)) {
-                        fileInfo.put("sampleName", newValue);
-                    }
-                });
-            });
-
-//            Button select = new Button();
-//            fileSelectButtonList.add(select);
-//            select.setText("+");
-//            select.setStyle("-fx-font-size:9;");
-//            GridPane.setValignment(select, VPos.CENTER);
-//            GridPane.setHalignment(select, HPos.CENTER);
-//            select.setOnAction(e -> {
-//                FileChooser fileChooser = new FileChooser();
-//                fileChooser.setTitle("Choose FASTQ File");
-//                fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-//                fileChooser.getExtensionFilters()
-//                        .addAll(new FileChooser.ExtensionFilter("fastq", "*.fastq", "*.fastq.gz"));
-//                File file = fileChooser.showOpenDialog(sampleUploadController.getCurrentStage());
-//
-//                if(file != null) {
-//                    String fastqFilePairName = FileUtil.getFASTQFilePairName(file.getName());
-//                    String chooseDirectoryPath = FilenameUtils.getFullPath(file.getAbsolutePath());
-//                    logger.info(String.format("directory path of choose file : %s", chooseDirectoryPath));
-//                    File directory = new File(chooseDirectoryPath);
-//                    //선택한 파일의 폴더 내 모든 파일
-//                    List<File> fastqFilesInFolder = (List<File>) FileUtils.listFiles(directory, new String[]{"fastq.gz"}, false);
-//                    //선택한 파일과 동일한 샘플명을 가지는 파일만 리스트로 남김
-//                    fastqFilesInFolder = fastqFilesInFolder.stream().filter(fileItem -> fastqFilePairName.equals(FileUtil.getFASTQFilePairName(fileItem.getName()))).collect(Collectors.toList());
-//
-//                    //파일은 반드시 짝을 이루어야만 함
-//                    if(fastqFilesInFolder.size() == 2 && !checkSameSample(fastqFilePairName)) {
-//                        addUploadFile(fastqFilesInFolder, fastqFilePairName);
-//                    }
-//
-//                    tableEdit();
-//                }
-//            });
-
-            TextField paitentId = new TextField();
-            paitentId.setStyle("-fx-text-inner-color: black;");
-            paitentId.setMaxWidth(Double.MAX_VALUE);
-            patientIdTextFieldList.add(paitentId);
-
-            ComboBox<ComboBoxItem> disease  = new ComboBox<>();
-            disease.setMaxWidth(Double.MAX_VALUE);
-            diseaseComboBoxList.add(disease);
-            diseasesSetting(disease);
-
-            ComboBox<ComboBoxItem> panel  = new ComboBox<>();
-            panel.setMaxWidth(Double.MAX_VALUE);
-            panelComboBoxList.add(panel);
-            panelSetting(panel);
-            panel.setOnAction(event -> {
-                ComboBox<ComboBoxItem> obj = (ComboBox<ComboBoxItem>) event.getSource();
-                if(panelComboBoxList.contains(obj)) {
-                    int index  = panelComboBoxList.indexOf(obj);
-                    ComboBoxItem item = obj.getSelectionModel().getSelectedItem();
-                    logger.info(item.getText());
-                    panels.stream().forEach(panelItem -> {
-                        if(panelItem.getId() == Integer.parseInt(item.getValue())) {
-                            sampleSourceTextFieldList.get(index).setText(panelItem.getSampleSource());
-                        }
-                    });
-                }
-            });
-
-            TextField source = new TextField();
-            source.setMaxWidth(Double.MAX_VALUE);
-            sampleSourceTextFieldList.add(source);
-            source.setEditable(false);
-            source.setStyle("-fx-text-inner-color: black;");
-            source.setText(panels.get(0).getSampleSource());
-
-            //standardDataGridPane.addRow(row, sampleName, select, panel, source, disease, paitentId);
-            standardDataGridPane.addRow(row, sampleName, panel, source, disease, paitentId);
-        }
-
         if(sampleUploadController.getSamples() != null) {
             sampleArrayList = sampleUploadController.getSamples();
             tableEdit();
@@ -196,13 +110,14 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     public void tableEdit() {
         int row = 0;
 
+        //sample 수만큼 row를 생성
+        while(sampleArrayList.size() > totalRow) {
+            createRow(totalRow++);
+        }
+
         for(Sample sample : sampleArrayList) {
-            //샘플의
             if(row > 22) break;
 
-            //SampleSheet item = sample.getSampleSheet();
-
-            //sampleNameTextFieldList.get(row).setText(!StringUtils.isEmpty(item.getSampleName()) ? item.getSampleName() : item.getSampleId());
             sampleNameTextFieldList.get(row).setText(sample.getName());
             patientIdTextFieldList.get(row).setText((sample.getPaitentId() != null) ? sample.getPaitentId().toString() : "");
 
@@ -232,10 +147,65 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 });
             }
 
-            //sampleSourceTextFieldList.get(row).setText((sample.getSampleSource() != null) ? sample.getSampleSource() : "FFPE" );
-
             row++;
         }
+
+    }
+
+    public void createRow(int row) {
+        standardDataGridPane.setPrefHeight(standardDataGridPane.getPrefHeight() + 27);
+        TextField sampleName = new TextField();
+        sampleName.setStyle("-fx-text-inner-color: black;");
+        sampleName.setMaxWidth(Double.MAX_VALUE);
+        sampleNameTextFieldList.add(sampleName);
+        sampleName.textProperty().addListener((observable, oldValue, newValue) -> {
+            Set<String> fileName = fileMap.keySet();
+            fileName.stream().forEach(file -> {
+                Map<String, Object> fileInfo = fileMap.get(file);
+
+                if (fileInfo.get("sampleName") != null && fileInfo.get("sampleName").toString().equals(oldValue)) {
+                    fileInfo.put("sampleName", newValue);
+                }
+            });
+        });
+
+        TextField paitentId = new TextField();
+        paitentId.setStyle("-fx-text-inner-color: black;");
+        paitentId.setMaxWidth(Double.MAX_VALUE);
+        patientIdTextFieldList.add(paitentId);
+
+        ComboBox<ComboBoxItem> disease  = new ComboBox<>();
+        disease.setMaxWidth(Double.MAX_VALUE);
+        diseaseComboBoxList.add(disease);
+        diseasesSetting(disease);
+
+        ComboBox<ComboBoxItem> panel  = new ComboBox<>();
+        panel.setMaxWidth(Double.MAX_VALUE);
+        panelComboBoxList.add(panel);
+        panelSetting(panel);
+        panel.setOnAction(event -> {
+            ComboBox<ComboBoxItem> obj = (ComboBox<ComboBoxItem>) event.getSource();
+            if(panelComboBoxList.contains(obj)) {
+                int index  = panelComboBoxList.indexOf(obj);
+                ComboBoxItem item = obj.getSelectionModel().getSelectedItem();
+                logger.info(item.getText());
+                panels.stream().forEach(panelItem -> {
+                    if(panelItem.getId() == Integer.parseInt(item.getValue())) {
+                        sampleSourceTextFieldList.get(index).setText(panelItem.getSampleSource());
+                    }
+                });
+            }
+        });
+
+        TextField source = new TextField();
+        source.setMaxWidth(Double.MAX_VALUE);
+        sampleSourceTextFieldList.add(source);
+        source.setEditable(false);
+        source.setStyle("-fx-text-inner-color: black;");
+        source.setText(panels.get(0).getSampleSource());
+
+        //standardDataGridPane.addRow(row, sampleName, select, panel, source, disease, paitentId);
+        standardDataGridPane.addRow(row, sampleName, panel, source, disease, paitentId);
     }
 
     public void saveSampleData() {
@@ -481,5 +451,40 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         sample.setSampleSheet(new SampleSheet());
         sample.setQcData(new QcData());
         sampleArrayList.add(sample);
+    }
+
+    @FXML
+    private void fastqAdd() {
+        maskerPane.setVisible(true);
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose Directory");
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        FileChooser.ExtensionFilter fileExtensions =
+                new FileChooser.ExtensionFilter(
+                        "fastq", "*.fastq", "*.fastq.gz");
+        fileChooser.getExtensionFilters().add(fileExtensions);
+        File file = fileChooser.showOpenDialog(this.sampleUploadController.getCurrentStage());
+
+        if(file != null) {
+            String fastqFilePairName = FileUtil.getFASTQFilePairName(file.getName());
+
+            String chooseDirectoryPath = FilenameUtils.getFullPath(file.getAbsolutePath());
+            logger.info(String.format("directory path of choose file : %s", chooseDirectoryPath));
+            File directory = new File(chooseDirectoryPath);
+            //선택한 파일의 폴더 내 모든 파일의 수
+            List<File> fastqFilesInFolder = (List<File>) FileUtils.listFiles(directory, new String[]{"fastq.gz"}, false);
+
+            List<File> pairFileList = fastqFilesInFolder.stream().filter(item ->
+                    item.getName().startsWith(fastqFilePairName)).collect(Collectors.toList());
+
+            //fastq 파일은 짝을 이루어야 함
+            if(pairFileList.size() == 2 && !checkSameSample(fastqFilePairName)) {
+                addUploadFile(pairFileList, fastqFilePairName);
+            }
+        }
+        tableEdit();
+
+        maskerPane.setVisible(false);
     }
 }
