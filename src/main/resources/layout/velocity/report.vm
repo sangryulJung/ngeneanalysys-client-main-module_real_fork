@@ -142,11 +142,11 @@
 									<fo:block font-weight="bold">Genomic Alternations</fo:block>
 								</fo:table-cell>
 								<fo:table-cell border-style="solid" border-width="0.5pt" number-columns-spanned="2" background-color="#fbe5d6" border="solid 0.5mm white">
-									<fo:block font-weight="bold">Tier 1</fo:block>
+									<fo:block font-weight="bold">Tier I</fo:block>
 									<fo:block>(Strong Clinical Significance)</fo:block>
 								</fo:table-cell>
 								<fo:table-cell border-style="solid" border-width="0.5pt" number-columns-spanned="2" background-color="#fff2cc" border="solid 0.5mm white">
-									<fo:block font-weight="bold">Tier 2</fo:block>
+									<fo:block font-weight="bold">Tier II</fo:block>
 									<fo:block>(Potential Clinical Significance)</fo:block>
 								</fo:table-cell>
 							</fo:table-row>
@@ -247,6 +247,15 @@
 			<fo:block margin-bottom="10mm" font-size="10pt">
 				<fo:block margin-bottom="5mm">
 					#foreach($variant in $contents.variantList)
+					#if($variant.swTier)
+						#if("$variant.swTier" == "T1")
+							#set($titleColor = "#f8cbad")
+							#set($color = "#fbe5d6")
+						#else
+							#set($titleColor = "#ffe699")
+							#set($color = "#fff2cc")
+						#end
+					#end
 					<fo:table table-layout="fixed" width="100%" margin-bottom="4mm">
 						<fo:table-column column-width="proportional-column-width(0.1)" />
 						<fo:table-column column-width="proportional-column-width(0.1)" />
@@ -256,22 +265,22 @@
 						<fo:table-column column-width="proportional-column-width(0.35)" />
 						<fo:table-body>
 							<fo:table-row height="6mm" display-align="center">
-								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="$color">
-									<fo:block>$variant.sequenceInfo.gene</fo:block>
+								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="$titleColor">
+									<fo:block text-align="center">$variant.sequenceInfo.gene</fo:block>
 								</fo:table-cell>
-								<fo:table-cell number-columns-spanned="3" border-style="solid" border-width="0.5pt">
-									<fo:block>$variant.variantExpression.transcript:<![CDATA[$variant.variantExpression.ntChange]]>(<![CDATA[$variant.variantExpression.aaChange]]>)</fo:block>
+								<fo:table-cell number-columns-spanned="3" border-style="solid" border-width="0.5pt" background-color="$titleColor">
+									<fo:block text-align="center">$variant.variantExpression.transcript:<![CDATA[$variant.variantExpression.ntChange]]>(<![CDATA[$variant.variantExpression.aaChange]]>)</fo:block>
 								</fo:table-cell>
-								<fo:table-cell number-columns-spanned="2" border-style="solid" border-width="0.5pt">
-									<fo:block>Tier #if($variant.swTier == "T1") 1
-													#elseif($variant.swTier == "T2") 2
-													#elseif($variant.swTier == "T3") 3
+								<fo:table-cell number-columns-spanned="2" border-style="solid" border-width="0.5pt" background-color="$titleColor">
+									<fo:block text-align="center">Tier #if($variant.swTier == "T1") I
+													#elseif($variant.swTier == "T2") II
+													#elseif($variant.swTier == "T3") III
 													#end
 									</fo:block>
 								</fo:table-cell>
 							</fo:table-row>
 							<fo:table-row border-bottom="1mm" border-top="1mm" display-align="center">
-								<fo:table-cell number-columns-spanned="6" border-style="solid" border-width="0.5pt">
+								<fo:table-cell number-columns-spanned="6" border-style="solid" border-width="0.5pt" background-color="$color">
 									<fo:block font-weight="bold">
 										#if ($variant.interpretation.interpretationEvidenceA && !($variant.interpretation.interpretationEvidenceA == "")) <![CDATA[[LEVEL A]]]> $variant.interpretation.interpretationEvidenceA
 										#elseif ($variant.interpretation.interpretationEvidenceB && !($variant.interpretation.interpretationEvidenceB == "")) <![CDATA[[LEVEL B]]]> $variant.interpretation.interpretationEvidenceB
@@ -281,17 +290,38 @@
 									</fo:block>
 								</fo:table-cell>
 							</fo:table-row>
-							<fo:table-row display-align="center" height="6mm">
-								<fo:table-cell number-columns-spanned="2" border-style="solid" border-width="0.5pt"><fo:block font-weight="bold">Variant Type</fo:block></fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#e7e7e7"><fo:block>SNV($variant.variantExpression.codingConsequence variant)</fo:block></fo:table-cell>
-								<fo:table-cell number-columns-spanned="2" border-style="solid" border-width="0.5pt"><fo:block font-weight="bold">dbSNP</fo:block></fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#e7e7e7"><fo:block>$variant.populationFrequency.dbsnpRsId</fo:block></fo:table-cell>
+							<fo:table-row display-align="center" height="6mm" background-color="$color">
+								<fo:table-cell number-columns-spanned="2" border-style="solid" border-width="0.5pt" background-color="$color">
+									<fo:block font-weight="bold">Variant Type
+									</fo:block>
+								</fo:table-cell>
+								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#f2f2f2">
+									<fo:block>SNV($variant.variantExpression.codingConsequence variant)
+									</fo:block>
+								</fo:table-cell>
+								<fo:table-cell number-columns-spanned="2" border-style="solid" border-width="0.5pt" background-color="$color">
+									<fo:block font-weight="bold">dbSNP
+									</fo:block>
+								</fo:table-cell>
+								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#f2f2f2">
+									<fo:block>$variant.populationFrequency.dbsnpRsId
+									</fo:block>
+								</fo:table-cell>
 							</fo:table-row>
-							<fo:table-row display-align="center" height="6mm">
-								<fo:table-cell number-columns-spanned="2" border-style="solid" border-width="0.5pt"><fo:block font-weight="bold" font-size="9pt">Variant Frequency</fo:block></fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#e7e7e7"><fo:block>0.509</fo:block></fo:table-cell>
-								<fo:table-cell number-columns-spanned="2" border-style="solid" border-width="0.5pt"><fo:block font-weight="bold">Zygosity</fo:block></fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#e7e7e7">
+							<fo:table-row display-align="center" height="6mm" background-color="$color">
+								<fo:table-cell number-columns-spanned="2" border-style="solid" border-width="0.5pt" background-color="$color">
+									<fo:block font-weight="bold" font-size="9pt">Variant Frequency
+									</fo:block>
+								</fo:table-cell>
+								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#f2f2f2">
+									<fo:block>0.509
+									</fo:block>
+								</fo:table-cell>
+								<fo:table-cell number-columns-spanned="2" border-style="solid" border-width="0.5pt" background-color="$color">
+									<fo:block font-weight="bold">Zygosity
+									</fo:block>
+								</fo:table-cell>
+								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#f2f2f2">
 									<fo:block>#if($variant.variantExpression.zygosity && !($variant.variantExpression.zygosity == "")) $variant.variantExpression.zygosity
 												#else Not-determied
 												#end
@@ -299,8 +329,11 @@
 								</fo:table-cell>
 							</fo:table-row>
 							<fo:table-row>
-								<fo:table-cell number-columns-spanned="2" border-style="solid" border-width="0.5pt"><fo:block>Population DB (MAF)</fo:block></fo:table-cell>
-								<fo:table-cell number-columns-spanned="4" border-style="solid" border-width="0.5pt" background-color="#e7e7e7">
+								<fo:table-cell number-columns-spanned="2" border-style="solid" border-width="0.5pt" background-color="$color">
+									<fo:block>Population DB (MAF)
+									</fo:block>
+								</fo:table-cell>
+								<fo:table-cell number-columns-spanned="4" border-style="solid" border-width="0.5pt" background-color="#f2f2f2">
 									<fo:block>ESP6500: #if($variant.populationFrequency.esp6500) $variant.populationFrequency.esp6500
 														#else no frequency data
 														#end
@@ -316,9 +349,17 @@
 								</fo:table-cell>
 							</fo:table-row>
 							<fo:table-row>
-								<fo:table-cell number-columns-spanned="2" border-style="solid" border-width="0.5pt"><fo:block>Clinical DB (ClnVar)</fo:block></fo:table-cell>
-								<fo:table-cell number-columns-spanned="4" border-style="solid" border-width="0.5pt" background-color="#e7e7e7">
-									<fo:block>ClinVar:SCV000505149.1(Likely pathogenic), SCV000505150.1(not provided)</fo:block>
+								<fo:table-cell number-columns-spanned="2" border-style="solid" border-width="0.5pt" background-color="$color">
+									<fo:block>Clinical DB (ClnVar)
+									</fo:block>
+								</fo:table-cell>
+								<fo:table-cell number-columns-spanned="4" border-style="solid" border-width="0.5pt" background-color="#f2f2f2">
+									<fo:block>
+										#if($variant.clinicalSignificant.clinVar.clinVarAcc)
+											$variant.clinicalSignificant.clinVar.clinVarAcc($variant.clinicalSignificant.clinVar.clinVarClass)
+										#else
+											Not found
+										#end</fo:block>
 								</fo:table-cell>
 							</fo:table-row>
 						</fo:table-body>
@@ -347,27 +388,32 @@
 											<fo:table-column column-width="proportional-column-width(0.3)" />
 											<fo:table-column column-width="proportional-column-width(0.3)" />
 											<fo:table-body>
-												<fo:table-row display-align="center" height="5mm" background-color="#bfbfbf">
+												<fo:table-row display-align="center" height="5mm" background-color="#d9d9d9">
 													<fo:table-cell border-style="solid" border-width="0.3pt">
 														<fo:block text-align="center">Gene</fo:block>
 													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.3pt" background-color="#bfbfbf">
+													<fo:table-cell border-style="solid" border-width="0.3pt" background-color="#d9d9d9">
 														<fo:block text-align="center">Variant</fo:block>
 													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.3pt" background-color="#bfbfbf">
+													<fo:table-cell border-style="solid" border-width="0.3pt" background-color="#d9d9d9">
 														<fo:block text-align="center">Report</fo:block>
 													</fo:table-cell>
 												</fo:table-row>
 												#foreach($gene in $contents.genesInPanelTableOne)
 												<fo:table-row display-align="center" height="5mm">
-													<fo:table-cell border-style="solid" border-width="0.3pt" background-color="#bfbfbf">
+													<fo:table-cell border-style="solid" border-width="0.3pt" background-color="#d9d9d9">
 														<fo:block>$gene.geneSymbol</fo:block>
 													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.3pt" background-color="#e7e7e7">
-														<fo:block text-align="center">10</fo:block>
+													<fo:table-cell border-style="solid" border-width="0.3pt" background-color="#f2f2f2">
+														<fo:block text-align="center">#set($value =$gene.tier1SnpCount + $gene.tier1IndelCount + $gene.tier2SnpCount + $gene.tier2IndelCount
+															+ $gene.tier3SnpCount + $gene.tier3IndelCount + $gene.tier4SnpCount + $gene.tier4IndelCount + $gene.tierNSnpCount + $gene.tierNIndelCount)
+															$value
+														</fo:block>
 													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.3pt" background-color="#e7e7e7">
-														<fo:block text-align="center">1</fo:block>
+													<fo:table-cell border-style="solid" border-width="0.3pt" background-color="#f2f2f2">
+														<fo:block text-align="center">#set($value =$gene.tier1SnpCount + $gene.tier1IndelCount + $gene.tier2SnpCount + $gene.tier2IndelCount)
+															$value
+														</fo:block>
 													</fo:table-cell>
 												</fo:table-row>
 												#end
@@ -383,26 +429,29 @@
 											<fo:table-column column-width="proportional-column-width(0.3)" />
 											<fo:table-body>
 												<fo:table-row display-align="center" height="5mm">
-													<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#bfbfbf">
+													<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#d9d9d9">
 														<fo:block text-align="center">Gene</fo:block>
 													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#bfbfbf">
+													<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#d9d9d9">
 														<fo:block text-align="center">Variant</fo:block>
 													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#bfbfbf">
+													<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#d9d9d9">
 														<fo:block text-align="center">Report</fo:block>
 													</fo:table-cell>
 												</fo:table-row>
 												#foreach($gene in $contents.genesInPanelTableTwo)
 												<fo:table-row display-align="center" height="5mm">
-													<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#bfbfbf">
+													<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#d9d9d9">
 														<fo:block>$gene.geneSymbol</fo:block>
 													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#e7e7e7">
-														<fo:block text-align="center">10</fo:block>
+													<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#f2f2f2">
+														<fo:block text-align="center">#set($value =$gene.tier1SnpCount + $gene.tier1IndelCount + $gene.tier2SnpCount + $gene.tier2IndelCount
+															+ $gene.tier3SnpCount + $gene.tier3IndelCount + $gene.tier4SnpCount + $gene.tier4IndelCount + $gene.tierNSnpCount + $gene.tierNIndelCount)
+															$value</fo:block>
 													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#e7e7e7">
-														<fo:block text-align="center">1</fo:block>
+													<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#f2f2f2">
+														<fo:block text-align="center">#set($value =$gene.tier1SnpCount + $gene.tier1IndelCount + $gene.tier2SnpCount + $gene.tier2IndelCount)
+															$value</fo:block>
 													</fo:table-cell>
 												</fo:table-row>
 												#end
@@ -418,26 +467,29 @@
 											<fo:table-column column-width="proportional-column-width(0.3)" />
 											<fo:table-body>
 												<fo:table-row display-align="center" height="5mm">
-													<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#bfbfbf">
+													<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#d9d9d9">
 														<fo:block text-align="center">Gene</fo:block>
 													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#bfbfbf">
+													<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#d9d9d9">
 														<fo:block text-align="center">Variant</fo:block>
 													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#bfbfbf">
+													<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#d9d9d9">
 														<fo:block text-align="center">Report</fo:block>
 													</fo:table-cell>
 												</fo:table-row>
 												#foreach($gene in $contents.genesInPanelTableThree)
 												<fo:table-row display-align="center" height="5mm">
-													<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#bfbfbf">
+													<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#d9d9d9">
 														<fo:block>$gene.geneSymbol</fo:block>
 													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#e7e7e7">
-														<fo:block text-align="center">10</fo:block>
+													<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#f2f2f2">
+														<fo:block text-align="center">#set($value =$gene.tier1SnpCount + $gene.tier1IndelCount + $gene.tier2SnpCount + $gene.tier2IndelCount
+															+ $gene.tier3SnpCount + $gene.tier3IndelCount + $gene.tier4SnpCount + $gene.tier4IndelCount + $gene.tierNSnpCount + $gene.tierNIndelCount)
+															$value</fo:block>
 													</fo:table-cell>
-													<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#e7e7e7">
-														<fo:block text-align="center">1</fo:block>
+													<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#f2f2f2">
+														<fo:block text-align="center">#set($value =$gene.tier1SnpCount + $gene.tier1IndelCount + $gene.tier2SnpCount + $gene.tier2IndelCount)
+															$value</fo:block>
 													</fo:table-cell>
 												</fo:table-row>
 												#end
@@ -460,16 +512,16 @@
 						<fo:table-column column-width="proportional-column-width(0.25)" />
 						<fo:table-body>
 							<fo:table-row text-align="center" height="6mm" display-align="center">
-								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#bfbfbf">
+								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#d9d9d9">
 									<fo:block font-weight="bold">Sample QC</fo:block>
 								</fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#bfbfbf">
+								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#d9d9d9">
 									<fo:block font-weight="bold">Library QC</fo:block>
 								</fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#bfbfbf">
+								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#d9d9d9">
 									<fo:block font-weight="bold">Sequencing QC</fo:block>
 								</fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#bfbfbf">
+								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#d9d9d9">
 									<fo:block font-weight="bold">Analysis QC</fo:block>
 								</fo:table-cell>
 							</fo:table-row>
@@ -499,24 +551,24 @@
 						<fo:table-column column-width="proportional-column-width(0.33)" />
 						<fo:table-body>
 							<fo:table-row text-align="center" height="6mm" display-align="center">
-								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#bfbfbf">
+								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#d9d9d9">
 									<fo:block font-weight="bold">Panel</fo:block>
 								</fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#bfbfbf">
+								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#d9d9d9">
 									<fo:block font-weight="bold">Reagent Kit</fo:block>
 								</fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#bfbfbf">
+								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#d9d9d9">
 									<fo:block font-weight="bold">Sequencer</fo:block>
 								</fo:table-cell>
 							</fo:table-row>
 							<fo:table-row text-align="center" height="6mm" display-align="center">
-								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#e7e7e7">
+								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#f2f2f2">
 									<fo:block>NgeneBio-SolidCancer-V3</fo:block>
 								</fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#e7e7e7">
+								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#f2f2f2">
 									<fo:block>Nano Kit v.2</fo:block>
 								</fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#e7e7e7">
+								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#f2f2f2">
 									<fo:block>Illumina MiSeqDX</fo:block>
 								</fo:table-cell>
 							</fo:table-row>
@@ -532,13 +584,13 @@
 						<fo:table-column column-width="proportional-column-width(0.33)" />
 						<fo:table-body>
 							<fo:table-row text-align="center" height="6mm" display-align="center">
-								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#bfbfbf">
+								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#d9d9d9">
 									<fo:block font-weight="bold">Min.Read Depth at ROI</fo:block>
 								</fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#bfbfbf">
+								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#d9d9d9">
 									<fo:block font-weight="bold">Coverage Rate at ROI</fo:block>
 								</fo:table-cell>
-								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#bfbfbf">
+								<fo:table-cell border-style="solid" border-width="0.5pt" background-color="#d9d9d9">
 									<fo:block font-weight="bold">Unique Mapping Quality</fo:block>
 								</fo:table-cell>
 							</fo:table-row>
