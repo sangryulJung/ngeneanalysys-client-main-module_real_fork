@@ -237,7 +237,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             if(panel.isPresent()) {
                 Panel p = panel.get();
                 //sample.setAnalysisType(p.getAnalysisType());
-                TextField sampleSource = (TextField) standardDataGridPane.getChildren().get(i + 5);
+                TextField sampleSource = (TextField) standardDataGridPane.getChildren().get(i + 2);
                 //sample.setSampleSource((sampleSource.getText() == null || sampleSource.getText().equals(""))
                 //        ? "FFPE" : sampleSource.getText());
                 //sample.setSampleSource(p.getSampleSource());
