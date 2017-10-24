@@ -154,19 +154,19 @@ public class UserAccountController extends SubPaneController {
             selectUserType.requestFocus();
         } else if(selectUserGroup.getSelectionModel().getSelectedIndex() == 0 || selectUserGroup.getValue() == null) {
             selectUserGroup.requestFocus();
-        } else if(ValidationUtil.text(loginIdTextField.getText(), "login ID", 4, 8, null, null, true, dialogStage) > 0) {
+        } else if(ValidationUtil.text(loginIdTextField.getText(), "login ID", 4, 50, null, null, true, dialogStage) > 0) {
             loginIdTextField.requestFocus();
-        } else if(ValidationUtil.text(nameTextField.getText(), "name", 4, 8, null, null, true, dialogStage) > 0) {
+        } else if(ValidationUtil.text(nameTextField.getText(), "name", 1, 100, null, null, true, dialogStage) > 0) {
             nameTextField.requestFocus();
-        } else if(!StringUtils.isEmpty(organizationTextField.getText()) && ValidationUtil.text(organizationTextField.getText(), "organization", -1, -1, null, null, true, dialogStage) > 0) {
+        } else if(!StringUtils.isEmpty(organizationTextField.getText()) && ValidationUtil.text(organizationTextField.getText(), "organization", -1, 50, null, null, true, dialogStage) > 0) {
             organizationTextField.requestFocus();
-        } else if(!StringUtils.isEmpty(departmentTextField.getText()) && ValidationUtil.text(departmentTextField.getText(), "department", -1, -1, null, null, true, dialogStage) > 0) {
+        } else if(!StringUtils.isEmpty(departmentTextField.getText()) && ValidationUtil.text(departmentTextField.getText(), "department", -1, 50, null, null, true, dialogStage) > 0) {
             departmentTextField.requestFocus();
         } else if(!StringUtils.isEmpty(addressTextField.getText()) && ValidationUtil.text(addressTextField.getText(), "address", -1, -1, null, null, true, dialogStage) > 0) {
             addressTextField.requestFocus();
-        } else if(!StringUtils.isEmpty(phoneTextField.getText()) && ValidationUtil.text(phoneTextField.getText(), "phone", -1, -1, null, null, true, dialogStage) > 0) {
+        } else if(!StringUtils.isEmpty(phoneTextField.getText()) && ValidationUtil.text(phoneTextField.getText(), "phone", -1, 50, null, null, true, dialogStage) > 0) {
             phoneTextField.requestFocus();
-        } else if(!StringUtils.isEmpty(emailTextField.getText()) && ValidationUtil.text(emailTextField.getText(), "email", -1, -1, null, null, true, dialogStage) > 0) {
+        } else if(!StringUtils.isEmpty(emailTextField.getText()) && ValidationUtil.text(emailTextField.getText(), "email", -1, 50, null, null, true, dialogStage) > 0) {
             emailTextField.requestFocus();
         } else if(validPwdInput()) {
             params = new HashMap<>();
