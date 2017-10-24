@@ -229,9 +229,11 @@ public class SystemMenuEditController extends SubPaneController {
                             dialogStage, true);
                     dialogStage.close();
                 } catch (WebAPIException wae) {
+                    wae.printStackTrace();
                     DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                             getMainApp().getPrimaryStage(), true);
                 } catch (Exception e) {
+                    e.printStackTrace();
                     DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
                 }
 
