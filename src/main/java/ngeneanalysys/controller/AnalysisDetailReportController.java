@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
+import ngeneanalysys.code.enums.SequencerCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
@@ -192,11 +193,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
             AnalysisResultVariantList analysisResultVariantList = response.getObjectBeforeConvertResponseToJSON(AnalysisResultVariantList.class);
 
-            response = apiService.get("/runs/" + sample.getRunId(), null,
-                    null, false);
-
-            Run run = response.getObjectBeforeConvertResponseToJSON(Run.class);
-
             List<AnalysisResultVariant> list = analysisResultVariantList.getResult();
 
             //negative list만 가져옴
@@ -279,9 +275,10 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 String draftImageStr = String.format("url('%s')", this.getClass().getClassLoader().getResource("layout/images/DRAFT.png"));
                 String ngenebioLogo = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/ngenebio_logo_small.png"));
                 Map<String,Object> contentsMap = new HashMap<>();
-                contentsMap.put("panelName", panelLabel.getText());
+                contentsMap.put("panelName", panel.getName());
                 contentsMap.put("diseaseName", diseaseLabel.getText());
                 contentsMap.put("sampleSource", panel.getSampleSource());
+                contentsMap.put("panelCode", panel.getCode());
 
                 List<AnalysisResultVariant> variantList = new ArrayList<>();
                 if(tierOne != null && !tierOne.isEmpty()) variantList.addAll(tierOne);
@@ -309,6 +306,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 contentsMap.put("evidenceCCount", evidenceCCount);
                 contentsMap.put("evidenceDCount", evidenceDCount);
                 contentsMap.put("negativeList", negativeResult);
+                contentsMap.put("qcData", sample.getQcData());
 
                 //Genes in panel
                 try {
@@ -329,6 +327,31 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         contentsMap.put("genesInPanelTableTwo", Arrays.copyOfRange(genesInPanelTableOne, tableOneSize, tableOneSize + tableTwoSize));
                         contentsMap.put("genesInPanelTableThree", Arrays.copyOfRange(genesInPanelTableOne, tableOneSize + tableTwoSize, variantCountByGenes.size()));
 
+                        response = apiService.get("/runs/" + sample.getRunId(), null,
+                                null, false);
+
+                        String runSequencer = response.getContentString().substring(response.getContentString().indexOf("MISEQ"));
+
+                        runSequencer = runSequencer.substring(0, runSequencer.indexOf("\""));
+
+                        if(runSequencer.equalsIgnoreCase("MISEQ")) {
+                            contentsMap.put("sequencer",SequencerCode.MISEQ.getDescription());
+                        } else {
+                            contentsMap.put("sequencer",SequencerCode.MISEQ_DX.getDescription());
+                        }
+
+                        response = apiService.get("/analysisResults/"+ sample.getId() + "/sampleQCs", null,
+                                null, false);
+
+                        List<SampleQC> qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
+
+                        contentsMap.put("totalBase",findQCResult(qcList, "total_base"));
+                        contentsMap.put("q30",findQCResult(qcList, "q30_trimmed_base"));
+                        contentsMap.put("mappedBase",findQCResult(qcList, "mapped_base"));
+                        contentsMap.put("onTarget",findQCResult(qcList, "on_target"));
+                        contentsMap.put("onTargetCoverage",findQCResult(qcList, "on_target_coverage"));
+                        contentsMap.put("duplicatedReads",findQCResult(qcList, "duplicated_reads"));
+                        contentsMap.put("roiCoverage",findQCResult(qcList, "roi_coverage"));
                     }
                 } catch (WebAPIException wae) {
                     DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
@@ -372,6 +395,16 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         }
 
         return created;
+    }
+
+    private SampleQC findQCResult(List<SampleQC> qcList, String qc) {
+        if(qcList != null && !qcList.isEmpty()) {
+            Optional<SampleQC> findQC = qcList.stream().filter(sampleQC -> sampleQC.getQcType().equalsIgnoreCase(qc)).findFirst();
+            if(findQC.isPresent()) {
+                return findQC.get();
+            }
+        }
+        return null;
     }
 
     /**
