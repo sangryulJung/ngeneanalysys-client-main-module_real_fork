@@ -120,6 +120,7 @@ public class ConvertUtil {
 			else if (tier.equalsIgnoreCase("T2")) convertTier = "Tier II";
 			else if (tier.equalsIgnoreCase("T3")) convertTier = "Tier III";
 			else if (tier.equalsIgnoreCase("T4")) convertTier = "Tier IV";
+			else if (tier.equalsIgnoreCase("TN")) convertTier = "Negative";
 		}
 
 		return convertTier;

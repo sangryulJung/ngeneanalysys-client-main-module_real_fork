@@ -13,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.Polyline;
@@ -200,8 +201,25 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
     private VBox variantInterpretation;
     @FXML
     private VBox clinicalSignificant;
+    @FXML
+    private HBox evidenceHBox;
+    @FXML
+    private HBox negativeHBox;
+    @FXML
+    private Label swTierLabel;
+    @FXML
+    private Label userTierLabel;
+    @FXML
+    private TextArea resultTextArea;
+    @FXML
+    private Pane nodePane;
+    @FXML
+    private Pane tierPane;
+    @FXML
+    private Pane clinicalPane;
 
     @FXML private VBox significantArea;
+
 
     private AnalysisDetailSNPsINDELsController analysisDetailSNPsINDELsController;
 
@@ -258,9 +276,12 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
 
         if(panel != null && "SOMATIC".equals(panel.getAnalysisType())) {
             variantInterpretation.setVisible(true);
-            clinicalSignificant.setVisible(false);
+            //clinicalSignificant.setVisible(false);
+            nodePane.getChildren().remove(clinicalPane);
+            showVariantInterpretation();
         } else {
-            variantInterpretation.setVisible(false);
+            //variantInterpretation.setVisible(false);
+            nodePane.getChildren().remove(tierPane);
             clinicalSignificant.setVisible(true);
             // SIGNIFICANT 레이더 차트 화면 출력
             //showClinicalSignificantGraph();
@@ -270,6 +291,112 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
 
         logger.info("SNP/Indels subTab Overview");
     }
+
+    private void showVariantInterpretation() {
+
+        renderTier(swTierLabel, variant.getInterpretation(), variant.getSwTier());
+        renderTier(userTierLabel, variant.getInterpretation(), variant.getExpertTier());
+        renderEvidence(evidenceHBox, variant.getInterpretation());
+        renderNegative(negativeHBox, variant.getInterpretation());
+    }
+
+    //evidence 정보 표시
+    private void renderEvidence(HBox node, Interpretation interpretation) {
+        if (node == null) return;
+        ObservableList<Node> childs = node.getChildren();
+        resultTextArea.setText("");
+        if (childs != null) {
+            for (Node child : childs) {
+                child.getStyleClass().removeAll(child.getStyleClass());
+                boolean flag = false;
+                if(((Label)child).getText().equals("A") && !StringUtils.isEmpty(interpretation.getInterpretationEvidenceA())) {
+                    child.getStyleClass().add("prediction_E");
+                    resultTextArea.setText(interpretation.getInterpretationEvidenceA());
+                    flag = true;
+                }
+                if(((Label)child).getText().equals("B") && !StringUtils.isEmpty(interpretation.getInterpretationEvidenceB())) {
+                    child.getStyleClass().add("prediction_E");
+                    resultTextArea.setText(interpretation.getInterpretationEvidenceB());
+                    flag = true;
+                }
+                if(((Label)child).getText().equals("C") && !StringUtils.isEmpty(interpretation.getInterpretationEvidenceC())) {
+                    child.getStyleClass().add("prediction_E");
+                    resultTextArea.setText(interpretation.getInterpretationEvidenceC());
+                    flag = true;
+                }
+                if(((Label)child).getText().equals("D") && !StringUtils.isEmpty(interpretation.getInterpretationEvidenceD())) {
+                    child.getStyleClass().add("prediction_E");
+                    resultTextArea.setText(interpretation.getInterpretationEvidenceD());
+                    flag = true;
+                }
+                if(((Label)child).getText().equals("EVIDENCE")) {
+                    child.getStyleClass().add("clinical_significant_pathogenicity_label");
+                    flag = true;
+                }
+                if(!flag) {
+                    child.getStyleClass().add("prediction_none");
+                    if(resultTextArea.getText().equalsIgnoreCase("")) {
+                        resultTextArea.setText("");
+                    }
+                }
+            }
+        }
+    }
+
+    //tier 정보 표시
+    private void renderTier(Label node, Interpretation interpretation, String tier) {
+        node.getStyleClass().removeAll(node.getStyleClass());
+        if(tier == null) {
+            node.getStyleClass().add("prediction_none");
+            return;
+        }
+        String text = "";
+        if(tier.equalsIgnoreCase("T1")) {
+            text = "I";
+        } else if(tier.equalsIgnoreCase("T2")) {
+            text = "II";
+        } else if(tier.equalsIgnoreCase("T3")) {
+            text = "III";
+        } else if(tier.equalsIgnoreCase("T4")) {
+            text = "IV";
+        }
+
+        boolean flag = false;
+        if(!text.equalsIgnoreCase("")) {
+            node.setText(text);
+            node.getStyleClass().add("prediction_C");
+        } else {
+            node.getStyleClass().add("prediction_none");
+        }
+    }
+
+    //tier 정보 표시
+    private void renderNegative(HBox node, Interpretation interpretation) {
+        if (node == null) return;
+        ObservableList<Node> childs = node.getChildren();
+
+        if (childs != null) {
+            for (Node child : childs) {
+                child.getStyleClass().removeAll(child.getStyleClass());
+                if(((Label)child).getText().equals("NEGATIVE")) {
+                    child.getStyleClass().add("clinical_significant_pathogenicity_label");
+                    continue;
+                }
+                boolean flag = false;
+                if(((Label)child).getText().equals("N") && !StringUtils.isEmpty(interpretation.getInterpretationNegativeTesult())) {
+                    child.getStyleClass().add("prediction_A");
+                    //resultTextArea.setText(interpretation.getInterpretationNegativeTesult());
+                    flag = true;
+                }
+
+                if(!flag) {
+                    child.getStyleClass().add("prediction_none");
+                    //resultTextArea.setText("");
+                }
+            }
+        }
+    }
+
 
     /**
      * Depth 그래프 값 입력 및 화면 출력
@@ -976,5 +1103,18 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
 
     public int getTranscriptComboBoxSelectedIndex() {
         return transcriptComboBox.getSelectionModel().getSelectedIndex();
+    }
+
+    @SuppressWarnings("unchecked")
+    public void addClickEvent(String text, Node node) {
+        if("T1".equals(text) || "T2".equals(text)) {
+            node.setStyle("-fx-cursor:hand;");
+            node.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openPopOver((Label) node));
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public void openPopOver(Label label) {
+
     }
 }

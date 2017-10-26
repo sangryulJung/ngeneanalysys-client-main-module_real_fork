@@ -217,7 +217,10 @@ public class AnalysisResultVariant implements Serializable {
 	 * @return hasWarning
 	 */
 	public String getHasWarning() {
-		return hasWarning;
+		if("Y".equalsIgnoreCase(this.hasWarning)) {
+			return (!StringUtils.isEmpty(this.warningReason)) ? this.warningReason : "NONE";
+		}
+		return null;
 	}
 
 	/**

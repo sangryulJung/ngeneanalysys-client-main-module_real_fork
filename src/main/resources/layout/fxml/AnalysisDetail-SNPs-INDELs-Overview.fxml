@@ -523,9 +523,9 @@
 		</VBox>
 		<VBox fx:id="significantArea" alignment="TOP_CENTER" layoutX="572.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="272.0" prefWidth="265.0" styleClass="border_left" GridPane.columnIndex="3">
 			<children>
-            <Pane prefHeight="270.0" prefWidth="264.0">
+            <Pane fx:id="nodePane" prefHeight="270.0" prefWidth="264.0">
                <children>
-                  <Pane prefHeight="200.0" prefWidth="264.0">
+                  <Pane fx:id="tierPane" prefHeight="200.0" prefWidth="264.0">
                      <children>
                         <VBox fx:id="variantInterpretation" prefHeight="200.0" prefWidth="264.0" styleClass="clinical_significant_pathogenicity_vbox">
                            <children>
@@ -534,35 +534,35 @@
                                     <Label styleClass="title1" text="VARIANT INTERPRETATION" />
                                  </children>
                               </HBox>
-                              <HBox fx:id="pathogenicityPredictionHBox1" prefHeight="33.0" styleClass="clinical_significant_pathogenicity_hbox">
+                              <HBox fx:id="tierHBox" prefHeight="33.0" styleClass="clinical_significant_pathogenicity_hbox">
                                  <children>
-                                    <Label fx:id="clinicalSignificantPathogenicityPredictionLabel1" styleClass="clinical_significant_pathogenicity_label" text="SW TIER" />
-                                    <Label styleClass="prediction_none" text="I" />
-                                    <Label fx:id="clinicalSignificantPathogenicityPredictionLabel11" styleClass="clinical_significant_pathogenicity_label" text="USER TIER" />
-                                    <Label styleClass="prediction_none" text="I" />
+                                    <Label fx:id="swTierTextLabel" styleClass="clinical_significant_pathogenicity_label" text="SW TIER" />
+                                    <Label fx:id="swTierLabel" styleClass="prediction_none" text="I" />
+                                    <Label fx:id="userTierTextLabel" styleClass="clinical_significant_pathogenicity_label" text="USER TIER" />
+                                    <Label fx:id="userTierLabel" styleClass="prediction_none" text="I" />
                                  </children>
                               </HBox>
-                              <HBox fx:id="pathogenicityPredictionHBox12" prefHeight="33.0" styleClass="clinical_significant_pathogenicity_hbox">
+                              <HBox fx:id="evidenceHBox" prefHeight="33.0" styleClass="clinical_significant_pathogenicity_hbox">
                                  <children>
-                                    <Label fx:id="clinicalSignificantPathogenicityPredictionLabel12" styleClass="clinical_significant_pathogenicity_label" text="EVIDENCE" />
+                                    <Label fx:id="evidenceTextLabel" styleClass="clinical_significant_pathogenicity_label" text="EVIDENCE" />
                                     <Label styleClass="prediction_none" text="A" />
                                     <Label styleClass="prediction_none" text="B" />
                                     <Label styleClass="prediction_none" text="C" />
                                     <Label styleClass="prediction_none" text="D" />
                                  </children>
                               </HBox>
-                              <HBox fx:id="pathogenicityPredictionHBox121" prefHeight="33.0" styleClass="clinical_significant_pathogenicity_hbox">
+                              <HBox fx:id="negativeHBox" prefHeight="33.0" styleClass="clinical_significant_pathogenicity_hbox">
                                  <children>
-                                    <Label fx:id="clinicalSignificantPathogenicityPredictionLabel121" styleClass="clinical_significant_pathogenicity_label" text="NEGATIVE" />
+                                    <Label fx:id="negativeLabel" styleClass="clinical_significant_pathogenicity_label" text="NEGATIVE" />
                                     <Label styleClass="prediction_none" text="N" />
                                  </children>
                               </HBox>
-                              <TextArea prefHeight="200.0" prefWidth="200.0" />
+                              <TextArea fx:id="resultTextArea" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true" />
                            </children>
                         </VBox>
                      </children>
                   </Pane>
-                  <Pane prefHeight="258.0" prefWidth="264.0">
+                  <Pane fx:id="clinicalPane" prefHeight="258.0" prefWidth="264.0">
                      <children>
             				<VBox fx:id="clinicalSignificant" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="258.0" prefWidth="270.0" visible="false">
             					<children>

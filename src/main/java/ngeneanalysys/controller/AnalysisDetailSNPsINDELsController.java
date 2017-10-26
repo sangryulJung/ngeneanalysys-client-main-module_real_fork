@@ -20,6 +20,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -31,6 +32,7 @@ import ngeneanalysys.code.enums.*;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
+import ngeneanalysys.model.render.SNPsINDELsList;
 import ngeneanalysys.service.ALAMUTService;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.IGVService;
@@ -283,6 +285,10 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         filterList.getChildren().add(predictionDBox);
         filterList.setMargin(predictionDBox, new Insets(0, 0, 0, 5));
 
+        // Negative
+        VBox predictionEBox = getFilterBox(ACMGFilterCode.TIER_NEGATIVE, (count.get("TN") != null ? count.get("TN").intValue() : 0));
+        filterList.getChildren().add(predictionEBox);
+        filterList.setMargin(predictionEBox, new Insets(0, 0, 0, 5));
     }
 
     /**
@@ -352,7 +358,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             alias.getStyleClass().add("alias_" + acmgFilterCode.name());
             HBox hbox = new HBox(alias, countLabel);
             box.getChildren().setAll(hbox, levelLabel);
-        } else {
+        }  else {
             box.getChildren().setAll(levelLabel, countLabel);
         }
 
@@ -975,9 +981,20 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         }
 
         TableColumn<AnalysisResultVariant, String> warn = new TableColumn<>("Warn");
+        warn.getStyleClass().add("alignment_center");
         warn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getHasWarning()));
+        warn.setCellFactory((param) -> {
+                TableCell<AnalysisResultVariant,String> cell = new TableCell<AnalysisResultVariant, String>() {
+                    @Override
+                    public void updateItem(String item, boolean empty) {
+                        setGraphic((!StringUtils.isEmpty(item)) ? SNPsINDELsList.getWarningReasonPopOver(item) : null);
+                    }
+                };
+                return cell;
+        });
 
         TableColumn<AnalysisResultVariant, String> report = new TableColumn<>("Report");
+        report.getStyleClass().add("alignment_center");
         report.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getIncludedInReport()));
         report.setCellFactory(new Callback<TableColumn<AnalysisResultVariant, String>, TableCell<AnalysisResultVariant, String>>() {
             @Override
@@ -988,6 +1005,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                         Label label = null;
                         if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
                             label = new Label("R");
+                            label.getStyleClass().remove("label");
                             label.getStyleClass().add("prediction_E");
                         }
                         setGraphic(label);

@@ -12,10 +12,7 @@ import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.PDFCreateService;
-import ngeneanalysys.util.DialogUtil;
-import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.StringUtils;
-import ngeneanalysys.util.VelocityUtil;
+import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
@@ -122,7 +119,10 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
         // API 서비스 클래스 init
         apiService = APIService.getInstance();
+
         apiService.setStage(getMainController().getPrimaryStage());
+
+        loginSession = LoginSessionUtil.getCurrentLoginSession();
 
         pdfCreateService = PDFCreateService.getInstance();
 
@@ -238,22 +238,77 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
     @FXML
     public void save() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initOwner(getMainController().getPrimaryStage());
+        alert.setTitle(CONFIRMATION_DIALOG);
+        alert.setHeaderText("Save Report Information");
+        alert.setContentText("Do you want to save?");
 
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.isPresent() && result.get() == ButtonType.OK) {
+            boolean dataSave = saveData(null);
+            if(dataSave) {
+                DialogUtil.alert("Save Success", "Input data is successfully saved.", getMainController().getPrimaryStage(), false);
+            }
+        } else {
+            alert.close();
+        }
     }
 
     @FXML
     public void createPDFAsDraft() {
-        createPDF(true, false);
+        boolean dataSave = saveData(null);
+        if(dataSave){
+            createPDF(true, false);
+        }
     }
 
     @FXML
     public void createPDFAsFinal() {
+        User user;
 
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initOwner(getMainController().getPrimaryStage());
+        alert.setTitle(CONFIRMATION_DIALOG);
+        alert.setHeaderText("Test conducting organization information");
+        alert.setContentText(String.format("Test conducting organization information will be filled with current user [ %s ] information for final report generation.\n\nDo you want to proceed?", loginSession.getName()));
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                HttpClientResponse response = apiService.get("/member", null,
+                        null, false);
+                user = response.getObjectBeforeConvertResponseToJSON(User.class);
+                // 소속기관, 연락처 정보 존재 확인
+                if (!StringUtils.isEmpty(user.getOrganization()) && !StringUtils.isEmpty(user.getPhone())) {
+                    boolean dataSave = saveData(user);
+                    if (dataSave) {
+                        // 최종 보고서 생성이 정상 처리된 경우 분석 샘플의 상태값 완료 처리.
+                        if (createPDF(false, true)) {
+                            setComplete();
+                        }
+                    }
+                } else {
+                    DialogUtil.warning("Empty Reviewer Information",
+                            "Please Input a Reviewer Information. [Menu > Edit]", getMainApp().getPrimaryStage(), true);
+                }
+
+            }  catch (WebAPIException wae) {
+                logger.error("web api exception", wae);
+                DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+                        getMainApp().getPrimaryStage(), true);
+            } catch (Exception e) {
+                logger.error("exception", e);
+                DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+            }
+        } else {
+            alert.close();
+        }
     }
 
     @FXML
     public void confirmPDFAsFinal() {
-
+        //createPDF(false, true);
     }
 
     public boolean createPDF(boolean isDraft, boolean printInspectionEnforcement) {
@@ -279,6 +334,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 contentsMap.put("diseaseName", diseaseLabel.getText());
                 contentsMap.put("sampleSource", panel.getSampleSource());
                 contentsMap.put("panelCode", panel.getCode());
+                contentsMap.put("patientCode", "SS17-01182");
 
                 List<AnalysisResultVariant> variantList = new ArrayList<>();
                 if(tierOne != null && !tierOne.isEmpty()) variantList.addAll(tierOne);

@@ -18,7 +18,8 @@ public enum ACMGFilterCode {
 	TIER_ONE("Tier I", "Tier I", "1", "T1"),
 	TIER_TWO("Tier II", "Tier II", "2", "T2"),
 	TIER_THREE("Tier III", "Tier III", "3", "T3"),
-	TIER_FOUR("Tier IV", "Tier IV", "4", "T4");
+	TIER_FOUR("Tier IV", "Tier IV", "4", "T4"),
+	TIER_NEGATIVE("Tier N", "Tier N", "N", "TN");
 
 	private String description;
 	private String detail;

@@ -89,7 +89,7 @@
 											Patient Code
 										</fo:block>
 										<fo:block font-weight="bold" font-size="12pt" color="#FFFFFF">
-											SS17-01182
+											$contents.patientCode
 										</fo:block>
 									</fo:block-container>
 								</fo:table-cell>
@@ -250,6 +250,7 @@
 
 			<!-- Variant Details -->
 			<fo:block text-align="center" margin-top="10mm" margin-bottom="5mm" font-family="Noto Sans CJK KR Bold" font-weight="bold" font-size="17pt">Variant Details</fo:block>
+			#if($contents.variantList && $contents.variantList.size() > 0)
 			<fo:block margin-bottom="10mm" font-size="10pt">
 				<fo:block margin-bottom="5mm">
 					#foreach($variant in $contents.variantList)
@@ -374,6 +375,7 @@
 				</fo:block>
 				<fo:block page-break-before="always"> </fo:block>
 			</fo:block>
+			#end
 
 			<!-- tierThreeVariantList -->
 			<fo:block margin-bottom="10mm" font-size="10pt">
