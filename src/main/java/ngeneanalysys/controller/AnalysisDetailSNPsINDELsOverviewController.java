@@ -3,6 +3,7 @@ package ngeneanalysys.controller;
 import javafx.animation.AnimationTimer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -311,22 +312,26 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
                 boolean flag = false;
                 if(((Label)child).getText().equals("A") && !StringUtils.isEmpty(interpretation.getInterpretationEvidenceA())) {
                     child.getStyleClass().add("prediction_E");
-                    resultTextArea.setText(interpretation.getInterpretationEvidenceA());
+                    //resultTextArea.setText(interpretation.getInterpretationEvidenceA());
+                    child.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> resultTextArea.setText(interpretation.getInterpretationEvidenceA()));
                     flag = true;
                 }
                 if(((Label)child).getText().equals("B") && !StringUtils.isEmpty(interpretation.getInterpretationEvidenceB())) {
                     child.getStyleClass().add("prediction_E");
-                    resultTextArea.setText(interpretation.getInterpretationEvidenceB());
+                    //resultTextArea.setText(interpretation.getInterpretationEvidenceB());
+                    child.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> resultTextArea.setText(interpretation.getInterpretationEvidenceB()));
                     flag = true;
                 }
                 if(((Label)child).getText().equals("C") && !StringUtils.isEmpty(interpretation.getInterpretationEvidenceC())) {
                     child.getStyleClass().add("prediction_E");
-                    resultTextArea.setText(interpretation.getInterpretationEvidenceC());
+                    //resultTextArea.setText(interpretation.getInterpretationEvidenceC());
+                    child.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> resultTextArea.setText(interpretation.getInterpretationEvidenceC()));
                     flag = true;
                 }
                 if(((Label)child).getText().equals("D") && !StringUtils.isEmpty(interpretation.getInterpretationEvidenceD())) {
                     child.getStyleClass().add("prediction_E");
-                    resultTextArea.setText(interpretation.getInterpretationEvidenceD());
+                    //resultTextArea.setText(interpretation.getInterpretationEvidenceD());
+                    child.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> resultTextArea.setText(interpretation.getInterpretationEvidenceD()));
                     flag = true;
                 }
                 if(((Label)child).getText().equals("EVIDENCE")) {
@@ -386,6 +391,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
                 if(((Label)child).getText().equals("N") && !StringUtils.isEmpty(interpretation.getInterpretationNegativeTesult())) {
                     child.getStyleClass().add("prediction_A");
                     //resultTextArea.setText(interpretation.getInterpretationNegativeTesult());
+                    child.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> resultTextArea.setText(interpretation.getInterpretationNegativeTesult()));
                     flag = true;
                 }
 
@@ -1103,18 +1109,5 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
 
     public int getTranscriptComboBoxSelectedIndex() {
         return transcriptComboBox.getSelectionModel().getSelectedIndex();
-    }
-
-    @SuppressWarnings("unchecked")
-    public void addClickEvent(String text, Node node) {
-        if("T1".equals(text) || "T2".equals(text)) {
-            node.setStyle("-fx-cursor:hand;");
-            node.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openPopOver((Label) node));
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    public void openPopOver(Label label) {
-
     }
 }

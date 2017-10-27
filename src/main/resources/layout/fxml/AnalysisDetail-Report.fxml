@@ -75,7 +75,7 @@
                               <Insets top="15.0" />
                            </VBox.margin>
                         </Label>
-                        <TableView fx:id="tierOneVariantsTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="1160.0" styleClass="txt_black">
+                        <TableView fx:id="tierOneVariantsTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="1160.0" styleClass="txt_black">
                           <columns>
                             <TableColumn fx:id="tierOneGeneColumn" prefWidth="75.0" styleClass="txt_black" text="Gene" />
                             <TableColumn fx:id="tierOneVariantsColumn" prefWidth="75.0" styleClass="txt_black" text="Variants" />
