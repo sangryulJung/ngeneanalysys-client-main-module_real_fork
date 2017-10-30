@@ -11,8 +11,11 @@ public class Panel {
     private String code;
     private String target;
     private String analysisType;
+    private String libraryType;
     private String sampleSource;
     private DateTime createdAt;
+    private DateTime updatedAt;
+    private DateTime deletedAt;
     private Integer deleted;
 
     public Integer getId() {
@@ -35,6 +38,8 @@ public class Panel {
         return analysisType;
     }
 
+    public String getLibraryType() { return libraryType; }
+
     public String getSampleSource() {
         return sampleSource;
     }
@@ -46,9 +51,11 @@ public class Panel {
     public DateTime getCreatedAt() {
         return createdAt;
     }
-
-    public void setCreatedAt(DateTime createdAt) {
-        this.createdAt = createdAt;
+    public DateTime getUpdatedAt() {
+        return updatedAt;
+    }
+    public DateTime getDeletedAt() {
+        return deletedAt;
     }
 
     @Override
@@ -59,7 +66,11 @@ public class Panel {
                 ", code='" + code + '\'' +
                 ", target='" + target + '\'' +
                 ", analysisType='" + analysisType + '\'' +
+                ", libraryType='" + libraryType + '\'' +
                 ", sampleSource='" + sampleSource + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", deletedAt=" + deletedAt +
                 ", deleted=" + deleted +
                 '}';
     }

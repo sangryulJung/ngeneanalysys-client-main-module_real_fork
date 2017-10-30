@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import ngeneanalysys.code.enums.ExperimentTypeCode;
+import ngeneanalysys.code.enums.LibraryTypeCode;
 import ngeneanalysys.code.enums.SampleSourceCode;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.model.Panel;
@@ -18,6 +19,7 @@ import ngeneanalysys.service.BedFileService;
 import ngeneanalysys.task.BedFileUploadTask;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
+import org.apache.commons.lang3.time.DateFormatUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,43 +48,55 @@ public class SystemManagerPanelController extends SubPaneController {
     private ComboBox<ComboBoxItem> analysisTypeComboBox;
 
     @FXML
+    private ComboBox<ComboBoxItem> libraryTypeComboBox;
+
+    @FXML
     private ComboBox<ComboBoxItem> sampleSourceComboBox;
 
     @FXML
-    private Button fileSelectBtn;
+    private Button bedFileSelectionButton;
 
     @FXML
-    private Button panelAddBtn;
+    private Button panelSaveButton;
 
     @FXML
     private TableView<Panel> panelListTable;
 
     @FXML
-    private TableColumn<Panel, Integer> panelId;
+    private TableColumn<Panel, Integer> panelIdTableColumn;
 
     @FXML
-    private TableColumn<Panel, String> panelName;
+    private TableColumn<Panel, String> panelNameTableColumn;
 
     @FXML
-    private TableColumn<Panel, String> panelCode;
+    private TableColumn<Panel, String> panelCodeTableColumn;
 
     @FXML
-    private TableColumn<Panel, String> panelTarget;
+    private TableColumn<Panel, String> panelTargetTableColumn;
 
     @FXML
-    private TableColumn<Panel, String> analysisType;
+    private TableColumn<Panel, String> analysisTypeTableColumn;
 
     @FXML
-    private TableColumn<Panel, String> sampleSource;
+    private TableColumn<Panel, String> libraryTypeTableColumn;
 
     @FXML
-    private TableColumn<Panel, String> createdAt;
+    private TableColumn<Panel, String> sampleSourceTableColumn;
 
     @FXML
-    private TableColumn<Panel, String> deleted;
+    private TableColumn<Panel, String> createdAtTableColumn;
 
     @FXML
-    private TableColumn<Panel, Boolean> modify;
+    private TableColumn<Panel, String> updatedAtTableColumn;
+
+    @FXML
+    private TableColumn<Panel, String> deletedAtTableColumn;
+
+    @FXML
+    private TableColumn<Panel, String> deletedTableColumn;
+
+    @FXML
+    private TableColumn<Panel, Boolean> editPanelTableColumn;
 
     File file = null;
 
@@ -90,14 +104,14 @@ public class SystemManagerPanelController extends SubPaneController {
     public void show(Parent root) throws IOException {
         apiService = APIService.getInstance();
 
-        panelAddBtn.setDisable(true);
+        panelSaveButton.setDisable(true);
 
-        panelId.setCellValueFactory(item -> new SimpleIntegerProperty(item.getValue().getId()).asObject());
-        panelName.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getName()));
-        panelCode.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getCode()));
-        panelTarget.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getTarget()));
-        analysisType.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getAnalysisType()));
-        sampleSource.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getSampleSource()));
+        panelIdTableColumn.setCellValueFactory(item -> new SimpleIntegerProperty(item.getValue().getId()).asObject());
+        panelNameTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getName()));
+        panelCodeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getCode()));
+        panelTargetTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getTarget()));
+        analysisTypeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getAnalysisType()));
+        sampleSourceTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getSampleSource()));
 
         List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
         panelListTable.getItems().addAll(panels);
@@ -108,18 +122,46 @@ public class SystemManagerPanelController extends SubPaneController {
         targetComboBox.getSelectionModel().selectFirst();
 
         analysisTypeComboBox.setConverter(new ComboBoxConverter());
-        analysisTypeComboBox.getItems().add(new ComboBoxItem(ExperimentTypeCode.SOMATIC.getDescription(), ExperimentTypeCode.SOMATIC.getDescription()));
-        analysisTypeComboBox.getItems().add(new ComboBoxItem(ExperimentTypeCode.GERMLINE.getDescription(), ExperimentTypeCode.GERMLINE.getDescription()));
+        analysisTypeComboBox.getItems().add(new ComboBoxItem(ExperimentTypeCode.SOMATIC.getDescription(),
+                ExperimentTypeCode.SOMATIC.getDescription()));
+        analysisTypeComboBox.getItems().add(new ComboBoxItem(ExperimentTypeCode.GERMLINE.getDescription(),
+                ExperimentTypeCode.GERMLINE.getDescription()));
+        analysisTypeComboBox.getItems().add(new ComboBoxItem(ExperimentTypeCode.SOMATIC_AND_GERMLINE.getDescription(),
+                ExperimentTypeCode.SOMATIC_AND_GERMLINE.getDescription()));
         analysisTypeComboBox.getSelectionModel().selectFirst();
-
+        libraryTypeComboBox.setConverter(new ComboBoxConverter());
+        libraryTypeComboBox.getItems().add(new ComboBoxItem(LibraryTypeCode.HYBRIDIZATION_CAPTURE.getDescription(),
+                LibraryTypeCode.HYBRIDIZATION_CAPTURE.getDescription()));
+        libraryTypeComboBox.getItems().add(new ComboBoxItem(LibraryTypeCode.AMPLICON_BASED.getDescription(),
+                LibraryTypeCode.AMPLICON_BASED.getDescription()));
+        libraryTypeComboBox.getSelectionModel().selectFirst();
         sampleSourceComboBox.setConverter(new ComboBoxConverter());
-        sampleSourceComboBox.getItems().add(new ComboBoxItem(SampleSourceCode.BLOOD.getDescription(), SampleSourceCode.BLOOD.getDescription()));
+        sampleSourceComboBox.getItems().add(new ComboBoxItem(SampleSourceCode.BLOOD.getDescription()
+                , SampleSourceCode.BLOOD.getDescription()));
         sampleSourceComboBox.getItems().add(new ComboBoxItem(SampleSourceCode.FFPE.getDescription(), SampleSourceCode.FFPE.getDescription()));
         sampleSourceComboBox.getSelectionModel().selectFirst();
+
+        createdAtTableColumn.setCellValueFactory(item -> new SimpleStringProperty(DateFormatUtils.format(
+                item.getValue().getCreatedAt().toDate(), "yyyy-MM-dd")));
+        updatedAtTableColumn.setCellValueFactory(item -> {
+            if (item.getValue().getUpdatedAt() != null )
+                return new SimpleStringProperty(DateFormatUtils.format(
+                    item.getValue().getUpdatedAt().toDate(), "yyyy-MM-dd"));
+            else
+                return new SimpleStringProperty("");
+        });
+        deletedAtTableColumn.setCellValueFactory(item -> {
+            if (item.getValue().getDeletedAt() != null )
+                return new SimpleStringProperty(DateFormatUtils.format(
+                        item.getValue().getDeletedAt().toDate(), "yyyy-MM-dd"));
+            else
+                return new SimpleStringProperty("");
+        });
+
     }
 
     @FXML
-    public void panelAdd() {
+    public void savePanel() {
         String panelName = panelNameTextField.getText();
         String code = panelCodeTextField.getText();
         if(!StringUtils.isEmpty(panelName) &&  !StringUtils.isEmpty(code)) {
@@ -130,6 +172,7 @@ public class SystemManagerPanelController extends SubPaneController {
             params.put("code", code);
             params.put("target", targetComboBox.getSelectionModel().getSelectedItem().getValue());
             params.put("analysisType", analysisTypeComboBox.getSelectionModel().getSelectedItem().getValue());
+            params.put("libraryType", libraryTypeComboBox.getSelectionModel().getSelectedItem().getValue());
             params.put("sampleSource", sampleSourceComboBox.getSelectionModel().getSelectedItem().getValue());
 
             HttpClientResponse response = null;
@@ -152,7 +195,7 @@ public class SystemManagerPanelController extends SubPaneController {
                 panelListTable.getItems().clear();
                 panelListTable.getItems().addAll(panels);
 
-                panelAddBtn.setDisable(true);
+                panelSaveButton.setDisable(true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -160,7 +203,7 @@ public class SystemManagerPanelController extends SubPaneController {
     }
 
     @FXML
-    public void fileSelect() {
+    public void selectBedFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose FASTQ File");
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
@@ -170,7 +213,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
         if(file != null && file.getName().toLowerCase().endsWith(".bed")) {
             this.file = file;
-            panelAddBtn.setDisable(false);
+            panelSaveButton.setDisable(false);
         }
     }
 }

@@ -6,14 +6,13 @@ package ngeneanalysys.code.enums;
  * @author gjyoo
  * @since 2016. 5. 24. 오전 10:32:36
  */
-public enum ExperimentTypeCode {
-	GERMLINE("GERMLINE"),
-	SOMATIC("SOMATIC"),
-	SOMATIC_AND_GERMLINE("SOMATIC_AND_GERMLINE");
-	
+public enum LibraryTypeCode {
+	HYBRIDIZATION_CAPTURE("HYBRIDIZATION_CAPTURE"),
+	AMPLICON_BASED("AMPLICON_BASED");
+
 	private String description;
-	
-	ExperimentTypeCode(String name) {
+
+	LibraryTypeCode(String name) {
 		this.description = name;
 	}
 

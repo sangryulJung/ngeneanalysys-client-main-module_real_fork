@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -16,7 +21,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="558.0" prefWidth="600.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemManagerPanelController">
+<AnchorPane prefHeight="558.0" prefWidth="600.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemManagerPanelController">
    <stylesheets>
       <URL value="@../../css/common.css" />
       <URL value="@../../css/experimenter.css" />
@@ -45,36 +50,39 @@
                   </VBox>
                   <GridPane>
                     <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="144.0" minWidth="10.0" prefWidth="111.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="189.0" minWidth="10.0" prefWidth="189.0" />
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <TextField fx:id="panelNameTextField" prefWidth="150.0" GridPane.columnIndex="1" />
-                        <TextField fx:id="panelCodeTextField" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <ComboBox fx:id="analysisTypeComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Label text="panel name" />
-                        <Label text="code" GridPane.rowIndex="1" />
-                        <Label text="target" GridPane.rowIndex="2" />
-                        <Label text="analysis type" GridPane.rowIndex="3" />
-                        <Label text="sample source" GridPane.rowIndex="4" />
-                        <ComboBox fx:id="targetComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <ComboBox fx:id="sampleSourceComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <TextField fx:id="panelNameTextField" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" />
+                        <TextField fx:id="panelCodeTextField" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <ComboBox fx:id="analysisTypeComboBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label text="Panel name" />
+                        <Label text="Code" GridPane.rowIndex="1" />
+                        <Label text="Target" GridPane.rowIndex="2" />
+                        <Label text="Analysis Type" GridPane.rowIndex="3" />
+                        <Label text="Sample Source" GridPane.rowIndex="5" />
+                        <ComboBox fx:id="targetComboBox" maxWidth="1.7976931348623157E308" prefWidth="188.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <ComboBox fx:id="sampleSourceComboBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <Label text="Library Type" GridPane.rowIndex="4" />
+                        <ComboBox fx:id="libraryTypeComboBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                      </children>
                   </GridPane>
                   <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="300.0">
                      <children>
-                        <Button fx:id="fileSelectBtn" mnemonicParsing="false" onAction="#fileSelect" text="select file">
+                        <Button fx:id="bedFileSelectionButton" mnemonicParsing="false" onAction="#selectBedFile" text="Select bed file">
                            <HBox.margin>
                               <Insets right="10.0" />
                            </HBox.margin></Button>
-                        <Button fx:id="panelAddBtn" mnemonicParsing="false" onAction="#panelAdd" text="panel add" />
+                        <Button fx:id="panelSaveButton" mnemonicParsing="false" onAction="#savePanel" text="Save" />
                      </children>
                   </HBox>
                </children>
@@ -125,16 +133,18 @@
                   </VBox>
                   <TableView fx:id="panelListTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                      <columns>
-                        <TableColumn fx:id="panelId" prefWidth="74.0" text="Panel Id" />
-                        <TableColumn fx:id="panelName" prefWidth="88.20001220703125" text="Panel Name" />
-                        <TableColumn fx:id="panelCode" prefWidth="64.79998779296875" text="Code" />
-                        <TableColumn fx:id="panelTarget" prefWidth="83.0" text="Target" />
-                        <TableColumn fx:id="analysisType" prefWidth="92.0" text="Analysis Type" />
-                        <TableColumn fx:id="sampleSource" prefWidth="97.0" text="Sample Source" />
-                        <TableColumn fx:id="createdAt" prefWidth="108.0" text="Created At" />
-                        <TableColumn fx:id="deletedAt" prefWidth="108.0" text="Deleted At" visible="false" />
-                        <TableColumn fx:id="deleted" prefWidth="49.0" text="Deleted" />
-                        <TableColumn fx:id="modify" prefWidth="83.0" text="Modify" />
+                        <TableColumn fx:id="panelIdTableColumn" prefWidth="74.0" text="Panel Id" />
+                        <TableColumn fx:id="panelNameTableColumn" prefWidth="88.20001220703125" text="Panel Name" />
+                        <TableColumn fx:id="panelCodeTableColumn" prefWidth="64.79998779296875" text="Code" />
+                        <TableColumn fx:id="panelTargetTableColumn" prefWidth="83.0" text="Target" />
+                        <TableColumn fx:id="analysisTypeTableColumn" prefWidth="92.0" text="Analysis Type" />
+                        <TableColumn fx:id="libraryTypeTableColumn" prefWidth="97.0" text="Library Type" />
+                        <TableColumn fx:id="sampleSourceTableColumn" prefWidth="97.0" text="Sample Source" />
+                        <TableColumn fx:id="createdAtTableColumn" prefWidth="108.0" text="Create at" />
+                        <TableColumn fx:id="updatedAtTableColumn" prefWidth="108.0" text="Update at" />
+                        <TableColumn fx:id="deletedAtTableColumn" prefWidth="108.0" text="Deleted At" visible="false" />
+                        <TableColumn fx:id="deletedTableColumn" prefWidth="49.0" text="Deleted" />
+                        <TableColumn fx:id="editPanelTableColumn" prefWidth="83.0" text="editPanelTableColumn" />
                      </columns>
                   </TableView>
                   <HBox alignment="CENTER_RIGHT" prefHeight="48.0" prefWidth="900.0" spacing="5.0" VBox.vgrow="NEVER">

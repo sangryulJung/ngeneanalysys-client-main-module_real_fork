@@ -131,6 +131,7 @@ public class SystemManagerHomeController extends SubPaneController {
 
             } catch (Exception e) {
                 logger.error("tab contents loading fail." + e.getMessage());
+                e.printStackTrace();
             }
         }
     }
