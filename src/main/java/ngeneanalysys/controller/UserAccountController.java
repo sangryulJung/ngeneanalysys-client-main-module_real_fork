@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author Jang
@@ -132,17 +133,17 @@ public class UserAccountController extends SubPaneController {
             addressTextField.setText(user.getAddress());
             phoneTextField.setText(user.getPhone());
             emailTextField.setText(user.getEmail());
-            /*final Optional<ComboBoxItem> userGroup = selectUserGroup.getItems().stream().filter(
-                    item -> item.getValue().equals(user.getUserGroup().toString())).findFirst();*/
-           /* if(userGroup.isPresent()) {
+            final Optional<ComboBoxItem> userGroup = selectUserGroup.getItems().stream().filter(
+                    item -> item.getText().equals(user.getMemberGroupName())).findFirst();
+            if(userGroup.isPresent()) {
                 selectUserGroup.setValue(userGroup.get());
             }
 
             final Optional<ComboBoxItem> userType = selectUserType.getItems().stream().filter(
-                    item -> item.getText().equals(user.getUserType())).findFirst();
+                    item -> item.getText().equals(user.getRole())).findFirst();
             if(userType.isPresent()) {
                 selectUserType.setValue(userType.get());
-            }*/
+            }
         }
     }
 

@@ -1,37 +1,46 @@
 package ngeneanalysys.controller;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import ngeneanalysys.code.enums.ExperimentTypeCode;
 import ngeneanalysys.code.enums.LibraryTypeCode;
 import ngeneanalysys.code.enums.SampleSourceCode;
 import ngeneanalysys.controller.extend.SubPaneController;
+import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.Panel;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.BedFileService;
 import ngeneanalysys.task.BedFileUploadTask;
+import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author Jang
  * @since 2017-09-25
  */
 public class SystemManagerPanelController extends SubPaneController {
+    private static Logger logger = LoggerUtil.getLogger();
 
     private APIService apiService;
 
@@ -98,7 +107,12 @@ public class SystemManagerPanelController extends SubPaneController {
     @FXML
     private TableColumn<Panel, Boolean> editPanelTableColumn;
 
+    @FXML
+    private Label titleLabel;
+
     File file = null;
+
+    private int panelId = 0;
 
     @Override
     public void show(Parent root) throws IOException {
@@ -158,6 +172,12 @@ public class SystemManagerPanelController extends SubPaneController {
                 return new SimpleStringProperty("");
         });
 
+        editPanelTableColumn.setSortable(false);
+        editPanelTableColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
+        editPanelTableColumn.setCellFactory(param -> new PanelModifyButton());
+
+
+        setDisabledItem(true);
     }
 
     @FXML
@@ -165,7 +185,7 @@ public class SystemManagerPanelController extends SubPaneController {
         String panelName = panelNameTextField.getText();
         String code = panelCodeTextField.getText();
         if(!StringUtils.isEmpty(panelName) &&  !StringUtils.isEmpty(code)) {
-            if(file == null) return;
+            if(file == null && panelId == 0) return;
 
             Map<String,Object> params = new HashMap<>();
             params.put("name", panelName);
@@ -177,29 +197,79 @@ public class SystemManagerPanelController extends SubPaneController {
 
             HttpClientResponse response = null;
             try {
-                response = apiService.post("admin/panels", params, null, true);
-                Panel newPanel = response.getObjectBeforeConvertResponseToJSON(Panel.class);
+                if(panelId == 0) {
+                    response = apiService.post("admin/panels", params, null, true);
+                    Panel newPanel = response.getObjectBeforeConvertResponseToJSON(Panel.class);
 
-                Task task = new BedFileUploadTask(newPanel.getId(), file);
+                    Task task = new BedFileUploadTask(newPanel.getId(), file);
 
-                Thread thread = new Thread(task);
-                thread.setDaemon(true);
-                thread.start();
+                    Thread thread = new Thread(task);
+                    thread.setDaemon(true);
+                    thread.start();
+                } else {
+                    response = apiService.put("admin/panels/" + panelId, params, null, true);
+                    Panel modifiedPanel = response.getObjectBeforeConvertResponseToJSON(Panel.class);
+                }
 
-                /*response = apiService.get("/panels", null, null, false);
+                response = apiService.get("/panels", null, null, false);
                 final List<Panel> panels = (List<Panel>) response.getMultiObjectBeforeConvertResponseToJSON(Panel.class, false);
-                mainController.getBasicInformationMap().put("panels", panels);*/
-                List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
-                panels.add(newPanel);
+                mainController.getBasicInformationMap().put("panels", panels);
+                //List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
+                //panels.add(newPanel);
 
                 panelListTable.getItems().clear();
                 panelListTable.getItems().addAll(panels);
-
+                resetItem();
+                setDisabledItem(true);
                 panelSaveButton.setDisable(true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void resetItem() {
+        panelNameTextField.setText("");
+        panelCodeTextField.setText("");
+        sampleSourceComboBox.getSelectionModel().selectFirst();
+        analysisTypeComboBox.getSelectionModel().selectFirst();
+        targetComboBox.getSelectionModel().selectFirst();
+        libraryTypeComboBox.getSelectionModel().selectFirst();
+        file = null;
+        panelSaveButton.setDisable(true);
+    }
+
+    public void setDisabledItem(boolean condition) {
+        panelNameTextField.setDisable(condition);
+        panelCodeTextField.setDisable(condition);
+        sampleSourceComboBox.setDisable(condition);
+        analysisTypeComboBox.setDisable(condition);
+        targetComboBox.setDisable(condition);
+        libraryTypeComboBox.setDisable(condition);
+        bedFileSelectionButton.setDisable(condition);
+    }
+
+    public void deletePanel(Integer panelId) {
+        try {
+            apiService.delete("admin/panels/" + panelId);
+
+            HttpClientResponse response = apiService.get("/panels", null, null, false);
+            final List<Panel> panels = (List<Panel>) response.getMultiObjectBeforeConvertResponseToJSON(Panel.class, false);
+            mainController.getBasicInformationMap().put("panels", panels);
+
+            panelListTable.getItems().clear();
+            panelListTable.getItems().addAll(panels);
+
+        } catch (WebAPIException wae) {
+            wae.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void panelAdd() {
+        titleLabel.setText("panel add");
+        setDisabledItem(false);
+        resetItem();
     }
 
     @FXML
@@ -216,4 +286,85 @@ public class SystemManagerPanelController extends SubPaneController {
             panelSaveButton.setDisable(false);
         }
     }
+
+    private class PanelModifyButton extends TableCell<Panel, Boolean> {
+        HBox box = null;
+        final ImageView img1 = new ImageView(resourceUtil.getImage("/layout/images/icon_pathogenicity_1.png"));
+        final ImageView img2 = new ImageView(resourceUtil.getImage("/layout/images/icon_pathogenicity_2.png"));
+
+        public PanelModifyButton() {
+
+            img1.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                Panel panel = PanelModifyButton.this.getTableView().getItems().get(
+                        PanelModifyButton.this.getIndex());
+
+                titleLabel.setText("panel modify");
+
+                setDisabledItem(false);
+
+                panelId = panel.getId();
+
+                panelNameTextField.setText(panel.getName());
+                panelCodeTextField.setText(panel.getCode());
+                Optional<ComboBoxItem> sampleSourceItem =
+                        sampleSourceComboBox.getItems().stream().filter(item -> item.getValue().equalsIgnoreCase(panel.getSampleSource())).findFirst();
+                if(sampleSourceItem.isPresent()) sampleSourceComboBox.getSelectionModel().select(sampleSourceItem.get());
+
+                Optional<ComboBoxItem> analysisTypeItem =
+                        analysisTypeComboBox.getItems().stream().filter(item -> item.getValue().equalsIgnoreCase(panel.getAnalysisType())).findFirst();
+                if(analysisTypeItem.isPresent()) analysisTypeComboBox.getSelectionModel().select(analysisTypeItem.get());
+
+                Optional<ComboBoxItem> targetItem = targetComboBox.getItems().stream().filter(item -> item.getValue().equalsIgnoreCase(panel.getTarget())).findFirst();
+                if(targetItem.isPresent()) targetComboBox.getSelectionModel().select(targetItem.get());
+
+                Optional<ComboBoxItem> libraryTypeItem = libraryTypeComboBox.getItems().stream().filter(item -> item.getValue().equalsIgnoreCase(panel.getLibraryType())).findFirst();
+                if(libraryTypeItem.isPresent()) libraryTypeComboBox.getSelectionModel().select(libraryTypeItem.get());
+
+                bedFileSelectionButton.setDisable(true);
+                panelSaveButton.setDisable(false);
+
+            });
+
+            img2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+                String alertHeaderText = null;
+                String alertContentText = "Are you sure to delete this panel?";
+
+                alert.setTitle("Confirmation Dialog");
+                Panel panel = PanelModifyButton.this.getTableView().getItems().get(
+                        PanelModifyButton.this.getIndex());
+                alert.setHeaderText(panel.getName());
+                alert.setContentText(alertContentText);
+                logger.info(panel.getId() + " : present id");
+                Optional<ButtonType> result = alert.showAndWait();
+                if(result.get() == ButtonType.OK) {
+                    deletePanel(panel.getId());
+                } else {
+                    logger.info(result.get() + " : button select");
+                    alert.close();
+                }
+            });
+        }
+
+        @Override
+        protected void updateItem(Boolean item, boolean empty) {
+            super.updateItem(item, empty);
+            if(item == null) {
+                setGraphic(null);
+                return;
+            }
+
+            box = new HBox();
+
+            box.setSpacing(10);
+
+            box.getChildren().add(img1);
+            box.getChildren().add(img2);
+
+            setGraphic(box);
+
+        }
+    }
+
 }

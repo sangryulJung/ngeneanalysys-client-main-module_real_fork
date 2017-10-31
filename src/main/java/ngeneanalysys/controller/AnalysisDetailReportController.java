@@ -334,6 +334,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 contentsMap.put("diseaseName", diseaseLabel.getText());
                 contentsMap.put("sampleSource", panel.getSampleSource());
                 contentsMap.put("panelCode", panel.getCode());
+                contentsMap.put("sampleName", sample.getName());
                 contentsMap.put("patientCode", "SS17-01182");
 
                 List<AnalysisResultVariant> variantList = new ArrayList<>();

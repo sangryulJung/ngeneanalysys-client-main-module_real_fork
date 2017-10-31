@@ -17,6 +17,7 @@ import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -118,7 +119,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
         runName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
         status.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
         userId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getMemberGroupId()).asObject());
-        createAt.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCreatedAt().toString()));
+        createAt.setCellValueFactory(cellData -> new SimpleStringProperty(DateFormatUtils.format(cellData.getValue().getCreatedAt().toDate(), "yyyy-MM-dd hh:mm:ss")));
         sc.setCellValueFactory(cellData -> new SimpleIntegerProperty(
                 cellData.getValue().getId()).asObject());
         userName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));

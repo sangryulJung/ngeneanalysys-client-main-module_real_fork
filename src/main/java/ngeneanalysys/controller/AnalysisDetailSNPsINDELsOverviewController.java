@@ -313,24 +313,28 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
                 if(((Label)child).getText().equals("A") && !StringUtils.isEmpty(interpretation.getInterpretationEvidenceA())) {
                     child.getStyleClass().add("prediction_E");
                     //resultTextArea.setText(interpretation.getInterpretationEvidenceA());
+                    child.setStyle("-fx-cursor:hand;");
                     child.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> resultTextArea.setText(interpretation.getInterpretationEvidenceA()));
                     flag = true;
                 }
                 if(((Label)child).getText().equals("B") && !StringUtils.isEmpty(interpretation.getInterpretationEvidenceB())) {
                     child.getStyleClass().add("prediction_E");
                     //resultTextArea.setText(interpretation.getInterpretationEvidenceB());
+                    child.setStyle("-fx-cursor:hand;");
                     child.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> resultTextArea.setText(interpretation.getInterpretationEvidenceB()));
                     flag = true;
                 }
                 if(((Label)child).getText().equals("C") && !StringUtils.isEmpty(interpretation.getInterpretationEvidenceC())) {
                     child.getStyleClass().add("prediction_E");
                     //resultTextArea.setText(interpretation.getInterpretationEvidenceC());
+                    child.setStyle("-fx-cursor:hand;");
                     child.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> resultTextArea.setText(interpretation.getInterpretationEvidenceC()));
                     flag = true;
                 }
                 if(((Label)child).getText().equals("D") && !StringUtils.isEmpty(interpretation.getInterpretationEvidenceD())) {
                     child.getStyleClass().add("prediction_E");
                     //resultTextArea.setText(interpretation.getInterpretationEvidenceD());
+                    child.setStyle("-fx-cursor:hand;");
                     child.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> resultTextArea.setText(interpretation.getInterpretationEvidenceD()));
                     flag = true;
                 }
@@ -391,6 +395,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
                 if(((Label)child).getText().equals("N") && !StringUtils.isEmpty(interpretation.getInterpretationNegativeTesult())) {
                     child.getStyleClass().add("prediction_A");
                     //resultTextArea.setText(interpretation.getInterpretationNegativeTesult());
+                    child.setStyle("-fx-cursor:hand;");
                     child.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> resultTextArea.setText(interpretation.getInterpretationNegativeTesult()));
                     flag = true;
                 }

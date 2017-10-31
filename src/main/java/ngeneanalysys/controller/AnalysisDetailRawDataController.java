@@ -157,7 +157,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
         currentStage.setResizable(false);
         currentStage.initStyle(StageStyle.DECORATED);
         currentStage.initModality(Modality.APPLICATION_MODAL);
-        currentStage.setTitle(CommonConstants.SYSTEM_NAME + " > New Analysis Request");
+        currentStage.setTitle(CommonConstants.SYSTEM_NAME + " > Raw Data Download");
         // OS가 Window인 경우 아이콘 출력.
         if (System.getProperty("os.name").toLowerCase().contains("window")) {
             currentStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));

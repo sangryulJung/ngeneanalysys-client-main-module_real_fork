@@ -76,7 +76,7 @@
 			<fo:block margin-bottom="10mm" font-size="10pt">
 				<fo:block font-size="13pt" font-weight="bold" margin-bottom="1mm">1. General Information</fo:block>
 				<fo:block>
-					<fo:table table-layout="fixed" width="100%">
+					<!--<fo:table table-layout="fixed" width="100%">
 						<fo:table-column column-width="proportional-column-width(0.25)"/>
 						<fo:table-column column-width="proportional-column-width(0.25)"/>
 						<fo:table-column column-width="proportional-column-width(0.25)"/>
@@ -84,7 +84,8 @@
 						<fo:table-body>
 							<fo:table-row>
 								<fo:table-cell display-align="center">
-									<fo:block-container height="25mm" border-style="solid" border-width="0.5pt" text-align="center" background-color="#ed7d31">
+									&lt;!&ndash;<fo:block-container height="25mm" border-style="solid" border-width="0.5pt" text-align="center" background-color="#ed7d31">&ndash;&gt;
+									<fo:block-container height="25mm" border-style="solid" border-width="0.5pt" text-align="center">
 										<fo:block padding-bottom="20pt" font-weight="bold" color="#FFFFFF">
 											Patient Code
 										</fo:block>
@@ -94,7 +95,8 @@
 									</fo:block-container>
 								</fo:table-cell>
 								<fo:table-cell display-align="center">
-									<fo:block-container height="25mm" border-style="solid" border-width="0.5pt" text-align="center" background-color="#ffc000">
+									&lt;!&ndash;<fo:block-container height="25mm" border-style="solid" border-width="0.5pt" text-align="center" background-color="#ffc000">&ndash;&gt;
+									<fo:block-container height="25mm" border-style="solid" border-width="0.5pt" text-align="center">
 										<fo:block padding-bottom="20pt" font-weight="bold" color="#FFFFFF">
 											Sample Source
 										</fo:block>
@@ -104,7 +106,8 @@
 									</fo:block-container>
 								</fo:table-cell>
 								<fo:table-cell display-align="center">
-									<fo:block-container height="25mm" border-style="solid" border-width="0.5pt" text-align="center" background-color="#70ad47">
+									&lt;!&ndash;<fo:block-container height="25mm" border-style="solid" border-width="0.5pt" text-align="center" background-color="#70ad47">&ndash;&gt;
+									<fo:block-container height="25mm" border-style="solid" border-width="0.5pt" text-align="center">
 										<fo:block padding-bottom="20pt" font-weight="bold" color="#FFFFFF">
 											Disease Name
 										</fo:block>
@@ -114,7 +117,8 @@
 									</fo:block-container>
 								</fo:table-cell>
 								<fo:table-cell display-align="center">
-									<fo:block-container height="25mm" border-style="solid" border-width="0.5pt" text-align="center" background-color="#5b9bd5">
+									&lt;!&ndash;<fo:block-container height="25mm" border-style="solid" border-width="0.5pt" text-align="center" background-color="#5b9bd5">&ndash;&gt;
+									<fo:block-container height="25mm" border-style="solid" border-width="0.5pt" text-align="center">
 										<fo:block padding-bottom="20pt" font-weight="bold" color="#FFFFFF">
 											Panel
 										</fo:block>
@@ -122,6 +126,56 @@
 											$contents.panelName
 										</fo:block>
 									</fo:block-container>
+								</fo:table-cell>
+							</fo:table-row>
+						</fo:table-body>
+					</fo:table>-->
+					<fo:table table-layout="fixed" width="100%" border="solid 0.2mm black">
+						<fo:table-column column-width="proportional-column-width(0.2)"/>
+						<fo:table-column column-width="proportional-column-width(0.3)"/>
+						<fo:table-column column-width="proportional-column-width(0.2)"/>
+						<fo:table-column column-width="proportional-column-width(0.3)"/>
+						<fo:table-body>
+							<fo:table-row height="7mm" text-align="center" display-align="center">
+								<fo:table-cell border="solid 0.2mm black">
+									<fo:block font-size="11pt" font-weight="bold">Sample</fo:block>
+								</fo:table-cell>
+								<fo:table-cell border="solid 0.2mm black">
+									<fo:block font-size="11pt">$contents.sampleName</fo:block>
+								</fo:table-cell>
+								<fo:table-cell border="solid 0.2mm black">
+									<fo:block font-size="11pt" font-weight="bold">Patient Code</fo:block>
+								</fo:table-cell>
+								<fo:table-cell border="solid 0.2mm black">
+									<fo:block font-size="11pt">$contents.patientCode</fo:block>
+								</fo:table-cell>
+							</fo:table-row>
+							<fo:table-row height="7mm" text-align="center" display-align="center">
+								<fo:table-cell border="solid 0.2mm black">
+									<fo:block font-size="11pt" font-weight="bold">Sample Source</fo:block>
+								</fo:table-cell>
+								<fo:table-cell border="solid 0.2mm black">
+									<fo:block font-size="11pt">$contents.sampleSource</fo:block>
+								</fo:table-cell>
+								<fo:table-cell border="solid 0.2mm black">
+									<fo:block font-size="11pt" font-weight="bold">Disease Name</fo:block>
+								</fo:table-cell>
+								<fo:table-cell border="solid 0.2mm black">
+									<fo:block font-size="11pt">$contents.diseaseName</fo:block>
+								</fo:table-cell>
+							</fo:table-row>
+							<fo:table-row height="7mm" text-align="center" display-align="center">
+								<fo:table-cell border="solid 0.2mm black">
+									<fo:block font-size="11pt" font-weight="bold">Panel</fo:block>
+								</fo:table-cell>
+								<fo:table-cell border="solid 0.2mm black">
+									<fo:block font-size="11pt">$contents.panelName</fo:block>
+								</fo:table-cell>
+								<fo:table-cell border="solid 0.2mm black">
+									<fo:block font-size="11pt" font-weight="bold">Date</fo:block>
+								</fo:table-cell>
+								<fo:table-cell border="solid 0.2mm black">
+									<fo:block font-size="11pt">2017-10-27</fo:block>
 								</fo:table-cell>
 							</fo:table-row>
 						</fo:table-body>
@@ -143,7 +197,7 @@
 						<fo:table-body>
 							<fo:table-row height="10mm" display-align="center" text-align="center" border="solid 0.5mm white">
 								<fo:table-cell border-style="solid" border-width="0.5pt" number-rows-spanned="2" background-color="#e7e7e7" border="solid 0.5mm white">
-									<fo:block font-weight="bold">Genomic Alternations</fo:block>
+									<fo:block font-weight="bold">Genomic Alternations<fo:inline vertical-align="super" font-size="7pt">1</fo:inline></fo:block>
 								</fo:table-cell>
 								<fo:table-cell border-style="solid" border-width="0.5pt" number-columns-spanned="2" background-color="#fbe5d6" border="solid 0.5mm white">
 									<fo:block font-weight="bold">Tier I</fo:block>
@@ -211,6 +265,12 @@
 									</fo:table-cell>
 								</fo:table-row>
 							#end
+							<fo:table-row>
+								<fo:table-cell number-columns-spanned="5">
+									<fo:block padding="2mm" font-size="9pt">
+										1. Li M. M. et. al. "Standards and Guidelines for the Interpretation and Reporting of Sequence Variants in Cancer - A Joint Consensus Recommendation of the Association for Molecular Pathology, American Society of Clinical Oncology, and College of American Pathologists" The Journal of Molecular Diagnostics, Vol. 19 (1), pp. 6-23 (2017).</fo:block>
+								</fo:table-cell>
+							</fo:table-row>
 						</fo:table-body>
 					</fo:table>
 				</fo:block>

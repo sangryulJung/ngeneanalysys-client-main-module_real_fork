@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -21,7 +16,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="558.0" prefWidth="600.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemManagerPanelController">
+<AnchorPane prefHeight="558.0" prefWidth="600.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemManagerPanelController">
    <stylesheets>
       <URL value="@../../css/common.css" />
       <URL value="@../../css/experimenter.css" />
@@ -35,7 +30,7 @@
                      <children>
                         <HBox alignment="CENTER" prefHeight="29.0" prefWidth="200.0">
                            <children>
-                              <Label text="Panel add" />
+                              <Label fx:id="titleLabel" text="Panel add" />
                            </children>
                         </HBox>
                         <HBox alignment="BOTTOM_LEFT" prefHeight="29.0" prefWidth="200.0">
@@ -111,6 +106,9 @@
                                  <padding>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </padding>
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#panelAdd" text="panel add" />
+                                 </children>
                               </HBox>
                               <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="180.0" spacing="5.0">
                                  <padding>
@@ -127,21 +125,26 @@
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </padding>
                               </HBox>
+                              <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="162.0" spacing="5.0">
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
                            </children>
                         </HBox>
                      </children>
                   </VBox>
                   <TableView fx:id="panelListTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                      <columns>
-                        <TableColumn fx:id="panelIdTableColumn" prefWidth="74.0" text="Panel Id" />
+                        <TableColumn fx:id="panelIdTableColumn" prefWidth="64.0" text="Panel Id" />
                         <TableColumn fx:id="panelNameTableColumn" prefWidth="88.20001220703125" text="Panel Name" />
                         <TableColumn fx:id="panelCodeTableColumn" prefWidth="64.79998779296875" text="Code" />
                         <TableColumn fx:id="panelTargetTableColumn" prefWidth="83.0" text="Target" />
                         <TableColumn fx:id="analysisTypeTableColumn" prefWidth="92.0" text="Analysis Type" />
                         <TableColumn fx:id="libraryTypeTableColumn" prefWidth="97.0" text="Library Type" />
                         <TableColumn fx:id="sampleSourceTableColumn" prefWidth="97.0" text="Sample Source" />
-                        <TableColumn fx:id="createdAtTableColumn" prefWidth="108.0" text="Create at" />
-                        <TableColumn fx:id="updatedAtTableColumn" prefWidth="108.0" text="Update at" />
+                        <TableColumn fx:id="createdAtTableColumn" prefWidth="90.0" text="Create at" />
+                        <TableColumn fx:id="updatedAtTableColumn" prefWidth="90.0" text="Update at" />
                         <TableColumn fx:id="deletedAtTableColumn" prefWidth="108.0" text="Deleted At" visible="false" />
                         <TableColumn fx:id="deletedTableColumn" prefWidth="49.0" text="Deleted" />
                         <TableColumn fx:id="editPanelTableColumn" prefWidth="83.0" text="editPanelTableColumn" />

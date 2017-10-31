@@ -352,7 +352,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
         Label countLabel = new Label(String.valueOf(count));
         countLabel.getStyleClass().add("count_" + acmgFilterCode.name());
-        if (acmgFilterCode.name().startsWith("PREDICTION_")) {
+        if (acmgFilterCode.name().startsWith("PREDICTION_") || acmgFilterCode.name().startsWith("TIER_")) {
             Label alias = new Label(acmgFilterCode.getAlias());
             alias.getStyleClass().add("alias_ALL");
             alias.getStyleClass().add("alias_" + acmgFilterCode.name());
