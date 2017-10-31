@@ -387,9 +387,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         response = apiService.get("/runs/" + sample.getRunId(), null,
                                 null, false);
 
-                        String runSequencer = response.getContentString().substring(response.getContentString().indexOf("MISEQ"));
-
-                        runSequencer = runSequencer.substring(0, runSequencer.indexOf("\""));
+                        RunWithSamples runWithSamples = response.getObjectBeforeConvertResponseToJSON(RunWithSamples.class);
+                        String runSequencer = runWithSamples.getRun().getSequencingPlatform();
 
                         if(runSequencer.equalsIgnoreCase("MISEQ")) {
                             contentsMap.put("sequencer",SequencerCode.MISEQ.getDescription());
