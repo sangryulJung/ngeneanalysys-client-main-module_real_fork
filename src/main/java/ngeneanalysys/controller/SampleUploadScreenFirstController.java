@@ -153,7 +153,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     }
 
     public void createRow(int row) {
-        standardDataGridPane.setPrefHeight(standardDataGridPane.getPrefHeight() + 27);
+        standardDataGridPane.setPrefHeight(standardDataGridPane.getPrefHeight() + 28);
         TextField sampleName = new TextField();
         sampleName.setStyle("-fx-text-inner-color: black;");
         sampleName.setMaxWidth(Double.MAX_VALUE);

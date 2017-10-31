@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="contentWrapper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SampleUploadController">
+<VBox fx:id="contentWrapper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="850.0" styleClass="bg_white" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SampleUploadController">
 	<children>
 		<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="500.0">
 			<columnConstraints>
@@ -63,6 +63,11 @@
                      </toggleGroup>
                   </RadioButton>
                   <RadioButton fx:id="sequencerMiSeqRadioButton" mnemonicParsing="false" text="Illumina MiSeq" toggleGroup="$sequencerType" />
+                  <Label styleClass="help_tooltip">
+                     <tooltip>
+                        <Tooltip text="Choose sequencing instrument platform" />
+                     </tooltip>
+                  </Label>
                </children>
             </HBox>
 			</children>

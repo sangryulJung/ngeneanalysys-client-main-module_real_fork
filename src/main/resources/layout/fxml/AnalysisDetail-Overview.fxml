@@ -157,7 +157,7 @@
                               <Label text="Total base" />
                               <Label styleClass="help_tooltip">
                                  <tooltip>
-                                    <Tooltip fx:id="totalBaseTooltip" styleClass="help_tooltip" text="Empty Tooltip" />
+                                    <Tooltip fx:id="totalBaseTooltip" text="Empty Tooltip" />
                                  </tooltip>
                               </Label>
                            </children>
@@ -168,7 +168,7 @@
                               <Label text="q30 trimmed base" />
                               <Label styleClass="help_tooltip">
                                  <tooltip>
-                                    <Tooltip fx:id="q30Tooltip" styleClass="help_tooltip" text="Empty Tooltip" />
+                                    <Tooltip fx:id="q30Tooltip" text="Empty Tooltip" />
                                  </tooltip>
                               </Label>
                            </children>
@@ -179,7 +179,7 @@
                               <Label text="Mapped base" />
                               <Label styleClass="help_tooltip">
                                  <tooltip>
-                                    <Tooltip fx:id="mappedBaseTooltip" styleClass="help_tooltip" text="Empty Tooltip" />
+                                    <Tooltip fx:id="mappedBaseTooltip" text="Empty Tooltip" />
                                  </tooltip>
                               </Label>
                            </children>
@@ -190,7 +190,7 @@
                               <Label text="On target" />
                               <Label styleClass="help_tooltip">
                                  <tooltip>
-                                    <Tooltip fx:id="onTargetTooltip" styleClass="help_tooltip" text="Empty Tooltip" />
+                                    <Tooltip fx:id="onTargetTooltip" text="Empty Tooltip" />
                                  </tooltip>
                               </Label>
                            </children>
@@ -201,7 +201,7 @@
                               <Label text="On target coverage" />
                               <Label styleClass="help_tooltip">
                                  <tooltip>
-                                    <Tooltip fx:id="onTargetCoverageTooltip" styleClass="help_tooltip" text="Empty Tooltip" />
+                                    <Tooltip fx:id="onTargetCoverageTooltip" text="Empty Tooltip" />
                                  </tooltip>
                               </Label>
                            </children>
@@ -211,7 +211,7 @@
                               <Label text="Duplicated reads" />
                               <Label styleClass="help_tooltip">
                                  <tooltip>
-                                    <Tooltip fx:id="duplicatedReadsTooltip" styleClass="help_tooltip" text="Empty Tooltip" />
+                                    <Tooltip fx:id="duplicatedReadsTooltip" text="Empty Tooltip" />
                                  </tooltip>
                               </Label>
                            </children>
@@ -221,7 +221,7 @@
                               <Label text="Roi coverage" />
                               <Label styleClass="help_tooltip">
                                  <tooltip>
-                                    <Tooltip fx:id="roiCoverageTooltip" styleClass="help_tooltip" text="Empty Tooltip" />
+                                    <Tooltip fx:id="roiCoverageTooltip" text="Empty Tooltip" />
                                  </tooltip>
                               </Label>
                            </children>
