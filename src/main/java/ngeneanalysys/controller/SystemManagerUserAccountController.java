@@ -159,7 +159,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
                 deletedShowString(cellData.getValue().getDeleted())));
         userModify.setSortable(false);
         userModify.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
-        userModify.setCellFactory(param -> new UserButton());
+        userModify.setCellFactory(param -> new UserEditAndDeleteButton());
 
         /**
          * UserGroup TableView
@@ -390,7 +390,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
     /** 그룹 삭제 */
     public void deleteGroup(Integer id) {
         try {
-            apiService.delete("/users/group/"+id);
+            apiService.delete("/admin/memberGroups/"+id);
             groupListTable.getItems().clear();
             groupSearch();
         } catch (WebAPIException wae) {
@@ -511,16 +511,16 @@ public class SystemManagerUserAccountController extends SubPaneController{
         }
     }
 
-    private class UserButton extends TableCell<User, Boolean> {
+    private class UserEditAndDeleteButton extends TableCell<User, Boolean> {
         HBox box = null;
         final ImageView img1 = new ImageView(resourceUtil.getImage("/layout/images/modify.png", 18, 18));
         final ImageView img2 = new ImageView(resourceUtil.getImage("/layout/images/delete.png", 18, 18));
 
-        public UserButton() {
+        public UserEditAndDeleteButton() {
 
             img1.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                User user = UserButton.this.getTableView().getItems().get(
-                        UserButton.this.getIndex());
+                User user = UserEditAndDeleteButton.this.getTableView().getItems().get(
+                        UserEditAndDeleteButton.this.getIndex());
 
                 userControllerInit("modify", user);
 
@@ -538,21 +538,33 @@ public class SystemManagerUserAccountController extends SubPaneController{
                 String alertContentText = "Are you sure to delete this user?";
 
                 alert.setTitle("Confirmation Dialog");
-                User user = UserButton.this.getTableView().getItems().get(
-                        UserButton.this.getIndex());
+                User user = UserEditAndDeleteButton.this.getTableView().getItems().get(
+                        UserEditAndDeleteButton.this.getIndex());
                 alert.setHeaderText(user.getName());
                 alert.setContentText(alertContentText);
                 logger.info(user.getId() + " : present id");
                 Optional<ButtonType> result = alert.showAndWait();
                 if(result.get() == ButtonType.OK) {
-                    //deleteUser(user.getId());
+                    deleteUser(user.getId());
                 } else {
                     logger.info(result.get() + " : button select");
                     alert.close();
                 }
             });
         }
-
+        /** 사용자 삭제 */
+        private void deleteUser(Integer userId) {
+            try {
+                apiService.delete("/admin/members/" + userId);
+                userListTable.getItems().clear();
+                userSearch();
+            } catch (WebAPIException wae) {
+                DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+                        getMainApp().getPrimaryStage(), true);
+            } catch (Exception e) {
+                DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+            }
+        }
         @Override
         protected void updateItem(Boolean item, boolean empty) {
             super.updateItem(item, empty);
