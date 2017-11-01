@@ -451,8 +451,8 @@ public class SystemManagerUserAccountController extends SubPaneController{
 
     private class UserGroupButton extends TableCell<UserGroup, Boolean> {
         HBox box = null;
-        final ImageView img1 = new ImageView(resourceUtil.getImage("/layout/images/icon_pathogenicity_1.png"));
-        final ImageView img2 = new ImageView(resourceUtil.getImage("/layout/images/icon_pathogenicity_2.png"));
+        final ImageView img1 = new ImageView(resourceUtil.getImage("/layout/images/modify.png", 18, 18));
+        final ImageView img2 = new ImageView(resourceUtil.getImage("/layout/images/delete.png", 18, 18));
 
         public UserGroupButton() {
 
@@ -472,10 +472,10 @@ public class SystemManagerUserAccountController extends SubPaneController{
             img2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 
-                String alertHeaderText = null;
+                String alertHeaderText = "Confirmation Dialog";
                 String alertContentText = "Are you sure to delete this group?";
 
-                alert.setTitle("Confirmation Dialog");
+                alert.setTitle(alertHeaderText);
                 UserGroup group = UserGroupButton.this.getTableView().getItems().get(
                         UserGroupButton.this.getIndex());
                 alert.setHeaderText(group.getName());
@@ -513,8 +513,8 @@ public class SystemManagerUserAccountController extends SubPaneController{
 
     private class UserButton extends TableCell<User, Boolean> {
         HBox box = null;
-        final ImageView img1 = new ImageView(resourceUtil.getImage("/layout/images/icon_pathogenicity_1.png"));
-        final ImageView img2 = new ImageView(resourceUtil.getImage("/layout/images/icon_pathogenicity_2.png"));
+        final ImageView img1 = new ImageView(resourceUtil.getImage("/layout/images/modify.png", 18, 18));
+        final ImageView img2 = new ImageView(resourceUtil.getImage("/layout/images/delete.png", 18, 18));
 
         public UserButton() {
 

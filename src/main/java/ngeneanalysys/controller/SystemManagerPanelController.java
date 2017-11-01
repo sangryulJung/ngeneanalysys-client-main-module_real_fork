@@ -3,12 +3,15 @@ package ngeneanalysys.controller;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import ngeneanalysys.code.enums.ExperimentTypeCode;
@@ -16,7 +19,10 @@ import ngeneanalysys.code.enums.LibraryTypeCode;
 import ngeneanalysys.code.enums.SampleSourceCode;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
+import ngeneanalysys.model.Diseases;
 import ngeneanalysys.model.Panel;
+import ngeneanalysys.model.SystemManagerUserGroupPaging;
+import ngeneanalysys.model.UserGroup;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
@@ -26,14 +32,13 @@ import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.controlsfx.control.CheckComboBox;
 import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Jang
@@ -110,6 +115,13 @@ public class SystemManagerPanelController extends SubPaneController {
     @FXML
     private Label titleLabel;
 
+    @FXML
+    private GridPane panelEditGridPane;
+
+    private CheckComboBox<ComboBoxItem> groupCheckComboBox = null;
+
+    private CheckComboBox<ComboBoxItem> diseaseCheckComboBox = null;
+
     File file = null;
 
     private int panelId = 0;
@@ -126,9 +138,6 @@ public class SystemManagerPanelController extends SubPaneController {
         panelTargetTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getTarget()));
         analysisTypeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getAnalysisType()));
         sampleSourceTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getSampleSource()));
-
-        List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
-        panelListTable.getItems().addAll(panels);
 
         targetComboBox.setConverter(new ComboBoxConverter());
         targetComboBox.getItems().add(new ComboBoxItem("DNA", "DNA"));
@@ -176,6 +185,66 @@ public class SystemManagerPanelController extends SubPaneController {
         editPanelTableColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
         editPanelTableColumn.setCellFactory(param -> new PanelModifyButton());
 
+        HttpClientResponse response = null;
+
+        try {
+            response = apiService.get("/admin/panels", null, null, false);
+            final List<Panel> panels = (List<Panel>) response.getMultiObjectBeforeConvertResponseToJSON(Panel.class, false);
+            panelListTable.getItems().addAll(panels);
+
+            response = apiService.get("/admin/memberGroups", null, null, false);
+            logger.info(response.getContentString());
+                if(response != null) {
+                    SystemManagerUserGroupPaging systemManagerUserGroupPaging =
+                            response.getObjectBeforeConvertResponseToJSON(SystemManagerUserGroupPaging.class);
+                    List<UserGroup> groupList = systemManagerUserGroupPaging.getList();
+
+                    List<ComboBoxItem> items = new ArrayList<>();
+
+                    for(UserGroup userGroup :groupList) {
+                        items.add(new ComboBoxItem(userGroup.getId().toString(), userGroup.getName()));
+                    }
+
+                    final CheckComboBox<ComboBoxItem> groupCheckComboBox = new CheckComboBox<>();
+                    groupCheckComboBox.setConverter(new ComboBoxConverter());
+
+                    groupCheckComboBox.getItems().addAll(items);
+
+                    panelEditGridPane.add(groupCheckComboBox, 1, 6);
+
+                    this.groupCheckComboBox = groupCheckComboBox;
+
+                    groupCheckComboBox.setPrefWidth(150);
+                    groupCheckComboBox.setMaxWidth(Double.MAX_VALUE);
+
+                }
+
+                List<Diseases> diseasesList = (List<Diseases>)mainController.getBasicInformationMap().get("diseases");
+
+                if(diseasesList != null) {
+                    List<ComboBoxItem> items = new ArrayList<>();
+
+                    for(Diseases disease : diseasesList) {
+                        items.add(new ComboBoxItem(disease.getId().toString(), disease.getName()));
+                    }
+
+                    final CheckComboBox<ComboBoxItem> diseaseCheckComboBox = new CheckComboBox<>();
+                    diseaseCheckComboBox.setConverter(new ComboBoxConverter());
+
+                    diseaseCheckComboBox.getItems().addAll(items);
+
+                    panelEditGridPane.add(diseaseCheckComboBox, 1, 7);
+
+                    diseaseCheckComboBox.setPrefWidth(150);
+                    diseaseCheckComboBox.setMaxWidth(Double.MAX_VALUE);
+
+                    this.diseaseCheckComboBox = diseaseCheckComboBox;
+                }
+
+            } catch (WebAPIException wae) {
+            wae.printStackTrace();
+        }
+
 
         setDisabledItem(true);
     }
@@ -184,6 +253,7 @@ public class SystemManagerPanelController extends SubPaneController {
     public void savePanel() {
         String panelName = panelNameTextField.getText();
         String code = panelCodeTextField.getText();
+
         if(!StringUtils.isEmpty(panelName) &&  !StringUtils.isEmpty(code)) {
             if(file == null && panelId == 0) return;
 
@@ -197,21 +267,40 @@ public class SystemManagerPanelController extends SubPaneController {
 
             HttpClientResponse response = null;
             try {
+                //panel을 사용할 수 있는 Group을 지정함
+                List<Integer> groupIdList = new ArrayList<>();
+                ObservableList<ComboBoxItem> checkedGroupList =  groupCheckComboBox.getCheckModel().getCheckedItems();
+                for(ComboBoxItem  group : checkedGroupList) {
+                    groupIdList.add(Integer.parseInt(group.getValue()));
+                }
+
+                //panel에서 선택할 수 있는 질병을 지정함
+                List<Integer> diseaseIdList = new ArrayList<>();
+                ObservableList<ComboBoxItem> checkedDiseaseList =  groupCheckComboBox.getCheckModel().getCheckedItems();
+                for(ComboBoxItem  disease : checkedDiseaseList) {
+                    diseaseIdList.add(Integer.parseInt(disease.getValue()));
+                }
+
+                Panel panel = null;
+
+                //패널 생성
                 if(panelId == 0) {
                     response = apiService.post("admin/panels", params, null, true);
-                    Panel newPanel = response.getObjectBeforeConvertResponseToJSON(Panel.class);
+                    panel = response.getObjectBeforeConvertResponseToJSON(Panel.class);
 
-                    Task task = new BedFileUploadTask(newPanel.getId(), file);
+                    Task task = new BedFileUploadTask(panel.getId(), file);
 
                     Thread thread = new Thread(task);
                     thread.setDaemon(true);
                     thread.start();
-                } else {
+                } else { //패널 수정
+                    params.put("memberGroupIds", groupIdList);
+                    params.put("diseaseIds", diseaseIdList);
                     response = apiService.put("admin/panels/" + panelId, params, null, true);
-                    Panel modifiedPanel = response.getObjectBeforeConvertResponseToJSON(Panel.class);
+                    panel = response.getObjectBeforeConvertResponseToJSON(Panel.class);
                 }
 
-                response = apiService.get("/panels", null, null, false);
+                response = apiService.get("/admin/panels", null, null, false);
                 final List<Panel> panels = (List<Panel>) response.getMultiObjectBeforeConvertResponseToJSON(Panel.class, false);
                 mainController.getBasicInformationMap().put("panels", panels);
                 //List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
@@ -237,6 +326,8 @@ public class SystemManagerPanelController extends SubPaneController {
         libraryTypeComboBox.getSelectionModel().selectFirst();
         file = null;
         panelSaveButton.setDisable(true);
+        groupCheckComboBox.getCheckModel().clearChecks();
+        diseaseCheckComboBox.getCheckModel().clearChecks();
     }
 
     public void setDisabledItem(boolean condition) {
@@ -247,6 +338,8 @@ public class SystemManagerPanelController extends SubPaneController {
         targetComboBox.setDisable(condition);
         libraryTypeComboBox.setDisable(condition);
         bedFileSelectionButton.setDisable(condition);
+        groupCheckComboBox.setDisable(condition);
+        diseaseCheckComboBox.setDisable(condition);
     }
 
     public void deletePanel(Integer panelId) {
@@ -289,8 +382,8 @@ public class SystemManagerPanelController extends SubPaneController {
 
     private class PanelModifyButton extends TableCell<Panel, Boolean> {
         HBox box = null;
-        final ImageView img1 = new ImageView(resourceUtil.getImage("/layout/images/icon_pathogenicity_1.png"));
-        final ImageView img2 = new ImageView(resourceUtil.getImage("/layout/images/icon_pathogenicity_2.png"));
+        final ImageView img1 = new ImageView(resourceUtil.getImage("/layout/images/modify.png", 18, 18));
+        final ImageView img2 = new ImageView(resourceUtil.getImage("/layout/images/delete.png", 18, 18));
 
         public PanelModifyButton() {
 

@@ -1,11 +1,14 @@
 package ngeneanalysys.controller;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
@@ -24,6 +27,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author Jang
@@ -124,6 +128,11 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
                 cellData.getValue().getId()).asObject());
         userName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
 
+        /** 삭제 버튼 */
+        delete.setSortable(false);
+        delete.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
+        delete.setCellFactory(param -> new DeleteButtonCreate());
+
 
         this.mainController.getMainFrame().setCenter(root);
     }
@@ -215,26 +224,112 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
 
     @FXML
     public void search() {
-
+        setList(1);
     }
 
     @FXML
     public void pageMove() {
-
+        if(!StringUtils.isEmpty(pageText.getText()) && pageText.getText().trim().length() != 0) {
+            try {
+                int page = Integer.parseInt(pageText.getText());
+                setList(page);
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+            }
+        }
     }
 
     @FXML
     public void reset() {
-
+        searchStatus.setValue(new ComboBoxItem());
+        runIdText.setText(null);
+        runNameText.setText(null);
+        userIdText.setText(null);
+        userNameText.setText(null);
     }
 
     @FXML
     public void prevMove() {
+        int pageIndex = paginationList.getCurrentPageIndex();
 
+        int movePage = pageIndex / 10;
+
+        if(movePage == 0)
+            paginationList.setCurrentPageIndex(0);
+        else
+            paginationList.setCurrentPageIndex(((movePage - 1) * 10));
     }
 
     @FXML
     public void nextMove() {
+        int totalPage = paginationList.getPageCount();
+        int pageIndex = paginationList.getCurrentPageIndex();
 
+        int movePage = pageIndex / 10;
+
+        if(totalPage == pageIndex)
+            paginationList.setCurrentPageIndex(totalPage);
+        else {
+            int tempTotalPage = totalPage / 10;
+            if(movePage == tempTotalPage)
+                paginationList.setCurrentPageIndex(totalPage);
+            else
+                paginationList.setCurrentPageIndex(((movePage + 1) * 10));
+        }
     }
+
+    /** 작업 삭제 */
+    public void deleteRun(Integer id) {
+        try {
+            apiService.delete("/admin/runs/"+id);
+            listTable.getItems().clear();
+            search();
+        } catch (WebAPIException wae) {
+            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+                    getMainApp().getPrimaryStage(), true);
+        } catch (Exception e) {
+            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+        }
+    }
+
+
+    /** 삭제 버튼 생성 */
+    private class DeleteButtonCreate extends TableCell<Run, Boolean> {
+        final ImageView img = new ImageView(resourceUtil.getImage("/layout/images/delete.png", 18, 18));
+
+        public DeleteButtonCreate() {
+            img.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+                String alertHeaderText = null;
+                String alertContentText = "Are you sure to delete this run?";
+
+                alert.setTitle("Confirmation Dialog");
+                Run run = DeleteButtonCreate.this.getTableView().getItems().get(
+                        DeleteButtonCreate.this.getIndex());
+                alert.setHeaderText(run.getName());
+                alert.setContentText(alertContentText);
+                logger.info(run.getId() + " : present id");
+                Optional<ButtonType> result = alert.showAndWait();
+                if(result.get() == ButtonType.OK) {
+                    deleteRun(run.getId());
+                } else {
+                    logger.info(result.get() + " : button select");
+                    alert.close();
+                }
+            });
+        }
+
+        @Override
+        protected void updateItem(Boolean item, boolean empty) {
+            super.updateItem(item, empty);
+
+            if(item == null) {
+                setGraphic(null);
+                return;
+            }
+            setGraphic(img);
+        }
+    }
+
 }

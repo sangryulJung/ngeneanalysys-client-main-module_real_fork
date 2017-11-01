@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.joda.time.DateTime;
 
+import java.util.List;
+
 public class Panel {
     private Integer id;
     private String name;
@@ -17,6 +19,33 @@ public class Panel {
     private DateTime updatedAt;
     private DateTime deletedAt;
     private Integer deleted;
+
+    private Integer reportTemplateId;
+
+    private List<Integer> memberGroupIds;
+
+    private List<Integer> diseaseIds;
+
+    /**
+     * @return reportTemplateId
+     */
+    public Integer getReportTemplateId() {
+        return reportTemplateId;
+    }
+
+    /**
+     * @return memberGroupIds
+     */
+    public List<Integer> getMemberGroupIds() {
+        return memberGroupIds;
+    }
+
+    /**
+     * @return diseaseIds
+     */
+    public List<Integer> getDiseaseIds() {
+        return diseaseIds;
+    }
 
     public Integer getId() {
         return id;
