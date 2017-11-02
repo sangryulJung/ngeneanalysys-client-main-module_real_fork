@@ -174,7 +174,6 @@ public class UserAccountController extends SubPaneController {
             params.put("role", selectUserType.getSelectionModel().getSelectedItem().getValue());
             params.put("memberGroupId", Integer.parseInt(selectUserGroup.getSelectionModel().getSelectedItem().getValue()));
             params.put("loginId", loginIdTextField.getText());
-            params.put("newLoginPassword", passwordField.getText());
             params.put("name", nameTextField.getText());
 
             if(!StringUtils.isEmpty(organizationTextField.getText())) {
@@ -195,10 +194,12 @@ public class UserAccountController extends SubPaneController {
 
             try {
                 if("add".equalsIgnoreCase(type)) {
+                    params.put("loginPassword", passwordField.getText());
                     apiService.post("/admin/members", params, null, true);
                     DialogUtil.alert("Create User Account Success", "A user account has been created.",
                             dialogStage, true);
                 } else {
+                    params.put("newLoginPassword", passwordField.getText());
                     apiService.put("/admin/members/" + user.getId(), params, null, true);
                     DialogUtil.alert("Modify User Account Success", "A user account has been modified.",
                             dialogStage, true);
