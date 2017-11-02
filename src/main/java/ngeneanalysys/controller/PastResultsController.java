@@ -820,7 +820,7 @@ public class PastResultsController extends SubPaneController {
 				List<SampleQC> qcList = null;
 
 				try {
-					HttpClientResponse response = apiService.get("/analysisResults/"+ sample.getId() + "/sampleQCs", null,
+					HttpClientResponse response = apiService.get("/analysisResults/sampleQCs/"+ sample.getId(), null,
 							null, false);
 
 					qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);

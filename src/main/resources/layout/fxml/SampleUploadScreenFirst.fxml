@@ -84,7 +84,7 @@
                         <Label styleClass="header" text="Source" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
                      </children>
                   </GridPane>
-                  <ScrollPane hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="830.0" style="fx-padding: ;" GridPane.rowIndex="1">
+                  <ScrollPane hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="830.0" GridPane.rowIndex="1">
                      <content>
                         <GridPane fx:id="standardDataGridPane" hgap="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="812.0" vgap="3.0">
                            <columnConstraints>
