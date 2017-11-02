@@ -188,7 +188,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         panelLabel.setText(panelName);
 
         try {
-            HttpClientResponse response = apiService.get("/analysisResults/" + sample.getId()  + "/variants", null,
+            HttpClientResponse response = apiService.get("/analysisResults/sampleVariants/" + sample.getId(), null,
                     null, false);
 
             AnalysisResultVariantList analysisResultVariantList = response.getObjectBeforeConvertResponseToJSON(AnalysisResultVariantList.class);

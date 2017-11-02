@@ -185,7 +185,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         negativeCauseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getInterpretation().getInterpretationNegativeTesult()));
 
         try {
-            HttpClientResponse response = apiService.get("/analysisResults/"+ sample.getId()  + "/variants", null,
+            HttpClientResponse response = apiService.get("/analysisResults/sampleVariants/" + sample.getId(), null,
                     null, false);
 
             AnalysisResultVariantList analysisResultVariantList = response.getObjectBeforeConvertResponseToJSON(AnalysisResultVariantList.class);
