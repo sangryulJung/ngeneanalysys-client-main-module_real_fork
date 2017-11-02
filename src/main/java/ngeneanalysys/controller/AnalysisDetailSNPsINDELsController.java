@@ -567,7 +567,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         Map<String, Object> params = new HashMap<>();
         params.put("sampleId", sample.getId());
         WorksheetUtil worksheetUtil = new WorksheetUtil();
-        worksheetUtil.exportVariantData("Excel", params, this.getMainApp());
+        worksheetUtil.exportVariantData("EXCEL", params, this.getMainApp());
     }
 
     @FXML
