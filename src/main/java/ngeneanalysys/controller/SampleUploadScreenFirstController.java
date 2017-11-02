@@ -295,7 +295,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                     if(sampleUploadController.getRunName() == null || "".equals(sampleUploadController.getRunName())) {
                         Date date = new Date();
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd.hh:mm:ss");
-                        params.put("name", "RUN NAME_" + sdf.format(date));
+                        params.put("name", sdf.format(date));
                     } else {
                         params.put("name", sampleUploadController.getRunName());
                     }
