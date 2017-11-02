@@ -175,9 +175,11 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         patientIdTextFieldList.add(paitentId);
 
         ComboBox<ComboBoxItem> disease  = new ComboBox<>();
+        disease.setConverter(new ComboBoxConverter());
         disease.setMaxWidth(Double.MAX_VALUE);
         diseaseComboBoxList.add(disease);
-        diseasesSetting(disease);
+        settingDiseaseComboBox(panels.get(0).getId(), row);
+        //diseasesSetting(disease);
 
         ComboBox<ComboBoxItem> panel  = new ComboBox<>();
         panel.setMaxWidth(Double.MAX_VALUE);
@@ -194,6 +196,9 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                         sampleSourceTextFieldList.get(index).setText(panelItem.getSampleSource());
                     }
                 });
+
+                settingDiseaseComboBox(Integer.parseInt(item.getValue()), index);
+
             }
         });
 
@@ -206,6 +211,34 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
         //standardDataGridPane.addRow(row, sampleName, select, panel, source, disease, paitentId);
         standardDataGridPane.addRow(row, sampleName, panel, source, disease, paitentId);
+        panel.getSelectionModel().select(0);
+    }
+
+    public void settingDiseaseComboBox(int panelId, int index) {
+        //질병명 추가
+        HttpClientResponse response = null;
+        try {
+            response = apiService.get("panels/" + panelId, null, null, false);
+            Panel panelDetail = response.getObjectBeforeConvertResponseToJSON(Panel.class);
+
+            ComboBox<ComboBoxItem> diseaseComboBox = diseaseComboBoxList.get(index);
+
+            diseaseComboBox.getItems().clear();
+
+            for(Diseases diseases : diseases) {
+                List<Integer> diseaseIds = panelDetail.getDiseaseIds();
+                if(diseaseIds != null && !diseaseIds.isEmpty() &&
+                        diseaseIds.stream().filter(diseaseId -> diseaseId.equals(diseases.getId())).findFirst().isPresent())
+                    diseaseComboBox.getItems().add(new ComboBoxItem(diseases.getId().toString(), diseases.getName()));
+            }
+
+            diseaseComboBox.getSelectionModel().selectFirst();
+
+        } catch (WebAPIException wae) {
+            wae.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void saveSampleData() {

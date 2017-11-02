@@ -250,8 +250,8 @@ public class MainController extends BaseStageController {
         HttpClientResponse response = null;
         try {
             response = apiService.get("/panels", null, null, false);
-            final List<Panel> panels = (List<Panel>) response.getMultiObjectBeforeConvertResponseToJSON(Panel.class, false);
-            basicInformationMap.put("panels", panels);
+            final PagedPanel panels = (PagedPanel) response.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
+            basicInformationMap.put("panels", panels.getResult());
 
             response = apiService.get("/diseases", null, null, false);
             List<Diseases> diseases = (List<Diseases>)response.getMultiObjectBeforeConvertResponseToJSON(Diseases.class, false);

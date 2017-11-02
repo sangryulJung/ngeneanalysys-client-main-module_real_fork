@@ -3,7 +3,6 @@ package ngeneanalysys.controller;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -19,14 +18,10 @@ import ngeneanalysys.code.enums.LibraryTypeCode;
 import ngeneanalysys.code.enums.SampleSourceCode;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
-import ngeneanalysys.model.Diseases;
-import ngeneanalysys.model.Panel;
-import ngeneanalysys.model.SystemManagerUserGroupPaging;
-import ngeneanalysys.model.UserGroup;
+import ngeneanalysys.model.*;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
-import ngeneanalysys.service.BedFileService;
 import ngeneanalysys.task.BedFileUploadTask;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
@@ -38,7 +33,6 @@ import org.slf4j.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author Jang
@@ -138,6 +132,7 @@ public class SystemManagerPanelController extends SubPaneController {
         panelTargetTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getTarget()));
         analysisTypeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getAnalysisType()));
         sampleSourceTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getSampleSource()));
+        libraryTypeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getLibraryType()));
 
         targetComboBox.setConverter(new ComboBoxConverter());
         targetComboBox.getItems().add(new ComboBoxItem("DNA", "DNA"));
@@ -189,8 +184,8 @@ public class SystemManagerPanelController extends SubPaneController {
 
         try {
             response = apiService.get("/admin/panels", null, null, false);
-            final List<Panel> panels = (List<Panel>) response.getMultiObjectBeforeConvertResponseToJSON(Panel.class, false);
-            panelListTable.getItems().addAll(panels);
+            final PagedPanel panels = (PagedPanel) response.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
+            panelListTable.getItems().addAll(panels.getResult());
 
             response = apiService.get("/admin/memberGroups", null, null, false);
             logger.info(response.getContentString());
@@ -276,7 +271,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
                 //panel에서 선택할 수 있는 질병을 지정함
                 List<Integer> diseaseIdList = new ArrayList<>();
-                ObservableList<ComboBoxItem> checkedDiseaseList =  groupCheckComboBox.getCheckModel().getCheckedItems();
+                ObservableList<ComboBoxItem> checkedDiseaseList =  diseaseCheckComboBox.getCheckModel().getCheckedItems();
                 for(ComboBoxItem  disease : checkedDiseaseList) {
                     diseaseIdList.add(Integer.parseInt(disease.getValue()));
                 }
@@ -285,7 +280,14 @@ public class SystemManagerPanelController extends SubPaneController {
 
                 //패널 생성
                 if(panelId == 0) {
+                    //패널 생성
                     response = apiService.post("admin/panels", params, null, true);
+                    panel = response.getObjectBeforeConvertResponseToJSON(Panel.class);
+
+                    //패널 생성 후
+                    params.put("memberGroupIds", groupIdList);
+                    params.put("diseaseIds", diseaseIdList);
+                    response = apiService.put("admin/panels/" + panel.getId(), params, null, true);
                     panel = response.getObjectBeforeConvertResponseToJSON(Panel.class);
 
                     Task task = new BedFileUploadTask(panel.getId(), file);
@@ -300,14 +302,18 @@ public class SystemManagerPanelController extends SubPaneController {
                     panel = response.getObjectBeforeConvertResponseToJSON(Panel.class);
                 }
 
-                response = apiService.get("/admin/panels", null, null, false);
-                final List<Panel> panels = (List<Panel>) response.getMultiObjectBeforeConvertResponseToJSON(Panel.class, false);
-                mainController.getBasicInformationMap().put("panels", panels);
+                response = apiService.get("/panels", null, null, false);
+                final PagedPanel panels = response.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
+                mainController.getBasicInformationMap().put("panels", panels.getResult());
                 //List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
                 //panels.add(newPanel);
 
+                response = apiService.get("/admin/panels", null, null, false);
+                final PagedPanel tablePanels = response.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
+                mainController.getBasicInformationMap().put("panels", panels.getResult());
+
                 panelListTable.getItems().clear();
-                panelListTable.getItems().addAll(panels);
+                panelListTable.getItems().addAll(tablePanels.getResult());
                 resetItem();
                 setDisabledItem(true);
                 panelSaveButton.setDisable(true);
@@ -391,9 +397,21 @@ public class SystemManagerPanelController extends SubPaneController {
                 Panel panel = PanelModifyButton.this.getTableView().getItems().get(
                         PanelModifyButton.this.getIndex());
 
+                Panel panelDetail = null;
+                HttpClientResponse response = null;
+                try {
+                    response = apiService.get("admin/panels/" + panel.getId(), null, null, false);
+                    panelDetail = response.getObjectBeforeConvertResponseToJSON(Panel.class);
+                } catch (WebAPIException wae) {
+                    wae.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 titleLabel.setText("panel modify");
 
                 setDisabledItem(false);
+                resetItem();
 
                 panelId = panel.getId();
 
@@ -412,6 +430,24 @@ public class SystemManagerPanelController extends SubPaneController {
 
                 Optional<ComboBoxItem> libraryTypeItem = libraryTypeComboBox.getItems().stream().filter(item -> item.getValue().equalsIgnoreCase(panel.getLibraryType())).findFirst();
                 if(libraryTypeItem.isPresent()) libraryTypeComboBox.getSelectionModel().select(libraryTypeItem.get());
+
+                if(panelDetail != null) {
+                    List<Integer> groupIds = panelDetail.getMemberGroupIds();
+                    for (int i = 0; i < groupCheckComboBox.getItems().size(); i++) {
+                        ComboBoxItem item = groupCheckComboBox.getCheckModel().getItem(i);
+                        if (groupIds != null && !groupIds.isEmpty() &&
+                                groupIds.stream().filter(id -> id.equals(Integer.parseInt(item.getValue()))).findFirst().isPresent())
+                            groupCheckComboBox.getCheckModel().check(item);
+                    }
+
+                    List<Integer> diseaseIds = panelDetail.getDiseaseIds();
+                    for (int i = 0; i < diseaseCheckComboBox.getItems().size(); i++) {
+                        ComboBoxItem item = diseaseCheckComboBox.getCheckModel().getItem(i);
+                        if (diseaseIds != null && !diseaseIds.isEmpty() &&
+                                diseaseIds.stream().filter(id -> id.equals(Integer.parseInt(item.getValue()))).findFirst().isPresent())
+                            diseaseCheckComboBox.getCheckModel().check(item);
+                    }
+                }
 
                 bedFileSelectionButton.setDisable(true);
                 panelSaveButton.setDisable(false);
