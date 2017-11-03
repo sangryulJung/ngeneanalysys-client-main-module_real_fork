@@ -171,6 +171,7 @@ public class LoginController extends BaseStageController {
 		primaryStage.setWidth(600);
 		primaryStage.setMinHeight(520);
 		primaryStage.setHeight(520);
+		primaryStage.setResizable(false);
 		primaryStage.centerOnScreen();
 		primaryStage.show();
 		logger.info(String.format("start %s", primaryStage.getTitle()));

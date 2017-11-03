@@ -162,6 +162,7 @@ public class MainController extends BaseStageController {
         primaryStage.setHeight(setWindowHeight + 35);
         primaryStage.setMinWidth(1290);
         primaryStage.setWidth(1290);
+        primaryStage.setResizable(false);
         primaryStage.centerOnScreen();
         primaryStage.show();
         logger.info(String.format("start %s", primaryStage.getTitle()));

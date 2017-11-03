@@ -1,6 +1,7 @@
 #contentswrapper {
 	-fx-background-color:transparent ;
 	-fx-background-image:url('../images/bg_login.png');
+	-fx-background-size:cover;
 }
 
 .text-field, .password-field {
