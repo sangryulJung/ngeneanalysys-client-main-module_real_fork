@@ -250,7 +250,9 @@ public class MainController extends BaseStageController {
         // 기본 정보 로드
         HttpClientResponse response = null;
         try {
-            response = apiService.get("/panels", null, null, false);
+            Map<String,Object> params = new HashMap<>();
+            params.put("skipOtherGroup", "false");
+            response = apiService.get("/panels", params, null, false);
             final PagedPanel panels = (PagedPanel) response.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
             basicInformationMap.put("panels", panels.getResult());
 

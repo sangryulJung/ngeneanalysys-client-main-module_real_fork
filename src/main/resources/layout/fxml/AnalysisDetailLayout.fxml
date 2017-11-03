@@ -15,8 +15,12 @@
 
 <GridPane fx:id="analysisDetailWrapper" prefHeight="625.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailLayoutController">
    <children>
-      <HBox fx:id="summaryBgHBox" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="64.0" prefWidth="1280.0" scaleZ="3.0" styleClass="topHeaderTabBg" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="NEVER" />
-      <HBox fx:id="summaryHBox" alignment="CENTER_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="1278.0" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="NEVER">
+      <TabPane fx:id="topTabPane" focusTraversable="false" layoutY="25.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="1280.0" scaleZ="2.0" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
+         <GridPane.margin>
+            <Insets top="5.0" />
+         </GridPane.margin>
+      </TabPane>
+      <HBox fx:id="summaryHBox" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="600.0" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER" GridPane.valignment="TOP" GridPane.vgrow="NEVER">
       	 <GridPane.margin>
             <Insets top="15.0" />
          </GridPane.margin>
@@ -88,11 +92,6 @@
             </HBox>
          </children>
       </HBox>
-      <TabPane fx:id="topTabPane" focusTraversable="false" layoutY="25.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="1280.0" scaleZ="2.0" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
-         <GridPane.margin>
-            <Insets top="5.0" />
-         </GridPane.margin>
-      </TabPane>
    </children>
    <stylesheets>
       <URL value="@../css/common.css" />

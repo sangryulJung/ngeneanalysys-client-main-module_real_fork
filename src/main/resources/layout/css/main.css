@@ -137,7 +137,7 @@
 	-fx-background-radius:3 3 0 0;
 	-fx-border-width:0;
 	-fx-pref-width:145;
-	-fx-pref-height:40;
+	-fx-pref-height:30;
 }
 
 #mainHeader #topMenuArea Region#addMenu {

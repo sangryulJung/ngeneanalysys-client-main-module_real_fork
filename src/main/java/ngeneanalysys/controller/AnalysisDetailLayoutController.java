@@ -170,27 +170,27 @@ public class AnalysisDetailLayoutController extends SubPaneController {
             }
         });
 
-        topTabPane.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            int x = (int)rawDataDownload.getLayoutX();
-            int y = (int)rawDataDownload.getLayoutY();
-            logger.info(event.getSceneX() + ", " + event.getSceneY());
-            logger.info(x + ", " + y);
-            if((event.getSceneX() >= x && event.getSceneX() <= (x + 64)) && (
-                    event.getSceneY() >= 64 && event.getSceneY() <= 86)) {
-                try {
-                    // Load the fxml file and create a new stage for the popup dialog
-                    FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_RAW_DATA);
-                    BorderPane page = loader.load();
-                    AnalysisDetailRawDataController controller = loader.getController();
-                    controller.setParamMap(getParamMap());
-                    controller.setMainController(this.mainController);
-
-                    controller.show(page);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+//        topTabPane.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+//            int x = (int)rawDataDownload.getLayoutX();
+//            int y = (int)rawDataDownload.getLayoutY();
+//            logger.info(event.getSceneX() + ", " + event.getSceneY());
+//            logger.info(x + ", " + y);
+//            if((event.getSceneX() >= x && event.getSceneX() <= (x + 64)) && (
+//                    event.getSceneY() >= 64 && event.getSceneY() <= 86)) {
+//                try {
+//                    // Load the fxml file and create a new stage for the popup dialog
+//                    FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_RAW_DATA);
+//                    BorderPane page = loader.load();
+//                    AnalysisDetailRawDataController controller = loader.getController();
+//                    controller.setParamMap(getParamMap());
+//                    controller.setMainController(this.mainController);
+//
+//                    controller.show(page);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
 
         this.mainController.getMainFrame().setCenter(root);
     }
@@ -259,7 +259,18 @@ public class AnalysisDetailLayoutController extends SubPaneController {
 
     @FXML
     private void rawDataDownloadButton() {
-        logger.info("click raw data download");
+        try {
+            // Load the fxml file and create a new stage for the popup dialog
+            FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_RAW_DATA);
+            BorderPane page = loader.load();
+            AnalysisDetailRawDataController controller = loader.getController();
+            controller.setParamMap(getParamMap());
+            controller.setMainController(this.mainController);
+
+            controller.show(page);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
