@@ -407,7 +407,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         }*/
         try {
             // API 서버 조회
-            HttpClientResponse response = apiService.get("/analysisResults/samleVariants/" + sample.getId(), null,
+            HttpClientResponse response = apiService.get("/analysisResults/sampleVariants/"+ sample.getId(), null,
                     null, false);
             AnalysisResultVariantList analysisResultVariantList = response.getObjectBeforeConvertResponseToJSON(AnalysisResultVariantList.class);
 

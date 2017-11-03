@@ -325,7 +325,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         List<SampleQC> qcList = null;
 
         try {
-            HttpClientResponse response = apiService.get("/analysisResults/"+ sampleId + "/sampleQCs", null,
+            HttpClientResponse response = apiService.get("/analysisResults/sampleQCs/" + sampleId, null,
                     null, false);
 
             qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);

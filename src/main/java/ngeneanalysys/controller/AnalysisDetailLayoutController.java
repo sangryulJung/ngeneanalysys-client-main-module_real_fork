@@ -105,7 +105,7 @@ public class AnalysisDetailLayoutController extends SubPaneController {
 
             sample = response.getObjectBeforeConvertResponseToJSON(Sample.class);
 
-            response = apiService.get("analysisResults/" + sampleId + "/summary", null, null, true);
+            response = apiService.get("analysisResults/sampleSummary/" + sampleId , null, null, true);
 
             sample.setAnalysisResultSummary(response.getObjectBeforeConvertResponseToJSON(AnalysisResultSummary.class));
 

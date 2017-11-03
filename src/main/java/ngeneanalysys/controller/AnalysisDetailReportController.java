@@ -396,7 +396,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                             contentsMap.put("sequencer",SequencerCode.MISEQ_DX.getDescription());
                         }
 
-                        response = apiService.get("/analysisResults/"+ sample.getId() + "/sampleQCs", null,
+                        response = apiService.get("/analysisResults/sampleQCs/" + sample.getId(), null,
                                 null, false);
 
                         List<SampleQC> qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
