@@ -141,11 +141,11 @@
 }
 
 #mainHeader #topMenuArea Region#addMenu {
-	-fx-background-color:linear-gradient(#D7000F 0%, #C60213 50%, #A70A1E 100%);
-	-fx-background-radius:3 3 0 0;
+	-fx-background-color:#f8a97f0;
+	-fx-background-radius:0;
 	-fx-border-width:0;
 	-fx-pref-width:180;
-	-fx-pref-height:20;
+	-fx-pref-height:30;
 }
 
 #mainHeader #topMenuArea .label {
@@ -154,13 +154,13 @@
 	-fx-alignment:center;
 	-fx-padding:0 0 0 0;
 	-fx-pref-width:145;
-	-fx-pref-height:20;
+	-fx-pref-height:30;
 }
 
 #mainHeader #topMenuArea .label#addMenuLabel {
 	-fx-font-size: 14;
 	-fx-text-fill:#ffffff;
-	-fx-alignment:center-left;
+	-fx-alignment:center;
 }
 
 #mainHeader #topMenuArea .scroll_left_btn {
@@ -186,7 +186,7 @@
 #mainHeader #topMenuArea .close_btn {
 	-fx-background-color:#DADADA;
 	-fx-background-image:url('../images/btn_tab_close.png');
-	-fx-padding:0 10;
+	-fx-padding:-5 15 0 0;
 	-fx-background-repeat: no-repeat;
 	-fx-background-position: center;
 }
@@ -194,9 +194,9 @@
 	-fx-background-image:url('../images/btn_tab_close_on.png');	
 }
 #mainHeader #topMenuArea #selectedMenu Region {
-	-fx-background-color: linear-gradient(#D7000F 0%, #C60213 50%, #A70A1E 100%);
+	-fx-background-color:linear-gradient(#D7000F 0%, #C60213 50%, #A70A1E 100%);
 	/* top-left top-right bottom-right bottom-left */
-	-fx-background-radius:3 3 0 0;
+	-fx-background-radius:0;
 	-fx-border-width:0;
 }
 
@@ -208,16 +208,16 @@
 }
 
 #mainHeader #topMenuArea #selectedMenu Region#addMenu {
-	-fx-background-color: #ffffff;
-	-fx-background-radius:3 3 0 0;
+	-fx-background-color:linear-gradient(#D7000F 0%, #C60213 50%, #A70A1E 100%);
+	-fx-background-radius:0;
 	-fx-border-width:0;
 }
 
 #mainHeader #topMenuArea #selectedMenu .label#addMenuLabel {
-	-fx-font-size: 12;
+	-fx-font-size: 14;
 	-fx-font-weight:bold; 
-	-fx-text-fill: #000000;
-	-fx-alignment:center-left;
+	-fx-text-fill: #ffffff;
+	-fx-alignment:center;
 }
 
 #mainFooter {

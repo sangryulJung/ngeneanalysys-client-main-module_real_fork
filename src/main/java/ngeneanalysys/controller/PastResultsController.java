@@ -72,12 +72,6 @@ public class PastResultsController extends SubPaneController {
 	/** status choose box */
 	@FXML
 	private ComboBox<ComboBoxItem> chooseAnalysisType;
-	/** Experimenter search label */
-	@FXML
-	private Label experimenterSearchLabel;
-	/** Experimenter choose box */
-	@FXML
-	private ComboBox<ComboBoxItem> chooseExperimenter;
 	/** Submitted Start Date Picker */
 	@FXML
 	private DatePicker submittedStartDatePicker;
@@ -176,11 +170,6 @@ public class PastResultsController extends SubPaneController {
 		chooseAnalysisType.getSelectionModel().selectFirst();
 		
 		logger.info("chooseExperimenter init..");
-		chooseExperimenter.setConverter(new ComboBoxConverter());
-		chooseExperimenter.getItems().add(new ComboBoxItem());
-		
-		experimenterSearchLabel.setVisible(false);
-		chooseExperimenter.setVisible(false);
 		
 		logger.info("submittedDatePicker init..");
 		String dateFormat = "yyyy-MM-dd";
@@ -380,10 +369,6 @@ public class PastResultsController extends SubPaneController {
 		if(chooseAnalysisType.getSelectionModel().getSelectedIndex() > 0 && chooseAnalysisType.getValue() != null) {
 			param.put("analysisType", chooseAnalysisType.getValue().getValue());
 		}
-		// Experiment
-		if(chooseExperimenter.getSelectionModel().getSelectedIndex() > -1 && chooseExperimenter.getValue() != null) {
-			param.put("job_run_group_user_id", chooseExperimenter.getValue().getValue());
-		}
 		
 		String minCreateAt = (submittedStartDatePicker.getValue() != null) ? submittedStartDatePicker.getValue().toString() : null;
 		String maxCreateAt = (submittedEndDatePicker.getValue() != null) ? submittedEndDatePicker.getValue().toString() : null;
@@ -527,7 +512,6 @@ public class PastResultsController extends SubPaneController {
 		choosePanel.setValue(new ComboBoxItem());
 		chooseSampleSource.setValue(new ComboBoxItem());
 		chooseAnalysisType.setValue(new ComboBoxItem());
-		chooseExperimenter.setValue(new ComboBoxItem());
 		submittedStartDatePicker.setValue(null);
 		submittedEndDatePicker.setValue(null);
 		sampleNameTextField.setText(null);

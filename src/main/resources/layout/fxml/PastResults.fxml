@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
@@ -18,7 +25,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="experimentPastResultsWrapper" prefHeight="625.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.PastResultsController">
+<GridPane fx:id="experimentPastResultsWrapper" prefHeight="625.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.PastResultsController">
    <columnConstraints>
       <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="20.0" />
       <ColumnConstraints hgrow="SOMETIMES" prefWidth="1240.0" />
@@ -173,16 +180,7 @@
                               <Insets right="15.0" />
                            </HBox.margin>
                         </ComboBox>
-                        <Label fx:id="experimenterSearchLabel" alignment="CENTER_RIGHT" prefWidth="80.0" text="Experimenter">
-                           <styleClass>
-                              <String fx:value="txt_black" />
-                              <String fx:value="font_size_12" />
-                           </styleClass>
-                           <HBox.margin>
-                              <Insets right="10.0" />
-                           </HBox.margin>
-                        </Label>
-                        <ComboBox fx:id="chooseExperimenter" prefWidth="135.0" />
+                        <Button fx:id="buttonResetForm" minWidth="52.0" mnemonicParsing="false" onAction="#resetSearchForm" prefHeight="26.0" prefWidth="84.0" styleClass="btn_refresh" text="Reset Filter" />
                      </children>
                      <VBox.margin>
                         <Insets top="10.0" />
@@ -203,7 +201,6 @@
                         <Insets top="4.0" />
                      </VBox.margin>
                   </Button>
-                  <Button fx:id="buttonResetForm" minWidth="52.0" mnemonicParsing="false" onAction="#resetSearchForm" prefHeight="26.0" prefWidth="52.0" styleClass="btn_refresh" text="Reset" />
                </children>
             </VBox>
          </children>
@@ -279,7 +276,7 @@
             <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="Panel" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
             <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="Result Overview" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
             <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="QC" GridPane.columnIndex="4" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
-            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="Detail" GridPane.columnIndex="5" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
+            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-border-width: 0;" styleClass="header" text="Detail" GridPane.columnIndex="5" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
          </children>
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" />

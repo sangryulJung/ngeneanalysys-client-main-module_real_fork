@@ -351,7 +351,7 @@ public class MainController extends BaseStageController {
 
                 Label menuName = new Label(topMenu.getMenuName());
                 menuName.setLayoutX(0);
-                menuName.setLayoutY(10);
+                //menuName.setLayoutY(5);
 
                 if (!topMenu.isStaticMenu()) {
                     region.setId("addMenu");
@@ -361,7 +361,7 @@ public class MainController extends BaseStageController {
                     Button closeButton = new Button("");
                     closeButton.getStyleClass().add("close_btn");
                     closeButton.setLayoutX(158);
-                    closeButton.setLayoutY(10);
+                    closeButton.setLayoutY(8);
 
                     //메뉴 삭제 이벤트 바인딩
                     closeButton.setOnMouseClicked(event -> {
