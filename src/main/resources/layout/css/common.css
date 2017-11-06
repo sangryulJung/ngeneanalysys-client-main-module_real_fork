@@ -877,29 +877,29 @@ Button {
 	-fx-pref-height:24;
 }
 .btn_cancel {
-	-fx-font-size:16;
+	-fx-font-size:14;
 	-fx-background-color:#AAAAAA;
 	-fx-text-fill:#ffffff;
 	-fx-font-weight:bold;
 	-fx-min-width:85;
 	-fx-pref-width:85;
 	-fx-max-width:85;
-	-fx-min-height:35;
-	-fx-pref-height:35;
-	-fx-max-height:35;
+	-fx-min-height:30;
+	-fx-pref-height:30;
+	-fx-max-height:30;
 }
 
 .btn_next {
-	-fx-font-size:16;
+	-fx-font-size:14;
 	-fx-background-color:#FB4952;
 	-fx-text-fill:#ffffff;
 	-fx-font-weight:bold;
 	-fx-min-width:85;
 	-fx-pref-width:85;
 	-fx-max-width:85;
-	-fx-min-height:35;
-	-fx-pref-height:35;
-	-fx-max-height:35;
+	-fx-min-height:30;
+	-fx-pref-height:30;
+	-fx-max-height:30;
 }
 .btn_next:hover {
 	-fx-background-color:#CF2730;

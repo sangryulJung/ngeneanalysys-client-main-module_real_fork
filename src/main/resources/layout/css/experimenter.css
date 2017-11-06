@@ -14,6 +14,7 @@ Button#buttonUpload {
 	-fx-background-image:url('../images/btn_run.png');
 	-fx-background-color:none;
 	-fx-background-repeat: no-repeat;
+	-fx-background-image-repeat: no-repeat ;
 	-fx-background-position: center;
 	-fx-border-width:0;
 	-fx-cursor:hand;
@@ -25,26 +26,27 @@ Button#buttonUpload:hover {
 }
 
 #runListHeaderGridPane, #sampleListHeaderGridPane {
-	-fx-border-color:#000;
-	-fx-border-width:2 0 0 0;
-	-fx-background-color:#75848c;
+	-fx-border-width:0;
+	-fx-background-color:#C30D23;
 }
 
 #runListHeaderGridPane .header, #sampleListHeaderGridPane .header {
 	-fx-font-size:12;
 	-fx-text-fill:#fff;
 	-fx-font-weight:bold;
-	-fx-min-height:30;
-	-fx-pref-height:30;
-	-fx-max-height:30;
+	-fx-min-height:25;
+	-fx-pref-height:25;
+	-fx-max-height:25;
 	-fx-padding:0 0 0 0;
+	-fx-border-width : 0 1 0 0;
+	-fx-border-color : white;
 }
 
 #listGrid {
 	-fx-background-color:#fff;
 }
 
-#listGrid .colunmn {
+#listGrid .column {
 	-fx-padding:0;
 	-fx-border-color:#d2d2d2;
 	-fx-border-width:0 0 1 0;
@@ -232,7 +234,7 @@ Button#buttonUpload:hover {
 	-fx-font-weight:bold;
 	-fx-padding:0;
 	-fx-graphic-text-gap:0;
-	-fx-font-size:16;
+	-fx-font-size:12;
 }
 .btn_search:hover {
 	-fx-background-color:#CF2730;

@@ -84,9 +84,7 @@
 }
 
 #sampleSettingHeader {
-	-fx-border-color:#000;
-	-fx-border-width:2 0 0 0;
-	-fx-background-color:#75848c;
+	-fx-background-color:#C30D23;
 }
 
 #sampleSettingHeader .header {

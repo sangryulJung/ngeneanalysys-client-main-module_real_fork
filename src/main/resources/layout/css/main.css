@@ -114,7 +114,7 @@
 }
 
 #mainHeader {
-	-fx-background-color:#5d5d5d;
+
 	-fx-background-image:url('../images/bg_main_header.png');
 	-fx-background-position:right ;
 }
@@ -133,32 +133,32 @@
 }
 
 #mainHeader #topMenuArea Region {
-	-fx-background-color:#737373;
-	-fx-background-radius:3 3 0 0;
+	-fx-background-color:linear-gradient(#A0A0A0 0%, #858585 50%, #525051 100%);
+	-fx-background-radius:0 0 0 0;
 	-fx-border-width:0;
 	-fx-pref-width:145;
 	-fx-pref-height:30;
 }
 
 #mainHeader #topMenuArea Region#addMenu {
-	-fx-background-color:#737373;
+	-fx-background-color:linear-gradient(#D7000F 0%, #C60213 50%, #A70A1E 100%);
 	-fx-background-radius:3 3 0 0;
 	-fx-border-width:0;
 	-fx-pref-width:180;
-	-fx-pref-height:40;
+	-fx-pref-height:20;
 }
 
 #mainHeader #topMenuArea .label {
 	-fx-font-size: 14;
 	-fx-text-fill:#ffffff;
 	-fx-alignment:center;
-	-fx-padding:0 0 0 10;
+	-fx-padding:0 0 0 0;
 	-fx-pref-width:145;
 	-fx-pref-height:20;
 }
 
 #mainHeader #topMenuArea .label#addMenuLabel {
-	-fx-font-size: 12;
+	-fx-font-size: 14;
 	-fx-text-fill:#ffffff;
 	-fx-alignment:center-left;
 }
@@ -194,7 +194,7 @@
 	-fx-background-image:url('../images/btn_tab_close_on.png');	
 }
 #mainHeader #topMenuArea #selectedMenu Region {
-	-fx-background-color: #ffffff;
+	-fx-background-color: linear-gradient(#D7000F 0%, #C60213 50%, #A70A1E 100%);
 	/* top-left top-right bottom-right bottom-left */
 	-fx-background-radius:3 3 0 0;
 	-fx-border-width:0;
@@ -203,7 +203,7 @@
 #mainHeader #topMenuArea #selectedMenu .label {
 	-fx-font-size: 14;
 	-fx-font-weight:bold; 
-	-fx-text-fill: #000000;
+	-fx-text-fill: #ffffff;
 	-fx-alignment:center;
 }
 

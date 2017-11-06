@@ -3,3 +3,7 @@
 -fx-background-color : white;
 -fx-border-width : 0 0 1 0;
 }
+
+.text_header {
+    -fx-text-fill : #666465;
+}
