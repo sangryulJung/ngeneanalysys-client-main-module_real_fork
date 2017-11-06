@@ -93,6 +93,7 @@ public class AnalysisRequestService {
             if(httpclient != null) response = httpclient.execute(put);
             if(response == null) return null;
             result = HttpClientUtil.getHttpClientResponse(response);
+
         } catch (IOException e) {
             e.printStackTrace();
             logger.error("upload file", e);

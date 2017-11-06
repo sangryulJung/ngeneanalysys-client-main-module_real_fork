@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -187,8 +188,17 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         String panelName = panel.getName();
         panelLabel.setText(panelName);
 
+        HttpClientResponse response = null;
         try {
-            HttpClientResponse response = apiService.get("/analysisResults/sampleVariants/" + sample.getId(), null,
+            /*response = apiService.get("/sampleReport/" + sample.getId(), null ,null, false);
+
+            if(!StringUtils.isEmpty(response.getContentString())) {
+
+                logger.info(response.getContentString());
+
+            }*/
+
+            response = apiService.get("/analysisResults/sampleVariants/" + sample.getId(), null,
                     null, false);
 
             AnalysisResultVariantList analysisResultVariantList = response.getObjectBeforeConvertResponseToJSON(AnalysisResultVariantList.class);
@@ -232,6 +242,24 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
      * @return
      */
     public boolean saveData(User user) {
+
+        String conclusionsText = conclusionsTextArea.getText();
+
+        Map<String, Object> params = new HashMap<>();
+
+        params.put("sampleId", sample.getId());
+
+        params.put("contents", conclusionsText);
+/*
+        HttpClientResponse response = null;
+        try {
+            response = apiService.post("/sampleReport", params, null, true);
+        } catch (WebAPIException wae) {
+            wae.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
+
 
         return true;
     }
@@ -328,7 +356,12 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         try {
             if(file != null) {
                 String draftImageStr = String.format("url('%s')", this.getClass().getClassLoader().getResource("layout/images/DRAFT.png"));
-                String ngenebioLogo = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/ngenebio_logo_small.png"));
+                String ngenebioLogo = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/ngenebio_logo.png"));
+                String testInformationText = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/test_information1.png"));
+                String pathogenicMutationsDetectedText = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/pathogenic_mutations_detected1.png"));
+                String pertinetNegativeText = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/pertinent_negative.png"));
+                String variantDetailText = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/variant_detail.png"));
+                String dataQcText = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/data_qc.png"));
                 Map<String,Object> contentsMap = new HashMap<>();
                 contentsMap.put("panelName", panel.getName());
                 contentsMap.put("diseaseName", diseaseLabel.getText());
@@ -336,6 +369,10 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 contentsMap.put("panelCode", panel.getCode());
                 contentsMap.put("sampleName", sample.getName());
                 contentsMap.put("patientCode", "SS17-01182");
+
+                Date date = new Date();
+                SimpleDateFormat sdf = new SimpleDateFormat("MMM. dd yyyy");
+                contentsMap.put("date", sdf.format(date));
 
                 List<AnalysisResultVariant> variantList = new ArrayList<>();
                 if(tierOne != null && !tierOne.isEmpty()) variantList.addAll(tierOne);
@@ -350,6 +387,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 if(!variantList.isEmpty()) {
                     variantList = variantList.stream().filter(item -> item.getIncludedInReport().equals("Y")).collect(Collectors.toList());
                 }
+
+                if(tierThree != null && !tierThree.isEmpty()) variantList.addAll(tierThree);
 
                 Long evidenceACount = variantList.stream().filter(item -> !StringUtils.isEmpty(item.getInterpretation().getInterpretationEvidenceA())).count();
                 Long evidenceBCount = variantList.stream().filter(item -> !StringUtils.isEmpty(item.getInterpretation().getInterpretationEvidenceB())).count();
@@ -374,6 +413,10 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         List<VariantCountByGene> variantCountByGenes = (List<VariantCountByGene>) response
                                 .getMultiObjectBeforeConvertResponseToJSON(VariantCountByGene.class,
                                         false);
+
+                        contentsMap.put("variantCountByGenes", variantCountByGenes);
+                        int geneTableMaxRowCount = (int)Math.ceil(variantCountByGenes.size() / 7.0);
+                        contentsMap.put("geneTableCount", (7 * geneTableMaxRowCount) - 1);
 
                         int tableOneSize = (int)Math.ceil((double)variantCountByGenes.size() / 3);
                         int tableTwoSize = (int)Math.ceil((double)(variantCountByGenes.size() - tableOneSize) / 2);
@@ -419,6 +462,11 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 //model.put("qcResult", sample.getQc());
                 model.put("draftImageURL", draftImageStr);
                 model.put("ngenebioLogo", ngenebioLogo);
+                model.put("testInformationText", testInformationText);
+                model.put("pathogenicMutationsDetectedText", pathogenicMutationsDetectedText);
+                model.put("pertinetNegativeText", pertinetNegativeText);
+                model.put("variantDetailText", variantDetailText);
+                model.put("dataQcText", dataQcText);
                 model.put("contents", contentsMap);
 
                 String contents = velocityUtil.getContents("/layout/velocity/report.vm", "UTF-8", model);
@@ -453,11 +501,27 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         return created;
     }
 
-    private SampleQC findQCResult(List<SampleQC> qcList, String qc) {
+    /*private SampleQC findQCResult(List<SampleQC> qcList, String qc) {
         if(qcList != null && !qcList.isEmpty()) {
             Optional<SampleQC> findQC = qcList.stream().filter(sampleQC -> sampleQC.getQcType().equalsIgnoreCase(qc)).findFirst();
             if(findQC.isPresent()) {
                 return findQC.get();
+            }
+        }
+        return null;
+    }*/
+    private String findQCResult(List<SampleQC> qcList, String qc) {
+        if(qcList != null && !qcList.isEmpty()) {
+            Optional<SampleQC> findQC = qcList.stream().filter(sampleQC -> sampleQC.getQcType().equalsIgnoreCase(qc)).findFirst();
+            if(findQC.isPresent()) {
+                if(qc.equalsIgnoreCase("total_base")) {
+                    String number = findQC.get().getQcValue().toString();
+                    Long value = Math.round(Double.parseDouble(number));
+                    return (value / 1000 / 1000) + "Mb";
+                }
+                String number = findQC.get().getQcValue().toString();
+                Long value = Math.round(Double.parseDouble(number));
+                return value + findQC.get().getQcUnit();
             }
         }
         return null;
