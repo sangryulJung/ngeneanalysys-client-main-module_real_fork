@@ -21,8 +21,8 @@
       <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="20.0" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints maxHeight="45.600006103515625" minHeight="-Infinity" prefHeight="35.19999694824219" valignment="TOP" vgrow="NEVER" />
-      <RowConstraints maxHeight="99.80000305175781" minHeight="-Infinity" prefHeight="81.19999694824219" vgrow="NEVER" />
+      <RowConstraints maxHeight="51.55555725097656" minHeight="-Infinity" prefHeight="51.55555725097656" valignment="TOP" vgrow="NEVER" />
+      <RowConstraints maxHeight="99.80000305175781" minHeight="-Infinity" prefHeight="66.44444274902344" vgrow="NEVER" />
       <RowConstraints maxHeight="48.80000305175781" minHeight="-Infinity" prefHeight="20.20001220703125" valignment="TOP" vgrow="NEVER" />
       <RowConstraints maxHeight="179.79998779296875" minHeight="137.60000610351562" prefHeight="137.60000610351562" valignment="TOP" vgrow="ALWAYS" />
       <RowConstraints maxHeight="59.399993896484375" minHeight="10.0" prefHeight="37.399993896484375" valignment="TOP" vgrow="ALWAYS" />
@@ -32,9 +32,9 @@
    <children>
       <HBox alignment="CENTER_LEFT" layoutX="20.0" layoutY="31.0" prefHeight="30.0" GridPane.columnIndex="1">
          <children>
-            <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+            <HBox alignment="BOTTOM_LEFT" HBox.hgrow="ALWAYS">
                <children>
-                  <Label alignment="TOP_LEFT" layoutX="60.0" layoutY="31.0" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="326.0" text="Filter">
+                  <Label alignment="TOP_LEFT" layoutX="60.0" layoutY="31.0" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="326.0" style="-fx-text-fill: #C30D23;" text="Filter">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>

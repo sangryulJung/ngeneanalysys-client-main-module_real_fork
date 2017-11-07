@@ -25,7 +25,7 @@
 			<children>
             <VBox maxHeight="-Infinity" prefHeight="75.0" prefWidth="1256.0">
                <children>
-                  <HBox prefHeight="7.0" prefWidth="200.0" style="-fx-background-color: #C30D23;" />
+                  <HBox maxWidth="-Infinity" prefHeight="7.0" prefWidth="1240.0" style="-fx-background-color: #C30D23;" />
                   <HBox prefHeight="62.0" prefWidth="200.0">
                      <children>
             				<HBox alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="62.0" prefWidth="131.0" HBox.hgrow="NEVER">
@@ -67,7 +67,7 @@
             				</HBox>
                      </children>
                   </HBox>
-                  <HBox prefHeight="7.0" prefWidth="200.0" style="-fx-background-color: #C30D23;" />
+                  <HBox maxWidth="-Infinity" prefHeight="7.0" prefWidth="1240.0" style="-fx-background-color: #C30D23;" />
                </children>
             </VBox>
 			</children>
@@ -142,6 +142,19 @@
             </HBox>
             <VBox alignment="BOTTOM_LEFT" prefHeight="320.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <VBox alignment="BOTTOM_LEFT" prefHeight="45.0" prefWidth="157.0">
+                           <children>
+                              <VBox maxWidth="-Infinity" prefHeight="8.0" prefWidth="138.0" style="-fx-background-color: #c30d23;">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </VBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
       				<VBox fx:id="linkArea" maxWidth="-Infinity" minWidth="140.0" prefHeight="132.0" prefWidth="130.0">
                      <VBox.margin>
                         <Insets />

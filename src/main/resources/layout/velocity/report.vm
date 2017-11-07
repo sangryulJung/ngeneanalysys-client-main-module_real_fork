@@ -428,62 +428,209 @@
             <fo:block padding-bottom="10mm">
                 <fo:block font-size="16pt" margin-bottom="2mm" font-family="Noto Sans CJK KR Bold" font-weight="bold">1) Experiment information</fo:block>
                 <fo:table table-layout="fixed" width="100%" margin-bottom="4mm" border-top="solid 0.1mm black" text-align="center" display-align="center" font-family="Noto Sans CJK KR Regular">
-                        <fo:table-body>
-                            <fo:table-row border-bottom="solid 1mm white">
-                                <fo:table-cell background-color="#58585a" border-right="solid 1mm white">
-                                    <fo:block padding-top="2.5mm" padding-bottom="2.5mm" color="white"></fo:block>
-                                </fo:table-cell>
-                                <fo:table-cell background-color="#58585a">
-                                    <fo:block padding-top="2.5mm" padding-bottom="2.5mm" color="white">Value</fo:block>
-                                </fo:table-cell>
-                            </fo:table-row>
-                            <fo:table-row border-bottom="solid 1mm white">
-                                <fo:table-cell background-color="#e7e7e8" border-right="solid 1mm white">
-                                    <fo:block padding-top="2.5mm" padding-bottom="2.5mm">DIN</fo:block>
-                                </fo:table-cell>
-                                <fo:table-cell background-color="#e7e7e8">
-                                    <fo:block padding-top="2.5mm" padding-bottom="2.5mm"></fo:block>
-                                </fo:table-cell>
-                            </fo:table-row>
-                            <fo:table-row border-bottom="solid 1mm white">
-                                <fo:table-cell background-color="#e7e7e8" border-right="solid 1mm white">
-                                    <fo:block padding-top="2.5mm" padding-bottom="2.5mm">Input DNA(ng)</fo:block>
-                                </fo:table-cell>
-                                <fo:table-cell background-color="#e7e7e8">
-                                    <fo:block padding-top="2.5mm" padding-bottom="2.5mm"></fo:block>
-                                </fo:table-cell>
-                            </fo:table-row>
-                            <fo:table-row border-bottom="solid 1mm white">
-                                <fo:table-cell background-color="#e7e7e8" border-right="solid 1mm white">
-                                    <fo:block padding-top="2.5mm" padding-bottom="2.5mm">PCR cycle</fo:block>
-                                </fo:table-cell>
-                                <fo:table-cell background-color="#e7e7e8">
-                                    <fo:block padding-top="2.5mm" padding-bottom="2.5mm"></fo:block>
-                                </fo:table-cell>
-                            </fo:table-row>
-                            <fo:table-row border-bottom="solid 1mm white">
-                                <fo:table-cell background-color="#e7e7e8" border-right="solid 1mm white">
-                                    <fo:block padding-top="2.5mm" padding-bottom="2.5mm">Hyb DNA(ng)</fo:block>
-                                </fo:table-cell>
-                                <fo:table-cell background-color="#e7e7e8">
-                                    <fo:block padding-top="2.5mm" padding-bottom="2.5mm"></fo:block>
-                                </fo:table-cell>
-                            </fo:table-row>
-                            <fo:table-row border-bottom="solid 1mm white">
-                                <fo:table-cell background-color="#e7e7e8" border-right="solid 1mm white">
-                                    <fo:block padding-top="2.5mm" padding-bottom="2.5mm">Cluster density</fo:block>
-                                </fo:table-cell>
-                                <fo:table-cell background-color="#e7e7e8">
-                                    <fo:block padding-top="2.5mm" padding-bottom="2.5mm"></fo:block>
-                                </fo:table-cell>
-                            </fo:table-row>
-                        </fo:table-body>
+                    <fo:table-column column-width="proportional-column-width(0.35)" />
+                    <fo:table-column column-width="proportional-column-width(0.2)" />
+                    <fo:table-column column-width="proportional-column-width(0.15)" />
+                    <fo:table-column column-width="proportional-column-width(0.3)" />
+                    <fo:table-body>
+                        <fo:table-row border-bottom="solid 1mm white">
+                            <fo:table-cell background-color="#58585a">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm" color="white">Q metric</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#58585a">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm" color="white">Parameters</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#58585a">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm" color="white">Results</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#58585a">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm" color="white">Acceptable range</fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                        <fo:table-row>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">DNA quality</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">DIN</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">3.1</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm"><![CDATA[>= 3]]></fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                        <fo:table-row>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">input DNA</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">ng</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">200</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm"><![CDATA[>= 200]]></fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                        <fo:table-row>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">PCR cycle</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">cycle</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">8</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm"><![CDATA[>= 7]]></fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                        <fo:table-row>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">total Hyb DNA</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">ng</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">1000</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">500 ~ 1000</fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                        <fo:table-row>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">cluster density</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">K/mm<fo:inline vertical-align="super" font-size="5pt">2</fo:inline></fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">1157</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">1000~1200</fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                    </fo:table-body>
                 </fo:table>
             </fo:block>
 
             <fo:block padding-bottom="15mm">
                 <fo:block font-size="16pt" margin-bottom="5mm" font-family="Noto Sans CJK KR Bold" font-weight="bold">2) Data QC</fo:block>
                 <fo:table table-layout="fixed" width="100%" margin-bottom="4mm" border-top="solid 0.1mm black" text-align="center" display-align="center" font-family="Noto Sans CJK KR Regular">
+                    <fo:table-column column-width="proportional-column-width(0.35)" />
+                    <fo:table-column column-width="proportional-column-width(0.2)" />
+                    <fo:table-column column-width="proportional-column-width(0.15)" />
+                    <fo:table-column column-width="proportional-column-width(0.3)" />
+                    <fo:table-body>
+                        <fo:table-row border-bottom="solid 1mm white">
+                            <fo:table-cell background-color="#58585a">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm" color="white">Q metric</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#58585a">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm" color="white">Parameters</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#58585a">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm" color="white">Results</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#58585a">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm" color="white">Acceptable range</fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                        <fo:table-row>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">Data throughput</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">$contents.totalBase.qcUnit</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">$contents.totalBase.qcValue</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm"><![CDATA[$contents.totalBase.qcThreshold]]></fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                        <fo:table-row>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">base > Q30</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">$contents.q30.qcUnit</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">$contents.q30.qcValue</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm"><![CDATA[$contents.q30.qcThreshold]]></fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                        <fo:table-row>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">Mapped %</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">$contents.mappedBase.qcUnit</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">$contents.mappedBase.qcValue</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm"><![CDATA[$contents.mappedBase.qcThreshold]]></fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                        <fo:table-row>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">Duplication rate</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">$contents.duplicatedReads.qcUnit</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">$contents.duplicatedReads.qcValue</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm"><![CDATA[$contents.duplicatedReads.qcThreshold]]></fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                        <fo:table-row>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">on-target rate</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">$contents.onTarget.qcUnit</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">$contents.onTarget.qcValue</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm"><![CDATA[$contents.onTarget.qcThreshold]]></fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                        <fo:table-row>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">on-target coverage</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">$contents.onTargetCoverage.qcUnit</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">$contents.onTargetCoverage.qcValue</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm"><![CDATA[$contents.onTargetCoverage.qcThreshold]]></fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                    </fo:table-body>
+                </fo:table>
+
+                <!--<fo:table table-layout="fixed" width="100%" margin-bottom="4mm" border-top="solid 0.1mm black" text-align="center" display-align="center" font-family="Noto Sans CJK KR Regular">
                     <fo:table-body>
                         <fo:table-row border-bottom="solid 1mm white">
                             <fo:table-cell background-color="#58585a" border-right="solid 1mm white">
@@ -542,7 +689,7 @@
                             </fo:table-cell>
                         </fo:table-row>
                     </fo:table-body>
-                </fo:table>
+                </fo:table>-->
             </fo:block>
 
 

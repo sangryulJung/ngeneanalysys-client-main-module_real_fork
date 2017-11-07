@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -501,27 +502,20 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         return created;
     }
 
-    /*private SampleQC findQCResult(List<SampleQC> qcList, String qc) {
+    private SampleQC findQCResult(List<SampleQC> qcList, String qc) {
         if(qcList != null && !qcList.isEmpty()) {
             Optional<SampleQC> findQC = qcList.stream().filter(sampleQC -> sampleQC.getQcType().equalsIgnoreCase(qc)).findFirst();
             if(findQC.isPresent()) {
-                return findQC.get();
-            }
-        }
-        return null;
-    }*/
-    private String findQCResult(List<SampleQC> qcList, String qc) {
-        if(qcList != null && !qcList.isEmpty()) {
-            Optional<SampleQC> findQC = qcList.stream().filter(sampleQC -> sampleQC.getQcType().equalsIgnoreCase(qc)).findFirst();
-            if(findQC.isPresent()) {
-                if(qc.equalsIgnoreCase("total_base")) {
+                    SampleQC qcData = findQC.get();
                     String number = findQC.get().getQcValue().toString();
                     Long value = Math.round(Double.parseDouble(number));
-                    return (value / 1000 / 1000) + "Mb";
+                if(qc.equalsIgnoreCase("total_base")) {
+                    qcData.setQcUnit("Mb");
+                    qcData.setQcValue(BigDecimal.valueOf(value / 1024 / 1024));
+                    return qcData;
                 }
-                String number = findQC.get().getQcValue().toString();
-                Long value = Math.round(Double.parseDouble(number));
-                return value + findQC.get().getQcUnit();
+                qcData.setQcValue(BigDecimal.valueOf(value));
+                return qcData;
             }
         }
         return null;

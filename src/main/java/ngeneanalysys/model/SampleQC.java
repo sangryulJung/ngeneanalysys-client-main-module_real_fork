@@ -16,6 +16,55 @@ public class SampleQC {
     private String qcDescription;
 
     /**
+     * @param sampleId
+     */
+    public void setSampleId(Integer sampleId) {
+        this.sampleId = sampleId;
+    }
+
+    /**
+     * @param qcType
+     */
+    public void setQcType(String qcType) {
+        this.qcType = qcType;
+    }
+
+    /**
+     * @param qcUnit
+     */
+    public void setQcUnit(String qcUnit) {
+        this.qcUnit = qcUnit;
+    }
+
+    /**
+     * @param qcValue
+     */
+    public void setQcValue(BigDecimal qcValue) {
+        this.qcValue = qcValue;
+    }
+
+    /**
+     * @param qcThreshold
+     */
+    public void setQcThreshold(String qcThreshold) {
+        this.qcThreshold = qcThreshold;
+    }
+
+    /**
+     * @param qcResult
+     */
+    public void setQcResult(String qcResult) {
+        this.qcResult = qcResult;
+    }
+
+    /**
+     * @param qcDescription
+     */
+    public void setQcDescription(String qcDescription) {
+        this.qcDescription = qcDescription;
+    }
+
+    /**
      * @return sampleId
      */
     public Integer getSampleId() {

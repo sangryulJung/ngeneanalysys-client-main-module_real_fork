@@ -102,8 +102,8 @@
 }
 
 #filterArea {
-	-fx-background-color:#d6dde0;
-	-fx-border-width:0 0 1 0;
+	-fx-background-color:#f3f3f3;
+	-fx-border-width:0 0 0 0;
 	-fx-border-color:#bac6cd;
 }
 
@@ -471,6 +471,8 @@
 	-fx-pref-height:50;
 	-fx-max-height:50;
 	-fx-cursor: hand;
+	/*-fx-border-width : 1 1 1 1;
+    -fx-border-color : #000;*/
 }
 #filterArea #filterList VBox .level_TIER_ONE {
 	-fx-font-size:10;
