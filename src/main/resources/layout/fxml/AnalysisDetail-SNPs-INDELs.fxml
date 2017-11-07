@@ -16,23 +16,23 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="590.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNPsINDELsController">
+<BorderPane prefHeight="590.0" prefWidth="1280.0" style="-fx-background-color: #F7F7F7;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNPsINDELsController">
 	<top>
-		<HBox fx:id="filterArea" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="90.0" prefWidth="1278.0" BorderPane.alignment="CENTER">
+		<HBox fx:id="filterArea" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" prefWidth="1278.0" style="-fx-background-color: #F7F7F7;" BorderPane.alignment="CENTER">
 			<padding>
 				<Insets left="19.0" />
 			</padding>
 			<children>
-            <VBox maxHeight="-Infinity" prefHeight="75.0" prefWidth="1256.0">
+            <VBox maxHeight="-Infinity" prefHeight="90.0" prefWidth="1256.0" style="-fx-background-color: #F7F7F7;">
                <children>
-                  <HBox maxWidth="-Infinity" prefHeight="7.0" prefWidth="1240.0" style="-fx-background-color: #C30D23;" />
-                  <HBox prefHeight="62.0" prefWidth="200.0">
+                  <HBox prefHeight="7.0" prefWidth="200.0" style="-fx-background-color: #C30D23;" />
+                  <HBox maxHeight="1.7976931348623157E308" prefHeight="62.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                      <children>
-            				<HBox alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="62.0" prefWidth="131.0" HBox.hgrow="NEVER">
+            				<HBox alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="62.0" prefWidth="200.0" HBox.hgrow="NEVER">
             					<children>
-            						<ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+            						<ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
             							<HBox.margin>
-            								<Insets right="3.0" />
+            								<Insets right="15.0" />
             							</HBox.margin>
             							<image>
             								<Image url="@../images/icon_03.png" />
@@ -67,7 +67,7 @@
             				</HBox>
                      </children>
                   </HBox>
-                  <HBox maxWidth="-Infinity" prefHeight="7.0" prefWidth="1240.0" style="-fx-background-color: #C30D23;" />
+                  <HBox prefHeight="7.0" prefWidth="200.0" style="-fx-background-color: #C30D23;" />
                </children>
             </VBox>
 			</children>
@@ -140,22 +140,9 @@
                   </Button>
                </children>
             </HBox>
-            <VBox alignment="BOTTOM_LEFT" prefHeight="320.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <VBox alignment="BOTTOM_LEFT" prefHeight="320.0" prefWidth="50.0" style="-fx-background-color: #F7F7F7;" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
-                  <VBox prefHeight="200.0" prefWidth="100.0">
-                     <children>
-                        <VBox alignment="BOTTOM_LEFT" prefHeight="45.0" prefWidth="157.0">
-                           <children>
-                              <VBox maxWidth="-Infinity" prefHeight="8.0" prefWidth="138.0" style="-fx-background-color: #c30d23;">
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </VBox>
-                           </children>
-                        </VBox>
-                     </children>
-                  </VBox>
-      				<VBox fx:id="linkArea" maxWidth="-Infinity" minWidth="140.0" prefHeight="132.0" prefWidth="130.0">
+      				<VBox fx:id="linkArea" maxWidth="-Infinity" minWidth="140.0" prefHeight="132.0" prefWidth="130.0" style="-fx-background-color: #F7F7F7;">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>

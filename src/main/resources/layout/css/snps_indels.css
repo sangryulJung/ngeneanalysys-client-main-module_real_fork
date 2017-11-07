@@ -177,7 +177,9 @@
 	-fx-border-color:#75848c;
 	-fx-border-width:1 0 0 0
 }
-
+#variantListTableView {
+    -fx-border-width:0;
+}
 #variantListTableView .column-header .label {
 	-fx-font-size:9;
 	/*-fx-border-width: 0 0 0 1;*/

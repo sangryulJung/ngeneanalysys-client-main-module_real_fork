@@ -218,9 +218,9 @@ Button#buttonUpload:hover {
 }
 
 #searchArea {
-	-fx-background-color:#f3f3f3;
-	-fx-border-color:#C30D23;
-	-fx-border-width:8 0 8 0;
+	-fx-background-color:#F7F7F7;
+	-fx-border-color:#C20D22;
+	-fx-border-width:7 0 7 0;
 }
 
 #searchArea .label {-fx-text-fill:#5a6971;}
@@ -262,32 +262,28 @@ Button#buttonUpload:hover {
 	-fx-background-insets:0;
 	-fx-background-color: #C30D23;
 	-fx-background-radius :3;
-	-fx-border-width:0;
 	-fx-text-fill:#fff;
 	-fx-font-weight:bold;
 	-fx-padding:0;
 	-fx-graphic-text-gap:0;
-	-fx-font-size:11;
+	-fx-font-size:14;
 }
 .btn_search_small:hover {
-	-fx-background-color: #C30D23;
+	-fx-background-color:#D41E34;
 }
 
 .btn_snp_indel {
-	-fx-font-size:11px;
+	-fx-font-size:14px;
 	-fx-background-insets:0;
-	-fx-background-color: #bfbfbf;
+	-fx-background-color: #CACACA;
 	-fx-background-radius :3;
-	-fx-border-radius :3;
-	-fx-border-color:#bfbfbf;
-	-fx-border-width:1;
 	-fx-text-fill:#fff;
 	-fx-font-weight:bold;
 	-fx-padding:0;
 	-fx-graphic-text-gap:0;
 }
 .btn_snp_indel:hover {
-	-fx-background-color: #bfbfbf;
+	-fx-background-color: #DBDBDB;
 }
 
 .help_tooltip {
@@ -302,28 +298,23 @@ Button#buttonUpload:hover {
 	-fx-max-height:15;
 }
 
-
+.geneTable {
+ -fx-border-width : 0;
+}
 .geneTable .column-header-background .nested-column-header .label{
 	-fx-font-size:12px;
-	-fx-font-weight:bold;
-	-fx-text-fill:#fff;
-	-fx-border-color:
-                transparent
-                transparent
-                transparent
-                transparent
-        -fx-border-insets: 0;
+	-fx-text-fill:#ffffff;
 }
 
 .geneTable .column-header-background .filler {
 	-fx-background-color:#C30D23;
-	-fx-border-color:#000 #000 #000 #c3c3c3;
-	-fx-border-width:1 0 0 0;
+	-fx-border-width: 1;
+	-fx-border-color:#FFFFFF ;
 }
 
 .geneTable .column-header {
 	-fx-pref-height:30;
 	-fx-background-color:#C30D23;
- 	-fx-border-color:#000 #000 #000 #c3c3c3;
- 	-fx-border-width:0 0 0 0;
+	-fx-border-color:#ffffff;
+	-fx-border-width: 1;
 }

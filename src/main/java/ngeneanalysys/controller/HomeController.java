@@ -5,6 +5,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
@@ -13,6 +15,7 @@ import javafx.scene.control.Pagination;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
@@ -117,6 +120,7 @@ public class HomeController extends SubPaneController{
                 ae -> autoUpdateSampleList()));
         sampleListAutoRefreshTimeline.setCycleCount(Animation.INDEFINITE);
         sampleListAutoRefreshTimeline.play();
+
     }
 
     public void autoUpdateSampleList() {
@@ -173,6 +177,7 @@ public class HomeController extends SubPaneController{
                 runNameFields.get(i).setText(run.getName());
                 runNameFields.get(i).setOnMouseClicked(e -> {
                     //showSampleList(run.getId(), 0);
+                    selectRunList(maxRunNumberOfPage, Optional.of((Node)e.getSource()));
                     if(e.getClickCount() == 1) {
                         sampleListPagination.setPageFactory((page) -> {
                             showSampleList(run.getId(), page);
@@ -208,9 +213,33 @@ public class HomeController extends SubPaneController{
                 runStatusFields.get(i).setBorder(null);
                 runStatusFields.get(i).setStatus(null);
             }
-
         } catch (Exception e) {
             logger.error("HOME -> SHOW RUN LIST", e);
+        }
+    }
+
+    private void selectRunList(int maxRunNumberOfPage, Optional<Node> selectedNode) {
+        int rowIndex = -1;
+        if(selectedNode.isPresent()) {
+            rowIndex = runListGridPane.getRowIndex(selectedNode.get());
+        }
+
+        for(int i = 0; i < maxRunNumberOfPage; i++){
+            StringBuilder style = new StringBuilder("-fx-font-size:11;");
+            style.append("-fx-border-width: 0 0 0 0;-fx-border-color:black;");
+            style.append("-fx-border-radius:0;-fx-max-height:30;-fx-background-color:transparent;");
+            if (rowIndex == i) {
+                //style.append("-fx-background-color:#ECAB85;");
+                runNameFields.get(i).setStyle(style.toString() + "-fx-padding : 0 0 0 20;-fx-background-image : url('/layout/images/arrow_end_on.png');-fx-background-repeat:no-repeat;-fx-background-position: left center;");
+                //runNameFields.get(i).setStyle(style.toString() + "-fx-border-width: 0 0 2 0;-fx-border-color:#C30D23;");
+                runStatusFields.get(i).setStyle("-fx-alignment:center;");
+            } else {
+                //style.append("-fx-background-color:transparent;");
+                runNameFields.get(i).setStyle(style.toString());
+                runStatusFields.get(i).setStyle("-fx-alignment:center;");
+            }
+
+            runDateFields.get(i).setStyle(style.toString() + "-fx-alignment:center;");
         }
     }
 
@@ -225,21 +254,14 @@ public class HomeController extends SubPaneController{
                 runNameField.setEditable(false);
                 TextField runDateField = new TextField();
                 runDateField.setEditable(false);
-                StringBuilder style = new StringBuilder("-fx-font-size:11;");
-                style.append("-fx-border-width: 0 0 1 0;-fx-border-color:black;");
-                style.append("-fx-border-radius:0;-fx-background-color:transparent;");
-                style.append("-fx-max-height:30;");
-                runNameField.setStyle(style.toString());
-                runDateField.setStyle(style.toString());
                 runNameFields.add(runNameField);
                 runListGridPane.add(runNameFields.get(i), 0, i);
                 runStatusFields.add(new RunAnalysisJobStatusBox());
-                runStatusFields.get(i).setStyle(runStatusFields.get(i).getStyle() + "-fx-alignment:center;");
                 runListGridPane.add(runStatusFields.get(i), 1, i);
-                runDateField.setStyle(runDateField.getStyle() + "-fx-alignment:center;");
                 runDateFields.add(runDateField);
                 runListGridPane.add(runDateFields.get(i), 2, i);
             }
+            selectRunList(maxRunNumberOfPage, Optional.empty());
         } catch (Exception e) {
             logger.error("HOME -> initRunListLayout", e);
         }
@@ -256,7 +278,7 @@ public class HomeController extends SubPaneController{
                 sampleNameField.setEditable(false);
                 sampleNameFields.add(sampleNameField);
                 StringBuilder style = new StringBuilder("-fx-font-size:11;");
-                style.append("-fx-border-width: 0 0 1 0;-fx-border-color:black;");
+                style.append("-fx-border-width: 0 0 0 0;-fx-border-color:black;");
                 style.append("-fx-border-radius:0;-fx-background-color:transparent;");
                 style.append("-fx-max-height:30;");
                 style.append("-fx-min-height:30;");

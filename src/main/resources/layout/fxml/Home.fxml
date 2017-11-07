@@ -32,7 +32,7 @@
    <children>
       <HBox alignment="CENTER_LEFT" prefHeight="87.0" prefWidth="1140.0" GridPane.columnIndex="1" GridPane.columnSpan="3">
          <children>
-            <ImageView fitHeight="16.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
+            <ImageView fitHeight="23.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
                <image>
                   <Image url="@../images/icon_01.png" />
                </image>

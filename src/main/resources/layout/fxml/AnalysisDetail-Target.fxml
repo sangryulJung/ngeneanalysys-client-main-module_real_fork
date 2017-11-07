@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -14,42 +13,29 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="experimentPastResultsWrapper" prefHeight="558.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailTargetController">
+<GridPane fx:id="experimentPastResultsWrapper" prefHeight="558.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailTargetController">
    <columnConstraints>
       <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="20.0" />
       <ColumnConstraints hgrow="SOMETIMES" prefWidth="1240.0" />
       <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="20.0" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints maxHeight="51.55555725097656" minHeight="-Infinity" prefHeight="51.55555725097656" valignment="TOP" vgrow="NEVER" />
-      <RowConstraints maxHeight="99.80000305175781" minHeight="-Infinity" prefHeight="66.44444274902344" vgrow="NEVER" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" valignment="TOP" vgrow="NEVER" />
+      <RowConstraints maxHeight="99.80000305175781" minHeight="-Infinity" prefHeight="81.19999694824219" vgrow="NEVER" />
       <RowConstraints maxHeight="48.80000305175781" minHeight="-Infinity" prefHeight="20.20001220703125" valignment="TOP" vgrow="NEVER" />
       <RowConstraints maxHeight="179.79998779296875" minHeight="137.60000610351562" prefHeight="137.60000610351562" valignment="TOP" vgrow="ALWAYS" />
       <RowConstraints maxHeight="59.399993896484375" minHeight="10.0" prefHeight="37.399993896484375" valignment="TOP" vgrow="ALWAYS" />
       <RowConstraints maxHeight="178.39999389648438" minHeight="10.0" prefHeight="173.60000610351562" valignment="TOP" vgrow="ALWAYS" />
-      <RowConstraints maxHeight="62.20001220703125" minHeight="-Infinity" prefHeight="62.20001220703125" valignment="TOP" vgrow="NEVER" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" valignment="TOP" vgrow="NEVER" />
    </rowConstraints>
    <children>
-      <HBox alignment="CENTER_LEFT" layoutX="20.0" layoutY="31.0" prefHeight="30.0" GridPane.columnIndex="1">
+      <HBox alignment="BOTTOM_LEFT" prefHeight="30.0" GridPane.columnIndex="1">
          <children>
-            <HBox alignment="BOTTOM_LEFT" HBox.hgrow="ALWAYS">
-               <children>
-                  <Label alignment="TOP_LEFT" layoutX="60.0" layoutY="31.0" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="326.0" style="-fx-text-fill: #C30D23;" text="Filter">
-                     <font>
-                        <Font name="System Bold" size="24.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="8.0" />
-                     </HBox.margin>
-                     <styleClass>
-                        <String fx:value="h1" />
-                        <String fx:value="weight_bold" />
-                        <String fx:value="txt_black" />
-                     </styleClass>
-                  </Label>
-               </children>
-            </HBox>
-            <HBox alignment="BOTTOM_RIGHT" />
+            <Label alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="326.0" style="-fx-font-size: 30; -fx-text-fill: #BF0E23;" styleClass="weight_bold" text="Filter">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
          </children>
       </HBox>
       <GridPane fx:id="searchArea" GridPane.columnIndex="1" GridPane.rowIndex="1">
@@ -63,9 +49,9 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="40.0">
                <children>
-                  <Label text="Genes" />
-                  <TextField fx:id="geneListTextField" prefWidth="661.0" promptText="EGFR,MAP2K1,PIK3CA" />
-                  <Button mnemonicParsing="false" onAction="#searchGene" prefHeight="24.0" prefWidth="55.0" styleClass="btn_search_small" text="Search" />
+                  <Label style="-fx-text-fill: #000000;" text="Genes" />
+                  <TextField fx:id="geneListTextField" prefWidth="600.0" promptText="EGFR,MAP2K1,PIK3CA" />
+                  <Button mnemonicParsing="false" onAction="#searchGene" prefHeight="45.0" prefWidth="90.0" styleClass="btn_search_small" text="Search" />
                </children>
                <padding>
                   <Insets left="20.0" />
@@ -78,7 +64,7 @@
                         <Insets />
                      </opaqueInsets>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#showSnpIndels" prefHeight="24.0" prefWidth="74.0" styleClass="btn_snp_indel" text="SNP/INDELs">
+                  <Button mnemonicParsing="false" onAction="#showSnpIndels" prefHeight="45.0" prefWidth="90.0" styleClass="btn_snp_indel" text="SNP/INDELs">
                      <HBox.margin>
                         <Insets right="20.0" />
                      </HBox.margin></Button>

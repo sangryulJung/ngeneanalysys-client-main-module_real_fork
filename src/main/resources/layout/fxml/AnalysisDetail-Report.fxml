@@ -74,7 +74,7 @@
                               <Insets top="5.0" />
                            </VBox.margin>
                         </Label>
-                        <TableView fx:id="tierOneVariantsTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="1160.0" styleClass="txt_black">
+                        <TableView fx:id="tierOneVariantsTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="1160.0" style="-fx-border-width: 0;" styleClass="txt_black">
                           <columns>
                             <TableColumn fx:id="tierOneGeneColumn" prefWidth="75.0" styleClass="txt_black" text="Gene" />
                             <TableColumn fx:id="tierOneVariantsColumn" prefWidth="75.0" styleClass="txt_black" text="Variants" />
@@ -87,7 +87,7 @@
                               <Insets top="5.0" />
                            </VBox.margin>
                         </Label>
-                        <TableView fx:id="tierTwoVariantsTable" prefHeight="140.0" prefWidth="1160.0" styleClass="txt_black">
+                        <TableView fx:id="tierTwoVariantsTable" prefHeight="140.0" prefWidth="1160.0" style="-fx-border-width: 0;" styleClass="txt_black">
                           <columns>
                             <TableColumn fx:id="tierTwoGeneColumn" prefWidth="75.0" styleClass="txt_black" text="Gene" />
                             <TableColumn fx:id="tierTwoVariantsColumn" prefWidth="75.0" styleClass="txt_black" text="Variants" />

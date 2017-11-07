@@ -138,7 +138,7 @@ public class AnalysisDetailLayoutController extends SubPaneController {
         } catch (WebAPIException e) {
             e.printStackTrace();
         }
-
+        topTabPane.getTabs().clear();
         // 권한별 탭메뉴 추가
         int idx = 0;
         for (AnalysisDetailTabMenuCode code : AnalysisDetailTabMenuCode.values()) {
