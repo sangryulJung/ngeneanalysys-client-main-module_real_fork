@@ -423,7 +423,7 @@ Button {
 .table-view {
 	-fx-background-color: #fff;
  	-fx-border-color:#000 #b1b1b1 #b1b1b1 #b1b1b1;
- 	-fx-border-width:1;
+ 	-fx-border-width:0;
  	-fx-padding:0;
 }
 
@@ -437,9 +437,9 @@ Button {
 	-fx-text-fill:#fff;
 	-fx-border-color:
                 transparent
+                derive(-fx-base, 60%)
                 transparent
-                transparent
-                derive(-fx-base, 60%);
+                transparent;
         -fx-border-insets: 3 2 3 -3;
 }
 

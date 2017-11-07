@@ -304,11 +304,12 @@ Button#buttonUpload:hover {
 .geneTable .column-header-background .nested-column-header .label{
 	-fx-font-size:12px;
 	-fx-text-fill:#ffffff;
+	-fx-border-width : 0;
 }
 
 .geneTable .column-header-background .filler {
 	-fx-background-color:#C30D23;
-	-fx-border-width: 1;
+	-fx-border-width: 0;
 	-fx-border-color:#FFFFFF ;
 }
 

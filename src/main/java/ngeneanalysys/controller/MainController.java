@@ -361,7 +361,7 @@ public class MainController extends BaseStageController {
                     Button closeButton = new Button("");
                     closeButton.getStyleClass().add("close_btn");
                     closeButton.setLayoutX(158);
-                    closeButton.setLayoutY(8);
+                    closeButton.setLayoutY(13);
 
                     //메뉴 삭제 이벤트 바인딩
                     closeButton.setOnMouseClicked(event -> {

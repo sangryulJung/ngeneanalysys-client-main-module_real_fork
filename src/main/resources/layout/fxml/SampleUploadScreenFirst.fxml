@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -13,7 +18,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="contentWrapper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="820.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SampleUploadScreenFirstController">
+<VBox fx:id="contentWrapper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="820.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SampleUploadScreenFirstController">
 	<children>
 		<GridPane layoutX="35.0" layoutY="25.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="820.0">
 			<columnConstraints>
@@ -80,7 +85,7 @@
                         <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="header" text="Sample" />
                         <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="Disease" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
                         <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="header" text="Panel" GridPane.columnIndex="1" />
-                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="Patient id" GridPane.columnIndex="4" GridPane.halignment="CENTER" />
+                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-border-width: 0;" styleClass="header" text="Patient id" GridPane.columnIndex="4" GridPane.halignment="CENTER" />
                         <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="Source" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
                      </children>
                   </GridPane>
@@ -88,15 +93,18 @@
                      <content>
                         <GridPane fx:id="standardDataGridPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="820.0" vgap="3.0">
                            <columnConstraints>
-                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="205.0" />
-                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="205.0" />
+                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="201.0" />
+                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="206.0" />
                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="105.0" />
                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="205.0" />
-                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="95.0" />
+                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" />
                            </columnConstraints>
                            <padding>
                               <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                            </padding>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                           </rowConstraints>
                         </GridPane>
                      </content>
                   </ScrollPane>
