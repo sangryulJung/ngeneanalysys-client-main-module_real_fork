@@ -289,12 +289,6 @@ public class SystemManagerPanelController extends SubPaneController {
                     params.put("diseaseIds", diseaseIdList);
                     response = apiService.put("admin/panels/" + panel.getId(), params, null, true);
                     panel = response.getObjectBeforeConvertResponseToJSON(Panel.class);
-
-                    Task task = new BedFileUploadTask(panel.getId(), file);
-
-                    Thread thread = new Thread(task);
-                    thread.setDaemon(true);
-                    thread.start();
                 } else { //패널 수정
                     params.put("memberGroupIds", groupIdList);
                     params.put("diseaseIds", diseaseIdList);
@@ -302,21 +296,36 @@ public class SystemManagerPanelController extends SubPaneController {
                     panel = response.getObjectBeforeConvertResponseToJSON(Panel.class);
                 }
 
-                response = apiService.get("/panels", null, null, false);
-                final PagedPanel panels = response.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
-                mainController.getBasicInformationMap().put("panels", panels.getResult());
-                //List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
-                //panels.add(newPanel);
+                Task task = new BedFileUploadTask(panel.getId(), file);
 
-                response = apiService.get("/admin/panels", null, null, false);
-                final PagedPanel tablePanels = response.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
-                mainController.getBasicInformationMap().put("panels", panels.getResult());
+                Thread thread = new Thread(task);
+                thread.setDaemon(true);
+                thread.start();
 
-                panelListTable.getItems().clear();
-                panelListTable.getItems().addAll(tablePanels.getResult());
-                resetItem();
-                setDisabledItem(true);
-                panelSaveButton.setDisable(true);
+                task.setOnSucceeded(ev -> {
+                    try {
+                        final HttpClientResponse response1 = apiService.get("/panels", null, null, false);
+                        final PagedPanel panels = response1.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
+                        mainController.getBasicInformationMap().put("panels", panels.getResult());
+                        final HttpClientResponse response2 = apiService.get("/admin/panels", null, null, false);
+                        final PagedPanel tablePanels = response2.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
+                        mainController.getBasicInformationMap().put("panels", panels.getResult());
+
+                        panelListTable.getItems().clear();
+                        panelListTable.getItems().addAll(tablePanels.getResult());
+                        resetItem();
+                        setDisabledItem(true);
+                        panelSaveButton.setDisable(true);
+                    } catch (Exception e) {
+                        logger.error("panel list refresh fail.", e);
+                    }
+
+                    //List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
+                    //panels.add(newPanel);
+
+
+                });
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -449,7 +458,7 @@ public class SystemManagerPanelController extends SubPaneController {
                     }
                 }
 
-                bedFileSelectionButton.setDisable(true);
+                bedFileSelectionButton.setDisable(false);
                 panelSaveButton.setDisable(false);
 
             });
