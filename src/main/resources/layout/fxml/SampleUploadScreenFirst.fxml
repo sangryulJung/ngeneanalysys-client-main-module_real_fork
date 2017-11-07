@@ -78,10 +78,10 @@
                      </rowConstraints>
                      <children>
                         <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="header" text="Sample" />
-                        <Label styleClass="header" text="Disease" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
+                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="Disease" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
                         <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="header" text="Panel" GridPane.columnIndex="1" />
-                        <Label styleClass="header" text="Patient id" GridPane.columnIndex="4" GridPane.halignment="CENTER" />
-                        <Label styleClass="header" text="Source" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="Patient id" GridPane.columnIndex="4" GridPane.halignment="CENTER" />
+                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="Source" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
                      </children>
                   </GridPane>
                   <ScrollPane hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="820.0" GridPane.rowIndex="1">

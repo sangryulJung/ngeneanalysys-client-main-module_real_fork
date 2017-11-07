@@ -435,24 +435,45 @@ Button {
 	-fx-font-size:12px;
 	-fx-font-weight:bold;
 	-fx-text-fill:#fff;
+	-fx-border-color:
+                transparent
+                transparent
+                transparent
+                derive(-fx-base, 60%);
+        -fx-border-insets: 3 2 3 -3;
 }
 
 .table-view .column-header-background .filler {
-	-fx-background-color:#75848c;
-	-fx-border-color:#000 #c3c3c3 #c3c3c3 #c3c3c3;
-	-fx-border-width:1 0 0 0;
+	-fx-background-color:#C30D23;
+	/*-fx-border-color:#000 #000 #000 #c3c3c3;
+	-fx-border-width:1 0 0 0;*/
 }
 
 .table-view .column-header {
 	-fx-pref-height:30;
-	-fx-background-color:#75848c;
- 	-fx-border-color:#000 #c3c3c3 #c3c3c3 #c3c3c3;
- 	-fx-border-width:1 1 0 0;
+	-fx-background-color:#C30D23;
+ 	/*-fx-border-color:#000 #000 #000 #c3c3c3;
+ 	-fx-border-width:0 0 0 0;*/
 }
 
 .table-row-cell {
 	-fx-background-insets:0;
 	-fx-font-size:12px;
+}
+
+.table-view:focused .table-row-cell:filled:focused:selected {
+    -fx-background-color: #eba181;
+    -fx-background-insets: 0, 1, 2;
+    -fx-background: -fx-accent;
+    -fx-text-fill: -fx-selection-bar-text;
+}
+
+/* Selected row when table not focused */
+.table-row-cell:filled:focused:selected {
+    -fx-background-color: #eba181;
+    -fx-background-insets: 0, 1, 2;
+    -fx-background: -fx-accent;
+    -fx-text-fill: -fx-selection-bar-text;
 }
 
 .table-row-cell:empty {
@@ -706,6 +727,19 @@ Button {
 	-fx-text-alignment:center ;
 	-fx-alignment:center;
 }
+
+
+.reported {
+	-fx-background-color:#c30d23;
+	-fx-background-radius:2;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-pref-width:20;
+	-fx-text-alignment:center ;
+	-fx-alignment:center;
+}
+
 
 .bullet_black {
 	-fx-background-color:#000;

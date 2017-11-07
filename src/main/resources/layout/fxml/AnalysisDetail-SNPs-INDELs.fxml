@@ -16,50 +16,60 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="558.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNPsINDELsController">
+<BorderPane prefHeight="590.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNPsINDELsController">
 	<top>
-		<HBox fx:id="filterArea" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="63.0" prefWidth="1278.0" BorderPane.alignment="CENTER">
+		<HBox fx:id="filterArea" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="90.0" prefWidth="1278.0" BorderPane.alignment="CENTER">
 			<padding>
 				<Insets left="19.0" />
 			</padding>
 			<children>
-				<HBox alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="110.0" HBox.hgrow="NEVER">
-					<children>
-						<ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-							<HBox.margin>
-								<Insets right="3.0" />
-							</HBox.margin>
-							<image>
-								<Image url="@../images/icon_03.png" />
-							</image>
-						</ImageView>
-						<Label fx:id="filterTitle" prefHeight="20.0" prefWidth="82.0" text="Variant Filter">
-							<HBox.margin>
-								<Insets left="2.0" />
-							</HBox.margin>
-						</Label>
-					</children>
-				</HBox>
-				<HBox HBox.hgrow="ALWAYS">
-					<children>
-						<HBox fx:id="filterList" prefHeight="62.0" HBox.hgrow="ALWAYS">
-							<HBox.margin>
-								<Insets />
-							</HBox.margin>
-							<padding>
-								<Insets left="17.0" top="7.0" />
-							</padding>
-						</HBox>
-						<HBox fx:id="iconAreaHBox" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="62.0" prefWidth="159.0" visible="false" HBox.hgrow="NEVER">
-							<HBox.margin>
-								<Insets left="14.0" />
-							</HBox.margin>
-						</HBox>
-					</children>
-					<HBox.margin>
-						<Insets right="15.0" />
-					</HBox.margin>
-				</HBox>
+            <VBox maxHeight="-Infinity" prefHeight="75.0" prefWidth="1256.0">
+               <children>
+                  <HBox prefHeight="7.0" prefWidth="200.0" style="-fx-background-color: #C30D23;" />
+                  <HBox prefHeight="62.0" prefWidth="200.0">
+                     <children>
+            				<HBox alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="62.0" prefWidth="131.0" HBox.hgrow="NEVER">
+            					<children>
+            						<ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+            							<HBox.margin>
+            								<Insets right="3.0" />
+            							</HBox.margin>
+            							<image>
+            								<Image url="@../images/icon_03.png" />
+            							</image>
+            						</ImageView>
+            						<Label fx:id="filterTitle" prefHeight="26.0" prefWidth="103.0" style="-fx-font-size: 16;" text="Variant Filter">
+            							<HBox.margin>
+            								<Insets left="2.0" />
+            							</HBox.margin>
+            						</Label>
+            					</children>
+            				</HBox>
+            				<HBox HBox.hgrow="ALWAYS">
+            					<children>
+            						<HBox fx:id="filterList" prefHeight="62.0" HBox.hgrow="ALWAYS">
+            							<HBox.margin>
+            								<Insets />
+            							</HBox.margin>
+            							<padding>
+            								<Insets left="17.0" top="7.0" />
+            							</padding>
+            						</HBox>
+            						<HBox fx:id="iconAreaHBox" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="62.0" prefWidth="159.0" visible="false" HBox.hgrow="NEVER">
+            							<HBox.margin>
+            								<Insets left="14.0" />
+            							</HBox.margin>
+            						</HBox>
+            					</children>
+            					<HBox.margin>
+            						<Insets right="15.0" />
+            					</HBox.margin>
+            				</HBox>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="7.0" prefWidth="200.0" style="-fx-background-color: #C30D23;" />
+               </children>
+            </VBox>
 			</children>
 		</HBox>
 	</top>
@@ -79,7 +89,7 @@
 					<children>
 						<HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
 							<children>
-								<Label maxHeight="32.0" maxWidth="-Infinity" minHeight="32.0" minWidth="-Infinity" prefHeight="32.0" prefWidth="135.0" styleClass="list_title" text="Variant List - sorted by : " HBox.hgrow="NEVER">
+								<Label maxHeight="32.0" maxWidth="-Infinity" minHeight="32.0" minWidth="-Infinity" prefHeight="32.0" prefWidth="190.0" style="-fx-font-size: 16; -fx-text-fill: #C30D23;" styleClass="list_title" text="Variant List - sorted by : " HBox.hgrow="NEVER">
 									<HBox.margin>
 										<Insets />
 									</HBox.margin>

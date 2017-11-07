@@ -1006,7 +1006,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                         if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
                             label = new Label("R");
                             label.getStyleClass().remove("label");
-                            label.getStyleClass().add("prediction_E");
+                            label.getStyleClass().add("prediction_A");
                         }
                         setGraphic(label);
                     }
@@ -1016,9 +1016,11 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         });
 
         TableColumn<AnalysisResultVariant, String> type = new TableColumn<>("Type");
+        type.getStyleClass().clear();
         type.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getVariantType()));
 
         TableColumn<AnalysisResultVariant, String> codCons = new TableColumn<>("Cod.Cons");
+        codCons.getStyleClass().clear();
         codCons.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getCodingConsequence()));
 
         TableColumn<AnalysisResultVariant, String> gene = new TableColumn<>("Gene");
@@ -1239,6 +1241,9 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                     ,beClinVarPathogenicity, beEnigmaPathogenicity, enigma);
 
         }
+
+        variantListTableView.getStyleClass().clear();
+        //variantListTableView.getStyleClass().add("table-view");
 
 
         /*variantListTableView.getColumns().addAll(warn, report, type, codCons, gene, strand, transcript, ntChange, aaChange, ntChangeBIC, chr, ref

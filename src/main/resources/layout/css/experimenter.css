@@ -301,3 +301,29 @@ Button#buttonUpload:hover {
 	-fx-pref-height:15;
 	-fx-max-height:15;
 }
+
+
+.geneTable .column-header-background .nested-column-header .label{
+	-fx-font-size:12px;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-border-color:
+                transparent
+                transparent
+                transparent
+                transparent
+        -fx-border-insets: 0;
+}
+
+.geneTable .column-header-background .filler {
+	-fx-background-color:#C30D23;
+	-fx-border-color:#000 #000 #000 #c3c3c3;
+	-fx-border-width:1 0 0 0;
+}
+
+.geneTable .column-header {
+	-fx-pref-height:30;
+	-fx-background-color:#C30D23;
+ 	-fx-border-color:#000 #000 #000 #c3c3c3;
+ 	-fx-border-width:0 0 0 0;
+}

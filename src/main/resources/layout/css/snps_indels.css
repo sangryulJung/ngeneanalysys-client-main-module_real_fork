@@ -180,7 +180,17 @@
 
 #variantListTableView .column-header .label {
 	-fx-font-size:9;
+	/*-fx-border-width: 0 0 0 1;*/
+    /*-fx-border-color:
+            transparent
+            transparent
+            transparent
+            derive(-fx-base, 80%);*/
+    /*-fx-border-insets: 0 0 1 2;*/
+
 }
+
+
 #variantListTableView #predictionColumn .label, #variantListTableView #pathgenicColumn .label, #variantListTableView #reportColumn .label, #variantListTableView #falseColumn .label {
 	-fx-alignment:center;
 	-fx-text-fill:#fff;
