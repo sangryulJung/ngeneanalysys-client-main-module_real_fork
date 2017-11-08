@@ -35,12 +35,12 @@
             </Tab>
          </tabs>
       </TabPane>
-      <HBox fx:id="summaryHBox" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="42.0" prefWidth="580.0" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER" GridPane.valignment="TOP" GridPane.vgrow="NEVER">
+      <HBox fx:id="summaryHBox" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="42.0" prefWidth="599.0" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER" GridPane.valignment="TOP" GridPane.vgrow="NEVER">
       	 <GridPane.margin>
             <Insets top="15.0" />
          </GridPane.margin>
          <children>
-            <Button fx:id="rawDataDownload" alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#rawDataDownloadButton" prefHeight="15.0" prefWidth="15.0" styleClass="fileDownloadButton">
+            <Button fx:id="rawDataDownload" alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#rawDataDownloadButton" prefHeight="15.0" prefWidth="15.0" styleClass="fileDownloadButton" text="Download">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -50,10 +50,6 @@
                <HBox.margin>
                   <Insets right="10.0" />
                </HBox.margin></Button>
-            <Separator maxHeight="11.0" minHeight="11.0" orientation="VERTICAL" prefHeight="11.0">
-               <HBox.margin>
-                  <Insets right="10.0" />
-               </HBox.margin></Separator>
             <Label fx:id="sampleIdLabel" text="#0001" textFill="#262b33" HBox.hgrow="ALWAYS">
                <font>
                   <Font size="11.0" />

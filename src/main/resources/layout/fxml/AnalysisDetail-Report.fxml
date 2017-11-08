@@ -95,7 +95,7 @@
                               <TableColumn fx:id="tierTwoExceptColumn" prefWidth="85.0" styleClass="txt_black" text="Exclude" />
                           </columns>
                         </TableView>
-                        <Label style="-fx-text-fill: #C30D23;" styleClass="font_size_18" text="Negatives">
+                        <Label style="-fx-text-fill: #C30D23;" styleClass="font_size_18" text="Pertinent Negatives">
                            <VBox.margin>
                               <Insets top="5.0" />
                            </VBox.margin>

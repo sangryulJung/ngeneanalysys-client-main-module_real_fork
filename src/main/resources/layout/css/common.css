@@ -513,9 +513,9 @@ Button {
 	-fx-min-width: 80;
 	-fx-alignment:center;
 	-fx-background-color:#fff;
-	-fx-background-radius:10;
+	-fx-background-radius:2;
 	-fx-border-color:#c1c1c1;
-	-fx-border-radius:10;
+	-fx-border-radius:2;
 	-fx-text-fill:#656565;
 	-fx-font-size:9;
 	-fx-padding:0 10;
@@ -529,9 +529,9 @@ Button {
 	-fx-background-repeat: no-repeat;
 	-fx-background-position:6px 3px;
 	-fx-background-color:#f4c73c;
-	-fx-background-radius:10;
+	-fx-background-radius:2;
 	-fx-border-color:#f4c73c;
-	-fx-border-radius:10;
+	-fx-border-radius:2;
 	-fx-text-fill:#fff;
 	-fx-font-size:9;
 	-fx-font-weight:bold;
@@ -546,9 +546,9 @@ Button {
 	-fx-background-repeat: no-repeat;
 	-fx-background-position:6px 3px;
 	-fx-background-color:#68BC4B;
-	-fx-background-radius:10;
+	-fx-background-radius:2;
 	-fx-border-color:#68BC4B;
-	-fx-border-radius:10;
+	-fx-border-radius:2;
 	-fx-text-fill:#fff;
 	-fx-font-size:9;
 	-fx-font-weight:bold;
@@ -559,10 +559,10 @@ Button {
 	-fx-min-height: 20;
 	-fx-min-width: 80;
     -fx-alignment:center;
-	-fx-background-color:#426579;
-	-fx-background-radius:10;
-	-fx-border-color:#426579;
-	-fx-border-radius:10;
+	-fx-background-color:#4b8dca;
+	-fx-background-radius:2;
+	-fx-border-color:#4b8dca;
+	-fx-border-radius:2;
 	-fx-text-fill:#fff;
 	-fx-font-size:9;
 	-fx-font-weight:bold;
@@ -574,14 +574,134 @@ Button {
 	-fx-min-width: 80;
     -fx-alignment:center;
 	-fx-background-color:#ff7e79;
-	-fx-background-radius:10;
+	-fx-background-radius:2;
 	-fx-border-color:#ff7e79;
-	-fx-border-radius:10;
+	-fx-border-radius:2;
 	-fx-text-fill:#fff;
 	-fx-font-size:9;
 	-fx-font-weight:bold;
 	-fx-padding:0 10;
 }
+
+/** Detail Job Status Icon Label */
+#detail_jobStatus_NONE {
+	-fx-min-height: 20;
+	-fx-min-width: 80;
+	-fx-alignment:center;
+	-fx-background-color:#fff;
+	-fx-background-radius:0 10 10 0;
+	-fx-border-color:#c1c1c1;
+	-fx-border-radius:0 10 10 0;
+	-fx-text-fill:#656565;
+	-fx-font-size:9;
+	-fx-padding:0 10;
+}
+
+#detail_jobStatus_QUEUED {
+	-fx-min-height: 20;
+	-fx-min-width: 80;
+    -fx-alignment:center;
+	-fx-background-image: url('../images/job_status_queued_animation.gif');
+	-fx-background-repeat: no-repeat;
+	-fx-background-position:6px 3px;
+	-fx-background-color:#f4c73c;
+	-fx-background-radius:0 10 10 0;
+	-fx-border-color:#f4c73c;
+	-fx-border-radius:0 10 10 0;
+	-fx-text-fill:#fff;
+	-fx-font-size:9;
+	-fx-font-weight:bold;
+	-fx-padding:0 10 0 21;
+}
+
+#detail_jobStatus_RUNNING {
+	-fx-min-height: 20;
+	-fx-min-width: 80;
+    -fx-alignment:center;
+	-fx-background-image: url('../images/job_status_running_animation.gif');
+	-fx-background-repeat: no-repeat;
+	-fx-background-position:6px 3px;
+	-fx-background-color:#68BC4B;
+	-fx-background-radius:0 10 10 0;
+	-fx-border-color:#68BC4B;
+	-fx-border-radius:0 10 10 0;
+	-fx-text-fill:#fff;
+	-fx-font-size:9;
+	-fx-font-weight:bold;
+	-fx-padding:0 10 0 21;
+}
+
+#detail_jobStatus_COMPLETE {
+	-fx-min-height: 20;
+	-fx-min-width: 80;
+    -fx-alignment:center;
+	-fx-background-color:#4b8dca;
+	-fx-background-radius:0 10 10 0;
+	-fx-border-color:#4b8dca;
+	-fx-border-radius:0 10 10 0;
+	-fx-text-fill:#fff;
+	-fx-font-size:9;
+	-fx-font-weight:bold;
+	-fx-padding:0 10;
+}
+
+#detail_jobStatus_FAIL {
+	-fx-min-height: 20;
+	-fx-min-width: 80;
+    -fx-alignment:center;
+	-fx-background-color:#ff7e79;
+	-fx-background-radius:0 10 10 0;
+	-fx-border-color:#ff7e79;
+	-fx-border-radius:0 10 10 0;
+	-fx-text-fill:#fff;
+	-fx-font-size:9;
+	-fx-font-weight:bold;
+	-fx-padding:0 10;
+}
+
+#detail_complete_jobStatus_COMPLETE {
+	-fx-min-height: 20;
+	-fx-min-width: 80;
+    -fx-alignment:center;
+	-fx-background-color:#4b8dca;
+	-fx-background-radius: 0;
+	-fx-border-color:#4b8dca;
+	-fx-border-radius: 0;
+	-fx-text-fill:#fff;
+	-fx-font-size:9;
+	-fx-font-weight:bold;
+	-fx-padding:0 10;
+}
+
+#detail_complete_jobStatus_NONE {
+	-fx-min-height: 20;
+	-fx-min-width: 80;
+    -fx-alignment:center;
+	-fx-background-color:transparent;
+	-fx-background-radius:0;
+	-fx-border-color:#4b8dca;
+	-fx-border-radius:0;
+	-fx-text-fill:#4b8dca;
+	-fx-font-size:9;
+	-fx-font-weight:bold;
+	-fx-padding:0 10;
+}
+
+#detail_complete_jobStatus_FAIL {
+	-fx-min-height: 20;
+	-fx-min-width: 80;
+    -fx-alignment:center;
+	-fx-background-color:#ff7e79;
+	-fx-background-radius:0;
+	-fx-border-color:#ff7e79;
+	-fx-border-radius:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:9;
+	-fx-font-weight:bold;
+	-fx-padding:0 10;
+}
+
+/* ------------------------------------------------------ */
 
 #jobStatus_sm_NONE {
 	-fx-pref-height: 14;
@@ -589,7 +709,7 @@ Button {
 	-fx-background-color:#fff;
 	-fx-background-radius:2;
 	-fx-background-insets:0;
-	-fx-border-color:#c1c1c1;
+	-fx-border-color:#ff7e79;
 	-fx-border-radius:2;
 	-fx-text-fill:#656565;
 	-fx-font-size:10;
@@ -1082,6 +1202,11 @@ Button {
 .red_line {
     -fx-border-color:#C20D22;
     -fx-border-width: 0 0 7 0;
+}
+
+.red_line_both {
+    -fx-border-color:#C20D22;
+    -fx-border-width: 7 0 7 0;
 }
 
 .font_color_white_bg_color_red {

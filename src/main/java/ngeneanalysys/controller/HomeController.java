@@ -227,7 +227,7 @@ public class HomeController extends SubPaneController{
         for(int i = 0; i < maxRunNumberOfPage; i++){
             StringBuilder style = new StringBuilder("-fx-font-size:11;");
             style.append("-fx-border-width: 0 0 0 0;-fx-border-color:black;");
-            style.append("-fx-border-radius:0;-fx-max-height:30;-fx-background-color:transparent;");
+            style.append("-fx-border-radius:0;-fx-max-height:30;-fx-background-color:transparent;-fx-cursor:hand;");
             if (rowIndex == i) {
                 //style.append("-fx-background-color:#ECAB85;");
                 runNameFields.get(i).setStyle(style.toString() + "-fx-padding : 0 0 0 20;-fx-background-image : url('/layout/images/arrow_end_on.png');-fx-background-repeat:no-repeat;-fx-background-position: left center;");
@@ -493,9 +493,11 @@ public class HomeController extends SubPaneController{
             style.append("-fx-min-height:30;");
             statusMsgTextField.setStyle(style.toString());
             statusBox.getChildren().add(statusLabelUpload);
-            statusBox.getChildren().add(new ImageView(resourceUtil.getImage("/layout/images/icon-arrow_margin.png")));
+            //statusBox.getChildren().add(new ImageView(resourceUtil.getImage("/layout/images/icon-arrow_margin.png")));
+            statusBox.getChildren().add(new VBox());
             statusBox.getChildren().add(statusLabelPipeline);
-            statusBox.getChildren().add(new ImageView(resourceUtil.getImage("/layout/images/icon-arrow_margin.png")));
+            //statusBox.getChildren().add(new ImageView(resourceUtil.getImage("/layout/images/icon-arrow_margin.png")));
+            statusBox.getChildren().add(new VBox());
             statusBox.getChildren().add(statusLabelComplete);
             statusBox.getChildren().add(statusMsgTextField);
             this.getChildren().add(statusBox);
@@ -504,29 +506,29 @@ public class HomeController extends SubPaneController{
         protected void setStatus(SampleStatus status) {
             if (status.getStep().equals(SAMPLE_ANALYSIS_STEP_UPLOAD)) {
                 statusLabelUpload.setText(SAMPLE_ANALYSIS_STEP_UPLOAD);
-                statusLabelUpload.setId("jobStatus_" + status.getStatus());
+                statusLabelUpload.setId("detail_jobStatus_" + status.getStatus());
                 statusLabelPipeline.setText(SAMPLE_ANALYSIS_STEP_PIPELINE);
-                statusLabelPipeline.setId("jobStatus_" + SAMPLE_ANALYSIS_STATUS_NONE);
+                statusLabelPipeline.setId("detail_jobStatus_" + SAMPLE_ANALYSIS_STATUS_NONE);
                 statusLabelComplete.setText("COMPLETE");
-                statusLabelComplete.setId("jobStatus_" + SAMPLE_ANALYSIS_STATUS_NONE);
+                statusLabelComplete.setId("detail_complete_jobStatus_" + SAMPLE_ANALYSIS_STATUS_NONE);
             } else if (status.getStep().equals(SAMPLE_ANALYSIS_STEP_PIPELINE)) {
                 statusLabelUpload.setText(SAMPLE_ANALYSIS_STEP_UPLOAD);
-                statusLabelUpload.setId("jobStatus_" + SAMPLE_ANALYSIS_STATUS_COMPLETE);
+                statusLabelUpload.setId("detail_jobStatus_" + SAMPLE_ANALYSIS_STATUS_COMPLETE);
                 if (status.getStatus().equals(SAMPLE_ANALYSIS_STATUS_COMPLETE)) {
                     statusLabelPipeline.setText(SAMPLE_ANALYSIS_STEP_PIPELINE);
-                    statusLabelPipeline.setId("jobStatus_" + SAMPLE_ANALYSIS_STATUS_COMPLETE);
+                    statusLabelPipeline.setId("detail_jobStatus_" + SAMPLE_ANALYSIS_STATUS_COMPLETE);
                     statusLabelComplete.setText("COMPLETE");
-                    statusLabelComplete.setId("jobStatus_" + SAMPLE_ANALYSIS_STATUS_COMPLETE);
+                    statusLabelComplete.setId("detail_complete_jobStatus_" + SAMPLE_ANALYSIS_STATUS_COMPLETE);
                 } else if (status.getStatus().equals(SAMPLE_ANALYSIS_STATUS_FAIL)){
                     statusLabelPipeline.setText(SAMPLE_ANALYSIS_STEP_PIPELINE);
-                    statusLabelPipeline.setId("jobStatus_" + SAMPLE_ANALYSIS_STATUS_FAIL);
+                    statusLabelPipeline.setId("detail_jobStatus_" + SAMPLE_ANALYSIS_STATUS_FAIL);
                     statusLabelComplete.setText(SAMPLE_ANALYSIS_STATUS_FAIL);
-                    statusLabelComplete.setId("jobStatus_" + SAMPLE_ANALYSIS_STATUS_FAIL);
+                    statusLabelComplete.setId("detail_complete_jobStatus_" + SAMPLE_ANALYSIS_STATUS_FAIL);
                 } else {
                     statusLabelPipeline.setText(SAMPLE_ANALYSIS_STEP_PIPELINE);
-                    statusLabelPipeline.setId("jobStatus_" + status.getStatus());
+                    statusLabelPipeline.setId("detail_jobStatus_" + status.getStatus());
                     statusLabelComplete.setText("COMPLETE");
-                    statusLabelComplete.setId("jobStatus_" + SAMPLE_ANALYSIS_STATUS_NONE);
+                    statusLabelComplete.setId("detail_complete_jobStatus_" + SAMPLE_ANALYSIS_STATUS_NONE);
                 }
             }
             statusMsgTextField.setText(status.getStatusMsg());

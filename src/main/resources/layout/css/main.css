@@ -159,7 +159,7 @@
 
 #mainHeader #topMenuArea .label#addMenuLabel {
 	-fx-font-size: 12;
-	-fx-text-fill:#ffffff;
+	-fx-text-fill:black;
 	-fx-alignment:center;
 }
 
