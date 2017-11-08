@@ -18,26 +18,26 @@
 	-fx-background-color: transparent;
 	-fx-border-width:0;
 	-fx-background-insets: 0;
-	-fx-min-height: 65px;
-    -fx-pref-height: 65px;
-    -fx-max-height: 65px;
+	-fx-min-height: 68px;
+    -fx-pref-height: 68px;
+    -fx-max-height: 68px;
 }
 
 /** 탭메뉴 : 미선택 */
 #topTabPane.tab-pane:top>.tab-header-area>.headers-region {
 	-fx-alignment: bottom-center;
-	-fx-min-height: 65px;
-	-fx-pref-height: 65px;
-	-fx-max-height: 65px;
+	-fx-min-height: 68px;
+	-fx-pref-height: 68px;
+	-fx-max-height: 68px;
 }
 #topTabPane.tab-pane:top>.tab-header-area>.headers-region>.tab:top {
 	-fx-background-color: transparent;
 	-fx-background-insets: 0;
 	-fx-border-width:0;
 	-fx-padding:0 0 0 4;
-	-fx-min-height: 65px;
-    	-fx-pref-height: 65px;
-    	-fx-max-height: 65px;
+	-fx-min-height: 68px;
+    	-fx-pref-height: 68px;
+    	-fx-max-height: 68px;
 	-fx-focus-traversable: false;
 }
 
@@ -69,9 +69,9 @@
 	-fx-background-insets: 0;
 	-fx-border-width:0;
 	-fx-padding:0 0 0 4;
-	-fx-min-height: 65px;
-    -fx-pref-height: 65px;
-    -fx-max-height: 65px;
+	-fx-min-height: 68px;
+    -fx-pref-height: 68px;
+    -fx-max-height: 68px;
 	-fx-focus-traversable: false;
 }
 
