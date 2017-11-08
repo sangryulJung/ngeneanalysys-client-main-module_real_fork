@@ -114,7 +114,8 @@
 }
 
 #mainHeader {
-
+    -fx-background-color : #e8e8e8;
+    -fx-background-radius : 0 0 20 20;
 	-fx-background-image:url('../images/bg_main_header.png');
 	-fx-background-position:right ;
 }
