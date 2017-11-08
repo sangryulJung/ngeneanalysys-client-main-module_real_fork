@@ -252,6 +252,7 @@
 	-fx-border-color:#959595;
 	-fx-border-radius: 5 5 0 0;
 	-fx-border-width:3 3 0 3;
+	-fx-border-insets: 0 0 0 3;
 	-fx-pref-height: 28px;
 	-fx-padding:0 18;
 	-fx-focus-traversable: false;
@@ -281,6 +282,7 @@
 	-fx-border-radius: 5 5 0 0;
 	/* top right bottom left  */
 	-fx-border-width:3 3 0 3;
+	-fx-border-insets: 0 0 0 3;
 	-fx-pref-height: 28px;
 	-fx-padding:0 18;
 	-fx-text-fill: #b33131;
