@@ -745,7 +745,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
             int variantFrequencyRunTotalCount = variantStatistics.getTotalSampleCountInRun();
             int variantFrequencyPanelCount = variantStatistics.getSamePanelSameVariantSampleCountInMemberGroup();
             int variantFrequencyPanelTotalCount = variantStatistics.getTotalSamePanelSampleCountInMemberGroup();
-            int variantFrequencyAccountCount = variantStatistics.getTotalSampleCountInMemberGroup();
+            int variantFrequencyAccountCount = variantStatistics.getSameVariantSampleCountInMemberGroup();
             int variantFrequencyAccountTotalCount = variantStatistics.getTotalSampleCountInMemberGroup();
 
             double variantFrequencyRun = (double) variantFrequencyRunCount / (double) variantFrequencyRunTotalCount;
