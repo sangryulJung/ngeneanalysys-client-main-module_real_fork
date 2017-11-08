@@ -1078,3 +1078,14 @@ Button {
 .btn_refresh:hover {
 	-fx-background-color:#7C878B;
 }
+
+.red_line {
+    -fx-border-color:#C20D22;
+    -fx-border-width: 0 0 7 0;
+}
+
+.font_color_white_bg_color_red {
+    -fx-alignment : center;
+    -fx-text-fill : white;
+    -fx-background-color : #C20D22;
+}

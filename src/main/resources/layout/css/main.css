@@ -141,7 +141,7 @@
 }
 
 #mainHeader #topMenuArea Region#addMenu {
-	-fx-background-color:#f8a97f0;
+	-fx-background-color: #f8a97f ;
 	-fx-background-radius:0;
 	-fx-border-width:0;
 	-fx-pref-width:180;

@@ -68,7 +68,7 @@
                   <VBox prefHeight="670.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowSpan="3">
                      <children>
                         <Label style="-fx-text-fill: #C30D23;" styleClass="font_size_18" text="Conclusions" />
-                        <TextArea fx:id="conclusionsTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="1207.0" styleClass="txt_black" />
+                        <TextArea fx:id="conclusionsTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="73.0" prefWidth="1207.0" styleClass="txt_black" />
                         <Label style="-fx-text-fill: #C30D23;" styleClass="font_size_18" text="Tier I Variants">
                            <VBox.margin>
                               <Insets top="5.0" />
@@ -118,20 +118,20 @@
          <children>
             <HBox prefHeight="23.0" prefWidth="740.0" spacing="10.0">
                <children>
-                  <HBox alignment="CENTER_LEFT" prefHeight="23.0" prefWidth="153.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="31.0" prefWidth="175.0">
                      <children>
-                        <Label text="Patient ID : " />
-                        <Label text="123456789" />
+                        <Label styleClass="font_size_14" text="Patient ID : " />
+                        <Label styleClass="font_size_14" text="123456789" />
                      </children>
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
                   </HBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0" />
+                  <VBox prefHeight="31.0" prefWidth="77.0" />
                   <HBox alignment="CENTER_LEFT" prefHeight="23.0" prefWidth="235.0">
                      <children>
-                        <Label text="Patient Disease : " />
-                        <Label fx:id="diseaseLabel" text="Lukemia Cancer" />
+                        <Label styleClass="font_size_14" text="Patient Disease : " />
+                        <Label fx:id="diseaseLabel" styleClass="font_size_14" text="Lukemia Cancer" />
                      </children>
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -139,8 +139,8 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="23.0" prefWidth="235.0">
                      <children>
-                        <Label text="Panel : " />
-                        <Label fx:id="panelLabel" text="HEMAaccuTest" />
+                        <Label styleClass="font_size_14" text="Panel : " />
+                        <Label fx:id="panelLabel" styleClass="font_size_14" text="HEMAaccuTest" />
                      </children>
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

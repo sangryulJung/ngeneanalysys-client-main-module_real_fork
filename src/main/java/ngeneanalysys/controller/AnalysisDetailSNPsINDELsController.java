@@ -1242,6 +1242,9 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
         }
 
+        variantListTableView.getStyleClass().clear();
+        variantListTableView.getStyleClass().add("table-view");
+
         /*variantListTableView.getColumns().addAll(warn, report, type, codCons, gene, strand, transcript, ntChange, aaChange, ntChangeBIC, chr, ref
             ,alt, zigosity, exon, exonBic, fraction ,refNum, altNum, depth, thousandGenomics, exac, esp, korean, clinVarAcc, clinVarClass, bicClass, bicDesignation
             ,kohbraPatient, kohbraFrequency, polyphen2, sift, mutationTaster, variantNum, refGenomeVer, leftSequence, rightSequence

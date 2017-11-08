@@ -219,8 +219,8 @@ Button#buttonUpload:hover {
 
 #searchArea {
 	-fx-background-color:#F7F7F7;
-	-fx-border-color:#C20D22;
-	-fx-border-width:7 0 7 0;
+	/*-fx-border-color:#C20D22;
+	-fx-border-width:7 0 7 0;*/
 }
 
 #searchArea .label {-fx-text-fill:#5a6971;}
