@@ -21,7 +21,7 @@
 	<fo:page-sequence master-reference="all-pages" margin-left="3mm" margin-right="3mm">
 		<!-- header contents -->
 		<fo:static-content flow-name="xsl-region-before">
-			<fo:block font-size="7pt" text-align="right" border-width="0" padding-bottom="10mm">
+			<fo:block font-size="7pt" text-align="right" border-width="0" padding-bottom="5mm">
                 <fo:block text-align="right">
                     <fo:external-graphic src="${ngenebioLogo}" content-width="45mm" content-height="10mm" padding-bottom="1mm"/>
                 </fo:block>
@@ -70,27 +70,46 @@
 		<fo:flow flow-name="xsl-region-body">
 
 			<!-- Test Information -->
-			<fo:block margin-bottom="20mm" font-size="10pt" margin-top="10mm">
+			<fo:block margin-bottom="10mm" font-size="10pt" margin-top="10mm">
 				<fo:block font-size="24pt" font-weight="bold" margin-bottom="1mm">
-                    <fo:external-graphic  content-width="18.4cm" content-height="1.5cm" src="${testInformationText}"  padding-bottom="1mm"/>
+                    <fo:external-graphic  content-width="18.4cm" content-height="1.5cm" src="${testInformationText}"  padding-bottom="0mm"/>
                 </fo:block>
-				<fo:block background-color="#e6e6e7" font-size="13pt" margin-bottom="10mm" padding-top="3mm" padding-bottom="3mm">
+				<fo:block background-color="#e6e6e7" font-size="13pt" margin-bottom="5mm" padding-top="3mm" padding-bottom="3mm">
                     <fo:table>
                         <fo:table-body>
                             <fo:table-row>
                                 <fo:table-cell>
-                                    <fo:block font-family="Noto Sans CJK KR Bold" font-weight="bold">Report Date : <fo:inline font-weight="normal" font-family="Noto Sans CJK KR Regular">$contents.date</fo:inline></fo:block>
-                                    <fo:block font-family="Noto Sans CJK KR Bold" font-weight="bold">Patient ID : <fo:inline font-weight="normal" font-family="Noto Sans CJK KR Regular">$contents.patientCode</fo:inline></fo:block>
-                                    <fo:block font-family="Noto Sans CJK KR Bold" font-weight="bold">Tissue : <fo:inline font-weight="normal" font-family="Noto Sans CJK KR Regular">$contents.diseaseName</fo:inline></fo:block>
-                                    <fo:block font-family="Noto Sans CJK KR Bold" font-weight="bold">Specimen Type : <fo:inline font-weight="normal" font-family="Noto Sans CJK KR Regular">$contents.sampleSource</fo:inline></fo:block>
-                                    <fo:block font-family="Noto Sans CJK KR Bold" font-weight="bold">Panel : <fo:inline font-weight="normal" font-family="Noto Sans CJK KR Regular">$contents.panelName</fo:inline></fo:block>
+                                    <fo:block font-family="Noto Sans CJK KR Bold" font-weight="bold">Report Date</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block font-family="Noto Sans CJK KR Regular">$contents.date</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block font-family="Noto Sans CJK KR Bold" font-weight="bold">Patient ID</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block font-family="Noto Sans CJK KR Regular">$contents.patientCode</fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                            <fo:table-row>
+                                <fo:table-cell>
+                                    <fo:block font-family="Noto Sans CJK KR Bold" font-weight="bold">Disease</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block font-family="Noto Sans CJK KR Regular">$contents.diseaseName</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block font-family="Noto Sans CJK KR Bold" font-weight="bold">Specimen Type</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block font-family="Noto Sans CJK KR Regular">$contents.sampleSource</fo:block>
                                 </fo:table-cell>
                             </fo:table-row>
                         </fo:table-body>
                     </fo:table>
 				</fo:block>
 				<fo:block>
-					<fo:block font-size="16pt" margin-bottom="1mm" font-family="Noto Sans CJK KR Bold" font-weight="bold">$contents.panelName</fo:block>
+					<fo:block font-size="16pt" margin-bottom="1mm" font-family="Noto Sans CJK KR Bold" font-weight="bold">Panel : $contents.panelName</fo:block>
 					<fo:table table-layout="fixed" width="100%" margin-bottom="4mm" border-bottom="solid 0.1mm black" border-top="solid 0.1mm black">
 						<fo:table-body>
 							#foreach($i in [0..$contents.geneTableCount])
@@ -114,9 +133,9 @@
 			</fo:block>
 
             <!-- Pathogenic Mutations Detected -->
-			<fo:block margin-bottom="10mm" font-size="10pt">
+			<fo:block margin-bottom="8mm" font-size="10pt">
 			<fo:block font-size="24pt" font-weight="bold" margin-bottom="1mm" font-family="Noto Sans CJK KR Regular">
-                <fo:external-graphic content-width="18.4cm" content-height="1.5cm" src="${pathogenicMutationsDetectedText}" padding-bottom="1mm" />
+                <fo:external-graphic content-width="18.4cm" content-height="1.5cm" src="${pathogenicMutationsDetectedText}" padding-bottom="0mm" />
             </fo:block>
 			<fo:block background-color="#e6e6e7" font-size="13pt" padding-top="3mm" padding-bottom="3mm">
                 <fo:table font-family="Noto Sans CJK KR Regular">
@@ -140,7 +159,7 @@
 					<fo:table-column column-width="proportional-column-width(0.18)" />
 					<fo:table-column column-width="proportional-column-width(0.14)" />
 					<fo:table-body>
-						<fo:table-row height="9mm" display-align="center">
+						<fo:table-row height="8mm" display-align="center">
 							<fo:table-cell background-color="#5a5657" border-right="solid 0.5mm white">
 								<fo:block color="#FFFFFF" text-align="center" font-weight="bold" font-family="Noto Sans CJK KR Bold">Gene</fo:block>
 							</fo:table-cell>
@@ -163,7 +182,7 @@
 
 						#foreach($variant in $contents.variantList)
                         #if($variant.swTier == "T1" || $variant.swTier == "T2")
-						<fo:table-row height="9mm" display-align="center" text-align="center" font-family="Noto Sans CJK KR Regular">
+						<fo:table-row height="8mm" display-align="center" text-align="center" font-family="Noto Sans CJK KR Regular">
 							<fo:table-cell border-bottom="solid 0.1mm black">
 								<fo:block text-align="center">$variant.sequenceInfo.gene</fo:block>
 							</fo:table-cell>
@@ -198,9 +217,9 @@
             <!-- Pertinent Negatives -->
             <fo:block margin-bottom="10mm" font-size="10pt" margin-top="10mm">
                 <fo:block font-size="24pt" font-weight="bold" margin-bottom="1mm" font-family="Noto Sans CJK KR Regular">
-                    <fo:external-graphic content-width="18.4cm" content-height="1.5cm" src="${pertinetNegativeText}" padding-bottom="1mm" />
+                    <fo:external-graphic content-width="18.4cm" content-height="1.5cm" src="${pertinetNegativeText}" padding-bottom="-3mm" />
                 </fo:block>
-                <fo:block background-color="#e6e6e7" font-size="13pt" padding-top="3mm" padding-bottom="3mm">
+                <!--<fo:block background-color="#e6e6e7" font-size="13pt" padding-top="3mm" padding-bottom="3mm">
                     <fo:table font-family="Noto Sans CJK KR Regular">
                         <fo:table-body>
                             <fo:table-row>
@@ -211,7 +230,7 @@
                             </fo:table-row>
                         </fo:table-body>
                     </fo:table>
-                </fo:block>
+                </fo:block>-->
                 <fo:block margin-bottom="5mm"></fo:block>
                 <fo:block font-size="11pt">
                     <fo:table table-layout="fixed" width="100%" margin-bottom="4mm" border-bottom="solid 0.1mm black">
@@ -222,7 +241,7 @@
                         <fo:table-column column-width="proportional-column-width(0.18)" />
                         <fo:table-column column-width="proportional-column-width(0.14)" />
                         <fo:table-body>
-                            <fo:table-row height="9mm" display-align="center">
+                            <fo:table-row height="8mm" display-align="center">
                                 <fo:table-cell background-color="#5a5657" border-right="solid 0.5mm white">
                                     <fo:block color="#FFFFFF" text-align="center" font-weight="bold" font-family="Noto Sans CJK KR Bold">Gene</fo:block>
                                 </fo:table-cell>
@@ -244,7 +263,7 @@
                             </fo:table-row>
 
                             #foreach($negative in $contents.negativeList)
-                            <fo:table-row height="9mm" display-align="center" text-align="center" font-family="Noto Sans CJK KR Regular">
+                            <fo:table-row height="8mm" display-align="center" text-align="center" font-family="Noto Sans CJK KR Regular">
                                 <fo:table-cell border-bottom="solid 0.1mm black">
                                     <fo:block text-align="center">$negative.sequenceInfo.gene</fo:block>
                                 </fo:table-cell>
@@ -317,7 +336,7 @@
 							</fo:table-row>
                             #if($variant.swTier == "T1" || $variant.swTier == "T2")
 							<fo:table-row border-bottom="solid 1mm white" border-top="1mm" display-align="center">
-								<fo:table-cell number-columns-spanned="4" background-color="#fde2cb" border-bottom="solid 1mm white">
+								<fo:table-cell number-columns-spanned="4" background-color="#e7e7e8" border-bottom="solid 1mm white">
 									<fo:block font-family="Noto Sans CJK KR Regular" text-align="left" padding-bottom="2mm" padding-top="2mm">
 										#if ($variant.interpretation.interpretationEvidenceA && !($variant.interpretation.interpretationEvidenceA == "")) <![CDATA[[LEVEL A]]]> $variant.interpretation.interpretationEvidenceA
 										#elseif ($variant.interpretation.interpretationEvidenceB && !($variant.interpretation.interpretationEvidenceB == "")) <![CDATA[[LEVEL B]]]> $variant.interpretation.interpretationEvidenceB
@@ -394,7 +413,7 @@
 							</fo:table-row>
 							<fo:table-row font-family="Noto Sans CJK KR Regular">
 								<fo:table-cell border-width="0.5pt" background-color="#fde2cb" border-right="solid 1mm white">
-									<fo:block padding-bottom="2mm" padding-top="2mm">Clinical DB (ClnVar)
+									<fo:block padding-bottom="2mm" padding-top="2mm">Clinical DB (ClinVar)
 									</fo:block>
 								</fo:table-cell>
 								<fo:table-cell border-width="0.5pt" background-color="#e7e7e8" border-right="solid 1mm white">

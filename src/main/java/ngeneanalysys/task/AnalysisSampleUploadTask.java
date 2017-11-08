@@ -14,6 +14,7 @@ import ngeneanalysys.util.LoginSessionUtil;
 import org.slf4j.Logger;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -112,6 +113,8 @@ public class AnalysisSampleUploadTask extends Task<Void>{
             currentUploadGroupId = run.getId();
             currentUploadGroupRefName = run.getName();
 
+            updateProgressInfoForMain(0, 0, 0, fileDataList.size());
+            List<AnalysisFile> completeFile = new ArrayList<>();
             for (AnalysisFile fileData : fileDataList) {
 
                 fileList.stream().forEach(file -> {
@@ -125,6 +128,9 @@ public class AnalysisSampleUploadTask extends Task<Void>{
                     if (fileData.getName().equals(file.getName())) {
                         try {
                             analysisRequestService.uploadFile(fileData.getId(), file);
+
+
+
                         } catch (WebAPIException e) {
                             e.printStackTrace();
                         }
@@ -165,6 +171,9 @@ public class AnalysisSampleUploadTask extends Task<Void>{
                         //analysisRequestService.removeRequestedJob(currentUploadGroupId);
                     }
                 }
+
+                completeFile.add(fileData);
+                updateProgressInfoForMain(0, 0, completeFile.size(), fileDataList.size());
             }
         } catch (Exception e) {
             logger.info(e.getMessage());
