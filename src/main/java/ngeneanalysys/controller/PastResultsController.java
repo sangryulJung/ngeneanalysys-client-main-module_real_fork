@@ -3,6 +3,7 @@ package ngeneanalysys.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -315,7 +316,7 @@ public class PastResultsController extends SubPaneController {
 				List<SampleView> list = null;
 				if (searchedSamples != null) {
 					totalCount = searchedSamples.getCount();
-					list = searchedSamples.getResult();
+					list = searchedSamples.getResult().stream().sorted((a, b) -> Integer.compare(b.getId(), a.getId())).collect(Collectors.toList());
 				}
 				int pageCount = 0;
 				if (totalCount > 0) {
