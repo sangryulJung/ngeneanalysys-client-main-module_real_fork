@@ -122,12 +122,13 @@
 	-fx-background-radius:2;
 	-fx-padding:2 3;
 	-fx-pref-width:112;
-	-fx-min-height:50;
-	-fx-pref-height:50;
-	-fx-max-height:50;
+	-fx-min-height:60;
+    -fx-pref-height:60;
+    -fx-max-height:60;
+    -fx-border-width : 1;
+    -fx-border-color : #C2C4C3;
 	-fx-cursor: hand;
 	-fx-alignment:center;
-	-fx-border-width:0;
 	-fx-alignment:center;
 }
 #filterArea #filterList VBox.PRE_FILTERED {
@@ -135,9 +136,9 @@
 	-fx-background-radius:15;	
 	-fx-padding:2 3;
 	-fx-pref-width:80;
-	-fx-min-height:50;
-	-fx-pref-height:50;
-	-fx-max-height:50;
+	-fx-min-height:60;
+	-fx-pref-height:60;
+	-fx-max-height:60;
 	-fx-cursor: hand;
 	-fx-border-radius:15;
 	-fx-border-width:0;
@@ -148,9 +149,9 @@
 	-fx-background-radius:15;
 	-fx-padding:2 3;
 	-fx-max-width:80;
-	-fx-min-height:50;
-	-fx-pref-height:50;
-	-fx-max-height:50;
+	-fx-min-height:60;
+	-fx-pref-height:60;
+	-fx-max-height:60;
 	-fx-cursor: hand;
 	-fx-border-radius:15;
 	-fx-border-width:0;
@@ -160,45 +161,45 @@
 	-fx-background-color:white;
 	-fx-padding:2 3;
 	-fx-pref-width:112;
-	-fx-min-height:50;
-	-fx-pref-height:50;
-	-fx-max-height:50;
+	-fx-min-height:60;
+	-fx-pref-height:60;
+	-fx-max-height:60;
 	-fx-cursor: hand;
 }
 #filterArea #filterList VBox.PREDICTION_B {
 	-fx-background-color:white;
 	-fx-padding:2 3;
 	-fx-pref-width:112;
-	-fx-min-height:50;
-	-fx-pref-height:50;
-	-fx-max-height:50;
+	-fx-min-height:60;
+	-fx-pref-height:60;
+	-fx-max-height:60;
 	-fx-cursor: hand;
 }
 #filterArea #filterList VBox.PREDICTION_C {
 	-fx-background-color:white;
 	-fx-padding:2 3;
 	-fx-pref-width:112;
-	-fx-min-height:50;
-	-fx-pref-height:50;
-	-fx-max-height:50;
+	-fx-min-height:60;
+	-fx-pref-height:60;
+	-fx-max-height:60;
 	-fx-cursor: hand;
 }
 #filterArea #filterList VBox.PREDICTION_D {
 	-fx-background-color:white;
 	-fx-padding:2 3;
 	-fx-pref-width:112;
-	-fx-min-height:50;
-	-fx-pref-height:50;
-	-fx-max-height:50;
+	-fx-min-height:60;
+	-fx-pref-height:60;
+	-fx-max-height:60;
 	-fx-cursor: hand;
 }
 #filterArea #filterList VBox.PREDICTION_E {
 	-fx-background-color:white;
 	-fx-padding:2 3;
 	-fx-pref-width:112;
-	-fx-min-height:50;
-	-fx-pref-height:50;
-	-fx-max-height:50;
+	-fx-min-height:60;
+	-fx-pref-height:60;
+	-fx-max-height:60;
 	-fx-cursor: hand;
 }
 
@@ -435,45 +436,54 @@
 	-fx-background-color:white;
 	-fx-padding:2 3;
 	-fx-pref-width:112;
-	-fx-min-height:50;
-	-fx-pref-height:50;
-	-fx-max-height:50;
+	-fx-min-height:60;
+	-fx-pref-height:60;
+	-fx-max-height:60;
+	-fx-border-width : 1;
+	-fx-border-color : #C2C4C3;
 	-fx-cursor: hand;
 }
 #filterArea #filterList VBox.TIER_TWO {
 	-fx-background-color:white;
 	-fx-padding:2 3;
-	-fx-pref-width:112;
-	-fx-min-height:50;
-	-fx-pref-height:50;
-	-fx-max-height:50;
+	-fx-min-height:60;
+    -fx-pref-height:60;
+    -fx-max-height:60;
+    -fx-border-width : 1;
+    -fx-border-color : #C2C4C3;
 	-fx-cursor: hand;
 }
 #filterArea #filterList VBox.TIER_THREE {
 	-fx-background-color:white;
 	-fx-padding:2 3;
 	-fx-pref-width:112;
-	-fx-min-height:50;
-	-fx-pref-height:50;
-	-fx-max-height:50;
+	-fx-min-height:60;
+    -fx-pref-height:60;
+    -fx-max-height:60;
+    -fx-border-width:1;
+    -fx-border-color : #C2C4C3;
 	-fx-cursor: hand;
 }
 #filterArea #filterList VBox.TIER_FOUR {
 	-fx-background-color:white;
 	-fx-padding:2 3;
 	-fx-pref-width:112;
-	-fx-min-height:50;
-	-fx-pref-height:50;
-	-fx-max-height:50;
+	-fx-min-height:60;
+    -fx-pref-height:60;
+    -fx-max-height:60;
+    -fx-border-width : 1;
+    -fx-border-color : #C2C4C3;
 	-fx-cursor: hand;
 }
 #filterArea #filterList VBox.TIER_NEGATIVE {
 	-fx-background-color:white;
 	-fx-padding:2 3;
 	-fx-pref-width:112;
-	-fx-min-height:50;
-	-fx-pref-height:50;
-	-fx-max-height:50;
+	-fx-min-height:60;
+    -fx-pref-height:60;
+    -fx-max-height:60;
+    -fx-border-width : 1;
+    -fx-border-color : #C2C4C3;
 	-fx-cursor: hand;
 }
 #filterArea #filterList VBox .level_TIER_ONE {

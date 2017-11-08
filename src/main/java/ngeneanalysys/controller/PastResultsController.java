@@ -915,7 +915,7 @@ public class PastResultsController extends SubPaneController {
 		DetailFieldVBox() {
 			this.setId("detailArea");
 			this.getStyleClass().add("column");
-			Button btn = new Button("Detail");
+			Button btn = new Button("Open");
 			btn.getStyleClass().add("btn_detail");
 			btn.setOnAction(e -> {
 				if(sample != null) {

@@ -42,7 +42,7 @@
                         <Image url="@../images/icon_03.png" />
                      </image>
                   </ImageView>
-                  <Label alignment="TOP_LEFT" layoutX="60.0" layoutY="31.0" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="116.0" style="-fx-text-fill: #C20D22;" text="Sample Filter">
+                  <Label alignment="TOP_LEFT" layoutX="60.0" layoutY="31.0" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="186.0" style="-fx-text-fill: #C20D22;" text="Sample Filter">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
@@ -269,7 +269,7 @@
             <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="Panel" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
             <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="Result Overview" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
             <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="QC" GridPane.columnIndex="4" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
-            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-border-width: 0;" styleClass="header" text="Detail" GridPane.columnIndex="5" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
+            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-border-width: 0;" styleClass="header" GridPane.columnIndex="5" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
          </children>
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" />

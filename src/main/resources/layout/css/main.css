@@ -141,7 +141,7 @@
 }
 
 #mainHeader #topMenuArea Region#addMenu {
-	-fx-background-color: #f8a97f ;
+	-fx-background-color: linear-gradient(#A0A0A0 0%, #858585 50%, #525051 100%);
 	-fx-background-radius:0;
 	-fx-border-width:0;
 	-fx-pref-width:180;
@@ -159,7 +159,8 @@
 
 #mainHeader #topMenuArea .label#addMenuLabel {
 	-fx-font-size: 12;
-	-fx-text-fill:black;
+	-fx-underline : true;
+	-fx-text-fill:#ffffff;
 	-fx-alignment:center;
 }
 
@@ -215,7 +216,7 @@
 
 #mainHeader #topMenuArea #selectedMenu .label#addMenuLabel {
 	-fx-font-size: 12;
-	-fx-font-weight:bold; 
+	-fx-underline : true;
 	-fx-text-fill: #ffffff;
 	-fx-alignment:center;
 }

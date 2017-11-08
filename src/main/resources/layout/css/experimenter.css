@@ -211,6 +211,7 @@ Button#buttonUpload:hover {
 
 #listGrid #detailArea {
 	-fx-alignment:CENTER;
+	-fx-border-width : 0;
 }
 
 #listGrid #detailArea .button {
