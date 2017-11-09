@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
@@ -295,6 +296,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
 
     /** 삭제 버튼 생성 */
     private class DeleteButtonCreate extends TableCell<Run, Boolean> {
+        HBox box = null;
         final ImageView img = new ImageView(resourceUtil.getImage("/layout/images/delete.png", 18, 18));
 
         public DeleteButtonCreate() {
@@ -328,7 +330,12 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
                 setGraphic(null);
                 return;
             }
-            setGraphic(img);
+
+            box = new HBox();
+
+            box.getChildren().add(img);
+
+            setGraphic(box);
         }
     }
 

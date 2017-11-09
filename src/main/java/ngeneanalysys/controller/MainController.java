@@ -251,7 +251,11 @@ public class MainController extends BaseStageController {
         HttpClientResponse response = null;
         try {
             Map<String,Object> params = new HashMap<>();
-            params.put("skipOtherGroup", "false");
+            if(loginSession.getRole().equalsIgnoreCase("ADMIN")) {
+                params.put("skipOtherGroup", "false");
+            } else {
+                params.put("skipOtherGroup", "true");
+            }
             response = apiService.get("/panels", params, null, false);
             final PagedPanel panels = (PagedPanel) response.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
             basicInformationMap.put("panels", panels.getResult());

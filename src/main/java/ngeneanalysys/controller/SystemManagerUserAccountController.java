@@ -326,7 +326,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
 
                 if(totalCount > 0) {
                     pageCount = totalCount / limit;
-                    paginationList.setCurrentPageIndex(page - 1);
+                    groupPaginationList.setCurrentPageIndex(page - 1);
                     if(totalCount % limit > 0) {
                         pageCount++;
                     }
