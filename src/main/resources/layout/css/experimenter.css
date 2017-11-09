@@ -298,7 +298,7 @@ Button#buttonUpload:hover {
 	-fx-pref-height:15;
 	-fx-max-height:15;
 }
-
+/*
 .geneTable {
  -fx-border-width : 0;
 }
@@ -318,5 +318,6 @@ Button#buttonUpload:hover {
 	-fx-pref-height:30;
 	-fx-background-color:#C30D23;
 	-fx-border-color:#ffffff;
-	-fx-border-width: 1;
+	-fx-border-width: 0;
 }
+*/
