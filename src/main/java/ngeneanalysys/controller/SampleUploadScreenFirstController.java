@@ -243,7 +243,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     public void saveSampleData() {
         for (int i = 0; i < standardDataGridPane.getChildren().size(); i += 5) {
-            int rowNum = i / 6;
+            int rowNum = i / 5;
             Sample sample = null;
             if(sampleArrayList.size() > rowNum) {
                 sample = sampleArrayList.get(rowNum);
