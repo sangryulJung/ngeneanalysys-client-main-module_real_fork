@@ -132,8 +132,62 @@
 
                     <fo:table>
                         <fo:table-body>
-                            <fo:table-row display-align="center">
+                            <fo:table-row>
+                                <fo:table-cell number-columns-spanned="8">
+                                    <fo:block color="#000000" font-weight="bold" font-family="Noto Sans CJK KR Bold" font-size="14pt">
+                                        Number of variants
+                                    </fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                            <fo:table-row display-align="center" text-align="center">
                                 <fo:table-cell height="6mm" border-bottom="solid 0.2mm black" border-top="solid 0.2mm black">
+                                    <fo:block color="#000000" text-align="center" font-weight="bold" font-family="Noto Sans CJK KR Bold">
+                                        Tier I
+                                    </fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell border-bottom="solid 0.2mm black" border-top="solid 0.2mm black">
+                                    <fo:block>
+                                        $contents.tierOneCount
+                                    </fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell border-bottom="solid 0.2mm black" border-top="solid 0.2mm black">
+                                    <fo:block color="#000000" text-align="center" font-weight="bold" font-family="Noto Sans CJK KR Bold">
+                                        Tier II
+                                    </fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell border-bottom="solid 0.2mm black" border-top="solid 0.2mm black">
+                                    <fo:block>
+                                        $contents.tierTwoCount
+                                    </fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell border-bottom="solid 0.2mm black" border-top="solid 0.2mm black">
+                                    <fo:block color="#000000" text-align="center" font-weight="bold" font-family="Noto Sans CJK KR Bold">
+                                        Tier III
+                                    </fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell border-bottom="solid 0.2mm black" border-top="solid 0.2mm black">
+                                    <fo:block>
+                                        $contents.tierThreeCount
+                                    </fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell border-bottom="solid 0.2mm black" border-top="solid 0.2mm black">
+                                    <fo:block color="#000000" text-align="center" font-weight="bold" font-family="Noto Sans CJK KR Bold">
+                                        Tier IV
+                                    </fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell border-bottom="solid 0.2mm black" border-top="solid 0.2mm black">
+                                    <fo:block>
+                                        $contents.tierFourCount
+                                    </fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                            <!--<fo:table-row display-align="center">
+                                <fo:table-cell number-rows-spanned="2">
+                                    <fo:block color="#000000" text-align="center" font-weight="bold" font-family="Noto Sans CJK KR Bold">
+                                        Number of variants
+                                    </fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell height="6mm" border-bottom="solid 0.2mm black" border-top="solid 0.2mm black" border-left="solid 0.2mm black">
                                     <fo:block color="#000000" text-align="center" font-weight="bold" font-family="Noto Sans CJK KR Bold">
                                     Tier I
                                     </fo:block>
@@ -157,7 +211,7 @@
 
                             </fo:table-row>
                             <fo:table-row height="6mm" display-align="center" text-align="center" font-family="Noto Sans CJK KR Regular">
-                                <fo:table-cell border-bottom="solid 0.2mm black">
+                                <fo:table-cell border-bottom="solid 0.2mm black" border-left="solid 0.2mm black">
                                     <fo:block>
                                         $contents.tierOneCount
                                     </fo:block>
@@ -177,7 +231,7 @@
                                         $contents.tierFourCount
                                     </fo:block>
                                 </fo:table-cell>
-                            </fo:table-row>
+                            </fo:table-row>-->
                         </fo:table-body>
                     </fo:table>
 				</fo:block>
