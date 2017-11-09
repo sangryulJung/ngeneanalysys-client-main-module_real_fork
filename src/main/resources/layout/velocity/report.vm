@@ -9,7 +9,7 @@
 			<fo:region-body region-name="xsl-region-body" margin-top="25mm" margin-bottom="15mm" />
 			#end
 			<!--<fo:region-body region-name="xsl-region-body" margin-top="20mm" margin-bottom="25mm" margin-left="10mm" margin-right="10mm" />-->
-			<fo:region-before region-name="xsl-region-before" display-align="after" extent="30mm" />
+			<fo:region-before region-name="xsl-region-before" display-align="after" extent="25mm" />
 			<fo:region-after region-name="xsl-region-after" display-align="before" extent="8mm" />
 		</fo:simple-page-master>
 		<fo:page-sequence-master master-name="default-sequence">
@@ -70,7 +70,7 @@
 		<fo:flow flow-name="xsl-region-body">
 
 			<!-- Test Information -->
-			<fo:block margin-bottom="10mm" font-size="10pt" margin-top="10mm">
+			<fo:block margin-bottom="3mm" font-size="10pt" margin-top="10mm">
 				<fo:block font-size="24pt" font-weight="bold" margin-bottom="1mm">
                     <fo:external-graphic  content-width="18.4cm" content-height="1.5cm" src="${testInformationText}"  padding-bottom="0mm"/>
                 </fo:block>
@@ -129,6 +129,57 @@
 							#end
 						</fo:table-body>
 					</fo:table>
+
+                    <fo:table>
+                        <fo:table-body>
+                            <fo:table-row display-align="center">
+                                <fo:table-cell height="6mm" border-bottom="solid 0.2mm black" border-top="solid 0.2mm black">
+                                    <fo:block color="#000000" text-align="center" font-weight="bold" font-family="Noto Sans CJK KR Bold">
+                                    Tier I
+                                    </fo:block>
+                                </fo:table-cell>
+
+                                <fo:table-cell border-bottom="solid 0.2mm black" border-top="solid 0.2mm black">
+                                    <fo:block color="#000000" text-align="center" font-weight="bold" font-family="Noto Sans CJK KR Bold">
+                                        Tier II
+                                    </fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell border-bottom="solid 0.2mm black" border-top="solid 0.2mm black">
+                                    <fo:block color="#000000" text-align="center" font-weight="bold" font-family="Noto Sans CJK KR Bold">
+                                        Tier III
+                                    </fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell border-bottom="solid 0.2mm black" border-top="solid 0.2mm black">
+                                    <fo:block color="#000000" text-align="center" font-weight="bold" font-family="Noto Sans CJK KR Bold">
+                                        Tier IV
+                                    </fo:block>
+                                </fo:table-cell>
+
+                            </fo:table-row>
+                            <fo:table-row height="6mm" display-align="center" text-align="center" font-family="Noto Sans CJK KR Regular">
+                                <fo:table-cell border-bottom="solid 0.2mm black">
+                                    <fo:block>
+                                        $contents.tierOneCount
+                                    </fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell border-bottom="solid 0.2mm black">
+                                    <fo:block>
+                                        $contents.tierTwoCount
+                                    </fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell border-bottom="solid 0.2mm black">
+                                    <fo:block>
+                                        $contents.tierThreeCount
+                                    </fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell border-bottom="solid 0.2mm black">
+                                    <fo:block>
+                                        $contents.tierFourCount
+                                    </fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                        </fo:table-body>
+                    </fo:table>
 				</fo:block>
 			</fo:block>
 
@@ -215,7 +266,7 @@
 			</fo:block>
 
             <!-- Pertinent Negatives -->
-            <fo:block margin-bottom="10mm" font-size="10pt" margin-top="10mm">
+            <fo:block margin-bottom="10mm" font-size="10pt" margin-top="5mm">
                 <fo:block font-size="24pt" font-weight="bold" margin-bottom="1mm" font-family="Noto Sans CJK KR Regular">
                     <fo:external-graphic content-width="18.4cm" content-height="1.5cm" src="${pertinetNegativeText}" padding-bottom="-3mm" />
                 </fo:block>

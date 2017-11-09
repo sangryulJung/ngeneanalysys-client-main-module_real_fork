@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -18,7 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="contentWrapper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="820.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SampleUploadScreenFirstController">
+<VBox fx:id="contentWrapper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="820.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SampleUploadScreenFirstController">
 	<children>
 		<GridPane layoutX="35.0" layoutY="25.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="820.0">
 			<columnConstraints>
@@ -52,10 +48,15 @@
                   </Label>
                </children>
             </HBox>
-            <Button alignment="TOP_LEFT" mnemonicParsing="false" onAction="#fastqAdd" styleClass="field_height" text="+" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+            <Button alignment="TOP_LEFT" mnemonicParsing="false" onAction="#fastqAdd" text="+" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
+               <styleClass>
+                  <String fx:value="field_height" />
+                  <String fx:value="file_add_btn" />
+                  <String fx:value="font_size_12" />
+               </styleClass>
             </Button>
          </children>
 		</GridPane>
@@ -89,9 +90,9 @@
                         <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="Source" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
                      </children>
                   </GridPane>
-                  <ScrollPane hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="820.0" GridPane.rowIndex="1">
+                  <ScrollPane hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="184.0" prefWidth="820.0" GridPane.rowIndex="1">
                      <content>
-                        <GridPane fx:id="standardDataGridPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="820.0" vgap="3.0">
+                        <GridPane fx:id="standardDataGridPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="184.0" prefWidth="820.0" vgap="3.0">
                            <columnConstraints>
                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="201.0" />
                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="206.0" />
@@ -100,7 +101,7 @@
                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" />
                            </columnConstraints>
                            <padding>
-                              <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                              <Insets left="3.0" right="3.0" />
                            </padding>
                            <rowConstraints>
                               <RowConstraints minHeight="10.0" prefHeight="30.0" />

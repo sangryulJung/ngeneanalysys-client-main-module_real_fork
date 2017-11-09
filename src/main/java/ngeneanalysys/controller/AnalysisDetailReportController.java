@@ -111,6 +111,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
     List<AnalysisResultVariant> tierThree = null;
 
+    List<AnalysisResultVariant> tierFour = null;
+
     List<AnalysisResultVariant> negativeVariant = null;
 
     List<AnalysisResultVariant> negativeList = null;
@@ -226,6 +228,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             }
 
             tierThree = variantTierMap.get("T3");
+
+            tierFour = variantTierMap.get("T4");
 
             if(negativeList != null) {
                 negativeVariantsTable.setItems(FXCollections.observableArrayList(negativeList));
@@ -398,6 +402,10 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
                 contentsMap.put("variantList", variantList);
                 contentsMap.put("tierThreeVariantList", tierThree);
+                contentsMap.put("tierOneCount", (tierOne != null) ? tierOne.size() : 0);
+                contentsMap.put("tierTwoCount", (tierTwo != null) ? tierTwo.size() : 0);
+                contentsMap.put("tierThreeCount", (tierThree != null) ? tierThree.size() : 0);
+                contentsMap.put("tierFourCount", (tierFour != null) ? tierFour.size() : 0);
                 contentsMap.put("evidenceACount", evidenceACount);
                 contentsMap.put("evidenceBCount", evidenceBCount);
                 contentsMap.put("evidenceCCount", evidenceCCount);

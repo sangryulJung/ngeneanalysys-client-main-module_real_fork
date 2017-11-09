@@ -781,6 +781,11 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                 linkBox = loader.load();
                 linkArea.getChildren().removeAll(linkArea.getChildren());
                 linkArea.getChildren().add(linkBox);
+            } else {
+                loader = FXMLLoadUtil.load(FXMLConstants.ANALYSIS_DETAIL_SNPS_INDELS_OVERVIEW_LINK_BRCA);
+                linkBox = loader.load();
+                linkArea.getChildren().removeAll(linkArea.getChildren());
+                linkArea.getChildren().add(linkBox);
             }
 
 
@@ -815,113 +820,157 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
                             igvButton.setDisable(false);
                         }
+
+                        if ("dbSNPButton".equals(id)) {
+                            Button dbSNPButton = (Button) node;
+                            dbSNPButton.setDisable(false);
+                        }
+
+                        if ("clinvarButton".equals(id)) {
+                            Button clinvarButton = (Button) node;
+                            clinvarButton.setDisable(false);
+                        }
+
+                        if ("cosmicButton".equals(id)) {
+                            Button cosmicButton = (Button) node;
+                            cosmicButton.setDisable(false);
+                        }
+
+                        if ("espButton".equals(id)) {
+                            Button espButton = (Button) node;
+                            espButton.setDisable(false);
+                        }
+
+                        if ("gnomesButton".equals(id)) {
+                            Button gnomesButton = (Button) node;
+                            gnomesButton.setDisable(false);
+                        }
+
+                        if ("exACButton".equals(id)) {
+                            Button exACButton = (Button) node;
+                            exACButton.setDisable(false);
+                        }
+
+                        if ("dbNSFPButton".equals(id)) {
+                            Button dbNSFPButton = (Button) node;
+                            dbNSFPButton.setDisable(false);
+                        }
                     }
                 }
-            }
-
-            /*if(linkBox != null && kit.equals(ExperimentTypeCode.SOMATIC)) {
+            } else {
                 Map<String,Object> variantInformationMap = (Map<String,Object>) paramMap.get("variantInformation");
                 AnalysisResultVariant analysisResultVariant = (AnalysisResultVariant) paramMap.get("analysisResultVariant");
                 //logger.info("init overview link button event binding..");
-                String urlExAC = (variantInformationMap.containsKey("exac_url")) ? (String) variantInformationMap.get("exac_url") : null;
+/*                String urlExAC = (variantInformationMap.containsKey("exac_url")) ? (String) variantInformationMap.get("exac_url") : null;
                 String urlBRCAExchange = (variantInformationMap.containsKey("brca_exchange_url")) ? (String) variantInformationMap.get("brca_exchange_url") : null;
                 String urlClinvar = (variantInformationMap.containsKey("clinvar_url")) ? (String) variantInformationMap.get("clinvar_url") : null;
                 String urlNCBI = (variantInformationMap.containsKey("ncbi_url")) ? (String) variantInformationMap.get("ncbi_url") : null;
-                String urlUCSC = (variantInformationMap.containsKey("ucsc_url")) ? (String) variantInformationMap.get("ucsc_url") : null;
+                String urlUCSC = (variantInformationMap.containsKey("ucsc_url")) ? (String) variantInformationMap.get("ucsc_url") : null;*/
                 for(Node node : linkBox.getChildren()) {
-                    if(node != null) {
+                    if (node != null) {
                         String id = node.getId();
                         //logger.info(String.format("button id : %s", id));
                         // exACButton
-                        if("exACButton".equals(id)) {
+                        if ("exACButton".equals(id)) {
                             Button exACButton = (Button) node;
-                            if(!StringUtils.isEmpty(urlExAC)) {
+                            /*if (!StringUtils.isEmpty(urlExAC)) {
                                 exACButton.setOnAction(event -> {
                                     logger.info(String.format("OPEN EXTERNAL LINK [%s][%s]", id, urlExAC));
                                     getMainApp().getHostServices().showDocument(urlExAC);
                                 });
                                 exACButton.setDisable(false);
-                            }
+                            }*/
+                            exACButton.setDisable(false);
                         }
                         // igvButton
-                        if("igvButton".equals(id)) {
+                        if ("igvButton".equals(id)) {
                             Button igvButton = (Button) node;
+
                             String sampleId = sample.getId().toString();
-                            String variantId = analysisResultVariant.getVariantId();
-                            String gene = analysisResultVariant.getGene();
-                            String locus = String.format("%s:%,d-%,d", analysisResultVariant.getChromosome(), Integer.parseInt(analysisResultVariant.getGenomicPosition()), Integer.parseInt(analysisResultVariant.getGenomicEndPosition()));
-                            String refGenome = analysisResultVariant.getReferenceGenome();
+                            String variantId = selectedAnalysisResultVariant.getId().toString();
+                            String gene = selectedAnalysisResultVariant.getSequenceInfo().getGene();
+                            String locus = String.format("%s:%,d-%,d",
+                                    selectedAnalysisResultVariant.getSequenceInfo().getChromosome(),
+                                    selectedAnalysisResultVariant.getSequenceInfo().getGenomicCoordinate(),
+                                    selectedAnalysisResultVariant.getSequenceInfo().getGenomicCoordinate());
+                            String refGenome = selectedAnalysisResultVariant.getSequenceInfo().getRefGenomeVer();
                             String humanGenomeVersion = (refGenome.contains("hg19")) ? "hg19" : "hg18";
+
                             igvButton.setOnAction(event -> {
                                 try {
-                                    loadIGV(sampleId, sample.getName(),	variantId, gene, locus, humanGenomeVersion);
+                                    loadIGV(sampleId, sample.getName(), variantId, gene, locus, humanGenomeVersion);
                                 } catch (WebAPIException wae) {
                                     DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                                             getMainApp().getPrimaryStage(), true);
                                 } catch (Exception e) {
-                                    DialogUtil.generalShow(AlertType.ERROR, "IGV launch fail", "IGV software doesn't launch.",
+                                    DialogUtil.generalShow(Alert.AlertType.ERROR, "IGV launch fail", "IGV software doesn't launch.",
                                             getMainApp().getPrimaryStage(), true);
                                 }
                             });
+
                             igvButton.setDisable(false);
                         }
                         // brcaExchangeButton
-                        if("brcaExchangeButton".equals(id)) {
+                        if ("brcaExchangeButton".equals(id)) {
                             Button brcaExchangeButton = (Button) node;
-                            if(!StringUtils.isEmpty(urlBRCAExchange)) {
+                            /*if (!StringUtils.isEmpty(urlBRCAExchange)) {
                                 brcaExchangeButton.setOnAction(event -> {
                                     logger.info(String.format("OPEN EXTERNAL LINK [%s][%s]", id, urlBRCAExchange));
                                     getMainApp().getHostServices().showDocument(urlBRCAExchange);
                                 });
                                 brcaExchangeButton.setDisable(false);
-                            }
+                            }*/
+                            brcaExchangeButton.setDisable(false);
                         }
                         // clinvarButton
-                        if("clinvarButton".equals(id)) {
+                        if ("clinvarButton".equals(id)) {
                             Button clinvarButton = (Button) node;
-                            if(!StringUtils.isEmpty(urlClinvar)) {
+                           /* if (!StringUtils.isEmpty(urlClinvar)) {
                                 clinvarButton.setOnAction(event -> {
                                     logger.info(String.format("OPEN EXTERNAL LINK [%s][%s]", id, urlClinvar));
                                     getMainApp().getHostServices().showDocument(urlClinvar);
                                 });
                                 clinvarButton.setDisable(false);
-                            }
+                            }*/
+                            clinvarButton.setDisable(false);
                         }
                         // ncbiButton
-                        if("ncbiButton".equals(id)) {
+                        if ("ncbiButton".equals(id)) {
                             Button ncbiButton = (Button) node;
-                            if(!StringUtils.isEmpty(urlNCBI)) {
+                            /*if (!StringUtils.isEmpty(urlNCBI)) {
                                 ncbiButton.setOnAction(event -> {
                                     logger.info(String.format("OPEN EXTERNAL LINK [%s][%s]", id, urlNCBI));
                                     getMainApp().getHostServices().showDocument(urlNCBI);
                                 });
                                 ncbiButton.setDisable(false);
-                            }
+                            }*/
+                            ncbiButton.setDisable(false);
                         }
                         // ucscButton
-                        if("ucscButton".equals(id)) {
+                        if ("ucscButton".equals(id)) {
                             Button ucscButton = (Button) node;
-                            if(!StringUtils.isEmpty(urlUCSC)) {
+                            /*if (!StringUtils.isEmpty(urlUCSC)) {
                                 ucscButton.setOnAction(event -> {
                                     logger.info(String.format("OPEN EXTERNAL LINK [%s][%s]", id, urlUCSC));
                                     getMainApp().getHostServices().showDocument(urlUCSC);
                                 });
                                 ucscButton.setDisable(false);
-                            }
+                            }*/
+                            ucscButton.setDisable(false);
                         }
                         // alamutButton
-                        if("alamutButton".equals(id)) {
+                        if ("alamutButton".equals(id)) {
                             Button alamutButton = (Button) node;
                             // variant identification transcript data map
-                            Map<String,Object> geneMap = (Map<String,Object>) paramMap.get("gene");
-                            if(geneMap != null && !geneMap.isEmpty() && geneMap.containsKey("transcript")) {
-                                Map<String,Map<String,String>> transcriptDataMap = (Map<String,Map<String,String>>) geneMap.get("transcript");
-                                if(!transcriptDataMap.isEmpty() && transcriptDataMap.size() > 0) {
+                            /*Map<String, Object> geneMap = (Map<String, Object>) paramMap.get("gene");
+                            if (geneMap != null && !geneMap.isEmpty() && geneMap.containsKey("transcript")) {
+                                Map<String, Map<String, String>> transcriptDataMap = (Map<String, Map<String, String>>) geneMap.get("transcript");
+                                if (!transcriptDataMap.isEmpty() && transcriptDataMap.size() > 0) {
                                     alamutButton.setOnAction(event -> {
                                         int selectedIdx = this.overviewController.getTranscriptComboBoxSelectedIndex();
                                         logger.info(String.format("selected transcript combobox idx : %s", selectedIdx));
-                                        Map<String,String> map = transcriptDataMap.get(String.valueOf(selectedIdx));
-                                        if(!map.isEmpty() && map.size() > 0) {
+                                        Map<String, String> map = transcriptDataMap.get(String.valueOf(selectedIdx));
+                                        if (!map.isEmpty() && map.size() > 0) {
                                             String transcript = (String) map.get("transcript_name");
                                             String cDNA = (String) map.get("hgvs.c");
                                             String sampleId = sample.getId().toString();
@@ -931,11 +980,13 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                                     });
                                     alamutButton.setDisable(false);
                                 }
-                            }
+                            }*/
+                            alamutButton.setDisable(false);
                         }
                     }
                 }
-            }*/
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
