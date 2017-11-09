@@ -118,7 +118,7 @@ public class SystemMenuEditController extends SubPaneController {
             // 사용자 정보 조회
             Map<String, Object> params = new HashMap<>();
 
-            HttpClientResponse response = apiService.get("/member", getParamMap(), null,
+            HttpClientResponse response = apiService.get("/members/" + loginSession.getId(), getParamMap(), null,
                     false);
 
             user = response.getObjectBeforeConvertResponseToJSON(User.class);
@@ -223,7 +223,7 @@ public class SystemMenuEditController extends SubPaneController {
                 }
 
                 try {
-                    apiService.put("/member", params, null, true);
+                    apiService.put("/members/" + loginSession.getId(), params, null, true);
 
                     DialogUtil.alert("Update User Information Success", "Your Information has been updated.",
                             dialogStage, true);
