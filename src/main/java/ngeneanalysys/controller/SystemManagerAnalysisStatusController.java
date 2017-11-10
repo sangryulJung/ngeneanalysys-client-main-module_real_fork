@@ -288,8 +288,10 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
         } catch (WebAPIException wae) {
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
+            wae.printStackTrace();
         } catch (Exception e) {
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+            e.printStackTrace();
         }
     }
 

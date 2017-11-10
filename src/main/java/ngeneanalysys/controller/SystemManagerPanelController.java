@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
@@ -133,6 +134,7 @@ public class SystemManagerPanelController extends SubPaneController {
         analysisTypeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getAnalysisType()));
         sampleSourceTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getSampleSource()));
         libraryTypeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getLibraryType()));
+        deletedTableColumn.setCellValueFactory(item -> new SimpleStringProperty((item.getValue().getDeleted() == 0) ? "N" : "D"));
 
         targetComboBox.setConverter(new ComboBoxConverter());
         targetComboBox.getItems().add(new ComboBoxItem("DNA", "DNA"));
@@ -361,12 +363,12 @@ public class SystemManagerPanelController extends SubPaneController {
         try {
             apiService.delete("admin/panels/" + panelId);
 
-            HttpClientResponse response = apiService.get("/panels", null, null, false);
-            final List<Panel> panels = (List<Panel>) response.getMultiObjectBeforeConvertResponseToJSON(Panel.class, false);
-            mainController.getBasicInformationMap().put("panels", panels);
+            HttpClientResponse response = apiService.get("admin/panels", null, null, false);
+            final PagedPanel tablePanels = response.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
+            mainController.getBasicInformationMap().put("panels", tablePanels.getResult());
 
             panelListTable.getItems().clear();
-            panelListTable.getItems().addAll(panels);
+            panelListTable.getItems().addAll(tablePanels.getResult());
 
         } catch (WebAPIException wae) {
             wae.printStackTrace();
@@ -493,7 +495,16 @@ public class SystemManagerPanelController extends SubPaneController {
                 return;
             }
 
+            Panel panel = PanelModifyButton.this.getTableView().getItems().get(
+                    PanelModifyButton.this.getIndex());
+
+            if(panel.getDeleted() != 0) {
+                return;
+            }
+
             box = new HBox();
+
+            box.setAlignment(Pos.CENTER);
 
             box.setSpacing(10);
 

@@ -30,7 +30,7 @@
                      <children>
                         <HBox alignment="CENTER" prefHeight="29.0" prefWidth="200.0">
                            <children>
-                              <Label fx:id="titleLabel" text="Panel add" />
+                              <Label fx:id="titleLabel" />
                            </children>
                         </HBox>
                         <HBox alignment="BOTTOM_LEFT" prefHeight="29.0" prefWidth="200.0">
@@ -101,7 +101,7 @@
                      <children>
                         <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="900.0" VBox.vgrow="NEVER">
                            <children>
-                              <Label text="Panel list" />
+                              <Label text="Panel" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="1.0">
@@ -111,7 +111,7 @@
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </padding>
                                  <children>
-                                    <Button mnemonicParsing="false" onAction="#panelAdd" text="panel add" />
+                                    <Button mnemonicParsing="false" onAction="#panelAdd" text="+" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="180.0" spacing="5.0">
@@ -140,18 +140,18 @@
                   </VBox>
                   <TableView fx:id="panelListTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                      <columns>
-                        <TableColumn fx:id="panelIdTableColumn" prefWidth="64.0" text="Panel Id" />
+                        <TableColumn fx:id="panelIdTableColumn" prefWidth="60.0" text="Panel Id" />
                         <TableColumn fx:id="panelNameTableColumn" prefWidth="88.20001220703125" text="Panel Name" />
-                        <TableColumn fx:id="panelCodeTableColumn" prefWidth="64.79998779296875" text="Code" />
-                        <TableColumn fx:id="panelTargetTableColumn" prefWidth="83.0" text="Target" />
+                        <TableColumn fx:id="panelCodeTableColumn" prefWidth="60.79998779296875" text="Code" />
+                        <TableColumn fx:id="panelTargetTableColumn" prefWidth="80.0" text="Target" />
                         <TableColumn fx:id="analysisTypeTableColumn" prefWidth="92.0" text="Analysis Type" />
                         <TableColumn fx:id="libraryTypeTableColumn" prefWidth="97.0" text="Library Type" />
                         <TableColumn fx:id="sampleSourceTableColumn" prefWidth="97.0" text="Sample Source" />
                         <TableColumn fx:id="createdAtTableColumn" prefWidth="90.0" text="Create at" />
                         <TableColumn fx:id="updatedAtTableColumn" prefWidth="90.0" text="Update at" />
                         <TableColumn fx:id="deletedAtTableColumn" prefWidth="108.0" text="Deleted At" visible="false" />
-                        <TableColumn fx:id="deletedTableColumn" prefWidth="49.0" text="Deleted" />
-                        <TableColumn fx:id="editPanelTableColumn" prefWidth="83.0" text="editPanelTableColumn" />
+                        <TableColumn fx:id="deletedTableColumn" prefWidth="55.0" style="-fx-alignment: center;" text="Deleted" />
+                        <TableColumn fx:id="editPanelTableColumn" prefWidth="80.0" text="editPanel" />
                      </columns>
                   </TableView>
                   <HBox alignment="CENTER_RIGHT" prefHeight="48.0" prefWidth="900.0" spacing="5.0" VBox.vgrow="NEVER">

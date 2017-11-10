@@ -828,6 +828,8 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
                         if ("clinvarButton".equals(id)) {
                             Button clinvarButton = (Button) node;
+
+
                             clinvarButton.setDisable(false);
                         }
 
