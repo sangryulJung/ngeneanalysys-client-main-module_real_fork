@@ -14,9 +14,6 @@ public class Run implements Serializable {
     @JsonProperty("memberId")
     private Integer memberId;
 
-    @JsonProperty(value = "memberGroupId")
-    private Integer memberGroupId;
-
     @JsonProperty(value = "name")
     private String name;
 
@@ -51,12 +48,12 @@ public class Run implements Serializable {
         return id;
     }
 
-    public Integer getMemberGroupId() {
-        return memberGroupId;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public Integer getMemberId() {
+        return memberId;
     }
 
     public void setName(String name) {
@@ -108,7 +105,6 @@ public class Run implements Serializable {
         return "Run{" +
                 "id=" + id +
                 ", memberId=" + memberId +
-                ", memberGroupId=" + memberGroupId +
                 ", name='" + name + '\'' +
                 ", sequencingPlatform='" + sequencingPlatform + '\'' +
                 ", status='" + status + '\'' +

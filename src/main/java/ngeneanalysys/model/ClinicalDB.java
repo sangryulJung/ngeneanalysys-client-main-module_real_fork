@@ -6,7 +6,7 @@ import java.math.BigDecimal;
  * @author Jang
  * @since 2017-09-08
  */
-public class ClinicalSignificant {
+public class ClinicalDB {
     private ClinVar clinVar;
     private BrcaCancerInformationCore bic;
     private String kohbraPatient;

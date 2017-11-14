@@ -123,7 +123,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
         id.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
         runName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
         status.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
-        userId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getMemberGroupId()).asObject());
+        userId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getMemberId()).asObject());
         createAt.setCellValueFactory(cellData -> new SimpleStringProperty(DateFormatUtils.format(cellData.getValue().getCreatedAt().toDate(), "yyyy-MM-dd hh:mm:ss")));
         sc.setCellValueFactory(cellData -> new SimpleIntegerProperty(
                 cellData.getValue().getId()).asObject());

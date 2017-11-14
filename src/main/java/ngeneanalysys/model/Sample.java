@@ -18,9 +18,6 @@ public class Sample {
     @JsonProperty("memberId")
     private Integer memberId;
 
-    @JsonProperty("memberGroupId")
-    private Integer memberGroupId;
-
     @JsonProperty("name")
     private String name;
 
@@ -115,20 +112,6 @@ public class Sample {
      */
     public void setMemberId(Integer memberId) {
         this.memberId = memberId;
-    }
-
-    /**
-     * @return memberGroupId
-     */
-    public Integer getMemberGroupId() {
-        return memberGroupId;
-    }
-
-    /**
-     * @param memberGroupId
-     */
-    public void setMemberGroupId(Integer memberGroupId) {
-        this.memberGroupId = memberGroupId;
     }
 
     /**
@@ -319,7 +302,6 @@ public class Sample {
                 "id=" + id +
                 ", runId=" + runId +
                 ", memberId=" + memberId +
-                ", memberGroupId=" + memberGroupId +
                 ", name='" + name + '\'' +
                 ", patientId='" + patientId + '\'' +
                 ", panelId=" + panelId +
