@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -501,6 +502,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
 
             box = new HBox();
 
+            box.setAlignment(Pos.CENTER);
             box.setSpacing(10);
 
             box.getChildren().add(img1);
@@ -575,6 +577,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
 
             box = new HBox();
 
+            box.setAlignment(Pos.CENTER);
             box.setSpacing(10);
 
             box.getChildren().add(img1);

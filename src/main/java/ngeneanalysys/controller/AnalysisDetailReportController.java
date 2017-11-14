@@ -352,7 +352,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         if(isDraft) {
             baseSaveName = String.format("DRAFT_Report_%s", sample.getName());
         }
-        // Show save file dialog
+        // Show save bedFile dialog
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf"));
         fileChooser.setInitialFileName(baseSaveName);
@@ -394,6 +394,12 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 }
 
                 if(tierThree != null && !tierThree.isEmpty()) variantList.addAll(tierThree);
+
+                for(AnalysisResultVariant variant : variantList) {
+                    variant.getVariantExpression().setTranscript(ConvertUtil.insertTextAtFixedPosition(variant.getVariantExpression().getTranscript(), 15, "\n"));
+                    variant.getVariantExpression().setNtChange(ConvertUtil.insertTextAtFixedPosition(variant.getVariantExpression().getNtChange(), 15, "\n"));
+                    variant.getVariantExpression().setAaChange(ConvertUtil.insertTextAtFixedPosition(variant.getVariantExpression().getAaChange(), 15, "\n"));
+                }
 
                 Long evidenceACount = variantList.stream().filter(item -> !StringUtils.isEmpty(item.getInterpretation().getInterpretationEvidenceA())).count();
                 Long evidenceBCount = variantList.stream().filter(item -> !StringUtils.isEmpty(item.getInterpretation().getInterpretationEvidenceB())).count();

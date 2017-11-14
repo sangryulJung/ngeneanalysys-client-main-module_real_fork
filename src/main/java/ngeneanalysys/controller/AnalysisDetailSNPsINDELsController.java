@@ -6,7 +6,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -20,8 +19,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -36,12 +33,10 @@ import ngeneanalysys.model.render.SNPsINDELsList;
 import ngeneanalysys.service.ALAMUTService;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.IGVService;
-import ngeneanalysys.task.ExportVariantDataTask;
 import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -1153,28 +1148,28 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                 cellData.getValue().getPopulationFrequency().getKorean() != null ? String.valueOf(Double.parseDouble(ConvertUtil.convertFormatNumber("%.2f",cellData.getValue().getPopulationFrequency().getKorean().toString(), ""))) : ""));
 
         TableColumn<AnalysisResultVariant, String> clinVarAcc = new TableColumn<>("ClinVar.Acc");
-        clinVarAcc.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getClinVar().getClinVarAcc()));
+        clinVarAcc.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getClinVar().getClinVarAcc()));
 
         TableColumn<AnalysisResultVariant, String> clinVarClass = new TableColumn<>("ClinVar.Class");
-        clinVarClass.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getClinVar().getClinVarClass()));
+        clinVarClass.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getClinVar().getClinVarClass()));
 
         variantListTableView.getColumns().addAll(fraction ,refNum, altNum, depth, thousandGenomics, exac, esp, korean, clinVarAcc, clinVarClass);
 
         if(panel != null && ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             TableColumn<AnalysisResultVariant, String> bicClass = new TableColumn<>("BIC.Class");
-            clinVarClass.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBic().getBicClass()));
+            clinVarClass.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBic().getBicClass()));
 
             TableColumn<AnalysisResultVariant, String> bicDesignation = new TableColumn<>("BIC.Designation");
-            bicDesignation.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBic().getBicDesignation()));
+            bicDesignation.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBic().getBicDesignation()));
 
             TableColumn<AnalysisResultVariant, String> bicNt = new TableColumn<>("BIC.NT");
-            bicNt.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBic().getBicNt()));
+            bicNt.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBic().getBicNt()));
 
             variantListTableView.getColumns().addAll(bicClass, bicDesignation, bicNt);
         }
 
         TableColumn<AnalysisResultVariant, String> kohbraPatient = new TableColumn<>("KOHBRA.patient");
-        kohbraPatient.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getKohbraPatient()));
+        kohbraPatient.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getKohbraPatient()));
 
         TableColumn<AnalysisResultVariant, String> kohbraFrequency = new TableColumn<>("KOHBRA.frequency");
         kohbraFrequency.setCellValueFactory(cellData -> new SimpleStringProperty(
@@ -1214,7 +1209,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         dbSnpRsId.setVisible(false);
 
         TableColumn<AnalysisResultVariant, String> clinVarDisease = new TableColumn<>("ClinVar.Disease");
-        clinVarDisease.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getClinVar().getClinVarDisease()));
+        clinVarDisease.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getClinVar().getClinVarDisease()));
         clinVarDisease.setVisible(false);
 
         variantListTableView.getColumns().addAll(kohbraPatient, kohbraFrequency,/* polyphen2, sift, mutationTaster,*/ variantNum, refGenomeVer, leftSequence, rightSequence
@@ -1222,71 +1217,71 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
         if(panel != null && ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             TableColumn<AnalysisResultVariant, String> bicCategory = new TableColumn<>("BIC.Category");
-            bicCategory.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBic().getBicCategory()));
+            bicCategory.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBic().getBicCategory()));
             bicCategory.setVisible(false);
 
             TableColumn<AnalysisResultVariant, String> bicImportance = new TableColumn<>("BIC.Importance");
-            bicImportance.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBic().getBicImportance()));
+            bicImportance.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBic().getBicImportance()));
             bicImportance.setVisible(false);
 
             TableColumn<AnalysisResultVariant, String> beClinVarUpdate = new TableColumn<>("Be.ClinVar.Update");
-            beClinVarUpdate.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBe().getBeClinVarUpdate()));
+            beClinVarUpdate.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBe().getBeClinVarUpdate()));
             beClinVarUpdate.setVisible(false);
 
             TableColumn<AnalysisResultVariant, String> beClinVarOrigin = new TableColumn<>("Be.ClinVar.Origin");
-            beClinVarOrigin.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBe().getBeClinVarOrigin()));
+            beClinVarOrigin.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBe().getBeClinVarOrigin()));
             beClinVarOrigin.setVisible(false);
 
             TableColumn<AnalysisResultVariant, String> beClinVarMethod = new TableColumn<>("Be.ClinVar.Method");
-            beClinVarMethod.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBe().getBeClinVarMethod()));
+            beClinVarMethod.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBe().getBeClinVarMethod()));
             beClinVarMethod.setVisible(false);
 
             TableColumn<AnalysisResultVariant, String> beBicCategory = new TableColumn<>("Be.BIC.Category");
-            beBicCategory.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBe().getBeBicCategory()));
+            beBicCategory.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBe().getBeBicCategory()));
             beBicCategory.setVisible(false);
 
             TableColumn<AnalysisResultVariant, String> beBicNationality = new TableColumn<>("Be.BIC.Nationality");
-            beBicNationality.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBe().getBeBicNationality()));
+            beBicNationality.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBe().getBeBicNationality()));
             beBicNationality.setVisible(false);
 
             TableColumn<AnalysisResultVariant, String> beBicEthnic = new TableColumn<>("Be.BIC.Ethnic");
-            beBicEthnic.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBe().getBeBicNationality()));
+            beBicEthnic.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBe().getBeBicNationality()));
             beBicEthnic.setVisible(false);
 
             TableColumn<AnalysisResultVariant, String> beBicPathogenicity = new TableColumn<>("Be.BIC.Pathogenicity");
-            beBicPathogenicity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBe().getBeBicPathogenicity()));
+            beBicPathogenicity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBe().getBeBicPathogenicity()));
             beBicPathogenicity.setVisible(false);
 
             TableColumn<AnalysisResultVariant, String> beTranscript = new TableColumn<>("Be.Transcript");
-            beTranscript.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBe().getBeTranscript()));
+            beTranscript.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBe().getBeTranscript()));
             beTranscript.setVisible(false);
 
             TableColumn<AnalysisResultVariant, String> beNt = new TableColumn<>("Be.NT");
-            beNt.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBe().getBeNt()));
+            beNt.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBe().getBeNt()));
             beNt.setVisible(false);
 
             TableColumn<AnalysisResultVariant, String> beGene = new TableColumn<>("Be.Gene");
-            beGene.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBe().getBeGene()));
+            beGene.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBe().getBeGene()));
             beGene.setVisible(false);
 
             TableColumn<AnalysisResultVariant, String> beEnigmaCondition = new TableColumn<>("Be.Enigma.Condition");
-            beEnigmaCondition.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBe().getBeEnigmaCondition()));
+            beEnigmaCondition.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBe().getBeEnigmaCondition()));
             beEnigmaCondition.setVisible(false);
 
             TableColumn<AnalysisResultVariant, String> beEnigmaUpdate = new TableColumn<>("Be.Enigma.Update");
-            beEnigmaUpdate.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBe().getBeEnigmaUpdate()));
+            beEnigmaUpdate.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBe().getBeEnigmaUpdate()));
             beEnigmaUpdate.setVisible(false);
 
             TableColumn<AnalysisResultVariant, String> beClinVarPathogenicity = new TableColumn<>("Be.ClinVar.Pathogenicity");
-            beClinVarPathogenicity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBe().getBeClinVarPathogenicity()));
+            beClinVarPathogenicity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBe().getBeClinVarPathogenicity()));
             beClinVarPathogenicity.setVisible(false);
 
             TableColumn<AnalysisResultVariant, String> beEnigmaPathogenicity = new TableColumn<>("Be.Enigma.Pathogenicity");
-            beEnigmaPathogenicity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBe().getBeEnigmaPathogenicity()));
+            beEnigmaPathogenicity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBe().getBeEnigmaPathogenicity()));
             beEnigmaPathogenicity.setVisible(false);
 
             TableColumn<AnalysisResultVariant, String> enigma = new TableColumn<>("Enigma");
-            enigma.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getBe().getBeEnigmaPathogenicity()));
+            enigma.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBe().getBeEnigmaPathogenicity()));
             enigma.setVisible(false);
 
             variantListTableView.getColumns().addAll(bicCategory, bicImportance, beClinVarUpdate, beClinVarOrigin, beClinVarMethod

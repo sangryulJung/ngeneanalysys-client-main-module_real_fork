@@ -8,7 +8,6 @@ import ngeneanalysys.model.AnalysisFile;
 import ngeneanalysys.model.Run;
 import ngeneanalysys.service.AnalysisRequestService;
 import ngeneanalysys.util.DialogUtil;
-import ngeneanalysys.util.FileUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.LoginSessionUtil;
 import org.slf4j.Logger;
@@ -16,8 +15,6 @@ import org.slf4j.Logger;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 /**
  * @author Jang
  * @since 2017-08-23

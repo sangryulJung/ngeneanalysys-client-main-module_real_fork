@@ -3,7 +3,6 @@
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Pagination?>
 <?import javafx.scene.control.Separator?>
@@ -17,13 +16,13 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="558.0" prefWidth="600.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemManagerPanelController">
+<AnchorPane prefHeight="558.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemManagerReportTemplateController">
    <stylesheets>
       <URL value="@../../css/common.css" />
       <URL value="@../../css/experimenter.css" />
    </stylesheets>
    <children>
-      <HBox layoutX="10.0" layoutY="10.0" prefHeight="592.0" prefWidth="1220.0">
+      <HBox layoutX="10.0" layoutY="10.0" prefHeight="592.0" prefWidth="1220.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <VBox prefHeight="592.0" prefWidth="300.0">
                <children>
@@ -45,47 +44,26 @@
                      </children>
                   </VBox>
                   <GridPane fx:id="panelEditGridPane">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="144.0" minWidth="10.0" prefWidth="111.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="189.0" minWidth="10.0" prefWidth="189.0" />
-                    </columnConstraints>
-                    <rowConstraints>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="144.0" minWidth="10.0" prefWidth="111.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="189.0" minWidth="10.0" prefWidth="189.0" />
+                     </columnConstraints>
+                     <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
+                     </rowConstraints>
                      <children>
-                        <TextField fx:id="panelNameTextField" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" />
-                        <TextField fx:id="panelCodeTextField" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <ComboBox fx:id="analysisTypeComboBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Label text="Panel name" />
-                        <Label text="Code" GridPane.rowIndex="1" />
-                        <Label text="Target" GridPane.rowIndex="2" />
-                        <Label text="Analysis Type" GridPane.rowIndex="3" />
-                        <Label text="Sample Source" GridPane.rowIndex="5" />
-                        <ComboBox fx:id="targetComboBox" maxWidth="1.7976931348623157E308" prefWidth="188.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <ComboBox fx:id="sampleSourceComboBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <Label text="Library Type" GridPane.rowIndex="4" />
-                        <ComboBox fx:id="libraryTypeComboBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <Label text="Group" GridPane.rowIndex="6" />
-                        <Label text="Disease" GridPane.rowIndex="7" />
-                        <Label text="Report Template" GridPane.rowIndex="8" />
-                        <ComboBox fx:id="reportTemplateComboBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                        <TextField fx:id="reportNameTextField" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" />
+                        <Label text="report name" />
                      </children>
                   </GridPane>
                   <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="300.0">
                      <children>
-                        <Button fx:id="roiFileSelectionButton" mnemonicParsing="false" onAction="#selectROIFile" text="Select ROI file">
+                        <Button fx:id="reportTemplateSelectionButton" mnemonicParsing="false" onAction="#selectReportTemplate" text="Select vm file">
                            <HBox.margin>
                               <Insets right="10.0" />
-                           </HBox.margin></Button>
-                        <Button fx:id="panelSaveButton" mnemonicParsing="false" onAction="#savePanel" text="Save" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="reportSaveButton" mnemonicParsing="false" onAction="#saveReportTemplate" text="Save" />
                      </children>
                   </HBox>
                </children>
@@ -105,7 +83,7 @@
                      <children>
                         <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="900.0" VBox.vgrow="NEVER">
                            <children>
-                              <Label text="Panel" />
+                              <Label text="Report" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="1.0">
@@ -115,7 +93,7 @@
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </padding>
                                  <children>
-                                    <Button mnemonicParsing="false" onAction="#panelAdd" text="+" />
+                                    <Button mnemonicParsing="false" onAction="#reportAdd" text="+" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="180.0" spacing="5.0">
@@ -142,25 +120,20 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <TableView fx:id="panelListTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                  <TableView fx:id="reportTemplateListTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                      <columns>
-                        <TableColumn fx:id="panelIdTableColumn" prefWidth="60.0" text="Panel Id" />
-                        <TableColumn fx:id="panelNameTableColumn" prefWidth="88.20001220703125" text="Panel Name" />
-                        <TableColumn fx:id="panelCodeTableColumn" prefWidth="60.79998779296875" text="Code" />
-                        <TableColumn fx:id="panelTargetTableColumn" prefWidth="80.0" text="Target" />
-                        <TableColumn fx:id="analysisTypeTableColumn" prefWidth="92.0" text="Analysis Type" />
-                        <TableColumn fx:id="libraryTypeTableColumn" prefWidth="97.0" text="Library Type" />
-                        <TableColumn fx:id="sampleSourceTableColumn" prefWidth="97.0" text="Sample Source" />
+                        <TableColumn fx:id="reportIdTableColumn" prefWidth="80.0" text="Report id" />
+                        <TableColumn fx:id="reportNameTableColumn" prefWidth="100.0" text="Report Name" />
                         <TableColumn fx:id="createdAtTableColumn" prefWidth="90.0" text="Create at" />
                         <TableColumn fx:id="updatedAtTableColumn" prefWidth="90.0" text="Update at" />
                         <TableColumn fx:id="deletedAtTableColumn" prefWidth="108.0" text="Deleted At" visible="false" />
                         <TableColumn fx:id="deletedTableColumn" prefWidth="55.0" style="-fx-alignment: center;" text="Deleted" />
-                        <TableColumn fx:id="editPanelTableColumn" prefWidth="80.0" text="editPanel" />
+                        <TableColumn fx:id="editReportTemplateTableColumn" prefWidth="139.55560302734375" text="editReportTemplate" />
                      </columns>
                   </TableView>
                   <HBox alignment="CENTER_RIGHT" prefHeight="48.0" prefWidth="900.0" spacing="5.0" VBox.vgrow="NEVER">
                      <children>
-                        <Pagination fx:id="panelPagination" prefHeight="200.0" prefWidth="200.0" />
+                        <Pagination fx:id="reportTemplatePagination" prefHeight="200.0" prefWidth="200.0" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" />
                         <HBox alignment="CENTER" prefHeight="48.0" prefWidth="168.0" />
                      </children>

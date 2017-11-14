@@ -1,6 +1,5 @@
 package ngeneanalysys.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -27,7 +26,6 @@ import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.model.render.DatepickerConverter;
 import ngeneanalysys.service.APIService;
-import ngeneanalysys.task.ExportVariantDataTask;
 import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
@@ -36,11 +34,9 @@ import ngeneanalysys.util.httpclient.HttpClientResponse;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -48,7 +44,6 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TextField;
-import javafx.stage.FileChooser;
 import javafx.util.Duration;
 
 /**
@@ -89,7 +84,7 @@ public class PastResultsController extends SubPaneController {
 	@FXML
 	private TextField inputJobRunGroup;
 	private Integer hiddenJobRunGroupId = 0;
-	/** file choose box open button */
+	/** bedFile choose box open button */
 	@FXML
 	private Button searchBtn;
 	/** job run group choose dialog open button */

@@ -8,10 +8,18 @@ import java.math.BigDecimal;
  */
 public class ClinicalDB {
     private ClinVar clinVar;
+    private CatalogueOfSomaticMutationsInCancer cosmic;
     private BrcaCancerInformationCore bic;
     private String kohbraPatient;
     private String enigma;
     private BrcaExchange be;
+
+    /**
+     * @return cosmic
+     */
+    public CatalogueOfSomaticMutationsInCancer getCosmic() {
+        return cosmic;
+    }
 
     /**
      * @return be

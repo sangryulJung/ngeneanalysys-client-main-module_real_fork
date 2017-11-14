@@ -43,6 +43,8 @@ public class SystemManagerHomeController extends SubPaneController {
 
     private SystemManagerPanelController systemManagerPanelController ;
 
+    private SystemManagerReportTemplateController systemManagerReportTemplateController;
+
     @Override
     public void show(Parent root) throws IOException {
         logger.info("System Manager Home");
@@ -119,6 +121,11 @@ public class SystemManagerHomeController extends SubPaneController {
                             systemManagerPanelController = loader.getController();
                             systemManagerPanelController.setMainController(this.getMainController());
                             systemManagerPanelController.show((Parent) node);
+                            break;
+                        case FXMLConstants.SYSTEM_MANAGER_REPORT_TEMPLATE :
+                            systemManagerReportTemplateController = loader.getController();
+                            systemManagerReportTemplateController.setMainController(this.getMainController());
+                            systemManagerReportTemplateController.show((Parent) node);
                             break;
 
                         default:

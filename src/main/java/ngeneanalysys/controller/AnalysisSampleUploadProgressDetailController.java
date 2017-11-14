@@ -153,7 +153,7 @@ public class AnalysisSampleUploadProgressDetailController extends BaseStageContr
      * @param progressPercent
      */
     public void update(int sampleFileId, double progressPercent) {
-        logger.info(String.format("update progress [file id : %s, percent : %s]", sampleFileId, progressPercent));
+        logger.info(String.format("update progress [bedFile id : %s, percent : %s]", sampleFileId, progressPercent));
         if(listViewSampleFile.getItems() != null && listViewSampleFile.getItems().size() > 0) {
             String selector = "#sampleFile_" + sampleFileId;
             HBox hbox = (HBox) listViewSampleFile.lookup(selector);

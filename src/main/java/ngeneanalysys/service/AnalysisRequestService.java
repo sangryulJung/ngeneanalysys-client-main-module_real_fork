@@ -1,18 +1,16 @@
 package ngeneanalysys.service;
 
 import ngeneanalysys.exceptions.WebAPIException;
+import ngeneanalysys.task.AnalysisSampleUploadTask;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import ngeneanalysys.util.httpclient.HttpClientUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.entity.EntityBuilder;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
@@ -79,13 +77,13 @@ public class AnalysisRequestService {
                 }
             }
 
-           FileBody fileParam = new FileBody(file);
+            FileBody fileParam = new FileBody(file);
 
-            //HttpEntity reqEntity = EntityBuilder.create()
-            //        .setFile(file).build();
-            HttpEntity reqEntity = MultipartEntityBuilder.create()
+            HttpEntity reqEntity = EntityBuilder.create()
+                    .setFile(file).build();
+            /*HttpEntity reqEntity = MultipartEntityBuilder.create()
                     .addPart("file", fileParam)
-                    .build();
+                    .build();*/
 
             put.setEntity(reqEntity);
 

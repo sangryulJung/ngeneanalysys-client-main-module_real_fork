@@ -124,7 +124,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
             //addFilterBox();
             filterTitleArea.setVisible(false);
             filterTitleArea.setPrefWidth(0);
-            filterList.getChildren().add(new Label("Raw Data Download: Upload fastq files, Mapped file(BAM format), Variant file(VCF format), Data QC Report(PDF) "));
+            filterList.getChildren().add(new Label("Raw Data Download: Upload fastq files, Mapped bedFile(BAM format), Variant bedFile(VCF format), Data QC Report(PDF) "));
             setList("ALL");
 
         } catch (WebAPIException wae) {
@@ -289,7 +289,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
         String extensionFilterTypeName = String.format("%s (*.%s)", fileExtension.toUpperCase(), fileExtension);
         String extensionFilterName = String.format("*.%s", fileExtension);
 
-        // Show save file dialog
+        // Show save bedFile dialog
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialFileName(resultFile.getName());
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter(extensionFilterTypeName, extensionFilterName));
@@ -333,7 +333,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
                             });
                         } catch (Exception e) {
                             logger.error("download cancel failed!!");
-                            DialogUtil.error("Failed File Download Cancel.", "An error occurred during the canceling file download.", getMainController().getPrimaryStage(), false);
+                            DialogUtil.error("Failed File Download Cancel.", "An error occurred during the canceling bedFile download.", getMainController().getPrimaryStage(), false);
                         }
                     }
                 });

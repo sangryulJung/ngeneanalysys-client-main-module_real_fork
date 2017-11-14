@@ -70,7 +70,7 @@
 		<fo:flow flow-name="xsl-region-body">
 
 			<!-- Test Information -->
-			<fo:block margin-bottom="3mm" font-size="10pt" margin-top="10mm">
+			<fo:block margin-bottom="10mm" font-size="10pt" margin-top="10mm">
 				<fo:block font-size="24pt" font-weight="bold" margin-bottom="1mm">
                     <fo:external-graphic  content-width="18.4cm" content-height="1.5cm" src="${testInformationText}"  padding-bottom="0mm"/>
                 </fo:block>
@@ -110,6 +110,12 @@
 				</fo:block>
 				<fo:block>
 					<fo:block font-size="16pt" margin-bottom="1mm" font-family="Noto Sans CJK KR Bold" font-weight="bold">Panel : $contents.panelName</fo:block>
+
+                    #if($contents.sampleSource && $contents.sampleSource == "BLOOD")
+                    <fo:block margin-bottom="10mm"> </fo:block>
+                    #end
+
+                    #if($contents.sampleSource && $contents.sampleSource == "FFPE")
 					<fo:table table-layout="fixed" width="100%" margin-bottom="4mm" border-bottom="solid 0.1mm black" border-top="solid 0.1mm black">
 						<fo:table-body>
 							#foreach($i in [0..$contents.geneTableCount])
@@ -129,7 +135,7 @@
 							#end
 						</fo:table-body>
 					</fo:table>
-
+                    #end
                     <fo:table>
                         <fo:table-body>
                             <fo:table-row>
@@ -259,10 +265,10 @@
 				<fo:table table-layout="fixed" width="100%" margin-bottom="4mm" border-bottom="solid 0.1mm black">
 					<fo:table-column column-width="proportional-column-width(0.14)" />
 					<fo:table-column column-width="proportional-column-width(0.18)" />
+					<fo:table-column column-width="proportional-column-width(0.21)" />
+					<fo:table-column column-width="proportional-column-width(0.21)" />
 					<fo:table-column column-width="proportional-column-width(0.18)" />
-					<fo:table-column column-width="proportional-column-width(0.18)" />
-					<fo:table-column column-width="proportional-column-width(0.18)" />
-					<fo:table-column column-width="proportional-column-width(0.14)" />
+					<fo:table-column column-width="proportional-column-width(0.08)" />
 					<fo:table-body>
 						<fo:table-row height="8mm" display-align="center">
 							<fo:table-cell background-color="#5a5657" border-right="solid 0.5mm white">
@@ -341,10 +347,10 @@
                     <fo:table table-layout="fixed" width="100%" margin-bottom="4mm" border-bottom="solid 0.1mm black">
                         <fo:table-column column-width="proportional-column-width(0.14)" />
                         <fo:table-column column-width="proportional-column-width(0.18)" />
+                        <fo:table-column column-width="proportional-column-width(0.21)" />
+                        <fo:table-column column-width="proportional-column-width(0.21)" />
                         <fo:table-column column-width="proportional-column-width(0.18)" />
-                        <fo:table-column column-width="proportional-column-width(0.18)" />
-                        <fo:table-column column-width="proportional-column-width(0.18)" />
-                        <fo:table-column column-width="proportional-column-width(0.14)" />
+                        <fo:table-column column-width="proportional-column-width(0.08)" />
                         <fo:table-body>
                             <fo:table-row height="8mm" display-align="center">
                                 <fo:table-cell background-color="#5a5657" border-right="solid 0.5mm white">
@@ -523,8 +529,8 @@
 								</fo:table-cell>
 								<fo:table-cell border-width="0.5pt" background-color="#e7e7e8" border-right="solid 1mm white">
 									<fo:block padding-bottom="2mm" padding-top="2mm">
-										#if($variant.clinicalSignificant.clinVar.clinVarAcc)
-											$variant.clinicalSignificant.clinVar.clinVarAcc($variant.clinicalSignificant.clinVar.clinVarClass)
+										#if($variant.clinicalDB.clinVar.clinVarAcc)
+											$variant.clinicalDB.clinVar.clinVarAcc ($variant.clinicalDB.clinVar.clinVarClass)
 										#else
 											Not found
 										#end
@@ -815,9 +821,38 @@
                     </fo:table-body>
                 </fo:table>-->
             </fo:block>
-
-
+            #if($contents.sampleSource && $contents.sampleSource == "FFEF")
 			<fo:block id="lastPage"> </fo:block>
+            #elseif($contents.sampleSource && $contents.sampleSource == "BLOOD")
+            <fo:block page-break-before="always"> </fo:block>
+            #end
+
+            #if($contents.sampleSource && $contents.sampleSource == "BLOOD")
+            <fo:block>
+                <fo:block font-size="16pt" margin-bottom="4mm" margin-top="10mm" font-family="Noto Sans CJK KR Bold" font-weight="bold">Target Gene List</fo:block>
+                <fo:table table-layout="fixed" width="100%" margin-bottom="4mm" border-bottom="solid 0.1mm black" border-top="solid 0.1mm black">
+                    <fo:table-body>
+                        #foreach($i in [0..$contents.geneTableCount])
+                        #if(($i % 7) == 0)
+                        <fo:table-row border-bottom="solid 0.1mm black" height="7mm" display-align="center" text-align="center">
+                            #end
+                            <fo:table-cell>
+                                <fo:block font-family="Noto Sans CJK KR Regular">
+                                    #if($i < $contents.variantCountByGenes.size())
+                                    $contents.variantCountByGenes.get($i).geneSymbol
+                                    #end
+                                </fo:block>
+                            </fo:table-cell>
+                            #if(($i % 7) == 6)
+                        </fo:table-row>
+                        #end
+                        #end
+                    </fo:table-body>
+                </fo:table>
+
+            </fo:block>
+            <fo:block id="lastPage"> </fo:block>
+            #end
 		</fo:flow>
 	</fo:page-sequence>
 </fo:root>

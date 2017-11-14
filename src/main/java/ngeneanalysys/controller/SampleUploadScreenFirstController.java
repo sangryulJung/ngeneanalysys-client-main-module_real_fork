@@ -294,7 +294,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 try {
                     if(sampleUploadController.getRunName() == null || "".equals(sampleUploadController.getRunName())) {
                         Date date = new Date();
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd.hh:mm:ss");
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd.HH:mm:ss");
                         params.put("name", sdf.format(date));
                     } else {
                         params.put("name", sampleUploadController.getRunName());
@@ -302,6 +302,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                     params.put("sequencingPlatform", sampleUploadController.getSequencerType().getUserData());
                     response = apiService.post("/runs", params, null, true);
                     run = response.getObjectBeforeConvertResponseToJSON(Run.class);
+                    mainController.getBasicInformationMap().put("runId", run.getId());
                     logger.info(run.toString());
 
                     saveSampleData();
@@ -503,7 +504,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             String fastqFilePairName = FileUtil.getFASTQFilePairName(file.getName());
 
             String chooseDirectoryPath = FilenameUtils.getFullPath(file.getAbsolutePath());
-            logger.info(String.format("directory path of choose file : %s", chooseDirectoryPath));
+            logger.info(String.format("directory path of choose bedFile : %s", chooseDirectoryPath));
             File directory = new File(chooseDirectoryPath);
             //선택한 파일의 폴더 내 모든 파일의 수
             List<File> fastqFilesInFolder = (List<File>) FileUtils.listFiles(directory, new String[]{"fastq.gz"}, false);

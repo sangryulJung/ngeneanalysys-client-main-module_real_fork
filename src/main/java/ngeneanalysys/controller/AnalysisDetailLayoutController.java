@@ -178,7 +178,7 @@ public class AnalysisDetailLayoutController extends SubPaneController {
 //            if((event.getSceneX() >= x && event.getSceneX() <= (x + 64)) && (
 //                    event.getSceneY() >= 64 && event.getSceneY() <= 86)) {
 //                try {
-//                    // Load the fxml file and create a new stage for the popup dialog
+//                    // Load the fxml bedFile and create a new stage for the popup dialog
 //                    FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_RAW_DATA);
 //                    BorderPane page = loader.load();
 //                    AnalysisDetailRawDataController controller = loader.getController();
@@ -260,7 +260,7 @@ public class AnalysisDetailLayoutController extends SubPaneController {
     @FXML
     private void rawDataDownloadButton() {
         try {
-            // Load the fxml file and create a new stage for the popup dialog
+            // Load the fxml bedFile and create a new stage for the popup dialog
             FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_RAW_DATA);
             BorderPane page = loader.load();
             AnalysisDetailRawDataController controller = loader.getController();

@@ -41,7 +41,7 @@ public class BedFileService {
 
     public HttpClientResponse uploadFile(int panelId, File file) throws WebAPIException {
 
-        String url = "/admin/targetROIs/uploadBedFile/" + panelId;
+        String url = "/admin/targetROIs/uploadROIFile/" + panelId;
 
         CloseableHttpClient httpclient = null;
         CloseableHttpResponse response = null;

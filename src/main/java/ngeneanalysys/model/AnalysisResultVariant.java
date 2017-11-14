@@ -40,7 +40,7 @@ public class AnalysisResultVariant implements Serializable {
 
 	private VariantExpression variantExpression;
 
-	private ClinicalSignificant clinicalSignificant;
+	private ClinicalDB clinicalDB;
 
 	private SequenceInfo sequenceInfo;
 
@@ -96,15 +96,15 @@ public class AnalysisResultVariant implements Serializable {
 	/**
 	 * @return clinicalSignificant
 	 */
-	public ClinicalSignificant getClinicalSignificant() {
-		return clinicalSignificant;
+	public ClinicalDB getClinicalDB() {
+		return clinicalDB;
 	}
 
 	/**
-	 * @param clinicalSignificant
+	 * @param clinicalDB
 	 */
-	public void setClinicalSignificant(ClinicalSignificant clinicalSignificant) {
-		this.clinicalSignificant = clinicalSignificant;
+	public void setClinicalDB(ClinicalDB clinicalDB) {
+		this.clinicalDB = clinicalDB;
 	}
 
 	/**

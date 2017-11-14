@@ -63,7 +63,10 @@ public class SystemManagerPanelController extends SubPaneController {
     private ComboBox<ComboBoxItem> sampleSourceComboBox;
 
     @FXML
-    private Button bedFileSelectionButton;
+    private ComboBox<ComboBoxItem> reportTemplateComboBox;
+
+    @FXML
+    private Button roiFileSelectionButton;
 
     @FXML
     private Button panelSaveButton;
@@ -117,7 +120,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
     private CheckComboBox<ComboBoxItem> diseaseCheckComboBox = null;
 
-    File file = null;
+    File bedFile = null;
 
     private int panelId = 0;
 
@@ -134,7 +137,7 @@ public class SystemManagerPanelController extends SubPaneController {
         analysisTypeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getAnalysisType()));
         sampleSourceTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getSampleSource()));
         libraryTypeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getLibraryType()));
-        deletedTableColumn.setCellValueFactory(item -> new SimpleStringProperty((item.getValue().getDeleted() == 0) ? "N" : "D"));
+        deletedTableColumn.setCellValueFactory(item -> new SimpleStringProperty((item.getValue().getDeleted() == 0) ? "N" : "Y"));
 
         targetComboBox.setConverter(new ComboBoxConverter());
         targetComboBox.getItems().add(new ComboBoxItem("DNA", "DNA"));
@@ -186,7 +189,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
         try {
             response = apiService.get("/admin/panels", null, null, false);
-            final PagedPanel panels = (PagedPanel) response.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
+            final PagedPanel panels = response.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
             panelListTable.getItems().addAll(panels.getResult());
 
             response = apiService.get("/admin/memberGroups", null, null, false);
@@ -252,7 +255,7 @@ public class SystemManagerPanelController extends SubPaneController {
         String code = panelCodeTextField.getText();
 
         if(!StringUtils.isEmpty(panelName) &&  !StringUtils.isEmpty(code)) {
-            if(file == null && panelId == 0) return;
+            if(bedFile == null && panelId == 0) return;
 
             Map<String,Object> params = new HashMap<>();
             params.put("name", panelName);
@@ -296,9 +299,10 @@ public class SystemManagerPanelController extends SubPaneController {
                     params.put("diseaseIds", diseaseIdList);
                     response = apiService.put("admin/panels/" + panelId, params, null, true);
                     panel = response.getObjectBeforeConvertResponseToJSON(Panel.class);
+                    panelId = 0; //패널을 수정했으므로 초기화
                 }
 
-                Task task = new BedFileUploadTask(panel.getId(), file);
+                Task task = new BedFileUploadTask(panel.getId(), bedFile);
 
                 Thread thread = new Thread(task);
                 thread.setDaemon(true);
@@ -311,7 +315,7 @@ public class SystemManagerPanelController extends SubPaneController {
                         mainController.getBasicInformationMap().put("panels", panels.getResult());
                         final HttpClientResponse response2 = apiService.get("/admin/panels", null, null, false);
                         final PagedPanel tablePanels = response2.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
-                        mainController.getBasicInformationMap().put("panels", panels.getResult());
+                        //mainController.getBasicInformationMap().put("panels", panels.getResult());
 
                         panelListTable.getItems().clear();
                         panelListTable.getItems().addAll(tablePanels.getResult());
@@ -324,7 +328,6 @@ public class SystemManagerPanelController extends SubPaneController {
 
                     //List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
                     //panels.add(newPanel);
-
 
                 });
 
@@ -341,7 +344,7 @@ public class SystemManagerPanelController extends SubPaneController {
         analysisTypeComboBox.getSelectionModel().selectFirst();
         targetComboBox.getSelectionModel().selectFirst();
         libraryTypeComboBox.getSelectionModel().selectFirst();
-        file = null;
+        bedFile = null;
         panelSaveButton.setDisable(true);
         groupCheckComboBox.getCheckModel().clearChecks();
         diseaseCheckComboBox.getCheckModel().clearChecks();
@@ -354,7 +357,7 @@ public class SystemManagerPanelController extends SubPaneController {
         analysisTypeComboBox.setDisable(condition);
         targetComboBox.setDisable(condition);
         libraryTypeComboBox.setDisable(condition);
-        bedFileSelectionButton.setDisable(condition);
+        roiFileSelectionButton.setDisable(condition);
         groupCheckComboBox.setDisable(condition);
         diseaseCheckComboBox.setDisable(condition);
     }
@@ -383,16 +386,14 @@ public class SystemManagerPanelController extends SubPaneController {
     }
 
     @FXML
-    public void selectBedFile() {
+    public void selectROIFile() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Choose FASTQ File");
+        fileChooser.setTitle("Choose ROI File");
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-        fileChooser.getExtensionFilters()
-                .addAll(new FileChooser.ExtensionFilter("bed", "*.bed"));
         File file = fileChooser.showOpenDialog(mainController.getPrimaryStage());
 
-        if(file != null && file.getName().toLowerCase().endsWith(".bed")) {
-            this.file = file;
+        if(file != null) {
+            this.bedFile = file;
             panelSaveButton.setDisable(false);
         }
     }
@@ -460,7 +461,7 @@ public class SystemManagerPanelController extends SubPaneController {
                     }
                 }
 
-                bedFileSelectionButton.setDisable(false);
+                roiFileSelectionButton.setDisable(false);
                 panelSaveButton.setDisable(false);
 
             });
