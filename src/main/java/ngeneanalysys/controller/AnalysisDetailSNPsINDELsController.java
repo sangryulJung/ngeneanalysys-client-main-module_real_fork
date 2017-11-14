@@ -1153,7 +1153,18 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         TableColumn<AnalysisResultVariant, String> clinVarClass = new TableColumn<>("ClinVar.Class");
         clinVarClass.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getClinVar().getClinVarClass()));
 
-        variantListTableView.getColumns().addAll(fraction ,refNum, altNum, depth, thousandGenomics, exac, esp, korean, clinVarAcc, clinVarClass);
+        TableColumn<AnalysisResultVariant, String> cosmicIds = new TableColumn<>("COSMIC");
+        cosmicIds.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getCosmic().getCosmicIds()));
+
+        TableColumn<AnalysisResultVariant, String> cosmicCount = new TableColumn<>("COSMIC COUNT");
+        cosmicCount.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getCosmic().getCosmicCount()));
+        cosmicCount.setVisible(false);
+
+        TableColumn<AnalysisResultVariant, String> cosmicOccurrence = new TableColumn<>("COSMIC OCCURRENCE");
+        cosmicOccurrence.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getCosmic().getCosmicOccurrence()));
+        cosmicOccurrence.setVisible(false);
+
+        variantListTableView.getColumns().addAll(fraction ,refNum, altNum, depth, thousandGenomics, exac, esp, korean, clinVarAcc, clinVarClass, cosmicIds, cosmicCount, cosmicOccurrence);
 
         if(panel != null && ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             TableColumn<AnalysisResultVariant, String> bicClass = new TableColumn<>("BIC.Class");
