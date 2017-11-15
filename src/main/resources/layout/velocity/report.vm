@@ -446,7 +446,7 @@
 								</fo:table-cell>
 							</fo:table-row>
                             #if($variant.swTier == "T1" || $variant.swTier == "T2")
-							<fo:table-row border-bottom="solid 1mm white" border-top="1mm" display-align="center">
+							<fo:table-row border-bottom="solid 1mm white" display-align="center">
 								<fo:table-cell number-columns-spanned="4" background-color="#e7e7e8" border-bottom="solid 1mm white">
 									<fo:block font-family="Noto Sans CJK KR Regular" text-align="left" padding-bottom="2mm" padding-top="2mm">
 										#if ($variant.interpretation.interpretationEvidenceA && !($variant.interpretation.interpretationEvidenceA == "")) <![CDATA[[LEVEL A]]]> $variant.interpretation.interpretationEvidenceA
@@ -821,7 +821,7 @@
                     </fo:table-body>
                 </fo:table>-->
             </fo:block>
-            #if($contents.sampleSource && $contents.sampleSource == "FFEF")
+            #if($contents.sampleSource && $contents.sampleSource == "FFPE")
 			<fo:block id="lastPage"> </fo:block>
             #elseif($contents.sampleSource && $contents.sampleSource == "BLOOD")
             <fo:block page-break-before="always"> </fo:block>

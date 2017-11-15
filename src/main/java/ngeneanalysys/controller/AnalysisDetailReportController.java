@@ -484,7 +484,16 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 model.put("dataQcText", dataQcText);
                 model.put("contents", contentsMap);
 
-                String contents = velocityUtil.getContents("/layout/velocity/report.vm", "UTF-8", model);
+                String contents = "";
+                if(panel.getReportTemplateId() == null) {
+                    contents = velocityUtil.getContents("/layout/velocity/report.vm", "UTF-8", model);
+                } else {
+                    HttpClientResponse response = apiService.get("reportTemplate/" + panel.getReportTemplateId(), null, null, false);
+                    ReportTemplate reportTemplate = response.getObjectBeforeConvertResponseToJSON(ReportTemplate.class);
+
+                    String path = FileUtil.saveVMFile(reportTemplate);
+                    contents = velocityUtil.getContents(reportTemplate.getName() + ".vm", "UTF-8", model);
+                }
 
                 created = pdfCreateService.createPDF(file, contents);
                 if (created) {

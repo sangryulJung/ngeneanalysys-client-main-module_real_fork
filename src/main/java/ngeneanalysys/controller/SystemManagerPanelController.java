@@ -24,6 +24,7 @@ import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.task.BedFileUploadTask;
+import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
@@ -187,6 +188,8 @@ public class SystemManagerPanelController extends SubPaneController {
 
         HttpClientResponse response = null;
 
+        reportTemplateComboBoxSetting();
+
         try {
             response = apiService.get("/admin/panels", null, null, false);
             final PagedPanel panels = response.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
@@ -249,6 +252,28 @@ public class SystemManagerPanelController extends SubPaneController {
         setDisabledItem(true);
     }
 
+    public void reportTemplateComboBoxSetting() {
+        try {
+            HttpClientResponse response = apiService.get("admin/reportTemplate", null, null, false);
+
+            PagedReportTemplate pagedReportTemplate = response.getObjectBeforeConvertResponseToJSON(PagedReportTemplate.class);
+
+            if(pagedReportTemplate != null &&pagedReportTemplate.getCount() != 0) {
+                List<ReportTemplate> reportTemplates = pagedReportTemplate.getResult();
+                reportTemplateComboBox.setConverter(new ComboBoxConverter());
+                reportTemplateComboBox.getItems().add(new ComboBoxItem());
+                for(ReportTemplate reportTemplate : reportTemplates) {
+                    reportTemplateComboBox.getItems().add(new ComboBoxItem(reportTemplate.getId().toString(),
+                            reportTemplate.getName()));
+                }
+
+            }
+
+        } catch (WebAPIException wae) {
+            DialogUtil.error(wae.getHeaderText(), wae.getMessage(), mainController.getPrimaryStage(), true);
+        }
+    }
+
     @FXML
     public void savePanel() {
         String panelName = panelNameTextField.getText();
@@ -264,6 +289,11 @@ public class SystemManagerPanelController extends SubPaneController {
             params.put("analysisType", analysisTypeComboBox.getSelectionModel().getSelectedItem().getValue());
             params.put("libraryType", libraryTypeComboBox.getSelectionModel().getSelectedItem().getValue());
             params.put("sampleSource", sampleSourceComboBox.getSelectionModel().getSelectedItem().getValue());
+
+            String reportId = sampleSourceComboBox.getSelectionModel().getSelectedItem().getValue();
+            if(!StringUtils.isEmpty(reportId)) {
+                params.put("reportTemplateId", Integer.parseInt(reportTemplateComboBox.getSelectionModel().getSelectedItem().getValue()));
+            }
 
             HttpClientResponse response = null;
             try {
@@ -348,6 +378,7 @@ public class SystemManagerPanelController extends SubPaneController {
         panelSaveButton.setDisable(true);
         groupCheckComboBox.getCheckModel().clearChecks();
         diseaseCheckComboBox.getCheckModel().clearChecks();
+        reportTemplateComboBox.getSelectionModel().selectFirst();
     }
 
     public void setDisabledItem(boolean condition) {
@@ -360,6 +391,7 @@ public class SystemManagerPanelController extends SubPaneController {
         roiFileSelectionButton.setDisable(condition);
         groupCheckComboBox.setDisable(condition);
         diseaseCheckComboBox.setDisable(condition);
+        reportTemplateComboBox.setDisable(condition);
     }
 
     public void deletePanel(Integer panelId) {
@@ -442,6 +474,12 @@ public class SystemManagerPanelController extends SubPaneController {
 
                 Optional<ComboBoxItem> libraryTypeItem = libraryTypeComboBox.getItems().stream().filter(item -> item.getValue().equalsIgnoreCase(panel.getLibraryType())).findFirst();
                 if(libraryTypeItem.isPresent()) libraryTypeComboBox.getSelectionModel().select(libraryTypeItem.get());
+                if(panel.getReportTemplateId() != null) {
+                    Optional<ComboBoxItem> reportTemplate = reportTemplateComboBox.getItems().stream().filter(item -> item.getValue().equalsIgnoreCase(panel.getReportTemplateId().toString())).findFirst();
+                    if (reportTemplate.isPresent())
+                        reportTemplateComboBox.getSelectionModel().select(reportTemplate.get());
+                }
+
 
                 if(panelDetail != null) {
                     List<Integer> groupIds = panelDetail.getMemberGroupIds();
