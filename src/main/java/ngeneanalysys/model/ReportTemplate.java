@@ -11,10 +11,18 @@ public class ReportTemplate {
     private Integer id;
     private String name;
     private String contents;
+    private String customFields;
     private DateTime createdAt;
     private DateTime updatedAt;
     private DateTime deletedAt;
     private Integer deleted;
+
+    /**
+     * @return customFields
+     */
+    public String getCustomFields() {
+        return customFields;
+    }
 
     /**
      * @return id

@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
@@ -15,6 +16,8 @@ import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.Run;
 import ngeneanalysys.model.RunGroupForPaging;
+import ngeneanalysys.model.RunWithSamples;
+import ngeneanalysys.model.Sample;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.DialogUtil;
@@ -133,6 +136,11 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
         delete.setSortable(false);
         delete.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
         delete.setCellFactory(param -> new DeleteButtonCreate());
+
+        /** 재시작 버튼 */
+        restart.setSortable(false);
+        restart.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
+        restart.setCellFactory(param -> new UpdateButtonCreate());
 
 
         this.mainController.getMainFrame().setCenter(root);
@@ -295,6 +303,27 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
         }
     }
 
+    public void restartRun(Integer id) {
+        HttpClientResponse response;
+
+        try {
+            response = apiService.get("runs/" + id, null ,null, false);
+
+            RunWithSamples runWithSamples = response.getObjectBeforeConvertResponseToJSON(RunWithSamples.class);
+
+            List<Sample> samples = runWithSamples.getSamples();
+
+            for(Sample sample : samples) {
+                response = apiService.get("admin/restartSampleAnalysis/" + sample.getId(), null ,null, false);
+                logger.info("status code : " + response.getStatus());
+            }
+
+        } catch(WebAPIException wae) {
+            DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
+        }
+
+    }
+
 
     /** 삭제 버튼 생성 */
     private class DeleteButtonCreate extends TableCell<Run, Boolean> {
@@ -332,9 +361,54 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
                 setGraphic(null);
                 return;
             }
-
+            img.setStyle("-fx-cursor:hand;");
             box = new HBox();
+            box.setAlignment(Pos.CENTER);
+            box.getChildren().add(img);
 
+            setGraphic(box);
+        }
+    }
+
+    /** 삭제 버튼 생성 */
+    private class UpdateButtonCreate extends TableCell<Run, Boolean> {
+        HBox box = null;
+        final ImageView img = new ImageView(resourceUtil.getImage("/layout/images/refresh.png", 18, 18));
+
+        public UpdateButtonCreate() {
+            img.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+                String alertHeaderText = null;
+                String alertContentText = "Are you sure to restart this run?";
+
+                alert.setTitle("Confirmation Dialog");
+                Run run = UpdateButtonCreate.this.getTableView().getItems().get(
+                        UpdateButtonCreate.this.getIndex());
+                alert.setHeaderText(run.getName());
+                alert.setContentText(alertContentText);
+                logger.info(run.getId() + " : present id");
+                Optional<ButtonType> result = alert.showAndWait();
+                if(result.get() == ButtonType.OK) {
+                    restartRun(run.getId());
+                } else {
+                    logger.info(result.get() + " : button select");
+                    alert.close();
+                }
+            });
+        }
+
+        @Override
+        protected void updateItem(Boolean item, boolean empty) {
+            super.updateItem(item, empty);
+
+            if(item == null) {
+                setGraphic(null);
+                return;
+            }
+            img.setStyle("-fx-cursor:hand;");
+            box = new HBox();
+            box.setAlignment(Pos.CENTER);
             box.getChildren().add(img);
 
             setGraphic(box);

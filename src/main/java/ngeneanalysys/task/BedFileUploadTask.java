@@ -71,6 +71,4 @@ public class BedFileUploadTask extends Task {
 
         //controller.removeProgressTaskItemById(progressBoxId);
     }
-
-
 }

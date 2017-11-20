@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import ngeneanalysys.code.enums.SequencerCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
@@ -101,6 +102,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     @FXML
     private TableColumn<AnalysisResultVariant, Boolean> negativeExceptColumn;
 
+    @FXML
+    private GridPane customFieldGridPane;
+
     Sample sample = null;
 
     Panel panel = null;
@@ -129,6 +133,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         loginSession = LoginSessionUtil.getCurrentLoginSession();
 
         pdfCreateService = PDFCreateService.getInstance();
+
+        customFieldGridPane.getChildren().clear();
+        customFieldGridPane.setPrefHeight(0);
 
         sample = (Sample)paramMap.get("sample");
 
@@ -432,6 +439,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         contentsMap.put("variantCountByGenes", variantCountByGenes);
                         int geneTableMaxRowCount = (int)Math.ceil(variantCountByGenes.size() / 7.0);
                         contentsMap.put("geneTableCount", (7 * geneTableMaxRowCount) - 1);
+                        contentsMap.put("geneTableCount4", (4 * geneTableMaxRowCount) - 1);
 
                         int tableOneSize = (int)Math.ceil((double)variantCountByGenes.size() / 3);
                         int tableTwoSize = (int)Math.ceil((double)(variantCountByGenes.size() - tableOneSize) / 2);
@@ -486,13 +494,20 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
                 String contents = "";
                 if(panel.getReportTemplateId() == null) {
-                    contents = velocityUtil.getContents("/layout/velocity/reportTemp.vm", "UTF-8", model);
+                    contents = velocityUtil.getContents("/layout/velocity/report.vm", "UTF-8", model);
                 } else {
                     HttpClientResponse response = apiService.get("reportTemplate/" + panel.getReportTemplateId(), null, null, false);
-                    ReportTemplate reportTemplate = response.getObjectBeforeConvertResponseToJSON(ReportTemplate.class);
 
-                    String path = FileUtil.saveVMFile(reportTemplate);
-                    contents = velocityUtil.getContents(reportTemplate.getName() + ".vm", "UTF-8", model);
+                    ReportContents reportContents = response.getObjectBeforeConvertResponseToJSON(ReportContents.class);
+
+                    String path = FileUtil.saveVMFile(reportContents.getReportTemplate());
+                    contents = velocityUtil.getContents(reportContents.getReportTemplate().getName() + ".vm", "UTF-8", model);
+
+                    Map<String, Object> variableList = JsonUtil.fromJsonToMap(reportContents.getReportTemplate().getCustomFields());
+
+                    if(variableList.size() > 0) {
+                        logger.info(variableList.size() + "");
+                    }
                 }
 
                 created = pdfCreateService.createPDF(file, contents);

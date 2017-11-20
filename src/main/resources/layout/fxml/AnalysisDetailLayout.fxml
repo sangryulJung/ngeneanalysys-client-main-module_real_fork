@@ -60,7 +60,7 @@
                   <Insets left="9.0" right="9.0" />
                </HBox.margin>
             </Separator>
-            <Label fx:id="kitLabel" layoutX="1243.0" layoutY="20.0" text="BRCA Panel Name" textFill="#262b33">
+            <Label fx:id="kitLabel" layoutX="1243.0" layoutY="20.0" text="Panel Name" textFill="#262b33">
                <font>
                   <Font size="11.0" />
                </font>

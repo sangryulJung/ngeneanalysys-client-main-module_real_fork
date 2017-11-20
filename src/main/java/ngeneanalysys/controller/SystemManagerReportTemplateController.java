@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -18,7 +19,9 @@ import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.PagedReportTemplate;
 import ngeneanalysys.model.ReportTemplate;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.task.ReportImageFileUploadTask;
 import ngeneanalysys.util.DialogUtil;
+import ngeneanalysys.util.JsonUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
@@ -30,6 +33,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Jang
@@ -112,9 +117,11 @@ public class SystemManagerReportTemplateController extends SubPaneController{
     //사용할 이미지 모음
     private List<File> imageList = null;
 
-    private Map<String, Object> variableNameList = new HashMap<>();
+    private Map<String, Object> variableList = new HashMap<>();
 
     private Integer id = 0;
+
+    private String selectedVariableName = null;
 
     @Override
     public void show(Parent root) throws IOException {
@@ -159,9 +166,10 @@ public class SystemManagerReportTemplateController extends SubPaneController{
 
         variableListComboBox.getSelectionModel().selectedIndexProperty().addListener((ov, oldIdx, newIdx) -> {
             if (oldIdx != newIdx) {
-                Map<String, String> item = (Map<String, String>)variableNameList.get(variableListComboBox.getSelectionModel().getSelectedItem());
+                Map<String, String> item = (Map<String, String>) variableList.get(variableListComboBox.getSelectionModel().getSelectedItem());
 
                 if(item != null) {
+                    selectedVariableName = variableListComboBox.getSelectionModel().getSelectedItem();
                     displayNameTextField.setText(item.get("displayName"));
                     variableNameTextField.setText(variableListComboBox.getSelectionModel().getSelectedItem());
                     variableTypeComboBox.getSelectionModel().select(item.get("variableType"));
@@ -252,12 +260,28 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                 param.put("name", reportName);
                 param.put("contents", contents);
 
+                String variableJson = JsonUtil.toJson(variableList);
+
+                param.put("customFields", variableJson);
+                HttpClientResponse response = null;
                 if(id == 0) {
-                    apiService.post("admin/reportTemplate", param, null, true);
+                    response = apiService.post("admin/reportTemplate", param, null, true);
                 } else {
-                    apiService.put("admin/reportTemplate/" + id, param, null, true);
+                    response = apiService.put("admin/reportTemplate/" + id, param, null, true);
                     id = 0;
                 }
+
+                ReportTemplate reportTemplate = response.getObjectBeforeConvertResponseToJSON(ReportTemplate.class);
+
+                if(!this.imageList.isEmpty()) {
+                    /*Task<Void> task = new ReportImageFileUploadTask();
+                    final Thread downloadThread = new Thread(task);
+
+                    // Thread 실행
+                    downloadThread.setDaemon(true);
+                    downloadThread.start();*/
+                }
+
                 setReportTableList(1);
 
                 resetItem();
@@ -280,7 +304,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                 .addAll(new FileChooser.ExtensionFilter("image", "*.jpg", "*.gif", "*.png"));
         List<File> imageList = fileChooser.showOpenMultipleDialog(mainController.getPrimaryStage());
 
-        if(imageList != null) {
+        if(imageList != null && !imageList.isEmpty()) {
             if(this.imageList.size() == 0) {
                 this.imageList.addAll(imageList);
             } else {
@@ -299,11 +323,15 @@ public class SystemManagerReportTemplateController extends SubPaneController{
 
     @FXML
     public void modifyVariable() {
-
+        editVariable();
     }
 
     @FXML
     public void addVariable() {
+        editVariable();
+    }
+
+    public void editVariable() {
         String variableName = variableNameTextField.getText();
         String displayName = displayNameTextField.getText();
         String variableType = variableTypeComboBox.getSelectionModel().getSelectedItem();
@@ -311,19 +339,23 @@ public class SystemManagerReportTemplateController extends SubPaneController{
         if(!StringUtils.isEmpty(variableName) && !StringUtils.isEmpty(displayName)
                 && !StringUtils.isEmpty(variableType)) {
 
+            if(!StringUtils.isEmpty(selectedVariableName)) {
+                variableList.remove(selectedVariableName);
+            }
+
             Map<String , String> item = new HashMap<>();
             item.put("displayName", displayName);
             item.put("variableType", variableType);
 
-            variableNameList.put(variableName, item);
+            variableList.put(variableName, item);
 
             settingVariableListComboBox();
 
             variableNameTextField.setText("");
             displayNameTextField.setText("");
             variableTypeComboBox.getSelectionModel().clearSelection();
+            selectedVariableName = null;
         }
-
     }
 
     @FXML
@@ -334,15 +366,24 @@ public class SystemManagerReportTemplateController extends SubPaneController{
 
         String item = variableListComboBox.getSelectionModel().getSelectedItem();
 
-        variableNameList.remove(item);
+        variableList.remove(item);
 
         settingVariableListComboBox();
     }
 
     @FXML
     public void removeImage() {
-        if(imageList != null) {
+        if(imageList != null && !imageList.isEmpty()) {
+            String imageName = imageListComboBox.getSelectionModel().getSelectedItem();
 
+            if(!StringUtils.isEmpty(imageName)) {
+                Optional<File> deleteFile = imageList.stream().filter(item -> imageName.equals(item.getName())).findFirst();
+                if(deleteFile.isPresent()) {
+                    imageList.remove(deleteFile.get());
+                }
+
+                imageListComboBox.getItems().remove(imageName);
+            }
         }
     }
 
@@ -356,11 +397,12 @@ public class SystemManagerReportTemplateController extends SubPaneController{
         variableTypeComboBox.getItems().add("String");
         variableTypeComboBox.getItems().add("Date");
         variableTypeComboBox.getItems().add("Integer");
+        variableTypeComboBox.getItems().add("Image");
     }
 
     public void settingImageListComboBox() {
         imageListComboBox.getItems().removeAll(imageListComboBox.getItems());
-        if(imageList != null) {
+        if(imageList != null && !imageList.isEmpty()) {
             for(File image : imageList) {
                 imageListComboBox.getItems().add(image.getName());
             }
@@ -369,8 +411,8 @@ public class SystemManagerReportTemplateController extends SubPaneController{
 
     public void settingVariableListComboBox() {
         variableListComboBox.getItems().removeAll(variableListComboBox.getItems());
-        if(variableNameList.size() > 0) {
-            Set<String> keySet = variableNameList.keySet();
+        if(variableList.size() > 0) {
+            Set<String> keySet = variableList.keySet();
 
             for(String name : keySet) {
                 variableListComboBox.getItems().add(name);
@@ -387,7 +429,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
         variableListComboBox.getItems().removeAll(variableListComboBox.getItems());
         imageListComboBox.getItems().removeAll(imageListComboBox.getItems());
         imageList.clear();
-        variableNameList.clear();
+        variableList.clear();
     }
 
     public void setDisabledItem(boolean condition) {
@@ -430,6 +472,8 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                 setDisabledItem(false);
 
                 id = reportTemplate.getId();
+
+                settingVariableTypeComboBox();
 
                 reportNameTextField.setText(reportTemplate.getName());
                 contents = reportTemplate.getContents();
@@ -481,7 +525,8 @@ public class SystemManagerReportTemplateController extends SubPaneController{
             box.setAlignment(Pos.CENTER);
 
             box.setSpacing(10);
-
+            img1.setStyle("-fx-cursor:hand;");
+            img2.setStyle("-fx-cursor:hand;");
             box.getChildren().add(img1);
             box.getChildren().add(img2);
 

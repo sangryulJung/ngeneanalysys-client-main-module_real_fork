@@ -504,7 +504,8 @@ public class SystemManagerUserAccountController extends SubPaneController{
 
             box.setAlignment(Pos.CENTER);
             box.setSpacing(10);
-
+            img1.setStyle("-fx-cursor:hand;");
+            img2.setStyle("-fx-cursor:hand;");
             box.getChildren().add(img1);
             box.getChildren().add(img2);
 
@@ -579,7 +580,8 @@ public class SystemManagerUserAccountController extends SubPaneController{
 
             box.setAlignment(Pos.CENTER);
             box.setSpacing(10);
-
+            img1.setStyle("-fx-cursor:hand;");
+            img2.setStyle("-fx-cursor:hand;");
             box.getChildren().add(img1);
             box.getChildren().add(img2);
 
