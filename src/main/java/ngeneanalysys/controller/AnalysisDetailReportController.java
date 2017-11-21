@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import ngeneanalysys.code.enums.SequencerCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
@@ -105,6 +107,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     @FXML
     private GridPane customFieldGridPane;
 
+    @FXML
+    private VBox contentVBox;
+
     Sample sample = null;
 
     Panel panel = null;
@@ -200,13 +205,57 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
         HttpClientResponse response = null;
         try {
-            /*response = apiService.get("/sampleReport/" + sample.getId(), null ,null, false);
+            if(panel.getReportTemplateId() != null) {
+                response = apiService.get("reportTemplate/" + panel.getReportTemplateId(), null, null, false);
 
-            if(!StringUtils.isEmpty(response.getContentString())) {
+                ReportContents reportContents = response.getObjectBeforeConvertResponseToJSON(ReportContents.class);
 
-                logger.info(response.getContentString());
+                ReportTemplate template = reportContents.getReportTemplate();
 
-            }*/
+                Map<String, Object> variableList = JsonUtil.fromJsonToMap(template.getCustomFields());
+
+                if(variableList != null && !variableList.isEmpty()) {
+
+                    Set<String> keyList = variableList.keySet();
+
+                    int gridPaneRowSize = (int)Math.ceil(variableList.size() / 3.0);
+
+                    for(int i = 0; i < gridPaneRowSize ; i++) {
+                        customFieldGridPane.setPrefHeight(customFieldGridPane.getPrefHeight() + 30);
+                        contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 30);
+                        RowConstraints con = new RowConstraints();
+                        con.setPrefHeight(30);
+                        customFieldGridPane.getRowConstraints().add(con);
+                    }
+
+                    int rowIndex = 0;
+                    int colIndex = 0;
+
+                    for(String key : keyList) {
+                        Map<String, String> item = (Map<String, String>) variableList.get(key);
+                        if(colIndex == 6) {
+                            colIndex = 0;
+                            rowIndex++;
+                        }
+                        customFieldGridPane.add(new Label(item.get("displayName")), colIndex++, rowIndex);
+
+                        String type = item.get("variableType");
+                        if(type.equalsIgnoreCase("Date")) {
+                            DatePicker datePicker = new DatePicker();
+                            //datePicker.getStyleClass().add("txt_black");
+                            datePicker.setStyle("-fx-text-inner-color: black;");
+                            datePicker.setId(key);
+                            customFieldGridPane.add(datePicker, colIndex++, rowIndex);
+                        } else {
+                            TextField textField = new TextField();
+                            textField.getStyleClass().add("txt_black");
+                            textField.setId(key);
+                            customFieldGridPane.add(textField, colIndex++, rowIndex);
+                        }
+                    }
+
+                }
+            }
 
             response = apiService.get("/analysisResults/sampleVariants/" + sample.getId(), null,
                     null, false);
@@ -496,6 +545,19 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 if(panel.getReportTemplateId() == null) {
                     contents = velocityUtil.getContents("/layout/velocity/report.vm", "UTF-8", model);
                 } else {
+                    for(int i = 0; i < customFieldGridPane.getChildren().size(); i++) {
+                        Object gridObject = customFieldGridPane.getChildren().get(i);
+
+                        if(gridObject instanceof TextField) {
+                            TextField textField = (TextField)gridObject;
+                            paramMap.put(textField.getId(), textField.getText());
+                        } else if(gridObject instanceof DatePicker) {
+                            DatePicker datePicker = (DatePicker)gridObject;
+                            paramMap.put(datePicker.getId(), datePicker.getValue().toString());
+                        }
+
+                    }
+
                     HttpClientResponse response = apiService.get("reportTemplate/" + panel.getReportTemplateId(), null, null, false);
 
                     ReportContents reportContents = response.getObjectBeforeConvertResponseToJSON(ReportContents.class);
@@ -503,11 +565,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     String path = FileUtil.saveVMFile(reportContents.getReportTemplate());
                     contents = velocityUtil.getContents(reportContents.getReportTemplate().getName() + ".vm", "UTF-8", model);
 
-                    Map<String, Object> variableList = JsonUtil.fromJsonToMap(reportContents.getReportTemplate().getCustomFields());
-
-                    if(variableList.size() > 0) {
-                        logger.info(variableList.size() + "");
-                    }
                 }
 
                 created = pdfCreateService.createPDF(file, contents);

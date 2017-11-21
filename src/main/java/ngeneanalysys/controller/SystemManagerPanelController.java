@@ -290,7 +290,11 @@ public class SystemManagerPanelController extends SubPaneController {
             params.put("libraryType", libraryTypeComboBox.getSelectionModel().getSelectedItem().getValue());
             params.put("sampleSource", sampleSourceComboBox.getSelectionModel().getSelectedItem().getValue());
 
-            String reportId = reportTemplateComboBox.getSelectionModel().getSelectedItem().getValue();
+            String reportId = null;
+            if(!reportTemplateComboBox.getSelectionModel().isEmpty()) {
+                reportId = reportTemplateComboBox.getSelectionModel().getSelectedItem().getValue();
+            }
+
 
             if(!StringUtils.isEmpty(reportId)) {
                 params.put("reportTemplateId", Integer.parseInt(reportTemplateComboBox.getSelectionModel().getSelectedItem().getValue()));

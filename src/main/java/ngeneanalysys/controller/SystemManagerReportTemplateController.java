@@ -33,8 +33,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author Jang
@@ -274,12 +272,12 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                 ReportTemplate reportTemplate = response.getObjectBeforeConvertResponseToJSON(ReportTemplate.class);
 
                 if(!this.imageList.isEmpty()) {
-                    /*Task<Void> task = new ReportImageFileUploadTask();
+                    Task<Void> task = new ReportImageFileUploadTask(imageList, reportTemplate.getId(), getMainController());
                     final Thread downloadThread = new Thread(task);
 
                     // Thread 실행
                     downloadThread.setDaemon(true);
-                    downloadThread.start();*/
+                    downloadThread.start();
                 }
 
                 setReportTableList(1);
@@ -472,6 +470,9 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                 setDisabledItem(false);
 
                 id = reportTemplate.getId();
+
+                variableList = JsonUtil.fromJsonToMap(reportTemplate.getCustomFields());
+                settingVariableListComboBox();
 
                 settingVariableTypeComboBox();
 
