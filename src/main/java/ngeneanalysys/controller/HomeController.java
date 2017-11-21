@@ -111,12 +111,12 @@ public class HomeController extends SubPaneController{
         initRunListLayout();
         initSampleListLayout();
         showRunList();
-        autoRefreshTimeline = new Timeline(new KeyFrame(Duration.millis(60000),
+        autoRefreshTimeline = new Timeline(new KeyFrame(Duration.millis(Integer.parseInt(config.getProperty("analysis.job.auto.refresh.period")) * 1000),
                 ae -> showRunList()));
         autoRefreshTimeline.setCycleCount(Animation.INDEFINITE);
         autoRefreshTimeline.play();
 
-        sampleListAutoRefreshTimeline = new Timeline(new KeyFrame(Duration.millis(60000),
+        sampleListAutoRefreshTimeline = new Timeline(new KeyFrame(Duration.millis(Integer.parseInt(config.getProperty("analysis.job.auto.refresh.period")) * 1000),
                 ae -> autoUpdateSampleList()));
         sampleListAutoRefreshTimeline.setCycleCount(Animation.INDEFINITE);
         sampleListAutoRefreshTimeline.play();

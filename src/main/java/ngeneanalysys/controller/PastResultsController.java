@@ -201,7 +201,7 @@ public class PastResultsController extends SubPaneController {
 		});
 
 		// 시스템 설정에서 자동 새로고침 설정이 true 인경우 자동 새로고팀 실행
-		startAutoRefresh();
+		//startAutoRefresh();
 		
 		this.mainController.getMainFrame().setCenter(root);
 	}
