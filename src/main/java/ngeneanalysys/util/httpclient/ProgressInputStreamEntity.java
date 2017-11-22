@@ -1,9 +1,11 @@
 package ngeneanalysys.util.httpclient;
 
 import ngeneanalysys.task.FileUploadTask;
+import ngeneanalysys.util.LoggerUtil;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.util.Args;
+import org.slf4j.Logger;
 
 import java.io.*;
 
@@ -31,6 +33,7 @@ public class ProgressInputStreamEntity extends InputStreamEntity {
                 }
                 outstream.write(buffer, 0, l);
                 remaining -= l;
+
                 fileUploadTask.updateProgress(getContentLength() - remaining, getContentLength());
             }
 

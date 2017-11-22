@@ -46,35 +46,28 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
 
     private boolean taskStatus = true;
 
-    public AnalysisSampleUploadTask(AnalysisSampleUploadProgressTaskController analysisSampleUploadProgressTaskController) {
+    public AnalysisSampleUploadTask(AnalysisSampleUploadProgressTaskController analysisSampleUploadProgressTaskController, int totalCount) {
+        super(totalCount);
         if(analysisSampleUploadProgressTaskController != null) {
             this.analysisSampleUploadProgressTaskController = analysisSampleUploadProgressTaskController;
             this.analysisRequestService = AnalysisRequestService.getInstance();
         }
     }
 
-    /**
-     * 메인 화면 상태 출력 영역 표시 메시지 update 처리
-     * @param completeSampleFileSize
-     * @param totalSampleFileSize
-     * @param completeSampleCount
-     * @param totalSampleCount
-     */
-    public void updateProgressInfoForMain(double completeSampleFileSize, double totalSampleFileSize, int completeSampleCount, int totalSampleCount) {
-        logger.info("updateProgressInfoForMain.. ");
-        // 전체 진행율 정보 update..
-        updateProgress(completeSampleFileSize, totalSampleFileSize);
-        // 전체 진행정보 text update..
-        updateMessage(String.valueOf(completeSampleCount));
-        // 현재 진행중인 그룹의 총 샘플 수 출력
+    @Override
+    public void updateProgress(long workDone, long max) {
+        long total = getNumberOfWork() * 100;
+        long complete = (long)(((double)getCompleteWorkCount() + (workDone / (double)max)) * 100);
+        updateMessage(String.valueOf(getCompleteWorkCount()));
         try {
             Thread.sleep(100);
             Platform.runLater(() -> {
-                this.analysisSampleUploadProgressTaskController.updateTotalCount(String.valueOf(totalSampleCount));
+                this.analysisSampleUploadProgressTaskController.updateTotalCount(String.valueOf(getNumberOfWork()));
             });
         } catch (Exception e) {
             e.printStackTrace();
         }
+        super.updateProgress(complete, total);
     }
 
     /**
@@ -110,10 +103,8 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
             currentUploadGroupId = run.getId();
             currentUploadGroupRefName = run.getName();
 
-            updateProgressInfoForMain(0, 0, 0, fileDataList.size());
             List<AnalysisFile> completeFile = new ArrayList<>();
             for (AnalysisFile fileData : fileDataList) {
-
                 fileList.stream().forEach(file -> {
 
                     if (this.analysisSampleUploadProgressTaskController.isStop) {
@@ -124,9 +115,9 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
 
                     if (fileData.getName().equals(file.getName())) {
                         try {
-                            analysisRequestService.uploadFile(fileData.getId(), file);
-
-
+                            analysisRequestService.uploadFile(fileData.getId(), file, this);
+                            completeFile.add(fileData);
+                            setCompleteWorkCount(completeFile.size());
 
                         } catch (WebAPIException e) {
                             e.printStackTrace();
@@ -170,7 +161,6 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
                 }
 
                 completeFile.add(fileData);
-                updateProgressInfoForMain(0, 0, completeFile.size(), fileDataList.size());
             }
         } catch (Exception e) {
             logger.info(e.getMessage());

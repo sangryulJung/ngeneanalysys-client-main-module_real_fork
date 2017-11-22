@@ -17,6 +17,8 @@ import javafx.stage.FileChooser;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.PagedReportTemplate;
+import ngeneanalysys.model.ReportContents;
+import ngeneanalysys.model.ReportImage;
 import ngeneanalysys.model.ReportTemplate;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.task.ReportImageFileUploadTask;
@@ -278,17 +280,26 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                     // Thread 실행
                     downloadThread.setDaemon(true);
                     downloadThread.start();
+
+                    task.setOnSucceeded(ev -> {
+                        setReportTableList(1);
+                        resetItem();
+                        setDisabledItem(true);
+                    });
+                } else {
+                    setReportTableList(1);
+                    resetItem();
+                    setDisabledItem(true);
                 }
-
-                setReportTableList(1);
-
-                resetItem();
-                setDisabledItem(true);
 
             } catch (WebAPIException wae) {
                 DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
-            } catch (IOException e) {
-                DialogUtil.error(e.getMessage(), e.getMessage(), mainController.getPrimaryStage(), true);
+                wae.printStackTrace();
+            } catch (IOException ioe) {
+                DialogUtil.error(ioe.getMessage(), ioe.getMessage(), mainController.getPrimaryStage(), true);
+                ioe.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -470,6 +481,25 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                 setDisabledItem(false);
 
                 id = reportTemplate.getId();
+
+                HttpClientResponse response;
+
+                try {
+                    response = apiService.get("reportTemplate/" + reportTemplate.getId(), null, null, false);
+
+                    ReportContents reportContents = response.getObjectBeforeConvertResponseToJSON(ReportContents.class);
+
+                    List<ReportImage> imageList = reportContents.getReportImages();
+                    //이미지 리스트 설정
+                    if(imageList != null && !imageList.isEmpty()) {
+                        for(ReportImage image : imageList) {
+
+                        }
+                    }
+
+                } catch (WebAPIException wae) {
+                    DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainApp.getPrimaryStage(), true);
+                }
 
                 variableList = JsonUtil.fromJsonToMap(reportTemplate.getCustomFields());
                 settingVariableListComboBox();

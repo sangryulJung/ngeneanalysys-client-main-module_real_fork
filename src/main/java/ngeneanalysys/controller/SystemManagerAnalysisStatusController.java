@@ -14,10 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
-import ngeneanalysys.model.Run;
-import ngeneanalysys.model.RunGroupForPaging;
-import ngeneanalysys.model.RunWithSamples;
-import ngeneanalysys.model.Sample;
+import ngeneanalysys.model.*;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.DialogUtil;
@@ -149,7 +146,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
     public void setList(int page) {
 
         int totalCount = 0;
-        int limit = 17;
+        int limit = 15;
         int offset = (page - 1)  * limit;
 
         HttpClientResponse response = null;
@@ -314,8 +311,11 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
             List<Sample> samples = runWithSamples.getSamples();
 
             for(Sample sample : samples) {
-                response = apiService.get("admin/restartSampleAnalysis/" + sample.getId(), null ,null, false);
-                logger.info("status code : " + response.getStatus());
+                SampleStatus sampleStatus = sample.getSampleStatus();
+                if(!sampleStatus.getStep().equalsIgnoreCase("UPLOAD") && sampleStatus.getStatus().equalsIgnoreCase("FAIL")) {
+                    response = apiService.get("admin/restartSampleAnalysis/" + sample.getId(), null, null, false);
+                    logger.info("status code : " + response.getStatus());
+                }
             }
 
         } catch(WebAPIException wae) {

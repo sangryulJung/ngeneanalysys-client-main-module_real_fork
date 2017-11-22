@@ -1,15 +1,13 @@
 package ngeneanalysys.service;
 
-import javafx.concurrent.Task;
+import ngeneanalysys.controller.MainController;
 import ngeneanalysys.exceptions.WebAPIException;
-import ngeneanalysys.task.AnalysisSampleUploadTask;
-import ngeneanalysys.task.FileUploadTask;
+import ngeneanalysys.model.ReportImage;
+import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import ngeneanalysys.util.httpclient.HttpClientUtil;
-import ngeneanalysys.util.httpclient.ProgressInputStreamEntity;
 import org.apache.http.HttpEntity;
-import org.apache.http.client.entity.EntityBuilder;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
@@ -20,14 +18,15 @@ import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 /**
  * @author Jang
- * @since 2017-08-22
+ * @since 2017-11-22
  */
-public class AnalysisRequestService {
+public class ImageUploadService {
     private static final Logger logger = LoggerUtil.getLogger();
 
     private APIService apiService;
@@ -35,44 +34,51 @@ public class AnalysisRequestService {
     /**
      * 인스턴스 생성 제한
      */
-    private AnalysisRequestService() {
+    private ImageUploadService() {
         apiService = APIService.getInstance();
     }
 
     /**
      * 싱글톤 인스턴스 생성 내부 클래스
      */
-    private static class AnalysisRequestHelper{
-        private AnalysisRequestHelper() {}
-        private static final AnalysisRequestService INSTANCE = new AnalysisRequestService();
+    private static class ImageUploadHelper{
+        private ImageUploadHelper() {}
+        private static final ImageUploadService INSTANCE = new ImageUploadService();
     }
 
     /**
      * 싱글톤 객체 반환
      * @return
      */
-    public static AnalysisRequestService getInstance() {
-        return AnalysisRequestHelper.INSTANCE;
+    public static ImageUploadService getInstance() {
+        return ImageUploadHelper.INSTANCE;
     }
 
-    public HttpClientResponse uploadFile(int sampleFileServerId, File file, FileUploadTask task) throws WebAPIException {
-
-        String url = "/analysisFiles/" + sampleFileServerId;
-
+    public HttpClientResponse uploadImage(int templateId, File imageFile, MainController mainController) throws WebAPIException {
         CloseableHttpClient httpclient = null;
         CloseableHttpResponse response = null;
-        HttpClientResponse result = null;
+        HttpClientResponse httpClientResponse = null;
 
         try {
+            Map<String, Object> params = new HashMap<>();
+            params.put("name", imageFile.getName());
+            params.put("reportTemplateId", templateId);
+            params.put("size", imageFile.length());
+
+            httpClientResponse = apiService.post("admin/reportImage", params, null, true);
+
+            ReportImage image = httpClientResponse.getObjectBeforeConvertResponseToJSON(ReportImage.class);
+
+            String url = "/admin/reportImage/" + image.getId();
+
             String connectURL = apiService.getConvertConnectURL(url);
-            //HttpPost post = new HttpPost(connectURL);
             HttpPut put = new HttpPut(connectURL);
 
             Map<String, Object> headerMap = apiService.getDefaultHeaders(true);
             headerMap.remove("Content-Type");
 
             // 지정된 헤더 삽입 정보가 있는 경우 추가
-            if(headerMap != null && headerMap.size() > 0) {
+            if (headerMap != null && headerMap.size() > 0) {
                 Iterator<String> keys = headerMap.keySet().iterator();
                 while (keys.hasNext()) {
                     String key = keys.next();
@@ -80,32 +86,31 @@ public class AnalysisRequestService {
                 }
             }
 
-            FileBody fileParam = new FileBody(file);
+            FileBody fileParam = new FileBody(imageFile);
 
-            HttpEntity reqEntity = EntityBuilder.create()
-                    .setFile(file).build();
-            /*HttpEntity reqEntity = MultipartEntityBuilder.create()
+            //HttpEntity reqEntity = EntityBuilder.create()
+            //        .setFile(imageFile).build();
+            HttpEntity reqEntity = MultipartEntityBuilder.create()
                     .addPart("file", fileParam)
-                    .build();*/
+                    .build();
 
-            HttpEntity progressInputStreamEntity = new ProgressInputStreamEntity(reqEntity.getContent(), file.length(), null, task);
-
-            put.setEntity(progressInputStreamEntity);
+            put.setEntity(reqEntity);
 
             httpclient = HttpClients.custom().setSSLSocketFactory(HttpClientUtil.getSSLSocketFactory()).build();
-            if(httpclient != null) response = httpclient.execute(put);
-            if(response == null) return null;
-            result = HttpClientUtil.getHttpClientResponse(response);
+            if (httpclient != null) response = httpclient.execute(put);
+            if (response == null) throw new Exception();
 
+        } catch (WebAPIException wae) {
+            wae.printStackTrace();
+            DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
         } catch (IOException e) {
             e.printStackTrace();
             logger.error("upload file", e);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        return result;
+        return httpClientResponse;
     }
 
-    public HttpClientResponse removeRequestedJob(int id) throws WebAPIException {
-        return apiService.delete("/runs/" + id);
-    }
 }

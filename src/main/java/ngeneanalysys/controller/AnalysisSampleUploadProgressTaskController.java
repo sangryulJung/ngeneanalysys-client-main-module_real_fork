@@ -1,7 +1,9 @@
 package ngeneanalysys.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -124,7 +126,9 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 		boolean isWorkStart = false;
 		this.progressIndicator.setProgress(new ProgressBar().getProgress());
 
-		this.task = new AnalysisSampleUploadTask(this);
+		List<File> fileList = (List<File>) paramMap.get("fileList");
+
+		this.task = new AnalysisSampleUploadTask(this, fileList.size());
 
 		progressBar.progressProperty().bind(this.task.progressProperty());
 		completeCount.textProperty().bind(this.task.messageProperty());

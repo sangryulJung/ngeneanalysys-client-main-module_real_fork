@@ -295,9 +295,8 @@ public class SystemManagerPanelController extends SubPaneController {
                 reportId = reportTemplateComboBox.getSelectionModel().getSelectedItem().getValue();
             }
 
-
             if(!StringUtils.isEmpty(reportId)) {
-                params.put("reportTemplateId", Integer.parseInt(reportTemplateComboBox.getSelectionModel().getSelectedItem().getValue()));
+                params.put("reportTemplateId", Integer.parseInt(reportId));
             }
 
             HttpClientResponse response = null;
@@ -366,8 +365,10 @@ public class SystemManagerPanelController extends SubPaneController {
 
                 });
 
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (WebAPIException wae) {
+                DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
+            } catch (IOException ioe) {
+                DialogUtil.error(ioe.getMessage(), ioe.getMessage(), mainController.getPrimaryStage(), true);
             }
         }
     }
@@ -411,7 +412,7 @@ public class SystemManagerPanelController extends SubPaneController {
             panelListTable.getItems().addAll(tablePanels.getResult());
 
         } catch (WebAPIException wae) {
-            wae.printStackTrace();
+            DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
         }
     }
 

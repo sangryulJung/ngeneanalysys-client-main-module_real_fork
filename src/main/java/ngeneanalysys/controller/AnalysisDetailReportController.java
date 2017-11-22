@@ -2,19 +2,23 @@ package ngeneanalysys.controller;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.enums.SequencerCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.PDFCreateService;
+import ngeneanalysys.task.ImageFileDownloadTask;
 import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
@@ -237,7 +241,12 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                             colIndex = 0;
                             rowIndex++;
                         }
-                        customFieldGridPane.add(new Label(item.get("displayName")), colIndex++, rowIndex);
+                        Label label = new Label(item.get("displayName"));
+                        label.setStyle("-fx-text-fill : #C20E20;");
+                        customFieldGridPane.add(label, colIndex++, rowIndex);
+                        label.setMaxHeight(Double.MAX_VALUE);
+                        label.setMaxWidth(Double.MAX_VALUE);
+                        label.setAlignment(Pos.CENTER);
 
                         String type = item.get("variableType");
                         if(type.equalsIgnoreCase("Date")) {
@@ -544,16 +553,22 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 String contents = "";
                 if(panel.getReportTemplateId() == null) {
                     contents = velocityUtil.getContents("/layout/velocity/report.vm", "UTF-8", model);
+                    created = pdfCreateService.createPDF(file, contents);
+                    createdCheck(created, file);
                 } else {
                     for(int i = 0; i < customFieldGridPane.getChildren().size(); i++) {
                         Object gridObject = customFieldGridPane.getChildren().get(i);
 
                         if(gridObject instanceof TextField) {
                             TextField textField = (TextField)gridObject;
-                            paramMap.put(textField.getId(), textField.getText());
+                            contentsMap.put(textField.getId(), textField.getText());
                         } else if(gridObject instanceof DatePicker) {
                             DatePicker datePicker = (DatePicker)gridObject;
-                            paramMap.put(datePicker.getId(), datePicker.getValue().toString());
+                            if(datePicker.getValue() != null) {
+                                contentsMap.put(datePicker.getId(), datePicker.getValue().toString());
+                            } else {
+                                contentsMap.put(datePicker.getId(), "");
+                            }
                         }
 
                     }
@@ -562,29 +577,39 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
                     ReportContents reportContents = response.getObjectBeforeConvertResponseToJSON(ReportContents.class);
 
-                    String path = FileUtil.saveVMFile(reportContents.getReportTemplate());
-                    contents = velocityUtil.getContents(reportContents.getReportTemplate().getName() + ".vm", "UTF-8", model);
+                    List<ReportImage> images = reportContents.getReportImages();
 
-                }
-
-                created = pdfCreateService.createPDF(file, contents);
-                if (created) {
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.initOwner(getMainController().getPrimaryStage());
-                    alert.setTitle(CONFIRMATION_DIALOG);
-                    alert.setHeaderText("Creating the report document was completed.");
-                    alert.setContentText("Do you want to check the report document?");
-
-                    Optional<ButtonType> result = alert.showAndWait();
-                    if (result.get() == ButtonType.OK) {
-                        getMainApp().getHostServices().showDocument(file.toURI().toURL().toExternalForm());
-                    } else {
-                        alert.close();
+                    for(ReportImage image : images) {
+                        String path = "url('file:/" + CommonConstants.BASE_FULL_PATH  + File.separator + "fop" + File.separator + image.getReportTemplateId()
+                                + File.separator + image.getName() + "')";
+                        path = path.replaceAll("\\\\", "/");
+                        String name = image.getName().substring(0, image.getName().indexOf("."));
+                        logger.info(name + " : "  + path);
+                        model.put(name, path);
                     }
-                } else {
-                    DialogUtil.error("Save Fail.", "An error occurred during the creation of the report document.",
-                            getMainApp().getPrimaryStage(), false);
+
+                    String path = FileUtil.saveVMFile(reportContents.getReportTemplate());
+
+                    Task task = new ImageFileDownloadTask(this, reportContents.getReportImages());
+
+                    Thread thread = new Thread(task);
+                    thread.setDaemon(true);
+                    thread.start();
+
+                    final String contents1 = velocityUtil.getContents( reportContents.getReportTemplate().getId()+ "/" + reportContents.getReportTemplate().getName() + ".vm", "UTF-8", model);
+
+                    task.setOnSucceeded(ev -> {
+                        try {
+                            final boolean created1 = pdfCreateService.createPDF(file, contents1);
+                            createdCheck(created1, file);
+                        } catch (Exception e) {
+                            DialogUtil.error("Save Fail.", "An error occurred during the creation of the report document.", getMainApp().getPrimaryStage(), false);
+                            e.printStackTrace();
+                        }
+                    });
+
                 }
+
             }
         } catch(FileNotFoundException fnfe){
             DialogUtil.error("Save Fail.", fnfe.getMessage(), getMainApp().getPrimaryStage(), false);
@@ -595,6 +620,30 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         }
 
         return created;
+    }
+
+    public void createdCheck(boolean created, File file) {
+        try {
+            if (created) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.initOwner(getMainController().getPrimaryStage());
+                alert.setTitle(CONFIRMATION_DIALOG);
+                alert.setHeaderText("Creating the report document was completed.");
+                alert.setContentText("Do you want to check the report document?");
+
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK) {
+                    getMainApp().getHostServices().showDocument(file.toURI().toURL().toExternalForm());
+                } else {
+                    alert.close();
+                }
+            } else {
+                DialogUtil.error("Save Fail.", "An error occurred during the creation of the report document.",
+                        getMainApp().getPrimaryStage(), false);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private SampleQC findQCResult(List<SampleQC> qcList, String qc) {
