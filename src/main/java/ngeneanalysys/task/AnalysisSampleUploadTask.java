@@ -19,7 +19,7 @@ import java.util.List;
  * @author Jang
  * @since 2017-08-23
  */
-public class AnalysisSampleUploadTask extends Task<Void>{
+public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
     Logger logger = LoggerUtil.getLogger();
 
     /** Main Controller Application Object */
