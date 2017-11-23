@@ -360,9 +360,6 @@ public class SystemManagerPanelController extends SubPaneController {
                         logger.error("panel list refresh fail.", e);
                     }
 
-                    //List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
-                    //panels.add(newPanel);
-
                 });
 
             } catch (WebAPIException wae) {

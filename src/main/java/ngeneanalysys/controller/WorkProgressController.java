@@ -71,10 +71,7 @@ public class WorkProgressController<T> extends BaseStageController {
 		workProgressBar.progressProperty().bind(this.task.progressProperty());
 		workProgressStatusLabel.textProperty().unbind();
 		workProgressStatusLabel.textProperty().bind(this.task.messageProperty());
-		this.task.setOnSucceeded( e -> {
-			this.close();
-			
-		});
+		this.task.setOnSucceeded( e -> this.close());
 		workProgressStage.show();
 		
 		logger.info(String.format("start %s", workProgressStage.getTitle()));

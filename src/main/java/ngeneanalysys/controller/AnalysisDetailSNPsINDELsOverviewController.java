@@ -3,7 +3,6 @@ package ngeneanalysys.controller;
 import javafx.animation.AnimationTimer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -556,7 +555,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
         // transcript 콤보박스 설정
             // variant identification transcript data map
 
-        if(!transcriptDataList.isEmpty() && transcriptDataList.size() > 0) {
+        if(!transcriptDataList.isEmpty() && !transcriptDataList.isEmpty()) {
             ObservableList<String> comboItemList = FXCollections.observableArrayList();
             // 콤보박스 아이템 목록 생성
             for(VariantTranscript variantTranscript : transcriptDataList) {
@@ -643,7 +642,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
         deletionRefLabel.setText(deletionRef);
         right22BpLabel.setText(displayRight22Bp.toUpperCase());
 
-        double textLength = displayLeft22Bp.length() + ref.length() + displayRight22Bp.length();
+        double textLength = (double)(displayLeft22Bp.length() + ref.length() + displayRight22Bp.length());
         logger.info("text length : " + textLength);
 
         if(textLength > 21) {
@@ -771,13 +770,13 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
             variantStatisticsGroupTimer.start();
             AnimationTimer variantStatisticsRunTimer1 = new VariantStatisticsTimer(
                     canvasVariantStatisticsRun.getGraphicsContext2D(), variantFrequencyRun, "RUN",
-                    (int) variantFrequencyRunCount + "/" + (int) variantFrequencyRunTotalCount, gaugeSpeed);
+                    variantFrequencyRunCount + "/" + variantFrequencyRunTotalCount, gaugeSpeed);
             AnimationTimer variantStatisticsPanelTimer1 = new VariantStatisticsTimer(
                     canvasVariantStatisticsPanel.getGraphicsContext2D(), variantFrequencyPanel, "PANEL",
-                    (int) variantFrequencyPanelCount + "/" + (int) variantFrequencyPanelTotalCount, gaugeSpeed);
+                    variantFrequencyPanelCount + "/" + variantFrequencyPanelTotalCount, gaugeSpeed);
             AnimationTimer variantStatisticsGroupTimer1 = new VariantStatisticsTimer(
                     canvasVariantStatisticsGroup.getGraphicsContext2D(), variantFrequencyAccount, "GROUP",
-                    (int) variantFrequencyAccountCount + "/" + (int) variantFrequencyAccountTotalCount, gaugeSpeed);
+                    variantFrequencyAccountCount + "/" + variantFrequencyAccountTotalCount, gaugeSpeed);
             canvasVariantStatisticsRun.setOnMouseEntered(event ->
                     variantStatisticsRunTimer1.start());
             canvasVariantStatisticsRun.setOnMouseExited(event ->
@@ -831,15 +830,15 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
         if("variantFrequencyRunVBox".equals(box.getId())) {
             count = (paramMap.containsKey("sameVariantSampleCountInRun")) ? (int) paramMap.get("sameVariantSampleCountInRun") : 0;
             totalCount = (paramMap.containsKey("totalSampleCountInRun")) ? (int) paramMap.get("totalSampleCountInRun") : 0;
-            variantFrequencyRunPercentLabel.setText((int) count + "/" + (int) totalCount);;
+            variantFrequencyRunPercentLabel.setText(count + "/" + totalCount);
         } else if("variantFrequencyPanelVBox".equals(box.getId())) {
             count = (paramMap.containsKey("samePanelSameVariantSampleCountInUsergroup")) ? (int) paramMap.get("samePanelSameVariantSampleCountInUsergroup") : 0;
             totalCount = (paramMap.containsKey("totalSamePanelSampleCountInUsergroup")) ? (int) paramMap.get("totalSamePanelSampleCountInUsergroup") : 0;
-            variantFrequencyPanelPercentLabel.setText((int) count + "/" + (int) totalCount);;
+            variantFrequencyPanelPercentLabel.setText(count + "/" + totalCount);
         } else if("variantFrequencyAccountVBox".equals(box.getId())) {
             count = (paramMap.containsKey("sameVariantSampleCountInUsergroup")) ? (int) paramMap.get("sameVariantSampleCountInUsergroup") : 0;
             totalCount = (paramMap.containsKey("totalSampleCountInUsergroup")) ? (int) paramMap.get("totalSampleCountInUsergroup") : 0;
-            variantFrequencyAccountPercentLabel.setText((int) count + "/" + (int) totalCount);;
+            variantFrequencyAccountPercentLabel.setText(count + "/" + totalCount);
         }
     }
 

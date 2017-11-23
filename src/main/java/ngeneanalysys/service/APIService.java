@@ -81,16 +81,9 @@ public class APIService {
         String connectURL = getConvertConnectURL(url);
         //헤더정보 삽입
         Map<String, Object> headerMap = getDefaultHeaders(true);
-        /*if(headers.isEmpty()) {
-            Iterator<String> keys = headers.keySet().iterator();
-            while(keys.hasNext()) {
-                String key = keys.next();
-                headerMap.put(key, headerMap.get(key).toString());
-            }
-        }*/
+
         if(headers != null && headers.size() > 0) headerMap.putAll(headers);
-        //HttpClientResponse res = HttpClientUtil.get(connectURL, params, headerMap, isJsonRequest);
-        //return res;
+
         return HttpClientUtil.get(connectURL, params, headerMap, isJsonRequest);
     }
 
@@ -108,13 +101,7 @@ public class APIService {
         String connectURL = getConvertConnectURL(url);
         // 헤더 삽입 정보 설정
         Map<String,Object> headerMap = getDefaultHeaders(false);
-        /*if(headers != null && headers.size() > 0) {
-            Iterator<String> keys = headers.keySet().iterator();
-            while (keys.hasNext()) {
-                String key = keys.next();
-                headerMap.put(key, headers.get(key).toString());
-            }
-        }*/
+
         if(headers != null && headers.size() > 0) headerMap.putAll(headers);
         return HttpClientUtil.get(connectURL, params, headerMap, isJsonRequest);
     }
@@ -124,13 +111,7 @@ public class APIService {
         String connectURL = getConvertConnectURL(url);
         // 헤더 삽입 정보 설정
         Map<String,Object> headerMap = getDefaultHeaders(true);
-        /*if(headers != null && headers.size() > 0) {
-            Iterator<String> keys = headers.keySet().iterator();
-            while (keys.hasNext()) {
-                String key = keys.next();
-                headerMap.put(key, headers.get(key).toString());
-            }
-        }*/
+
         if(headers != null && headers.size() > 0) headerMap.putAll(headers);
         return HttpClientUtil.post(connectURL, params, headerMap, isJsonRequest);
     }
@@ -175,16 +156,10 @@ public class APIService {
 
             // 헤더 삽입 정보 설정
             Map<String,Object> headerMap = getDefaultHeaders(true);
-            /*if(headers != null && headers.size() > 0) {
-                Iterator<String> keys = headers.keySet().iterator();
-                while (keys.hasNext()) {
-                    String key = keys.next();
-                    headerMap.put(key, headers.get(key).toString());
-                }
-            }*/
+
             if(headers != null && headers.size() > 0) headerMap.putAll(headers);
 
-                HttpPost post = new HttpPost(connectURL);
+            HttpPost post = new HttpPost(connectURL);
 
             // 지정된 헤더 삽입 정보가 있는 경우 추가
             if(headerMap != null && headerMap.size() > 0) {
@@ -245,13 +220,7 @@ public class APIService {
         String connectURL = getConvertConnectURL(url);
         // 헤더 삽입 정보 설정
         Map<String,Object> headerMap = getDefaultHeaders(true);
-        /*if(headers != null && headers.size() > 0) {
-            Iterator<String> keys = headers.keySet().iterator();
-            while (keys.hasNext()) {
-                String key = keys.next();
-                headerMap.put(key, headers.get(key).toString());
-            }
-        }*/
+
         if(headers != null && headers.size() > 0) headerMap.putAll(headers);
         return HttpClientUtil.put(connectURL, params, headerMap, isJsonRequest);
     }
@@ -261,13 +230,7 @@ public class APIService {
         String connectURL = getConvertConnectURL(url);
         // 헤더 삽입 정보 설정
         Map<String,Object> headerMap = getDefaultHeaders(false);
-        /*if(headers != null && headers.size() > 0) {
-            Iterator<String> keys = headers.keySet().iterator();
-            while (keys.hasNext()) {
-                String key = keys.next();
-                headerMap.put(key, headers.get(key).toString());
-            }
-        }*/
+
         if(headers != null && headers.size() > 0) headerMap.putAll(headers);
         return HttpClientUtil.put(connectURL, params, headerMap, isJsonRequest);
     }
@@ -286,13 +249,7 @@ public class APIService {
         String connectURL = getConvertConnectURL(url);
         // 헤더 삽입 정보 설정
         Map<String,Object> headerMap = getDefaultHeaders(true);
-        /*if(headers != null && headers.size() > 0) {
-            Iterator<String> keys = headers.keySet().iterator();
-            while (keys.hasNext()) {
-                String key = keys.next();
-                headerMap.put(key, headers.get(key).toString());
-            }
-        }*/
+
         if(headers != null && headers.size() > 0) headerMap.putAll(headers);
         return HttpClientUtil.patch(connectURL, params, headerMap, isJsonRequest);
     }
@@ -311,13 +268,7 @@ public class APIService {
         String connectURL = getConvertConnectURL(url);
         // 헤더 삽입 정보 설정
         Map<String,Object> headerMap = getDefaultHeaders(false);
-        /*if(headers != null && headers.size() > 0) {
-            Iterator<String> keys = headers.keySet().iterator();
-            while (keys.hasNext()) {
-                String key = keys.next();
-                headerMap.put(key, headers.get(key).toString());
-            }
-        }*/
+
         if(headers != null && headers.size() > 0) headerMap.putAll(headers);
         return HttpClientUtil.patch(connectURL, params, headerMap, isJsonRequest);
     }
@@ -344,7 +295,7 @@ public class APIService {
     public String getConvertConnectURL(String url) {
         String serverHost = config.getProperty(CommonConstants.DEFAULT_SERVER_HOST_KEY);
         if(!StringUtils.isEmpty(serverHost) && config.getProperty(CommonConstants.DEFAULT_SERVER_HOST_KEY).endsWith("/")) {
-            serverHost = serverHost.substring(0, serverHost.lastIndexOf("/"));
+            serverHost = serverHost.substring(0, serverHost.lastIndexOf('/'));
         }
         return (!url.startsWith("/")) ? serverHost + "/" + url : serverHost + url;
     }

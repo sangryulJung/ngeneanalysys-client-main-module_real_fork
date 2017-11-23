@@ -15,7 +15,7 @@ import java.net.URL;
  * @since 2017-08-04
  */
 public class CacheMemoryService {
-    private final static Logger logger = LoggerUtil.getLogger();
+    private static final Logger logger = LoggerUtil.getLogger();
 
     private CacheManager cacheManager;
 

@@ -56,8 +56,6 @@ public class SystemMenuEditController extends SubPaneController {
 
     private Stage dialogStage;
 
-    /** 현재 사용중인 비밀번호 */
-    private String currentPwd;
     /** 사용자 정보 */
     private User user;
     /** api 서비스 */
@@ -75,7 +73,6 @@ public class SystemMenuEditController extends SubPaneController {
 
         // 현재 로그인 세션 정보 조회
         loginSession = LoginSessionUtil.getCurrentLoginSession();
-        //currentPwd = loginSession.getUser().getLoginPassword();
 
         // Create the dialog Stage
         dialogStage = new Stage();
@@ -87,15 +84,6 @@ public class SystemMenuEditController extends SubPaneController {
             dialogStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
         }
         dialogStage.initOwner(getMainApp().getPrimaryStage());
-
-        // 현재 비밀번호 입력란 포커스 이동시 리스너 바인딩
-        /*currentPasswordField.focusedProperty().addListener((ov, t, t1) -> {
-                if(!t1) {	// focus out
-                    if(!StringUtils.isEmpty(currentPasswordField.getText())) {
-                        validCurrentPwdInput();
-                    }
-                }
-        });*/
 
         // 새 비밀번호 입력란 포커스 이동시 리스너 바인딩
         newPasswordField.focusedProperty().addListener((ov, t,t1) -> {
@@ -115,9 +103,6 @@ public class SystemMenuEditController extends SubPaneController {
                 }
         });
         try {
-            // 사용자 정보 조회
-            Map<String, Object> params = new HashMap<>();
-
             HttpClientResponse response = apiService.get("/members/" + loginSession.getId(), getParamMap(), null,
                     false);
 

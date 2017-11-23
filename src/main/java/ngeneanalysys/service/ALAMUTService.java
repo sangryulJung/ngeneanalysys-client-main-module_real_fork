@@ -26,7 +26,7 @@ public class ALAMUTService {
     private ALAMUTService() {}
 
     private static class ALAMUTHelper{
-        private ALAMUTHelper(){};
+        private ALAMUTHelper(){}
         private static final ALAMUTService INSTANCE = new ALAMUTService();
     }
 
@@ -49,7 +49,7 @@ public class ALAMUTService {
      * 어플리케이션 연결가능한지 체크 여부
      * @return
      */
-    public boolean isConnect() { ;
+    public boolean isConnect() {
         try (Socket socket = new Socket()){
             socket.connect(new InetSocketAddress("localhost", alamutPort), 500);
             logger.info("alamut connect socket : " + socket);
@@ -71,7 +71,7 @@ public class ALAMUTService {
             if(isConnect()) {
                 requestAlamutURL(transcript, cDNA, sampleId, bamFileName);
             } else {
-                StringBuffer sb = new StringBuffer();
+                StringBuilder sb = new StringBuilder();
                 sb.append("To use this feature, first check that the external software tool you are using enables such communication with Alamut® Visual (see list below).");
                 sb.append("\n\n");
                 sb.append("Second, in the Options dialog box (menu 'Tools' > 'Options' > 'API' tab), check the 'Local HTTP Server Port' option and possibly change the port according to the external software specifications. Then restart Alamut® Visual ");

@@ -107,11 +107,6 @@ public class SystemManagerHomeController extends SubPaneController {
                             systemManagerUserAccountController.setMainController(this.getMainController());
                             systemManagerUserAccountController.show((Parent) node);
                             break;
-                        /*case FXMLConstants.SYSTEM_MANAGER_SERVER_STATUS:
-                            systemManagerServerStatusController = loader.getController();
-                            systemManagerServerStatusController.setMainController(this.getMainController());
-                            systemManagerServerStatusController.show((Parent) node);
-                            break;*/
                         case FXMLConstants.SYSTEM_MANAGER_LOG_LIST:
                             systemManagerSystemLogsController = loader.getController();
                             systemManagerSystemLogsController.setMainController(this.getMainController());

@@ -68,7 +68,5 @@ public class BedFileUploadTask extends Task {
     @Override
     protected void succeeded() {
         logger.info("bed bedFile upload task complete");
-
-        //controller.removeProgressTaskItemById(progressBoxId);
     }
 }

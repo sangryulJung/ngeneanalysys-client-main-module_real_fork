@@ -1,8 +1,6 @@
 package ngeneanalysys.service;
 
-import javafx.concurrent.Task;
 import ngeneanalysys.exceptions.WebAPIException;
-import ngeneanalysys.task.AnalysisSampleUploadTask;
 import ngeneanalysys.task.FileUploadTask;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
@@ -12,7 +10,6 @@ import org.apache.http.HttpEntity;
 import org.apache.http.client.entity.EntityBuilder;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;

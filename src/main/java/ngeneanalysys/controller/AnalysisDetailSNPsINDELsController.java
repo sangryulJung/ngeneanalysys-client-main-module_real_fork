@@ -22,7 +22,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Callback;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.*;
@@ -423,7 +422,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             // 하단 탭 활성화 토글
             setDetailTabActivationToggle(true);
 
-            if (list != null && list.size() > 0) {
+            if (list != null && !list.isEmpty()) {
                 displayList = FXCollections.observableArrayList(list);
                 logger.info(displayList.size() + "");
             }
@@ -1002,8 +1001,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             TableColumn<AnalysisResultVariant, String> swPathogenicityLevel = new TableColumn<>("Pathogenic");
             swPathogenicityLevel.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSwPathogenicityLevel()));
             swPathogenicityLevel.setPrefWidth(55);
-            swPathogenicityLevel.setCellFactory(param -> {
-                TableCell<AnalysisResultVariant,String> cell = new TableCell<AnalysisResultVariant, String>() {
+            swPathogenicityLevel.setCellFactory(param -> new TableCell<AnalysisResultVariant, String>() {
                     @Override
                     public void updateItem(String item, boolean empty) {
                         Label label = null;
@@ -1018,9 +1016,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                         }
                         setGraphic(label);
                     }
-                };
-                return cell;
-            });
+                });
 
             TableColumn<AnalysisResultVariant, String> expertPathogenicityLevel = new TableColumn<>("Pathogenic(User)");
             expertPathogenicityLevel.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getExpertPathogenicityLevel()));
@@ -1031,23 +1027,17 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         TableColumn<AnalysisResultVariant, String> warn = new TableColumn<>("Warn");
         warn.getStyleClass().add("alignment_center");
         warn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getHasWarning()));
-        warn.setCellFactory((param) -> {
-                TableCell<AnalysisResultVariant,String> cell = new TableCell<AnalysisResultVariant, String>() {
+        warn.setCellFactory(param -> new TableCell<AnalysisResultVariant, String>() {
                     @Override
                     public void updateItem(String item, boolean empty) {
                         setGraphic((!StringUtils.isEmpty(item)) ? SNPsINDELsList.getWarningReasonPopOver(item) : null);
                     }
-                };
-                return cell;
-        });
+                });
 
         TableColumn<AnalysisResultVariant, String> report = new TableColumn<>("Report");
         report.getStyleClass().add("alignment_center");
         report.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getIncludedInReport()));
-        report.setCellFactory(new Callback<TableColumn<AnalysisResultVariant, String>, TableCell<AnalysisResultVariant, String>>() {
-            @Override
-            public TableCell<AnalysisResultVariant, String> call(TableColumn<AnalysisResultVariant, String> param) {
-                TableCell<AnalysisResultVariant,String> cell = new TableCell<AnalysisResultVariant, String>() {
+        report.setCellFactory(param -> new TableCell<AnalysisResultVariant, String>() {
                     @Override
                     public void updateItem(String item, boolean empty) {
                         Label label = null;
@@ -1058,10 +1048,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                         }
                         setGraphic(label);
                     }
-                };
-                return cell;
-            }
-        });
+                });
 
         TableColumn<AnalysisResultVariant, String> type = new TableColumn<>("Type");
         type.getStyleClass().clear();

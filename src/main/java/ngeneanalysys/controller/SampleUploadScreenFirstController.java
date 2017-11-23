@@ -1,9 +1,6 @@
 package ngeneanalysys.controller;
 
 import javafx.fxml.FXML;
-import javafx.geometry.HPos;
-import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -119,7 +116,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             if(row > 22) break;
 
             sampleNameTextFieldList.get(row).setText(sample.getName());
-            patientIdTextFieldList.get(row).setText((sample.getPaitentId() != null) ? sample.getPaitentId().toString() : "");
+            patientIdTextFieldList.get(row).setText((sample.getPaitentId() != null) ? sample.getPaitentId() : "");
 
             if(sample.getDiseaseId() != null) {
                 ComboBox<ComboBoxItem> disease = diseaseComboBoxList.get(row);
@@ -228,7 +225,8 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             for(Diseases diseases : diseases) {
                 List<Integer> diseaseIds = panelDetail.getDiseaseIds();
                 if(diseaseIds != null && !diseaseIds.isEmpty() &&
-                        diseaseIds.stream().filter(diseaseId -> diseaseId.equals(diseases.getId())).findFirst().isPresent())
+                        //diseaseIds.stream().filter(diseaseId -> diseaseId.equals(diseases.getId())).findFirst().isPresent())
+                        diseaseIds.stream().anyMatch(diseaseId -> diseaseId.equals(diseases.getId())))
                     diseaseComboBox.getItems().add(new ComboBoxItem(diseases.getId().toString(), diseases.getName()));
             }
 

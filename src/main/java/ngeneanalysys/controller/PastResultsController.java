@@ -432,7 +432,7 @@ public class PastResultsController extends SubPaneController {
 	 * @param list
 	 */
 	public void renderSampleList(List<SampleView> list) {
-		if (list != null && list.size() > 0) {
+		if (list != null && !list.isEmpty()) {
 			for(int idx = 0; idx < list.size(); idx++) {
 				SampleView sample = list.get(idx);
 				sampleNameFields.get(idx).setSampleView(sample);
@@ -776,7 +776,7 @@ public class PastResultsController extends SubPaneController {
 				title.getStyleClass().add("txt_gray_656565");
 				percentageLabel.getStyleClass().add("font_size_12");
 				percentageLabel.getStyleClass().add("weight_bold");
-				percentageLabel.getStyleClass().add("txt_black");;
+				percentageLabel.getStyleClass().add("txt_black");
 				contents.getStyleClass().add("font_size_11");
 				contents.getStyleClass().add("txt_gray_656565");
 				box.getChildren().addAll(title, percentageLabel, contents);

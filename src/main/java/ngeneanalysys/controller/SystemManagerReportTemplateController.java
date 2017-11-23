@@ -210,7 +210,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                 }
             }
 
-            logger.info(String.format("total count : %s, page count : %s", totalCount, pageCount));
+            logger.info("total count : %s, page count : %s", totalCount, pageCount);
 
             if (pageCount > 0) {
                 reportTemplatePagination.setVisible(true);
@@ -314,7 +314,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
         List<File> imageList = fileChooser.showOpenMultipleDialog(mainController.getPrimaryStage());
 
         if(imageList != null && !imageList.isEmpty()) {
-            if(this.imageList.size() == 0) {
+            if(this.imageList.isEmpty()) {
                 this.imageList.addAll(imageList);
             } else {
                 for (File image : imageList) {

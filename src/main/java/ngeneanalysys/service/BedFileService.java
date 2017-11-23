@@ -7,7 +7,6 @@ import ngeneanalysys.util.httpclient.HttpClientUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -24,7 +23,7 @@ import java.util.Map;
  * @since 2017-10-13
  */
 public class BedFileService {
-    private static Logger logger = LoggerUtil.getLogger();
+    private static final Logger logger = LoggerUtil.getLogger();
 
     private APIService apiService;
 

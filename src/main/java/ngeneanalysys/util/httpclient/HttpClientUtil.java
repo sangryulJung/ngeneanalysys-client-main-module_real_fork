@@ -555,7 +555,7 @@ public class HttpClientUtil {
 	 * @return
 	 */
 	public static List<NameValuePair> convertParam(Map<String, Object> params) {
-		List<NameValuePair> paramList = new ArrayList<NameValuePair>();
+		List<NameValuePair> paramList = new ArrayList<>();
 		if (params != null && params.size() > 0) {
 			Iterator<String> keys = params.keySet().iterator();
 			while (keys.hasNext()) {
@@ -576,7 +576,7 @@ public class HttpClientUtil {
 		try {
 			BufferedReader rd = new BufferedReader(new InputStreamReader(content));
 			String line;
-			StringBuffer sb = new StringBuffer();
+			StringBuilder sb = new StringBuilder();
 			while ((line = rd.readLine()) != null) {
 				sb.append(line);
 			}

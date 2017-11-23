@@ -28,7 +28,7 @@ import java.util.Map;
  * @since 2017-09-06
  */
 public class GroupAddController extends SubPaneController{
-    private static Logger logger = LoggerUtil.getLogger();
+    private static final Logger logger = LoggerUtil.getLogger();
 
     private Stage dialogStage;
 

@@ -59,7 +59,7 @@ public class HttpClientResponse {
 				ObjectMapper mapper = new ObjectMapper();
 				mapper.registerModule(new JodaModule());
 				List<Class<T>> list = mapper.readValue(response, mapper.getTypeFactory().constructCollectionType(List.class, valueType));
-				if(list != null && list.size() > 0) {
+				if(list != null && !list.isEmpty()) {
 					if(isConvertObservableList) {
 						return (T) FXCollections.observableArrayList(list);
 					} else {

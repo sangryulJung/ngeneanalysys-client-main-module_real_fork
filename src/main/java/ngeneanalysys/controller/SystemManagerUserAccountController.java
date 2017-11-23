@@ -46,9 +46,6 @@ import java.util.Optional;
 public class SystemManagerUserAccountController extends SubPaneController{
     private static Logger logger = LoggerUtil.getLogger();
 
-    /** Resource Util */
-    //protected ResourceUtil resourceUtil = new ResourceUtil();
-
     @FXML
     private TableView<User> userListTable;
 
@@ -425,8 +422,6 @@ public class SystemManagerUserAccountController extends SubPaneController{
         HttpClientResponse response = null;
 
         try {
-            Map<String, Object> param = new HashMap<>();
-
             response = apiService.get("/admin/memberGroups", null, null, false);
             logger.info(response.getContentString());
             if(response != null) {

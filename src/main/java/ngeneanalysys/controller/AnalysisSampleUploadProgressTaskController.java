@@ -37,7 +37,7 @@ import javafx.stage.Window;
  * @since 2016. 5. 26. 오후 8:46:26
  */
 public class AnalysisSampleUploadProgressTaskController extends SubPaneController {
-	private static Logger logger = LoggerUtil.getLogger();
+	private static final Logger logger = LoggerUtil.getLogger();
 	
 	/** 현재 진행중인 그룹명 출력 라벨 */
 	@FXML
@@ -240,7 +240,7 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 		alert.setContentText("Do you want to cancel analysis request?");
 
 		Optional<ButtonType> result = alert.showAndWait();
-		if (result.get() == ButtonType.OK){
+		if (result.isPresent() && result.get() == ButtonType.OK){
 			// 작업 일시 정지 처리.
 			isPause = true;
 			// 작업 정지 처리

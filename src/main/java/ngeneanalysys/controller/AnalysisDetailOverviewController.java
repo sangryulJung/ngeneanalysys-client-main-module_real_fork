@@ -152,8 +152,11 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         Sample sample = (Sample) getParamMap().get("sample");
 
         List<Diseases> diseases = (List<Diseases>) mainController.getBasicInformationMap().get("diseases");
-        String diseaseName = diseases.stream().filter(disease -> disease.getId() == sample.getDiseaseId()).findFirst().get().getName();
-        diseaseLabel.setText(diseaseName);
+        Optional<Diseases> diseasesOptional = diseases.stream().filter(disease -> disease.getId() == sample.getDiseaseId()).findFirst();
+        if(diseasesOptional.isPresent()) {
+            String diseaseName = diseasesOptional.get().getName();
+            diseaseLabel.setText(diseaseName);
+        }
 
         //Tier Table Setting
         tierColumn.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.tierConvert(cellData.getValue().getSwTier())));

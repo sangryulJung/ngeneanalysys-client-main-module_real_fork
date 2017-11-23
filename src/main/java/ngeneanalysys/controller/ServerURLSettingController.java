@@ -61,7 +61,7 @@ public class ServerURLSettingController extends BaseStageController{
         if(StringUtils.isEmpty(inputURL.getText())) {
             DialogUtil.warning("Empty Server URL", "Please Enter the Server URL Text", this.mainApp.getPrimaryStage(), true);
         } else {
-            int status = 200;//serverURLManageService.isValidURL(inputURL.getText());
+            int status = serverURLManageService.isValidURL(inputURL.getText());
             if(status < 200 || status >= 300) {
                 String msgHeader = "Incorrect URL.";
                 String msgContents = "Please Enter the New Server URL Text";

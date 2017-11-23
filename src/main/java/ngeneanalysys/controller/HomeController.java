@@ -5,7 +5,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
@@ -13,9 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
@@ -28,14 +25,11 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-import static java.lang.Double.MAX_VALUE;
-import static java.lang.Thread.sleep;
 import static ngeneanalysys.code.AnalysisJobStatusCode.*;
 
 /**
@@ -179,7 +173,7 @@ public class HomeController extends SubPaneController{
                     //showSampleList(run.getId(), 0);
                     selectRunList(maxRunNumberOfPage, Optional.of((Node)e.getSource()));
                     if(e.getClickCount() == 1) {
-                        sampleListPagination.setPageFactory((page) -> {
+                        sampleListPagination.setPageFactory(page -> {
                             showSampleList(run.getId(), page);
                             currentRunId = run.getId();
                             currentPage = page;
@@ -337,7 +331,7 @@ public class HomeController extends SubPaneController{
             return getPagedSample;
         });
         try {
-            List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");//getPanels.get();
+            List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
             Map<Integer, Panel> mapPanels = panels.stream().collect(Collectors.toMap(Panel::getId, p -> p));
             PagedSample pagedSample = getPagedSample.get();
             runningSampleAnalysisJobCount.setText(
@@ -392,7 +386,7 @@ public class HomeController extends SubPaneController{
                 logger.info(run.toString());
                 testAddSamples(run.getId());
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
         }
     }
@@ -449,7 +443,7 @@ public class HomeController extends SubPaneController{
                 }
                 logger.info(sample.toString());
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
         }
 

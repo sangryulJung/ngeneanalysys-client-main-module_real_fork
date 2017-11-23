@@ -194,13 +194,9 @@ public class SampleUploadController extends BaseStageController{
         FXMLLoader loader = null;
         VBox box = null;
         sequencerType.setUserData(SequencerCode.MISEQ_DX.getDescription());
-        sequencerMiSeqDXRadioButton.setOnAction(ev ->{
-            sequencerType.setUserData(SequencerCode.MISEQ_DX.getDescription());
-        });
+        sequencerMiSeqDXRadioButton.setOnAction(ev -> sequencerType.setUserData(SequencerCode.MISEQ_DX.getDescription()));
 
-        sequencerMiSeqRadioButton.setOnAction(ev ->{
-            sequencerType.setUserData(SequencerCode.MISEQ.getDescription());
-        });
+        sequencerMiSeqRadioButton.setOnAction(ev -> sequencerType.setUserData(SequencerCode.MISEQ.getDescription()));
 
         switch (scene) {
             case 1 :

@@ -2,7 +2,6 @@ package ngeneanalysys.task;
 
 import javafx.concurrent.Task;
 import ngeneanalysys.controller.MainController;
-import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.ImageUploadService;
 import ngeneanalysys.util.LoggerUtil;
 import org.slf4j.Logger;
@@ -23,12 +22,9 @@ public class ReportImageFileUploadTask extends Task {
 
     private MainController mainController;
 
-    private APIService apiService = null;
-
     ImageUploadService imageUploadService;
 
     public ReportImageFileUploadTask(List<File> list, int templateId, MainController mainController) {
-        apiService = APIService.getInstance();
         this.list = list;
         this.templateId = templateId;
         this.mainController = mainController;

@@ -10,25 +10,21 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import ngeneanalysys.code.AnalysisJobStatusCode;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
-import ngeneanalysys.model.RunGroupForPaging;
 import ngeneanalysys.model.Sample;
 import ngeneanalysys.model.VariantCountByGene;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -184,7 +180,7 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
         if(event.getClickCount() == 2) {
             String obj = geneTable.getSelectionModel().getSelectedCells().get(0).getTableColumn().getText();
             VariantCountByGene gene = geneTable.getSelectionModel().getSelectedItem();
-            logger.info(obj.toString() + " gene : " + gene.getGeneSymbol());
+            logger.info(obj + " gene : " + gene.getGeneSymbol());
         }
     }
 

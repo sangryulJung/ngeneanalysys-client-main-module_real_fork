@@ -133,9 +133,7 @@ public class ImageFileDownloadTask extends Task {
      */
     @Override
     protected void failed() {
-        //logger.error(String.format("download task fail!! [original : %s, save : %s]", anlysisResultFile.getName(), saveFile.getName()));
         controller.getMainController().removeProgressTaskItemById(progressBoxId);
-        //DialogUtil.error("Failed Application Update File Download.", "An error occurred during download.\n file : " + saveFile.getName(), this.controller.getMainController().getPrimaryStage(), false);
     }
 
     /**
@@ -143,27 +141,8 @@ public class ImageFileDownloadTask extends Task {
      */
     @Override
     protected void succeeded() {
-        //logger.info(String.format("download task complete [original : %s, save : %s]", analysisResultFile.getName(), saveFile.getName()));
         controller.getMainController().removeProgressTaskItemById(progressBoxId);
 
-        /*try {
-            // 다운로드 파일 실행 여부 확인
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.initOwner(this.controller.getMainController().getPrimaryStage());
-            alert.setWidth(500);
-            alert.setTitle("Confirmation Dialog");
-            alert.setHeaderText("File downloading was completed.");
-            alert.setContentText(String.format("Do you want to check the downloaded File?\n[Filename : %s]\n ", saveFile.getName()));
-
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.OK){
-                controller.getMainApp().getHostServices().showDocument(saveFile.toURI().toURL().toExternalForm());
-            } else {
-                alert.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
     }
 
 }

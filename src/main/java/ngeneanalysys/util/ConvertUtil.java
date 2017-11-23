@@ -97,7 +97,7 @@ public class ConvertUtil {
 		if(text == null) {
 			return "";
 		} else if( text.length() > splitLength) {
-			StringBuffer buf = new StringBuffer();
+			StringBuilder buf = new StringBuilder();
 			for(int i = 0; i < text.length(); i += splitLength){
 				if(i + splitLength > text.length()) {
 					buf.append(text.substring(i, text.length()));

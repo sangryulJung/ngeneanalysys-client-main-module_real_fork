@@ -29,7 +29,6 @@ public class VelocityUtil {
 	public void init() {
 		logger.info("Init Velocity Engine");
 		engine = new VelocityEngine();
-		//engine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
 		engine.setProperty(RuntimeConstants.RESOURCE_LOADER, "file,classpath");
 		engine.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
 		engine.setProperty("file.resource.loader.class", FileResourceLoader.class.getName());

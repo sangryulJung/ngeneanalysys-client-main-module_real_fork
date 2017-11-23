@@ -198,7 +198,6 @@ public class MainController extends BaseStageController {
         //로그인 사용자 세션
         LoginSession loginSession = LoginSessionUtil.getCurrentLoginSession();
         String role = loginSession.getRole();
-        //String loginId = loginSession.getLoginId();
 
         //우상단 로그인 사용자명 삽입
         loginUserName.setText(loginSession.getName());
@@ -257,7 +256,7 @@ public class MainController extends BaseStageController {
                 params.put("skipOtherGroup", "true");
             }
             response = apiService.get("/panels", params, null, false);
-            final PagedPanel panels = (PagedPanel) response.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
+            final PagedPanel panels = response.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
             basicInformationMap.put("panels", panels.getResult());
 
             response = apiService.get("/diseases", null, null, false);

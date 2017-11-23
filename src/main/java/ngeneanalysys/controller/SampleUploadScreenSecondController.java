@@ -26,7 +26,7 @@ import java.util.Optional;
  * @since 2017-08-10
  */
 public class SampleUploadScreenSecondController extends BaseStageController{
-    private static Logger logger = LoggerUtil.getLogger();
+    private static final Logger logger = LoggerUtil.getLogger();
 
     /** 메인 화면 컨트롤러 객체 */
     private MainController mainController;
@@ -159,7 +159,7 @@ public class SampleUploadScreenSecondController extends BaseStageController{
                 tableEdit();
 
             } catch (IOException e) {
-
+                e.printStackTrace();
             }
 
         }

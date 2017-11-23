@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
  * @since 2017-08-07
  */
 public class ServerURLManageService {
-    private final static Logger logger = LoggerUtil.getLogger();
+    private static final Logger logger = LoggerUtil.getLogger();
 
     /**
      * 인스턴스 생성 제한

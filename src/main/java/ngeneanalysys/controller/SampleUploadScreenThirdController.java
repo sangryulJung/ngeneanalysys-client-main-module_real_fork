@@ -68,26 +68,21 @@ public class SampleUploadScreenThirdController extends BaseStageController {
 
             ComboBox<ComboBoxItem>  dnaQc = new ComboBox<>();
             qcSetting(dnaQc);
-            //if(sample.getQcData() != null && "Fail".equals(sample.getQcData().getDnaQC()))
 
             ComboBox<ComboBoxItem>  libraryQc = new ComboBox<>();
             qcSetting(libraryQc);
-            //if(sample.getQcData() != null && "Fail".equals(sample.getQcData().getLibraryQC()))
 
             ComboBox<ComboBoxItem>  seqClusterDensity = new ComboBox<>();
             qcSetting(seqClusterDensity);
 
             ComboBox<ComboBoxItem>  seqQ30 = new ComboBox<>();
             qcSetting(seqQ30);
-            //if(sample.getQcData() != null && "Fail".equals(sample.getQcData().getSeqQ30()))
 
             ComboBox<ComboBoxItem>  seqClusterPF = new ComboBox<>();
             qcSetting(seqClusterPF);
-            //if(sample.getQcData() != null && "Fail".equals(sample.getQcData().getSeqClusterPF()))
 
             ComboBox<ComboBoxItem>  seqIndexingPFCV = new ComboBox<>();
             qcSetting(seqIndexingPFCV);
-            //if(sample.getQcData() != null && "Fail".equals(sample.getQcData().getSeqIndexingPFCV()))
 
             qcGridPane.addRow(row, sampleName, dnaQc, libraryQc, seqClusterDensity, seqQ30, seqClusterPF, seqIndexingPFCV);
         }

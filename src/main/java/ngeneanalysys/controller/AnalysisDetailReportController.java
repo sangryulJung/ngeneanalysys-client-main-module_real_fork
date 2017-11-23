@@ -199,13 +199,19 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         logger.info(sample.toString());
 
         List<Diseases> diseases = (List<Diseases>) mainController.getBasicInformationMap().get("diseases");
-        String diseaseName = diseases.stream().filter(disease -> disease.getId() == sample.getDiseaseId()).findFirst().get().getName();
-        diseaseLabel.setText(diseaseName);
+        Optional<Diseases> diseasesOptional = diseases.stream().filter(disease -> disease.getId() == sample.getDiseaseId()).findFirst();
+        if(diseasesOptional.isPresent()) {
+            String diseaseName = diseasesOptional.get().getName();
+            diseaseLabel.setText(diseaseName);
+        }
 
         List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
-        panel = panels.stream().filter(panel -> panel.getId().equals(sample.getPanelId())).findFirst().get();
-        String panelName = panel.getName();
-        panelLabel.setText(panelName);
+        Optional<Panel> panelOptional = panels.stream().filter(panelItem -> panelItem.getId().equals(sample.getPanelId())).findFirst();
+        if(panelOptional.isPresent()) {
+            panel = panelOptional.get();
+            String panelName = panel.getName();
+            panelLabel.setText(panelName);
+        }
 
         HttpClientResponse response = null;
         try {
@@ -251,7 +257,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         String type = item.get("variableType");
                         if(type.equalsIgnoreCase("Date")) {
                             DatePicker datePicker = new DatePicker();
-                            //datePicker.getStyleClass().add("txt_black");
                             datePicker.setStyle("-fx-text-inner-color: black;");
                             datePicker.setId(key);
                             customFieldGridPane.add(datePicker, colIndex++, rowIndex);
@@ -583,12 +588,12 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         String path = "url('file:/" + CommonConstants.BASE_FULL_PATH  + File.separator + "fop" + File.separator + image.getReportTemplateId()
                                 + File.separator + image.getName() + "')";
                         path = path.replaceAll("\\\\", "/");
-                        String name = image.getName().substring(0, image.getName().indexOf("."));
-                        logger.info(name + " : "  + path);
+                        String name = image.getName().substring(0, image.getName().lastIndexOf('.'));
+                        logger.info("%s : %s", name, path);
                         model.put(name, path);
                     }
 
-                    String path = FileUtil.saveVMFile(reportContents.getReportTemplate());
+                    FileUtil.saveVMFile(reportContents.getReportTemplate());
 
                     Task task = new ImageFileDownloadTask(this, reportContents.getReportImages());
 
@@ -600,6 +605,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
                     task.setOnSucceeded(ev -> {
                         try {
+                            //이미지파일이 모두 다운로드 되었다면 PDF 파일을 생성함
                             final boolean created1 = pdfCreateService.createPDF(file, contents1);
                             createdCheck(created1, file);
                         } catch (Exception e) {
@@ -632,7 +638,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 alert.setContentText("Do you want to check the report document?");
 
                 Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == ButtonType.OK) {
+                if (result.isPresent() && result.get() == ButtonType.OK) {
                     getMainApp().getHostServices().showDocument(file.toURI().toURL().toExternalForm());
                 } else {
                     alert.close();

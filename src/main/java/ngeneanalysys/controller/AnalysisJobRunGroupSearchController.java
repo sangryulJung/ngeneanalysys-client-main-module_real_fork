@@ -135,8 +135,7 @@ public class AnalysisJobRunGroupSearchController extends BaseStageController {
         columnPlatform.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequencingPlatform()));
         columnRequestDate.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCreatedAt().toString()));
         columnSelect.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue() != null));
-        columnSelect.setCellFactory(param -> {
-                TableCell<Run,Boolean> cell = new TableCell<Run, Boolean>() {
+        columnSelect.setCellFactory(param -> new TableCell<Run, Boolean>() {
                     @Override
                     public void updateItem(Boolean value, boolean empty) {
                         if(!empty) {
@@ -152,9 +151,7 @@ public class AnalysisJobRunGroupSearchController extends BaseStageController {
                             setGraphic(null);
                         }
                     }
-                };
-                return cell;
-        });
+                });
 
         // 페이지 이동 이벤트 바인딩
         paginationList.setPageFactory(pageIndex -> {

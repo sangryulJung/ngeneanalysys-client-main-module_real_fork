@@ -5,6 +5,9 @@ package ngeneanalysys.code;
  * @since 2017-09-06
  */
 public class LogStatusCode {
+    private LogStatusCode() {
+        throw new IllegalStateException("Utility class");
+    }
     public static final String LOG_TYPE_CREATE = "CREATE";
     public static final String LOG_TYPE_READ = "READ";
     public static final String LOG_TYPE_UPDATE = "UPDATE";
