@@ -123,6 +123,12 @@ public class SystemManagerReportTemplateController extends SubPaneController{
 
     private String selectedVariableName = null;
 
+    //삭제할 이미지 모음
+    private List<ReportImage> deleteImageList = new ArrayList<>();
+
+    //기존 이미지 모음
+    private List<ReportImage> currentImageList = new ArrayList<>();
+
     @Override
     public void show(Parent root) throws IOException {
         logger.info("system manager report template init");
@@ -210,7 +216,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                 }
             }
 
-            logger.info("total count : %s, page count : %s", totalCount, pageCount);
+            logger.info("total count : " + totalCount + ", page count : " + pageCount);
 
             if (pageCount > 0) {
                 reportTemplatePagination.setVisible(true);
@@ -269,6 +275,12 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                 } else {
                     response = apiService.put("admin/reportTemplate/" + id, param, null, true);
                     id = 0;
+
+                    if(!deleteImageList.isEmpty()) {
+                        for(ReportImage deleteImage : deleteImageList) {
+                            apiService.delete("admin/reportImage/" + deleteImage.getId());
+                        }
+                    }
                 }
 
                 ReportTemplate reportTemplate = response.getObjectBeforeConvertResponseToJSON(ReportTemplate.class);
@@ -382,13 +394,19 @@ public class SystemManagerReportTemplateController extends SubPaneController{
 
     @FXML
     public void removeImage() {
-        if(imageList != null && !imageList.isEmpty()) {
+        if((imageList != null && !imageList.isEmpty()) || (currentImageList != null && !currentImageList.isEmpty())) {
             String imageName = imageListComboBox.getSelectionModel().getSelectedItem();
 
             if(!StringUtils.isEmpty(imageName)) {
-                Optional<File> deleteFile = imageList.stream().filter(item -> imageName.equals(item.getName())).findFirst();
-                if(deleteFile.isPresent()) {
-                    imageList.remove(deleteFile.get());
+                Optional<ReportImage> currentImageOptional = currentImageList.stream().filter(currentImage -> currentImage.getName().equals(imageName)).findFirst();
+                if(currentImageOptional.isPresent()) {
+                    deleteImageList.add(currentImageOptional.get());
+                    currentImageList.remove(currentImageOptional.get());
+                } else {
+                    Optional<File> deleteFile = imageList.stream().filter(item -> imageName.equals(item.getName())).findFirst();
+                    if (deleteFile.isPresent()) {
+                        imageList.remove(deleteFile.get());
+                    }
                 }
 
                 imageListComboBox.getItems().remove(imageName);
@@ -411,8 +429,15 @@ public class SystemManagerReportTemplateController extends SubPaneController{
 
     public void settingImageListComboBox() {
         imageListComboBox.getItems().removeAll(imageListComboBox.getItems());
+        //새로 추가하는 이미지 리스트
         if(imageList != null && !imageList.isEmpty()) {
             for(File image : imageList) {
+                imageListComboBox.getItems().add(image.getName());
+            }
+        }
+        //기존에 존재하던 이미지 리스트
+        if(currentImageList != null && !currentImageList.isEmpty()) {
+            for(ReportImage image : currentImageList) {
                 imageListComboBox.getItems().add(image.getName());
             }
         }
@@ -436,6 +461,8 @@ public class SystemManagerReportTemplateController extends SubPaneController{
         displayNameTextField.setText("");
         variableTypeComboBox.getItems().removeAll(variableTypeComboBox.getItems());
         variableListComboBox.getItems().removeAll(variableListComboBox.getItems());
+        deleteImageList.clear();
+        currentImageList.clear();
         imageListComboBox.getItems().removeAll(imageListComboBox.getItems());
         imageList.clear();
         variableList.clear();
@@ -491,11 +518,8 @@ public class SystemManagerReportTemplateController extends SubPaneController{
 
                     List<ReportImage> imageList = reportContents.getReportImages();
                     //이미지 리스트 설정
-                    if(imageList != null && !imageList.isEmpty()) {
-                        for(ReportImage image : imageList) {
-
-                        }
-                    }
+                    currentImageList.addAll(imageList);
+                    settingImageListComboBox();
 
                 } catch (WebAPIException wae) {
                     DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainApp.getPrimaryStage(), true);

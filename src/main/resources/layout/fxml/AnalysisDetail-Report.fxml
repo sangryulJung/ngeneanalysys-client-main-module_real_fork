@@ -19,24 +19,21 @@
    <columnConstraints>
       <ColumnConstraints maxWidth="-Infinity" minWidth="-Infinity" prefWidth="20.0" />
       <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" prefWidth="405.0" />
-      <ColumnConstraints maxWidth="-Infinity" minWidth="-Infinity" prefWidth="10.0" />
-      <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" minWidth="-Infinity" prefWidth="405.0" />
-      <ColumnConstraints maxWidth="-Infinity" minWidth="-Infinity" prefWidth="10.0" />
-      <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" minWidth="-Infinity" prefWidth="405.0" />
       <ColumnConstraints maxWidth="-Infinity" minWidth="-Infinity" prefWidth="20.0" />
+      <ColumnConstraints />
+      <ColumnConstraints />
+      <ColumnConstraints />
    </columnConstraints>
    <rowConstraints>
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="15.0" />
       <RowConstraints maxHeight="95.60000610351562" minHeight="10.0" prefHeight="44.55555725097656" valignment="BOTTOM" />
       <RowConstraints maxHeight="95.60000610351562" minHeight="-Infinity" prefHeight="77.44444274902344" valignment="BOTTOM" />
       <RowConstraints minHeight="-Infinity" prefHeight="134.0" vgrow="ALWAYS" />
-      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" valignment="BOTTOM" />
-      <RowConstraints minHeight="-Infinity" prefHeight="134.0" vgrow="ALWAYS" />
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" valignment="BOTTOM" />
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="15.0" />
    </rowConstraints>
    <children>
-      <HBox fx:id="workBtnBox" alignment="BOTTOM_RIGHT" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="BOTTOM">
+      <HBox fx:id="workBtnBox" alignment="BOTTOM_RIGHT" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="BOTTOM">
          <children>
             <Button mnemonicParsing="false" onAction="#save" prefHeight="35.0" prefWidth="95.0" styleClass="btn_patient_search1" text="Save" GridPane.columnIndex="5" GridPane.rowIndex="7" />
             <Button layoutX="1155.0" layoutY="20.0" mnemonicParsing="false" onAction="#createPDFAsDraft" prefHeight="35.0" prefWidth="150.0" styleClass="btn_create_draft_report" text="Create Draft Report">
@@ -47,16 +44,16 @@
             <Button layoutX="1155.0" layoutY="20.0" mnemonicParsing="false" onAction="#createPDFAsFinal" prefHeight="35.0" prefWidth="150.0" styleClass="btn_create_final_report" text="Create Final Report" />
          </children>
       </HBox>
-      <HBox fx:id="completeBtnBox" alignment="BOTTOM_RIGHT" layoutX="30.0" layoutY="508.0" visible="false" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="6">
+      <HBox fx:id="completeBtnBox" alignment="BOTTOM_RIGHT" layoutX="30.0" layoutY="508.0" visible="false" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="4">
          <children>
             <Button layoutX="1155.0" layoutY="20.0" mnemonicParsing="false" onAction="#confirmPDFAsFinal" prefHeight="35.0" prefWidth="156.0" styleClass="btn_blue_sm" text="Confirm Final Report" />
          </children>
       </HBox>
-      <ScrollPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="2" GridPane.rowSpan="4" GridPane.valignment="CENTER">
+      <ScrollPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.rowSpan="2" GridPane.valignment="CENTER">
          <content>
-            <Pane>
+            <Pane fx:id="mainContentsPane" prefHeight="800.0" prefWidth="1223.0">
                <children>
-                  <VBox fx:id="contentVBox" prefHeight="640.0" prefWidth="100.0">
+                  <VBox fx:id="contentVBox" prefHeight="800.0" prefWidth="1207.0">
                      <children>
                         <GridPane fx:id="customFieldGridPane" alignment="CENTER">
                           <columnConstraints>
@@ -68,8 +65,19 @@
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                           </columnConstraints>
                         </GridPane>
-                        <Label style="-fx-text-fill: #C30D23;" styleClass="font_size_18" text="Conclusions" />
-                        <TextArea fx:id="conclusionsTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="73.0" prefWidth="1207.0" styleClass="txt_black" />
+                        <GridPane prefHeight="73.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="16.7" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label fx:id="conclusions" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-text-fill: #C30D23;" styleClass="font_size_12" text="Conclusions" />
+                              <TextArea fx:id="conclusionsTextArea" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="73.0" styleClass="txt_black" GridPane.columnIndex="1" />
+                           </children>
+                        </GridPane>
                         <Label style="-fx-text-fill: #C30D23;" styleClass="font_size_18" text="Tier I Variants">
                            <VBox.margin>
                               <Insets top="5.0" />
@@ -79,8 +87,9 @@
                           <columns>
                             <TableColumn fx:id="tierOneGeneColumn" prefWidth="75.0" styleClass="txt_black" text="Gene" />
                             <TableColumn fx:id="tierOneVariantsColumn" prefWidth="75.0" styleClass="txt_black" text="Variants" />
-                              <TableColumn fx:id="tierOneTherapeuticColumn" prefWidth="924.0" styleClass="txt_black" text="Therapeutic" />
-                              <TableColumn fx:id="tierOneExceptColumn" prefWidth="85.0" styleClass="txt_black" text="Exclude" />
+                              <TableColumn fx:id="tierOneAlleleFrequencyColumn" prefWidth="75.0" styleClass="txt_black" text="VAF" />
+                              <TableColumn fx:id="tierOneTherapeuticColumn" prefWidth="902.0" styleClass="txt_black" text="Therapeutic" />
+                              <TableColumn fx:id="tierOneExceptColumn" styleClass="txt_black" text="Exclude" />
                           </columns>
                         </TableView>
                         <Label style="-fx-text-fill: #C30D23;" styleClass="font_size_18" text="Tier II Variants">
@@ -92,9 +101,20 @@
                           <columns>
                             <TableColumn fx:id="tierTwoGeneColumn" prefWidth="75.0" styleClass="txt_black" text="Gene" />
                             <TableColumn fx:id="tierTwoVariantsColumn" prefWidth="75.0" styleClass="txt_black" text="Variants" />
-                              <TableColumn fx:id="tierTwoTherapeuticColumn" prefWidth="924.0" styleClass="txt_black" text="Therapeutic" />
-                              <TableColumn fx:id="tierTwoExceptColumn" prefWidth="85.0" styleClass="txt_black" text="Exclude" />
+                              <TableColumn fx:id="tierTwoAlleleFrequencyColumn" prefWidth="75.0" styleClass="txt_black" text="VAF" />
+                              <TableColumn fx:id="tierTwoTherapeuticColumn" prefWidth="902.0" styleClass="txt_black" text="Therapeutic" />
+                              <TableColumn fx:id="tierTwoExceptColumn" styleClass="txt_black" text="Exclude" />
                           </columns>
+                        </TableView>
+                        <Label style="-fx-text-fill: #C30D23;" styleClass="font_size_18" text="Tier III Variants" />
+                        <TableView fx:id="tierThreeVariantsTable" prefHeight="140.0" prefWidth="1160.0" style="-fx-border-width: 0;" styleClass="txt_black">
+                           <columns>
+                              <TableColumn fx:id="tierThreeGeneColumn" prefWidth="75.0" styleClass="txt_black" text="Gene" />
+                              <TableColumn fx:id="tierThreeVariantsColumn" prefWidth="75.0" styleClass="txt_black" text="Variants" />
+                              <TableColumn fx:id="tierThreeAlleleFrequencyColumn" prefWidth="75.0" styleClass="txt_black" text="VAF" />
+                              <TableColumn fx:id="tierThreeTherapeuticColumn" prefWidth="902.0" styleClass="txt_black" text="Therapeutic" />
+                              <TableColumn fx:id="tierThreeExceptColumn" styleClass="txt_black" text="Exclude" />
+                           </columns>
                         </TableView>
                         <Label style="-fx-text-fill: #C30D23;" styleClass="font_size_18" text="Pertinent Negatives">
                            <VBox.margin>
@@ -105,8 +125,9 @@
                            <columns>
                               <TableColumn fx:id="negativeGeneColumn" prefWidth="75.0" styleClass="txt_black" text="Gene" />
                               <TableColumn fx:id="negativeVariantsColumn" prefWidth="75.0" styleClass="txt_black" text="Variants" />
-                              <TableColumn fx:id="negativeCauseColumn" prefWidth="924.0" styleClass="txt_black" text="Cause" />
-                              <TableColumn fx:id="negativeExceptColumn" prefWidth="85.0" styleClass="txt_black" text="Exclude" />
+                              <TableColumn fx:id="negativeAlleleFrequencyColumn" prefWidth="75.0" styleClass="txt_black" text="VAF" />
+                              <TableColumn fx:id="negativeCauseColumn" prefWidth="902.0" styleClass="txt_black" text="Cause" />
+                              <TableColumn fx:id="negativeExceptColumn" styleClass="txt_black" text="Exclude" />
                            </columns>
                         </TableView>
                      </children>
@@ -115,7 +136,7 @@
             </Pane>
          </content>
       </ScrollPane>
-      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="1">
+      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
             <HBox prefHeight="23.0" prefWidth="740.0" spacing="10.0">
                <children>
@@ -128,8 +149,8 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
                   </HBox>
-                  <VBox prefHeight="31.0" prefWidth="77.0" />
-                  <HBox alignment="CENTER_LEFT" prefHeight="23.0" prefWidth="235.0">
+                  <VBox prefHeight="31.0" prefWidth="45.0" />
+                  <HBox alignment="CENTER_LEFT" prefHeight="31.0" prefWidth="253.0">
                      <children>
                         <Label styleClass="font_size_14" text="Patient Disease : " />
                         <Label fx:id="diseaseLabel" styleClass="font_size_14" text="Lukemia Cancer" />
@@ -138,7 +159,7 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
                   </HBox>
-                  <HBox alignment="CENTER_LEFT" prefHeight="23.0" prefWidth="235.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="31.0" prefWidth="299.0">
                      <children>
                         <Label styleClass="font_size_14" text="Panel : " />
                         <Label fx:id="panelLabel" styleClass="font_size_14" text="HEMAaccuTest" />

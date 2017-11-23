@@ -4,6 +4,7 @@ import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.model.ReportTemplate;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
+import org.apache.commons.io.FileUtils;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -45,14 +46,14 @@ public class FileUtil {
         String path = folderPath + File.separator + reportTemplate.getName() + ".vm";
 
         File folder = new File(folderPath);
-
-        if(!folder.exists()) {
-            folder.mkdirs();
-        } else {
-            File[] distroy = folder.listFiles();
-            for(File des : distroy) {
-                des.delete();
+        try {
+            if (!folder.exists()) {
+                folder.mkdirs();
+            } else {
+                FileUtils.cleanDirectory(folder);
             }
+        } catch(IOException ioe) {
+            ioe.printStackTrace();
         }
 
         File file = new File(path);

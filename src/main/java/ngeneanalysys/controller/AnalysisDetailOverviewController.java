@@ -1,5 +1,6 @@
 package ngeneanalysys.controller;
 
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -19,6 +20,7 @@ import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -84,6 +86,9 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
     private TableColumn<AnalysisResultVariant, String> therapeuticColumn;
 
     @FXML
+    private TableColumn<AnalysisResultVariant, BigDecimal> alleleFrequencyColumn;
+
+    @FXML
     private TableView<AnalysisResultVariant> pertinentNegativesTable;
 
     @FXML
@@ -94,6 +99,9 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
 
     @FXML
     private TableColumn<AnalysisResultVariant, String> negativeCauseColumn;
+
+    @FXML
+    private TableColumn<AnalysisResultVariant, BigDecimal> negativeAlleleFrequencyColumn;
 
     @FXML
     private Label totalBaseLabel;
@@ -162,6 +170,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         tierColumn.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.tierConvert(cellData.getValue().getSwTier())));
         geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getGene()));
         variantColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getNtChange()));
+        alleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getReadInfo().getAlleleFraction()));
         therapeuticColumn.setCellValueFactory(cellData -> {
             Interpretation interpretation = cellData.getValue().getInterpretation();
             String text = "";
@@ -186,6 +195,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         negativeGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getGene()));
         negativeVariantColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getNtChange()));
         negativeCauseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getInterpretation().getInterpretationNegativeTesult()));
+        negativeAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getReadInfo().getAlleleFraction()));
 
         try {
             HttpClientResponse response = apiService.get("/analysisResults/sampleVariants/" + sample.getId(), null,

@@ -1,5 +1,7 @@
 package ngeneanalysys.controller;
 
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
@@ -7,9 +9,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.enums.SequencerCode;
@@ -70,6 +70,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     private TableColumn<AnalysisResultVariant, String> tierOneTherapeuticColumn;
 
     @FXML
+    private TableColumn<AnalysisResultVariant, BigDecimal> tierOneAlleleFrequencyColumn;
+
+    @FXML
     private TableColumn<AnalysisResultVariant, String> tierOneDrugColumn;
 
     @FXML
@@ -88,10 +91,31 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     private TableColumn<AnalysisResultVariant, String> tierTwoTherapeuticColumn;
 
     @FXML
+    private TableColumn<AnalysisResultVariant, BigDecimal> tierTwoAlleleFrequencyColumn;
+
+    @FXML
     private TableColumn<AnalysisResultVariant, String> tierTwoDrugColumn;
 
     @FXML
     private TableColumn<AnalysisResultVariant, Boolean> tierTwoExceptColumn;
+
+    @FXML
+    private TableView<AnalysisResultVariant> tierThreeVariantsTable;
+
+    @FXML
+    private TableColumn<AnalysisResultVariant, String> tierThreeGeneColumn;
+
+    @FXML
+    private TableColumn<AnalysisResultVariant, String> tierThreeVariantsColumn;
+
+    @FXML
+    private TableColumn<AnalysisResultVariant, String> tierThreeTherapeuticColumn;
+
+    @FXML
+    private TableColumn<AnalysisResultVariant, BigDecimal> tierThreeAlleleFrequencyColumn;
+
+    @FXML
+    private TableColumn<AnalysisResultVariant, Boolean> tierThreeExceptColumn;
 
     @FXML
     private TableView<AnalysisResultVariant> negativeVariantsTable;
@@ -106,6 +130,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     private TableColumn<AnalysisResultVariant, String> negativeCauseColumn;
 
     @FXML
+    private TableColumn<AnalysisResultVariant, String> negativeAlleleFrequencyColumn;
+
+    @FXML
     private TableColumn<AnalysisResultVariant, Boolean> negativeExceptColumn;
 
     @FXML
@@ -113,6 +140,12 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
     @FXML
     private VBox contentVBox;
+
+    @FXML
+    private Pane mainContentsPane;
+
+    @FXML
+    private Label conclusions;
 
     Sample sample = null;
 
@@ -150,6 +183,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
         tierOneGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getGene()));
         tierOneVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getNtChange()));
+        tierOneAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getReadInfo().getAlleleFraction()));
+        tierOneExceptColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
+        tierOneExceptColumn.setCellFactory(param -> new ReportedCheckBox());
         tierOneTherapeuticColumn.setCellValueFactory(cellData -> {
             Interpretation interpretation = cellData.getValue().getInterpretation();
             String text = "";
@@ -172,7 +208,35 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
         tierTwoGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getGene()));
         tierTwoVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getNtChange()));
+        tierTwoAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getReadInfo().getAlleleFraction()));
+        tierTwoExceptColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
+        tierTwoExceptColumn.setCellFactory(param -> new ReportedCheckBox());
         tierTwoTherapeuticColumn.setCellValueFactory(cellData -> {
+            Interpretation interpretation = cellData.getValue().getInterpretation();
+            String text = "";
+
+            if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceA()))
+                text += interpretation.getInterpretationEvidenceA() + ", ";
+            if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceB()))
+                text += interpretation.getInterpretationEvidenceB() + ", ";
+            if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceC()))
+                text += interpretation.getInterpretationEvidenceC() + ", ";
+            if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceD()))
+                text += interpretation.getInterpretationEvidenceD() + ", ";
+
+            if(!"".equals(text)) {
+                text = text.substring(0, text.length() - 2);
+            }
+
+            return new SimpleStringProperty(text);
+        });
+
+        tierThreeGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getGene()));
+        tierThreeVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getNtChange()));
+        tierThreeAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getReadInfo().getAlleleFraction()));
+        tierThreeExceptColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
+        tierThreeExceptColumn.setCellFactory(param -> new ReportedCheckBox());
+        tierThreeTherapeuticColumn.setCellValueFactory(cellData -> {
             Interpretation interpretation = cellData.getValue().getInterpretation();
             String text = "";
 
@@ -195,6 +259,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         negativeGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getGene()));
         negativeVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getNtChange()));
         negativeCauseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getInterpretation().getInterpretationNegativeTesult()));
+        negativeAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getReadInfo().getAlleleFraction().toString()));
+        negativeExceptColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
+        negativeExceptColumn.setCellFactory(param -> new ReportedCheckBox());
 
         logger.info(sample.toString());
 
@@ -228,10 +295,17 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
                     Set<String> keyList = variableList.keySet();
 
+                    if(keyList.contains("conclusions")) {
+                        Map<String, String> item = (Map<String, String>) variableList.get("conclusions");
+                        conclusions.setText(item.get("displayName"));
+                    }
+
+
                     int gridPaneRowSize = (int)Math.ceil(variableList.size() / 3.0);
 
                     for(int i = 0; i < gridPaneRowSize ; i++) {
                         customFieldGridPane.setPrefHeight(customFieldGridPane.getPrefHeight() + 30);
+                        mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 30);
                         contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 30);
                         RowConstraints con = new RowConstraints();
                         con.setPrefHeight(30);
@@ -294,10 +368,13 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
             if(tierTwo != null) {
                 tierTwoVariantsTable.getItems().addAll(FXCollections.observableArrayList(tierTwo));
-
             }
 
             tierThree = variantTierMap.get("T3");
+
+            if(tierThree != null) {
+                tierThreeVariantsTable.getItems().addAll(FXCollections.observableArrayList(tierThree));
+            }
 
             tierFour = variantTierMap.get("T4");
 
@@ -589,7 +666,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                                 + File.separator + image.getName() + "')";
                         path = path.replaceAll("\\\\", "/");
                         String name = image.getName().substring(0, image.getName().lastIndexOf('.'));
-                        logger.info("%s : %s", name, path);
+                        logger.info(name + " : " + path);
                         model.put(name, path);
                     }
 
@@ -693,5 +770,43 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         } catch (Exception e) {
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }*/
+    }
+
+
+    private class ReportedCheckBox extends TableCell<AnalysisResultVariant, Boolean> {
+        HBox box = null;
+        final CheckBox checkBox = new CheckBox();
+
+        ReportedCheckBox() {
+
+        }
+
+        @Override
+        protected void updateItem(Boolean item, boolean empty) {
+            super.updateItem(item, empty);
+            if(item == null) {
+                setGraphic(null);
+                return;
+            }
+
+            AnalysisResultVariant analysisResultVariant = ReportedCheckBox.this.getTableView().getItems().get(
+                    ReportedCheckBox.this.getIndex());
+
+            if(analysisResultVariant.getIncludedInReport().equalsIgnoreCase("Y")) {
+                checkBox.setSelected(true);
+            }
+
+            box = new HBox();
+
+            box.setAlignment(Pos.CENTER);
+
+            box.setSpacing(10);
+            checkBox.setStyle("-fx-cursor:hand;");
+            box.getChildren().add(checkBox);
+
+            setGraphic(box);
+
+        }
+
     }
 }

@@ -119,14 +119,16 @@
             <TableColumn fx:id="tierColumn" editable="false" prefWidth="75.0" sortable="false" text="Tier" />
             <TableColumn fx:id="geneColumn" editable="false" prefWidth="100.0" sortable="false" text="Gene" />
             <TableColumn fx:id="variantColumn" editable="false" prefWidth="200.0" sortable="false" text="Variant" />
-            <TableColumn fx:id="therapeuticColumn" editable="false" prefWidth="864.0" sortable="false" text="Therapeutic drug and prognosis" />
+            <TableColumn fx:id="alleleFrequencyColumn" prefWidth="73.0" text="VAF" />
+            <TableColumn fx:id="therapeuticColumn" editable="false" prefWidth="791.5556640625" sortable="false" text="Therapeutic drug and prognosis" />
          </columns>
       </TableView>
       <TableView fx:id="pertinentNegativesTable" prefHeight="105.0" prefWidth="962.0" style="-fx-border-width: 0;" GridPane.columnIndex="1" GridPane.rowIndex="5">
          <columns>
             <TableColumn fx:id="negativeGeneColumn" editable="false" prefWidth="75.0" sortable="false" text="Gene" />
             <TableColumn fx:id="negativeVariantColumn" editable="false" prefWidth="75.0" sortable="false" text="Variant" />
-            <TableColumn fx:id="negativeCauseColumn" prefWidth="1089.000015258789" text="Cause" />
+            <TableColumn fx:id="negativeAlleleFrequencyColumn" prefWidth="75.0" text="VAF" />
+            <TableColumn fx:id="negativeCauseColumn" prefWidth="1000.0" text="Cause" />
          </columns>
       </TableView>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">

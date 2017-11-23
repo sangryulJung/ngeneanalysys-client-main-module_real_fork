@@ -37,6 +37,7 @@ import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1082,6 +1083,21 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         }
 
         TableColumn<AnalysisResultVariant, String> chr = new TableColumn<>("Chr");
+        chr.setComparator((s1, s2) -> {
+            String value1 = s1.replaceAll("chr", "");
+            String value2 = s2.replace("chr", "");
+
+            if(!value1.equalsIgnoreCase("x") && !value1.equalsIgnoreCase("y") &&
+                    value1.length() == 1) {
+                value1 = "0" + value1;
+            }
+
+            if(!value2.equalsIgnoreCase("x") && !value2.equalsIgnoreCase("y") &&
+                    value2.length() == 1) {
+                value2 = "0" + value2;
+            }
+            return value1.compareToIgnoreCase(value2);
+        });
         chr.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getChromosome()));
 
         TableColumn<AnalysisResultVariant, String> ref = new TableColumn<>("Ref");
@@ -1114,25 +1130,20 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         TableColumn<AnalysisResultVariant, Integer> depth = new TableColumn<>("Depth");
         depth.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getReadInfo().getReadDepth()).asObject());
 
-        TableColumn<AnalysisResultVariant, String> fraction = new TableColumn<>("Fraction");
-        fraction.setCellValueFactory(cellData -> new SimpleStringProperty(
-                cellData.getValue().getReadInfo().getAlleleFraction() != null ? String.valueOf(Double.parseDouble(ConvertUtil.convertFormatNumber("%.2f",cellData.getValue().getReadInfo().getAlleleFraction().toString(), ""))) : ""));
+        TableColumn<AnalysisResultVariant, BigDecimal> fraction = new TableColumn<>("Fraction");
+        fraction.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getReadInfo().getAlleleFraction()));
 
-        TableColumn<AnalysisResultVariant, String> thousandGenomics = new TableColumn<>("1KG");
-        thousandGenomics.setCellValueFactory(cellData -> new SimpleStringProperty(
-                cellData.getValue().getPopulationFrequency().getG1000() != null ? String.valueOf(Double.parseDouble(ConvertUtil.convertFormatNumber("%.2f",cellData.getValue().getPopulationFrequency().getG1000().toString(), ""))) : ""));
+        TableColumn<AnalysisResultVariant, BigDecimal> thousandGenomics = new TableColumn<>("1KG");
+        thousandGenomics.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getPopulationFrequency().getG1000()));
 
-        TableColumn<AnalysisResultVariant, String> exac = new TableColumn<>("ExAC");
-        exac.setCellValueFactory(cellData -> new SimpleStringProperty(
-                cellData.getValue().getPopulationFrequency().getExac() != null ? String.valueOf(Double.parseDouble(ConvertUtil.convertFormatNumber("%.2f",cellData.getValue().getPopulationFrequency().getExac().toString(), ""))) : ""));
+        TableColumn<AnalysisResultVariant, BigDecimal> exac = new TableColumn<>("ExAC");
+        exac.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getPopulationFrequency().getExac()));
 
-        TableColumn<AnalysisResultVariant, String> esp = new TableColumn<>("Esp6500");
-        esp.setCellValueFactory(cellData -> new SimpleStringProperty(
-                cellData.getValue().getPopulationFrequency().getEsp6500() != null ? String.valueOf(Double.parseDouble(ConvertUtil.convertFormatNumber("%.2f",cellData.getValue().getPopulationFrequency().getEsp6500().toString(), ""))) : ""));
+        TableColumn<AnalysisResultVariant, BigDecimal> esp = new TableColumn<>("Esp6500");
+        esp.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getPopulationFrequency().getEsp6500()));
 
-        TableColumn<AnalysisResultVariant, String> korean = new TableColumn<>("Korean");
-        korean.setCellValueFactory(cellData -> new SimpleStringProperty(
-                cellData.getValue().getPopulationFrequency().getKorean() != null ? String.valueOf(Double.parseDouble(ConvertUtil.convertFormatNumber("%.2f",cellData.getValue().getPopulationFrequency().getKorean().toString(), ""))) : ""));
+        TableColumn<AnalysisResultVariant, BigDecimal> korean = new TableColumn<>("Korean");
+        korean.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getPopulationFrequency().getKorean()));
 
         TableColumn<AnalysisResultVariant, String> clinVarAcc = new TableColumn<>("ClinVar.Acc");
         clinVarAcc.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getClinVar().getClinVarAcc()));
@@ -1169,9 +1180,8 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         TableColumn<AnalysisResultVariant, String> kohbraPatient = new TableColumn<>("KOHBRA.patient");
         kohbraPatient.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getKohbraPatient()));
 
-        TableColumn<AnalysisResultVariant, String> kohbraFrequency = new TableColumn<>("KOHBRA.frequency");
-        kohbraFrequency.setCellValueFactory(cellData -> new SimpleStringProperty(
-                cellData.getValue().getPopulationFrequency().getKohbraFreq() != null ? String.valueOf(Double.parseDouble(ConvertUtil.convertFormatNumber("%.2f",cellData.getValue().getPopulationFrequency().getKohbraFreq().toString(), ""))) : ""));
+        TableColumn<AnalysisResultVariant, BigDecimal> kohbraFrequency = new TableColumn<>("KOHBRA.frequency");
+        kohbraFrequency.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getPopulationFrequency().getKohbraFreq()));
 
         /*TableColumn<AnalysisResultVariant, String> polyphen2 = new TableColumn<>("polyphen2");
         polyphen2.setCellValueFactory(cellData -> new SimpleStringProperty(
