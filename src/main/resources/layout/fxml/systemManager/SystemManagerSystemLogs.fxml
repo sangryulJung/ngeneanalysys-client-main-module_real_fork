@@ -94,7 +94,7 @@
                   <TableColumn fx:id="loginIdTableColumn" editable="false" prefWidth="150.0" sortable="false" text="Login ID" visible="false" />
                   <TableColumn fx:id="roleTableColumn" editable="false" prefWidth="150.0" sortable="false" text="User Role" visible="false" />
                   <TableColumn fx:id="userNameTableColumn" editable="false" prefWidth="176.0" sortable="false" text="User" />
-                  <TableColumn fx:id="userGroupNameTalbeColumn" editable="false" prefWidth="187.0" sortable="false" text="Group" />
+                  <TableColumn fx:id="userGroupNameTableColumn" editable="false" prefWidth="187.0" sortable="false" text="Group" />
                </columns>
             </TableView>
             <HBox alignment="CENTER" prefHeight="48.0" prefWidth="900.0" spacing="5.0" VBox.vgrow="NEVER">

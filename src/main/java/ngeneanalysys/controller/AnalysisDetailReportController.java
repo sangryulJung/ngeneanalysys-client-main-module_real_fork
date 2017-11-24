@@ -6,10 +6,16 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.enums.SequencerCode;
@@ -163,9 +169,62 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
     List<AnalysisResultVariant> negativeList = null;
 
+    private ImageView dragImageView;
+
+    private AnalysisResultVariant selectedItem = null;
+
+    private TableView<AnalysisResultVariant> selectedTable = null;
+
+    @FXML
+    private GridPane mainGridPane;
+
     @Override
     public void show(Parent root) throws IOException {
         logger.info("show..");
+
+        ResourceUtil resourceUtil = new ResourceUtil();
+
+        TableRow<AnalysisResultVariant> row = new TableRow<>();
+        Image image = row.snapshot(null, null);
+        //Image image = resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH);
+        dragImageView = new ImageView(image);
+        dragImageView.getStyleClass().clear();
+        dragImageView.setFitHeight(60);
+        dragImageView.setFitWidth(60);
+
+        tierOneVariantsTable.setOnDragDetected(e -> onDragDetected(e, tierOneVariantsTable));
+        tierOneVariantsTable.setOnDragDone(e -> onDragDone(e, tierOneVariantsTable));
+        tierOneVariantsTable.setOnDragOver(e -> onDragOver(e, tierOneVariantsTable));
+        tierOneVariantsTable.setOnDragExited(e -> onDragExited(e, tierOneVariantsTable));
+        tierOneVariantsTable.setOnDragDropped(e -> onDragDropped(e, tierOneVariantsTable));
+
+        tierTwoVariantsTable.setOnDragDetected(e -> onDragDetected(e, tierTwoVariantsTable));
+        tierTwoVariantsTable.setOnDragDone(e -> onDragDone(e, tierTwoVariantsTable));
+        tierTwoVariantsTable.setOnDragOver(e -> onDragOver(e, tierTwoVariantsTable));
+        tierTwoVariantsTable.setOnDragExited(e -> onDragExited(e, tierTwoVariantsTable));
+        tierTwoVariantsTable.setOnDragDropped(e -> onDragDropped(e, tierTwoVariantsTable));
+
+        tierThreeVariantsTable.setOnDragDetected(e -> onDragDetected(e, tierThreeVariantsTable));
+        tierThreeVariantsTable.setOnDragDone(e -> onDragDone(e, tierThreeVariantsTable));
+        tierThreeVariantsTable.setOnDragOver(e -> onDragOver(e, tierThreeVariantsTable));
+        tierThreeVariantsTable.setOnDragExited(e -> onDragExited(e, tierThreeVariantsTable));
+        tierThreeVariantsTable.setOnDragDropped(e -> onDragDropped(e, tierThreeVariantsTable));
+
+        negativeVariantsTable.setOnDragDetected(e -> onDragDetected(e, negativeVariantsTable));
+        negativeVariantsTable.setOnDragDone(e -> onDragDone(e, negativeVariantsTable));
+        negativeVariantsTable.setOnDragOver(e -> onDragOver(e, negativeVariantsTable));
+        negativeVariantsTable.setOnDragExited(e -> onDragExited(e, negativeVariantsTable));
+        negativeVariantsTable.setOnDragDropped(e -> onDragDropped(e, negativeVariantsTable));
+
+        mainGridPane.setOnDragOver(e -> {
+            Point2D localPoint = mainGridPane.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
+            dragImageView.relocate(
+                    (int) (localPoint.getX() - dragImageView.getBoundsInLocal().getWidth() / 2),
+                    (int) (localPoint.getY() - dragImageView.getBoundsInLocal().getHeight() / 2));
+            logger.info(dragImageView.getBoundsInLocal().getWidth() + ", " + dragImageView.getBoundsInLocal().getHeight());
+            logger.info(dragImageView.getX() + ", " + dragImageView.getY());
+            e.consume();
+        });
 
         // API 서비스 클래스 init
         apiService = APIService.getInstance();
@@ -295,13 +354,16 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
                     Set<String> keyList = variableList.keySet();
 
+                    List<String> sortedKeyList = keyList.stream().sorted().collect(Collectors.toList());
+
                     if(keyList.contains("conclusions")) {
                         Map<String, String> item = (Map<String, String>) variableList.get("conclusions");
                         conclusions.setText(item.get("displayName"));
+                        sortedKeyList.remove("conclusions");
                     }
 
 
-                    int gridPaneRowSize = (int)Math.ceil(variableList.size() / 3.0);
+                    int gridPaneRowSize = (int)Math.ceil(sortedKeyList.size() / 3.0);
 
                     for(int i = 0; i < gridPaneRowSize ; i++) {
                         customFieldGridPane.setPrefHeight(customFieldGridPane.getPrefHeight() + 30);
@@ -315,7 +377,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     int rowIndex = 0;
                     int colIndex = 0;
 
-                    for(String key : keyList) {
+                    for(String key : sortedKeyList) {
                         Map<String, String> item = (Map<String, String>) variableList.get(key);
                         if(colIndex == 6) {
                             colIndex = 0;
@@ -808,5 +870,88 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
         }
 
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////
+
+    /*
+    TableView 간의 Drag and Drop 기능 구현
+     */
+
+    /**
+     *
+     * @param e
+     * @param table
+     */
+    public void onDragDetected(MouseEvent e, TableView<AnalysisResultVariant> table) {
+        AnalysisResultVariant selectedVariant = table.getSelectionModel().getSelectedItem();
+        selectedTable = table;
+
+        if(selectedVariant == null) return;
+
+        selectedItem = selectedVariant;
+
+        if (!mainGridPane.getChildren().contains(dragImageView)) {
+            mainGridPane.getChildren().add(dragImageView);
+        }
+
+        dragImageView.setOpacity(1);
+        dragImageView.toFront();
+        dragImageView.setMouseTransparent(true);
+        dragImageView.setVisible(true);
+        dragImageView.relocate(
+                (int) (e.getSceneX() - dragImageView.getBoundsInLocal().getWidth() / 2),
+                (int) (e.getSceneY() - dragImageView.getBoundsInLocal().getHeight() / 2));
+
+        Dragboard db = table.startDragAndDrop(TransferMode.ANY);
+        ClipboardContent content = new ClipboardContent();
+
+        content.putString(selectedVariant.toString());
+        db.setContent(content);
+        e.consume();
+    }
+
+    public void onDragDone(DragEvent e, TableView<AnalysisResultVariant> table) {
+        dragImageView.setVisible(false);
+        e.consume();
+    }
+
+    public void onDragOver(DragEvent t, TableView<AnalysisResultVariant> table) {
+        if(selectedTable != table) {
+            t.acceptTransferModes(TransferMode.ANY);
+            DropShadow dropShadow = new DropShadow();
+            dropShadow.setRadius(5.0);
+            dropShadow.setOffsetX(3.0);
+            dropShadow.setOffsetY(3.0);
+            dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
+            table.setEffect(dropShadow);
+        }
+    }
+
+    public void onDragExited(DragEvent t, TableView<AnalysisResultVariant> table) {
+        t.acceptTransferModes(TransferMode.ANY);
+        table.setEffect(null);
+        t.consume();
+    }
+
+    public void onDragDropped(DragEvent t, TableView<AnalysisResultVariant> table) {
+        System.out.println("change Tier");
+        if(selectedItem != null && selectedTable != table) {
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Change Tier Information");
+            dialog.setHeaderText("Change Variant Tier Information");
+            dialog.setContentText("cause:");
+
+            // Traditional way to get the response value.
+            Optional<String> result = dialog.showAndWait();
+            if (result.isPresent()){
+                selectedTable.getItems().remove(selectedItem);
+                table.getItems().add(selectedItem);
+                selectedItem = null;
+                selectedTable = null;
+            }
+
+        }
+        t.setDropCompleted(true);
     }
 }
