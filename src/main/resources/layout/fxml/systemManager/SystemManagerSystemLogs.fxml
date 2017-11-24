@@ -86,16 +86,15 @@
                   </HBox>
                </children>
             </VBox>
-            <TableView fx:id="logListTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+            <TableView fx:id="logListTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
                <columns>
-                  <TableColumn fx:id="logId" prefWidth="100.0" text="Log ID" />
-                  <TableColumn fx:id="logType" prefWidth="100.0" text="Log Type" />
-                  <TableColumn fx:id="logMsg" prefWidth="150.0" text="Log Msg" />
-                  <TableColumn fx:id="userId" prefWidth="75.0" text="User ID" />
-                  <TableColumn fx:id="userLoginId" prefWidth="150.0" text="User Login ID" />
-                  <TableColumn fx:id="role" prefWidth="150.0" text="User Type" />
-                  <TableColumn fx:id="name" prefWidth="100.0" text="Name" />
-                  <TableColumn fx:id="createdAt" prefWidth="150.0" text="Created At" />
+                  <TableColumn fx:id="createdAtTableColumn" editable="false" prefWidth="150.0" sortable="false" text="Date" />
+                  <TableColumn fx:id="logTypeTableColumn" editable="false" prefWidth="125.0" sortable="false" text="Log Type" />
+                  <TableColumn fx:id="logMsgTableColumn" editable="false" minWidth="600.0" prefWidth="-1.0" sortable="false" text="Log Msg" />
+                  <TableColumn fx:id="loginIdTableColumn" editable="false" prefWidth="150.0" sortable="false" text="Login ID" visible="false" />
+                  <TableColumn fx:id="roleTableColumn" editable="false" prefWidth="150.0" sortable="false" text="User Role" visible="false" />
+                  <TableColumn fx:id="userNameTableColumn" editable="false" prefWidth="176.0" sortable="false" text="User" />
+                  <TableColumn fx:id="userGroupNameTalbeColumn" editable="false" prefWidth="187.0" sortable="false" text="Group" />
                </columns>
             </TableView>
             <HBox alignment="CENTER" prefHeight="48.0" prefWidth="900.0" spacing="5.0" VBox.vgrow="NEVER">
