@@ -519,7 +519,7 @@ public class MainController extends BaseStageController {
 
                 if(topMenuContent[menu.getDisplayOrder()] == null) {
                     FXMLLoader loader = mainApp.load(menu.getFxmlPath());
-                    Node node = (Node) loader.load();
+                    Node node = loader.load();
                     isFirstShow = true;
 
                     switch (menu.getFxmlPath()) {

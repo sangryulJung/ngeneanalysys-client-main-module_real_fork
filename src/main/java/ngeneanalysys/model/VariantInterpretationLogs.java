@@ -8,14 +8,28 @@ import org.joda.time.DateTime;
  */
 public class VariantInterpretationLogs {
     private Integer id;
-    private Integer variant_id;
-    private Integer member_id;
-    private String interpretation_type;
-    private String old_value;
-    private String new_value;
+    private Integer variantId;
+    private String memberLoginId;
+    private Integer memberId;
+    private String memberName;
+    private String interpretationType;
+    private String oldValue;
+    private String newValue;
     private String comment;
-    private DateTime created_at;
+    private DateTime createdAt;
 
+    /**
+     * @return memberId
+     */
+    public Integer getMemberId() {
+        return memberId;
+    }
+    /**
+     * @return memberName
+     */
+    public String getMemberName() {
+        return memberName;
+    }
     /**
      * @return id
      */
@@ -24,80 +38,38 @@ public class VariantInterpretationLogs {
     }
 
     /**
-     * @param id
+     * @return variantId
      */
-    public void setId(Integer id) {
-        this.id = id;
+    public Integer getVariantId() {
+        return variantId;
     }
 
     /**
-     * @return variant_id
+     * @return memberLoginId
      */
-    public Integer getVariant_id() {
-        return variant_id;
+    public String getMemberLoginId() {
+        return memberLoginId;
     }
 
     /**
-     * @param variant_id
+     * @return interpretationType
      */
-    public void setVariant_id(Integer variant_id) {
-        this.variant_id = variant_id;
+    public String getInterpretationType() {
+        return interpretationType;
     }
 
     /**
-     * @return member_id
+     * @return oldValue
      */
-    public Integer getMember_id() {
-        return member_id;
+    public String getOldValue() {
+        return oldValue;
     }
 
     /**
-     * @param member_id
+     * @return newValue
      */
-    public void setMember_id(Integer member_id) {
-        this.member_id = member_id;
-    }
-
-    /**
-     * @return interpretation_type
-     */
-    public String getInterpretation_type() {
-        return interpretation_type;
-    }
-
-    /**
-     * @param interpretation_type
-     */
-    public void setInterpretation_type(String interpretation_type) {
-        this.interpretation_type = interpretation_type;
-    }
-
-    /**
-     * @return old_value
-     */
-    public String getOld_value() {
-        return old_value;
-    }
-
-    /**
-     * @param old_value
-     */
-    public void setOld_value(String old_value) {
-        this.old_value = old_value;
-    }
-
-    /**
-     * @return new_value
-     */
-    public String getNew_value() {
-        return new_value;
-    }
-
-    /**
-     * @param new_value
-     */
-    public void setNew_value(String new_value) {
-        this.new_value = new_value;
+    public String getNewValue() {
+        return newValue;
     }
 
     /**
@@ -108,23 +80,9 @@ public class VariantInterpretationLogs {
     }
 
     /**
-     * @param comment
+     * @return createdAt
      */
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    /**
-     * @return created_at
-     */
-    public DateTime getCreated_at() {
-        return created_at;
-    }
-
-    /**
-     * @param created_at
-     */
-    public void setCreated_at(DateTime created_at) {
-        this.created_at = created_at;
+    public DateTime getCreatedAt() {
+        return createdAt;
     }
 }

@@ -6,18 +6,20 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.geometry.Point2D;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Transform;
 import javafx.stage.FileChooser;
 import ngeneanalysys.code.constants.CommonConstants;
+import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.SequencerCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
@@ -153,6 +155,21 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     @FXML
     private Label conclusions;
 
+    @FXML
+    private TextField dnaQualityTextField;
+
+    @FXML
+    private TextField inputDNATextField;
+
+    @FXML
+    private TextField pcrCycleTextField;
+
+    @FXML
+    private TextField totalHybDNATextField;
+
+    @FXML
+    private TextField clusterDensityTextField;
+
     Sample sample = null;
 
     Panel panel = null;
@@ -169,11 +186,11 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
     List<AnalysisResultVariant> negativeList = null;
 
-    private ImageView dragImageView;
-
     private AnalysisResultVariant selectedItem = null;
 
     private TableView<AnalysisResultVariant> selectedTable = null;
+
+    private TableRow<AnalysisResultVariant> rowItem;
 
     @FXML
     private GridPane mainGridPane;
@@ -181,49 +198,75 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     @Override
     public void show(Parent root) throws IOException {
         logger.info("show..");
+        //숫자 이외의 값을 강제함
+        dnaQualityTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+                if(!newValue.matches("[0-9]*")) dnaQualityTextField.setText(oldValue);
+        });
 
-        ResourceUtil resourceUtil = new ResourceUtil();
+        inputDNATextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(!newValue.matches("[0-9]*")) inputDNATextField.setText(oldValue);
+        });
 
-        TableRow<AnalysisResultVariant> row = new TableRow<>();
-        Image image = row.snapshot(null, null);
-        //Image image = resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH);
-        dragImageView = new ImageView(image);
-        dragImageView.getStyleClass().clear();
-        dragImageView.setFitHeight(60);
-        dragImageView.setFitWidth(60);
+        pcrCycleTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(!newValue.matches("[0-9]*")) pcrCycleTextField.setText(oldValue);
+        });
 
+        totalHybDNATextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(!newValue.matches("[0-9]*")) totalHybDNATextField.setText(oldValue);
+        });
+
+        clusterDensityTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(!newValue.matches("[0-9]*")) clusterDensityTextField.setText(oldValue);
+        });
+
+        //Drag & Drop 으로 Variant의 Tier를 변경
         tierOneVariantsTable.setOnDragDetected(e -> onDragDetected(e, tierOneVariantsTable));
-        tierOneVariantsTable.setOnDragDone(e -> onDragDone(e, tierOneVariantsTable));
+        tierOneVariantsTable.setOnDragDone(e -> onDragDone(e));
         tierOneVariantsTable.setOnDragOver(e -> onDragOver(e, tierOneVariantsTable));
         tierOneVariantsTable.setOnDragExited(e -> onDragExited(e, tierOneVariantsTable));
-        tierOneVariantsTable.setOnDragDropped(e -> onDragDropped(e, tierOneVariantsTable));
+        tierOneVariantsTable.setOnDragDropped(e -> onDragDropped(e, tierOneVariantsTable, "T1"));
 
         tierTwoVariantsTable.setOnDragDetected(e -> onDragDetected(e, tierTwoVariantsTable));
-        tierTwoVariantsTable.setOnDragDone(e -> onDragDone(e, tierTwoVariantsTable));
+        tierTwoVariantsTable.setOnDragDone(e -> onDragDone(e));
         tierTwoVariantsTable.setOnDragOver(e -> onDragOver(e, tierTwoVariantsTable));
         tierTwoVariantsTable.setOnDragExited(e -> onDragExited(e, tierTwoVariantsTable));
-        tierTwoVariantsTable.setOnDragDropped(e -> onDragDropped(e, tierTwoVariantsTable));
+        tierTwoVariantsTable.setOnDragDropped(e -> onDragDropped(e, tierTwoVariantsTable, "T2"));
 
         tierThreeVariantsTable.setOnDragDetected(e -> onDragDetected(e, tierThreeVariantsTable));
-        tierThreeVariantsTable.setOnDragDone(e -> onDragDone(e, tierThreeVariantsTable));
+        tierThreeVariantsTable.setOnDragDone(e -> onDragDone(e));
         tierThreeVariantsTable.setOnDragOver(e -> onDragOver(e, tierThreeVariantsTable));
         tierThreeVariantsTable.setOnDragExited(e -> onDragExited(e, tierThreeVariantsTable));
-        tierThreeVariantsTable.setOnDragDropped(e -> onDragDropped(e, tierThreeVariantsTable));
+        tierThreeVariantsTable.setOnDragDropped(e -> onDragDropped(e, tierThreeVariantsTable, "T3"));
 
         negativeVariantsTable.setOnDragDetected(e -> onDragDetected(e, negativeVariantsTable));
-        negativeVariantsTable.setOnDragDone(e -> onDragDone(e, negativeVariantsTable));
+        negativeVariantsTable.setOnDragDone(e -> onDragDone(e));
         negativeVariantsTable.setOnDragOver(e -> onDragOver(e, negativeVariantsTable));
         negativeVariantsTable.setOnDragExited(e -> onDragExited(e, negativeVariantsTable));
-        negativeVariantsTable.setOnDragDropped(e -> onDragDropped(e, negativeVariantsTable));
+        negativeVariantsTable.setOnDragDropped(e -> onDragDropped(e, negativeVariantsTable, "TN"));
 
-        mainGridPane.setOnDragOver(e -> {
-            Point2D localPoint = mainGridPane.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
-            dragImageView.relocate(
-                    (int) (localPoint.getX() - dragImageView.getBoundsInLocal().getWidth() / 2),
-                    (int) (localPoint.getY() - dragImageView.getBoundsInLocal().getHeight() / 2));
-            logger.info(dragImageView.getBoundsInLocal().getWidth() + ", " + dragImageView.getBoundsInLocal().getHeight());
-            logger.info(dragImageView.getX() + ", " + dragImageView.getY());
-            e.consume();
+        //선택한 Row를 전역변수로 저장
+        tierOneVariantsTable.setRowFactory(tv -> {
+            TableRow<AnalysisResultVariant> rowData = new TableRow<>();
+            rowData.setOnDragDetected(e -> rowItem = rowData);
+            return rowData;
+        });
+
+        tierTwoVariantsTable.setRowFactory(tv -> {
+            TableRow<AnalysisResultVariant> rowData = new TableRow<>();
+            rowData.setOnDragDetected(e -> rowItem = rowData);
+            return rowData;
+        });
+
+        tierThreeVariantsTable.setRowFactory(tv -> {
+            TableRow<AnalysisResultVariant> rowData = new TableRow<>();
+            rowData.setOnDragDetected(e -> rowItem = rowData);
+            return rowData;
+        });
+
+        negativeVariantsTable.setRowFactory(tv -> {
+            TableRow<AnalysisResultVariant> rowData = new TableRow<>();
+            rowData.setOnDragDetected(e -> rowItem = rowData);
+            return rowData;
         });
 
         // API 서비스 클래스 init
@@ -400,6 +443,12 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                             TextField textField = new TextField();
                             textField.getStyleClass().add("txt_black");
                             textField.setId(key);
+                            if(type.equalsIgnoreCase("Integer")) {
+                                textField.textProperty().addListener((observable, oldValue, newValue) -> {
+                                    if(!newValue.matches("[0-9]*")) textField.setText(oldValue);
+                                });
+                            }
+
                             customFieldGridPane.add(textField, colIndex++, rowIndex);
                         }
                     }
@@ -415,9 +464,34 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             List<AnalysisResultVariant> list = analysisResultVariantList.getResult();
 
             //negative list만 가져옴
-            negativeList = list.stream().filter(item -> !StringUtils.isEmpty(item.getInterpretation().getInterpretationNegativeTesult())).collect(Collectors.toList());
+            negativeList = list.stream().filter(item -> (!StringUtils.isEmpty(item.getInterpretation().getInterpretationNegativeTesult()) ||
+            "TN".equalsIgnoreCase(item.getExpertTier()))).collect(Collectors.toList());
 
-            Map<String, List<AnalysisResultVariant>> variantTierMap = list.stream().collect(Collectors.groupingBy(AnalysisResultVariant::getSwTier));
+            tierOne = list.stream().filter(item -> (("T1".equalsIgnoreCase(item.getExpertTier()) ||
+                    (StringUtils.isEmpty(item.getExpertTier()) && item.getSwTier().equalsIgnoreCase("T1")))))
+                    .collect(Collectors.toList());
+
+            tierTwo = list.stream().filter(item -> (("T2".equalsIgnoreCase(item.getExpertTier()) ||
+                    (StringUtils.isEmpty(item.getExpertTier()) && item.getSwTier().equalsIgnoreCase("T2")))))
+                    .collect(Collectors.toList());
+
+            tierThree = list.stream().filter(item -> (("T3".equalsIgnoreCase(item.getExpertTier()) ||
+                    (StringUtils.isEmpty(item.getExpertTier()) && item.getSwTier().equalsIgnoreCase("T3")))))
+                    .collect(Collectors.toList());
+
+            tierFour = list.stream().filter(item -> (("T4".equalsIgnoreCase(item.getExpertTier()) ||
+                    (StringUtils.isEmpty(item.getExpertTier()) && item.getSwTier().equalsIgnoreCase("T4")))))
+                    .collect(Collectors.toList());
+
+            if(tierOne != null) tierOneVariantsTable.getItems().addAll(FXCollections.observableArrayList(tierOne));
+
+            if(tierTwo != null) tierTwoVariantsTable.getItems().addAll(FXCollections.observableArrayList(tierTwo));
+
+            if(tierThree != null) tierThreeVariantsTable.getItems().addAll(FXCollections.observableArrayList(tierThree));
+
+            if(negativeList != null) negativeVariantsTable.getItems().addAll(FXCollections.observableArrayList(negativeList));
+
+            /*Map<String, List<AnalysisResultVariant>> variantTierMap = list.stream().collect(Collectors.groupingBy(AnalysisResultVariant::getSwTier));
 
             tierOne = variantTierMap.get("T1");
 
@@ -442,7 +516,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
             if(negativeList != null) {
                 negativeVariantsTable.setItems(FXCollections.observableArrayList(negativeList));
-            }
+            }*/
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -501,7 +575,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     public void createPDFAsDraft() {
         boolean dataSave = saveData(null);
         if(dataSave){
-            createPDF(true, false);
+            createPDF(true);
         }
     }
 
@@ -526,7 +600,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     boolean dataSave = saveData(user);
                     if (dataSave) {
                         // 최종 보고서 생성이 정상 처리된 경우 분석 샘플의 상태값 완료 처리.
-                        if (createPDF(false, true)) {
+                        if (createPDF(false)) {
                             setComplete();
                         }
                     }
@@ -550,10 +624,10 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
     @FXML
     public void confirmPDFAsFinal() {
-        //createPDF(false, true);
+        createPDF(false);
     }
 
-    public boolean createPDF(boolean isDraft, boolean printInspectionEnforcement) {
+    public boolean createPDF(boolean isDraft) {
         boolean created = true;
 
         // 보고서 파일명 기본값
@@ -589,8 +663,10 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 contentsMap.put("date", sdf.format(date));
 
                 List<AnalysisResultVariant> variantList = new ArrayList<>();
-                if(tierOne != null && !tierOne.isEmpty()) variantList.addAll(tierOne);
-                if(tierTwo != null && !tierTwo.isEmpty()) variantList.addAll(tierTwo);
+                if(!tierOneVariantsTable.getItems().isEmpty()) variantList.addAll(tierOneVariantsTable.getItems().stream().collect(Collectors.toList()));
+                if(!tierTwoVariantsTable.getItems().isEmpty()) variantList.addAll(tierTwoVariantsTable.getItems().stream().collect(Collectors.toList()));
+                //if(tierOne != null && !tierOne.isEmpty()) variantList.addAll(tierOne);
+                //if(tierTwo != null && !tierTwo.isEmpty()) variantList.addAll(tierTwo);
 
                 List<AnalysisResultVariant> negativeResult = new ArrayList<>();
                 //리포트에서 제외된 negative 정보를 제거
@@ -617,9 +693,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
                 contentsMap.put("variantList", variantList);
                 contentsMap.put("tierThreeVariantList", tierThree);
-                contentsMap.put("tierOneCount", (tierOne != null) ? tierOne.size() : 0);
-                contentsMap.put("tierTwoCount", (tierTwo != null) ? tierTwo.size() : 0);
-                contentsMap.put("tierThreeCount", (tierThree != null) ? tierThree.size() : 0);
+                contentsMap.put("tierOneCount", tierOneVariantsTable.getItems().size());
+                contentsMap.put("tierTwoCount", tierTwoVariantsTable.getItems().size());
+                contentsMap.put("tierThreeCount", tierThreeVariantsTable.getItems().size());
                 contentsMap.put("tierFourCount", (tierFour != null) ? tierFour.size() : 0);
                 contentsMap.put("evidenceACount", evidenceACount);
                 contentsMap.put("evidenceBCount", evidenceBCount);
@@ -627,6 +703,12 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 contentsMap.put("evidenceDCount", evidenceDCount);
                 contentsMap.put("negativeList", negativeResult);
                 contentsMap.put("qcData", sample.getQcData());
+
+                contentsMap.put("dnaQuality", (!StringUtils.isEmpty(dnaQualityTextField.getText())) ? dnaQualityTextField.getText() : "0");
+                contentsMap.put("inputDNA", (!StringUtils.isEmpty(inputDNATextField.getText())) ? inputDNATextField.getText() : "0");
+                contentsMap.put("pcrCycle", (!StringUtils.isEmpty(pcrCycleTextField.getText())) ? pcrCycleTextField.getText() : "0");
+                contentsMap.put("totalHybDNA", (!StringUtils.isEmpty(totalHybDNATextField.getText())) ? totalHybDNATextField.getText() : "0");
+                contentsMap.put("clusterDensity", (!StringUtils.isEmpty(clusterDensityTextField.getText())) ? clusterDensityTextField.getText() : "0");
 
                 //Genes in panel
                 try {
@@ -638,10 +720,13 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                                 .getMultiObjectBeforeConvertResponseToJSON(VariantCountByGene.class,
                                         false);
 
+                        variantCountByGenes = variantCountByGenes.stream().sorted(Comparator.comparing(VariantCountByGene::getGeneSymbol)).collect(Collectors.toList());
+
                         contentsMap.put("variantCountByGenes", variantCountByGenes);
                         int geneTableMaxRowCount = (int)Math.ceil(variantCountByGenes.size() / 7.0);
+                        int geneTableMaxRowCount4 = (int)Math.ceil(variantCountByGenes.size() / 4.0);
                         contentsMap.put("geneTableCount", (7 * geneTableMaxRowCount) - 1);
-                        contentsMap.put("geneTableCount4", (4 * geneTableMaxRowCount) - 1);
+                        contentsMap.put("geneTableCount4", (4 * geneTableMaxRowCount4) - 1);
 
                         int tableOneSize = (int)Math.ceil((double)variantCountByGenes.size() / 3);
                         int tableTwoSize = (int)Math.ceil((double)(variantCountByGenes.size() - tableOneSize) / 2);
@@ -676,6 +761,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         contentsMap.put("onTargetCoverage",findQCResult(qcList, "on_target_coverage"));
                         contentsMap.put("duplicatedReads",findQCResult(qcList, "duplicated_reads"));
                         contentsMap.put("roiCoverage",findQCResult(qcList, "roi_coverage"));
+
+                        contentsMap.put("conclusions", conclusionsTextArea.getText());
                     }
                 } catch (WebAPIException wae) {
                     DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
@@ -840,7 +927,57 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         final CheckBox checkBox = new CheckBox();
 
         ReportedCheckBox() {
+            checkBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
 
+                AnalysisResultVariant analysisResultVariant = ReportedCheckBox.this.getTableView().getItems().get(
+                        ReportedCheckBox.this.getIndex());
+
+                TextInputDialog dialog = new TextInputDialog();
+                dialog.setContentText("cause:");
+                dialog.setTitle("Reported variant");
+
+                if (checkBox.isSelected()) {
+                    /*dialog.setHeaderText("variant add to report");
+                    Optional<String> result = dialog.showAndWait();
+
+                    if (result.isPresent()) {
+                        Map<String, Object> params = new HashMap<>();
+                        params.put("comment", result.get());
+                        params.put("includeInReport" , "Y");
+                        analysisResultVariant.setIncludedInReport("Y");
+                        apiService.put("analysisResults/variants/" + analysisResultVariant.getId() + "/updateIncludeInReport", params, null, true);*/
+                    try {
+                        FXMLLoader loader = mainApp.load(FXMLConstants.Exclude_REPORT);
+                        Node root = loader.load();
+                        ExcludeReportDialogController excludeReportDialogController = loader.getController();
+                        excludeReportDialogController.setMainController(mainController);
+                        excludeReportDialogController.settingItem("Y", selectedItem, checkBox);
+                        excludeReportDialogController.show((Parent) root);
+                    } catch (IOException ioe) {
+                        ioe.printStackTrace();
+                    }
+                } else {
+                    /*dialog.setHeaderText("remove to report");
+                    Optional<String> result = dialog.showAndWait();
+
+                    if (result.isPresent()) {
+                        Map<String, Object> params = new HashMap<>();
+                        params.put("comment", result.get());
+                        params.put("includeInReport" , "N");
+                        analysisResultVariant.setIncludedInReport("N");
+                        apiService.put("analysisResults/variants/" + analysisResultVariant.getId() + "/updateIncludeInReport", params, null, true);*/
+                    try {
+                        FXMLLoader loader = mainApp.load(FXMLConstants.Exclude_REPORT);
+                        Node root = loader.load();
+                        ExcludeReportDialogController excludeReportDialogController = loader.getController();
+                        excludeReportDialogController.setMainController(mainController);
+                        excludeReportDialogController.settingItem("N", selectedItem, checkBox);
+                        excludeReportDialogController.show((Parent) root);
+                    } catch (IOException ioe) {
+                        ioe.printStackTrace();
+                    }
+                }
+            });
         }
 
         @Override
@@ -891,28 +1028,21 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
         selectedItem = selectedVariant;
 
-        if (!mainGridPane.getChildren().contains(dragImageView)) {
-            mainGridPane.getChildren().add(dragImageView);
-        }
-
-        dragImageView.setOpacity(1);
-        dragImageView.toFront();
-        dragImageView.setMouseTransparent(true);
-        dragImageView.setVisible(true);
-        dragImageView.relocate(
-                (int) (e.getSceneX() - dragImageView.getBoundsInLocal().getWidth() / 2),
-                (int) (e.getSceneY() - dragImageView.getBoundsInLocal().getHeight() / 2));
-
         Dragboard db = table.startDragAndDrop(TransferMode.ANY);
         ClipboardContent content = new ClipboardContent();
+        //저장된 row를 기준으로 스냅샷 생성
+        SnapshotParameters sp = new SnapshotParameters();
+        sp.setTransform(Transform.scale(2, 2));
+        db.setDragView(rowItem.snapshot(sp, null));
 
         content.putString(selectedVariant.toString());
         db.setContent(content);
         e.consume();
     }
 
-    public void onDragDone(DragEvent e, TableView<AnalysisResultVariant> table) {
-        dragImageView.setVisible(false);
+
+
+    public void onDragDone(DragEvent e) {
         e.consume();
     }
 
@@ -934,24 +1064,58 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         t.consume();
     }
 
-    public void onDragDropped(DragEvent t, TableView<AnalysisResultVariant> table) {
+    public void onDragDropped(DragEvent t, TableView<AnalysisResultVariant> table, String tier) {
         System.out.println("change Tier");
         if(selectedItem != null && selectedTable != table) {
-            TextInputDialog dialog = new TextInputDialog();
-            dialog.setTitle("Change Tier Information");
-            dialog.setHeaderText("Change Variant Tier Information");
+            /*TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Change Tier");
+            dialog.setHeaderText("Change Variant Tier : " + ConvertUtil.tierConvert(selectedItem.getSwTier()) + " -> " +
+                    ConvertUtil.tierConvert(tier));
             dialog.setContentText("cause:");
 
             // Traditional way to get the response value.
             Optional<String> result = dialog.showAndWait();
             if (result.isPresent()){
+                String cause  = result.get();
+                logger.info(cause);
+                Map<String, Object> params = new HashMap<>();
+                try {
+                    params.put("tier", tier);
+                    params.put("comment", cause);
+
+                    apiService.put("analysisResults/variants/" + selectedItem.getId() + "/updateExpertTier", params, null, true);
+                } catch (WebAPIException wae) {
+                    DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
+                }
+
                 selectedTable.getItems().remove(selectedItem);
                 table.getItems().add(selectedItem);
                 selectedItem = null;
                 selectedTable = null;
+                rowItem = null;
+            }*/
+            try {
+                FXMLLoader loader = mainApp.load(FXMLConstants.CHANGE_TIER);
+                Node root = loader.load();
+                ChangeTierDialogController changeTierDialogController = loader.getController();
+                changeTierDialogController.setMainController(this.getMainController());
+                changeTierDialogController.setAnalysisDetailReportController(this);
+                changeTierDialogController.settingItem(table, tier, selectedItem);
+                changeTierDialogController.show((Parent) root);
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
             }
 
         }
         t.setDropCompleted(true);
     }
+
+    public void resetData(TableView<AnalysisResultVariant> table) {
+        selectedTable.getItems().remove(selectedItem);
+        table.getItems().add(selectedItem);
+        selectedItem = null;
+        selectedTable = null;
+        rowItem = null;
+    }
+
 }

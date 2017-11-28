@@ -292,7 +292,10 @@
 						</fo:table-row>
 
 						#foreach($variant in $contents.variantList)
-                        #if($variant.swTier == "T1" || $variant.swTier == "T2")
+                        #if(($variant.expertTier && $variant.expertTier == "T1") ||
+                        ((!$variant.expertTier || $variant.expertTier == "") && $variant.swTier == "T1") ||
+                        ($variant.expertTier && $variant.expertTier =="T2") ||
+                        ((!$variant.expertTier || $variant.expertTier == "") && $variant.swTier == "T2"))
 						<fo:table-row height="8mm" display-align="center" text-align="center" font-family="Noto Sans CJK KR Regular">
 							<fo:table-cell border-bottom="solid 0.1mm black">
 								<fo:block text-align="center">$variant.sequenceInfo.gene</fo:block>
@@ -311,9 +314,12 @@
 							</fo:table-cell>
 							<fo:table-cell border-bottom="solid 0.1mm black">
 								<fo:block>
-									#if($variant.swTier == "T1") I
-									#elseif($variant.swTier == "T2") II
-									#elseif($variant.swTier == "T3") III
+									#if(($variant.expertTier && $variant.expertTier == "T1") ||
+                                    ((!$variant.expertTier || $variant.expertTier == "") && $variant.swTier == "T1")) I
+									#elseif(($variant.expertTier && $variant.expertTier == "T2") ||
+                                    ((!$variant.expertTier || $variant.expertTier == "") && $variant.swTier == "T2")) II
+									#elseif(($variant.expertTier && $variant.expertTier == "T3") ||
+                                    ((!$variant.expertTier || $variant.expertTier == "") && $variant.swTier == "T3")) III
 									#end
 								</fo:block>
 							</fo:table-cell>
@@ -392,9 +398,12 @@
                                 </fo:table-cell>
                                 <fo:table-cell border-bottom="solid 0.1mm black">
                                     <fo:block>
-                                        #if($negative.swTier == "T1") I
-                                        #elseif($negative.swTier == "T2") II
-                                        #elseif($negative.swTier == "T3") III
+                                        #if(($negative.expertTier && $negative.expertTier == "T1") ||
+                                        ((!$negative.expertTier || $negative.expertTier == "") && $negative.swTier == "T1")) I
+                                        #elseif(($negative.expertTier && $negative.expertTier == "T2") ||
+                                        ((!$negative.expertTier || $negative.expertTier == "") && $negative.swTier == "T2")) II
+                                        #elseif(($negative.expertTier && $negative.expertTier == "T3") ||
+                                        ((!$negative.expertTier || $negative.expertTier == "") && $negative.swTier == "T3")) III
                                         #end
                                     </fo:block>
                                 </fo:table-cell>
@@ -585,7 +594,7 @@
                                 <fo:block padding-top="2.5mm" padding-bottom="2.5mm">DIN</fo:block>
                             </fo:table-cell>
                             <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">3.1</fo:block>
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">$contents.dnaQuality</fo:block>
                             </fo:table-cell>
                             <fo:table-cell background-color="#e7e7e8">
                                 <fo:block padding-top="2.5mm" padding-bottom="2.5mm"><![CDATA[>= 3]]></fo:block>
@@ -599,7 +608,7 @@
                                 <fo:block padding-top="2.5mm" padding-bottom="2.5mm">ng</fo:block>
                             </fo:table-cell>
                             <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">200</fo:block>
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">$contents.inputDNA</fo:block>
                             </fo:table-cell>
                             <fo:table-cell background-color="#e7e7e8">
                                 <fo:block padding-top="2.5mm" padding-bottom="2.5mm"><![CDATA[>= 200]]></fo:block>
@@ -613,7 +622,7 @@
                                 <fo:block padding-top="2.5mm" padding-bottom="2.5mm">cycle</fo:block>
                             </fo:table-cell>
                             <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">8</fo:block>
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">$contents.pcrCycle</fo:block>
                             </fo:table-cell>
                             <fo:table-cell background-color="#e7e7e8">
                                 <fo:block padding-top="2.5mm" padding-bottom="2.5mm"><![CDATA[>= 7]]></fo:block>
@@ -627,7 +636,7 @@
                                 <fo:block padding-top="2.5mm" padding-bottom="2.5mm">ng</fo:block>
                             </fo:table-cell>
                             <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">1000</fo:block>
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">$contents.totalHybDNA</fo:block>
                             </fo:table-cell>
                             <fo:table-cell background-color="#e7e7e8">
                                 <fo:block padding-top="2.5mm" padding-bottom="2.5mm">500 ~ 1000</fo:block>
@@ -641,7 +650,7 @@
                                 <fo:block padding-top="2.5mm" padding-bottom="2.5mm">K/mm<fo:inline vertical-align="super" font-size="5pt">2</fo:inline></fo:block>
                             </fo:table-cell>
                             <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">1157</fo:block>
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">$contents.clusterDensity</fo:block>
                             </fo:table-cell>
                             <fo:table-cell background-color="#e7e7e8">
                                 <fo:block padding-top="2.5mm" padding-bottom="2.5mm">1000~1200</fo:block>

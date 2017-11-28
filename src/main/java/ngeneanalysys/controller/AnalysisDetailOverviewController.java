@@ -206,16 +206,32 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
             List<AnalysisResultVariant> list = analysisResultVariantList.getResult();
 
             //negative list만 가져옴
-            List<AnalysisResultVariant> negativeList = list.stream().filter(item -> !StringUtils.isEmpty(item.getInterpretation().getInterpretationNegativeTesult())).collect(Collectors.toList());
+            List<AnalysisResultVariant> negativeList = list.stream().filter(item -> (!StringUtils.isEmpty(item.getInterpretation().getInterpretationNegativeTesult())
+                    || (!StringUtils.isEmpty(item.getExpertTier()) && "TN".equalsIgnoreCase(item.getExpertTier())))).collect(Collectors.toList());
 
             //그 이후 list에서 negative list를 제거
             //list.removeAll(negativeList);
             //list = list.stream().filter(item -> item.getInterpretation().getInterpretationNegativeTesult() == null).collect(Collectors.toList());
 
-            Map<String, List<AnalysisResultVariant>> variantTierMap = list.stream().collect(Collectors.groupingBy(AnalysisResultVariant::getSwTier));
+            //Map<String, List<AnalysisResultVariant>> variantTierMap = list.stream().collect(Collectors.groupingBy(AnalysisResultVariant::getSwTier));
 
-            List<AnalysisResultVariant> tierOne = variantTierMap.get("T1");
+            //List<AnalysisResultVariant> tierOne = variantTierMap.get("T1");
 
+            List<AnalysisResultVariant> tierOne = list.stream().filter(item -> (("T1".equalsIgnoreCase(item.getExpertTier()) ||
+                    (StringUtils.isEmpty(item.getExpertTier()) && item.getSwTier().equalsIgnoreCase("T1")))))
+                    .collect(Collectors.toList());
+
+            List<AnalysisResultVariant> tierTwo = list.stream().filter(item -> (("T2".equalsIgnoreCase(item.getExpertTier()) ||
+                    (StringUtils.isEmpty(item.getExpertTier()) && item.getSwTier().equalsIgnoreCase("T2")))))
+                    .collect(Collectors.toList());
+
+            List<AnalysisResultVariant> tierThree = list.stream().filter(item -> (("T3".equalsIgnoreCase(item.getExpertTier()) ||
+                    (StringUtils.isEmpty(item.getExpertTier()) && item.getSwTier().equalsIgnoreCase("T3")))))
+                    .collect(Collectors.toList());
+
+            List<AnalysisResultVariant> tierFour = list.stream().filter(item -> (("T4".equalsIgnoreCase(item.getExpertTier()) ||
+                    (StringUtils.isEmpty(item.getExpertTier()) && item.getSwTier().equalsIgnoreCase("T4")))))
+                    .collect(Collectors.toList());
 
             if(tierOne != null) {
                 tierTable.getItems().addAll(FXCollections.observableArrayList(tierOne));
@@ -241,7 +257,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                 tierOneTherapeuticLabel.setText(String.valueOf(count));
             }
 
-            List<AnalysisResultVariant> tierTwo = variantTierMap.get("T2");
+            //List<AnalysisResultVariant> tierTwo = variantTierMap.get("T2");
 
             if(tierTwo != null) {
                 tierTable.getItems().addAll(FXCollections.observableArrayList(tierTwo));
@@ -268,7 +284,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                 tierTwoTherapeuticLabel.setText(String.valueOf(count));
             }
 
-            List<AnalysisResultVariant> tierThree  = variantTierMap.get("T3");
+            //List<AnalysisResultVariant> tierThree  = variantTierMap.get("T3");
 
             if(tierThree != null) {
                 tierThreeVariantsCountLabel.setText(String.valueOf(tierThree.size()));
@@ -294,7 +310,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                 tierThreeTherapeuticLabel.setText(String.valueOf(count));
             }
 
-            List<AnalysisResultVariant> tierFour  = variantTierMap.get("T4");
+            //List<AnalysisResultVariant> tierFour  = variantTierMap.get("T4");
 
             if(tierFour != null) {
                 tierFourVariantsCountLabel.setText(String.valueOf(tierFour.size()));

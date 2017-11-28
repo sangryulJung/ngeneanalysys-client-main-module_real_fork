@@ -8,6 +8,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -49,7 +50,7 @@
             <Button layoutX="1155.0" layoutY="20.0" mnemonicParsing="false" onAction="#confirmPDFAsFinal" prefHeight="35.0" prefWidth="156.0" styleClass="btn_blue_sm" text="Confirm Final Report" />
          </children>
       </HBox>
-      <ScrollPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.rowSpan="2" GridPane.valignment="CENTER">
+      <ScrollPane fx:id="scrollPane" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.rowSpan="2" GridPane.valignment="CENTER">
          <content>
             <Pane fx:id="mainContentsPane" prefHeight="800.0" prefWidth="1223.0">
                <children>
@@ -77,6 +78,38 @@
                               <Label fx:id="conclusions" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-text-fill: #C30D23;" styleClass="font_size_12" text="Conclusions" />
                               <TextArea fx:id="conclusionsTextArea" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="73.0" styleClass="txt_black" GridPane.columnIndex="1" />
                            </children>
+                        </GridPane>
+                        <GridPane>
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="12.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="8.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="12.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="8.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="12.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="8.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="12.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="8.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="12.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="8.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-text-fill: #C30D23;" styleClass="font_size_12" text="DNA quality(DIN)" />
+                              <TextField fx:id="inputDNATextField" styleClass="txt_black" GridPane.columnIndex="3" />
+                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-text-fill: #C30D23;" styleClass="font_size_12" text="inputDNA(ng)" GridPane.columnIndex="2" />
+                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-text-fill: #C30D23;" styleClass="font_size_12" text="PCR cycle(cycle)" GridPane.columnIndex="4" />
+                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-text-fill: #C30D23;" styleClass="font_size_12" text="total Hyb DNA(ng)" GridPane.columnIndex="6" />
+                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-text-fill: #C30D23;" styleClass="font_size_12" text="cluster density(K/㎟)" GridPane.columnIndex="8" />
+                              <TextField fx:id="dnaQualityTextField" styleClass="txt_black" GridPane.columnIndex="1" />
+                              <TextField fx:id="pcrCycleTextField" styleClass="txt_black" GridPane.columnIndex="5" />
+                              <TextField fx:id="totalHybDNATextField" styleClass="txt_black" GridPane.columnIndex="7" />
+                              <TextField fx:id="clusterDensityTextField" styleClass="txt_black" GridPane.columnIndex="9" />
+                           </children>
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
                         </GridPane>
                         <Label style="-fx-text-fill: #C30D23;" styleClass="font_size_18" text="Tier I Variants">
                            <VBox.margin>

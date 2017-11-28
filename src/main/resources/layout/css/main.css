@@ -137,7 +137,7 @@
 	-fx-background-color:linear-gradient(#A0A0A0 0%, #858585 50%, #525051 100%);
 	-fx-background-radius:0 0 0 0;
 	-fx-border-width:0;
-	-fx-pref-width:145;
+	-fx-pref-width:155;
 	-fx-pref-height:40;
 }
 
@@ -154,7 +154,7 @@
 	-fx-text-fill:#ffffff;
 	-fx-alignment:center;
 	-fx-padding:0 0 0 0;
-	-fx-pref-width:145;
+	-fx-pref-width:155;
 	-fx-pref-height:40;
 }
 

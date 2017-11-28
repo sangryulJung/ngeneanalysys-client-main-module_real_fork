@@ -33,7 +33,7 @@ public class AnalysisDetailSNPsINDELsMemoController extends SubPaneController {
     private TableColumn<VariantInterpretationLogs,String> typeColumn;
     /** 목록 등록자 컬럼 */
     @FXML
-    private TableColumn<VariantInterpretationLogs,Integer> userColumn;
+    private TableColumn<VariantInterpretationLogs,String> userColumn;
     /** 목록 변경이전값 컬럼 */
     @FXML
     private TableColumn<VariantInterpretationLogs,String> preValueColumn;
@@ -63,13 +63,12 @@ public class AnalysisDetailSNPsINDELsMemoController extends SubPaneController {
     @Override
     public void show(Parent root) throws IOException {
         logger.info("show..");
-        dateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(DateFormatUtils.format(cellData.getValue().getCreated_at().toDate(), "yyyy-MM-dd HH:mm:ss")));
-        typeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getInterpretation_type()));
-        userColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getMember_id()).asObject());
-        preValueColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getOld_value()));
-        nextValueColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNew_value()));
+        dateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(DateFormatUtils.format(cellData.getValue().getCreatedAt().toDate(), "yyyy-MM-dd HH:mm:ss")));
+        typeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getInterpretationType()));
+        userColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getMemberLoginId()));
+        preValueColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getOldValue()));
+        nextValueColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNewValue()));
         commentColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getComment()));
-
 
         analysisDetailSNPsINDELsController.subTabMemo.setContent(root);
     }

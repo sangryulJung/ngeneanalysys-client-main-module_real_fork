@@ -156,4 +156,8 @@ public class FXMLConstants {
 	/** 사용자 추가/수정 화면 */
 	public static final String GROUP_ADD = "/layout/fxml/systemManager/GroupAdd.fxml";
 
+	public static final String Exclude_REPORT = "/layout/fxml/ExcludeReportDialog.fxml";
+
+	public static final String CHANGE_TIER = "/layout/fxml/ChangeTierDialog.fxml";
+
 }

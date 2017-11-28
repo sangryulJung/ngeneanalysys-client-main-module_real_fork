@@ -252,36 +252,54 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
     }
 
     public void setTierFilterBox() {
-        AnalysisResultSummary summary = sample.getAnalysisResultSummary();
+        //Map<String, Long> count = list.stream().collect(Collectors.groupingBy(AnalysisResultVariant::getSwTier, Collectors.counting()));
 
-        Map<String, Long> count = list.stream().collect(Collectors.groupingBy(AnalysisResultVariant::getSwTier, Collectors.counting()));
+        List<AnalysisResultVariant> negativeList = list.stream().filter(item -> (!StringUtils.isEmpty(item.getInterpretation().getInterpretationNegativeTesult()) ||
+                "TN".equalsIgnoreCase(item.getExpertTier()))).collect(Collectors.toList());
+
+        List<AnalysisResultVariant> tierOne = list.stream().filter(item -> (("T1".equalsIgnoreCase(item.getExpertTier()) ||
+                (StringUtils.isEmpty(item.getExpertTier()) && item.getSwTier().equalsIgnoreCase("T1")))))
+                .collect(Collectors.toList());
+
+        List<AnalysisResultVariant> tierTwo = list.stream().filter(item -> (("T2".equalsIgnoreCase(item.getExpertTier()) ||
+                (StringUtils.isEmpty(item.getExpertTier()) && item.getSwTier().equalsIgnoreCase("T2")))))
+                .collect(Collectors.toList());
+
+        List<AnalysisResultVariant> tierThree = list.stream().filter(item -> (("T3".equalsIgnoreCase(item.getExpertTier()) ||
+                (StringUtils.isEmpty(item.getExpertTier()) && item.getSwTier().equalsIgnoreCase("T3")))))
+                .collect(Collectors.toList());
+
+        List<AnalysisResultVariant> tierFour = list.stream().filter(item -> (("T4".equalsIgnoreCase(item.getExpertTier()) ||
+                (StringUtils.isEmpty(item.getExpertTier()) && item.getSwTier().equalsIgnoreCase("T4")))))
+                .collect(Collectors.toList());
 
         VBox totalVariantBox = getFilterBox(ACMGFilterCode.TOTAL_VARIANT, list.size());
         filterList.getChildren().add(totalVariantBox);
         filterList.setMargin(totalVariantBox, new Insets(0, 0, 0, 5));
 
         // Tier I
-        VBox predictionABox = getFilterBox(ACMGFilterCode.TIER_ONE, (count.get("T1") != null ? count.get("T1").intValue() : 0));
+        //VBox predictionABox = getFilterBox(ACMGFilterCode.TIER_ONE, (count.get("T1") != null ? count.get("T1").intValue() : 0));
+        VBox predictionABox = getFilterBox(ACMGFilterCode.TIER_ONE, tierOne.size());
         filterList.getChildren().add(predictionABox);
         filterList.setMargin(predictionABox, new Insets(0, 0, 0, 5));
 
         // Tier II
-        VBox predictionBBox = getFilterBox(ACMGFilterCode.TIER_TWO, (count.get("T2") != null ? count.get("T2").intValue() : 0));
+        VBox predictionBBox = getFilterBox(ACMGFilterCode.TIER_TWO, tierTwo.size());
         filterList.getChildren().add(predictionBBox);
         filterList.setMargin(predictionBBox, new Insets(0, 0, 0, 5));
 
         // Tier III
-        VBox predictionCBox = getFilterBox(ACMGFilterCode.TIER_THREE, (count.get("T3") != null ? count.get("T3").intValue() : 0));
+        VBox predictionCBox = getFilterBox(ACMGFilterCode.TIER_THREE, tierThree.size());
         filterList.getChildren().add(predictionCBox);
         filterList.setMargin(predictionCBox, new Insets(0, 0, 0, 5));
 
         // Tier IV
-        VBox predictionDBox = getFilterBox(ACMGFilterCode.TIER_FOUR, (count.get("T4") != null ? count.get("T4").intValue() : 0));
+        VBox predictionDBox = getFilterBox(ACMGFilterCode.TIER_FOUR, tierFour.size());
         filterList.getChildren().add(predictionDBox);
         filterList.setMargin(predictionDBox, new Insets(0, 0, 0, 5));
 
         // Negative
-        VBox predictionEBox = getFilterBox(ACMGFilterCode.TIER_NEGATIVE, (count.get("TN") != null ? count.get("TN").intValue() : 0));
+        VBox predictionEBox = getFilterBox(ACMGFilterCode.TIER_NEGATIVE, negativeList.size());
         filterList.getChildren().add(predictionEBox);
         filterList.setMargin(predictionEBox, new Insets(0, 0, 0, 5));
     }
@@ -416,8 +434,8 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                 list = list.stream().filter(variant ->
                         variant.getSwPathogenicityLevel().equals(acmgFilterCode.getAlias())).collect(Collectors.toList());
             } else if(acmgFilterCode != null && acmgFilterCode.getAlias() != null && panel != null && ExperimentTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType())) {
-                list = list.stream().filter(variant ->
-                        variant.getSwTier().equals(acmgFilterCode.getAlias())).collect(Collectors.toList());
+                list = list.stream().filter(variant -> (!StringUtils.isEmpty(variant.getExpertTier()) && variant.getExpertTier().equals(acmgFilterCode.getAlias())) ||
+                        (StringUtils.isEmpty(variant.getExpertTier()) && variant.getSwTier().equals(acmgFilterCode.getAlias()))).collect(Collectors.toList());
             }
 
             // 하단 탭 활성화 토글
