@@ -94,7 +94,6 @@ public class SystemManagerSystemLogsController extends SubPaneController {
             param.put("offset", offset);
 
             response = apiService.get("/admin/systemLogs", param, null, false);
-            logger.info(response.getContentString());
 
             if(response != null) {
                 PagedSystemLogView pagedSystemLogView =

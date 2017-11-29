@@ -196,7 +196,7 @@ public class SystemManagerPanelController extends SubPaneController {
             panelListTable.getItems().addAll(panels.getResult());
 
             response = apiService.get("/admin/memberGroups", null, null, false);
-            logger.info(response.getContentString());
+
                 if(response != null) {
                     SystemManagerUserGroupPaging systemManagerUserGroupPaging =
                             response.getObjectBeforeConvertResponseToJSON(SystemManagerUserGroupPaging.class);

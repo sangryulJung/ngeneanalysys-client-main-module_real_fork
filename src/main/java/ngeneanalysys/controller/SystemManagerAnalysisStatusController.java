@@ -100,6 +100,15 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
     @FXML
     private TableColumn<Run, Boolean> delete;
 
+    @FXML
+    private TableColumn<Run, String> loginIdColumn;
+
+    @FXML
+    private TableColumn<Run, String> memberNameColumn;
+
+    @FXML
+    private TableColumn<Run, String> groupNameColumn;
+
 
     @Override
     public void show(Parent root) throws IOException {
@@ -114,6 +123,9 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
         id.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
         runName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
         status.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
+        loginIdColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLoginId()));
+        memberNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getMemberName()));
+        groupNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getMemberGroupName()));
         createAt.setCellValueFactory(cellData -> new SimpleStringProperty(DateFormatUtils.format(cellData.getValue().getCreatedAt().toDate(), "yyyy-MM-dd hh:mm:ss")));
 
         /** 삭제 버튼 */
@@ -145,7 +157,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
             param.put("ordering", "-id");
 
             response = apiService.get("/admin/runs", param, null, false);
-            logger.info(response.getContentString());
+
             if(response != null) {
                 RunGroupForPaging managerAnalysisStatus =
                         response.getObjectBeforeConvertResponseToJSON(RunGroupForPaging.class);

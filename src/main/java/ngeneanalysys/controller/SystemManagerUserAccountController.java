@@ -252,7 +252,6 @@ public class SystemManagerUserAccountController extends SubPaneController{
             param.put("offset", offset);
 
             response = apiService.get("/admin/members", param, null, false);
-            logger.info(response.getContentString());
 
             if(response != null) {
                 SystemManagerUserInfoPaging systemManagerUserInfoPaging =
@@ -308,7 +307,6 @@ public class SystemManagerUserAccountController extends SubPaneController{
             param.put("offset", offset);
 
             response = apiService.get("/admin/memberGroups", param, null, false);
-            logger.info(response.getContentString());
 
             if(response != null) {
                 SystemManagerUserGroupPaging systemManagerUserGroupPaging =
