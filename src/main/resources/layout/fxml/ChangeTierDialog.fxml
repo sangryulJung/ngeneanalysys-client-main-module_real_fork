@@ -15,7 +15,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="200.0">
                <children>
-                  <Label text="Change variant tier : ">
+                  <Label styleClass="font_size_14" text="Change variant tier : ">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -23,7 +23,7 @@
                         <Insets left="30.0" />
                      </HBox.margin>
                   </Label>
-                  <Label fx:id="tierLabel">
+                  <Label fx:id="tierLabel" styleClass="font_size_14">
                      <font>
                         <Font size="16.0" />
                      </font>

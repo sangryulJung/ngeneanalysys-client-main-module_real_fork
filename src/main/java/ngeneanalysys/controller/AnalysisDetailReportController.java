@@ -36,6 +36,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -191,6 +193,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     private TableView<AnalysisResultVariant> selectedTable = null;
 
     private TableRow<AnalysisResultVariant> rowItem;
+
+    private boolean reportData = false;
 
     @FXML
     private GridPane mainGridPane;
@@ -518,9 +522,46 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 negativeVariantsTable.setItems(FXCollections.observableArrayList(negativeList));
             }*/
 
+            response = apiService.get("sampleReport/" + sample.getId(), null, null, false);
+
+            if(response.getStatus() >= 200 && response.getStatus() <= 300) {
+                reportData = true;
+                SampleReport sampleReport = response.getObjectBeforeConvertResponseToJSON(SampleReport.class);
+                settingReportData(sampleReport.getContents());
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+    }
+
+    public void settingReportData(String contents) {
+
+        Map<String,Object> contentsMap = JsonUtil.fromJsonToMap(contents);
+
+        if(contentsMap.containsKey("contents")) conclusionsTextArea.setText((String)contentsMap.get("contents"));
+        if(contentsMap.containsKey("dnaQuality")) dnaQualityTextField.setText((String)contentsMap.get("dnaQuality"));
+        if(contentsMap.containsKey("inputDNA")) inputDNATextField.setText((String)contentsMap.get("inputDNA"));
+        if(contentsMap.containsKey("pcrCycle")) pcrCycleTextField.setText((String)contentsMap.get("pcrCycle"));
+        if(contentsMap.containsKey("totalHybDNA")) totalHybDNATextField.setText((String)contentsMap.get("totalHybDNA"));
+        if(contentsMap.containsKey("clusterDensity")) clusterDensityTextField.setText((String)contentsMap.get("clusterDensity"));
+
+        for(int i = 0; i < customFieldGridPane.getChildren().size(); i++) {
+            Object gridObject = customFieldGridPane.getChildren().get(i);
+
+            if(gridObject instanceof TextField) {
+                TextField textField = (TextField)gridObject;
+                if(contentsMap.containsKey(textField.getId())) textField.setText((String)contentsMap.get(textField.getId()));
+            } else if(gridObject instanceof DatePicker) {
+                DatePicker datePicker = (DatePicker)gridObject;
+                if(contentsMap.containsKey(datePicker.getId())) {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    datePicker.setValue(LocalDate.parse((String)contentsMap.get(datePicker.getId()), formatter));
+                }
+            }
+        }
+
 
     }
 
@@ -535,18 +576,45 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
         Map<String, Object> params = new HashMap<>();
 
-        params.put("sampleId", sample.getId());
+        //params.put("sampleId", sample.getId());
 
-        params.put("contents", conclusionsText);
-/*
+        Map<String, Object> contentsMap = new HashMap<>();
+
+        if(!StringUtils.isEmpty(conclusionsText)) contentsMap.put("contents", conclusionsText);
+        if((!StringUtils.isEmpty(dnaQualityTextField.getText()))) contentsMap.put("dnaQuality", dnaQualityTextField.getText());
+        if((!StringUtils.isEmpty(inputDNATextField.getText()))) contentsMap.put("inputDNA", inputDNATextField.getText());
+        if(!StringUtils.isEmpty(pcrCycleTextField.getText())) contentsMap.put("pcrCycle", pcrCycleTextField.getText());
+        if(!StringUtils.isEmpty(totalHybDNATextField.getText())) contentsMap.put("totalHybDNA", totalHybDNATextField.getText());
+        if(!StringUtils.isEmpty(clusterDensityTextField.getText())) contentsMap.put("clusterDensity", clusterDensityTextField.getText());
+
+        for(int i = 0; i < customFieldGridPane.getChildren().size(); i++) {
+            Object gridObject = customFieldGridPane.getChildren().get(i);
+
+            if(gridObject instanceof TextField) {
+                TextField textField = (TextField)gridObject;
+                if(!StringUtils.isEmpty(textField.getText())) contentsMap.put(textField.getId(), textField.getText());
+            } else if(gridObject instanceof DatePicker) {
+                DatePicker datePicker = (DatePicker)gridObject;
+                if(datePicker.getValue() != null) {
+                    contentsMap.put(datePicker.getId(), datePicker.getValue().toString());
+                }
+            }
+        }
+        String contents = JsonUtil.toJson(contentsMap);
+        params.put("contents", contents);
+
         HttpClientResponse response = null;
         try {
-            response = apiService.post("/sampleReport", params, null, true);
+            if(reportData) {
+                response = apiService.put("/sampleReport/" + sample.getId(), params, null, true);
+            } else {
+                response = apiService.post("/sampleReport/" + sample.getId(), params, null, true);
+            }
         } catch (WebAPIException wae) {
             wae.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
-        }*/
+        }
 
 
         return true;
