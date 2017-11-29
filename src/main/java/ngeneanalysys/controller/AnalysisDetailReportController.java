@@ -198,7 +198,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     @Override
     public void show(Parent root) throws IOException {
         logger.info("show..");
-        //숫자 이외의 값을 강제함
+        //숫자 값을 강제함
         dnaQualityTextField.textProperty().addListener((observable, oldValue, newValue) -> {
                 if(!newValue.matches("[0-9]*")) dnaQualityTextField.setText(oldValue);
         });

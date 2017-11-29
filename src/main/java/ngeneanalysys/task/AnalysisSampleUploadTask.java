@@ -60,7 +60,6 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
         long complete = (long)(((double)getCompleteWorkCount() + (workDone / (double)max)) * 100);
         updateMessage(String.valueOf(getCompleteWorkCount()));
         try {
-            Thread.sleep(100);
             Platform.runLater(() -> {
                 this.analysisSampleUploadProgressTaskController.updateTotalCount(String.valueOf(getNumberOfWork()));
             });

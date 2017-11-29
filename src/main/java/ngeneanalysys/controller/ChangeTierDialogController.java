@@ -3,6 +3,7 @@ package ngeneanalysys.controller;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
@@ -13,6 +14,7 @@ import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.AnalysisResultVariant;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import org.slf4j.Logger;
@@ -41,6 +43,9 @@ public class ChangeTierDialogController extends SubPaneController {
     @FXML
     private TextField commentTextField;
 
+    @FXML
+    private Label tierLabel;
+
     private Stage dialogStage;
 
     /**
@@ -54,6 +59,8 @@ public class ChangeTierDialogController extends SubPaneController {
         this.table =table;
         this.tier = tier;
         this.selectedItem = selectedItem;
+
+        tierLabel.setText(ConvertUtil.tierConvert(selectedItem.getSwTier()) + " > " + ConvertUtil.tierConvert(tier));
     }
 
     @Override

@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="100.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.ExcludeReportDialogController">
+<AnchorPane prefHeight="100.0" prefWidth="450.0" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.ExcludeReportDialogController">
    <children>
       <VBox prefHeight="100.0" prefWidth="450.0">
          <children>
@@ -26,14 +26,14 @@
                   </TextField>
                </children>
             </HBox>
-            <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="200.0">
+            <HBox alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="200.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#ok" text="OK">
+                  <Button mnemonicParsing="false" onAction="#ok" styleClass="btn_setting_save" text="OK">
                      <HBox.margin>
                         <Insets right="20.0" />
                      </HBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#cancel" text="Cancel">
+                  <Button mnemonicParsing="false" onAction="#cancel" styleClass="btn_setting_close" text="Cancel">
                      <HBox.margin>
                         <Insets right="20.0" />
                      </HBox.margin>
