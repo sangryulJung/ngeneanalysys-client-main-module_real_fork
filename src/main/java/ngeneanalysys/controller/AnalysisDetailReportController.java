@@ -287,7 +287,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         tierOneVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getNtChange()));
         tierOneAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getReadInfo().getAlleleFraction()));
         tierOneExceptColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
-        tierOneExceptColumn.setCellFactory(param -> new ReportedCheckBox());
+        tierOneExceptColumn.setCellFactory(param -> new ReportedCheckBox(this));
         tierOneTherapeuticColumn.setCellValueFactory(cellData -> {
             Interpretation interpretation = cellData.getValue().getInterpretation();
             String text = "";
@@ -312,7 +312,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         tierTwoVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getNtChange()));
         tierTwoAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getReadInfo().getAlleleFraction()));
         tierTwoExceptColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
-        tierTwoExceptColumn.setCellFactory(param -> new ReportedCheckBox());
+        tierTwoExceptColumn.setCellFactory(param -> new ReportedCheckBox(this));
         tierTwoTherapeuticColumn.setCellValueFactory(cellData -> {
             Interpretation interpretation = cellData.getValue().getInterpretation();
             String text = "";
@@ -337,7 +337,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         tierThreeVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getNtChange()));
         tierThreeAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getReadInfo().getAlleleFraction()));
         tierThreeExceptColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
-        tierThreeExceptColumn.setCellFactory(param -> new ReportedCheckBox());
+        tierThreeExceptColumn.setCellFactory(param -> new ReportedCheckBox(this));
         tierThreeTherapeuticColumn.setCellValueFactory(cellData -> {
             Interpretation interpretation = cellData.getValue().getInterpretation();
             String text = "";
@@ -363,7 +363,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         negativeCauseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getInterpretation().getInterpretationNegativeTesult()));
         negativeAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getReadInfo().getAlleleFraction().toString()));
         negativeExceptColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
-        negativeExceptColumn.setCellFactory(param -> new ReportedCheckBox());
+        negativeExceptColumn.setCellFactory(param -> new ReportedCheckBox(this));
 
         logger.info(sample.toString());
 
@@ -926,7 +926,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         HBox box = null;
         final CheckBox checkBox = new CheckBox();
 
-        ReportedCheckBox() {
+        ReportedCheckBox(AnalysisDetailReportController analysisDetailReportController) {
             checkBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
 
                 AnalysisResultVariant analysisResultVariant = ReportedCheckBox.this.getTableView().getItems().get(
@@ -951,6 +951,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         Node root = loader.load();
                         ExcludeReportDialogController excludeReportDialogController = loader.getController();
                         excludeReportDialogController.setMainController(mainController);
+                        excludeReportDialogController.setAnalysisDetailReportController(analysisDetailReportController);
                         excludeReportDialogController.settingItem("Y", selectedItem, checkBox);
                         excludeReportDialogController.show((Parent) root);
                     } catch (IOException ioe) {

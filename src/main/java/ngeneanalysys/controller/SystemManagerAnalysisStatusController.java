@@ -92,15 +92,6 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
     private TableColumn<Run, String> status;
 
     @FXML
-    private TableColumn<Run, Integer> sc;
-
-    @FXML
-    private TableColumn<Run, Integer> userId;
-
-    @FXML
-    private TableColumn<Run, String> userName;
-
-    @FXML
     private TableColumn<Run, String> createAt;
 
     @FXML
@@ -123,11 +114,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
         id.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
         runName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
         status.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
-        userId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getMemberId()).asObject());
         createAt.setCellValueFactory(cellData -> new SimpleStringProperty(DateFormatUtils.format(cellData.getValue().getCreatedAt().toDate(), "yyyy-MM-dd hh:mm:ss")));
-        sc.setCellValueFactory(cellData -> new SimpleIntegerProperty(
-                cellData.getValue().getId()).asObject());
-        userName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
 
         /** 삭제 버튼 */
         delete.setSortable(false);

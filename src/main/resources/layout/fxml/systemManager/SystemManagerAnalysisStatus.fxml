@@ -91,9 +91,6 @@
                   <TableColumn fx:id="id" prefWidth="100.0" text="Run ID" />
                   <TableColumn fx:id="runName" prefWidth="300.0" text="Run Name" />
                   <TableColumn fx:id="status" prefWidth="75.0" text="Status" />
-                  <TableColumn fx:id="sc" prefWidth="50.0" text="S/C" />
-                  <TableColumn fx:id="userId" prefWidth="150.0" text="User ID" />
-                  <TableColumn fx:id="userName" prefWidth="150.0" text="User Name" />
                   <TableColumn fx:id="createAt" prefWidth="150.0" text="Created at" />
                   <TableColumn fx:id="restart" prefWidth="75.0" text="Restart" />
                   <TableColumn fx:id="delete" prefWidth="75.0" text="Delete" />

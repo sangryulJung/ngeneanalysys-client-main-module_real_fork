@@ -5,6 +5,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -14,6 +15,7 @@ import ngeneanalysys.model.*;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.FileUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
@@ -116,6 +118,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             if(row > 22) break;
 
             sampleNameTextFieldList.get(row).setText(sample.getName());
+
             patientIdTextFieldList.get(row).setText((sample.getPaitentId() != null) ? sample.getPaitentId() : "");
 
             if(sample.getDiseaseId() != null) {
@@ -142,6 +145,38 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                         return;
                     }
                 });
+            }
+
+            //sample Status 가 존재한다면 그에 따른 추가기능의 설정
+            if(sample.getSampleStatus() != null) {
+                if("UPLOAD".equalsIgnoreCase(sample.getSampleStatus().getStep())
+                        && "RUNNING".equalsIgnoreCase(sample.getSampleStatus().getStatus())) {
+                    sampleNameTextFieldList.get(row).addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+                        if(e.getClickCount() == 2) {
+                            try {
+                                Map<String, Object> params = new HashMap<>();
+                                params.put("sampleId", sample.getId());
+
+                                HttpClientResponse response = apiService.get("analysisFiles", params, null, false);
+
+                                PagedAnalysisFile pagedAnalysisFile = response.getObjectBeforeConvertResponseToJSON(PagedAnalysisFile.class);
+
+                                for(AnalysisFile analysisFile : pagedAnalysisFile.getResult()) {
+                                    if(analysisFile.getSampleId().equals("ACTIVE")) pagedAnalysisFile.getResult().remove(analysisFile);
+                                }
+                                failedFastqAdd(pagedAnalysisFile.getResult());
+                            } catch (WebAPIException wae) {
+                                DialogUtil.error(wae.getHeaderText(), wae.getContents(), getMainApp().getPrimaryStage(), true);
+                            }
+                        }
+                    });
+                } else {
+                    sampleNameTextFieldList.get(row).setDisable(true);
+                    patientIdTextFieldList.get(row).setDisable(true);
+                    panelComboBoxList.get(row).setDisable(true);
+                    diseaseComboBoxList.get(row).setDisable(true);
+                    sampleSourceTextFieldList.get(row).setDisable(true);
+                }
             }
 
             row++;
@@ -504,7 +539,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             String chooseDirectoryPath = FilenameUtils.getFullPath(file.getAbsolutePath());
             logger.info(String.format("directory path of choose bedFile : %s", chooseDirectoryPath));
             File directory = new File(chooseDirectoryPath);
-            //선택한 파일의 폴더 내 모든 파일의 수
+            //선택한 파일의 폴더 내 모든 FASTQ 파일 검색
             List<File> fastqFilesInFolder = (List<File>) FileUtils.listFiles(directory, new String[]{"fastq.gz"}, false);
 
             List<File> pairFileList = fastqFilesInFolder.stream().filter(item ->
@@ -516,6 +551,48 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             }
         }
         tableEdit();
+
+        maskerPane.setVisible(false);
+    }
+
+    private void failedFastqAdd(List<AnalysisFile> failedFileList) {
+        maskerPane.setVisible(true);
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose Directory");
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        FileChooser.ExtensionFilter fileExtensions =
+                new FileChooser.ExtensionFilter(
+                        "fastq", "*.fastq", "*.fastq.gz");
+        fileChooser.getExtensionFilters().add(fileExtensions);
+        File file = fileChooser.showOpenDialog(this.sampleUploadController.getCurrentStage());
+
+        if(file != null) {
+            String fastqFilePairName = FileUtil.getFASTQFilePairName(file.getName());
+
+            String chooseDirectoryPath = FilenameUtils.getFullPath(file.getAbsolutePath());
+            logger.info(String.format("directory path of choose bedFile : %s", chooseDirectoryPath));
+            File directory = new File(chooseDirectoryPath);
+            //선택한 파일의 폴더 내 모든 FASTQ 파일 검색
+            List<File> fastqFilesInFolder = (List<File>) FileUtils.listFiles(directory, new String[]{"fastq.gz"}, false);
+
+            List<File> pairFileList = fastqFilesInFolder.stream().filter(item ->
+                    item.getName().startsWith(fastqFilePairName)).collect(Collectors.toList());
+
+
+            if(pairFileList.size() == 2) {
+                logger.info("검사");
+                for (File selectedFile : pairFileList) {
+                    Optional<AnalysisFile> fileOptional = failedFileList.stream().filter(item -> selectedFile.getName().equals(item.getName())).findFirst();
+                    if (!fileOptional.isPresent()) {
+                        DialogUtil.error("FASTQ FILE SELECT ERROR", "MISMATCH FASTQ FILE", getMainApp().getPrimaryStage(), true);
+                        return;
+                    } else {
+                        logger.info(selectedFile.getName());
+                    }
+                }
+            }
+        }
 
         maskerPane.setVisible(false);
     }

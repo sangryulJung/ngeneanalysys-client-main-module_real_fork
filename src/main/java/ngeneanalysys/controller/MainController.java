@@ -596,31 +596,31 @@ public class MainController extends BaseStageController {
             FXMLLoader loader = null;
             if(menuId.equals(SystemMenuCode.EDIT.name())) {
                 loader = mainApp.load(FXMLConstants.SYSTEM_MENU_EDIT);
-                Node root = (Node) loader.load();
+                Node root = loader.load();
                 SystemMenuEditController editController = loader.getController();
                 editController.setMainController(this);
                 editController.show((Parent) root);
             } else if(menuId.equals(SystemMenuCode.SETTINGS.name())) {
                 loader = mainApp.load(FXMLConstants.SYSTEM_MENU_SETTING);
-                Node root = (Node) loader.load();
+                Node root = loader.load();
                 SystemMenuSettingController settingsController = loader.getController();
                 settingsController.setMainController(this);
                 settingsController.show((Parent) root);
             } else if(menuId.equals(SystemMenuCode.SUPPORT.name())) {
                 loader = mainApp.load(FXMLConstants.SYSTEM_MENU_SUPPORT);
-                Node root = (Node) loader.load();
+                Node root = loader.load();
                 SystemMenuSupportController supportController = loader.getController();
                 supportController.setMainController(this);
                 supportController.show((Parent) root);
             } else if(menuId.equals(SystemMenuCode.LICENSE.name())) {
                 loader = mainApp.load(FXMLConstants.SYSTEM_MENU_LICENSE);
-                Node root = (Node) loader.load();
+                Node root = loader.load();
                 SystemMenuLicenseController licenseController = loader.getController();
                 licenseController.setMainController(this);
                 licenseController.show((Parent) root);
             } else if(menuId.equals(SystemMenuCode.PUBLIC_DATABASES.name())) {
                 loader = mainApp.load(FXMLConstants.SYSTEM_MENU_PUBLIC_DATABASES);
-                Node root = (Node) loader.load();
+                Node root = loader.load();
                 SystemMenuPublicDatabasesController publicDatabasesController = loader.getController();
                 publicDatabasesController.setMainController(this);
                 publicDatabasesController.show((Parent) root);

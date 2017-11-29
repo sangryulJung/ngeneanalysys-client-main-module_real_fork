@@ -44,6 +44,34 @@ public class Run implements Serializable {
     @JsonProperty(value = "deleted")
     private Integer deleted;
 
+    @JsonProperty(value = "memberName")
+    private String memberName;
+
+    private String loginId;
+
+    private String memberGroupName;
+
+    /**
+     * @return memberGroupName
+     */
+    public String getMemberGroupName() {
+        return memberGroupName;
+    }
+
+    /**
+     * @return loginId
+     */
+    public String getLoginId() {
+        return loginId;
+    }
+
+    /**
+     * @return memberName
+     */
+    public String getMemberName() {
+        return memberName;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -61,6 +61,7 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
         updateMessage(String.valueOf(getCompleteWorkCount()));
         try {
             Platform.runLater(() -> {
+                if(complete > total) return;
                 this.analysisSampleUploadProgressTaskController.updateTotalCount(String.valueOf(getNumberOfWork()));
             });
         } catch (Exception e) {
@@ -156,6 +157,7 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
                     if (currentUploadGroupId > 0) {
                         // 현재 업로드중인 분석 요청 그룹 데이터 삭제
                         //analysisRequestService.removeRequestedJob(currentUploadGroupId);
+                        this.analysisSampleUploadProgressTaskController.getMainController().clearProgressTaskArea();
                     }
                 }
 
