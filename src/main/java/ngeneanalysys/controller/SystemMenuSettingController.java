@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
+import ngeneanalysys.service.PropertiesService;
 import ngeneanalysys.service.ServerURLManageService;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
@@ -169,6 +170,7 @@ public class SystemMenuSettingController extends SubPaneController {
             String homeDir = System.getProperty("user.home");
             File configFile = new File(homeDir + File.separator + CommonConstants.BASE_PATH, CommonConstants.CONFIG_PROPERTIES);
 
+            String pastURL = config.getProperty(CommonConstants.DEFAULT_SERVER_HOST_KEY);
             // 프로퍼티 파일에 저장
             Map<String,String> map = new HashMap<>();
             map.put("default.server.host", serverURLTextField.getText());
@@ -194,7 +196,20 @@ public class SystemMenuSettingController extends SubPaneController {
                 }
                 DialogUtil.alert("Modify success!!", "It has been saved.", getMainApp().getPrimaryStage(), true);
                 // 자동 새로고침 설정 적용
-                getMainController().applyAutoRefreshSettings();
+
+                String presentURL = serverURLTextField.getText();
+
+                PropertiesService propertiesService = PropertiesService.getInstance();
+
+                propertiesService.getConfig().setProperty("analysis.job.auto.refresh", Boolean.toString(autoRefreshCheckBox.isSelected()));
+                propertiesService.getConfig().setProperty("analysis.job.auto.refresh.period", Boolean.toString(autoRefreshCheckBox.isSelected()));
+
+                if(pastURL.equals(presentURL)) {
+                    getMainController().applyAutoRefreshSettings();
+                } else {
+                    serverURLManageService.save(presentURL);
+                    mainController.logoutForce();
+                }
                 close();
             } catch (Exception e) {
                 e.printStackTrace();

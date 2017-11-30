@@ -157,21 +157,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     @FXML
     private Label conclusions;
 
-    @FXML
-    private TextField dnaQualityTextField;
-
-    @FXML
-    private TextField inputDNATextField;
-
-    @FXML
-    private TextField pcrCycleTextField;
-
-    @FXML
-    private TextField totalHybDNATextField;
-
-    @FXML
-    private TextField clusterDensityTextField;
-
     Sample sample = null;
 
     Panel panel = null;
@@ -202,26 +187,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     @Override
     public void show(Parent root) throws IOException {
         logger.info("show..");
-        //숫자 값을 강제함
-        dnaQualityTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-                if(!newValue.matches("[0-9]*")) dnaQualityTextField.setText(oldValue);
-        });
-
-        inputDNATextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if(!newValue.matches("[0-9]*")) inputDNATextField.setText(oldValue);
-        });
-
-        pcrCycleTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if(!newValue.matches("[0-9]*")) pcrCycleTextField.setText(oldValue);
-        });
-
-        totalHybDNATextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if(!newValue.matches("[0-9]*")) totalHybDNATextField.setText(oldValue);
-        });
-
-        clusterDensityTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if(!newValue.matches("[0-9]*")) clusterDensityTextField.setText(oldValue);
-        });
 
         //Drag & Drop 으로 Variant의 Tier를 변경
         tierOneVariantsTable.setOnDragDetected(e -> onDragDetected(e, tierOneVariantsTable));
@@ -522,14 +487,15 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 negativeVariantsTable.setItems(FXCollections.observableArrayList(negativeList));
             }*/
 
-            response = apiService.get("sampleReport/" + sample.getId(), null, null, false);
+            if(sample.getSampleStatus().getReportStartedAt() != null) {
+                response = apiService.get("sampleReport/" + sample.getId(), null, null, false);
 
-            if(response.getStatus() >= 200 && response.getStatus() <= 300) {
-                reportData = true;
-                SampleReport sampleReport = response.getObjectBeforeConvertResponseToJSON(SampleReport.class);
-                settingReportData(sampleReport.getContents());
+                if (response.getStatus() >= 200 && response.getStatus() <= 300) {
+                    reportData = true;
+                    SampleReport sampleReport = response.getObjectBeforeConvertResponseToJSON(SampleReport.class);
+                    settingReportData(sampleReport.getContents());
+                }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -539,13 +505,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     public void settingReportData(String contents) {
 
         Map<String,Object> contentsMap = JsonUtil.fromJsonToMap(contents);
-
-        if(contentsMap.containsKey("contents")) conclusionsTextArea.setText((String)contentsMap.get("contents"));
-        if(contentsMap.containsKey("dnaQuality")) dnaQualityTextField.setText((String)contentsMap.get("dnaQuality"));
-        if(contentsMap.containsKey("inputDNA")) inputDNATextField.setText((String)contentsMap.get("inputDNA"));
-        if(contentsMap.containsKey("pcrCycle")) pcrCycleTextField.setText((String)contentsMap.get("pcrCycle"));
-        if(contentsMap.containsKey("totalHybDNA")) totalHybDNATextField.setText((String)contentsMap.get("totalHybDNA"));
-        if(contentsMap.containsKey("clusterDensity")) clusterDensityTextField.setText((String)contentsMap.get("clusterDensity"));
 
         for(int i = 0; i < customFieldGridPane.getChildren().size(); i++) {
             Object gridObject = customFieldGridPane.getChildren().get(i);
@@ -581,11 +540,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         Map<String, Object> contentsMap = new HashMap<>();
 
         if(!StringUtils.isEmpty(conclusionsText)) contentsMap.put("contents", conclusionsText);
-        if((!StringUtils.isEmpty(dnaQualityTextField.getText()))) contentsMap.put("dnaQuality", dnaQualityTextField.getText());
-        if((!StringUtils.isEmpty(inputDNATextField.getText()))) contentsMap.put("inputDNA", inputDNATextField.getText());
-        if(!StringUtils.isEmpty(pcrCycleTextField.getText())) contentsMap.put("pcrCycle", pcrCycleTextField.getText());
-        if(!StringUtils.isEmpty(totalHybDNATextField.getText())) contentsMap.put("totalHybDNA", totalHybDNATextField.getText());
-        if(!StringUtils.isEmpty(clusterDensityTextField.getText())) contentsMap.put("clusterDensity", clusterDensityTextField.getText());
 
         for(int i = 0; i < customFieldGridPane.getChildren().size(); i++) {
             Object gridObject = customFieldGridPane.getChildren().get(i);
@@ -746,7 +700,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     variantList = variantList.stream().filter(item -> item.getIncludedInReport().equals("Y")).collect(Collectors.toList());
                 }
 
-                if(tierThree != null && !tierThree.isEmpty()) variantList.addAll(tierThree);
+                //if(tierThree != null && !tierThree.isEmpty()) variantList.addAll(tierThree);
+                if(!tierThreeVariantsTable.getItems().isEmpty()) variantList.addAll(tierThreeVariantsTable.getItems().stream().collect(Collectors.toList()));
 
                 for(AnalysisResultVariant variant : variantList) {
                     variant.getVariantExpression().setTranscript(ConvertUtil.insertTextAtFixedPosition(variant.getVariantExpression().getTranscript(), 15, "\n"));
@@ -754,16 +709,25 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     variant.getVariantExpression().setAaChange(ConvertUtil.insertTextAtFixedPosition(variant.getVariantExpression().getAaChange(), 15, "\n"));
                 }
 
-                Long evidenceACount = variantList.stream().filter(item -> !StringUtils.isEmpty(item.getInterpretation().getInterpretationEvidenceA())).count();
+                /*Long evidenceACount = variantList.stream().filter(item -> !StringUtils.isEmpty(item.getInterpretation().getInterpretationEvidenceA())).count();
                 Long evidenceBCount = variantList.stream().filter(item -> !StringUtils.isEmpty(item.getInterpretation().getInterpretationEvidenceB())).count();
                 Long evidenceCCount = variantList.stream().filter(item -> !StringUtils.isEmpty(item.getInterpretation().getInterpretationEvidenceC())).count();
-                Long evidenceDCount = variantList.stream().filter(item -> !StringUtils.isEmpty(item.getInterpretation().getInterpretationEvidenceD())).count();
+                Long evidenceDCount = variantList.stream().filter(item -> !StringUtils.isEmpty(item.getInterpretation().getInterpretationEvidenceD())).count();*/
+
+                Integer evidenceACount = tierOneVariantsTable.getItems().filtered(item ->
+                        (item.getIncludedInReport().equals("Y") && StringUtils.isEmpty(item.getExpertTier()) && item.getSwTier().equals("T1")
+                        && !StringUtils.isEmpty(item.getInterpretation().getInterpretationEvidenceA()))).size();
+                Integer evidenceBCount = tierOneVariantsTable.getItems().filtered(item -> item.getIncludedInReport().equals("Y")).size() - evidenceACount;
+                Integer evidenceCCount = tierOneVariantsTable.getItems().filtered(item ->
+                        (item.getIncludedInReport().equals("Y") && StringUtils.isEmpty(item.getExpertTier()) && item.getSwTier().equals("T2")
+                                && !StringUtils.isEmpty(item.getInterpretation().getInterpretationEvidenceC()))).size();
+                Integer evidenceDCount = tierTwoVariantsTable.getItems().filtered(item -> item.getIncludedInReport().equals("Y")).size() - evidenceCCount;
 
                 contentsMap.put("variantList", variantList);
                 contentsMap.put("tierThreeVariantList", tierThree);
-                contentsMap.put("tierOneCount", tierOneVariantsTable.getItems().size());
-                contentsMap.put("tierTwoCount", tierTwoVariantsTable.getItems().size());
-                contentsMap.put("tierThreeCount", tierThreeVariantsTable.getItems().size());
+                contentsMap.put("tierOneCount", tierOneVariantsTable.getItems().filtered(item -> item.getIncludedInReport().equals("Y")).size());
+                contentsMap.put("tierTwoCount", tierTwoVariantsTable.getItems().filtered(item -> item.getIncludedInReport().equals("Y")).size());
+                contentsMap.put("tierThreeCount", tierThreeVariantsTable.getItems().filtered(item -> item.getIncludedInReport().equals("Y")).size());
                 contentsMap.put("tierFourCount", (tierFour != null) ? tierFour.size() : 0);
                 contentsMap.put("evidenceACount", evidenceACount);
                 contentsMap.put("evidenceBCount", evidenceBCount);
@@ -771,12 +735,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 contentsMap.put("evidenceDCount", evidenceDCount);
                 contentsMap.put("negativeList", negativeResult);
                 contentsMap.put("qcData", sample.getQcData());
-
-                contentsMap.put("dnaQuality", (!StringUtils.isEmpty(dnaQualityTextField.getText())) ? dnaQualityTextField.getText() : "0");
-                contentsMap.put("inputDNA", (!StringUtils.isEmpty(inputDNATextField.getText())) ? inputDNATextField.getText() : "0");
-                contentsMap.put("pcrCycle", (!StringUtils.isEmpty(pcrCycleTextField.getText())) ? pcrCycleTextField.getText() : "0");
-                contentsMap.put("totalHybDNA", (!StringUtils.isEmpty(totalHybDNATextField.getText())) ? totalHybDNATextField.getText() : "0");
-                contentsMap.put("clusterDensity", (!StringUtils.isEmpty(clusterDensityTextField.getText())) ? clusterDensityTextField.getText() : "0");
 
                 //Genes in panel
                 try {

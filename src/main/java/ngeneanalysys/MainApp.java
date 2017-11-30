@@ -100,7 +100,7 @@ public class MainApp extends Application {
 		AnchorPane pane = loader.load();
 		LoginController controller = loader.getController();
 		controller.setMainApp(this);
-		controller.show((Parent) pane);
+		controller.show(pane);
 		
 	}
 
@@ -109,7 +109,7 @@ public class MainApp extends Application {
 		GridPane pane = loader.load();
 		ServerURLSettingController controller = loader.getController();
 		controller.setMainApp(this);
-		controller.show((Parent) pane);
+		controller.show(pane);
 	}
 	
 	/**
@@ -307,7 +307,7 @@ public class MainApp extends Application {
 			GridPane mainPane = loader.load();
 			MainController controller = loader.getController();
 			controller.setMainApp(this);
-			controller.show((Parent) mainPane);
+			controller.show(mainPane);
 		}
 	}
 	

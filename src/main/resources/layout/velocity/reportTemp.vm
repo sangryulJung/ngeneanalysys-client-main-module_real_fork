@@ -437,7 +437,10 @@
 								</fo:table-cell>
 							</fo:table-row>
 							#foreach($variant in $contents.variantList)
-							#if($variant.swTier == "T1" || $variant.swTier == "T2")
+							#if(($variant.expertTier && $variant.expertTier == "T1") ||
+							((!$variant.expertTier || $variant.expertTier == "") && $variant.swTier == "T1") ||
+							($variant.expertTier && $variant.expertTier == "T2") ||
+							((!$variant.expertTier || $variant.expertTier == "") && $variant.swTier == "T2"))
 								<fo:table-row text-align="center">
 									<fo:table-cell border-style="solid" border="solid 0.2mm black" display-align="center" text-align="center">
 										<fo:block text-align="left" font-family="Noto Sans CJK KR Regular">$variant.sequenceInfo.gene
@@ -446,16 +449,36 @@
 										<fo:block text-align="left">$variant.variantExpression.ntChange</fo:block>
 									</fo:table-cell>
 									<fo:table-cell border-style="solid" border="solid 0.2mm black">
-											<fo:block font-family="Noto Sans CJK KR Regular">$variant.interpretation.interpretationEvidenceA</fo:block>
+											<fo:block font-family="Noto Sans CJK KR Regular">
+												#if((!$variant.expertTier || $variant.expertTier == ""))
+													$variant.interpretation.interpretationEvidenceA
+												#end
+											</fo:block>
 									</fo:table-cell>
 									<fo:table-cell border-style="solid" border="solid 0.2mm black">
-										<fo:block font-family="Noto Sans CJK KR Regular">$variant.interpretation.interpretationEvidenceB</fo:block>
+										<fo:block font-family="Noto Sans CJK KR Regular">
+											#if((!$variant.expertTier || $variant.expertTier == ""))
+												$variant.interpretation.interpretationEvidenceB
+											#else
+												$variant.comment
+											#end
+										</fo:block>
 									</fo:table-cell>
 									<fo:table-cell border-style="solid" border="solid 0.2mm black">
-										<fo:block font-family="Noto Sans CJK KR Regular">$variant.interpretation.interpretationEvidenceC</fo:block>
+										<fo:block font-family="Noto Sans CJK KR Regular">
+											#if((!$variant.expertTier || $variant.expertTier == ""))
+												$variant.interpretation.interpretationEvidenceC
+											#end
+										</fo:block>
 									</fo:table-cell>
 									<fo:table-cell border-style="solid" border="solid 0.2mm black">
-										<fo:block font-family="Noto Sans CJK KR Regular">$variant.interpretation.interpretationEvidenceD</fo:block>
+										<fo:block font-family="Noto Sans CJK KR Regular">
+											#if((!$variant.expertTier || $variant.expertTier == ""))
+												$variant.interpretation.interpretationEvidenceD
+											#else
+												$variant.comment
+											#end
+										</fo:block>
 									</fo:table-cell>
 								</fo:table-row>
 							#end
@@ -720,7 +743,7 @@
 								<fo:block padding-top="1.2mm" padding-bottom="1.2mm">DIN</fo:block>
 							</fo:table-cell>
 							<fo:table-cell background-color="#e7e7e8">
-								<fo:block padding-top="1.2mm" padding-bottom="1.2mm">$contents.dnaQuality</fo:block>
+								<fo:block padding-top="1.2mm" padding-bottom="1.2mm">$contents.zdnaQuality</fo:block>
 							</fo:table-cell>
 							<fo:table-cell background-color="#e7e7e8">
 								<fo:block padding-top="1.2mm" padding-bottom="1.2mm"><![CDATA[>= 3]]></fo:block>
@@ -734,7 +757,7 @@
 								<fo:block padding-top="1.2mm" padding-bottom="1.2mm">ng</fo:block>
 							</fo:table-cell>
 							<fo:table-cell background-color="#e7e7e8">
-								<fo:block padding-top="1.2mm" padding-bottom="1.2mm">$contents.inputDNA</fo:block>
+								<fo:block padding-top="1.2mm" padding-bottom="1.2mm">$contents.zinputDNA</fo:block>
 							</fo:table-cell>
 							<fo:table-cell background-color="#e7e7e8">
 								<fo:block padding-top="1.2mm" padding-bottom="1.2mm"><![CDATA[>= 200]]></fo:block>
@@ -748,7 +771,7 @@
 								<fo:block padding-top="1.2mm" padding-bottom="1.2mm">cycle</fo:block>
 							</fo:table-cell>
 							<fo:table-cell background-color="#e7e7e8">
-								<fo:block padding-top="1.2mm" padding-bottom="1.2mm">$contents.pcrCycle</fo:block>
+								<fo:block padding-top="1.2mm" padding-bottom="1.2mm">$contents.zpcrCycle</fo:block>
 							</fo:table-cell>
 							<fo:table-cell background-color="#e7e7e8">
 								<fo:block padding-top="1.2mm" padding-bottom="1.2mm"><![CDATA[>= 7]]></fo:block>
@@ -762,7 +785,7 @@
 								<fo:block padding-top="1.2mm" padding-bottom="1.2mm">ng</fo:block>
 							</fo:table-cell>
 							<fo:table-cell background-color="#e7e7e8">
-								<fo:block padding-top="1.2mm" padding-bottom="1.2mm">$contents.totalHybDNA</fo:block>
+								<fo:block padding-top="1.2mm" padding-bottom="1.2mm">$contents.ztotalHybDNA</fo:block>
 							</fo:table-cell>
 							<fo:table-cell background-color="#e7e7e8">
 								<fo:block padding-top="1.2mm" padding-bottom="1.2mm">500 ~ 1000</fo:block>
@@ -776,7 +799,7 @@
 								<fo:block padding-top="1.2mm" padding-bottom="1.2mm">K/mm<fo:inline vertical-align="super" font-size="5pt">2</fo:inline></fo:block>
 							</fo:table-cell>
 							<fo:table-cell background-color="#e7e7e8">
-								<fo:block padding-top="1.2mm" padding-bottom="1.2mm">$contents.clusterDensity</fo:block>
+								<fo:block padding-top="1.2mm" padding-bottom="1.2mm">$contents.zclusterDensity</fo:block>
 							</fo:table-cell>
 							<fo:table-cell background-color="#e7e7e8">
 								<fo:block padding-top="1.2mm" padding-bottom="1.2mm">1000~1200</fo:block>

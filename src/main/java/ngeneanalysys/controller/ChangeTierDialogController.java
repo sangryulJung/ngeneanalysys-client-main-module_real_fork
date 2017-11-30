@@ -79,6 +79,7 @@ public class ChangeTierDialogController extends SubPaneController {
             dialogStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
         }
         dialogStage.initOwner(getMainApp().getPrimaryStage());
+        dialogStage.setResizable(false);
 
         // Schen Init
         Scene scene = new Scene(root);
