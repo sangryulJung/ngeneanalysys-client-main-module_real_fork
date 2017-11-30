@@ -1,5 +1,6 @@
 package ngeneanalysys.controller;
 
+import javafx.animation.KeyFrame;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.util.Duration;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.SystemMenuCode;
@@ -785,6 +787,7 @@ public class MainController extends BaseStageController {
     public void applyAutoRefreshSettings() {
         // 현재 화면에 출력중인 화면이 분석자 HOME 화면인 경우
         if("HomeWrapper".equals(currentShowFrameId)) {
+            homeController.autoRefreshTimeline.setDelay((Duration.millis(Integer.parseInt(config.getProperty("analysis.job.auto.refresh.period")) * 1000)));
             homeController.autoRefreshTimeline.play();
             if(pastResultsController != null) {
                 pastResultsController.startAutoRefresh();

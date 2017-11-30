@@ -693,7 +693,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 List<AnalysisResultVariant> negativeResult = new ArrayList<>();
                 //리포트에서 제외된 negative 정보를 제거
                 if(negativeList != null && !negativeList.isEmpty()) {
-                    negativeResult.addAll(negativeList.stream().filter(item -> item.getIncludedInReport().equals("Y")).collect(Collectors.toList()));
+                    negativeResult.addAll(negativeVariantsTable.getItems().stream().filter(item -> item.getIncludedInReport().equals("Y")).collect(Collectors.toList()));
                 }
                 //리포트에서 제외된 variant를 제거
                 if(!variantList.isEmpty()) {

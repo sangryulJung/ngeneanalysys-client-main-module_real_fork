@@ -202,12 +202,12 @@ public class SystemMenuSettingController extends SubPaneController {
                 PropertiesService propertiesService = PropertiesService.getInstance();
 
                 propertiesService.getConfig().setProperty("analysis.job.auto.refresh", Boolean.toString(autoRefreshCheckBox.isSelected()));
-                propertiesService.getConfig().setProperty("analysis.job.auto.refresh.period", Boolean.toString(autoRefreshCheckBox.isSelected()));
+                propertiesService.getConfig().setProperty("analysis.job.auto.refresh.period", autoRefreshPeriodComboBox.getValue().replaceAll(" second", ""));
 
                 if(pastURL.equals(presentURL)) {
                     getMainController().applyAutoRefreshSettings();
                 } else {
-                    serverURLManageService.save(presentURL);
+                    propertiesService.getConfig().setProperty(CommonConstants.DEFAULT_SERVER_HOST_KEY, presentURL);
                     mainController.logoutForce();
                 }
                 close();

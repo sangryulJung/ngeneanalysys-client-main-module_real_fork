@@ -101,6 +101,7 @@ public class ChangeTierDialogController extends SubPaneController {
             } catch (WebAPIException wae) {
                 DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
             }
+            selectedItem.setExpertTier(tier);
             analysisDetailReportController.resetData(table);
 
             dialogStage.close();
