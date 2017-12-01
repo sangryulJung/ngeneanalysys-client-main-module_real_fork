@@ -17,6 +17,7 @@ import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
+import ngeneanalysys.util.StringUtils;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -60,7 +61,9 @@ public class ChangeTierDialogController extends SubPaneController {
         this.tier = tier;
         this.selectedItem = selectedItem;
 
-        tierLabel.setText(ConvertUtil.tierConvert(selectedItem.getSwTier()) + " > " + ConvertUtil.tierConvert(tier));
+        String currentTier = getCurrentTier();
+
+        tierLabel.setText(ConvertUtil.tierConvert(currentTier) + " > " + ConvertUtil.tierConvert(tier));
     }
 
     @Override
@@ -103,13 +106,25 @@ public class ChangeTierDialogController extends SubPaneController {
             }
             selectedItem.setExpertTier(tier);
             analysisDetailReportController.resetData(table);
-
+            //analysisDetailReportController.selectClear(getCurrentTier());
             dialogStage.close();
         }
     }
 
     @FXML
     public void cancel() {
+        analysisDetailReportController.selectClear(getCurrentTier());
+        selectedItem = null;
         dialogStage.close();
+    }
+
+    public String getCurrentTier() {
+        String currentTier = null;
+        if(!StringUtils.isEmpty(selectedItem.getExpertTier())) {
+            currentTier = selectedItem.getExpertTier();
+        } else {
+            currentTier = selectedItem.getSwTier();
+        }
+        return currentTier;
     }
 }

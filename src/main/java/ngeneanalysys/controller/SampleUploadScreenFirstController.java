@@ -161,10 +161,16 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
                                 PagedAnalysisFile pagedAnalysisFile = response.getObjectBeforeConvertResponseToJSON(PagedAnalysisFile.class);
 
-                                for(AnalysisFile analysisFile : pagedAnalysisFile.getResult()) {
-                                    if(analysisFile.getSampleId().equals("ACTIVE")) pagedAnalysisFile.getResult().remove(analysisFile);
+                                List<AnalysisFile> allFile = pagedAnalysisFile.getResult();
+
+                                List<AnalysisFile> activeFile = new ArrayList<>();
+
+                                for(AnalysisFile analysisFile : allFile) {
+                                    if(analysisFile.getStatus().equals("ACTIVE")) activeFile.add(analysisFile);
                                 }
-                                failedFastqAdd(pagedAnalysisFile.getResult());
+                                if(!activeFile.isEmpty()) allFile.removeAll(activeFile);
+
+                                failedFastqAdd(allFile);
                             } catch (WebAPIException wae) {
                                 DialogUtil.error(wae.getHeaderText(), wae.getContents(), getMainApp().getPrimaryStage(), true);
                             }
@@ -314,7 +320,13 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     @FXML
     public void submit() {
 
-        if(sampleUploadController.getRunId() != -1) {
+        if(sampleUploadController.getRun() != null) {
+
+            if((uploadFileData != null && !uploadFileData.isEmpty()) &&
+                    (uploadFileList != null && !uploadFileList.isEmpty()))
+                this.mainController.runningAnalysisRequestUpload(uploadFileData, uploadFileList, sampleUploadController.getRun());
+            logger.info("submit");
+            closeDialog();
             return;
         }
 
@@ -475,7 +487,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                     file.getName().startsWith(fastqFilePairName)).collect(Collectors.toList());
 
                 if(pairFileList.size() == 2 && !checkSameSample(fastqFilePairName)) {
-                    addUploadFile(pairFileList, fastqFilePairName);
+                    addUploadFile(pairFileList, fastqFilePairName, true);
                 } else {
                     fileList.removeAll(pairFileList);
                 }
@@ -502,7 +514,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         return overlapCheck;
     }
 
-    private void addUploadFile(List<File> fileList, String fastqFilePairName) {
+    private void addUploadFile(List<File> fileList, String fastqFilePairName, boolean newFileCheck) {
         for (File fastqFile : fileList) {
             Map<String, Object> file = new HashMap<>();
             file.put("sampleName", fastqFilePairName);
@@ -513,11 +525,13 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             this.fileMap.put(fastqFile.getName(), file);
         }
         uploadFileList.addAll(fileList);
-        Sample sample = new Sample();
-        sample.setName(fastqFilePairName);
-        sample.setSampleSheet(new SampleSheet());
-        sample.setQcData(new QcData());
-        sampleArrayList.add(sample);
+        if(newFileCheck) {
+            Sample sample = new Sample();
+            sample.setName(fastqFilePairName);
+            sample.setSampleSheet(new SampleSheet());
+            sample.setQcData(new QcData());
+            sampleArrayList.add(sample);
+        }
     }
 
     @FXML
@@ -547,7 +561,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
             //fastq 파일은 짝을 이루어야 함
             if(pairFileList.size() == 2 && !checkSameSample(fastqFilePairName)) {
-                addUploadFile(pairFileList, fastqFilePairName);
+                addUploadFile(pairFileList, fastqFilePairName, true);
             }
         }
         tableEdit();
@@ -555,7 +569,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         maskerPane.setVisible(false);
     }
 
-    private void failedFastqAdd(List<AnalysisFile> failedFileList) {
+    private void failedFastqAdd(List<AnalysisFile> failedAnalysisFileList) {
         maskerPane.setVisible(true);
 
         FileChooser fileChooser = new FileChooser();
@@ -579,19 +593,23 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             List<File> pairFileList = fastqFilesInFolder.stream().filter(item ->
                     item.getName().startsWith(fastqFilePairName)).collect(Collectors.toList());
 
+            List<File> failedFileList = new ArrayList<>();
 
             if(pairFileList.size() == 2) {
-                logger.info("검사");
                 for (File selectedFile : pairFileList) {
-                    Optional<AnalysisFile> fileOptional = failedFileList.stream().filter(item -> selectedFile.getName().equals(item.getName())).findFirst();
-                    if (!fileOptional.isPresent()) {
-                        DialogUtil.error("FASTQ FILE SELECT ERROR", "MISMATCH FASTQ FILE", getMainApp().getPrimaryStage(), true);
-                        return;
-                    } else {
-                        logger.info(selectedFile.getName());
+                    Optional<AnalysisFile> fileOptional = failedAnalysisFileList.stream().filter(item -> selectedFile.getName().equals(item.getName())).findFirst();
+                    if (fileOptional.isPresent()) {
+                        failedFileList.add(selectedFile);
                     }
                 }
+
+                if(failedFileList.isEmpty()) {
+                    DialogUtil.alert("file check", "This is not a valid file.",
+                            getMainApp().getPrimaryStage(), true);
+                }
             }
+            uploadFileData.addAll(failedAnalysisFileList);
+            addUploadFile(failedFileList, fastqFilePairName, false);
         }
 
         maskerPane.setVisible(false);

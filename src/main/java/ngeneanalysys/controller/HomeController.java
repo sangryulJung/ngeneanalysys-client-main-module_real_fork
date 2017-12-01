@@ -185,7 +185,7 @@ public class HomeController extends SubPaneController{
                             FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.ANALYSIS_SAMPLE_UPLOAD_MAIN);
                             Pane page = loader.load();
                             SampleUploadController controller = loader.getController();
-                            controller.setRunId(run.getId());
+                            controller.setRun(run);
                             controller.setMainController(this.mainController);
                             controller.setHomeController(this);
                             controller.show(page);

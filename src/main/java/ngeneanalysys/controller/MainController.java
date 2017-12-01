@@ -1,6 +1,5 @@
 package ngeneanalysys.controller;
 
-import javafx.animation.KeyFrame;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -176,7 +175,7 @@ public class MainController extends BaseStageController {
             String alertContentText = "Do you want to exit the application?";
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.initOwner((Window) this.primaryStage);
+            alert.initOwner(this.primaryStage);
             alert.setTitle("Confirmation Dialog");
             alert.setHeaderText(alertHeaderText);
             alert.setContentText(alertContentText);

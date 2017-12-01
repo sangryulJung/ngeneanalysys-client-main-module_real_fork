@@ -18,6 +18,7 @@ import ngeneanalysys.code.enums.SequencerCode;
 import ngeneanalysys.controller.extend.BaseStageController;
 import ngeneanalysys.model.AnalysisFile;
 import ngeneanalysys.model.PagedSample;
+import ngeneanalysys.model.Run;
 import ngeneanalysys.model.Sample;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.FXMLLoadUtil;
@@ -39,7 +40,7 @@ import java.util.Map;
 public class SampleUploadController extends BaseStageController{
     private static Logger logger = LoggerUtil.getLogger();
 
-    private Integer runId = -1;
+    private Run run = null;
 
     /** 메인 화면 컨트롤러 객체 */
     private MainController mainController;
@@ -83,6 +84,21 @@ public class SampleUploadController extends BaseStageController{
     private List<AnalysisFile> uploadFileData = new ArrayList<>();
 
     /**
+     * @return run
+     */
+    public Run getRun() {
+        return run;
+    }
+
+    /**
+     * @param run
+     */
+    public void setRun(Run run) {
+        this.run = run;
+        sampleLoad();
+    }
+
+    /**
      * @return fileMap
      */
     public Map<String, Map<String, Object>> getFileMap() {
@@ -101,21 +117,6 @@ public class SampleUploadController extends BaseStageController{
      */
     public List<AnalysisFile> getUploadFileData() {
         return uploadFileData;
-    }
-
-    /**
-     * @return runId
-     */
-    public Integer getRunId() {
-        return runId;
-    }
-
-    /**
-     * @param runId
-     */
-    public void setRunId(Integer runId) {
-        this.runId = runId;
-        sampleLoad();
     }
 
     /**
@@ -245,7 +246,7 @@ public class SampleUploadController extends BaseStageController{
         try {
             APIService apiService = APIService.getInstance();
             params.clear();
-            params.put("runId", runId);
+            params.put("runId", run.getId());
             params.put("limit", 23);
             params.put("offset", 0);
             response = apiService.get("/samples", params, null, false);

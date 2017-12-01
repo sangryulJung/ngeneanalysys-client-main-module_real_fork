@@ -1060,14 +1060,13 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         //저장된 row를 기준으로 스냅샷 생성
         SnapshotParameters sp = new SnapshotParameters();
         sp.setTransform(Transform.scale(2, 2));
+
         db.setDragView(rowItem.snapshot(sp, null));
 
         content.putString(selectedVariant.toString());
         db.setContent(content);
         e.consume();
     }
-
-
 
     public void onDragDone(DragEvent e) {
         e.consume();
@@ -1145,4 +1144,15 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         rowItem = null;
     }
 
+    public void selectClear(String tier) {
+        if(tier.equals("T1")) {
+            tierOneVariantsTable.getSelectionModel().clearSelection();
+        } else if(tier.equals("T2")) {
+            tierTwoVariantsTable.getSelectionModel().clearSelection();
+        } else if(tier.equals("T3")) {
+            tierThreeVariantsTable.getSelectionModel().clearSelection();
+        } else if(tier.equals("TN")) {
+            negativeVariantsTable.getSelectionModel().clearSelection();
+        }
+    }
 }
