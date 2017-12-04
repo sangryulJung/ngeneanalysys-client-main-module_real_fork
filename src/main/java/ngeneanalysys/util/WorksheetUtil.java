@@ -541,7 +541,7 @@ public class WorksheetUtil {
 			if (file != null) {
 				Task<Void> task = new ExportVariantDataTask(mainApp, fileType, file, params);
 				Thread exportDataThread = new Thread(task);
-				WorkProgressController<Void> workProgressController = new WorkProgressController<Void>(mainApp, "Export variant List", task);
+				WorkProgressController<Void> workProgressController = new WorkProgressController<>(mainApp, "Export variant List", task);
 				FXMLLoader loader = mainApp.load("/layout/fxml/WorkProgress.fxml");
 				loader.setController(workProgressController);
 				Node root = loader.load();

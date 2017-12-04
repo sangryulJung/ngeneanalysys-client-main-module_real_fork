@@ -12,6 +12,7 @@ import ngeneanalysys.util.httpclient.HttpClientUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
@@ -79,11 +80,17 @@ public class ExportVariantDataTask extends Task<Void> {
 		InputStream is = null;
 		try {
 			String connectURL = apiService.getConvertConnectURL(downloadUrl);
+			URIBuilder builder = new URIBuilder(connectURL);
+			Set<String> keySet = params.keySet();
+			for(String key : keySet) {
+				Object object = params.get(key);
+				builder.setParameter(key, object.toString());
+			}
 
 			// 헤더 삽입 정보 설정
 			Map<String,Object> headerMap = apiService.getDefaultHeaders(true);
 
-			HttpGet get = new HttpGet(connectURL);
+			HttpGet get = new HttpGet(builder.build());
 			logger.info("GET:" + get.getURI());
 
 			// 지정된 헤더 삽입 정보가 있는 경우 추가
@@ -166,7 +173,7 @@ public class ExportVariantDataTask extends Task<Void> {
 		}
 		try {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
-			alert.initOwner((Window) this.mainApp.getPrimaryStage());
+			alert.initOwner(this.mainApp.getPrimaryStage());
 			alert.setTitle("Confirmation Dialog");
 			alert.setHeaderText("Creating the " + fileType + " document was completed.");
 			alert.setContentText("Do you want to check the " + fileType + " document?");

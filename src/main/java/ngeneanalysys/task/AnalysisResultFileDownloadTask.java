@@ -147,7 +147,7 @@ public class AnalysisResultFileDownloadTask extends Task<Void> {
         //logger.info(String.format("download task complete [original : %s, save : %s]", analysisResultFile.getName(), saveFile.getName()));
         controller.getMainController().removeProgressTaskItemById(progressBoxId);
 
-        try {
+        /*try {
             // 다운로드 파일 실행 여부 확인
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.initOwner(this.controller.getMainController().getPrimaryStage());
@@ -164,6 +164,6 @@ public class AnalysisResultFileDownloadTask extends Task<Void> {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }
