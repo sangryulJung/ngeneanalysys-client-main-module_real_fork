@@ -84,13 +84,13 @@ public class FXMLConstants {
 	/** 분석 상세 > SNPs-INDELs > Flagging Dialog 화면 */
 	public static final String ANALYSIS_DETAIL_SNPS_INDELS_FLAGGING_DIALOG = "/layout/fxml/AnalysisDetail-SNPs-INDELs-Flagging.fxml";
 	
-	/** 분석 상세 > SNPs-INDELs > OVERVIEW TAB 화면 */
+	/** 분석 상세 > SNPs-INDELs > FUSIONGENE TAB 화면 */
 	public static final String ANALYSIS_DETAIL_SNPS_INDELS_OVERVIEW = "/layout/fxml/AnalysisDetail-SNPs-INDELs-Overview.fxml";
 	
-	/** 분석 상세 > SNPs-INDELs > OVERVIEW TAB 화면 > BRCA 파이프라인 Link 화면 */
+	/** 분석 상세 > SNPs-INDELs > FUSIONGENE TAB 화면 > BRCA 파이프라인 Link 화면 */
 	public static final String ANALYSIS_DETAIL_SNPS_INDELS_OVERVIEW_LINK_BRCA = "/layout/fxml/AnalysisDetail-SNPs-INDELs-Overview-Link-BRCA.fxml";
 
-	/** 분석 상세 > SNPs-INDELs > OVERVIEW TAB 화면 > BRCA 파이프라인 Link 화면 */
+	/** 분석 상세 > SNPs-INDELs > FUSIONGENE TAB 화면 > BRCA 파이프라인 Link 화면 */
 	public static final String ANALYSIS_DETAIL_SNPS_INDELS_OVERVIEW_LINK_SOMATIC = "/layout/fxml/AnalysisDetail-SNPs-INDELs-Overview-Link-SOMATIC.fxml";
 	
 	/** 분석 상세 > SNPs-INDELs > DATA SUMMARY TAB 화면 */
@@ -156,8 +156,14 @@ public class FXMLConstants {
 	/** 사용자 추가/수정 화면 */
 	public static final String GROUP_ADD = "/layout/fxml/systemManager/GroupAdd.fxml";
 
-	public static final String Exclude_REPORT = "/layout/fxml/ExcludeReportDialog.fxml";
+	public static final String EXCLUDE_REPORT = "/layout/fxml/ExcludeReportDialog.fxml";
 
 	public static final String CHANGE_TIER = "/layout/fxml/ChangeTierDialog.fxml";
+
+	public static final String ANALYSIS_DETAIL_FUSION_MAIN = "/layout/fxml/AnalysisDetail-FusionMain.fxml";
+
+	public static final String ANALYSIS_DETAIL_FUSION_GENE = "/layout/fxml/AnalysisDetail-FusionGene.fxml";
+
+	public static final String ANALYSIS_DETAIL_GENE_EXPRESSION = "/layout/fxml/AnalysisDetail-GeneExpression.fxml";
 
 }

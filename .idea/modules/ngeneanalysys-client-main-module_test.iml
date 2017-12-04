@@ -28,6 +28,7 @@
     <orderEntry type="library" name="Gradle: org.apache.xmlgraphics:fop:2.1" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.velocity:velocity:1.7" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.pdfbox:fontbox:1.8.13" level="project" />
+    <orderEntry type="library" name="Gradle: org.ahocorasick:ahocorasick:0.3.0" level="project" />
     <orderEntry type="library" name="Gradle: org.controlsfx:controlsfx:8.40.13" level="project" />
     <orderEntry type="library" name="Gradle: junit:junit:4.12" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.httpcomponents:httpcore:4.4.4" level="project" />

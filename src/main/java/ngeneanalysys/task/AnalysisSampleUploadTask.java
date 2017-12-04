@@ -161,7 +161,7 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
                     }
                 }
 
-                completeFile.add(fileData);
+                //completeFile.add(fileData);
             }
         } catch (Exception e) {
             logger.info(e.getMessage());
@@ -214,7 +214,7 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
     private void updateCurrentUploadGroupInfo() {
         logger.info("updateCurrentUploadGroupInfo..");
         try {
-            Thread.sleep(100);
+            //Thread.sleep(50);
             Platform.runLater(() -> {
                 this.analysisSampleUploadProgressTaskController.setCurrentUploadGroupId(currentUploadGroupId);
                 this.analysisSampleUploadProgressTaskController.setCurrentUploadGroupRefName(currentUploadGroupRefName);

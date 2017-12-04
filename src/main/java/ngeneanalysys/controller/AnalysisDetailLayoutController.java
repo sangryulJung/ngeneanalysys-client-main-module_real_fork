@@ -145,7 +145,7 @@ public class AnalysisDetailLayoutController extends SubPaneController {
             AnalysisDetailTabItem item = code.getItem();
 
             if(panel.getAnalysisType() != null && "GERMLINE".equals(panel.getAnalysisType())
-                    && "OVERVIEW".equals(item.getTabName())){
+                    && "FUSIONGENE".equals(item.getTabName())){
                 continue;
             }
             Tab tab = new Tab();

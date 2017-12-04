@@ -472,7 +472,7 @@ public class PastResultsController extends SubPaneController {
 			this.inputJobRunGroup.setText(null);
 
 			FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_JOB_RUN_GROUP_SEARCH_DIALOG);
-			Pane dialogPane = (Pane) loader.load();
+			Pane dialogPane = loader.load();
 			AnalysisJobRunGroupSearchController controller = loader.getController();
 			controller.setMainApp(getMainApp());
 			controller.setPastResultsController(this);

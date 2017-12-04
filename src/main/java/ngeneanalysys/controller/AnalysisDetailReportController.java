@@ -973,7 +973,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         analysisResultVariant.setIncludedInReport("Y");
                         apiService.put("analysisResults/variants/" + analysisResultVariant.getId() + "/updateIncludeInReport", params, null, true);*/
                     try {
-                        FXMLLoader loader = mainApp.load(FXMLConstants.Exclude_REPORT);
+                        FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
                         Node root = loader.load();
                         ExcludeReportDialogController excludeReportDialogController = loader.getController();
                         excludeReportDialogController.setMainController(mainController);
@@ -994,7 +994,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         analysisResultVariant.setIncludedInReport("N");
                         apiService.put("analysisResults/variants/" + analysisResultVariant.getId() + "/updateIncludeInReport", params, null, true);*/
                     try {
-                        FXMLLoader loader = mainApp.load(FXMLConstants.Exclude_REPORT);
+                        FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
                         Node root = loader.load();
                         ExcludeReportDialogController excludeReportDialogController = loader.getController();
                         excludeReportDialogController.setMainController(mainController);

@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
@@ -137,9 +138,15 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
     public void showFusion() {
         try {
             // Load the fxml file and create a new stage for the popup dialog
-            FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_FUSION);
+            /*FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_FUSION);
             BorderPane page = loader.load();
             AnalysisDetailFusionController controller = loader.getController();
+            controller.setParamMap(getParamMap());
+            controller.setMainController(this.mainController);*/
+
+            FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_FUSION_MAIN);
+            GridPane page = loader.load();
+            AnalysisDetailFusionMainController controller = loader.getController();
             controller.setParamMap(getParamMap());
             controller.setMainController(this.mainController);
 

@@ -59,6 +59,8 @@ dependencies {
     compile group: 'org.apache.velocity', name: 'velocity', version: '1.7'
     // https://mvnrepository.com/artifact/org.apache.pdfbox/fontbox
     compile group: 'org.apache.pdfbox', name: 'fontbox', version: '1.8.13'
+    // https://mvnrepository.com/artifact/org.ahocorasick/ahocorasick
+    compile group: 'org.ahocorasick', name: 'ahocorasick', version: '0.3.0'
 
     compile 'org.controlsfx:controlsfx:8.40.13'
 
