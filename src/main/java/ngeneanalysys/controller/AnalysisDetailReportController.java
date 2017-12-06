@@ -157,6 +157,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     @FXML
     private Label conclusions;
 
+    @FXML
+    private Label patientIdLabel;
+
     Sample sample = null;
 
     Panel panel = null;
@@ -251,6 +254,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         customFieldGridPane.setPrefHeight(0);
 
         sample = (Sample)paramMap.get("sample");
+
+        patientIdLabel.setText(sample.getPaitentId());
 
         tierOneGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getGene()));
         tierOneVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getNtChange()));

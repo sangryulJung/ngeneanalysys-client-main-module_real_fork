@@ -7,6 +7,10 @@ package ngeneanalysys.model;
 public class FusionGene {
     private Integer id;
     private Integer sampleId;
+    private String swTier;
+    private String expertTier;
+    private String includedInReport;
+    private String comment;
     private String name;
     private Integer junctionReadCount;
     private Integer spanningFragCount;
@@ -28,6 +32,34 @@ public class FusionGene {
     private String fusionTransl;
     private String pfamLeft;
     private String pfamRight;
+
+    /**
+     * @return swTier
+     */
+    public String getSwTier() {
+        return swTier;
+    }
+
+    /**
+     * @return expertTier
+     */
+    public String getExpertTier() {
+        return expertTier;
+    }
+
+    /**
+     * @return includedInReport
+     */
+    public String getIncludedInReport() {
+        return includedInReport;
+    }
+
+    /**
+     * @return comment
+     */
+    public String getComment() {
+        return comment;
+    }
 
     /**
      * @return id

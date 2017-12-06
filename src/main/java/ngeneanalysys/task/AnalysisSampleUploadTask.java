@@ -25,7 +25,6 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
     /** Main Controller Application Object */
     private AnalysisSampleUploadProgressTaskController analysisSampleUploadProgressTaskController;
 
-
     /** 분석 샘플 요청 관리 서비스 */
     private AnalysisRequestService analysisRequestService;
 
@@ -214,7 +213,7 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
     private void updateCurrentUploadGroupInfo() {
         logger.info("updateCurrentUploadGroupInfo..");
         try {
-            //Thread.sleep(50);
+            Thread.sleep(50);
             Platform.runLater(() -> {
                 this.analysisSampleUploadProgressTaskController.setCurrentUploadGroupId(currentUploadGroupId);
                 this.analysisSampleUploadProgressTaskController.setCurrentUploadGroupRefName(currentUploadGroupRefName);

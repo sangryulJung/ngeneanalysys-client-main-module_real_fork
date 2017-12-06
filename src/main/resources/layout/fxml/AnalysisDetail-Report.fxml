@@ -160,7 +160,7 @@
                   <HBox alignment="CENTER_LEFT" prefHeight="31.0" prefWidth="175.0">
                      <children>
                         <Label styleClass="font_size_14" text="Patient ID : " />
-                        <Label styleClass="font_size_14" text="123456789" />
+                        <Label fx:id="patientIdLabel" styleClass="font_size_14" text="123456789" />
                      </children>
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

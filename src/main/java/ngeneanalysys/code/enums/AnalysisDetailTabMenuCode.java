@@ -10,7 +10,7 @@ import ngeneanalysys.model.render.AnalysisDetailTabItem;
  * @since 2016. 5. 28. 오후 2:45:40
  */
 public enum AnalysisDetailTabMenuCode {
-	TAB_OVERVIEW(new AnalysisDetailTabItem("TAB_OVERVIEW", "FUSIONGENE", FXMLConstants.ANALYSIS_DETAIL_OVERVIEW, 13)),
+	TAB_OVERVIEW(new AnalysisDetailTabItem("TAB_OVERVIEW", "OVERVIEW", FXMLConstants.ANALYSIS_DETAIL_OVERVIEW, 13)),
 	TAB_REPORT(new AnalysisDetailTabItem("TAB_REPORT", "REPORT", FXMLConstants.ANALYSIS_DETAIL_REPORT, 13)),
 	//TAB_SNPS_INDELS(new AnalysisDetailTabItem("TAB_SNPS_INDELS", "SNPs-INDELs", FXMLConstants.ANALYSIS_DETAIL_SNPS_INDELS_LAYOUT, 13)),
 	TAB_TARGET(new AnalysisDetailTabItem("TAB_TARGET", "TARGET GENES", FXMLConstants.ANALYSIS_DETAIL_TARGET, 13));
