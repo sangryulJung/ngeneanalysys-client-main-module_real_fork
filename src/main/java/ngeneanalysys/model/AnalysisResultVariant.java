@@ -48,7 +48,7 @@ public class AnalysisResultVariant implements Serializable {
 
 	private PopulationFrequency populationFrequency;
 
-	private Integer interpretation;
+	private Integer interpretationId;
 
 
 	/**
@@ -287,16 +287,16 @@ public class AnalysisResultVariant implements Serializable {
 	}
 
 	/**
-	 * @return interpretation
+	 * @return interpretationId
 	 */
-	public Integer getInterpretation() {
-		return interpretation;
+	public Integer getInterpretationId() {
+		return interpretationId;
 	}
 
 	/**
-	 * @param interpretation
+	 * @param interpretationId
 	 */
-	public void setInterpretation(Integer interpretation) {
-		this.interpretation = interpretation;
+	public void setInterpretationId(Integer interpretationId) {
+		this.interpretationId = interpretationId;
 	}
 }
