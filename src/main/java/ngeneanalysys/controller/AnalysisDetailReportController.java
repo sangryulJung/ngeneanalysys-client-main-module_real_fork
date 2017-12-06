@@ -339,8 +339,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         negativeExceptColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
         negativeExceptColumn.setCellFactory(param -> new ReportedCheckBox(this));
 
-        logger.info(sample.toString());
-
         List<Diseases> diseases = (List<Diseases>) mainController.getBasicInformationMap().get("diseases");
         Optional<Diseases> diseasesOptional = diseases.stream().filter(disease -> disease.getId() == sample.getDiseaseId()).findFirst();
         if(diseasesOptional.isPresent()) {
@@ -746,7 +744,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 try {
                     HttpClientResponse response = apiService.get("/analysisResults/variantCountByGene/" + sample.getId(),
                             null, null, false);
-                    logger.info(response.toString());
                     if (response != null) {
                         List<VariantCountByGene> variantCountByGenes = (List<VariantCountByGene>) response
                                 .getMultiObjectBeforeConvertResponseToJSON(VariantCountByGene.class,

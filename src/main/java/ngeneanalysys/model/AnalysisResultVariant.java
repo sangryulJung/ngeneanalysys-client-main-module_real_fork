@@ -48,7 +48,7 @@ public class AnalysisResultVariant implements Serializable {
 
 	private PopulationFrequency populationFrequency;
 
-	private Integer interpretationId;
+	private Integer interpretationEvidenceId;
 
 
 	/**
@@ -286,17 +286,17 @@ public class AnalysisResultVariant implements Serializable {
 		this.variantExpression = variantExpression;
 	}
 
-	/**
-	 * @return interpretationId
-	 */
-	public Integer getInterpretationId() {
-		return interpretationId;
-	}
+    /**
+     * @return interpretationEvidenceId
+     */
+    public Integer getInterpretationEvidenceId() {
+        return interpretationEvidenceId;
+    }
 
-	/**
-	 * @param interpretationId
-	 */
-	public void setInterpretationId(Integer interpretationId) {
-		this.interpretationId = interpretationId;
-	}
+    /**
+     * @param interpretationEvidenceId
+     */
+    public void setInterpretationEvidenceId(Integer interpretationEvidenceId) {
+        this.interpretationEvidenceId = interpretationEvidenceId;
+    }
 }
