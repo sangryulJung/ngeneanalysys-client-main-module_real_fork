@@ -13,6 +13,7 @@ import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.AnalysisResultVariant;
+import ngeneanalysys.model.VariantAndInterpretationEvidence;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.DialogUtil;
@@ -33,11 +34,11 @@ public class ChangeTierDialogController extends SubPaneController {
 
     private APIService apiService = null;
 
-    private TableView<AnalysisResultVariant> table;
+    private TableView<VariantAndInterpretationEvidence> table;
 
     private String tier;
 
-    private AnalysisResultVariant selectedItem = null;
+    private VariantAndInterpretationEvidence selectedItem = null;
 
     private AnalysisDetailReportController analysisDetailReportController;
 
@@ -56,7 +57,7 @@ public class ChangeTierDialogController extends SubPaneController {
         this.analysisDetailReportController = analysisDetailReportController;
     }
 
-    public void settingItem(TableView<AnalysisResultVariant> table, String tier, AnalysisResultVariant selectedItem) {
+    public void settingItem(TableView<VariantAndInterpretationEvidence> table, String tier, VariantAndInterpretationEvidence selectedItem) {
         this.table =table;
         this.tier = tier;
         this.selectedItem = selectedItem;
@@ -100,11 +101,11 @@ public class ChangeTierDialogController extends SubPaneController {
                 params.put("tier", tier);
                 params.put("comment", comment);
 
-                apiService.put("analysisResults/variants/" + selectedItem.getId() + "/updateExpertTier", params, null, true);
+                apiService.put("analysisResults/variants/" + selectedItem.getVariant().getId() + "/updateExpertTier", params, null, true);
             } catch (WebAPIException wae) {
                 DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
             }
-            selectedItem.setExpertTier(tier);
+            selectedItem.getVariant().setExpertTier(tier);
             analysisDetailReportController.resetData(table);
             //analysisDetailReportController.selectClear(getCurrentTier());
             dialogStage.close();
@@ -120,10 +121,10 @@ public class ChangeTierDialogController extends SubPaneController {
 
     public String getCurrentTier() {
         String currentTier = null;
-        if(!StringUtils.isEmpty(selectedItem.getExpertTier())) {
-            currentTier = selectedItem.getExpertTier();
+        if(!StringUtils.isEmpty(selectedItem.getVariant().getExpertTier())) {
+            currentTier = selectedItem.getVariant().getExpertTier();
         } else {
-            currentTier = selectedItem.getSwTier();
+            currentTier = selectedItem.getVariant().getSwTier();
         }
         return currentTier;
     }

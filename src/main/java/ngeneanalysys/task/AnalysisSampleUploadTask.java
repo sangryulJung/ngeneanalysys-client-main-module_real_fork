@@ -74,11 +74,10 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
      */
     public void updateProgressInfoForDetail() {
         try {
-            Thread.sleep(100);
-            Platform.runLater(() -> {
-                this.analysisSampleUploadProgressTaskController.updateProgressInfoTargetDetailDialog(
-                        this.currentUploadSampleFileId, this.currentUploadSampleFileProgress);
-            });
+            Thread.sleep(50);
+            Platform.runLater(() -> this.analysisSampleUploadProgressTaskController.updateProgressInfoTargetDetailDialog(
+                        this.currentUploadSampleFileId, this.currentUploadSampleFileProgress)
+            );
         } catch (Exception e) {
             e.printStackTrace();
         }

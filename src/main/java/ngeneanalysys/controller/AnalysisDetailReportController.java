@@ -68,82 +68,82 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     private TextArea conclusionsTextArea;
 
     @FXML
-    private TableView<AnalysisResultVariant> tierOneVariantsTable;
+    private TableView<VariantAndInterpretationEvidence> tierOneVariantsTable;
 
     @FXML
-    private TableColumn<AnalysisResultVariant, String> tierOneGeneColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> tierOneGeneColumn;
 
     @FXML
-    private TableColumn<AnalysisResultVariant, String> tierOneVariantsColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> tierOneVariantsColumn;
 
     @FXML
-    private TableColumn<AnalysisResultVariant, String> tierOneTherapeuticColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> tierOneTherapeuticColumn;
 
     @FXML
-    private TableColumn<AnalysisResultVariant, BigDecimal> tierOneAlleleFrequencyColumn;
+    private TableColumn<VariantAndInterpretationEvidence, BigDecimal> tierOneAlleleFrequencyColumn;
 
     @FXML
-    private TableColumn<AnalysisResultVariant, String> tierOneDrugColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> tierOneDrugColumn;
 
     @FXML
-    private TableColumn<AnalysisResultVariant, Boolean> tierOneExceptColumn;
+    private TableColumn<VariantAndInterpretationEvidence, Boolean> tierOneExceptColumn;
 
     @FXML
-    private TableView<AnalysisResultVariant> tierTwoVariantsTable;
+    private TableView<VariantAndInterpretationEvidence> tierTwoVariantsTable;
 
     @FXML
-    private TableColumn<AnalysisResultVariant, String> tierTwoGeneColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> tierTwoGeneColumn;
 
     @FXML
-    private TableColumn<AnalysisResultVariant, String> tierTwoVariantsColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> tierTwoVariantsColumn;
 
     @FXML
-    private TableColumn<AnalysisResultVariant, String> tierTwoTherapeuticColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> tierTwoTherapeuticColumn;
 
     @FXML
-    private TableColumn<AnalysisResultVariant, BigDecimal> tierTwoAlleleFrequencyColumn;
+    private TableColumn<VariantAndInterpretationEvidence, BigDecimal> tierTwoAlleleFrequencyColumn;
 
     @FXML
-    private TableColumn<AnalysisResultVariant, String> tierTwoDrugColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> tierTwoDrugColumn;
 
     @FXML
-    private TableColumn<AnalysisResultVariant, Boolean> tierTwoExceptColumn;
+    private TableColumn<VariantAndInterpretationEvidence, Boolean> tierTwoExceptColumn;
 
     @FXML
-    private TableView<AnalysisResultVariant> tierThreeVariantsTable;
+    private TableView<VariantAndInterpretationEvidence> tierThreeVariantsTable;
 
     @FXML
-    private TableColumn<AnalysisResultVariant, String> tierThreeGeneColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> tierThreeGeneColumn;
 
     @FXML
-    private TableColumn<AnalysisResultVariant, String> tierThreeVariantsColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> tierThreeVariantsColumn;
 
     @FXML
-    private TableColumn<AnalysisResultVariant, String> tierThreeTherapeuticColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> tierThreeTherapeuticColumn;
 
     @FXML
-    private TableColumn<AnalysisResultVariant, BigDecimal> tierThreeAlleleFrequencyColumn;
+    private TableColumn<VariantAndInterpretationEvidence, BigDecimal> tierThreeAlleleFrequencyColumn;
 
     @FXML
-    private TableColumn<AnalysisResultVariant, Boolean> tierThreeExceptColumn;
+    private TableColumn<VariantAndInterpretationEvidence, Boolean> tierThreeExceptColumn;
 
     @FXML
-    private TableView<AnalysisResultVariant> negativeVariantsTable;
+    private TableView<VariantAndInterpretationEvidence> negativeVariantsTable;
 
     @FXML
-    private TableColumn<AnalysisResultVariant, String> negativeGeneColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> negativeGeneColumn;
 
     @FXML
-    private TableColumn<AnalysisResultVariant, String> negativeVariantsColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> negativeVariantsColumn;
 
     @FXML
-    private TableColumn<AnalysisResultVariant, String> negativeCauseColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> negativeCauseColumn;
 
     @FXML
-    private TableColumn<AnalysisResultVariant, String> negativeAlleleFrequencyColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> negativeAlleleFrequencyColumn;
 
     @FXML
-    private TableColumn<AnalysisResultVariant, Boolean> negativeExceptColumn;
+    private TableColumn<VariantAndInterpretationEvidence, Boolean> negativeExceptColumn;
 
     @FXML
     private GridPane customFieldGridPane;
@@ -164,23 +164,23 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
     Panel panel = null;
 
-    List<AnalysisResultVariant> tierOne = null;
+    List<VariantAndInterpretationEvidence> tierOne = null;
 
-    List<AnalysisResultVariant> tierTwo = null;
+    List<VariantAndInterpretationEvidence> tierTwo = null;
 
-    List<AnalysisResultVariant> tierThree = null;
+    List<VariantAndInterpretationEvidence> tierThree = null;
 
-    List<AnalysisResultVariant> tierFour = null;
+    List<VariantAndInterpretationEvidence> tierFour = null;
 
-    List<AnalysisResultVariant> negativeVariant = null;
+    List<VariantAndInterpretationEvidence> negativeVariant = null;
 
-    List<AnalysisResultVariant> negativeList = null;
+    List<VariantAndInterpretationEvidence> negativeList = null;
 
-    private AnalysisResultVariant selectedItem = null;
+    private VariantAndInterpretationEvidence selectedItem = null;
 
-    private TableView<AnalysisResultVariant> selectedTable = null;
+    private TableView<VariantAndInterpretationEvidence> selectedTable = null;
 
-    private TableRow<AnalysisResultVariant> rowItem;
+    private TableRow<VariantAndInterpretationEvidence> rowItem;
 
     private boolean reportData = false;
 
@@ -218,25 +218,25 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
         //선택한 Row를 전역변수로 저장
         tierOneVariantsTable.setRowFactory(tv -> {
-            TableRow<AnalysisResultVariant> rowData = new TableRow<>();
+            TableRow<VariantAndInterpretationEvidence> rowData = new TableRow<>();
             rowData.setOnDragDetected(e -> rowItem = rowData);
             return rowData;
         });
 
         tierTwoVariantsTable.setRowFactory(tv -> {
-            TableRow<AnalysisResultVariant> rowData = new TableRow<>();
+            TableRow<VariantAndInterpretationEvidence> rowData = new TableRow<>();
             rowData.setOnDragDetected(e -> rowItem = rowData);
             return rowData;
         });
 
         tierThreeVariantsTable.setRowFactory(tv -> {
-            TableRow<AnalysisResultVariant> rowData = new TableRow<>();
+            TableRow<VariantAndInterpretationEvidence> rowData = new TableRow<>();
             rowData.setOnDragDetected(e -> rowItem = rowData);
             return rowData;
         });
 
         negativeVariantsTable.setRowFactory(tv -> {
-            TableRow<AnalysisResultVariant> rowData = new TableRow<>();
+            TableRow<VariantAndInterpretationEvidence> rowData = new TableRow<>();
             rowData.setOnDragDetected(e -> rowItem = rowData);
             return rowData;
         });
@@ -257,13 +257,13 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
         patientIdLabel.setText(sample.getPaitentId());
 
-        tierOneGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getGene()));
-        tierOneVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getNtChange()));
-        tierOneAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getReadInfo().getAlleleFraction()));
+        tierOneGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getSequenceInfo().getGene()));
+        tierOneVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getVariantExpression().getNtChange()));
+        tierOneAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getVariant().getReadInfo().getAlleleFraction()));
         tierOneExceptColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
         tierOneExceptColumn.setCellFactory(param -> new ReportedCheckBox(this));
         tierOneTherapeuticColumn.setCellValueFactory(cellData -> {
-            Interpretation interpretation = cellData.getValue().getInterpretation();
+            Interpretation interpretation = cellData.getValue().getInterpretationEvidence();
             String text = "";
 
             if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceA()))
@@ -282,13 +282,13 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             return new SimpleStringProperty(text);
         });
 
-        tierTwoGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getGene()));
-        tierTwoVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getNtChange()));
-        tierTwoAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getReadInfo().getAlleleFraction()));
+        tierTwoGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getSequenceInfo().getGene()));
+        tierTwoVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getVariantExpression().getNtChange()));
+        tierTwoAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getVariant().getReadInfo().getAlleleFraction()));
         tierTwoExceptColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
         tierTwoExceptColumn.setCellFactory(param -> new ReportedCheckBox(this));
         tierTwoTherapeuticColumn.setCellValueFactory(cellData -> {
-            Interpretation interpretation = cellData.getValue().getInterpretation();
+            Interpretation interpretation = cellData.getValue().getInterpretationEvidence();
             String text = "";
 
             if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceA()))
@@ -307,13 +307,13 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             return new SimpleStringProperty(text);
         });
 
-        tierThreeGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getGene()));
-        tierThreeVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getNtChange()));
-        tierThreeAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getReadInfo().getAlleleFraction()));
+        tierThreeGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getSequenceInfo().getGene()));
+        tierThreeVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getVariantExpression().getNtChange()));
+        tierThreeAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getVariant().getReadInfo().getAlleleFraction()));
         tierThreeExceptColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
         tierThreeExceptColumn.setCellFactory(param -> new ReportedCheckBox(this));
         tierThreeTherapeuticColumn.setCellValueFactory(cellData -> {
-            Interpretation interpretation = cellData.getValue().getInterpretation();
+            Interpretation interpretation = cellData.getValue().getInterpretationEvidence();
             String text = "";
 
             if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceA()))
@@ -332,10 +332,10 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             return new SimpleStringProperty(text);
         });
 
-        negativeGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getGene()));
-        negativeVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getNtChange()));
-        negativeCauseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getInterpretation().getInterpretationNegativeTesult()));
-        negativeAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getReadInfo().getAlleleFraction().toString()));
+        negativeGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getSequenceInfo().getGene()));
+        negativeVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getVariantExpression().getNtChange()));
+        negativeCauseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getInterpretationEvidence().getInterpretationNegativeTesult()));
+        negativeAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getReadInfo().getAlleleFraction().toString()));
         negativeExceptColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
         negativeExceptColumn.setCellFactory(param -> new ReportedCheckBox(this));
 
@@ -433,28 +433,29 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             response = apiService.get("/analysisResults/sampleVariants/" + sample.getId(), null,
                     null, false);
 
-            AnalysisResultVariantList analysisResultVariantList = response.getObjectBeforeConvertResponseToJSON(AnalysisResultVariantList.class);
+            PagedVariantAndInterpretationEvidence analysisResultVariantList = response.getObjectBeforeConvertResponseToJSON(PagedVariantAndInterpretationEvidence.class);
 
-            List<AnalysisResultVariant> list = analysisResultVariantList.getResult();
+            List<VariantAndInterpretationEvidence> list = analysisResultVariantList.getResult();
 
             //negative list만 가져옴
-            negativeList = list.stream().filter(item -> (!StringUtils.isEmpty(item.getInterpretation().getInterpretationNegativeTesult()) ||
-            "TN".equalsIgnoreCase(item.getExpertTier()))).collect(Collectors.toList());
+            negativeList = list.stream().filter(item -> ((item.getInterpretationEvidence() != null &&
+                    !StringUtils.isEmpty(item.getInterpretationEvidence().getInterpretationNegativeTesult())) ||
+            "TN".equalsIgnoreCase(item.getVariant().getExpertTier()))).collect(Collectors.toList());
 
-            tierOne = list.stream().filter(item -> (("T1".equalsIgnoreCase(item.getExpertTier()) ||
-                    (StringUtils.isEmpty(item.getExpertTier()) && item.getSwTier().equalsIgnoreCase("T1")))))
+            tierOne = list.stream().filter(item -> (("T1".equalsIgnoreCase(item.getVariant().getExpertTier()) ||
+                    (StringUtils.isEmpty(item.getVariant().getExpertTier()) && item.getVariant().getSwTier().equalsIgnoreCase("T1")))))
                     .collect(Collectors.toList());
 
-            tierTwo = list.stream().filter(item -> (("T2".equalsIgnoreCase(item.getExpertTier()) ||
-                    (StringUtils.isEmpty(item.getExpertTier()) && item.getSwTier().equalsIgnoreCase("T2")))))
+            tierTwo = list.stream().filter(item -> (("T2".equalsIgnoreCase(item.getVariant().getExpertTier()) ||
+                    (StringUtils.isEmpty(item.getVariant().getExpertTier()) && item.getVariant().getSwTier().equalsIgnoreCase("T2")))))
                     .collect(Collectors.toList());
 
-            tierThree = list.stream().filter(item -> (("T3".equalsIgnoreCase(item.getExpertTier()) ||
-                    (StringUtils.isEmpty(item.getExpertTier()) && item.getSwTier().equalsIgnoreCase("T3")))))
+            tierThree = list.stream().filter(item -> (("T3".equalsIgnoreCase(item.getVariant().getExpertTier()) ||
+                    (StringUtils.isEmpty(item.getVariant().getExpertTier()) && item.getVariant().getSwTier().equalsIgnoreCase("T3")))))
                     .collect(Collectors.toList());
 
-            tierFour = list.stream().filter(item -> (("T4".equalsIgnoreCase(item.getExpertTier()) ||
-                    (StringUtils.isEmpty(item.getExpertTier()) && item.getSwTier().equalsIgnoreCase("T4")))))
+            tierFour = list.stream().filter(item -> (("T4".equalsIgnoreCase(item.getVariant().getExpertTier()) ||
+                    (StringUtils.isEmpty(item.getVariant().getExpertTier()) && item.getVariant().getSwTier().equalsIgnoreCase("T4")))))
                     .collect(Collectors.toList());
 
             if(tierOne != null) tierOneVariantsTable.getItems().addAll(FXCollections.observableArrayList(tierOne));
@@ -689,29 +690,29 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 SimpleDateFormat sdf = new SimpleDateFormat("MMM. dd yyyy");
                 contentsMap.put("date", sdf.format(date));
 
-                List<AnalysisResultVariant> variantList = new ArrayList<>();
+                List<VariantAndInterpretationEvidence> variantList = new ArrayList<>();
                 if(!tierOneVariantsTable.getItems().isEmpty()) variantList.addAll(tierOneVariantsTable.getItems().stream().collect(Collectors.toList()));
                 if(!tierTwoVariantsTable.getItems().isEmpty()) variantList.addAll(tierTwoVariantsTable.getItems().stream().collect(Collectors.toList()));
                 //if(tierOne != null && !tierOne.isEmpty()) variantList.addAll(tierOne);
                 //if(tierTwo != null && !tierTwo.isEmpty()) variantList.addAll(tierTwo);
 
-                List<AnalysisResultVariant> negativeResult = new ArrayList<>();
+                List<VariantAndInterpretationEvidence> negativeResult = new ArrayList<>();
                 //리포트에서 제외된 negative 정보를 제거
                 if(negativeList != null && !negativeList.isEmpty()) {
-                    negativeResult.addAll(negativeVariantsTable.getItems().stream().filter(item -> item.getIncludedInReport().equals("Y")).collect(Collectors.toList()));
+                    negativeResult.addAll(negativeVariantsTable.getItems().stream().filter(item -> item.getVariant().getIncludedInReport().equals("Y")).collect(Collectors.toList()));
                 }
                 //리포트에서 제외된 variant를 제거
                 if(!variantList.isEmpty()) {
-                    variantList = variantList.stream().filter(item -> item.getIncludedInReport().equals("Y")).collect(Collectors.toList());
+                    variantList = variantList.stream().filter(item -> item.getVariant().getIncludedInReport().equals("Y")).collect(Collectors.toList());
                 }
 
                 //if(tierThree != null && !tierThree.isEmpty()) variantList.addAll(tierThree);
                 if(!tierThreeVariantsTable.getItems().isEmpty()) variantList.addAll(tierThreeVariantsTable.getItems().stream().collect(Collectors.toList()));
 
-                for(AnalysisResultVariant variant : variantList) {
-                    variant.getVariantExpression().setTranscript(ConvertUtil.insertTextAtFixedPosition(variant.getVariantExpression().getTranscript(), 15, "\n"));
-                    variant.getVariantExpression().setNtChange(ConvertUtil.insertTextAtFixedPosition(variant.getVariantExpression().getNtChange(), 15, "\n"));
-                    variant.getVariantExpression().setAaChange(ConvertUtil.insertTextAtFixedPosition(variant.getVariantExpression().getAaChange(), 15, "\n"));
+                for(VariantAndInterpretationEvidence variant : variantList) {
+                    variant.getVariant().getVariantExpression().setTranscript(ConvertUtil.insertTextAtFixedPosition(variant.getVariant().getVariantExpression().getTranscript(), 15, "\n"));
+                    variant.getVariant().getVariantExpression().setNtChange(ConvertUtil.insertTextAtFixedPosition(variant.getVariant().getVariantExpression().getNtChange(), 15, "\n"));
+                    variant.getVariant().getVariantExpression().setAaChange(ConvertUtil.insertTextAtFixedPosition(variant.getVariant().getVariantExpression().getAaChange(), 15, "\n"));
                 }
 
                 /*Long evidenceACount = variantList.stream().filter(item -> !StringUtils.isEmpty(item.getInterpretation().getInterpretationEvidenceA())).count();
@@ -720,19 +721,19 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 Long evidenceDCount = variantList.stream().filter(item -> !StringUtils.isEmpty(item.getInterpretation().getInterpretationEvidenceD())).count();*/
 
                 Integer evidenceACount = tierOneVariantsTable.getItems().filtered(item ->
-                        (item.getIncludedInReport().equals("Y") && StringUtils.isEmpty(item.getExpertTier()) && item.getSwTier().equals("T1")
-                        && !StringUtils.isEmpty(item.getInterpretation().getInterpretationEvidenceA()))).size();
-                Integer evidenceBCount = tierOneVariantsTable.getItems().filtered(item -> item.getIncludedInReport().equals("Y")).size() - evidenceACount;
+                        (item.getVariant().getIncludedInReport().equals("Y") && StringUtils.isEmpty(item.getVariant().getExpertTier()) && item.getVariant().getSwTier().equals("T1")
+                        && !StringUtils.isEmpty(item.getInterpretationEvidence().getInterpretationEvidenceA()))).size();
+                Integer evidenceBCount = tierOneVariantsTable.getItems().filtered(item -> item.getVariant().getIncludedInReport().equals("Y")).size() - evidenceACount;
                 Integer evidenceCCount = tierOneVariantsTable.getItems().filtered(item ->
-                        (item.getIncludedInReport().equals("Y") && StringUtils.isEmpty(item.getExpertTier()) && item.getSwTier().equals("T2")
-                                && !StringUtils.isEmpty(item.getInterpretation().getInterpretationEvidenceC()))).size();
-                Integer evidenceDCount = tierTwoVariantsTable.getItems().filtered(item -> item.getIncludedInReport().equals("Y")).size() - evidenceCCount;
+                        (item.getVariant().getIncludedInReport().equals("Y") && StringUtils.isEmpty(item.getVariant().getExpertTier()) && item.getVariant().getSwTier().equals("T2")
+                                && !StringUtils.isEmpty(item.getInterpretationEvidence().getInterpretationEvidenceC()))).size();
+                Integer evidenceDCount = tierTwoVariantsTable.getItems().filtered(item -> item.getVariant().getIncludedInReport().equals("Y")).size() - evidenceCCount;
 
                 contentsMap.put("variantList", variantList);
                 contentsMap.put("tierThreeVariantList", tierThree);
-                contentsMap.put("tierOneCount", tierOneVariantsTable.getItems().filtered(item -> item.getIncludedInReport().equals("Y")).size());
-                contentsMap.put("tierTwoCount", tierTwoVariantsTable.getItems().filtered(item -> item.getIncludedInReport().equals("Y")).size());
-                contentsMap.put("tierThreeCount", tierThreeVariantsTable.getItems().filtered(item -> item.getIncludedInReport().equals("Y")).size());
+                contentsMap.put("tierOneCount", tierOneVariantsTable.getItems().filtered(item -> item.getVariant().getIncludedInReport().equals("Y")).size());
+                contentsMap.put("tierTwoCount", tierTwoVariantsTable.getItems().filtered(item -> item.getVariant().getIncludedInReport().equals("Y")).size());
+                contentsMap.put("tierThreeCount", tierThreeVariantsTable.getItems().filtered(item -> item.getVariant().getIncludedInReport().equals("Y")).size());
                 contentsMap.put("tierFourCount", (tierFour != null) ? tierFour.size() : 0);
                 contentsMap.put("evidenceACount", evidenceACount);
                 contentsMap.put("evidenceBCount", evidenceBCount);
@@ -953,14 +954,14 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     }
 
 
-    private class ReportedCheckBox extends TableCell<AnalysisResultVariant, Boolean> {
+    private class ReportedCheckBox extends TableCell<VariantAndInterpretationEvidence, Boolean> {
         HBox box = null;
         final CheckBox checkBox = new CheckBox();
 
         ReportedCheckBox(AnalysisDetailReportController analysisDetailReportController) {
             checkBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
 
-                AnalysisResultVariant analysisResultVariant = ReportedCheckBox.this.getTableView().getItems().get(
+                VariantAndInterpretationEvidence analysisResultVariant = ReportedCheckBox.this.getTableView().getItems().get(
                         ReportedCheckBox.this.getIndex());
 
                 TextInputDialog dialog = new TextInputDialog();
@@ -1020,10 +1021,10 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 return;
             }
 
-            AnalysisResultVariant analysisResultVariant = ReportedCheckBox.this.getTableView().getItems().get(
+            VariantAndInterpretationEvidence analysisResultVariant = ReportedCheckBox.this.getTableView().getItems().get(
                     ReportedCheckBox.this.getIndex());
 
-            if(analysisResultVariant.getIncludedInReport().equalsIgnoreCase("Y")) {
+            if(analysisResultVariant.getVariant().getIncludedInReport().equalsIgnoreCase("Y")) {
                 checkBox.setSelected(true);
             }
 
@@ -1052,8 +1053,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
      * @param e
      * @param table
      */
-    public void onDragDetected(MouseEvent e, TableView<AnalysisResultVariant> table) {
-        AnalysisResultVariant selectedVariant = table.getSelectionModel().getSelectedItem();
+    public void onDragDetected(MouseEvent e, TableView<VariantAndInterpretationEvidence> table) {
+        VariantAndInterpretationEvidence selectedVariant = table.getSelectionModel().getSelectedItem();
         selectedTable = table;
 
         if(selectedVariant == null) return;
@@ -1077,7 +1078,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         e.consume();
     }
 
-    public void onDragOver(DragEvent t, TableView<AnalysisResultVariant> table) {
+    public void onDragOver(DragEvent t, TableView<VariantAndInterpretationEvidence> table) {
         if(selectedTable != table) {
             t.acceptTransferModes(TransferMode.ANY);
             DropShadow dropShadow = new DropShadow();
@@ -1089,13 +1090,13 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         }
     }
 
-    public void onDragExited(DragEvent t, TableView<AnalysisResultVariant> table) {
+    public void onDragExited(DragEvent t, TableView<VariantAndInterpretationEvidence> table) {
         t.acceptTransferModes(TransferMode.ANY);
         table.setEffect(null);
         t.consume();
     }
 
-    public void onDragDropped(DragEvent t, TableView<AnalysisResultVariant> table, String tier) {
+    public void onDragDropped(DragEvent t, TableView<VariantAndInterpretationEvidence> table, String tier) {
         System.out.println("change Tier");
         if(selectedItem != null && selectedTable != table) {
             /*TextInputDialog dialog = new TextInputDialog();
@@ -1141,7 +1142,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         t.setDropCompleted(true);
     }
 
-    public void resetData(TableView<AnalysisResultVariant> table) {
+    public void resetData(TableView<VariantAndInterpretationEvidence> table) {
         selectedTable.getItems().remove(selectedItem);
         table.getItems().add(selectedItem);
         selectedItem = null;

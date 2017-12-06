@@ -503,7 +503,10 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 List<File> pairFileList = fileList.stream().filter(file ->
                         file.getName().startsWith(fastqFilePairName)).collect(Collectors.toList());
 
-                Sample sample = getSameSample(fastqFilePairName);
+                Optional<AnalysisFile> optionalFile = uploadFileData.stream().filter(item ->
+                        item.getName().contains(fastqFilePairName)).findFirst();
+                Sample sample = null;
+                if(optionalFile.isPresent()) sample = getSameSample(optionalFile.get().getSampleId());
 
                 if(pairFileList.size() == 2 && sample != null) {
                     List<File> failedFileList = new ArrayList<>();
@@ -546,12 +549,12 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     /**
      * 동일한 샘플을 검색하여 해당 sample의 id 값을 리턴
-     * @param name
+     * @param sampleId
      * @return
      */
-    private Sample getSameSample(String name) {
-        Optional<Sample> optionalSample = sampleArrayList.stream().filter(item -> (name.equals(item.getName())
-                && item.getId() != null)).findFirst();
+    private Sample getSameSample(Integer sampleId) {
+        Optional<Sample> optionalSample = sampleArrayList.stream().filter(item -> (item.getId() != null
+                        && sampleId.equals(item.getId()))).findFirst();
         if(optionalSample.isPresent()) return optionalSample.get();
         return null;
     }

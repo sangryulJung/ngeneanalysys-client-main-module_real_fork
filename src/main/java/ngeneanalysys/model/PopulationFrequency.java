@@ -11,8 +11,23 @@ public class PopulationFrequency {
     private BigDecimal g1000;
     private BigDecimal exac;
     private BigDecimal esp6500;
-    private BigDecimal korean;
+    private BigDecimal koreanExomInformationDatabase;
     private BigDecimal kohbraFreq;
+    private BigDecimal koreanReferenceGenomeDatabase;
+
+    /**
+     * @return koreanReferenceGenomeDatabase
+     */
+    public BigDecimal getKoreanReferenceGenomeDatabase() {
+        return koreanReferenceGenomeDatabase;
+    }
+
+    /**
+     * @param koreanReferenceGenomeDatabase
+     */
+    public void setKoreanReferenceGenomeDatabase(BigDecimal koreanReferenceGenomeDatabase) {
+        this.koreanReferenceGenomeDatabase = koreanReferenceGenomeDatabase;
+    }
 
     /**
      * @return dbsnpRsId
@@ -71,17 +86,17 @@ public class PopulationFrequency {
     }
 
     /**
-     * @return korean
+     * @return koreanExomInformationDatabase
      */
-    public BigDecimal getKorean() {
-        return korean;
+    public BigDecimal getKoreanExomInformationDatabase() {
+        return koreanExomInformationDatabase;
     }
 
     /**
-     * @param korean
+     * @param koreanExomInformationDatabase
      */
-    public void setKorean(BigDecimal korean) {
-        this.korean = korean;
+    public void setKoreanExomInformationDatabase(BigDecimal koreanExomInformationDatabase) {
+        this.koreanExomInformationDatabase = koreanExomInformationDatabase;
     }
 
     /**

@@ -12,6 +12,7 @@ import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.AnalysisResultVariant;
+import ngeneanalysys.model.VariantAndInterpretationEvidence;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
 import org.slf4j.Logger;
@@ -31,7 +32,7 @@ public class ExcludeReportDialogController extends SubPaneController {
 
     private String symbol;
 
-    private AnalysisResultVariant selectedItem = null;
+    private VariantAndInterpretationEvidence selectedItem = null;
 
     private CheckBox checkBox;
 
@@ -49,7 +50,7 @@ public class ExcludeReportDialogController extends SubPaneController {
         this.analysisDetailReportController = analysisDetailReportController;
     }
 
-    public void settingItem(String symbol, AnalysisResultVariant selectedItem, CheckBox checkBox) {
+    public void settingItem(String symbol, VariantAndInterpretationEvidence selectedItem, CheckBox checkBox) {
         this.symbol =symbol;
         this.selectedItem = selectedItem;
         this.checkBox = checkBox;
@@ -87,8 +88,8 @@ public class ExcludeReportDialogController extends SubPaneController {
                 Map<String, Object> params = new HashMap<>();
                 params.put("comment", comment);
                 params.put("includeInReport", symbol);
-                selectedItem.setIncludedInReport(symbol);
-                apiService.put("analysisResults/variants/" + selectedItem.getId() + "/updateIncludeInReport", params, null, true);
+                selectedItem.getVariant().setIncludedInReport(symbol);
+                apiService.put("analysisResults/variants/" + selectedItem.getVariant().getId() + "/updateIncludeInReport", params, null, true);
             } catch (WebAPIException wae) {
                 wae.printStackTrace();
             }

@@ -71,37 +71,37 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
     private Label tierFourTherapeuticLabel;
 
     @FXML
-    private TableView<AnalysisResultVariant> tierTable;
+    private TableView<VariantAndInterpretationEvidence> tierTable;
 
     @FXML
-    private TableColumn<AnalysisResultVariant, String> tierColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> tierColumn;
 
     @FXML
-    private TableColumn<AnalysisResultVariant, String> geneColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> geneColumn;
 
     @FXML
-    private TableColumn<AnalysisResultVariant, String> variantColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> variantColumn;
 
     @FXML
-    private TableColumn<AnalysisResultVariant, String> therapeuticColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> therapeuticColumn;
 
     @FXML
-    private TableColumn<AnalysisResultVariant, BigDecimal> alleleFrequencyColumn;
+    private TableColumn<VariantAndInterpretationEvidence, BigDecimal> alleleFrequencyColumn;
 
     @FXML
-    private TableView<AnalysisResultVariant> pertinentNegativesTable;
+    private TableView<VariantAndInterpretationEvidence> pertinentNegativesTable;
 
     @FXML
-    private TableColumn<AnalysisResultVariant, String> negativeGeneColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> negativeGeneColumn;
 
     @FXML
-    private TableColumn<AnalysisResultVariant, String> negativeVariantColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> negativeVariantColumn;
 
     @FXML
-    private TableColumn<AnalysisResultVariant, String> negativeCauseColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> negativeCauseColumn;
 
     @FXML
-    private TableColumn<AnalysisResultVariant, BigDecimal> negativeAlleleFrequencyColumn;
+    private TableColumn<VariantAndInterpretationEvidence, BigDecimal> negativeAlleleFrequencyColumn;
 
     @FXML
     private Label totalBaseLabel;
@@ -167,23 +167,23 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         }
 
         //Tier Table Setting
-        tierColumn.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.tierConvert(cellData.getValue().getSwTier())));
-        geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getGene()));
-        variantColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getNtChange()));
-        alleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getReadInfo().getAlleleFraction()));
+        tierColumn.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.tierConvert(cellData.getValue().getVariant().getSwTier())));
+        geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getSequenceInfo().getGene()));
+        variantColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getVariantExpression().getNtChange()));
+        alleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getVariant().getReadInfo().getAlleleFraction()));
         therapeuticColumn.setCellValueFactory(cellData -> {
-            Interpretation interpretation = cellData.getValue().getInterpretation();
+            Interpretation interpretation = cellData.getValue().getInterpretationEvidence();
             String text = "";
-
-            if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceA()))
-                text += interpretation.getInterpretationEvidenceA() + ", ";
-            if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceB()))
-                text += interpretation.getInterpretationEvidenceB() + ", ";
-            if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceC()))
-                text += interpretation.getInterpretationEvidenceC() + ", ";
-            if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceD()))
-                text += interpretation.getInterpretationEvidenceD() + ", ";
-
+            if(interpretation != null) {
+                if (!StringUtils.isEmpty(interpretation.getInterpretationEvidenceA()))
+                    text += interpretation.getInterpretationEvidenceA() + ", ";
+                if (!StringUtils.isEmpty(interpretation.getInterpretationEvidenceB()))
+                    text += interpretation.getInterpretationEvidenceB() + ", ";
+                if (!StringUtils.isEmpty(interpretation.getInterpretationEvidenceC()))
+                    text += interpretation.getInterpretationEvidenceC() + ", ";
+                if (!StringUtils.isEmpty(interpretation.getInterpretationEvidenceD()))
+                    text += interpretation.getInterpretationEvidenceD() + ", ";
+            }
             if(!"".equals(text)) {
                 text = text.substring(0, text.length() - 2);
             }
@@ -192,22 +192,25 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
             });
 
         //Negative Table Setting
-        negativeGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getGene()));
-        negativeVariantColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getNtChange()));
-        negativeCauseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getInterpretation().getInterpretationNegativeTesult()));
-        negativeAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getReadInfo().getAlleleFraction()));
+        negativeGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getSequenceInfo().getGene()));
+        negativeVariantColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getVariantExpression().getNtChange()));
+        negativeCauseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getInterpretationEvidence() != null
+                ? cellData.getValue().getInterpretationEvidence().getInterpretationNegativeTesult() : ""));
+        negativeAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getVariant().getReadInfo().getAlleleFraction()));
 
         try {
             HttpClientResponse response = apiService.get("/analysisResults/sampleVariants/" + sample.getId(), null,
                     null, false);
 
-            AnalysisResultVariantList analysisResultVariantList = response.getObjectBeforeConvertResponseToJSON(AnalysisResultVariantList.class);
+            PagedVariantAndInterpretationEvidence analysisResultVariantList = response.getObjectBeforeConvertResponseToJSON(PagedVariantAndInterpretationEvidence.class);
 
-            List<AnalysisResultVariant> list = analysisResultVariantList.getResult();
+            List<VariantAndInterpretationEvidence> list = analysisResultVariantList.getResult();
 
             //negative list만 가져옴
-            List<AnalysisResultVariant> negativeList = list.stream().filter(item -> (!StringUtils.isEmpty(item.getInterpretation().getInterpretationNegativeTesult())
-                    || (!StringUtils.isEmpty(item.getExpertTier()) && "TN".equalsIgnoreCase(item.getExpertTier())))).collect(Collectors.toList());
+            List<VariantAndInterpretationEvidence> negativeList = list.stream().filter(item -> (item.getInterpretationEvidence() != null &&
+                    !StringUtils.isEmpty(item.getInterpretationEvidence().getInterpretationNegativeTesult())
+                    || (!StringUtils.isEmpty(item.getVariant().getExpertTier()) && "TN".equalsIgnoreCase(item.getVariant().getExpertTier()))))
+                    .collect(Collectors.toList());
 
             //그 이후 list에서 negative list를 제거
             //list.removeAll(negativeList);
@@ -217,20 +220,20 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
 
             //List<AnalysisResultVariant> tierOne = variantTierMap.get("T1");
 
-            List<AnalysisResultVariant> tierOne = list.stream().filter(item -> (("T1".equalsIgnoreCase(item.getExpertTier()) ||
-                    (StringUtils.isEmpty(item.getExpertTier()) && item.getSwTier().equalsIgnoreCase("T1")))))
+            List<VariantAndInterpretationEvidence> tierOne = list.stream().filter(item -> (("T1".equalsIgnoreCase(item.getVariant().getExpertTier()) ||
+                    (StringUtils.isEmpty(item.getVariant().getExpertTier()) && item.getVariant().getSwTier().equalsIgnoreCase("T1")))))
                     .collect(Collectors.toList());
 
-            List<AnalysisResultVariant> tierTwo = list.stream().filter(item -> (("T2".equalsIgnoreCase(item.getExpertTier()) ||
-                    (StringUtils.isEmpty(item.getExpertTier()) && item.getSwTier().equalsIgnoreCase("T2")))))
+            List<VariantAndInterpretationEvidence> tierTwo = list.stream().filter(item -> (("T2".equalsIgnoreCase(item.getVariant().getExpertTier()) ||
+                    (StringUtils.isEmpty(item.getVariant().getExpertTier()) && item.getVariant().getSwTier().equalsIgnoreCase("T2")))))
                     .collect(Collectors.toList());
 
-            List<AnalysisResultVariant> tierThree = list.stream().filter(item -> (("T3".equalsIgnoreCase(item.getExpertTier()) ||
-                    (StringUtils.isEmpty(item.getExpertTier()) && item.getSwTier().equalsIgnoreCase("T3")))))
+            List<VariantAndInterpretationEvidence> tierThree = list.stream().filter(item -> (("T3".equalsIgnoreCase(item.getVariant().getExpertTier()) ||
+                    (StringUtils.isEmpty(item.getVariant().getExpertTier()) && item.getVariant().getSwTier().equalsIgnoreCase("T3")))))
                     .collect(Collectors.toList());
 
-            List<AnalysisResultVariant> tierFour = list.stream().filter(item -> (("T4".equalsIgnoreCase(item.getExpertTier()) ||
-                    (StringUtils.isEmpty(item.getExpertTier()) && item.getSwTier().equalsIgnoreCase("T4")))))
+            List<VariantAndInterpretationEvidence> tierFour = list.stream().filter(item -> (("T4".equalsIgnoreCase(item.getVariant().getExpertTier()) ||
+                    (StringUtils.isEmpty(item.getVariant().getExpertTier()) && item.getVariant().getSwTier().equalsIgnoreCase("T4")))))
                     .collect(Collectors.toList());
 
             if(tierOne != null) {
@@ -238,16 +241,16 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                 tierOneVariantsCountLabel.setText(String.valueOf(tierOne.size()));
                 List<SequenceInfo> sequenceInfos = new ArrayList<>();
                 tierOne.stream().forEach(item -> {
-                    if (item.getSequenceInfo() != null)
-                        sequenceInfos.add(item.getSequenceInfo());
+                    if (item.getVariant().getSequenceInfo() != null)
+                        sequenceInfos.add(item.getVariant().getSequenceInfo());
                 });
 
                 tierOneGenesCountLabel.setText(sequenceInfos.stream().collect(Collectors.groupingBy(SequenceInfo::getGene)).size() + "");
 
                 List<Interpretation> interpretations = new ArrayList<>();
                 tierOne.stream().forEach(item -> {
-                    if (item.getInterpretation() != null)
-                        interpretations.add(item.getInterpretation());
+                    if (item.getInterpretationEvidence() != null)
+                        interpretations.add(item.getInterpretationEvidence());
                 });
 
                 long count = interpretations.stream().filter(item -> (!StringUtils.isEmpty(item.getInterpretationEvidenceA()) ||
@@ -265,16 +268,16 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
 
                 List<SequenceInfo> sequenceInfos = new ArrayList<>();
                 tierTwo.stream().forEach(item -> {
-                    if (item.getSequenceInfo() != null)
-                        sequenceInfos.add(item.getSequenceInfo());
+                    if (item.getVariant().getSequenceInfo() != null)
+                        sequenceInfos.add(item.getVariant().getSequenceInfo());
                 });
 
                 tierTwoGenesCountLabel.setText(sequenceInfos.stream().collect(Collectors.groupingBy(SequenceInfo::getGene)).size() + "");
 
                 List<Interpretation> interpretations = new ArrayList<>();
                 tierTwo.stream().forEach(item -> {
-                    if (item.getInterpretation() != null)
-                        interpretations.add(item.getInterpretation());
+                    if (item.getInterpretationEvidence() != null)
+                        interpretations.add(item.getInterpretationEvidence());
                 });
 
                 long count = interpretations.stream().filter(item -> (!StringUtils.isEmpty(item.getInterpretationEvidenceA()) ||
@@ -291,16 +294,16 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
 
                 List<SequenceInfo> sequenceInfos = new ArrayList<>();
                 tierThree.stream().forEach(item -> {
-                    if (item.getSequenceInfo() != null)
-                        sequenceInfos.add(item.getSequenceInfo());
+                    if (item.getVariant().getSequenceInfo() != null)
+                        sequenceInfos.add(item.getVariant().getSequenceInfo());
                 });
 
                 tierThreeGenesCountLabel.setText(sequenceInfos.stream().collect(Collectors.groupingBy(SequenceInfo::getGene)).size() + "");
 
                 List<Interpretation> interpretations = new ArrayList<>();
                 tierThree.stream().forEach(item -> {
-                    if (item.getInterpretation() != null)
-                        interpretations.add(item.getInterpretation());
+                    if (item.getInterpretationEvidence() != null)
+                        interpretations.add(item.getInterpretationEvidence());
                 });
 
                 long count = interpretations.stream().filter(item -> (!StringUtils.isEmpty(item.getInterpretationEvidenceA()) ||
@@ -317,16 +320,16 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
 
                 List<SequenceInfo> sequenceInfos = new ArrayList<>();
                 tierFour.stream().forEach(item -> {
-                    if (item.getSequenceInfo() != null)
-                        sequenceInfos.add(item.getSequenceInfo());
+                    if (item.getVariant().getSequenceInfo() != null)
+                        sequenceInfos.add(item.getVariant().getSequenceInfo());
                 });
 
                 tierFourGenesCountLabel.setText(sequenceInfos.stream().collect(Collectors.groupingBy(SequenceInfo::getGene)).size() + "");
 
                 List<Interpretation> interpretations = new ArrayList<>();
                 tierFour.stream().forEach(item -> {
-                    if (item.getInterpretation() != null)
-                        interpretations.add(item.getInterpretation());
+                    if (item.getInterpretationEvidence() != null)
+                        interpretations.add(item.getInterpretationEvidence());
                 });
 
                 long count = interpretations.stream().filter(item -> (!StringUtils.isEmpty(item.getInterpretationEvidenceA()) ||

@@ -60,7 +60,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
     private ALAMUTService alamutService;
 
     /** 현재 선택된 변이 정보 객체 */
-    private AnalysisResultVariant selectedAnalysisResultVariant;
+    private VariantAndInterpretationEvidence selectedAnalysisResultVariant;
 
     /** 현재 선택된 Prediction Filter */
     private ACMGFilterCode selectedPredictionCodeFilter;
@@ -80,7 +80,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
     private GridPane mainGridPane;
 
     @FXML
-    private TableView<AnalysisResultVariant> variantListTableView;
+    private TableView<VariantAndInterpretationEvidence> variantListTableView;
     /** Variant List Column > prediction */
 
     @FXML
@@ -121,7 +121,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
     Panel panel = null;
 
     //VariantList
-    List<AnalysisResultVariant> list = null;
+    List<VariantAndInterpretationEvidence> list = null;
 
     @Override
     public void show(Parent root) throws IOException {
@@ -147,7 +147,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
         // 목록 클릭 시 변이 상세정보 출력 이벤트 바인딩
         variantListTableView.setRowFactory(tv -> {
-            TableRow<AnalysisResultVariant> row = new TableRow<>();
+            TableRow<VariantAndInterpretationEvidence> row = new TableRow<>();
             row.setOnMouseClicked(e -> {
                 if (e.getClickCount() == 1 && (!row.isEmpty())) {
                     showVariantDetail(variantListTableView.getSelectionModel().getSelectedItem());
@@ -180,9 +180,9 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
 
         // 목록 정렬 설정 트래킹
-        variantListTableView.getSortOrder().addListener(new ListChangeListener<TableColumn<AnalysisResultVariant,?>>() {
+        variantListTableView.getSortOrder().addListener(new ListChangeListener<TableColumn<VariantAndInterpretationEvidence,?>>() {
             @Override
-            public void onChanged(Change<? extends TableColumn<AnalysisResultVariant,?>> change) {
+            public void onChanged(Change<? extends TableColumn<VariantAndInterpretationEvidence,?>> change) {
                 while (change.next()) {
                     // 출력 박스 초기화
                     sortListBox.getChildren().removeAll(sortListBox.getChildren());
@@ -190,7 +190,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                     int size = variantListTableView.getSortOrder().size();
                     if(size > 0 ) {
                         int idx = 0;
-                        for (TableColumn<AnalysisResultVariant, ?> column : variantListTableView.getSortOrder()) {
+                        for (TableColumn<VariantAndInterpretationEvidence, ?> column : variantListTableView.getSortOrder()) {
                             if(idx > 0) {
                                 ImageView image = new ImageView(resourceUtil.getImage("/layout/images/icon-arrow_margin.png"));
                                 sortListBox.getChildren().add(image);
@@ -254,23 +254,24 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
     public void setTierFilterBox() {
         //Map<String, Long> count = list.stream().collect(Collectors.groupingBy(AnalysisResultVariant::getSwTier, Collectors.counting()));
 
-        List<AnalysisResultVariant> negativeList = list.stream().filter(item -> (!StringUtils.isEmpty(item.getInterpretation().getInterpretationNegativeTesult()) ||
-                "TN".equalsIgnoreCase(item.getExpertTier()))).collect(Collectors.toList());
-
-        List<AnalysisResultVariant> tierOne = list.stream().filter(item -> (("T1".equalsIgnoreCase(item.getExpertTier()) ||
-                (StringUtils.isEmpty(item.getExpertTier()) && item.getSwTier().equalsIgnoreCase("T1")))))
+        List<VariantAndInterpretationEvidence> negativeList = list.stream().filter(item -> (("TN".equalsIgnoreCase(item.getVariant().getExpertTier()) ||
+                (StringUtils.isEmpty(item.getVariant().getExpertTier()) && item.getVariant().getSwTier().equalsIgnoreCase("TN")))))
                 .collect(Collectors.toList());
 
-        List<AnalysisResultVariant> tierTwo = list.stream().filter(item -> (("T2".equalsIgnoreCase(item.getExpertTier()) ||
-                (StringUtils.isEmpty(item.getExpertTier()) && item.getSwTier().equalsIgnoreCase("T2")))))
+        List<VariantAndInterpretationEvidence> tierOne = list.stream().filter(item -> (("T1".equalsIgnoreCase(item.getVariant().getExpertTier()) ||
+                (StringUtils.isEmpty(item.getVariant().getExpertTier()) && item.getVariant().getSwTier().equalsIgnoreCase("T1")))))
                 .collect(Collectors.toList());
 
-        List<AnalysisResultVariant> tierThree = list.stream().filter(item -> (("T3".equalsIgnoreCase(item.getExpertTier()) ||
-                (StringUtils.isEmpty(item.getExpertTier()) && item.getSwTier().equalsIgnoreCase("T3")))))
+        List<VariantAndInterpretationEvidence> tierTwo = list.stream().filter(item -> (("T2".equalsIgnoreCase(item.getVariant().getExpertTier()) ||
+                (StringUtils.isEmpty(item.getVariant().getExpertTier()) && item.getVariant().getSwTier().equalsIgnoreCase("T2")))))
                 .collect(Collectors.toList());
 
-        List<AnalysisResultVariant> tierFour = list.stream().filter(item -> (("T4".equalsIgnoreCase(item.getExpertTier()) ||
-                (StringUtils.isEmpty(item.getExpertTier()) && item.getSwTier().equalsIgnoreCase("T4")))))
+        List<VariantAndInterpretationEvidence> tierThree = list.stream().filter(item -> (("T3".equalsIgnoreCase(item.getVariant().getExpertTier()) ||
+                (StringUtils.isEmpty(item.getVariant().getExpertTier()) && item.getVariant().getSwTier().equalsIgnoreCase("T3")))))
+                .collect(Collectors.toList());
+
+        List<VariantAndInterpretationEvidence> tierFour = list.stream().filter(item -> (("T4".equalsIgnoreCase(item.getVariant().getExpertTier()) ||
+                (StringUtils.isEmpty(item.getVariant().getExpertTier()) && item.getVariant().getSwTier().equalsIgnoreCase("T4")))))
                 .collect(Collectors.toList());
 
         VBox totalVariantBox = getFilterBox(ACMGFilterCode.TOTAL_VARIANT, list.size());
@@ -422,20 +423,21 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             // API 서버 조회
             HttpClientResponse response = apiService.get("/analysisResults/sampleVariants/"+ sample.getId(), null,
                     null, false);
-            AnalysisResultVariantList analysisResultVariantList = response.getObjectBeforeConvertResponseToJSON(AnalysisResultVariantList.class);
+            PagedVariantAndInterpretationEvidence analysisResultVariantList = response.getObjectBeforeConvertResponseToJSON(PagedVariantAndInterpretationEvidence.class);
 
-            List<AnalysisResultVariant> list = analysisResultVariantList.getResult();
+            List<VariantAndInterpretationEvidence> list = analysisResultVariantList.getResult();
             this.list = list;
 
             //if(list == null || list.isEmpty()) list = dummyVariantList();
-            ObservableList<AnalysisResultVariant> displayList = null;
+            ObservableList<VariantAndInterpretationEvidence> displayList = null;
 
             if(acmgFilterCode != null && acmgFilterCode.getAlias() != null && panel != null && ExperimentTypeCode.GERMLINE.getDescription().equals(panel.getAnalysisType())) {
                 list = list.stream().filter(variant ->
-                        variant.getSwPathogenicityLevel().equals(acmgFilterCode.getAlias())).collect(Collectors.toList());
+                        variant.getVariant().getSwPathogenicityLevel().equals(acmgFilterCode.getAlias())).collect(Collectors.toList());
             } else if(acmgFilterCode != null && acmgFilterCode.getAlias() != null && panel != null && ExperimentTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType())) {
-                list = list.stream().filter(variant -> (!StringUtils.isEmpty(variant.getExpertTier()) && variant.getExpertTier().equals(acmgFilterCode.getAlias())) ||
-                        (StringUtils.isEmpty(variant.getExpertTier()) && variant.getSwTier().equals(acmgFilterCode.getAlias()))).collect(Collectors.toList());
+                list = list.stream().filter(variant ->
+                        (!StringUtils.isEmpty(variant.getVariant().getExpertTier()) && variant.getVariant().getExpertTier().equals(acmgFilterCode.getAlias())) ||
+                        (StringUtils.isEmpty(variant.getVariant().getExpertTier()) && variant.getVariant().getSwTier().equals(acmgFilterCode.getAlias()))).collect(Collectors.toList());
             }
 
             // 하단 탭 활성화 토글
@@ -488,7 +490,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
      * @param analysisResultVariant
      */
     @SuppressWarnings("unchecked")
-    public void showVariantDetail(AnalysisResultVariant analysisResultVariant) {
+    public void showVariantDetail(VariantAndInterpretationEvidence analysisResultVariant) {
         expandOverview();
         // 선택된 변이의 목록에서의 인덱스 정보 설정.
         selectedVariantIndex = variantListTableView.getItems().indexOf(analysisResultVariant);
@@ -528,7 +530,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         try {
             // Memo 데이터 API 요청
             //Map<String, Object> commentParamMap = new HashMap<>();
-            HttpClientResponse responseMemo = apiService.get("/analysisResults/variantInterpretationLogs/" + selectedAnalysisResultVariant.getId() , null, null, false);
+            HttpClientResponse responseMemo = apiService.get("/analysisResults/variantInterpretationLogs/" + selectedAnalysisResultVariant.getVariant().getId() , null, null, false);
 
             // Flagging Comment 데이터 요청이 정상 요청된 경우 진행.
             VariantInterpretationLogsList memoList = responseMemo.getObjectBeforeConvertResponseToJSON(VariantInterpretationLogsList.class);
@@ -557,7 +559,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         }
 
         // warnings 탭 출력
-        if(subTabLowConfidence != null) showLowConfidenceTab(selectedAnalysisResultVariant.getWarningReason());
+        if(subTabLowConfidence != null) showLowConfidenceTab(selectedAnalysisResultVariant.getVariant().getWarningReason());
 
         // 첫번째 탭 선택 처리
         tabArea.getSelectionModel().selectFirst();
@@ -591,15 +593,15 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         worksheetUtil.exportVariantData("CSV", params, this.getMainApp());
     }
 
-    public void showOverviewTab(AnalysisResultVariant analysisResultVariant) {
+    public void showOverviewTab(VariantAndInterpretationEvidence analysisResultVariant) {
         paramMap.put("variant", analysisResultVariant);
 
         try {
-            HttpClientResponse response = apiService.get("/analysisResults/variantTranscripts/" + analysisResultVariant.getId(), null, null, false);
+            HttpClientResponse response = apiService.get("/analysisResults/variantTranscripts/" + analysisResultVariant.getVariant().getId(), null, null, false);
             List<VariantTranscript> variantTranscripts = (List<VariantTranscript>) response.getMultiObjectBeforeConvertResponseToJSON(VariantTranscript.class, false);
             paramMap.put("variantTranscripts", variantTranscripts);
 
-            response = apiService.get("/analysisResults/variantStatistics/" + analysisResultVariant.getId(), null, null, false);
+            response = apiService.get("/analysisResults/variantStatistics/" + analysisResultVariant.getVariant().getId(), null, null, false);
             VariantStatistics variantStatistics = response.getObjectBeforeConvertResponseToJSON(VariantStatistics.class);
             paramMap.put("variantStatistics", variantStatistics);
 
@@ -810,13 +812,13 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                             Button igvButton = (Button) node;
 
                             String sampleId = sample.getId().toString();
-                            String variantId = selectedAnalysisResultVariant.getId().toString();
-                            String gene = selectedAnalysisResultVariant.getSequenceInfo().getGene();
+                            String variantId = selectedAnalysisResultVariant.getVariant().getId().toString();
+                            String gene = selectedAnalysisResultVariant.getVariant().getSequenceInfo().getGene();
                             String locus = String.format("%s:%,d-%,d",
-                                    selectedAnalysisResultVariant.getSequenceInfo().getChromosome(),
-                                    selectedAnalysisResultVariant.getSequenceInfo().getGenomicCoordinate(),
-                                    selectedAnalysisResultVariant.getSequenceInfo().getGenomicCoordinate());
-                            String refGenome = selectedAnalysisResultVariant.getSequenceInfo().getRefGenomeVer();
+                                    selectedAnalysisResultVariant.getVariant().getSequenceInfo().getChromosome(),
+                                    selectedAnalysisResultVariant.getVariant().getSequenceInfo().getGenomicCoordinate(),
+                                    selectedAnalysisResultVariant.getVariant().getSequenceInfo().getGenomicCoordinate());
+                            String refGenome = selectedAnalysisResultVariant.getVariant().getSequenceInfo().getRefGenomeVer();
                             String humanGenomeVersion = (refGenome.contains("hg19")) ? "hg19" : "hg18";
 
                             igvButton.setOnAction(event -> {
@@ -902,13 +904,13 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                             Button igvButton = (Button) node;
 
                             String sampleId = sample.getId().toString();
-                            String variantId = selectedAnalysisResultVariant.getId().toString();
-                            String gene = selectedAnalysisResultVariant.getSequenceInfo().getGene();
+                            String variantId = selectedAnalysisResultVariant.getVariant().getId().toString();
+                            String gene = selectedAnalysisResultVariant.getVariant().getSequenceInfo().getGene();
                             String locus = String.format("%s:%,d-%,d",
-                                    selectedAnalysisResultVariant.getSequenceInfo().getChromosome(),
-                                    selectedAnalysisResultVariant.getSequenceInfo().getGenomicCoordinate(),
-                                    selectedAnalysisResultVariant.getSequenceInfo().getGenomicCoordinate());
-                            String refGenome = selectedAnalysisResultVariant.getSequenceInfo().getRefGenomeVer();
+                                    selectedAnalysisResultVariant.getVariant().getSequenceInfo().getChromosome(),
+                                    selectedAnalysisResultVariant.getVariant().getSequenceInfo().getGenomicCoordinate(),
+                                    selectedAnalysisResultVariant.getVariant().getSequenceInfo().getGenomicCoordinate());
+                            String refGenome = selectedAnalysisResultVariant.getVariant().getSequenceInfo().getRefGenomeVer();
                             String humanGenomeVersion = (refGenome.contains("hg19")) ? "hg19" : "hg18";
 
                             igvButton.setOnAction(event -> {
@@ -1009,18 +1011,18 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
     public void setTableViewColumn() {
         if(panel != null && ExperimentTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
-            TableColumn<AnalysisResultVariant, String> swTier = new TableColumn<>("Tier");
-            swTier.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.tierConvert(cellData.getValue().getSwTier())));
+            TableColumn<VariantAndInterpretationEvidence, String> swTier = new TableColumn<>("Tier");
+            swTier.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.tierConvert(cellData.getValue().getVariant().getSwTier())));
 
-            TableColumn<AnalysisResultVariant, String> expertTier = new TableColumn<>("Tier(User)");
-            expertTier.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.tierConvert(cellData.getValue().getExpertTier())));
+            TableColumn<VariantAndInterpretationEvidence, String> expertTier = new TableColumn<>("Tier(User)");
+            expertTier.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.tierConvert(cellData.getValue().getVariant().getExpertTier())));
 
             variantListTableView.getColumns().addAll(swTier, expertTier);
         } else {
-            TableColumn<AnalysisResultVariant, String> swPathogenicityLevel = new TableColumn<>("Pathogenic");
-            swPathogenicityLevel.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSwPathogenicityLevel()));
+            TableColumn<VariantAndInterpretationEvidence, String> swPathogenicityLevel = new TableColumn<>("Pathogenic");
+            swPathogenicityLevel.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getSwPathogenicityLevel()));
             swPathogenicityLevel.setPrefWidth(55);
-            swPathogenicityLevel.setCellFactory(param -> new TableCell<AnalysisResultVariant, String>() {
+            swPathogenicityLevel.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
                     @Override
                     public void updateItem(String item, boolean empty) {
                         Label label = null;
@@ -1037,26 +1039,26 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                     }
                 });
 
-            TableColumn<AnalysisResultVariant, String> expertPathogenicityLevel = new TableColumn<>("Pathogenic(User)");
-            expertPathogenicityLevel.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getExpertPathogenicityLevel()));
+            TableColumn<VariantAndInterpretationEvidence, String> expertPathogenicityLevel = new TableColumn<>("Pathogenic(User)");
+            expertPathogenicityLevel.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getExpertPathogenicityLevel()));
             expertPathogenicityLevel.setPrefWidth(80);
             variantListTableView.getColumns().addAll(swPathogenicityLevel, expertPathogenicityLevel);
         }
 
-        TableColumn<AnalysisResultVariant, String> warn = new TableColumn<>("Warn");
+        TableColumn<VariantAndInterpretationEvidence, String> warn = new TableColumn<>("Warn");
         warn.getStyleClass().add("alignment_center");
-        warn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getHasWarning()));
-        warn.setCellFactory(param -> new TableCell<AnalysisResultVariant, String>() {
+        warn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getVariant().getHasWarning()));
+        warn.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
                     @Override
                     public void updateItem(String item, boolean empty) {
                         setGraphic((!StringUtils.isEmpty(item)) ? SNPsINDELsList.getWarningReasonPopOver(item) : null);
                     }
                 });
 
-        TableColumn<AnalysisResultVariant, String> report = new TableColumn<>("Report");
+        TableColumn<VariantAndInterpretationEvidence, String> report = new TableColumn<>("Report");
         report.getStyleClass().add("alignment_center");
-        report.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getIncludedInReport()));
-        report.setCellFactory(param -> new TableCell<AnalysisResultVariant, String>() {
+        report.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getVariant().getIncludedInReport()));
+        report.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
                     @Override
                     public void updateItem(String item, boolean empty) {
                         Label label = null;
@@ -1069,38 +1071,38 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                     }
                 });
 
-        TableColumn<AnalysisResultVariant, String> type = new TableColumn<>("Type");
+        TableColumn<VariantAndInterpretationEvidence, String> type = new TableColumn<>("Type");
         type.getStyleClass().clear();
-        type.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getVariantType()));
+        type.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getVariantExpression().getVariantType()));
 
-        TableColumn<AnalysisResultVariant, String> codCons = new TableColumn<>("Cod.Cons");
+        TableColumn<VariantAndInterpretationEvidence, String> codCons = new TableColumn<>("Cod.Cons");
         codCons.getStyleClass().clear();
-        codCons.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getCodingConsequence()));
+        codCons.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getVariantExpression().getCodingConsequence()));
 
-        TableColumn<AnalysisResultVariant, String> gene = new TableColumn<>("Gene");
-        gene.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getGene()));
+        TableColumn<VariantAndInterpretationEvidence, String> gene = new TableColumn<>("Gene");
+        gene.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getSequenceInfo().getGene()));
 
-        TableColumn<AnalysisResultVariant, String> strand = new TableColumn<>("Strand");
-        strand.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getStrand()));
+        TableColumn<VariantAndInterpretationEvidence, String> strand = new TableColumn<>("Strand");
+        strand.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getSequenceInfo().getStrand()));
 
-        TableColumn<AnalysisResultVariant, String> transcript = new TableColumn<>("Transcript");
-        transcript.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getTranscript()));
+        TableColumn<VariantAndInterpretationEvidence, String> transcript = new TableColumn<>("Transcript");
+        transcript.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getVariantExpression().getTranscript()));
 
-        TableColumn<AnalysisResultVariant, String> ntChange = new TableColumn<>("NT change");
-        ntChange.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getNtChange()));
+        TableColumn<VariantAndInterpretationEvidence, String> ntChange = new TableColumn<>("NT change");
+        ntChange.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getVariantExpression().getNtChange()));
 
-        TableColumn<AnalysisResultVariant, String> aaChange = new TableColumn<>("AA change");
-        aaChange.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getAaChange()));
+        TableColumn<VariantAndInterpretationEvidence, String> aaChange = new TableColumn<>("AA change");
+        aaChange.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getVariantExpression().getAaChange()));
 
         variantListTableView.getColumns().addAll(warn, report, type, codCons, gene, strand, transcript, ntChange, aaChange);
 
         if(panel != null && ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
-            TableColumn<AnalysisResultVariant, String> ntChangeBIC = new TableColumn<>("NT change(BIC)");
-            ntChangeBIC.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getNtChangeBic()));
+            TableColumn<VariantAndInterpretationEvidence, String> ntChangeBIC = new TableColumn<>("NT change(BIC)");
+            ntChangeBIC.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getVariantExpression().getNtChangeBic()));
             variantListTableView.getColumns().addAll(ntChangeBIC);
         }
 
-        TableColumn<AnalysisResultVariant, String> chr = new TableColumn<>("Chr");
+        TableColumn<VariantAndInterpretationEvidence, String> chr = new TableColumn<>("Chr");
         chr.setComparator((s1, s2) -> {
             String value1 = s1.replaceAll("chr", "");
             String value2 = s2.replace("chr", "");
@@ -1116,90 +1118,90 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             }
             return value1.compareToIgnoreCase(value2);
         });
-        chr.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getChromosome()));
+        chr.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getSequenceInfo().getChromosome()));
 
-        TableColumn<AnalysisResultVariant, String> ref = new TableColumn<>("Ref");
-        ref.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getRefSequence()));
+        TableColumn<VariantAndInterpretationEvidence, String> ref = new TableColumn<>("Ref");
+        ref.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getSequenceInfo().getRefSequence()));
 
-        TableColumn<AnalysisResultVariant, String> alt = new TableColumn<>("Alt");
-        alt.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getAltSequence()));
+        TableColumn<VariantAndInterpretationEvidence, String> alt = new TableColumn<>("Alt");
+        alt.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getSequenceInfo().getAltSequence()));
 
-        TableColumn<AnalysisResultVariant, String> zigosity = new TableColumn<>("Zigosity");
-        zigosity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariantExpression().getZygosity()));
+        TableColumn<VariantAndInterpretationEvidence, String> zigosity = new TableColumn<>("Zigosity");
+        zigosity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getVariantExpression().getZygosity()));
 
 
-        TableColumn<AnalysisResultVariant, String> exon = new TableColumn<>("Exon");
-        exon.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getExonNum()));
+        TableColumn<VariantAndInterpretationEvidence, String> exon = new TableColumn<>("Exon");
+        exon.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getSequenceInfo().getExonNum()));
 
         variantListTableView.getColumns().addAll(chr, ref, alt, zigosity, exon);
 
         if(panel != null && ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
-            TableColumn<AnalysisResultVariant, String> exonBic = new TableColumn<>("Exon(BIC)");
-            exonBic.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getExonNumBic()));
+            TableColumn<VariantAndInterpretationEvidence, String> exonBic = new TableColumn<>("Exon(BIC)");
+            exonBic.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getSequenceInfo().getExonNumBic()));
             variantListTableView.getColumns().addAll(exonBic);
         }
 
-        TableColumn<AnalysisResultVariant, Integer> refNum = new TableColumn<>("Ref.num");
-        refNum.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getReadInfo().getRefReadNum()).asObject());
+        TableColumn<VariantAndInterpretationEvidence, Integer> refNum = new TableColumn<>("Ref.num");
+        refNum.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getVariant().getReadInfo().getRefReadNum()).asObject());
 
-        TableColumn<AnalysisResultVariant, Integer> altNum = new TableColumn<>("Alt.num");
-        altNum.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getReadInfo().getAltReadNum()).asObject());
+        TableColumn<VariantAndInterpretationEvidence, Integer> altNum = new TableColumn<>("Alt.num");
+        altNum.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getVariant().getReadInfo().getAltReadNum()).asObject());
 
-        TableColumn<AnalysisResultVariant, Integer> depth = new TableColumn<>("Depth");
-        depth.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getReadInfo().getReadDepth()).asObject());
+        TableColumn<VariantAndInterpretationEvidence, Integer> depth = new TableColumn<>("Depth");
+        depth.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getVariant().getReadInfo().getReadDepth()).asObject());
 
-        TableColumn<AnalysisResultVariant, BigDecimal> fraction = new TableColumn<>("Fraction");
-        fraction.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getReadInfo().getAlleleFraction()));
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> fraction = new TableColumn<>("Fraction");
+        fraction.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getVariant().getReadInfo().getAlleleFraction()));
 
-        TableColumn<AnalysisResultVariant, BigDecimal> thousandGenomics = new TableColumn<>("1KG");
-        thousandGenomics.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getPopulationFrequency().getG1000()));
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> thousandGenomics = new TableColumn<>("1KG");
+        thousandGenomics.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getVariant().getPopulationFrequency().getG1000()));
 
-        TableColumn<AnalysisResultVariant, BigDecimal> exac = new TableColumn<>("ExAC");
-        exac.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getPopulationFrequency().getExac()));
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> exac = new TableColumn<>("ExAC");
+        exac.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getVariant().getPopulationFrequency().getExac()));
 
-        TableColumn<AnalysisResultVariant, BigDecimal> esp = new TableColumn<>("Esp6500");
-        esp.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getPopulationFrequency().getEsp6500()));
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> esp = new TableColumn<>("Esp6500");
+        esp.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getVariant().getPopulationFrequency().getEsp6500()));
 
-        TableColumn<AnalysisResultVariant, BigDecimal> korean = new TableColumn<>("Korean");
-        korean.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getPopulationFrequency().getKorean()));
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> korean = new TableColumn<>("Korean");
+        korean.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getVariant().getPopulationFrequency().getKoreanExomInformationDatabase()));
 
-        TableColumn<AnalysisResultVariant, String> clinVarAcc = new TableColumn<>("ClinVar.Acc");
-        clinVarAcc.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getClinVar().getClinVarAcc()));
+        TableColumn<VariantAndInterpretationEvidence, String> clinVarAcc = new TableColumn<>("ClinVar.Acc");
+        clinVarAcc.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getClinicalDB().getClinVar().getClinVarAcc()));
 
-        TableColumn<AnalysisResultVariant, String> clinVarClass = new TableColumn<>("ClinVar.Class");
-        clinVarClass.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getClinVar().getClinVarClass()));
+        TableColumn<VariantAndInterpretationEvidence, String> clinVarClass = new TableColumn<>("ClinVar.Class");
+        clinVarClass.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getClinicalDB().getClinVar().getClinVarClass()));
 
-        TableColumn<AnalysisResultVariant, String> cosmicIds = new TableColumn<>("COSMIC");
-        cosmicIds.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getCosmic().getCosmicIds()));
+        TableColumn<VariantAndInterpretationEvidence, String> cosmicIds = new TableColumn<>("COSMIC");
+        cosmicIds.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getClinicalDB().getCosmic().getCosmicIds()));
 
-        TableColumn<AnalysisResultVariant, String> cosmicCount = new TableColumn<>("COSMIC COUNT");
-        cosmicCount.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getCosmic().getCosmicCount()));
+        TableColumn<VariantAndInterpretationEvidence, String> cosmicCount = new TableColumn<>("COSMIC COUNT");
+        cosmicCount.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getClinicalDB().getCosmic().getCosmicCount()));
         cosmicCount.setVisible(false);
 
-        TableColumn<AnalysisResultVariant, String> cosmicOccurrence = new TableColumn<>("COSMIC OCCURRENCE");
-        cosmicOccurrence.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getCosmic().getCosmicOccurrence()));
+        TableColumn<VariantAndInterpretationEvidence, String> cosmicOccurrence = new TableColumn<>("COSMIC OCCURRENCE");
+        cosmicOccurrence.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getClinicalDB().getCosmic().getCosmicOccurrence()));
         cosmicOccurrence.setVisible(false);
 
         variantListTableView.getColumns().addAll(fraction ,refNum, altNum, depth, thousandGenomics, exac, esp, korean, clinVarAcc, clinVarClass, cosmicIds, cosmicCount, cosmicOccurrence);
 
         if(panel != null && ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
-            TableColumn<AnalysisResultVariant, String> bicClass = new TableColumn<>("BIC.Class");
-            clinVarClass.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBic().getBicClass()));
+            TableColumn<VariantAndInterpretationEvidence, String> bicClass = new TableColumn<>("BIC.Class");
+            clinVarClass.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getClinicalDB().getBic().getBicClass()));
 
-            TableColumn<AnalysisResultVariant, String> bicDesignation = new TableColumn<>("BIC.Designation");
-            bicDesignation.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBic().getBicDesignation()));
+            TableColumn<VariantAndInterpretationEvidence, String> bicDesignation = new TableColumn<>("BIC.Designation");
+            bicDesignation.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getClinicalDB().getBic().getBicDesignation()));
 
-            TableColumn<AnalysisResultVariant, String> bicNt = new TableColumn<>("BIC.NT");
-            bicNt.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBic().getBicNt()));
+            TableColumn<VariantAndInterpretationEvidence, String> bicNt = new TableColumn<>("BIC.NT");
+            bicNt.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getClinicalDB().getBic().getBicNt()));
 
             variantListTableView.getColumns().addAll(bicClass, bicDesignation, bicNt);
         }
 
-        TableColumn<AnalysisResultVariant, String> kohbraPatient = new TableColumn<>("KOHBRA.patient");
-        kohbraPatient.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getKohbraPatient()));
+        TableColumn<VariantAndInterpretationEvidence, String> kohbraPatient = new TableColumn<>("KOHBRA.patient");
+        kohbraPatient.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getClinicalDB().getKohbraPatient()));
 
-        TableColumn<AnalysisResultVariant, BigDecimal> kohbraFrequency = new TableColumn<>("KOHBRA.frequency");
-        kohbraFrequency.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getPopulationFrequency().getKohbraFreq()));
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> kohbraFrequency = new TableColumn<>("KOHBRA.frequency");
+        kohbraFrequency.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getVariant().getPopulationFrequency().getKohbraFreq()));
 
         /*TableColumn<AnalysisResultVariant, String> polyphen2 = new TableColumn<>("polyphen2");
         polyphen2.setCellValueFactory(cellData -> new SimpleStringProperty(
@@ -1210,104 +1212,104 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         TableColumn<AnalysisResultVariant, String> mutationTaster = new TableColumn<>("mutationtaster");
         mutationTaster.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalSignificant().getMutationTaster()));*/
 
-        TableColumn<AnalysisResultVariant, Integer> variantNum = new TableColumn<>("VariantNum");
-        variantNum.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getVariantNum()).asObject());
+        TableColumn<VariantAndInterpretationEvidence, Integer> variantNum = new TableColumn<>("VariantNum");
+        variantNum.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getVariant().getVariantNum()).asObject());
         variantNum.setVisible(false);
 
-        TableColumn<AnalysisResultVariant, String> refGenomeVer = new TableColumn<>("RefGenomeVer");
-        refGenomeVer.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getRefGenomeVer()));
+        TableColumn<VariantAndInterpretationEvidence, String> refGenomeVer = new TableColumn<>("RefGenomeVer");
+        refGenomeVer.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getSequenceInfo().getRefGenomeVer()));
         refGenomeVer.setVisible(false);
 
-        TableColumn<AnalysisResultVariant, String> leftSequence = new TableColumn<>("LeftSequence");
-        leftSequence.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getLeftSequence()));
+        TableColumn<VariantAndInterpretationEvidence, String> leftSequence = new TableColumn<>("LeftSequence");
+        leftSequence.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getSequenceInfo().getLeftSequence()));
         leftSequence.setVisible(false);
 
-        TableColumn<AnalysisResultVariant, String> rightSequence = new TableColumn<>("RightSequence");
-        rightSequence.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSequenceInfo().getRightSequence()));
+        TableColumn<VariantAndInterpretationEvidence, String> rightSequence = new TableColumn<>("RightSequence");
+        rightSequence.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getSequenceInfo().getRightSequence()));
         rightSequence.setVisible(false);
 
-        TableColumn<AnalysisResultVariant, Integer> genomicCoordinate = new TableColumn<>("GenomicCoordinate");
-        genomicCoordinate.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSequenceInfo().getGenomicCoordinate()).asObject());
+        TableColumn<VariantAndInterpretationEvidence, Integer> genomicCoordinate = new TableColumn<>("GenomicCoordinate");
+        genomicCoordinate.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getVariant().getSequenceInfo().getGenomicCoordinate()).asObject());
         genomicCoordinate.setVisible(false);
 
-        TableColumn<AnalysisResultVariant, String> dbSnpRsId = new TableColumn<>("SnpRsId");
-        dbSnpRsId.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPopulationFrequency().getDbsnpRsId()));
+        TableColumn<VariantAndInterpretationEvidence, String> dbSnpRsId = new TableColumn<>("SnpRsId");
+        dbSnpRsId.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getPopulationFrequency().getDbsnpRsId()));
         dbSnpRsId.setVisible(false);
 
-        TableColumn<AnalysisResultVariant, String> clinVarDisease = new TableColumn<>("ClinVar.Disease");
-        clinVarDisease.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getClinVar().getClinVarDisease()));
+        TableColumn<VariantAndInterpretationEvidence, String> clinVarDisease = new TableColumn<>("ClinVar.Disease");
+        clinVarDisease.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getClinicalDB().getClinVar().getClinVarDisease()));
         clinVarDisease.setVisible(false);
 
         variantListTableView.getColumns().addAll(kohbraPatient, kohbraFrequency,/* polyphen2, sift, mutationTaster,*/ variantNum, refGenomeVer, leftSequence, rightSequence
                 ,genomicCoordinate, dbSnpRsId, clinVarDisease);
 
         if(panel != null && ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
-            TableColumn<AnalysisResultVariant, String> bicCategory = new TableColumn<>("BIC.Category");
-            bicCategory.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBic().getBicCategory()));
+            TableColumn<VariantAndInterpretationEvidence, String> bicCategory = new TableColumn<>("BIC.Category");
+            bicCategory.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getClinicalDB().getBic().getBicCategory()));
             bicCategory.setVisible(false);
 
-            TableColumn<AnalysisResultVariant, String> bicImportance = new TableColumn<>("BIC.Importance");
-            bicImportance.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBic().getBicImportance()));
+            TableColumn<VariantAndInterpretationEvidence, String> bicImportance = new TableColumn<>("BIC.Importance");
+            bicImportance.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getClinicalDB().getBic().getBicImportance()));
             bicImportance.setVisible(false);
 
-            TableColumn<AnalysisResultVariant, String> beClinVarUpdate = new TableColumn<>("Be.ClinVar.Update");
-            beClinVarUpdate.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBe().getBeClinVarUpdate()));
+            TableColumn<VariantAndInterpretationEvidence, String> beClinVarUpdate = new TableColumn<>("Be.ClinVar.Update");
+            beClinVarUpdate.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getClinicalDB().getBe().getBeClinVarUpdate()));
             beClinVarUpdate.setVisible(false);
 
-            TableColumn<AnalysisResultVariant, String> beClinVarOrigin = new TableColumn<>("Be.ClinVar.Origin");
-            beClinVarOrigin.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBe().getBeClinVarOrigin()));
+            TableColumn<VariantAndInterpretationEvidence, String> beClinVarOrigin = new TableColumn<>("Be.ClinVar.Origin");
+            beClinVarOrigin.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getClinicalDB().getBe().getBeClinVarOrigin()));
             beClinVarOrigin.setVisible(false);
 
-            TableColumn<AnalysisResultVariant, String> beClinVarMethod = new TableColumn<>("Be.ClinVar.Method");
-            beClinVarMethod.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBe().getBeClinVarMethod()));
+            TableColumn<VariantAndInterpretationEvidence, String> beClinVarMethod = new TableColumn<>("Be.ClinVar.Method");
+            beClinVarMethod.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getClinicalDB().getBe().getBeClinVarMethod()));
             beClinVarMethod.setVisible(false);
 
-            TableColumn<AnalysisResultVariant, String> beBicCategory = new TableColumn<>("Be.BIC.Category");
-            beBicCategory.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBe().getBeBicCategory()));
+            TableColumn<VariantAndInterpretationEvidence, String> beBicCategory = new TableColumn<>("Be.BIC.Category");
+            beBicCategory.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getClinicalDB().getBe().getBeBicCategory()));
             beBicCategory.setVisible(false);
 
-            TableColumn<AnalysisResultVariant, String> beBicNationality = new TableColumn<>("Be.BIC.Nationality");
-            beBicNationality.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBe().getBeBicNationality()));
+            TableColumn<VariantAndInterpretationEvidence, String> beBicNationality = new TableColumn<>("Be.BIC.Nationality");
+            beBicNationality.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getClinicalDB().getBe().getBeBicNationality()));
             beBicNationality.setVisible(false);
 
-            TableColumn<AnalysisResultVariant, String> beBicEthnic = new TableColumn<>("Be.BIC.Ethnic");
-            beBicEthnic.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBe().getBeBicNationality()));
+            TableColumn<VariantAndInterpretationEvidence, String> beBicEthnic = new TableColumn<>("Be.BIC.Ethnic");
+            beBicEthnic.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getClinicalDB().getBe().getBeBicNationality()));
             beBicEthnic.setVisible(false);
 
-            TableColumn<AnalysisResultVariant, String> beBicPathogenicity = new TableColumn<>("Be.BIC.Pathogenicity");
-            beBicPathogenicity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBe().getBeBicPathogenicity()));
+            TableColumn<VariantAndInterpretationEvidence, String> beBicPathogenicity = new TableColumn<>("Be.BIC.Pathogenicity");
+            beBicPathogenicity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getClinicalDB().getBe().getBeBicPathogenicity()));
             beBicPathogenicity.setVisible(false);
 
-            TableColumn<AnalysisResultVariant, String> beTranscript = new TableColumn<>("Be.Transcript");
-            beTranscript.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBe().getBeTranscript()));
+            TableColumn<VariantAndInterpretationEvidence, String> beTranscript = new TableColumn<>("Be.Transcript");
+            beTranscript.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getClinicalDB().getBe().getBeTranscript()));
             beTranscript.setVisible(false);
 
-            TableColumn<AnalysisResultVariant, String> beNt = new TableColumn<>("Be.NT");
-            beNt.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBe().getBeNt()));
+            TableColumn<VariantAndInterpretationEvidence, String> beNt = new TableColumn<>("Be.NT");
+            beNt.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getClinicalDB().getBe().getBeNt()));
             beNt.setVisible(false);
 
-            TableColumn<AnalysisResultVariant, String> beGene = new TableColumn<>("Be.Gene");
-            beGene.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBe().getBeGene()));
+            TableColumn<VariantAndInterpretationEvidence, String> beGene = new TableColumn<>("Be.Gene");
+            beGene.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getClinicalDB().getBe().getBeGene()));
             beGene.setVisible(false);
 
-            TableColumn<AnalysisResultVariant, String> beEnigmaCondition = new TableColumn<>("Be.Enigma.Condition");
-            beEnigmaCondition.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBe().getBeEnigmaCondition()));
+            TableColumn<VariantAndInterpretationEvidence, String> beEnigmaCondition = new TableColumn<>("Be.Enigma.Condition");
+            beEnigmaCondition.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getClinicalDB().getBe().getBeEnigmaCondition()));
             beEnigmaCondition.setVisible(false);
 
-            TableColumn<AnalysisResultVariant, String> beEnigmaUpdate = new TableColumn<>("Be.Enigma.Update");
-            beEnigmaUpdate.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBe().getBeEnigmaUpdate()));
+            TableColumn<VariantAndInterpretationEvidence, String> beEnigmaUpdate = new TableColumn<>("Be.Enigma.Update");
+            beEnigmaUpdate.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getClinicalDB().getBe().getBeEnigmaUpdate()));
             beEnigmaUpdate.setVisible(false);
 
-            TableColumn<AnalysisResultVariant, String> beClinVarPathogenicity = new TableColumn<>("Be.ClinVar.Pathogenicity");
-            beClinVarPathogenicity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBe().getBeClinVarPathogenicity()));
+            TableColumn<VariantAndInterpretationEvidence, String> beClinVarPathogenicity = new TableColumn<>("Be.ClinVar.Pathogenicity");
+            beClinVarPathogenicity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getClinicalDB().getBe().getBeClinVarPathogenicity()));
             beClinVarPathogenicity.setVisible(false);
 
-            TableColumn<AnalysisResultVariant, String> beEnigmaPathogenicity = new TableColumn<>("Be.Enigma.Pathogenicity");
-            beEnigmaPathogenicity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBe().getBeEnigmaPathogenicity()));
+            TableColumn<VariantAndInterpretationEvidence, String> beEnigmaPathogenicity = new TableColumn<>("Be.Enigma.Pathogenicity");
+            beEnigmaPathogenicity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getClinicalDB().getBe().getBeEnigmaPathogenicity()));
             beEnigmaPathogenicity.setVisible(false);
 
-            TableColumn<AnalysisResultVariant, String> enigma = new TableColumn<>("Enigma");
-            enigma.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getClinicalDB().getBe().getBeEnigmaPathogenicity()));
+            TableColumn<VariantAndInterpretationEvidence, String> enigma = new TableColumn<>("Enigma");
+            enigma.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getClinicalDB().getBe().getBeEnigmaPathogenicity()));
             enigma.setVisible(false);
 
             variantListTableView.getColumns().addAll(bicCategory, bicImportance, beClinVarUpdate, beClinVarOrigin, beClinVarMethod
