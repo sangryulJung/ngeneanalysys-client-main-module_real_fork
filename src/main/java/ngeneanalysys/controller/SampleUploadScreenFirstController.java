@@ -308,6 +308,26 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         }
     }
 
+    public void checkAmplicon() {
+        for(ComboBox<ComboBoxItem> panelComboBox : panelComboBoxList) {
+            if(panelComboBox.isDisabled()) continue;
+
+            Integer panelId = Integer.parseInt(panelComboBox.getSelectionModel().getSelectedItem().getValue());
+            HttpClientResponse response;
+            try {
+                response = apiService.get("panels/" + panelId, null, null, false);
+                Panel panelDetail = response.getObjectBeforeConvertResponseToJSON(Panel.class);
+
+                if("AMPLICON_BASED".equals(panelDetail.getLibraryType())) {
+
+                }
+
+            } catch (WebAPIException wae) {
+                DialogUtil.error(wae.getHeaderText(), wae.getContents(), sampleUploadController.getCurrentStage(), true);
+            }
+        }
+    }
+
     @FXML
     public void submit() {
 

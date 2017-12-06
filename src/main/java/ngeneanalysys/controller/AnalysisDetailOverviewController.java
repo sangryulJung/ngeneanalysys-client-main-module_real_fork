@@ -175,14 +175,14 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
             Interpretation interpretation = cellData.getValue().getInterpretationEvidence();
             String text = "";
             if(interpretation != null) {
-                if (!StringUtils.isEmpty(interpretation.getInterpretationEvidenceA()))
-                    text += interpretation.getInterpretationEvidenceA() + ", ";
-                if (!StringUtils.isEmpty(interpretation.getInterpretationEvidenceB()))
-                    text += interpretation.getInterpretationEvidenceB() + ", ";
-                if (!StringUtils.isEmpty(interpretation.getInterpretationEvidenceC()))
-                    text += interpretation.getInterpretationEvidenceC() + ", ";
-                if (!StringUtils.isEmpty(interpretation.getInterpretationEvidenceD()))
-                    text += interpretation.getInterpretationEvidenceD() + ", ";
+                if (!StringUtils.isEmpty(interpretation.getEvidenceLevelA()))
+                    text += interpretation.getEvidenceLevelA() + ", ";
+                if (!StringUtils.isEmpty(interpretation.getEvidenceLevelB()))
+                    text += interpretation.getEvidenceLevelB() + ", ";
+                if (!StringUtils.isEmpty(interpretation.getEvidenceLevelC()))
+                    text += interpretation.getEvidenceLevelC() + ", ";
+                if (!StringUtils.isEmpty(interpretation.getEvidenceLevelD()))
+                    text += interpretation.getEvidenceLevelD() + ", ";
             }
             if(!"".equals(text)) {
                 text = text.substring(0, text.length() - 2);
@@ -195,7 +195,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         negativeGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getSequenceInfo().getGene()));
         negativeVariantColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getVariantExpression().getNtChange()));
         negativeCauseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getInterpretationEvidence() != null
-                ? cellData.getValue().getInterpretationEvidence().getInterpretationNegativeTesult() : ""));
+                ? cellData.getValue().getInterpretationEvidence().getEvidencePersistentNegative() : ""));
         negativeAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getVariant().getReadInfo().getAlleleFraction()));
 
         try {
@@ -208,7 +208,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
 
             //negative list만 가져옴
             List<VariantAndInterpretationEvidence> negativeList = list.stream().filter(item -> (item.getInterpretationEvidence() != null &&
-                    !StringUtils.isEmpty(item.getInterpretationEvidence().getInterpretationNegativeTesult())
+                    !StringUtils.isEmpty(item.getInterpretationEvidence().getEvidencePersistentNegative())
                     || (!StringUtils.isEmpty(item.getVariant().getExpertTier()) && "TN".equalsIgnoreCase(item.getVariant().getExpertTier()))))
                     .collect(Collectors.toList());
 
@@ -253,10 +253,10 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                         interpretations.add(item.getInterpretationEvidence());
                 });
 
-                long count = interpretations.stream().filter(item -> (!StringUtils.isEmpty(item.getInterpretationEvidenceA()) ||
-                        !StringUtils.isEmpty(item.getInterpretationEvidenceB()) ||
-                        !StringUtils.isEmpty(item.getInterpretationEvidenceC()) ||
-                        !StringUtils.isEmpty(item.getInterpretationEvidenceD()))).count();
+                long count = interpretations.stream().filter(item -> (!StringUtils.isEmpty(item.getEvidenceLevelA()) ||
+                        !StringUtils.isEmpty(item.getEvidenceLevelB()) ||
+                        !StringUtils.isEmpty(item.getEvidenceLevelC()) ||
+                        !StringUtils.isEmpty(item.getEvidenceLevelD()))).count();
                 tierOneTherapeuticLabel.setText(String.valueOf(count));
             }
 
@@ -280,10 +280,10 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                         interpretations.add(item.getInterpretationEvidence());
                 });
 
-                long count = interpretations.stream().filter(item -> (!StringUtils.isEmpty(item.getInterpretationEvidenceA()) ||
-                        !StringUtils.isEmpty(item.getInterpretationEvidenceB()) ||
-                        !StringUtils.isEmpty(item.getInterpretationEvidenceC()) ||
-                        !StringUtils.isEmpty(item.getInterpretationEvidenceD()))).count();
+                long count = interpretations.stream().filter(item -> (!StringUtils.isEmpty(item.getEvidenceLevelA()) ||
+                        !StringUtils.isEmpty(item.getEvidenceLevelB()) ||
+                        !StringUtils.isEmpty(item.getEvidenceLevelC()) ||
+                        !StringUtils.isEmpty(item.getEvidenceLevelD()))).count();
                 tierTwoTherapeuticLabel.setText(String.valueOf(count));
             }
 
@@ -306,10 +306,10 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                         interpretations.add(item.getInterpretationEvidence());
                 });
 
-                long count = interpretations.stream().filter(item -> (!StringUtils.isEmpty(item.getInterpretationEvidenceA()) ||
-                        !StringUtils.isEmpty(item.getInterpretationEvidenceB()) ||
-                        !StringUtils.isEmpty(item.getInterpretationEvidenceC()) ||
-                        !StringUtils.isEmpty(item.getInterpretationEvidenceD()))).count();
+                long count = interpretations.stream().filter(item -> (!StringUtils.isEmpty(item.getEvidenceLevelA()) ||
+                        !StringUtils.isEmpty(item.getEvidenceLevelB()) ||
+                        !StringUtils.isEmpty(item.getEvidenceLevelC()) ||
+                        !StringUtils.isEmpty(item.getEvidenceLevelD()))).count();
                 tierThreeTherapeuticLabel.setText(String.valueOf(count));
             }
 
@@ -332,10 +332,10 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                         interpretations.add(item.getInterpretationEvidence());
                 });
 
-                long count = interpretations.stream().filter(item -> (!StringUtils.isEmpty(item.getInterpretationEvidenceA()) ||
-                        !StringUtils.isEmpty(item.getInterpretationEvidenceB()) ||
-                        !StringUtils.isEmpty(item.getInterpretationEvidenceC()) ||
-                        !StringUtils.isEmpty(item.getInterpretationEvidenceD()))).count();
+                long count = interpretations.stream().filter(item -> (!StringUtils.isEmpty(item.getEvidenceLevelA()) ||
+                        !StringUtils.isEmpty(item.getEvidenceLevelB()) ||
+                        !StringUtils.isEmpty(item.getEvidenceLevelC()) ||
+                        !StringUtils.isEmpty(item.getEvidenceLevelD()))).count();
                 tierFourTherapeuticLabel.setText(String.valueOf(count));
             }
 

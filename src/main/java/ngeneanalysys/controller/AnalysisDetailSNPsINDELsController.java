@@ -1073,7 +1073,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
         TableColumn<VariantAndInterpretationEvidence, String> type = new TableColumn<>("Type");
         type.getStyleClass().clear();
-        type.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getVariantExpression().getVariantType()));
+        type.setCellValueFactory(cellData -> new SimpleStringProperty(cutVariantTypeString(cellData.getValue().getVariant().getVariantExpression().getVariantType())));
 
         TableColumn<VariantAndInterpretationEvidence, String> codCons = new TableColumn<>("Cod.Cons");
         codCons.getStyleClass().clear();
@@ -1328,5 +1328,10 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             ,beBicCategory, beBicNationality, beBicEthnic, beBicPathogenicity, beTranscript, beNt, beGene, beEnigmaCondition, beEnigmaUpdate
             ,beClinVarPathogenicity, beEnigmaPathogenicity, enigma);*/
 
+    }
+
+    public String cutVariantTypeString(String variantType) {
+        if(variantType.contains(":")) return variantType.substring(0, variantType.indexOf(':') - 1);
+        return variantType;
     }
 }

@@ -1,58 +1,100 @@
 package ngeneanalysys.model;
 
 public class Interpretation {
+    private Integer id;
+    private Integer diseaseId;
+    private String identificationMethod;
+    private String identificationKey;
+    private String description;
     private String interpretationVersion;
-    private String interpretationEvidenceA;
-    private String interpretationEvidenceB;
-    private String interpretationEvidenceC;
-    private String interpretationEvidenceD;
-    private String interpretationNegativeTesult;
+    private String evidenceLevelA;
+    private String evidenceLevelB;
+    private String evidenceLevelC;
+    private String evidenceLevelD;
+    private String evidencePersistentNegative;
+    private String version;
 
+    /**
+     * @return id
+     */
+    public Integer getId() {
+        return id;
+    }
+
+    /**
+     * @return diseaseId
+     */
+    public Integer getDiseaseId() {
+        return diseaseId;
+    }
+
+    /**
+     * @return identificationMethod
+     */
+    public String getIdentificationMethod() {
+        return identificationMethod;
+    }
+
+    /**
+     * @return identificationKey
+     */
+    public String getIdentificationKey() {
+        return identificationKey;
+    }
+
+    /**
+     * @return description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @return interpretationVersion
+     */
     public String getInterpretationVersion() {
         return interpretationVersion;
     }
 
-    public void setInterpretationVersion(String interpretationVersion) {
-        this.interpretationVersion = interpretationVersion;
+    /**
+     * @return evidenceLevelA
+     */
+    public String getEvidenceLevelA() {
+        return evidenceLevelA;
     }
 
-    public String getInterpretationEvidenceA() {
-        return interpretationEvidenceA;
+    /**
+     * @return evidenceLevelB
+     */
+    public String getEvidenceLevelB() {
+        return evidenceLevelB;
     }
 
-    public void setInterpretationEvidenceA(String interpretationEvidenceA) {
-        this.interpretationEvidenceA = interpretationEvidenceA;
+    /**
+     * @return evidenceLevelC
+     */
+    public String getEvidenceLevelC() {
+        return evidenceLevelC;
     }
 
-    public String getInterpretationEvidenceB() {
-        return interpretationEvidenceB;
+    /**
+     * @return evidenceLevelD
+     */
+    public String getEvidenceLevelD() {
+        return evidenceLevelD;
     }
 
-    public void setInterpretationEvidenceB(String interpretationEvidenceB) {
-        this.interpretationEvidenceB = interpretationEvidenceB;
+    /**
+     * @return evidencePersistentNegative
+     */
+    public String getEvidencePersistentNegative() {
+        return evidencePersistentNegative;
     }
 
-    public String getInterpretationEvidenceC() {
-        return interpretationEvidenceC;
-    }
-
-    public void setInterpretationEvidenceC(String interpretationEvidenceC) {
-        this.interpretationEvidenceC = interpretationEvidenceC;
-    }
-
-    public String getInterpretationEvidenceD() {
-        return interpretationEvidenceD;
-    }
-
-    public void setInterpretationEvidenceD(String interpretationEvidenceD) {
-        this.interpretationEvidenceD = interpretationEvidenceD;
-    }
-
-    public String getInterpretationNegativeTesult() {
-        return interpretationNegativeTesult;
-    }
-
-    public void setInterpretationNegativeTesult(String interpretationNegativeTesult) {
-        this.interpretationNegativeTesult = interpretationNegativeTesult;
+    /**
+     * @return version
+     */
+    public String getVersion() {
+        return version;
     }
 }

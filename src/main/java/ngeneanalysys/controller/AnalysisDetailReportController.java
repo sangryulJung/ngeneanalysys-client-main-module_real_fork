@@ -265,16 +265,16 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         tierOneTherapeuticColumn.setCellValueFactory(cellData -> {
             Interpretation interpretation = cellData.getValue().getInterpretationEvidence();
             String text = "";
-
-            if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceA()))
-                text += interpretation.getInterpretationEvidenceA() + ", ";
-            if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceB()))
-                text += interpretation.getInterpretationEvidenceB() + ", ";
-            if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceC()))
-                text += interpretation.getInterpretationEvidenceC() + ", ";
-            if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceD()))
-                text += interpretation.getInterpretationEvidenceD() + ", ";
-
+            if(interpretation != null) {
+                if (!StringUtils.isEmpty(interpretation.getEvidenceLevelA()))
+                    text += interpretation.getEvidenceLevelA() + ", ";
+                if (!StringUtils.isEmpty(interpretation.getEvidenceLevelB()))
+                    text += interpretation.getEvidenceLevelB() + ", ";
+                if (!StringUtils.isEmpty(interpretation.getEvidenceLevelC()))
+                    text += interpretation.getEvidenceLevelC() + ", ";
+                if (!StringUtils.isEmpty(interpretation.getEvidenceLevelD()))
+                    text += interpretation.getEvidenceLevelD() + ", ";
+            }
             if(!"".equals(text)) {
                 text = text.substring(0, text.length() - 2);
             }
@@ -290,16 +290,16 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         tierTwoTherapeuticColumn.setCellValueFactory(cellData -> {
             Interpretation interpretation = cellData.getValue().getInterpretationEvidence();
             String text = "";
-
-            if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceA()))
-                text += interpretation.getInterpretationEvidenceA() + ", ";
-            if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceB()))
-                text += interpretation.getInterpretationEvidenceB() + ", ";
-            if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceC()))
-                text += interpretation.getInterpretationEvidenceC() + ", ";
-            if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceD()))
-                text += interpretation.getInterpretationEvidenceD() + ", ";
-
+            if(interpretation != null) {
+                if (!StringUtils.isEmpty(interpretation.getEvidenceLevelA()))
+                    text += interpretation.getEvidenceLevelA() + ", ";
+                if (!StringUtils.isEmpty(interpretation.getEvidenceLevelB()))
+                    text += interpretation.getEvidenceLevelB() + ", ";
+                if (!StringUtils.isEmpty(interpretation.getEvidenceLevelC()))
+                    text += interpretation.getEvidenceLevelC() + ", ";
+                if (!StringUtils.isEmpty(interpretation.getEvidenceLevelD()))
+                    text += interpretation.getEvidenceLevelD() + ", ";
+            }
             if(!"".equals(text)) {
                 text = text.substring(0, text.length() - 2);
             }
@@ -315,16 +315,16 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         tierThreeTherapeuticColumn.setCellValueFactory(cellData -> {
             Interpretation interpretation = cellData.getValue().getInterpretationEvidence();
             String text = "";
-
-            if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceA()))
-                text += interpretation.getInterpretationEvidenceA() + ", ";
-            if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceB()))
-                text += interpretation.getInterpretationEvidenceB() + ", ";
-            if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceC()))
-                text += interpretation.getInterpretationEvidenceC() + ", ";
-            if(!StringUtils.isEmpty(interpretation.getInterpretationEvidenceD()))
-                text += interpretation.getInterpretationEvidenceD() + ", ";
-
+            if(interpretation != null) {
+                if (!StringUtils.isEmpty(interpretation.getEvidenceLevelA()))
+                    text += interpretation.getEvidenceLevelA() + ", ";
+                if (!StringUtils.isEmpty(interpretation.getEvidenceLevelB()))
+                    text += interpretation.getEvidenceLevelB() + ", ";
+                if (!StringUtils.isEmpty(interpretation.getEvidenceLevelC()))
+                    text += interpretation.getEvidenceLevelC() + ", ";
+                if (!StringUtils.isEmpty(interpretation.getEvidenceLevelD()))
+                    text += interpretation.getEvidenceLevelD() + ", ";
+            }
             if(!"".equals(text)) {
                 text = text.substring(0, text.length() - 2);
             }
@@ -334,7 +334,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
         negativeGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getSequenceInfo().getGene()));
         negativeVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getVariantExpression().getNtChange()));
-        negativeCauseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getInterpretationEvidence().getInterpretationNegativeTesult()));
+        negativeCauseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getInterpretationEvidence().getEvidencePersistentNegative()));
         negativeAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVariant().getReadInfo().getAlleleFraction().toString()));
         negativeExceptColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
         negativeExceptColumn.setCellFactory(param -> new ReportedCheckBox(this));
@@ -437,7 +437,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
             //negative list만 가져옴
             negativeList = list.stream().filter(item -> ((item.getInterpretationEvidence() != null &&
-                    !StringUtils.isEmpty(item.getInterpretationEvidence().getInterpretationNegativeTesult())) ||
+                    !StringUtils.isEmpty(item.getInterpretationEvidence().getEvidencePersistentNegative())) ||
             "TN".equalsIgnoreCase(item.getVariant().getExpertTier()))).collect(Collectors.toList());
 
             tierOne = list.stream().filter(item -> (("T1".equalsIgnoreCase(item.getVariant().getExpertTier()) ||
@@ -720,11 +720,11 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
                 Integer evidenceACount = tierOneVariantsTable.getItems().filtered(item ->
                         (item.getVariant().getIncludedInReport().equals("Y") && StringUtils.isEmpty(item.getVariant().getExpertTier()) && item.getVariant().getSwTier().equals("T1")
-                        && !StringUtils.isEmpty(item.getInterpretationEvidence().getInterpretationEvidenceA()))).size();
+                        && !StringUtils.isEmpty(item.getInterpretationEvidence().getEvidenceLevelA()))).size();
                 Integer evidenceBCount = tierOneVariantsTable.getItems().filtered(item -> item.getVariant().getIncludedInReport().equals("Y")).size() - evidenceACount;
                 Integer evidenceCCount = tierOneVariantsTable.getItems().filtered(item ->
                         (item.getVariant().getIncludedInReport().equals("Y") && StringUtils.isEmpty(item.getVariant().getExpertTier()) && item.getVariant().getSwTier().equals("T2")
-                                && !StringUtils.isEmpty(item.getInterpretationEvidence().getInterpretationEvidenceC()))).size();
+                                && !StringUtils.isEmpty(item.getInterpretationEvidence().getEvidenceLevelC()))).size();
                 Integer evidenceDCount = tierTwoVariantsTable.getItems().filtered(item -> item.getVariant().getIncludedInReport().equals("Y")).size() - evidenceCCount;
 
                 contentsMap.put("variantList", variantList);
