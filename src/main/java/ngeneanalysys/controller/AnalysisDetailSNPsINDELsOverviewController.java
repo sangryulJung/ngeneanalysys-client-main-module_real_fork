@@ -29,6 +29,7 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -221,6 +222,14 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
 
     @FXML private VBox significantArea;
 
+    @FXML
+    private ScrollPane transcriptDetailScrollBox;
+
+    @FXML
+    private VBox leftVbox;
+
+    @FXML
+    private GridPane transcriptDetailGrid;
 
     private AnalysisDetailSNPsINDELsController analysisDetailSNPsINDELsController;
 
@@ -584,15 +593,43 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
 
 
                         logger.info(String.format("variant identification choose '%s' option idx [%s]", transcriptName, newIdx));
-
+                        List<Integer> textLength = new ArrayList<>();
                         geneSymbolTextField.setText(geneSymbol); //Gene Symbol
-                        if(!StringUtils.isEmpty(geneSymbol)) geneSymbolTextField.setTooltip(new Tooltip(geneSymbol));
+                        if(!StringUtils.isEmpty(geneSymbol)) {
+                            geneSymbolTextField.setTooltip(new Tooltip(geneSymbol));
+                            textLength.add(geneSymbol.length());
+                        }
                         hgvspTextField.setText(protein); //Protein
-                        if(!StringUtils.isEmpty(protein)) hgvspTextField.setTooltip(new Tooltip(protein));
+                        if(!StringUtils.isEmpty(protein)) {
+                            hgvspTextField.setTooltip(new Tooltip(protein));
+                            textLength.add(protein.length());
+                        }
                         hgvscTextField.setText(codingDNA); //Coding DNA
-                        if(!StringUtils.isEmpty(codingDNA)) hgvscTextField.setTooltip(new Tooltip(codingDNA));
+                        if(!StringUtils.isEmpty(codingDNA)) {
+                            hgvscTextField.setTooltip(new Tooltip(codingDNA));
+                            textLength.add(codingDNA.length());
+                        }
                         grch37TextField.setText(genomicDNA); //Genomic DNA
-                        if(!StringUtils.isEmpty(genomicDNA)) grch37TextField.setTooltip(new Tooltip(genomicDNA));
+                        if(!StringUtils.isEmpty(genomicDNA)) {
+                            grch37TextField.setTooltip(new Tooltip(genomicDNA));
+                            textLength.add(genomicDNA.length());
+                        }
+                        int maxTextLength = 0;
+                        Optional<Integer> maxTextLengthOptional = textLength.stream().max(Integer::compare);
+                        if(maxTextLengthOptional.isPresent()) {
+                            maxTextLength = maxTextLengthOptional.get();
+                        }
+                        logger.info("max Length : " + maxTextLength);
+
+                        if(maxTextLength > 29) {
+                            transcriptDetailGrid.setPrefWidth(maxTextLength * 9);
+                            geneSymbolTextField.setMinWidth(maxTextLength * 9);
+                            hgvspTextField.setMinWidth(maxTextLength * 9);
+                            hgvscTextField.setMinWidth(maxTextLength * 9);
+                            grch37TextField.setMinWidth(maxTextLength * 9);
+                            transcriptDetailScrollBox.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+                            transcriptDetailScrollBox.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+                        }
                     }
                 }
             });
@@ -603,26 +640,26 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
 
         // 레퍼런스 앞문자열 끝에서부터 9글자만 출력함.
         int displayLeft22Bplength = 9;
-        String displayLeft22Bp = "";
-        if(!StringUtils.isEmpty(left22Bp) && left22Bp.length() > displayLeft22Bplength) {
+        String displayLeft22Bp = left22Bp;
+        /*if(!StringUtils.isEmpty(left22Bp) && left22Bp.length() > displayLeft22Bplength) {
             for(int i = 0; i < left22Bp.length(); i++) {
                 if( i >= (left22Bp.length() - displayLeft22Bplength)) {
                     displayLeft22Bp += left22Bp.substring(i, i + 1);
                 }
             }
-        }
+        }*/
 
         // 레퍼런스 뒷문자열 9글자만 출력 : 레퍼런스 문자열이 1보다 큰 경우 1보다 늘어난 숫자만큼 출력 문자열 수 가감함.
         int displayRight22BpLength = 9;
-        String displayRight22Bp = "";
+        String displayRight22Bp = right22Bp;
         // 처음부터 지정글자수까지 출력
-        if(!StringUtils.isEmpty(right22Bp) && right22Bp.length() > displayRight22BpLength) {
+        /*if(!StringUtils.isEmpty(right22Bp) && right22Bp.length() > displayRight22BpLength) {
             for(int i = 0; i < right22Bp.length(); i++) {
                 if( i <= (displayRight22BpLength - 1)) {
                     displayRight22Bp += right22Bp.substring(i, i + 1);
                 }
             }
-        }
+        }*/
 
         // 변이 유형이 "deletion"인 경우 삭제된 염기서열 문자열 분리
         String notDeletionRef = "";
@@ -636,9 +673,14 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
             notDeletionRef = ref;
         }
 
+        if(!StringUtils.isEmpty(displayLeft22Bp)) {
+            leftVbox.setPrefWidth(170);
+        }
+
         // 값 화면 출력
         genePositionStartLabel.setText(genePositionStart);
         left22BpLabel.setText(displayLeft22Bp.toUpperCase());
+        logger.info(displayLeft22Bp.toUpperCase());
         transcriptRefLabel.setText(notDeletionRef);
         deletionRefLabel.setText(deletionRef);
         right22BpLabel.setText(displayRight22Bp.toUpperCase());
@@ -647,7 +689,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
         logger.info("text length : " + textLength);
 
         if(textLength > 21) {
-            gridBox.setPrefWidth(textLength * 12);
+            gridBox.setPrefWidth(textLength * 11);
             sequenceCharsBox.setStyle("-fx-padding:-10 0 0 20;");
             scrollBox.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         }

@@ -292,37 +292,37 @@
 								<fo:table-cell font-family="Noto Sans CJK KR Bold" font-weight="bold"><fo:block>Categorization</fo:block></fo:table-cell>
 							</fo:table-row>
 							#foreach($variant in $contents.variantList)
-								#if(($variant.expertTier && $variant.expertTier == "T1") ||
-							((!$variant.expertTier || $variant.expertTier == "") && $variant.swTier == "T1") ||
-							($variant.expertTier && $variant.expertTier =="T2") ||
-							((!$variant.expertTier || $variant.expertTier == "") && $variant.swTier == "T2"))
+								#if(($variant.variant.expertTier && $variant.variant.expertTier == "T1") ||
+							((!$variant.variant.expertTier || $variant.variant.expertTier == "") && $variant.variant.swTier == "T1") ||
+							($variant.variant.expertTier && $variant.variant.expertTier =="T2") ||
+							((!$variant.variant.expertTier || $variant.variant.expertTier == "") && $variant.swTier == "T2"))
 									<fo:table-row height="7mm" display-align="center" text-align="center" font-family="Noto Sans CJK KR Regular" font-size="10pt">
 										<fo:table-cell>
-											<fo:block  font-family="Noto Sans CJK KR Bold" font-weight="bold">$variant.sequenceInfo.gene</fo:block>
+											<fo:block  font-family="Noto Sans CJK KR Bold" font-weight="bold">$variant.variant.sequenceInfo.gene</fo:block>
 										</fo:table-cell>
 										<fo:table-cell>
-											<fo:block text-align="center">$variant.variantExpression.transcript</fo:block>
+											<fo:block text-align="center">$variant.variant.variantExpression.transcript</fo:block>
 										</fo:table-cell>
 										<fo:table-cell>
-											<fo:block text-align="center">$variant.variantExpression.ntChange</fo:block>
+											<fo:block text-align="center">$variant.variant.variantExpression.ntChange</fo:block>
 										</fo:table-cell>
 										<fo:table-cell>
-											<fo:block text-align="center">$variant.variantExpression.aaChange</fo:block>
+											<fo:block text-align="center">$variant.variant.variantExpression.aaChange</fo:block>
 										</fo:table-cell>
 										<fo:table-cell>
-											<fo:block text-align="center">$variant.readInfo.alleleFraction%</fo:block>
+											<fo:block text-align="center">$variant.variant.readInfo.alleleFraction%</fo:block>
 										</fo:table-cell>
 										<fo:table-cell>
-											<fo:block text-align="center">$variant.readInfo.readDepth</fo:block>
+											<fo:block text-align="center">$variant.variant.readInfo.readDepth</fo:block>
 										</fo:table-cell>
 										<fo:table-cell>
 											<fo:block>Tier
-												#if(($variant.expertTier && $variant.expertTier == "T1") ||
-												((!$variant.expertTier || $variant.expertTier == "") && $variant.swTier == "T1")) I
-												#elseif(($variant.expertTier && $variant.expertTier == "T2") ||
-												((!$variant.expertTier || $variant.expertTier == "") && $variant.swTier == "T2")) II
-												#elseif(($variant.expertTier && $variant.expertTier == "T3") ||
-												((!$variant.expertTier || $variant.expertTier == "") && $variant.swTier == "T3")) III
+												#if(($variant.variant.expertTier && $variant.variant.expertTier == "T1") ||
+												((!$variant.variant.expertTier || $variant.variant.expertTier == "") && $variant.variant.swTier == "T1")) I
+												#elseif(($variant.variant.expertTier && $variant.variant.expertTier == "T2") ||
+												((!$variant.variant.expertTier || $variant.variant.expertTier == "") && $variant.variant.swTier == "T2")) II
+												#elseif(($variant.variant.expertTier && $variant.variant.expertTier == "T3") ||
+												((!$variant.variant.expertTier || $variant.variant.expertTier == "") && $variant.variant.swTier == "T3")) III
 												#end
 											</fo:block>
 										</fo:table-cell>
@@ -437,28 +437,28 @@
 								</fo:table-cell>
 							</fo:table-row>
 							#foreach($variant in $contents.variantList)
-							#if(($variant.expertTier && $variant.expertTier == "T1") ||
-							((!$variant.expertTier || $variant.expertTier == "") && $variant.swTier == "T1") ||
-							($variant.expertTier && $variant.expertTier == "T2") ||
-							((!$variant.expertTier || $variant.expertTier == "") && $variant.swTier == "T2"))
+							#if(($variant.variant.expertTier && $variant.variant.expertTier == "T1") ||
+							((!$variant.variant.expertTier || $variant.variant.expertTier == "") && $variant.variant.swTier == "T1") ||
+							($variant.variant.expertTier && $variant.variant.expertTier == "T2") ||
+							((!$variant.variant.expertTier || $variant.variant.expertTier == "") && $variant.variant.swTier == "T2"))
 								<fo:table-row text-align="center">
 									<fo:table-cell border-style="solid" border="solid 0.2mm black" display-align="center" text-align="center">
-										<fo:block text-align="left" font-family="Noto Sans CJK KR Regular">$variant.sequenceInfo.gene
-											<fo:leader font-size="5pt"/>$variant.variantExpression.variantType
+										<fo:block text-align="left" font-family="Noto Sans CJK KR Regular">$variant.variant.sequenceInfo.gene
+											<fo:leader font-size="5pt"/>$variant.variant.variantExpression.variantType
 										</fo:block>
-										<fo:block text-align="left">$variant.variantExpression.ntChange</fo:block>
+										<fo:block text-align="left">$variant.variant.variantExpression.ntChange</fo:block>
 									</fo:table-cell>
 									<fo:table-cell border-style="solid" border="solid 0.2mm black">
 											<fo:block font-family="Noto Sans CJK KR Regular">
-												#if((!$variant.expertTier || $variant.expertTier == ""))
-													$variant.interpretation.interpretationEvidenceA
+												#if((!$variant.variant.expertTier || $variant.variant.expertTier == ""))
+													$variant.interpretationEvidence.evidenceLevelA
 												#end
 											</fo:block>
 									</fo:table-cell>
 									<fo:table-cell border-style="solid" border="solid 0.2mm black">
 										<fo:block font-family="Noto Sans CJK KR Regular">
-											#if((!$variant.expertTier || $variant.expertTier == ""))
-												$variant.interpretation.interpretationEvidenceB
+											#if((!$variant.variant.expertTier || $variant.variant.expertTier == ""))
+												$variant.interpretationEvidence.evidenceLevelB
 											#else
 												$variant.comment
 											#end
@@ -466,15 +466,15 @@
 									</fo:table-cell>
 									<fo:table-cell border-style="solid" border="solid 0.2mm black">
 										<fo:block font-family="Noto Sans CJK KR Regular">
-											#if((!$variant.expertTier || $variant.expertTier == ""))
-												$variant.interpretation.interpretationEvidenceC
+											#if((!$variant.variant.expertTier || $variant.variant.expertTier == ""))
+												$variant.interpretationEvidence.evidenceLevelC
 											#end
 										</fo:block>
 									</fo:table-cell>
 									<fo:table-cell border-style="solid" border="solid 0.2mm black">
 										<fo:block font-family="Noto Sans CJK KR Regular">
-											#if((!$variant.expertTier || $variant.expertTier == ""))
-												$variant.interpretation.interpretationEvidenceD
+											#if((!$variant.variant.expertTier || $variant.variant.expertTier == ""))
+												$variant.interpretationEvidence.evidenceLevelD
 											#else
 												$variant.comment
 											#end
@@ -505,13 +505,13 @@
 							#foreach($negative in $contents.negativeList)
 								<fo:table-row border="0">
 									<fo:table-cell border-style="solid" border="0" border-right="solid 0.1mm black" border-bottom="solid 0.1mm black">
-										<fo:block text-align="left" font-weight="bold">$negative.sequenceInfo.gene</fo:block>
-										<fo:block text-align="left">$negative.variantExpression.ntChange</fo:block>
+										<fo:block text-align="left" font-weight="bold">$negative.variant.sequenceInfo.gene</fo:block>
+										<fo:block text-align="left">$negative.variant.variantExpression.ntChange</fo:block>
 									</fo:table-cell>
 									<fo:table-cell border-style="solid" border="0" border-bottom="solid 0.1mm black">
 										<fo:block>
-											#if($negative.interpretation.interpretationNegativeTesult && $negative.interpretation.interpretationNegativeTesult != "")
-												$negative.interpretation.interpretationNegativeTesult
+											#if($negative.interpretationEvidence.evidencePersistentNegative && $negative.interpretationEvidence.evidencePersistentNegative != "")
+												$negative.interpretationEvidence.evidencePersistentNegative
 											#end
 										</fo:block>
 									</fo:table-cell>
@@ -537,30 +537,30 @@
 						<fo:table-body>
 							<fo:table-row font-weight="bold" font-family="Noto Sans CJK KR Bold" border-bottom="solid 0.2mm black">
 								<fo:table-cell border-width="0.5pt" background-color="black" border-right="solid 0.2mm black">
-									<fo:block text-align="center" color="white" padding-bottom="2mm" padding-top="2mm">$variant.sequenceInfo.gene</fo:block>
+									<fo:block text-align="center" color="white" padding-bottom="2mm" padding-top="2mm">$variant.variant.sequenceInfo.gene</fo:block>
 								</fo:table-cell>
 								<fo:table-cell number-columns-spanned="2" border-width="0.5pt" background-color="black" border-right="solid 1mm black">
-									<fo:block text-align="center" color="white">$variant.variantExpression.transcript:<![CDATA[$variant.variantExpression.ntChange]]>(<![CDATA[$variant.variantExpression.aaChange]]>)</fo:block>
+									<fo:block text-align="center" color="white">$variant.variant.variantExpression.transcript:<![CDATA[$variant.variant.variantExpression.ntChange]]>(<![CDATA[$variant.variant.variantExpression.aaChange]]>)</fo:block>
 								</fo:table-cell>
 								<fo:table-cell background-color="black">
-									<fo:block text-align="center" color="white">Tier #if(($variant.expertTier && $variant.expertTier == "T1") ||
-										((!$variant.expertTier || $variant.expertTier == "") && $variant.swTier == "T1")) I
-										#elseif(($variant.expertTier && $variant.expertTier == "T2") ||
-										((!$variant.expertTier || $variant.expertTier == "") && $variant.swTier == "T2")) II
-										#elseif(($variant.expertTier && $variant.expertTier == "T3") ||
-										((!$variant.expertTier || $variant.expertTier == "") && $variant.swTier == "T3")) III
+									<fo:block text-align="center" color="white">Tier #if(($variant.variant.expertTier && $variant.variant.expertTier == "T1") ||
+										((!$variant.variant.expertTier || $variant.variant.expertTier == "") && $variant.variant.swTier == "T1")) I
+										#elseif(($variant.variant.expertTier && $variant.variant.expertTier == "T2") ||
+										((!$variant.variant.expertTier || $variant.variant.expertTier == "") && $variant.variant.swTier == "T2")) II
+										#elseif(($variant.variant.expertTier && $variant.variant.expertTier == "T3") ||
+										((!$variant.variant.expertTier || $variant.variant.expertTier == "") && $variant.variant.swTier == "T3")) III
 										#end
 									</fo:block>
 								</fo:table-cell>
 							</fo:table-row>
-							#if($variant.swTier == "T1" || $variant.swTier == "T2")
+							#if($variant.variant.swTier == "T1" || $variant.variant.swTier == "T2")
 							<fo:table-row border-bottom="solid 0.2mm balck" display-align="center">
 								<fo:table-cell number-columns-spanned="4" border-bottom="solid 0.2mm black">
 									<fo:block font-family="Noto Sans CJK KR Regular" text-align="left" padding-bottom="2mm" padding-top="2mm">
-										#if ($variant.interpretation.interpretationEvidenceA && !($variant.interpretation.interpretationEvidenceA == "")) <![CDATA[[LEVEL A]]]> $variant.interpretation.interpretationEvidenceA
-										#elseif ($variant.interpretation.interpretationEvidenceB && !($variant.interpretation.interpretationEvidenceB == "")) <![CDATA[[LEVEL B]]]> $variant.interpretation.interpretationEvidenceB
-										#elseif ($variant.interpretation.interpretationEvidenceC && !($variant.interpretation.interpretationEvidenceC == "")) <![CDATA[[LEVEL C]]]> $variant.interpretation.interpretationEvidenceC
-										#elseif ($variant.interpretation.interpretationEvidenceD && !($variant.interpretation.interpretationEvidenceD == "")) <![CDATA[[LEVEL D]]]> $variant.interpretation.interpretationEvidenceD
+										#if ($variant.interpretationEvidence.evidenceLevelA && !($variant.interpretationEvidence.evidenceLevelA == "")) <![CDATA[[LEVEL A]]]> $variant.interpretationEvidence.evidenceLevelA
+										#elseif ($variant.interpretationEvidence.evidenceLevelB && !($variant.interpretationEvidence.evidenceLevelB == "")) <![CDATA[[LEVEL B]]]> $variant.interpretationEvidence.evidenceLevelB
+										#elseif ($variant.interpretationEvidence.evidenceLevelC && !($variant.interpretationEvidence.evidenceLevelC == "")) <![CDATA[[LEVEL C]]]> $variant.interpretationEvidence.evidenceLevelC
+										#elseif ($variant.interpretationEvidence.evidenceLevelD && !($variant.interpretationEvidence.evidenceLevelD == "")) <![CDATA[[LEVEL D]]]> $variant.interpretationEvidence.evidenceLevelD
 										#end
 									</fo:block>
 								</fo:table-cell>
@@ -572,7 +572,7 @@
 									</fo:block>
 								</fo:table-cell>
 								<fo:table-cell border-width="0.5pt" border-right="solid 0.2mm black">
-									<fo:block padding-bottom="2mm" padding-top="2mm" text-align="left"><![CDATA[$variant.variantExpression.variantType ($variant.variantExpression.codingConsequence variant)]]>
+									<fo:block padding-bottom="2mm" padding-top="2mm" text-align="left"><![CDATA[$variant.variant.variantExpression.variantType ($variant.variant.variantExpression.codingConsequence variant)]]>
 									</fo:block>
 								</fo:table-cell>
 								<fo:table-cell border-width="0.5pt" border-right="solid 0.2mm black">
@@ -580,7 +580,7 @@
 									</fo:block>
 								</fo:table-cell>
 								<fo:table-cell border-width="0.5pt">
-									<fo:block padding-bottom="2mm" padding-top="2mm" text-align="left">$variant.populationFrequency.dbsnpRsId
+									<fo:block padding-bottom="2mm" padding-top="2mm" text-align="left">$variant.variant.populationFrequency.dbsnpRsId
 									</fo:block>
 								</fo:table-cell>
 							</fo:table-row>
@@ -598,7 +598,7 @@
 									</fo:block>
 								</fo:table-cell>
 								<fo:table-cell border-width="0.5pt">
-									<fo:block font-family="Noto Sans CJK KR Regular" padding-bottom="2mm" padding-top="2mm" text-align="left">#if($variant.variantExpression.zygosity && !($variant.variantExpression.zygosity == "")) $variant.variantExpression.zygosity
+									<fo:block font-family="Noto Sans CJK KR Regular" padding-bottom="2mm" padding-top="2mm" text-align="left">#if($variant.variant.variantExpression.zygosity && !($variant.variant.variantExpression.zygosity == "")) $variant.variant.variantExpression.zygosity
 										#else Not-determied
 										#end
 									</fo:block>
@@ -610,15 +610,15 @@
 									</fo:block>
 								</fo:table-cell>
 								<fo:table-cell border-width="0.5pt" text-align="left" padding-bottom="2mm" padding-top="2mm" number-columns-spanned="3">
-									<fo:block>ESP6500: #if($variant.populationFrequency.esp6500) $variant.populationFrequency.esp6500
+									<fo:block>ESP6500: #if($variant.variant.populationFrequency.esp6500) $variant.variant.populationFrequency.esp6500
 										#else no frequency data
 										#end
 									</fo:block>
-									<fo:block>1000G: #if($variant.populationFrequency.g1000) $variant.populationFrequency.g1000
+									<fo:block>1000G: #if($variant.variant.populationFrequency.g1000) $variant.variant.populationFrequency.g1000
 										#else no frequency data
 										#end
 									</fo:block>
-									<fo:block>ExAC: #if($variant.populationFrequency.exac) $variant.populationFrequency.exac
+									<fo:block>ExAC: #if($variant.variant.populationFrequency.exac) $variant.variant.populationFrequency.exac
 										#else no frequency data
 										#end
 									</fo:block>
@@ -631,8 +631,8 @@
 								</fo:table-cell>
 								<fo:table-cell border-width="0.5pt" border-bottom="solid 0.2mm black" number-columns-spanned="3">
 									<fo:block padding-bottom="2mm" padding-top="2mm">
-										#if($variant.clinicalDB.clinVar.clinVarAcc)
-										$variant.clinicalDB.clinVar.clinVarAcc ($variant.clinicalDB.clinVar.clinVarClass)
+										#if($variant.variant.clinicalDB.clinVar.clinVarAcc)
+										$variant.variant.clinicalDB.clinVar.clinVarAcc ($variant.variant.clinicalDB.clinVar.clinVarClass)
 										#else
 										Not found
 										#end

@@ -3,6 +3,7 @@ package ngeneanalysys.controller;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -13,6 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import ngeneanalysys.code.enums.ExperimentTypeCode;
 import ngeneanalysys.code.enums.LibraryTypeCode;
@@ -29,6 +31,7 @@ import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.fop.area.Page;
 import org.controlsfx.control.CheckComboBox;
 import org.slf4j.Logger;
 
@@ -117,6 +120,9 @@ public class SystemManagerPanelController extends SubPaneController {
     @FXML
     private GridPane panelEditGridPane;
 
+    @FXML
+    private Pagination panelPagination;
+
     private CheckComboBox<ComboBoxItem> groupCheckComboBox = null;
 
     private CheckComboBox<ComboBoxItem> diseaseCheckComboBox = null;
@@ -191,9 +197,9 @@ public class SystemManagerPanelController extends SubPaneController {
         reportTemplateComboBoxSetting();
 
         try {
-            response = apiService.get("/admin/panels", null, null, false);
-            final PagedPanel panels = response.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
-            panelListTable.getItems().addAll(panels.getResult());
+            //response = apiService.get("/admin/panels", null, null, false);
+            //final PagedPanel panels = response.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
+            //panelListTable.getItems().addAll(panels.getResult());
 
             response = apiService.get("/admin/memberGroups", null, null, false);
 
@@ -248,8 +254,67 @@ public class SystemManagerPanelController extends SubPaneController {
             wae.printStackTrace();
         }
 
+        panelPagination.setPageFactory(pageIndex -> {
+            setPanelList(pageIndex + 1);
+            return new VBox();
+        });
 
         setDisabledItem(true);
+    }
+
+    public void setPanelList(int page) {
+
+        int totalCount = 0;
+        int limit = 30;
+        int offset = (page - 1)  * limit;
+
+        HttpClientResponse response = null;
+
+        try {
+            Map<String, Object> param = new HashMap<>();
+            param.put("limit", limit);
+            param.put("offset", offset);
+
+            response = apiService.get("/admin/panels", param, null, false);
+
+            if(response != null) {
+                PagedPanel pagedPanel =
+                        response.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
+                List<Panel> list = null;
+
+                if(pagedPanel != null) {
+                    totalCount = pagedPanel.getCount();
+                    list = pagedPanel.getResult();
+                }
+
+                int pageCount = 0;
+
+                if(totalCount > 0) {
+                    pageCount = totalCount / limit;
+                    panelPagination.setCurrentPageIndex(page - 1);
+                    if(totalCount % limit > 0) {
+                        pageCount++;
+                    }
+                }
+
+                panelListTable.setItems((FXCollections.observableList(list)));
+
+                logger.info(String.format("total count : %s, page count : %s", totalCount, pageCount));
+
+                if (pageCount > 0) {
+                    panelPagination.setVisible(true);
+                    panelPagination.setPageCount(pageCount);
+                } else {
+                    panelPagination.setVisible(false);
+                }
+            }
+
+        } catch (WebAPIException wae) {
+            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+                    getMainApp().getPrimaryStage(), true);
+        } catch (Exception e) {
+            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+        }
     }
 
     public void reportTemplateComboBoxSetting() {

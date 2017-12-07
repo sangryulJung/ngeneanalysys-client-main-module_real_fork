@@ -71,6 +71,9 @@ public class SampleUploadController extends BaseStageController{
     @FXML
     private Pane tableRegion;
 
+    @FXML
+    private VBox contentWrapper;
+
     private SampleUploadScreenFirstController sampleUploadScreenFirstController;
 
     private SampleUploadScreenSecondController sampleUploadScreenSecondController;
@@ -183,6 +186,11 @@ public class SampleUploadController extends BaseStageController{
         currentStage.setMaxHeight(510);
         currentStage.setMaxWidth(900);*/
         pageSetting(1);
+
+        contentWrapper.getChildren().add(maskerPane);
+        maskerPane.setPrefHeight(contentWrapper.getPrefHeight());
+        maskerPane.setPrefWidth(contentWrapper.getPrefWidth());
+        maskerPane.setVisible(false);
 
         // Scene Init
         Scene scene = new Scene(root);

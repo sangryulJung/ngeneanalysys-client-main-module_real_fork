@@ -803,7 +803,6 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                 linkArea.getChildren().add(linkBox);
             }
 
-
             if(linkBox != null && analysisType.equals(ExperimentTypeCode.SOMATIC.getDescription())) {
                 for(Node node : linkBox.getChildren()) {
                     if (node != null) {
@@ -1331,7 +1330,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
     }
 
     public String cutVariantTypeString(String variantType) {
-        if(variantType.contains(":")) return variantType.substring(0, variantType.indexOf(':') - 1);
+        if(variantType.contains(":")) return variantType.substring(0, variantType.indexOf(':'));
         return variantType;
     }
 }

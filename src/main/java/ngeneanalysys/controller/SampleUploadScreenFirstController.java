@@ -1,6 +1,7 @@
 package ngeneanalysys.controller;
 
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -8,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import ngeneanalysys.code.enums.LibraryTypeCode;
 import ngeneanalysys.controller.extend.BaseStageController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
@@ -165,6 +167,18 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
                         List<AnalysisFile> activeFile = new ArrayList<>();
 
+                        if(allFile.size() == 1) {
+                            AnalysisFile analysisFile = allFile.get(0);
+                            Map<String, Object> file = new HashMap<>();
+                            AnalysisFile failedAnalysisFile = new AnalysisFile();
+
+                            if(analysisFile.getName().contains("_R1_0"))
+                                failedAnalysisFile.setName(analysisFile.getName().replaceAll("_R1_0", "_R2_0"));
+                            if(analysisFile.getName().contains("_R2_0"))
+                                failedAnalysisFile.setName(analysisFile.getName().replaceAll("_R2_0", "_R1_0"));
+                            failedAnalysisFile.setStatus("NOT_FOUND");
+                            failedAnalysisFileList.add(failedAnalysisFile);
+                        }
                         for(AnalysisFile analysisFile : allFile) {
                             if(analysisFile.getStatus().equals("ACTIVE")) activeFile.add(analysisFile);
                         }
@@ -193,6 +207,8 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         TextField sampleName = new TextField();
         sampleName.setStyle("-fx-text-inner-color: black; -fx-border-width: 0;");
         sampleName.setMaxWidth(Double.MAX_VALUE);
+        sampleName.setEditable(false);
+        sampleName.setCursor(Cursor.DEFAULT);
         sampleNameTextFieldList.add(sampleName);
         sampleName.textProperty().addListener((observable, oldValue, newValue) -> {
             Set<String> fileName = fileMap.keySet();
@@ -214,6 +230,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         disease.setConverter(new ComboBoxConverter());
         disease.setMaxWidth(Double.MAX_VALUE);
         disease.setStyle("-fx-border-width: 0;");
+        disease.setCursor(Cursor.HAND);
         diseaseComboBoxList.add(disease);
         settingDiseaseComboBox(panels.get(0).getId(), row);
         //diseasesSetting(disease);
@@ -222,6 +239,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         panel.setMaxWidth(Double.MAX_VALUE);
         panelComboBoxList.add(panel);
         panelSetting(panel);
+        panel.setCursor(Cursor.HAND);
         panel.setStyle("-fx-text-inner-color: black; -fx-border-width: 0;");
         panel.setOnAction(event -> {
             ComboBox<ComboBoxItem> obj = (ComboBox<ComboBoxItem>) event.getSource();
@@ -318,7 +336,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 response = apiService.get("panels/" + panelId, null, null, false);
                 Panel panelDetail = response.getObjectBeforeConvertResponseToJSON(Panel.class);
 
-                if("AMPLICON_BASED".equals(panelDetail.getLibraryType())) {
+                if(LibraryTypeCode.AMPLICON_BASED.getDescription().equals(panelDetail.getLibraryType())) {
 
                 }
 
@@ -536,7 +554,17 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                                 selectedFile.getName().equals(item.getName())).findFirst();
                         if (fileOptional.isPresent()) {
                             failedFileList.add(selectedFile);
-                            selectedAnalysisFileList.add(fileOptional.get());
+
+                            //meta data 정보가 하나만 입력이 되어있는 경우
+                            if("NOT_FOUND".equals(fileOptional.get().getStatus())) {
+                                failedAnalysisFileList.remove(fileOptional.get());
+                                addUploadFile(selectedFile,fastqFilePairName);
+                            } else {
+                                //메타 데이터 정보가 온전히 존재하고 파일 업로드에 실패한 경우
+                                selectedAnalysisFileList.add(fileOptional.get());
+                            }
+
+                            //meta data 정보가 없는 경우
                         } else if(sample.getSampleStatus() != null && sample.getSampleStatus().getStep().equals("UPLOAD")
                                 && sample.getSampleStatus().getStatus().equals("QUEUED")) {
                             failedFileList.add(selectedFile);
@@ -597,6 +625,18 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             sample.setQcData(new QcData());
             sampleArrayList.add(sample);
         }
+    }
+
+    private void addUploadFile(File selectedFile, String fastqFilePairName) {
+        Map<String, Object> file = new HashMap<>();
+        file.put("sampleName", fastqFilePairName);
+        file.put("name", selectedFile.getName());
+        file.put("fileSize", selectedFile.length());
+        file.put("isInput", true);
+        file.put("fileType", "FASTQ.GZ");
+        this.fileMap.put(selectedFile.getName(), file);
+
+        uploadFileList.add(selectedFile);
     }
 
     @FXML
