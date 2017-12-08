@@ -143,7 +143,6 @@ public class AnalysisSampleUploadProgressDetailController extends BaseStageContr
     @FXML
     public void windowDialogClose() {
         Stage stage = (Stage) this.buttonClose.getScene().getWindow();
-        this.taskController.setDetailDialogCloseInfo();
         stage.close();
     }
 

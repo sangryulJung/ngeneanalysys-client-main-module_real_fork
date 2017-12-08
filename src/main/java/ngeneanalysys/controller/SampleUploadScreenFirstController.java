@@ -299,16 +299,12 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     }
 
     public void saveSampleData() {
-        for (int i = 0; i < standardDataGridPane.getRowConstraints().size(); i++) {
+        int rowCount = standardDataGridPane.getChildren().size() / 5;
+
+        for (int i = 0; i < rowCount; i++) {
             Sample sample = null;
-            if(sampleArrayList.size() > i) {
-                sample = sampleArrayList.get(i);
-                if(sample.getId() != null) continue;
-            } else {
-                sample = new Sample();
-                sample.setQcData(new QcData());
-                sample.setSampleSheet(new SampleSheet());
-            }
+            sample = sampleArrayList.get(i);
+            if(sample.getId() != null) continue;
 
             TextField sampleName = sampleNameTextFieldList.get(i);
             if(sampleName.getText().isEmpty()) continue;
@@ -437,6 +433,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     }
 
     public void sampleUpload(Sample sample) throws  Exception {
+
         Map<String, Object> params = new HashMap<>();
         HttpClientResponse response = null;
 

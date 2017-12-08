@@ -45,11 +45,6 @@
             <Insets left="5.0" />
          </HBox.margin>
       </Button>
-      <Button fx:id="buttonDetail" alignment="TOP_CENTER" layoutX="297.0" layoutY="13.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#openDetailDialog" prefHeight="20.0" prefWidth="70.0" text="DETAIL">
-         <HBox.margin>
-            <Insets bottom="1.0" left="5.0" />
-         </HBox.margin>
-      </Button>
       <Button fx:id="buttonCancel" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#cancelUpload" prefHeight="20.0" prefWidth="70.0" text="CANCEL">
          <HBox.margin>
             <Insets bottom="1.0" left="5.0" />

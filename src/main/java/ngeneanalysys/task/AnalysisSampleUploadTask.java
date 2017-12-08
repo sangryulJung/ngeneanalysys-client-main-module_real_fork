@@ -69,21 +69,6 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
         super.updateProgress(complete, total);
     }
 
-    /**
-     * 상세 진행정보 Dialog 업데이트..
-     */
-    public void updateProgressInfoForDetail() {
-        try {
-            Thread.sleep(50);
-            Platform.runLater(() -> this.analysisSampleUploadProgressTaskController.updateProgressInfoTargetDetailDialog(
-                        this.currentUploadSampleFileId, this.currentUploadSampleFileProgress)
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
     @Override
     protected Void call() throws Exception {
         logger.info("start upload task...");
@@ -109,7 +94,7 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
                        return;
                     }
 
-                    updateCurrentUploadGroupInfo();
+                    //updateCurrentUploadGroupInfo();
 
                     if (fileData.getName().equals(file.getName())) {
                         try {
@@ -180,9 +165,6 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
 
     @Override
     protected void succeeded() {
-        Platform.runLater(() -> {
-            this.analysisSampleUploadProgressTaskController.clearWhenUploadTaskSucceeded();
-        });
 
         // 업로드 작업 중단
         if(this.analysisSampleUploadProgressTaskController.isCancel) {
