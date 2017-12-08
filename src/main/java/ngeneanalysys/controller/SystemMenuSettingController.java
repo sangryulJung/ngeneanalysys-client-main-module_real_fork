@@ -132,6 +132,10 @@ public class SystemMenuSettingController extends SubPaneController {
     public void save() {
         logger.info("settings save start..");
 
+        if(mainController.getProgressTaskContentArea().getChildren().size() != 0) {
+            return;
+        }
+
         boolean isContinue = true;
         if(!originServerURL.equals(serverURLTextField.getText())) {
             int status = serverURLManageService.isValidURL(serverURLTextField.getText());

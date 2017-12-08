@@ -311,9 +311,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
 
             for(Sample sample : samples) {
                 SampleStatus sampleStatus = sample.getSampleStatus();
-                if(!sampleStatus.getStep().equalsIgnoreCase("UPLOAD") &&
-                        (sampleStatus.getStatus().equalsIgnoreCase("FAIL") ||
-                                sampleStatus.getStatus().equalsIgnoreCase("COMPLETE"))) {
+                if(!sampleStatus.getStep().equalsIgnoreCase("UPLOAD") && sampleStatus.getStatus().equalsIgnoreCase("FAIL")) {
                     response = apiService.get("admin/restartSampleAnalysis/" + sample.getId(), null, null, false);
                     logger.info("status code : " + response.getStatus());
                 }

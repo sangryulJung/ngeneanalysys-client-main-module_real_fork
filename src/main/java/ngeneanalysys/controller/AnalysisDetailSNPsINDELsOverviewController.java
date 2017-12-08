@@ -680,7 +680,6 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
         // 값 화면 출력
         genePositionStartLabel.setText(genePositionStart);
         left22BpLabel.setText(displayLeft22Bp.toUpperCase());
-        logger.info(displayLeft22Bp.toUpperCase());
         transcriptRefLabel.setText(notDeletionRef);
         deletionRefLabel.setText(deletionRef);
         right22BpLabel.setText(displayRight22Bp.toUpperCase());
@@ -1203,7 +1202,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
         scrollPane.setContent(box);
 
         String[] results = acmg.containsKey("rules") ? ((String)acmg.get("rules")).split(",") : null;
-        String rulesText = acmg.containsKey("rules") ? "(" + (String)acmg.get("rules") + ")" : null;
+        String rulesText = acmg.containsKey("rules") ? "(" + acmg.get("rules") + ")" : null;
 
         Label reason = new Label();
         String pathogenicity = acmg.containsKey("pathogenicity") ? (String)acmg.get("pathogenicity") : null;

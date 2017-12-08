@@ -14,6 +14,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.AnalysisDetailTabMenuCode;
+import ngeneanalysys.code.enums.ExperimentTypeCode;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.AnalysisResultSummary;
@@ -134,7 +135,6 @@ public class AnalysisDetailLayoutController extends SubPaneController {
             qcLabel.getStyleClass().add(String.format("FASTQC_%s", fastQC.toUpperCase()));
             qcImageView.setImage(resourceUtil.getImage("/layout/images/icon_qc_" + fastQC.toLowerCase() + ".png"));
 
-
         } catch (WebAPIException e) {
             e.printStackTrace();
         }
@@ -144,8 +144,7 @@ public class AnalysisDetailLayoutController extends SubPaneController {
         for (AnalysisDetailTabMenuCode code : AnalysisDetailTabMenuCode.values()) {
             AnalysisDetailTabItem item = code.getItem();
 
-            if(panel.getAnalysisType() != null && "GERMLINE".equals(panel.getAnalysisType())
-                    && "FUSIONGENE".equals(item.getTabName())){
+            if(panel.getAnalysisType() != null && ExperimentTypeCode.GERMLINE.getDescription().equals(panel.getAnalysisType())){
                 continue;
             }
             Tab tab = new Tab();

@@ -42,12 +42,6 @@ public class FXMLConstants {
 	/** 분석자(실험자) Past Results (최근 완료 분석건) 화면 */
 	public static final String PAST_RESULTS = "/layout/fxml/PastResults.fxml";
 
-	/** 환자 DB 화면 */
-	public static final String PATIENT_DB = "/layout/fxml/PatientDB.fxml";
-
-	/** 환자 DB 검색 Dialog 화면 */
-	public static final String PATIENT_SEARCH = "/layout/fxml/PatientSearch.fxml";
-
 	/** FAST 파일 업로드 창 */
 	public static final String ANALYSIS_SAMPLE_UPLOAD_MAIN = "/layout/fxml/SampleUpload.fxml";
 
@@ -69,20 +63,8 @@ public class FXMLConstants {
 	/** 분석 상세 레이아웃 화면 */
 	public static final String ANALYSIS_DETAIL_LAYOUT = "/layout/fxml/AnalysisDetailLayout.fxml";
 	
-	/** 분석 상세 > Read Statistics 화면 */
-	public static final String ANALYSIS_DETAIL_READ_STATISTICS = "/layout/fxml/AnalysisDetail-ReadStatistics.fxml";
-	
-	/** 분석 상세 > Assay Target 화면 */
-	public static final String ANALYSIS_DETAIL_ASSAY_TARGET = "/layout/fxml/AnalysisDetail-AssayTarget.fxml";
-	
-	/** 분석 상세 > Variant Summary 화면 */
-	public static final String ANALYSIS_DETAIL_VARIANT_SUMMARY = "/layout/fxml/AnalysisDetail-VariantSummary.fxml";
-	
 	/** 분석 상세 > SNPs-INDELs 레이아웃 화면 */
 	public static final String ANALYSIS_DETAIL_SNPS_INDELS_LAYOUT = "/layout/fxml/AnalysisDetail-SNPs-INDELs.fxml";
-	
-	/** 분석 상세 > SNPs-INDELs > Flagging Dialog 화면 */
-	public static final String ANALYSIS_DETAIL_SNPS_INDELS_FLAGGING_DIALOG = "/layout/fxml/AnalysisDetail-SNPs-INDELs-Flagging.fxml";
 	
 	/** 분석 상세 > SNPs-INDELs > FUSIONGENE TAB 화면 */
 	public static final String ANALYSIS_DETAIL_SNPS_INDELS_OVERVIEW = "/layout/fxml/AnalysisDetail-SNPs-INDELs-Overview.fxml";
@@ -134,9 +116,6 @@ public class FXMLConstants {
 
 	/** 시스템 매니저 사용자 정보 화면 */
 	public static final String SYSTEM_MANAGER_USER_ACCOUNT = "/layout/fxml/systemManager/SystemManagerUserAccount.fxml";
-
-	/** 시스템 매니저 서버 정보 화면 */
-	public static final String SYSTEM_MANAGER_SERVER_STATUS = "/layout/fxml/systemManager/SystemManagerServerStatus.fxml";
 
 	/** 시스템 매니저 분석 상태 화면 */
 	public static final String SYSTEM_MANAGER_ANALYSIS_STATUS = "/layout/fxml/systemManager/SystemManagerAnalysisStatus.fxml";

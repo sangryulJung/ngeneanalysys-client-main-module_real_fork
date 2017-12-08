@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import ngeneanalysys.code.AnalysisJobStatusCode;
 import ngeneanalysys.code.enums.LibraryTypeCode;
 import ngeneanalysys.controller.extend.BaseStageController;
 import ngeneanalysys.exceptions.WebAPIException;
@@ -153,8 +154,8 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
             //sample Status 가 존재한다면 그에 따른 추가기능의 설정
             if(sample.getSampleStatus() != null) {
-                if("UPLOAD".equalsIgnoreCase(sample.getSampleStatus().getStep())
-                        && !"ACTIVE".equalsIgnoreCase(sample.getSampleStatus().getStatus())) {
+                if(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STEP_UPLOAD.equalsIgnoreCase(sample.getSampleStatus().getStep())
+                        && !AnalysisJobStatusCode.SAMPLE_FILE_META_ACTIVE.equalsIgnoreCase(sample.getSampleStatus().getStatus())) {
                     try {
                         Map<String, Object> params = new HashMap<>();
                         params.put("sampleId", sample.getId());
@@ -180,7 +181,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                             failedAnalysisFileList.add(failedAnalysisFile);
                         }
                         for(AnalysisFile analysisFile : allFile) {
-                            if(analysisFile.getStatus().equals("ACTIVE")) activeFile.add(analysisFile);
+                            if(analysisFile.getStatus().equals(AnalysisJobStatusCode.SAMPLE_FILE_META_ACTIVE)) activeFile.add(analysisFile);
                         }
                         if(!activeFile.isEmpty()) allFile.removeAll(activeFile);
                         failedAnalysisFileList.addAll(allFile);
@@ -426,7 +427,8 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                     e.printStackTrace();
                 }
             } else if ((sample.getSampleStatus() != null &&
-                    sample.getSampleStatus().getStep().equals("UPLOAD") && sample.getSampleStatus().getStatus().equals("QUEUED"))) {
+                    sample.getSampleStatus().getStep().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STEP_UPLOAD)
+                    && sample.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_QUEUED))) {
                 postAnalysisFilesData(sample);
             }
         }
@@ -542,7 +544,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                         item.getName().contains(fastqFilePairName)).findFirst();
                 Sample sample = null;
                 if(optionalFile.isPresent()) sample = getSameSample(optionalFile.get().getSampleId());
-
+                //fastq 파일이 짝을 이루고 올리는데 실패한 파일인 경우
                 if(pairFileList.size() == 2 && sample != null) {
                     List<File> failedFileList = new ArrayList<>();
                     List<AnalysisFile> selectedAnalysisFileList = new ArrayList<>();
@@ -562,8 +564,8 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                             }
 
                             //meta data 정보가 없는 경우
-                        } else if(sample.getSampleStatus() != null && sample.getSampleStatus().getStep().equals("UPLOAD")
-                                && sample.getSampleStatus().getStatus().equals("QUEUED")) {
+                        } else if(sample.getSampleStatus() != null && sample.getSampleStatus().getStep().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STEP_UPLOAD)
+                                && sample.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_QUEUED)) {
                             failedFileList.add(selectedFile);
                         }
                     }
