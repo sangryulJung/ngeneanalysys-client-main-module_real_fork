@@ -134,7 +134,7 @@ public class SystemManagerSystemLogsController extends SubPaneController {
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
-    
+
     private void setSystemLogList() {
 
     }
