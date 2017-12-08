@@ -60,7 +60,6 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
         updateMessage(String.valueOf(getCompleteWorkCount()));
         try {
             Platform.runLater(() -> {
-                if(complete > total) return;
                 this.analysisSampleUploadProgressTaskController.updateTotalCount(String.valueOf(getNumberOfWork()));
             });
         } catch (Exception e) {
@@ -87,14 +86,15 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
             currentUploadGroupRefName = run.getName();
 
             List<AnalysisFile> completeFile = new ArrayList<>();
+
+            updateCurrentUploadGroupInfo();
+
             for (AnalysisFile fileData : fileDataList) {
                 fileList.stream().forEach(file -> {
 
                     if (this.analysisSampleUploadProgressTaskController.isStop) {
                        return;
                     }
-
-                    //updateCurrentUploadGroupInfo();
 
                     if (fileData.getName().equals(file.getName())) {
                         try {
@@ -165,6 +165,10 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
 
     @Override
     protected void succeeded() {
+        // 메인 화면 Progress Task 영역 삭제
+        Platform.runLater(() -> {
+            this.analysisSampleUploadProgressTaskController.clearWhenUploadTaskSucceeded();
+        });
 
         // 업로드 작업 중단
         if(this.analysisSampleUploadProgressTaskController.isCancel) {

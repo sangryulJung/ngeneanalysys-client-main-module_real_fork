@@ -20,17 +20,17 @@
       <VBox prefHeight="200.0" prefWidth="100.0">
          <children>
             <HBox prefHeight="39.0" prefWidth="1278.0" />
-            <TableView prefHeight="518.0" prefWidth="1278.0">
+            <TableView fx:id="GeneExpressionTableView" prefHeight="518.0" prefWidth="1278.0">
                <columns>
-                  <TableColumn prefWidth="75.0" text="gene Id" />
-                  <TableColumn prefWidth="88.0" text="gene name" />
-                  <TableColumn prefWidth="100.0" text="chr" />
-                  <TableColumn prefWidth="108.0" text="strand" />
-                  <TableColumn prefWidth="132.0" text="startPosition" />
-                  <TableColumn prefWidth="136.0" text="endPosition" />
-                  <TableColumn prefWidth="86.0" text="coverage" />
-                  <TableColumn prefWidth="103.0" text="fpkm" />
-                  <TableColumn prefWidth="75.0" text="tpm" />
+                  <TableColumn fx:id="geneIdTableColumn" prefWidth="75.0" text="gene Id" />
+                  <TableColumn fx:id="geneNameTableColumn" prefWidth="88.0" text="gene name" />
+                  <TableColumn fx:id="chrTableColumn" prefWidth="100.0" text="chr" />
+                  <TableColumn fx:id="strandTableColumn" prefWidth="108.0" text="strand" />
+                  <TableColumn fx:id="startPositionTableColumn" prefWidth="132.0" text="startPosition" />
+                  <TableColumn fx:id="endPositionTableColumn" prefWidth="136.0" text="endPosition" />
+                  <TableColumn fx:id="coverageTableColumn" prefWidth="86.0" text="coverage" />
+                  <TableColumn fx:id="fpkmTableColumn" prefWidth="103.0" text="fpkm" />
+                  <TableColumn fx:id="tpmTableColumn" prefWidth="75.0" text="tpm" />
                </columns>
                <stylesheets>
                   <URL value="@../css/common.css" />

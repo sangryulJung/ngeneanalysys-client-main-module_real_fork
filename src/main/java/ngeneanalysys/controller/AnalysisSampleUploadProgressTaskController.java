@@ -214,6 +214,13 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 	}
 
 	/**
+	 * 업로드 작업 관련 화면 출력 정리
+	 */
+	public void clearWhenUploadTaskSucceeded() {
+		this.mainController.clearProgressTaskArea();
+	}
+
+	/**
 	 * @return the thread
 	 */
 	public Thread getThread() {

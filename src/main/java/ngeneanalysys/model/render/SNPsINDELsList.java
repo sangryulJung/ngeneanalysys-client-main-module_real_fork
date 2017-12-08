@@ -1,9 +1,11 @@
 package ngeneanalysys.model.render;
 
 import java.util.Map;
+import java.util.Set;
 
 import ngeneanalysys.util.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.PopOver.ArrowLocation;
 
@@ -41,7 +43,20 @@ public class SNPsINDELsList {
 		} else {
 			box.setAlignment(Pos.BOTTOM_LEFT);
 			Map<String,String> map = JsonUtil.fromJsonToMap(jsonStr.replace("'", "\""));
-			if(map != null && !map.isEmpty() && map.size() > 0) {
+
+			Set<String> mapKey = map.keySet();
+			int currentIndex = 1;
+			for(String key : mapKey) {
+				if(key.toUpperCase().equals("WARNING")) continue;
+				String warningString = map.get(key);
+				String titleString = "* " + WordUtils.capitalize(key.replaceAll("_", " ")) + " : ";
+				HBox hbox = getWarningReasonItemBox(titleString, warningString == null ? "N/A" : warningString );
+				box.getChildren().add(hbox);
+				if(mapKey.size() > currentIndex) box.setMargin(hbox, new Insets(5, 0, 0, 0));
+				currentIndex++;
+			}
+
+			/*if(map != null && !map.isEmpty() && map.size() > 0) {
 				String lowVariantCoverageDepth = map.get("low_variant_coverage_depth");
 				String lowVariantFraction = map.get("low_variant_fraction");				
 				String homopolymerRegion = map.get("homopolymer_region");
@@ -63,7 +78,7 @@ public class SNPsINDELsList {
 				box.setMargin(softClippedRegionBox, new Insets(5, 0, 0, 0));
 				box.setMargin(homopolymerRegionBox, new Insets(5, 0, 0, 0));
 				box.setMargin(primerDeletionRegionBox, new Insets(5, 0, 0, 0));
-			}
+			}*/
 		}
 		
 		button.setOnAction(event -> {
