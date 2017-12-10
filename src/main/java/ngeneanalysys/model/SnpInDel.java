@@ -1,20 +1,8 @@
 package ngeneanalysys.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.type.TypeReference;
-import ngeneanalysys.code.enums.ACMGFilterCode;
-import ngeneanalysys.util.JsonUtil;
 
 /**
  * 분석 결과 변이 목록
@@ -22,7 +10,7 @@ import ngeneanalysys.util.JsonUtil;
  * @author gjyoo
  * @since 2016. 6. 15. 오후 7:37:59
  */
-public class AnalysisResultVariant implements Serializable {
+public class SnpInDel implements Serializable {
 	private static final long serialVersionUID = -5728637480602616382L;
 
 	private Integer id;
@@ -38,7 +26,7 @@ public class AnalysisResultVariant implements Serializable {
 	private Integer variantNum;
 	private String comment;
 
-	private VariantExpression variantExpression;
+	private SnpInDelExpression snpInDelExpression;
 
 	private ClinicalDB clinicalDB;
 
@@ -273,17 +261,17 @@ public class AnalysisResultVariant implements Serializable {
 	}
 
 	/**
-	 * @return variantExpression
+	 * @return snpInDelExpression
 	 */
-	public VariantExpression getVariantExpression() {
-		return variantExpression;
+	public SnpInDelExpression getSnpInDelExpression() {
+		return snpInDelExpression;
 	}
 
 	/**
-	 * @param variantExpression
+	 * @param snpInDelExpression
 	 */
-	public void setVariantExpression(VariantExpression variantExpression) {
-		this.variantExpression = variantExpression;
+	public void setSnpInDelExpression(SnpInDelExpression snpInDelExpression) {
+		this.snpInDelExpression = snpInDelExpression;
 	}
 
     /**

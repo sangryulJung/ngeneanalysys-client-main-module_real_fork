@@ -6,7 +6,7 @@ import org.joda.time.DateTime;
  * @author Jang
  * @since 2017-09-20
  */
-public class VariantInterpretationLogs {
+public class SnpInDelInterpretationLogs {
     private Integer id;
     private Integer variantId;
     private String memberLoginId;

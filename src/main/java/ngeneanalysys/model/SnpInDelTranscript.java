@@ -4,8 +4,8 @@ package ngeneanalysys.model;
  * @author Jang
  * @since 2017-09-19
  */
-public class VariantTranscript {
-    private Integer variantId;
+public class SnpInDelTranscript {
+    private Integer snpInDelId;
     private String transcriptId;
     private String geneSymbol;
     private String codingDna;
@@ -14,17 +14,17 @@ public class VariantTranscript {
     private Boolean isDefault;
 
     /**
-     * @return variantId
+     * @return snpInDelId
      */
-    public Integer getVariantId() {
-        return variantId;
+    public Integer getSnpInDelId() {
+        return snpInDelId;
     }
 
     /**
-     * @param variantId
+     * @param snpInDelId
      */
-    public void setVariantId(Integer variantId) {
-        this.variantId = variantId;
+    public void setSnpInDelId(Integer snpInDelId) {
+        this.snpInDelId = snpInDelId;
     }
 
     /**

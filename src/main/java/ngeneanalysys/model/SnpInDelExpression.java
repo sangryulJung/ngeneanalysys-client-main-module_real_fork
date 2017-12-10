@@ -4,7 +4,7 @@ package ngeneanalysys.model;
  * @author Jang
  * @since 2017-09-08
  */
-public class VariantExpression {
+public class SnpInDelExpression {
     private String variantType;
     private String transcript;
     private String codingConsequence;

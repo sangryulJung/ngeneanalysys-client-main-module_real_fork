@@ -11,7 +11,6 @@ import javafx.stage.StageStyle;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
-import ngeneanalysys.model.AnalysisResultVariant;
 import ngeneanalysys.model.VariantAndInterpretationEvidence;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
@@ -88,8 +87,8 @@ public class ExcludeReportDialogController extends SubPaneController {
                 Map<String, Object> params = new HashMap<>();
                 params.put("comment", comment);
                 params.put("includeInReport", symbol);
-                selectedItem.getVariant().setIncludedInReport(symbol);
-                apiService.put("analysisResults/variants/" + selectedItem.getVariant().getId() + "/updateIncludeInReport", params, null, true);
+                selectedItem.getSnpInDel().setIncludedInReport(symbol);
+                apiService.put("analysisResults/variants/" + selectedItem.getSnpInDel().getId() + "/updateIncludeInReport", params, null, true);
             } catch (WebAPIException wae) {
                 wae.printStackTrace();
             }

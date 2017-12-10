@@ -12,7 +12,6 @@ import javafx.stage.StageStyle;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
-import ngeneanalysys.model.AnalysisResultVariant;
 import ngeneanalysys.model.VariantAndInterpretationEvidence;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.ConvertUtil;
@@ -101,11 +100,11 @@ public class ChangeTierDialogController extends SubPaneController {
                 params.put("tier", tier);
                 params.put("comment", comment);
 
-                apiService.put("analysisResults/variants/" + selectedItem.getVariant().getId() + "/updateExpertTier", params, null, true);
+                apiService.put("analysisResults/variants/" + selectedItem.getSnpInDel().getId() + "/updateExpertTier", params, null, true);
             } catch (WebAPIException wae) {
                 DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
             }
-            selectedItem.getVariant().setExpertTier(tier);
+            selectedItem.getSnpInDel().setExpertTier(tier);
             analysisDetailReportController.resetData(table);
             //analysisDetailReportController.selectClear(getCurrentTier());
             dialogStage.close();
@@ -121,10 +120,10 @@ public class ChangeTierDialogController extends SubPaneController {
 
     public String getCurrentTier() {
         String currentTier = null;
-        if(!StringUtils.isEmpty(selectedItem.getVariant().getExpertTier())) {
-            currentTier = selectedItem.getVariant().getExpertTier();
+        if(!StringUtils.isEmpty(selectedItem.getSnpInDel().getExpertTier())) {
+            currentTier = selectedItem.getSnpInDel().getExpertTier();
         } else {
-            currentTier = selectedItem.getVariant().getSwTier();
+            currentTier = selectedItem.getSnpInDel().getSwTier();
         }
         return currentTier;
     }

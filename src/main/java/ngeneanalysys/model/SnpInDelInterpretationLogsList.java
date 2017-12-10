@@ -6,9 +6,9 @@ import java.util.List;
  * @author Jang
  * @since 2017-09-20
  */
-public class VariantInterpretationLogsList {
+public class SnpInDelInterpretationLogsList {
     private Integer count;
-    private List<VariantInterpretationLogs> result;
+    private List<SnpInDelInterpretationLogs> result;
 
     /**
      * @return count
@@ -27,14 +27,14 @@ public class VariantInterpretationLogsList {
     /**
      * @return result
      */
-    public List<VariantInterpretationLogs> getResult() {
+    public List<SnpInDelInterpretationLogs> getResult() {
         return result;
     }
 
     /**
      * @param result
      */
-    public void setResult(List<VariantInterpretationLogs> result) {
+    public void setResult(List<SnpInDelInterpretationLogs> result) {
         this.result = result;
     }
 }

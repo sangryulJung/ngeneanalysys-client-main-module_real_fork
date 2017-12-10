@@ -304,8 +304,8 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
 
     private void showVariantInterpretation() {
 
-        renderTier(swTierLabel, variant.getInterpretationEvidence(), variant.getVariant().getSwTier());
-        renderTier(userTierLabel, variant.getInterpretationEvidence(), variant.getVariant().getExpertTier());
+        renderTier(swTierLabel, variant.getInterpretationEvidence(), variant.getSnpInDel().getSwTier());
+        renderTier(userTierLabel, variant.getInterpretationEvidence(), variant.getSnpInDel().getExpertTier());
         renderEvidence(evidenceHBox, variant.getInterpretationEvidence());
         renderNegative(negativeHBox, variant.getInterpretationEvidence());
     }
@@ -434,7 +434,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
             depth = (alleleMap.containsKey("total_read_depth")) ? (int) alleleMap.get("total_read_depth") : 0;
 
         }*/
-        depth = variant.getVariant().getReadInfo().getReadDepth();
+        depth = variant.getSnpInDel().getReadInfo().getReadDepth();
         depthLegendImageView.setVisible(this.graphAnimationIconDisplay);
         depthMinLabel.setText(String.valueOf(Math.round(depthMin)));
         depthMaxLabel.setText(String.valueOf(Math.round(depthMax)));
@@ -489,14 +489,14 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
 
         String ref = (String) variantInformationMap.get("ref");
         String alt = (String) variantInformationMap.get("alt");*/
-        String ref = variant.getVariant().getSequenceInfo().getRefSequence();
-        String alt = variant.getVariant().getSequenceInfo().getAltSequence();
+        String ref = variant.getSnpInDel().getSequenceInfo().getRefSequence();
+        String alt = variant.getSnpInDel().getSequenceInfo().getAltSequence();
         double alleleFraction = 0;
 
         /*if(alleleMap != null && !alleleMap.isEmpty() && alleleMap.size() > 0) {
             alleleFraction = (alleleMap.containsKey("allele_fraction")) ? (double) alleleMap.get("allele_fraction") : 0;
         }*/
-        BigDecimal allele = variant.getVariant().getReadInfo().getAlleleFraction();
+        BigDecimal allele = variant.getSnpInDel().getReadInfo().getAlleleFraction();
         alleleFraction = (allele != null) ? allele.doubleValue() : 0;
 
         fractionLegendImageView.setVisible(this.graphAnimationIconDisplay);
@@ -553,14 +553,14 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
      */
     @SuppressWarnings("unchecked")
     public void showVariantIdentification() {
-        List<VariantTranscript> transcriptDataList = (List<VariantTranscript>) paramMap.get("variantTranscripts");
+        List<SnpInDelTranscript> transcriptDataList = (List<SnpInDelTranscript>) paramMap.get("snpInDelTranscripts");
 
-        String ref = variant.getVariant().getSequenceInfo().getRefSequence();
-        String alt = variant.getVariant().getSequenceInfo().getAltSequence();
-        String left22Bp = variant.getVariant().getSequenceInfo().getLeftSequence();
-        String right22Bp = variant.getVariant().getSequenceInfo().getRightSequence();
-        String genePositionStart = String.valueOf(variant.getVariant().getSequenceInfo().getGenomicCoordinate());
-        String transcriptAltType = variant.getVariant().getVariantExpression().getVariantType();
+        String ref = variant.getSnpInDel().getSequenceInfo().getRefSequence();
+        String alt = variant.getSnpInDel().getSequenceInfo().getAltSequence();
+        String left22Bp = variant.getSnpInDel().getSequenceInfo().getLeftSequence();
+        String right22Bp = variant.getSnpInDel().getSequenceInfo().getRightSequence();
+        String genePositionStart = String.valueOf(variant.getSnpInDel().getSequenceInfo().getGenomicCoordinate());
+        String transcriptAltType = variant.getSnpInDel().getSnpInDelExpression().getVariantType();
         String defaultTranscript = null;
         // transcript 콤보박스 설정
             // variant identification transcript data map
@@ -568,10 +568,10 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
         if(!transcriptDataList.isEmpty() && !transcriptDataList.isEmpty()) {
             ObservableList<String> comboItemList = FXCollections.observableArrayList();
             // 콤보박스 아이템 목록 생성
-            for(VariantTranscript variantTranscript : transcriptDataList) {
-                comboItemList.add(variantTranscript.getTranscriptId());
-                if(variantTranscript.getIsDefault()) {
-                    defaultTranscript = variantTranscript.getTranscriptId();
+            for(SnpInDelTranscript snpInDelTranscript : transcriptDataList) {
+                comboItemList.add(snpInDelTranscript.getTranscriptId());
+                if(snpInDelTranscript.getIsDefault()) {
+                    defaultTranscript = snpInDelTranscript.getTranscriptId();
                 }
             }
 
@@ -581,10 +581,10 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
             // 콤보박스 Onchange 이벤트 바인딩
             transcriptComboBox.getSelectionModel().selectedIndexProperty().addListener((ov, oldIdx, newIdx) -> {
                 if(oldIdx != newIdx) {
-                    Optional<VariantTranscript> transcriptOptional = transcriptDataList.stream().filter(item ->
+                    Optional<SnpInDelTranscript> transcriptOptional = transcriptDataList.stream().filter(item ->
                             item.getTranscriptId().equals(transcriptComboBox.getItems().get((int)newIdx))).findFirst();
                     if(transcriptOptional.isPresent()) {
-                        VariantTranscript transcript = transcriptOptional.get();
+                        SnpInDelTranscript transcript = transcriptOptional.get();
                         String geneSymbol = (!StringUtils.isEmpty(transcript.getGeneSymbol())) ? transcript.getGeneSymbol() : "N/A";
                         String transcriptName = (!StringUtils.isEmpty(transcript.getTranscriptId())) ? transcript.getTranscriptId() : "N/A";
                         String codingDNA = (!StringUtils.isEmpty(transcript.getCodingDna())) ? transcript.getCodingDna() : "N/A";
@@ -702,20 +702,20 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
      */
     public void showPopulationFrequency() {
         //double populationFrequencyESP6500 = getPopulationFrequencyByParam("ESP6500", "ALL");
-        double populationFrequencyESP6500 = (variant.getVariant().getPopulationFrequency().getEsp6500() != null) ? variant.getVariant().getPopulationFrequency().getEsp6500().doubleValue() : -1d;
+        double populationFrequencyESP6500 = (variant.getSnpInDel().getPopulationFrequency().getEsp6500() != null) ? variant.getSnpInDel().getPopulationFrequency().getEsp6500().doubleValue() : -1d;
         addPopulationFrequencyGraph(0, 0, "ESP6500 ", populationFrequencyESP6500);
 
         //double populationFrequency1000Genomes = getPopulationFrequencyByParam("1000_genomes", "ALL");
-        double populationFrequency1000Genomes = (variant.getVariant().getPopulationFrequency().getG1000() != null) ?variant.getVariant().getPopulationFrequency().getG1000().doubleValue() : -1d;
+        double populationFrequency1000Genomes = (variant.getSnpInDel().getPopulationFrequency().getG1000() != null) ?variant.getSnpInDel().getPopulationFrequency().getG1000().doubleValue() : -1d;
         addPopulationFrequencyGraph(0, 1, "1KG ", populationFrequency1000Genomes);
 
         //double populationFrequencyExAC = getPopulationFrequencyByParam("ExAC", "ALL");
-        double populationFrequencyExAC = (variant.getVariant().getPopulationFrequency().getExac() != null) ? variant.getVariant().getPopulationFrequency().getExac().doubleValue() : -1d;
+        double populationFrequencyExAC = (variant.getSnpInDel().getPopulationFrequency().getExac() != null) ? variant.getSnpInDel().getPopulationFrequency().getExac().doubleValue() : -1d;
         addPopulationFrequencyGraph(1, 0, "ExAC ", populationFrequencyExAC);
 
         //double populationFrequencyKorean = getPopulationFrequencyByParam("Korean_exome", "ALL");
-        double populationFrequencyKorean = (variant.getVariant().getPopulationFrequency().getKoreanExomInformationDatabase() != null)
-                ? variant.getVariant().getPopulationFrequency().getKoreanExomInformationDatabase().doubleValue() : -1d;
+        double populationFrequencyKorean = (variant.getSnpInDel().getPopulationFrequency().getKoreanExomInformationDatabase() != null)
+                ? variant.getSnpInDel().getPopulationFrequency().getKoreanExomInformationDatabase().doubleValue() : -1d;
         addPopulationFrequencyGraph(1, 1, "Korean ", populationFrequencyKorean);
     }
 

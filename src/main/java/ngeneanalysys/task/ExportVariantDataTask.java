@@ -224,10 +224,10 @@ public class ExportVariantDataTask extends Task<Void> {
 			HttpClientResponse response = apiService.get("/analysis_result/variant_list/" + sampleID, null,
 					null, false);
 			@SuppressWarnings("unchecked")
-			List<AnalysisResultVariant> list = (List<AnalysisResultVariant>) response
-					.getMultiObjectBeforeConvertResponseToJSON(AnalysisResultVariant.class, false);
+			List<SnpInDel> list = (List<SnpInDel>) response
+					.getMultiObjectBeforeConvertResponseToJSON(SnpInDel.class, false);
 			if(list != null && list.size() > 0) {
-				for(AnalysisResultVariant item : list) {
+				for(SnpInDel item : list) {
 					String[] contents = new String[spreadSheetHeaders.length];
 					contents[0] = runName;
 					contents[1] = sampleName;
@@ -243,7 +243,7 @@ public class ExportVariantDataTask extends Task<Void> {
 					// set flase
 					contents[6] = StringUtils.defaultIfEmpty(item.getPathogenicFalseYn(), "");
 					// variant id
-					contents[7] = StringUtils.defaultIfEmpty(item.getVariantId(), "");
+					contents[7] = StringUtils.defaultIfEmpty(item.getSnpInDelId(), "");
 					// snp type
 					contents[8] = StringUtils.defaultIfEmpty(item.getType(), "");
 					// coding consequence

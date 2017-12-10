@@ -5,14 +5,14 @@ package ngeneanalysys.model;
  * @since 2017-12-06
  */
 public class VariantAndInterpretationEvidence {
-    private AnalysisResultVariant variant;
+    private SnpInDel snpInDel;
     private Interpretation interpretationEvidence;
 
     /**
-     * @return variant
+     * @return snpInDel
      */
-    public AnalysisResultVariant getVariant() {
-        return variant;
+    public SnpInDel getSnpInDel() {
+        return snpInDel;
     }
 
     /**
