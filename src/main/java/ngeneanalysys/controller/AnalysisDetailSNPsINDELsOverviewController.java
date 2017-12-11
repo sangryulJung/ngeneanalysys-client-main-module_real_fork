@@ -565,7 +565,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
         // transcript 콤보박스 설정
             // variant identification transcript data map
 
-        if(!transcriptDataList.isEmpty() && !transcriptDataList.isEmpty()) {
+        if(transcriptDataList != null && !transcriptDataList.isEmpty()) {
             ObservableList<String> comboItemList = FXCollections.observableArrayList();
             // 콤보박스 아이템 목록 생성
             for(SnpInDelTranscript snpInDelTranscript : transcriptDataList) {
@@ -688,7 +688,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
         logger.info("text length : " + textLength);
 
         if(textLength > 21) {
-            gridBox.setPrefWidth(textLength * 11);
+            gridBox.setPrefWidth(textLength * 12);
             sequenceCharsBox.setStyle("-fx-padding:-10 0 0 20;");
             scrollBox.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         }

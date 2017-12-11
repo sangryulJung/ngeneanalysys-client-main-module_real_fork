@@ -1025,8 +1025,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             VariantAndInterpretationEvidence analysisResultVariant = ReportedCheckBox.this.getTableView().getItems().get(
                     ReportedCheckBox.this.getIndex());
 
-            if(analysisResultVariant.getSnpInDel().getIncludedInReport().equalsIgnoreCase("Y")) {
-                checkBox.setSelected(false);
+            if(analysisResultVariant.getSnpInDel().getIncludedInReport().equalsIgnoreCase("N")) {
+                checkBox.setSelected(true);
             }
 
             box = new HBox();
