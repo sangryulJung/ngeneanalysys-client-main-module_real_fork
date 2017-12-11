@@ -100,7 +100,7 @@ public class ChangeTierDialogController extends SubPaneController {
                 params.put("tier", tier);
                 params.put("comment", comment);
 
-                apiService.put("analysisResults/variants/" + selectedItem.getSnpInDel().getId() + "/updateExpertTier", params, null, true);
+                apiService.put("analysisResults/snpInDels/" + selectedItem.getSnpInDel().getId() + "/updateExpertTier", params, null, true);
             } catch (WebAPIException wae) {
                 DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
             }

@@ -50,7 +50,7 @@ public class ExcludeReportDialogController extends SubPaneController {
     }
 
     public void settingItem(String symbol, VariantAndInterpretationEvidence selectedItem, CheckBox checkBox) {
-        this.symbol =symbol;
+        this.symbol = symbol;
         this.selectedItem = selectedItem;
         this.checkBox = checkBox;
     }
@@ -88,7 +88,7 @@ public class ExcludeReportDialogController extends SubPaneController {
                 params.put("comment", comment);
                 params.put("includeInReport", symbol);
                 selectedItem.getSnpInDel().setIncludedInReport(symbol);
-                apiService.put("analysisResults/variants/" + selectedItem.getSnpInDel().getId() + "/updateIncludeInReport", params, null, true);
+                apiService.put("analysisResults/snpInDels/" + selectedItem.getSnpInDel().getId() + "/updateIncludeInReport", params, null, true);
             } catch (WebAPIException wae) {
                 wae.printStackTrace();
             }
@@ -100,6 +100,8 @@ public class ExcludeReportDialogController extends SubPaneController {
                 checkBox.setSelected(true);
             }
         }
+
+        selectedItem = null;
     }
 
     @FXML

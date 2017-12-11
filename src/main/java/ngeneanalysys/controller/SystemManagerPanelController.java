@@ -265,7 +265,7 @@ public class SystemManagerPanelController extends SubPaneController {
     public void setPanelList(int page) {
 
         int totalCount = 0;
-        int limit = 30;
+        int limit = 15;
         int offset = (page - 1)  * limit;
 
         HttpClientResponse response = null;
@@ -414,7 +414,7 @@ public class SystemManagerPanelController extends SubPaneController {
                         mainController.getBasicInformationMap().put("panels", panels.getResult());
                         final HttpClientResponse response2 = apiService.get("/admin/panels", null, null, false);
                         final PagedPanel tablePanels = response2.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
-                        //mainController.getBasicInformationMap().put("panels", panels.getResult());
+                        mainController.getBasicInformationMap().put("panels", panels.getResult());
 
                         panelListTable.getItems().clear();
                         panelListTable.getItems().addAll(tablePanels.getResult());

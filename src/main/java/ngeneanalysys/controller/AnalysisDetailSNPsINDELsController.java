@@ -774,14 +774,6 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         showVariantList(selectedPredictionCodeFilter, selectedVariantIndex);
     }
 
-    /*private void dummyDataCreated() {
-        AnalysisResultSummary analysisResultSummary = new AnalysisResultSummary(sample.getId(),"warn",281,768,
-                new BigDecimal("438"),2,5,0,0,0,0,0,5
-                ,new BigDecimal(98.13662348939866),"pass",new BigDecimal(100.0),"pass",new BigDecimal(100),"pass",
-                new BigDecimal(100.0),"pass");
-        sample.setAnalysisResultSummary(analysisResultSummary);
-    }*/
-
     @SuppressWarnings("unchecked")
     public void showLink() {
         Sample sample = (Sample) paramMap.get("sample");

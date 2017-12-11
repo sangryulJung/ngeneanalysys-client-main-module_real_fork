@@ -93,8 +93,8 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
 
-        fusionButton.setDisable(true);
-        fusionButton.setVisible(false);
+        //fusionButton.setDisable(true);
+        //fusionButton.setVisible(false);
 
         geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getGeneSymbol()));
         tier1SnvColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier1SnpCount()).asObject());

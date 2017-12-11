@@ -510,6 +510,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
         Map<String,Object> contentsMap = JsonUtil.fromJsonToMap(contents);
 
+        if(contentsMap.containsKey("contents")) conclusionsTextArea.setText((String)contentsMap.get("contents"));
+
         for(int i = 0; i < customFieldGridPane.getChildren().size(); i++) {
             Object gridObject = customFieldGridPane.getChildren().get(i);
 
@@ -961,11 +963,13 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 VariantAndInterpretationEvidence analysisResultVariant = ReportedCheckBox.this.getTableView().getItems().get(
                         ReportedCheckBox.this.getIndex());
 
+                selectedItem = analysisResultVariant;
+
                 TextInputDialog dialog = new TextInputDialog();
                 dialog.setContentText("cause:");
                 dialog.setTitle("Reported variant");
 
-                if (checkBox.isSelected()) {
+                if (!checkBox.isSelected()) {
                     /*dialog.setHeaderText("variant add to report");
                     Optional<String> result = dialog.showAndWait();
 
@@ -1022,7 +1026,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     ReportedCheckBox.this.getIndex());
 
             if(analysisResultVariant.getSnpInDel().getIncludedInReport().equalsIgnoreCase("Y")) {
-                checkBox.setSelected(true);
+                checkBox.setSelected(false);
             }
 
             box = new HBox();

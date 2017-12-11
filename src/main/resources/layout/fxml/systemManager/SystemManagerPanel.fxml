@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="558.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemManagerPanelController">
+<AnchorPane maxHeight="1.7976931348623157E308" prefHeight="558.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemManagerPanelController">
    <stylesheets>
       <URL value="@../../css/common.css" />
       <URL value="@../../css/experimenter.css" />
@@ -142,8 +142,8 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <TableView fx:id="panelListTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
-                     <columns>
+                  <TableView fx:id="panelListTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="405.0" prefWidth="900.0" tableMenuButtonVisible="true">
+                    <columns>
                         <TableColumn fx:id="panelIdTableColumn" prefWidth="60.0" text="Panel Id" visible="false" />
                         <TableColumn fx:id="panelNameTableColumn" prefWidth="160.0" text="Panel Name" />
                         <TableColumn fx:id="panelCodeTableColumn" prefWidth="60.79998779296875" text="Code" />
@@ -156,7 +156,7 @@
                         <TableColumn fx:id="deletedAtTableColumn" prefWidth="108.0" text="Deleted At" visible="false" />
                         <TableColumn fx:id="deletedTableColumn" prefWidth="55.0" style="-fx-alignment: center;" text="Deleted" />
                         <TableColumn fx:id="editPanelTableColumn" prefWidth="80.0" text="editPanel" />
-                     </columns>
+                    </columns>
                   </TableView>
                   <HBox alignment="CENTER_RIGHT" prefHeight="48.0" prefWidth="900.0" spacing="5.0" VBox.vgrow="NEVER">
                      <children>

@@ -59,7 +59,7 @@
             </HBox>
             <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" GridPane.columnIndex="1">
                <children>
-                  <Button fx:id="fusionButton" mnemonicParsing="false" onAction="#showFusion" prefHeight="24.0" prefWidth="55.0" styleClass="btn_snp_indel" text="Fusion">
+                  <Button fx:id="fusionButton" mnemonicParsing="false" onAction="#showFusion" prefHeight="45.0" prefWidth="65.0" styleClass="btn_snp_indel" text="Fusion">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
