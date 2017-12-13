@@ -51,6 +51,9 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     @FXML
     private GridPane standardDataGridPane;
 
+    @FXML
+    private Button testButton;
+
     private APIService apiService;
 
     List<Panel> panels = null;
@@ -104,6 +107,9 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
         panels = (List<Panel>)mainController.getBasicInformationMap().get("panels");
         diseases = (List<Diseases>)mainController.getBasicInformationMap().get("diseases");
+
+        testButton.setDisable(true);
+        testButton.setVisible(false);
 
         if(sampleUploadController.getSamples() != null) {
             sampleArrayList = sampleUploadController.getSamples();
@@ -667,6 +673,77 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             if(pairFileList.size() == 2 && !checkSameSample(fastqFilePairName)) {
                 addUploadFile(pairFileList, fastqFilePairName, true);
             }
+        }
+        tableEdit();
+
+        maskerPane.setVisible(false);
+    }
+
+
+    @FXML
+    public void showFileFindWindow2() {
+        maskerPane.setVisible(true);
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose Directory");
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        List<File> fileList = fileChooser.showOpenMultipleDialog(this.sampleUploadController.getCurrentStage());
+
+        if(fileList != null && !fileList.isEmpty()) {
+            String chooseDirectoryPath = FilenameUtils.getFullPath(fileList.get(0).getAbsolutePath());
+            logger.info(String.format("directory path of choose bedFile : %s", chooseDirectoryPath));
+            File directory = new File(chooseDirectoryPath);
+            //선택한 파일의 폴더 내 모든 FASTQ 파일 검색
+            List<File> fastqFilesInFolder = (List<File>) FileUtils.listFiles(directory, new String[]{"fastq.gz"}, false);
+
+            fileList = fileList.stream().filter(file -> file.getName().endsWith(".fastq.gz")).collect(Collectors.toList());
+
+            while (!fileList.isEmpty()) {
+                File fastqFile = fileList.get(0);
+                String fastqFilePairName = FileUtil.getFASTQFilePairName(fastqFile.getName());
+
+                List<File> pairFileList = fileList.stream().filter(file ->
+                        file.getName().startsWith(fastqFilePairName)).collect(Collectors.toList());
+
+                Optional<AnalysisFile> optionalFile = uploadFileData.stream().filter(item ->
+                        item.getName().contains(fastqFilePairName)).findFirst();
+                Sample sample = null;
+                if(optionalFile.isPresent()) sample = getSameSample(optionalFile.get().getSampleId());
+                //fastq 파일이 짝을 이루고 올리는데 실패한 파일인 경우
+                if(pairFileList.size() == 2 && sample != null) {
+                    List<File> failedFileList = new ArrayList<>();
+                    List<AnalysisFile> selectedAnalysisFileList = new ArrayList<>();
+                    for (File selectedFile : pairFileList) {
+                        Optional<AnalysisFile> fileOptional = failedAnalysisFileList.stream().filter(item ->
+                                selectedFile.getName().equals(item.getName())).findFirst();
+                        if (fileOptional.isPresent()) {
+                            failedFileList.add(selectedFile);
+
+                            //meta data 정보가 하나만 입력이 되어있는 경우
+                            if("NOT_FOUND".equals(fileOptional.get().getStatus())) {
+                                failedAnalysisFileList.remove(fileOptional.get());
+                                addUploadFile(selectedFile,fastqFilePairName);
+                            } else {
+                                //메타 데이터 정보가 온전히 존재하고 파일 업로드에 실패한 경우
+                                selectedAnalysisFileList.add(fileOptional.get());
+                            }
+
+                            //meta data 정보가 없는 경우
+                        } else if(sample.getSampleStatus() != null && sample.getSampleStatus().getStep().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STEP_UPLOAD)
+                                && sample.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_QUEUED)) {
+                            failedFileList.add(selectedFile);
+                        }
+                    }
+                    if(!failedFileList.isEmpty()) addUploadFile(failedFileList, fastqFilePairName, false);
+
+                    if(!selectedAnalysisFileList.isEmpty()) uploadFileData.addAll(selectedAnalysisFileList);
+                } else if (pairFileList.size() == 2 && !checkSameSample(fastqFilePairName)) {
+                    addUploadFile(pairFileList, fastqFilePairName, true);
+                }
+
+                fileList.removeAll(pairFileList);
+            }
+
         }
         tableEdit();
 

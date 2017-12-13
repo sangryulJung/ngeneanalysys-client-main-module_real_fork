@@ -58,6 +58,13 @@
                   <String fx:value="font_size_12" />
                </styleClass>
             </Button>
+            <Button fx:id="testButton" mnemonicParsing="false" onAction="#showFileFindWindow2" text="test" GridPane.columnIndex="2">
+               <styleClass>
+                  <String fx:value="field_height" />
+                  <String fx:value="file_add_btn" />
+                  <String fx:value="font_size_10" />
+               </styleClass>
+            </Button>
          </children>
 		</GridPane>
       <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="820.0" style="-fx-border-style: dashed solid solid solid; -fx-border-color: #C30D23;">

@@ -24,6 +24,7 @@ import ngeneanalysys.code.enums.SequencerCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
+import ngeneanalysys.model.render.DatepickerConverter;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.PDFCreateService;
 import ngeneanalysys.task.ImageFileDownloadTask;
@@ -192,29 +193,11 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         logger.info("show..");
 
         //Drag & Drop 으로 Variant의 Tier를 변경
-        tierOneVariantsTable.setOnDragDetected(e -> onDragDetected(e, tierOneVariantsTable));
-        tierOneVariantsTable.setOnDragDone(e -> onDragDone(e));
-        tierOneVariantsTable.setOnDragOver(e -> onDragOver(e, tierOneVariantsTable));
-        tierOneVariantsTable.setOnDragExited(e -> onDragExited(e, tierOneVariantsTable));
-        tierOneVariantsTable.setOnDragDropped(e -> onDragDropped(e, tierOneVariantsTable, "T1"));
 
-        tierTwoVariantsTable.setOnDragDetected(e -> onDragDetected(e, tierTwoVariantsTable));
-        tierTwoVariantsTable.setOnDragDone(e -> onDragDone(e));
-        tierTwoVariantsTable.setOnDragOver(e -> onDragOver(e, tierTwoVariantsTable));
-        tierTwoVariantsTable.setOnDragExited(e -> onDragExited(e, tierTwoVariantsTable));
-        tierTwoVariantsTable.setOnDragDropped(e -> onDragDropped(e, tierTwoVariantsTable, "T2"));
-
-        tierThreeVariantsTable.setOnDragDetected(e -> onDragDetected(e, tierThreeVariantsTable));
-        tierThreeVariantsTable.setOnDragDone(e -> onDragDone(e));
-        tierThreeVariantsTable.setOnDragOver(e -> onDragOver(e, tierThreeVariantsTable));
-        tierThreeVariantsTable.setOnDragExited(e -> onDragExited(e, tierThreeVariantsTable));
-        tierThreeVariantsTable.setOnDragDropped(e -> onDragDropped(e, tierThreeVariantsTable, "T3"));
-
-        negativeVariantsTable.setOnDragDetected(e -> onDragDetected(e, negativeVariantsTable));
-        negativeVariantsTable.setOnDragDone(e -> onDragDone(e));
-        negativeVariantsTable.setOnDragOver(e -> onDragOver(e, negativeVariantsTable));
-        negativeVariantsTable.setOnDragExited(e -> onDragExited(e, negativeVariantsTable));
-        negativeVariantsTable.setOnDragDropped(e -> onDragDropped(e, negativeVariantsTable, "TN"));
+        settingTableViewDragAndDrop(tierOneVariantsTable, "T1");
+        settingTableViewDragAndDrop(tierTwoVariantsTable, "T2");
+        settingTableViewDragAndDrop(tierThreeVariantsTable, "T3");
+        settingTableViewDragAndDrop(negativeVariantsTable, "TN");
 
         //선택한 Row를 전역변수로 저장
         tierOneVariantsTable.setRowFactory(tv -> {
@@ -262,75 +245,21 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         tierOneAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()));
         tierOneExceptColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
         tierOneExceptColumn.setCellFactory(param -> new ReportedCheckBox(this));
-        tierOneTherapeuticColumn.setCellValueFactory(cellData -> {
-            Interpretation interpretation = cellData.getValue().getInterpretationEvidence();
-            String text = "";
-            if(interpretation != null) {
-                if (!StringUtils.isEmpty(interpretation.getEvidenceLevelA()))
-                    text += interpretation.getEvidenceLevelA() + ", ";
-                if (!StringUtils.isEmpty(interpretation.getEvidenceLevelB()))
-                    text += interpretation.getEvidenceLevelB() + ", ";
-                if (!StringUtils.isEmpty(interpretation.getEvidenceLevelC()))
-                    text += interpretation.getEvidenceLevelC() + ", ";
-                if (!StringUtils.isEmpty(interpretation.getEvidenceLevelD()))
-                    text += interpretation.getEvidenceLevelD() + ", ";
-            }
-            if(!"".equals(text)) {
-                text = text.substring(0, text.length() - 2);
-            }
-
-            return new SimpleStringProperty(text);
-        });
+        tierOneTherapeuticColumn.setCellValueFactory(cellData -> returnTherapeutic(cellData.getValue().getInterpretationEvidence()));
 
         tierTwoGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSequenceInfo().getGene()));
         tierTwoVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
         tierTwoAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()));
         tierTwoExceptColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
         tierTwoExceptColumn.setCellFactory(param -> new ReportedCheckBox(this));
-        tierTwoTherapeuticColumn.setCellValueFactory(cellData -> {
-            Interpretation interpretation = cellData.getValue().getInterpretationEvidence();
-            String text = "";
-            if(interpretation != null) {
-                if (!StringUtils.isEmpty(interpretation.getEvidenceLevelA()))
-                    text += interpretation.getEvidenceLevelA() + ", ";
-                if (!StringUtils.isEmpty(interpretation.getEvidenceLevelB()))
-                    text += interpretation.getEvidenceLevelB() + ", ";
-                if (!StringUtils.isEmpty(interpretation.getEvidenceLevelC()))
-                    text += interpretation.getEvidenceLevelC() + ", ";
-                if (!StringUtils.isEmpty(interpretation.getEvidenceLevelD()))
-                    text += interpretation.getEvidenceLevelD() + ", ";
-            }
-            if(!"".equals(text)) {
-                text = text.substring(0, text.length() - 2);
-            }
-
-            return new SimpleStringProperty(text);
-        });
+        tierTwoTherapeuticColumn.setCellValueFactory(cellData -> returnTherapeutic(cellData.getValue().getInterpretationEvidence()));
 
         tierThreeGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSequenceInfo().getGene()));
         tierThreeVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
         tierThreeAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()));
         tierThreeExceptColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
         tierThreeExceptColumn.setCellFactory(param -> new ReportedCheckBox(this));
-        tierThreeTherapeuticColumn.setCellValueFactory(cellData -> {
-            Interpretation interpretation = cellData.getValue().getInterpretationEvidence();
-            String text = "";
-            if(interpretation != null) {
-                if (!StringUtils.isEmpty(interpretation.getEvidenceLevelA()))
-                    text += interpretation.getEvidenceLevelA() + ", ";
-                if (!StringUtils.isEmpty(interpretation.getEvidenceLevelB()))
-                    text += interpretation.getEvidenceLevelB() + ", ";
-                if (!StringUtils.isEmpty(interpretation.getEvidenceLevelC()))
-                    text += interpretation.getEvidenceLevelC() + ", ";
-                if (!StringUtils.isEmpty(interpretation.getEvidenceLevelD()))
-                    text += interpretation.getEvidenceLevelD() + ", ";
-            }
-            if(!"".equals(text)) {
-                text = text.substring(0, text.length() - 2);
-            }
-
-            return new SimpleStringProperty(text);
-        });
+        tierThreeTherapeuticColumn.setCellValueFactory(cellData -> returnTherapeutic(cellData.getValue().getInterpretationEvidence()));
 
         negativeGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSequenceInfo().getGene()));
         negativeVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
@@ -408,7 +337,10 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         String type = item.get("variableType");
                         if(type.equalsIgnoreCase("Date")) {
                             DatePicker datePicker = new DatePicker();
-                            datePicker.setStyle("-fx-text-inner-color: black;");
+                            datePicker.setStyle(datePicker.getStyle() + "-fx-text-inner-color: black; -fx-prompt-text-fill: gray;");
+                            String dateType = "yyyy-MM-dd";
+                            datePicker.setConverter(DatepickerConverter.getConverter(dateType));
+                            datePicker.setPromptText(dateType);
                             datePicker.setId(key);
                             customFieldGridPane.add(datePicker, colIndex++, rowIndex);
                         } else {
@@ -440,56 +372,21 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     !StringUtils.isEmpty(item.getInterpretationEvidence().getEvidencePersistentNegative())) ||
             "TN".equalsIgnoreCase(item.getSnpInDel().getExpertTier()))).collect(Collectors.toList());
 
-            tierOne = list.stream().filter(item -> (("T1".equalsIgnoreCase(item.getSnpInDel().getExpertTier()) ||
-                    (StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && item.getSnpInDel().getSwTier().equalsIgnoreCase("T1")))))
-                    .collect(Collectors.toList());
+            tierOne = settingTierList(list, "T1");
 
-            tierTwo = list.stream().filter(item -> (("T2".equalsIgnoreCase(item.getSnpInDel().getExpertTier()) ||
-                    (StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && item.getSnpInDel().getSwTier().equalsIgnoreCase("T2")))))
-                    .collect(Collectors.toList());
+            tierTwo = settingTierList(list, "T2");
 
-            tierThree = list.stream().filter(item -> (("T3".equalsIgnoreCase(item.getSnpInDel().getExpertTier()) ||
-                    (StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && item.getSnpInDel().getSwTier().equalsIgnoreCase("T3")))))
-                    .collect(Collectors.toList());
+            tierThree = settingTierList(list, "T3");
 
-            tierFour = list.stream().filter(item -> (("T4".equalsIgnoreCase(item.getSnpInDel().getExpertTier()) ||
-                    (StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && item.getSnpInDel().getSwTier().equalsIgnoreCase("T4")))))
-                    .collect(Collectors.toList());
+            tierFour = settingTierList(list, "T4");
 
-            if(tierOne != null) tierOneVariantsTable.getItems().addAll(FXCollections.observableArrayList(tierOne));
+            orderingAndAddTableItem(tierOneVariantsTable, tierOne);
 
-            if(tierTwo != null) tierTwoVariantsTable.getItems().addAll(FXCollections.observableArrayList(tierTwo));
+            orderingAndAddTableItem(tierTwoVariantsTable, tierTwo);
 
-            if(tierThree != null) tierThreeVariantsTable.getItems().addAll(FXCollections.observableArrayList(tierThree));
+            orderingAndAddTableItem(tierThreeVariantsTable, tierThree);
 
-            if(negativeList != null) negativeVariantsTable.getItems().addAll(FXCollections.observableArrayList(negativeList));
-
-            /*Map<String, List<SnpInDel>> variantTierMap = list.stream().collect(Collectors.groupingBy(SnpInDel::getSwTier));
-
-            tierOne = variantTierMap.get("T1");
-
-            if(tierOne != null) {
-                tierOneVariantsTable.getItems().addAll(FXCollections.observableArrayList(tierOne));
-
-            }
-
-            tierTwo = variantTierMap.get("T2");
-
-            if(tierTwo != null) {
-                tierTwoVariantsTable.getItems().addAll(FXCollections.observableArrayList(tierTwo));
-            }
-
-            tierThree = variantTierMap.get("T3");
-
-            if(tierThree != null) {
-                tierThreeVariantsTable.getItems().addAll(FXCollections.observableArrayList(tierThree));
-            }
-
-            tierFour = variantTierMap.get("T4");
-
-            if(negativeList != null) {
-                negativeVariantsTable.setItems(FXCollections.observableArrayList(negativeList));
-            }*/
+            orderingAndAddTableItem(negativeVariantsTable, negativeList);
 
             if(sample.getSampleStatus().getReportStartedAt() != null) {
                 response = apiService.get("sampleReport/" + sample.getId(), null, null, false);
@@ -504,6 +401,54 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             e.printStackTrace();
         }
 
+    }
+
+    public void settingTableViewDragAndDrop(TableView<VariantAndInterpretationEvidence> tableView, String tier) {
+        if(!StringUtils.isEmpty(tier) && tableView != null) {
+            tableView.setOnDragDetected(e -> onDragDetected(e, tableView));
+            tableView.setOnDragDone(e -> onDragDone(e));
+            tableView.setOnDragOver(e -> onDragOver(e, tableView));
+            tableView.setOnDragExited(e -> onDragExited(e, tableView));
+            tableView.setOnDragDropped(e -> onDragDropped(e, tableView, tier));
+        }
+    }
+
+    public void orderingAndAddTableItem(TableView<VariantAndInterpretationEvidence> tableView,
+                                        List<VariantAndInterpretationEvidence> tierList) {
+        if(tierList != null && !tierList.isEmpty()) {
+            Collections.sort(tierList,
+                    (a, b) -> a.getSnpInDel().getSequenceInfo().getGene().compareTo(b.getSnpInDel().getSequenceInfo().getGene()));
+            tableView.getItems().addAll(tierList);
+        }
+    }
+
+    public List<VariantAndInterpretationEvidence> settingTierList(List<VariantAndInterpretationEvidence> allTierList, String tier) {
+        if(!StringUtils.isEmpty(tier)) {
+            return allTierList.stream().filter(item -> ((tier.equalsIgnoreCase(item.getSnpInDel().getExpertTier()) ||
+                    (StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && item.getSnpInDel().getSwTier().equalsIgnoreCase(tier)))))
+                    .collect(Collectors.toList());
+        }
+
+        return null;
+    }
+
+    public SimpleStringProperty returnTherapeutic(Interpretation interpretation) {
+        String text = "";
+        if(interpretation != null) {
+            if (!StringUtils.isEmpty(interpretation.getEvidenceLevelA()))
+                text += interpretation.getEvidenceLevelA() + ", ";
+            if (!StringUtils.isEmpty(interpretation.getEvidenceLevelB()))
+                text += interpretation.getEvidenceLevelB() + ", ";
+            if (!StringUtils.isEmpty(interpretation.getEvidenceLevelC()))
+                text += interpretation.getEvidenceLevelC() + ", ";
+            if (!StringUtils.isEmpty(interpretation.getEvidenceLevelD()))
+                text += interpretation.getEvidenceLevelD() + ", ";
+        }
+        if(!"".equals(text)) {
+            text = text.substring(0, text.length() - 2);
+        }
+
+        return new SimpleStringProperty(text);
     }
 
     public void settingReportData(String contents) {

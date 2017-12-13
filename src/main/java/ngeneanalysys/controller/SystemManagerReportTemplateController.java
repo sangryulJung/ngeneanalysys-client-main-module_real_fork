@@ -55,7 +55,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
     private TextField displayNameTextField;
 
     @FXML
-    private TextField customFieldsTextField;
+    private TextArea customFieldsTextArea;
 
     @FXML
     private ComboBox<String> variableTypeComboBox;
@@ -269,8 +269,8 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                 param.put("name", reportName);
                 param.put("contents", contents);
 
-                if(!StringUtils.isEmpty(customFieldsTextField.getText())) {
-                    param.put("customFields", customFieldsTextField.getText());
+                if(!StringUtils.isEmpty(customFieldsTextArea.getText())) {
+                    param.put("customFields", customFieldsTextArea.getText());
                 } else {
                     String variableJson = JsonUtil.toJson(variableList);
                     param.put("customFields", variableJson);
@@ -462,7 +462,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
     }
 
     public void resetItem() {
-        customFieldsTextField.setText("");
+        customFieldsTextArea.setText("");
         reportNameTextField.setText("");
         contents = "";
         variableNameTextField.setText("");
@@ -478,7 +478,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
 
     public void setDisabledItem(boolean condition) {
         resetItem();
-        customFieldsTextField.setDisable(condition);
+        customFieldsTextArea.setDisable(condition);
         reportNameTextField.setDisable(condition);
         reportTemplateSelectionButton.setDisable(condition);
         reportSaveButton.setDisable(condition);
