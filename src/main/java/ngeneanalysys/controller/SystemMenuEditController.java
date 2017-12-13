@@ -175,22 +175,6 @@ public class SystemMenuEditController extends SubPaneController {
                 if (!StringUtils.isEmpty(newPasswordField.getText()) && validNewPwdInput() && validConfirmPwdInput())
                     params.put("newLoginPassword", newPasswordField.getText());
 
-                    /*try {
-                        apiService.patch("/users/password/" + user.getId(), params, null, true);
-
-                        //loginSession.getUser().setLoginPassword(newPasswordField.getText());
-                        // 캐시 메모리 서비스 할당
-                        CacheMemoryService cacheMemoryService = CacheMemoryService.getInstance();
-                        // 캐시 메모리내 세션 정보 삽입
-                        cacheMemoryService.setCacheObject(CommonConstants.SESSION_CACHE_SET_NAME,
-                                CommonConstants.SESSION_CACHE_KEY_NAME, loginSession);
-                    } catch (WebAPIException wae) {
-                        DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
-                                getMainApp().getPrimaryStage(), true);
-                    } catch (Exception e) {
-                        DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
-                    }*/
-
                 if (!StringUtils.isEmpty(organizationTextField.getText())) {
                     params.put("organization", organizationTextField.getText());
                 }
@@ -222,41 +206,6 @@ public class SystemMenuEditController extends SubPaneController {
                     DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
                 }
 
-                // 유효성 체크
-                /*if (ValidationUtil.text(organizationTextField.getText(), "organization", -1, -1, null, null, true, dialogStage) > 0) {
-                    organizationTextField.requestFocus();
-                } else if (ValidationUtil.text(departmentTextField.getText(), "department", -1, -1, null, null, true, dialogStage) > 0) {
-                    departmentTextField.requestFocus();
-                } else if (ValidationUtil.text(addressTextField.getText(), "address", -1, -1, null, null, true, dialogStage) > 0) {
-                    addressTextField.requestFocus();
-                } else if (ValidationUtil.text(phoneTextField.getText(), "phone", -1, -1, null, null, true, dialogStage) > 0) {
-                    phoneTextField.requestFocus();
-                } else if (ValidationUtil.text(emailTextField.getText(), "email", -1, -1, null, null, true, dialogStage) > 0) {
-                    emailTextField.requestFocus();
-                } else {
-                    // 사용자 정보 수정
-                    params = new HashMap<>();
-                    params.put("organization", organizationTextField.getText());
-                    params.put("department", departmentTextField.getText());
-                    params.put("address", addressTextField.getText());
-                    params.put("phone", phoneTextField.getText());
-                    params.put("email", emailTextField.getText());
-                    try {
-                        apiService.put("/member", params, null, true);
-
-                        DialogUtil.alert("Update User Information Success", "Your Information has been updated.",
-                                dialogStage, true);
-                        dialogStage.close();
-                    } catch (WebAPIException wae) {
-                        DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
-                                getMainApp().getPrimaryStage(), true);
-                    } catch (Exception e) {
-                        DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
-                    }
-                }
-            } else {
-                DialogUtil.error(null, "Empty User Information", dialogStage, false);
-            }*/
             }
         }
     }

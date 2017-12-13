@@ -352,6 +352,16 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     @FXML
     public void submit() {
 
+        for(ComboBox<ComboBoxItem> panelComboBox : panelComboBoxList) {
+            ComboBoxItem comboBoxItem = panelComboBox.getSelectionModel().getSelectedItem();
+
+            if("".equals(comboBoxItem.getValue())) {
+                DialogUtil.alert("warning", "Panel not selected. please select a panel.",
+                        this.sampleUploadController.getCurrentStage(), true);
+                return;
+            }
+        }
+
         if(sampleUploadController.getRun() != null) {
             newSampleAdded();
             if((uploadFileData != null && !uploadFileData.isEmpty()) &&
@@ -508,6 +518,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     public void panelSetting(ComboBox<ComboBoxItem> panelBox) {
         panelBox.setConverter(new ComboBoxConverter());
+        panelBox.getItems().add(new ComboBoxItem());
         for(Panel panel :  panels) {
             panelBox.getItems().add(new ComboBoxItem(panel.getId().toString(), panel.getName()));
         }
@@ -685,9 +696,14 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         maskerPane.setVisible(true);
 
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Choose Directory");
+        fileChooser.setTitle("Choose File");
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        FileChooser.ExtensionFilter fileExtensions =
+                new FileChooser.ExtensionFilter(
+                        "fastq", "*.fastq", "*.fastq.gz");
+        fileChooser.getExtensionFilters().add(fileExtensions);
         List<File> fileList = fileChooser.showOpenMultipleDialog(this.sampleUploadController.getCurrentStage());
+        List<File> addFileList = new ArrayList<>();
 
         if(fileList != null && !fileList.isEmpty()) {
             String chooseDirectoryPath = FilenameUtils.getFullPath(fileList.get(0).getAbsolutePath());

@@ -381,6 +381,7 @@ Button {
 .pagination>.pagination-control>.control-box>.number-button {
 	-fx-background-color:none;
 	-fx-padding:0;
+	-fx-text-fill : black;
 	-fx-cursor: hand;
 }
 

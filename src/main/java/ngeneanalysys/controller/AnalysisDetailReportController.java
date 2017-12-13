@@ -200,7 +200,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         settingTableViewDragAndDrop(negativeVariantsTable, "TN");
 
         //선택한 Row를 전역변수로 저장
-        tierOneVariantsTable.setRowFactory(tv -> {
+        /*tierOneVariantsTable.setRowFactory(tv -> {
             TableRow<VariantAndInterpretationEvidence> rowData = new TableRow<>();
             rowData.setOnDragDetected(e -> rowItem = rowData);
             return rowData;
@@ -222,7 +222,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             TableRow<VariantAndInterpretationEvidence> rowData = new TableRow<>();
             rowData.setOnDragDetected(e -> rowItem = rowData);
             return rowData;
-        });
+        });*/
 
         // API 서비스 클래스 init
         apiService = APIService.getInstance();
@@ -337,10 +337,10 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         String type = item.get("variableType");
                         if(type.equalsIgnoreCase("Date")) {
                             DatePicker datePicker = new DatePicker();
-                            datePicker.setStyle(datePicker.getStyle() + "-fx-text-inner-color: black; -fx-prompt-text-fill: gray;");
+                            datePicker.setStyle(datePicker.getStyle() + "-fx-text-inner-color: black; -fx-control-inner-background: white;");
                             String dateType = "yyyy-MM-dd";
-                            datePicker.setConverter(DatepickerConverter.getConverter(dateType));
                             datePicker.setPromptText(dateType);
+                            datePicker.setConverter(DatepickerConverter.getConverter(dateType));
                             datePicker.setId(key);
                             customFieldGridPane.add(datePicker, colIndex++, rowIndex);
                         } else {
@@ -410,6 +410,12 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             tableView.setOnDragOver(e -> onDragOver(e, tableView));
             tableView.setOnDragExited(e -> onDragExited(e, tableView));
             tableView.setOnDragDropped(e -> onDragDropped(e, tableView, tier));
+
+            tableView.setRowFactory(tv -> {
+                TableRow<VariantAndInterpretationEvidence> rowData = new TableRow<>();
+                rowData.setOnDragDetected(e -> rowItem = rowData);
+                return rowData;
+            });
         }
     }
 
@@ -915,15 +921,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 dialog.setTitle("Reported variant");
 
                 if (!checkBox.isSelected()) {
-                    /*dialog.setHeaderText("variant add to report");
-                    Optional<String> result = dialog.showAndWait();
-
-                    if (result.isPresent()) {
-                        Map<String, Object> params = new HashMap<>();
-                        params.put("comment", result.get());
-                        params.put("includeInReport" , "Y");
-                        analysisResultVariant.setIncludedInReport("Y");
-                        apiService.put("analysisResults/variants/" + analysisResultVariant.getId() + "/updateIncludeInReport", params, null, true);*/
                     try {
                         FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
                         Node root = loader.load();
@@ -936,15 +933,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         ioe.printStackTrace();
                     }
                 } else {
-                    /*dialog.setHeaderText("remove to report");
-                    Optional<String> result = dialog.showAndWait();
-
-                    if (result.isPresent()) {
-                        Map<String, Object> params = new HashMap<>();
-                        params.put("comment", result.get());
-                        params.put("includeInReport" , "N");
-                        analysisResultVariant.setIncludedInReport("N");
-                        apiService.put("analysisResults/variants/" + analysisResultVariant.getId() + "/updateIncludeInReport", params, null, true);*/
                     try {
                         FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
                         Node root = loader.load();
@@ -1045,40 +1033,13 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     public void onDragDropped(DragEvent t, TableView<VariantAndInterpretationEvidence> table, String tier) {
         System.out.println("change Tier");
         if(selectedItem != null && selectedTable != table) {
-            /*TextInputDialog dialog = new TextInputDialog();
-            dialog.setTitle("Change Tier");
-            dialog.setHeaderText("Change Variant Tier : " + ConvertUtil.tierConvert(selectedItem.getSwTier()) + " -> " +
-                    ConvertUtil.tierConvert(tier));
-            dialog.setContentText("cause:");
-
-            // Traditional way to get the response value.
-            Optional<String> result = dialog.showAndWait();
-            if (result.isPresent()){
-                String cause  = result.get();
-                logger.info(cause);
-                Map<String, Object> params = new HashMap<>();
-                try {
-                    params.put("tier", tier);
-                    params.put("comment", cause);
-
-                    apiService.put("analysisResults/variants/" + selectedItem.getId() + "/updateExpertTier", params, null, true);
-                } catch (WebAPIException wae) {
-                    DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
-                }
-
-                selectedTable.getItems().remove(selectedItem);
-                table.getItems().add(selectedItem);
-                selectedItem = null;
-                selectedTable = null;
-                rowItem = null;
-            }*/
             try {
                 FXMLLoader loader = mainApp.load(FXMLConstants.CHANGE_TIER);
                 Node root = loader.load();
                 ChangeTierDialogController changeTierDialogController = loader.getController();
                 changeTierDialogController.setMainController(this.getMainController());
                 changeTierDialogController.setAnalysisDetailReportController(this);
-                changeTierDialogController.settingItem(table, tier, selectedItem);
+                changeTierDialogController.settingItem(table, tier, selectedItem, rowItem);
                 changeTierDialogController.show((Parent) root);
             } catch (IOException ioe) {
                 ioe.printStackTrace();

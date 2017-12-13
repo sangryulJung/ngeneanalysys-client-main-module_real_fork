@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
@@ -49,6 +50,8 @@ public class ChangeTierDialogController extends SubPaneController {
 
     private Stage dialogStage;
 
+    private TableRow<VariantAndInterpretationEvidence> rowItem;
+
     /**
      * @param analysisDetailReportController
      */
@@ -56,10 +59,12 @@ public class ChangeTierDialogController extends SubPaneController {
         this.analysisDetailReportController = analysisDetailReportController;
     }
 
-    public void settingItem(TableView<VariantAndInterpretationEvidence> table, String tier, VariantAndInterpretationEvidence selectedItem) {
+    public void settingItem(TableView<VariantAndInterpretationEvidence> table, String tier, VariantAndInterpretationEvidence selectedItem
+    , TableRow<VariantAndInterpretationEvidence> rowItem) {
         this.table =table;
         this.tier = tier;
         this.selectedItem = selectedItem;
+        this.rowItem = rowItem;
 
         String currentTier = getCurrentTier();
 
@@ -115,6 +120,7 @@ public class ChangeTierDialogController extends SubPaneController {
     public void cancel() {
         analysisDetailReportController.selectClear(getCurrentTier());
         selectedItem = null;
+        rowItem = null;
         dialogStage.close();
     }
 
