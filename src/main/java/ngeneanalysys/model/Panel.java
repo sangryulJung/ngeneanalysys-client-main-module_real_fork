@@ -2,6 +2,7 @@ package ngeneanalysys.model;
 
 import org.joda.time.DateTime;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class Panel {
@@ -16,6 +17,9 @@ public class Panel {
     private DateTime updatedAt;
     private DateTime deletedAt;
     private Integer deleted;
+    private Boolean isDefault;
+    private Integer warningReadDepth;
+    private BigDecimal warningMAF;
 
     private Integer reportTemplateId;
 
@@ -84,6 +88,12 @@ public class Panel {
         return deletedAt;
     }
 
+    public Boolean getIsDefault() { return isDefault; }
+
+    public Integer getWarningReadDepth() { return warningReadDepth; }
+
+    public BigDecimal getWarningMAF() { return warningMAF; }
+
     @Override
     public String toString() {
         return "Panel{" +
@@ -98,6 +108,12 @@ public class Panel {
                 ", updatedAt=" + updatedAt +
                 ", deletedAt=" + deletedAt +
                 ", deleted=" + deleted +
+                ", isDefault=" + isDefault +
+                ", warningReadDepth=" + warningReadDepth +
+                ", warningMAF=" + warningMAF +
+                ", reportTemplateId=" + reportTemplateId +
+                ", memberGroupIds=" + memberGroupIds +
+                ", diseaseIds=" + diseaseIds +
                 '}';
     }
 }
