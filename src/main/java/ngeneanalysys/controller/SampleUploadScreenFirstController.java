@@ -295,7 +295,10 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                         diseaseIds.stream().anyMatch(diseaseId -> diseaseId.equals(diseases.getId())))
                     diseaseComboBox.getItems().add(new ComboBoxItem(diseases.getId().toString(), diseases.getName()));
             }
-
+            // 질병명이 없는 패널일 경우 샘플의 질병을 N/A로 설정되도록 함.
+            if (diseaseComboBox.getItems().size() == 0) {
+                diseaseComboBox.getItems().add(new ComboBoxItem("0", "N/A"));
+            }
             diseaseComboBox.getSelectionModel().selectFirst();
 
         } catch (WebAPIException wae) {
