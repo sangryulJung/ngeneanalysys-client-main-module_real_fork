@@ -126,4 +126,16 @@ public class ConvertUtil {
 		return convertTier;
 	}
 
+	public static String convertButtonId(String tier) {
+		String convertTier = "";
+		if(tier != null) {
+			if (tier.equalsIgnoreCase("T1")) convertTier = "tierOne";
+			else if (tier.equalsIgnoreCase("T2")) convertTier = "tierTwo";
+			else if (tier.equalsIgnoreCase("T3")) convertTier = "tierThree";
+			else if (tier.equalsIgnoreCase("T4")) convertTier = "tierFour";
+		}
+
+		return convertTier;
+	}
+
 }

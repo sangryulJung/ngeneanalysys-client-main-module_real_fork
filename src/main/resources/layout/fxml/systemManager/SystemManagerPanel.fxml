@@ -3,6 +3,7 @@
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Pagination?>
@@ -80,9 +81,27 @@
                         <Label text="Report Template" GridPane.halignment="RIGHT" GridPane.rowIndex="8" />
                         <ComboBox fx:id="reportTemplateComboBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                         <Label text="Warning Read Depth( X )" GridPane.halignment="RIGHT" GridPane.rowIndex="9" />
-                        <TextField fx:id="warningReadDepthTextField" promptText="100" GridPane.columnIndex="1" GridPane.rowIndex="9" />
                         <Label text="Warning MAF( % )" GridPane.halignment="RIGHT" GridPane.rowIndex="10" />
-                        <TextField fx:id="warningMAFTextField" promptText="5.0" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                           <children>
+                              <TextField fx:id="warningReadDepthTextField" maxHeight="38.0" maxWidth="170.0" prefWidth="170.0" promptText="100">
+                                 <HBox.margin>
+                                    <Insets right="3.0" />
+                                 </HBox.margin>
+                              </TextField>
+                              <CheckBox fx:id="warningReadDepthCheckBox" mnemonicParsing="false" text="Edit" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                           <children>
+                              <TextField fx:id="warningMAFTextField" maxWidth="170.0" prefWidth="170.0" promptText="5.0">
+                                 <HBox.margin>
+                                    <Insets right="3.0" />
+                                 </HBox.margin>
+                              </TextField>
+                              <CheckBox fx:id="warningMAFCheckBox" mnemonicParsing="false" text="Edit" />
+                           </children>
+                        </HBox>
                      </children>
                   </GridPane>
                   <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="300.0">
@@ -153,7 +172,7 @@
                   </VBox>
                   <TableView fx:id="panelListTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="405.0" prefWidth="877.0" tableMenuButtonVisible="true">
                     <columns>
-                        <TableColumn prefWidth="75.0" text="Default" />
+                        <TableColumn fx:id="defaultPanelTableColumn" prefWidth="75.0" text="Default" />
                         <TableColumn fx:id="panelIdTableColumn" prefWidth="60.0" text="Panel Id" visible="false" />
                         <TableColumn fx:id="panelNameTableColumn" prefWidth="400.0" text="Panel Name" />
                         <TableColumn fx:id="editPanelTableColumn" prefWidth="80.0" />

@@ -3,7 +3,6 @@ package ngeneanalysys.controller;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -671,7 +670,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 Long evidenceCCount = variantList.stream().filter(item -> !StringUtils.isEmpty(item.getInterpretation().getInterpretationEvidenceC())).count();
                 Long evidenceDCount = variantList.stream().filter(item -> !StringUtils.isEmpty(item.getInterpretation().getInterpretationEvidenceD())).count();*/
 
-                Integer evidenceACount = tierOneVariantsTable.getItems().filtered(item ->
+                /*Integer evidenceACount = tierOneVariantsTable.getItems().filtered(item ->
                         (item.getSnpInDel().getIncludedInReport().equals("Y") && StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && item.getSnpInDel().getSwTier().equals("T1")
                         && !StringUtils.isEmpty(item.getInterpretationEvidence().getEvidenceLevelA()))).size();
                 Integer evidenceBCount = tierOneVariantsTable.getItems().filtered(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).size() - evidenceACount;
@@ -679,6 +678,42 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         (item.getSnpInDel().getIncludedInReport().equals("Y") && StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && item.getSnpInDel().getSwTier().equals("T2")
                                 && !StringUtils.isEmpty(item.getInterpretationEvidence().getEvidenceLevelC()))).size();
                 Integer evidenceDCount = tierTwoVariantsTable.getItems().filtered(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).size() - evidenceCCount;
+                */
+
+                Integer evidenceACount = 0;
+                Integer evidenceBCount = 0;
+                Integer evidenceCCount = 0;
+                Integer evidenceDCount = 0;
+
+                if(!tierOneVariantsTable.getItems().isEmpty()) {
+                    for(VariantAndInterpretationEvidence variant : tierOneVariantsTable.getItems()) {
+                        if(variant.getInterpretationEvidence() != null) {
+                            if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelA())) evidenceACount++;
+                            if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelB())) evidenceBCount++;
+                            if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelC())) evidenceCCount++;
+                            if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelD())) evidenceDCount++;
+                            if("T2".equals(variant.getSnpInDel().getSwTier())
+                                    && StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelB())) evidenceBCount++;
+                        } else {
+                            evidenceBCount++;
+                        }
+                    }
+                }
+
+                if(!tierTwoVariantsTable.getItems().isEmpty()) {
+                    for(VariantAndInterpretationEvidence variant : tierTwoVariantsTable.getItems()) {
+                        if(variant.getInterpretationEvidence() != null) {
+                            if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelA())) evidenceACount++;
+                            if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelB())) evidenceBCount++;
+                            if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelC())) evidenceCCount++;
+                            if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelD())) evidenceDCount++;
+                            if("T1".equals(variant.getSnpInDel().getSwTier())
+                                    && StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelD())) evidenceDCount++;
+                        } else {
+                            evidenceDCount++;
+                        }
+                    }
+                }
 
                 contentsMap.put("variantList", variantList);
                 contentsMap.put("tierThreeVariantList", tierThree);
@@ -765,7 +800,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
                 String contents = "";
                 if(panel.getReportTemplateId() == null) {
-                    contents = velocityUtil.getContents("/layout/velocity/report.vm", "UTF-8", model);
+                    contents = velocityUtil.getContents("/layout/velocity/report2.vm", "UTF-8", model);
                     created = pdfCreateService.createPDF(file, contents);
                     createdCheck(created, file);
                 } else {
@@ -910,7 +945,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
         ReportedCheckBox(AnalysisDetailReportController analysisDetailReportController) {
             checkBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-
                 VariantAndInterpretationEvidence analysisResultVariant = ReportedCheckBox.this.getTableView().getItems().get(
                         ReportedCheckBox.this.getIndex());
 
@@ -950,25 +984,26 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         @Override
         protected void updateItem(Boolean item, boolean empty) {
             super.updateItem(item, empty);
-            if(item == null) {
+            if(isEmpty()) {
                 setGraphic(null);
                 return;
             }
+            if(box == null) {
+                VariantAndInterpretationEvidence analysisResultVariant = ReportedCheckBox.this.getTableView().getItems().get(
+                        ReportedCheckBox.this.getIndex());
 
-            VariantAndInterpretationEvidence analysisResultVariant = ReportedCheckBox.this.getTableView().getItems().get(
-                    ReportedCheckBox.this.getIndex());
+                if (analysisResultVariant.getSnpInDel().getIncludedInReport().equalsIgnoreCase("N")) {
+                    checkBox.setSelected(true);
+                }
 
-            if(analysisResultVariant.getSnpInDel().getIncludedInReport().equalsIgnoreCase("N")) {
-                checkBox.setSelected(true);
+                box = new HBox();
+
+                box.setAlignment(Pos.CENTER);
+
+                box.setSpacing(10);
+                checkBox.setStyle("-fx-cursor:hand;");
+                box.getChildren().add(checkBox);
             }
-
-            box = new HBox();
-
-            box.setAlignment(Pos.CENTER);
-
-            box.setSpacing(10);
-            checkBox.setStyle("-fx-cursor:hand;");
-            box.getChildren().add(checkBox);
 
             setGraphic(box);
 
@@ -989,9 +1024,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
      */
     public void onDragDetected(MouseEvent e, TableView<VariantAndInterpretationEvidence> table) {
         VariantAndInterpretationEvidence selectedVariant = table.getSelectionModel().getSelectedItem();
-        selectedTable = table;
-
         if(selectedVariant == null) return;
+
+        selectedTable = table;
 
         selectedItem = selectedVariant;
 

@@ -294,7 +294,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
             nodePane.getChildren().remove(tierPane);
             clinicalSignificant.setVisible(true);
             // SIGNIFICANT 레이더 차트 화면 출력
-            //showClinicalSignificantGraph();
+            showClinicalSignificantGraph2();
         }
 
         analysisDetailSNPsINDELsController.subTabOverview.setContent(root);
@@ -889,6 +889,86 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
      * SIGNIFICANT 레이더 차트 화면 출력
      */
     @SuppressWarnings("unchecked")
+    public void showClinicalSignificantGraph2() {
+                // SIFT
+        double siftValue = -1;
+        // POLYPHEN2
+        double polyphenValue = -1;
+        double mtValue = -1;
+        String siftText = "";
+        String polyphenText = "";
+        String mtText = "";
+        String siftScore = null;
+        String polyphenScore = null;
+
+        SnpInDel snpInDel = variant.getSnpInDel();
+
+        // BIC
+        if(snpInDel.getClinicalDB().getBic() != null) {
+            renderClinicalPathogenicityData(pathogenicityBicHBox, "BIC",
+                    changePathogenicity(snpInDel.getClinicalDB().getBic().getBicClass()));
+        } else {
+            renderClinicalPathogenicityData(pathogenicityBicHBox, "BIC", null);
+        }
+        // CLINVAR
+        if(snpInDel.getClinicalDB().getClinVar() != null) {
+            renderClinicalPathogenicityData(pathogenicityClinVarHBox, "CLINVAR",
+                    changePathogenicity(snpInDel.getClinicalDB().getClinVar().getClinVarClass()));
+        } else {
+            renderClinicalPathogenicityData(pathogenicityClinVarHBox, "CLINVAR", null);
+        }
+        // ENIGMA
+        if(snpInDel.getClinicalDB().getEnigma() != null) {
+            renderClinicalPathogenicityData(pathogenicityEnigmaHBox, "ENIGMA",
+                    changePathogenicity(snpInDel.getClinicalDB().getEnigma()));
+        } else {
+            renderClinicalPathogenicityData(pathogenicityEnigmaHBox, "ENIGMA", null);
+        }
+        // PREDICTION
+        if(snpInDel.getSwPathogenicityLevel() != null) {
+            renderClinicalPathogenicityData(pathogenicityPredictionHBox, "PREDICTION", snpInDel.getSwPathogenicityLevel());
+        } else {
+            renderClinicalPathogenicityData(pathogenicityPredictionHBox, "PREDICTION", null);
+        }
+
+    }
+
+    public String changePathogenicity(String data) {
+        if(data == null) return null;
+
+        String tempData = data.toUpperCase().trim();
+        String rader = null;
+        if(tempData.contains("LIKELYPATHOGENIC")) {
+            tempData = tempData.replaceAll("LIKELYPATHOGENIC", "");
+
+            if(tempData.contains("PATHOGENIC")) {
+                rader = "P";
+            } else {
+                rader = "LP";
+            }
+        } else if(tempData.contains("PATHOGENIC")) {
+            rader = "P";
+        } else if(tempData.contains("UNCERTAINSIGNIFICANCE")) {
+            rader = "US";
+        } else if(tempData.contains("LIKELYBENIGN")) {
+            tempData = tempData.replaceAll("LIKELYBENIGN", "");
+
+            if(tempData.contains("BENIGN")) {
+                rader = "B";
+            } else {
+                rader = "LB";
+            }
+        } else if(tempData.contains("BENIGN")) {
+            rader = "B";
+        }
+
+        return rader;
+    }
+
+    /**
+     * SIGNIFICANT 레이더 차트 화면 출력
+     */
+    @SuppressWarnings("unchecked")
     public void showClinicalSignificantGraph() {
         Map<String,Object> inSilicoPredictionMap = (Map<String,Object>) paramMap.get("inSilicoPrediction");
         Map<String,Object> variantClassifierMap = (Map<String,Object>) paramMap.get("variantClassifier");
@@ -1076,32 +1156,25 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
     }
 
     private void renderClinicalPathogenicityData(HBox node, String text, String value) {
-        int level = 0;
-        if (value != null) {
-            try {
-                level = Integer.valueOf(value);
-            } catch(NumberFormatException nfe){
-                nfe.printStackTrace();
-            }
-        }
+        if(value == null) value = "";
         if (node == null) return;
         ObservableList<Node> childs = node.getChildren();
         if (childs != null) {
             for(Node child : childs){
                 child.getStyleClass().removeAll(child.getStyleClass());
-                if (((Label)child).getText().equals("P") && level  == 5) {
+                if (((Label)child).getText().equals("P") && value.equals("P")) {
                     child.getStyleClass().add("prediction_A");
                     addClickEvent(text, child);
-                } else if(((Label)child).getText().equals("LP") && level == 4) {
+                } else if(((Label)child).getText().equals("LP") && value.equals("LP")) {
                     child.getStyleClass().add("prediction_B");
                     addClickEvent(text, child);
-                } else if(((Label)child).getText().equals("US") && level == 3) {
+                } else if(((Label)child).getText().equals("US") && value.equals("US")) {
                     child.getStyleClass().add("prediction_C");
                     addClickEvent(text, child);
-                } else if(((Label)child).getText().equals("LB") && level == 2) {
+                } else if(((Label)child).getText().equals("LB") && value.equals("LB")) {
                     child.getStyleClass().add("prediction_D");
                     addClickEvent(text, child);
-                } else if(((Label)child).getText().equals("B") && level == 1) {
+                } else if(((Label)child).getText().equals("B") && value.equals("B")) {
                     child.getStyleClass().add("prediction_E");
                     addClickEvent(text, child);
                 } else if(((Label)child).getText().equals(text)) {

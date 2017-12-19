@@ -71,6 +71,14 @@ public class ChangeTierDialogController extends SubPaneController {
         tierLabel.setText(ConvertUtil.tierConvert(currentTier) + " > " + ConvertUtil.tierConvert(tier));
     }
 
+    public void settingTier(String tier, VariantAndInterpretationEvidence selectedItem) {
+        this.tier = tier;
+        this.selectedItem = selectedItem;
+        String currentTier = getCurrentTier();
+
+        tierLabel.setText(ConvertUtil.tierConvert(currentTier) + " > " + ConvertUtil.tierConvert(tier));
+    }
+
     @Override
     public void show(Parent root) throws IOException {
         logger.info("show..");
@@ -109,18 +117,23 @@ public class ChangeTierDialogController extends SubPaneController {
             } catch (WebAPIException wae) {
                 DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
             }
-            selectedItem.getSnpInDel().setExpertTier(tier);
-            analysisDetailReportController.resetData(table);
-            //analysisDetailReportController.selectClear(getCurrentTier());
+            if(analysisDetailReportController != null) {
+                selectedItem.getSnpInDel().setExpertTier(tier);
+                selectedItem.getSnpInDel().setComment(comment);
+                analysisDetailReportController.resetData(table);
+            }
+
             dialogStage.close();
         }
     }
 
     @FXML
     public void cancel() {
-        analysisDetailReportController.selectClear(getCurrentTier());
-        selectedItem = null;
-        rowItem = null;
+        if(analysisDetailReportController != null) {
+            analysisDetailReportController.selectClear(getCurrentTier());
+            selectedItem = null;
+            rowItem = null;
+        }
         dialogStage.close();
     }
 

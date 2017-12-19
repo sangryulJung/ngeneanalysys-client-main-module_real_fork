@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -119,6 +120,17 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
     Sample sample = null;
     Panel panel = null;
+
+    @FXML private Button tierOne;
+    @FXML private Button tierTwo;
+    @FXML private Button tierThree;
+    @FXML private Button tierFour;
+
+    @FXML private HBox swTierArea;
+    @FXML private HBox userTierArea;
+
+    @FXML private VBox tierChangeVBox;
+
 
     //VariantList
     List<VariantAndInterpretationEvidence> list = null;
@@ -239,6 +251,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
         //필터 박스 출력
         if(panel != null &&"GERMLINE".equals(panel.getAnalysisType())) {
+            tierChangeVBox.setVisible(false);
             setFilterBox();
         } else {
             filterTitle.setText("Tier Filter");
@@ -252,57 +265,47 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
     }
 
     public void setTierFilterBox() {
-        //Map<String, Long> count = list.stream().collect(Collectors.groupingBy(SnpInDel::getSwTier, Collectors.counting()));
-
-        List<VariantAndInterpretationEvidence> negativeList = list.stream().filter(item -> (("TN".equalsIgnoreCase(item.getSnpInDel().getExpertTier()) ||
-                (StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && item.getSnpInDel().getSwTier().equalsIgnoreCase("TN")))))
-                .collect(Collectors.toList());
-
-        List<VariantAndInterpretationEvidence> tierOne = list.stream().filter(item -> (("T1".equalsIgnoreCase(item.getSnpInDel().getExpertTier()) ||
-                (StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && item.getSnpInDel().getSwTier().equalsIgnoreCase("T1")))))
-                .collect(Collectors.toList());
-
-        List<VariantAndInterpretationEvidence> tierTwo = list.stream().filter(item -> (("T2".equalsIgnoreCase(item.getSnpInDel().getExpertTier()) ||
-                (StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && item.getSnpInDel().getSwTier().equalsIgnoreCase("T2")))))
-                .collect(Collectors.toList());
-
-        List<VariantAndInterpretationEvidence> tierThree = list.stream().filter(item -> (("T3".equalsIgnoreCase(item.getSnpInDel().getExpertTier()) ||
-                (StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && item.getSnpInDel().getSwTier().equalsIgnoreCase("T3")))))
-                .collect(Collectors.toList());
-
-        List<VariantAndInterpretationEvidence> tierFour = list.stream().filter(item -> (("T4".equalsIgnoreCase(item.getSnpInDel().getExpertTier()) ||
-                (StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && item.getSnpInDel().getSwTier().equalsIgnoreCase("T4")))))
-                .collect(Collectors.toList());
-
         VBox totalVariantBox = getFilterBox(ACMGFilterCode.TOTAL_VARIANT, list.size());
         filterList.getChildren().add(totalVariantBox);
         filterList.setMargin(totalVariantBox, new Insets(0, 0, 0, 5));
 
         // Tier I
         //VBox predictionABox = getFilterBox(ACMGFilterCode.TIER_ONE, (count.get("T1") != null ? count.get("T1").intValue() : 0));
-        VBox predictionABox = getFilterBox(ACMGFilterCode.TIER_ONE, tierOne.size());
+        VBox predictionABox = getFilterBox(ACMGFilterCode.TIER_ONE, returnTierVariantCount("T1"));
         filterList.getChildren().add(predictionABox);
         filterList.setMargin(predictionABox, new Insets(0, 0, 0, 5));
 
         // Tier II
-        VBox predictionBBox = getFilterBox(ACMGFilterCode.TIER_TWO, tierTwo.size());
+        VBox predictionBBox = getFilterBox(ACMGFilterCode.TIER_TWO, returnTierVariantCount("T2"));
         filterList.getChildren().add(predictionBBox);
         filterList.setMargin(predictionBBox, new Insets(0, 0, 0, 5));
 
         // Tier III
-        VBox predictionCBox = getFilterBox(ACMGFilterCode.TIER_THREE, tierThree.size());
+        VBox predictionCBox = getFilterBox(ACMGFilterCode.TIER_THREE, returnTierVariantCount("T3"));
         filterList.getChildren().add(predictionCBox);
         filterList.setMargin(predictionCBox, new Insets(0, 0, 0, 5));
 
         // Tier IV
-        VBox predictionDBox = getFilterBox(ACMGFilterCode.TIER_FOUR, tierFour.size());
+        VBox predictionDBox = getFilterBox(ACMGFilterCode.TIER_FOUR, returnTierVariantCount("T4"));
         filterList.getChildren().add(predictionDBox);
         filterList.setMargin(predictionDBox, new Insets(0, 0, 0, 5));
 
         // Negative
-        VBox predictionEBox = getFilterBox(ACMGFilterCode.TIER_NEGATIVE, negativeList.size());
+        VBox predictionEBox = getFilterBox(ACMGFilterCode.TIER_NEGATIVE, returnTierVariantCount("TN"));
         filterList.getChildren().add(predictionEBox);
         filterList.setMargin(predictionEBox, new Insets(0, 0, 0, 5));
+    }
+
+    public int returnTierVariantCount(String tier) {
+        return (int)list.stream().filter(item -> ((tier.equalsIgnoreCase(item.getSnpInDel().getExpertTier()) ||
+                (StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && item.getSnpInDel().getSwTier().equalsIgnoreCase(tier)))))
+                .count();
+    }
+
+    public int returnPathogenicityVariantCount(String pathogenicity) {
+        return (int)list.stream().filter(item -> ((pathogenicity.equalsIgnoreCase(item.getSnpInDel().getExpertPathogenicityLevel()) ||
+                (StringUtils.isEmpty(item.getSnpInDel().getExpertPathogenicityLevel()) && item.getSnpInDel().getSwPathogenicityLevel().equalsIgnoreCase(pathogenicity)))))
+                .count();
     }
 
     /**
@@ -313,32 +316,32 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         AnalysisResultSummary summary = sample.getAnalysisResultSummary();
 
         // total variant count
-        VBox totalVariantBox = getFilterBox(ACMGFilterCode.TOTAL_VARIANT, summary.getAllVariantCount());
+        VBox totalVariantBox = getFilterBox(ACMGFilterCode.TOTAL_VARIANT, list.size());
         filterList.getChildren().add(totalVariantBox);
         filterList.setMargin(totalVariantBox, new Insets(0, 0, 0, 5));
 
         // prediction A
-        VBox predictionABox = getFilterBox(ACMGFilterCode.PREDICTION_A, summary.getLevel1VariantCount());
+        VBox predictionABox = getFilterBox(ACMGFilterCode.PREDICTION_A, returnPathogenicityVariantCount("P"));
         filterList.getChildren().add(predictionABox);
         filterList.setMargin(predictionABox, new Insets(0, 0, 0, 5));
 
         // prediction B
-        VBox predictionBBox = getFilterBox(ACMGFilterCode.PREDICTION_B, summary.getLevel2VariantCount());
+        VBox predictionBBox = getFilterBox(ACMGFilterCode.PREDICTION_B, returnPathogenicityVariantCount("LP"));
         filterList.getChildren().add(predictionBBox);
         filterList.setMargin(predictionBBox, new Insets(0, 0, 0, 5));
 
         // prediction C
-        VBox predictionCBox = getFilterBox(ACMGFilterCode.PREDICTION_C, summary.getLevel3VariantCount());
+        VBox predictionCBox = getFilterBox(ACMGFilterCode.PREDICTION_C, returnPathogenicityVariantCount("US"));
         filterList.getChildren().add(predictionCBox);
         filterList.setMargin(predictionCBox, new Insets(0, 0, 0, 5));
 
         // prediction D
-        VBox predictionDBox = getFilterBox(ACMGFilterCode.PREDICTION_D, summary.getLevel4VariantCount());
+        VBox predictionDBox = getFilterBox(ACMGFilterCode.PREDICTION_D, returnPathogenicityVariantCount("LB"));
         filterList.getChildren().add(predictionDBox);
         filterList.setMargin(predictionDBox, new Insets(0, 0, 0, 5));
 
         // prediction E
-        VBox predictionEBox = getFilterBox(ACMGFilterCode.PREDICTION_E, summary.getLevel5VariantCount());
+        VBox predictionEBox = getFilterBox(ACMGFilterCode.PREDICTION_E, returnPathogenicityVariantCount("B"));
         filterList.getChildren().add(predictionEBox);
         filterList.setMargin(predictionEBox, new Insets(0, 0, 0, 5));
 
@@ -428,7 +431,6 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             List<VariantAndInterpretationEvidence> list = analysisResultVariantList.getResult();
             this.list = list;
 
-            //if(list == null || list.isEmpty()) list = dummyVariantList();
             ObservableList<VariantAndInterpretationEvidence> displayList = null;
 
             if(acmgFilterCode != null && acmgFilterCode.getAlias() != null && panel != null && ExperimentTypeCode.GERMLINE.getDescription().equals(panel.getAnalysisType())) {
@@ -500,28 +502,27 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         setDetailTabActivationToggle(false);
         try {
             // Detail 데이터 API 요청
-            /*HttpClientResponse responseDetail = apiService.get(
-                    "/analysis_result/variant_details/" + selectedAnalysisResultVariant.getId(), null, null, false);*/
+            HttpClientResponse responseDetail = apiService.get(
+                    "/analysisResults/snpInDels/" + selectedAnalysisResultVariant.getSnpInDel().getId(), null, null, false);
             // 상세 데이터 요청이 정상 요청된 경우 진행.
-           /* String data = dummyVariantDetail(selectedAnalysisResultVariant.getId());
-            Map<String, Object> detailMap = JsonUtil.fromJsonToMap(data);
-            if (detailMap != null && !detailMap.isEmpty() && detailMap.size() > 0) {
-                // 하단 Overview 탭 설정.
-                if (subTabOverview != null){
-                    showOverviewTab(detailMap);
-                }
-            }*/
+
+            SnpInDel snpInDel
+                    = responseDetail.getObjectBeforeConvertResponseToJSON(SnpInDel.class);
+            VariantAndInterpretationEvidence variantAndInterpretationEvidence = new VariantAndInterpretationEvidence();
+
+            variantAndInterpretationEvidence.setSnpInDel(snpInDel);
+            variantAndInterpretationEvidence.setInterpretationEvidence(selectedAnalysisResultVariant.getInterpretationEvidence());
 
             if(analysisResultVariant != null) {
                 if (subTabOverview != null){
-                    showOverviewTab(analysisResultVariant);
+                    showOverviewTab(variantAndInterpretationEvidence);
                 }
             }
-        } /*catch (WebAPIException wae) {
+        } catch (WebAPIException wae) {
             wae.printStackTrace();
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
-        }*/
+        }
         catch (Exception e) {
             e.printStackTrace();
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
@@ -544,6 +545,8 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                     }*/
                 }
             }
+
+            settingTierArea();
 
             // 우측 Pathogenic Review 화면 설정
             // comment tab 화면 출력
@@ -1324,5 +1327,91 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
     public String cutVariantTypeString(String variantType) {
         if(variantType.contains(":")) return variantType.substring(0, variantType.indexOf(':'));
         return variantType;
+    }
+
+    public void settingTierArea() {
+        if(selectedAnalysisResultVariant.getSnpInDel().getSwTier() != null) {
+            for(Node node : swTierArea.getChildren()) {
+                Label label = (Label) node;
+
+                if(label.getId().equals(selectedAnalysisResultVariant.getSnpInDel().getSwTier())) {
+                    label.getStyleClass().removeAll(label.getStyleClass());
+
+                    if(selectedAnalysisResultVariant.getSnpInDel().getSwTier().equals("T1")) {
+                        label.getStyleClass().add("tier_one");
+                    } else if(selectedAnalysisResultVariant.getSnpInDel().getSwTier().equals("T2")) {
+                        label.getStyleClass().add("tier_two");
+                    } else if(selectedAnalysisResultVariant.getSnpInDel().getSwTier().equals("T3")) {
+                        label.getStyleClass().add("tier_three");
+                    } else if(selectedAnalysisResultVariant.getSnpInDel().getSwTier().equals("T4")) {
+                        label.getStyleClass().add("tier_four");
+                    }
+                } else {
+                    label.getStyleClass().add("no_selected_sw_tier");
+                }
+            }
+        }
+        String userTier = selectedAnalysisResultVariant.getSnpInDel().getExpertTier();
+        userTier = ConvertUtil.convertButtonId(userTier);
+        for(Node node : userTierArea.getChildren()) {
+            Button button = (Button)node;
+            button.getStyleClass().removeAll(button.getStyleClass());
+            button.getStyleClass().add("button");
+            if(!StringUtils.isEmpty(userTier)) {
+                if(userTier.equals(button.getId())) {
+                    if(selectedAnalysisResultVariant.getSnpInDel().getExpertTier().equals("T1")) {
+                        button.getStyleClass().add("tier_one");
+                        button.setDisable(true);
+                    } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertTier().equals("T2")) {
+                        button.getStyleClass().add("tier_two");
+                        button.setDisable(true);
+                    } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertTier().equals("T3")) {
+                        button.getStyleClass().add("tier_three");
+                        button.setDisable(true);
+                    } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertTier().equals("T4")) {
+                        button.getStyleClass().add("tier_four");
+                        button.setDisable(true);
+                    }
+                } else {
+                    button.getStyleClass().add("no_selected_user_tier");
+                    button.setDisable(false);
+                }
+            } else {
+                button.getStyleClass().add("no_selected_user_tier");
+                button.setDisable(false);
+            }
+
+        }
+    }
+
+    @FXML
+    public void setFlag(ActionEvent event) {
+        Button actionButton = (Button) event.getSource();
+        String value = null;
+        if (actionButton == tierOne) {
+            value = "T1";
+        } else if (actionButton == tierTwo) {
+            value = "T2";
+        } else if (actionButton == tierThree) {
+            value = "T3";
+        } else if (actionButton == tierFour) {
+            value = "T4";
+        }
+
+        if((selectedAnalysisResultVariant.getSnpInDel().getExpertTier() == null)
+                    || !selectedAnalysisResultVariant.getSnpInDel().getExpertTier().equals(value)) {
+            try {
+                FXMLLoader loader = mainApp.load(FXMLConstants.CHANGE_TIER);
+                Node root = loader.load();
+                ChangeTierDialogController changeTierDialogController = loader.getController();
+                changeTierDialogController.setMainController(this.getMainController());
+                changeTierDialogController.settingTier(value, selectedAnalysisResultVariant);
+                changeTierDialogController.show((Parent) root);
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+
+            showVariantList(null, 0);
+        }
     }
 }

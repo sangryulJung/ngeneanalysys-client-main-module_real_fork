@@ -3,6 +3,7 @@
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -16,6 +17,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane prefHeight="590.0" prefWidth="1280.0" style="-fx-background-color: #F7F7F7;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNPsINDELsController">
 	<top>
@@ -39,7 +41,7 @@
             								<Image url="@../images/icon_03.png" />
             							</image>
             						</ImageView>
-            						<Label fx:id="filterTitle" prefHeight="26.0" prefWidth="103.0" style="-fx-font-size: 16;" text="Variant Filter">
+            						<Label fx:id="filterTitle" prefHeight="26.0" prefWidth="121.0" style="-fx-font-size: 16;" text="Variant Filter">
             							<HBox.margin>
             								<Insets left="2.0" />
             							</HBox.margin>
@@ -148,6 +150,89 @@
             </HBox>
             <VBox alignment="BOTTOM_LEFT" prefHeight="320.0" prefWidth="50.0" style="-fx-background-color: #F7F7F7;" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
+                  <VBox fx:id="tierChangeVBox" alignment="TOP_CENTER" prefHeight="130.0" prefWidth="100.0">
+                     <children>
+                        <Label text="Tier Change" />
+                        <Label alignment="CENTER" maxHeight="16.0" maxWidth="1.7976931348623157E308" minHeight="16.0" prefHeight="16.0" styleClass="flagging_label" text="SW Tier">
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="4.0" />
+                           </VBox.margin>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </Label>
+                        <HBox fx:id="swTierArea" alignment="TOP_CENTER" maxHeight="20.0" maxWidth="158.0" minHeight="20.0" minWidth="138.0" prefHeight="20.0" prefWidth="138.0">
+                           <children>
+                              <Label fx:id="T1" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="no_selected_sw_tier" text="I">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Label fx:id="T2" alignment="CENTER" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" prefHeight="20.0" prefWidth="20.0" styleClass="no_selected_sw_tier" text="II">
+                                 <HBox.margin>
+                                    <Insets left="4.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Label fx:id="T3" alignment="CENTER" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" prefHeight="20.0" prefWidth="20.0" styleClass="no_selected_sw_tier" text="III">
+                                 <HBox.margin>
+                                    <Insets left="4.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Label fx:id="T4" alignment="CENTER" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" prefHeight="20.0" prefWidth="20.0" styleClass="no_selected_sw_tier" text="IV">
+                                 <HBox.margin>
+                                    <Insets left="4.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="3.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <Label alignment="TOP_CENTER" maxHeight="16.0" maxWidth="1.7976931348623157E308" minHeight="16.0" prefHeight="16.0" prefWidth="140.0" styleClass="flagging_label" text="User Tier">
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="4.0" />
+                           </VBox.margin>
+                        </Label>
+                        <HBox fx:id="userTierArea" alignment="TOP_CENTER" minHeight="20.0" prefHeight="20.0" prefWidth="140.0">
+                           <children>
+                              <Button fx:id="tierOne" layoutX="70.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setFlag" prefHeight="20.0" prefWidth="20.0" styleClass="tier_one" text="I">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button fx:id="tierTwo" layoutX="50.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setFlag" prefHeight="20.0" prefWidth="20.0" styleClass="tier_two" text="II">
+                                 <HBox.margin>
+                                    <Insets left="4.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button fx:id="tierThree" layoutX="30.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setFlag" prefHeight="20.0" prefWidth="20.0" styleClass="tier_three" text="III">
+                                 <HBox.margin>
+                                    <Insets left="4.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button fx:id="tierFour" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setFlag" prefHeight="20.0" prefWidth="20.0" styleClass="tier_four" text="IV">
+                                 <HBox.margin>
+                                    <Insets left="4.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="3.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <VBox prefWidth="100.0" styleClass="pathogenic_review_checkbox">
+                           <children>
+                              <CheckBox fx:id="addToReportCheckBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="28.0" text="Add to Report" VBox.vgrow="ALWAYS" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
       				<VBox fx:id="linkArea" maxWidth="-Infinity" minWidth="140.0" prefHeight="132.0" prefWidth="130.0" style="-fx-background-color: #F7F7F7;">
                      <VBox.margin>
                         <Insets />

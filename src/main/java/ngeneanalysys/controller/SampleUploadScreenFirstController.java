@@ -3,9 +3,7 @@ package ngeneanalysys.controller;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -254,14 +252,27 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 int index  = panelComboBoxList.indexOf(obj);
                 ComboBoxItem item = obj.getSelectionModel().getSelectedItem();
                 logger.info(item.getText());
-                panels.stream().forEach(panelItem -> {
-                    if(panelItem.getId() == Integer.parseInt(item.getValue())) {
-                        sampleSourceTextFieldList.get(index).setText(panelItem.getSampleSource());
+                if(!StringUtils.isEmpty(item.getValue())) {
+                    panels.stream().forEach(panelItem -> {
+                        if (panelItem.getId() == Integer.parseInt(item.getValue())) {
+                            sampleSourceTextFieldList.get(index).setText(panelItem.getSampleSource());
+                        }
+                    });
+
+                    if (index == 0) {
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Panel Setting");
+                        alert.setHeaderText("Panel Setting");
+                        alert.setContentText("Do you want to apply them all at once?");
+                        Optional<ButtonType> result = alert.showAndWait();
+
+                        if (result.isPresent() && result.get() == ButtonType.OK) {
+                            panelBatchApplication(item);
+                        }
                     }
-                });
 
-                settingDiseaseComboBox(Integer.parseInt(item.getValue()), index);
-
+                    settingDiseaseComboBox(Integer.parseInt(item.getValue()), index);
+                }
             }
         });
 
@@ -275,6 +286,21 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         //standardDataGridPane.addRow(row, sampleName, select, panel, source, disease, paitentId);
         standardDataGridPane.addRow(row, sampleName, panel, source, disease, paitentId);
         panel.getSelectionModel().select(0);
+    }
+
+    public void panelBatchApplication(ComboBoxItem item) {
+        for(int index = 1 ; index < panelComboBoxList.size(); index++) {
+            ComboBox<ComboBoxItem> panel = panelComboBoxList.get(index);
+            panel.getSelectionModel().select(item);
+            final int itemIndex = index;
+            panels.stream().forEach(panelItem -> {
+                if (panelItem.getId() == Integer.parseInt(item.getValue())) {
+                    sampleSourceTextFieldList.get(itemIndex).setText(panelItem.getSampleSource());
+                }
+            });
+
+            settingDiseaseComboBox(Integer.parseInt(item.getValue()), index);
+        }
     }
 
     public void settingDiseaseComboBox(int panelId, int index) {

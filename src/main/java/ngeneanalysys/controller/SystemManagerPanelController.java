@@ -31,13 +31,14 @@ import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.fop.area.Page;
 import org.controlsfx.control.CheckComboBox;
 import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.function.UnaryOperator;
+import java.util.regex.Pattern;
 
 /**
  * @author Jang
@@ -68,6 +69,18 @@ public class SystemManagerPanelController extends SubPaneController {
 
     @FXML
     private ComboBox<ComboBoxItem> reportTemplateComboBox;
+
+    @FXML
+    private TextField warningReadDepthTextField;
+
+    @FXML
+    private TextField warningMAFTextField;
+
+    @FXML
+    private CheckBox warningReadDepthCheckBox;
+
+    @FXML
+    private CheckBox warningMAFCheckBox;
 
     @FXML
     private Button roiFileSelectionButton;
@@ -115,6 +128,9 @@ public class SystemManagerPanelController extends SubPaneController {
     private TableColumn<Panel, Boolean> editPanelTableColumn;
 
     @FXML
+    private TableColumn<Panel, String> defaultPanelTableColumn;
+
+    @FXML
     private Label titleLabel;
 
     @FXML
@@ -144,7 +160,28 @@ public class SystemManagerPanelController extends SubPaneController {
         analysisTypeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getAnalysisType()));
         sampleSourceTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getSampleSource()));
         libraryTypeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getLibraryType()));
+        defaultPanelTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getIsDefault() ? "Y" : "N"));
         deletedTableColumn.setCellValueFactory(item -> new SimpleStringProperty((item.getValue().getDeleted() == 0) ? "N" : "Y"));
+
+        Pattern pattern = Pattern.compile("\\d*|\\d+\\.\\d*");
+        TextFormatter formatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
+            return pattern.matcher(change.getControlNewText()).matches() ? change : null;
+        });
+        warningMAFTextField.setTextFormatter(formatter);
+
+        warningReadDepthTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(!newValue.matches("[0-9]*")) warningReadDepthTextField.setText(oldValue);
+        });
+
+        warningMAFCheckBox.selectedProperty().addListener((observable, oldValue,  newValue) ->
+            warningMAFTextField.setDisable(!newValue)
+        );
+
+
+        warningReadDepthCheckBox.selectedProperty().addListener((observable, oldValue,  newValue) ->
+            warningReadDepthTextField.setDisable(!newValue)
+        );
+
 
         targetComboBox.setConverter(new ComboBoxConverter());
         targetComboBox.getItems().add(new ComboBoxItem("DNA", "DNA"));
@@ -193,8 +230,6 @@ public class SystemManagerPanelController extends SubPaneController {
         editPanelTableColumn.setCellFactory(param -> new PanelModifyButton());
 
         HttpClientResponse response = null;
-
-        reportTemplateComboBoxSetting();
 
         try {
             //response = apiService.get("/admin/panels", null, null, false);
@@ -318,6 +353,9 @@ public class SystemManagerPanelController extends SubPaneController {
     }
 
     public void reportTemplateComboBoxSetting() {
+
+        reportTemplateComboBox.getItems().clear();
+
         try {
             HttpClientResponse response = apiService.get("admin/reportTemplate", null, null, false);
 
@@ -328,8 +366,9 @@ public class SystemManagerPanelController extends SubPaneController {
                 reportTemplateComboBox.setConverter(new ComboBoxConverter());
                 reportTemplateComboBox.getItems().add(new ComboBoxItem());
                 for(ReportTemplate reportTemplate : reportTemplates) {
-                    reportTemplateComboBox.getItems().add(new ComboBoxItem(reportTemplate.getId().toString(),
-                            reportTemplate.getName()));
+                    if(reportTemplate.getDeleted() == 0)
+                        reportTemplateComboBox.getItems().add(new ComboBoxItem(reportTemplate.getId().toString(),
+                                reportTemplate.getName()));
                 }
 
             }
@@ -350,6 +389,13 @@ public class SystemManagerPanelController extends SubPaneController {
             Map<String,Object> params = new HashMap<>();
             params.put("name", panelName);
             params.put("code", code);
+            if(warningReadDepthCheckBox.isSelected() && !StringUtils.isEmpty(warningReadDepthTextField.getText())) {
+                params.put("warningReadDepth", Integer.parseInt(warningReadDepthTextField.getText()));
+            }
+            if(warningMAFCheckBox.isSelected() && !StringUtils.isEmpty(warningMAFTextField.getText())) {
+                params.put("warningMAF", warningMAFTextField.getText());
+            }
+
             params.put("target", targetComboBox.getSelectionModel().getSelectedItem().getValue());
             params.put("analysisType", analysisTypeComboBox.getSelectionModel().getSelectedItem().getValue());
             params.put("libraryType", libraryTypeComboBox.getSelectionModel().getSelectedItem().getValue());
@@ -416,8 +462,9 @@ public class SystemManagerPanelController extends SubPaneController {
                         final PagedPanel tablePanels = response2.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
                         mainController.getBasicInformationMap().put("panels", panels.getResult());
 
-                        panelListTable.getItems().clear();
-                        panelListTable.getItems().addAll(tablePanels.getResult());
+                        //panelListTable.getItems().clear();
+                        //panelListTable.getItems().addAll(tablePanels.getResult());
+                        setPanelList(1);
                         resetItem();
                         setDisabledItem(true);
                         panelSaveButton.setDisable(true);
@@ -436,8 +483,11 @@ public class SystemManagerPanelController extends SubPaneController {
     }
 
     public void resetItem() {
+        reportTemplateComboBoxSetting();
         panelNameTextField.setText("");
         panelCodeTextField.setText("");
+        warningMAFTextField.setText("");
+        warningReadDepthTextField.setText("");
         sampleSourceComboBox.getSelectionModel().selectFirst();
         analysisTypeComboBox.getSelectionModel().selectFirst();
         targetComboBox.getSelectionModel().selectFirst();
@@ -447,9 +497,15 @@ public class SystemManagerPanelController extends SubPaneController {
         groupCheckComboBox.getCheckModel().clearChecks();
         diseaseCheckComboBox.getCheckModel().clearChecks();
         reportTemplateComboBox.getSelectionModel().selectFirst();
+        warningReadDepthCheckBox.setSelected(false);
+        warningMAFCheckBox.setSelected(false);
     }
 
     public void setDisabledItem(boolean condition) {
+        warningReadDepthTextField.setDisable(true);
+        warningMAFTextField.setDisable(true);
+        warningReadDepthCheckBox.setDisable(condition);
+        warningMAFCheckBox.setDisable(condition);
         panelNameTextField.setDisable(condition);
         panelCodeTextField.setDisable(condition);
         sampleSourceComboBox.setDisable(condition);
@@ -470,8 +526,10 @@ public class SystemManagerPanelController extends SubPaneController {
             final PagedPanel tablePanels = response.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
             mainController.getBasicInformationMap().put("panels", tablePanels.getResult());
 
-            panelListTable.getItems().clear();
-            panelListTable.getItems().addAll(tablePanels.getResult());
+            //panelListTable.getItems().removeAll(panelListTable.getItems());
+            //panelListTable.getItems().addAll(tablePanels.getResult());
+
+            setPanelList(1);
 
         } catch (WebAPIException wae) {
             DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
@@ -529,6 +587,17 @@ public class SystemManagerPanelController extends SubPaneController {
 
                 panelNameTextField.setText(panel.getName());
                 panelCodeTextField.setText(panel.getCode());
+                if(panel.getWarningMAF() != null) {
+                    warningMAFCheckBox.setSelected(true);
+                    warningMAFTextField.setDisable(false);
+                    warningMAFTextField.setText(panel.getWarningMAF().toString());
+                }
+                if(panel.getWarningReadDepth() != null) {
+                    warningReadDepthCheckBox.setSelected(true);
+                    warningReadDepthTextField.setDisable(false);
+                    warningReadDepthTextField.setText(panel.getWarningReadDepth().toString());
+                }
+
                 Optional<ComboBoxItem> sampleSourceItem =
                         sampleSourceComboBox.getItems().stream().filter(item -> item.getValue().equalsIgnoreCase(panel.getSampleSource())).findFirst();
                 if(sampleSourceItem.isPresent()) sampleSourceComboBox.getSelectionModel().select(sampleSourceItem.get());
@@ -570,6 +639,17 @@ public class SystemManagerPanelController extends SubPaneController {
                 roiFileSelectionButton.setDisable(false);
                 panelSaveButton.setDisable(false);
 
+                if(panelDetail.getIsDefault()) {
+                    setDisabledItem(true);
+                    diseaseCheckComboBox.setDisable(false);
+                    groupCheckComboBox.setDisable(false);
+                }
+
+                if(panelDetail.getName().contains("BRCA")) {
+                    diseaseCheckComboBox.setDisable(true);
+                    warningMAFCheckBox.setDisable(true);
+                    warningReadDepthCheckBox.setDisable(true);
+                }
             });
 
             img2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {

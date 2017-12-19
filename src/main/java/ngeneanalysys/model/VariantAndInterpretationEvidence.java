@@ -9,6 +9,20 @@ public class VariantAndInterpretationEvidence {
     private Interpretation interpretationEvidence;
 
     /**
+     * @param snpInDel
+     */
+    public void setSnpInDel(SnpInDel snpInDel) {
+        this.snpInDel = snpInDel;
+    }
+
+    /**
+     * @param interpretationEvidence
+     */
+    public void setInterpretationEvidence(Interpretation interpretationEvidence) {
+        this.interpretationEvidence = interpretationEvidence;
+    }
+
+    /**
      * @return snpInDel
      */
     public SnpInDel getSnpInDel() {

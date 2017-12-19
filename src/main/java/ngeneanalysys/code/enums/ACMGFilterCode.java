@@ -15,11 +15,11 @@ public enum ACMGFilterCode {
 	PREDICTION_E("Benign", "Benign", "E", "B"),
 	LOW_CONFIDENCE("Low Confidence", "Low Confidence", "yes", null),
 	//임시
-	TIER_ONE("Tier I", "Tier I", "1", "T1"),
-	TIER_TWO("Tier II", "Tier II", "2", "T2"),
-	TIER_THREE("Tier III", "Tier III", "3", "T3"),
-	TIER_FOUR("Tier IV", "Tier IV", "4", "T4"),
-	TIER_NEGATIVE("Tier N", "Tier N", "N", "TN");
+	TIER_ONE("Tier I", "I", "1", "T1"),
+	TIER_TWO("Tier II", "II", "2", "T2"),
+	TIER_THREE("Tier III", "III", "3", "T3"),
+	TIER_FOUR("Tier IV", "IV", "4", "T4"),
+	TIER_NEGATIVE("Tier N", "N", "N", "TN");
 
 	private String description;
 	private String detail;

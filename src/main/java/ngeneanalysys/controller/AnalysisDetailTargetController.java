@@ -14,12 +14,14 @@ import javafx.scene.layout.GridPane;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
+import ngeneanalysys.model.Panel;
 import ngeneanalysys.model.Sample;
 import ngeneanalysys.model.VariantCountByGene;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
+import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
@@ -93,8 +95,8 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
 
-        //fusionButton.setDisable(true);
-        //fusionButton.setVisible(false);
+        fusionButton.setDisable(true);
+        fusionButton.setVisible(false);
 
         geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getGeneSymbol()));
         tier1SnvColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier1SnpCount()).asObject());
@@ -124,7 +126,6 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
             AnalysisDetailSNPsINDELsController controller = loader.getController();
             controller.setParamMap(getParamMap());
             controller.setMainController(this.mainController);
-
             controller.show(page);
         } catch (IOException e) {
             e.printStackTrace();
@@ -205,14 +206,22 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
             param.put("geneSymbols", geneList);
         }
         try {
-            HttpClientResponse response = apiService.get("/analysisResults/variantCountByGene/" + sampleId,
-                    param, null, false);
-            logger.info(response.toString());
+            HttpClientResponse response = null;
+            Panel panel = (Panel)getParamMap().get("panel");
+            if(panel != null && "SOMATIC".equals(panel.getAnalysisType())) {
+                response = apiService.get("/analysisResults/variantCountByGeneForSomaticDNA/" + sampleId,
+                        param, null, false);
+            } else if(panel != null && "GERMLINE".equals(panel.getAnalysisType())) {
+                response = apiService.get("/analysisResults/variantCountByGeneForGermlineDNA/" + sampleId,
+                        param, null, false);
+            }
+
             if (response != null) {
                 variantCountByGenes = (ObservableList<VariantCountByGene>) response
                         .getMultiObjectBeforeConvertResponseToJSON(VariantCountByGene.class,
                                 true);
             }
+            if(variantCountByGenes == null) return null;
         } catch (WebAPIException wae) {
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);

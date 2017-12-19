@@ -144,7 +144,8 @@ public class AnalysisDetailLayoutController extends SubPaneController {
         for (AnalysisDetailTabMenuCode code : AnalysisDetailTabMenuCode.values()) {
             AnalysisDetailTabItem item = code.getItem();
 
-            if(panel.getAnalysisType() != null && ExperimentTypeCode.GERMLINE.getDescription().equals(panel.getAnalysisType())){
+            if("TAB_OVERVIEW".equals(item.getNodeId()) &&
+                    (panel.getAnalysisType() != null && ExperimentTypeCode.GERMLINE.getDescription().equals(panel.getAnalysisType()))){
                 continue;
             }
             Tab tab = new Tab();

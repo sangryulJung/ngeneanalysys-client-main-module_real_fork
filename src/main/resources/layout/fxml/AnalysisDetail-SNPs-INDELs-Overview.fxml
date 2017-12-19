@@ -566,14 +566,14 @@
                   </Pane>
                   <Pane fx:id="clinicalPane" prefHeight="258.0" prefWidth="264.0">
                      <children>
-            				<VBox fx:id="clinicalSignificant" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="258.0" prefWidth="270.0" visible="false">
+            				<VBox fx:id="clinicalSignificant" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="258.0" prefWidth="265.0" visible="false">
             					<children>
             						<Label styleClass="title1" text="CLINICAL SIGNIFICANT">
             							<padding>
             								<Insets top="-5.0" />
             							</padding>
             						</Label>
-            						<TabPane fx:id="clinicalTabPane" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pickOnBounds="false" prefHeight="243.0" prefWidth="260.0" tabClosingPolicy="UNAVAILABLE">
+            						<TabPane fx:id="clinicalTabPane" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pickOnBounds="false" prefHeight="243.0" prefWidth="270.0" tabClosingPolicy="UNAVAILABLE">
             							<tabs>
             								<Tab closable="false" text="PATHOGENICITY">
             									<content>
