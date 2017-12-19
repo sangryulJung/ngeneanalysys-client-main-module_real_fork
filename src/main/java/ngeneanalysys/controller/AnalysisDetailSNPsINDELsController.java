@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -131,6 +132,8 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
     @FXML private VBox tierChangeVBox;
 
+    @FXML private CheckBox addToReportCheckBox;
+
 
     //VariantList
     List<VariantAndInterpretationEvidence> list = null;
@@ -190,6 +193,38 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         ruoImgView.setFitHeight(50);
         iconAreaHBox.getChildren().add(ruoImgView);
 
+        addToReportCheckBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+            if(selectedAnalysisResultVariant != null) {
+                String oldSymbol = selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport();
+                if (addToReportCheckBox.isSelected()) {
+                    try {
+                        FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
+                        Node node = loader.load();
+                        ExcludeReportDialogController excludeReportDialogController = loader.getController();
+                        excludeReportDialogController.setMainController(mainController);
+                        excludeReportDialogController.settingItem("Y", selectedAnalysisResultVariant, addToReportCheckBox);
+                        excludeReportDialogController.show((Parent) node);
+                    } catch (IOException ioe) {
+                        ioe.printStackTrace();
+                    }
+                    if(!oldSymbol.equals(selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport()))
+                        showVariantList(null, 0);
+                } else {
+                    try {
+                        FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
+                        Node node = loader.load();
+                        ExcludeReportDialogController excludeReportDialogController = loader.getController();
+                        excludeReportDialogController.setMainController(mainController);
+                        excludeReportDialogController.settingItem("N", selectedAnalysisResultVariant, addToReportCheckBox);
+                        excludeReportDialogController.show((Parent) node);
+                    } catch (IOException ioe) {
+                        ioe.printStackTrace();
+                    }
+                }
+                if(!oldSymbol.equals(selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport()))
+                    showVariantList(null, 0);
+            }
+        });
 
         // 목록 정렬 설정 트래킹
         variantListTableView.getSortOrder().addListener(new ListChangeListener<TableColumn<VariantAndInterpretationEvidence,?>>() {
@@ -440,6 +475,9 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                 list = list.stream().filter(variant ->
                         (!StringUtils.isEmpty(variant.getSnpInDel().getExpertTier()) && variant.getSnpInDel().getExpertTier().equals(acmgFilterCode.getAlias())) ||
                         (StringUtils.isEmpty(variant.getSnpInDel().getExpertTier()) && variant.getSnpInDel().getSwTier().equals(acmgFilterCode.getAlias()))).collect(Collectors.toList());
+            } else if (acmgFilterCode != null && acmgFilterCode.getAlias() == null && panel != null && ExperimentTypeCode.GERMLINE.getDescription().equals(panel.getAnalysisType())) {
+                list = list.stream().filter(variant ->
+                        variant.getSnpInDel().getHasWarning() != null).collect(Collectors.toList());
             }
 
             // 하단 탭 활성화 토글
@@ -548,6 +586,12 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
             settingTierArea();
 
+            if("Y".equals(analysisResultVariant.getSnpInDel().getIncludedInReport())) {
+                addToReportCheckBox.setSelected(true);
+            } else {
+                addToReportCheckBox.setSelected(false);
+            }
+
             // 우측 Pathogenic Review 화면 설정
             // comment tab 화면 출력
             if (subTabMemo != null)
@@ -613,65 +657,6 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         }
 
         try {
-            FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_SNPS_INDELS_OVERVIEW);
-            Node node = loader.load();
-            overviewController = loader.getController();
-            overviewController.setMainController(this.getMainController());
-            overviewController.setAnalysisDetailSNPsINDELsController(this);
-            overviewController.setParamMap(paramMap);
-            overviewController.show((Parent) node);
-            showLink();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Overview 탬 화면 출력
-     * @param detailMap
-     */
-    @SuppressWarnings("unchecked")
-    public void showOverviewTab(Map<String,Object> detailMap) {
-        try {
-            Map<String,Object> alleleMap = (detailMap.containsKey("allele")) ? (Map<String,Object>) detailMap.get("allele") : null;
-            Map<String,Object> variantInformationMap = (detailMap.containsKey("variant_information")) ? (Map<String,Object>) detailMap.get("variant_information") : null;
-            int sameVariantSampleCountInRun = (detailMap.containsKey("same_variant_sample_count_in_run")) ? (int) detailMap.get("same_variant_sample_count_in_run") : 0;
-            int totalSampleCountInRun = (detailMap.containsKey("total_sample_count_in_run")) ? (int) detailMap.get("total_sample_count_in_run") : 0;
-            int samePanelSameVariantSampleCountInUsergroup = (detailMap.containsKey("same_panel_same_variant_sample_count_in_usergroup")) ? (int) detailMap.get("same_panel_same_variant_sample_count_in_usergroup") : 0;
-            int totalSamePanelSampleCountInUsergroup = (detailMap.containsKey("total_same_panel_sample_count_in_usergroup")) ? (int) detailMap.get("total_same_panel_sample_count_in_usergroup") : 0;
-            int sameVariantSampleCountInUsergroup = (detailMap.containsKey("same_variant_sample_count_in_usergroup")) ? (int) detailMap.get("same_variant_sample_count_in_usergroup") : 0;
-            int totalSampleCountInUsergroup = (detailMap.containsKey("total_sample_count_in_usergroup")) ? (int) detailMap.get("total_sample_count_in_usergroup") : 0;
-            Map<String,Object> variantClassifierMap = (detailMap.containsKey("variant_classifier")) ? (Map<String,Object>) detailMap.get("variant_classifier") : null;
-            Map<String,Object> clinicalMap = (detailMap.containsKey("clinical")) ? (Map<String,Object>) detailMap.get("clinical") : null;
-            Map<String,Object> breastCancerInformationCoreMap = (detailMap.containsKey("breast_cancer_information_core")) ? (Map<String,Object>) detailMap.get("breast_cancer_information_core") : null;
-            Map<String,Object> populationFrequencyMap = (detailMap.containsKey("population_frequency")) ? (Map<String,Object>) detailMap.get("population_frequency") : null;
-            Map<String,Object> geneMap = (detailMap.containsKey("gene")) ? (Map<String,Object>) detailMap.get("gene") : null;
-            Map<String,Object> inSilicoPredictionMap = (detailMap.containsKey("in_silico_prediction")) ? (Map<String,Object>) detailMap.get("in_silico_prediction") : null;
-            Map<String,Object> enigmaMap = (detailMap.containsKey("ENIGMA")) ? (Map<String,Object>) detailMap.get("ENIGMA") : null;
-            Map<String,Object> buildMap = (detailMap.containsKey("build")) ? (Map<String,Object>) detailMap.get("build") : null;
-            Map<String,Object> genomicCoordinateMap = (detailMap.containsKey("genomic_coordinate")) ? (Map<String,Object>) detailMap.get("genomic_coordinate") : null;
-
-            Map<String,Object> paramMap = new HashMap<>();
-            paramMap.put("sample", sample);
-            paramMap.put("analysisResultVariant", selectedAnalysisResultVariant);
-            paramMap.put("allele", alleleMap);
-            paramMap.put("variantInformation", variantInformationMap);
-            paramMap.put("variantClassifier", variantClassifierMap);
-            paramMap.put("clinical", clinicalMap);
-            paramMap.put("breastCancerInformationCore", breastCancerInformationCoreMap);
-            paramMap.put("populationFrequency", populationFrequencyMap);
-            paramMap.put("gene", geneMap);
-            paramMap.put("inSilicoPrediction", inSilicoPredictionMap);
-            paramMap.put("sameVariantSampleCountInRun", sameVariantSampleCountInRun);
-            paramMap.put("totalSampleCountInRun", totalSampleCountInRun);
-            paramMap.put("samePanelSameVariantSampleCountInUsergroup", samePanelSameVariantSampleCountInUsergroup);
-            paramMap.put("totalSamePanelSampleCountInUsergroup", totalSamePanelSampleCountInUsergroup);
-            paramMap.put("sameVariantSampleCountInUsergroup", sameVariantSampleCountInUsergroup);
-            paramMap.put("totalSampleCountInUsergroup", totalSampleCountInUsergroup);
-            paramMap.put("enigma", enigmaMap);
-            paramMap.put("build", buildMap);
-            paramMap.put("genomicCoordinate", genomicCoordinateMap);
-
             FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_SNPS_INDELS_OVERVIEW);
             Node node = loader.load();
             overviewController = loader.getController();
@@ -1013,7 +998,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
             variantListTableView.getColumns().addAll(swTier, expertTier);
         } else {
-            TableColumn<VariantAndInterpretationEvidence, String> swPathogenicityLevel = new TableColumn<>("Pathogenic");
+            TableColumn<VariantAndInterpretationEvidence, String> swPathogenicityLevel = new TableColumn<>("Prediction");
             swPathogenicityLevel.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSwPathogenicityLevel()));
             swPathogenicityLevel.setPrefWidth(55);
             swPathogenicityLevel.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
@@ -1033,7 +1018,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                     }
                 });
 
-            TableColumn<VariantAndInterpretationEvidence, String> expertPathogenicityLevel = new TableColumn<>("Pathogenic(User)");
+            TableColumn<VariantAndInterpretationEvidence, String> expertPathogenicityLevel = new TableColumn<>("Pathogenicity(User)");
             expertPathogenicityLevel.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getExpertPathogenicityLevel()));
             expertPathogenicityLevel.setPrefWidth(80);
             variantListTableView.getColumns().addAll(swPathogenicityLevel, expertPathogenicityLevel);

@@ -599,8 +599,7 @@
 									<fo:block font-family="Noto Sans CJK KR Regular">
 										#if($i < $contents.variantCountByGenes.size())
 										#set($value =$contents.variantCountByGenes.get($i).tier1SnpCount + $contents.variantCountByGenes.get($i).tier1IndelCount + $contents.variantCountByGenes.get($i).tier2SnpCount + $contents.variantCountByGenes.get($i).tier2IndelCount
-										+ $contents.variantCountByGenes.get($i).tier3SnpCount + $contents.variantCountByGenes.get($i).tier3IndelCount + $contents.variantCountByGenes.get($i).tier4SnpCount + $contents.variantCountByGenes.get($i).tier4IndelCount
-										+ $contents.variantCountByGenes.get($i).tierNSnpCount + $contents.variantCountByGenes.get($i).tierNIndelCount)
+										+ $contents.variantCountByGenes.get($i).tier3SnpCount + $contents.variantCountByGenes.get($i).tier3IndelCount + $contents.variantCountByGenes.get($i).tier4SnpCount + $contents.variantCountByGenes.get($i).tier4IndelCount)
 										$value
 										#end
 									</fo:block>
@@ -609,8 +608,7 @@
 									<fo:block font-family="Noto Sans CJK KR Regular">
 										#if($i < $contents.variantCountByGenes.size())
 										#set($value =$contents.variantCountByGenes.get($i).tier1SnpCount + $contents.variantCountByGenes.get($i).tier1IndelCount + $contents.variantCountByGenes.get($i).tier2SnpCount + $contents.variantCountByGenes.get($i).tier2IndelCount
-										+ $contents.variantCountByGenes.get($i).tier3SnpCount + $contents.variantCountByGenes.get($i).tier3IndelCount
-										+ $contents.variantCountByGenes.get($i).tierNSnpCount + $contents.variantCountByGenes.get($i).tierNIndelCount)
+										+ $contents.variantCountByGenes.get($i).tier3SnpCount + $contents.variantCountByGenes.get($i).tier3IndelCount)
 										$value
 										#end
 									</fo:block>

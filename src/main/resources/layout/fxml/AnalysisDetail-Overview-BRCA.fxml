@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<GridPane fx:id="experimentPastResultsWrapper" prefHeight="550.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailOverviewBRCAController">
+   <columnConstraints>
+      <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="20.0" />
+      <ColumnConstraints hgrow="SOMETIMES" prefWidth="1240.0" />
+      <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="20.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" vgrow="NEVER" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="120.0" vgrow="NEVER" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" valignment="TOP" vgrow="NEVER" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="140.0" valignment="TOP" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" valignment="BOTTOM" vgrow="NEVER" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="90.0" valignment="TOP" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" valignment="BOTTOM" vgrow="NEVER" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" valignment="TOP" vgrow="NEVER" />
+   </rowConstraints>
+   <children>
+      <HBox alignment="CENTER_LEFT" prefHeight="30.0" GridPane.columnIndex="1">
+         <children>
+            <HBox alignment="BOTTOM_LEFT" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label alignment="TOP_LEFT" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" prefWidth="1253.0" style="-fx-text-fill: #C30D23;" text="Detected Variants Summary">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                     <styleClass>
+                        <String fx:value="h2" />
+                        <String fx:value="weight_bold" />
+                        <String fx:value="txt_black" />
+                     </styleClass>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox alignment="BOTTOM_RIGHT" />
+         </children>
+      </HBox>
+      <GridPane fx:id="searchArea" styleClass="red_line_both" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" percentWidth="20.0" prefWidth="120.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0" spacing="40.0">
+               <children>
+                  <GridPane alignment="CENTER" prefHeight="86.0" prefWidth="809.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label fx:id="tierOneLabel" text="Pathogenic" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                        <Label text="Likey Pathogenic" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+                        <Label text="Uncertain Significance" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
+                        <Label text="Likely Benign" GridPane.columnIndex="4" GridPane.halignment="CENTER" />
+                        <Label text="Variants " GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                        <Label text="Genes" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                        <Label text="Therapeutic" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                        <Label fx:id="lbVariantsCountLabel" text="0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                        <Label fx:id="lbGenesCountLabel" text="0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                        <Label fx:id="lbTherapeuticLabel" text="0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+                        <Label fx:id="usVariantsCountLabel" text="0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                        <Label fx:id="usGenesCountLabel" text="0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                        <Label fx:id="usTherapeuticLabel" text="0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+                        <Label fx:id="lpVariantsCountLabel" text="0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                        <Label fx:id="lpGenesCountLabel" text="0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                        <Label fx:id="lpTherapeuticLabel" text="0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+                        <Label fx:id="pVariantsCountLabel" text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                        <Label fx:id="pGenesCountLabel" text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                        <Label fx:id="pTherapeuticLabel" text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+                        <Label text="Benign" GridPane.columnIndex="5" GridPane.halignment="CENTER" />
+                        <Label fx:id="bVariantsCountLabel1" text="0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                        <Label fx:id="bGenesCountLabel1" text="0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                        <Label fx:id="bTherapeuticLabel1" text="0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+                     </children>
+                  </GridPane>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </HBox>
+            <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0" spacing="10.0" GridPane.columnIndex="1">
+               <children>
+                  <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label fx:id="diseaseLabel" text="Patient disease : " />
+                        <Label fx:id="diseaseLabel" text="disease" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </GridPane>
+      <TableView fx:id="tierTable" prefHeight="149.0" prefWidth="966.0" style="-fx-border-width: 0;" GridPane.columnIndex="1" GridPane.rowIndex="3">
+         <columns>
+            <TableColumn fx:id="tierColumn" editable="false" prefWidth="75.0" sortable="false" text="Tier" />
+            <TableColumn fx:id="geneColumn" editable="false" prefWidth="100.0" sortable="false" text="Gene" />
+            <TableColumn fx:id="variantColumn" editable="false" prefWidth="200.0" sortable="false" text="Variant" />
+            <TableColumn fx:id="alleleFrequencyColumn" prefWidth="73.0" text="VAF" />
+            <TableColumn fx:id="therapeuticColumn" editable="false" prefWidth="791.5556640625" sortable="false" text="Therapeutic drug and prognosis" />
+         </columns>
+      </TableView>
+      <TableView fx:id="pertinentNegativesTable" prefHeight="105.0" prefWidth="962.0" style="-fx-border-width: 0;" GridPane.columnIndex="1" GridPane.rowIndex="5">
+         <columns>
+            <TableColumn fx:id="negativeGeneColumn" editable="false" prefWidth="75.0" sortable="false" text="Gene" />
+            <TableColumn fx:id="negativeVariantColumn" editable="false" prefWidth="75.0" sortable="false" text="Variant" />
+            <TableColumn fx:id="negativeAlleleFrequencyColumn" prefWidth="75.0" text="VAF" />
+            <TableColumn fx:id="negativeCauseColumn" prefWidth="1000.0" text="Cause" />
+         </columns>
+      </TableView>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+         <children>
+            <VBox prefHeight="75.0" prefWidth="864.0">
+               <children>
+                  <GridPane fx:id="dataQCResultGridPane" prefWidth="862.0">
+                     <columnConstraints>
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #C20D22;">
+                           <children>
+                              <Label maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="150.0" text="Total base">
+                                 <tooltip>
+                                    <Tooltip fx:id="totalBaseTooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                                 <styleClass>
+                                    <String fx:value="font_color_white_bg_color_red" />
+                                    <String fx:value="right_white_border" />
+                                 </styleClass></Label>
+                           </children>
+                        </HBox>
+                        <Label fx:id="totalBaseLabel" text="pass" GridPane.rowIndex="1" />
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #C20D22;" GridPane.columnIndex="1">
+                           <children>
+                              <Label maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="150.0" text="q30 trimmed base">
+                                 <tooltip>
+                                    <Tooltip fx:id="q30Tooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                                 <styleClass>
+                                    <String fx:value="font_color_white_bg_color_red" />
+                                    <String fx:value="right_white_border" />
+                                 </styleClass></Label>
+                           </children>
+                        </HBox>
+                        <Label fx:id="q30Label" text="pass" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #C20D22;" GridPane.columnIndex="2">
+                           <children>
+                              <Label maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="150.0" text="Mapped base">
+                                 <tooltip>
+                                    <Tooltip fx:id="mappedBaseTooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                                 <styleClass>
+                                    <String fx:value="font_color_white_bg_color_red" />
+                                    <String fx:value="right_white_border" />
+                                 </styleClass></Label>
+                           </children>
+                        </HBox>
+                        <Label fx:id="mappedLabel" text="pass" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #C20D22;" GridPane.columnIndex="3">
+                           <children>
+                              <Label maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="150.0" text="On target">
+                                 <tooltip>
+                                    <Tooltip fx:id="onTargetTooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                                 <styleClass>
+                                    <String fx:value="font_color_white_bg_color_red" />
+                                    <String fx:value="right_white_border" />
+                                 </styleClass></Label>
+                           </children>
+                        </HBox>
+                        <Label fx:id="onTargetLabel" text="pass" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #C20D22;" GridPane.columnIndex="4">
+                           <children>
+                              <Label maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="150.0" text="On target coverage">
+                                 <tooltip>
+                                    <Tooltip fx:id="onTargetCoverageTooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                                 <styleClass>
+                                    <String fx:value="font_color_white_bg_color_red" />
+                                    <String fx:value="right_white_border" />
+                                 </styleClass></Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #C20D22;" GridPane.columnIndex="5">
+                           <children>
+                              <Label maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="150.0" text="Duplicated reads">
+                                 <tooltip>
+                                    <Tooltip fx:id="duplicatedReadsTooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                                 <styleClass>
+                                    <String fx:value="font_color_white_bg_color_red" />
+                                    <String fx:value="right_white_border" />
+                                 </styleClass></Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #C20D22;" GridPane.columnIndex="6">
+                           <children>
+                              <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" styleClass="font_color_white_bg_color_red" text="Roi coverage">
+                                 <tooltip>
+                                    <Tooltip fx:id="roiCoverageTooltip" text="Empty Tooltip" />
+                                 </tooltip></Label>
+                           </children>
+                        </HBox>
+                        <Label fx:id="onTargetCoverageLabel" text="pass" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                        <Label fx:id="duplicatedReadsLabel" text="pass" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                        <Label fx:id="roiCoverageLabel" text="pass" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                     </children>
+                  </GridPane>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <Label maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" prefWidth="326.0" style="-fx-text-fill: #C30D23;" text="Pertinent Negatives" GridPane.columnIndex="1" GridPane.rowIndex="4">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+         <styleClass>
+            <String fx:value="h2" />
+            <String fx:value="weight_bold" />
+            <String fx:value="txt_black" />
+         </styleClass>
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+      </Label>
+      <Label alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="85.0" style="-fx-pref-height: 30; -fx-text-fill: #C30D23;" text="Data QC" GridPane.columnIndex="1" GridPane.rowIndex="6">
+         <styleClass>
+            <String fx:value="h2" />
+            <String fx:value="txt_black" />
+            <String fx:value="weight_bold" />
+         </styleClass>
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+      </Label>
+   </children>
+   <stylesheets>
+      <URL value="@../css/common.css" />
+      <URL value="@../css/experimenter.css" />
+   </stylesheets>
+</GridPane>

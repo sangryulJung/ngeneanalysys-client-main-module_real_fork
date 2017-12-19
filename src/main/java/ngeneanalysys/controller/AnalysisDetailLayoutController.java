@@ -147,6 +147,9 @@ public class AnalysisDetailLayoutController extends SubPaneController {
             if("TAB_OVERVIEW".equals(item.getNodeId()) &&
                     (panel.getAnalysisType() != null && ExperimentTypeCode.GERMLINE.getDescription().equals(panel.getAnalysisType()))){
                 continue;
+            } else if("TAB_OVERVIEW_BRCA".equals(item.getNodeId()) &&
+                    (panel.getAnalysisType() != null && ExperimentTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType()))) {
+                continue;
             }
             Tab tab = new Tab();
             tab.setId(item.getNodeId());

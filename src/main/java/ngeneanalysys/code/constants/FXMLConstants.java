@@ -108,6 +108,9 @@ public class FXMLConstants {
 	/** 분석 상세 > OverView 화면 */
 	public static final String ANALYSIS_DETAIL_OVERVIEW = "/layout/fxml/AnalysisDetail-Overview.fxml";
 
+	/** 분석 상세 > OverView 화면 */
+	public static final String ANALYSIS_DETAIL_OVERVIEW_BRCA = "/layout/fxml/AnalysisDetail-Overview-BRCA.fxml";
+
 	/** 분석 상세 > Variants 화면 */
 	public static final String ANALYSIS_DETAIL_TARGET = "/layout/fxml/AnalysisDetail-Target.fxml";
 
@@ -128,6 +131,9 @@ public class FXMLConstants {
 
 	/** 시스템 매니저 리포트 양식 관리 */
 	public static final String SYSTEM_MANAGER_REPORT_TEMPLATE = "/layout/fxml/systemManager/SystemManagerReportTemplate.fxml";
+
+	/** 시스템 매니저 Evidence Database 관리 */
+	public static final String SYSTEM_MANAGER_INTERPRETATION_DATABASE = "/layout/fxml/systemManager/SystemManagerInterpretationDatabase.fxml";
 
 	/** 사용자 추가/수정 화면 */
 	public static final String USER_ACCOUNT = "/layout/fxml/systemManager/UserAccount.fxml";

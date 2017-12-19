@@ -92,6 +92,7 @@ public class ExcludeReportDialogController extends SubPaneController {
             } catch (WebAPIException wae) {
                 wae.printStackTrace();
             }
+            selectedItem.getSnpInDel().setIncludedInReport(symbol);
             selectedItem.getSnpInDel().setComment(comment);
             dialogStage.close();
         } else {
