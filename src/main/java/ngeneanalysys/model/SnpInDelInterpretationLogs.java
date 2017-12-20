@@ -17,7 +17,14 @@ public class SnpInDelInterpretationLogs {
     private String newValue;
     private String comment;
     private DateTime createdAt;
+    private Integer snpInDelId;
 
+    /**
+     * @return snpInDelId
+     */
+    public Integer getSnpInDelId() {
+        return snpInDelId;
+    }
     /**
      * @return memberId
      */
