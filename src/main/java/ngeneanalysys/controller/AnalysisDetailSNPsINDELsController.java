@@ -43,6 +43,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -655,7 +656,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
             response = apiService.get(
                     "/analysisResults/snpInDelExtraInfos/" + analysisResultVariant.getSnpInDel().getId(), null, null, false);
-            
+
             List<SnpInDelExtraInfo> item = (List<SnpInDelExtraInfo>)response.getMultiObjectBeforeConvertResponseToJSON(SnpInDelExtraInfo.class, false);
             paramMap.put("detail", item);
 
@@ -769,6 +770,19 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         showVariantList(selectedPredictionCodeFilter, selectedVariantIndex);
     }
 
+    public Map<String, Object> returnResultsAfterSearch(String key) {
+        List<SnpInDelExtraInfo> detail = (List<SnpInDelExtraInfo>)paramMap.get("detail");
+
+        Optional<SnpInDelExtraInfo> populationFrequency = detail.stream().filter(item
+                -> key.equalsIgnoreCase(item.key)).findFirst();
+
+        if(populationFrequency.isPresent()) {
+            return JsonUtil.fromJsonToMap(populationFrequency.get().value);
+        }
+
+        return null;
+    }
+
     @SuppressWarnings("unchecked")
     public void showLink() {
         Sample sample = (Sample) paramMap.get("sample");
@@ -861,29 +875,28 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                     }
                 }
             } else {
-                Map<String,Object> variantInformationMap = (Map<String,Object>) paramMap.get("variantInformation");
+                Map<String,Object> variantInformationMap = returnResultsAfterSearch("variant_information");
                 SnpInDel snpInDel = (SnpInDel) paramMap.get("snpInDel");
-                //logger.info("init overview link button event binding..");
-/*                String urlExAC = (variantInformationMap.containsKey("exac_url")) ? (String) variantInformationMap.get("exac_url") : null;
+                logger.info("init overview link button event binding..");
+                String urlExAC = (variantInformationMap.containsKey("exac_url")) ? (String) variantInformationMap.get("exac_url") : null;
                 String urlBRCAExchange = (variantInformationMap.containsKey("brca_exchange_url")) ? (String) variantInformationMap.get("brca_exchange_url") : null;
                 String urlClinvar = (variantInformationMap.containsKey("clinvar_url")) ? (String) variantInformationMap.get("clinvar_url") : null;
                 String urlNCBI = (variantInformationMap.containsKey("ncbi_url")) ? (String) variantInformationMap.get("ncbi_url") : null;
-                String urlUCSC = (variantInformationMap.containsKey("ucsc_url")) ? (String) variantInformationMap.get("ucsc_url") : null;*/
+                String urlUCSC = (variantInformationMap.containsKey("ucsc_url")) ? (String) variantInformationMap.get("ucsc_url") : null;
                 for(Node node : linkBox.getChildren()) {
                     if (node != null) {
                         String id = node.getId();
-                        //logger.info(String.format("button id : %s", id));
+                        logger.info(String.format("button id : %s", id));
                         // exACButton
-                        if ("exACButton".equals(id)) {
+                        if("exACButton".equals(id)) {
                             Button exACButton = (Button) node;
-                            /*if (!StringUtils.isEmpty(urlExAC)) {
+                            if(!StringUtils.isEmpty(urlExAC)) {
                                 exACButton.setOnAction(event -> {
                                     logger.info(String.format("OPEN EXTERNAL LINK [%s][%s]", id, urlExAC));
                                     getMainApp().getHostServices().showDocument(urlExAC);
                                 });
                                 exACButton.setDisable(false);
-                            }*/
-                            exACButton.setDisable(false);
+                            }
                         }
                         // igvButton
                         if ("igvButton".equals(id)) {
@@ -914,68 +927,69 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                             igvButton.setDisable(false);
                         }
                         // brcaExchangeButton
-                        if ("brcaExchangeButton".equals(id)) {
+                        if("brcaExchangeButton".equals(id)) {
                             Button brcaExchangeButton = (Button) node;
-                            /*if (!StringUtils.isEmpty(urlBRCAExchange)) {
+                            if(!StringUtils.isEmpty(urlBRCAExchange)) {
                                 brcaExchangeButton.setOnAction(event -> {
                                     logger.info(String.format("OPEN EXTERNAL LINK [%s][%s]", id, urlBRCAExchange));
                                     getMainApp().getHostServices().showDocument(urlBRCAExchange);
                                 });
                                 brcaExchangeButton.setDisable(false);
-                            }*/
-                            brcaExchangeButton.setDisable(false);
+                            }
                         }
+
                         // clinvarButton
-                        if ("clinvarButton".equals(id)) {
+                        if("clinvarButton".equals(id)) {
                             Button clinvarButton = (Button) node;
-                           /* if (!StringUtils.isEmpty(urlClinvar)) {
+                            if(!StringUtils.isEmpty(urlClinvar)) {
                                 clinvarButton.setOnAction(event -> {
                                     logger.info(String.format("OPEN EXTERNAL LINK [%s][%s]", id, urlClinvar));
                                     getMainApp().getHostServices().showDocument(urlClinvar);
                                 });
                                 clinvarButton.setDisable(false);
-                            }*/
-                            clinvarButton.setDisable(false);
+                            }
                         }
+
                         // ncbiButton
-                        if ("ncbiButton".equals(id)) {
+                        if("ncbiButton".equals(id)) {
                             Button ncbiButton = (Button) node;
-                            /*if (!StringUtils.isEmpty(urlNCBI)) {
+                            if(!StringUtils.isEmpty(urlNCBI)) {
                                 ncbiButton.setOnAction(event -> {
                                     logger.info(String.format("OPEN EXTERNAL LINK [%s][%s]", id, urlNCBI));
                                     getMainApp().getHostServices().showDocument(urlNCBI);
                                 });
                                 ncbiButton.setDisable(false);
-                            }*/
-                            ncbiButton.setDisable(false);
+                            }
                         }
+
                         // ucscButton
-                        if ("ucscButton".equals(id)) {
+                        if("ucscButton".equals(id)) {
                             Button ucscButton = (Button) node;
-                            /*if (!StringUtils.isEmpty(urlUCSC)) {
+                            if(!StringUtils.isEmpty(urlUCSC)) {
                                 ucscButton.setOnAction(event -> {
                                     logger.info(String.format("OPEN EXTERNAL LINK [%s][%s]", id, urlUCSC));
                                     getMainApp().getHostServices().showDocument(urlUCSC);
                                 });
                                 ucscButton.setDisable(false);
-                            }*/
-                            ucscButton.setDisable(false);
+                            }
                         }
+
                         // alamutButton
-                        if ("alamutButton".equals(id)) {
+                        if("alamutButton".equals(id)) {
                             Button alamutButton = (Button) node;
+
                             // variant identification transcript data map
-                            /*Map<String, Object> geneMap = (Map<String, Object>) paramMap.get("gene");
-                            if (geneMap != null && !geneMap.isEmpty() && geneMap.containsKey("transcript")) {
-                                Map<String, Map<String, String>> transcriptDataMap = (Map<String, Map<String, String>>) geneMap.get("transcript");
-                                if (!transcriptDataMap.isEmpty() && transcriptDataMap.size() > 0) {
+                            Map<String,Object> geneMap = returnResultsAfterSearch("gene");
+                            if(geneMap != null && !geneMap.isEmpty() && geneMap.containsKey("transcript")) {
+                                Map<String,Map<String,String>> transcriptDataMap = (Map<String,Map<String,String>>) geneMap.get("transcript");
+                                if(!transcriptDataMap.isEmpty() && transcriptDataMap.size() > 0) {
                                     alamutButton.setOnAction(event -> {
                                         int selectedIdx = this.overviewController.getTranscriptComboBoxSelectedIndex();
                                         logger.info(String.format("selected transcript combobox idx : %s", selectedIdx));
-                                        Map<String, String> map = transcriptDataMap.get(String.valueOf(selectedIdx));
-                                        if (!map.isEmpty() && map.size() > 0) {
-                                            String transcript = (String) map.get("transcript_name");
-                                            String cDNA = (String) map.get("hgvs.c");
+                                        Map<String,String> map = transcriptDataMap.get(String.valueOf(selectedIdx));
+                                        if(!map.isEmpty() && map.size() > 0) {
+                                            String transcript = map.get("transcript_name");
+                                            String cDNA = map.get("hgvs.c");
                                             String sampleId = sample.getId().toString();
                                             String bamFileName = sample.getName() + "_final.bam";
                                             loadAlamut(transcript, cDNA, sampleId, bamFileName);
@@ -983,8 +997,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                                     });
                                     alamutButton.setDisable(false);
                                 }
-                            }*/
-                            alamutButton.setDisable(false);
+                            }
                         }
                     }
                 }

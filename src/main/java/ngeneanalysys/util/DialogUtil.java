@@ -48,11 +48,12 @@ public class DialogUtil {
 		if(StringUtils.isEmpty(contentText)) {
 			alert.setContentText("Unknown message.");
 		} else {
-			if(contentText.length() > 100) {
+			/*if(contentText.length() > 100) {
 				alert.setContentText(contentText.substring(0, 100));
 			} else {
 				alert.setContentText(contentText);
-			}
+			}*/
+			alert.setContentText(contentText);
 		}
 		
 		if(waitAfterShow) {
