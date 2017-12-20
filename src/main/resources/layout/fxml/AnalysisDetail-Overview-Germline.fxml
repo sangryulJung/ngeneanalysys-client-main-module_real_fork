@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="experimentPastResultsWrapper" prefHeight="550.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailOverviewBRCAController">
+<GridPane fx:id="experimentPastResultsWrapper" prefHeight="550.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailOverviewGermlineController">
    <columnConstraints>
       <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="20.0" />
       <ColumnConstraints hgrow="SOMETIMES" prefWidth="1240.0" />
@@ -74,7 +74,6 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
                         <Label fx:id="tierOneLabel" text="Pathogenic" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
@@ -83,23 +82,17 @@
                         <Label text="Likely Benign" GridPane.columnIndex="4" GridPane.halignment="CENTER" />
                         <Label text="Variants " GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
                         <Label text="Genes" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                        <Label text="Therapeutic" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
                         <Label fx:id="lbVariantsCountLabel" text="0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                         <Label fx:id="lbGenesCountLabel" text="0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                        <Label fx:id="lbTherapeuticLabel" text="0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
                         <Label fx:id="usVariantsCountLabel" text="0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                         <Label fx:id="usGenesCountLabel" text="0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                        <Label fx:id="usTherapeuticLabel" text="0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
                         <Label fx:id="lpVariantsCountLabel" text="0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                         <Label fx:id="lpGenesCountLabel" text="0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                        <Label fx:id="lpTherapeuticLabel" text="0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
                         <Label fx:id="pVariantsCountLabel" text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                         <Label fx:id="pGenesCountLabel" text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                        <Label fx:id="pTherapeuticLabel" text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
                         <Label text="Benign" GridPane.columnIndex="5" GridPane.halignment="CENTER" />
-                        <Label fx:id="bVariantsCountLabel1" text="0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                        <Label fx:id="bGenesCountLabel1" text="0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                        <Label fx:id="bTherapeuticLabel1" text="0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+                        <Label fx:id="bVariantsCountLabel" text="0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                        <Label fx:id="bGenesCountLabel" text="0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                      </children>
                   </GridPane>
                </children>
@@ -111,7 +104,7 @@
                <children>
                   <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Label fx:id="diseaseLabel" text="Patient disease : " />
+                        <Label fx:id="diseasetextLabel" text="Patient disease : " />
                         <Label fx:id="diseaseLabel" text="disease" />
                      </children>
                   </HBox>
@@ -119,21 +112,11 @@
             </VBox>
          </children>
       </GridPane>
-      <TableView fx:id="tierTable" prefHeight="149.0" prefWidth="966.0" style="-fx-border-width: 0;" GridPane.columnIndex="1" GridPane.rowIndex="3">
+      <TableView fx:id="pathogenicityTable" prefHeight="149.0" prefWidth="966.0" style="-fx-border-width: 0;" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.rowSpan="3">
          <columns>
-            <TableColumn fx:id="tierColumn" editable="false" prefWidth="75.0" sortable="false" text="Tier" />
+            <TableColumn fx:id="pathogenicityColumn" editable="false" prefWidth="100.0" sortable="false" text="Pathogenicity" />
             <TableColumn fx:id="geneColumn" editable="false" prefWidth="100.0" sortable="false" text="Gene" />
             <TableColumn fx:id="variantColumn" editable="false" prefWidth="200.0" sortable="false" text="Variant" />
-            <TableColumn fx:id="alleleFrequencyColumn" prefWidth="73.0" text="VAF" />
-            <TableColumn fx:id="therapeuticColumn" editable="false" prefWidth="791.5556640625" sortable="false" text="Therapeutic drug and prognosis" />
-         </columns>
-      </TableView>
-      <TableView fx:id="pertinentNegativesTable" prefHeight="105.0" prefWidth="962.0" style="-fx-border-width: 0;" GridPane.columnIndex="1" GridPane.rowIndex="5">
-         <columns>
-            <TableColumn fx:id="negativeGeneColumn" editable="false" prefWidth="75.0" sortable="false" text="Gene" />
-            <TableColumn fx:id="negativeVariantColumn" editable="false" prefWidth="75.0" sortable="false" text="Variant" />
-            <TableColumn fx:id="negativeAlleleFrequencyColumn" prefWidth="75.0" text="VAF" />
-            <TableColumn fx:id="negativeCauseColumn" prefWidth="1000.0" text="Cause" />
          </columns>
       </TableView>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
@@ -248,19 +231,6 @@
             </VBox>
          </children>
       </HBox>
-      <Label maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" prefWidth="326.0" style="-fx-text-fill: #C30D23;" text="Pertinent Negatives" GridPane.columnIndex="1" GridPane.rowIndex="4">
-         <font>
-            <Font name="System Bold" size="24.0" />
-         </font>
-         <styleClass>
-            <String fx:value="h2" />
-            <String fx:value="weight_bold" />
-            <String fx:value="txt_black" />
-         </styleClass>
-         <GridPane.margin>
-            <Insets />
-         </GridPane.margin>
-      </Label>
       <Label alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="85.0" style="-fx-pref-height: 30; -fx-text-fill: #C30D23;" text="Data QC" GridPane.columnIndex="1" GridPane.rowIndex="6">
          <styleClass>
             <String fx:value="h2" />

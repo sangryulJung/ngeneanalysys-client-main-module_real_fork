@@ -22,6 +22,7 @@ import ngeneanalysys.animaition.VariantStatisticsTimer;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.render.SNPsINDELsOverviewRadarGraph;
+import ngeneanalysys.util.JsonUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
 import org.controlsfx.control.PopOver;
@@ -294,7 +295,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
             nodePane.getChildren().remove(tierPane);
             clinicalSignificant.setVisible(true);
             // SIGNIFICANT 레이더 차트 화면 출력
-            showClinicalSignificantGraph2();
+            showClinicalSignificantGraph();
         }
 
         analysisDetailSNPsINDELsController.subTabOverview.setContent(root);
@@ -885,84 +886,17 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
         }
     }
 
-    /**
-     * SIGNIFICANT 레이더 차트 화면 출력
-     */
-    @SuppressWarnings("unchecked")
-    public void showClinicalSignificantGraph2() {
-                // SIFT
-        double siftValue = -1;
-        // POLYPHEN2
-        double polyphenValue = -1;
-        double mtValue = -1;
-        String siftText = "";
-        String polyphenText = "";
-        String mtText = "";
-        String siftScore = null;
-        String polyphenScore = null;
+    public Map<String, Object> returnResultsAfterSearch(String key) {
+        List<SnpInDelExtraInfo> detail = (List<SnpInDelExtraInfo>)paramMap.get("detail");
 
-        SnpInDel snpInDel = variant.getSnpInDel();
+        Optional<SnpInDelExtraInfo> populationFrequency = detail.stream().filter(item
+                -> key.equalsIgnoreCase(item.key)).findFirst();
 
-        // BIC
-        if(snpInDel.getClinicalDB().getBic() != null) {
-            renderClinicalPathogenicityData(pathogenicityBicHBox, "BIC",
-                    changePathogenicity(snpInDel.getClinicalDB().getBic().getBicClass()));
-        } else {
-            renderClinicalPathogenicityData(pathogenicityBicHBox, "BIC", null);
-        }
-        // CLINVAR
-        if(snpInDel.getClinicalDB().getClinVar() != null) {
-            renderClinicalPathogenicityData(pathogenicityClinVarHBox, "CLINVAR",
-                    changePathogenicity(snpInDel.getClinicalDB().getClinVar().getClinVarClass()));
-        } else {
-            renderClinicalPathogenicityData(pathogenicityClinVarHBox, "CLINVAR", null);
-        }
-        // ENIGMA
-        if(snpInDel.getClinicalDB().getEnigma() != null) {
-            renderClinicalPathogenicityData(pathogenicityEnigmaHBox, "ENIGMA",
-                    changePathogenicity(snpInDel.getClinicalDB().getEnigma()));
-        } else {
-            renderClinicalPathogenicityData(pathogenicityEnigmaHBox, "ENIGMA", null);
-        }
-        // PREDICTION
-        if(snpInDel.getSwPathogenicityLevel() != null) {
-            renderClinicalPathogenicityData(pathogenicityPredictionHBox, "PREDICTION", snpInDel.getSwPathogenicityLevel());
-        } else {
-            renderClinicalPathogenicityData(pathogenicityPredictionHBox, "PREDICTION", null);
+        if(populationFrequency.isPresent()) {
+            return JsonUtil.fromJsonToMap(populationFrequency.get().value);
         }
 
-    }
-
-    public String changePathogenicity(String data) {
-        if(data == null) return null;
-
-        String tempData = data.toUpperCase().trim();
-        String rader = null;
-        if(tempData.contains("LIKELYPATHOGENIC")) {
-            tempData = tempData.replaceAll("LIKELYPATHOGENIC", "");
-
-            if(tempData.contains("PATHOGENIC")) {
-                rader = "P";
-            } else {
-                rader = "LP";
-            }
-        } else if(tempData.contains("PATHOGENIC")) {
-            rader = "P";
-        } else if(tempData.contains("UNCERTAINSIGNIFICANCE")) {
-            rader = "US";
-        } else if(tempData.contains("LIKELYBENIGN")) {
-            tempData = tempData.replaceAll("LIKELYBENIGN", "");
-
-            if(tempData.contains("BENIGN")) {
-                rader = "B";
-            } else {
-                rader = "LB";
-            }
-        } else if(tempData.contains("BENIGN")) {
-            rader = "B";
-        }
-
-        return rader;
+        return null;
     }
 
     /**
@@ -970,14 +904,14 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
      */
     @SuppressWarnings("unchecked")
     public void showClinicalSignificantGraph() {
-        Map<String,Object> inSilicoPredictionMap = (Map<String,Object>) paramMap.get("inSilicoPrediction");
-        Map<String,Object> variantClassifierMap = (Map<String,Object>) paramMap.get("variantClassifier");
-        Map<String,Object> clinicalMap = (Map<String,Object>) paramMap.get("clinical");
-        Map<String,Object> breastCancerInformationCoreMap = (Map<String,Object>) paramMap.get("breastCancerInformationCore");
+        Map<String,Object> inSilicoPredictionMap = returnResultsAfterSearch("in_silico_prediction");
+        Map<String,Object> variantClassifierMap = returnResultsAfterSearch("variant_classifier");
+        Map<String,Object> clinicalMap = returnResultsAfterSearch("clinical");
+        Map<String,Object> breastCancerInformationCoreMap = returnResultsAfterSearch("breast_cancer_information_core");
         Map<String,Object> siftMap = (inSilicoPredictionMap != null && inSilicoPredictionMap.containsKey("SIFT")) ? (Map<String,Object>) inSilicoPredictionMap.get("SIFT") : null;
         Map<String,Object> polyphenMap = (inSilicoPredictionMap != null && inSilicoPredictionMap.containsKey("PolyPhen2")) ? (Map<String,Object>) inSilicoPredictionMap.get("PolyPhen2") : null;
         Map<String,Object> mtMap = (inSilicoPredictionMap != null && inSilicoPredictionMap.containsKey("mt")) ? (Map<String,Object>) inSilicoPredictionMap.get("mt") : null;
-        Map<String,Object> enigmaMap = (Map<String,Object>) paramMap.get("enigma");
+        Map<String,Object> enigmaMap = returnResultsAfterSearch("ENIGMA");
 
         // SIFT
         double siftValue = -1;
@@ -1156,25 +1090,32 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
     }
 
     private void renderClinicalPathogenicityData(HBox node, String text, String value) {
-        if(value == null) value = "";
+        int level = 0;
+        if (!StringUtils.isEmpty(value)) {
+            try {
+                level = Integer.valueOf(value);
+            } catch(NumberFormatException nfe){
+                nfe.printStackTrace();
+            }
+        }
         if (node == null) return;
         ObservableList<Node> childs = node.getChildren();
         if (childs != null) {
             for(Node child : childs){
                 child.getStyleClass().removeAll(child.getStyleClass());
-                if (((Label)child).getText().equals("P") && value.equals("P")) {
+                if (((Label)child).getText().equals("P") && level  == 5) {
                     child.getStyleClass().add("prediction_A");
                     addClickEvent(text, child);
-                } else if(((Label)child).getText().equals("LP") && value.equals("LP")) {
+                } else if(((Label)child).getText().equals("LP") && level == 4) {
                     child.getStyleClass().add("prediction_B");
                     addClickEvent(text, child);
-                } else if(((Label)child).getText().equals("US") && value.equals("US")) {
+                } else if(((Label)child).getText().equals("US") && level == 3) {
                     child.getStyleClass().add("prediction_C");
                     addClickEvent(text, child);
-                } else if(((Label)child).getText().equals("LB") && value.equals("LB")) {
+                } else if(((Label)child).getText().equals("LB") && level == 2) {
                     child.getStyleClass().add("prediction_D");
                     addClickEvent(text, child);
-                } else if(((Label)child).getText().equals("B") && value.equals("B")) {
+                } else if(((Label)child).getText().equals("B") && level == 1) {
                     child.getStyleClass().add("prediction_E");
                     addClickEvent(text, child);
                 } else if(((Label)child).getText().equals(text)) {
@@ -1195,7 +1136,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
     @SuppressWarnings("unchecked")
     public double getPopulationFrequencyByParam(String orgKey, String location) {
         double percentage = -1d;
-        Map<String,Object> populationFrequencyMap = (Map<String,Object>) paramMap.get("populationFrequency");
+        Map<String,Object> populationFrequencyMap = returnResultsAfterSearch("population_frequency");
         if(!populationFrequencyMap.isEmpty() && populationFrequencyMap.containsKey(orgKey)) {
             Map<String,Object> orgMap = (Map<String,Object>) populationFrequencyMap.get(orgKey);
             if(!orgMap.isEmpty() && orgMap.containsKey(location)) {
@@ -1239,7 +1180,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
     @SuppressWarnings("unchecked")
     public void addClickEvent(String text, Node node) {
         if("PREDICTION".equals(text)) {
-            Map<String, Object> acmg = (Map<String, Object>) paramMap.get("acmg");
+            Map<String, Object> acmg = returnResultsAfterSearch("acmg");
             if(acmg == null) return;
             node.setStyle("-fx-cursor:hand;");
             node.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openPopOver((Label) node, acmg));

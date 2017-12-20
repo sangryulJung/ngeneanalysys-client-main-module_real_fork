@@ -468,16 +468,18 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
             ObservableList<VariantAndInterpretationEvidence> displayList = null;
 
-            if(acmgFilterCode != null && acmgFilterCode.getAlias() != null && panel != null && ExperimentTypeCode.GERMLINE.getDescription().equals(panel.getAnalysisType())) {
-                list = list.stream().filter(variant ->
-                        variant.getSnpInDel().getSwPathogenicityLevel().equals(acmgFilterCode.getAlias())).collect(Collectors.toList());
-            } else if(acmgFilterCode != null && acmgFilterCode.getAlias() != null && panel != null && ExperimentTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType())) {
-                list = list.stream().filter(variant ->
-                        (!StringUtils.isEmpty(variant.getSnpInDel().getExpertTier()) && variant.getSnpInDel().getExpertTier().equals(acmgFilterCode.getAlias())) ||
-                        (StringUtils.isEmpty(variant.getSnpInDel().getExpertTier()) && variant.getSnpInDel().getSwTier().equals(acmgFilterCode.getAlias()))).collect(Collectors.toList());
-            } else if (acmgFilterCode != null && acmgFilterCode.getAlias() == null && panel != null && ExperimentTypeCode.GERMLINE.getDescription().equals(panel.getAnalysisType())) {
-                list = list.stream().filter(variant ->
-                        variant.getSnpInDel().getHasWarning() != null).collect(Collectors.toList());
+            if(acmgFilterCode != null &&  acmgFilterCode.getCode() != null) {
+                if (acmgFilterCode.getAlias() != null && panel != null && ExperimentTypeCode.GERMLINE.getDescription().equals(panel.getAnalysisType())) {
+                    list = list.stream().filter(variant ->
+                            variant.getSnpInDel().getSwPathogenicityLevel().equals(acmgFilterCode.getAlias())).collect(Collectors.toList());
+                } else if (acmgFilterCode.getAlias() != null && panel != null && ExperimentTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType())) {
+                    list = list.stream().filter(variant ->
+                            (!StringUtils.isEmpty(variant.getSnpInDel().getExpertTier()) && variant.getSnpInDel().getExpertTier().equals(acmgFilterCode.getAlias())) ||
+                                    (StringUtils.isEmpty(variant.getSnpInDel().getExpertTier()) && variant.getSnpInDel().getSwTier().equals(acmgFilterCode.getAlias()))).collect(Collectors.toList());
+                } else if (acmgFilterCode.getAlias() == null && panel != null && ExperimentTypeCode.GERMLINE.getDescription().equals(panel.getAnalysisType())) {
+                    list = list.stream().filter(variant ->
+                            variant.getSnpInDel().getHasWarning() != null).collect(Collectors.toList());
+                }
             }
 
             // 하단 탭 활성화 토글
@@ -543,7 +545,6 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             HttpClientResponse responseDetail = apiService.get(
                     "/analysisResults/snpInDels/" + selectedAnalysisResultVariant.getSnpInDel().getId(), null, null, false);
             // 상세 데이터 요청이 정상 요청된 경우 진행.
-
             SnpInDel snpInDel
                     = responseDetail.getObjectBeforeConvertResponseToJSON(SnpInDel.class);
             VariantAndInterpretationEvidence variantAndInterpretationEvidence = new VariantAndInterpretationEvidence();
@@ -651,6 +652,12 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             response = apiService.get("/analysisResults/snpInDelStatistics/" + analysisResultVariant.getSnpInDel().getId(), null, null, false);
             VariantStatistics variantStatistics = response.getObjectBeforeConvertResponseToJSON(VariantStatistics.class);
             paramMap.put("variantStatistics", variantStatistics);
+
+            response = apiService.get(
+                    "/analysisResults/snpInDelExtraInfos/" + analysisResultVariant.getSnpInDel().getId(), null, null, false);
+            
+            List<SnpInDelExtraInfo> item = (List<SnpInDelExtraInfo>)response.getMultiObjectBeforeConvertResponseToJSON(SnpInDelExtraInfo.class, false);
+            paramMap.put("detail", item);
 
         } catch(WebAPIException e) {
             logger.info(e.getMessage());

@@ -87,6 +87,13 @@ public class AnalysisDetailLayoutController extends SubPaneController {
 
     private AnalysisDetailReportController analysisDetailReportController;
 
+    private AnalysisDetailOverviewGermlineController analysisDetailOverviewGermlineController;
+
+    /** target Tab Controller */
+    private AnalysisDetailTargetGermlineController analysisDetailTargetGermlineController;
+
+    private AnalysisDetailReportGermlineController analysisDetailReportGermlineController;
+
     /** API 서버 통신 서비스 */
     private APIService apiService;
 
@@ -144,22 +151,15 @@ public class AnalysisDetailLayoutController extends SubPaneController {
         for (AnalysisDetailTabMenuCode code : AnalysisDetailTabMenuCode.values()) {
             AnalysisDetailTabItem item = code.getItem();
 
-            if("TAB_OVERVIEW".equals(item.getNodeId()) &&
-                    (panel.getAnalysisType() != null && ExperimentTypeCode.GERMLINE.getDescription().equals(panel.getAnalysisType()))){
-                continue;
-            } else if("TAB_OVERVIEW_BRCA".equals(item.getNodeId()) &&
-                    (panel.getAnalysisType() != null && ExperimentTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType()))) {
-                continue;
+            if(item.getNodeId().contains("GERMLINE") &&
+                    (panel.getAnalysisType() != null && ExperimentTypeCode.GERMLINE.getDescription().equals(panel.getAnalysisType()))) {
+                addTab(item, idx);
+                idx++;
+            } else if(!item.getNodeId().contains("GERMLINE") &&
+                    (panel.getAnalysisType() != null && ExperimentTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType()))){
+                addTab(item, idx);
+                idx++;
             }
-            Tab tab = new Tab();
-            tab.setId(item.getNodeId());
-            tab.setText(item.getTabName());
-            tab.setClosable(false);
-            // 첫번째 탭 컨텐츠 삽입.
-            if (idx == 0)
-                setTabContent(tab);
-            topTabPane.getTabs().add(tab);
-            idx++;
         }
 
         // 탭메뉴 변경 리스너 설정 : 해당 탭 최초 선택 시 내용 삽입 처리.
@@ -174,6 +174,17 @@ public class AnalysisDetailLayoutController extends SubPaneController {
         });
 
         this.mainController.getMainFrame().setCenter(root);
+    }
+
+    public void addTab(AnalysisDetailTabItem item, int idx) {
+        Tab tab = new Tab();
+        tab.setId(item.getNodeId());
+        tab.setText(item.getTabName());
+        tab.setClosable(false);
+        // 첫번째 탭 컨텐츠 삽입.
+        if (idx == 0)
+            setTabContent(tab);
+        topTabPane.getTabs().add(tab);
     }
 
     /**
@@ -209,7 +220,24 @@ public class AnalysisDetailLayoutController extends SubPaneController {
                             analysisDetailReportController.setAnalysisDetailLayoutController(this);
                             analysisDetailReportController.setParamMap(getParamMap());
                             analysisDetailReportController.show((Parent) node);
-
+                            break;
+                        case FXMLConstants.ANALYSIS_DETAIL_OVERVIEW_GERMLINE:
+                            analysisDetailOverviewGermlineController = loader.getController();
+                            analysisDetailOverviewGermlineController.setAnalysisDetailLayoutController(this);
+                            analysisDetailOverviewGermlineController.setParamMap(getParamMap());
+                            analysisDetailOverviewGermlineController.show((Parent) node);
+                            break;
+                        case FXMLConstants.ANALYSIS_DETAIL_TARGET_GERMLINE:
+                            analysisDetailTargetGermlineController = loader.getController();
+                            analysisDetailTargetGermlineController.setAnalysisDetailLayoutController(this);
+                            analysisDetailTargetGermlineController.setParamMap(getParamMap());
+                            analysisDetailTargetGermlineController.show((Parent) node);
+                            break;
+                        case FXMLConstants.ANALYSIS_DETAIL_REPORT_GERMLINE :
+                            analysisDetailReportGermlineController = loader.getController();
+                            analysisDetailReportGermlineController.setAnalysisDetailLayoutController(this);
+                            analysisDetailReportGermlineController.setParamMap(getParamMap());
+                            analysisDetailReportGermlineController.show((Parent) node);
                             break;
                         default:
                             break;

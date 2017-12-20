@@ -17,11 +17,11 @@ import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.Panel;
 import ngeneanalysys.model.Sample;
 import ngeneanalysys.model.VariantCountByGene;
+import ngeneanalysys.model.VariantCountByGeneForGermlineDNA;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
  * @author Jang
  * @since 2017-08-28
  */
-public class AnalysisDetailTargetController extends AnalysisDetailCommonController {
+public class AnalysisDetailTargetGermlineController extends AnalysisDetailCommonController {
     private static Logger logger = LoggerUtil.getLogger();
 
     /** API 서버 통신 서비스 */
@@ -51,40 +51,40 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
     private TextField geneListTextField;
 
     @FXML
-    private TableView<VariantCountByGene> geneTable;
+    private TableView<VariantCountByGeneForGermlineDNA> geneTable;
 
     @FXML
-    private TableColumn<VariantCountByGene, String> geneColumn;
+    private TableColumn<VariantCountByGeneForGermlineDNA, String> geneColumn;
 
     @FXML
-    private TableColumn<VariantCountByGene, Integer> tier1SnvColumn;
+    private TableColumn<VariantCountByGeneForGermlineDNA, Integer> pathogenicSnvColumn;
 
     @FXML
-    private TableColumn<VariantCountByGene, Integer> tier1IndelsColumn;
+    private TableColumn<VariantCountByGeneForGermlineDNA, Integer> pathogenicIndelsColumn;
 
     @FXML
-    private TableColumn<VariantCountByGene, Integer> tier2SnvColumn;
+    private TableColumn<VariantCountByGeneForGermlineDNA, Integer> likelyPathogenicSnvColumn;
 
     @FXML
-    private TableColumn<VariantCountByGene, Integer> tier2IndelsColumn;
+    private TableColumn<VariantCountByGeneForGermlineDNA, Integer> likelyPathogenicIndelsColumn;
 
     @FXML
-    private TableColumn<VariantCountByGene, Integer> tier3SnvColumn;
+    private TableColumn<VariantCountByGeneForGermlineDNA, Integer> uncertainSignificanceSnvColumn;
 
     @FXML
-    private TableColumn<VariantCountByGene, Integer> tier3IndelsColumn;
+    private TableColumn<VariantCountByGeneForGermlineDNA, Integer> uncertainSignificanceIndelsColumn;
 
     @FXML
-    private TableColumn<VariantCountByGene, Integer> tier4SnvColumn;
+    private TableColumn<VariantCountByGeneForGermlineDNA, Integer> likelyBenignSnvColumn;
 
     @FXML
-    private TableColumn<VariantCountByGene, Integer> tier4IndelsColumn;
+    private TableColumn<VariantCountByGeneForGermlineDNA, Integer> likelyBenignIndelsColumn;
 
     @FXML
-    private TableColumn<VariantCountByGene, Integer> tierNSnvColumn;
+    private TableColumn<VariantCountByGeneForGermlineDNA, Integer> benignSnvColumn;
 
     @FXML
-    private TableColumn<VariantCountByGene, Integer> tierNIndelsColumn;
+    private TableColumn<VariantCountByGeneForGermlineDNA, Integer> benignIndelsColumn;
 
     @FXML
     private Button fusionButton;
@@ -99,16 +99,16 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
         fusionButton.setVisible(false);
 
         geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getGeneSymbol()));
-        tier1SnvColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier1SnpCount()).asObject());
-        tier1IndelsColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier1IndelCount()).asObject());
-        tier2SnvColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier2SnpCount()).asObject());
-        tier2IndelsColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier2IndelCount()).asObject());
-        tier3SnvColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier3SnpCount()).asObject());
-        tier3IndelsColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier3IndelCount()).asObject());
-        tier4SnvColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier4SnpCount()).asObject());
-        tier4IndelsColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier4IndelCount()).asObject());
-        tierNSnvColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTierNSnpCount()).asObject());
-        tierNIndelsColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTierNSnpCount()).asObject());
+        pathogenicSnvColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getPathogenicSnpCount()).asObject());
+        pathogenicIndelsColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getPathogenicInDelCount()).asObject());
+        likelyPathogenicSnvColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getLikelyPathogenicSnpCount()).asObject());
+        likelyPathogenicIndelsColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getLikelyPathogenicInDelCount()).asObject());
+        uncertainSignificanceSnvColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getUncertainSignificanceSnpCount()).asObject());
+        uncertainSignificanceIndelsColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getUncertainSignificanceInDelCount()).asObject());
+        likelyBenignSnvColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getLikelyBenignSnpCount()).asObject());
+        likelyBenignIndelsColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getLikelyBenignInDelCount()).asObject());
+        benignSnvColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getBenignSnpCount()).asObject());
+        benignIndelsColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getBenignInDelCount()).asObject());
 
         showVariantCountByGeneData();
 
@@ -138,12 +138,6 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
     @FXML
     public void showFusion() {
         try {
-            // Load the fxml file and create a new stage for the popup dialog
-            /*FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_FUSION);
-            BorderPane page = loader.load();
-            AnalysisDetailFusionController controller = loader.getController();
-            controller.setParamMap(getParamMap());
-            controller.setMainController(this.mainController);*/
 
             FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_FUSION_MAIN);
             GridPane page = loader.load();
@@ -178,7 +172,7 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
     @FXML
     public void searchGene() {
         Sample sample = (Sample)getParamMap().get("sample");
-        ObservableList<VariantCountByGene> VariantCountByGene = getVariantcountByGeneData(sample.getId(),
+        ObservableList<VariantCountByGeneForGermlineDNA> VariantCountByGene = getVariantcountByGeneData(sample.getId(),
                     geneListTextField.getText());
         geneTable.setItems(VariantCountByGene);
     }
@@ -187,7 +181,7 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
     public void cellSelectEvent(MouseEvent event){
         if(event.getClickCount() == 2) {
             String obj = geneTable.getSelectionModel().getSelectedCells().get(0).getTableColumn().getText();
-            VariantCountByGene gene = geneTable.getSelectionModel().getSelectedItem();
+            VariantCountByGeneForGermlineDNA gene = geneTable.getSelectionModel().getSelectedItem();
             logger.info(obj + " gene : " + gene.getGeneSymbol());
         }
     }
@@ -195,25 +189,25 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
 
     private void showVariantCountByGeneData() {
         Sample sample = (Sample)getParamMap().get("sample");
-        ObservableList<VariantCountByGene> VariantCountByGene = getVariantcountByGeneData(sample.getId(), null);
+        ObservableList<VariantCountByGeneForGermlineDNA> VariantCountByGene = getVariantcountByGeneData(sample.getId(), null);
         geneTable.setItems(VariantCountByGene);
     }
 
-    private ObservableList<VariantCountByGene> getVariantcountByGeneData(int sampleId, String geneList) {
+    private ObservableList<VariantCountByGeneForGermlineDNA> getVariantcountByGeneData(int sampleId, String geneList) {
         Map<String, Object> param = new HashMap<>();
-        ObservableList<VariantCountByGene> variantCountByGenes = null;
+        ObservableList<VariantCountByGeneForGermlineDNA> variantCountByGenes = null;
         if (geneList != null && geneList.trim().length() > 0) {
             param.put("geneSymbols", geneList);
         }
         try {
             HttpClientResponse response = null;
 
-            response = apiService.get("/analysisResults/variantCountByGeneForSomaticDNA/" + sampleId,
+            response = apiService.get("/analysisResults/variantCountByGeneForGermlineDNA/" + sampleId,
                     param, null, false);
 
             if (response != null) {
-                variantCountByGenes = (ObservableList<VariantCountByGene>) response
-                        .getMultiObjectBeforeConvertResponseToJSON(VariantCountByGene.class,
+                variantCountByGenes = (ObservableList<VariantCountByGeneForGermlineDNA>) response
+                        .getMultiObjectBeforeConvertResponseToJSON(VariantCountByGeneForGermlineDNA.class,
                                 true);
             }
             if(variantCountByGenes == null) return null;

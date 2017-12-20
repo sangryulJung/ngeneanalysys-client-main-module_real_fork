@@ -101,6 +101,9 @@ public class FXMLConstants {
 	
 	/** 분석 상세 > Report 화면 */
 	public static final String ANALYSIS_DETAIL_REPORT = "/layout/fxml/AnalysisDetail-Report.fxml";
+
+	/** 분석 상세 > Report 화면 */
+	public static final String ANALYSIS_DETAIL_REPORT_GERMLINE = "/layout/fxml/AnalysisDetail-Report-Germline.fxml";
 	
 	/** 분석 요청 그룹 검색 Dialog 화면 */
 	public static final String ANALYSIS_JOB_RUN_GROUP_SEARCH_DIALOG = "/layout/fxml/AnalysisJobRunGroupSearch.fxml";
@@ -109,10 +112,13 @@ public class FXMLConstants {
 	public static final String ANALYSIS_DETAIL_OVERVIEW = "/layout/fxml/AnalysisDetail-Overview.fxml";
 
 	/** 분석 상세 > OverView 화면 */
-	public static final String ANALYSIS_DETAIL_OVERVIEW_BRCA = "/layout/fxml/AnalysisDetail-Overview-BRCA.fxml";
+	public static final String ANALYSIS_DETAIL_OVERVIEW_GERMLINE = "/layout/fxml/AnalysisDetail-Overview-Germline.fxml";
 
 	/** 분석 상세 > Variants 화면 */
 	public static final String ANALYSIS_DETAIL_TARGET = "/layout/fxml/AnalysisDetail-Target.fxml";
+
+	/** 분석 상세 > Variants 화면 Germline */
+	public static final String ANALYSIS_DETAIL_TARGET_GERMLINE = "/layout/fxml/AnalysisDetail-Target-Germline.fxml";
 
 	/** 시스템 매니저 화면 */
 	public static final String SYSTEM_MANAGER_HOME = "/layout/fxml/SystemManagerHome.fxml";
