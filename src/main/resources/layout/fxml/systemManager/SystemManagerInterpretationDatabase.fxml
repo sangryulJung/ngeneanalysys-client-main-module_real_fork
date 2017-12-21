@@ -6,7 +6,9 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Pagination?>
-<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -23,140 +25,221 @@
       <URL value="@../../css/experimenter.css" />
    </stylesheets>
    <children>
-      <HBox layoutX="10.0" layoutY="10.0" prefHeight="592.0" prefWidth="1220.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="592.0" prefWidth="860.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
          <children>
-            <VBox prefHeight="592.0" prefWidth="300.0">
-               <children>
-                  <VBox prefHeight="74.0" prefWidth="100.0">
-                     <children>
-                        <HBox alignment="CENTER" prefHeight="29.0" prefWidth="200.0">
+            <TabPane prefHeight="470.0" prefWidth="1260.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab text="Genomic Coordinate">
+                     <content>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <Label fx:id="titleLabel" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="BOTTOM_LEFT" prefHeight="29.0" prefWidth="200.0">
-                           <children>
-                              <VBox prefHeight="170.0" prefWidth="150.0" spacing="10.0" />
-                           </children>
-                           <VBox.margin>
-                              <Insets top="20.0" />
-                           </VBox.margin>
-                        </HBox>
-                     </children>
-                  </VBox>
-                  <GridPane fx:id="panelEditGridPane" prefWidth="300.0">
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="144.0" minWidth="10.0" prefWidth="111.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="189.0" minWidth="10.0" prefWidth="189.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                     <children>
-                        <TextField fx:id="reportNameTextField" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" />
-                        <Label text="identification key" />
-                        <Label text="evidence A" GridPane.rowIndex="2" />
-                        <Label text="evidence B" GridPane.rowIndex="3" />
-                        <Label text="disease" GridPane.rowIndex="6" />
-                        <TextField fx:id="variableNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <TextField fx:id="displayNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Label text="evidence C" GridPane.rowIndex="4" />
-                        <TextField fx:id="displayNameTextField1" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <Label text="evidence D" GridPane.rowIndex="5" />
-                        <TextField fx:id="displayNameTextField11" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <Label text="description" GridPane.rowIndex="1" />
-                        <TextField fx:id="reportNameTextField1" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <ComboBox fx:id="variableListComboBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                     </children>
-                  </GridPane>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="300.0">
-                     <children>
-                        <Button fx:id="interpretationSaveButton" mnemonicParsing="false" onAction="#saveInterpretationDatabase" text="Save" />
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-            <HBox alignment="CENTER" prefHeight="592.0" prefWidth="20.0">
-               <children>
-                  <Separator orientation="VERTICAL" prefHeight="200.0">
-                     <HBox.margin>
-                        <Insets bottom="2.0" />
-                     </HBox.margin>
-                  </Separator>
-               </children>
-            </HBox>
-            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="592.0" prefWidth="860.0">
-               <children>
-                  <VBox prefHeight="74.0" prefWidth="900.0">
-                     <children>
-                        <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="900.0" VBox.vgrow="NEVER">
-                           <children>
-                              <Label text="evidence database" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="1.0">
-                           <children>
-                              <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="162.0" spacing="5.0">
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
+                              <HBox alignment="CENTER_RIGHT" spacing="1.0">
                                  <children>
                                     <Button mnemonicParsing="false" onAction="#interpretationAdd" text="+" />
                                  </children>
-                              </HBox>
-                              <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="180.0" spacing="5.0">
                                  <padding>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </padding>
                               </HBox>
-                              <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="33.0" prefWidth="170.0" spacing="5.0">
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                              </HBox>
-                              <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="33.0" prefWidth="192.0" spacing="5.0">
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                              </HBox>
-                              <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="162.0" spacing="5.0">
+                              <ScrollPane prefHeight="500.0" prefWidth="200.0">
+                                 <content>
+                                    <TableView fx:id="evidenceListTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" tableMenuButtonVisible="true">
+                                       <columns>
+                                          <TableColumn fx:id="idTableColumn" prefWidth="80.0" text="id" visible="false" />
+                                          <TableColumn fx:id="diseaseIdTableColumn" prefWidth="100.0" text="Disease" />
+                                          <TableColumn fx:id="identificationKeyTableColumn" prefWidth="90.0" text="Genomic Coordinate DB">
+                                             <columns>
+                                                <TableColumn fx:id="identificationKeyTableColumn11" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="50.0" text="Chr" />
+                                                <TableColumn fx:id="identificationKeyTableColumn111" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" text="Gene" />
+                                                <TableColumn fx:id="identificationKeyTableColumn1111" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="70.0" text="Position" />
+                                                <TableColumn fx:id="identificationKeyTableColumn11111" minWidth="-Infinity" prefWidth="90.0" text="Ref" />
+                                                <TableColumn fx:id="identificationKeyTableColumn111111" prefWidth="90.0" text="Alt" />
+                                             </columns>
+                                          </TableColumn>
+                                          <TableColumn fx:id="identificationKeyTableColumn1" prefWidth="90.0" text="Genomic Coordinate NGS">
+                                             <columns>
+                                                <TableColumn fx:id="identificationKeyTableColumn111" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="50.0" text="Chr" />
+                                                <TableColumn fx:id="identificationKeyTableColumn1111" prefWidth="90.0" text="Gene" />
+                                                <TableColumn fx:id="identificationKeyTableColumn11111" prefWidth="70.0" text="Position" />
+                                                <TableColumn fx:id="identificationKeyTableColumn111111" prefWidth="90.0" text="Ref" />
+                                                <TableColumn fx:id="identificationKeyTableColumn1111111" prefWidth="90.0" text="Alt" />
+                                             </columns>
+                                          </TableColumn>
+                                          <TableColumn fx:id="evidenceATableColumn1" minWidth="-Infinity" prefWidth="90.0" text="Tier I">
+                                             <columns>
+                                                <TableColumn fx:id="evidenceATableColumn" minWidth="-Infinity" prefWidth="90.0" text="Evidence A" />
+                                                <TableColumn fx:id="evidenceBTableColumn" minWidth="-Infinity" prefWidth="90.0" style="-fx-alignment: center;" text="Evidence B" />
+                                             </columns>
+                                          </TableColumn>
+                                          <TableColumn fx:id="evidenceCTableColumn1" prefWidth="139.55560302734375" text="Tier II">
+                                             <columns>
+                                                <TableColumn fx:id="evidenceCTableColumn" prefWidth="90.0" text="Evidence C" />
+                                                <TableColumn fx:id="evidenceDTableColumn" prefWidth="90.0" text="Evidence D" />
+                                             </columns>
+                                          </TableColumn>
+                                          <TableColumn fx:id="evidenceNegativeTableColumn11" minWidth="-Infinity" prefWidth="120.0" text="Pertinent Negative" />
+                                          <TableColumn fx:id="evidenceCTableColumn11" prefWidth="139.55560302734375" text="Tier IV">
+                                             <columns>
+                                                <TableColumn fx:id="evidenceCTableColumn1" prefWidth="90.0" text="Benign" />
+                                             </columns>
+                                          </TableColumn>
+                                          <TableColumn fx:id="deletedAtTableColumn" prefWidth="108.0" text="Deleted At" visible="false" />
+                                       </columns>
+                                    </TableView>
+                                 </content>
+                              </ScrollPane>
+                              <GridPane fx:id="panelEditGridPane" prefWidth="300.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="144.0" minWidth="10.0" prefWidth="111.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="189.0" minWidth="10.0" prefWidth="189.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="189.0" minWidth="10.0" prefWidth="189.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="189.0" minWidth="10.0" prefWidth="189.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="189.0" minWidth="10.0" prefWidth="189.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="189.0" minWidth="10.0" prefWidth="189.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <TextField fx:id="reportNameTextField" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <Label text="identification key" GridPane.rowIndex="1" />
+                                    <Label text="evidence A" GridPane.rowIndex="2" />
+                                    <Label text="evidence B" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                    <Label text="disease" />
+                                    <TextField fx:id="variableNameTextField" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                    <TextField fx:id="displayNameTextField" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                                    <Label text="evidence C" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                                    <TextField fx:id="displayNameTextField1" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                    <Label text="evidence D" GridPane.rowIndex="6" />
+                                    <TextField fx:id="displayNameTextField11" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                    <Label text="description" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                    <ComboBox fx:id="variableListComboBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" />
+                                    <HBox alignment="CENTER_RIGHT" prefHeight="48.0" prefWidth="900.0" spacing="5.0" GridPane.rowIndex="1">
+                                       <children>
+                                          <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" />
+                                          <HBox alignment="CENTER" prefHeight="48.0" prefWidth="168.0" />
+                                       </children>
+                                    </HBox>
+                                    <Pagination fx:id="evidenceDatabasePagination" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="8" />
+                                 </children>
+                              </GridPane>
+                              <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="300.0">
+                                 <children>
+                                    <Button fx:id="interpretationSaveButton" mnemonicParsing="false" onAction="#saveInterpretationDatabase" text="Save" />
+                                 </children>
                                  <padding>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </padding>
                               </HBox>
                            </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-                  <TableView fx:id="evidenceListTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-                     <columns>
-                        <TableColumn fx:id="idTableColumn" prefWidth="80.0" text="id" />
-                        <TableColumn fx:id="diseaseIdTableColumn" prefWidth="100.0" text="diseaseId" />
-                        <TableColumn fx:id="identificationKeyTableColumn" prefWidth="90.0" text="identificationkey" />
-                        <TableColumn fx:id="evidenceATableColumn" prefWidth="90.0" text="evidence A" />
-                        <TableColumn fx:id="deletedAtTableColumn" prefWidth="108.0" text="Deleted At" visible="false" />
-                        <TableColumn fx:id="evidenceBTableColumn" prefWidth="100.0" style="-fx-alignment: center;" text="evidence B" />
-                        <TableColumn fx:id="evidenceCTableColumn" prefWidth="139.55560302734375" text="evidence C" />
-                        <TableColumn fx:id="evidenceDTableColumn" prefWidth="139.55560302734375" text="evidence D" />
-                        <TableColumn fx:id="evidenceNegativeTableColumn11" prefWidth="139.55560302734375" text="evidence negative" />
-                     </columns>
-                  </TableView>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="48.0" prefWidth="900.0" spacing="5.0" VBox.vgrow="NEVER">
-                     <children>
-                        <Pagination fx:id="evidenceDatabasePagination" prefHeight="200.0" prefWidth="200.0" />
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" />
-                        <HBox alignment="CENTER" prefHeight="48.0" prefWidth="168.0" />
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
+                        </VBox>
+                     </content>
+                  </Tab>
+                <Tab text="Variant Type">
+                     <content>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <HBox alignment="CENTER_RIGHT" spacing="1.0">
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#interpretationAdd" text="+" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <TableView fx:id="evidenceListTable1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" tableMenuButtonVisible="true">
+                                 <columns>
+                                    <TableColumn fx:id="idTableColumn1" prefWidth="80.0" text="id" visible="false" />
+                                    <TableColumn fx:id="diseaseIdTableColumn1" prefWidth="100.0" text="Disease" />
+                                    <TableColumn fx:id="diseaseIdTableColumn111" prefWidth="100.0" text="Variant Type" />
+                                    <TableColumn fx:id="diseaseIdTableColumn11" prefWidth="100.0" text="Description" />
+                                    <TableColumn fx:id="evidenceATableColumn11" minWidth="-Infinity" prefWidth="90.0" text="Tier I">
+                                       <columns>
+                                          <TableColumn fx:id="evidenceATableColumn1" minWidth="-Infinity" prefWidth="90.0" text="Evidence A" />
+                                          <TableColumn fx:id="evidenceBTableColumn1" minWidth="-Infinity" prefWidth="90.0" style="-fx-alignment: center;" text="Evidence B" />
+                                       </columns>
+                                    </TableColumn>
+                                    <TableColumn fx:id="evidenceCTableColumn1" prefWidth="139.55560302734375" text="Tier II">
+                                       <columns>
+                                          <TableColumn fx:id="evidenceCTableColumn1" prefWidth="90.0" text="Evidence C" />
+                                          <TableColumn fx:id="evidenceDTableColumn1" prefWidth="90.0" text="Evidence D" />
+                                       </columns>
+                                    </TableColumn>
+                                    <TableColumn fx:id="evidenceNegativeTableColumn111" minWidth="-Infinity" prefWidth="120.0" text="Pertinent Negative" />
+                                    <TableColumn fx:id="evidenceCTableColumn111" prefWidth="139.55560302734375" text="Tier IV">
+                                       <columns>
+                                          <TableColumn fx:id="evidenceCTableColumn11" prefWidth="90.0" text="Benign" />
+                                       </columns>
+                                    </TableColumn>
+                                    <TableColumn fx:id="deletedAtTableColumn1" prefWidth="108.0" text="Deleted At" visible="false" />
+                                 </columns>
+                              </TableView>
+                              <GridPane fx:id="panelEditGridPane1" prefWidth="300.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="144.0" minWidth="10.0" prefWidth="111.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="189.0" minWidth="10.0" prefWidth="189.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="189.0" minWidth="10.0" prefWidth="189.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="189.0" minWidth="10.0" prefWidth="189.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="189.0" minWidth="10.0" prefWidth="189.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="189.0" minWidth="10.0" prefWidth="189.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <TextField fx:id="reportNameTextField1" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <Label text="identification key" GridPane.rowIndex="1" />
+                                    <Label text="evidence A" GridPane.rowIndex="2" />
+                                    <Label text="evidence B" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                    <Label text="disease" />
+                                    <TextField fx:id="variableNameTextField1" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                    <TextField fx:id="displayNameTextField1" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                                    <Label text="evidence C" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                                    <TextField fx:id="displayNameTextField11" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                    <Label text="evidence D" GridPane.rowIndex="6" />
+                                    <TextField fx:id="displayNameTextField111" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                    <Label text="description" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                    <ComboBox fx:id="variableListComboBox1" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" />
+                                    <HBox alignment="CENTER_RIGHT" prefHeight="48.0" prefWidth="900.0" spacing="5.0" GridPane.rowIndex="1">
+                                       <children>
+                                          <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" />
+                                          <HBox alignment="CENTER" prefHeight="48.0" prefWidth="168.0" />
+                                       </children>
+                                    </HBox>
+                                    <Pagination fx:id="evidenceDatabasePagination1" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="8" />
+                                 </children>
+                              </GridPane>
+                              <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="300.0">
+                                 <children>
+                                    <Button fx:id="interpretationSaveButton1" mnemonicParsing="false" onAction="#saveInterpretationDatabase" text="Save" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </content>
+                  </Tab>
+              </tabs>
+            </TabPane>
          </children>
-      </HBox>
+      </VBox>
    </children>
 </AnchorPane>
