@@ -42,6 +42,8 @@ public class ChangeTierDialogController extends SubPaneController {
 
     private AnalysisDetailReportController analysisDetailReportController;
 
+    private AnalysisDetailReportGermlineController analysisDetailReportGermlineController;
+
     @FXML
     private TextField commentTextField;
 
@@ -51,6 +53,15 @@ public class ChangeTierDialogController extends SubPaneController {
     private Stage dialogStage;
 
     private TableRow<VariantAndInterpretationEvidence> rowItem;
+
+    private boolean typeSomatic = true;
+
+    /**
+     * @param analysisDetailReportGermlineController
+     */
+    public void setAnalysisDetailReportGermlineController(AnalysisDetailReportGermlineController analysisDetailReportGermlineController) {
+        this.analysisDetailReportGermlineController = analysisDetailReportGermlineController;
+    }
 
     /**
      * @param analysisDetailReportController
@@ -110,7 +121,11 @@ public class ChangeTierDialogController extends SubPaneController {
             logger.info(comment);
             Map<String, Object> params = new HashMap<>();
             try {
-                params.put("tier", tier);
+                if(typeSomatic) {
+                    params.put("tier", tier);
+                } else {
+                    params.put("tier", tier);
+                }
                 params.put("comment", comment);
 
                 apiService.put("analysisResults/snpInDels/" + selectedItem.getSnpInDel().getId() + "/updateExpertTier", params, null, true);
@@ -121,6 +136,11 @@ public class ChangeTierDialogController extends SubPaneController {
                 selectedItem.getSnpInDel().setExpertTier(tier);
                 selectedItem.getSnpInDel().setComment(comment);
                 analysisDetailReportController.resetData(table);
+            }
+            if(analysisDetailReportGermlineController != null) {
+                selectedItem.getSnpInDel().setExpertPathogenicityLevel(tier);
+                selectedItem.getSnpInDel().setComment(comment);
+                analysisDetailReportGermlineController.resetData(table);
             }
 
             dialogStage.close();

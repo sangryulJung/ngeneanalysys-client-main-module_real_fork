@@ -344,3 +344,135 @@
 	-fx-padding:0 5 0 0;
 	-fx-font-size:10;
 }
+
+
+#significantArea .benign {
+	-fx-text-fill:#5a64a5;
+	-fx-font-size:15;
+	-fx-font-weight: bold;
+	-fx-padding:0 0 20 0;
+}
+
+#significantArea .likely_benign {
+	-fx-text-fill:#1F2D87;
+	-fx-font-size:15;
+	-fx-font-weight: bold;
+	-fx-padding:0 0 20 0;
+}
+
+#ignificantArea .uncertain_significance {
+	-fx-text-fill:#70ACF5;
+	-fx-font-size:15;
+	-fx-font-weight: bold;
+	-fx-padding:0 0 20 0;
+}
+
+#significantArea .likely_pathogenic {
+	-fx-text-fill:#FF9482;
+	-fx-font-size:15;
+	-fx-font-weight: bold;
+	-fx-padding:0 0 20 0;
+}
+
+#significantArea .pathogenic {
+	-fx-text-fill:#F6545C;
+	-fx-font-size:15;
+	-fx-font-weight: bold;
+	-fx-padding:0 0 20 0;
+}
+
+#significantArea .acmg_content_box{
+	-fx-padding:0 0 0 10;
+}
+
+#significantArea .acmg_content_role_label{
+	-fx-font-size: 14;
+}
+
+#significantArea .acmg_content_desc_label{
+	-fx-font-weight: bold;
+	-fx-font-size: 12;
+}
+
+#significantArea .acmg_content_msg_label{
+	-fx-font-size: 11;
+	-fx-text-fill: #7c7c7c;
+	-fx-padding : 0 0 15 0;
+}
+
+.acmg_PVS {
+	-fx-background-color:#C00000;
+	-fx-background-radius:2;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-pref-width:20;
+	-fx-text-alignment:center ;
+	-fx-alignment:center;
+}
+
+.acmg_PS {
+	-fx-background-color:#FFC000;
+	-fx-background-radius:2;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-pref-width:20;
+	-fx-text-alignment:center ;
+	-fx-alignment:center;
+}
+
+.acmg_PM {
+	-fx-background-color:#FFD966;
+	-fx-background-radius:2;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-pref-width:20;
+	-fx-text-alignment:center ;
+	-fx-alignment:center;
+}
+
+.acmg_PP {
+	-fx-background-color:#FFE966;
+	-fx-background-radius:2;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-pref-width:20;
+	-fx-text-alignment:center ;
+	-fx-alignment:center;
+}
+
+.acmg_BP {
+	-fx-background-color:#C4E0B4;
+	-fx-background-radius:2;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-pref-width:20;
+	-fx-text-alignment:center ;
+	-fx-alignment:center;
+}
+
+.acmg_BS {
+	-fx-background-color:#91D050;
+	-fx-background-radius:2;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-pref-width:20;
+	-fx-text-alignment:center ;
+	-fx-alignment:center;
+}
+
+.acmg_BA {
+	-fx-background-color:#00B050;
+	-fx-background-radius:2;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-pref-width:20;
+	-fx-text-alignment:center ;
+	-fx-alignment:center;
+}

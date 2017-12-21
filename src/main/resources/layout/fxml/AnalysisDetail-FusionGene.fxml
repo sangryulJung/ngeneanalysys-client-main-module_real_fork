@@ -14,13 +14,14 @@
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="390.5555419921875" minHeight="10.0" prefHeight="363.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="300.0" minHeight="10.0" prefHeight="300.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
       <VBox prefHeight="200.0" prefWidth="100.0">
          <children>
             <HBox prefHeight="39.0" prefWidth="1278.0" />
-            <TableView fx:id="fusionGeneTableView" prefHeight="518.0" prefWidth="1278.0">
+            <TableView fx:id="fusionGeneTableView" prefHeight="272.0" prefWidth="1278.0">
               <columns>
                 <TableColumn fx:id="nameTableColumn" prefWidth="75.0" text="name" />
                   <TableColumn fx:id="tierTableColumn" prefWidth="75.0" text="tier" />

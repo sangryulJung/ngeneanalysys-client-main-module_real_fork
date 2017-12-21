@@ -103,7 +103,7 @@
                         <TableView fx:id="pathogenicVariantsTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="1160.0" style="-fx-border-width: 0;" styleClass="txt_black">
                           <columns>
                             <TableColumn fx:id="pathogenicGeneColumn" prefWidth="75.0" styleClass="txt_black" text="Gene" />
-                            <TableColumn fx:id="pathogenicVariantsColumn" prefWidth="75.0" styleClass="txt_black" text="Variants" />
+                            <TableColumn fx:id="pathogenicVariantsColumn" prefWidth="100.0" styleClass="txt_black" text="Variants" />
                               <TableColumn fx:id="pathogenicExceptColumn" styleClass="txt_black" text="Exclude" />
                           </columns>
                         </TableView>
@@ -115,7 +115,7 @@
                         <TableView fx:id="likelyPathogenicVariantsTable" prefHeight="140.0" prefWidth="1160.0" style="-fx-border-width: 0;" styleClass="txt_black">
                           <columns>
                             <TableColumn fx:id="likelyPathogenicGeneColumn" prefWidth="75.0" styleClass="txt_black" text="Gene" />
-                            <TableColumn fx:id="likelyPathogenicVariantsColumn" prefWidth="75.0" styleClass="txt_black" text="Variants" />
+                            <TableColumn fx:id="likelyPathogenicVariantsColumn" prefWidth="100.0" styleClass="txt_black" text="Variants" />
                               <TableColumn fx:id="likelyPathogenicExceptColumn" styleClass="txt_black" text="Exclude" />
                           </columns>
                         </TableView>
@@ -123,7 +123,7 @@
                         <TableView fx:id="uncertainSignificanceVariantsTable" prefHeight="140.0" prefWidth="1160.0" style="-fx-border-width: 0;" styleClass="txt_black">
                            <columns>
                               <TableColumn fx:id="uncertainSignificanceGeneColumn" prefWidth="75.0" styleClass="txt_black" text="Gene" />
-                              <TableColumn fx:id="uncertainSignificanceVariantsColumn" prefWidth="75.0" styleClass="txt_black" text="Variants" />
+                              <TableColumn fx:id="uncertainSignificanceVariantsColumn" prefWidth="100.0" styleClass="txt_black" text="Variants" />
                               <TableColumn fx:id="uncertainSignificanceExceptColumn" styleClass="txt_black" text="Exclude" />
                            </columns>
                         </TableView>

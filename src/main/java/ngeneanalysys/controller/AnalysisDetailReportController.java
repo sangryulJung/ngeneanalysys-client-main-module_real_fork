@@ -478,7 +478,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             }
         }
 
-
     }
 
     /**
@@ -526,7 +525,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
         return true;
     }
@@ -801,7 +799,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
                 String contents = "";
                 if(panel.getReportTemplateId() == null) {
-                    contents = velocityUtil.getContents("/layout/velocity/report2.vm", "UTF-8", model);
+                    contents = velocityUtil.getContents("/layout/velocity/report.vm", "UTF-8", model);
                     created = pdfCreateService.createPDF(file, contents);
                     createdCheck(created, file);
                 } else {
@@ -819,7 +817,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                                 contentsMap.put(datePicker.getId(), "");
                             }
                         }
-
                     }
 
                     HttpClientResponse response = apiService.get("reportTemplate/" + panel.getReportTemplateId(), null, null, false);
@@ -961,7 +958,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         Node root = loader.load();
                         ExcludeReportDialogController excludeReportDialogController = loader.getController();
                         excludeReportDialogController.setMainController(mainController);
-                        excludeReportDialogController.setAnalysisDetailReportController(analysisDetailReportController);
+                        //excludeReportDialogController.setAnalysisDetailReportController(analysisDetailReportController);
                         excludeReportDialogController.settingItem("Y", selectedItem, checkBox);
                         excludeReportDialogController.show((Parent) root);
                     } catch (IOException ioe) {

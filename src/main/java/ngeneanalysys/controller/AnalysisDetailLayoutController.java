@@ -263,6 +263,9 @@ public class AnalysisDetailLayoutController extends SubPaneController {
         if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_REPORT.name())) {
             logger.info("report tab reported variant list reload...");
             analysisDetailReportController.setVariantsList();
+        } else if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_REPORT_GERMLINE.name())) {
+            logger.info("germline report tab reported variant list reload...");
+            analysisDetailReportGermlineController.setVariantsList();
         }
     }
 
