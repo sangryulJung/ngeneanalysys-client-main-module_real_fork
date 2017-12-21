@@ -262,7 +262,7 @@ public class AnalysisDetailLayoutController extends SubPaneController {
         // 보고서 탭인 경우 reported variant list 갱신함.
         if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_REPORT.name())) {
             logger.info("report tab reported variant list reload...");
-            //reportController.setVariantList();
+            analysisDetailReportController.setVariantsList();
         }
     }
 

@@ -172,8 +172,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
     List<VariantAndInterpretationEvidence> tierFour = null;
 
-    List<VariantAndInterpretationEvidence> negativeVariant = null;
-
     List<VariantAndInterpretationEvidence> negativeList = null;
 
     private VariantAndInterpretationEvidence selectedItem = null;
@@ -191,37 +189,20 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     public void show(Parent root) throws IOException {
         logger.info("show..");
 
+
+
+        tableCellUpdateFix(tierOneVariantsTable);
+        tableCellUpdateFix(tierTwoVariantsTable);
+        tableCellUpdateFix(tierThreeVariantsTable);
+        tableCellUpdateFix(negativeVariantsTable);
+
+
         //Drag & Drop 으로 Variant의 Tier를 변경
 
         settingTableViewDragAndDrop(tierOneVariantsTable, "T1");
         settingTableViewDragAndDrop(tierTwoVariantsTable, "T2");
         settingTableViewDragAndDrop(tierThreeVariantsTable, "T3");
         settingTableViewDragAndDrop(negativeVariantsTable, "TN");
-
-        //선택한 Row를 전역변수로 저장
-        /*tierOneVariantsTable.setRowFactory(tv -> {
-            TableRow<VariantAndInterpretationEvidence> rowData = new TableRow<>();
-            rowData.setOnDragDetected(e -> rowItem = rowData);
-            return rowData;
-        });
-
-        tierTwoVariantsTable.setRowFactory(tv -> {
-            TableRow<VariantAndInterpretationEvidence> rowData = new TableRow<>();
-            rowData.setOnDragDetected(e -> rowItem = rowData);
-            return rowData;
-        });
-
-        tierThreeVariantsTable.setRowFactory(tv -> {
-            TableRow<VariantAndInterpretationEvidence> rowData = new TableRow<>();
-            rowData.setOnDragDetected(e -> rowItem = rowData);
-            return rowData;
-        });
-
-        negativeVariantsTable.setRowFactory(tv -> {
-            TableRow<VariantAndInterpretationEvidence> rowData = new TableRow<>();
-            rowData.setOnDragDetected(e -> rowItem = rowData);
-            return rowData;
-        });*/
 
         // API 서비스 클래스 init
         apiService = APIService.getInstance();
@@ -359,6 +340,32 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 }
             }
 
+            if(sample.getSampleStatus().getReportStartedAt() != null) {
+                response = apiService.get("sampleReport/" + sample.getId(), null, null, false);
+
+                if (response.getStatus() >= 200 && response.getStatus() <= 300) {
+                    reportData = true;
+                    SampleReport sampleReport = response.getObjectBeforeConvertResponseToJSON(SampleReport.class);
+                    settingReportData(sampleReport.getContents());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void tableCellUpdateFix(TableView<VariantAndInterpretationEvidence> tableView) {
+        tableView.addEventFilter(ScrollEvent.ANY, scrollEvent -> {
+            tableView.refresh();
+            // close text box
+            tableView.edit(-1, null);
+        });
+    }
+
+    public void setVariantsList() {
+        HttpClientResponse response = null;
+        try {
             response = apiService.get("/analysisResults/sampleSnpInDels/" + sample.getId(), null,
                     null, false);
 
@@ -369,7 +376,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             //negative list만 가져옴
             negativeList = list.stream().filter(item -> ((item.getInterpretationEvidence() != null &&
                     !StringUtils.isEmpty(item.getInterpretationEvidence().getEvidencePersistentNegative())) ||
-            "TN".equalsIgnoreCase(item.getSnpInDel().getExpertTier()))).collect(Collectors.toList());
+                    "TN".equalsIgnoreCase(item.getSnpInDel().getExpertTier()))).collect(Collectors.toList());
 
             tierOne = settingTierList(list, "T1");
 
@@ -386,20 +393,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             orderingAndAddTableItem(tierThreeVariantsTable, tierThree);
 
             orderingAndAddTableItem(negativeVariantsTable, negativeList);
-
-            if(sample.getSampleStatus().getReportStartedAt() != null) {
-                response = apiService.get("sampleReport/" + sample.getId(), null, null, false);
-
-                if (response.getStatus() >= 200 && response.getStatus() <= 300) {
-                    reportData = true;
-                    SampleReport sampleReport = response.getObjectBeforeConvertResponseToJSON(SampleReport.class);
-                    settingReportData(sampleReport.getContents());
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (WebAPIException wae) {
+            DialogUtil.error(wae.getHeaderText(), wae.getContents(), this.getMainApp().getPrimaryStage(), true);
         }
-
     }
 
     public void settingTableViewDragAndDrop(TableView<VariantAndInterpretationEvidence> tableView, String tier) {
@@ -421,6 +417,11 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     public void orderingAndAddTableItem(TableView<VariantAndInterpretationEvidence> tableView,
                                         List<VariantAndInterpretationEvidence> tierList) {
         if(tierList != null && !tierList.isEmpty()) {
+
+            if(tableView.getItems() != null && !tableView.getItems().isEmpty()) {
+                tableView.getItems().removeAll(tableView.getItems());
+            }
+
             Collections.sort(tierList,
                     (a, b) -> a.getSnpInDel().getSequenceInfo().getGene().compareTo(b.getSnpInDel().getSequenceInfo().getGene()));
             tableView.getItems().addAll(tierList);
