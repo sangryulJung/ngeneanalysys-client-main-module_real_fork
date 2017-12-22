@@ -965,7 +965,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
                     siftValue = -1.0;
                 }
             } else if (siftMap.containsKey("radar")) {
-                siftValue = convertRadarItemPercentageByLevelForPathogenic((String) siftMap.get("radar")) / 100.0;
+                siftValue = convertRadarItemPercentageByLevelForPathogenic(checkType(siftMap.get("radar"))) / 100.0;
                 // clinicalSignificantPathogenicitySiftLabel.setTooltip(new
                 // Tooltip((String) siftMap.get("radar")));
             } else {
@@ -993,7 +993,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
                     polyphenValue = -1.0;
                 }
             } else if (polyphenMap.containsKey("radar")) {
-                polyphenValue = convertRadarItemPercentageByLevelForPathogenic((String) polyphenMap.get("radar")) / 100.0;
+                polyphenValue = convertRadarItemPercentageByLevelForPathogenic(checkType(polyphenMap.get("radar"))) / 100.0;
                 // clinicalSignificantPathogenicitySiftLabel.setTooltip(new
                 // Tooltip((String) siftMap.get("radar")));
             } else {
@@ -1007,7 +1007,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
         // POLYPHEN2
         if (mtMap != null && !mtMap.isEmpty()) {
             if (mtMap.containsKey("radar")) {
-                mtValue = convertRadarItemPercentageByLevelForPathogenic((String) mtMap.get("radar")) / 100.0;
+                mtValue = convertRadarItemPercentageByLevelForPathogenic(checkType(mtMap.get("radar"))) / 100.0;
                 // clinicalSignificantPathogenicitySiftLabel.setTooltip(new
                 // Tooltip((String) siftMap.get("radar")));
             } else {
@@ -1021,7 +1021,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
         AnimationTimer siftTimer = new ClinicalSignificantTimer(
                 siftCanvas.getGraphicsContext2D(), siftValue, "SIFT", siftText, this.gaugeSpeed);
         AnimationTimer polyphenTimer = new ClinicalSignificantTimer(
-                polyphenCanvas.getGraphicsContext2D(), polyphenValue, "POLYPHEN2", polyphenText, this.gaugeSpeed);
+                polyphenCanvas.getGraphicsContext2D(), polyphenValue, "MetaSVM", polyphenText, this.gaugeSpeed);
         AnimationTimer mtTimer = new ClinicalSignificantTimer(
                 mtCanvas.getGraphicsContext2D(), mtValue, "MUTATIONTASTER", mtText, this.gaugeSpeed);
         siftTimer.start();
@@ -1087,6 +1087,13 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
                 frequencyValue[4] * 100,
                 frequencyValue[5] * 100);
         frequenciesRadarGraph.display();
+    }
+
+    private String checkType(Object obj) {
+        if(obj instanceof Integer) {
+            return String.valueOf(obj);
+        }
+        return (String) obj;
     }
 
     private void renderClinicalPathogenicityData(HBox node, String text, String value) {

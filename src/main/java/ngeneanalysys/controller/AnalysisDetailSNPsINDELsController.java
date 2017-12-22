@@ -135,6 +135,19 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
     @FXML private CheckBox addToReportCheckBox;
 
+    @FXML private Button pathogenic5;
+    @FXML private Button pathogenic4;
+    @FXML private Button pathogenic3;
+    @FXML private Button pathogenic2;
+    @FXML private Button pathogenic1;
+
+    @FXML private HBox predictionArea;
+    @FXML private HBox pathogenicityArea;
+
+    @FXML private VBox pathogenicityVBox;
+
+    @FXML private CheckBox addToGermlineReportCheckBox;
+
 
     //VariantList
     List<VariantAndInterpretationEvidence> list = null;
@@ -195,36 +208,11 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         iconAreaHBox.getChildren().add(ruoImgView);
 
         addToReportCheckBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-            if(selectedAnalysisResultVariant != null) {
-                String oldSymbol = selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport();
-                if (addToReportCheckBox.isSelected()) {
-                    try {
-                        FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
-                        Node node = loader.load();
-                        ExcludeReportDialogController excludeReportDialogController = loader.getController();
-                        excludeReportDialogController.setMainController(mainController);
-                        excludeReportDialogController.settingItem("Y", selectedAnalysisResultVariant, addToReportCheckBox);
-                        excludeReportDialogController.show((Parent) node);
-                    } catch (IOException ioe) {
-                        ioe.printStackTrace();
-                    }
-                    if(!oldSymbol.equals(selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport()))
-                        showVariantList(null, 0);
-                } else {
-                    try {
-                        FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
-                        Node node = loader.load();
-                        ExcludeReportDialogController excludeReportDialogController = loader.getController();
-                        excludeReportDialogController.setMainController(mainController);
-                        excludeReportDialogController.settingItem("N", selectedAnalysisResultVariant, addToReportCheckBox);
-                        excludeReportDialogController.show((Parent) node);
-                    } catch (IOException ioe) {
-                        ioe.printStackTrace();
-                    }
-                }
-                if(!oldSymbol.equals(selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport()))
-                    showVariantList(null, 0);
-            }
+            addToReportBtn();
+        });
+
+        addToGermlineReportCheckBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+            addToReportBtn();
         });
 
         // 목록 정렬 설정 트래킹
@@ -262,6 +250,12 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             }
         });
 
+        if("SOMATIC".equalsIgnoreCase(panel.getAnalysisType())) {
+
+        } else {
+            tierChangeVBox.setVisible(false);
+            pathogenicityVBox.setVisible(true);
+        }
 
         currentStage = new Stage();
         currentStage.setResizable(false);
@@ -342,6 +336,39 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         return (int)list.stream().filter(item -> ((pathogenicity.equalsIgnoreCase(item.getSnpInDel().getExpertPathogenicityLevel()) ||
                 (StringUtils.isEmpty(item.getSnpInDel().getExpertPathogenicityLevel()) && item.getSnpInDel().getSwPathogenicityLevel().equalsIgnoreCase(pathogenicity)))))
                 .count();
+    }
+
+    public void addToReportBtn() {
+        if(selectedAnalysisResultVariant != null) {
+            String oldSymbol = selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport();
+            if (addToReportCheckBox.isSelected()) {
+                try {
+                    FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
+                    Node node = loader.load();
+                    ExcludeReportDialogController excludeReportDialogController = loader.getController();
+                    excludeReportDialogController.setMainController(mainController);
+                    excludeReportDialogController.settingItem("Y", selectedAnalysisResultVariant, addToReportCheckBox);
+                    excludeReportDialogController.show((Parent) node);
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
+                }
+                if(!oldSymbol.equals(selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport()))
+                    showVariantList(null, 0);
+            } else {
+                try {
+                    FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
+                    Node node = loader.load();
+                    ExcludeReportDialogController excludeReportDialogController = loader.getController();
+                    excludeReportDialogController.setMainController(mainController);
+                    excludeReportDialogController.settingItem("N", selectedAnalysisResultVariant, addToReportCheckBox);
+                    excludeReportDialogController.show((Parent) node);
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
+                }
+            }
+            if(!oldSymbol.equals(selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport()))
+                showVariantList(null, 0);
+        }
     }
 
     /**

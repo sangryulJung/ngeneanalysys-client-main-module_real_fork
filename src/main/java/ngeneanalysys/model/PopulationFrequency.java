@@ -14,6 +14,21 @@ public class PopulationFrequency {
     private BigDecimal koreanExomInformationDatabase;
     private BigDecimal kohbraFreq;
     private BigDecimal koreanReferenceGenomeDatabase;
+    private BigDecimal genomAD;
+
+    /**
+     * @return genomAD
+     */
+    public BigDecimal getGenomAD() {
+        return genomAD;
+    }
+
+    /**
+     * @param genomAD
+     */
+    public void setGenomAD(BigDecimal genomAD) {
+        this.genomAD = genomAD;
+    }
 
     /**
      * @return koreanReferenceGenomeDatabase
