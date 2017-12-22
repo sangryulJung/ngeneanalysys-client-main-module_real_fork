@@ -297,7 +297,7 @@
 													#if($variant.snpInDel.sequenceInfo.gene == "BRCA1")
 														<fo:table-row>
 															<fo:table-cell text-align="left" padding="2mm" border-width="0.5pt" border-style="solid">
-																<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt"><![CDATA[$variant.ntChangeBRCA]]></fo:block>
+																<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt"><![CDATA[$variant.snpInDel.ntChangeBRCA]]></fo:block>
 															</fo:table-cell>
 															<fo:table-cell text-align="left" padding="2mm" border-width="0.5pt" border-style="solid">
 																<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt"><![CDATA[$variant.snpInDel.snpInDelExpression.ntChange]]></fo:block>
@@ -399,7 +399,7 @@
 													#if($variant.snpInDel.sequenceInfo.gene == "BRCA2")
 														<fo:table-row>
 															<fo:table-cell text-align="left" padding="2mm" border-width="0.5pt" border-style="solid">
-																<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt"><![CDATA[$variant.ntChangeBRCA]]></fo:block>
+																<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt"><![CDATA[$variant.snpInDel.ntChangeBRCA]]></fo:block>
 															</fo:table-cell>
 															<fo:table-cell text-align="left" padding="2mm" border-width="0.5pt" border-style="solid">
 																<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt"><![CDATA[$variant.snpInDel.snpInDelExpression.ntChange]]></fo:block>

@@ -208,11 +208,11 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         iconAreaHBox.getChildren().add(ruoImgView);
 
         addToReportCheckBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-            addToReportBtn();
+            addToReportBtn(addToReportCheckBox );
         });
 
         addToGermlineReportCheckBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-            addToReportBtn();
+            addToReportBtn(addToGermlineReportCheckBox);
         });
 
         // 목록 정렬 설정 트래킹
@@ -251,7 +251,8 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         });
 
         if("SOMATIC".equalsIgnoreCase(panel.getAnalysisType())) {
-
+            tierChangeVBox.setVisible(true);
+            pathogenicityVBox.setVisible(false);
         } else {
             tierChangeVBox.setVisible(false);
             pathogenicityVBox.setVisible(true);
@@ -338,16 +339,16 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                 .count();
     }
 
-    public void addToReportBtn() {
+    public void addToReportBtn(CheckBox checkBox) {
         if(selectedAnalysisResultVariant != null) {
             String oldSymbol = selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport();
-            if (addToReportCheckBox.isSelected()) {
+            if (checkBox.isSelected()) {
                 try {
                     FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
                     Node node = loader.load();
                     ExcludeReportDialogController excludeReportDialogController = loader.getController();
                     excludeReportDialogController.setMainController(mainController);
-                    excludeReportDialogController.settingItem("Y", selectedAnalysisResultVariant, addToReportCheckBox);
+                    excludeReportDialogController.settingItem("Y", selectedAnalysisResultVariant, checkBox);
                     excludeReportDialogController.show((Parent) node);
                 } catch (IOException ioe) {
                     ioe.printStackTrace();
@@ -360,14 +361,14 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                     Node node = loader.load();
                     ExcludeReportDialogController excludeReportDialogController = loader.getController();
                     excludeReportDialogController.setMainController(mainController);
-                    excludeReportDialogController.settingItem("N", selectedAnalysisResultVariant, addToReportCheckBox);
+                    excludeReportDialogController.settingItem("N", selectedAnalysisResultVariant, checkBox);
                     excludeReportDialogController.show((Parent) node);
                 } catch (IOException ioe) {
                     ioe.printStackTrace();
                 }
             }
             if(!oldSymbol.equals(selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport()))
-                showVariantList(null, 0);
+                showVariantList(null, selectedVariantIndex);
         }
     }
 
@@ -613,12 +614,12 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                 }
             }
 
-            settingTierArea();
-
-            if("Y".equals(analysisResultVariant.getSnpInDel().getIncludedInReport())) {
-                addToReportCheckBox.setSelected(true);
+            if("SOMATIC".equalsIgnoreCase(panel.getAnalysisType())) {
+                settingTierArea();
+                checkBoxSetting(addToReportCheckBox, analysisResultVariant.getSnpInDel().getIncludedInReport());
             } else {
-                addToReportCheckBox.setSelected(false);
+                settingGermlineArea();
+                checkBoxSetting(addToGermlineReportCheckBox, analysisResultVariant.getSnpInDel().getIncludedInReport());
             }
 
             // 우측 Pathogenic Review 화면 설정
@@ -640,6 +641,14 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         // 첫번째 탭 선택 처리
         tabArea.getSelectionModel().selectFirst();
         setDetailTabActivationToggle(true);
+    }
+
+    public void checkBoxSetting(CheckBox checkBox, String Symbol) {
+        if("Y".equals(Symbol)) {
+            checkBox.setSelected(true);
+        } else {
+            checkBox.setSelected(false);
+        }
     }
 
     /**
@@ -1124,7 +1133,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
         if(panel != null && ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             TableColumn<VariantAndInterpretationEvidence, String> ntChangeBIC = new TableColumn<>("NT change(BIC)");
-            ntChangeBIC.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChangeBic()));
+            ntChangeBIC.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getNtChangeBRCA()));
             variantListTableView.getColumns().addAll(ntChangeBIC);
         }
 
@@ -1365,9 +1374,8 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         if(selectedAnalysisResultVariant.getSnpInDel().getSwTier() != null) {
             for(Node node : swTierArea.getChildren()) {
                 Label label = (Label) node;
-
+                label.getStyleClass().removeAll(label.getStyleClass());
                 if(label.getId().equals(selectedAnalysisResultVariant.getSnpInDel().getSwTier())) {
-                    label.getStyleClass().removeAll(label.getStyleClass());
 
                     if(selectedAnalysisResultVariant.getSnpInDel().getSwTier().equals("T1")) {
                         label.getStyleClass().add("tier_one");
@@ -1416,6 +1424,63 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         }
     }
 
+    public void settingGermlineArea() {
+        if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicityLevel() != null) {
+            for(Node node : predictionArea.getChildren()) {
+                Label label = (Label) node;
+                label.getStyleClass().removeAll(label.getStyleClass());
+                if(label.getId().equals(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicityLevel())) {
+                    if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicityLevel().equals("P")) {
+                        label.getStyleClass().add("prediction_A");
+                    } else if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicityLevel().equals("LP")) {
+                        label.getStyleClass().add("prediction_B");
+                    } else if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicityLevel().equals("US")) {
+                        label.getStyleClass().add("prediction_C");
+                    } else if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicityLevel().equals("LB")) {
+                        label.getStyleClass().add("prediction_D");
+                    } else if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicityLevel().equals("B")) {
+                        label.getStyleClass().add("prediction_E");
+                    }
+                } else {
+                    label.getStyleClass().add("prediction_none");
+                }
+            }
+        }
+        String pathogenicity = selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicityLevel();
+        for(Node node : pathogenicityArea.getChildren()) {
+            Button button = (Button)node;
+            button.getStyleClass().removeAll(button.getStyleClass());
+            button.getStyleClass().add("button");
+            if(!StringUtils.isEmpty(pathogenicity)) {
+                if(pathogenicity.equals(button.getId())) {
+                    if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicityLevel().equals("P")) {
+                        button.getStyleClass().add("prediction_A");
+                        button.setDisable(true);
+                    } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicityLevel().equals("LP")) {
+                        button.getStyleClass().add("prediction_B");
+                        button.setDisable(true);
+                    } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicityLevel().equals("US")) {
+                        button.getStyleClass().add("prediction_C");
+                        button.setDisable(true);
+                    } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicityLevel().equals("LB")) {
+                        button.getStyleClass().add("prediction_D");
+                        button.setDisable(true);
+                    } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicityLevel().equals("B")) {
+                        button.getStyleClass().add("prediction_E");
+                        button.setDisable(true);
+                    }
+                } else {
+                    button.getStyleClass().add("no_selected_user_tier");
+                    button.setDisable(false);
+                }
+            } else {
+                button.getStyleClass().add("no_selected_user_tier");
+                button.setDisable(false);
+            }
+
+        }
+    }
+
     @FXML
     public void setFlag(ActionEvent event) {
         Button actionButton = (Button) event.getSource();
@@ -1445,5 +1510,38 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
             showVariantList(null, 0);
         }
+    }
+
+    @FXML
+    public void setGermlineFlag(ActionEvent event) {
+        Button actionButton = (Button) event.getSource();
+        String value = null;
+        if (actionButton == pathogenic5) {
+            value = "P";
+        } else if (actionButton == pathogenic4) {
+            value = "LP";
+        } else if (actionButton == pathogenic3) {
+            value = "US";
+        } else if (actionButton == pathogenic2) {
+            value = "LB";
+        } else if (actionButton == pathogenic1) {
+            value = "B";
+        }
+
+        /*if((selectedAnalysisResultVariant.getSnpInDel().getExpertTier() == null)
+                || !selectedAnalysisResultVariant.getSnpInDel().getExpertTier().equals(value)) {
+            try {
+                FXMLLoader loader = mainApp.load(FXMLConstants.CHANGE_TIER);
+                Node root = loader.load();
+                ChangeTierDialogController changeTierDialogController = loader.getController();
+                changeTierDialogController.setMainController(this.getMainController());
+                changeTierDialogController.settingTier(value, selectedAnalysisResultVariant);
+                changeTierDialogController.show((Parent) root);
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+
+            showVariantList(null, 0);
+        }*/
     }
 }

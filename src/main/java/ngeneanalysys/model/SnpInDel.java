@@ -1,6 +1,10 @@
 package ngeneanalysys.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -287,4 +291,45 @@ public class SnpInDel implements Serializable {
     public void setInterpretationEvidenceId(Integer interpretationEvidenceId) {
         this.interpretationEvidenceId = interpretationEvidenceId;
     }
+
+	/**
+	 * @return the cDNAbic
+	 */
+	public String getNtChangeBRCA() {
+		String cDNAbic = this.getSnpInDelExpression().getNtChange();
+		if (cDNAbic != null
+				&& !cDNAbic.isEmpty()
+				&& getSequenceInfo() != null && getSequenceInfo().getGene() != null
+				&& (getSequenceInfo().getGene().toUpperCase().equals("BRCA1") || getSequenceInfo().getGene().toUpperCase().equals("BRCA2"))) {
+			List<String> findCDNANums = new ArrayList<>();
+			Pattern p = Pattern.compile("\\d+");
+			Matcher m = null;
+			if(cDNAbic.contains(":")) {
+				String tempcDNAbic = cDNAbic.substring(cDNAbic.indexOf(":") + 1);
+				m = p.matcher(tempcDNAbic);
+			} else {
+				m = p.matcher(cDNAbic);
+			}
+			while (m.find()) {
+				findCDNANums.add(m.group());
+			}
+			int cdnaNum = 0;
+			for(String cdnaItem : findCDNANums){
+				try {
+					cdnaNum = Integer.parseInt(cdnaItem);
+					if(getSequenceInfo().getGene().toUpperCase().equals("BRCA1")){
+						cDNAbic = cDNAbic.replace(cdnaItem, String.valueOf(cdnaNum+119));
+					} else if (getSequenceInfo().getGene().toUpperCase().equals("BRCA2")){
+						cDNAbic = cDNAbic.replace(cdnaItem, String.valueOf(cdnaNum+228));
+					} else {
+
+					}
+				} catch (NumberFormatException e){
+					return "cDNA parsing error. " + cdnaItem;
+				}
+			}
+			return cDNAbic;
+		}
+		return "";
+	}
 }

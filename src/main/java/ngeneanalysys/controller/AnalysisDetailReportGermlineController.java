@@ -561,6 +561,20 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 contentsMap.put("reportingDate" , new Date().toString());
                 contentsMap.put("reportID", String.format("%05d-%05d", sample.getId(), random.nextInt(99999)));
 
+                contentsMap.put("inspectorOrganization", "");
+                contentsMap.put("inspectorName", "");
+                contentsMap.put("inspectorContact", "");
+                contentsMap.put("reportingDate", "");
+                if(!isDraft) {
+                    HttpClientResponse response = apiService.get("/members/" + loginSession.getId(), getParamMap(), null,
+                            false);
+                    User user = response.getObjectBeforeConvertResponseToJSON(User.class);
+                    contentsMap.put("inspectorOrganization", user.getOrganization() + "/" + user.getDepartment());
+                    contentsMap.put("inspectorName", user.getName());
+                    contentsMap.put("inspectorContact", user.getPhone());
+                    contentsMap.put("reportingDate", sample.getSampleStatus().getReportFinishedAt());
+                }
+
                 for(int i = 0; i < customFieldGridPane.getChildren().size(); i++) {
                     Object gridObject = customFieldGridPane.getChildren().get(i);
 
@@ -578,9 +592,12 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 }
 
                 List<VariantAndInterpretationEvidence> list = new ArrayList<>();
-                if(pathogenicVariantsTable.getItems() != null && !pathogenicVariantsTable.getItems().isEmpty()) list.addAll(pathogenicVariantsTable.getItems());
-                if(pathogenicVariantsTable.getItems() != null && !pathogenicVariantsTable.getItems().isEmpty()) list.addAll(pathogenicVariantsTable.getItems());
-                if(pathogenicVariantsTable.getItems() != null && !pathogenicVariantsTable.getItems().isEmpty()) list.addAll(pathogenicVariantsTable.getItems());
+                if(pathogenicVariantsTable.getItems() != null
+                        && !pathogenicVariantsTable.getItems().isEmpty()) list.addAll(pathogenicVariantsTable.getItems());
+                if(likelyPathogenicVariantsTable.getItems() != null
+                        && !likelyPathogenicVariantsTable.getItems().isEmpty()) list.addAll(likelyPathogenicVariantsTable.getItems());
+                if(uncertainSignificanceVariantsTable.getItems() != null
+                        && !uncertainSignificanceVariantsTable.getItems().isEmpty()) list.addAll(uncertainSignificanceVariantsTable.getItems());
                 if(likelyBenignList != null && !likelyBenignList.isEmpty()) list.addAll(likelyBenignList);
                 if(benignList != null && !benignList.isEmpty()) list.addAll(benignList);
 

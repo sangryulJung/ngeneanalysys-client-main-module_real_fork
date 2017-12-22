@@ -151,9 +151,9 @@
             </HBox>
             <VBox alignment="BOTTOM_LEFT" prefHeight="320.0" prefWidth="50.0" style="-fx-background-color: #F7F7F7;" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
-                  <Pane prefHeight="173.0" prefWidth="157.0">
+                  <Pane prefHeight="155.0" prefWidth="157.0">
                      <children>
-                        <VBox fx:id="tierChangeVBox" alignment="TOP_CENTER" prefHeight="175.0" prefWidth="157.0">
+                        <VBox fx:id="tierChangeVBox" alignment="TOP_CENTER" prefHeight="155.0" prefWidth="157.0" visible="false">
                            <children>
                               <Label text="Tier Change" />
                               <Label alignment="CENTER" maxHeight="16.0" maxWidth="1.7976931348623157E308" minHeight="16.0" prefHeight="16.0" styleClass="flagging_label" text="SW Tier">
@@ -161,7 +161,7 @@
                                     <Font size="11.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="4.0" />
+                                    <Insets top="3.0" />
                                  </VBox.margin>
                                  <opaqueInsets>
                                     <Insets />
@@ -191,7 +191,7 @@
                                     </Label>
                                  </children>
                                  <VBox.margin>
-                                    <Insets top="3.0" />
+                                    <Insets top="1.0" />
                                  </VBox.margin>
                               </HBox>
                               <Label alignment="TOP_CENTER" maxHeight="16.0" maxWidth="1.7976931348623157E308" minHeight="16.0" prefHeight="16.0" prefWidth="140.0" styleClass="flagging_label" text="User Tier">
@@ -199,7 +199,7 @@
                                     <Font size="11.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="4.0" />
+                                    <Insets top="3.0" />
                                  </VBox.margin>
                               </Label>
                               <HBox fx:id="userTierArea" alignment="TOP_CENTER" minHeight="20.0" prefHeight="20.0" prefWidth="140.0">
@@ -226,17 +226,17 @@
                                     </Button>
                                  </children>
                                  <VBox.margin>
-                                    <Insets top="3.0" />
+                                    <Insets top="1.0" />
                                  </VBox.margin>
                               </HBox>
                               <VBox prefWidth="100.0" styleClass="pathogenic_review_checkbox">
                                  <children>
-                                    <CheckBox fx:id="addToReportCheckBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="28.0" text="Add to Report" VBox.vgrow="ALWAYS" />
+                                    <CheckBox fx:id="addToReportCheckBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="27.0" text="Add to Report" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                            </children>
                         </VBox>
-                        <VBox fx:id="pathogenicityVBox" alignment="TOP_CENTER" prefHeight="153.0" prefWidth="157.0" visible="false">
+                        <VBox fx:id="pathogenicityVBox" alignment="TOP_CENTER" prefHeight="155.0" prefWidth="157.0">
                            <children>
                               <Label text="Pathogenicity Change" />
                               <Label alignment="CENTER" maxHeight="16.0" maxWidth="1.7976931348623157E308" minHeight="16.0" prefHeight="16.0" styleClass="flagging_label" text="Prediction">
@@ -244,7 +244,7 @@
                                     <Font size="11.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="4.0" />
+                                    <Insets top="3.0" />
                                  </VBox.margin>
                                  <opaqueInsets>
                                     <Insets />
@@ -252,34 +252,34 @@
                               </Label>
                               <HBox fx:id="predictionArea" alignment="TOP_CENTER" maxHeight="20.0" maxWidth="158.0" minHeight="20.0" minWidth="138.0" prefHeight="20.0" prefWidth="138.0">
                                  <children>
-                                    <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="prediction_none" text="P">
+                                    <Label fx:id="P" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="prediction_none" text="P">
                                        <HBox.margin>
                                           <Insets left="10.0" />
                                        </HBox.margin>
                                     </Label>
-                                    <Label alignment="CENTER" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" prefHeight="20.0" prefWidth="20.0" styleClass="prediction_none" text="LP">
+                                    <Label fx:id="LP" alignment="CENTER" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" prefHeight="20.0" prefWidth="20.0" styleClass="prediction_none" text="LP">
                                        <HBox.margin>
                                           <Insets left="4.0" />
                                        </HBox.margin>
                                     </Label>
-                                    <Label alignment="CENTER" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" prefHeight="20.0" prefWidth="20.0" styleClass="prediction_none" text="US">
+                                    <Label fx:id="US" alignment="CENTER" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" prefHeight="20.0" prefWidth="20.0" styleClass="prediction_none" text="US">
                                        <HBox.margin>
                                           <Insets left="4.0" />
                                        </HBox.margin>
                                     </Label>
-                                    <Label alignment="CENTER" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" prefHeight="20.0" prefWidth="20.0" styleClass="prediction_none" text="LB">
+                                    <Label fx:id="LB" alignment="CENTER" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" prefHeight="20.0" prefWidth="20.0" styleClass="prediction_none" text="LB">
                                        <HBox.margin>
                                           <Insets left="4.0" />
                                        </HBox.margin>
                                     </Label>
-                                    <Label alignment="CENTER" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" prefHeight="20.0" prefWidth="20.0" styleClass="prediction_none" text="B">
+                                    <Label fx:id="B" alignment="CENTER" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" prefHeight="20.0" prefWidth="20.0" styleClass="prediction_none" text="B">
                                        <HBox.margin>
                                           <Insets left="4.0" />
                                        </HBox.margin>
                                     </Label>
                                  </children>
                                  <VBox.margin>
-                                    <Insets top="3.0" />
+                                    <Insets top="1.0" />
                                  </VBox.margin>
                               </HBox>
                               <Label alignment="TOP_CENTER" maxHeight="16.0" maxWidth="1.7976931348623157E308" minHeight="16.0" prefHeight="16.0" prefWidth="140.0" styleClass="flagging_label" text="Pathogenicity">
@@ -287,44 +287,44 @@
                                     <Font size="11.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="4.0" />
+                                    <Insets top="3.0" />
                                  </VBox.margin>
                               </Label>
                               <HBox fx:id="pathogenicityArea" alignment="TOP_CENTER" minHeight="20.0" prefHeight="20.0" prefWidth="140.0">
                                  <children>
-                                    <Button fx:id="pathogenic5" layoutX="70.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setFlag" prefHeight="20.0" prefWidth="20.0" styleClass="pathogenic_5" text="P">
+                                    <Button fx:id="pathogenic5" layoutX="70.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setGermlineFlag" prefHeight="20.0" prefWidth="20.0" styleClass="pathogenic_5" text="P">
                                        <HBox.margin>
                                           <Insets left="10.0" />
                                        </HBox.margin>
                                     </Button>
-                                    <Button fx:id="pathogenic4" layoutX="50.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setFlag" prefHeight="20.0" prefWidth="20.0" styleClass="pathogenic_4" text="LP">
+                                    <Button fx:id="pathogenic4" layoutX="50.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setGermlineFlag" prefHeight="20.0" prefWidth="20.0" styleClass="pathogenic_4" text="LP">
                                        <HBox.margin>
                                           <Insets left="4.0" />
                                        </HBox.margin>
                                     </Button>
-                                    <Button fx:id="pathogenic3" layoutX="30.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setFlag" prefHeight="20.0" prefWidth="20.0" styleClass="pathogenic_3" text="US">
+                                    <Button fx:id="pathogenic3" layoutX="30.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setGermlineFlag" prefHeight="20.0" prefWidth="20.0" styleClass="pathogenic_3" text="US">
                                        <HBox.margin>
                                           <Insets left="4.0" />
                                        </HBox.margin>
                                     </Button>
-                                    <Button fx:id="pathogenic2" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setFlag" prefHeight="20.0" prefWidth="20.0" styleClass="pathogenic_2" text="LB">
+                                    <Button fx:id="pathogenic2" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setGermlineFlag" prefHeight="20.0" prefWidth="20.0" styleClass="pathogenic_2" text="LB">
                                        <HBox.margin>
                                           <Insets left="4.0" />
                                        </HBox.margin>
                                     </Button>
-                                    <Button fx:id="pathogenic1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setFlag" prefHeight="20.0" prefWidth="20.0" styleClass="pathogenic_1" text="B">
+                                    <Button fx:id="pathogenic1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setGermlineFlag" prefHeight="20.0" prefWidth="20.0" styleClass="pathogenic_1" text="B">
                                        <HBox.margin>
                                           <Insets left="4.0" />
                                        </HBox.margin>
                                     </Button>
                                  </children>
                                  <VBox.margin>
-                                    <Insets top="3.0" />
+                                    <Insets top="1.0" />
                                  </VBox.margin>
                               </HBox>
                               <VBox prefWidth="100.0" styleClass="pathogenic_review_checkbox">
                                  <children>
-                                    <CheckBox fx:id="addToGermlineReportCheckBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="28.0" text="Add to Report" VBox.vgrow="ALWAYS" />
+                                    <CheckBox fx:id="addToGermlineReportCheckBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="27.0" text="Add to Report" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                            </children>
