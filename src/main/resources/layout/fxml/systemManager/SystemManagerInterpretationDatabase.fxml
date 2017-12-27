@@ -66,7 +66,7 @@
                                        <columns>
                                           <TableColumn fx:id="idTableColumn" prefWidth="80.0" text="id" visible="false" />
                                           <TableColumn fx:id="diseaseIdTableColumn" prefWidth="100.0" text="Disease" />
-                                          <TableColumn fx:id="diseaseIdTableColumn2" maxWidth="1.7976931348623157E308" minWidth="-Infinity" text="Date" />
+                                          <TableColumn fx:id="diseaseIdTableColumn2" maxWidth="1.7976931348623157E308" minWidth="-Infinity" text="Version" />
                                           <TableColumn fx:id="identificationKeyTableColumn" prefWidth="90.0" text="Genomic Coordinate DB">
                                              <columns>
                                                 <TableColumn fx:id="identificationKeyTableColumn11" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="50.0" text="Chr" />
@@ -104,7 +104,8 @@
                                                 <TableColumn fx:id="evidenceCTableColumn1" prefWidth="90.0" text="Benign" />
                                              </columns>
                                           </TableColumn>
-                                          <TableColumn fx:id="deletedAtTableColumn" prefWidth="108.0" text="Deleted At" visible="false" />
+                                          <TableColumn fx:id="deletedAtTableColumn" prefWidth="108.0" text="Date" visible="false" />
+                                          <TableColumn fx:id="deletedAtTableColumn2" prefWidth="108.0" text="Deactivated" visible="false" />
                                        </columns>
                                     </TableView>
                                  </content>
