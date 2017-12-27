@@ -66,11 +66,11 @@
                                        <columns>
                                           <TableColumn fx:id="idTableColumn" prefWidth="80.0" text="id" visible="false" />
                                           <TableColumn fx:id="diseaseIdTableColumn" prefWidth="100.0" text="Disease" />
-                                          <TableColumn fx:id="diseaseIdTableColumn2" maxWidth="1.7976931348623157E308" minWidth="-Infinity" text="Version" />
+                                          <TableColumn fx:id="diseaseIdTableColumn2" maxWidth="1.7976931348623157E308" minWidth="-Infinity" text="Date" />
                                           <TableColumn fx:id="identificationKeyTableColumn" prefWidth="90.0" text="Genomic Coordinate DB">
                                              <columns>
                                                 <TableColumn fx:id="identificationKeyTableColumn11" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="50.0" text="Chr" />
-                                                <TableColumn fx:id="identificationKeyTableColumn111" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" text="Gene" />
+                                                <TableColumn fx:id="identificationKeyTableColumn111" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="90.0" text="Gene" />
                                                 <TableColumn fx:id="identificationKeyTableColumn1111" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="70.0" text="Position" />
                                                 <TableColumn fx:id="identificationKeyTableColumn11111" minWidth="-Infinity" prefWidth="90.0" text="Ref" />
                                                 <TableColumn fx:id="identificationKeyTableColumn111111" prefWidth="90.0" text="Alt" />
