@@ -64,7 +64,7 @@
                         <Insets />
                      </opaqueInsets>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#showSnpIndels" prefHeight="45.0" prefWidth="90.0" styleClass="btn_snp_indel" text="SNP/INDELs">
+                  <Button fx:id="popUpBtn" mnemonicParsing="false" onAction="#showSnpIndels" prefHeight="45.0" prefWidth="90.0" styleClass="btn_snp_indel" text="SNP/INDELs">
                      <HBox.margin>
                         <Insets right="20.0" />
                      </HBox.margin></Button>

@@ -14,24 +14,30 @@ public class FusionGene {
     private String name;
     private Integer junctionReadCount;
     private Integer spanningFragCount;
-    private String leftBreakPoint;
-    private String leftTxExon;
-    private String rightTxExon;
     private String protFusionType;
     private String spliceType;
     private String largeAnchorSupport;
-    private String leftBreakDinuc;
-    private String rightBreakDinuc;
     private String annots;
-    private String cdsLeftId;
-    private String cdsLeftRange;
-    private String cdsRightId;
-    private String cdsRightRange;
     private String fusionModel;
     private String fusionCds;
     private String fusionTransl;
-    private String pfamLeft;
-    private String pfamRight;
+    private Integer interpretationEvidenceId;
+    private FusionRight fusionRight;
+    private FusionLeft fusionLeft;
+
+    /**
+     * @return id
+     */
+    public Integer getId() {
+        return id;
+    }
+
+    /**
+     * @return sampleId
+     */
+    public Integer getSampleId() {
+        return sampleId;
+    }
 
     /**
      * @return swTier
@@ -62,20 +68,6 @@ public class FusionGene {
     }
 
     /**
-     * @return id
-     */
-    public Integer getId() {
-        return id;
-    }
-
-    /**
-     * @return sampleId
-     */
-    public Integer getSampleId() {
-        return sampleId;
-    }
-
-    /**
      * @return name
      */
     public String getName() {
@@ -94,27 +86,6 @@ public class FusionGene {
      */
     public Integer getSpanningFragCount() {
         return spanningFragCount;
-    }
-
-    /**
-     * @return leftBreakPoint
-     */
-    public String getLeftBreakPoint() {
-        return leftBreakPoint;
-    }
-
-    /**
-     * @return leftTxExon
-     */
-    public String getLeftTxExon() {
-        return leftTxExon;
-    }
-
-    /**
-     * @return rightTxExon
-     */
-    public String getRightTxExon() {
-        return rightTxExon;
     }
 
     /**
@@ -139,52 +110,10 @@ public class FusionGene {
     }
 
     /**
-     * @return leftBreakDinuc
-     */
-    public String getLeftBreakDinuc() {
-        return leftBreakDinuc;
-    }
-
-    /**
-     * @return rightBreakDinuc
-     */
-    public String getRightBreakDinuc() {
-        return rightBreakDinuc;
-    }
-
-    /**
      * @return annots
      */
     public String getAnnots() {
         return annots;
-    }
-
-    /**
-     * @return cdsLeftId
-     */
-    public String getCdsLeftId() {
-        return cdsLeftId;
-    }
-
-    /**
-     * @return cdsLeftRange
-     */
-    public String getCdsLeftRange() {
-        return cdsLeftRange;
-    }
-
-    /**
-     * @return cdsRightId
-     */
-    public String getCdsRightId() {
-        return cdsRightId;
-    }
-
-    /**
-     * @return cdsRightRange
-     */
-    public String getCdsRightRange() {
-        return cdsRightRange;
     }
 
     /**
@@ -209,16 +138,23 @@ public class FusionGene {
     }
 
     /**
-     * @return pfamLeft
+     * @return interpretationEvidenceId
      */
-    public String getPfamLeft() {
-        return pfamLeft;
+    public Integer getInterpretationEvidenceId() {
+        return interpretationEvidenceId;
     }
 
     /**
-     * @return pfamRight
+     * @return fusionRight
      */
-    public String getPfamRight() {
-        return pfamRight;
+    public FusionRight getFusionRight() {
+        return fusionRight;
+    }
+
+    /**
+     * @return fusionLeft
+     */
+    public FusionLeft getFusionLeft() {
+        return fusionLeft;
     }
 }

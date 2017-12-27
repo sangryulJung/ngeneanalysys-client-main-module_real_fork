@@ -729,7 +729,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
                 //Genes in panel
                 try {
-                    HttpClientResponse response = apiService.get("/analysisResults/variantCountByGene/" + sample.getId(),
+                    HttpClientResponse response = apiService.get("/analysisResults/variantCountByGeneForSomaticDNA/" + sample.getId(),
                             null, null, false);
                     if (response != null) {
                         List<VariantCountByGene> variantCountByGenes = (List<VariantCountByGene>) response
@@ -778,7 +778,21 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         contentsMap.put("duplicatedReads",findQCResult(qcList, "duplicated_reads"));
                         contentsMap.put("roiCoverage",findQCResult(qcList, "roi_coverage"));
 
-                        contentsMap.put("conclusions", conclusionsTextArea.getText());
+
+                        List<String> conclusionLineList = null;
+                        if(!StringUtils.isEmpty(conclusionsTextArea.getText())) {
+                            conclusionLineList = new ArrayList<>();
+                            String[] lines = conclusionsTextArea.getText().split("\n");
+                            if(lines != null && lines.length > 0) {
+                                for (String line : lines) {
+                                    conclusionLineList.add(line);
+                                }
+                            } else {
+                                conclusionLineList.add(conclusionsTextArea.getText());
+                            }
+                        }
+                        contentsMap.put("conclusions", conclusionLineList);
+
                     }
                 } catch (WebAPIException wae) {
                     DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
@@ -799,7 +813,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
                 String contents = "";
                 if(panel.getReportTemplateId() == null) {
-                    contents = velocityUtil.getContents("/layout/velocity/report.vm", "UTF-8", model);
+                    contents = velocityUtil.getContents("/layout/velocity/report2.vm", "UTF-8", model);
                     created = pdfCreateService.createPDF(file, contents);
                     createdCheck(created, file);
                 } else {

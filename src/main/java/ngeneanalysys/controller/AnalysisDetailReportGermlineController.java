@@ -525,7 +525,50 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
     @FXML
     public void createPDFAsFinal() {
+        User user;
 
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initOwner(getMainController().getPrimaryStage());
+        alert.setTitle(CONFIRMATION_DIALOG);
+        alert.setHeaderText("Test conducting organization information");
+        alert.setContentText(String.format("Test conducting organization information will be filled with current user [ %s ] information for final report generation.\n\nDo you want to proceed?", loginSession.getName()));
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                HttpClientResponse response = apiService.get("/members", null,
+                        null, false);
+                user = response.getObjectBeforeConvertResponseToJSON(User.class);
+                // 소속기관, 연락처 정보 존재 확인
+                if (!StringUtils.isEmpty(user.getOrganization()) && !StringUtils.isEmpty(user.getPhone())) {
+                    boolean dataSave = saveData(user);
+                    if (dataSave) {
+                        // 최종 보고서 생성이 정상 처리된 경우 분석 샘플의 상태값 완료 처리.
+                        if (createPDF(false)) {
+                            setComplete();
+                        }
+                    }
+                } else {
+                    DialogUtil.warning("Empty Reviewer Information",
+                            "Please Input a Reviewer Information. [Menu > Edit]", getMainApp().getPrimaryStage(), true);
+                }
+
+            }  catch (WebAPIException wae) {
+                logger.error("web api exception", wae);
+                DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+                        getMainApp().getPrimaryStage(), true);
+            } catch (Exception e) {
+                logger.error("exception", e);
+                DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+            }
+        } else {
+            alert.close();
+        }
+    }
+    /**
+     * 보고서 작업 완료 처리
+     */
+    public void setComplete() {
     }
 
     @FXML
@@ -566,13 +609,15 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 contentsMap.put("inspectorContact", "");
                 contentsMap.put("reportingDate", "");
                 if(!isDraft) {
-                    HttpClientResponse response = apiService.get("/members/" + loginSession.getId(), getParamMap(), null,
+                    HttpClientResponse response = apiService.get("/members/" + loginSession.getId(), null, null,
                             false);
                     User user = response.getObjectBeforeConvertResponseToJSON(User.class);
                     contentsMap.put("inspectorOrganization", user.getOrganization() + "/" + user.getDepartment());
                     contentsMap.put("inspectorName", user.getName());
                     contentsMap.put("inspectorContact", user.getPhone());
-                    contentsMap.put("reportingDate", sample.getSampleStatus().getReportFinishedAt());
+                    if((sample.getSampleStatus() != null) && sample.getSampleStatus().getReportFinishedAt() != null) {
+                        contentsMap.put("reportingDate", sample.getSampleStatus().getReportFinishedAt());
+                    }
                 }
 
                 for(int i = 0; i < customFieldGridPane.getChildren().size(); i++) {
@@ -614,7 +659,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                     contentsMap.put("isExistBRCA2", "Y");
                 }
 
-                if(list != null && list.size() > 0) {
+                if(list != null && !list.isEmpty()) {
                     for(VariantAndInterpretationEvidence variant : list){
                         variant.getSnpInDel().getSnpInDelExpression().setTranscript(ConvertUtil.insertTextAtFixedPosition(variant.getSnpInDel().getSnpInDelExpression().getTranscript(), 15, "\n"));
                         variant.getSnpInDel().getSnpInDelExpression().setNtChange(ConvertUtil.insertTextAtFixedPosition(variant.getSnpInDel().getSnpInDelExpression().getNtChange(), 15, "\n"));
@@ -626,7 +671,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 // 소견 내용 라인별로 분리하여 리스트 객체로 변환하여 저장 : fop template에서 라인별로 출력하려는 경우 라인별로 <fo:block> 태그로 감싸주어야함.
                 List<String> conclusionLineList = null;
                 if(!StringUtils.isEmpty(conclusionsTextArea.getText())) {
-                    conclusionLineList = new ArrayList<String>();
+                    conclusionLineList = new ArrayList<>();
                     String[] lines = conclusionsTextArea.getText().split("\n");
                     if(lines != null && lines.length > 0) {
                         for (String line : lines) {

@@ -354,7 +354,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                     ioe.printStackTrace();
                 }
                 if(!oldSymbol.equals(selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport()))
-                    showVariantList(null, 0);
+                    showVariantList(null, selectedVariantIndex);
             } else {
                 try {
                     FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
@@ -457,7 +457,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
      * @param predictionCode
      */
     public void setOnSelectedFilter(ACMGFilterCode predictionCode) {
-        if(filterList.getChildren() != null && filterList.getChildren().size() > 0) {
+        if(filterList.getChildren() != null && !filterList.getChildren().isEmpty()) {
             for (Node node : filterList.getChildren()) {
                 VBox box = (VBox) node;
                 // 선택 속성 클래스 삭제
@@ -809,11 +809,13 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
     public Map<String, Object> returnResultsAfterSearch(String key) {
         List<SnpInDelExtraInfo> detail = (List<SnpInDelExtraInfo>)paramMap.get("detail");
 
-        Optional<SnpInDelExtraInfo> populationFrequency = detail.stream().filter(item
-                -> key.equalsIgnoreCase(item.key)).findFirst();
+        if(detail != null && detail.isEmpty()) {
+            Optional<SnpInDelExtraInfo> populationFrequency = detail.stream().filter(item
+                    -> key.equalsIgnoreCase(item.key)).findFirst();
 
-        if(populationFrequency.isPresent()) {
-            return JsonUtil.fromJsonToMap(populationFrequency.get().value);
+            if (populationFrequency.isPresent()) {
+                return JsonUtil.fromJsonToMap(populationFrequency.get().value);
+            }
         }
 
         return null;

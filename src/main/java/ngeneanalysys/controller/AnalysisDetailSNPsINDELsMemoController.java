@@ -45,6 +45,22 @@ public class AnalysisDetailSNPsINDELsMemoController extends SubPaneController {
 
     private AnalysisDetailSNPsINDELsController analysisDetailSNPsINDELsController;
 
+    private AnalysisDetailFusionGeneController analysisDetailFusionGeneController;
+
+    /**
+     * @return analysisDetailFusionGeneController
+     */
+    public AnalysisDetailFusionGeneController getAnalysisDetailFusionGeneController() {
+        return analysisDetailFusionGeneController;
+    }
+
+    /**
+     * @param analysisDetailFusionGeneController
+     */
+    public void setAnalysisDetailFusionGeneController(AnalysisDetailFusionGeneController analysisDetailFusionGeneController) {
+        this.analysisDetailFusionGeneController = analysisDetailFusionGeneController;
+    }
+
     /**
      * @return the analysisDetailSNPsINDELsController
      */
@@ -69,7 +85,12 @@ public class AnalysisDetailSNPsINDELsMemoController extends SubPaneController {
         nextValueColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNewValue()));
         commentColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getComment()));
 
-        analysisDetailSNPsINDELsController.subTabMemo.setContent(root);
+        if(analysisDetailSNPsINDELsController != null) {
+            analysisDetailSNPsINDELsController.subTabMemo.setContent(root);
+        } else if(analysisDetailFusionGeneController != null) {
+            analysisDetailFusionGeneController.subTabMemo.setContent(root);
+        }
+
     }
 
     /**

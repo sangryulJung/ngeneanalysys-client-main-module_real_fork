@@ -48,9 +48,6 @@
 								<fo:block text-align="center" end-indent="5pt" font-family="Noto Sans CJK KR Bold" font-weight="bold" padding-top="1mm">
 									검사실명 화순 전남대학교병원 진담검사의학과
 								</fo:block>
-								<fo:block text-align="center" end-indent="5pt" font-family="Noto Sans CJK KR Regular" font-size="7pt" padding-bottom="1mm">
-									본 검사실은 대한진단 검사의학회 진담검사의학재단의 우수검사실 신임 인증을 받은 검사실입니다.
-								</fo:block>
 							</fo:table-cell>
 						</fo:table-row>
 					</fo:table-body>
@@ -260,9 +257,13 @@
 						<fo:external-graphic src="${conclusionImage}" content-width="174mm" content-height="60mm" scaling="non-uniform"></fo:external-graphic>
 					</fo:block>
 					<fo:block-container position="absolute">
-						<fo:block white-space="pre">
-							$contents.conclusions
-						</fo:block>
+						#if($contents.conclusions != $null)
+						#foreach($line in $contents.conclusions)
+						<fo:block margin-top="1mm" font-family="Noto Sans CJK KR Regular" font-size="9pt"><![CDATA[$line]]></fo:block>
+						#end
+						#else
+						<fo:block margin-top="1mm" font-family="Noto Sans CJK KR Regular" font-size="9pt"></fo:block>
+						#end
 					</fo:block-container>
 				</fo:block-container>
 
@@ -389,14 +390,15 @@
 							</fo:table-cell>
 							<fo:table-cell border-style="solid" border="0" border-bottom="solid 0.2mm black">
 								<fo:block font-family="Noto Sans CJK KR Regular">
-									#if((!$variant.snpInDel.expertTier || $variant.snpInDel.expertTier == ""))
+									#if($variant.interpretationEvidence)
 									$variant.interpretationEvidence.evidenceLevelA
 									#end
 								</fo:block>
 							</fo:table-cell>
 							<fo:table-cell border="0" border-bottom="solid 0.2mm black">
 								<fo:block font-family="Noto Sans CJK KR Regular">
-									#if((!$variant.snpInDel.expertTier || $variant.snpInDel.expertTier == ""))
+									#if((!$variant.snpInDel.expertTier || $variant.snpInDel.expertTier == "" ||
+									!$variant.snpInDel.expertTier == "T1") && $variant.interpretationEvidence)
 									$variant.interpretationEvidence.evidenceLevelB
 									#elseif($variant.snpInDel.expertTier && $variant.snpInDel.expertTier == "T1")
 									$variant.snpInDel.comment
@@ -405,14 +407,15 @@
 							</fo:table-cell>
 							<fo:table-cell border="0" border-bottom="solid 0.2mm black">
 								<fo:block font-family="Noto Sans CJK KR Regular">
-									#if((!$variant.snpInDel.expertTier || $variant.snpInDel.expertTier == ""))
+									#if($variant.interpretationEvidence)
 									$variant.interpretationEvidence.evidenceLevelC
 									#end
 								</fo:block>
 							</fo:table-cell>
 							<fo:table-cell border="0" border-bottom="solid 0.2mm black">
 								<fo:block font-family="Noto Sans CJK KR Regular">
-									#if((!$variant.snpInDel.expertTier || $variant.snpInDel.expertTier == ""))
+									#if((!$variant.snpInDel.expertTier || $variant.snpInDel.expertTier == "" ||
+									!$variant.snpInDel.expertTier == "T2") && $variant.interpretationEvidence)
 									$variant.interpretationEvidence.evidenceLevelD
 									#elseif($variant.snpInDel.expertTier && $variant.snpInDel.expertTier == "T2")
 									$variant.snpInDel.comment
@@ -434,7 +437,7 @@
 				</fo:table>
 			</fo:block>
 
-			<fo:block width="100%" font-family="Noto Sans CJK KR Regular" font-size="11pt" margin-bottom="3mm">
+			<!--<fo:block width="100%" font-family="Noto Sans CJK KR Regular" font-size="11pt" margin-bottom="3mm">
 				<fo:inline-container width="5mm" margin="0in">
 					<fo:block background-color="#1B6D97" margin="0in" text-align="center" font-size="10pt" color="white">2</fo:block>
 				</fo:inline-container>
@@ -552,7 +555,7 @@
 						#end
 					</fo:table-body>
 				</fo:table>
-			</fo:block>
+			</fo:block>-->
 
 
 			<fo:block page-break-before="always"> </fo:block>

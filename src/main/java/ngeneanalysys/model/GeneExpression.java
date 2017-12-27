@@ -13,8 +13,8 @@ public class GeneExpression {
     private String geneName;
     private String chromosome;
     private String strand;
-    private String startPosition;
-    private String endPosition;
+    private Integer startPosition;
+    private Integer endPosition;
     private BigDecimal coverage;
     private BigDecimal fpkm;
     private BigDecimal tpm;
@@ -64,14 +64,14 @@ public class GeneExpression {
     /**
      * @return startPosition
      */
-    public String getStartPosition() {
+    public Integer getStartPosition() {
         return startPosition;
     }
 
     /**
      * @return endPosition
      */
-    public String getEndPosition() {
+    public Integer getEndPosition() {
         return endPosition;
     }
 

@@ -21,7 +21,6 @@ import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
@@ -89,11 +88,22 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
     @FXML
     private Button fusionButton;
 
+    @FXML
+    private Button popUpBtn;
+
     @Override
     public void show(Parent root) throws IOException {
         logger.info("show..");
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
+
+        Panel panel = (Panel)getParamMap().get("panel");
+
+        if(panel.getTarget() != null && "DNA".equals(panel.getTarget())) {
+            popUpBtn.setText("SNP/INDELs");
+        } else {
+            popUpBtn.setText("Fusion");
+        }
 
         fusionButton.setDisable(true);
         fusionButton.setVisible(false);
@@ -119,16 +129,31 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
      */
     @FXML
     public void showSnpIndels() {
-        try {
-            // Load the fxml file and create a new stage for the popup dialog
-            FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_SNPS_INDELS_LAYOUT);
-            BorderPane page = loader.load();
-            AnalysisDetailSNPsINDELsController controller = loader.getController();
-            controller.setParamMap(getParamMap());
-            controller.setMainController(this.mainController);
-            controller.show(page);
-        } catch (IOException e) {
-            e.printStackTrace();
+        Panel panel = (Panel)getParamMap().get("panel");
+        if(panel.getTarget() != null && "DNA".equals(panel.getTarget())) {
+            try {
+                // Load the fxml file and create a new stage for the popup dialog
+                FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_SNPS_INDELS_LAYOUT);
+                BorderPane page = loader.load();
+                AnalysisDetailSNPsINDELsController controller = loader.getController();
+                controller.setParamMap(getParamMap());
+                controller.setMainController(this.mainController);
+                controller.show(page);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_FUSION_MAIN);
+                GridPane page = loader.load();
+                AnalysisDetailFusionMainController controller = loader.getController();
+                controller.setParamMap(getParamMap());
+                controller.setMainController(this.mainController);
+
+                controller.show(page);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
