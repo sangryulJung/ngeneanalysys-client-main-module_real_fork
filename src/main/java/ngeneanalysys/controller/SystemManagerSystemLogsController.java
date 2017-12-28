@@ -59,7 +59,7 @@ public class SystemManagerSystemLogsController extends SubPaneController {
         apiService = APIService.getInstance();
 
         createdAtTableColumn.setCellValueFactory(item -> new SimpleStringProperty(DateFormatUtils.format(
-                item.getValue().getCreatedAt().toDate(), "yyyy-MM-dd hh:mm:ss")));
+                item.getValue().getCreatedAt().toDate(), "yyyy-MM-dd HH:mm:ss")));
         logTypeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getLogType()));
         logMsgTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getLogMessage()));
         userGroupNameTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getMemberGroupName()));

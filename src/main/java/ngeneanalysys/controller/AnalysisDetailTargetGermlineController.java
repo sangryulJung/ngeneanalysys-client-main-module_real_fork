@@ -14,7 +14,6 @@ import javafx.scene.layout.GridPane;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
-import ngeneanalysys.model.Panel;
 import ngeneanalysys.model.Sample;
 import ngeneanalysys.model.VariantCountByGene;
 import ngeneanalysys.model.VariantCountByGeneForGermlineDNA;

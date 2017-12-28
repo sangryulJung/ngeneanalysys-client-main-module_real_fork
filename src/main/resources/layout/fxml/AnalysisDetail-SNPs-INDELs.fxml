@@ -331,7 +331,7 @@
                         </VBox>
                      </children>
                   </Pane>
-      				<VBox fx:id="linkArea" maxWidth="-Infinity" minWidth="140.0" prefHeight="132.0" prefWidth="130.0" style="-fx-background-color: #F7F7F7;">
+      				<VBox fx:id="linkArea" maxWidth="158.0" minWidth="140.0" prefHeight="132.0" prefWidth="158.0" style="-fx-background-color: #F7F7F7;">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>

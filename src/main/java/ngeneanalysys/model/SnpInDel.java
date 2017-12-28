@@ -34,7 +34,7 @@ public class SnpInDel implements Serializable {
 
 	private ClinicalDB clinicalDB;
 
-	private SequenceInfo sequenceInfo;
+	private GenomicCoordinate genomicCoordinate;
 
 	private ReadInfo readInfo;
 
@@ -42,19 +42,18 @@ public class SnpInDel implements Serializable {
 
 	private Integer interpretationEvidenceId;
 
-
 	/**
-	 * @return sequenceInfo
+	 * @return genomicCoordinate
 	 */
-	public SequenceInfo getSequenceInfo() {
-		return sequenceInfo;
+	public GenomicCoordinate getGenomicCoordinate() {
+		return genomicCoordinate;
 	}
 
 	/**
-	 * @param sequenceInfo
+	 * @param genomicCoordinate
 	 */
-	public void setSequenceInfo(SequenceInfo sequenceInfo) {
-		this.sequenceInfo = sequenceInfo;
+	public void setGenomicCoordinate(GenomicCoordinate genomicCoordinate) {
+		this.genomicCoordinate = genomicCoordinate;
 	}
 
 	/**
@@ -299,8 +298,8 @@ public class SnpInDel implements Serializable {
 		String cDNAbic = this.getSnpInDelExpression().getNtChange();
 		if (cDNAbic != null
 				&& !cDNAbic.isEmpty()
-				&& getSequenceInfo() != null && getSequenceInfo().getGene() != null
-				&& (getSequenceInfo().getGene().toUpperCase().equals("BRCA1") || getSequenceInfo().getGene().toUpperCase().equals("BRCA2"))) {
+				&& getGenomicCoordinate() != null && getGenomicCoordinate().getGene() != null
+				&& (getGenomicCoordinate().getGene().toUpperCase().equals("BRCA1") || getGenomicCoordinate().getGene().toUpperCase().equals("BRCA2"))) {
 			List<String> findCDNANums = new ArrayList<>();
 			Pattern p = Pattern.compile("\\d+");
 			Matcher m = null;
@@ -317,9 +316,9 @@ public class SnpInDel implements Serializable {
 			for(String cdnaItem : findCDNANums){
 				try {
 					cdnaNum = Integer.parseInt(cdnaItem);
-					if(getSequenceInfo().getGene().toUpperCase().equals("BRCA1")){
+					if(getGenomicCoordinate().getGene().toUpperCase().equals("BRCA1")){
 						cDNAbic = cDNAbic.replace(cdnaItem, String.valueOf(cdnaNum+119));
-					} else if (getSequenceInfo().getGene().toUpperCase().equals("BRCA2")){
+					} else if (getGenomicCoordinate().getGene().toUpperCase().equals("BRCA2")){
 						cDNAbic = cDNAbic.replace(cdnaItem, String.valueOf(cdnaNum+228));
 					} else {
 

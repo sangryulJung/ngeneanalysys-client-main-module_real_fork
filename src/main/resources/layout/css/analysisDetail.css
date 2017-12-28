@@ -669,9 +669,9 @@
 }
 
 #linkArea {
-	-fx-min-width:150;
-	-fx-pref-width:150;
-	-fx-max-width:150;
+	-fx-min-width:155;
+	-fx-pref-width:155;
+	-fx-max-width:155;
 	-fx-background-color:#ffffff;
 	-fx-padding:10;
 	-fx-alignment:center;

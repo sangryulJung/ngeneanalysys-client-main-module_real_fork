@@ -425,7 +425,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
     @SuppressWarnings("unchecked")
     public void showDepth() {
         AnalysisResultSummary summary =  sample.getAnalysisResultSummary();
-        Map<String,Object> alleleMap = (Map<String,Object>) paramMap.get("allele");
+//        Map<String,Object> alleleMap = returnResultsAfterSearch("allele");
 
         double depthMin = summary.getDepthMin();
         double depthMax = summary.getDepthMax();
@@ -490,8 +490,8 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
 
         String ref = (String) variantInformationMap.get("ref");
         String alt = (String) variantInformationMap.get("alt");*/
-        String ref = variant.getSnpInDel().getSequenceInfo().getRefSequence();
-        String alt = variant.getSnpInDel().getSequenceInfo().getAltSequence();
+        String ref = variant.getSnpInDel().getGenomicCoordinate().getRefSequence();
+        String alt = variant.getSnpInDel().getGenomicCoordinate().getAltSequence();
         double alleleFraction = 0;
 
         /*if(alleleMap != null && !alleleMap.isEmpty() && alleleMap.size() > 0) {
@@ -556,11 +556,11 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
     public void showVariantIdentification() {
         List<SnpInDelTranscript> transcriptDataList = (List<SnpInDelTranscript>) paramMap.get("snpInDelTranscripts");
 
-        String ref = variant.getSnpInDel().getSequenceInfo().getRefSequence();
-        String alt = variant.getSnpInDel().getSequenceInfo().getAltSequence();
-        String left22Bp = variant.getSnpInDel().getSequenceInfo().getLeftSequence();
-        String right22Bp = variant.getSnpInDel().getSequenceInfo().getRightSequence();
-        String genePositionStart = String.valueOf(variant.getSnpInDel().getSequenceInfo().getGenomicCoordinate());
+        String ref = variant.getSnpInDel().getGenomicCoordinate().getRefSequence();
+        String alt = variant.getSnpInDel().getGenomicCoordinate().getAltSequence();
+        String left22Bp = variant.getSnpInDel().getGenomicCoordinate().getLeftSequence();
+        String right22Bp = variant.getSnpInDel().getGenomicCoordinate().getRightSequence();
+        String genePositionStart = String.valueOf(variant.getSnpInDel().getGenomicCoordinate().getStartPosition());
         String transcriptAltType = variant.getSnpInDel().getSnpInDelExpression().getVariantType();
         String defaultTranscript = null;
         // transcript 콤보박스 설정

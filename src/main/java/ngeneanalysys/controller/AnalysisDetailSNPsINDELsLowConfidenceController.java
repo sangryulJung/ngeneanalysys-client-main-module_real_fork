@@ -67,7 +67,7 @@ public class AnalysisDetailSNPsINDELsLowConfidenceController extends SubPaneCont
 
             for(String key : keySet) {
 
-                if(key.toUpperCase().equals("WARNING")) continue;
+                if(key.equalsIgnoreCase("WARNING")) continue;
 
                 HBox box = new HBox();
 
@@ -82,7 +82,7 @@ public class AnalysisDetailSNPsINDELsLowConfidenceController extends SubPaneCont
                 warningLabel.setText(warningString);
 
                 if(!StringUtils.isEmpty(warningString)) {
-                    if(warningString.toUpperCase().equals("YES")) {
+                    if(warningString.equalsIgnoreCase("YES")) {
                         warningLabel.getStyleClass().add("txt_green");
                     } else {
                         warningLabel.getStyleClass().add("txt_red");

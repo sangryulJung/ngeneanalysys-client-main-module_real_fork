@@ -207,13 +207,9 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         ruoImgView.setFitHeight(50);
         iconAreaHBox.getChildren().add(ruoImgView);
 
-        addToReportCheckBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-            addToReportBtn(addToReportCheckBox );
-        });
+        addToReportCheckBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> addToReportBtn(addToReportCheckBox ));
 
-        addToGermlineReportCheckBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-            addToReportBtn(addToGermlineReportCheckBox);
-        });
+        addToGermlineReportCheckBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> addToReportBtn(addToGermlineReportCheckBox));
 
         // 목록 정렬 설정 트래킹
         variantListTableView.getSortOrder().addListener(new ListChangeListener<TableColumn<VariantAndInterpretationEvidence,?>>() {
@@ -525,9 +521,6 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             }
             variantListTableView.setItems(displayList);
 
-            int reportCount = 0;
-            int falseCount = 0;
-
             // 화면 출력
             if (displayList != null && displayList.size() > 0) {
                 // report & false variant 카운트 집계
@@ -603,16 +596,6 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
             // Flagging Comment 데이터 요청이 정상 요청된 경우 진행.
             SnpInDelInterpretationLogsList memoList = responseMemo.getObjectBeforeConvertResponseToJSON(SnpInDelInterpretationLogsList.class);
-
-            if(memoList != null){
-                //코드 값을 별칭으로 변경함.
-                for(SnpInDelInterpretationLogs memo : memoList.getResult()) {
-                    /*if (memo.getCommentType().equals(PathogenicReviewFlagTypeCode.PATHOGENICITY.name())) {
-                        memo.setPrevValue(PathogenicTypeCode.getAliasFromCode(memo.getPrevValue()));
-                        memo.setValue(PathogenicTypeCode.getAliasFromCode(memo.getValue()));
-                    }*/
-                }
-            }
 
             if("SOMATIC".equalsIgnoreCase(panel.getAnalysisType())) {
                 settingTierArea();
@@ -809,7 +792,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
     public Map<String, Object> returnResultsAfterSearch(String key) {
         List<SnpInDelExtraInfo> detail = (List<SnpInDelExtraInfo>)paramMap.get("detail");
 
-        if(detail != null && detail.isEmpty()) {
+        if(detail != null && !detail.isEmpty()) {
             Optional<SnpInDelExtraInfo> populationFrequency = detail.stream().filter(item
                     -> key.equalsIgnoreCase(item.key)).findFirst();
 
@@ -826,15 +809,15 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         Sample sample = (Sample) paramMap.get("sample");
         String analysisType = (panel != null) ? panel.getAnalysisType() : "";
         FXMLLoader loader = null;
+        ScrollPane somaticLinkBox = null;
         Pane linkBox = null;
-
         try {
             // SOMATIC 인 경우
             if(analysisType.equals(ExperimentTypeCode.SOMATIC.getDescription())) {
                 loader = FXMLLoadUtil.load(FXMLConstants.ANALYSIS_DETAIL_SNPS_INDELS_OVERVIEW_LINK_SOMATIC);
-                linkBox = loader.load();
+                somaticLinkBox = loader.load();
                 linkArea.getChildren().removeAll(linkArea.getChildren());
-                linkArea.getChildren().add(linkBox);
+                linkArea.getChildren().add(somaticLinkBox);
             } else {
                 loader = FXMLLoadUtil.load(FXMLConstants.ANALYSIS_DETAIL_SNPS_INDELS_OVERVIEW_LINK_BRCA);
                 linkBox = loader.load();
@@ -842,8 +825,15 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                 linkArea.getChildren().add(linkBox);
             }
 
-            if(linkBox != null && analysisType.equals(ExperimentTypeCode.SOMATIC.getDescription())) {
-                for(Node node : linkBox.getChildren()) {
+            if(somaticLinkBox != null && analysisType.equals(ExperimentTypeCode.SOMATIC.getDescription())) {
+                Map<String,Object> variantInformationMap = returnResultsAfterSearch("variant_information");
+                String rsId = (variantInformationMap.containsKey("rs_id")) ? (String) variantInformationMap.get("rs_id") : null;
+                String exacFormat = (variantInformationMap.containsKey("exac_url")) ? (String) variantInformationMap.get("exac_format") : null;
+                String geneId = (variantInformationMap.containsKey("geneid")) ? (String) variantInformationMap.get("geneid") : null;
+                Integer start = (variantInformationMap.containsKey("start")) ? (Integer) variantInformationMap.get("start") : null;
+                Integer end = (variantInformationMap.containsKey("stop")) ? (Integer) variantInformationMap.get("stop") : null;
+                GridPane gridPane = (GridPane) somaticLinkBox.getContent();
+                for(Node node : gridPane.getChildren()) {
                     if (node != null) {
                         String id = node.getId();
                         if ("igvButton".equals(id)) {
@@ -851,12 +841,12 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
                             String sampleId = sample.getId().toString();
                             String variantId = selectedAnalysisResultVariant.getSnpInDel().getId().toString();
-                            String gene = selectedAnalysisResultVariant.getSnpInDel().getSequenceInfo().getGene();
+                            String gene = selectedAnalysisResultVariant.getSnpInDel().getGenomicCoordinate().getGene();
                             String locus = String.format("%s:%,d-%,d",
-                                    selectedAnalysisResultVariant.getSnpInDel().getSequenceInfo().getChromosome(),
-                                    selectedAnalysisResultVariant.getSnpInDel().getSequenceInfo().getGenomicCoordinate(),
-                                    selectedAnalysisResultVariant.getSnpInDel().getSequenceInfo().getGenomicCoordinate());
-                            String refGenome = selectedAnalysisResultVariant.getSnpInDel().getSequenceInfo().getRefGenomeVer();
+                                    selectedAnalysisResultVariant.getSnpInDel().getGenomicCoordinate().getChromosome(),
+                                    selectedAnalysisResultVariant.getSnpInDel().getGenomicCoordinate().getStartPosition(),
+                                    selectedAnalysisResultVariant.getSnpInDel().getGenomicCoordinate().getStartPosition());
+                            String refGenome = selectedAnalysisResultVariant.getSnpInDel().getGenomicCoordinate().getRefGenomeVer();
                             String humanGenomeVersion = (refGenome.contains("hg19")) ? "hg19" : "hg18";
 
                             igvButton.setOnAction(event -> {
@@ -876,39 +866,142 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
                         if ("dbSNPButton".equals(id)) {
                             Button dbSNPButton = (Button) node;
-                            dbSNPButton.setDisable(false);
+
+                            if(!StringUtils.isEmpty(geneId)) {
+                                String fullUrlDBsnp = "https://www.ncbi.nlm.nih.gov/projects/SNP/snp_ref.cgi?rs=" + rsId.replaceAll("rs", "");
+                                dbSNPButton.setOnAction(event -> getMainApp().getHostServices().showDocument(fullUrlDBsnp));
+                                dbSNPButton.setDisable(false);
+                            }
                         }
 
                         if ("clinvarButton".equals(id)) {
                             Button clinvarButton = (Button) node;
-
-
-                            clinvarButton.setDisable(false);
+                            if(!StringUtils.isEmpty(rsId)) {
+                                String fullUrlClinvar = "http://www.ncbi.nlm.nih.gov/clinvar?term=" + rsId;
+                                clinvarButton.setOnAction(event -> getMainApp().getHostServices().showDocument(fullUrlClinvar));
+                                clinvarButton.setDisable(false);
+                            }
                         }
 
                         if ("cosmicButton".equals(id)) {
                             Button cosmicButton = (Button) node;
-                            cosmicButton.setDisable(false);
+                            if(!StringUtils.isEmpty(selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getCosmic().getCosmicIds())) {
+                                String cosmicId = selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getCosmic().getCosmicIds().replaceAll("COSM", "");
+                                if(cosmicId.contains("|")) {
+                                    String[] ids = cosmicId.split("\\|");
+
+                                    cosmicButton.setOnAction(event -> {
+                                        boolean first = true;
+                                        for(String cosmic : ids) {
+                                            String fullUrlCOSMIC = "http://cancer.sanger.ac.uk/cosmic/mutation/overview?genome=37&id=" + cosmic;
+                                            getMainApp().getHostServices().showDocument(fullUrlCOSMIC);
+                                            try {
+                                                if(first) {
+                                                    Thread.sleep(1200);
+                                                    first = false;
+                                                }
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
+
+                                } else {
+                                    String fullUrlCOSMIC = "http://cancer.sanger.ac.uk/cosmic/mutation/overview?genome=37&id=" + cosmicId;
+                                    cosmicButton.setOnAction(event -> getMainApp().getHostServices().showDocument(fullUrlCOSMIC));
+                                }
+                                cosmicButton.setDisable(false);
+                            }
                         }
 
-                        if ("espButton".equals(id)) {
-                            Button espButton = (Button) node;
-                            espButton.setDisable(false);
+                        if ("ncbiButton".equals(id)) {
+                            Button ncbiButton = (Button) node;
+                            if(!StringUtils.isEmpty(geneId)) {
+                                String fullUrlNCBI = "http://www.ncbi.nlm.nih.gov/gene/" + geneId;
+                                ncbiButton.setOnAction(event -> getMainApp().getHostServices().showDocument(fullUrlNCBI));
+                                ncbiButton.setDisable(false);
+                            }
                         }
 
                         if ("gnomesButton".equals(id)) {
                             Button gnomesButton = (Button) node;
-                            gnomesButton.setDisable(false);
+                            if(!StringUtils.isEmpty(rsId)) {
+                                String fullUrl1000G = "http://grch37.ensembl.org/Homo_sapiens/Variation/Population?db=core;v="
+                                        + rsId + ";vdb=variation";
+                                gnomesButton.setOnAction(event -> getMainApp().getHostServices().showDocument(fullUrl1000G));
+                                gnomesButton.setDisable(false);
+                            }
                         }
 
                         if ("exACButton".equals(id)) {
                             Button exACButton = (Button) node;
-                            exACButton.setDisable(false);
+                            if(!StringUtils.isEmpty(exacFormat)) {
+                                String fullUrlExAC = "http://exac.broadinstitute.org/variant/"
+                                        + exacFormat;
+                                exACButton.setOnAction(event -> getMainApp().getHostServices().showDocument(fullUrlExAC));
+                                exACButton.setDisable(false);
+                            }
                         }
 
-                        if ("dbNSFPButton".equals(id)) {
-                            Button dbNSFPButton = (Button) node;
-                            dbNSFPButton.setDisable(false);
+                        if ("gnomADButton".equals(id)) {
+                            Button gnomADButton = (Button) node;
+                            if(!StringUtils.isEmpty(exacFormat)) {
+                                String fullUrlExAC = "http://gnomad.broadinstitute.org/variant/"
+                                        + exacFormat;
+                                gnomADButton.setOnAction(event -> getMainApp().getHostServices().showDocument(fullUrlExAC));
+                                gnomADButton.setDisable(false);
+                            }
+                        }
+
+                        if ("koEXIDButton".equals(id)) {
+                            Button koEXIDButton = (Button) node;
+                            if(!StringUtils.isEmpty(rsId)) {
+                                String fullUrlKoKEXID = "http://koex.snu.ac.kr/koex_main.php?section=search&db_code=15&keyword_class=varid&search_keyword="
+                                        + rsId;
+                                koEXIDButton.setOnAction(event -> getMainApp().getHostServices().showDocument(fullUrlKoKEXID));
+                                koEXIDButton.setDisable(false);
+                            }
+                        }
+
+                        if ("oncoKBButton".equals(id)) {
+                            Button oncoKBButton = (Button) node;
+                            if(selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getOncoKB() != null &&
+                                    !StringUtils.isEmpty(selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getOncoKB().getOncokbHgvsp())) {
+                                String fullUrlOncoKB = "http://oncokb.org/#/gene/"
+                                        + selectedAnalysisResultVariant.getSnpInDel().getGenomicCoordinate().getGene()
+                                        + "/variant/"
+                                        + selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getOncoKB().getOncokbHgvsp();
+                                oncoKBButton.setOnAction(event -> getMainApp().getHostServices().showDocument(fullUrlOncoKB));
+                                oncoKBButton.setDisable(false);
+                            }
+                        }
+
+                        if ("ucscButton".equals(id)) {
+                            Button ucscButton = (Button) node;
+                            if(start != null && end != null) {
+                                StringBuilder insertStart = new StringBuilder(start.toString());
+                                StringBuilder insertEnd = new StringBuilder(end.toString());
+                                int startLength = insertStart.length();
+                                int endLength = insertEnd.length();
+                                for(int i = 1; i < startLength; i++) {
+                                    if(i % 3 == 0) insertStart.insert(startLength - i, ",");
+                                }
+                                for(int i = 1; i < endLength; i++) {
+                                    if(i % 3 == 0) insertEnd.insert(endLength - i, ",");
+                                }
+                                Integer startMinus = start - 30;
+                                Integer endPlus = end + 30;
+                                String fullUrlUCSC = "http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&highlight=hg19.{"
+                                        + selectedAnalysisResultVariant.getSnpInDel().getGenomicCoordinate().getChromosome() + "%3A"
+                                        + insertStart + "-"
+                                        + insertEnd + "&position="
+                                        + selectedAnalysisResultVariant.getSnpInDel().getGenomicCoordinate().getChromosome() + "%3A"
+                                        + startMinus +"-"
+                                        + endPlus;
+
+                                ucscButton.setOnAction(event -> getMainApp().getHostServices().showDocument(fullUrlUCSC));
+                                ucscButton.setDisable(false);
+                            }
                         }
                     }
                 }
@@ -942,12 +1035,12 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
                             String sampleId = sample.getId().toString();
                             String variantId = selectedAnalysisResultVariant.getSnpInDel().getId().toString();
-                            String gene = selectedAnalysisResultVariant.getSnpInDel().getSequenceInfo().getGene();
+                            String gene = selectedAnalysisResultVariant.getSnpInDel().getGenomicCoordinate().getGene();
                             String locus = String.format("%s:%,d-%,d",
-                                    selectedAnalysisResultVariant.getSnpInDel().getSequenceInfo().getChromosome(),
-                                    selectedAnalysisResultVariant.getSnpInDel().getSequenceInfo().getGenomicCoordinate(),
-                                    selectedAnalysisResultVariant.getSnpInDel().getSequenceInfo().getGenomicCoordinate());
-                            String refGenome = selectedAnalysisResultVariant.getSnpInDel().getSequenceInfo().getRefGenomeVer();
+                                    selectedAnalysisResultVariant.getSnpInDel().getGenomicCoordinate().getChromosome(),
+                                    selectedAnalysisResultVariant.getSnpInDel().getGenomicCoordinate().getStartPosition(),
+                                    selectedAnalysisResultVariant.getSnpInDel().getGenomicCoordinate().getStartPosition());
+                            String refGenome = selectedAnalysisResultVariant.getSnpInDel().getGenomicCoordinate().getRefGenomeVer();
                             String humanGenomeVersion = (refGenome.contains("hg19")) ? "hg19" : "hg18";
 
                             igvButton.setOnAction(event -> {
@@ -1117,10 +1210,10 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         codCons.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getCodingConsequence()));
 
         TableColumn<VariantAndInterpretationEvidence, String> gene = new TableColumn<>("Gene");
-        gene.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSequenceInfo().getGene()));
+        gene.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
 
         TableColumn<VariantAndInterpretationEvidence, String> strand = new TableColumn<>("Strand");
-        strand.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSequenceInfo().getStrand()));
+        strand.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getStrand()));
 
         TableColumn<VariantAndInterpretationEvidence, String> transcript = new TableColumn<>("Transcript");
         transcript.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getTranscript()));
@@ -1155,26 +1248,26 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             }
             return value1.compareToIgnoreCase(value2);
         });
-        chr.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSequenceInfo().getChromosome()));
+        chr.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getChromosome()));
 
         TableColumn<VariantAndInterpretationEvidence, String> ref = new TableColumn<>("Ref");
-        ref.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSequenceInfo().getRefSequence()));
+        ref.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getRefSequence()));
 
         TableColumn<VariantAndInterpretationEvidence, String> alt = new TableColumn<>("Alt");
-        alt.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSequenceInfo().getAltSequence()));
+        alt.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getAltSequence()));
 
         TableColumn<VariantAndInterpretationEvidence, String> zigosity = new TableColumn<>("Zigosity");
         zigosity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getZygosity()));
 
 
         TableColumn<VariantAndInterpretationEvidence, String> exon = new TableColumn<>("Exon");
-        exon.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSequenceInfo().getExonNum()));
+        exon.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getExonNum()));
 
         variantListTableView.getColumns().addAll(chr, ref, alt, zigosity, exon);
 
         if(panel != null && ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             TableColumn<VariantAndInterpretationEvidence, String> exonBic = new TableColumn<>("Exon(BIC)");
-            exonBic.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSequenceInfo().getExonNumBic()));
+            exonBic.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getExonNumBic()));
             variantListTableView.getColumns().addAll(exonBic);
         }
 
@@ -1254,19 +1347,19 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         variantNum.setVisible(false);
 
         TableColumn<VariantAndInterpretationEvidence, String> refGenomeVer = new TableColumn<>("RefGenomeVer");
-        refGenomeVer.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSequenceInfo().getRefGenomeVer()));
+        refGenomeVer.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getRefGenomeVer()));
         refGenomeVer.setVisible(false);
 
         TableColumn<VariantAndInterpretationEvidence, String> leftSequence = new TableColumn<>("LeftSequence");
-        leftSequence.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSequenceInfo().getLeftSequence()));
+        leftSequence.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getLeftSequence()));
         leftSequence.setVisible(false);
 
         TableColumn<VariantAndInterpretationEvidence, String> rightSequence = new TableColumn<>("RightSequence");
-        rightSequence.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSequenceInfo().getRightSequence()));
+        rightSequence.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getRightSequence()));
         rightSequence.setVisible(false);
 
         TableColumn<VariantAndInterpretationEvidence, Integer> genomicCoordinate = new TableColumn<>("GenomicCoordinate");
-        genomicCoordinate.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getSequenceInfo().getGenomicCoordinate()).asObject());
+        genomicCoordinate.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getStartPosition()).asObject());
         genomicCoordinate.setVisible(false);
 
         TableColumn<VariantAndInterpretationEvidence, String> dbSnpRsId = new TableColumn<>("SnpRsId");
