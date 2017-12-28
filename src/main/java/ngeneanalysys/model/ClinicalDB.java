@@ -13,38 +13,14 @@ public class ClinicalDB {
     private String kohbraPatient;
     private String enigma;
     private BrcaExchange be;
-    private Sift sift;
-    private PolyPhen2 polyPhen2;
-    private MutationTaster mutationTaster;
-    private GERP gerp;
     private OncoKB oncoKB;
+    private DBNSFP dbNSFP;
 
     /**
-     * @return sift
+     * @return dbNSFP
      */
-    public Sift getSift() {
-        return sift;
-    }
-
-    /**
-     * @return polyPhen2
-     */
-    public PolyPhen2 getPolyPhen2() {
-        return polyPhen2;
-    }
-
-    /**
-     * @return mutationTaster
-     */
-    public MutationTaster getMutationTaster() {
-        return mutationTaster;
-    }
-
-    /**
-     * @return gerp
-     */
-    public GERP getGerp() {
-        return gerp;
+    public DBNSFP getDbNSFP() {
+        return dbNSFP;
     }
 
     /**

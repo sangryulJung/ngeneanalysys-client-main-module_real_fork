@@ -298,7 +298,7 @@
                         ((!$variant.snpInDel.expertTier || $variant.snpInDel.expertTier == "") && $variant.snpInDel.swTier == "T2"))
 						<fo:table-row height="8mm" display-align="center" text-align="center" font-family="Noto Sans CJK KR Regular">
 							<fo:table-cell border-bottom="solid 0.1mm black">
-								<fo:block text-align="center">$variant.snpInDel.sequenceInfo.gene</fo:block>
+								<fo:block text-align="center">$variant.snpInDel.genomicCoordinate.gene</fo:block>
 							</fo:table-cell>
 							<fo:table-cell border-bottom="solid 0.1mm black">
 								<fo:block text-align="center">$variant.snpInDel.snpInDelExpression.transcript</fo:block>
@@ -382,7 +382,7 @@
                             #foreach($negative in $contents.negativeList)
                             <fo:table-row height="8mm" display-align="center" text-align="center" font-family="Noto Sans CJK KR Regular">
                                 <fo:table-cell border-bottom="solid 0.1mm black">
-                                    <fo:block text-align="center">$negative.snpInDel.sequenceInfo.gene</fo:block>
+                                    <fo:block text-align="center">$negative.snpInDel.genomicCoordinate.gene</fo:block>
                                 </fo:table-cell>
                                 <fo:table-cell border-bottom="solid 0.1mm black">
                                     <fo:block text-align="center">$negative.snpInDel.snpInDelExpression.transcript</fo:block>
@@ -442,7 +442,7 @@
 						<fo:table-body>
 							<fo:table-row font-weight="bold" font-family="Noto Sans CJK KR Bold" border-bottom="solid 1mm white">
 								<fo:table-cell border-width="0.5pt" background-color="#58585a" border-right="solid 1mm white">
-									<fo:block text-align="center" color="white" padding-bottom="2mm" padding-top="2mm">$variant.snpInDel.sequenceInfo.gene</fo:block>
+									<fo:block text-align="center" color="white" padding-bottom="2mm" padding-top="2mm">$variant.snpInDel.genomicCoordinate.gene</fo:block>
 								</fo:table-cell>
 								<fo:table-cell number-columns-spanned="2" border-width="0.5pt" background-color="#58585a" border-right="solid 1mm white">
 									<fo:block text-align="center" color="white">$variant.snpInDel.snpInDelExpression.transcript:<![CDATA[$variant.snpInDel.snpInDelExpression.ntChange]]>

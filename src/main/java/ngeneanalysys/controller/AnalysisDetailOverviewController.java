@@ -167,7 +167,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
 
         //Tier Table Setting
         tierColumn.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.tierConvert(cellData.getValue().getSnpInDel().getSwTier())));
-        geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSequenceInfo().getGene()));
+        geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
         variantColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
         alleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()));
         therapeuticColumn.setCellValueFactory(cellData -> {
@@ -191,7 +191,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
             });
 
         //Negative Table Setting
-        negativeGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSequenceInfo().getGene()));
+        negativeGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
         negativeVariantColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
         negativeCauseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getInterpretationEvidence() != null
                 ? cellData.getValue().getInterpretationEvidence().getEvidencePersistentNegative() : ""));
@@ -238,13 +238,13 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
             if(tierOne != null) {
                 tierTable.getItems().addAll(FXCollections.observableArrayList(tierOne));
                 tierOneVariantsCountLabel.setText(String.valueOf(tierOne.size()));
-                List<SequenceInfo> sequenceInfos = new ArrayList<>();
+                List<GenomicCoordinate> genomicCoordinates = new ArrayList<>();
                 tierOne.stream().forEach(item -> {
-                    if (item.getSnpInDel().getSequenceInfo() != null)
-                        sequenceInfos.add(item.getSnpInDel().getSequenceInfo());
+                    if (item.getSnpInDel().getGenomicCoordinate() != null)
+                        genomicCoordinates.add(item.getSnpInDel().getGenomicCoordinate());
                 });
 
-                tierOneGenesCountLabel.setText(sequenceInfos.stream().collect(Collectors.groupingBy(SequenceInfo::getGene)).size() + "");
+                tierOneGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
 
                 List<Interpretation> interpretations = new ArrayList<>();
                 tierOne.stream().forEach(item -> {
@@ -265,13 +265,13 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                 tierTable.getItems().addAll(FXCollections.observableArrayList(tierTwo));
                 tierTwoVariantsCountLabel.setText(String.valueOf(tierTwo.size()));
 
-                List<SequenceInfo> sequenceInfos = new ArrayList<>();
+                List<GenomicCoordinate> genomicCoordinates = new ArrayList<>();
                 tierTwo.stream().forEach(item -> {
-                    if (item.getSnpInDel().getSequenceInfo() != null)
-                        sequenceInfos.add(item.getSnpInDel().getSequenceInfo());
+                    if (item.getSnpInDel().getGenomicCoordinate() != null)
+                        genomicCoordinates.add(item.getSnpInDel().getGenomicCoordinate());
                 });
 
-                tierTwoGenesCountLabel.setText(sequenceInfos.stream().collect(Collectors.groupingBy(SequenceInfo::getGene)).size() + "");
+                tierTwoGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
 
                 List<Interpretation> interpretations = new ArrayList<>();
                 tierTwo.stream().forEach(item -> {
@@ -291,13 +291,13 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
             if(tierThree != null) {
                 tierThreeVariantsCountLabel.setText(String.valueOf(tierThree.size()));
 
-                List<SequenceInfo> sequenceInfos = new ArrayList<>();
+                List<GenomicCoordinate> genomicCoordinates = new ArrayList<>();
                 tierThree.stream().forEach(item -> {
-                    if (item.getSnpInDel().getSequenceInfo() != null)
-                        sequenceInfos.add(item.getSnpInDel().getSequenceInfo());
+                    if (item.getSnpInDel().getGenomicCoordinate() != null)
+                        genomicCoordinates.add(item.getSnpInDel().getGenomicCoordinate());
                 });
 
-                tierThreeGenesCountLabel.setText(sequenceInfos.stream().collect(Collectors.groupingBy(SequenceInfo::getGene)).size() + "");
+                tierThreeGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
 
                 List<Interpretation> interpretations = new ArrayList<>();
                 tierThree.stream().forEach(item -> {
@@ -317,13 +317,13 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
             if(tierFour != null) {
                 tierFourVariantsCountLabel.setText(String.valueOf(tierFour.size()));
 
-                List<SequenceInfo> sequenceInfos = new ArrayList<>();
+                List<GenomicCoordinate> genomicCoordinates = new ArrayList<>();
                 tierFour.stream().forEach(item -> {
-                    if (item.getSnpInDel().getSequenceInfo() != null)
-                        sequenceInfos.add(item.getSnpInDel().getSequenceInfo());
+                    if (item.getSnpInDel().getGenomicCoordinate() != null)
+                        genomicCoordinates.add(item.getSnpInDel().getGenomicCoordinate());
                 });
 
-                tierFourGenesCountLabel.setText(sequenceInfos.stream().collect(Collectors.groupingBy(SequenceInfo::getGene)).size() + "");
+                tierFourGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
 
                 List<Interpretation> interpretations = new ArrayList<>();
                 tierFour.stream().forEach(item -> {

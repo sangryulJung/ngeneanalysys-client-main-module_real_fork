@@ -168,17 +168,17 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         settingTableViewDragAndDrop(likelyPathogenicVariantsTable, "LP");
         settingTableViewDragAndDrop(uncertainSignificanceVariantsTable, "US");
 
-        pathogenicGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSequenceInfo().getGene()));
+        pathogenicGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
         pathogenicVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
         pathogenicExceptColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
         pathogenicExceptColumn.setCellFactory(param -> new ReportedCheckBox(this));
 
-        likelyPathogenicGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSequenceInfo().getGene()));
+        likelyPathogenicGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
         likelyPathogenicVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
         likelyPathogenicExceptColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
         likelyPathogenicExceptColumn.setCellFactory(param -> new ReportedCheckBox(this));
 
-        uncertainSignificanceGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSequenceInfo().getGene()));
+        uncertainSignificanceGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
         uncertainSignificanceVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
         uncertainSignificanceExceptColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
         uncertainSignificanceExceptColumn.setCellFactory(param -> new ReportedCheckBox(this));
@@ -407,7 +407,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
             }
 
             Collections.sort(pathogenicityList,
-                    (a, b) -> a.getSnpInDel().getSequenceInfo().getGene().compareTo(b.getSnpInDel().getSequenceInfo().getGene()));
+                    (a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
             tableView.getItems().addAll(pathogenicityList);
         }
     }
@@ -651,11 +651,11 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
                 if(list.stream().anyMatch(item -> "Y".equalsIgnoreCase(item.getSnpInDel().getIncludedInReport()))) contentsMap.put("isExistReportedVariant", "Y");
 
-                if(list.stream().anyMatch(item -> "BRCA1".equalsIgnoreCase(item.getSnpInDel().getSequenceInfo().getGene()))) {
+                if(list.stream().anyMatch(item -> "BRCA1".equalsIgnoreCase(item.getSnpInDel().getGenomicCoordinate().getGene()))) {
                     contentsMap.put("isExistBRCA1", "Y");
                 }
 
-                if(list.stream().anyMatch(item -> "BRCA2".equalsIgnoreCase(item.getSnpInDel().getSequenceInfo().getGene()))) {
+                if(list.stream().anyMatch(item -> "BRCA2".equalsIgnoreCase(item.getSnpInDel().getGenomicCoordinate().getGene()))) {
                     contentsMap.put("isExistBRCA2", "Y");
                 }
 

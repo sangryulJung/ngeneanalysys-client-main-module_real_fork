@@ -4,18 +4,32 @@ package ngeneanalysys.model;
  * @author Jang
  * @since 2017-09-08
  */
-public class SequenceInfo {
+public class GenomicCoordinate {
     private String chromosome;
     private String gene;
     private String refSequence;
     private String altSequence;
     private String leftSequence;
     private String rightSequence;
-    private Integer genomicCoordinate;
+    private Integer startPosition;
     private String exonNum;
     private String exonNumBic;
     private String strand;
     private String refGenomeVer;
+
+    /**
+     * @return startPosition
+     */
+    public Integer getStartPosition() {
+        return startPosition;
+    }
+
+    /**
+     * @param startPosition
+     */
+    public void setStartPosition(Integer startPosition) {
+        this.startPosition = startPosition;
+    }
 
     /**
      * @return chromosome
@@ -99,20 +113,6 @@ public class SequenceInfo {
      */
     public void setRightSequence(String rightSequence) {
         this.rightSequence = rightSequence;
-    }
-
-    /**
-     * @return genomicCoordinate
-     */
-    public Integer getGenomicCoordinate() {
-        return genomicCoordinate;
-    }
-
-    /**
-     * @param genomicCoordinate
-     */
-    public void setGenomicCoordinate(Integer genomicCoordinate) {
-        this.genomicCoordinate = genomicCoordinate;
     }
 
     /**
