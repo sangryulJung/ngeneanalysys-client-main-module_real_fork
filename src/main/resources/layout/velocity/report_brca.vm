@@ -216,7 +216,7 @@
 									#foreach($variant in $contents.variantList)
 										#if($variant.snpInDel.includedInReport == 'Y')
 											<fo:block padding="1mm">
-												<![CDATA[$variant.snpInDel.sequenceInfo.gene]]>,  <![CDATA[$variant.snpInDel.snpInDelExpression.ntChange]]>, <![CDATA[$variant.snpInDel.snpInDelExpression.aaChange]]>, <![CDATA[$variant.snpInDel.snpInDelExpression.zygosity]]>
+												<![CDATA[$variant.snpInDel.genomicCoordinate.gene]]>,  <![CDATA[$variant.snpInDel.snpInDelExpression.ntChange]]>, <![CDATA[$variant.snpInDel.snpInDelExpression.aaChange]]>, <![CDATA[$variant.snpInDel.snpInDelExpression.zygosity]]>
 											</fo:block>
 										#end	
 									#end
@@ -294,7 +294,7 @@
 											</fo:table-row>
 											#if($contents.isExistBRCA1 == "Y")
 												#foreach($variant in $contents.variantList)
-													#if($variant.snpInDel.sequenceInfo.gene == "BRCA1")
+													#if($variant.snpInDel.genomicCoordinate.gene == "BRCA1")
 														<fo:table-row>
 															<fo:table-cell text-align="left" padding="2mm" border-width="0.5pt" border-style="solid">
 																<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt"><![CDATA[$variant.snpInDel.ntChangeBRCA]]></fo:block>
@@ -396,7 +396,7 @@
 											</fo:table-row>
 											#if($contents.isExistBRCA2 == "Y")
 												#foreach($variant in $contents.variantList)
-													#if($variant.snpInDel.sequenceInfo.gene == "BRCA2")
+													#if($variant.snpInDel.genomicCoordinate.gene == "BRCA2")
 														<fo:table-row>
 															<fo:table-cell text-align="left" padding="2mm" border-width="0.5pt" border-style="solid">
 																<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt"><![CDATA[$variant.snpInDel.ntChangeBRCA]]></fo:block>

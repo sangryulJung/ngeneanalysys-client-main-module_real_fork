@@ -189,13 +189,10 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     public void show(Parent root) throws IOException {
         logger.info("show..");
 
-
-
         tableCellUpdateFix(tierOneVariantsTable);
         tableCellUpdateFix(tierTwoVariantsTable);
         tableCellUpdateFix(tierThreeVariantsTable);
         tableCellUpdateFix(negativeVariantsTable);
-
 
         //Drag & Drop 으로 Variant의 Tier를 변경
 

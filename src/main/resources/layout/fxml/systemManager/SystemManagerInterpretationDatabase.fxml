@@ -6,7 +6,6 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Pagination?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -31,7 +30,7 @@
               <tabs>
                 <Tab text="Genomic Coordinate">
                      <content>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
+                        <VBox prefHeight="200.0" prefWidth="1610.0">
                            <children>
                               <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="1260.0" spacing="5.0">
                                  <children>
@@ -49,7 +48,7 @@
                                           <Label text="Filter Area" />
                                        </children>
                                     </GridPane>
-                                    <VBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="133.0" spacing="5.0" visible="false">
+                                    <VBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="133.0" spacing="5.0">
                                        <children>
                                           <Button mnemonicParsing="false" text="Add data from file" />
                                           <Button mnemonicParsing="false" onAction="#interpretationAdd" text="+" />
@@ -60,61 +59,57 @@
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </padding>
                               </HBox>
-                              <ScrollPane prefHeight="500.0" prefWidth="200.0">
-                                 <content>
-                                    <TableView fx:id="evidenceListTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" tableMenuButtonVisible="true">
+                              <TableView fx:id="evidenceListTable" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="335.0" prefWidth="800.0" tableMenuButtonVisible="true">
+                                 <columns>
+                                    <TableColumn fx:id="idTableColumn" prefWidth="80.0" styleClass="txt_black" text="id" visible="false" />
+                                    <TableColumn fx:id="diseaseIdTableColumn" prefWidth="100.0" styleClass="txt_black" text="Disease" />
+                                    <TableColumn fx:id="versionTableColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" styleClass="txt_black" text="Version" />
+                                    <TableColumn fx:id="identificationKeyTableColumn" prefWidth="90.0" text="Genomic Coordinate DB">
                                        <columns>
-                                          <TableColumn fx:id="idTableColumn" prefWidth="80.0" text="id" visible="false" />
-                                          <TableColumn fx:id="diseaseIdTableColumn" prefWidth="100.0" text="Disease" />
-                                          <TableColumn fx:id="diseaseIdTableColumn2" maxWidth="1.7976931348623157E308" minWidth="-Infinity" text="Version" />
-                                          <TableColumn fx:id="identificationKeyTableColumn" prefWidth="90.0" text="Genomic Coordinate DB">
-                                             <columns>
-                                                <TableColumn fx:id="identificationKeyTableColumn11" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="50.0" text="Chr" />
-                                                <TableColumn fx:id="identificationKeyTableColumn111" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="90.0" text="Gene" />
-                                                <TableColumn fx:id="identificationKeyTableColumn1111" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="70.0" text="Position" />
-                                                <TableColumn fx:id="identificationKeyTableColumn11111" minWidth="-Infinity" prefWidth="90.0" text="Ref" />
-                                                <TableColumn fx:id="identificationKeyTableColumn111111" prefWidth="90.0" text="Alt" />
-                                             </columns>
-                                          </TableColumn>
-                                          <TableColumn fx:id="identificationKeyTableColumn1" prefWidth="90.0" text="Genomic Coordinate NGS">
-                                             <columns>
-                                                <TableColumn fx:id="identificationKeyTableColumn111" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="50.0" text="Chr" />
-                                                <TableColumn fx:id="identificationKeyTableColumn1111" prefWidth="90.0" text="Gene" />
-                                                <TableColumn fx:id="identificationKeyTableColumn11111" prefWidth="70.0" text="Position" />
-                                                <TableColumn fx:id="identificationKeyTableColumn111111" prefWidth="90.0" text="Ref" />
-                                                <TableColumn fx:id="identificationKeyTableColumn1111111" prefWidth="90.0" text="Alt" />
-                                             </columns>
-                                          </TableColumn>
-                                          <TableColumn fx:id="idTableColumn2" minWidth="-Infinity" prefWidth="80.0" text="Type" />
-                                          <TableColumn fx:id="evidenceATableColumn1" minWidth="-Infinity" prefWidth="90.0" text="Tier I">
-                                             <columns>
-                                                <TableColumn fx:id="evidenceATableColumn" minWidth="-Infinity" prefWidth="90.0" text="Evidence A" />
-                                                <TableColumn fx:id="evidenceBTableColumn" minWidth="-Infinity" prefWidth="90.0" style="-fx-alignment: center;" text="Evidence B" />
-                                             </columns>
-                                          </TableColumn>
-                                          <TableColumn fx:id="evidenceCTableColumn1" prefWidth="139.55560302734375" text="Tier II">
-                                             <columns>
-                                                <TableColumn fx:id="evidenceCTableColumn" prefWidth="90.0" text="Evidence C" />
-                                                <TableColumn fx:id="evidenceDTableColumn" prefWidth="90.0" text="Evidence D" />
-                                             </columns>
-                                          </TableColumn>
-                                          <TableColumn fx:id="evidenceNegativeTableColumn11" minWidth="-Infinity" prefWidth="120.0" text="Pertinent Negative" />
-                                          <TableColumn fx:id="evidenceCTableColumn11" prefWidth="139.55560302734375" text="Tier IV">
-                                             <columns>
-                                                <TableColumn fx:id="evidenceCTableColumn1" prefWidth="90.0" text="Benign" />
-                                             </columns>
-                                          </TableColumn>
-                                          <TableColumn fx:id="deletedAtTableColumn" prefWidth="108.0" text="Date" visible="false" />
-                                          <TableColumn fx:id="deletedAtTableColumn2" prefWidth="108.0" text="Deactivated" visible="false" />
+                                          <TableColumn fx:id="dbChrTableColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="50.0" styleClass="txt_black" text="Chr" />
+                                          <TableColumn fx:id="dbGeneTableColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="90.0" styleClass="txt_black" text="Gene" />
+                                          <TableColumn fx:id="dbPositionTableColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="70.0" styleClass="txt_black" text="Position" />
+                                          <TableColumn fx:id="dbRefTableColumn" minWidth="-Infinity" prefWidth="90.0" styleClass="txt_black" text="Ref" />
+                                          <TableColumn fx:id="dbAltTableColumn" prefWidth="90.0" styleClass="txt_black" text="Alt" />
                                        </columns>
-                                    </TableView>
-                                 </content>
-                              </ScrollPane>
+                                    </TableColumn>
+                                    <TableColumn fx:id="identificationKeyTableColumn1" prefWidth="90.0" text="Genomic Coordinate NGS">
+                                       <columns>
+                                          <TableColumn fx:id="ngsChrTableColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="50.0" styleClass="txt_black" text="Chr" />
+                                          <TableColumn fx:id="ngsGeneTableColumn" prefWidth="90.0" styleClass="txt_black" text="Gene" />
+                                          <TableColumn fx:id="ngsPositionTableColumn" prefWidth="70.0" styleClass="txt_black" text="Position" />
+                                          <TableColumn fx:id="ngsRefTableColumn" prefWidth="90.0" styleClass="txt_black" text="Ref" />
+                                          <TableColumn fx:id="ngsAltTableColumn" prefWidth="90.0" styleClass="txt_black" text="Alt" />
+                                       </columns>
+                                    </TableColumn>
+                                    <TableColumn fx:id="typeTableColumn" minWidth="-Infinity" prefWidth="80.0" styleClass="txt_black" text="Type" />
+                                    <TableColumn fx:id="Tier1ATableColumn" minWidth="-Infinity" prefWidth="90.0" text="Tier I">
+                                       <columns>
+                                          <TableColumn fx:id="evidenceATableColumn" minWidth="-Infinity" prefWidth="90.0" styleClass="txt_black" text="Evidence A" />
+                                          <TableColumn fx:id="evidenceBTableColumn" minWidth="-Infinity" prefWidth="90.0" styleClass="txt_black" text="Evidence B" />
+                                       </columns>
+                                    </TableColumn>
+                                    <TableColumn fx:id="Tier2TableColumn" prefWidth="139.55560302734375" text="Tier II">
+                                       <columns>
+                                          <TableColumn fx:id="evidenceCTableColumn" prefWidth="90.0" styleClass="txt_black" text="Evidence C" />
+                                          <TableColumn fx:id="evidenceDTableColumn" prefWidth="90.0" styleClass="txt_black" text="Evidence D" />
+                                       </columns>
+                                    </TableColumn>
+                                    <TableColumn fx:id="evidenceNegativeTableColumn" minWidth="-Infinity" prefWidth="120.0" styleClass="txt_black" text="Pertinent Negative" />
+                                    <TableColumn fx:id="tier4TableColumn" prefWidth="139.55560302734375" text="Tier IV">
+                                       <columns>
+                                          <TableColumn fx:id="benignTableColumn" prefWidth="90.0" styleClass="txt_black" text="Benign" />
+                                       </columns>
+                                    </TableColumn>
+                                    <TableColumn fx:id="deletedAtTableColumn" prefWidth="108.0" styleClass="txt_black" text="Date" visible="false" />
+                                    <TableColumn fx:id="deletedAtTableColumn2" prefWidth="108.0" styleClass="txt_black" text="Deactivated" visible="false" />
+                                 </columns>
+                              </TableView>
                               <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="300.0">
                                  <children>
                                     <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="SOMETIMES">
                                        <children>
-                                          <Pagination prefHeight="200.0" prefWidth="200.0" />
+                                          <Pagination fx:id="interpretationPagination" prefHeight="200.0" prefWidth="200.0" />
                                        </children>
                                     </HBox>
                                     <Button fx:id="interpretationSaveButton" mnemonicParsing="false" onAction="#saveInterpretationDatabase" text="Save" />
@@ -151,7 +146,7 @@
                                           <TableColumn fx:id="evidenceBTableColumn1" minWidth="-Infinity" prefWidth="90.0" style="-fx-alignment: center;" text="Evidence B" />
                                        </columns>
                                     </TableColumn>
-                                    <TableColumn fx:id="evidenceCTableColumn1" prefWidth="139.55560302734375" text="Tier II">
+                                    <TableColumn fx:id="evidenceCTableColumn12" prefWidth="139.55560302734375" text="Tier II">
                                        <columns>
                                           <TableColumn fx:id="evidenceCTableColumn1" prefWidth="90.0" text="Evidence C" />
                                           <TableColumn fx:id="evidenceDTableColumn1" prefWidth="90.0" text="Evidence D" />
