@@ -240,7 +240,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
         negativeGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
         negativeVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
-        negativeCauseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getInterpretationEvidence().getEvidencePersistentNegative()));
+        //negativeCauseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getInterpretationEvidence().getEvidencePersistentNegative()));
         negativeAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction().toString()));
         negativeExceptColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
         negativeExceptColumn.setCellFactory(param -> new ReportedCheckBox(this));
@@ -371,9 +371,13 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             List<VariantAndInterpretationEvidence> list = analysisResultVariantList.getResult();
 
             //negative list만 가져옴
-            negativeList = list.stream().filter(item -> ((item.getInterpretationEvidence() != null &&
+            /*negativeList = list.stream().filter(item -> ((item.getInterpretationEvidence() != null &&
                     !StringUtils.isEmpty(item.getInterpretationEvidence().getEvidencePersistentNegative())) ||
-                    "TN".equalsIgnoreCase(item.getSnpInDel().getExpertTier()))).collect(Collectors.toList());
+                    "TN".equalsIgnoreCase(item.getSnpInDel().getExpertTier()))).collect(Collectors.toList());*/
+
+            negativeList = list.stream().filter(item -> (
+                    StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && "TN".equalsIgnoreCase(item.getSnpInDel().getSwTier())) ||
+                    "TN".equalsIgnoreCase(item.getSnpInDel().getExpertTier())).collect(Collectors.toList());
 
             tierOne = settingTierList(list, "T1");
 
@@ -435,17 +439,17 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         return null;
     }
 
-    public SimpleStringProperty returnTherapeutic(Interpretation interpretation) {
+    public SimpleStringProperty returnTherapeutic(SnpInDelInterpretation snpInDelInterpretation) {
         String text = "";
-        if(interpretation != null) {
-            if (!StringUtils.isEmpty(interpretation.getEvidenceLevelA()))
-                text += interpretation.getEvidenceLevelA() + ", ";
-            if (!StringUtils.isEmpty(interpretation.getEvidenceLevelB()))
-                text += interpretation.getEvidenceLevelB() + ", ";
-            if (!StringUtils.isEmpty(interpretation.getEvidenceLevelC()))
-                text += interpretation.getEvidenceLevelC() + ", ";
-            if (!StringUtils.isEmpty(interpretation.getEvidenceLevelD()))
-                text += interpretation.getEvidenceLevelD() + ", ";
+        if(snpInDelInterpretation != null) {
+            if (!StringUtils.isEmpty(snpInDelInterpretation.getEvidenceLevelA()))
+                text += snpInDelInterpretation.getEvidenceLevelA() + ", ";
+            if (!StringUtils.isEmpty(snpInDelInterpretation.getEvidenceLevelB()))
+                text += snpInDelInterpretation.getEvidenceLevelB() + ", ";
+            if (!StringUtils.isEmpty(snpInDelInterpretation.getEvidenceLevelC()))
+                text += snpInDelInterpretation.getEvidenceLevelC() + ", ";
+            if (!StringUtils.isEmpty(snpInDelInterpretation.getEvidenceLevelD()))
+                text += snpInDelInterpretation.getEvidenceLevelD() + ", ";
         }
         if(!"".equals(text)) {
             text = text.substring(0, text.length() - 2);

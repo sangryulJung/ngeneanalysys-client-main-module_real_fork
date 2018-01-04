@@ -40,7 +40,7 @@ public class SnpInDel implements Serializable {
 
 	private PopulationFrequency populationFrequency;
 
-	private Integer interpretationEvidenceId;
+	//private Integer interpretationEvidenceId;
 
 	/**
 	 * @return genomicCoordinate
@@ -276,20 +276,6 @@ public class SnpInDel implements Serializable {
 	public void setSnpInDelExpression(SnpInDelExpression snpInDelExpression) {
 		this.snpInDelExpression = snpInDelExpression;
 	}
-
-    /**
-     * @return interpretationEvidenceId
-     */
-    public Integer getInterpretationEvidenceId() {
-        return interpretationEvidenceId;
-    }
-
-    /**
-     * @param interpretationEvidenceId
-     */
-    public void setInterpretationEvidenceId(Integer interpretationEvidenceId) {
-        this.interpretationEvidenceId = interpretationEvidenceId;
-    }
 
 	/**
 	 * @return the cDNAbic

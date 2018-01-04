@@ -64,24 +64,13 @@
                                     <TableColumn fx:id="idTableColumn" prefWidth="80.0" styleClass="txt_black" text="id" visible="false" />
                                     <TableColumn fx:id="diseaseIdTableColumn" prefWidth="100.0" styleClass="txt_black" text="Disease" />
                                     <TableColumn fx:id="versionTableColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" styleClass="txt_black" text="Version" />
-                                    <TableColumn fx:id="identificationKeyTableColumn" prefWidth="90.0" text="Genomic Coordinate DB">
-                                       <columns>
-                                          <TableColumn fx:id="dbChrTableColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="50.0" styleClass="txt_black" text="Chr" />
-                                          <TableColumn fx:id="dbGeneTableColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="90.0" styleClass="txt_black" text="Gene" />
-                                          <TableColumn fx:id="dbPositionTableColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="70.0" styleClass="txt_black" text="Position" />
-                                          <TableColumn fx:id="dbRefTableColumn" minWidth="-Infinity" prefWidth="90.0" styleClass="txt_black" text="Ref" />
-                                          <TableColumn fx:id="dbAltTableColumn" prefWidth="90.0" styleClass="txt_black" text="Alt" />
-                                       </columns>
-                                    </TableColumn>
-                                    <TableColumn fx:id="identificationKeyTableColumn1" prefWidth="90.0" text="Genomic Coordinate NGS">
-                                       <columns>
-                                          <TableColumn fx:id="ngsChrTableColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="50.0" styleClass="txt_black" text="Chr" />
-                                          <TableColumn fx:id="ngsGeneTableColumn" prefWidth="90.0" styleClass="txt_black" text="Gene" />
-                                          <TableColumn fx:id="ngsPositionTableColumn" prefWidth="70.0" styleClass="txt_black" text="Position" />
-                                          <TableColumn fx:id="ngsRefTableColumn" prefWidth="90.0" styleClass="txt_black" text="Ref" />
-                                          <TableColumn fx:id="ngsAltTableColumn" prefWidth="90.0" styleClass="txt_black" text="Alt" />
-                                       </columns>
-                                    </TableColumn>
+                                    <TableColumn fx:id="chrTableColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="50.0" styleClass="txt_black" text="Chr" />
+                                    <TableColumn fx:id="geneTableColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="90.0" styleClass="txt_black" text="Gene" />
+                                    <TableColumn fx:id="positionTableColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" styleClass="txt_black" text="Position" />
+                                    <TableColumn fx:id="dbRefTableColumn" minWidth="-Infinity" prefWidth="90.0" styleClass="txt_black" text="DB Ref" />
+                                    <TableColumn fx:id="dbAltTableColumn" prefWidth="90.0" styleClass="txt_black" text="DB Alt" />
+                                    <TableColumn fx:id="ngsRefTableColumn" prefWidth="90.0" styleClass="txt_black" text="NGS Ref" />
+                                    <TableColumn fx:id="ngsAltTableColumn" prefWidth="90.0" styleClass="txt_black" text="NGS Alt" />
                                     <TableColumn fx:id="typeTableColumn" minWidth="-Infinity" prefWidth="80.0" styleClass="txt_black" text="Type" />
                                     <TableColumn fx:id="Tier1ATableColumn" minWidth="-Infinity" prefWidth="90.0" text="Tier I">
                                        <columns>

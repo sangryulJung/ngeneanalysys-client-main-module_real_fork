@@ -237,7 +237,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         disease.setStyle("-fx-border-width: 0;");
         disease.setCursor(Cursor.HAND);
         diseaseComboBoxList.add(disease);
-        settingDiseaseComboBox(panels.get(0).getId(), row);
+        //settingDiseaseComboBox(panels.get(0).getId(), row);
         //diseasesSetting(disease);
 
         ComboBox<ComboBoxItem> panel  = new ComboBox<>();
@@ -281,7 +281,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         sampleSourceTextFieldList.add(source);
         source.setEditable(false);
         source.setStyle("-fx-text-inner-color: black; -fx-border-width: 0;");
-        source.setText(panels.get(0).getSampleSource());
+        //source.setText(panels.get(0).getSampleSource());
 
         //standardDataGridPane.addRow(row, sampleName, select, panel, source, disease, paitentId);
         standardDataGridPane.addRow(row, sampleName, panel, source, disease, paitentId);

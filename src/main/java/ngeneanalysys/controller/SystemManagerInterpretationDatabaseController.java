@@ -2,6 +2,7 @@ package ngeneanalysys.controller;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -10,10 +11,9 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.VBox;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
-import ngeneanalysys.model.DbGenomicCoordinateClinicalVariant;
-import ngeneanalysys.model.GenomicCoordinateClinicalVariant;
-import ngeneanalysys.model.NgsGenomicCoordinateClinicalVariant;
+import ngeneanalysys.model.*;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
@@ -45,28 +45,19 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
     private  TableColumn<GenomicCoordinateClinicalVariant, String> versionTableColumn;
 
     @FXML
-    private TableColumn<GenomicCoordinateClinicalVariant, String> dbChrTableColumn;
+    private TableColumn<GenomicCoordinateClinicalVariant, String> chrTableColumn;
 
     @FXML
-    private TableColumn<GenomicCoordinateClinicalVariant, String> dbGeneTableColumn;
+    private TableColumn<GenomicCoordinateClinicalVariant, String> geneTableColumn;
 
     @FXML
-    private TableColumn<GenomicCoordinateClinicalVariant, String> dbPositionTableColumn;
+    private TableColumn<GenomicCoordinateClinicalVariant, String> positionTableColumn;
 
     @FXML
     private TableColumn<GenomicCoordinateClinicalVariant, String> dbRefTableColumn;
 
     @FXML
     private TableColumn<GenomicCoordinateClinicalVariant, String> dbAltTableColumn;
-
-    @FXML
-    private TableColumn<GenomicCoordinateClinicalVariant, String> ngsChrTableColumn;
-
-    @FXML
-    private TableColumn<GenomicCoordinateClinicalVariant, String> ngsGeneTableColumn;
-
-    @FXML
-    private TableColumn<GenomicCoordinateClinicalVariant, String> ngsPositionTableColumn;
 
     @FXML
     private TableColumn<GenomicCoordinateClinicalVariant, String> ngsRefTableColumn;
@@ -98,6 +89,8 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
     @FXML
     private Pagination interpretationPagination;
 
+    private Integer currentPageIndex = -1;
+
     @Override
     public void show(Parent root) throws IOException {
 
@@ -116,58 +109,42 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
             (t.getTableView().getItems().get(t.getTablePosition().getRow())).setClinicalVariantVersion(t.getNewValue());
         });
 
-        dbChrTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getDb().getDbChr()));
-        dbChrTableColumn.setCellFactory(tableColumn -> new EditingCell());
-        dbChrTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
-            (t.getTableView().getItems().get(t.getTablePosition().getRow())).getDb().setDbChr(t.getNewValue());
+        chrTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getGenomicCoordinateForCV().getChr()));
+        chrTableColumn.setCellFactory(tableColumn -> new EditingCell());
+        chrTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
+            (t.getTableView().getItems().get(t.getTablePosition().getRow())).getGenomicCoordinateForCV().setChr(t.getNewValue());
         });
-        dbGeneTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getDb().getDbGene()));
-        dbGeneTableColumn.setCellFactory(tableColumn -> new EditingCell());
-        dbGeneTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
-            (t.getTableView().getItems().get(t.getTablePosition().getRow())).getDb().setDbChr(t.getNewValue());
+        geneTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getGenomicCoordinateForCV().getGene()));
+        geneTableColumn.setCellFactory(tableColumn -> new EditingCell());
+        geneTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
+            (t.getTableView().getItems().get(t.getTablePosition().getRow())).getGenomicCoordinateForCV().setChr(t.getNewValue());
         });
-        dbPositionTableColumn.setCellValueFactory(item -> new SimpleStringProperty((item.getValue().getDb().getDbPosition() != null) ?
-                item.getValue().getDb().getDbPosition().toString() : null));
-        dbPositionTableColumn.setCellFactory(tableColumn -> new EditingCell());
-        dbPositionTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
-            (t.getTableView().getItems().get(t.getTablePosition().getRow())).getDb().setDbPosition(Integer.parseInt(t.getNewValue()));
+        positionTableColumn.setCellValueFactory(item -> new SimpleStringProperty((item.getValue().getGenomicCoordinateForCV().getPosition() != null) ?
+                item.getValue().getGenomicCoordinateForCV().getPosition().toString() : null));
+        positionTableColumn.setCellFactory(tableColumn -> new EditingCell());
+        positionTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
+            (t.getTableView().getItems().get(t.getTablePosition().getRow())).getGenomicCoordinateForCV().setPosition(Integer.parseInt(t.getNewValue()));
         });
-        dbRefTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getDb().getDbRef()));
+        dbRefTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getGenomicCoordinateForCV().getDbRef()));
         dbRefTableColumn.setCellFactory(tableColumn -> new EditingCell());
         dbRefTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
-            (t.getTableView().getItems().get(t.getTablePosition().getRow())).getDb().setDbRef(t.getNewValue());
+            (t.getTableView().getItems().get(t.getTablePosition().getRow())).getGenomicCoordinateForCV().setDbRef(t.getNewValue());
         });
-        dbAltTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getDb().getDbAlt()));
+        dbAltTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getGenomicCoordinateForCV().getDbAlt()));
         dbAltTableColumn.setCellFactory(tableColumn -> new EditingCell());
         dbAltTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
-            (t.getTableView().getItems().get(t.getTablePosition().getRow())).getDb().setDbAlt(t.getNewValue());
+            (t.getTableView().getItems().get(t.getTablePosition().getRow())).getGenomicCoordinateForCV().setDbAlt(t.getNewValue());
         });
 
-        ngsChrTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getNgs().getNgsChr()));
-        ngsChrTableColumn.setCellFactory(tableColumn -> new EditingCell());
-        ngsChrTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
-            (t.getTableView().getItems().get(t.getTablePosition().getRow())).getNgs().setNgsChr(t.getNewValue());
-        });
-        ngsGeneTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getNgs().getNgsGene()));
-        ngsGeneTableColumn.setCellFactory(tableColumn -> new EditingCell());
-        ngsGeneTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
-            (t.getTableView().getItems().get(t.getTablePosition().getRow())).getNgs().setNgsGene(t.getNewValue());
-        });
-        ngsPositionTableColumn.setCellValueFactory(item -> new SimpleStringProperty((item.getValue().getNgs().getNgsPosition() != null) ?
-                item.getValue().getNgs().getNgsPosition().toString() : null));
-        ngsPositionTableColumn.setCellFactory(tableColumn -> new EditingCell());
-        ngsPositionTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
-            (t.getTableView().getItems().get(t.getTablePosition().getRow())).getNgs().setNgsPosition(Integer.parseInt(t.getNewValue()));
-        });
-        ngsRefTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getNgs().getNgsRef()));
+        ngsRefTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getGenomicCoordinateForCV().getNgsRef()));
         ngsRefTableColumn.setCellFactory(tableColumn -> new EditingCell());
         ngsRefTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
-            (t.getTableView().getItems().get(t.getTablePosition().getRow())).getNgs().setNgsRef(t.getNewValue());
+            (t.getTableView().getItems().get(t.getTablePosition().getRow())).getGenomicCoordinateForCV().setNgsRef(t.getNewValue());
         });
-        ngsAltTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getNgs().getNgsAlt()));
+        ngsAltTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getGenomicCoordinateForCV().getNgsAlt()));
         ngsAltTableColumn.setCellFactory(tableColumn -> new EditingCell());
         ngsAltTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
-            (t.getTableView().getItems().get(t.getTablePosition().getRow())).getNgs().setNgsAlt(t.getNewValue());
+            (t.getTableView().getItems().get(t.getTablePosition().getRow())).getGenomicCoordinateForCV().setNgsAlt(t.getNewValue());
         });
 
         typeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getClinicalVariantType()));
@@ -195,7 +172,10 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
         benignTableColumn.setCellFactory(tableColumn -> new PopUpTableCell("evidenceBenign"));
 
         interpretationPagination.setPageFactory(pageIndex -> {
-            setInterpretationList(pageIndex + 1);
+            if(currentPageIndex != pageIndex) {
+                setInterpretationList(pageIndex + 1);
+                currentPageIndex = pageIndex;
+            }
             return new VBox();
         });
     }
@@ -213,19 +193,19 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
 
             HttpClientResponse response = apiService.get("admin/clinicalVariant/genomicCoordinate", param, null, false);
 
-            /*PagedReportTemplate pagedReportTemplate = response.getObjectBeforeConvertResponseToJSON(PagedReportTemplate.class);
+            PagedGenomicCoordinateClinicalVariant pagedGenomicCoordinateClinicalVariant = response.getObjectBeforeConvertResponseToJSON(PagedGenomicCoordinateClinicalVariant.class);
 
-            if(pagedReportTemplate != null) {
-                totalCount = pagedReportTemplate.getCount();
-                reportTemplateListTable.getItems().clear();
-                reportTemplateListTable.setItems(FXCollections.observableArrayList(pagedReportTemplate.getResult()));
+            if(pagedGenomicCoordinateClinicalVariant != null) {
+                totalCount = pagedGenomicCoordinateClinicalVariant.getCount();
+                evidenceListTable.getItems().clear();
+                evidenceListTable.setItems(FXCollections.observableArrayList(pagedGenomicCoordinateClinicalVariant.getResult()));
             }
 
             int pageCount = 0;
 
             if(totalCount > 0) {
                 pageCount = totalCount / limit;
-                reportTemplatePagination.setCurrentPageIndex(page - 1);
+                interpretationPagination.setCurrentPageIndex(page - 1);
                 if(totalCount % limit > 0) {
                     pageCount++;
                 }
@@ -234,15 +214,15 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
             logger.info("total count : " + totalCount + ", page count : " + pageCount);
 
             if (pageCount > 0) {
-                reportTemplatePagination.setVisible(true);
-                reportTemplatePagination.setPageCount(pageCount);
+                interpretationPagination.setVisible(true);
+                interpretationPagination.setPageCount(pageCount);
             } else {
-                reportTemplatePagination.setVisible(false);
-            }*/
+                interpretationPagination.setVisible(false);
+            }
 
         } catch(WebAPIException wae) {
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
-                    getMainApp().getPrimaryStage(), true);
+                    getMainApp().getPrimaryStage(), false);
         }
     }
 
@@ -252,10 +232,22 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
 
         if(list != null && !list.isEmpty()) {
             for(GenomicCoordinateClinicalVariant item : list) {
-                if(item.getId() == null) {
-
-                } else {
-
+                try {
+                    Map<String, Object> params = ConvertUtil.getMapToModel(item);
+                    params.remove("createdAt");
+                    params.remove("updatedAt");
+                    params.remove("deletedAt");
+                    params.remove("deleted");
+                    if (item.getId() == null) {
+                        params.remove("id");
+                        apiService.post("admin/clinicalVariant/genomicCoordinate", params, null, true);
+                    } else {
+                        apiService.put("admin/clinicalVariant/genomicCoordinate", params, null, true);
+                    }
+                } catch (WebAPIException wae) {
+                    DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
+                } catch (IOException ioe) {
+                    DialogUtil.error(ioe.getMessage(), ioe.getMessage(), mainController.getPrimaryStage(), true);
                 }
             }
         }
@@ -265,8 +257,7 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
     private void interpretationAdd() {
         GenomicCoordinateClinicalVariant genomicCoordinateClinicalVariant = new GenomicCoordinateClinicalVariant();
         genomicCoordinateClinicalVariant.setDiseaseId(evidenceListTable.getItems().size());
-        genomicCoordinateClinicalVariant.setDb(new DbGenomicCoordinateClinicalVariant());
-        genomicCoordinateClinicalVariant.setNgs(new NgsGenomicCoordinateClinicalVariant());
+        genomicCoordinateClinicalVariant.setGenomicCoordinateForCV(new GenomicCoordinateForCV());
         evidenceListTable.getItems().add(0, genomicCoordinateClinicalVariant);
 
         if(evidenceListTable.getItems().size() > 17) {

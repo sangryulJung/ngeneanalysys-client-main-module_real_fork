@@ -1,8 +1,11 @@
 package ngeneanalysys.util;
 
+import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TimeZone;
 
 import org.apache.commons.lang3.StringUtils;
@@ -136,6 +139,21 @@ public class ConvertUtil {
 		}
 
 		return convertTier;
+	}
+
+	public static <T> Map<String, Object> getMapToModel(T item) {
+		Field[] fields = item.getClass().getDeclaredFields();
+		Map<String, Object> params = new HashMap<>();
+		for(Field field : fields) {
+			field.setAccessible(true);
+			try {
+				params.put(field.getName(), field.get(item));
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return params;
 	}
 
 }

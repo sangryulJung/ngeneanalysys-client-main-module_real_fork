@@ -171,17 +171,17 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         variantColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
         alleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()));
         therapeuticColumn.setCellValueFactory(cellData -> {
-            Interpretation interpretation = cellData.getValue().getInterpretationEvidence();
+            SnpInDelInterpretation snpInDelInterpretation = cellData.getValue().getInterpretationEvidence();
             String text = "";
-            if(interpretation != null) {
-                if (!StringUtils.isEmpty(interpretation.getEvidenceLevelA()))
-                    text += interpretation.getEvidenceLevelA() + ", ";
-                if (!StringUtils.isEmpty(interpretation.getEvidenceLevelB()))
-                    text += interpretation.getEvidenceLevelB() + ", ";
-                if (!StringUtils.isEmpty(interpretation.getEvidenceLevelC()))
-                    text += interpretation.getEvidenceLevelC() + ", ";
-                if (!StringUtils.isEmpty(interpretation.getEvidenceLevelD()))
-                    text += interpretation.getEvidenceLevelD() + ", ";
+            if(snpInDelInterpretation != null) {
+                if (!StringUtils.isEmpty(snpInDelInterpretation.getEvidenceLevelA()))
+                    text += snpInDelInterpretation.getEvidenceLevelA() + ", ";
+                if (!StringUtils.isEmpty(snpInDelInterpretation.getEvidenceLevelB()))
+                    text += snpInDelInterpretation.getEvidenceLevelB() + ", ";
+                if (!StringUtils.isEmpty(snpInDelInterpretation.getEvidenceLevelC()))
+                    text += snpInDelInterpretation.getEvidenceLevelC() + ", ";
+                if (!StringUtils.isEmpty(snpInDelInterpretation.getEvidenceLevelD()))
+                    text += snpInDelInterpretation.getEvidenceLevelD() + ", ";
             }
             if(!"".equals(text)) {
                 text = text.substring(0, text.length() - 2);
@@ -193,8 +193,8 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         //Negative Table Setting
         negativeGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
         negativeVariantColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
-        negativeCauseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getInterpretationEvidence() != null
-                ? cellData.getValue().getInterpretationEvidence().getEvidencePersistentNegative() : ""));
+        //negativeCauseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getInterpretationEvidence() != null
+        //        ? cellData.getValue().getInterpretationEvidence().getEvidencePersistentNegative() : ""));
         negativeAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()));
 
         try {
@@ -206,9 +206,14 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
             List<VariantAndInterpretationEvidence> list = analysisResultVariantList.getResult();
 
             //negative list만 가져옴
-            List<VariantAndInterpretationEvidence> negativeList = list.stream().filter(item -> (item.getInterpretationEvidence() != null &&
+            /*List<VariantAndInterpretationEvidence> negativeList = list.stream().filter(item -> (item.getInterpretationEvidence() != null &&
                     !StringUtils.isEmpty(item.getInterpretationEvidence().getEvidencePersistentNegative())
                     || (!StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && "TN".equalsIgnoreCase(item.getSnpInDel().getExpertTier()))))
+                    .collect(Collectors.toList());*/
+
+            List<VariantAndInterpretationEvidence> negativeList = list.stream().filter(item ->
+                    ((!StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && "TN".equalsIgnoreCase(item.getSnpInDel().getExpertTier()))) ||
+                            (StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && "TN".equalsIgnoreCase(item.getSnpInDel().getSwTier())))
                     .collect(Collectors.toList());
 
             //그 이후 list에서 negative list를 제거
@@ -246,13 +251,13 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
 
                 tierOneGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
 
-                List<Interpretation> interpretations = new ArrayList<>();
+                List<SnpInDelInterpretation> snpInDelInterpretations = new ArrayList<>();
                 tierOne.stream().forEach(item -> {
                     if (item.getInterpretationEvidence() != null)
-                        interpretations.add(item.getInterpretationEvidence());
+                        snpInDelInterpretations.add(item.getInterpretationEvidence());
                 });
 
-                long count = interpretations.stream().filter(item -> (!StringUtils.isEmpty(item.getEvidenceLevelA()) ||
+                long count = snpInDelInterpretations.stream().filter(item -> (!StringUtils.isEmpty(item.getEvidenceLevelA()) ||
                         !StringUtils.isEmpty(item.getEvidenceLevelB()) ||
                         !StringUtils.isEmpty(item.getEvidenceLevelC()) ||
                         !StringUtils.isEmpty(item.getEvidenceLevelD()))).count();
@@ -273,13 +278,13 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
 
                 tierTwoGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
 
-                List<Interpretation> interpretations = new ArrayList<>();
+                List<SnpInDelInterpretation> snpInDelInterpretations = new ArrayList<>();
                 tierTwo.stream().forEach(item -> {
                     if (item.getInterpretationEvidence() != null)
-                        interpretations.add(item.getInterpretationEvidence());
+                        snpInDelInterpretations.add(item.getInterpretationEvidence());
                 });
 
-                long count = interpretations.stream().filter(item -> (!StringUtils.isEmpty(item.getEvidenceLevelA()) ||
+                long count = snpInDelInterpretations.stream().filter(item -> (!StringUtils.isEmpty(item.getEvidenceLevelA()) ||
                         !StringUtils.isEmpty(item.getEvidenceLevelB()) ||
                         !StringUtils.isEmpty(item.getEvidenceLevelC()) ||
                         !StringUtils.isEmpty(item.getEvidenceLevelD()))).count();
@@ -299,13 +304,13 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
 
                 tierThreeGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
 
-                List<Interpretation> interpretations = new ArrayList<>();
+                List<SnpInDelInterpretation> snpInDelInterpretations = new ArrayList<>();
                 tierThree.stream().forEach(item -> {
                     if (item.getInterpretationEvidence() != null)
-                        interpretations.add(item.getInterpretationEvidence());
+                        snpInDelInterpretations.add(item.getInterpretationEvidence());
                 });
 
-                long count = interpretations.stream().filter(item -> (!StringUtils.isEmpty(item.getEvidenceLevelA()) ||
+                long count = snpInDelInterpretations.stream().filter(item -> (!StringUtils.isEmpty(item.getEvidenceLevelA()) ||
                         !StringUtils.isEmpty(item.getEvidenceLevelB()) ||
                         !StringUtils.isEmpty(item.getEvidenceLevelC()) ||
                         !StringUtils.isEmpty(item.getEvidenceLevelD()))).count();
@@ -325,13 +330,13 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
 
                 tierFourGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
 
-                List<Interpretation> interpretations = new ArrayList<>();
+                List<SnpInDelInterpretation> snpInDelInterpretations = new ArrayList<>();
                 tierFour.stream().forEach(item -> {
                     if (item.getInterpretationEvidence() != null)
-                        interpretations.add(item.getInterpretationEvidence());
+                        snpInDelInterpretations.add(item.getInterpretationEvidence());
                 });
 
-                long count = interpretations.stream().filter(item -> (!StringUtils.isEmpty(item.getEvidenceLevelA()) ||
+                long count = snpInDelInterpretations.stream().filter(item -> (!StringUtils.isEmpty(item.getEvidenceLevelA()) ||
                         !StringUtils.isEmpty(item.getEvidenceLevelB()) ||
                         !StringUtils.isEmpty(item.getEvidenceLevelC()) ||
                         !StringUtils.isEmpty(item.getEvidenceLevelD()))).count();

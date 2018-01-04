@@ -6,7 +6,7 @@ package ngeneanalysys.model;
  */
 public class VariantAndInterpretationEvidence {
     private SnpInDel snpInDel;
-    private Interpretation interpretationEvidence;
+    private SnpInDelInterpretation interpretationEvidence;
 
     /**
      * @param snpInDel
@@ -18,7 +18,7 @@ public class VariantAndInterpretationEvidence {
     /**
      * @param interpretationEvidence
      */
-    public void setInterpretationEvidence(Interpretation interpretationEvidence) {
+    public void setInterpretationEvidence(SnpInDelInterpretation interpretationEvidence) {
         this.interpretationEvidence = interpretationEvidence;
     }
 
@@ -32,7 +32,7 @@ public class VariantAndInterpretationEvidence {
     /**
      * @return interpretationEvidence
      */
-    public Interpretation getInterpretationEvidence() {
+    public SnpInDelInterpretation getInterpretationEvidence() {
         return interpretationEvidence;
     }
 }

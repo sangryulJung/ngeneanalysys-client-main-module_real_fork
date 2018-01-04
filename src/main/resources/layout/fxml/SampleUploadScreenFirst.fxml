@@ -37,7 +37,7 @@
             </Label>
             <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1">
                <children>
-                  <Button fx:id="buttonFileOpen" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showFileFindWindow" prefHeight="32.0" styleClass="field_height" text="Choose files" />
+                  <Button fx:id="buttonFileOpen" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showFileFindWindow" prefHeight="32.0" styleClass="field_height" text="Choose folder" />
                   <Label alignment="CENTER_RIGHT" styleClass="help_tooltip">
                      <tooltip>
                         <Tooltip text="Choose FASTQ sequencing data file" />
@@ -93,7 +93,7 @@
                         <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="header" text="Sample" />
                         <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="Disease" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
                         <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="header" text="Panel" GridPane.columnIndex="1" />
-                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-border-width: 0;" styleClass="header" text="Patient id" GridPane.columnIndex="4" GridPane.halignment="CENTER" />
+                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-border-width: 0;" styleClass="header" text="Patient Id" GridPane.columnIndex="4" GridPane.halignment="CENTER" />
                         <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="Source" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
                      </children>
                   </GridPane>

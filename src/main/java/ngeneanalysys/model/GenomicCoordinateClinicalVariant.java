@@ -10,8 +10,10 @@ public class GenomicCoordinateClinicalVariant {
     private Integer id;
     private Integer diseaseId;
     private String clinicalVariantVersion;
-    private NgsGenomicCoordinateClinicalVariant ngs;
-    private DbGenomicCoordinateClinicalVariant db;
+    private String Tier;
+    private GenomicCoordinateForCV genomicCoordinateForCV;
+    private String dbNtChange;
+    private String dbTranscript;
     private String clinicalVariantType;
     private String evidenceLevelA;
     private String evidenceLevelB;
@@ -25,80 +27,31 @@ public class GenomicCoordinateClinicalVariant {
     private Integer deleted;
 
     /**
-     * @param clinicalVariantType
+     * @return dbTranscript
      */
-    public void setClinicalVariantType(String clinicalVariantType) {
-        this.clinicalVariantType = clinicalVariantType;
+    public String getDbTranscript() {
+        return dbTranscript;
     }
 
     /**
-     * @param evidenceLevelA
+     * @param dbTranscript
      */
-    public void setEvidenceLevelA(String evidenceLevelA) {
-        this.evidenceLevelA = evidenceLevelA;
+    public void setDbTranscript(String dbTranscript) {
+        this.dbTranscript = dbTranscript;
     }
 
     /**
-     * @param evidenceLevelB
+     * @return Tier
      */
-    public void setEvidenceLevelB(String evidenceLevelB) {
-        this.evidenceLevelB = evidenceLevelB;
+    public String getTier() {
+        return Tier;
     }
 
     /**
-     * @param evidenceLevelC
+     * @param tier
      */
-    public void setEvidenceLevelC(String evidenceLevelC) {
-        this.evidenceLevelC = evidenceLevelC;
-    }
-
-    /**
-     * @param evidenceLevelD
-     */
-    public void setEvidenceLevelD(String evidenceLevelD) {
-        this.evidenceLevelD = evidenceLevelD;
-    }
-
-    /**
-     * @param evidenceLevelBenign
-     */
-    public void setEvidenceLevelBenign(String evidenceLevelBenign) {
-        this.evidenceLevelBenign = evidenceLevelBenign;
-    }
-
-    /**
-     * @param evidencePertinentNegative
-     */
-    public void setEvidencePertinentNegative(String evidencePertinentNegative) {
-        this.evidencePertinentNegative = evidencePertinentNegative;
-    }
-
-    /**
-     * @param ngs
-     */
-    public void setNgs(NgsGenomicCoordinateClinicalVariant ngs) {
-        this.ngs = ngs;
-    }
-
-    /**
-     * @param db
-     */
-    public void setDb(DbGenomicCoordinateClinicalVariant db) {
-        this.db = db;
-    }
-
-    /**
-     * @param diseaseId
-     */
-    public void setDiseaseId(Integer diseaseId) {
-        this.diseaseId = diseaseId;
-    }
-
-    /**
-     * @param clinicalVariantVersion
-     */
-    public void setClinicalVariantVersion(String clinicalVariantVersion) {
-        this.clinicalVariantVersion = clinicalVariantVersion;
+    public void setTier(String tier) {
+        Tier = tier;
     }
 
     /**
@@ -109,10 +62,24 @@ public class GenomicCoordinateClinicalVariant {
     }
 
     /**
+     * @param id
+     */
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /**
      * @return diseaseId
      */
     public Integer getDiseaseId() {
         return diseaseId;
+    }
+
+    /**
+     * @param diseaseId
+     */
+    public void setDiseaseId(Integer diseaseId) {
+        this.diseaseId = diseaseId;
     }
 
     /**
@@ -123,17 +90,38 @@ public class GenomicCoordinateClinicalVariant {
     }
 
     /**
-     * @return ngs
+     * @param clinicalVariantVersion
      */
-    public NgsGenomicCoordinateClinicalVariant getNgs() {
-        return ngs;
+    public void setClinicalVariantVersion(String clinicalVariantVersion) {
+        this.clinicalVariantVersion = clinicalVariantVersion;
     }
 
     /**
-     * @return db
+     * @return genomicCoordinateForCV
      */
-    public DbGenomicCoordinateClinicalVariant getDb() {
-        return db;
+    public GenomicCoordinateForCV getGenomicCoordinateForCV() {
+        return genomicCoordinateForCV;
+    }
+
+    /**
+     * @param genomicCoordinateForCV
+     */
+    public void setGenomicCoordinateForCV(GenomicCoordinateForCV genomicCoordinateForCV) {
+        this.genomicCoordinateForCV = genomicCoordinateForCV;
+    }
+
+    /**
+     * @return dbNtChange
+     */
+    public String getDbNtChange() {
+        return dbNtChange;
+    }
+
+    /**
+     * @param dbNtChange
+     */
+    public void setDbNtChange(String dbNtChange) {
+        this.dbNtChange = dbNtChange;
     }
 
     /**
@@ -144,10 +132,24 @@ public class GenomicCoordinateClinicalVariant {
     }
 
     /**
+     * @param clinicalVariantType
+     */
+    public void setClinicalVariantType(String clinicalVariantType) {
+        this.clinicalVariantType = clinicalVariantType;
+    }
+
+    /**
      * @return evidenceLevelA
      */
     public String getEvidenceLevelA() {
         return evidenceLevelA;
+    }
+
+    /**
+     * @param evidenceLevelA
+     */
+    public void setEvidenceLevelA(String evidenceLevelA) {
+        this.evidenceLevelA = evidenceLevelA;
     }
 
     /**
@@ -158,10 +160,24 @@ public class GenomicCoordinateClinicalVariant {
     }
 
     /**
+     * @param evidenceLevelB
+     */
+    public void setEvidenceLevelB(String evidenceLevelB) {
+        this.evidenceLevelB = evidenceLevelB;
+    }
+
+    /**
      * @return evidenceLevelC
      */
     public String getEvidenceLevelC() {
         return evidenceLevelC;
+    }
+
+    /**
+     * @param evidenceLevelC
+     */
+    public void setEvidenceLevelC(String evidenceLevelC) {
+        this.evidenceLevelC = evidenceLevelC;
     }
 
     /**
@@ -172,10 +188,24 @@ public class GenomicCoordinateClinicalVariant {
     }
 
     /**
+     * @param evidenceLevelD
+     */
+    public void setEvidenceLevelD(String evidenceLevelD) {
+        this.evidenceLevelD = evidenceLevelD;
+    }
+
+    /**
      * @return evidenceLevelBenign
      */
     public String getEvidenceLevelBenign() {
         return evidenceLevelBenign;
+    }
+
+    /**
+     * @param evidenceLevelBenign
+     */
+    public void setEvidenceLevelBenign(String evidenceLevelBenign) {
+        this.evidenceLevelBenign = evidenceLevelBenign;
     }
 
     /**
@@ -186,10 +216,24 @@ public class GenomicCoordinateClinicalVariant {
     }
 
     /**
+     * @param evidencePertinentNegative
+     */
+    public void setEvidencePertinentNegative(String evidencePertinentNegative) {
+        this.evidencePertinentNegative = evidencePertinentNegative;
+    }
+
+    /**
      * @return createdAt
      */
     public DateTime getCreatedAt() {
         return createdAt;
+    }
+
+    /**
+     * @param createdAt
+     */
+    public void setCreatedAt(DateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     /**
@@ -200,6 +244,13 @@ public class GenomicCoordinateClinicalVariant {
     }
 
     /**
+     * @param updatedAt
+     */
+    public void setUpdatedAt(DateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    /**
      * @return deletedAt
      */
     public DateTime getDeletedAt() {
@@ -207,9 +258,23 @@ public class GenomicCoordinateClinicalVariant {
     }
 
     /**
+     * @param deletedAt
+     */
+    public void setDeletedAt(DateTime deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
+    /**
      * @return deleted
      */
     public Integer getDeleted() {
         return deleted;
+    }
+
+    /**
+     * @param deleted
+     */
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
     }
 }
