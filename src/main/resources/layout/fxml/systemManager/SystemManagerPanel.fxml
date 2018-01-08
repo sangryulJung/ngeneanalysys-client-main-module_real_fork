@@ -176,6 +176,7 @@
                         <TableColumn fx:id="panelIdTableColumn" prefWidth="60.0" text="Panel Id" visible="false" />
                         <TableColumn fx:id="panelNameTableColumn" prefWidth="400.0" text="Panel Name" />
                         <TableColumn fx:id="editPanelTableColumn" prefWidth="80.0" />
+                        <TableColumn fx:id="virtualPanelColumn" prefWidth="195.0" style="-fx-alignment: center;" text="Virtual Panel" />
                         <TableColumn fx:id="panelCodeTableColumn" prefWidth="60.79998779296875" text="Code" />
                         <TableColumn fx:id="panelTargetTableColumn" prefWidth="80.0" text="Target" visible="false" />
                         <TableColumn fx:id="analysisTypeTableColumn" prefWidth="92.0" text="Analysis Type" visible="false" />

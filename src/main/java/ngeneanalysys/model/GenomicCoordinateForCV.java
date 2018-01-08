@@ -5,7 +5,7 @@ package ngeneanalysys.model;
  * @since 2018-01-04
  */
 public class GenomicCoordinateForCV {
-    private String chr ;
+    private String chr;
     private String gene;
     private Integer position;
     private String ngsRef;

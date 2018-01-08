@@ -1590,8 +1590,8 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             value = "T4";
         }
 
-        if((selectedAnalysisResultVariant.getSnpInDel().getExpertTier() == null)
-                    || !selectedAnalysisResultVariant.getSnpInDel().getExpertTier().equals(value)) {
+        if((selectedAnalysisResultVariant.getSnpInDel().getExpertTier() == null && !selectedAnalysisResultVariant.getSnpInDel().getSwTier().equals(value))
+                    || (selectedAnalysisResultVariant.getSnpInDel().getExpertTier() != null &&!selectedAnalysisResultVariant.getSnpInDel().getExpertTier().equals(value))) {
             try {
                 FXMLLoader loader = mainApp.load(FXMLConstants.CHANGE_TIER);
                 Node root = loader.load();

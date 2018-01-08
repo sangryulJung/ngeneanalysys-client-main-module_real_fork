@@ -23,6 +23,8 @@ import ngeneanalysys.code.enums.SequencerCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
+import ngeneanalysys.model.render.ComboBoxConverter;
+import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.model.render.DatepickerConverter;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.PDFCreateService;
@@ -160,6 +162,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     @FXML
     private Label patientIdLabel;
 
+    @FXML
+    private ComboBox<ComboBoxItem> virtualPanelComboBox;
+
     Sample sample = null;
 
     Panel panel = null;
@@ -182,12 +187,20 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
     private boolean reportData = false;
 
+    private List<VirtualPanel> virtualPanels = new ArrayList<>();
+
     @FXML
     private GridPane mainGridPane;
 
     @Override
     public void show(Parent root) throws IOException {
         logger.info("show..");
+
+        virtualPanelComboBox.getSelectionModel().selectedItemProperty().addListener((ov, t, t1) -> {
+            if(!StringUtils.isEmpty(t1.getValue())) {
+                setVariantsList();
+            }
+        });
 
         tableCellUpdateFix(tierOneVariantsTable);
         tableCellUpdateFix(tierTwoVariantsTable);
@@ -199,7 +212,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         settingTableViewDragAndDrop(tierOneVariantsTable, "T1");
         settingTableViewDragAndDrop(tierTwoVariantsTable, "T2");
         settingTableViewDragAndDrop(tierThreeVariantsTable, "T3");
-        settingTableViewDragAndDrop(negativeVariantsTable, "TN");
 
         // API 서비스 클래스 init
         apiService = APIService.getInstance();
@@ -260,7 +272,10 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             panelLabel.setText(panelName);
         }
 
+        setVirtualPanel();
+
         HttpClientResponse response = null;
+
         try {
             if(panel.getReportTemplateId() != null) {
                 response = apiService.get("reportTemplate/" + panel.getReportTemplateId(), null, null, false);
@@ -343,6 +358,13 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 if (response.getStatus() >= 200 && response.getStatus() <= 300) {
                     reportData = true;
                     SampleReport sampleReport = response.getObjectBeforeConvertResponseToJSON(SampleReport.class);
+                    if(sampleReport.getVirtualPanelId() != null) {
+                        Optional<ComboBoxItem> item = virtualPanelComboBox.getItems().stream().filter(
+                                comboBoxItem -> comboBoxItem.getValue().equals(sampleReport.getVirtualPanelId().toString())).findFirst();
+                        if(item.isPresent()) {
+                            virtualPanelComboBox.getSelectionModel().select(item.get());
+                        }
+                    }
                     settingReportData(sampleReport.getContents());
                 }
             }
@@ -360,6 +382,56 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         });
     }
 
+    public List<VariantAndInterpretationEvidence> filteringVariant(List<VariantAndInterpretationEvidence> list) {
+        List<VariantAndInterpretationEvidence> filteringList = new ArrayList<>();
+        if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
+            try {
+                HttpClientResponse response = apiService.get("virtualPanels/" + virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue(),
+                        null, null, false);
+
+                VirtualPanel virtualPanel = response.getObjectBeforeConvertResponseToJSON(VirtualPanel.class);
+                for(VariantAndInterpretationEvidence variantAndInterpretationEvidence : list) {
+                    if(virtualPanel.getEssentialGenes().contains(variantAndInterpretationEvidence.getSnpInDel().getGenomicCoordinate().getGene())
+                            || (virtualPanel.getOptionalGenes() != null &&
+                            virtualPanel.getOptionalGenes().contains(variantAndInterpretationEvidence.getSnpInDel().getGenomicCoordinate().getGene()))) {
+                        filteringList.add(variantAndInterpretationEvidence);
+                    }
+                }
+            } catch (WebAPIException wae) {
+
+            }
+        } else {
+            return list;
+        }
+
+        return filteringList;
+    }
+
+    public List<VariantCountByGene> filteringGeneList(List<VariantCountByGene> list) {
+        List<VariantCountByGene> filteringList = new ArrayList<>();
+        if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
+            try {
+                HttpClientResponse response = apiService.get("virtualPanels/" + virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue(),
+                        null, null, false);
+
+                VirtualPanel virtualPanel = response.getObjectBeforeConvertResponseToJSON(VirtualPanel.class);
+                for(VariantCountByGene variantCountByGene : list) {
+                    if(virtualPanel.getEssentialGenes().contains(variantCountByGene.getGeneSymbol())
+                            || (virtualPanel.getOptionalGenes() != null &&
+                            virtualPanel.getOptionalGenes().contains(variantCountByGene.getGeneSymbol()))) {
+                        filteringList.add(variantCountByGene);
+                    }
+                }
+            } catch (WebAPIException wae) {
+
+            }
+        } else {
+            return list;
+        }
+
+        return filteringList;
+    }
+
     public void setVariantsList() {
         HttpClientResponse response = null;
         try {
@@ -369,6 +441,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             PagedVariantAndInterpretationEvidence analysisResultVariantList = response.getObjectBeforeConvertResponseToJSON(PagedVariantAndInterpretationEvidence.class);
 
             List<VariantAndInterpretationEvidence> list = analysisResultVariantList.getResult();
+
+            list = filteringVariant(list);
 
             //negative list만 가져옴
             /*negativeList = list.stream().filter(item -> ((item.getInterpretationEvidence() != null &&
@@ -394,8 +468,37 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             orderingAndAddTableItem(tierThreeVariantsTable, tierThree);
 
             orderingAndAddTableItem(negativeVariantsTable, negativeList);
+
         } catch (WebAPIException wae) {
             DialogUtil.error(wae.getHeaderText(), wae.getContents(), this.getMainApp().getPrimaryStage(), true);
+        }
+    }
+
+    public void setVirtualPanel() {
+
+        virtualPanelComboBox.setConverter(new ComboBoxConverter());
+
+        virtualPanelComboBox.getItems().add(new ComboBoxItem());
+
+        virtualPanelComboBox.getSelectionModel().selectFirst();
+
+        try {
+
+            Map<String, Object> params = new HashMap<>();
+
+            params.put("panelId", panel.getId());
+
+            HttpClientResponse response = apiService.get("virtualPanels", params, null, false);
+
+            PagedVirtualPanel pagedVirtualPanel = response.getObjectBeforeConvertResponseToJSON(PagedVirtualPanel.class);
+
+            if(pagedVirtualPanel.getCount() > 0) {
+                for(VirtualPanel virtualPanel : pagedVirtualPanel.getResult()) {
+                    virtualPanelComboBox.getItems().add(new ComboBoxItem(virtualPanel.getId().toString(), virtualPanel.getName()));
+                }
+            }
+        } catch (WebAPIException wae) {
+            wae.printStackTrace();
         }
     }
 
@@ -513,6 +616,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         }
         String contents = JsonUtil.toJson(contentsMap);
         params.put("contents", contents);
+        if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
+            params.put("virtualPanelId", Integer.parseInt(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue()));
+        }
 
         HttpClientResponse response = null;
         try {
@@ -737,6 +843,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                                 .getMultiObjectBeforeConvertResponseToJSON(VariantCountByGene.class,
                                         false);
 
+                        variantCountByGenes = filteringGeneList(variantCountByGenes);
+
                         variantCountByGenes = variantCountByGenes.stream().sorted(Comparator.comparing(VariantCountByGene::getGeneSymbol)).collect(Collectors.toList());
 
                         contentsMap.put("variantCountByGenes", variantCountByGenes);
@@ -778,7 +886,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         contentsMap.put("onTargetCoverage",findQCResult(qcList, "on_target_coverage"));
                         contentsMap.put("duplicatedReads",findQCResult(qcList, "duplicated_reads"));
                         contentsMap.put("roiCoverage",findQCResult(qcList, "roi_coverage"));
-
 
                         List<String> conclusionLineList = null;
                         if(!StringUtils.isEmpty(conclusionsTextArea.getText())) {
@@ -1095,6 +1202,10 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
         }
         t.setDropCompleted(true);
+    }
+
+    public void onClicked(MouseEvent e) {
+
     }
 
     public void resetData(TableView<VariantAndInterpretationEvidence> table) {

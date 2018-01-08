@@ -1,5 +1,6 @@
 package ngeneanalysys.controller;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -7,15 +8,19 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.ExperimentTypeCode;
 import ngeneanalysys.code.enums.LibraryTypeCode;
 import ngeneanalysys.code.enums.SampleSourceCode;
@@ -27,6 +32,7 @@ import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.task.BedFileUploadTask;
 import ngeneanalysys.util.DialogUtil;
+import ngeneanalysys.util.FXMLLoadUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
@@ -89,46 +95,49 @@ public class SystemManagerPanelController extends SubPaneController {
     private Button panelSaveButton;
 
     @FXML
-    private TableView<Panel> panelListTable;
+    private TableView<PanelView> panelListTable;
 
     @FXML
-    private TableColumn<Panel, Integer> panelIdTableColumn;
+    private TableColumn<PanelView, Integer> panelIdTableColumn;
 
     @FXML
-    private TableColumn<Panel, String> panelNameTableColumn;
+    private TableColumn<PanelView, String> panelNameTableColumn;
 
     @FXML
-    private TableColumn<Panel, String> panelCodeTableColumn;
+    private TableColumn<PanelView, String> panelCodeTableColumn;
 
     @FXML
-    private TableColumn<Panel, String> panelTargetTableColumn;
+    private TableColumn<PanelView, String> panelTargetTableColumn;
 
     @FXML
-    private TableColumn<Panel, String> analysisTypeTableColumn;
+    private TableColumn<PanelView, String> analysisTypeTableColumn;
 
     @FXML
-    private TableColumn<Panel, String> libraryTypeTableColumn;
+    private TableColumn<PanelView, String> libraryTypeTableColumn;
 
     @FXML
-    private TableColumn<Panel, String> sampleSourceTableColumn;
+    private TableColumn<PanelView, String> sampleSourceTableColumn;
 
     @FXML
-    private TableColumn<Panel, String> createdAtTableColumn;
+    private TableColumn<PanelView, String> createdAtTableColumn;
 
     @FXML
-    private TableColumn<Panel, String> updatedAtTableColumn;
+    private TableColumn<PanelView, String> updatedAtTableColumn;
 
     @FXML
-    private TableColumn<Panel, String> deletedAtTableColumn;
+    private TableColumn<PanelView, String> deletedAtTableColumn;
 
     @FXML
-    private TableColumn<Panel, String> deletedTableColumn;
+    private TableColumn<PanelView, String> deletedTableColumn;
 
     @FXML
-    private TableColumn<Panel, Boolean> editPanelTableColumn;
+    private TableColumn<PanelView, Boolean> editPanelTableColumn;
 
     @FXML
-    private TableColumn<Panel, String> defaultPanelTableColumn;
+    private TableColumn<PanelView, String> defaultPanelTableColumn;
+
+    @FXML
+    private TableColumn<PanelView, Boolean> virtualPanelColumn;
 
     @FXML
     private Label titleLabel;
@@ -149,6 +158,13 @@ public class SystemManagerPanelController extends SubPaneController {
 
     @Override
     public void show(Parent root) throws IOException {
+
+        panelListTable.addEventFilter(ScrollEvent.ANY, scrollEvent -> {
+            panelListTable.refresh();
+            // close text box
+            panelListTable.edit(-1, null);
+        });
+
         apiService = APIService.getInstance();
 
         panelSaveButton.setDisable(true);
@@ -164,9 +180,8 @@ public class SystemManagerPanelController extends SubPaneController {
         deletedTableColumn.setCellValueFactory(item -> new SimpleStringProperty((item.getValue().getDeleted() == 0) ? "N" : "Y"));
 
         Pattern pattern = Pattern.compile("\\d*|\\d+\\.\\d*");
-        TextFormatter formatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
-            return pattern.matcher(change.getControlNewText()).matches() ? change : null;
-        });
+        TextFormatter formatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change ->
+            pattern.matcher(change.getControlNewText()).matches() ? change : null);
         warningMAFTextField.setTextFormatter(formatter);
 
         warningReadDepthTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -228,6 +243,10 @@ public class SystemManagerPanelController extends SubPaneController {
         editPanelTableColumn.setSortable(false);
         editPanelTableColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
         editPanelTableColumn.setCellFactory(param -> new PanelModifyButton());
+
+        virtualPanelColumn.setSortable(false);
+        virtualPanelColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
+        virtualPanelColumn.setCellFactory(param -> new VirtualPanelButton());
 
         HttpClientResponse response = null;
 
@@ -313,9 +332,9 @@ public class SystemManagerPanelController extends SubPaneController {
             response = apiService.get("/admin/panels", param, null, false);
 
             if(response != null) {
-                PagedPanel pagedPanel =
-                        response.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
-                List<Panel> list = null;
+                PagedPanelView pagedPanel =
+                        response.getObjectBeforeConvertResponseToJSON(PagedPanelView.class);
+                List<PanelView> list = null;
 
                 if(pagedPanel != null) {
                     totalCount = pagedPanel.getCount();
@@ -455,12 +474,15 @@ public class SystemManagerPanelController extends SubPaneController {
 
                 task.setOnSucceeded(ev -> {
                     try {
-                        final HttpClientResponse response1 = apiService.get("/panels", null, null, false);
+                        /*final HttpClientResponse response1 = apiService.get("/panels", null, null, false);
                         final PagedPanel panels = response1.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
-                        mainController.getBasicInformationMap().put("panels", panels.getResult());
-                        final HttpClientResponse response2 = apiService.get("/admin/panels", null, null, false);
-                        final PagedPanel tablePanels = response2.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
-                        mainController.getBasicInformationMap().put("panels", panels.getResult());
+                        mainController.getBasicInformationMap().put("panels", panels.getResult());*/
+
+                        mainController.settingPanelAndDiseases();
+
+                        //final HttpClientResponse response2 = apiService.get("/admin/panels", null, null, false);
+                        //final PagedPanel tablePanels = response2.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
+                        //mainController.getBasicInformationMap().put("panels", panels.getResult());
 
                         //panelListTable.getItems().clear();
                         //panelListTable.getItems().addAll(tablePanels.getResult());
@@ -556,7 +578,7 @@ public class SystemManagerPanelController extends SubPaneController {
         }
     }
 
-    private class PanelModifyButton extends TableCell<Panel, Boolean> {
+    private class PanelModifyButton extends TableCell<PanelView, Boolean> {
         HBox box = null;
         final ImageView img1 = new ImageView(resourceUtil.getImage("/layout/images/modify.png", 18, 18));
         final ImageView img2 = new ImageView(resourceUtil.getImage("/layout/images/delete.png", 18, 18));
@@ -567,11 +589,11 @@ public class SystemManagerPanelController extends SubPaneController {
                 Panel panel = PanelModifyButton.this.getTableView().getItems().get(
                         PanelModifyButton.this.getIndex());
 
-                Panel panelDetail = null;
+                PanelView panelDetail = null;
                 HttpClientResponse response = null;
                 try {
                     response = apiService.get("admin/panels/" + panel.getId(), null, null, false);
-                    panelDetail = response.getObjectBeforeConvertResponseToJSON(Panel.class);
+                    panelDetail = response.getObjectBeforeConvertResponseToJSON(PanelView.class);
                 } catch (WebAPIException wae) {
                     wae.printStackTrace();
                 } catch (Exception e) {
@@ -702,6 +724,147 @@ public class SystemManagerPanelController extends SubPaneController {
             setGraphic(box);
 
         }
+    }
+
+    private class VirtualPanelButton extends TableCell<PanelView, Boolean> {
+        HBox box = null;
+        ComboBox<ComboBoxItem> comboBox = new ComboBox<>();
+        final ImageView img = new ImageView(resourceUtil.getImage("/layout/images/modify.png", 18, 18));
+
+        public VirtualPanelButton() {
+
+            img.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                Panel panel = VirtualPanelButton.this.getTableView().getItems().get(
+                        VirtualPanelButton.this.getIndex());
+
+                try {
+                    VirtualPanelEditController controller;
+                    FXMLLoader loader = FXMLLoadUtil.load(FXMLConstants.VIRTUAL_PANEL_EDIT);
+                    AnchorPane pane = loader.load();
+                    controller = loader.getController();
+                    controller.setComboBox(this.comboBox);
+                    controller.setPanelId(panel.getId());
+                    controller.setMainController(mainController);
+                    controller.show(pane);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            });
+
+            comboBox.getSelectionModel().selectedItemProperty().addListener((ov, t, t1) -> {
+                if(t1 != null && !StringUtils.isEmpty(t1.getValue())) {
+                    Panel panel = VirtualPanelButton.this.getTableView().getItems().get(
+                            VirtualPanelButton.this.getIndex());
+
+                    Integer virtualPanelId = Integer.parseInt(t1.getValue());
+
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("virtual panel setting");
+                    alert.setHeaderText("What would you like to do?");
+                    alert.setContentText("choose an action");
+
+                    ButtonType buttonTypeEdit = new ButtonType("Edit");
+                    ButtonType buttonTypeRemove = new ButtonType("Remove");
+                    ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+                    alert.getButtonTypes().setAll(buttonTypeEdit, buttonTypeRemove, buttonTypeCancel);
+
+                    Optional<ButtonType> result = alert.showAndWait();
+
+                    if (result.isPresent()) {
+                        if(result.get() == buttonTypeEdit) {
+
+                            try {
+                                VirtualPanelEditController controller;
+                                FXMLLoader loader = FXMLLoadUtil.load(FXMLConstants.VIRTUAL_PANEL_EDIT);
+                                AnchorPane pane = loader.load();
+                                controller = loader.getController();
+                                controller.setComboBox(this.comboBox);
+                                controller.settingVirtualPanelContents(virtualPanelId);
+                                controller.setPanelId(panel.getId());
+                                controller.setMainController(mainController);
+                                controller.show(pane);
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else if(result.get() == buttonTypeRemove) {
+                            showRemoveDialog(t1);
+                            alert.close();
+                        } else {
+                            Platform.runLater(() -> comboBox.getSelectionModel().selectFirst());
+                        }
+                    }
+                }
+            });
+
+        }
+
+        @Override
+        protected void updateItem(Boolean item, boolean empty) {
+            super.updateItem(item, empty);
+            if(item == null) {
+                setGraphic(null);
+                return;
+            }
+
+            PanelView panel = VirtualPanelButton.this.getTableView().getItems().get(
+                    VirtualPanelButton.this.getIndex());
+
+            if(panel.getDeleted() != 0) {
+                return;
+            }
+
+            if(box == null) {
+                comboBox.setPrefWidth(130);
+                comboBox.setMinWidth(130);
+                box = new HBox();
+
+                comboBox.setConverter(new ComboBoxConverter());
+
+                comboBox.getItems().add(new ComboBoxItem());
+                comboBox.getSelectionModel().selectFirst();
+
+                if(panel.getVirtualPanelSummaries() != null && !panel.getVirtualPanelSummaries().isEmpty()) {
+
+                    for(VirtualPanelSummary virtualPanelSummary : panel.getVirtualPanelSummaries()) {
+                        comboBox.getItems().add(new ComboBoxItem(virtualPanelSummary.getId().toString(), virtualPanelSummary.getName()));
+                    }
+                }
+
+                box.setAlignment(Pos.CENTER);
+
+                box.setSpacing(10);
+                img.setStyle("-fx-cursor:hand;");
+                box.getChildren().add(comboBox);
+                box.getChildren().add(img);
+            }
+            setGraphic(box);
+
+        }
+
+        public void showRemoveDialog(ComboBoxItem item) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText("Look, a Confirmation Dialog");
+            alert.setContentText("Are you ok with this?");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK){
+                try {
+                    apiService.delete("admin/virtualPanels/" + item.getValue());
+
+                    comboBox.getItems().remove(item);
+
+                } catch (WebAPIException wae) {
+                    wae.printStackTrace();
+                }
+                alert.close();
+            }
+        }
+
     }
 
 }

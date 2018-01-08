@@ -23,29 +23,11 @@ public class Panel {
 
     private Integer reportTemplateId;
 
-    private List<Integer> memberGroupIds;
-
-    private List<Integer> diseaseIds;
-
     /**
      * @return reportTemplateId
      */
     public Integer getReportTemplateId() {
         return reportTemplateId;
-    }
-
-    /**
-     * @return memberGroupIds
-     */
-    public List<Integer> getMemberGroupIds() {
-        return memberGroupIds;
-    }
-
-    /**
-     * @return diseaseIds
-     */
-    public List<Integer> getDiseaseIds() {
-        return diseaseIds;
     }
 
     public Integer getId() {
@@ -112,8 +94,6 @@ public class Panel {
                 ", warningReadDepth=" + warningReadDepth +
                 ", warningMAF=" + warningMAF +
                 ", reportTemplateId=" + reportTemplateId +
-                ", memberGroupIds=" + memberGroupIds +
-                ", diseaseIds=" + diseaseIds +
                 '}';
     }
 }

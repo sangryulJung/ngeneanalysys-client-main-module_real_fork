@@ -63,6 +63,7 @@
                                  <columns>
                                     <TableColumn fx:id="idTableColumn" prefWidth="80.0" styleClass="txt_black" text="id" visible="false" />
                                     <TableColumn fx:id="diseaseIdTableColumn" prefWidth="100.0" styleClass="txt_black" text="Disease" />
+                                    <TableColumn fx:id="tierTableColumn" prefWidth="80.0" styleClass="txt_black" text="Tier" />
                                     <TableColumn fx:id="versionTableColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" styleClass="txt_black" text="Version" />
                                     <TableColumn fx:id="chrTableColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="50.0" styleClass="txt_black" text="Chr" />
                                     <TableColumn fx:id="geneTableColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="90.0" styleClass="txt_black" text="Gene" />

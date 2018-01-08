@@ -12,6 +12,8 @@ import javafx.scene.layout.VBox;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
+import ngeneanalysys.model.render.ComboBoxConverter;
+import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.DialogUtil;
@@ -40,6 +42,9 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
 
     @FXML
     private TableColumn<GenomicCoordinateClinicalVariant, Integer> diseaseIdTableColumn;
+
+    @FXML
+    private TableColumn<GenomicCoordinateClinicalVariant, String> tierTableColumn;
 
     @FXML
     private  TableColumn<GenomicCoordinateClinicalVariant, String> versionTableColumn;
@@ -103,6 +108,9 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
         });
 
         diseaseIdTableColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getDiseaseId()));
+        diseaseIdTableColumn.setCellFactory(item -> new DiseasesComboBoxCell());
+        tierTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getTier()));
+        tierTableColumn.setCellFactory(item -> new TierComboBoxCell());
         versionTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getClinicalVariantVersion()));
         versionTableColumn.setCellFactory(tableColumn -> new EditingCell());
         versionTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
@@ -117,7 +125,7 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
         geneTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getGenomicCoordinateForCV().getGene()));
         geneTableColumn.setCellFactory(tableColumn -> new EditingCell());
         geneTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
-            (t.getTableView().getItems().get(t.getTablePosition().getRow())).getGenomicCoordinateForCV().setChr(t.getNewValue());
+            (t.getTableView().getItems().get(t.getTablePosition().getRow())).getGenomicCoordinateForCV().setGene(t.getNewValue());
         });
         positionTableColumn.setCellValueFactory(item -> new SimpleStringProperty((item.getValue().getGenomicCoordinateForCV().getPosition() != null) ?
                 item.getValue().getGenomicCoordinateForCV().getPosition().toString() : null));
@@ -246,8 +254,10 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
                     }
                 } catch (WebAPIException wae) {
                     DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
+                    wae.printStackTrace();
                 } catch (IOException ioe) {
                     DialogUtil.error(ioe.getMessage(), ioe.getMessage(), mainController.getPrimaryStage(), true);
+                    ioe.printStackTrace();
                 }
             }
         }
@@ -336,6 +346,120 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
         private String getString() {
             return getItem() == null ? "" : getItem().toString();
         }
+    }
+
+    private class TierComboBoxCell extends TableCell<GenomicCoordinateClinicalVariant, String> {
+        private ComboBox<ComboBoxItem> comboBox = new ComboBox<>();
+
+        public TierComboBoxCell() {
+            comboBox.getSelectionModel().selectedItemProperty().addListener((ov, t, t1) -> {
+                GenomicCoordinateClinicalVariant genomicCoordinateClinicalVariant = TierComboBoxCell.this.getTableView().getItems().get(
+                        TierComboBoxCell.this.getIndex());
+
+                if(!StringUtils.isEmpty(t1.getValue())) {
+                    genomicCoordinateClinicalVariant.setTier(t1.getValue());
+                }
+            });
+        }
+
+        @Override
+        protected void updateItem(String item, boolean empty) {
+            super.updateItem(item, empty);
+            if(empty) {
+                setGraphic(null);
+                return;
+            }
+
+            GenomicCoordinateClinicalVariant genomicCoordinateClinicalVariant = TierComboBoxCell.this.getTableView().getItems().get(
+                    TierComboBoxCell.this.getIndex());
+
+            if(genomicCoordinateClinicalVariant.getDeleted() != null && genomicCoordinateClinicalVariant.getDeleted() != 0) {
+                return;
+            }
+
+            if(comboBox.getItems().isEmpty()) {
+                comboBox.setConverter(new ComboBoxConverter());
+
+                comboBox.getItems().add(new ComboBoxItem());
+                comboBox.getSelectionModel().selectFirst();
+
+                comboBox.getItems().add(new ComboBoxItem("T1", "Tier I"));
+                comboBox.getItems().add(new ComboBoxItem("T2", "Tier II"));
+                comboBox.getItems().add(new ComboBoxItem("T3", "Tier III"));
+                comboBox.getItems().add(new ComboBoxItem("T4", "Tier IV"));
+
+                if(!StringUtils.isEmpty(genomicCoordinateClinicalVariant.getTier())) {
+                    if("T1".equals(genomicCoordinateClinicalVariant.getTier())) {
+                        comboBox.getSelectionModel().select(1);
+                    } else if("T2".equals(genomicCoordinateClinicalVariant.getTier())) {
+                        comboBox.getSelectionModel().select(2);
+                    } else if("T3".equals(genomicCoordinateClinicalVariant.getTier())) {
+                        comboBox.getSelectionModel().select(3);
+                    } else if("T4".equals(genomicCoordinateClinicalVariant.getTier())) {
+                        comboBox.getSelectionModel().select(4);
+                    }
+                }
+            }
+            setGraphic(comboBox);
+        }
+
+    }
+
+    private class DiseasesComboBoxCell extends TableCell<GenomicCoordinateClinicalVariant, Integer> {
+        private ComboBox<ComboBoxItem> comboBox = new ComboBox<>();
+
+        public DiseasesComboBoxCell() {
+            comboBox.getSelectionModel().selectedItemProperty().addListener((ov, t, t1) -> {
+                GenomicCoordinateClinicalVariant genomicCoordinateClinicalVariant = DiseasesComboBoxCell.this.getTableView().getItems().get(
+                        DiseasesComboBoxCell.this.getIndex());
+
+
+                if(!StringUtils.isEmpty(t1.getValue())) {
+                    genomicCoordinateClinicalVariant.setDiseaseId(Integer.parseInt(t1.getValue()));
+                }
+            });
+        }
+
+        @Override
+        protected void updateItem(Integer item, boolean empty) {
+            super.updateItem(item, empty);
+            if(empty) {
+                setGraphic(null);
+                return;
+            }
+
+            GenomicCoordinateClinicalVariant genomicCoordinateClinicalVariant = DiseasesComboBoxCell.this.getTableView().getItems().get(
+                    DiseasesComboBoxCell.this.getIndex());
+
+            if(genomicCoordinateClinicalVariant.getDeleted() != null && genomicCoordinateClinicalVariant.getDeleted() != 0) {
+                return;
+            }
+
+            if(comboBox.getItems().isEmpty()) {
+                comboBox.setConverter(new ComboBoxConverter());
+
+                comboBox.getItems().add(new ComboBoxItem());
+                comboBox.getSelectionModel().selectFirst();
+
+                List<Diseases> diseases = (List<Diseases>)mainController.getBasicInformationMap().get("diseases");
+
+                if(diseases != null && !diseases.isEmpty()) {
+
+                    for(Diseases disease : diseases) {
+                        ComboBoxItem comboBoxItem = new ComboBoxItem(disease.getId().toString(), disease.getName());
+                        comboBox.getItems().add(comboBoxItem);
+
+                        if(genomicCoordinateClinicalVariant.getDiseaseId() != null && genomicCoordinateClinicalVariant.getDiseaseId().equals(disease.getId())) {
+                            comboBox.getSelectionModel().select(comboBoxItem);
+                        }
+
+                    }
+                }
+            }
+            setGraphic(comboBox);
+
+        }
+
     }
 
     private class PopUpTableCell extends TableCell<GenomicCoordinateClinicalVariant, String> {

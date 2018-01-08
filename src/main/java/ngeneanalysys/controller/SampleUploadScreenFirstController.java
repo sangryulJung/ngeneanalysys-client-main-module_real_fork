@@ -308,7 +308,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         HttpClientResponse response = null;
         try {
             response = apiService.get("panels/" + panelId, null, null, false);
-            Panel panelDetail = response.getObjectBeforeConvertResponseToJSON(Panel.class);
+            PanelView panelDetail = response.getObjectBeforeConvertResponseToJSON(PanelView.class);
 
             ComboBox<ComboBoxItem> diseaseComboBox = diseaseComboBoxList.get(index);
 

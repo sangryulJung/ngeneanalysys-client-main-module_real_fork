@@ -1,5 +1,7 @@
 package ngeneanalysys.model;
 
+import ngeneanalysys.util.StringUtils;
+
 /**
  * @author Jang
  * @since 2017-09-08
@@ -109,5 +111,19 @@ public class SnpInDelExpression {
      */
     public void setZygosity(String zygosity) {
         this.zygosity = zygosity;
+    }
+
+    public String getAaChangeConversion() {
+        String conversion = aaChange;
+
+        if(!StringUtils.isEmpty(conversion)) {
+            if(conversion.startsWith("p.")) {
+                conversion = conversion.substring(2);
+            }
+
+
+        }
+
+        return conversion;
     }
 }

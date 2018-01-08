@@ -247,8 +247,15 @@ public class MainController extends BaseStageController {
 
         // 중단된 분석 요청 작업이 있는지 체크
 
+        settingPanelAndDiseases();
+    }
+
+    public void settingPanelAndDiseases() {
         // 기본 정보 로드
         HttpClientResponse response = null;
+
+        LoginSession loginSession = LoginSessionUtil.getCurrentLoginSession();
+
         try {
             Map<String,Object> params = new HashMap<>();
             if(loginSession.getRole().equalsIgnoreCase("ADMIN")) {
@@ -268,6 +275,7 @@ public class MainController extends BaseStageController {
             logger.info(e.getMessage());
         }
     }
+
 
     /**
      * 상단 사용자 메뉴 설정 : 사용자 권한에 따른 메뉴 출력

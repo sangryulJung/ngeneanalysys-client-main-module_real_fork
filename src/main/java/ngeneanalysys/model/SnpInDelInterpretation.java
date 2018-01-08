@@ -2,7 +2,6 @@ package ngeneanalysys.model;
 
 public class SnpInDelInterpretation {
     private Integer snpInDelId;
-    private Integer diseaseId;
     private String clinicalVariantVersion;
     private String dbRef;
     private String dbAlt;
@@ -16,6 +15,90 @@ public class SnpInDelInterpretation {
     private String dbTranscript;
 
     /**
+     * @param snpInDelId
+     */
+    public void setSnpInDelId(Integer snpInDelId) {
+        this.snpInDelId = snpInDelId;
+    }
+
+    /**
+     * @param clinicalVariantVersion
+     */
+    public void setClinicalVariantVersion(String clinicalVariantVersion) {
+        this.clinicalVariantVersion = clinicalVariantVersion;
+    }
+
+    /**
+     * @param dbRef
+     */
+    public void setDbRef(String dbRef) {
+        this.dbRef = dbRef;
+    }
+
+    /**
+     * @param dbAlt
+     */
+    public void setDbAlt(String dbAlt) {
+        this.dbAlt = dbAlt;
+    }
+
+    /**
+     * @param clinicalVariantType
+     */
+    public void setClinicalVariantType(String clinicalVariantType) {
+        this.clinicalVariantType = clinicalVariantType;
+    }
+
+    /**
+     * @param dbNtChange
+     */
+    public void setDbNtChange(String dbNtChange) {
+        this.dbNtChange = dbNtChange;
+    }
+
+    /**
+     * @param evidenceLevelA
+     */
+    public void setEvidenceLevelA(String evidenceLevelA) {
+        this.evidenceLevelA = evidenceLevelA;
+    }
+
+    /**
+     * @param evidenceLevelB
+     */
+    public void setEvidenceLevelB(String evidenceLevelB) {
+        this.evidenceLevelB = evidenceLevelB;
+    }
+
+    /**
+     * @param evidenceLevelC
+     */
+    public void setEvidenceLevelC(String evidenceLevelC) {
+        this.evidenceLevelC = evidenceLevelC;
+    }
+
+    /**
+     * @param evidenceLevelD
+     */
+    public void setEvidenceLevelD(String evidenceLevelD) {
+        this.evidenceLevelD = evidenceLevelD;
+    }
+
+    /**
+     * @param evidenceBenign
+     */
+    public void setEvidenceBenign(String evidenceBenign) {
+        this.evidenceBenign = evidenceBenign;
+    }
+
+    /**
+     * @param dbTranscript
+     */
+    public void setDbTranscript(String dbTranscript) {
+        this.dbTranscript = dbTranscript;
+    }
+
+    /**
      * @return dbTranscript
      */
     public String getDbTranscript() {
@@ -27,13 +110,6 @@ public class SnpInDelInterpretation {
      */
     public Integer getSnpInDelId() {
         return snpInDelId;
-    }
-
-    /**
-     * @return diseaseId
-     */
-    public Integer getDiseaseId() {
-        return diseaseId;
     }
 
     /**

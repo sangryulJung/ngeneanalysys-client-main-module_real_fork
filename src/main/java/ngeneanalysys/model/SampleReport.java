@@ -8,9 +8,17 @@ import org.joda.time.DateTime;
  */
 public class SampleReport {
     private Integer sampleId;
+    private Integer virtualPanelId;
     private String contents;
     private DateTime createdAt;
     private DateTime updatedAt;
+
+    /**
+     * @return virtualPanelId
+     */
+    public Integer getVirtualPanelId() {
+        return virtualPanelId;
+    }
 
     /**
      * @return sampleId

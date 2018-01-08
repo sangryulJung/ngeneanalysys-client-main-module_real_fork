@@ -500,7 +500,7 @@
 									</fo:block>
 								</fo:table-cell>
 								<fo:table-cell border-width="0.5pt" background-color="#e7e7e8" border-right="solid 1mm white">
-									<fo:block font-family="Noto Sans CJK KR Regular" padding-bottom="2mm" padding-top="2mm">0.509
+									<fo:block font-family="Noto Sans CJK KR Regular" padding-bottom="2mm" padding-top="2mm">$variant.snpInDel.readInfo.alleleFraction
 									</fo:block>
 								</fo:table-cell>
 								<fo:table-cell border-width="0.5pt" background-color="#fde2cb" border-right="solid 1mm white">

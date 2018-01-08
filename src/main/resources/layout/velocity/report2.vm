@@ -257,7 +257,7 @@
 							<fo:table-cell border-top="solid 0.5mm black" number-columns-spanned="8" end-indent="3pt" text-align="left">
 								<fo:block color="#6D6E71">상기 결과는 TierI, II, III에 해당하는 변이만 기술하였습니다.</fo:block>
 								<fo:block color="#EF5BA1">* VAF:Variant Allele Frequency</fo:block>
-								<fo:block color="#EF5BA1">** REMARK : CEBPA 유전자의 경우 biallelic 변이 확인 필요(Mo-mono variant, Bi-Bialleic variants)</fo:block>
+								<fo:block color="#EF5BA1">** REMARK : 변이 확인 필요 CEBPA : (Mo-mono variant, Bi-Bialleic variants)</fo:block>
 								<fo:block color="#EF5BA1">*** WARNING : 100X 이하 지역</fo:block>
 							</fo:table-cell>
 						</fo:table-row>

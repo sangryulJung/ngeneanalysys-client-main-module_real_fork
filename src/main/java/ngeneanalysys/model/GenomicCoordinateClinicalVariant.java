@@ -10,7 +10,7 @@ public class GenomicCoordinateClinicalVariant {
     private Integer id;
     private Integer diseaseId;
     private String clinicalVariantVersion;
-    private String Tier;
+    private String tier;
     private GenomicCoordinateForCV genomicCoordinateForCV;
     private String dbNtChange;
     private String dbTranscript;
@@ -44,14 +44,14 @@ public class GenomicCoordinateClinicalVariant {
      * @return Tier
      */
     public String getTier() {
-        return Tier;
+        return tier;
     }
 
     /**
      * @param tier
      */
     public void setTier(String tier) {
-        Tier = tier;
+        tier = tier;
     }
 
     /**

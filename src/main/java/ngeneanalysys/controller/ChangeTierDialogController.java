@@ -3,22 +3,21 @@ package ngeneanalysys.controller;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
+import ngeneanalysys.model.SnpInDelInterpretation;
 import ngeneanalysys.model.VariantAndInterpretationEvidence;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
+import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -43,6 +42,36 @@ public class ChangeTierDialogController extends SubPaneController {
     private AnalysisDetailReportController analysisDetailReportController;
 
     private AnalysisDetailReportGermlineController analysisDetailReportGermlineController;
+
+    @FXML
+    private ComboBox<String> clinicalVariantTypeComboBox;
+
+    @FXML
+    private TextField dbRefTextField;
+
+    @FXML
+    private TextField dbAltTextField;
+
+    @FXML
+    private TextField dbNtChangeTextField;
+
+    @FXML
+    private TextField dbTranscriptTextField;
+
+    @FXML
+    private TextField evidenceATextField;
+
+    @FXML
+    private TextField evidenceBTextField;
+
+    @FXML
+    private TextField evidenceCTextField;
+
+    @FXML
+    private TextField evidenceDTextField;
+
+    @FXML
+    private TextField evidenceBenignTextField;
 
     @FXML
     private TextField commentTextField;
@@ -71,23 +100,23 @@ public class ChangeTierDialogController extends SubPaneController {
     }
 
     public void settingItem(TableView<VariantAndInterpretationEvidence> table, String tier, VariantAndInterpretationEvidence selectedItem
-    , TableRow<VariantAndInterpretationEvidence> rowItem) {
+            , TableRow<VariantAndInterpretationEvidence> rowItem) {
         this.table =table;
         this.tier = tier;
         this.selectedItem = selectedItem;
         this.rowItem = rowItem;
 
-        String currentTier = getCurrentTier();
+        //String currentTier = getCurrentTier();
 
-        tierLabel.setText(ConvertUtil.tierConvert(currentTier) + " > " + ConvertUtil.tierConvert(tier));
+        //tierLabel.setText(ConvertUtil.tierConvert(currentTier) + " > " + ConvertUtil.tierConvert(tier));
     }
 
     public void settingTier(String tier, VariantAndInterpretationEvidence selectedItem) {
         this.tier = tier;
         this.selectedItem = selectedItem;
-        String currentTier = getCurrentTier();
+        //String currentTier = getCurrentTier();
 
-        tierLabel.setText(ConvertUtil.tierConvert(currentTier) + " > " + ConvertUtil.tierConvert(tier));
+        //tierLabel.setText(ConvertUtil.tierConvert(currentTier) + " > " + ConvertUtil.tierConvert(tier));
     }
 
     @Override
@@ -108,6 +137,60 @@ public class ChangeTierDialogController extends SubPaneController {
         dialogStage.initOwner(getMainApp().getPrimaryStage());
         dialogStage.setResizable(false);
 
+        String currentTier = getCurrentTier();
+
+        tierLabel.setText(ConvertUtil.tierConvert(currentTier) + " > " + ConvertUtil.tierConvert(tier));
+
+        clinicalVariantTypeComboBox.getItems().add("FLT3-ITD");
+        clinicalVariantTypeComboBox.getItems().add("type A");
+        clinicalVariantTypeComboBox.getItems().add("type B");
+        clinicalVariantTypeComboBox.getItems().add("type D");
+        clinicalVariantTypeComboBox.getItems().add("N-term");
+        clinicalVariantTypeComboBox.getItems().add("C-term");
+
+        try {
+            HttpClientResponse httpClientResponse = apiService
+                    .get("analysisResults/snpInDelInterpretation/" + selectedItem.getSnpInDel().getId(), null, null, false);
+
+            if(httpClientResponse.getStatus() == 200) {
+                SnpInDelInterpretation interpretation = httpClientResponse.getObjectBeforeConvertResponseToJSON(SnpInDelInterpretation.class);
+                if(!StringUtils.isEmpty(interpretation.getClinicalVariantType()))
+                    clinicalVariantTypeComboBox.getSelectionModel().select(interpretation.getClinicalVariantType());
+
+                if(!StringUtils.isEmpty(interpretation.getDbAlt()))
+                    dbAltTextField.setText(interpretation.getDbAlt());
+
+                if(!StringUtils.isEmpty(interpretation.getDbNtChange()))
+                    dbNtChangeTextField.setText(interpretation.getDbNtChange());
+
+                if(!StringUtils.isEmpty(interpretation.getDbRef()))
+                    dbRefTextField.setText(interpretation.getDbRef());
+
+                if(!StringUtils.isEmpty(interpretation.getDbTranscript()))
+                    dbTranscriptTextField.setText(interpretation.getDbTranscript());
+
+                if(!StringUtils.isEmpty(interpretation.getEvidenceLevelA()))
+                    evidenceATextField.setText(interpretation.getEvidenceLevelA());
+
+                if(!StringUtils.isEmpty(interpretation.getEvidenceLevelB()))
+                    evidenceBTextField.setText(interpretation.getEvidenceLevelB());
+
+                if(!StringUtils.isEmpty(interpretation.getEvidenceLevelC()))
+                    evidenceCTextField.setText(interpretation.getEvidenceLevelC());
+
+                if(!StringUtils.isEmpty(interpretation.getEvidenceLevelD()))
+                    evidenceDTextField.setText(interpretation.getEvidenceLevelD());
+
+                if(!StringUtils.isEmpty(interpretation.getEvidenceBenign()))
+                    evidenceBenignTextField.setText(interpretation.getEvidenceBenign());
+
+            }
+        } catch (WebAPIException wae) {
+            wae.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         // Schen Init
         Scene scene = new Scene(root);
         dialogStage.setScene(scene);
@@ -117,30 +200,63 @@ public class ChangeTierDialogController extends SubPaneController {
     @FXML
     public void ok() {
         String comment = commentTextField.getText();
-        if(!comment.isEmpty()) {
-            logger.info(comment);
-            Map<String, Object> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
+
+        /*params.put("evidenceLevelA", evidenceATextField.getText());
+        params.put("evidenceLevelB", evidenceBTextField.getText());
+        params.put("evidenceLevelC", evidenceCTextField.getText());
+        params.put("evidenceLevelD", evidenceDTextField.getText());
+
+        if(clinicalVariantTypeComboBox.getSelectionModel().getSelectedItem() != null) {
+            params.put("clinicalVariantType", clinicalVariantTypeComboBox.getSelectionModel().getSelectedItem());
+        } else {
+            params.put("clinicalVariantType", null);
+        }
+        params.put("dbRef", dbRefTextField.getText());
+        params.put("dbAlt", dbAltTextField.getText());
+        params.put("dbNtChange", dbNtChangeTextField.getText());
+        params.put("dbTranscript", dbTranscriptTextField.getText());
+*/
+        SnpInDelInterpretation snpInDelInterpretation = new SnpInDelInterpretation();
+
+        snpInDelInterpretation.setSnpInDelId(selectedItem.getSnpInDel().getId());
+        snpInDelInterpretation.setEvidenceLevelA(evidenceATextField.getText());
+        snpInDelInterpretation.setEvidenceLevelB(evidenceBTextField.getText());
+        snpInDelInterpretation.setEvidenceLevelC(evidenceCTextField.getText());
+        snpInDelInterpretation.setEvidenceLevelD(evidenceDTextField.getText());
+        snpInDelInterpretation.setEvidenceBenign(evidenceBenignTextField.getText());
+        snpInDelInterpretation.setDbRef(dbRefTextField.getText());
+        snpInDelInterpretation.setDbAlt(dbAltTextField.getText());
+        snpInDelInterpretation.setDbNtChange(dbNtChangeTextField.getText());
+        snpInDelInterpretation.setDbTranscript(dbTranscriptTextField.getText());
+        snpInDelInterpretation.setClinicalVariantType(clinicalVariantTypeComboBox.getSelectionModel().getSelectedItem());
+
+        params.put("snpInDelInterpretation", snpInDelInterpretation);
+
+        if(!StringUtils.isEmpty(comment)) {
+            params.put("comment", comment);
             try {
                 if(typeSomatic) {
                     params.put("tier", tier);
                 } else {
                     params.put("tier", tier);
                 }
-                params.put("comment", comment);
+                //params.put("snpInDelId", selectedItem.getSnpInDel().getId());
 
-                apiService.put("analysisResults/snpInDels/" + selectedItem.getSnpInDel().getId() + "/updateExpertTier", params, null, true);
+                apiService.put("analysisResults/snpInDels/" + selectedItem.getSnpInDel().getId() + "/updateTier", params, null, true);
             } catch (WebAPIException wae) {
+                wae.printStackTrace();
                 DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
             }
             if(analysisDetailReportController != null) {
-                selectedItem.getSnpInDel().setExpertTier(tier);
-                selectedItem.getSnpInDel().setComment(comment);
+                /*selectedItem.getSnpInDel().setExpertTier(tier);*/
                 analysisDetailReportController.resetData(table);
+                analysisDetailReportController.setVariantsList();
             }
             if(analysisDetailReportGermlineController != null) {
-                selectedItem.getSnpInDel().setExpertPathogenicityLevel(tier);
-                selectedItem.getSnpInDel().setComment(comment);
+                /*selectedItem.getSnpInDel().setExpertPathogenicityLevel(tier);*/
                 analysisDetailReportGermlineController.resetData(table);
+                analysisDetailReportGermlineController.setVariantsList();
             }
 
             dialogStage.close();

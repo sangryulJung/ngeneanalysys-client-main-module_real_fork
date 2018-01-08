@@ -10,11 +10,27 @@ public class VirtualPanel {
     private Integer id;
     private Integer panelId;
     private String name;
+    private String description;
     private String essentialGenes;
     private String optionalGenes;
     private DateTime createdAt;
     private DateTime deletedAt;
+    private DateTime updatedAt;
     private Integer deleted;
+
+    /**
+     * @return description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @return updatedAt
+     */
+    public DateTime getUpdatedAt() {
+        return updatedAt;
+    }
 
     /**
      * @return id

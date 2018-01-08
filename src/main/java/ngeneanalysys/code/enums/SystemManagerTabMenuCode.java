@@ -11,7 +11,7 @@ public enum SystemManagerTabMenuCode {
 	TAB_SYSTEM_MANAGER_PANEL(new SystemManagerTabItem("TAB_SYSTEM_MANAGER_PANEL", "Panel", FXMLConstants.SYSTEM_MANAGER_PANEL)),
 	TAB_SYSTEM_MANAGER_REPORT_TEMPLATE(new SystemManagerTabItem("TAB_SYSTEM_MANAGER_REPORT_TEMPLATE", "Report", FXMLConstants.SYSTEM_MANAGER_REPORT_TEMPLATE)),
 	TAB_SYSTEM_MANAGER_SYSTEM_LOGS(new SystemManagerTabItem("TAB_SYSTEM_MANAGER_SYSTEM_LOGS", "System Logs", FXMLConstants.SYSTEM_MANAGER_LOG_LIST)),
-	TAB_SYSTEM_MANAGER_INTERPRETATION_DATABASE(new SystemManagerTabItem("TAB_SYSTEM_MANAGER_INTERPRETATION_DATABASE", "Interpretation DB", FXMLConstants.SYSTEM_MANAGER_INTERPRETATION_DATABASE));
+	TAB_SYSTEM_MANAGER_INTERPRETATION_DATABASE(new SystemManagerTabItem("TAB_SYSTEM_MANAGER_INTERPRETATION_DATABASE", "Clinical Variant DB", FXMLConstants.SYSTEM_MANAGER_INTERPRETATION_DATABASE));
 	
 	private SystemManagerTabItem item;
 
@@ -26,7 +26,5 @@ public enum SystemManagerTabMenuCode {
 	public void setItem(SystemManagerTabItem item) {
 		this.item = item;
 	}
-	
-	
 
 }
