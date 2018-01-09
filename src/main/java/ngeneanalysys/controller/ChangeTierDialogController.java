@@ -105,18 +105,11 @@ public class ChangeTierDialogController extends SubPaneController {
         this.tier = tier;
         this.selectedItem = selectedItem;
         this.rowItem = rowItem;
-
-        //String currentTier = getCurrentTier();
-
-        //tierLabel.setText(ConvertUtil.tierConvert(currentTier) + " > " + ConvertUtil.tierConvert(tier));
     }
 
     public void settingTier(String tier, VariantAndInterpretationEvidence selectedItem) {
         this.tier = tier;
         this.selectedItem = selectedItem;
-        //String currentTier = getCurrentTier();
-
-        //tierLabel.setText(ConvertUtil.tierConvert(currentTier) + " > " + ConvertUtil.tierConvert(tier));
     }
 
     @Override

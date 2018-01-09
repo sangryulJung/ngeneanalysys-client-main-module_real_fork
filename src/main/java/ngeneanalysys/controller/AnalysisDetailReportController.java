@@ -187,8 +187,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
     private boolean reportData = false;
 
-    private List<VirtualPanel> virtualPanels = new ArrayList<>();
-
     @FXML
     private GridPane mainGridPane;
 
@@ -466,11 +464,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
             list = filteringVariant(list);
 
-            //negative list만 가져옴
-            /*negativeList = list.stream().filter(item -> ((item.getInterpretationEvidence() != null &&
-                    !StringUtils.isEmpty(item.getInterpretationEvidence().getEvidencePersistentNegative())) ||
-                    "TN".equalsIgnoreCase(item.getSnpInDel().getExpertTier()))).collect(Collectors.toList());*/
-
             negativeList = list.stream().filter(item -> (
                     StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && "TN".equalsIgnoreCase(item.getSnpInDel().getSwTier())) ||
                     "TN".equalsIgnoreCase(item.getSnpInDel().getExpertTier())).collect(Collectors.toList());
@@ -531,6 +524,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             tableView.setOnDragOver(e -> onDragOver(e, tableView));
             tableView.setOnDragExited(e -> onDragExited(e, tableView));
             tableView.setOnDragDropped(e -> onDragDropped(e, tableView, tier));
+            tableView.setOnMouseClicked(e -> onClicked(e, tableView , tier));
 
             tableView.setRowFactory(tv -> {
                 TableRow<VariantAndInterpretationEvidence> rowData = new TableRow<>();
@@ -784,6 +778,10 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     variantList = variantList.stream().filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).collect(Collectors.toList());
                 }
 
+                List<VariantAndInterpretationEvidence> clinicalVariantList = new ArrayList<>();
+
+                clinicalVariantList.addAll(variantList);
+
                 //if(tierThree != null && !tierThree.isEmpty()) variantList.addAll(tierThree);
                 if(!tierThreeVariantsTable.getItems().isEmpty()) variantList.addAll(tierThreeVariantsTable.getItems().stream().collect(Collectors.toList()));
 
@@ -793,21 +791,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     variant.getSnpInDel().getSnpInDelExpression().setAaChange(ConvertUtil.insertTextAtFixedPosition(variant.getSnpInDel().getSnpInDelExpression().getAaChange(), 15, "\n"));
                 }
 
-                /*Long evidenceACount = variantList.stream().filter(item -> !StringUtils.isEmpty(item.getInterpretation().getInterpretationEvidenceA())).count();
-                Long evidenceBCount = variantList.stream().filter(item -> !StringUtils.isEmpty(item.getInterpretation().getInterpretationEvidenceB())).count();
-                Long evidenceCCount = variantList.stream().filter(item -> !StringUtils.isEmpty(item.getInterpretation().getInterpretationEvidenceC())).count();
-                Long evidenceDCount = variantList.stream().filter(item -> !StringUtils.isEmpty(item.getInterpretation().getInterpretationEvidenceD())).count();*/
-
-                /*Integer evidenceACount = tierOneVariantsTable.getItems().filtered(item ->
-                        (item.getSnpInDel().getIncludedInReport().equals("Y") && StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && item.getSnpInDel().getSwTier().equals("T1")
-                        && !StringUtils.isEmpty(item.getInterpretationEvidence().getEvidenceLevelA()))).size();
-                Integer evidenceBCount = tierOneVariantsTable.getItems().filtered(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).size() - evidenceACount;
-                Integer evidenceCCount = tierOneVariantsTable.getItems().filtered(item ->
-                        (item.getSnpInDel().getIncludedInReport().equals("Y") && StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && item.getSnpInDel().getSwTier().equals("T2")
-                                && !StringUtils.isEmpty(item.getInterpretationEvidence().getEvidenceLevelC()))).size();
-                Integer evidenceDCount = tierTwoVariantsTable.getItems().filtered(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).size() - evidenceCCount;
-                */
-
                 Integer evidenceACount = 0;
                 Integer evidenceBCount = 0;
                 Integer evidenceCCount = 0;
@@ -815,34 +798,31 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
                 if(!tierOneVariantsTable.getItems().isEmpty()) {
                     for(VariantAndInterpretationEvidence variant : tierOneVariantsTable.getItems()) {
-                        if(variant.getInterpretationEvidence() != null) {
+                        if("Y".equalsIgnoreCase(variant.getSnpInDel().getIncludedInReport()) && variant.getInterpretationEvidence() != null) {
                             if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelA())) evidenceACount++;
                             if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelB())) evidenceBCount++;
                             if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelC())) evidenceCCount++;
                             if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelD())) evidenceDCount++;
                             if("T2".equals(variant.getSnpInDel().getSwTier())
                                     && StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelB())) evidenceBCount++;
-                        } else {
-                            evidenceBCount++;
                         }
                     }
                 }
 
                 if(!tierTwoVariantsTable.getItems().isEmpty()) {
                     for(VariantAndInterpretationEvidence variant : tierTwoVariantsTable.getItems()) {
-                        if(variant.getInterpretationEvidence() != null) {
+                        if("Y".equalsIgnoreCase(variant.getSnpInDel().getIncludedInReport()) && variant.getInterpretationEvidence() != null) {
                             if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelA())) evidenceACount++;
                             if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelB())) evidenceBCount++;
                             if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelC())) evidenceCCount++;
                             if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelD())) evidenceDCount++;
                             if("T1".equals(variant.getSnpInDel().getSwTier())
                                     && StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelD())) evidenceDCount++;
-                        } else {
-                            evidenceDCount++;
                         }
                     }
                 }
 
+                contentsMap.put("clinicalVariantList", clinicalVariantList);
                 contentsMap.put("variantList", variantList);
                 contentsMap.put("tierThreeVariantList", tierThree);
                 contentsMap.put("tierOneCount", tierOneVariantsTable.getItems().filtered(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).size());
@@ -895,12 +875,11 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                             list.addAll(Arrays.stream(virtualPanel.getEssentialGenes().replaceAll("\\p{Z}", "")
                                     .split(",")).collect(Collectors.toSet()));
 
-                            Set<String> allGeneList = new HashSet<>();
-
-                            allGeneList = returnGeneList(virtualPanel.getEssentialGenes(), virtualPanel.getOptionalGenes());
+                            Set<String> allGeneList = returnGeneList(virtualPanel.getEssentialGenes(), virtualPanel.getOptionalGenes());
 
                             contentsMap.put("essentialGenes", list);
                             contentsMap.put("allGeneList", allGeneList);
+                            contentsMap.put("virtualPaneName", virtualPanel.getName());
 
                         }
 
@@ -1228,7 +1207,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     }
 
     public void onDragDropped(DragEvent t, TableView<VariantAndInterpretationEvidence> table, String tier) {
-        System.out.println("change Tier");
         if(selectedItem != null && selectedTable != table) {
             try {
                 FXMLLoader loader = mainApp.load(FXMLConstants.CHANGE_TIER);
@@ -1246,13 +1224,29 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         t.setDropCompleted(true);
     }
 
-    public void onClicked(MouseEvent e) {
+    public void onClicked(MouseEvent e,TableView<VariantAndInterpretationEvidence> table, String tier) {
 
+        if(e.getClickCount() == 2) {
+            VariantAndInterpretationEvidence variantAndInterpretationEvidence = table.getSelectionModel().getSelectedItem();
+            try {
+                FXMLLoader loader = mainApp.load(FXMLConstants.CHANGE_TIER);
+                Node root = loader.load();
+                ChangeTierDialogController changeTierDialogController = loader.getController();
+                changeTierDialogController.setMainController(this.getMainController());
+                changeTierDialogController.setAnalysisDetailReportController(this);
+                changeTierDialogController.settingTier(tier, variantAndInterpretationEvidence);
+                changeTierDialogController.show((Parent) root);
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+        }
     }
 
     public void resetData(TableView<VariantAndInterpretationEvidence> table) {
-        selectedTable.getItems().remove(selectedItem);
-        table.getItems().add(selectedItem);
+        if(selectedTable != null && table != null) {
+            selectedTable.getItems().remove(selectedItem);
+            table.getItems().add(selectedItem);
+        }
         selectedItem = null;
         selectedTable = null;
         rowItem = null;
