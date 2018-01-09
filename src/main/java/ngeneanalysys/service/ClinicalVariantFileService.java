@@ -40,7 +40,7 @@ public class ClinicalVariantFileService {
 
     public HttpClientResponse uploadFile(File file) throws WebAPIException {
 
-        String url = "/admin/clinicalVariant/clinicalVariantFile/";
+        String url = "/admin/clinicalVariant/genomicCoordinate";
 
         CloseableHttpClient httpclient = null;
         CloseableHttpResponse response = null;
@@ -65,7 +65,7 @@ public class ClinicalVariantFileService {
             FileBody fileParam = new FileBody(file);
 
             HttpEntity reqEntity = MultipartEntityBuilder.create()
-                    .addPart("file", fileParam)
+                    .addPart("clinicalVariantFile", fileParam)
                     .build();
 
             post.setEntity(reqEntity);
