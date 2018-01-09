@@ -196,12 +196,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     public void show(Parent root) throws IOException {
         logger.info("show..");
 
-        virtualPanelComboBox.getSelectionModel().selectedItemProperty().addListener((ov, t, t1) -> {
-            if(!StringUtils.isEmpty(t1.getValue())) {
-                setVariantsList();
-            }
-        });
-
         tableCellUpdateFix(tierOneVariantsTable);
         tableCellUpdateFix(tierTwoVariantsTable);
         tableCellUpdateFix(tierThreeVariantsTable);
@@ -372,6 +366,10 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             e.printStackTrace();
         }
 
+        virtualPanelComboBox.getSelectionModel().selectedItemProperty().addListener((ov, t, t1) -> {
+            if(!t1.equals(t)) setVariantsList();
+        });
+
     }
 
     public void tableCellUpdateFix(TableView<VariantAndInterpretationEvidence> tableView) {
@@ -382,6 +380,22 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         });
     }
 
+    public Set<String> returnGeneList(String essentialGenes, String optionalGenes) {
+        Set<String> list = new HashSet<>();
+
+        essentialGenes = essentialGenes.replaceAll("\\p{Z}", "");
+
+        list.addAll(Arrays.stream(essentialGenes.split(",")).collect(Collectors.toSet()));
+
+        if(!StringUtils.isEmpty(optionalGenes)) {
+            optionalGenes = optionalGenes.replaceAll("\\p{Z}", "");
+
+            list.addAll(Arrays.stream(optionalGenes.split(",")).collect(Collectors.toSet()));
+        }
+
+        return list;
+    }
+
     public List<VariantAndInterpretationEvidence> filteringVariant(List<VariantAndInterpretationEvidence> list) {
         List<VariantAndInterpretationEvidence> filteringList = new ArrayList<>();
         if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
@@ -390,10 +404,11 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         null, null, false);
 
                 VirtualPanel virtualPanel = response.getObjectBeforeConvertResponseToJSON(VirtualPanel.class);
+
+                Set<String> geneList = returnGeneList(virtualPanel.getEssentialGenes(), virtualPanel.getOptionalGenes());
+
                 for(VariantAndInterpretationEvidence variantAndInterpretationEvidence : list) {
-                    if(virtualPanel.getEssentialGenes().contains(variantAndInterpretationEvidence.getSnpInDel().getGenomicCoordinate().getGene())
-                            || (virtualPanel.getOptionalGenes() != null &&
-                            virtualPanel.getOptionalGenes().contains(variantAndInterpretationEvidence.getSnpInDel().getGenomicCoordinate().getGene()))) {
+                    if(geneList.contains(variantAndInterpretationEvidence.getSnpInDel().getGenomicCoordinate().getGene())) {
                         filteringList.add(variantAndInterpretationEvidence);
                     }
                 }
@@ -403,6 +418,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         } else {
             return list;
         }
+
+        if(filteringList.isEmpty()) return list;
 
         return filteringList;
     }
@@ -415,10 +432,11 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         null, null, false);
 
                 VirtualPanel virtualPanel = response.getObjectBeforeConvertResponseToJSON(VirtualPanel.class);
+
+                Set<String> geneList = returnGeneList(virtualPanel.getEssentialGenes(), virtualPanel.getOptionalGenes());
+
                 for(VariantCountByGene variantCountByGene : list) {
-                    if(virtualPanel.getEssentialGenes().contains(variantCountByGene.getGeneSymbol())
-                            || (virtualPanel.getOptionalGenes() != null &&
-                            virtualPanel.getOptionalGenes().contains(variantCountByGene.getGeneSymbol()))) {
+                    if(geneList.contains(variantCountByGene.getGeneSymbol())) {
                         filteringList.add(variantCountByGene);
                     }
                 }
@@ -426,6 +444,10 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
             }
         } else {
+            return list;
+        }
+
+        if(filteringList.isEmpty()) {
             return list;
         }
 
@@ -862,6 +884,21 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         contentsMap.put("genesInPanelTableTwo", Arrays.copyOfRange(genesInPanelTableOne, tableOneSize, tableOneSize + tableTwoSize));
                         contentsMap.put("genesInPanelTableThree", Arrays.copyOfRange(genesInPanelTableOne, tableOneSize + tableTwoSize, variantCountByGenes.size()));
 
+                        if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
+                            response = apiService.get("virtualPanels/" + virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue(),
+                                    null, null, false);
+
+                            VirtualPanel virtualPanel = response.getObjectBeforeConvertResponseToJSON(VirtualPanel.class);
+
+                            Set<String> list = new HashSet<>();
+
+                            list.addAll(Arrays.stream(virtualPanel.getEssentialGenes().replaceAll("\\p{Z}", "")
+                                    .split(",")).collect(Collectors.toSet()));
+
+                            contentsMap.put("essentialGenes", list);
+
+                        }
+
                         response = apiService.get("/runs/" + sample.getRunId(), null,
                                 null, false);
 
@@ -921,7 +958,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
                 String contents = "";
                 if(panel.getReportTemplateId() == null) {
-                    contents = velocityUtil.getContents("/layout/velocity/report.vm", "UTF-8", model);
+                    contents = velocityUtil.getContents("/layout/velocity/report2.vm", "UTF-8", model);
                     created = pdfCreateService.createPDF(file, contents);
                     createdCheck(created, file);
                 } else {

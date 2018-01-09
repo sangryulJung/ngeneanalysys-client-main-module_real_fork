@@ -3,18 +3,21 @@ package ngeneanalysys.controller;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.task.ClinicalFileUploadTask;
 import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
@@ -22,6 +25,7 @@ import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -131,7 +135,8 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
                 item.getValue().getGenomicCoordinateForCV().getPosition().toString() : null));
         positionTableColumn.setCellFactory(tableColumn -> new EditingCell());
         positionTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
-            (t.getTableView().getItems().get(t.getTablePosition().getRow())).getGenomicCoordinateForCV().setPosition(Integer.parseInt(t.getNewValue()));
+            if(!StringUtils.isEmpty(t.getNewValue()))
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).getGenomicCoordinateForCV().setPosition(Integer.parseInt(t.getNewValue()));
         });
         dbRefTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getGenomicCoordinateForCV().getDbRef()));
         dbRefTableColumn.setCellFactory(tableColumn -> new EditingCell());
@@ -186,6 +191,35 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
             }
             return new VBox();
         });
+    }
+
+    @FXML
+    public void addDataFromFile() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose ROI File");
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        File file = fileChooser.showOpenDialog(mainController.getPrimaryStage());
+
+        if(file != null) {
+            Task task = new ClinicalFileUploadTask(file);
+
+            Thread thread = new Thread(task);
+            thread.setDaemon(true);
+            thread.start();
+
+            task.setOnSucceeded(ev -> {
+                try {
+                    DialogUtil.alert("Clinical File Upload",
+                            "Clinical File Upload Success!", this.getMainController().getPrimaryStage(), true);
+
+                    setInterpretationList(1);
+
+                } catch (Exception e) {
+                    logger.error("panel list refresh fail.", e);
+                }
+
+            });
+        }
     }
 
     public void setInterpretationList(int page) {

@@ -51,7 +51,7 @@ public class GenomicCoordinateClinicalVariant {
      * @param tier
      */
     public void setTier(String tier) {
-        tier = tier;
+        this.tier = tier;
     }
 
     /**

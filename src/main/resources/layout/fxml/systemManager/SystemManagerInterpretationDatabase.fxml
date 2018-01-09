@@ -50,7 +50,7 @@
                                     </GridPane>
                                     <VBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="133.0" spacing="5.0">
                                        <children>
-                                          <Button mnemonicParsing="false" text="Add data from file" />
+                                          <Button mnemonicParsing="false" onAction="#addDataFromFile" text="Add data from file" />
                                           <Button mnemonicParsing="false" onAction="#interpretationAdd" text="+" />
                                        </children>
                                     </VBox>
