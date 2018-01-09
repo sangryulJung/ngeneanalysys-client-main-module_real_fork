@@ -895,7 +895,12 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                             list.addAll(Arrays.stream(virtualPanel.getEssentialGenes().replaceAll("\\p{Z}", "")
                                     .split(",")).collect(Collectors.toSet()));
 
+                            Set<String> allGeneList = new HashSet<>();
+
+                            allGeneList = returnGeneList(virtualPanel.getEssentialGenes(), virtualPanel.getOptionalGenes());
+
                             contentsMap.put("essentialGenes", list);
+                            contentsMap.put("allGeneList", allGeneList);
 
                         }
 
@@ -958,7 +963,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
                 String contents = "";
                 if(panel.getReportTemplateId() == null) {
-                    contents = velocityUtil.getContents("/layout/velocity/report2.vm", "UTF-8", model);
+                    contents = velocityUtil.getContents("/layout/velocity/report.vm", "UTF-8", model);
                     created = pdfCreateService.createPDF(file, contents);
                     createdCheck(created, file);
                 } else {
