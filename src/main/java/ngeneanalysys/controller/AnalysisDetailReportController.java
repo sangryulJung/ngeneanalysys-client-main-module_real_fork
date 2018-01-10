@@ -275,75 +275,75 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 ReportContents reportContents = response.getObjectBeforeConvertResponseToJSON(ReportContents.class);
 
                 ReportTemplate template = reportContents.getReportTemplate();
+                if (template.getContents() != null) {
+                    Map<String, Object> variableList = JsonUtil.fromJsonToMap(template.getCustomFields());
 
-                Map<String, Object> variableList = JsonUtil.fromJsonToMap(template.getCustomFields());
+                    if (variableList != null && !variableList.isEmpty()) {
 
-                if(variableList != null && !variableList.isEmpty()) {
+                        Set<String> keyList = variableList.keySet();
 
-                    Set<String> keyList = variableList.keySet();
+                        List<String> sortedKeyList = keyList.stream().sorted().collect(Collectors.toList());
 
-                    List<String> sortedKeyList = keyList.stream().sorted().collect(Collectors.toList());
-
-                    if(keyList.contains("conclusions")) {
-                        Map<String, String> item = (Map<String, String>) variableList.get("conclusions");
-                        conclusions.setText(item.get("displayName"));
-                        sortedKeyList.remove("conclusions");
-                    }
-
-
-                    int gridPaneRowSize = (int)Math.ceil(sortedKeyList.size() / 3.0);
-
-                    for(int i = 0; i < gridPaneRowSize ; i++) {
-                        customFieldGridPane.setPrefHeight(customFieldGridPane.getPrefHeight() + 30);
-                        mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 30);
-                        contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 30);
-                        RowConstraints con = new RowConstraints();
-                        con.setPrefHeight(30);
-                        customFieldGridPane.getRowConstraints().add(con);
-                    }
-
-                    int rowIndex = 0;
-                    int colIndex = 0;
-
-                    for(String key : sortedKeyList) {
-                        Map<String, String> item = (Map<String, String>) variableList.get(key);
-                        if(colIndex == 6) {
-                            colIndex = 0;
-                            rowIndex++;
+                        if (keyList.contains("conclusions")) {
+                            Map<String, String> item = (Map<String, String>) variableList.get("conclusions");
+                            conclusions.setText(item.get("displayName"));
+                            sortedKeyList.remove("conclusions");
                         }
-                        Label label = new Label(item.get("displayName"));
-                        label.setStyle("-fx-text-fill : #C20E20;");
-                        customFieldGridPane.add(label, colIndex++, rowIndex);
-                        label.setMaxHeight(Double.MAX_VALUE);
-                        label.setMaxWidth(Double.MAX_VALUE);
-                        label.setAlignment(Pos.CENTER);
 
-                        String type = item.get("variableType");
-                        if(type.equalsIgnoreCase("Date")) {
-                            DatePicker datePicker = new DatePicker();
-                            datePicker.setStyle(datePicker.getStyle() + "-fx-text-inner-color: black; -fx-control-inner-background: white;");
-                            String dateType = "yyyy-MM-dd";
-                            datePicker.setPromptText(dateType);
-                            datePicker.setConverter(DatepickerConverter.getConverter(dateType));
-                            datePicker.setId(key);
-                            customFieldGridPane.add(datePicker, colIndex++, rowIndex);
-                        } else {
-                            TextField textField = new TextField();
-                            textField.getStyleClass().add("txt_black");
-                            textField.setId(key);
-                            if(type.equalsIgnoreCase("Integer")) {
-                                textField.textProperty().addListener((observable, oldValue, newValue) -> {
-                                    if(!newValue.matches("[0-9]*")) textField.setText(oldValue);
-                                });
+
+                        int gridPaneRowSize = (int) Math.ceil(sortedKeyList.size() / 3.0);
+
+                        for (int i = 0; i < gridPaneRowSize; i++) {
+                            customFieldGridPane.setPrefHeight(customFieldGridPane.getPrefHeight() + 30);
+                            mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 30);
+                            contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 30);
+                            RowConstraints con = new RowConstraints();
+                            con.setPrefHeight(30);
+                            customFieldGridPane.getRowConstraints().add(con);
+                        }
+
+                        int rowIndex = 0;
+                        int colIndex = 0;
+
+                        for (String key : sortedKeyList) {
+                            Map<String, String> item = (Map<String, String>) variableList.get(key);
+                            if (colIndex == 6) {
+                                colIndex = 0;
+                                rowIndex++;
                             }
+                            Label label = new Label(item.get("displayName"));
+                            label.setStyle("-fx-text-fill : #C20E20;");
+                            customFieldGridPane.add(label, colIndex++, rowIndex);
+                            label.setMaxHeight(Double.MAX_VALUE);
+                            label.setMaxWidth(Double.MAX_VALUE);
+                            label.setAlignment(Pos.CENTER);
 
-                            customFieldGridPane.add(textField, colIndex++, rowIndex);
+                            String type = item.get("variableType");
+                            if (type.equalsIgnoreCase("Date")) {
+                                DatePicker datePicker = new DatePicker();
+                                datePicker.setStyle(datePicker.getStyle() + "-fx-text-inner-color: black; -fx-control-inner-background: white;");
+                                String dateType = "yyyy-MM-dd";
+                                datePicker.setPromptText(dateType);
+                                datePicker.setConverter(DatepickerConverter.getConverter(dateType));
+                                datePicker.setId(key);
+                                customFieldGridPane.add(datePicker, colIndex++, rowIndex);
+                            } else {
+                                TextField textField = new TextField();
+                                textField.getStyleClass().add("txt_black");
+                                textField.setId(key);
+                                if (type.equalsIgnoreCase("Integer")) {
+                                    textField.textProperty().addListener((observable, oldValue, newValue) -> {
+                                        if (!newValue.matches("[0-9]*")) textField.setText(oldValue);
+                                    });
+                                }
+
+                                customFieldGridPane.add(textField, colIndex++, rowIndex);
+                            }
                         }
-                    }
 
+                    }
                 }
             }
-
             if(sample.getSampleStatus().getReportStartedAt() != null) {
                 response = apiService.get("sampleReport/" + sample.getId(), null, null, false);
 
@@ -783,7 +783,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 clinicalVariantList.addAll(variantList);
 
                 //if(tierThree != null && !tierThree.isEmpty()) variantList.addAll(tierThree);
-                if(!tierThreeVariantsTable.getItems().isEmpty()) variantList.addAll(tierThreeVariantsTable.getItems().stream().collect(Collectors.toList()));
+                if(!tierThreeVariantsTable.getItems().isEmpty()) variantList.addAll(tierThreeVariantsTable.getItems().stream().filter(tierThree ->
+                tierThree.getSnpInDel().getIncludedInReport().equalsIgnoreCase("Y")).collect(Collectors.toList()));
 
                 for(VariantAndInterpretationEvidence variant : variantList) {
                     variant.getSnpInDel().getSnpInDelExpression().setTranscript(ConvertUtil.insertTextAtFixedPosition(variant.getSnpInDel().getSnpInDelExpression().getTranscript(), 15, "\n"));
@@ -797,7 +798,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 Integer evidenceDCount = 0;
 
                 if(!tierOneVariantsTable.getItems().isEmpty()) {
-                    for(VariantAndInterpretationEvidence variant : tierOneVariantsTable.getItems()) {
+                    for(VariantAndInterpretationEvidence variant : tierOneVariantsTable.getItems().stream().filter(tierOne ->
+                    tierOne.getSnpInDel().getIncludedInReport().equalsIgnoreCase("Y")).collect(Collectors.toList())) {
                         if("Y".equalsIgnoreCase(variant.getSnpInDel().getIncludedInReport()) && variant.getInterpretationEvidence() != null) {
                             if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelA())) evidenceACount++;
                             if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelB())) evidenceBCount++;
@@ -810,7 +812,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 }
 
                 if(!tierTwoVariantsTable.getItems().isEmpty()) {
-                    for(VariantAndInterpretationEvidence variant : tierTwoVariantsTable.getItems()) {
+                    for(VariantAndInterpretationEvidence variant : tierTwoVariantsTable.getItems().stream().filter(tierTwo ->
+                            tierTwo.getSnpInDel().getIncludedInReport().equalsIgnoreCase("Y")).collect(Collectors.toList())) {
                         if("Y".equalsIgnoreCase(variant.getSnpInDel().getIncludedInReport()) && variant.getInterpretationEvidence() != null) {
                             if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelA())) evidenceACount++;
                             if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelB())) evidenceBCount++;

@@ -68,8 +68,8 @@
                                     <TableColumn fx:id="chrTableColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="50.0" styleClass="txt_black" text="Chr" />
                                     <TableColumn fx:id="geneTableColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="90.0" styleClass="txt_black" text="Gene" />
                                     <TableColumn fx:id="positionTableColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" styleClass="txt_black" text="Position" />
-                                    <TableColumn fx:id="dbRefTableColumn" minWidth="-Infinity" prefWidth="90.0" styleClass="txt_black" text="DB Ref" />
-                                    <TableColumn fx:id="dbAltTableColumn" prefWidth="90.0" styleClass="txt_black" text="DB Alt" />
+                                    <TableColumn fx:id="dbRefTableColumn" minWidth="-Infinity" prefWidth="90.0" styleClass="txt_black" text="DB Ref" visible="false" />
+                                    <TableColumn fx:id="dbAltTableColumn" prefWidth="90.0" styleClass="txt_black" text="DB Alt" visible="false" />
                                     <TableColumn fx:id="ngsRefTableColumn" prefWidth="90.0" styleClass="txt_black" text="NGS Ref" />
                                     <TableColumn fx:id="ngsAltTableColumn" prefWidth="90.0" styleClass="txt_black" text="NGS Alt" />
                                     <TableColumn fx:id="typeTableColumn" minWidth="-Infinity" prefWidth="80.0" styleClass="txt_black" text="Type" />
@@ -85,7 +85,7 @@
                                           <TableColumn fx:id="evidenceDTableColumn" prefWidth="90.0" styleClass="txt_black" text="Evidence D" />
                                        </columns>
                                     </TableColumn>
-                                    <TableColumn fx:id="evidenceNegativeTableColumn" minWidth="-Infinity" prefWidth="120.0" styleClass="txt_black" text="Pertinent Negative" />
+                                    <TableColumn fx:id="evidenceNegativeTableColumn" minWidth="-Infinity" prefWidth="120.0" styleClass="txt_black" text="Pertinent Negative" visible="false" />
                                     <TableColumn fx:id="tier4TableColumn" prefWidth="139.55560302734375" text="Tier IV">
                                        <columns>
                                           <TableColumn fx:id="benignTableColumn" prefWidth="90.0" styleClass="txt_black" text="Benign" />

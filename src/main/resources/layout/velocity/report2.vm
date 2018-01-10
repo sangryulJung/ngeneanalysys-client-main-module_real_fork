@@ -78,9 +78,9 @@
 					<fo:table-column column-width="proportional-column-width(0.13)"/>
 					<fo:table-column column-width="proportional-column-width(0.13)"/>
 					<fo:table-column column-width="proportional-column-width(0.12)"/>
-					<fo:table-column column-width="proportional-column-width(0.28)"/>
+					<fo:table-column column-width="proportional-column-width(0.32)"/>
 					<fo:table-column column-width="proportional-column-width(0.12)"/>
-					<fo:table-column column-width="proportional-column-width(0.22)"/>
+					<fo:table-column column-width="proportional-column-width(0.18)"/>
 					<fo:table-body>
 						<fo:table-row height="6mm" display-align="center" border="0">
 							<fo:table-cell background-color="#2F5496">
@@ -266,7 +266,7 @@
 			</fo:block>
 
 			<fo:block font-family="Noto Sans CJK KR Bold" font-weight="bold" font-size="14pt" margin-bottom="5mm" background-color="#D9E2F3" padding-top="1mm" padding-bottom="1mm" white-space="pre"> 소견 및 결과 해석</fo:block>
-			<fo:block-container border="0.2mm solid black"  margin-bottom="10mm">
+			<fo:block-container border="0.2mm solid black">
 				<fo:block end-indent="0pt" start-indent="0pt">
 					<fo:external-graphic src="${conclusionImage}" content-width="178mm" content-height="60mm" scaling="non-uniform"></fo:external-graphic>
 				</fo:block>
@@ -281,7 +281,7 @@
 				</fo:block-container>
 			</fo:block-container>
 
-			<fo:block padding-bottom="5mm">
+			<fo:block margin-top="10mm" padding-bottom="5mm">
 				<fo:table table-layout="fixed" width="100%">
 					<fo:table-column column-width="proportional-column-width(0.09)" />
 					<fo:table-column column-width="proportional-column-width(0.32)" />
@@ -782,7 +782,7 @@
 				2. 기준 염기서열(Accession number of Reference Sequence)
 			</fo:block>
 
-			#if(!$contents.virtualPaneName)
+			#if(!$contents.virtualPaneName && $contents.panelName.contains('123'))
 
 			<fo:block font-family="Noto Sans CJK KR Regular" font-size="6.5pt">
 				<fo:table width="100%" table-layout="fixed">
@@ -1907,7 +1907,7 @@
 
 			<fo:block page-break-before="always"> </fo:block>
 
-			#elseif($contents.virtualPaneName == 'Acute Myeloid Leukemia')
+			#elseif($contents.virtualPaneName && $contents.virtualPaneName == 'Acute Myeloid Leukemia')
 
 			<fo:block font-family="Noto Sans CJK KR Regular" font-size="6.5pt">
 				<fo:table width="100%" table-layout="fixed">
@@ -2482,7 +2482,7 @@
 
 			<fo:block page-break-before="always"> </fo:block>
 
-			#elseif($contents.virtualPaneName == 'Myelodysplastic Syndrome')
+			#elseif($contents.virtualPaneName && $contents.virtualPaneName == 'Myelodysplastic Syndrome')
 
 			<fo:block font-family="Noto Sans CJK KR Regular" font-size="6.5pt">
 				<fo:table width="100%" table-layout="fixed">
@@ -3024,7 +3024,7 @@
 
 			<fo:block page-break-before="always"> </fo:block>
 
-			#elseif($contents.virtualPaneName == 'Plasma Cell Neoplasm')
+			#elseif($contents.virtualPaneName && $contents.virtualPaneName == 'Acute Lymphoblastic Leukemia')
 
 			<fo:block font-family="Noto Sans CJK KR Regular" font-size="6.5pt">
 				<fo:table width="100%" table-layout="fixed">
@@ -3613,6 +3613,1626 @@
 
 			<fo:block page-break-before="always"> </fo:block>
 
+			#elseif(!$contents.virtualPaneName && $contents.panelName.contains('72'))
+
+			<fo:block font-family="Noto Sans CJK KR Regular" font-size="6.5pt">
+				<fo:table width="100%" table-layout="fixed">
+					<fo:table-column column-width="proportional-column-width(0.5)" />
+					<fo:table-column column-width="proportional-column-width(0.5)" />
+					<fo:table-body>
+						<fo:table-row>
+							<fo:table-cell>
+								<fo:block end-indent="3pt" start-indent="0pt">
+									<fo:table table-layout="fixed" width="100%"  start-indent="2pt">
+										<fo:table-column column-width="proportional-column-width(0.2)" />
+										<fo:table-column column-width="proportional-column-width(0.8)" />
+										<fo:table-body>
+											<fo:table-row border-left="solid 0.1mm #323E4F">
+												<fo:table-cell background-color="#323E4F" border-right="solid 0.1mm black">
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm" color="white">Gene</fo:block>
+												</fo:table-cell>
+												<fo:table-cell background-color="#323E4F">
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm" color="white">DB Accession number</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">AKT1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_005163	NM_001014432	NM_001014431</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">AKT2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001243028	NM_001243027	NM_001330511	NM_001626</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">AKT3</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001206729	NM_005465	NM_181690</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">ALK</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_004304	NM_001353765</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">ATM</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001351836	NM_001351835	NM_001351834	NM_000051</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">B2M</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_004048</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">BCL2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_000657	NM_000633</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">BCL6</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001706	NM_001134738	NM_001130845</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">BIRC2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001166	NM_001256166	NM_001256163</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">BIRC3</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001165	NM_182962</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">BRAF</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001354609	NM_004333</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">CCND1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_053056</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">CD38</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001775</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">CDK4</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_000075</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">CDK7</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001799	NM_001324069	NM_001324070	NM_001324071	NM_001324072	NM_001324075	NM_001324074	NM_001324078	NM_001324077</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">CDKN1B</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_004064</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">CRBN</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_016302	NM_001173482</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">CREBBP</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_004380	NM_001079846</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">CUL4A</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001354940	NM_001354941	NM_001354938	NM_001278513	NM_001278514	NM_003589	NM_001354944	NM_001354943	NM_001354942	NM_001354939	NM_001008895</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">CUL4B</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001079872	NM_003588	NM_001330624</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">CXCR4</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001348060	NM_001348059	NM_003467	NM_001348056	NM_001008540</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">DIS3</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001322349	NM_014953	NM_001128226	NM_001322348</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">DUSP22</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001286555	NM_020185</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">EGFR</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001346898	NM_001346897	NM_005228	NM_001346899	NM_001346941	NM_001346900	NM_201284	NM_201283	NM_201282</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">EP300</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001429</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">EZH2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_152998	NM_004456	NM_001203249	NM_001203248	NM_001203247</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">FAM46C</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_017709</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">FGFR3</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_022965	NM_001354809	NM_001354810	NM_001163213	NM_000142</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">GRB2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_203506	NM_002086</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">IDH1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001282387	NM_001282386	NM_005896</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">IDH2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001290114	NM_002168	NM_001289910</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">IDH3A</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_005530</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">IFNGR2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001329128	NM_005534</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">IGF1R</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001291858	NM_000875</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">IKZF1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001291837	NM_006060	NM_001220768	NM_001220767	NM_001291847	NM_001291846	NM_001291845	NM_001291844	NM_001291843	NM_001291842	NM_001220765	NM_001220771	NM_001220770	NM_001291841	NM_001291840	NM_001291839	NM_001291838</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm">IKZF3</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001257413	NM_001257414	NM_001284515	NM_001284514	NM_001257409	NM_001257408	NM_001257410	NM_001257411	NM_001257412	NM_012481	NM_001284516	NM_183232	NM_183231	NM_183230	NM_183229	NM_183228</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+										</fo:table-body>
+									</fo:table>
+
+								</fo:block>
+							</fo:table-cell>
+							<fo:table-cell>
+								<fo:block end-indent="0pt" start-indent="3pt">
+									<fo:table table-layout="fixed" width="100%"  start-indent="2pt">
+										<fo:table-column column-width="proportional-column-width(0.2)" />
+										<fo:table-column column-width="proportional-column-width(0.8)" />
+										<fo:table-body>
+											<fo:table-row border-left="solid 0.1mm #323E4F">
+												<fo:table-cell background-color="#323E4F" border-right="solid 0.1mm white">
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm" color="white">Gene</fo:block>
+												</fo:table-cell>
+												<fo:table-cell background-color="#323E4F">
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm" color="white">DB Accession number</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">IL6</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001318095	NM_000600</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">IL6R</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_000565	NM_001206866	NM_181359</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">IRF4</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001195286	NM_002460</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">JAK2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001322195	NM_001322194	NM_001322196	NM_001322198	NM_001322199	NM_001322204	NM_004972</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">KDM6A</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001291416	NM_021140	NM_001291417	NM_001291418	NM_001291421	NM_001291415</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">KRAS</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_033360	NM_004985</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">MAP2K1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_002755</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">MEF2B</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001145785</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">MTCP1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001018025</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">MYC</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001354870	NM_002467</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">MYD88</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_002468	NM_001172566	NM_001172569	NM_001172568	NM_001172567</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">NFKB2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001261403	NM_001288724	NM_001077494	NM_001322934	NM_001322935	NM_002502</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">NOTCH1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_017617</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">NOTCH2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001200001	NM_024408</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">NR3C1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001204258	NM_001204261	NM_001204260	NM_001204262	NM_001204263	NM_001204264	NM_001204265	NM_001204259	NM_001024094	NM_001020825	NM_001018077	NM_001018076	NM_001018075	NM_001018074	NM_000176</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">NRAS</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_002524</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">PIK3CA</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_006218</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">PIK3CG</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001282427	NM_001282426	NM_002649</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">PIK3R1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001242466	NM_181524	NM_181523	NM_181504</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">PIK3R2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_005027</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">PIM1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001243186	NM_002648</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">PIM2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_006875</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">PIM3</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001001852</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">PSMA1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_002786	NM_148976	NM_001143937</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">PSMB5</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001144932	NM_002797	NM_001130725</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">PSMD1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001191037	NM_002807</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">PSMG2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_147163	NM_020232</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">PTPN11</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_002834	NM_080601	NM_001330437</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">RB1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_000321</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">RHOH</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001278368	NM_001278364	NM_001278365	NM_001278366	NM_001278367	NM_001278369	NM_001278359	NM_001278360	NM_001278361	NM_001278362	NM_001278363	NM_004310</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">SF3B1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001308824	NM_012433	NM_001005526</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">STAT3</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_003150	NM_139276	NM_213662</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">TGFBR2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_003242	NM_001024847</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">TLR4</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_138557	NM_138554	NM_003266</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">TP53</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001276699	NM_001276698	NM_001276761	NM_001276760	NM_001126117	NM_001126118	NM_001126116	NM_001126113	NM_001126112	NM_001126115	NM_001126114	NM_001276695	NM_001276697	NM_001276696	NM_000546</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm">TRAF3</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_145725	NM_001199427	NM_145726	NM_003300</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+										</fo:table-body>
+									</fo:table>
+								</fo:block>
+							</fo:table-cell>
+						</fo:table-row>
+					</fo:table-body>
+				</fo:table>
+			</fo:block>
+
+			<fo:block page-break-before="always"> </fo:block>
+
+			#elseif($contents.virtualPaneName && $contents.virtualPaneName == 'Plasma Cell Neoplasm')
+
+			<fo:block font-family="Noto Sans CJK KR Regular" font-size="6.5pt">
+				<fo:table width="100%" table-layout="fixed">
+					<fo:table-column column-width="proportional-column-width(0.5)" />
+					<fo:table-column column-width="proportional-column-width(0.5)" />
+					<fo:table-body>
+						<fo:table-row>
+							<fo:table-cell>
+								<fo:block end-indent="3pt" start-indent="0pt">
+									<fo:table table-layout="fixed" width="100%"  start-indent="2pt">
+										<fo:table-column column-width="proportional-column-width(0.2)" />
+										<fo:table-column column-width="proportional-column-width(0.8)" />
+										<fo:table-body>
+											<fo:table-row border-left="solid 0.1mm #323E4F">
+												<fo:table-cell background-color="#323E4F" border-right="solid 0.1mm black">
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm" color="white">Gene</fo:block>
+												</fo:table-cell>
+												<fo:table-cell background-color="#323E4F">
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm" color="white">DB Accession number</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">AKT1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_005163	NM_001014432	NM_001014431</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">AKT2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001243028	NM_001243027	NM_001330511	NM_001626</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">AKT3</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001206729	NM_005465	NM_181690</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">ALK</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_004304	NM_001353765</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">ATM</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001351836	NM_001351835	NM_001351834	NM_000051</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">B2M</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_004048</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">BIRC2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001166	NM_001256166	NM_001256163</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">BIRC3</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001165	NM_182962</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">BRAF</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001354609	NM_004333</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">CCND1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_053056</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">CD38</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001775</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">CDK4</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_000075</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">CDK7</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001799	NM_001324069	NM_001324070	NM_001324071	NM_001324072	NM_001324075	NM_001324074	NM_001324078	NM_001324077</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">CDKN1B</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_004064</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">CRBN</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_016302	NM_001173482</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">CUL4A</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001354940	NM_001354941	NM_001354938	NM_001278513	NM_001278514	NM_003589	NM_001354944	NM_001354943	NM_001354942	NM_001354939	NM_001008895</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">CXCR4</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001348060	NM_001348059	NM_003467	NM_001348056	NM_001008540</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">DIS3</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001322349	NM_014953	NM_001128226	NM_001322348</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">EGFR</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001346898	NM_001346897	NM_005228	NM_001346899	NM_001346941	NM_001346900	NM_201284	NM_201283	NM_201282</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">FAM46C</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_017709</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">FGFR3</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_022965	NM_001354809	NM_001354810	NM_001163213	NM_000142</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">GRB2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_203506	NM_002086</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">IDH2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001290114	NM_002168	NM_001289910</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">IGF1R</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001291858	NM_000875</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">IKZF1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001291837	NM_006060	NM_001220768	NM_001220767	NM_001291847	NM_001291846	NM_001291845	NM_001291844	NM_001291843	NM_001291842	NM_001220765	NM_001220771	NM_001220770	NM_001291841	NM_001291840	NM_001291839	NM_001291838</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm">IKZF3</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001257413	NM_001257414	NM_001284515	NM_001284514	NM_001257409	NM_001257408	NM_001257410	NM_001257411	NM_001257412	NM_012481	NM_001284516	NM_183232	NM_183231	NM_183230	NM_183229	NM_183228</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+										</fo:table-body>
+									</fo:table>
+
+								</fo:block>
+							</fo:table-cell>
+							<fo:table-cell>
+								<fo:block end-indent="0pt" start-indent="3pt">
+									<fo:table table-layout="fixed" width="100%"  start-indent="2pt">
+										<fo:table-column column-width="proportional-column-width(0.2)" />
+										<fo:table-column column-width="proportional-column-width(0.8)" />
+										<fo:table-body>
+											<fo:table-row border-left="solid 0.1mm #323E4F">
+												<fo:table-cell background-color="#323E4F" border-right="solid 0.1mm white">
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm" color="white">Gene</fo:block>
+												</fo:table-cell>
+												<fo:table-cell background-color="#323E4F">
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm" color="white">DB Accession number</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">IL6R</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_000565	NM_001206866	NM_181359</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">IRF4</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001195286	NM_002460</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">JAK2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001322195	NM_001322194	NM_001322196	NM_001322198	NM_001322199	NM_001322204	NM_004972</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">KDM6A</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001291416	NM_021140	NM_001291417	NM_001291418	NM_001291421	NM_001291415</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">KRAS</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_033360	NM_004985</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">MAP2K1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_002755</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">MYC</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001354870	NM_002467</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">MYD88</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_002468	NM_001172566	NM_001172569	NM_001172568	NM_001172567</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">NFKB2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001261403	NM_001288724	NM_001077494	NM_001322934	NM_001322935	NM_002502</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">NOTCH1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_017617</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">NOTCH2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001200001	NM_024408</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">NR3C1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001204258	NM_001204261	NM_001204260	NM_001204262	NM_001204263	NM_001204264	NM_001204265	NM_001204259	NM_001024094	NM_001020825	NM_001018077	NM_001018076	NM_001018075	NM_001018074	NM_000176</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">NRAS</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_002524</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">PIK3CA</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_006218</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">PIK3CG</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001282427	NM_001282426	NM_002649</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">PIM1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001243186	NM_002648</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">PIM2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_006875</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">PIM3</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001001852</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">PSMB5</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001144932	NM_002797	NM_001130725</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">PSMD1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001191037	NM_002807</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">PSMG2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_147163	NM_020232</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">PTPN11</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_002834	NM_080601	NM_001330437</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">RB1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_000321</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">STAT3</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_003150	NM_139276	NM_213662</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">TGFBR2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_003242	NM_001024847</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">TLR4</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_138557	NM_138554	NM_003266</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">TP53</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001276699	NM_001276698	NM_001276761	NM_001276760	NM_001126117	NM_001126118	NM_001126116	NM_001126113	NM_001126112	NM_001126115	NM_001126114	NM_001276695	NM_001276697	NM_001276696	NM_000546</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm">TRAF3</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_145725	NM_001199427	NM_145726	NM_003300</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+										</fo:table-body>
+									</fo:table>
+								</fo:block>
+							</fo:table-cell>
+						</fo:table-row>
+					</fo:table-body>
+				</fo:table>
+			</fo:block>
+
+			<fo:block page-break-before="always"> </fo:block>
+
+			#elseif($contents.virtualPaneName && $contents.virtualPaneName == 'Malignant Lymphoma')
+
+			<fo:block font-family="Noto Sans CJK KR Regular" font-size="6.5pt">
+				<fo:table width="100%" table-layout="fixed">
+					<fo:table-column column-width="proportional-column-width(0.5)" />
+					<fo:table-column column-width="proportional-column-width(0.5)" />
+					<fo:table-body>
+						<fo:table-row>
+							<fo:table-cell>
+								<fo:block end-indent="3pt" start-indent="0pt">
+									<fo:table table-layout="fixed" width="100%"  start-indent="2pt">
+										<fo:table-column column-width="proportional-column-width(0.2)" />
+										<fo:table-column column-width="proportional-column-width(0.8)" />
+										<fo:table-body>
+											<fo:table-row border-left="solid 0.1mm #323E4F">
+												<fo:table-cell background-color="#323E4F" border-right="solid 0.1mm black">
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm" color="white">Gene</fo:block>
+												</fo:table-cell>
+												<fo:table-cell background-color="#323E4F">
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm" color="white">DB Accession number</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">AKT1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_005163	NM_001014432	NM_001014431</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">AKT2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001243028	NM_001243027	NM_001330511	NM_001626</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">ALK</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_004304	NM_001353765</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">ATM</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001351836	NM_001351835	NM_001351834	NM_000051</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">B2M</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_004048</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">BCL2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_000657	NM_000633</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">BCL6</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001706	NM_001134738	NM_001130845</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">BIRC2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001166	NM_001256166	NM_001256163</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">BIRC3</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001165	NM_182962</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">BRAF</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001354609	NM_004333</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">CCND1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_053056</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">CD38</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001775</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">CDK4</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_000075</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">CDK7</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001799	NM_001324069	NM_001324070	NM_001324071	NM_001324072	NM_001324075	NM_001324074	NM_001324078	NM_001324077</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">CDKN1B</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_004064</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">CRBN</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_016302	NM_001173482</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">CREBBP</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_004380	NM_001079846</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">DUSP22</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001286555	NM_020185</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">EGFR</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001346898	NM_001346897	NM_005228	NM_001346899	NM_001346941	NM_001346900	NM_201284	NM_201283	NM_201282</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">EP300</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001429</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">EZH2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_152998	NM_004456	NM_001203249	NM_001203248	NM_001203247</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">FGFR3</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_022965	NM_001354809	NM_001354810	NM_001163213	NM_000142</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">GRB2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_203506	NM_002086</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">IDH1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001282387	NM_001282386	NM_005896</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">IDH2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001290114	NM_002168	NM_001289910</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">IGF1R</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001291858	NM_000875</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">IKZF1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001291837	NM_006060	NM_001220768	NM_001220767	NM_001291847	NM_001291846	NM_001291845	NM_001291844	NM_001291843	NM_001291842	NM_001220765	NM_001220771	NM_001220770	NM_001291841	NM_001291840	NM_001291839	NM_001291838</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm">IKZF3</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001257413	NM_001257414	NM_001284515	NM_001284514	NM_001257409	NM_001257408	NM_001257410	NM_001257411	NM_001257412	NM_012481	NM_001284516	NM_183232	NM_183231	NM_183230	NM_183229	NM_183228</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+										</fo:table-body>
+									</fo:table>
+
+								</fo:block>
+							</fo:table-cell>
+							<fo:table-cell>
+								<fo:block end-indent="0pt" start-indent="3pt">
+									<fo:table table-layout="fixed" width="100%"  start-indent="2pt">
+										<fo:table-column column-width="proportional-column-width(0.2)" />
+										<fo:table-column column-width="proportional-column-width(0.8)" />
+										<fo:table-body>
+											<fo:table-row border-left="solid 0.1mm #323E4F">
+												<fo:table-cell background-color="#323E4F" border-right="solid 0.1mm white">
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm" color="white">Gene</fo:block>
+												</fo:table-cell>
+												<fo:table-cell background-color="#323E4F">
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm" color="white">DB Accession number</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">IL6</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001318095	NM_000600</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">IL6R</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_000565	NM_001206866	NM_181359</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">IRF4</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001195286	NM_002460</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">JAK2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001322195	NM_001322194	NM_001322196	NM_001322198	NM_001322199	NM_001322204	NM_004972</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">KRAS</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_033360	NM_004985</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">MAP2K1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_002755</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">MEF2B</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001145785</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">MTCP1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001018025</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">MYC</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001354870	NM_002467</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">MYD88</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_002468	NM_001172566	NM_001172569	NM_001172568	NM_001172567</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">NFKB2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001261403	NM_001288724	NM_001077494	NM_001322934	NM_001322935	NM_002502</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">NOTCH1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_017617</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">NOTCH2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001200001	NM_024408</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">NR3C1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001204258	NM_001204261	NM_001204260	NM_001204262	NM_001204263	NM_001204264	NM_001204265	NM_001204259	NM_001024094	NM_001020825	NM_001018077	NM_001018076	NM_001018075	NM_001018074	NM_000176</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">NRAS</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_002524</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">PIK3CA</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_006218</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">PIK3R1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001242466	NM_181524	NM_181523	NM_181504</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">PIM1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001243186	NM_002648</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">PIM2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_006875</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">PIM3</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001001852</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">PTPN11</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_002834	NM_080601	NM_001330437</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">RB1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_000321</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">RHOH</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001278368	NM_001278364	NM_001278365	NM_001278366	NM_001278367	NM_001278369	NM_001278359	NM_001278360	NM_001278361	NM_001278362	NM_001278363	NM_004310</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">SF3B1</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001308824	NM_012433	NM_001005526</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">STAT3</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_003150	NM_139276	NM_213662</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">TGFBR2</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_003242	NM_001024847</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">TLR4</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_138557	NM_138554	NM_003266</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm" padding-bottom="0.8mm">TP53</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black" border-bottom="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_001276699	NM_001276698	NM_001276761	NM_001276760	NM_001126117	NM_001126118	NM_001126116	NM_001126113	NM_001126112	NM_001126115	NM_001126114	NM_001276695	NM_001276697	NM_001276696	NM_000546</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row border-left="solid 0.1mm black">
+												<fo:table-cell>
+													<fo:block padding-top="0.8mm">TRAF3</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-left="solid 0.05mm black">
+													<fo:block color="#6D6E71" padding-top="0.8mm" padding-bottom="0.8mm"> NM_145725	NM_001199427	NM_145726	NM_003300</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+										</fo:table-body>
+									</fo:table>
+								</fo:block>
+							</fo:table-cell>
+						</fo:table-row>
+					</fo:table-body>
+				</fo:table>
+			</fo:block>
+
+			<fo:block page-break-before="always"> </fo:block>
+
 			#end
 
 			<fo:block margin-bottom="10mm">
@@ -3831,7 +5451,11 @@
                         <fo:table-row font-size="6pt" font-family="Noto Sans CJK KR Regular">
                             <fo:table-cell number-columns-spanned="3" end-indent="0pt" text-align="right">
                                 <fo:block color="#808285" font-size="6pt" white-space="pre"> </fo:block>
+								#if($contents.panelName.contains('123'))
 								<fo:block color="#808285">NGeneBio-HEMEaccuTest<fo:inline vertical-align="super" font-size="4pt">TM</fo:inline>는 차세대염기서열 분석법을 이용하여 악성 혈액암 관련 유전자 123개 중에서 유전자 변이를 분석하는 제품 입니다.</fo:block>
+								#elseif($contents.panelName.contains('72'))
+								<fo:block color="#808285">NGeneBio-HEMEaccuTest<fo:inline vertical-align="super" font-size="4pt">TM</fo:inline>는 차세대염기서열 분석법을 이용하여 악성 혈액암 관련 유전자 72개 중에서 유전자 변이를 분석하는 제품 입니다.</fo:block>
+								#end
                             </fo:table-cell>
                         </fo:table-row>
 					</fo:table-body>

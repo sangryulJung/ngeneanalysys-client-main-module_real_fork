@@ -145,10 +145,18 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
         }
 
         //Tier Table Setting
-        pathogenicityColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSwPathogenicityLevel()));
+        pathogenicityColumn.setCellValueFactory(cellData -> new SimpleStringProperty(
+                !StringUtils.isEmpty(cellData.getValue().getSnpInDel().getExpertPathogenicityLevel()) ?
+                        cellData.getValue().getSnpInDel().getExpertPathogenicityLevel() :
+                        cellData.getValue().getSnpInDel().getSwPathogenicityLevel()));
         geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
         variantColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
 
+        setDisplayItem();
+    }
+
+    public void setDisplayItem() {
+        Sample sample = (Sample) getParamMap().get("sample");
         try {
             HttpClientResponse response = apiService.get("/analysisResults/sampleSnpInDels/" + sample.getId(), null,
                     null, false);
@@ -272,7 +280,6 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
 
         //기본 초기화
         settingOverallQC(sample.getId());
-
     }
 
     public List<VariantAndInterpretationEvidence> returnVariant(List<VariantAndInterpretationEvidence> list, String pathogenicity) {

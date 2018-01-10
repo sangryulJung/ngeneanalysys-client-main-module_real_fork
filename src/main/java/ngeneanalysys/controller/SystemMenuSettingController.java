@@ -130,6 +130,7 @@ public class SystemMenuSettingController extends SubPaneController {
 
     @FXML
     public void save() {
+
         logger.info("settings save start..");
 
         if(mainController.getProgressTaskContentArea().getChildren().size() != 0) {

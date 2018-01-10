@@ -3,6 +3,7 @@ package ngeneanalysys.controller;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
@@ -44,6 +45,12 @@ public class VirtualPanelEditController extends SubPaneController {
 
     @FXML
     private TextField optionalGenesTextField;
+
+    @FXML
+    private Button btnOk;
+
+    @FXML
+    private Button btnCancel;
 
     private Stage dialogStage;
 
@@ -90,7 +97,7 @@ public class VirtualPanelEditController extends SubPaneController {
     @Override
     public void show(Parent root) throws IOException {
 
-        logger.info("show..");
+        logger.info("show virtual Panel Edit");
         // Create the dialog Stage
 
         apiService = APIService.getInstance();

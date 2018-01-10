@@ -150,11 +150,11 @@ public class AnalysisDetailLayoutController extends SubPaneController {
         for (AnalysisDetailTabMenuCode code : AnalysisDetailTabMenuCode.values()) {
             AnalysisDetailTabItem item = code.getItem();
 
-            if(item.getNodeId().contains("GERMLINE") &&
+            if(item.getNodeId().contains(ExperimentTypeCode.GERMLINE.getDescription()) &&
                     (panel.getAnalysisType() != null && ExperimentTypeCode.GERMLINE.getDescription().equals(panel.getAnalysisType()))) {
                 addTab(item, idx);
                 idx++;
-            } else if(!item.getNodeId().contains("GERMLINE") &&
+            } else if(!item.getNodeId().contains(ExperimentTypeCode.GERMLINE.getDescription()) &&
                     (panel.getAnalysisType() != null && ExperimentTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType()))){
                 addTab(item, idx);
                 idx++;
@@ -259,7 +259,12 @@ public class AnalysisDetailLayoutController extends SubPaneController {
      */
     public void executeReloadByTab(Tab tab) {
         // 보고서 탭인 경우 reported variant list 갱신함.
-        if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_REPORT.name())) {
+
+        if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_OVERVIEW.name())) {
+            analysisDetailOverviewController.setDisplayItem();
+        } else if (tab.getId().equals(AnalysisDetailTabMenuCode.TAB_OVERVIEW_GERMLINE.name())) {
+            analysisDetailOverviewGermlineController.setDisplayItem();
+        } else if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_REPORT.name())) {
             logger.info("report tab reported variant list reload...");
             analysisDetailReportController.setVariantsList();
         } else if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_REPORT_GERMLINE.name())) {

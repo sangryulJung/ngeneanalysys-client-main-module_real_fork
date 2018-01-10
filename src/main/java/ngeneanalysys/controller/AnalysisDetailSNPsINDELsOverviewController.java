@@ -409,13 +409,13 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
                     child.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> resultTextArea.setText(snpInDelInterpretation.getEvidencePersistentNegative()));
                     flag = true;
                 }*/
-                if(((Label)child).getText().equals("N")) {
+                /*if(((Label)child).getText().equals("N")) {
                     child.getStyleClass().add("prediction_A");
                     //resultTextArea.setText(snpInDelInterpretation.getInterpretationNegativeTesult());
                     child.setStyle("-fx-cursor:hand;");
                     //child.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> resultTextArea.setText(snpInDelInterpretation.getEvidencePersistentNegative()));
                     flag = true;
-                }
+                }*/
 
                 if(!flag) {
                     child.getStyleClass().add("prediction_none");

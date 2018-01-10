@@ -10,6 +10,7 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
@@ -736,16 +737,16 @@ public class SystemManagerPanelController extends SubPaneController {
             img.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 Panel panel = VirtualPanelButton.this.getTableView().getItems().get(
                         VirtualPanelButton.this.getIndex());
-
                 try {
                     VirtualPanelEditController controller;
-                    FXMLLoader loader = FXMLLoadUtil.load(FXMLConstants.VIRTUAL_PANEL_EDIT);
-                    AnchorPane pane = loader.load();
+                    FXMLLoader loader = mainApp.load(FXMLConstants.VIRTUAL_PANEL_EDIT);
+                    Node pane = loader.load();
+                    logger.info("try virtual Panel edit..A");
                     controller = loader.getController();
                     controller.setComboBox(this.comboBox);
                     controller.setPanelId(panel.getId());
                     controller.setMainController(mainController);
-                    controller.show(pane);
+                    controller.show((Parent) pane);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -775,7 +776,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
                     if (result.isPresent()) {
                         if(result.get() == buttonTypeEdit) {
-
+                            logger.info("try virtual Panel edit..");
                             try {
                                 VirtualPanelEditController controller;
                                 FXMLLoader loader = FXMLLoadUtil.load(FXMLConstants.VIRTUAL_PANEL_EDIT);
