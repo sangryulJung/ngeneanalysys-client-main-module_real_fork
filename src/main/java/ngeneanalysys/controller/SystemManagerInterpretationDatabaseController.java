@@ -23,6 +23,7 @@ import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 
 import java.io.File;
@@ -94,6 +95,12 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
 
     @FXML
     private TableColumn<GenomicCoordinateClinicalVariant, String> benignTableColumn;
+
+    @FXML
+    private TableColumn<GenomicCoordinateClinicalVariant, String> createdAtTableColumn;
+
+    @FXML
+    private TableColumn<GenomicCoordinateClinicalVariant, String> deletedTableColumn;
 
     @FXML
     private Pagination interpretationPagination;
@@ -183,6 +190,11 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
 
         benignTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getEvidenceLevelBenign()));
         benignTableColumn.setCellFactory(tableColumn -> new PopUpTableCell("evidenceBenign"));
+
+        createdAtTableColumn.setCellValueFactory(item -> new SimpleStringProperty(DateFormatUtils.format(
+                item.getValue().getCreatedAt().toDate(), "yyyy-MM-dd")));
+
+        deletedTableColumn.setCellValueFactory(item -> new SimpleStringProperty((item.getValue().getDeleted() == 0) ? "N" : "Y"));
 
         interpretationPagination.setPageFactory(pageIndex -> {
             if(currentPageIndex != pageIndex) {
@@ -275,11 +287,18 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
         if(list != null && !list.isEmpty()) {
             for(GenomicCoordinateClinicalVariant item : list) {
                 try {
+
+                    if(item.getDiseaseId() == null || StringUtils.isEmpty(item.getTier()) || StringUtils.isEmpty(item.getClinicalVariantVersion())
+                            || StringUtils.isEmpty(item.getGenomicCoordinateForCV().getChr()) || StringUtils.isEmpty(item.getGenomicCoordinateForCV().getGene())) {
+                        break;
+                    }
+
                     Map<String, Object> params = ConvertUtil.getMapToModel(item);
                     params.remove("createdAt");
                     params.remove("updatedAt");
                     params.remove("deletedAt");
                     params.remove("deleted");
+
                     if (item.getId() == null) {
                         params.remove("id");
                         apiService.post("admin/clinicalVariant/genomicCoordinate", params, null, true);
@@ -309,6 +328,11 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
                 evidenceListTable.getItems().remove(17);
             }
         }
+    }
+
+    @FXML
+    private void cancelInput() {
+        setInterpretationList(currentPageIndex);
     }
 
     class EditingCell extends TableCell<GenomicCoordinateClinicalVariant, String> {

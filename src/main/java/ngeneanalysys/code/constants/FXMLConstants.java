@@ -157,6 +157,8 @@ public class FXMLConstants {
 
 	public static final String ANALYSIS_DETAIL_GENE_EXPRESSION = "/layout/fxml/AnalysisDetail-GeneExpression.fxml";
 
+	public static final String ANALYSIS_DETAIL_EXON_SKIPPING = "/layout/fxml/AnalysisDetail-ExonSkipping.fxml";
+
 	public static final String VIRTUAL_PANEL_EDIT = "/layout/fxml/VirtualPanelEdit.fxml";
 
 }

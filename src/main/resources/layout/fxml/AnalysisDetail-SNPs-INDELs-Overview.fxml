@@ -552,12 +552,9 @@
                                     <Label styleClass="prediction_none" text="C" />
                                     <Label styleClass="prediction_none" text="D" />
                                  </children>
-                              </HBox>
-                              <HBox fx:id="negativeHBox" prefHeight="33.0" styleClass="clinical_significant_pathogenicity_hbox">
-                                 <children>
-                                    <Label fx:id="negativeLabel" styleClass="clinical_significant_pathogenicity_label" text="NEGATIVE" />
-                                    <Label styleClass="prediction_none" text="N" />
-                                 </children>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
                               </HBox>
                               <TextArea fx:id="resultTextArea" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true" />
                            </children>

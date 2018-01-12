@@ -108,6 +108,10 @@ public class ServerURLSettingController extends BaseStageController{
         primaryStage.centerOnScreen();
         primaryStage.show();
 
+        String serverURL = config.getProperty("default.server.host");
+
+        if(!StringUtils.isEmpty(serverURL)) inputURL.setText(serverURL);
+
         logger.info(String.format("start %s", primaryStage.getTitle()));
     }
 }

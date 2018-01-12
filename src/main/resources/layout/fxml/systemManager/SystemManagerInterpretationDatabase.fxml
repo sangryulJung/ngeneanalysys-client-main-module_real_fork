@@ -91,8 +91,8 @@
                                           <TableColumn fx:id="benignTableColumn" prefWidth="90.0" styleClass="txt_black" text="Benign" />
                                        </columns>
                                     </TableColumn>
-                                    <TableColumn fx:id="deletedAtTableColumn" prefWidth="108.0" styleClass="txt_black" text="Date" visible="false" />
-                                    <TableColumn fx:id="deletedAtTableColumn2" prefWidth="108.0" styleClass="txt_black" text="Deactivated" visible="false" />
+                                    <TableColumn fx:id="createdAtTableColumn" prefWidth="108.0" styleClass="txt_black" text="Date" visible="false" />
+                                    <TableColumn fx:id="deletedTableColumn" prefWidth="108.0" styleClass="txt_black" text="Deactivated" visible="false" />
                                  </columns>
                               </TableView>
                               <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="300.0">
@@ -102,6 +102,11 @@
                                           <Pagination fx:id="interpretationPagination" prefHeight="200.0" prefWidth="200.0" />
                                        </children>
                                     </HBox>
+                                    <Button mnemonicParsing="false" onAction="#cancelInput" text="Cancel">
+                                       <HBox.margin>
+                                          <Insets right="10.0" />
+                                       </HBox.margin>
+                                    </Button>
                                     <Button fx:id="interpretationSaveButton" mnemonicParsing="false" onAction="#saveInterpretationDatabase" text="Save" />
                                  </children>
                                  <padding>

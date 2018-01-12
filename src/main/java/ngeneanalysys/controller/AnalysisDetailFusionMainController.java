@@ -44,6 +44,8 @@ public class AnalysisDetailFusionMainController extends AnalysisDetailCommonCont
 
     private AnalysisDetailFusionGeneController analysisDetailFusionGeneController;
 
+    private AnalysisDetailExonSkippingController analysisDetailExonSkippingController;
+
     @FXML
     private TabPane tabArea;
 
@@ -78,6 +80,10 @@ public class AnalysisDetailFusionMainController extends AnalysisDetailCommonCont
         if (subTabFusionExpression != null){
             showFusionExpressionTab();
         }
+
+        if (subTabExonSkipping != null){
+            showExonSkippingTab();
+        }
         // Scene Init
         Scene scene = new Scene(root);
         currentStage.setScene(scene);
@@ -107,6 +113,20 @@ public class AnalysisDetailFusionMainController extends AnalysisDetailCommonCont
             analysisDetailFusionGeneController.setAnalysisDetailFusionMainController(this);
             analysisDetailFusionGeneController.setParamMap(paramMap);
             analysisDetailFusionGeneController.show((Parent) node);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showExonSkippingTab() {
+        try {
+            FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_EXON_SKIPPING);
+            Node node = loader.load();
+            analysisDetailExonSkippingController = loader.getController();
+            analysisDetailExonSkippingController.setMainController(this.getMainController());
+            analysisDetailExonSkippingController.setAnalysisDetailFusionMainController(this);
+            analysisDetailExonSkippingController.setParamMap(paramMap);
+            analysisDetailExonSkippingController.show((Parent) node);
         } catch (Exception e) {
             e.printStackTrace();
         }

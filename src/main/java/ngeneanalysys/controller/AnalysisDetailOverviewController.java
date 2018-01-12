@@ -243,6 +243,9 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
 
             List<VariantAndInterpretationEvidence> tierFour = settingTierList(list, "T4");
 
+            if(!tierTable.getItems().isEmpty()) tierTable.getItems().removeAll(tierTable.getItems());
+            if(!pertinentNegativesTable.getItems().isEmpty()) pertinentNegativesTable.getItems().removeAll(pertinentNegativesTable.getItems());
+
             if(tierOne != null) {
                 tierTable.getItems().addAll(FXCollections.observableArrayList(tierOne));
                 tierOneVariantsCountLabel.setText(String.valueOf(tierOne.size()));

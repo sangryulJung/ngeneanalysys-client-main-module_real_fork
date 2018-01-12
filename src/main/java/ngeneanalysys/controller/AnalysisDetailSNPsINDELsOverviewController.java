@@ -207,8 +207,6 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
     @FXML
     private HBox evidenceHBox;
     @FXML
-    private HBox negativeHBox;
-    @FXML
     private Label swTierLabel;
     @FXML
     private Label userTierLabel;
@@ -308,7 +306,6 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
         renderTier(swTierLabel, variant.getInterpretationEvidence(), variant.getSnpInDel().getSwTier());
         renderTier(userTierLabel, variant.getInterpretationEvidence(), variant.getSnpInDel().getExpertTier());
         renderEvidence(evidenceHBox, variant.getInterpretationEvidence());
-        renderNegative(negativeHBox, variant.getInterpretationEvidence());
     }
 
     //evidence 정보 표시
@@ -388,43 +385,6 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
             node.getStyleClass().add("prediction_none");
         }
     }
-
-    //tier 정보 표시
-    private void renderNegative(HBox node, SnpInDelInterpretation snpInDelInterpretation) {
-        if (node == null || snpInDelInterpretation == null) return;
-        ObservableList<Node> childs = node.getChildren();
-
-        if (childs != null) {
-            for (Node child : childs) {
-                child.getStyleClass().removeAll(child.getStyleClass());
-                if(((Label)child).getText().equals("NEGATIVE")) {
-                    child.getStyleClass().add("clinical_significant_pathogenicity_label");
-                    continue;
-                }
-                boolean flag = false;
-                /*if(((Label)child).getText().equals("N") && !StringUtils.isEmpty(snpInDelInterpretation.getEvidencePersistentNegative())) {
-                    child.getStyleClass().add("prediction_A");
-                    //resultTextArea.setText(snpInDelInterpretation.getInterpretationNegativeTesult());
-                    child.setStyle("-fx-cursor:hand;");
-                    child.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> resultTextArea.setText(snpInDelInterpretation.getEvidencePersistentNegative()));
-                    flag = true;
-                }*/
-                /*if(((Label)child).getText().equals("N")) {
-                    child.getStyleClass().add("prediction_A");
-                    //resultTextArea.setText(snpInDelInterpretation.getInterpretationNegativeTesult());
-                    child.setStyle("-fx-cursor:hand;");
-                    //child.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> resultTextArea.setText(snpInDelInterpretation.getEvidencePersistentNegative()));
-                    flag = true;
-                }*/
-
-                if(!flag) {
-                    child.getStyleClass().add("prediction_none");
-                    //resultTextArea.setText("");
-                }
-            }
-        }
-    }
-
 
     /**
      * Depth 그래프 값 입력 및 화면 출력

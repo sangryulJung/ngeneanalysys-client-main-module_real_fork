@@ -246,7 +246,8 @@
 							</fo:table-cell>
 							<fo:table-cell>
 								<fo:block>
-									#if($variant.snpInDel.genomicCoordinate.gene && $variant.snpInDel.genomicCoordinate.gene == "CEBPA") Mo/Bi
+									#if($variant.interpretationEvidence && $variant.interpretationEvidence.clinicalVariantType &&
+									!($variant.interpretationEvidence.clinicalVariantType == "")) $variant.interpretationEvidence.clinicalVariantType
 									#end
 								</fo:block>
 							</fo:table-cell>

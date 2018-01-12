@@ -156,4 +156,15 @@ public class ConvertUtil {
 		return params;
 	}
 
+	public static String getAminoAcid(String aminoAcid) {
+		if(ngeneanalysys.util.StringUtils.isEmpty(aminoAcid)) return null;
+
+		String[] pattern1 = {"Ala", "Arg", "Asn", "Asp", "Cys", "Glu", "Gln", "Gly", "His",
+				"Ile", "Leu", "Lys", "Met","Phe", "Pro", "Ser", "Thr", "Trp", "Tyr", "Val"};
+		String[] pattern2 = {"A","R","N","D","C","E","Q","G","H","I","L","K","M","F","P","S","T","W","Y","V"};
+
+		/*if(aminoAcid.startsWith("p."))
+			aminoAcid = aminoAcid.replaceFirst("p.", "");*/
+		return StringUtils.replaceEach(aminoAcid, pattern1, pattern2);
+	}
 }

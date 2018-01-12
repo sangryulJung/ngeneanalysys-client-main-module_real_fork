@@ -317,10 +317,6 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         filterList.getChildren().add(predictionDBox);
         filterList.setMargin(predictionDBox, new Insets(0, 0, 0, 5));
 
-        // Negative
-        VBox predictionEBox = getFilterBox(ACMGFilterCode.TIER_NEGATIVE, returnTierVariantCount("TN"));
-        filterList.getChildren().add(predictionEBox);
-        filterList.setMargin(predictionEBox, new Insets(0, 0, 0, 5));
     }
 
     public int returnTierVariantCount(String tier) {
@@ -1169,7 +1165,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                     }
                 });
 
-            TableColumn<VariantAndInterpretationEvidence, String> expertPathogenicityLevel = new TableColumn<>("Pathogenicity(User)");
+            TableColumn<VariantAndInterpretationEvidence, String> expertPathogenicityLevel = new TableColumn<>("Pathogenicity");
             expertPathogenicityLevel.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getExpertPathogenicityLevel()));
             expertPathogenicityLevel.setPrefWidth(80);
             variantListTableView.getColumns().addAll(swPathogenicityLevel, expertPathogenicityLevel);
@@ -1219,12 +1215,19 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         transcript.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getTranscript()));
 
         TableColumn<VariantAndInterpretationEvidence, String> ntChange = new TableColumn<>("NT change");
+        ntChange.setPrefWidth(90);
         ntChange.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
 
         TableColumn<VariantAndInterpretationEvidence, String> aaChange = new TableColumn<>("AA change");
+        aaChange.setPrefWidth(90);
         aaChange.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChange()));
 
-        variantListTableView.getColumns().addAll(warn, report, type, codCons, gene, strand, transcript, ntChange, aaChange);
+        TableColumn<VariantAndInterpretationEvidence, String> aaChangeConversion = new TableColumn<>("AA change(Single)");
+        aaChangeConversion.setPrefWidth(90);
+        aaChangeConversion.setCellValueFactory(cellData -> new SimpleStringProperty(
+                cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChangeConversion()));
+
+        variantListTableView.getColumns().addAll(warn, report, type, codCons, gene, strand, transcript, ntChange, aaChange, aaChangeConversion);
 
         if(panel != null && ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             TableColumn<VariantAndInterpretationEvidence, String> ntChangeBIC = new TableColumn<>("NT change(BIC)");

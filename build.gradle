@@ -1,5 +1,5 @@
 group 'ngenebio'
-version '1.2.20180109'
+version '1.2.20180110'
 
 apply plugin: 'java'
 

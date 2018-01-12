@@ -175,6 +175,8 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
 
             List<VariantAndInterpretationEvidence> benign = returnVariant(list, "B");
 
+            if(!pathogenicityTable.getItems().isEmpty()) pathogenicityTable.getItems().removeAll(pathogenicityTable.getItems());
+
             if(pathgenicList != null) {
                 pathogenicityTable.getItems().addAll(FXCollections.observableArrayList(pathgenicList));
                 pVariantsCountLabel.setText(String.valueOf(pathgenicList.size()));

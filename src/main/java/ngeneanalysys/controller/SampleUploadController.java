@@ -187,6 +187,10 @@ public class SampleUploadController extends BaseStageController{
         currentStage.setMaxWidth(900);*/
         pageSetting(1);
 
+        textFieldRunName.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")) textFieldRunName.setText(oldValue);
+        });
+
         contentWrapper.getChildren().add(maskerPane);
         maskerPane.setPrefHeight(contentWrapper.getPrefHeight());
         maskerPane.setPrefWidth(contentWrapper.getPrefWidth());

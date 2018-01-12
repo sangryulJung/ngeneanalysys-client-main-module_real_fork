@@ -1,5 +1,6 @@
 package ngeneanalysys.model;
 
+import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.StringUtils;
 
 /**
@@ -114,16 +115,6 @@ public class SnpInDelExpression {
     }
 
     public String getAaChangeConversion() {
-        String conversion = aaChange;
-
-        if(!StringUtils.isEmpty(conversion)) {
-            if(conversion.startsWith("p.")) {
-                conversion = conversion.substring(2);
-            }
-
-
-        }
-
-        return conversion;
+        return ConvertUtil.getAminoAcid(aaChange);
     }
 }
