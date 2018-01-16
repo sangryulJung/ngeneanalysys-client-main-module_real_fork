@@ -255,7 +255,8 @@ public class MainController extends BaseStageController {
         HttpClientResponse response = null;
 
         LoginSession loginSession = LoginSessionUtil.getCurrentLoginSession();
-
+        String path = System.getProperty("user.home");
+        basicInformationMap.put("path", path);
         try {
             Map<String,Object> params = new HashMap<>();
             if(loginSession.getRole().equalsIgnoreCase("ADMIN")) {

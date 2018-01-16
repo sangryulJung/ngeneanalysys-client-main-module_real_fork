@@ -571,7 +571,11 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Choose Directory");
-        directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        if(mainController.getBasicInformationMap().containsKey("path")) {
+            directoryChooser.setInitialDirectory(new File((String) mainController.getBasicInformationMap().get("path")));
+        } else {
+            directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        }
         File folder = directoryChooser.showDialog(this.sampleUploadController.getCurrentStage());
 
         if(folder != null) {
@@ -580,6 +584,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             fileList = fileList.stream().filter(file -> file.getName().endsWith(".fastq.gz")).collect(Collectors.toList());
 
             while (!fileList.isEmpty()) {
+                mainController.getBasicInformationMap().put("path", folder.getAbsolutePath());
                 File fastqFile = fileList.get(0);
                 String fastqFilePairName = FileUtil.getFASTQFilePairName(fastqFile.getName());
 
@@ -690,7 +695,11 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose Directory");
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        if(mainController.getBasicInformationMap().containsKey("path")) {
+            fileChooser.setInitialDirectory(new File((String)mainController.getBasicInformationMap().get("path")));
+        } else {
+            fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        }
         FileChooser.ExtensionFilter fileExtensions =
                 new FileChooser.ExtensionFilter(
                         "fastq", "*.fastq", "*.fastq.gz");
@@ -713,6 +722,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             if(pairFileList.size() == 2 && !checkSameSample(fastqFilePairName)) {
                 addUploadFile(pairFileList, fastqFilePairName, true);
             }
+            mainController.getBasicInformationMap().put("path", chooseDirectoryPath);
         }
         tableEdit();
 

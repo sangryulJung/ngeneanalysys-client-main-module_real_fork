@@ -332,7 +332,7 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
 
     @FXML
     private void cancelInput() {
-        setInterpretationList(currentPageIndex);
+        setInterpretationList(currentPageIndex + 1);
     }
 
     class EditingCell extends TableCell<GenomicCoordinateClinicalVariant, String> {
@@ -496,7 +496,6 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
             if(comboBox.getItems().isEmpty()) {
                 comboBox.setConverter(new ComboBoxConverter());
 
-                comboBox.getItems().add(new ComboBoxItem());
                 comboBox.getSelectionModel().selectFirst();
 
                 List<Diseases> diseases = (List<Diseases>)mainController.getBasicInformationMap().get("diseases");

@@ -188,6 +188,151 @@
 
 			<fo:block font-family="Noto Sans CJK KR Bold" font-weight="bold" font-size="14pt" margin-bottom="5mm" background-color="#D9E2F3" padding-top="1mm" padding-bottom="1mm" white-space="pre"> 검출 유전 변이(Detected Genetic Variants)</fo:block>
 			<fo:block margin-bottom="10mm">
+				<!-- Tier One Table-->
+				#if($contents.tierOneCount > 0)
+				<fo:table table-layout="fixed" width="100%" margin-bottom="3mm">
+					<fo:table-column column-width="proportional-column-width(0.1)" />
+					<fo:table-column column-width="proportional-column-width(0.14)" />
+					<fo:table-column column-width="proportional-column-width(0.2)" />
+					<fo:table-column column-width="proportional-column-width(0.16)" />
+					<fo:table-column column-width="proportional-column-width(0.10)" />
+					<fo:table-column column-width="proportional-column-width(0.08)" />
+					<fo:table-column column-width="proportional-column-width(0.12)" />
+					<fo:table-column column-width="proportional-column-width(0.1)" />
+					<fo:table-body>
+						<fo:table-row display-align="center" text-align="center" font-size="9pt">
+							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>GENE</fo:block></fo:table-cell>
+							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>REF.SEQ</fo:block></fo:table-cell>
+							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>NUCLEOTIDE</fo:block></fo:table-cell>
+							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>AMINO ACID</fo:block></fo:table-cell>
+							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>VAF<fo:inline vertical-align="super" font-size="6pt" color="red">*</fo:inline></fo:block></fo:table-cell>
+							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>DEPTH</fo:block></fo:table-cell>
+							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>CATEGORY</fo:block></fo:table-cell>
+							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>REMARK<fo:inline vertical-align="super" font-size="6pt" color="red">**</fo:inline></fo:block></fo:table-cell>
+						</fo:table-row>
+						#foreach($variant in $contents.variantList)
+						#if(($variant.snpInDel.expertTier && $variant.snpInDel.expertTier == "T1")
+						|| (!$variant.snpInDel.expertTier || $variant.snpInDel.expertTier == "") && $variant.snpInDel.swTier == "T1")))
+						<fo:table-row height="7mm" display-align="center" text-align="center" font-family="Noto Sans CJK KR Regular" font-size="9pt">
+							<fo:table-cell border-right="solid 0.1mm black">
+								<fo:block  font-family="Noto Sans CJK KR Bold" font-weight="bold">$variant.snpInDel.genomicCoordinate.gene</fo:block>
+							</fo:table-cell>
+							<fo:table-cell>
+								<fo:block text-align="center">$variant.snpInDel.snpInDelExpression.transcript</fo:block>
+							</fo:table-cell>
+							<fo:table-cell>
+								<fo:block text-align="center">$variant.snpInDel.snpInDelExpression.ntChange</fo:block>
+							</fo:table-cell>
+							<fo:table-cell>
+								<fo:block text-align="center">$variant.snpInDel.snpInDelExpression.aaChange</fo:block>
+							</fo:table-cell>
+							<fo:table-cell>
+								<fo:block text-align="center">$variant.snpInDel.readInfo.alleleFraction%</fo:block>
+							</fo:table-cell>
+							<fo:table-cell>
+								<fo:block text-align="center">$variant.snpInDel.readInfo.readDepth
+									#if($variant.snpInDel.readInfo.readDepth <= 100)<fo:inline vertical-align="super" font-size="6pt" color="red">***</fo:inline>
+									#end
+								</fo:block>
+							</fo:table-cell>
+							<fo:table-cell>
+								<fo:block>Tier
+									#if(($variant.snpInDel.expertTier && $variant.snpInDel.expertTier == "T1") ||
+									((!$variant.snpInDel.expertTier || $variant.snpInDel.expertTier == "") && $variant.snpInDel.swTier == "T1")) I
+									#elseif(($variant.snpInDel.expertTier && $variant.snpInDel.expertTier == "T2") ||
+									((!$variant.snpInDel.expertTier || $variant.snpInDel.expertTier == "") && $variant.snpInDel.swTier == "T2")) II
+									#elseif(($variant.snpInDel.expertTier && $variant.snpInDel.expertTier == "T3") ||
+									((!$variant.snpInDel.expertTier || $variant.snpInDel.expertTier == "") && $variant.snpInDel.swTier == "T3")) III
+									#end
+								</fo:block>
+							</fo:table-cell>
+							<fo:table-cell>
+								<fo:block>
+									#if($variant.interpretationEvidence && $variant.interpretationEvidence.clinicalVariantType &&
+									!($variant.interpretationEvidence.clinicalVariantType == "")) $variant.interpretationEvidence.clinicalVariantType
+									#end
+								</fo:block>
+							</fo:table-cell>
+						</fo:table-row>
+						#end
+						#end
+					</fo:table-body>
+				</fo:table>
+				#end
+				<!-- Tier Two Table-->
+				#if($contents.tierTwoCount > 0)
+				<fo:table table-layout="fixed" width="100%" margin-bottom="3mm">
+					<fo:table-column column-width="proportional-column-width(0.1)" />
+					<fo:table-column column-width="proportional-column-width(0.14)" />
+					<fo:table-column column-width="proportional-column-width(0.2)" />
+					<fo:table-column column-width="proportional-column-width(0.16)" />
+					<fo:table-column column-width="proportional-column-width(0.10)" />
+					<fo:table-column column-width="proportional-column-width(0.08)" />
+					<fo:table-column column-width="proportional-column-width(0.12)" />
+					<fo:table-column column-width="proportional-column-width(0.1)" />
+					<fo:table-body>
+						<fo:table-row display-align="center" text-align="center" font-size="9pt">
+							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>GENE</fo:block></fo:table-cell>
+							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>REF.SEQ</fo:block></fo:table-cell>
+							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>NUCLEOTIDE</fo:block></fo:table-cell>
+							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>AMINO ACID</fo:block></fo:table-cell>
+							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>VAF<fo:inline vertical-align="super" font-size="6pt" color="red">*</fo:inline></fo:block></fo:table-cell>
+							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>DEPTH</fo:block></fo:table-cell>
+							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>CATEGORY</fo:block></fo:table-cell>
+							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>REMARK<fo:inline vertical-align="super" font-size="6pt" color="red">**</fo:inline></fo:block></fo:table-cell>
+						</fo:table-row>
+						#foreach($variant in $contents.variantList)
+						#if(($variant.snpInDel.expertTier && $variant.snpInDel.expertTier == "T2")
+						|| (!$variant.snpInDel.expertTier || $variant.snpInDel.expertTier == "") && $variant.snpInDel.swTier == "T2")))
+						<fo:table-row height="7mm" display-align="center" text-align="center" font-family="Noto Sans CJK KR Regular" font-size="9pt">
+							<fo:table-cell border-right="solid 0.1mm black">
+								<fo:block  font-family="Noto Sans CJK KR Bold" font-weight="bold">$variant.snpInDel.genomicCoordinate.gene</fo:block>
+							</fo:table-cell>
+							<fo:table-cell>
+								<fo:block text-align="center">$variant.snpInDel.snpInDelExpression.transcript</fo:block>
+							</fo:table-cell>
+							<fo:table-cell>
+								<fo:block text-align="center">$variant.snpInDel.snpInDelExpression.ntChange</fo:block>
+							</fo:table-cell>
+							<fo:table-cell>
+								<fo:block text-align="center">$variant.snpInDel.snpInDelExpression.aaChange</fo:block>
+							</fo:table-cell>
+							<fo:table-cell>
+								<fo:block text-align="center">$variant.snpInDel.readInfo.alleleFraction%</fo:block>
+							</fo:table-cell>
+							<fo:table-cell>
+								<fo:block text-align="center">$variant.snpInDel.readInfo.readDepth
+									#if($variant.snpInDel.readInfo.readDepth <= 100)<fo:inline vertical-align="super" font-size="6pt" color="red">***</fo:inline>
+									#end
+								</fo:block>
+							</fo:table-cell>
+							<fo:table-cell>
+								<fo:block>Tier
+									#if(($variant.snpInDel.expertTier && $variant.snpInDel.expertTier == "T1") ||
+									((!$variant.snpInDel.expertTier || $variant.snpInDel.expertTier == "") && $variant.snpInDel.swTier == "T1")) I
+									#elseif(($variant.snpInDel.expertTier && $variant.snpInDel.expertTier == "T2") ||
+									((!$variant.snpInDel.expertTier || $variant.snpInDel.expertTier == "") && $variant.snpInDel.swTier == "T2")) II
+									#elseif(($variant.snpInDel.expertTier && $variant.snpInDel.expertTier == "T3") ||
+									((!$variant.snpInDel.expertTier || $variant.snpInDel.expertTier == "") && $variant.snpInDel.swTier == "T3")) III
+									#end
+								</fo:block>
+							</fo:table-cell>
+							<fo:table-cell>
+								<fo:block>
+									#if($variant.interpretationEvidence && $variant.interpretationEvidence.clinicalVariantType &&
+									!($variant.interpretationEvidence.clinicalVariantType == "")) $variant.interpretationEvidence.clinicalVariantType
+									#end
+								</fo:block>
+							</fo:table-cell>
+						</fo:table-row>
+						#end
+						#end
+					</fo:table-body>
+				</fo:table>
+				#end
+
+				<!-- Tier Three Table-->
+				#if($contents.tierThreeCount > 0)
 				<fo:table table-layout="fixed" width="100%">
 					<fo:table-column column-width="proportional-column-width(0.1)" />
 					<fo:table-column column-width="proportional-column-width(0.14)" />
@@ -209,8 +354,8 @@
 							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>REMARK<fo:inline vertical-align="super" font-size="6pt" color="red">**</fo:inline></fo:block></fo:table-cell>
 						</fo:table-row>
 						#foreach($variant in $contents.variantList)
-						#if(!($variant.snpInDel.expertTier && $variant.snpInDel.expertTier == "T4")
-						|| (!$variant.snpInDel.expertTier || $variant.snpInDel.expertTier == "") && $variant.snpInDel.swTier == "T4")))
+						#if(($variant.snpInDel.expertTier && $variant.snpInDel.expertTier == "T3")
+						|| (!$variant.snpInDel.expertTier || $variant.snpInDel.expertTier == "") && $variant.snpInDel.swTier == "T3")))
 						<fo:table-row height="7mm" display-align="center" text-align="center" font-family="Noto Sans CJK KR Regular" font-size="9pt">
 							<fo:table-cell border-right="solid 0.1mm black">
 								<fo:block  font-family="Noto Sans CJK KR Bold" font-weight="bold">$variant.snpInDel.genomicCoordinate.gene</fo:block>
@@ -264,6 +409,7 @@
 						</fo:table-row>
 					</fo:table-body>
 				</fo:table>
+				#end
 			</fo:block>
 
 			<fo:block font-family="Noto Sans CJK KR Bold" font-weight="bold" font-size="14pt" margin-bottom="5mm" background-color="#D9E2F3" padding-top="1mm" padding-bottom="1mm" white-space="pre"> 소견 및 결과 해석</fo:block>
@@ -2483,7 +2629,7 @@
 
 			<fo:block page-break-before="always"> </fo:block>
 
-			#elseif($contents.virtualPaneName && $contents.virtualPaneName == 'Myelodysplastic Syndrome')
+			#elseif($contents.virtualPaneName && $contents.virtualPaneName == 'MDS/MPN')
 
 			<fo:block font-family="Noto Sans CJK KR Regular" font-size="6.5pt">
 				<fo:table width="100%" table-layout="fixed">
