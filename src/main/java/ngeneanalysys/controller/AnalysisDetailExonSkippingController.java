@@ -42,7 +42,7 @@ public class AnalysisDetailExonSkippingController extends SubPaneController {
 
     public void setList() {
         try {
-            HttpClientResponse response = apiService.get("analysisResults/sampleExonSkip" + sample.getId(), null, null, false);
+            HttpClientResponse response = apiService.get("analysisResults/sampleExonSkip/" + sample.getId(), null, null, false);
 
             PagedExonSkip pagedExonSkip = response.getObjectBeforeConvertResponseToJSON(PagedExonSkip.class);
 

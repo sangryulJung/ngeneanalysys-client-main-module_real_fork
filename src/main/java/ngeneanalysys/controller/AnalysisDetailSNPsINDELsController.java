@@ -228,7 +228,9 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                                 sortListBox.getChildren().add(image);
                                 sortListBox.setMargin(image, new Insets(0, 1, 0, 2));
                             }
-                            sortListBox.getChildren().add(new Label(column.getText()));
+                            Label label = new Label(column.getText());
+                            label.setStyle("-fx-font-size : 16; -fx-text-fill : #C30D23;");
+                            sortListBox.getChildren().add(label);
                             idx++;
                         }
                     }
@@ -1361,7 +1363,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         rightSequence.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getRightSequence()));
         rightSequence.setVisible(false);
 
-        TableColumn<VariantAndInterpretationEvidence, Integer> genomicCoordinate = new TableColumn<>("GenomicCoordinate");
+        TableColumn<VariantAndInterpretationEvidence, Integer> genomicCoordinate = new TableColumn<>("StartPosition");
         genomicCoordinate.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getStartPosition()).asObject());
         genomicCoordinate.setVisible(false);
 

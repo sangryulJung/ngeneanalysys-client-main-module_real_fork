@@ -28,10 +28,7 @@ import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @author Jang
@@ -106,6 +103,8 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
     private Pagination interpretationPagination;
 
     private Integer currentPageIndex = -1;
+
+    private Set<Integer> modifiedList = new HashSet<>();
 
     @Override
     public void show(Parent root) throws IOException {
@@ -273,7 +272,6 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
             } else {
                 interpretationPagination.setVisible(false);
             }
-
         } catch(WebAPIException wae) {
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), false);
@@ -303,7 +301,11 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
                         params.remove("id");
                         apiService.post("admin/clinicalVariant/genomicCoordinate", params, null, true);
                     } else {
-                        apiService.put("admin/clinicalVariant/genomicCoordinate", params, null, true);
+                        Integer id = (Integer)params.get("id");
+                        if(modifiedList.contains(id)) {
+                            params.remove("id");
+                            apiService.put("admin/clinicalVariant/genomicCoordinate/" + id, params, null, true);
+                        }
                     }
                 } catch (WebAPIException wae) {
                     DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
@@ -313,6 +315,13 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
                     ioe.printStackTrace();
                 }
             }
+            modifiedList.clear();
+        }
+    }
+
+    public void addModifiedList(GenomicCoordinateClinicalVariant variant) {
+        if(variant.getId() != null && variant.getId() != 0) {
+            modifiedList.add(variant.getId());
         }
     }
 
@@ -385,11 +394,14 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
             textField = new TextField(getString());
             textField.getStyleClass().add("txt_black");
             textField.setMinWidth(this.getWidth() - this.getGraphicTextGap() * 2);
+            GenomicCoordinateClinicalVariant variant = this.getTableView().getItems().get(this.getTableRow().getIndex());
             textField.setOnKeyPressed(t -> {
                 if(t.getCode() == KeyCode.ENTER) {
                     commitEdit(textField.getText());
+                    addModifiedList(variant);
                 } else if (t.getCode() == KeyCode.TAB) {
                     commitEdit(textField.getText());
+                    addModifiedList(variant);
                 } else if(t.getCode() == KeyCode.ESCAPE) {
                     cancelEdit();
                 }
@@ -397,6 +409,7 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
             textField.focusedProperty().addListener((arg0, arg1, arg2) -> {
                 if (!arg2) {
                     commitEdit(textField.getText());
+                    addModifiedList(variant);
                 }
             });
         }
@@ -408,6 +421,7 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
 
     private class TierComboBoxCell extends TableCell<GenomicCoordinateClinicalVariant, String> {
         private ComboBox<ComboBoxItem> comboBox = new ComboBox<>();
+        private boolean setting = false;
 
         public TierComboBoxCell() {
             comboBox.getSelectionModel().selectedItemProperty().addListener((ov, t, t1) -> {
@@ -416,6 +430,11 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
 
                 if(!StringUtils.isEmpty(t1.getValue())) {
                     genomicCoordinateClinicalVariant.setTier(t1.getValue());
+                    if(setting) {
+                        addModifiedList(genomicCoordinateClinicalVariant);
+                    } else {
+                        setting = true;
+                    }
                 }
             });
         }
@@ -465,15 +484,20 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
 
     private class DiseasesComboBoxCell extends TableCell<GenomicCoordinateClinicalVariant, Integer> {
         private ComboBox<ComboBoxItem> comboBox = new ComboBox<>();
+        boolean setting = false;
 
         public DiseasesComboBoxCell() {
             comboBox.getSelectionModel().selectedItemProperty().addListener((ov, t, t1) -> {
                 GenomicCoordinateClinicalVariant genomicCoordinateClinicalVariant = DiseasesComboBoxCell.this.getTableView().getItems().get(
                         DiseasesComboBoxCell.this.getIndex());
 
-
                 if(!StringUtils.isEmpty(t1.getValue())) {
                     genomicCoordinateClinicalVariant.setDiseaseId(Integer.parseInt(t1.getValue()));
+                    if(setting) {
+                        addModifiedList(genomicCoordinateClinicalVariant);
+                    } else {
+                        setting = true;
+                    }
                 }
             });
         }
@@ -611,6 +635,7 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
                         variant.setEvidenceLevelBenign(text);
                     }
                     commitEdit(text);
+                    addModifiedList(variant);
                 });
 
                 if(!result.isPresent()) {
