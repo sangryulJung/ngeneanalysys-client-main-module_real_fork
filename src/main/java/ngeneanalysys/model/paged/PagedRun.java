@@ -1,6 +1,6 @@
-package ngeneanalysys.model;
+package ngeneanalysys.model.paged;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import ngeneanalysys.model.Run;
 
 import java.util.List;
 

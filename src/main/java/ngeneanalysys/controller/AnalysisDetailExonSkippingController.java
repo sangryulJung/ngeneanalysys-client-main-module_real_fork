@@ -1,15 +1,10 @@
 package ngeneanalysys.controller;
 
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.ExonSkip;
-import ngeneanalysys.model.PagedExonSkip;
+import ngeneanalysys.model.paged.PagedExonSkip;
 import ngeneanalysys.model.Sample;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;

@@ -17,7 +17,7 @@ import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.SequencerCode;
 import ngeneanalysys.controller.extend.BaseStageController;
 import ngeneanalysys.model.AnalysisFile;
-import ngeneanalysys.model.PagedSample;
+import ngeneanalysys.model.paged.PagedSample;
 import ngeneanalysys.model.Run;
 import ngeneanalysys.model.Sample;
 import ngeneanalysys.service.APIService;

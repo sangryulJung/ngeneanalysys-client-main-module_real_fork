@@ -670,11 +670,13 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
      */
     public void showPopulationFrequency() {
         //double populationFrequencyESP6500 = getPopulationFrequencyByParam("ESP6500", "ALL");
-        double populationFrequencyESP6500 = (variant.getSnpInDel().getPopulationFrequency().getEsp6500() != null) ? variant.getSnpInDel().getPopulationFrequency().getEsp6500().doubleValue() : -1d;
+        double populationFrequencyESP6500 = (variant.getSnpInDel().getPopulationFrequency().getEsp6500() != null &&
+                variant.getSnpInDel().getPopulationFrequency().getEsp6500().getAll() != null) ? variant.getSnpInDel().getPopulationFrequency().getEsp6500().getAll().doubleValue() : -1d;
         addPopulationFrequencyGraph(0, 0, "ESP6500 ", populationFrequencyESP6500);
 
         //double populationFrequency1000Genomes = getPopulationFrequencyByParam("1000_genomes", "ALL");
-        double populationFrequency1000Genomes = (variant.getSnpInDel().getPopulationFrequency().getG1000() != null) ?variant.getSnpInDel().getPopulationFrequency().getG1000().doubleValue() : -1d;
+        double populationFrequency1000Genomes = (variant.getSnpInDel().getPopulationFrequency().getG1000() != null &&
+                variant.getSnpInDel().getPopulationFrequency().getG1000().getAll() != null) ? variant.getSnpInDel().getPopulationFrequency().getG1000().getAll().doubleValue() : -1d;
         addPopulationFrequencyGraph(0, 1, "1KG ", populationFrequency1000Genomes);
 
         //double populationFrequencyExAC = getPopulationFrequencyByParam("ExAC", "ALL");

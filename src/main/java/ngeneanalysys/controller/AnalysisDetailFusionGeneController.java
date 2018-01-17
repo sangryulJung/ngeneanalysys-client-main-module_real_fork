@@ -14,6 +14,8 @@ import ngeneanalysys.code.enums.SNPsINDELsTabMenuCode;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
+import ngeneanalysys.model.paged.PagedFusionGene;
+import ngeneanalysys.model.paged.PagedFusionGeneInterpretationLogView;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;

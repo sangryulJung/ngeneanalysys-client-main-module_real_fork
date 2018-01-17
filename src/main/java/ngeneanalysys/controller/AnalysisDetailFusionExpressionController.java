@@ -11,7 +11,7 @@ import javafx.scene.control.TableView;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.GeneExpression;
-import ngeneanalysys.model.PagedGeneExpression;
+import ngeneanalysys.model.paged.PagedGeneExpression;
 import ngeneanalysys.model.Sample;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.DialogUtil;

@@ -10,7 +10,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
-import ngeneanalysys.model.PagedSystemLogView;
+import ngeneanalysys.model.paged.PagedSystemLogView;
 import ngeneanalysys.model.SystemLogView;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.DialogUtil;

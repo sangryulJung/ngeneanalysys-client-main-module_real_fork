@@ -1,16 +1,20 @@
-package ngeneanalysys.model;
+package ngeneanalysys.model.paged;
+
+import ngeneanalysys.model.SampleAnalysisJobCount;
+import ngeneanalysys.model.SampleView;
 
 import java.util.List;
 
-public class PagedSample {
-    private  Integer count;
-    private List<Sample> result;
+public class PagedSampleView {
+    private Integer count;
+    private List<SampleView> result;
     private SampleAnalysisJobCount sampleAnalysisJobCount;
 
     public Integer getCount() {
         return count;
     }
-    public List<Sample> getResult() {
+
+    public List<SampleView> getResult() {
         return result;
     }
 
@@ -20,7 +24,7 @@ public class PagedSample {
 
     @Override
     public String toString() {
-        return "PagedSample{" +
+        return "PagedSampleView{" +
                 "count=" + count +
                 ", result=" + result +
                 ", sampleAnalysisJobCount=" + sampleAnalysisJobCount +

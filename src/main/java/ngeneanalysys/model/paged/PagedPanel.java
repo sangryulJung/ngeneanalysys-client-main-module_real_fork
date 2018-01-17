@@ -1,14 +1,16 @@
-package ngeneanalysys.model;
+package ngeneanalysys.model.paged;
+
+import ngeneanalysys.model.Panel;
 
 import java.util.List;
 
 /**
  * @author Jang
- * @since 2018-01-12
+ * @since 2017-11-02
  */
-public class PagedGeneExpression {
+public class PagedPanel {
     private Integer count;
-    private List<GeneExpression> result;
+    private List<Panel> result;
 
     /**
      * @return count
@@ -20,7 +22,7 @@ public class PagedGeneExpression {
     /**
      * @return result
      */
-    public List<GeneExpression> getResult() {
+    public List<Panel> getResult() {
         return result;
     }
 }

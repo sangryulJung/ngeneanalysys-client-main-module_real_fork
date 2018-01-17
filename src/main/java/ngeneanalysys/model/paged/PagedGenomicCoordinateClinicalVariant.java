@@ -1,4 +1,6 @@
-package ngeneanalysys.model;
+package ngeneanalysys.model.paged;
+
+import ngeneanalysys.model.GenomicCoordinateClinicalVariant;
 
 import java.util.List;
 

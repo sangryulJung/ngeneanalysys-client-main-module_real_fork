@@ -12,6 +12,7 @@ import javafx.scene.layout.*;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.ExperimentTypeCode;
 import ngeneanalysys.model.*;
+import ngeneanalysys.model.paged.PagedSampleView;
 import ngeneanalysys.util.WorksheetUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;

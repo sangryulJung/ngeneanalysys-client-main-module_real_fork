@@ -1,4 +1,6 @@
-package ngeneanalysys.model;
+package ngeneanalysys.model.paged;
+
+import ngeneanalysys.model.ExonSkip;
 
 import java.util.List;
 

@@ -8,41 +8,13 @@ import java.math.BigDecimal;
  */
 public class PopulationFrequency {
     private String dbsnpRsId;
-    private BigDecimal g1000;
+    private G1000 g1000;
     private BigDecimal exac;
-    private BigDecimal esp6500;
+    private ESP6500 esp6500;
+    private GenomeAD genomAD;
     private BigDecimal koreanExomInformationDatabase;
     private BigDecimal kohbraFreq;
     private BigDecimal koreanReferenceGenomeDatabase;
-    private BigDecimal genomAD;
-
-    /**
-     * @return genomAD
-     */
-    public BigDecimal getGenomAD() {
-        return genomAD;
-    }
-
-    /**
-     * @param genomAD
-     */
-    public void setGenomAD(BigDecimal genomAD) {
-        this.genomAD = genomAD;
-    }
-
-    /**
-     * @return koreanReferenceGenomeDatabase
-     */
-    public BigDecimal getKoreanReferenceGenomeDatabase() {
-        return koreanReferenceGenomeDatabase;
-    }
-
-    /**
-     * @param koreanReferenceGenomeDatabase
-     */
-    public void setKoreanReferenceGenomeDatabase(BigDecimal koreanReferenceGenomeDatabase) {
-        this.koreanReferenceGenomeDatabase = koreanReferenceGenomeDatabase;
-    }
 
     /**
      * @return dbsnpRsId
@@ -52,24 +24,10 @@ public class PopulationFrequency {
     }
 
     /**
-     * @param dbsnpRsId
-     */
-    public void setDbsnpRsId(String dbsnpRsId) {
-        this.dbsnpRsId = dbsnpRsId;
-    }
-
-    /**
      * @return g1000
      */
-    public BigDecimal getG1000() {
+    public G1000 getG1000() {
         return g1000;
-    }
-
-    /**
-     * @param g1000
-     */
-    public void setG1000(BigDecimal g1000) {
-        this.g1000 = g1000;
     }
 
     /**
@@ -80,24 +38,17 @@ public class PopulationFrequency {
     }
 
     /**
-     * @param exac
-     */
-    public void setExac(BigDecimal exac) {
-        this.exac = exac;
-    }
-
-    /**
      * @return esp6500
      */
-    public BigDecimal getEsp6500() {
+    public ESP6500 getEsp6500() {
         return esp6500;
     }
 
     /**
-     * @param esp6500
+     * @return genomAD
      */
-    public void setEsp6500(BigDecimal esp6500) {
-        this.esp6500 = esp6500;
+    public GenomeAD getGenomAD() {
+        return genomAD;
     }
 
     /**
@@ -108,13 +59,6 @@ public class PopulationFrequency {
     }
 
     /**
-     * @param koreanExomInformationDatabase
-     */
-    public void setKoreanExomInformationDatabase(BigDecimal koreanExomInformationDatabase) {
-        this.koreanExomInformationDatabase = koreanExomInformationDatabase;
-    }
-
-    /**
      * @return kohbraFreq
      */
     public BigDecimal getKohbraFreq() {
@@ -122,9 +66,9 @@ public class PopulationFrequency {
     }
 
     /**
-     * @param kohbraFreq
+     * @return koreanReferenceGenomeDatabase
      */
-    public void setKohbraFreq(BigDecimal kohbraFreq) {
-        this.kohbraFreq = kohbraFreq;
+    public BigDecimal getKoreanReferenceGenomeDatabase() {
+        return koreanReferenceGenomeDatabase;
     }
 }

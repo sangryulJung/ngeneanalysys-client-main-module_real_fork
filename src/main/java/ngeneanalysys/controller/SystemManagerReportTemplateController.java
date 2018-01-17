@@ -16,7 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
-import ngeneanalysys.model.PagedReportTemplate;
+import ngeneanalysys.model.paged.PagedReportTemplate;
 import ngeneanalysys.model.ReportContents;
 import ngeneanalysys.model.ReportImage;
 import ngeneanalysys.model.ReportTemplate;

@@ -1,14 +1,16 @@
-package ngeneanalysys.model;
+package ngeneanalysys.model.paged;
+
+import ngeneanalysys.model.FusionGene;
 
 import java.util.List;
 
 /**
  * @author Jang
- * @since 2017-11-02
+ * @since 2017-12-26
  */
-public class PagedPanel {
+public class PagedFusionGene {
     private Integer count;
-    private List<Panel> result;
+    private List<FusionGene> result;
 
     /**
      * @return count
@@ -20,7 +22,7 @@ public class PagedPanel {
     /**
      * @return result
      */
-    public List<Panel> getResult() {
+    public List<FusionGene> getResult() {
         return result;
     }
 }

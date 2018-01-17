@@ -1,14 +1,16 @@
-package ngeneanalysys.model;
+package ngeneanalysys.model.paged;
+
+import ngeneanalysys.model.PanelView;
 
 import java.util.List;
 
 /**
  * @author Jang
- * @since 2017-12-26
+ * @since 2018-01-08
  */
-public class PagedFusionGeneInterpretationLogView {
+public class PagedPanelView {
     private Integer count;
-    private List<FusionGeneInterpretationLogView> result;
+    private List<PanelView> result;
 
     /**
      * @return count
@@ -20,7 +22,7 @@ public class PagedFusionGeneInterpretationLogView {
     /**
      * @return result
      */
-    public List<FusionGeneInterpretationLogView> getResult() {
+    public List<PanelView> getResult() {
         return result;
     }
 }

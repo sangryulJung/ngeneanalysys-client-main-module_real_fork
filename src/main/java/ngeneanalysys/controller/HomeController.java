@@ -18,6 +18,8 @@ import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.Panel;
+import ngeneanalysys.model.paged.PagedRun;
+import ngeneanalysys.model.paged.PagedSample;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;

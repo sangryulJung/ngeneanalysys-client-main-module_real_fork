@@ -1,4 +1,6 @@
-package ngeneanalysys.model;
+package ngeneanalysys.model.paged;
+
+import ngeneanalysys.model.VirtualPanel;
 
 import java.util.List;
 
