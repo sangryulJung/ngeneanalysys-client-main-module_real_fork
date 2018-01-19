@@ -33,8 +33,13 @@ import ngeneanalysys.service.PDFCreateService;
 import ngeneanalysys.task.ImageFileDownloadTask;
 import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.rendering.ImageType;
+import org.apache.pdfbox.rendering.PDFRenderer;
 import org.slf4j.Logger;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -729,6 +734,22 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         createPDF(false);
     }
 
+    public void convertPDFtoImage(File file, String baseFileName) {
+        String path = file.getParentFile().getAbsolutePath();
+        try {
+        PDDocument document = PDDocument.load(file);
+            PDFRenderer d = new PDFRenderer(document);
+            int index = document.getNumberOfPages();
+
+            for(int i = 0; i < index ;i++) {
+                BufferedImage im  = d.renderImage(i, 2, ImageType.RGB);
+                ImageIO.write(im, "jpg",  new File(path + "\\\\" + baseFileName + "_" + i+".jpg"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public boolean createPDF(boolean isDraft) {
         boolean created = true;
 
@@ -950,6 +971,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     contents = velocityUtil.getContents("/layout/velocity/report.vm", "UTF-8", model);
                     created = pdfCreateService.createPDF(file, contents);
                     createdCheck(created, file);
+                    //convertPDFtoImage(file, sample.getName());
                 } else {
                     for(int i = 0; i < customFieldGridPane.getChildren().size(); i++) {
                         Object gridObject = customFieldGridPane.getChildren().get(i);
@@ -997,6 +1019,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                             //이미지파일이 모두 다운로드 되었다면 PDF 파일을 생성함
                             final boolean created1 = pdfCreateService.createPDF(file, contents1);
                             createdCheck(created1, file);
+                            //convertPDFtoImage(file, sample.getName());
                         } catch (Exception e) {
                             DialogUtil.error("Save Fail.", "An error occurred during the creation of the report document.", getMainApp().getPrimaryStage(), false);
                             e.printStackTrace();

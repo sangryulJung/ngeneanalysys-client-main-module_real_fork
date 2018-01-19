@@ -56,13 +56,16 @@ dependencies {
     // https://mvnrepository.com/artifact/org.apache.commons/commons-compress
     compile group: 'org.apache.commons', name: 'commons-compress', version: '1.12'
     // https://mvnrepository.com/artifact/org.apache.xmlgraphics/fop
-    compile group: 'org.apache.xmlgraphics', name: 'fop', version: '2.1'
+    compile group: 'org.apache.xmlgraphics', name: 'fop', version: '2.2'
     // https://mvnrepository.com/artifact/org.apache.velocity/velocity
     compile group: 'org.apache.velocity', name: 'velocity', version: '1.7'
     // https://mvnrepository.com/artifact/org.apache.pdfbox/fontbox
-    compile group: 'org.apache.pdfbox', name: 'fontbox', version: '1.8.13'
+    //compile group: 'org.apache.pdfbox', name: 'fontbox', version: '1.8.13'
     // https://mvnrepository.com/artifact/org.ahocorasick/ahocorasick
     compile group: 'org.ahocorasick', name: 'ahocorasick', version: '0.3.0'
+    // https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox
+    compile group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.6'
+
 
     compile 'org.controlsfx:controlsfx:8.40.13'
 

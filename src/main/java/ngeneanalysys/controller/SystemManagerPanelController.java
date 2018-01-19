@@ -93,6 +93,12 @@ public class SystemManagerPanelController extends SubPaneController {
     private CheckBox warningMAFCheckBox;
 
     @FXML
+    private TextField reportCutOffMAFTextField;
+
+    @FXML
+    private CheckBox reportCutOffMAFCheckBox;
+
+    @FXML
     private Button roiFileSelectionButton;
 
     @FXML
@@ -183,10 +189,9 @@ public class SystemManagerPanelController extends SubPaneController {
         defaultPanelTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getIsDefault() ? "Y" : "N"));
         deletedTableColumn.setCellValueFactory(item -> new SimpleStringProperty((item.getValue().getDeleted() == 0) ? "N" : "Y"));
 
-        Pattern pattern = Pattern.compile("\\d*|\\d+\\.\\d*");
-        TextFormatter formatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change ->
-            pattern.matcher(change.getControlNewText()).matches() ? change : null);
-        warningMAFTextField.setTextFormatter(formatter);
+        warningMAFTextField.setTextFormatter(returnFormatter());
+
+        reportCutOffMAFTextField.setTextFormatter(returnFormatter());
 
         warningReadDepthTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             if(!newValue.matches("[0-9]*")) warningReadDepthTextField.setText(oldValue);
@@ -196,9 +201,12 @@ public class SystemManagerPanelController extends SubPaneController {
             warningMAFTextField.setDisable(!newValue)
         );
 
-
         warningReadDepthCheckBox.selectedProperty().addListener((observable, oldValue,  newValue) ->
             warningReadDepthTextField.setDisable(!newValue)
+        );
+
+        reportCutOffMAFCheckBox.selectedProperty().addListener((observable, oldValue,  newValue) ->
+                reportCutOffMAFTextField.setDisable(!newValue)
         );
 
 
@@ -320,6 +328,12 @@ public class SystemManagerPanelController extends SubPaneController {
         setDisabledItem(true);
     }
 
+    public TextFormatter returnFormatter() {
+        Pattern pattern = Pattern.compile("\\d*|\\d+\\.\\d*");
+        return new TextFormatter((UnaryOperator<TextFormatter.Change>) change ->
+                pattern.matcher(change.getControlNewText()).matches() ? change : null);
+    }
+
     public void setPanelList(int page) {
 
         int totalCount = 0;
@@ -418,6 +432,9 @@ public class SystemManagerPanelController extends SubPaneController {
             if(warningMAFCheckBox.isSelected() && !StringUtils.isEmpty(warningMAFTextField.getText())) {
                 params.put("warningMAF", warningMAFTextField.getText());
             }
+            if(reportCutOffMAFCheckBox.isSelected() && !StringUtils.isEmpty(reportCutOffMAFTextField.getText())) {
+                params.put("reportCutoffMAF", reportCutOffMAFTextField.getText());
+            }
 
             params.put("target", targetComboBox.getSelectionModel().getSelectedItem().getValue());
             params.put("analysisType", analysisTypeComboBox.getSelectionModel().getSelectedItem().getValue());
@@ -513,6 +530,7 @@ public class SystemManagerPanelController extends SubPaneController {
         panelNameTextField.setText("");
         panelCodeTextField.setText("");
         warningMAFTextField.setText("");
+        reportCutOffMAFTextField.setText("");
         warningReadDepthTextField.setText("");
         sampleSourceComboBox.getSelectionModel().selectFirst();
         analysisTypeComboBox.getSelectionModel().selectFirst();
@@ -525,13 +543,16 @@ public class SystemManagerPanelController extends SubPaneController {
         reportTemplateComboBox.getSelectionModel().selectFirst();
         warningReadDepthCheckBox.setSelected(false);
         warningMAFCheckBox.setSelected(false);
+        reportCutOffMAFCheckBox.setSelected(false);
     }
 
     public void setDisabledItem(boolean condition) {
         warningReadDepthTextField.setDisable(true);
         warningMAFTextField.setDisable(true);
+        reportCutOffMAFTextField.setDisable(true);
         warningReadDepthCheckBox.setDisable(condition);
         warningMAFCheckBox.setDisable(condition);
+        reportCutOffMAFCheckBox.setDisable(condition);
         panelNameTextField.setDisable(condition);
         panelCodeTextField.setDisable(condition);
         sampleSourceComboBox.setDisable(condition);
@@ -622,6 +643,11 @@ public class SystemManagerPanelController extends SubPaneController {
                     warningReadDepthCheckBox.setSelected(true);
                     warningReadDepthTextField.setDisable(false);
                     warningReadDepthTextField.setText(panel.getWarningReadDepth().toString());
+                }
+                if(panel.getReportCutoffMAF() != null) {
+                    reportCutOffMAFCheckBox.setSelected(true);
+                    reportCutOffMAFTextField.setDisable(false);
+                    reportCutOffMAFTextField.setText(panel.getReportCutoffMAF().toString());
                 }
 
                 Optional<ComboBoxItem> sampleSourceItem =

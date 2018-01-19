@@ -20,8 +20,16 @@ public class Panel {
     private Boolean isDefault;
     private Integer warningReadDepth;
     private BigDecimal warningMAF;
+    private BigDecimal reportCutoffMAF;
 
     private Integer reportTemplateId;
+
+    /**
+     * @return reportCutoffMAF
+     */
+    public BigDecimal getReportCutoffMAF() {
+        return reportCutoffMAF;
+    }
 
     /**
      * @return reportTemplateId
