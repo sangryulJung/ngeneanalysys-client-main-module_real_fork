@@ -99,7 +99,7 @@
                                  <children>
                                     <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="SOMETIMES">
                                        <children>
-                                          <Pagination fx:id="interpretationPagination" prefHeight="200.0" prefWidth="200.0" />
+                                          <Pagination fx:id="interpretationPagination" prefHeight="46.0" prefWidth="740.0" />
                                        </children>
                                     </HBox>
                                     <Button mnemonicParsing="false" onAction="#cancelInput" text="Cancel">

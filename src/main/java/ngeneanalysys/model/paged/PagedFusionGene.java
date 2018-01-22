@@ -1,6 +1,6 @@
 package ngeneanalysys.model.paged;
 
-import ngeneanalysys.model.FusionGene;
+import ngeneanalysys.model.FusionGeneView;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class PagedFusionGene {
     private Integer count;
-    private List<FusionGene> result;
+    private List<FusionGeneView> result;
 
     /**
      * @return count
@@ -22,7 +22,7 @@ public class PagedFusionGene {
     /**
      * @return result
      */
-    public List<FusionGene> getResult() {
+    public List<FusionGeneView> getResult() {
         return result;
     }
 }

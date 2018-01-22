@@ -41,82 +41,82 @@ public class AnalysisDetailFusionGeneController extends SubPaneController {
     private AnalysisDetailSNPsINDELsOverviewController overviewController;
 
     @FXML
-    private TableView<FusionGene> fusionGeneTableView;
+    private TableView<FusionGeneView> fusionGeneTableView;
 
     @FXML
-    private TableColumn<FusionGene, String> nameTableColumn;
+    private TableColumn<FusionGeneView, String> nameTableColumn;
 
     @FXML
-    private TableColumn<FusionGene, String> tierTableColumn;
+    private TableColumn<FusionGeneView, String> tierTableColumn;
 
     @FXML
-    private TableColumn<FusionGene, String> userTierTableColumn;
+    private TableColumn<FusionGeneView, String> userTierTableColumn;
 
     @FXML
-    private TableColumn<FusionGene, String> reportTableColumn;
+    private TableColumn<FusionGeneView, String> reportTableColumn;
 
     @FXML
-    private TableColumn<FusionGene, Integer> junctionReadCountTableColumn;
+    private TableColumn<FusionGeneView, Integer> junctionReadCountTableColumn;
 
     @FXML
-    private TableColumn<FusionGene, Integer> spanninigFragCountTableColumn;
+    private TableColumn<FusionGeneView, Integer> spanninigFragCountTableColumn;
 
     @FXML
-    private TableColumn<FusionGene, String> leftBreakPointTableColumn;
+    private TableColumn<FusionGeneView, String> leftBreakPointTableColumn;
 
     @FXML
-    private TableColumn<FusionGene, String> rightBreakPointTableColumn;
+    private TableColumn<FusionGeneView, String> rightBreakPointTableColumn;
 
     @FXML
-    private TableColumn<FusionGene, String> leftTxExonTableColumn;
+    private TableColumn<FusionGeneView, String> leftTxExonTableColumn;
 
     @FXML
-    private TableColumn<FusionGene, String> rightTxExonTableColumn;
+    private TableColumn<FusionGeneView, String> rightTxExonTableColumn;
 
     @FXML
-    private TableColumn<FusionGene, String> protFusionTypeTableColumn;
+    private TableColumn<FusionGeneView, String> protFusionTypeTableColumn;
 
     @FXML
-    private TableColumn<FusionGene, String> spliceTypeTableColumn;
+    private TableColumn<FusionGeneView, String> spliceTypeTableColumn;
 
     @FXML
-    private TableColumn<FusionGene, String> largeAnchorSupportTableColumn;
+    private TableColumn<FusionGeneView, String> largeAnchorSupportTableColumn;
 
     @FXML
-    private TableColumn<FusionGene, String> leftBreakDinucTableColumn;
+    private TableColumn<FusionGeneView, String> leftBreakDinucTableColumn;
 
     @FXML
-    private TableColumn<FusionGene, String> rightBreakDinucTableColumn;
+    private TableColumn<FusionGeneView, String> rightBreakDinucTableColumn;
 
     @FXML
-    private TableColumn<FusionGene, String> annotsTableColumn;
+    private TableColumn<FusionGeneView, String> annotsTableColumn;
 
     @FXML
-    private TableColumn<FusionGene, String> cdsLeftIdTableColumn;
+    private TableColumn<FusionGeneView, String> cdsLeftIdTableColumn;
 
     @FXML
-    private TableColumn<FusionGene, String> cdsleftRangeTableColumn;
+    private TableColumn<FusionGeneView, String> cdsleftRangeTableColumn;
 
     @FXML
-    private TableColumn<FusionGene, String> cdsRightIdTableColumn;
+    private TableColumn<FusionGeneView, String> cdsRightIdTableColumn;
 
     @FXML
-    private TableColumn<FusionGene, String> cdsRightRangeTableColumn;
+    private TableColumn<FusionGeneView, String> cdsRightRangeTableColumn;
 
     @FXML
-    private TableColumn<FusionGene, String> fusionModelTableColumn;
+    private TableColumn<FusionGeneView, String> fusionModelTableColumn;
 
     @FXML
-    private TableColumn<FusionGene, String> fusionCdsTableColumn;
+    private TableColumn<FusionGeneView, String> fusionCdsTableColumn;
 
     @FXML
-    private TableColumn<FusionGene, String> fusionTranslTableColumn;
+    private TableColumn<FusionGeneView, String> fusionTranslTableColumn;
 
     @FXML
-    private TableColumn<FusionGene, String> pfamLeftTableColumn;
+    private TableColumn<FusionGeneView, String> pfamLeftTableColumn;
 
     @FXML
-    private TableColumn<FusionGene, String> pfamRightTableColumn;
+    private TableColumn<FusionGeneView, String> pfamRightTableColumn;
 
     @FXML
     private TabPane tabArea;
@@ -127,7 +127,7 @@ public class AnalysisDetailFusionGeneController extends SubPaneController {
     /** 현재 선택된 변이 리스트 객체의 index */
     private int selectedVariantIndex;
 
-    private FusionGene selectedFusionGene;
+    private FusionGeneView selectedFusionGene;
 
     /** Overview Tab */
     public Tab subTabOverview;
@@ -149,12 +149,12 @@ public class AnalysisDetailFusionGeneController extends SubPaneController {
 
         sample = (Sample)paramMap.get("sample");
 
-        nameTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getName()));
-        tierTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.tierConvert(cellData.getValue().getSwTier())));
-        userTierTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.tierConvert(cellData.getValue().getExpertTier())));
+        nameTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionGene().getName()));
+        tierTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.tierConvert(cellData.getValue().getFusionGene().getSwTier())));
+        userTierTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.tierConvert(cellData.getValue().getFusionGene().getExpertTier())));
         reportTableColumn.getStyleClass().add("alignment_center");
-        reportTableColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getIncludedInReport()));
-        reportTableColumn.setCellFactory(param -> new TableCell<FusionGene, String>() {
+        reportTableColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getFusionGene().getIncludedInReport()));
+        reportTableColumn.setCellFactory(param -> new TableCell<FusionGeneView, String>() {
             @Override
             public void updateItem(String item, boolean empty) {
                 Label label = null;
@@ -167,27 +167,27 @@ public class AnalysisDetailFusionGeneController extends SubPaneController {
             }
         });
 
-        junctionReadCountTableColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getJunctionReadCount()));
-        spanninigFragCountTableColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getSpanningFragCount()));
-        leftBreakPointTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionLeft().getLeftBreakPoint()));
-        rightBreakPointTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionRight().getRightBreakPoint()));
-        leftTxExonTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionLeft().getLeftTxExon()));
-        rightTxExonTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionRight().getRightTxExon()));
-        protFusionTypeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getProtFusionType()));
-        spliceTypeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getSpliceType()));
-        largeAnchorSupportTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getLargeAnchorSupport()));
-        leftBreakDinucTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionLeft().getLeftBreakDinuc()));
-        rightBreakDinucTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionRight().getRightBreakDinuc()));
-        annotsTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getAnnots()));
-        cdsLeftIdTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionLeft().getCdsLeftId()));
-        cdsleftRangeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionLeft().getCdsLeftRange()));
-        cdsRightIdTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionRight().getCdsRightId()));
-        cdsRightRangeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionRight().getCdsRightRange()));
-        fusionModelTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionModel()));
-        fusionCdsTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionCds()));
-        fusionTranslTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionTransl()));
-        pfamLeftTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionLeft().getPfamLeft()));
-        pfamRightTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionRight().getPfamRight()));
+        junctionReadCountTableColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getFusionGene().getJunctionReadCount()));
+        spanninigFragCountTableColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getFusionGene().getSpanningFragCount()));
+        leftBreakPointTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionGene().getFusionLeft().getLeftBreakPoint()));
+        rightBreakPointTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionGene().getFusionRight().getRightBreakPoint()));
+        leftTxExonTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionGene().getFusionLeft().getLeftTxExon()));
+        rightTxExonTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionGene().getFusionRight().getRightTxExon()));
+        protFusionTypeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionGene().getProtFusionType()));
+        spliceTypeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionGene().getSpliceType()));
+        largeAnchorSupportTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionGene().getLargeAnchorSupport()));
+        leftBreakDinucTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionGene().getFusionLeft().getLeftBreakDinuc()));
+        rightBreakDinucTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionGene().getFusionRight().getRightBreakDinuc()));
+        annotsTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionGene().getAnnots()));
+        cdsLeftIdTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionGene().getFusionLeft().getCdsLeftId()));
+        cdsleftRangeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionGene().getFusionLeft().getCdsLeftRange()));
+        cdsRightIdTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionGene().getFusionRight().getCdsRightId()));
+        cdsRightRangeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionGene().getFusionRight().getCdsRightRange()));
+        fusionModelTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionGene().getFusionModel()));
+        fusionCdsTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionGene().getFusionCds()));
+        fusionTranslTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionGene().getFusionTransl()));
+        pfamLeftTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionGene().getFusionLeft().getPfamLeft()));
+        pfamRightTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionGene().getFusionRight().getPfamRight()));
 
 
         tabArea.getTabs().removeAll(tabArea.getTabs());
@@ -207,8 +207,8 @@ public class AnalysisDetailFusionGeneController extends SubPaneController {
             response = apiService.get("analysisResults/sampleFusionGene/" + sample.getId(), null, null, false);
 
             PagedFusionGene fusionGene = response.getObjectBeforeConvertResponseToJSON(PagedFusionGene.class);
-            List<FusionGene> list = fusionGene.getResult();
-            ObservableList<FusionGene> displayList = null;
+            List<FusionGeneView> list = fusionGene.getResult();
+            ObservableList<FusionGeneView> displayList = null;
 
             if(list != null && !list.isEmpty()) {
                 displayList = FXCollections.observableArrayList(list);
@@ -238,7 +238,7 @@ public class AnalysisDetailFusionGeneController extends SubPaneController {
      * @param fusionGene
      */
     @SuppressWarnings("unchecked")
-    public void showVariantDetail(FusionGene fusionGene) {
+    public void showVariantDetail(FusionGeneView fusionGene) {
         //expandOverview();
         // 선택된 변이의 목록에서의 인덱스 정보 설정.
         selectedVariantIndex = fusionGeneTableView.getItems().indexOf(fusionGene);
@@ -249,7 +249,7 @@ public class AnalysisDetailFusionGeneController extends SubPaneController {
         try {
             // Detail 데이터 API 요청
             HttpClientResponse responseDetail = apiService.get(
-                    "/analysisResults/fusionGene/" + selectedFusionGene.getId(), null, null, false);
+                    "/analysisResults/fusionGene/" + selectedFusionGene.getFusionGene().getId(), null, null, false);
             // 상세 데이터 요청이 정상 요청된 경우 진행.
             FusionGene fusionGeneDetail
                     = responseDetail.getObjectBeforeConvertResponseToJSON(FusionGene.class);
@@ -272,7 +272,7 @@ public class AnalysisDetailFusionGeneController extends SubPaneController {
         try {
             // Memo 데이터 API 요청
             //Map<String, Object> commentParamMap = new HashMap<>();
-            HttpClientResponse responseMemo = apiService.get("/analysisResults/fusionGeneInterpretationLogs/" + selectedFusionGene.getId() , null, null, false);
+            HttpClientResponse responseMemo = apiService.get("/analysisResults/fusionGeneInterpretationLogs/" + selectedFusionGene.getFusionGene().getId() , null, null, false);
 
             // Flagging Comment 데이터 요청이 정상 요청된 경우 진행.
             PagedFusionGeneInterpretationLogView memoList = responseMemo.getObjectBeforeConvertResponseToJSON(PagedFusionGeneInterpretationLogView.class);

@@ -206,7 +206,7 @@
                   </TableView>
                   <HBox alignment="CENTER_RIGHT" prefHeight="48.0" prefWidth="900.0" spacing="5.0" VBox.vgrow="NEVER">
                      <children>
-                        <Pagination fx:id="panelPagination" prefHeight="200.0" prefWidth="200.0" />
+                        <Pagination fx:id="panelPagination" prefHeight="48.0" prefWidth="949.0" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" />
                         <HBox alignment="CENTER" prefHeight="48.0" prefWidth="168.0" />
                      </children>
