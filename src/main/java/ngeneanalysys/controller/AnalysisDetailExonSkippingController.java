@@ -1,6 +1,12 @@
 package ngeneanalysys.controller;
 
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.ExonSkip;
@@ -12,6 +18,7 @@ import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -28,6 +35,24 @@ public class AnalysisDetailExonSkippingController extends SubPaneController {
 
     private AnalysisDetailFusionMainController analysisDetailFusionMainController;
 
+    @FXML
+    private TableView<ExonSkip> exonSkipTableView;
+
+    @FXML
+    private TableColumn<ExonSkip, Integer> geneIdTableColumn;
+
+    @FXML
+    private TableColumn<ExonSkip, Integer> exonNumberTableColumn;
+
+    @FXML
+    private TableColumn<ExonSkip, Integer> totalReadCountTableColumn;
+
+    @FXML
+    private TableColumn<ExonSkip, Integer> skippedReadCountTableColumn;
+
+    @FXML
+    private TableColumn<ExonSkip, BigDecimal> skippedRateTableColumn;
+
     /**
      * @param analysisDetailFusionMainController
      */
@@ -42,10 +67,17 @@ public class AnalysisDetailExonSkippingController extends SubPaneController {
             PagedExonSkip pagedExonSkip = response.getObjectBeforeConvertResponseToJSON(PagedExonSkip.class);
 
             List<ExonSkip> exonSkipList = pagedExonSkip.getResult();
+            ObservableList<ExonSkip> displayList = null;
 
             if(!exonSkipList.isEmpty()) {
-
+                displayList = FXCollections.observableArrayList(exonSkipList);
+                logger.info(displayList.size() + "");
             }
+
+            if (exonSkipTableView.getItems() != null && !exonSkipTableView.getItems().isEmpty()) {
+                exonSkipTableView.getItems().clear();
+            }
+            exonSkipTableView.setItems(displayList);
 
         } catch (WebAPIException wae) {
 
@@ -61,6 +93,12 @@ public class AnalysisDetailExonSkippingController extends SubPaneController {
         sample = (Sample)paramMap.get("sample");
 
         setList();
+
+        geneIdTableColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getSampleId()));
+        exonNumberTableColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getExonNumber()));
+        totalReadCountTableColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getTotalReadCount()));
+        skippedReadCountTableColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getSkippedReadCount()));
+        skippedRateTableColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getSkippedRate()));
 
         analysisDetailFusionMainController.subTabExonSkipping.setContent(root);
     }

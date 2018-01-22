@@ -1,6 +1,7 @@
 package ngeneanalysys.util;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -154,6 +155,10 @@ public class ConvertUtil {
 		}
 
 		return params;
+	}
+
+	public static BigDecimal removeZero(BigDecimal bigDecimal) {
+		return (bigDecimal != null) ? bigDecimal.stripTrailingZeros() : null;
 	}
 
 	public static String getAminoAcid(String aminoAcid) {

@@ -905,7 +905,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
                             contentsMap.put("essentialGenes", list);
                             contentsMap.put("allGeneList", allGeneList);
-                            contentsMap.put("virtualPaneName", virtualPanel.getName());
+                            contentsMap.put("virtualPanelName", virtualPanel.getName());
 
                         }
 
