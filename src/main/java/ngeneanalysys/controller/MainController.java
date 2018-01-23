@@ -160,6 +160,7 @@ public class MainController extends BaseStageController {
         if (System.getProperty("os.name").toLowerCase().contains("window")) {
             primaryStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
         }
+        primaryStage.setResizable(true);
         primaryStage.setMinHeight(setWindowHeight + 35);
         primaryStage.setHeight(setWindowHeight + 35);
         primaryStage.setMinWidth(1290);

@@ -173,7 +173,7 @@
 				</fo:table>
 			</fo:block>
 
-			<fo:block font-family="Noto Sans CJK KR Bold" font-weight="bold" font-size="14pt" margin-bottom="5mm" background-color="#D9E2F3" padding-top="1mm" padding-bottom="1mm" white-space="pre"> 검사명</fo:block>
+			<fo:block font-family="Noto Sans CJK KR Bold" font-weight="bold" font-size="14pt" margin-bottom="1mm" background-color="#D9E2F3" padding-top="1mm" padding-bottom="1mm" white-space="pre"> 검사명</fo:block>
 			<fo:block margin-bottom="7mm">
 					NGS Panel for
 				#if($contents.virtualPanelName && !($contents.virtualPanelName == "")) $contents.virtualPanelName
@@ -397,7 +397,7 @@
 						<fo:table-row font-size="7pt" font-family="Noto Sans CJK KR Regular">
 							<fo:table-cell border-top="solid 0.5mm black" number-columns-spanned="8" end-indent="3pt" text-align="left">
 								<fo:block color="#6D6E71">상기 결과는 TierI, II, III에 해당하는 변이만 기술하였습니다.</fo:block>
-								<fo:block color="#EF5BA1">* VAF, Variant Allele Frequency; †DEPTH, Total Read Depth;SIGNIFICANCE, clinical significance;</fo:block>
+								<fo:block color="#EF5BA1">* VAF, Variant Allele Frequency; †DEPTH, Total Read Depth; ‡SIGNIFICANCE, clinical significance;</fo:block>
 								<fo:block color="#EF5BA1"><![CDATA[*** WARNING: Depth < 100]]></fo:block>
 							</fo:table-cell>
 						</fo:table-row>
