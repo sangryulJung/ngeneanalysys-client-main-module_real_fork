@@ -119,7 +119,7 @@ public class HomeController extends SubPaneController{
 
     }
 
-    public void autoUpdateSampleList() {
+    private void autoUpdateSampleList() {
         if(currentPage != -1 && currentRunId != -1) {
             showSampleList(currentRunId, currentPage);
         }
@@ -147,8 +147,8 @@ public class HomeController extends SubPaneController{
     private void showRunList() {
         final int maxRunNumberOfPage = runListGridPane.getRowConstraints().size();
         CompletableFuture<PagedRun> getPagedRun = new CompletableFuture<>();
-        getPagedRun.supplyAsync(() -> {
-            HttpClientResponse response = null;
+        CompletableFuture.supplyAsync(() -> {
+            HttpClientResponse response;
             Map<String, Object> params = new HashMap<>();
             try {
                 params.clear();
@@ -173,7 +173,7 @@ public class HomeController extends SubPaneController{
                 runNameFields.get(i).setText(run.getName());
                 runNameFields.get(i).setOnMouseClicked(e -> {
                     //showSampleList(run.getId(), 0);
-                    selectRunList(maxRunNumberOfPage, Optional.of((Node)e.getSource()));
+                    selectRunList(maxRunNumberOfPage, (Node)e.getSource());
                     if(e.getClickCount() == 1) {
                         sampleListPagination.setPageFactory(page -> {
                             showSampleList(run.getId(), page);
@@ -214,10 +214,10 @@ public class HomeController extends SubPaneController{
         }
     }
 
-    private void selectRunList(int maxRunNumberOfPage, Optional<Node> selectedNode) {
+    private void selectRunList(int maxRunNumberOfPage, Node selectedNode) {
         int rowIndex = -1;
-        if(selectedNode.isPresent()) {
-            rowIndex = runListGridPane.getRowIndex(selectedNode.get());
+        if(selectedNode != null) {
+            rowIndex = GridPane.getRowIndex(selectedNode);
         }
 
         for(int i = 0; i < maxRunNumberOfPage; i++){
@@ -257,7 +257,7 @@ public class HomeController extends SubPaneController{
                 runDateFields.add(runDateField);
                 runListGridPane.add(runDateFields.get(i), 2, i);
             }
-            selectRunList(maxRunNumberOfPage, Optional.empty());
+            selectRunList(maxRunNumberOfPage, null);
         } catch (Exception e) {
             logger.error("HOME -> initRunListLayout", e);
         }
@@ -313,8 +313,8 @@ public class HomeController extends SubPaneController{
         });*/
 
         CompletableFuture<PagedSample> getPagedSample = new CompletableFuture<>();
-        getPagedSample.supplyAsync(() -> {
-            HttpClientResponse response = null;
+        CompletableFuture.supplyAsync(() -> {
+            HttpClientResponse response;
             Map<String, Object> params = new HashMap<>();
             try {
                 params.clear();
@@ -376,80 +376,7 @@ public class HomeController extends SubPaneController{
             logger.error("HOME -> SHOW RUN LIST", e);
         }
     }
-    private void testAddRuns() {
-        Map<String, Object> params = new HashMap<>();
-        HttpClientResponse response = null;
-        for(int i = 0; i < 10; i ++) {
-            try {
-                params.put("name", "RUN NAME_" + i);
-                params.put("sequencingPlatform", "MISEQ");
-                response = apiService.post("/runs", params, null, true);
-                Run run = response.getObjectBeforeConvertResponseToJSON(Run.class);
-                logger.info(run.toString());
-                testAddSamples(run.getId());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    private void testAddSamples(int runId) {
-        Map<String, Object> params = new HashMap<>();
-        HttpClientResponse response = null;
-        for(int i = 0; i < 10; i++) {
-            try {
-                params.put("runId", runId);
-                params.put("name", "sample_" + i + "_" + "RUN_" + runId);
-                params.put("patientId", "PAT_" + i + "_" + runId);
-                int panelId = 3;//(runId % 3) + 1;
-                params.put("panelId", panelId);
-                params.put("diseaseId", 1);
-                if(panelId == 1) {
-                    params.put("analysisType", "GERMLINE");
-                } else {
-                    params.put("analysisType", "SOMATIC");
-                }
-                if (panelId == 2) {
-                    params.put("sampleSource", "FFPE");
-                } else {
-                    params.put("sampleSource", "BLOOD");
-                }
-                params.put("inputFType", "FASTQ.GZ");
-                Map<String, String> sampleSheet = new HashMap<>();
-                sampleSheet.put("sampleId", "");
-                sampleSheet.put("sampleName", "");
-                sampleSheet.put("samplePlate", "");
-                sampleSheet.put("sampleWell", "");
-                sampleSheet.put("i7IndexId", "");
-                sampleSheet.put("sampleIndex", "");
-                sampleSheet.put("sampleProject", "");
-                sampleSheet.put("description", "");
-                params.put("sampleSheet", sampleSheet);
-                Map<String, String> qcData = new HashMap<>();
-                qcData.put("dnaQC", "");
-                qcData.put("libraryQC", "");
-                qcData.put("seqClusterDensity", "");
-                qcData.put("seqQ30", "");
-                qcData.put("seqClusterPF", "");
-                qcData.put("seqIndexingPFCV", "");
-                params.put("qcData", qcData);
-                response = apiService.post("/samples", params, null, true);
-                Sample sample = response.getObjectBeforeConvertResponseToJSON(Sample.class);
-                if (i == 0) {
-                    params.clear();
-                    params.put("sampleId", sample.getId());
-                    params.put("name", "1234.fastq.gz");
 
-                    params.put("fileSize", 1234567890);
-                    params.put("fileType", "FASTQ.GZ");
-                    response = apiService.post("/analysisFiles", params, null, true);
-                }
-                logger.info(sample.toString());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
     class RunAnalysisJobStatusBox extends VBox {
         private HBox statusBox;
         private Label statusLabel;
@@ -482,12 +409,11 @@ public class HomeController extends SubPaneController{
             statusLabelPipeline = new Label();
             statusLabelComplete = new Label();
             statusMsgTextField = new TextField();
-            StringBuilder style = new StringBuilder("-fx-font-size:9;");
-            style.append("-fx-border-width: 0 0 0 0;-fx-border-color:black;");
-            style.append("-fx-border-radius:0;-fx-background-color:transparent;");
-            style.append("-fx-max-height:30;");
-            style.append("-fx-min-height:30;");
-            statusMsgTextField.setStyle(style.toString());
+            String style = "-fx-font-size:9;" + "-fx-border-width: 0 0 0 0;-fx-border-color:black;" +
+                    "-fx-border-radius:0;-fx-background-color:transparent;" +
+                    "-fx-max-height:30;" +
+                    "-fx-min-height:30;";
+            statusMsgTextField.setStyle(style);
             statusBox.getChildren().add(statusLabelUpload);
             //statusBox.getChildren().add(new ImageView(resourceUtil.getImage("/layout/images/icon-arrow_margin.png")));
             statusBox.getChildren().add(new VBox());
@@ -510,21 +436,25 @@ public class HomeController extends SubPaneController{
             } else if (status.getStep().equals(SAMPLE_ANALYSIS_STEP_PIPELINE)) {
                 statusLabelUpload.setText(SAMPLE_ANALYSIS_STEP_UPLOAD);
                 statusLabelUpload.setId("detail_jobStatus_" + SAMPLE_ANALYSIS_STATUS_COMPLETE);
-                if (status.getStatus().equals(SAMPLE_ANALYSIS_STATUS_COMPLETE)) {
-                    statusLabelPipeline.setText(SAMPLE_ANALYSIS_STEP_PIPELINE);
-                    statusLabelPipeline.setId("detail_jobStatus_" + SAMPLE_ANALYSIS_STATUS_COMPLETE);
-                    statusLabelComplete.setText("COMPLETE");
-                    statusLabelComplete.setId("detail_complete_jobStatus_" + SAMPLE_ANALYSIS_STATUS_COMPLETE);
-                } else if (status.getStatus().equals(SAMPLE_ANALYSIS_STATUS_FAIL)){
-                    statusLabelPipeline.setText(SAMPLE_ANALYSIS_STEP_PIPELINE);
-                    statusLabelPipeline.setId("detail_jobStatus_" + SAMPLE_ANALYSIS_STATUS_FAIL);
-                    statusLabelComplete.setText(SAMPLE_ANALYSIS_STATUS_FAIL);
-                    statusLabelComplete.setId("detail_complete_jobStatus_" + SAMPLE_ANALYSIS_STATUS_FAIL);
-                } else {
-                    statusLabelPipeline.setText(SAMPLE_ANALYSIS_STEP_PIPELINE);
-                    statusLabelPipeline.setId("detail_jobStatus_" + status.getStatus());
-                    statusLabelComplete.setText("COMPLETE");
-                    statusLabelComplete.setId("detail_complete_jobStatus_" + SAMPLE_ANALYSIS_STATUS_NONE);
+                switch (status.getStatus()) {
+                    case SAMPLE_ANALYSIS_STATUS_COMPLETE:
+                        statusLabelPipeline.setText(SAMPLE_ANALYSIS_STEP_PIPELINE);
+                        statusLabelPipeline.setId("detail_jobStatus_" + SAMPLE_ANALYSIS_STATUS_COMPLETE);
+                        statusLabelComplete.setText("COMPLETE");
+                        statusLabelComplete.setId("detail_complete_jobStatus_" + SAMPLE_ANALYSIS_STATUS_COMPLETE);
+                        break;
+                    case SAMPLE_ANALYSIS_STATUS_FAIL:
+                        statusLabelPipeline.setText(SAMPLE_ANALYSIS_STEP_PIPELINE);
+                        statusLabelPipeline.setId("detail_jobStatus_" + SAMPLE_ANALYSIS_STATUS_FAIL);
+                        statusLabelComplete.setText(SAMPLE_ANALYSIS_STATUS_FAIL);
+                        statusLabelComplete.setId("detail_complete_jobStatus_" + SAMPLE_ANALYSIS_STATUS_FAIL);
+                        break;
+                    default:
+                        statusLabelPipeline.setText(SAMPLE_ANALYSIS_STEP_PIPELINE);
+                        statusLabelPipeline.setId("detail_jobStatus_" + status.getStatus());
+                        statusLabelComplete.setText("COMPLETE");
+                        statusLabelComplete.setId("detail_complete_jobStatus_" + SAMPLE_ANALYSIS_STATUS_NONE);
+                        break;
                 }
             }
             if(status.getProgressPercentage() != null) {
