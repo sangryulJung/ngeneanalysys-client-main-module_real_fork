@@ -527,7 +527,11 @@ public class HomeController extends SubPaneController{
                     statusLabelComplete.setId("detail_complete_jobStatus_" + SAMPLE_ANALYSIS_STATUS_NONE);
                 }
             }
-            statusMsgTextField.setText(status.getStatusMsg());
+            if(status.getProgressPercentage() != null) {
+                statusMsgTextField.setText("(" + status.getProgressPercentage() + ") : " + status.getStatusMsg());
+            } else {
+                statusMsgTextField.setText(status.getStatusMsg());
+            }
         }
     }
 }

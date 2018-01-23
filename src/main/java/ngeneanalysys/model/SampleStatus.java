@@ -15,6 +15,8 @@ public class SampleStatus {
 
     private String statusMsg;
 
+    private Integer progressPercentage;
+
     private DateTime uploadStartedAt;
 
     private DateTime uploadFinishedAt;
@@ -59,6 +61,20 @@ public class SampleStatus {
      */
     public void setStatusMsg(String statusMsg) {
         this.statusMsg = statusMsg;
+    }
+
+    /**
+     * @return progressPercentage
+     */
+    public Integer getProgressPercentage() {
+        return progressPercentage;
+    }
+
+    /**
+     * @param progressPercentage
+     */
+    public void setProgressPercentage(Integer progressPercentage) {
+        this.progressPercentage = progressPercentage;
     }
 
     /**
