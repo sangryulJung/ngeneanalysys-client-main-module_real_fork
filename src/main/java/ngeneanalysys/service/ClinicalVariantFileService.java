@@ -55,9 +55,7 @@ public class ClinicalVariantFileService {
 
             // 지정된 헤더 삽입 정보가 있는 경우 추가
             if(headerMap != null && headerMap.size() > 0) {
-                Iterator<String> keys = headerMap.keySet().iterator();
-                while (keys.hasNext()) {
-                    String key = keys.next();
+                for (String key : headerMap.keySet()) {
                     post.setHeader(key, headerMap.get(key).toString());
                 }
             }

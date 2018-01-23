@@ -431,7 +431,7 @@ public class HomeController extends SubPaneController{
                 statusLabelUpload.setId("detail_jobStatus_" + status.getStatus());
                 statusLabelPipeline.setText(SAMPLE_ANALYSIS_STEP_PIPELINE);
                 statusLabelPipeline.setId("detail_jobStatus_" + SAMPLE_ANALYSIS_STATUS_NONE);
-                statusLabelComplete.setText("COMPLETE");
+                statusLabelComplete.setText(SAMPLE_ANALYSIS_STATUS_COMPLETE);
                 statusLabelComplete.setId("detail_complete_jobStatus_" + SAMPLE_ANALYSIS_STATUS_NONE);
             } else if (status.getStep().equals(SAMPLE_ANALYSIS_STEP_PIPELINE)) {
                 statusLabelUpload.setText(SAMPLE_ANALYSIS_STEP_UPLOAD);
@@ -440,27 +440,37 @@ public class HomeController extends SubPaneController{
                     case SAMPLE_ANALYSIS_STATUS_COMPLETE:
                         statusLabelPipeline.setText(SAMPLE_ANALYSIS_STEP_PIPELINE);
                         statusLabelPipeline.setId("detail_jobStatus_" + SAMPLE_ANALYSIS_STATUS_COMPLETE);
-                        statusLabelComplete.setText("COMPLETE");
+                        statusLabelComplete.setText(SAMPLE_ANALYSIS_STATUS_COMPLETE);
                         statusLabelComplete.setId("detail_complete_jobStatus_" + SAMPLE_ANALYSIS_STATUS_COMPLETE);
                         break;
                     case SAMPLE_ANALYSIS_STATUS_FAIL:
                         statusLabelPipeline.setText(SAMPLE_ANALYSIS_STEP_PIPELINE);
                         statusLabelPipeline.setId("detail_jobStatus_" + SAMPLE_ANALYSIS_STATUS_FAIL);
-                        statusLabelComplete.setText(SAMPLE_ANALYSIS_STATUS_FAIL);
+                        if (status.getProgressPercentage() != null) {
+                            statusLabelComplete.setText(SAMPLE_ANALYSIS_STATUS_FAIL +
+                                    "(" + status.getProgressPercentage() + "%)");
+                        } else {
+                            statusLabelComplete.setText(SAMPLE_ANALYSIS_STATUS_FAIL);
+                        }
                         statusLabelComplete.setId("detail_complete_jobStatus_" + SAMPLE_ANALYSIS_STATUS_FAIL);
                         break;
                     default:
                         statusLabelPipeline.setText(SAMPLE_ANALYSIS_STEP_PIPELINE);
                         statusLabelPipeline.setId("detail_jobStatus_" + status.getStatus());
-                        statusLabelComplete.setText("COMPLETE");
+                        if (status.getProgressPercentage() != null) {
+                            statusLabelComplete.setText(SAMPLE_ANALYSIS_STATUS_COMPLETE + "(" + status.getProgressPercentage() + "%)");
+                        } else {
+                            statusLabelComplete.setText(SAMPLE_ANALYSIS_STATUS_COMPLETE);
+                        }
+
                         statusLabelComplete.setId("detail_complete_jobStatus_" + SAMPLE_ANALYSIS_STATUS_NONE);
                         break;
                 }
             }
-            if(status.getProgressPercentage() != null) {
-                statusMsgTextField.setText("(" + status.getProgressPercentage() + ") : " + status.getStatusMsg());
-            } else {
+            if(status.getStatusMsg() != null) {
                 statusMsgTextField.setText(status.getStatusMsg());
+            } else {
+                statusMsgTextField.setText("");
             }
         }
     }
