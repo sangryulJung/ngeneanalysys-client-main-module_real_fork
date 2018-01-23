@@ -73,54 +73,37 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
     @FXML
     private TableColumn<VariantAndInterpretationEvidence, String> variantColumn;
 
-
-    @FXML
-    private Label totalBaseLabel;
-
-    @FXML
-    private Label q30Label;
-
-    @FXML
-    private Label mappedLabel;
-
-    @FXML
-    private Label onTargetLabel;
-
-    @FXML
-    private Label onTargetCoverageLabel;
-
-    @FXML
-    private Label duplicatedReadsLabel;
-
-    @FXML
-    private Label roiCoverageLabel;
-
-    @FXML
-    private Tooltip totalBaseTooltip;
-
-    @FXML
-    private Tooltip q30Tooltip;
-
-    @FXML
-    private Tooltip mappedBaseTooltip;
-
-    @FXML
-    private Tooltip onTargetTooltip;
-
-    @FXML
-    private Tooltip onTargetCoverageTooltip;
-
-    @FXML
-    private Tooltip duplicatedReadsTooltip;
-
-    @FXML
-    private Tooltip roiCoverageTooltip;
-
     @FXML
     private Label diseasetextLabel;
 
     @FXML
     private Label diseaseLabel;
+
+    @FXML
+    private Tooltip roiCoverageTooltip;
+
+    @FXML
+    private Label roiCoverageLabel;
+
+    @FXML
+    private Tooltip meanReadTooltip;
+
+    @FXML
+    private Label meanReadLabel;
+
+    @FXML
+    private Tooltip retainedReadTooltip;
+
+    @FXML
+    private Label retainedReadLabel;
+
+    @FXML
+    private Tooltip coverageUniformityTooltip;
+
+    @FXML
+    private Label coverageUniformityLabel;
+
+
 
     /** API 서버 통신 서비스 */
     private APIService apiService;
@@ -301,20 +284,17 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
 
             qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
 
-            totalBaseLabel.setText(findQCResult(qcList, "total_base"));
-            totalBaseTooltip.setText(findQCTooltipString(qcList, "total_base"));
-            q30Label.setText(findQCResult(qcList, "q30_trimmed_base"));
-            q30Tooltip.setText(findQCTooltipString(qcList, "q30_trimmed_base"));
-            mappedLabel.setText(findQCResult(qcList, "mapped_base"));
-            mappedBaseTooltip.setText(findQCTooltipString(qcList, "mapped_base"));
-            onTargetLabel.setText(findQCResult(qcList, "on_target"));
-            onTargetTooltip.setText(findQCTooltipString(qcList, "on_target"));
-            onTargetCoverageLabel.setText(findQCResult(qcList, "on_target_coverage"));
-            onTargetCoverageTooltip.setText(findQCTooltipString(qcList, "on_target_coverage"));
-            duplicatedReadsLabel.setText(findQCResult(qcList, "duplicated_reads"));
-            duplicatedReadsTooltip.setText(findQCTooltipString(qcList, "duplicated_reads"));
             roiCoverageLabel.setText(findQCResult(qcList, "roi_coverage"));
             roiCoverageTooltip.setText(findQCTooltipString(qcList, "roi_coverage"));
+
+            meanReadLabel.setText(findQCResult(qcList, "mean_read_quality"));
+            meanReadTooltip.setText(findQCTooltipString(qcList, "mean_read_quality"));
+
+            retainedReadLabel.setText(findQCResult(qcList, "retained_reads"));
+            retainedReadTooltip.setText(findQCTooltipString(qcList, "retained_reads"));
+
+            coverageUniformityLabel.setText(findQCResult(qcList, "coverage_uniformity"));
+            coverageUniformityTooltip.setText(findQCTooltipString(qcList, "coverage_uniformity"));
 
         } catch(WebAPIException e) {
             e.printStackTrace();

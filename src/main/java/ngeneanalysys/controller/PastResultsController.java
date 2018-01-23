@@ -625,40 +625,10 @@ public class PastResultsController extends SubPaneController {
 		private Label totalVariantCountValueLabel = new Label();
 		private Label warningVariantCountValueLabel = new Label();
 
-		private Button totalBaseButton;
-		private Label totalBaseTitleLabel = new Label();
-		private Label totalBaseContentsLabel = new Label();
-		private Label totalBaseValueLabel = new Label();
-
-		private Button q30TrimmedBaseButton;
-		private Label q30TrimmedBaseTitleLabel = new Label();
-		private Label q30TrimmedBaseContentsLabel = new Label();
-		private Label q30TrimmedBaseValueLabel = new Label();
-
-		private Button mappedBaseButton;
-		private Label mappedBaseTitleLabel = new Label();
-		private Label mappedBaseContentsLabel = new Label();
-		private Label mappedBaseValueLabel = new Label();
-
-		private Button ontTargetButton;
-		private Label onTargetTitleLabel = new Label();
-		private Label onTargetContentsLabel = new Label();
-		private Label onTargetValueLabel = new Label();
-
-		private Button onTargetCoverageButton;
-		private Label onTargetCoverageTitleLabel = new Label();
-		private Label onTargetCoverageContentsLabel = new Label();
-		private Label onTargetCoverageValueLabel = new Label();
-
-		private Button duplicatedReadsButton;
-		private Label duplicatedReadsTitleLabel = new Label();
-		private Label duplicatedReadsContentsLabel = new Label();
-		private Label duplicatedReadsValueLabel = new Label();
-
-		private Button roiCoverageButton;
-		private Label roiCoverageTitleLabel = new Label();
-		private Label roiCoverageContentsLabel = new Label();
-		private Label roiCoverageValueLabel = new Label();
+		private List<Button> buttons = new ArrayList<>();
+		private List<Label> titleLabels = new ArrayList<>();
+		private List<Label> contentsLabels = new ArrayList<>();
+		private List<Label> valueLabels = new ArrayList<>();
 
 		private Label reportLabel = new Label();
 
@@ -705,36 +675,22 @@ public class PastResultsController extends SubPaneController {
 			HBox qcFlagHbox = new HBox();
 			qcFlagHbox.getStyleClass().add("alignment_center_left");
 
-			totalBaseButton = getQCIcon(totalBaseTitleLabel, totalBaseContentsLabel,
-					totalBaseValueLabel);
+			for(int i = 0; i < 7 ; i++) {
+				Label titleLabel = new Label();
+				Label contentsLabel = new Label();
+				Label valueLabel = new Label();
 
-			q30TrimmedBaseButton = getQCIcon(q30TrimmedBaseTitleLabel, q30TrimmedBaseContentsLabel,
-					q30TrimmedBaseValueLabel);
+				Button button = getQCIcon(titleLabel, contentsLabel, valueLabel);
 
-			mappedBaseButton = getQCIcon(mappedBaseTitleLabel, mappedBaseContentsLabel,
-					mappedBaseValueLabel);
+				buttons.add(button);
+				titleLabels.add(titleLabel);
+				contentsLabels.add(contentsLabel);
+				valueLabels.add(valueLabel);
 
-			ontTargetButton = getQCIcon(onTargetTitleLabel, onTargetContentsLabel,
-					onTargetValueLabel);
+				qcFlagHbox.getChildren().add(button);
+				qcFlagHbox.setMargin(button, new Insets(0, 0, 0, 5));
 
-			onTargetCoverageButton = getQCIcon(onTargetCoverageTitleLabel, onTargetCoverageContentsLabel,
-					onTargetCoverageValueLabel);
-
-			duplicatedReadsButton = getQCIcon(duplicatedReadsTitleLabel, duplicatedReadsContentsLabel,
-					duplicatedReadsValueLabel);
-
-			roiCoverageButton = getQCIcon(roiCoverageTitleLabel, roiCoverageContentsLabel,
-					roiCoverageValueLabel);
-
-			qcFlagHbox.getChildren().addAll(totalBaseButton, q30TrimmedBaseButton, mappedBaseButton,
-					ontTargetButton, onTargetCoverageButton, duplicatedReadsButton, roiCoverageButton);
-			qcFlagHbox.setMargin(totalBaseButton, new Insets(0, 0, 0, 5));
-			qcFlagHbox.setMargin(q30TrimmedBaseButton, new Insets(0, 0, 0, 5));
-			qcFlagHbox.setMargin(mappedBaseButton, new Insets(0, 0, 0, 5));
-			qcFlagHbox.setMargin(ontTargetButton, new Insets(0, 0, 0, 5));
-			qcFlagHbox.setMargin(onTargetCoverageButton, new Insets(0, 0, 0, 5));
-			qcFlagHbox.setMargin(duplicatedReadsButton, new Insets(0, 0, 0, 5));
-			qcFlagHbox.setMargin(roiCoverageButton, new Insets(0, 0, 0, 5));
+			}
 
 			qcFlagHbox.getChildren().add(reportLabel);
 			qcFlagHbox.setMargin(reportLabel, new Insets(0, 0, 0, 5));
@@ -806,96 +762,34 @@ public class PastResultsController extends SubPaneController {
 
 					qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
 
-					SampleQC totalBase = findQCResult(qcList, "total_base");
-					if(totalBase != null) {
-						totalBaseButton.setVisible(true);
-						totalBaseTitleLabel.setText(totalBase.getQcType());
-						totalBaseContentsLabel.setText(totalBase.getQcDescription() + " " + totalBase.getQcThreshold());
-						totalBaseValueLabel.setText(totalBase.getQcValue().toString() + totalBase.getQcUnit());
-					} else {
-						totalBaseButton.setVisible(false);
-					}
+					if(qcList != null && !qcList.isEmpty()) qcList.stream().forEachOrdered(item -> item.getQcType());
 
-					SampleQC q30TrimmedBase = findQCResult(qcList, "q30_trimmed_base");
-					if(q30TrimmedBase != null) {
-						q30TrimmedBaseButton.setVisible(true);
-						q30TrimmedBaseTitleLabel.setText(q30TrimmedBase.getQcType());
-						q30TrimmedBaseContentsLabel.setText(q30TrimmedBase.getQcDescription() + " " + q30TrimmedBase.getQcThreshold());
-						q30TrimmedBaseValueLabel.setText(q30TrimmedBase.getQcValue().toString() + q30TrimmedBase.getQcUnit());
-					} else {
-						q30TrimmedBaseButton.setVisible(false);
-					}
+					for(int i = 0; i < 7 ; i++) {
+						if(qcList == null || qcList.isEmpty() || (qcList.size() - 1 ) < i) {
+							buttons.get(i).setVisible(false);
+						} else {
+							buttons.get(i).setVisible(true);
+							SampleQC sampleQC = qcList.get(i);
+							titleLabels.get(i).setText(sampleQC.getQcType());
+							contentsLabels.get(i).setText(sampleQC.getQcDescription() + " " + sampleQC.getQcThreshold());
+							valueLabels.get(i).setText(sampleQC.getQcValue().toString() + sampleQC.getQcUnit());
 
-					SampleQC mappedBase = findQCResult(qcList, "mapped_base");
-					if(mappedBase != null) {
-						mappedBaseButton.setVisible(true);
-						mappedBaseTitleLabel.setText(mappedBase.getQcType());
-						mappedBaseContentsLabel.setText(mappedBase.getQcDescription() + " " + mappedBase.getQcThreshold());
-						mappedBaseValueLabel.setText(mappedBase.getQcValue().toString() + mappedBase.getQcUnit());
-					} else {
-						mappedBaseButton.setVisible(false);
-					}
-
-					SampleQC onTarget = findQCResult(qcList, "on_target");
-					if(onTarget != null) {
-						ontTargetButton.setVisible(true);
-						onTargetTitleLabel.setText(onTarget.getQcType());
-						onTargetContentsLabel.setText(onTarget.getQcDescription() + " " + onTarget.getQcThreshold());
-						onTargetValueLabel.setText(onTarget.getQcValue().toString() + onTarget.getQcUnit());
-					} else {
-						ontTargetButton.setVisible(false);
-					}
-
-					SampleQC onTargetCoverage = findQCResult(qcList, "on_target_coverage");
-					if(onTargetCoverage != null) {
-						onTargetCoverageButton.setVisible(true);
-						onTargetCoverageTitleLabel.setText(onTargetCoverage.getQcType());
-						onTargetCoverageContentsLabel.setText(onTargetCoverage.getQcDescription() + " " + onTargetCoverage.getQcThreshold());
-						onTargetCoverageValueLabel.setText(onTargetCoverage.getQcValue().toString() + onTargetCoverage.getQcUnit());
-					} else {
-						onTargetCoverageButton.setVisible(false);
-					}
-
-					SampleQC duplicatedReads = findQCResult(qcList, "duplicated_reads");
-					if(duplicatedReads != null) {
-						duplicatedReadsButton.setVisible(true);
-						duplicatedReadsTitleLabel.setText(duplicatedReads.getQcType());
-						duplicatedReadsContentsLabel.setText(duplicatedReads.getQcDescription() + " " + duplicatedReads.getQcThreshold());
-						duplicatedReadsValueLabel.setText(duplicatedReads.getQcValue().toString() + duplicatedReads.getQcUnit());
-					} else {
-						duplicatedReadsButton.setVisible(false);
-					}
-
-					SampleQC roiCoverage = findQCResult(qcList, "roi_coverage");
-					if(roiCoverage != null) {
-						roiCoverageButton.setVisible(true);
-						roiCoverageTitleLabel.setText(roiCoverage.getQcType());
-						roiCoverageContentsLabel.setText(roiCoverage.getQcDescription() + " " + roiCoverage.getQcThreshold());
-						roiCoverageValueLabel.setText(roiCoverage.getQcValue().toString() + roiCoverage.getQcUnit());
-					} else {
-						roiCoverageButton.setVisible(false);
+						}
 					}
 
 				} catch(WebAPIException e) {
 					e.printStackTrace();
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-
-				/*roiCoverageValueLabel.setText(analysisResultSummary.getRoiCoveragePercentage().toString());
-				totalBaseValueLabel.setText(analysisResultSummary.getMeanReadQualityPercentage().toString());
-				mappedBaseValueLabel.setText(analysisResultSummary.getCoverageUniformityPercentage().toString());*/
+				
+				setVisible(true);
+			} else {
+				setVisible(false);
 			}
-			setVisible(true);
+
 		}
 
-		private SampleQC findQCResult(List<SampleQC> qcList, String qc) {
-			if(qcList != null && !qcList.isEmpty()) {
-				Optional<SampleQC> findQC = qcList.stream().filter(sampleQC -> sampleQC.getQcType().equalsIgnoreCase(qc)).findFirst();
-				if(findQC.isPresent()) {
-					return findQC.get();
-				}
-			}
-			return null;
-		}
 	}
 	class QcResultHBox extends HBox {
 		QcResultHBox() {

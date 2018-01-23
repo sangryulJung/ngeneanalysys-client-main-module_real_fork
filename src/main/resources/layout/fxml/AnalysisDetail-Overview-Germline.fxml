@@ -121,13 +121,10 @@
       </TableView>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
          <children>
-            <VBox prefHeight="75.0" prefWidth="864.0">
+            <VBox prefHeight="70.0" prefWidth="601.0">
                <children>
-                  <GridPane fx:id="dataQCResultGridPane" prefWidth="862.0">
+                  <GridPane fx:id="dataQCResultGridPane" prefHeight="60.0" prefWidth="811.0">
                      <columnConstraints>
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -140,91 +137,56 @@
                      <children>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #C20D22;">
                            <children>
-                              <Label maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="150.0" text="Total base">
-                                 <tooltip>
-                                    <Tooltip fx:id="totalBaseTooltip" text="Empty Tooltip" />
-                                 </tooltip>
-                                 <styleClass>
-                                    <String fx:value="font_color_white_bg_color_red" />
-                                    <String fx:value="right_white_border" />
-                                 </styleClass></Label>
-                           </children>
-                        </HBox>
-                        <Label fx:id="totalBaseLabel" text="pass" GridPane.rowIndex="1" />
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #C20D22;" GridPane.columnIndex="1">
-                           <children>
-                              <Label maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="150.0" text="q30 trimmed base">
-                                 <tooltip>
-                                    <Tooltip fx:id="q30Tooltip" text="Empty Tooltip" />
-                                 </tooltip>
-                                 <styleClass>
-                                    <String fx:value="font_color_white_bg_color_red" />
-                                    <String fx:value="right_white_border" />
-                                 </styleClass></Label>
-                           </children>
-                        </HBox>
-                        <Label fx:id="q30Label" text="pass" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #C20D22;" GridPane.columnIndex="2">
-                           <children>
-                              <Label maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="150.0" text="Mapped base">
-                                 <tooltip>
-                                    <Tooltip fx:id="mappedBaseTooltip" text="Empty Tooltip" />
-                                 </tooltip>
-                                 <styleClass>
-                                    <String fx:value="font_color_white_bg_color_red" />
-                                    <String fx:value="right_white_border" />
-                                 </styleClass></Label>
-                           </children>
-                        </HBox>
-                        <Label fx:id="mappedLabel" text="pass" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #C20D22;" GridPane.columnIndex="3">
-                           <children>
-                              <Label maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="150.0" text="On target">
-                                 <tooltip>
-                                    <Tooltip fx:id="onTargetTooltip" text="Empty Tooltip" />
-                                 </tooltip>
-                                 <styleClass>
-                                    <String fx:value="font_color_white_bg_color_red" />
-                                    <String fx:value="right_white_border" />
-                                 </styleClass></Label>
-                           </children>
-                        </HBox>
-                        <Label fx:id="onTargetLabel" text="pass" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #C20D22;" GridPane.columnIndex="4">
-                           <children>
-                              <Label maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="150.0" text="On target coverage">
-                                 <tooltip>
-                                    <Tooltip fx:id="onTargetCoverageTooltip" text="Empty Tooltip" />
-                                 </tooltip>
-                                 <styleClass>
-                                    <String fx:value="font_color_white_bg_color_red" />
-                                    <String fx:value="right_white_border" />
-                                 </styleClass></Label>
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #C20D22;" GridPane.columnIndex="5">
-                           <children>
-                              <Label maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="150.0" text="Duplicated reads">
-                                 <tooltip>
-                                    <Tooltip fx:id="duplicatedReadsTooltip" text="Empty Tooltip" />
-                                 </tooltip>
-                                 <styleClass>
-                                    <String fx:value="font_color_white_bg_color_red" />
-                                    <String fx:value="right_white_border" />
-                                 </styleClass></Label>
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #C20D22;" GridPane.columnIndex="6">
-                           <children>
-                              <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" styleClass="font_color_white_bg_color_red" text="Roi coverage">
+                              <Label maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="150.0" text="ROI coverage">
                                  <tooltip>
                                     <Tooltip fx:id="roiCoverageTooltip" text="Empty Tooltip" />
-                                 </tooltip></Label>
+                                 </tooltip>
+                                 <styleClass>
+                                    <String fx:value="font_color_white_bg_color_red" />
+                                    <String fx:value="right_white_border" />
+                                 </styleClass></Label>
                            </children>
                         </HBox>
-                        <Label fx:id="onTargetCoverageLabel" text="pass" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                        <Label fx:id="duplicatedReadsLabel" text="pass" GridPane.columnIndex="5" GridPane.rowIndex="1" />
-                        <Label fx:id="roiCoverageLabel" text="pass" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                        <Label fx:id="roiCoverageLabel" text="pass" GridPane.rowIndex="1" />
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #C20D22;" GridPane.columnIndex="1">
+                           <children>
+                              <Label maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="150.0" text="mean read quality">
+                                 <tooltip>
+                                    <Tooltip fx:id="meanReadTooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                                 <styleClass>
+                                    <String fx:value="font_color_white_bg_color_red" />
+                                    <String fx:value="right_white_border" />
+                                 </styleClass></Label>
+                           </children>
+                        </HBox>
+                        <Label fx:id="meanReadLabel" text="pass" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #C20D22;" GridPane.columnIndex="2">
+                           <children>
+                              <Label maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="150.0" text="retained read">
+                                 <tooltip>
+                                    <Tooltip fx:id="retainedReadTooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                                 <styleClass>
+                                    <String fx:value="font_color_white_bg_color_red" />
+                                    <String fx:value="right_white_border" />
+                                 </styleClass></Label>
+                           </children>
+                        </HBox>
+                        <Label fx:id="retainedReadLabel" text="pass" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #C20D22;" GridPane.columnIndex="3">
+                           <children>
+                              <Label maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="150.0" text="coverage uniformity">
+                                 <tooltip>
+                                    <Tooltip fx:id="coverageUniformityTooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                                 <styleClass>
+                                    <String fx:value="font_color_white_bg_color_red" />
+                                    <String fx:value="right_white_border" />
+                                 </styleClass></Label>
+                           </children>
+                        </HBox>
+                        <Label fx:id="coverageUniformityLabel" text="pass" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
                </children>
