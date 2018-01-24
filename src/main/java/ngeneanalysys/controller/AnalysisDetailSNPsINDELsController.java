@@ -329,8 +329,8 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
     }
 
     public int returnPathogenicityVariantCount(String pathogenicity) {
-        return (int)list.stream().filter(item -> ((pathogenicity.equalsIgnoreCase(item.getSnpInDel().getExpertPathogenicityLevel()) ||
-                (StringUtils.isEmpty(item.getSnpInDel().getExpertPathogenicityLevel()) && item.getSnpInDel().getSwPathogenicityLevel().equalsIgnoreCase(pathogenicity)))))
+        return (int)list.stream().filter(item -> ((pathogenicity.equalsIgnoreCase(item.getSnpInDel().getExpertPathogenicity()) ||
+                (StringUtils.isEmpty(item.getSnpInDel().getExpertPathogenicity()) && item.getSnpInDel().getSwPathogenicity().equalsIgnoreCase(pathogenicity)))))
                 .count();
     }
 
@@ -495,7 +495,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             if(acmgFilterCode != null &&  acmgFilterCode.getCode() != null) {
                 if (acmgFilterCode.getAlias() != null && panel != null && ExperimentTypeCode.GERMLINE.getDescription().equals(panel.getAnalysisType())) {
                     list = list.stream().filter(variant ->
-                            variant.getSnpInDel().getSwPathogenicityLevel().equals(acmgFilterCode.getAlias())).collect(Collectors.toList());
+                            variant.getSnpInDel().getSwPathogenicity().equals(acmgFilterCode.getAlias())).collect(Collectors.toList());
                 } else if (acmgFilterCode.getAlias() != null && panel != null && ExperimentTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType())) {
                     list = list.stream().filter(variant ->
                             (!StringUtils.isEmpty(variant.getSnpInDel().getExpertTier()) && variant.getSnpInDel().getExpertTier().equals(acmgFilterCode.getAlias())) ||
@@ -1149,7 +1149,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             variantListTableView.getColumns().addAll(swTier, expertTier);
         } else {
             TableColumn<VariantAndInterpretationEvidence, String> swPathogenicityLevel = new TableColumn<>("Prediction");
-            swPathogenicityLevel.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSwPathogenicityLevel()));
+            swPathogenicityLevel.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSwPathogenicity()));
             swPathogenicityLevel.setPrefWidth(55);
             swPathogenicityLevel.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
                     @Override
@@ -1169,7 +1169,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                 });
 
             TableColumn<VariantAndInterpretationEvidence, String> expertPathogenicityLevel = new TableColumn<>("Pathogenicity");
-            expertPathogenicityLevel.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getExpertPathogenicityLevel()));
+            expertPathogenicityLevel.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getExpertPathogenicity()));
             expertPathogenicityLevel.setPrefWidth(80);
             variantListTableView.getColumns().addAll(swPathogenicityLevel, expertPathogenicityLevel);
         }
@@ -1526,20 +1526,20 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
     }
 
     public void settingGermlineArea() {
-        if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicityLevel() != null) {
+        if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicity() != null) {
             for(Node node : predictionArea.getChildren()) {
                 Label label = (Label) node;
                 label.getStyleClass().removeAll(label.getStyleClass());
-                if(label.getId().equals(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicityLevel())) {
-                    if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicityLevel().equals("P")) {
+                if(label.getId().equals(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicity())) {
+                    if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicity().equals("P")) {
                         label.getStyleClass().add("prediction_A");
-                    } else if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicityLevel().equals("LP")) {
+                    } else if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicity().equals("LP")) {
                         label.getStyleClass().add("prediction_B");
-                    } else if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicityLevel().equals("US")) {
+                    } else if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicity().equals("US")) {
                         label.getStyleClass().add("prediction_C");
-                    } else if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicityLevel().equals("LB")) {
+                    } else if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicity().equals("LB")) {
                         label.getStyleClass().add("prediction_D");
-                    } else if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicityLevel().equals("B")) {
+                    } else if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicity().equals("B")) {
                         label.getStyleClass().add("prediction_E");
                     }
                 } else {
@@ -1547,26 +1547,26 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                 }
             }
         }
-        String pathogenicity = selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicityLevel();
+        String pathogenicity = selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity();
         for(Node node : pathogenicityArea.getChildren()) {
             Button button = (Button)node;
             button.getStyleClass().removeAll(button.getStyleClass());
             button.getStyleClass().add("button");
             if(!StringUtils.isEmpty(pathogenicity)) {
                 if(pathogenicity.equals(button.getId())) {
-                    if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicityLevel().equals("P")) {
+                    if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals("P")) {
                         button.getStyleClass().add("prediction_A");
                         button.setDisable(true);
-                    } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicityLevel().equals("LP")) {
+                    } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals("LP")) {
                         button.getStyleClass().add("prediction_B");
                         button.setDisable(true);
-                    } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicityLevel().equals("US")) {
+                    } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals("US")) {
                         button.getStyleClass().add("prediction_C");
                         button.setDisable(true);
-                    } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicityLevel().equals("LB")) {
+                    } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals("LB")) {
                         button.getStyleClass().add("prediction_D");
                         button.setDisable(true);
-                    } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicityLevel().equals("B")) {
+                    } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals("B")) {
                         button.getStyleClass().add("prediction_E");
                         button.setDisable(true);
                     }

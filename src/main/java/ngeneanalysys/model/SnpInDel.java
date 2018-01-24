@@ -20,8 +20,8 @@ public class SnpInDel implements Serializable {
 	private Integer id;
 	private Integer sampleId;
 	private String serialNumber;
-	private String swPathogenicityLevel;
-	private String expertPathogenicityLevel;
+	private String swPathogenicity;
+	private String expertPathogenicity;
 	private String swTier;
 	private String expertTier;
 	private String includedInReport;
@@ -135,31 +135,31 @@ public class SnpInDel implements Serializable {
 	}
 	
 	/**
-	 * @return swPathogenicityLevel
+	 * @return swPathogenicity
 	 */
-	public String getSwPathogenicityLevel() {
-		return swPathogenicityLevel;
+	public String getSwPathogenicity() {
+		return swPathogenicity;
 	}
 
 	/**
-	 * @param swPathogenicityLevel
+	 * @param swPathogenicity
 	 */
-	public void setSwPathogenicityLevel(String swPathogenicityLevel) {
-		this.swPathogenicityLevel = swPathogenicityLevel;
+	public void setSwPathogenicity(String swPathogenicity) {
+		this.swPathogenicity = swPathogenicity;
 	}
 
 	/**
-	 * @return expertPathogenicityLevel
+	 * @return expertPathogenicity
 	 */
-	public String getExpertPathogenicityLevel() {
-		return expertPathogenicityLevel;
+	public String getExpertPathogenicity() {
+		return expertPathogenicity;
 	}
 
 	/**
-	 * @param expertPathogenicityLevel
+	 * @param expertPathogenicity
 	 */
-	public void setExpertPathogenicityLevel(String expertPathogenicityLevel) {
-		this.expertPathogenicityLevel = expertPathogenicityLevel;
+	public void setExpertPathogenicity(String expertPathogenicity) {
+		this.expertPathogenicity = expertPathogenicity;
 	}
 
 	/**

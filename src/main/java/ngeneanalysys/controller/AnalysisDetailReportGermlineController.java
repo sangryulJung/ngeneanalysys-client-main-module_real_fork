@@ -416,9 +416,9 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
     public List<VariantAndInterpretationEvidence> settingPathogenicityList(List<VariantAndInterpretationEvidence> allTierList,
                                                                            String pathogenicity) {
         if(!StringUtils.isEmpty(pathogenicity)) {
-            return allTierList.stream().filter(item -> ((pathogenicity.equalsIgnoreCase(item.getSnpInDel().getExpertPathogenicityLevel()) ||
-                    (StringUtils.isEmpty(item.getSnpInDel().getExpertPathogenicityLevel())
-                            && item.getSnpInDel().getSwPathogenicityLevel().equalsIgnoreCase(pathogenicity)))))
+            return allTierList.stream().filter(item -> ((pathogenicity.equalsIgnoreCase(item.getSnpInDel().getExpertPathogenicity()) ||
+                    (StringUtils.isEmpty(item.getSnpInDel().getExpertPathogenicity())
+                            && item.getSnpInDel().getSwPathogenicity().equalsIgnoreCase(pathogenicity)))))
                     .collect(Collectors.toList());
         }
 

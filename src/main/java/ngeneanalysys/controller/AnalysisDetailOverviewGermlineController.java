@@ -130,9 +130,9 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
 
         //Tier Table Setting
         pathogenicityColumn.setCellValueFactory(cellData -> new SimpleStringProperty(
-                !StringUtils.isEmpty(cellData.getValue().getSnpInDel().getExpertPathogenicityLevel()) ?
-                        cellData.getValue().getSnpInDel().getExpertPathogenicityLevel() :
-                        cellData.getValue().getSnpInDel().getSwPathogenicityLevel()));
+                !StringUtils.isEmpty(cellData.getValue().getSnpInDel().getExpertPathogenicity()) ?
+                        cellData.getValue().getSnpInDel().getExpertPathogenicity() :
+                        cellData.getValue().getSnpInDel().getSwPathogenicity()));
         geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
         variantColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
 
@@ -269,8 +269,8 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
     }
 
     public List<VariantAndInterpretationEvidence> returnVariant(List<VariantAndInterpretationEvidence> list, String pathogenicity) {
-        return list.stream().filter(item -> ((pathogenicity.equalsIgnoreCase(item.getSnpInDel().getExpertPathogenicityLevel()) ||
-                (StringUtils.isEmpty(item.getSnpInDel().getExpertPathogenicityLevel()) && item.getSnpInDel().getSwPathogenicityLevel().equalsIgnoreCase(pathogenicity)))))
+        return list.stream().filter(item -> ((pathogenicity.equalsIgnoreCase(item.getSnpInDel().getExpertPathogenicity()) ||
+                (StringUtils.isEmpty(item.getSnpInDel().getExpertPathogenicity()) && item.getSnpInDel().getSwPathogenicity().equalsIgnoreCase(pathogenicity)))))
                 .collect(Collectors.toList());
     }
 
