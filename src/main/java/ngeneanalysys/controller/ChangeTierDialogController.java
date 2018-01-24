@@ -41,8 +41,6 @@ public class ChangeTierDialogController extends SubPaneController {
 
     private AnalysisDetailReportController analysisDetailReportController;
 
-    private AnalysisDetailReportGermlineController analysisDetailReportGermlineController;
-
     @FXML
     private ComboBox<String> clinicalVariantTypeComboBox;
 
@@ -84,13 +82,6 @@ public class ChangeTierDialogController extends SubPaneController {
     private TableRow<VariantAndInterpretationEvidence> rowItem;
 
     private boolean typeSomatic = true;
-
-    /**
-     * @param analysisDetailReportGermlineController
-     */
-    public void setAnalysisDetailReportGermlineController(AnalysisDetailReportGermlineController analysisDetailReportGermlineController) {
-        this.analysisDetailReportGermlineController = analysisDetailReportGermlineController;
-    }
 
     /**
      * @param analysisDetailReportController
@@ -245,11 +236,6 @@ public class ChangeTierDialogController extends SubPaneController {
                 /*selectedItem.getSnpInDel().setExpertTier(tier);*/
                 analysisDetailReportController.resetData(table);
                 analysisDetailReportController.setVariantsList();
-            }
-            if(analysisDetailReportGermlineController != null) {
-                /*selectedItem.getSnpInDel().setExpertPathogenicityLevel(tier);*/
-                analysisDetailReportGermlineController.resetData(table);
-                analysisDetailReportGermlineController.setVariantsList();
             }
 
             dialogStage.close();

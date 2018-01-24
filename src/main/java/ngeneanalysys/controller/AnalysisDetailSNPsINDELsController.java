@@ -492,8 +492,8 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
             if(acmgFilterCode != null &&  acmgFilterCode.getCode() != null) {
                 if (acmgFilterCode.getAlias() != null && panel != null && ExperimentTypeCode.GERMLINE.getDescription().equals(panel.getAnalysisType())) {
-                    list = list.stream().filter(variant ->
-                            variant.getSnpInDel().getSwPathogenicity().equals(acmgFilterCode.getAlias())).collect(Collectors.toList());
+                    list = list.stream().filter(variant -> (!StringUtils.isEmpty(variant.getSnpInDel().getExpertPathogenicity()) && variant.getSnpInDel().getExpertPathogenicity().equals(acmgFilterCode.getAlias())) ||
+                            (StringUtils.isEmpty(variant.getSnpInDel().getExpertPathogenicity()) && variant.getSnpInDel().getSwPathogenicity().equals(acmgFilterCode.getAlias()))).collect(Collectors.toList());
                 } else if (acmgFilterCode.getAlias() != null && panel != null && ExperimentTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType())) {
                     list = list.stream().filter(variant ->
                             (!StringUtils.isEmpty(variant.getSnpInDel().getExpertTier()) && variant.getSnpInDel().getExpertTier().equals(acmgFilterCode.getAlias())) ||
@@ -1168,7 +1168,23 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
             TableColumn<VariantAndInterpretationEvidence, String> expertPathogenicityLevel = new TableColumn<>("Pathogenicity");
             expertPathogenicityLevel.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getExpertPathogenicity()));
-            expertPathogenicityLevel.setPrefWidth(80);
+            expertPathogenicityLevel.setPrefWidth(70);
+            expertPathogenicityLevel.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
+                @Override
+                public void updateItem(String item, boolean empty) {
+                    Label label = null;
+                    if(item != null) {
+                        String code = PredictionTypeCode.getCodeFromAlias(item);
+                        if(code != null && !"NONE".equals(code)) {
+                            label = new Label(item);
+                            label.getStyleClass().clear();
+                            expertPathogenicityLevel.getStyleClass().add("alignment_center");
+                            label.getStyleClass().add("prediction_" + code);
+                        }
+                    }
+                    setGraphic(label);
+                }
+            });
             variantListTableView.getColumns().addAll(swPathogenicityLevel, expertPathogenicityLevel);
         }
 
@@ -1627,20 +1643,20 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             value = "B";
         }
 
-        /*if((selectedAnalysisResultVariant.getSnpInDel().getExpertTier() == null)
-                || !selectedAnalysisResultVariant.getSnpInDel().getExpertTier().equals(value)) {
+        if((selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity() == null && !selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicity().equals(value))
+                || (selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity() != null &&!selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals(value))) {
             try {
-                FXMLLoader loader = mainApp.load(FXMLConstants.CHANGE_TIER);
+                FXMLLoader loader = mainApp.load(FXMLConstants.CHANGE_PATHOGENICITY);
                 Node root = loader.load();
-                ChangeTierDialogController changeTierDialogController = loader.getController();
-                changeTierDialogController.setMainController(this.getMainController());
-                changeTierDialogController.settingTier(value, selectedAnalysisResultVariant);
-                changeTierDialogController.show((Parent) root);
+                ChangePathogenicityController changePathogenicityController = loader.getController();
+                changePathogenicityController.setMainController(this.getMainController());
+                changePathogenicityController.settingTier(value, selectedAnalysisResultVariant);
+                changePathogenicityController.show((Parent) root);
             } catch (IOException ioe) {
                 ioe.printStackTrace();
             }
 
             showVariantList(null, 0);
-        }*/
+        }
     }
 }

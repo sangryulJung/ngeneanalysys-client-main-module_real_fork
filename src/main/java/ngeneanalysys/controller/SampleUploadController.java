@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -188,7 +189,14 @@ public class SampleUploadController extends BaseStageController{
         pageSetting(1);
 
         textFieldRunName.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")) textFieldRunName.setText(oldValue);
+            if (newValue.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")) {
+                textFieldRunName.setText(oldValue);
+                /*Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("text error");
+                alert.setContentText("");
+
+                alert.showAndWait();*/
+            }
         });
 
         contentWrapper.getChildren().add(maskerPane);

@@ -695,7 +695,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         maskerPane.setVisible(true);
 
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Choose Directory");
+        fileChooser.setTitle("Choose File");
         if(mainController.getBasicInformationMap().containsKey("path")) {
             fileChooser.setInitialDirectory(new File((String)mainController.getBasicInformationMap().get("path")));
         } else {

@@ -915,20 +915,20 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         t.consume();
     }
 
-    public void onDragDropped(DragEvent t, TableView<VariantAndInterpretationEvidence> table, String tier) {
-        System.out.println("change Pathogenicity " + tier);
+    public void onDragDropped(DragEvent t, TableView<VariantAndInterpretationEvidence> table, String pathogenicity) {
+        System.out.println("change Pathogenicity " + pathogenicity);
         if(selectedItem != null && selectedTable != table) {
-            /*try {
-                FXMLLoader loader = mainApp.load(FXMLConstants.CHANGE_TIER);
+            try {
+                FXMLLoader loader = mainApp.load(FXMLConstants.CHANGE_PATHOGENICITY);
                 Node root = loader.load();
-                ChangeTierDialogController changeTierDialogController = loader.getController();
-                changeTierDialogController.setMainController(this.getMainController());
-                changeTierDialogController.setAnalysisDetailReportController(this);
-                changeTierDialogController.settingItem(table, tier, selectedItem, rowItem);
-                changeTierDialogController.show((Parent) root);
+                ChangePathogenicityController changePathogenicityController = loader.getController();
+                changePathogenicityController.setMainController(this.getMainController());
+                changePathogenicityController.setAnalysisDetailReportGermlineController(this);
+                changePathogenicityController.settingItem(table, pathogenicity, selectedItem, rowItem);
+                changePathogenicityController.show((Parent) root);
             } catch (IOException ioe) {
                 ioe.printStackTrace();
-            }*/
+            }
 
         }
         t.setDropCompleted(true);

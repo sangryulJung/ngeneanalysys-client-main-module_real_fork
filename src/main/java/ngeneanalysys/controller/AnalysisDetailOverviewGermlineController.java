@@ -307,7 +307,7 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
 
         if(qcList != null && !qcList.isEmpty()) {
             Optional<SampleQC> findQC = qcList.stream().filter(sampleQC -> sampleQC.getQcType().equalsIgnoreCase(qc)).findFirst();
-            if(findQC.isPresent()) {
+            if(findQC.isPresent() && !StringUtils.isEmpty(findQC.get().getQcResult())) {
                 result = findQC.get().getQcResult();
             }
         }

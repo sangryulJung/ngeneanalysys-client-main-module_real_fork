@@ -151,6 +151,8 @@ public class FXMLConstants {
 
 	public static final String CHANGE_TIER = "/layout/fxml/ChangeTierDialog.fxml";
 
+	public static final String CHANGE_PATHOGENICITY = "/layout/fxml/ChangePathogenicityDialog.fxml";
+
 	public static final String ANALYSIS_DETAIL_FUSION_MAIN = "/layout/fxml/AnalysisDetail-FusionMain.fxml";
 
 	public static final String ANALYSIS_DETAIL_FUSION_GENE = "/layout/fxml/AnalysisDetail-FusionGene.fxml";

@@ -200,10 +200,10 @@
 							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>REF.SEQ</fo:block></fo:table-cell>
 							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>NUCLEOTIDE</fo:block></fo:table-cell>
 							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>AMINO ACID</fo:block></fo:table-cell>
-							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>VAF<fo:inline vertical-align="super" font-size="6pt" color="red">*</fo:inline></fo:block></fo:table-cell>
-							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block><![CDATA[DEPTH†]]></fo:block></fo:table-cell>
-							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block><![CDATA[SIGNIFICANCE‡]]></fo:block></fo:table-cell>
-							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>REMARK<fo:inline vertical-align="super" font-size="6pt" color="red">**</fo:inline></fo:block></fo:table-cell>
+							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>VAF*</fo:block></fo:table-cell>
+							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>DEPTH<fo:inline vertical-align="super" font-size="6pt">†</fo:inline></fo:block></fo:table-cell>
+							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>SIGNIFICANCE<fo:inline vertical-align="super" font-size="6pt">‡</fo:inline></fo:block></fo:table-cell>
+							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>REMARK</fo:block></fo:table-cell>
 						</fo:table-row>
 						#foreach($variant in $contents.variantList)
 						#if(($variant.snpInDel.expertTier && $variant.snpInDel.expertTier == "T1")
@@ -226,7 +226,7 @@
 							</fo:table-cell>
 							<fo:table-cell>
 								<fo:block text-align="center">$variant.snpInDel.readInfo.readDepth
-									#if($variant.snpInDel.readInfo.readDepth <= 100)<fo:inline vertical-align="super" font-size="6pt" color="red">***</fo:inline>
+									#if($variant.snpInDel.readInfo.readDepth <= 100)<fo:inline vertical-align="super" font-size="6pt" color="red">§</fo:inline>
 									#end
 								</fo:block>
 							</fo:table-cell>
@@ -271,10 +271,10 @@
 							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>REF.SEQ</fo:block></fo:table-cell>
 							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>NUCLEOTIDE</fo:block></fo:table-cell>
 							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>AMINO ACID</fo:block></fo:table-cell>
-							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>VAF<fo:inline vertical-align="super" font-size="6pt" color="red">*</fo:inline></fo:block></fo:table-cell>
-							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block><![CDATA[DEPTH†]]></fo:block></fo:table-cell>
-							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block><![CDATA[SIGNIFICANCE‡]]></fo:block></fo:table-cell>
-							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>REMARK<fo:inline vertical-align="super" font-size="6pt" color="red">**</fo:inline></fo:block></fo:table-cell>
+							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>VAF*</fo:block></fo:table-cell>
+							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>DEPTH<fo:inline vertical-align="super" font-size="6pt">†</fo:inline></fo:block></fo:table-cell>
+							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>SIGNIFICANCE<fo:inline vertical-align="super" font-size="6pt">‡</fo:inline></fo:block></fo:table-cell>
+							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>REMARK</fo:block></fo:table-cell>
 						</fo:table-row>
 						#foreach($variant in $contents.variantList)
 						#if(($variant.snpInDel.expertTier && $variant.snpInDel.expertTier == "T2")
@@ -297,7 +297,7 @@
 							</fo:table-cell>
 							<fo:table-cell>
 								<fo:block text-align="center">$variant.snpInDel.readInfo.readDepth
-									#if($variant.snpInDel.readInfo.readDepth <= 100)<fo:inline vertical-align="super" font-size="6pt" color="red">***</fo:inline>
+									#if($variant.snpInDel.readInfo.readDepth <= 100)<fo:inline vertical-align="super" font-size="6pt" color="red">§</fo:inline>
 									#end
 								</fo:block>
 							</fo:table-cell>
@@ -343,10 +343,10 @@
 							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>REF.SEQ</fo:block></fo:table-cell>
 							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>NUCLEOTIDE</fo:block></fo:table-cell>
 							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>AMINO ACID</fo:block></fo:table-cell>
-							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>VAF<fo:inline vertical-align="super" font-size="6pt" color="red">*</fo:inline></fo:block></fo:table-cell>
-							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block><![CDATA[DEPTH†]]></fo:block></fo:table-cell>
-							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block><![CDATA[SIGNIFICANCE‡]]></fo:block></fo:table-cell>
-							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>REMARK<fo:inline vertical-align="super" font-size="6pt" color="red">**</fo:inline></fo:block></fo:table-cell>
+							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>VAF*</fo:block></fo:table-cell>
+							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>DEPTH<fo:inline vertical-align="super" font-size="6pt">†</fo:inline></fo:block></fo:table-cell>
+							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>SIGNIFICANCE<fo:inline vertical-align="super" font-size="6pt">‡</fo:inline></fo:block></fo:table-cell>
+							<fo:table-cell border-bottom="solid 0.5mm black" border-top="solid 0.5mm black" font-family="Noto Sans CJK KR Regular"><fo:block>REMARK</fo:block></fo:table-cell>
 						</fo:table-row>
 						#foreach($variant in $contents.variantList)
 						#if(($variant.snpInDel.expertTier && $variant.snpInDel.expertTier == "T3")
@@ -369,7 +369,7 @@
 							</fo:table-cell>
 							<fo:table-cell>
 								<fo:block text-align="center">$variant.snpInDel.readInfo.readDepth
-									#if($variant.snpInDel.readInfo.readDepth <= 100)<fo:inline vertical-align="super" font-size="6pt" color="red">***</fo:inline>
+									#if($variant.snpInDel.readInfo.readDepth <= 100)<fo:inline vertical-align="super" font-size="6pt" color="red">§</fo:inline>
 									#end
 								</fo:block>
 							</fo:table-cell>
@@ -397,8 +397,8 @@
 						<fo:table-row font-size="7pt" font-family="Noto Sans CJK KR Regular">
 							<fo:table-cell border-top="solid 0.5mm black" number-columns-spanned="8" end-indent="3pt" text-align="left">
 								<fo:block color="#6D6E71">상기 결과는 TierI, II, III에 해당하는 변이만 기술하였습니다.</fo:block>
-								<fo:block color="#EF5BA1">* VAF, Variant Allele Frequency; †DEPTH, Total Read Depth; ‡SIGNIFICANCE, clinical significance;</fo:block>
-								<fo:block color="#EF5BA1"><![CDATA[*** WARNING: Depth < 100]]></fo:block>
+								<fo:block color="#6D6E71">* VAF, Variant Allele Frequency; †DEPTH, Total Read Depth; ‡SIGNIFICANCE, clinical significance;</fo:block>
+								<fo:block color="#EF5BA1"><![CDATA[§WARNING: Low coverage, read depth < 100x]]></fo:block>
 							</fo:table-cell>
 						</fo:table-row>
 					</fo:table-body>
@@ -442,7 +442,7 @@
 								<fo:block font-family="Noto Sans CJK KR Regular" white-space="pre" text-align="center">$contents.name1/$contents.name2</fo:block>
 							</fo:table-cell>
 							<fo:table-cell start-indent="0pt" padding-top="5mm" display-align="after">
-								<fo:block font-family="Noto Sans CJK KR Regular" white-space="pre">(서명)</fo:block>
+								<fo:block font-family="Noto Sans CJK KR Regular" white-space="pre"></fo:block>
 							</fo:table-cell>
 							<fo:table-cell start-indent="0pt" padding-top="5mm" display-align="after">
 								<fo:block font-family="Noto Sans CJK KR Bold" font-weight="bold">보고자</fo:block>
@@ -769,7 +769,7 @@
 															#if($i < $contents.variantCountByGenes.size())
 															$contents.variantCountByGenes.get($i).geneSymbol
 															#if(($contents.essentialGenes && $contents.essentialGenes.contains($contents.variantCountByGenes.get($i).geneSymbol)))
-															<fo:inline vertical-align="super" font-size="6pt" color="red">*</fo:inline>
+															<fo:inline vertical-align="super" font-size="6pt">*</fo:inline>
 															#end
 															#end
 														</fo:block>
@@ -915,7 +915,7 @@
 											</fo:table-body>
 										</fo:table>
 									</fo:block>
-									<fo:block color="red" font-family="Noto Sans CJK KR Regular" font-size="7pt" start-indent="0pt">*보건복지부 지정 필수유전자
+									<fo:block font-family="Noto Sans CJK KR Regular" font-size="7pt" start-indent="0pt">*보건복지부 지정 필수유전자
 									</fo:block>
 								</fo:table-cell>
 							</fo:table-row>

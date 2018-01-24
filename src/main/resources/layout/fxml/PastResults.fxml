@@ -247,8 +247,8 @@
             </HBox>
             <HBox alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="340.0">
                <children>
-                  <Button maxHeight="26.0" maxWidth="71.0" minHeight="26.0" minWidth="54.0" mnemonicParsing="false" onAction="#saveExcel" prefHeight="26.0" prefWidth="56.0" styleClass="btn_refresh" text="EXCEL" />
-                  <Button maxHeight="26.0" maxWidth="57.0" minHeight="26.0" minWidth="45.0" mnemonicParsing="false" onAction="#saveCSV" prefHeight="26.0" prefWidth="57.0" styleClass="btn_refresh" text="CSV">
+                  <Button disable="true" maxHeight="26.0" maxWidth="71.0" minHeight="26.0" minWidth="54.0" mnemonicParsing="false" onAction="#saveExcel" prefHeight="26.0" prefWidth="56.0" styleClass="btn_refresh" text="EXCEL" visible="false" />
+                  <Button disable="true" maxHeight="26.0" maxWidth="57.0" minHeight="26.0" minWidth="45.0" mnemonicParsing="false" onAction="#saveCSV" prefHeight="26.0" prefWidth="57.0" styleClass="btn_refresh" text="CSV" visible="false">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
