@@ -802,8 +802,6 @@ public class PastResultsController extends SubPaneController {
 			setVisible(true);
 			this.getChildren().clear();
 			String fastQC = sample.getQcResult();
-			fastQC = (StringUtils.isEmpty(fastQC) && sample.getAnalysisResultSummary() != null) ? sample.getAnalysisResultSummary().getQualityControlStatus() : fastQC;
-			fastQC = (!StringUtils.isEmpty(fastQC)) ? fastQC.toUpperCase() : "NONE";
 			Image img = resourceUtil.getImage("/layout/images/icon_qc_" + fastQC.toLowerCase() + ".png");
 			if (img != null) {
 				ImageView imgVw = new ImageView(img);

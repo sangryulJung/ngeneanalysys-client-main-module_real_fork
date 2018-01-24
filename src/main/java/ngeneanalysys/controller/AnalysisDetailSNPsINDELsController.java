@@ -195,8 +195,6 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
         // 본 샘플의 FASTQC 결과가 "pass"가 아닌 경우 아이콘 출력함.
         String fastQC = sample.getQcResult();
-        fastQC = (StringUtils.isEmpty(fastQC) && sample.getAnalysisResultSummary() != null) ? sample.getAnalysisResultSummary().getQualityControlStatus() : fastQC;
-        fastQC = (!StringUtils.isEmpty(fastQC)) ? fastQC.toUpperCase() : "NONE";
         if(StringUtils.isEmpty(fastQC) || !"PASS".endsWith(fastQC.toUpperCase())) {
             ImageView imgView = new ImageView(resourceUtil.getImage("/layout/images/icon_warn_big.png"));
             iconAreaHBox.getChildren().add(imgView);

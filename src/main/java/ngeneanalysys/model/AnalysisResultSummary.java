@@ -9,7 +9,6 @@ public class AnalysisResultSummary implements Serializable {
     private static final long serialVersionUID = 8336098024552988388L;
 
     private Integer sampleId;
-    private String qualityControlStatus;
     private Integer depthMin;
     private Integer depthMax;
     private BigDecimal depthMean;
@@ -21,21 +20,9 @@ public class AnalysisResultSummary implements Serializable {
     private Integer level3VariantCount;
     private Integer level4VariantCount;
     private Integer level5VariantCount;
-    private BigDecimal meanReadQualityPercentage;
-    private String meanReadQualityStatus;
-    private BigDecimal retainedReadsPercentage;
-    private String retainedReadsStatus;
-    private BigDecimal roiCoveragePercentage;
-    private String roiCoverageStatus;
-    private BigDecimal coverageUniformityPercentage;
-    private String coverageUniformityStatus;
 
     public Integer getSampleId() {
         return sampleId;
-    }
-
-    public String getQualityControlStatus() {
-        return qualityControlStatus;
     }
 
     public Integer getDepthMin() {
@@ -82,43 +69,10 @@ public class AnalysisResultSummary implements Serializable {
         return geneCount;
     }
 
-    public BigDecimal getMeanReadQualityPercentage() {
-        return meanReadQualityPercentage;
-    }
-
-    public String getMeanReadQualityStatus() {
-        return meanReadQualityStatus;
-    }
-
-    public BigDecimal getRetainedReadsPercentage() {
-        return retainedReadsPercentage;
-    }
-
-    public String getRetainedReadsStatus() {
-        return retainedReadsStatus;
-    }
-
-    public BigDecimal getRoiCoveragePercentage() {
-        return roiCoveragePercentage;
-    }
-
-    public String getRoiCoverageStatus() {
-        return roiCoverageStatus;
-    }
-
-    public BigDecimal getCoverageUniformityPercentage() {
-        return coverageUniformityPercentage;
-    }
-
-    public String getCoverageUniformityStatus() {
-        return coverageUniformityStatus;
-    }
-
     @Override
     public String toString() {
         return "AnalysisResultSummary{" +
                 "sampleId=" + sampleId +
-                ", qualityControlStatus='" + qualityControlStatus + '\'' +
                 ", depthMin=" + depthMin +
                 ", depthMax=" + depthMax +
                 ", depthMean=" + depthMean +
@@ -130,14 +84,6 @@ public class AnalysisResultSummary implements Serializable {
                 ", level3VariantCount=" + level3VariantCount +
                 ", level4VariantCount=" + level4VariantCount +
                 ", level5VariantCount=" + level5VariantCount +
-                ", meanReadQualityPercentage=" + meanReadQualityPercentage +
-                ", meanReadQualityStatus='" + meanReadQualityStatus + '\'' +
-                ", retainedReadsPercentage=" + retainedReadsPercentage +
-                ", retainedReadsStatus='" + retainedReadsStatus + '\'' +
-                ", roiCoveragePercentage=" + roiCoveragePercentage +
-                ", roiCoverageStatus='" + roiCoverageStatus + '\'' +
-                ", coverageUniformityPercentage=" + coverageUniformityPercentage +
-                ", coverageUniformityStatus='" + coverageUniformityStatus + '\'' +
                 '}';
     }
 }
