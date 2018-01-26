@@ -354,7 +354,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             if(sample.getSampleStatus().getReportStartedAt() != null) {
                 response = apiService.get("sampleReport/" + sample.getId(), null, null, false);
 
-                if (response.getStatus() >= 200 && response.getStatus() <= 300) {
+                if (response.getStatus() == 200) {
                     reportData = true;
                     SampleReport sampleReport = response.getObjectBeforeConvertResponseToJSON(SampleReport.class);
                     if(sampleReport.getVirtualPanelId() != null) {
@@ -752,6 +752,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
     public boolean createPDF(boolean isDraft) {
         boolean created = true;
+        String reportCreationErrorMsg = "An error occurred during the creation of the report document.";
 
         // 보고서 파일명 기본값
         String baseSaveName = String.format("FINAL_Report_%s", sample.getName());
@@ -1021,7 +1022,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                             createdCheck(created1, file);
                             //convertPDFtoImage(file, sample.getName());
                         } catch (Exception e) {
-                            DialogUtil.error("Save Fail.", "An error occurred during the creation of the report document.", getMainApp().getPrimaryStage(), false);
+                            DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);
                             e.printStackTrace();
                         }
                     });
@@ -1030,9 +1031,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
             }
         } catch(FileNotFoundException fnfe){
-            DialogUtil.error("Save Fail.", fnfe.getMessage(), getMainApp().getPrimaryStage(), false);
+            DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + fnfe.getMessage(), getMainApp().getPrimaryStage(), false);
         } catch (Exception e) {
-            DialogUtil.error("Save Fail.", "An error occurred during the creation of the report document.", getMainApp().getPrimaryStage(), false);
+            DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);
             e.printStackTrace();
             created = false;
         }
