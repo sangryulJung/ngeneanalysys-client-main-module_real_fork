@@ -298,7 +298,7 @@ public class AnalysisDetailFusionGeneController extends SubPaneController {
     public void showOverviewTab(FusionGene fusionGene) {
         paramMap.put("fusionGene", fusionGene);
 
-        /*try {
+        try {
             HttpClientResponse response = apiService.get("/analysisResults/snpInDelTranscripts/" + fusionGene.getId(), null, null, false);
             List<SnpInDelTranscript> snpInDelTranscripts = (List<SnpInDelTranscript>) response.getMultiObjectBeforeConvertResponseToJSON(SnpInDelTranscript.class, false);
             paramMap.put("snpInDelTranscripts", snpInDelTranscripts);
@@ -315,7 +315,7 @@ public class AnalysisDetailFusionGeneController extends SubPaneController {
 
         } catch(WebAPIException e) {
             logger.info(e.getMessage());
-        }*/
+        }
 
         try {
             FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_SNPS_INDELS_OVERVIEW);
@@ -323,7 +323,7 @@ public class AnalysisDetailFusionGeneController extends SubPaneController {
             overviewController = loader.getController();
             overviewController.setMainController(this.getMainController());
             overviewController.setParamMap(paramMap);
-            overviewController.show((Parent) node);
+            //overviewController.show((Parent) node);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -338,6 +338,7 @@ public class AnalysisDetailFusionGeneController extends SubPaneController {
             Node node = loader.load();
             AnalysisDetailSNPsINDELsMemoController controller = loader.getController();
             controller.setMainController(this.getMainController());
+            controller.setAnalysisDetailFusionGeneController(this);
             controller.show((Parent) node);
 
         } catch (Exception e) {

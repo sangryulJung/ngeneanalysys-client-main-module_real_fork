@@ -245,13 +245,13 @@ public class SystemManagerReportTemplateController extends SubPaneController{
 
         if(file != null && file.getName().toLowerCase().endsWith(".vm")) {
             try (BufferedReader in = new BufferedReader(new FileReader(file))){
-                StringBuilder sb = new StringBuilder();
-                String s;
-                while((s = in.readLine()) != null) {
+                final StringBuilder sb = new StringBuilder();
+                //String s;
+                in.lines().forEach(s -> sb.append(s + "\n"));
+                /*while((s = in.readLine()) != null) {
                     sb = sb.append(s + "\n");
-                }
-
-                contents = sb.toString();
+                }*/
+                if(sb.length() > 0) contents = sb.toString();
 
             } catch (Exception e) {
                 DialogUtil.error(e.getMessage(), e.getMessage(), mainController.getPrimaryStage() ,true);

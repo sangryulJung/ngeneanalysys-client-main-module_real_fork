@@ -67,34 +67,44 @@ public class AnalysisDetailSNPsINDELsLowConfidenceController extends SubPaneCont
 
             for(String key : keySet) {
 
-                if(key.equalsIgnoreCase("WARNING")) continue;
+                //if(key.equalsIgnoreCase("WARNING")) continue;
 
-                HBox box = new HBox();
 
-                Label titleLabel = new Label();
+                if (key.equalsIgnoreCase("low_variant_coverage_depth") ||
+                        key.equalsIgnoreCase("low_variant_fraction") ||
+                        key.equalsIgnoreCase("homopolymer_region") ||
+                        key.equalsIgnoreCase("soft_clipped_amplicon") ||
+                        key.equalsIgnoreCase("primer_deletion") ||
+                        key.equalsIgnoreCase("low_read_depth") ||
+                        key.equalsIgnoreCase("low_allele_fraction")) {
 
-                titleLabel.setText(WordUtils.capitalize(key.replaceAll("_", " ")) + " : ");
-                titleLabel.getStyleClass().add("font_size_12");
+                    HBox box = new HBox();
 
-                String warningString = (String)getParamMap().get(key);
-                Label warningLabel = new Label();
-                warningLabel.getStyleClass().add("font_size_12");
-                warningLabel.setText(warningString);
+                    Label titleLabel = new Label();
 
-                if(!StringUtils.isEmpty(warningString)) {
-                    if(warningString.equalsIgnoreCase("YES")) {
-                        warningLabel.getStyleClass().add("txt_green");
+                    titleLabel.setText(WordUtils.capitalize(key.replaceAll("_", " ")) + " : ");
+                    titleLabel.getStyleClass().add("font_size_12");
+
+                    String warningString = (String) getParamMap().get(key);
+                    Label warningLabel = new Label();
+                    warningLabel.getStyleClass().add("font_size_12");
+                    warningLabel.setText(warningString);
+
+                    if (!StringUtils.isEmpty(warningString)) {
+                        if (warningString.equalsIgnoreCase("YES")) {
+                            warningLabel.getStyleClass().add("txt_green");
+                        } else {
+                            warningLabel.getStyleClass().add("txt_red");
+                        }
                     } else {
-                        warningLabel.getStyleClass().add("txt_red");
+                        warningLabel.setText(na);
                     }
-                } else {
-                    warningLabel.setText(na);
+
+                    box.getChildren().add(titleLabel);
+                    box.getChildren().add(warningLabel);
+
+                    vbox.getChildren().add(box);
                 }
-
-                box.getChildren().add(titleLabel);
-                box.getChildren().add(warningLabel);
-
-                vbox.getChildren().add(box);
             }
         }
 

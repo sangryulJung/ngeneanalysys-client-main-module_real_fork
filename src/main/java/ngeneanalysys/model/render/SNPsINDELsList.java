@@ -47,13 +47,23 @@ public class SNPsINDELsList {
 			Set<String> mapKey = map.keySet();
 			int currentIndex = 1;
 			for(String key : mapKey) {
-				if(key.toUpperCase().equals("WARNING")) continue;
-				String warningString = map.get(key);
-				String titleString = "* " + WordUtils.capitalize(key.replaceAll("_", " ")) + " : ";
-				HBox hbox = getWarningReasonItemBox(titleString, warningString == null ? "N/A" : warningString );
-				box.getChildren().add(hbox);
-				if(mapKey.size() > currentIndex) box.setMargin(hbox, new Insets(5, 0, 0, 0));
-				currentIndex++;
+				//if(key.toUpperCase().equals("WARNING")) continue;
+
+				if (key.equalsIgnoreCase("low_variant_coverage_depth") ||
+						key.equalsIgnoreCase("low_variant_fraction") ||
+						key.equalsIgnoreCase("homopolymer_region") ||
+						key.equalsIgnoreCase("soft_clipped_amplicon") ||
+						key.equalsIgnoreCase("primer_deletion") ||
+						key.equalsIgnoreCase("low_read_depth") ||
+						key.equalsIgnoreCase("low_allele_fraction")) {
+
+					String warningString = map.get(key);
+					String titleString = "* " + WordUtils.capitalize(key.replaceAll("_", " ")) + " : ";
+					HBox hbox = getWarningReasonItemBox(titleString, warningString == null ? "N/A" : warningString);
+					box.getChildren().add(hbox);
+					if (mapKey.size() > currentIndex) box.setMargin(hbox, new Insets(5, 0, 0, 0));
+					currentIndex++;
+				}
 			}
 
 			/*if(map != null && !map.isEmpty() && map.size() > 0) {
