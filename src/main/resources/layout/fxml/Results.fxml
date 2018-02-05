@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Pagination?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <GridPane prefHeight="600.0" prefWidth="1280.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="631.0" minWidth="10.0" prefWidth="118.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="1189.0" minWidth="10.0" prefWidth="1162.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="109.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="530.0" minHeight="10.0" prefHeight="526.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="194.0" minHeight="0.0" prefHeight="29.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnSpan="2">
+               <children>
+                  <Label prefHeight="34.0" prefWidth="284.0" text="NGeneAnalySys">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <HBox prefHeight="100.0" prefWidth="900.0" />
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label text="User" />
+                        <Button mnemonicParsing="false" text="V">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnSpan="2" GridPane.rowIndex="2">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="286.0" spacing="10.0">
+                     <children>
+                        <ProgressBar prefWidth="200.0" progress="0.0">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </ProgressBar>
+                        <Label text="Task Name" />
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="28.0" prefWidth="858.0" />
+                  <HBox prefHeight="28.0" prefWidth="126.0">
+                     <children>
+                        <Label text="NGeneBio">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: lightgray;" GridPane.rowIndex="1">
+               <children>
+                  <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" style="-fx-background-color: skyblue;" text="Run" textAlignment="CENTER">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Button mnemonicParsing="false" text="^" />
+                  <ScrollPane hbarPolicy="NEVER" prefHeight="304.0" prefWidth="118.0" vbarPolicy="NEVER">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="117.0">
+                           <children>
+                              <VBox layoutX="9.0" prefHeight="304.0" prefWidth="100.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" prefHeight="33.0" prefWidth="100.0">
+                                       <children>
+                                          <Label maxWidth="1.7976931348623157E308" prefHeight="15.0" prefWidth="78.0" text="Sample 1" />
+                                          <Button mnemonicParsing="false" text="X" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" prefHeight="33.0" prefWidth="100.0">
+                                       <children>
+                                          <Label maxWidth="1.7976931348623157E308" prefHeight="15.0" prefWidth="78.0" text="Sample 2" />
+                                          <Button mnemonicParsing="false" text="X" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" prefHeight="33.0" prefWidth="100.0">
+                                       <children>
+                                          <Label maxWidth="1.7976931348623157E308" prefHeight="15.0" prefWidth="78.0" text="Sample 3" />
+                                          <Button mnemonicParsing="false" text="X" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" prefHeight="33.0" prefWidth="100.0">
+                                       <children>
+                                          <Label maxWidth="1.7976931348623157E308" prefHeight="15.0" prefWidth="78.0" text="Sample 4" />
+                                          <Button mnemonicParsing="false" text="X" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" prefHeight="33.0" prefWidth="100.0">
+                                       <children>
+                                          <Label maxWidth="1.7976931348623157E308" prefHeight="15.0" prefWidth="78.0" text="Sample 5" />
+                                          <Button mnemonicParsing="false" text="X" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" prefHeight="33.0" prefWidth="100.0">
+                                       <children>
+                                          <Label maxWidth="1.7976931348623157E308" prefHeight="15.0" prefWidth="78.0" text="Sample 6" />
+                                          <Button mnemonicParsing="false" text="X" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" prefHeight="33.0" prefWidth="100.0">
+                                       <children>
+                                          <Label maxWidth="1.7976931348623157E308" prefHeight="15.0" prefWidth="78.0" text="Sample 7" />
+                                          <Button mnemonicParsing="false" text="X" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" prefHeight="33.0" prefWidth="100.0">
+                                       <children>
+                                          <Label maxWidth="1.7976931348623157E308" prefHeight="15.0" prefWidth="78.0" text="Sample 8" />
+                                          <Button mnemonicParsing="false" text="X" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" prefHeight="33.0" prefWidth="100.0">
+                                       <children>
+                                          <Label maxWidth="1.7976931348623157E308" prefHeight="15.0" prefWidth="78.0" text="Sample 9" />
+                                          <Button mnemonicParsing="false" text="X" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" prefHeight="33.0" prefWidth="100.0">
+                                       <children>
+                                          <Label maxWidth="1.7976931348623157E308" prefHeight="15.0" prefWidth="78.0" text="Sample 10" />
+                                          <Button mnemonicParsing="false" text="X" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" prefHeight="33.0" prefWidth="100.0">
+                                       <children>
+                                          <Label maxWidth="1.7976931348623157E308" prefHeight="15.0" prefWidth="78.0" text="Sample 11" />
+                                          <Button mnemonicParsing="false" text="X" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" prefHeight="33.0" prefWidth="100.0">
+                                       <children>
+                                          <Label maxWidth="1.7976931348623157E308" prefHeight="15.0" prefWidth="78.0" text="Sample 12" />
+                                          <Button mnemonicParsing="false" text="X" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" prefHeight="33.0" prefWidth="100.0">
+                                       <children>
+                                          <Label maxWidth="1.7976931348623157E308" prefHeight="15.0" prefWidth="78.0" text="Sample 13" />
+                                          <Button mnemonicParsing="false" text="X" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </ScrollPane>
+                  <Button mnemonicParsing="false" text="V" />
+                  <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" style="-fx-background-color: skyblue;" text="Manager" textAlignment="CENTER">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="129.0" minHeight="10.0" prefHeight="89.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="420.0" minHeight="10.0" prefHeight="408.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <VBox prefHeight="91.0" prefWidth="1162.0" style="-fx-background-color: purple;">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="36.0" prefWidth="1162.0" spacing="20.0">
+                           <children>
+                              <Label style="-fx-text-fill: white;" text="Filter">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <ComboBox prefWidth="150.0" />
+                              <TextField promptText="enter keyword" />
+                              <Button alignment="CENTER" mnemonicParsing="false" prefHeight="16.0" prefWidth="68.0" style="-fx-background-color: lightgray;" text="Search">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <FlowPane hgap="10.0" prefHeight="21.0" prefWidth="1162.0">
+                           <children>
+                              <HBox alignment="CENTER" prefHeight="20.0" style="-fx-background-color: blue; -fx-background-radius: 5; -fx-text-fill: white;">
+                                 <children>
+                                    <Label maxWidth="1.7976931348623157E308" style="-fx-background-radius: 5; -fx-text-fill: white;" text="Keyword1">
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </Label>
+                                    <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: blue; -fx-text-fill: white;" text="X" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="20.0" style="-fx-background-color: blue; -fx-background-radius: 5; -fx-text-fill: white;">
+                                 <children>
+                                    <Label maxWidth="1.7976931348623157E308" style="-fx-background-radius: 5; -fx-text-fill: white;" text="Keyword1">
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </Label>
+                                    <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: blue; -fx-text-fill: white;" text="X" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="20.0" style="-fx-background-color: blue; -fx-background-radius: 5; -fx-text-fill: white;">
+                                 <children>
+                                    <Label maxWidth="1.7976931348623157E308" style="-fx-background-radius: 5; -fx-text-fill: white;" text="Keyword1">
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </Label>
+                                    <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: blue; -fx-text-fill: white;" text="X" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="20.0" style="-fx-background-color: blue; -fx-background-radius: 5; -fx-text-fill: white;">
+                                 <children>
+                                    <Label maxWidth="1.7976931348623157E308" style="-fx-background-radius: 5; -fx-text-fill: white;" text="Keyword1">
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </Label>
+                                    <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: blue; -fx-text-fill: white;" text="X" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="20.0" style="-fx-background-color: blue; -fx-background-radius: 5; -fx-text-fill: white;">
+                                 <children>
+                                    <Label maxWidth="1.7976931348623157E308" style="-fx-background-radius: 5; -fx-text-fill: white;" text="Keyword1">
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </Label>
+                                    <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: blue; -fx-text-fill: white;" text="X" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="20.0" style="-fx-background-color: blue; -fx-background-radius: 5; -fx-text-fill: white;">
+                                 <children>
+                                    <Label maxWidth="1.7976931348623157E308" style="-fx-background-radius: 5; -fx-text-fill: white;" text="Keyword1">
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </Label>
+                                    <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: blue; -fx-text-fill: white;" text="X" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="20.0" style="-fx-background-color: blue; -fx-background-radius: 5; -fx-text-fill: white;">
+                                 <children>
+                                    <Label maxWidth="1.7976931348623157E308" style="-fx-background-radius: 5; -fx-text-fill: white;" text="Keyword1">
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </Label>
+                                    <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: blue; -fx-text-fill: white;" text="X" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="20.0" style="-fx-background-color: blue; -fx-background-radius: 5; -fx-text-fill: white;">
+                                 <children>
+                                    <Label maxWidth="1.7976931348623157E308" style="-fx-background-radius: 5; -fx-text-fill: white;" text="Keyword1">
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </Label>
+                                    <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: blue; -fx-text-fill: white;" text="X" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="20.0" style="-fx-background-color: blue; -fx-background-radius: 5; -fx-text-fill: white;">
+                                 <children>
+                                    <Label maxWidth="1.7976931348623157E308" style="-fx-background-radius: 5; -fx-text-fill: white;" text="Keyword1">
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </Label>
+                                    <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: blue; -fx-text-fill: white;" text="X" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="20.0" style="-fx-background-color: blue; -fx-background-radius: 5; -fx-text-fill: white;">
+                                 <children>
+                                    <Label maxWidth="1.7976931348623157E308" style="-fx-background-radius: 5; -fx-text-fill: white;" text="Keyword1">
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </Label>
+                                    <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: blue; -fx-text-fill: white;" text="X" />
+                                 </children>
+                              </HBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </VBox.margin>
+                        </FlowPane>
+                     </children>
+                  </VBox>
+                  <VBox maxHeight="1.7976931348623157E308" prefHeight="440.0" prefWidth="1162.0" GridPane.rowIndex="1">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="44.0" prefWidth="1162.0" style="-fx-background-color: white;">
+                           <children>
+                              <HBox prefHeight="44.0" prefWidth="13.0" />
+                              <Label text="Samples">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <HBox prefHeight="100.0" prefWidth="200.0" />
+                              <HBox prefHeight="44.0" prefWidth="74.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="44.0" prefWidth="87.0" style="-fx-background-color: black; -fx-background-insets: 5; -fx-background-radius: 10; -fx-text-fill: white;" text="T : 100" textAlignment="CENTER" />
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="44.0" prefWidth="74.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="44.0" prefWidth="87.0" style="-fx-background-color: yellow; -fx-background-insets: 5; -fx-background-radius: 10; -fx-text-fill: gray;" text="Q : 10" textAlignment="CENTER" />
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="44.0" prefWidth="74.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="44.0" prefWidth="87.0" style="-fx-background-color: green; -fx-background-insets: 5; -fx-background-radius: 10; -fx-text-fill: white;" text="R : 10" textAlignment="CENTER" />
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="44.0" prefWidth="74.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="44.0" prefWidth="87.0" style="-fx-background-color: cyan; -fx-background-insets: 5; -fx-background-radius: 10;" text="C : 10" textAlignment="CENTER" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <VBox maxHeight="1.7976931348623157E308" prefHeight="364.0" prefWidth="1162.0">
+                           <children>
+                              <Accordion prefHeight="342.0" prefWidth="1162.0" style="-fx-background-color: white;">
+                                <panes>
+                                  <TitledPane animated="false" text="Run Name 1">
+                                       <content>
+                                          <VBox prefHeight="200.0" prefWidth="100.0" spacing="2.0" style="-fx-background-color: white;">
+                                             <children>
+                                                <HBox prefHeight="31.0" prefWidth="1140.0">
+                                                   <children>
+                                                      <HBox alignment="CENTER_LEFT" minWidth="-Infinity" prefHeight="300.0" prefWidth="150.0">
+                                                         <children>
+                                                            <Label style="-fx-background-color: white;" text="Name" />
+                                                            <VBox prefHeight="200.0" prefWidth="20.0">
+                                                               <children>
+                                                                  <Button mnemonicParsing="false" prefHeight="10.0" prefWidth="24.0" style="-fx-background-color: white;" text="^" />
+                                                                  <Button mnemonicParsing="false" style="-fx-background-color: white;" text="V" />
+                                                               </children>
+                                                            </VBox>
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="80.0">
+                                                         <children>
+                                                            <Label style="-fx-background-color: white;" text="Status" />
+                                                            <VBox prefHeight="46.0" prefWidth="20.0">
+                                                               <children>
+                                                                  <Button mnemonicParsing="false" prefHeight="10.0" prefWidth="24.0" style="-fx-background-color: white;" text="^" />
+                                                                  <Button mnemonicParsing="false" style="-fx-background-color: white;" text="V" />
+                                                               </children>
+                                                            </VBox>
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="150.0">
+                                                         <children>
+                                                            <Label style="-fx-background-color: white;" text="Panel" />
+                                                            <VBox prefHeight="46.0" prefWidth="20.0">
+                                                               <children>
+                                                                  <Button mnemonicParsing="false" prefHeight="10.0" prefWidth="24.0" style="-fx-background-color: white;" text="^" />
+                                                                  <Button mnemonicParsing="false" style="-fx-background-color: white;" text="V" />
+                                                               </children>
+                                                            </VBox>
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="100.0">
+                                                         <children>
+                                                            <Label maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="300.0" style="-fx-background-color: white;" text="Variants" />
+                                                            <VBox prefHeight="46.0" prefWidth="20.0" />
+                                                         </children>
+                                                      </HBox>
+                                                   </children>
+                                                </HBox>
+                                                <HBox prefHeight="26.0" prefWidth="1140.0">
+                                                   <children>
+                                                      <Label maxHeight="1.7976931348623157E308" prefWidth="150.0" text="Sample Name 1" />
+                                                      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="80.0">
+                                                         <children>
+                                                            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="28.0" style="-fx-background-color: green; -fx-background-radius: 10; -fx-text-fill: white; -fx-padding: 0 0 0 10;" text="R" textAlignment="CENTER" />
+                                                         </children>
+                                                      </HBox>
+                                                      <Label maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="150.0" style="-fx-background-color: white;" text="SOLIDaccuTest" />
+                                                      <Label maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="300.0" text="TI : 1, TII : 2, TIII : 5, TIV : 50" />
+                                                   </children>
+                                                </HBox>
+                                                <HBox prefHeight="26.0" prefWidth="1140.0">
+                                                   <children>
+                                                      <Label maxHeight="1.7976931348623157E308" prefWidth="150.0" text="Sample Name 2" />
+                                                      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="80.0">
+                                                         <children>
+                                                            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="28.0" style="-fx-background-color: green; -fx-background-radius: 10; -fx-text-fill: white; -fx-padding: 0 0 0 10;" text="R" textAlignment="CENTER" />
+                                                         </children>
+                                                      </HBox>
+                                                      <Label maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="150.0" style="-fx-background-color: white;" text="HEMEaccuTest" />
+                                                   </children>
+                                                </HBox>
+                                                <HBox prefHeight="26.0" prefWidth="1140.0">
+                                                   <children>
+                                                      <Label maxHeight="1.7976931348623157E308" prefWidth="150.0" text="Sample Name 3" />
+                                                      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="80.0">
+                                                         <children>
+                                                            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="28.0" style="-fx-background-color: green; -fx-background-radius: 10; -fx-text-fill: white; -fx-padding: 0 0 0 10;" text="R" textAlignment="CENTER" />
+                                                         </children>
+                                                      </HBox>
+                                                      <Label maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="150.0" style="-fx-background-color: white;" text="HEREDaccuTest" />
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </VBox>
+                                       </content>
+                                    </TitledPane>
+                                  <TitledPane animated="false" text="Run Name 2" />
+                                    <TitledPane animated="false" text="Run Name 3" />
+                                    <TitledPane animated="false" text="Run Name 4" />
+                                    <TitledPane animated="false" text="Run Name 5" />
+                                    <TitledPane animated="false" text="Run Name 6" />
+                                    <TitledPane animated="false" text="Run Name 7" />
+                                </panes>
+                              </Accordion>
+                              <Pagination prefHeight="28.0" prefWidth="1162.0" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+               </children>
+            </GridPane>
+         </children>
+      </GridPane>
+   </children>
+</Pane>
