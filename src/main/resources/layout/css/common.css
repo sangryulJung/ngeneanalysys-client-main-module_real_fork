@@ -1352,3 +1352,93 @@ Button {
 	-fx-pref-height:20;
 	-fx-max-height:20;
 }
+
+.prediction_E_Selected {
+	-fx-background-color:#5a64a5;
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-background-insets:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-padding:0;
+	-fx-min-width:20;
+	-fx-pref-width:20;
+	-fx-max-width:20;
+	-fx-min-height:20;
+	-fx-pref-height:20;
+	-fx-max-height:20;
+}
+
+.prediction_D_Selected {
+	-fx-background-color:#1F2D87;
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-background-insets:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-padding:0;
+	-fx-min-width:20;
+	-fx-pref-width:20;
+	-fx-max-width:20;
+	-fx-min-height:20;
+	-fx-pref-height:20;
+	-fx-max-height:20;
+}
+
+.prediction_C_Selected {
+	-fx-background-color:#70ACF5;
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-background-insets:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-padding:0;
+	-fx-min-width:20;
+	-fx-pref-width:20;
+	-fx-max-width:20;
+	-fx-min-height:20;
+	-fx-pref-height:20;
+	-fx-max-height:20;
+}
+
+.prediction_B_Selected {
+	-fx-background-color:#FF9482;
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-background-insets:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-padding:0;
+	-fx-min-width:20;
+	-fx-pref-width:20;
+	-fx-max-width:20;
+	-fx-min-height:20;
+	-fx-pref-height:20;
+	-fx-max-height:20;
+}
+
+.prediction_A_Selected {
+	-fx-background-color:#F6545C;
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-background-insets:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-padding:0;
+	-fx-min-width:20;
+	-fx-pref-width:20;
+	-fx-max-width:20;
+	-fx-min-height:20;
+	-fx-pref-height:20;
+	-fx-max-height:20;
+}

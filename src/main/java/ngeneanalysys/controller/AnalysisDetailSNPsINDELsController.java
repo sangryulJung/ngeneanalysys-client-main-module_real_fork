@@ -41,10 +41,7 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -148,6 +145,8 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
     @FXML private VBox pathogenicityVBox;
 
     @FXML private CheckBox addToGermlineReportCheckBox;
+
+    private List<Label> countLabels = new ArrayList<>();
 
 
     //VariantList
@@ -259,7 +258,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         currentStage.setResizable(false);
         currentStage.initStyle(StageStyle.DECORATED);
         currentStage.initModality(Modality.APPLICATION_MODAL);
-        currentStage.setTitle(CommonConstants.SYSTEM_NAME + " > New Analysis Request");
+        currentStage.setTitle(CommonConstants.SYSTEM_NAME + " > SNP-InDels");
         // OS가 Window인 경우 아이콘 출력.
         if (System.getProperty("os.name").toLowerCase().contains("window")) {
             currentStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
@@ -435,7 +434,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         }  else {
             box.getChildren().setAll(levelLabel, countLabel);
         }
-
+        countLabels.add(countLabel);
         // 마우스 클릭 이벤트 바인딩
         box.setOnMouseClicked(event -> {
             showVariantList(acmgFilterCode, 0);
@@ -1569,21 +1568,21 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             button.getStyleClass().removeAll(button.getStyleClass());
             button.getStyleClass().add("button");
             if(!StringUtils.isEmpty(pathogenicity)) {
-                if(pathogenicity.equals(button.getId())) {
+                if(pathogenicity.equals(button.getText())) {
                     if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals("P")) {
-                        button.getStyleClass().add("prediction_A");
+                        button.getStyleClass().add("prediction_A_Selected");
                         button.setDisable(true);
                     } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals("LP")) {
-                        button.getStyleClass().add("prediction_B");
+                        button.getStyleClass().add("prediction_B_Selected");
                         button.setDisable(true);
                     } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals("US")) {
-                        button.getStyleClass().add("prediction_C");
+                        button.getStyleClass().add("prediction_C_Selected");
                         button.setDisable(true);
                     } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals("LB")) {
-                        button.getStyleClass().add("prediction_D");
+                        button.getStyleClass().add("prediction_D_Selected");
                         button.setDisable(true);
                     } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals("B")) {
-                        button.getStyleClass().add("prediction_E");
+                        button.getStyleClass().add("prediction_E_Selected");
                         button.setDisable(true);
                     }
                 } else {
@@ -1624,7 +1623,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             } catch (IOException ioe) {
                 ioe.printStackTrace();
             }
-
+            //setTierVariantCount();
             showVariantList(null, 0);
         }
     }
@@ -1657,8 +1656,27 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             } catch (IOException ioe) {
                 ioe.printStackTrace();
             }
-
+            //setPathogenicityVariantCount();
             showVariantList(null, 0);
+        }
+    }
+
+    public void setPathogenicityVariantCount() {
+        if(!countLabels.isEmpty()) {
+            /*countLabels.get(1).setText(String.valueOf(returnPathogenicityVariantCount("P")));
+            countLabels.get(2).setText(String.valueOf(returnPathogenicityVariantCount("LP")));
+            countLabels.get(3).setText(String.valueOf(returnPathogenicityVariantCount("US")));
+            countLabels.get(4).setText(String.valueOf(returnPathogenicityVariantCount("LB")));
+            countLabels.get(5).setText(String.valueOf(returnPathogenicityVariantCount("B")));*/
+        }
+    }
+
+    public void setTierVariantCount() {
+        if(!countLabels.isEmpty()) {
+            /*countLabels.get(1).setText(String.valueOf(returnTierVariantCount("T1")));
+            countLabels.get(2).setText(String.valueOf(returnPathogenicityVariantCount("T2")));
+            countLabels.get(3).setText(String.valueOf(returnPathogenicityVariantCount("T3")));
+            countLabels.get(4).setText(String.valueOf(returnPathogenicityVariantCount("T4")));*/
         }
     }
 }

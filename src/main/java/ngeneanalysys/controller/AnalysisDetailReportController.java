@@ -44,6 +44,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -781,6 +782,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 contentsMap.put("panelCode", panel.getCode());
                 contentsMap.put("sampleName", sample.getName());
                 contentsMap.put("patientCode", "SS17-01182");
+                SecureRandom random = new SecureRandom();
+                contentsMap.put("reportID", String.format("%05d-%05d", sample.getId(), random.nextInt(99999)));
 
                 Date date = new Date();
                 SimpleDateFormat sdf = new SimpleDateFormat("MMM. dd yyyy");
