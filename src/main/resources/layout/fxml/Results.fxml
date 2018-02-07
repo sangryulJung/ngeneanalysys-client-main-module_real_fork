@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Pagination?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <GridPane prefHeight="600.0" prefWidth="1280.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="631.0" minWidth="10.0" prefWidth="118.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="1189.0" minWidth="10.0" prefWidth="1162.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="109.0" minHeight="10.0" prefHeight="52.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="530.0" minHeight="10.0" prefHeight="519.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="194.0" minHeight="0.0" prefHeight="29.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2">
+               <children>
+                  <HBox prefHeight="56.0" prefWidth="169.0">
+                     <children>
+                        <Label text="NGeneAnalySys">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <Label alignment="CENTER" maxHeight="1.7976931348623157E308" prefWidth="100.0" style="-fx-border-color: black; -fx-border-width: 0 0 1 0;" text="DashBoard" textAlignment="CENTER" />
+                  <Label alignment="CENTER" maxHeight="1.7976931348623157E308" prefWidth="100.0" style="-fx-border-color: black; -fx-border-width: 0 0 3 0;" text="Results" textAlignment="CENTER" />
+                  <Label alignment="CENTER" maxHeight="1.7976931348623157E308" prefWidth="100.0" style="-fx-border-color: black; -fx-border-width: 0 0 1 0;" text="Manager" textAlignment="CENTER" />
+                  <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                  <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="56.0" prefWidth="113.0">
+                           <children>
+                              <Label prefHeight="15.0" prefWidth="70.0" text="User1" />
+                           </children>
+                        </HBox>
+                        <Label text="NGeneBio">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+            <GridPane GridPane.columnSpan="2" GridPane.rowIndex="1">
+              <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="10.0" />
+                <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="1200.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="10.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="137.0" minHeight="10.0" prefHeight="137.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="420.0" minHeight="10.0" prefHeight="382.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <VBox prefHeight="115.0" prefWidth="1280.0" style="-fx-background-color: white;" GridPane.columnIndex="1">
+                     <children>
+                        <HBox prefHeight="27.0" prefWidth="1280.0">
+                           <children>
+                              <Label prefHeight="28.0" prefWidth="470.0" text="Samples Search">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <HBox alignment="CENTER_LEFT" prefHeight="94.0" prefWidth="1280.0" style="-fx-background-color: white;">
+                                 <children>
+                                    <HBox prefHeight="44.0" prefWidth="13.0" />
+                                    <HBox prefHeight="44.0" prefWidth="74.0">
+                                       <children>
+                                          <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="44.0" prefWidth="87.0" style="-fx-background-color: black; -fx-background-insets: 5; -fx-background-radius: 10; -fx-text-fill: white;" text="T : 100" textAlignment="CENTER" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="44.0" prefWidth="74.0">
+                                       <children>
+                                          <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="44.0" prefWidth="87.0" style="-fx-background-color: yellow; -fx-background-insets: 5; -fx-background-radius: 10; -fx-text-fill: black;" text="Q : 10" textAlignment="CENTER" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="44.0" prefWidth="74.0">
+                                       <children>
+                                          <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="44.0" prefWidth="87.0" style="-fx-background-color: green; -fx-background-insets: 5; -fx-background-radius: 10; -fx-text-fill: white;" text="R : 10" textAlignment="CENTER" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="44.0" prefWidth="74.0">
+                                       <children>
+                                          <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="44.0" prefWidth="87.0" style="-fx-background-color: cyan; -fx-background-insets: 5; -fx-background-radius: 10;" text="C : 10" textAlignment="CENTER" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="44.0" prefWidth="74.0">
+                                       <children>
+                                          <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="44.0" prefWidth="87.0" style="-fx-background-color: red; -fx-background-insets: 5; -fx-background-radius: 10; -fx-text-fill: white;" text="F : 1" textAlignment="CENTER" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="36.0" prefWidth="1162.0" spacing="20.0">
+                           <children>
+                              <ComboBox prefWidth="150.0" promptText="Select Type" />
+                              <TextField promptText="enter keyword" />
+                              <Button alignment="CENTER" mnemonicParsing="false" prefHeight="16.0" prefWidth="68.0" style="-fx-background-color: lightgray;" text="Search">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <FlowPane hgap="10.0" prefHeight="21.0" prefWidth="1162.0" vgap="5.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" prefHeight="23.0" prefWidth="154.0">
+                                 <children>
+                                    <Label text="(" />
+                                    <HBox alignment="CENTER" prefHeight="20.0">
+                                       <children>
+                                          <Label maxWidth="1.7976931348623157E308" text="run name1">
+                                             <padding>
+                                                <Insets left="5.0" right="5.0" />
+                                             </padding>
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <Label text="OR">
+                                       <font>
+                                          <Font size="10.0" />
+                                       </font>
+                                    </Label>
+                                    <HBox alignment="CENTER" prefHeight="20.0">
+                                       <children>
+                                          <Label maxWidth="1.7976931348623157E308" text="run name1">
+                                             <padding>
+                                                <Insets left="5.0" right="5.0" />
+                                             </padding>
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <Label text=")" />
+                                 </children>
+                              </HBox>
+                              <Label text="AND">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                              </Label>
+                              <HBox alignment="CENTER_LEFT" prefHeight="23.0" prefWidth="208.0">
+                                 <children>
+                                    <Label text="(" />
+                                    <HBox alignment="CENTER" prefHeight="20.0">
+                                       <children>
+                                          <Label maxWidth="1.7976931348623157E308" prefHeight="6.0" prefWidth="89.0" text="sample name1">
+                                             <padding>
+                                                <Insets left="5.0" right="5.0" />
+                                             </padding>
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <Label text="OR">
+                                       <font>
+                                          <Font size="10.0" />
+                                       </font>
+                                    </Label>
+                                    <HBox alignment="CENTER" prefHeight="20.0">
+                                       <children>
+                                          <Label maxWidth="1.7976931348623157E308" text="sample name2">
+                                             <padding>
+                                                <Insets left="5.0" right="5.0" />
+                                             </padding>
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <Label text=")" />
+                                 </children>
+                              </HBox>
+                              <Label text="AND">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                              </Label>
+                              <HBox alignment="CENTER_LEFT" prefHeight="23.0" prefWidth="208.0">
+                                 <children>
+                                    <Label text="(" />
+                                    <HBox alignment="CENTER" prefHeight="23.0" prefWidth="76.0">
+                                       <children>
+                                          <Label maxWidth="1.7976931348623157E308" prefHeight="6.0" prefWidth="89.0" text="panel name1">
+                                             <padding>
+                                                <Insets left="5.0" right="5.0" />
+                                             </padding>
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <Label text="OR">
+                                       <font>
+                                          <Font size="10.0" />
+                                       </font>
+                                    </Label>
+                                    <HBox alignment="CENTER" prefHeight="20.0">
+                                       <children>
+                                          <Label maxWidth="1.7976931348623157E308" text="panel name2">
+                                             <padding>
+                                                <Insets left="5.0" right="5.0" />
+                                             </padding>
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <Label text=")" />
+                                 </children>
+                              </HBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </VBox.margin>
+                        </FlowPane>
+                     </children>
+                  </VBox>
+                  <VBox maxHeight="1.7976931348623157E308" prefHeight="440.0" prefWidth="1162.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="82.0" prefWidth="1280.0">
+                           <children>
+                              <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" />
+                              <Label prefHeight="15.0" prefWidth="213.0" style="-fx-border-width: 0 0 1 0; -fx-border-color: black;" text="Run" />
+                              <Label prefHeight="15.0" prefWidth="124.0" style="-fx-border-width: 0 0 1 0; -fx-border-color: black;" text="Sequencer" />
+                              <Label prefHeight="15.0" prefWidth="110.0" style="-fx-border-color: black; -fx-border-width: 0 0 1 0;" text="Submit Date" />
+                              <Label prefHeight="15.0" prefWidth="113.0" style="-fx-border-color: black; -fx-border-width: 0 0 1 0;" text="Finish Date" />
+                              <Label prefHeight="15.0" prefWidth="113.0" style="-fx-border-color: black; -fx-border-width: 0 0 1 0;" text="User" />
+                           </children>
+                        </HBox>
+                        <VBox maxHeight="1.7976931348623157E308" prefHeight="364.0" prefWidth="1162.0">
+                           <children>
+                              <VBox prefHeight="265.0" prefWidth="1260.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="23.0" prefWidth="1260.0">
+                                       <children>
+                                          <Button alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="20.0" prefWidth="20.0" text="V" textAlignment="CENTER">
+                                             <font>
+                                                <Font size="7.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets right="10.0" />
+                                             </HBox.margin>
+                                          </Button>
+                                          <Label prefHeight="15.0" prefWidth="214.0" text="Run Name 1" />
+                                          <Label prefHeight="15.0" prefWidth="123.0" text="MiSeqDX" />
+                                          <Label prefHeight="15.0" prefWidth="110.0" text="2018/2/1" />
+                                          <Label prefHeight="15.0" prefWidth="115.0" text="2018/2/2" />
+                                          <Label prefHeight="15.0" prefWidth="110.0" text="User1" />
+                                       </children>
+                                    </HBox>
+                                    <VBox prefHeight="136.0" prefWidth="1260.0" spacing="2.0" style="-fx-background-color: white;">
+                                       <children>
+                                          <HBox prefHeight="30.0" prefWidth="1260.0">
+                                             <children>
+                                                <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" />
+                                                <HBox alignment="CENTER_LEFT" minWidth="-Infinity" prefHeight="46.0" prefWidth="200.0">
+                                                   <children>
+                                                      <Label style="-fx-background-color: white; -fx-border-color: black; -fx-border-width: 0 0 1 0;" text="Name" />
+                                                      <VBox prefHeight="200.0" prefWidth="20.0">
+                                                         <children>
+                                                            <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="20.0" prefWidth="24.0" style="-fx-background-color: white;" text="^" />
+                                                            <Button mnemonicParsing="false" style="-fx-background-color: white;" text="V" />
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="80.0">
+                                                   <children>
+                                                      <Label style="-fx-background-color: white; -fx-border-color: black; -fx-border-width: 0 0 1 0;" text="Status" />
+                                                      <VBox prefHeight="46.0" prefWidth="20.0">
+                                                         <children>
+                                                            <Button mnemonicParsing="false" prefHeight="10.0" prefWidth="24.0" style="-fx-background-color: white;" text="^" />
+                                                            <Button mnemonicParsing="false" style="-fx-background-color: white;" text="V" />
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="200.0">
+                                                   <children>
+                                                      <Label style="-fx-background-color: white; -fx-border-color: black; -fx-border-width: 0 0 1 0;" text="Panel" />
+                                                      <VBox prefHeight="46.0" prefWidth="20.0">
+                                                         <children>
+                                                            <Button mnemonicParsing="false" prefHeight="10.0" prefWidth="24.0" style="-fx-background-color: white;" text="^" />
+                                                            <Button mnemonicParsing="false" style="-fx-background-color: white;" text="V" />
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="296.0">
+                                                   <children>
+                                                      <Label minWidth="-Infinity" style="-fx-background-color: white; -fx-border-width: 0 0 1 0; -fx-border-color: black;" text="Variants" />
+                                                      <VBox prefHeight="46.0" prefWidth="20.0" />
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="100.0">
+                                                   <children>
+                                                      <Label maxHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: white; -fx-border-color: black; -fx-border-width: 0 0 1 0;" text="QC" />
+                                                      <VBox prefHeight="46.0" prefWidth="20.0" />
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </HBox>
+                                          <ScrollPane hbarPolicy="NEVER" pannable="true" prefHeight="119.0" prefWidth="1260.0" style="-fx-background-color: white;">
+                                             <content>
+                                                <VBox spacing="3.0">
+                                                   <children>
+                                                      <HBox prefHeight="26.0" prefWidth="1140.0">
+                                                         <children>
+                                                            <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" />
+                                                            <Label maxHeight="1.7976931348623157E308" prefWidth="200.0" text="Sample Name 1" />
+                                                            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="80.0">
+                                                               <children>
+                                                                  <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="28.0" style="-fx-background-color: green; -fx-background-radius: 10; -fx-text-fill: white; -fx-padding: 0 0 0 10;" text="R" textAlignment="CENTER" />
+                                                               </children>
+                                                            </HBox>
+                                                            <HBox prefHeight="26.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <Label maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="150.0" style="-fx-background-color: white;" text="SOLIDaccuTest" />
+                                                               </children>
+                                                            </HBox>
+                                                            <HBox prefHeight="100.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <Label maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="300.0" text="T I : 1, T II : 2, T III : 5, T IV : 50" />
+                                                               </children>
+                                                            </HBox>
+                                                            <Label maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="44.0" text="PASS" />
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox prefHeight="26.0" prefWidth="1140.0">
+                                                         <children>
+                                                            <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" />
+                                                            <Label maxHeight="1.7976931348623157E308" prefWidth="200.0" text="Sample Name 2" />
+                                                            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="80.0">
+                                                               <children>
+                                                                  <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="28.0" style="-fx-background-color: green; -fx-background-radius: 10; -fx-text-fill: white; -fx-padding: 0 0 0 10;" text="R" textAlignment="CENTER" />
+                                                               </children>
+                                                            </HBox>
+                                                            <HBox prefHeight="26.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <Label maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="150.0" style="-fx-background-color: white;" text="SOLIDaccuTest" />
+                                                               </children>
+                                                            </HBox>
+                                                            <HBox prefHeight="100.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <Label maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="300.0" text="T I : 1, T II : 2, T III : 5, T IV : 50" />
+                                                               </children>
+                                                            </HBox>
+                                                            <Label maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="44.0" text="PASS" />
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox prefHeight="26.0" prefWidth="1140.0">
+                                                         <children>
+                                                            <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" />
+                                                            <Label maxHeight="1.7976931348623157E308" prefWidth="200.0" text="Sample Name 3" />
+                                                            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="80.0">
+                                                               <children>
+                                                                  <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="28.0" style="-fx-background-color: green; -fx-background-radius: 10; -fx-text-fill: white; -fx-padding: 0 0 0 10;" text="R" textAlignment="CENTER" />
+                                                               </children>
+                                                            </HBox>
+                                                            <HBox prefHeight="26.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <Label maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="150.0" style="-fx-background-color: white;" text="SOLIDaccuTest" />
+                                                               </children>
+                                                            </HBox>
+                                                            <HBox prefHeight="100.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <Label maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="300.0" text="TI : 1, TII : 2, TIII : 5, TIV : 50" />
+                                                               </children>
+                                                            </HBox>
+                                                            <Label maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="44.0" text="PASS" />
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox prefHeight="26.0" prefWidth="1140.0">
+                                                         <children>
+                                                            <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" />
+                                                            <Label maxHeight="1.7976931348623157E308" prefWidth="200.0" text="Sample Name 4" />
+                                                            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="80.0">
+                                                               <children>
+                                                                  <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="28.0" style="-fx-background-color: green; -fx-background-radius: 10; -fx-text-fill: white; -fx-padding: 0 0 0 10;" text="R" textAlignment="CENTER" />
+                                                               </children>
+                                                            </HBox>
+                                                            <HBox prefHeight="26.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <Label maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="150.0" style="-fx-background-color: white;" text="SOLIDaccuTest" />
+                                                               </children>
+                                                            </HBox>
+                                                            <HBox prefHeight="100.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <Label maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="300.0" text="TI : 1, TII : 2, TIII : 5, TIV : 50" />
+                                                               </children>
+                                                            </HBox>
+                                                            <Label maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="44.0" text="PASS" />
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox prefHeight="26.0" prefWidth="1140.0">
+                                                         <children>
+                                                            <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" />
+                                                            <Label maxHeight="1.7976931348623157E308" prefWidth="200.0" text="Sample Name 5" />
+                                                            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="80.0">
+                                                               <children>
+                                                                  <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="28.0" style="-fx-background-color: green; -fx-background-radius: 10; -fx-text-fill: white; -fx-padding: 0 0 0 10;" text="R" textAlignment="CENTER" />
+                                                               </children>
+                                                            </HBox>
+                                                            <HBox prefHeight="26.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <Label maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="150.0" style="-fx-background-color: white;" text="SOLIDaccuTest" />
+                                                               </children>
+                                                            </HBox>
+                                                            <HBox prefHeight="100.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <Label maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="300.0" text="TI : 1, TII : 2, TIII : 5, TIV : 50" />
+                                                               </children>
+                                                            </HBox>
+                                                            <Label maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="44.0" text="PASS" />
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox prefHeight="26.0" prefWidth="1140.0">
+                                                         <children>
+                                                            <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" />
+                                                            <Label maxHeight="1.7976931348623157E308" prefWidth="200.0" text="Sample Name 6" />
+                                                            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="80.0">
+                                                               <children>
+                                                                  <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="28.0" style="-fx-background-color: green; -fx-background-radius: 10; -fx-text-fill: white; -fx-padding: 0 0 0 10;" text="R" textAlignment="CENTER" />
+                                                               </children>
+                                                            </HBox>
+                                                            <HBox prefHeight="26.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <Label maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="150.0" style="-fx-background-color: white;" text="SOLIDaccuTest" />
+                                                               </children>
+                                                            </HBox>
+                                                            <HBox prefHeight="100.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <Label maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="300.0" text="TI : 1, TII : 2, TIII : 5, TIV : 50" />
+                                                               </children>
+                                                            </HBox>
+                                                            <Label maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="44.0" text="PASS" />
+                                                         </children>
+                                                      </HBox>
+                                                   </children>
+                                                </VBox>
+                                             </content>
+                                          </ScrollPane>
+                                       </children>
+                                    </VBox>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="23.0" prefWidth="1260.0">
+                                       <children>
+                                          <Button alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="20.0" prefWidth="20.0" text="&gt;" textAlignment="CENTER">
+                                             <font>
+                                                <Font size="7.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets right="10.0" />
+                                             </HBox.margin>
+                                          </Button>
+                                          <Label prefHeight="15.0" prefWidth="214.0" text="Run Name 2" />
+                                          <Label prefHeight="15.0" prefWidth="123.0" text="MiSeqDX" />
+                                          <Label prefHeight="15.0" prefWidth="110.0" text="2018/1/1" />
+                                          <Label prefHeight="15.0" prefWidth="115.0" text="2018/1/2" />
+                                          <Label prefHeight="15.0" prefWidth="110.0" text="User2" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="23.0" prefWidth="1260.0">
+                                       <children>
+                                          <Button alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="20.0" prefWidth="20.0" text="&gt;" textAlignment="CENTER">
+                                             <font>
+                                                <Font size="7.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets right="10.0" />
+                                             </HBox.margin>
+                                          </Button>
+                                          <Label prefHeight="15.0" prefWidth="214.0" text="Run Name 3" />
+                                          <Label prefHeight="15.0" prefWidth="123.0" text="MiSeqDX" />
+                                          <Label prefHeight="15.0" prefWidth="110.0" text="2018/1/1" />
+                                          <Label prefHeight="15.0" prefWidth="115.0" text="2018/1/2" />
+                                          <Label prefHeight="15.0" prefWidth="110.0" text="User2" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="23.0" prefWidth="1260.0">
+                                       <children>
+                                          <Button alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="20.0" prefWidth="20.0" text="&gt;" textAlignment="CENTER">
+                                             <font>
+                                                <Font size="7.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets right="10.0" />
+                                             </HBox.margin>
+                                          </Button>
+                                          <Label prefHeight="15.0" prefWidth="214.0" text="Run Name 4" />
+                                          <Label prefHeight="15.0" prefWidth="123.0" text="MiSeqDX" />
+                                          <Label prefHeight="15.0" prefWidth="110.0" text="2018/1/1" />
+                                          <Label prefHeight="15.0" prefWidth="115.0" text="2018/1/2" />
+                                          <Label prefHeight="15.0" prefWidth="110.0" text="User2" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="23.0" prefWidth="1260.0">
+                                       <children>
+                                          <Button alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="20.0" prefWidth="20.0" text="&gt;" textAlignment="CENTER">
+                                             <font>
+                                                <Font size="7.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets right="10.0" />
+                                             </HBox.margin>
+                                          </Button>
+                                          <Label prefHeight="15.0" prefWidth="214.0" text="Run Name 5" />
+                                          <Label prefHeight="15.0" prefWidth="123.0" text="MiSeqDX" />
+                                          <Label prefHeight="15.0" prefWidth="110.0" text="2018/1/1" />
+                                          <Label prefHeight="15.0" prefWidth="115.0" text="2018/1/2" />
+                                          <Label prefHeight="15.0" prefWidth="110.0" text="User2" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <Pagination currentPageIndex="1" maxPageIndicatorCount="15" pageCount="123456789" prefHeight="28.0" prefWidth="1162.0" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+               </children>
+            </GridPane>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnSpan="2" GridPane.rowIndex="2">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="29.0" prefWidth="327.0" spacing="10.0">
+                     <children>
+                        <ProgressBar prefWidth="200.0" progress="0.0">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </ProgressBar>
+                        <Label prefHeight="15.0" prefWidth="137.0" text="Task Name" />
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="28.0" prefWidth="858.0" />
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label alignment="CENTER_RIGHT" contentDisplay="TOP" maxWidth="1.7976931348623157E308" text="v1.2.20180101" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+         </children>
+      </GridPane>
+   </children>
+</Pane>
