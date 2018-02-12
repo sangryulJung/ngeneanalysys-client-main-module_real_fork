@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import ngeneanalysys.code.constants.CommonConstants;
@@ -25,12 +27,7 @@ import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.apache.xmlbeans.XmlException;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRow;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblPr;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcBorders;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcPr;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.STBorder;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.*;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STBorder.Enum;
 
 import ngeneanalysys.model.SampleQC;
@@ -50,6 +47,7 @@ public class WordCreater {
     private final List<XWPFTable> deleteList = new ArrayList<>();
     private String dir = System.getProperty("user.dir");
     private String path = dir + "\\test.docx";
+    private final Pattern keyFindPattern = Pattern.compile("\\$([^\\s]+)\\$");
 
     public void updateEmbeddedDoc(String path) throws OpenXML4JException, IOException {
         this.docFile = new File(path);
@@ -69,23 +67,27 @@ public class WordCreater {
 
     public void replaceText(XWPFRun run) {
         Set<String> keys = params.keySet();
-        if(run.toString().contains("$")) {
-            keys.stream().forEach(key -> {
-                String changeText = run.toString();
-                if(changeText.contains("$" + key + "$")) {
 
-                    String value = "";
-                    if(params.get(key) instanceof Integer) {
-                        value = params.get(key).toString();
-                    } else {
-                        value = (String)params.get(key);
-                    }
-
-                    changeText = changeText.replace("$" + key + "$", value);
-                    run.setText(changeText, 0);
+        // do not trim()
+        String replaceText = run.toString();
+        Matcher m = keyFindPattern.matcher(replaceText);
+        System.out.println(replaceText);
+        while(m.find()) {
+            String findKey = m.group(1);
+            if (keys.contains(findKey)) {
+                String value = "";
+                if (params.get(findKey) instanceof Integer) {
+                    value = params.get(findKey).toString();
+                } else {
+                    value = (String) params.get(findKey);
                 }
-            });
+                replaceText = replaceText.replace("$" + findKey + "$", value);
+            } else {
+                replaceText = replaceText.replace("$" + findKey + "$", "");
+            }
         }
+        System.out.println(replaceText);
+        run.setText(replaceText, 0);
     }
 
     public void updateWordFile() throws OpenXML4JException, IOException {
@@ -458,15 +460,32 @@ public class WordCreater {
                 try {
                     ctrow = CTRow.Factory.parse(row.getCtRow().newInputStream());
                     final VariantAndInterpretationEvidence variant = list.get(i);
+                    CTVMerge vmerge = CTVMerge.Factory.newInstance();
                     if(i == 0) {
                         setRowStyle(row, STBorder.BASIC_WIDE_MIDLINE, STBorder.BASIC_WIDE_MIDLINE);
-                        evidenceRowData(row, variant);
+                        evidenceRowData(row, variant, "Therapeutic");
+                        vmerge.setVal(STMerge.RESTART);
+                        row.getCell(0).getCTTc().getTcPr().setVMerge(vmerge);
                     } else {
                         XWPFTableRow newRow = new XWPFTableRow(ctrow, table);
                         setRowStyle(newRow, STBorder.BASIC_WIDE_MIDLINE, STBorder.BASIC_WIDE_MIDLINE);
-                        evidenceRowData(newRow, variant);
+                        evidenceRowData(newRow, variant,"Therapeutic");
+                        vmerge.setVal(STMerge.RESTART);
+                        newRow.getCell(0).getCTTc().getTcPr().setVMerge(vmerge);
                         table.addRow(newRow);
                     }
+                    CTVMerge vmerge1 = CTVMerge.Factory.newInstance();
+                    vmerge1.setVal(STMerge.CONTINUE);
+                    XWPFTableRow newRow = new XWPFTableRow(ctrow, table);
+                    setRowStyle(newRow, STBorder.BASIC_WIDE_MIDLINE, STBorder.BASIC_WIDE_MIDLINE);
+                    evidenceRowData(newRow, variant,"Diagnosis");
+                    newRow.getCell(0).getCTTc().getTcPr().setVMerge(vmerge1);
+                    table.addRow(newRow);
+                    newRow = new XWPFTableRow(ctrow, table);
+                    setRowStyle(newRow, STBorder.BASIC_WIDE_OUTLINE, STBorder.BASIC_WIDE_MIDLINE);
+                    evidenceRowData(newRow, variant,"Prognosis");
+                    newRow.getCell(0).getCTTc().getTcPr().setVMerge(vmerge1);
+                    table.addRow(newRow);
                 } catch (XmlException | IOException e) {
                     e.printStackTrace();
                 }
@@ -476,12 +495,15 @@ public class WordCreater {
         }
     }
 
-    public void evidenceRowData(XWPFTableRow row, VariantAndInterpretationEvidence variant) {
-        setVariantInformation(row.getCell(0), variant);
-        setTableCellText(row.getCell(1), variant.getInterpretationEvidence().getEvidenceLevelA(), 8, false);
-        setTableCellText(row.getCell(2), variant.getInterpretationEvidence().getEvidenceLevelB(), 8, false);
-        setTableCellText(row.getCell(3), variant.getInterpretationEvidence().getEvidenceLevelC(), 8, false);
-        setTableCellText(row.getCell(4), variant.getInterpretationEvidence().getEvidenceLevelD(), 8, false);
+    public void evidenceRowData(XWPFTableRow row, VariantAndInterpretationEvidence variant, String impacts) {
+        setTableCellText(row.getCell(1), impacts, 8, false);
+        if(impacts.equalsIgnoreCase("Therapeutic")) {
+            setVariantInformation(row.getCell(0), variant);
+            setTableCellText(row.getCell(2), variant.getInterpretationEvidence().getEvidenceLevelA(), 8, false);
+            setTableCellText(row.getCell(3), variant.getInterpretationEvidence().getEvidenceLevelB(), 8, false);
+            setTableCellText(row.getCell(4), variant.getInterpretationEvidence().getEvidenceLevelC(), 8, false);
+            setTableCellText(row.getCell(5), variant.getInterpretationEvidence().getEvidenceLevelD(), 8, false);
+        }
     }
 
     public void setVariantInformation(XWPFTableCell cell, VariantAndInterpretationEvidence variant) {
