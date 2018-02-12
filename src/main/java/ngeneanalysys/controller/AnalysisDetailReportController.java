@@ -1050,7 +1050,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                                 result = updateWordFile.invoke(application);
                                 System.out.print("test");*/
                                 WordCreater wc = WordCreater.getInstance();
-
+                                wc.setWriteFilePath(file.getPath());
                                 wc.setParams(contentsMap);
                                 wc.updateEmbeddedDoc(resourceUtil.getResourceURL("/config/test.docx").getFile());
                                 wc.updateWordFile();

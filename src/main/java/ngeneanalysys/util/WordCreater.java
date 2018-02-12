@@ -98,7 +98,7 @@ public class WordCreater {
             }
         }
 
-        doc.write(new FileOutputStream("C:\\Users\\Jang\\Desktop\\testff.docx"));
+        doc.write(new FileOutputStream(writeFilePath));
         //doc.write(new FileOutputStream(writeFilePath));
     }
 
@@ -520,6 +520,10 @@ public class WordCreater {
 
     public void setParams(Map<String, Object> params) {
         this.params = params;
+    }
+
+    public void setWriteFilePath(String path) {
+        this.writeFilePath = path;
     }
 
     private static class WordCreaterHelper{
