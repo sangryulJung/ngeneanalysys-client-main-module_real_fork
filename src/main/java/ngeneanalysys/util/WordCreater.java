@@ -71,7 +71,6 @@ public class WordCreater {
         // do not trim()
         String replaceText = run.toString();
         Matcher m = keyFindPattern.matcher(replaceText);
-        System.out.println(replaceText);
         while(m.find()) {
             String findKey = m.group(1);
             if (keys.contains(findKey)) {
@@ -86,7 +85,6 @@ public class WordCreater {
                 replaceText = replaceText.replace("$" + findKey + "$", "");
             }
         }
-        System.out.println(replaceText);
         run.setText(replaceText, 0);
     }
 
