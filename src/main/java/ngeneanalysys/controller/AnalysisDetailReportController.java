@@ -43,7 +43,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -762,7 +765,11 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         }
         // Show save bedFile dialog
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf"));
+        if(panel.getName().equalsIgnoreCase("HEMEaccuTest CNUHH 123 v1")) {
+            fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF (*.docx)", "*.docx"));
+        } else {
+            fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf"));
+        }
         fileChooser.setInitialFileName(baseSaveName);
         File file = fileChooser.showSaveDialog(this.getMainApp().getPrimaryStage());
 
@@ -1021,8 +1028,37 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     task.setOnSucceeded(ev -> {
                         try {
                             //이미지파일이 모두 다운로드 되었다면 PDF 파일을 생성함
-                            final boolean created1 = pdfCreateService.createPDF(file, contents1);
-                            createdCheck(created1, file);
+                            if(panel.getName().equalsIgnoreCase("HEMEaccuTest CNUHH 123 v1")) {
+                                /*URL url = resourceUtil.getResourceURL("word-creater.jar");
+                                File gocrygo = new File(CommonConstants.BASE_FULL_PATH, "word-creater.jar");
+                                URL[] jarUrls = new URL[]{gocrygo.toURI().toURL()};
+                                URLClassLoader classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader());
+
+                                Thread.currentThread().setContextClassLoader(classLoader);
+                                @SuppressWarnings("unchecked")
+                                Class classToLoad = Class.forName("word.create.app.App", true, classLoader);
+                                logger.info("application init..");
+                                Method[] methods = classToLoad.getMethods();
+                                Method method = classToLoad.getDeclaredMethod("init");
+                                Method setParams = classToLoad.getMethod("setParams");
+                                Method updateEmbeddedDoc = classToLoad.getMethod("updateEmbeddedDoc");
+                                Method updateWordFile = classToLoad.getDeclaredMethod("updateWordFile");
+                                Object application = classToLoad.newInstance();
+                                Object result = method.invoke(application);
+                                result = setParams.invoke(application, contentsMap);
+                                result = updateEmbeddedDoc.invoke(application);
+                                result = updateWordFile.invoke(application);
+                                System.out.print("test");*/
+                                WordCreater wc = WordCreater.getInstance();
+
+                                wc.setParams(contentsMap);
+                                wc.updateEmbeddedDoc(resourceUtil.getResourceURL("/config/test.docx").getFile());
+                                wc.updateWordFile();
+
+                            } else {
+                                final boolean created1 = pdfCreateService.createPDF(file, contents1);
+                                createdCheck(created1, file);
+                            }
                             //convertPDFtoImage(file, sample.getName());
                         } catch (Exception e) {
                             DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);
