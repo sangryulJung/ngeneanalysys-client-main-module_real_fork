@@ -43,10 +43,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -1049,12 +1046,13 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                                 result = updateEmbeddedDoc.invoke(application);
                                 result = updateWordFile.invoke(application);
                                 System.out.print("test");*/
-                                WordCreater wc = WordCreater.getInstance();
+                                WordCreator wc = WordCreator.getInstance();
                                 wc.setWriteFilePath(file.getPath());
                                 wc.setParams(contentsMap);
-                                wc.updateEmbeddedDoc(resourceUtil.getResourceURL("/config/test.docx").getFile());
+                                //wc.updateEmbeddedDoc(resourceUtil.getResourceURL("/config/test.docx").getPath());
+                                wc.updateEmbeddedDoc(resourceUtil.getResourceAsStream("/layout/word/test.docx"));
                                 wc.updateWordFile();
-
+                                createdCheck(true, file);
                             } else {
                                 final boolean created1 = pdfCreateService.createPDF(file, contents1);
                                 createdCheck(created1, file);
