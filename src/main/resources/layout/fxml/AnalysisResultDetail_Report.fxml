@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -14,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1280.0" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1280.0" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <GridPane BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -26,11 +31,9 @@
             <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="10.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="26.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="386.0" minHeight="10.0" prefHeight="206.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="434.0" minHeight="-Infinity" prefHeight="396.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="106.0" minHeight="-Infinity" prefHeight="57.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <HBox prefHeight="29.0" prefWidth="1280.0" spacing="10.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2">
@@ -42,7 +45,12 @@
                   </HBox>
                   <HBox prefHeight="37.0" prefWidth="120.0">
                      <children>
-                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="60.0" prefWidth="90.0" style="-fx-border-color: black; -fx-border-width: 1; -fx-border-radius: 20; -fx-font-size: 12; -fx-background-color: darkgray; -fx-background-radius: 20;" text="Variants" HBox.hgrow="ALWAYS" />
+                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="60.0" prefWidth="90.0" style="-fx-border-color: black; -fx-border-width: 1; -fx-border-radius: 20; -fx-font-size: 12; -fx-background-radius: 20;" text="Variants" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="37.0" prefWidth="120.0">
+                     <children>
+                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="60.0" prefWidth="90.0" style="-fx-border-color: black; -fx-border-width: 1; -fx-border-radius: 20; -fx-font-size: 12; -fx-background-color: darkgray; -fx-background-radius: 20;" text="Report" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
                </children>
@@ -50,87 +58,1707 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </HBox>
-            <HBox prefHeight="113.0" prefWidth="1270.0" spacing="20.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4">
-               <children>
-                  <HBox alignment="CENTER" prefHeight="114.0" prefWidth="175.0" style="-fx-background-color: red; -fx-background-radius: 5;">
+            <ScrollPane maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="1260.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <content>
+                  <VBox maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="1260.0" spacing="10.0">
                      <children>
-                        <VBox prefHeight="118.0" prefWidth="124.0">
+                        <HBox alignment="CENTER_LEFT" prefWidth="1270.0" style="-fx-border-color: black; -fx-border-width: 0 0 1 0;">
                            <children>
-                              <Label maxWidth="1.7976931348623157E308" style="-fx-text-fill: white;" text="Variant : 1" />
-                              <Label maxWidth="1.7976931348623157E308" style="-fx-text-fill: white;" text="Genes : 1" />
-                              <Label maxWidth="1.7976931348623157E308" style="-fx-text-fill: white;" text="Therapeutic : 1" />
+                              <Label style="-fx-font-size: 14;" text="Detected Variants" />
                            </children>
-                           <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding>
-                        </VBox>
-                        <Label alignment="CENTER" prefHeight="39.0" prefWidth="43.0" style="-fx-background-color: white; -fx-background-radius: 30;" text="Tier I" />
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="104.0" prefWidth="175.0" style="-fx-background-color: orange; -fx-background-radius: 5;">
-                     <children>
-                        <VBox prefHeight="104.0" prefWidth="124.0">
+                        </HBox>
+                        <VBox maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="1267.0" spacing="2.0">
                            <children>
-                              <Label maxWidth="1.7976931348623157E308" style="-fx-text-fill: white;" text="Variant : 1" />
-                              <Label maxWidth="1.7976931348623157E308" style="-fx-text-fill: white;" text="Genes : 1" />
-                              <Label maxWidth="1.7976931348623157E308" style="-fx-text-fill: white;" text="Therapeutic : 1" />
+                              <HBox prefHeight="31.0" prefWidth="1140.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="50.0">
+                                       <children>
+                                          <Label style="-fx-border-color: black; -fx-border-width: 0 0 1 0;" text="Tier" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="46.0" prefWidth="60.0">
+                                       <children>
+                                          <Label style="-fx-border-color: black; -fx-border-width: 0 0 1 0;" text="Chr" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="80.0">
+                                       <children>
+                                          <Label style="-fx-border-color: black; -fx-border-width: 0 0 1 0;" text="Gene" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="100.0">
+                                       <children>
+                                          <Label style="-fx-border-color: black; -fx-border-width: 0 0 1 0;" text="Position" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="31.0" prefWidth="120.0">
+                                       <children>
+                                          <Label style="-fx-border-color: black; -fx-border-width: 0 0 1 0;" text="Ref Seq" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="31.0" prefWidth="150.0">
+                                       <children>
+                                          <Label style="-fx-border-color: black; -fx-border-width: 0 0 1 0;" text="NT Change" />
+                                          <VBox prefHeight="46.0" prefWidth="20.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="31.0" prefWidth="100.0">
+                                       <children>
+                                          <Label style="-fx-border-color: black; -fx-border-width: 0 0 1 0;" text="AA Change" />
+                                          <VBox prefHeight="46.0" prefWidth="20.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="31.0" prefWidth="120.0">
+                                       <children>
+                                          <Label style="-fx-border-color: black; -fx-border-width: 0 0 1 0;" text="VAF(Depth)" />
+                                          <VBox prefHeight="46.0" prefWidth="20.0" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </HBox>
+                              <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="780.0">
+                                 <children>
+                                    <HBox prefHeight="26.0" prefWidth="1140.0">
+                                       <children>
+                                          <Label maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" text="T I" />
+                                          <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="46.0" prefWidth="60.0">
+                                             <children>
+                                                <Label text="Chr1" />
+                                                <VBox prefHeight="46.0" prefWidth="20.0" />
+                                             </children>
+                                          </HBox>
+                                          <Label maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefHeight="26.0" prefWidth="80.0" text="ALK" />
+                                          <Label maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" text="12345" />
+                                          <Label maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="120.0" text="NM_00101010" />
+                                          <Label maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" text="c.123_124C&gt;T" />
+                                          <Label maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" text="V600E" />
+                                          <Label maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="120.0" text="32.22%(300x)" />
+                                          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="26.0" prefWidth="1140.0">
+                                       <children>
+                                          <Label maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" text="T II" />
+                                          <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="46.0" prefWidth="60.0">
+                                             <children>
+                                                <Label maxWidth="-Infinity" prefHeight="19.0" prefWidth="31.0" text="Chr2" />
+                                                <VBox prefHeight="46.0" prefWidth="20.0" />
+                                             </children>
+                                          </HBox>
+                                          <Label maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="80.0" text="EGFR" />
+                                          <Label maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" text="12345" />
+                                          <Label maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="120.0" text="NM_00101010" />
+                                          <Label maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" text="c.123_124C&gt;T" />
+                                          <Label maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" text="V600E" />
+                                          <Label maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="120.0" text="22.02%(250x)" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="26.0" prefWidth="1140.0">
+                                       <children>
+                                          <Label maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" text="T III" />
+                                          <HBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="60.0">
+                                             <children>
+                                                <Label maxWidth="-Infinity" prefWidth="60.0" text="Chr3" />
+                                                <VBox prefHeight="46.0" prefWidth="20.0" />
+                                             </children>
+                                          </HBox>
+                                          <Label maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="80.0" text="CEBPA" />
+                                          <Label maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" text="12345" />
+                                          <Label maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="120.0" text="NM_00101010" />
+                                          <Label maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" text="c.123_124C&gt;T" />
+                                          <Label maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" text="V600E" />
+                                          <Label maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="120.0" text="12.02%(20x)" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
                            </children>
-                           <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding>
                         </VBox>
-                        <Label alignment="CENTER" prefHeight="39.0" prefWidth="43.0" style="-fx-background-color: white; -fx-background-radius: 30;" text="Tier II" />
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="104.0" prefWidth="175.0" style="-fx-background-color: skyblue; -fx-background-radius: 5;">
-                     <children>
-                        <VBox prefHeight="104.0" prefWidth="124.0">
+                        <HBox alignment="CENTER_LEFT" prefWidth="1270.0" style="-fx-border-color: black; -fx-border-width: 0 0 1 0;">
                            <children>
-                              <Label maxWidth="1.7976931348623157E308" style="-fx-text-fill: white;" text="Variant : 1" />
-                              <Label maxWidth="1.7976931348623157E308" style="-fx-text-fill: white;" text="Genes : 1" />
+                              <Label style="-fx-font-size: 14;" text="Conclusion" />
                            </children>
-                           <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding>
-                        </VBox>
-                        <Label alignment="CENTER" prefHeight="39.0" prefWidth="43.0" style="-fx-background-color: white; -fx-background-radius: 30;" text="Tier III" />
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="104.0" prefWidth="175.0" style="-fx-background-color: darkgray; -fx-background-radius: 5;">
-                     <children>
-                        <VBox prefHeight="104.0" prefWidth="124.0">
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefWidth="1270.0">
                            <children>
-                              <Label maxWidth="1.7976931348623157E308" style="-fx-text-fill: white;" text="Variant : 1" />
-                              <Label maxWidth="1.7976931348623157E308" style="-fx-text-fill: white;" text="Genes : 1" />
+                              <TextArea maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="1200.0" />
                            </children>
-                           <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding>
-                        </VBox>
-                        <Label alignment="CENTER" prefHeight="39.0" prefWidth="43.0" style="-fx-background-color: white; -fx-background-radius: 30;" text="Tier IV" />
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="104.0" prefWidth="175.0" style="-fx-background-color: black; -fx-background-radius: 5;">
-                     <children>
-                        <VBox prefHeight="104.0" prefWidth="124.0">
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefWidth="1270.0" style="-fx-border-color: black; -fx-border-width: 0 0 1 0;">
                            <children>
-                              <Label maxWidth="1.7976931348623157E308" style="-fx-text-fill: white;" text="Variant : 1" />
-                              <Label maxWidth="1.7976931348623157E308" style="-fx-text-fill: white;" text="Genes : 1" />
+                              <Label style="-fx-font-size: 14;" text="Report Extra Fields" />
                            </children>
-                           <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding>
-                        </VBox>
-                        <Label alignment="CENTER" prefHeight="39.0" prefWidth="43.0" style="-fx-background-color: white; -fx-background-radius: 30;" text="Tier N" />
+                        </HBox>
+                        <GridPane minWidth="-Infinity">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label text="Patiant Name :" />
+                                    <TextField />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+                                 <children>
+                                    <Label text="Inspect Name :" />
+                                    <TextField />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
+                                 <children>
+                                    <Label text="Input DNA :" />
+                                    <TextField />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3">
+                                 <children>
+                                    <Label text="Inspect Date :" />
+                                    <TextField />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                 <children>
+                                    <Label text="Experimenter  :" />
+                                    <TextField />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <children>
+                                    <Label text="xxxxxx  :" />
+                                    <TextField />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                 <children>
+                                    <Label text="xxxxxx  :" />
+                                    <TextField />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                 <children>
+                                    <Label text="xxxxxx  :" />
+                                    <TextField />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+                                 <children>
+                                    <Label text="xxxxxx  :" />
+                                    <TextField />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </GridPane>
+                        <HBox alignment="CENTER_LEFT" prefWidth="1270.0" style="-fx-border-color: black; -fx-border-width: 0 0 1 0;">
+                           <children>
+                              <Label style="-fx-font-size: 14;" text="Target Genes( 123)" />
+                           </children>
+                        </HBox>
+                        <FlowPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="1260.0">
+                           <children>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30;" text="CEBPA" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30;" text="CEBPA" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30;" text="CEBPA" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30;" text="CEBPA" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30;" text="CEBPA" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30;" text="CEBPA" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30;" text="CEBPA" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30;" text="CEBPA" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30;" text="CEBPA" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30;" text="CEBPA" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30;" text="CEBPA" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30;" text="CEBPA" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30;" text="CEBPA" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30;" text="CEBPA" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30;" text="CEBPA" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30;" text="CEBPA" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30;" text="CEBPA" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30;" text="CEBPA" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30;" text="CEBPA" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30;" text="CEBPA" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                    <HBox prefHeight="17.0" prefWidth="26.0">
+                                       <children>
+                                          <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                             <padding>
+                                                <Insets left="10.0" right="10.0" />
+                                             </padding>
+                                          </Label>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding>
+                                    </HBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30;" text="CEBPA" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30;" text="CEBPA" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30;" text="CEBPA" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30;" text="CEBPA" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30;" text="CEBPA" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30;" text="CEBPA" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30;" text="CEBPA" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30;" text="CEBPA" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30;" text="CEBPA" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30;" text="CEBPA" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30; -fx-text-fill: red;" text="ALK" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="17.0" prefWidth="26.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 30;" text="CEBPA" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                           </children>
+                        </FlowPane>
                      </children>
-                  </HBox>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" prefHeight="22.0" prefWidth="1260.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
-               <children>
-                  <Label style="-fx-font-size: 14;" text="Detected Variant Summary" />
-               </children>
-            </HBox>
+                  </VBox>
+               </content>
+            </ScrollPane>
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="72.0" prefWidth="208.0">
@@ -154,6 +1782,13 @@
                      </children>
                   </HBox>
                   <Button mnemonicParsing="false" text="Download" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" prefWidth="200.0" spacing="10.0" style="-fx-border-color: black; -fx-border-width: 3 0 0 0;" GridPane.columnIndex="1" GridPane.rowIndex="5">
+               <children>
+                  <Button mnemonicParsing="false" text="Save" />
+                  <Button mnemonicParsing="false" text="Draft Report" />
+                  <Button mnemonicParsing="false" text="Final Report" />
                </children>
             </HBox>
          </children>
