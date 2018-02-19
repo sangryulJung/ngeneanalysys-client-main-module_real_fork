@@ -43,7 +43,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -1026,30 +1029,29 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         try {
                             //이미지파일이 모두 다운로드 되었다면 PDF 파일을 생성함
                             if(panel.getName().equalsIgnoreCase("HEMEaccuTest CNUHH 123 v1")) {
-                                /*URL url = resourceUtil.getResourceURL("word-creater.jar");
-                                File gocrygo = new File(CommonConstants.BASE_FULL_PATH, "word-creater.jar");
+                                //URL url = resourceUtil.getResourceURL("/word-creator.jar");
+                                /*File gocrygo = new File(CommonConstants.BASE_FULL_PATH, "word-creator1.jar");
                                 URL[] jarUrls = new URL[]{gocrygo.toURI().toURL()};
                                 URLClassLoader classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader());
 
                                 Thread.currentThread().setContextClassLoader(classLoader);
                                 @SuppressWarnings("unchecked")
-                                Class classToLoad = Class.forName("word.create.app.App", true, classLoader);
+                                Class classToLoad = Class.forName("word.create.App", true, classLoader);
                                 logger.info("application init..");
                                 Method[] methods = classToLoad.getMethods();
-                                Method method = classToLoad.getDeclaredMethod("init");
-                                Method setParams = classToLoad.getMethod("setParams");
+                                Method setParams = classToLoad.getMethod("setParams", Map.class);
                                 Method updateEmbeddedDoc = classToLoad.getMethod("updateEmbeddedDoc");
                                 Method updateWordFile = classToLoad.getDeclaredMethod("updateWordFile");
+                                Method setWriteFilePath = classToLoad.getDeclaredMethod("setWriteFilePath", String.class);
                                 Object application = classToLoad.newInstance();
-                                Object result = method.invoke(application);
-                                result = setParams.invoke(application, contentsMap);
+                                Object result = setParams.invoke(application, contentsMap);
+                                result = setWriteFilePath.invoke(application, file.getPath());
                                 result = updateEmbeddedDoc.invoke(application);
                                 result = updateWordFile.invoke(application);
                                 System.out.print("test");*/
                                 WordCreator wc = WordCreator.getInstance();
                                 wc.setWriteFilePath(file.getPath());
                                 wc.setParams(contentsMap);
-                                //wc.updateEmbeddedDoc(resourceUtil.getResourceURL("/config/test.docx").getPath());
                                 wc.updateEmbeddedDoc(resourceUtil.getResourceAsStream("/layout/word/test.docx"));
                                 wc.updateWordFile();
                                 createdCheck(true, file);
