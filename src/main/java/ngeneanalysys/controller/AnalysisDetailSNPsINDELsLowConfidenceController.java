@@ -76,7 +76,8 @@ public class AnalysisDetailSNPsINDELsLowConfidenceController extends SubPaneCont
                         key.equalsIgnoreCase("soft_clipped_amplicon") ||
                         key.equalsIgnoreCase("primer_deletion") ||
                         key.equalsIgnoreCase("low_read_depth") ||
-                        key.equalsIgnoreCase("low_allele_fraction")) {
+                        key.equalsIgnoreCase("low_allele_fraction") ||
+                        key.equalsIgnoreCase("low_confidence")) {
 
                     HBox box = new HBox();
 
