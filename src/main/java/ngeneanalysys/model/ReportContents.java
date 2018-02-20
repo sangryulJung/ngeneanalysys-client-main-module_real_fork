@@ -9,6 +9,14 @@ import java.util.List;
 public class ReportContents {
     private ReportTemplate reportTemplate;
     private List<ReportImage> reportImages;
+    private List<ReportComponent> reportComponents;
+
+    /**
+     * @return reportComponents
+     */
+    public List<ReportComponent> getReportComponents() {
+        return reportComponents;
+    }
 
     /**
      * @return reportTemplate

@@ -31,8 +31,10 @@ import ngeneanalysys.model.render.DatepickerConverter;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.PDFCreateService;
 import ngeneanalysys.task.ImageFileDownloadTask;
+import ngeneanalysys.task.JarDownloadTask;
 import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
+import org.apache.commons.io.FileUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
@@ -45,6 +47,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.SecureRandom;
@@ -757,23 +760,29 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     public boolean createPDF(boolean isDraft) {
         boolean created = true;
         String reportCreationErrorMsg = "An error occurred during the creation of the report document.";
-
-        // 보고서 파일명 기본값
-        String baseSaveName = String.format("FINAL_Report_%s", sample.getName());
-        if(isDraft) {
-            baseSaveName = String.format("DRAFT_Report_%s", sample.getName());
-        }
-        // Show save bedFile dialog
-        FileChooser fileChooser = new FileChooser();
-        if(panel.getName().equalsIgnoreCase("HEMEaccuTest CNUHH 123 v1")) {
-            fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF (*.docx)", "*.docx"));
-        } else {
-            fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf"));
-        }
-        fileChooser.setInitialFileName(baseSaveName);
-        File file = fileChooser.showSaveDialog(this.getMainApp().getPrimaryStage());
-
         try {
+            String outputType = "PDF";
+            if(panel.getReportTemplateId() != null) {
+                HttpClientResponse response = apiService.get("reportTemplate/" + panel.getReportTemplateId(), null, null, false);
+                ReportContents reportContents = response.getObjectBeforeConvertResponseToJSON(ReportContents.class);
+                outputType = reportContents.getReportTemplate().getOutputType();
+            }
+
+            // 보고서 파일명 기본값
+            String baseSaveName = String.format("FINAL_Report_%s", sample.getName());
+            if(isDraft) {
+                baseSaveName = String.format("DRAFT_Report_%s", sample.getName());
+            }
+            // Show save bedFile dialog
+            FileChooser fileChooser = new FileChooser();
+            if(outputType != null && outputType.equalsIgnoreCase("MS_WORD")) {
+                fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF (*.docx)", "*.docx"));
+            } else {
+                fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf"));
+            }
+            fileChooser.setInitialFileName(baseSaveName);
+            File file = fileChooser.showSaveDialog(this.getMainApp().getPrimaryStage());
+
             if(file != null) {
                 String draftImageStr = String.format("url('%s')", this.getClass().getClassLoader().getResource("layout/images/DRAFT.png"));
                 String ngenebioLogo = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/ngenebio_logo.png"));
@@ -874,95 +883,91 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 contentsMap.put("qcData", sample.getQcData());
 
                 //Genes in panel
-                try {
-                    HttpClientResponse response = apiService.get("/analysisResults/variantCountByGeneForSomaticDNA/" + sample.getId(),
-                            null, null, false);
-                    if (response != null) {
-                        List<VariantCountByGene> variantCountByGenes = (List<VariantCountByGene>) response
-                                .getMultiObjectBeforeConvertResponseToJSON(VariantCountByGene.class,
-                                        false);
 
-                        variantCountByGenes = filteringGeneList(variantCountByGenes);
+                HttpClientResponse response = apiService.get("/analysisResults/variantCountByGeneForSomaticDNA/" + sample.getId(),
+                        null, null, false);
+                if (response != null) {
+                    List<VariantCountByGene> variantCountByGenes = (List<VariantCountByGene>) response
+                            .getMultiObjectBeforeConvertResponseToJSON(VariantCountByGene.class,
+                                    false);
 
-                        variantCountByGenes = variantCountByGenes.stream().sorted(Comparator.comparing(VariantCountByGene::getGeneSymbol)).collect(Collectors.toList());
+                    variantCountByGenes = filteringGeneList(variantCountByGenes);
 
-                        contentsMap.put("variantCountByGenes", variantCountByGenes);
-                        int geneTableMaxRowCount = (int)Math.ceil(variantCountByGenes.size() / 7.0);
-                        int geneTableMaxRowCount4 = (int)Math.ceil(variantCountByGenes.size() / 4.0);
-                        contentsMap.put("geneTableCount", (7 * geneTableMaxRowCount) - 1);
-                        contentsMap.put("geneTableCount4", (4 * geneTableMaxRowCount4) - 1);
+                    variantCountByGenes = variantCountByGenes.stream().sorted(Comparator.comparing(VariantCountByGene::getGeneSymbol)).collect(Collectors.toList());
 
-                        int tableOneSize = (int)Math.ceil((double)variantCountByGenes.size() / 3);
-                        int tableTwoSize = (int)Math.ceil((double)(variantCountByGenes.size() - tableOneSize) / 2);
+                    contentsMap.put("variantCountByGenes", variantCountByGenes);
+                    int geneTableMaxRowCount = (int)Math.ceil(variantCountByGenes.size() / 7.0);
+                    int geneTableMaxRowCount4 = (int)Math.ceil(variantCountByGenes.size() / 4.0);
+                    contentsMap.put("geneTableCount", (7 * geneTableMaxRowCount) - 1);
+                    contentsMap.put("geneTableCount4", (4 * geneTableMaxRowCount4) - 1);
 
-                        Object[] genesInPanelTableOne = variantCountByGenes.toArray();
-                        //Gene List를 3등분함
-                        contentsMap.put("genesInPanelTableOne", Arrays.copyOfRange(genesInPanelTableOne, 0, tableOneSize));
-                        contentsMap.put("genesInPanelTableTwo", Arrays.copyOfRange(genesInPanelTableOne, tableOneSize, tableOneSize + tableTwoSize));
-                        contentsMap.put("genesInPanelTableThree", Arrays.copyOfRange(genesInPanelTableOne, tableOneSize + tableTwoSize, variantCountByGenes.size()));
+                    int tableOneSize = (int)Math.ceil((double)variantCountByGenes.size() / 3);
+                    int tableTwoSize = (int)Math.ceil((double)(variantCountByGenes.size() - tableOneSize) / 2);
 
-                        if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
-                            response = apiService.get("virtualPanels/" + virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue(),
-                                    null, null, false);
+                    Object[] genesInPanelTableOne = variantCountByGenes.toArray();
+                    //Gene List를 3등분함
+                    contentsMap.put("genesInPanelTableOne", Arrays.copyOfRange(genesInPanelTableOne, 0, tableOneSize));
+                    contentsMap.put("genesInPanelTableTwo", Arrays.copyOfRange(genesInPanelTableOne, tableOneSize, tableOneSize + tableTwoSize));
+                    contentsMap.put("genesInPanelTableThree", Arrays.copyOfRange(genesInPanelTableOne, tableOneSize + tableTwoSize, variantCountByGenes.size()));
 
-                            VirtualPanel virtualPanel = response.getObjectBeforeConvertResponseToJSON(VirtualPanel.class);
+                    if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
+                        response = apiService.get("virtualPanels/" + virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue(),
+                                null, null, false);
 
-                            Set<String> list = new HashSet<>();
+                        VirtualPanel virtualPanel = response.getObjectBeforeConvertResponseToJSON(VirtualPanel.class);
 
-                            list.addAll(Arrays.stream(virtualPanel.getEssentialGenes().replaceAll("\\p{Z}", "")
-                                    .split(",")).collect(Collectors.toSet()));
+                        Set<String> list = new HashSet<>();
 
-                            Set<String> allGeneList = returnGeneList(virtualPanel.getEssentialGenes(), virtualPanel.getOptionalGenes());
+                        list.addAll(Arrays.stream(virtualPanel.getEssentialGenes().replaceAll("\\p{Z}", "")
+                                .split(",")).collect(Collectors.toSet()));
 
-                            contentsMap.put("essentialGenes", list);
-                            contentsMap.put("allGeneList", allGeneList);
-                            contentsMap.put("virtualPanelName", virtualPanel.getName());
+                        Set<String> allGeneList = returnGeneList(virtualPanel.getEssentialGenes(), virtualPanel.getOptionalGenes());
 
-                        }
-
-                        response = apiService.get("/runs/" + sample.getRunId(), null,
-                                null, false);
-
-                        RunWithSamples runWithSamples = response.getObjectBeforeConvertResponseToJSON(RunWithSamples.class);
-                        String runSequencer = runWithSamples.getRun().getSequencingPlatform();
-
-                        if(runSequencer.equalsIgnoreCase("MISEQ")) {
-                            contentsMap.put("sequencer",SequencerCode.MISEQ.getDescription());
-                        } else {
-                            contentsMap.put("sequencer",SequencerCode.MISEQ_DX.getDescription());
-                        }
-
-                        response = apiService.get("/analysisResults/sampleQCs/" + sample.getId(), null,
-                                null, false);
-
-                        List<SampleQC> qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
-
-                        contentsMap.put("totalBase",findQCResult(qcList, "total_base"));
-                        contentsMap.put("q30",findQCResult(qcList, "q30_trimmed_base"));
-                        contentsMap.put("mappedBase",findQCResult(qcList, "mapped_base"));
-                        contentsMap.put("onTarget",findQCResult(qcList, "on_target"));
-                        contentsMap.put("onTargetCoverage",findQCResult(qcList, "on_target_coverage"));
-                        contentsMap.put("duplicatedReads",findQCResult(qcList, "duplicated_reads"));
-                        contentsMap.put("roiCoverage",findQCResult(qcList, "roi_coverage"));
-
-                        List<String> conclusionLineList = null;
-                        if(!StringUtils.isEmpty(conclusionsTextArea.getText())) {
-                            conclusionLineList = new ArrayList<>();
-                            String[] lines = conclusionsTextArea.getText().split("\n");
-                            if(lines != null && lines.length > 0) {
-                                for (String line : lines) {
-                                    conclusionLineList.add(line);
-                                }
-                            } else {
-                                conclusionLineList.add(conclusionsTextArea.getText());
-                            }
-                        }
-                        contentsMap.put("conclusions", conclusionLineList);
+                        contentsMap.put("essentialGenes", list);
+                        contentsMap.put("allGeneList", allGeneList);
+                        contentsMap.put("virtualPanelName", virtualPanel.getName());
 
                     }
-                } catch (WebAPIException wae) {
-                    DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
-                            getMainApp().getPrimaryStage(), true);
+
+                    response = apiService.get("/runs/" + sample.getRunId(), null,
+                            null, false);
+
+                    RunWithSamples runWithSamples = response.getObjectBeforeConvertResponseToJSON(RunWithSamples.class);
+                    String runSequencer = runWithSamples.getRun().getSequencingPlatform();
+
+                    if(runSequencer.equalsIgnoreCase("MISEQ")) {
+                        contentsMap.put("sequencer",SequencerCode.MISEQ.getDescription());
+                    } else {
+                        contentsMap.put("sequencer",SequencerCode.MISEQ_DX.getDescription());
+                    }
+
+                    response = apiService.get("/analysisResults/sampleQCs/" + sample.getId(), null,
+                            null, false);
+
+                    List<SampleQC> qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
+
+                    contentsMap.put("totalBase",findQCResult(qcList, "total_base"));
+                    contentsMap.put("q30",findQCResult(qcList, "q30_trimmed_base"));
+                    contentsMap.put("mappedBase",findQCResult(qcList, "mapped_base"));
+                    contentsMap.put("onTarget",findQCResult(qcList, "on_target"));
+                    contentsMap.put("onTargetCoverage",findQCResult(qcList, "on_target_coverage"));
+                    contentsMap.put("duplicatedReads",findQCResult(qcList, "duplicated_reads"));
+                    contentsMap.put("roiCoverage",findQCResult(qcList, "roi_coverage"));
+
+                    List<String> conclusionLineList = null;
+                    if(!StringUtils.isEmpty(conclusionsTextArea.getText())) {
+                        conclusionLineList = new ArrayList<>();
+                        String[] lines = conclusionsTextArea.getText().split("\n");
+                        if(lines != null && lines.length > 0) {
+                            for (String line : lines) {
+                                conclusionLineList.add(line);
+                            }
+                        } else {
+                            conclusionLineList.add(conclusionsTextArea.getText());
+                        }
+                    }
+                    contentsMap.put("conclusions", conclusionLineList);
+
                 }
 
                 Map<String, Object> model = new HashMap<>();
@@ -1000,77 +1005,96 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         }
                     }
 
-                    HttpClientResponse response = apiService.get("reportTemplate/" + panel.getReportTemplateId(), null, null, false);
+                    response = apiService.get("reportTemplate/" + panel.getReportTemplateId(), null, null, false);
 
-                    ReportContents reportContents = response.getObjectBeforeConvertResponseToJSON(ReportContents.class);
+                    final ReportContents reportContents = response.getObjectBeforeConvertResponseToJSON(ReportContents.class);
 
-                    List<ReportImage> images = reportContents.getReportImages();
+                    if(reportContents.getReportTemplate().getOutputType() != null
+                            && reportContents.getReportTemplate().getOutputType().equalsIgnoreCase("MS_WORD")) {
+                        List<ReportComponent> components = reportContents.getReportComponents();
 
-                    for(ReportImage image : images) {
-                        String path = "url('file:/" + CommonConstants.BASE_FULL_PATH  + File.separator + "fop" + File.separator + image.getReportTemplateId()
-                                + File.separator + image.getName() + "')";
-                        path = path.replaceAll("\\\\", "/");
-                        String name = image.getName().substring(0, image.getName().lastIndexOf('.'));
-                        logger.info(name + " : " + path);
-                        model.put(name, path);
-                    }
+                        if(components == null || components.isEmpty()) throw new Exception();
+                        final Comparator<ReportComponent> comp = (p1, p2) -> Integer.compare( p1.getId(), p2.getId());
+                        final ReportComponent component = components.stream().max(comp).get();
+                        final String filePath = CommonConstants.BASE_FULL_PATH + File.separator + "word" + File.separator + component.getId();
+                        File jarFile = new File(filePath, component.getName());
 
-                    FileUtil.saveVMFile(reportContents.getReportTemplate());
+                        components.remove(component);
 
-                    Task task = new ImageFileDownloadTask(this, reportContents.getReportImages());
+                        if(!components.isEmpty()) {
+                            for (ReportComponent cmp : components) {
+                                File oldVersionFolder = new File(CommonConstants.BASE_FULL_PATH + File.separator + "word" + File.separator + cmp.getId());
+                                if(oldVersionFolder.exists()) {
+                                    FileUtils.deleteQuietly(oldVersionFolder);
+                                }
+                            }
+                        }
 
-                    Thread thread = new Thread(task);
-                    thread.setDaemon(true);
-                    thread.start();
+                        if(!jarFile.exists()) {
 
-                    final String contents1 = velocityUtil.getContents( reportContents.getReportTemplate().getId()+ "/" + reportContents.getReportTemplate().getName() + ".vm", "UTF-8", model);
+                            File folder = new File(filePath);
+                            if (!folder.exists()) folder.mkdirs();
 
-                    task.setOnSucceeded(ev -> {
-                        try {
-                            //이미지파일이 모두 다운로드 되었다면 PDF 파일을 생성함
-                            if(panel.getName().equalsIgnoreCase("HEMEaccuTest CNUHH 123 v1")) {
-                                //URL url = resourceUtil.getResourceURL("/word-creator.jar");
-                                /*File gocrygo = new File(CommonConstants.BASE_FULL_PATH, "word-creator1.jar");
-                                URL[] jarUrls = new URL[]{gocrygo.toURI().toURL()};
-                                URLClassLoader classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader());
+                            Task task = new JarDownloadTask(this, component);
 
-                                Thread.currentThread().setContextClassLoader(classLoader);
-                                @SuppressWarnings("unchecked")
-                                Class classToLoad = Class.forName("word.create.App", true, classLoader);
-                                logger.info("application init..");
-                                Method[] methods = classToLoad.getMethods();
-                                Method setParams = classToLoad.getMethod("setParams", Map.class);
-                                Method updateEmbeddedDoc = classToLoad.getMethod("updateEmbeddedDoc");
-                                Method updateWordFile = classToLoad.getDeclaredMethod("updateWordFile");
-                                Method setWriteFilePath = classToLoad.getDeclaredMethod("setWriteFilePath", String.class);
-                                Object application = classToLoad.newInstance();
-                                Object result = setParams.invoke(application, contentsMap);
-                                result = setWriteFilePath.invoke(application, file.getPath());
-                                result = updateEmbeddedDoc.invoke(application);
-                                result = updateWordFile.invoke(application);
-                                System.out.print("test");*/
-                                WordCreator wc = WordCreator.getInstance();
-                                wc.setWriteFilePath(file.getPath());
-                                wc.setParams(contentsMap);
-                                wc.updateEmbeddedDoc(resourceUtil.getResourceAsStream("/layout/word/test.docx"));
-                                wc.updateWordFile();
-                                createdCheck(true, file);
-                            } else {
+                            Thread thread = new Thread(task);
+                            thread.setDaemon(true);
+                            thread.start();
+
+                            task.setOnSucceeded(ev -> {
+                                try {
+                                    final File jarFile1 = new File(filePath, component.getName());
+                                    URL[] jarUrls = new URL[]{jarFile1.toURI().toURL()};
+                                    createWordFile(jarUrls, file, contentsMap, reportCreationErrorMsg);
+                                } catch (MalformedURLException murle) {
+                                    DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + murle.getMessage(), getMainApp().getPrimaryStage(), false);
+                                    murle.printStackTrace();
+                                }
+                            });
+                        } else {
+                            URL[] jarUrls = new URL[]{jarFile.toURI().toURL()};
+                            createWordFile(jarUrls, file, contentsMap, reportCreationErrorMsg);
+                        }
+
+                    } else {
+                        List<ReportImage> images = reportContents.getReportImages();
+
+                        for (ReportImage image : images) {
+                            String path = "url('file:/" + CommonConstants.BASE_FULL_PATH + File.separator + "fop" + File.separator + image.getReportTemplateId()
+                                    + File.separator + image.getName() + "')";
+                            path = path.replaceAll("\\\\", "/");
+                            String name = image.getName().substring(0, image.getName().lastIndexOf('.'));
+                            logger.info(name + " : " + path);
+                            model.put(name, path);
+                        }
+
+                        FileUtil.saveVMFile(reportContents.getReportTemplate());
+
+                        Task task = new ImageFileDownloadTask(this, reportContents.getReportImages());
+
+                        Thread thread = new Thread(task);
+                        thread.setDaemon(true);
+                        thread.start();
+
+                        final String contents1 = velocityUtil.getContents(reportContents.getReportTemplate().getId() + "/" + reportContents.getReportTemplate().getName() + ".vm", "UTF-8", model);
+                        task.setOnSucceeded(ev -> {
+                            try {
                                 final boolean created1 = pdfCreateService.createPDF(file, contents1);
                                 createdCheck(created1, file);
+
+                            } catch (Exception e) {
+                                DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);
+                                e.printStackTrace();
                             }
-                            //convertPDFtoImage(file, sample.getName());
-                        } catch (Exception e) {
-                            DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);
-                            e.printStackTrace();
-                        }
-                    });
-
+                        });
+                    }
                 }
-
             }
         } catch(FileNotFoundException fnfe){
             DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + fnfe.getMessage(), getMainApp().getPrimaryStage(), false);
+        } catch (WebAPIException wae) {
+            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+                    getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
             DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);
             e.printStackTrace();
@@ -1078,6 +1102,31 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         }
 
         return created;
+    }
+
+    public void createWordFile(URL[] jarUrls, File file , Map<String, Object> contentsMap, String reportCreationErrorMsg) {
+        try (URLClassLoader classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader())) {
+
+            Thread.currentThread().setContextClassLoader(classLoader);
+            @SuppressWarnings("unchecked")
+            Class classToLoad = Class.forName("word.create.App", true, classLoader);
+            logger.info("application init..");
+            Method[] methods = classToLoad.getMethods();
+            Method setParams = classToLoad.getMethod("setParams", Map.class);
+            Method updateEmbeddedDoc = classToLoad.getMethod("updateEmbeddedDoc");
+            Method updateWordFile = classToLoad.getDeclaredMethod("updateWordFile");
+            Method setWriteFilePath = classToLoad.getDeclaredMethod("setWriteFilePath", String.class);
+            Object application = classToLoad.newInstance();
+            Object result = setParams.invoke(application, contentsMap);
+            result = setWriteFilePath.invoke(application, file.getPath());
+            result = updateEmbeddedDoc.invoke(application);
+            result = updateWordFile.invoke(application);
+            System.out.print("test");
+            createdCheck(true, file);
+        } catch (Exception e) {
+            DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);
+            e.printStackTrace();
+        }
     }
 
     public void createdCheck(boolean created, File file) {

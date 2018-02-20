@@ -21,6 +21,7 @@ import ngeneanalysys.model.ReportContents;
 import ngeneanalysys.model.ReportImage;
 import ngeneanalysys.model.ReportTemplate;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.task.JarUploadTask;
 import ngeneanalysys.task.ReportImageFileUploadTask;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.JsonUtil;
@@ -56,6 +57,9 @@ public class SystemManagerReportTemplateController extends SubPaneController{
 
     @FXML
     private TextArea customFieldsTextArea;
+
+    @FXML
+    private ComboBox<String> outputTypeComboBox;
 
     @FXML
     private ComboBox<String> variableTypeComboBox;
@@ -132,6 +136,8 @@ public class SystemManagerReportTemplateController extends SubPaneController{
     //기존 이미지 모음
     private List<ReportImage> currentImageList = new ArrayList<>();
 
+    private File wordCreatorJar;
+
     @Override
     public void show(Parent root) throws IOException {
         logger.info("system manager report template init");
@@ -139,6 +145,14 @@ public class SystemManagerReportTemplateController extends SubPaneController{
         apiService = APIService.getInstance();
 
         imageList = new ArrayList<>();
+
+        outputTypeComboBox.valueProperty().addListener((ov, t, t1) -> {
+            if(t1 == null || t1.equalsIgnoreCase("pdf")) {
+                reportTemplateSelectionButton.setText("Select vm file");
+            } else {
+                reportTemplateSelectionButton.setText("Select jar file");
+            }
+        });
 
         reportIdTableColumn.setCellValueFactory(param -> new SimpleIntegerProperty(param.getValue().getId()).asObject());
         reportNameTableColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getName()));
@@ -239,11 +253,16 @@ public class SystemManagerReportTemplateController extends SubPaneController{
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose Report Template File");
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-        fileChooser.getExtensionFilters()
-                .addAll(new FileChooser.ExtensionFilter("vm", "*.vm"));
+        if(outputTypeComboBox.getSelectionModel().getSelectedItem().equalsIgnoreCase("pdf")) {
+            fileChooser.getExtensionFilters()
+                    .addAll(new FileChooser.ExtensionFilter("vm", "*.vm"));
+        } else {
+            fileChooser.getExtensionFilters()
+                    .addAll(new FileChooser.ExtensionFilter("jar", "*.jar"));
+        }
         File file = fileChooser.showOpenDialog(mainController.getPrimaryStage());
 
-        if(file != null && file.getName().toLowerCase().endsWith(".vm")) {
+        if(file != null && (file.getName().toLowerCase().endsWith(".vm"))) {
             try (BufferedReader in = new BufferedReader(new FileReader(file))){
                 final StringBuilder sb = new StringBuilder();
                 //String s;
@@ -257,6 +276,9 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                 DialogUtil.error(e.getMessage(), e.getMessage(), mainController.getPrimaryStage() ,true);
                 e.printStackTrace();
             }
+        } else if(file != null && (file.getName().toLowerCase().endsWith(".jar"))) {
+            contents = file.getName();
+            wordCreatorJar = file;
         }
     }
 
@@ -268,7 +290,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                 Map<String, Object> param = new HashMap<>();
                 param.put("name", reportName);
                 param.put("contents", contents);
-
+                param.put("outputType", outputTypeComboBox.getSelectionModel().getSelectedItem());
                 if(!StringUtils.isEmpty(customFieldsTextArea.getText())) {
                     param.put("customFields", customFieldsTextArea.getText());
                 } else {
@@ -292,8 +314,8 @@ public class SystemManagerReportTemplateController extends SubPaneController{
 
                 ReportTemplate reportTemplate = response.getObjectBeforeConvertResponseToJSON(ReportTemplate.class);
 
-                if(!this.imageList.isEmpty()) {
-                    Task<Void> task = new ReportImageFileUploadTask(imageList, reportTemplate.getId(), getMainController());
+                if(outputTypeComboBox.getSelectionModel().getSelectedItem().equalsIgnoreCase("MS_WORD")) {
+                    Task<Void> task = new JarUploadTask(wordCreatorJar, reportTemplate.getId(), getMainController());
                     final Thread downloadThread = new Thread(task);
 
                     // Thread 실행
@@ -306,9 +328,24 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                         setDisabledItem(true);
                     });
                 } else {
-                    setReportTableList(1);
-                    resetItem();
-                    setDisabledItem(true);
+                    if (!this.imageList.isEmpty()) {
+                        Task<Void> task = new ReportImageFileUploadTask(imageList, reportTemplate.getId(), getMainController());
+                        final Thread downloadThread = new Thread(task);
+
+                        // Thread 실행
+                        downloadThread.setDaemon(true);
+                        downloadThread.start();
+
+                        task.setOnSucceeded(ev -> {
+                            setReportTableList(1);
+                            resetItem();
+                            setDisabledItem(true);
+                        });
+                    } else {
+                        setReportTableList(1);
+                        resetItem();
+                        setDisabledItem(true);
+                    }
                 }
 
             } catch (WebAPIException wae) {
@@ -425,6 +462,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
     public void reportAdd() {
         setDisabledItem(false);
         settingVariableTypeComboBox();
+        settingReportType();
     }
 
     public void settingVariableTypeComboBox() {
@@ -432,6 +470,11 @@ public class SystemManagerReportTemplateController extends SubPaneController{
         variableTypeComboBox.getItems().add("Date");
         variableTypeComboBox.getItems().add("Integer");
         variableTypeComboBox.getItems().add("Image");
+    }
+
+    public void settingReportType() {
+        outputTypeComboBox.getItems().add("PDF");
+        outputTypeComboBox.getItems().add("MS_WORD");
     }
 
     public void settingImageListComboBox() {
@@ -469,6 +512,8 @@ public class SystemManagerReportTemplateController extends SubPaneController{
         displayNameTextField.setText("");
         variableTypeComboBox.getItems().removeAll(variableTypeComboBox.getItems());
         variableListComboBox.getItems().removeAll(variableListComboBox.getItems());
+        variableListComboBox.getItems().removeAll(variableListComboBox.getItems());
+        outputTypeComboBox.getSelectionModel().selectFirst();
         deleteImageList.clear();
         currentImageList.clear();
         imageListComboBox.getItems().removeAll(imageListComboBox.getItems());
@@ -482,6 +527,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
         reportNameTextField.setDisable(condition);
         reportTemplateSelectionButton.setDisable(condition);
         reportSaveButton.setDisable(condition);
+        outputTypeComboBox.setDisable(condition);
         selectImageButton.setDisable(condition);
         variableNameTextField.setDisable(condition);
         displayNameTextField.setDisable(condition);
@@ -538,7 +584,8 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                 settingVariableListComboBox();
 
                 settingVariableTypeComboBox();
-
+                settingReportType();
+                if(reportTemplate.getOutputType() != null) outputTypeComboBox.getSelectionModel().select(reportTemplate.getOutputType());
                 reportNameTextField.setText(reportTemplate.getName());
                 contents = reportTemplate.getContents();
 

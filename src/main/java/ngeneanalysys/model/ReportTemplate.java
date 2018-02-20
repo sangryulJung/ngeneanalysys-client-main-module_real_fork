@@ -11,11 +11,19 @@ public class ReportTemplate {
     private Integer id;
     private String name;
     private String contents;
+    private String outputType;
     private String customFields;
     private DateTime createdAt;
     private DateTime updatedAt;
     private DateTime deletedAt;
     private Integer deleted;
+
+    /**
+     * @return outputType
+     */
+    public String getOutputType() {
+        return outputType;
+    }
 
     /**
      * @return customFields

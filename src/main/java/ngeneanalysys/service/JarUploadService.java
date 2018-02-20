@@ -2,7 +2,7 @@ package ngeneanalysys.service;
 
 import ngeneanalysys.controller.MainController;
 import ngeneanalysys.exceptions.WebAPIException;
-import ngeneanalysys.model.ReportImage;
+import ngeneanalysys.model.ReportComponent;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
@@ -24,9 +24,9 @@ import java.util.Map;
 
 /**
  * @author Jang
- * @since 2017-11-22
+ * @since 2018-02-19
  */
-public class ImageUploadService {
+public class JarUploadService {
     private static final Logger logger = LoggerUtil.getLogger();
 
     private APIService apiService;
@@ -34,42 +34,42 @@ public class ImageUploadService {
     /**
      * 인스턴스 생성 제한
      */
-    private ImageUploadService() {
+    private JarUploadService() {
         apiService = APIService.getInstance();
     }
 
     /**
      * 싱글톤 인스턴스 생성 내부 클래스
      */
-    private static class ImageUploadHelper{
-        private ImageUploadHelper() {}
-        private static final ImageUploadService INSTANCE = new ImageUploadService();
+    private static class JarUploadHelper{
+        private JarUploadHelper() {}
+        private static final JarUploadService INSTANCE = new JarUploadService();
     }
 
     /**
      * 싱글톤 객체 반환
      * @return
      */
-    public static ImageUploadService getInstance() {
-        return ImageUploadHelper.INSTANCE;
+    public static JarUploadService getInstance() {
+        return JarUploadHelper.INSTANCE;
     }
 
-    public HttpClientResponse uploadImage(int templateId, File imageFile, MainController mainController) {
+    public HttpClientResponse uploadJar(int templateId, File jarFile, MainController mainController) {
         CloseableHttpClient httpclient = null;
         CloseableHttpResponse response = null;
         HttpClientResponse httpClientResponse = null;
 
         try {
             Map<String, Object> params = new HashMap<>();
-            params.put("name", imageFile.getName());
+            params.put("name", jarFile.getName());
             params.put("reportTemplateId", templateId);
-            params.put("size", imageFile.length());
+            params.put("size", jarFile.length());
 
-            httpClientResponse = apiService.post("admin/reportImage", params, null, true);
+            httpClientResponse = apiService.post("/admin/reportComponent", params, null, true);
 
-            ReportImage image = httpClientResponse.getObjectBeforeConvertResponseToJSON(ReportImage.class);
+            ReportComponent component = httpClientResponse.getObjectBeforeConvertResponseToJSON(ReportComponent.class);
 
-            String url = "/admin/reportImage/" + image.getId();
+            String url = "/admin/reportComponent/" + component.getId();
 
             String connectURL = apiService.getConvertConnectURL(url);
             HttpPut put = new HttpPut(connectURL);
@@ -86,10 +86,8 @@ public class ImageUploadService {
                 }
             }
 
-            FileBody fileParam = new FileBody(imageFile);
+            FileBody fileParam = new FileBody(jarFile);
 
-            //HttpEntity reqEntity = EntityBuilder.create()
-            //        .setFile(imageFile).build();
             HttpEntity reqEntity = MultipartEntityBuilder.create()
                     .addPart("file", fileParam)
                     .build();
@@ -112,5 +110,4 @@ public class ImageUploadService {
 
         return httpClientResponse;
     }
-
 }
