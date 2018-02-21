@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 <?import java.lang.Double?>
 <?import java.lang.String?>
 <?import java.net.URL?>
@@ -22,7 +30,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Polyline?>
 
-<GridPane fx:id="overviewWrapper" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="272.0" prefWidth="1105.0" styleClass="bg_white" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNPsINDELsOverviewController">
+<GridPane fx:id="overviewWrapper" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="272.0" prefWidth="1105.0" styleClass="bg_white" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNPsINDELsOverviewController">
 	<columnConstraints>
 		<ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="271.0" minWidth="-Infinity" prefWidth="171.0" />
 		<ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="388.0" minWidth="-Infinity" prefWidth="288.0" />
@@ -72,14 +80,6 @@
 							<children>
 								<VBox fx:id="depthLegendBox">
 									<children>
-										<ImageView fx:id="depthLegendImageView" fitHeight="21.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-											<image>
-												<Image url="@../images/animation.gif" />
-											</image>
-											<VBox.margin>
-												<Insets />
-											</VBox.margin>
-										</ImageView>
 										<Label fx:id="depthLegendLabel" styleClass="vertical_stick_value_right">
 											<VBox.margin>
 												<Insets bottom="-6.0" />
@@ -185,11 +185,6 @@
 							<children>
 								<VBox fx:id="fractionLegendBox">
 									<children>
-										<ImageView fx:id="fractionLegendImageView" fitHeight="21.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-											<image>
-												<Image url="@../images/animation.gif" />
-											</image>
-										</ImageView>
 										<Label fx:id="fractionLegendLabel" minWidth="23.0" prefWidth="23.0" styleClass="vertical_stick_value_left">
 											<VBox.margin>
 												<Insets bottom="-6.0" />

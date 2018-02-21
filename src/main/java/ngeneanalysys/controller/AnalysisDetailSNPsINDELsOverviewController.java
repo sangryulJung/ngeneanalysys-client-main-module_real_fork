@@ -45,8 +45,6 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
     /** 수직 막대 그래프 Height */
     private double verticalGraphHeight = 116;
 
-    private boolean graphAnimationIconDisplay = true;
-
     private final int gaugeSpeed = 10;
 
     @FXML
@@ -58,8 +56,6 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
     @FXML
     private VBox depthLegendBox;						/** DEPTH > Legend Box */
     @FXML
-    private ImageView depthLegendImageView;				/** DEPTH > Legend Animation Image */
-    @FXML
     private Label depthLegendLabel;						/** DEPTH > Legend 실제값 표시 라벨 */
     @FXML
     private VBox depthLegendVBox;						/** DEPTH > Legend Box 실제값 표시 라벨 부모 박스 */
@@ -70,8 +66,6 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
     private Label fractionValueLabel;					/** FRACTION > Value 실제값 */
     @FXML
     private VBox fractionLegendBox;						/** FRACTION > Legend Box */
-    @FXML
-    private ImageView fractionLegendImageView;				/** FRACTION > Legend Animation Image */
     @FXML
     private Label fractionLegendLabel;					/** FRACTION > Legend 실제값 표시 라벨 */
     @FXML
@@ -258,9 +252,6 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
         panel = (Panel) paramMap.get("panel");
         variant = (VariantAndInterpretationEvidence) paramMap.get("variant");
 
-        // 그래프 애니메이션 아이콘 출력여부 체크
-        this.graphAnimationIconDisplay = "true".equals(config.getProperty("graph.animation.icon.display"));
-
         // Depth 그래프 값 입력 및 화면 출력
         showDepth();
 
@@ -403,7 +394,6 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
 
         }*/
         depth = variant.getSnpInDel().getReadInfo().getReadDepth();
-        depthLegendImageView.setVisible(this.graphAnimationIconDisplay);
         depthMinLabel.setText(String.valueOf(Math.round(depthMin)));
         depthMaxLabel.setText(String.valueOf(Math.round(depthMax)));
         depthLegendLabel.setText(String.valueOf(Math.round(depth)));
@@ -424,7 +414,6 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
             @Override
             public void handle(long l) {
                 if(idx >= depthValueHeight) {
-                    depthLegendImageView.setImage(resourceUtil.getImage("/layout/images/animation_stop.png"));
                     stop();
                 }
                 // 막대 높이 사이즈 1pixel씩 증가
@@ -436,7 +425,6 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
                 double lableBottomMargin = idx - 2;
                 double imageLeftMargin = Math.round(idx*(maxLeftMarginForImage/depthValueHeight));
                 if(lableBottomMargin < -6) lableBottomMargin = -8;
-                depthLegendBox.setMargin(depthLegendImageView, new Insets(0, 0, 0, imageLeftMargin));
                 depthLegendVBox.setMargin(depthLegendBox, new Insets(0, 0, lableBottomMargin, 0));
                 idx += step;
                 if (idx > depthValueHeight) {
@@ -467,7 +455,6 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
         BigDecimal allele = variant.getSnpInDel().getReadInfo().getAlleleFraction();
         alleleFraction = (allele != null) ? allele.doubleValue() : 0;
 
-        fractionLegendImageView.setVisible(this.graphAnimationIconDisplay);
         fractionRef.setText(ref);
         fractionRef.setTooltip(new Tooltip(ref));
         fractionAlt.setText(alt);
@@ -493,7 +480,6 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
             @Override
             public void handle(long l) {
                 if(idx >= fractionValueHeight) {
-                    fractionLegendImageView.setImage(resourceUtil.getImage("/layout/images/animation_stop.png"));
                     stop();
                 }
                 // 막대 높이 사이즈 1pixel씩 증가
@@ -505,7 +491,6 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
                 double lableBottomMargin = idx - 2;
                 double imageLeftMargin = Math.round(idx*(maxLeftMarginForImage/fractionValueHeight));
                 if(lableBottomMargin < -6) lableBottomMargin = -8;
-                fractionLegendBox.setMargin(fractionLegendImageView, new Insets(0, 0, 0, imageLeftMargin));
                 fractionLegendVBox.setMargin(fractionLegendBox, new Insets(0, 0, lableBottomMargin, 0));
                 idx += step;
                 if (idx > fractionValueHeight) {
