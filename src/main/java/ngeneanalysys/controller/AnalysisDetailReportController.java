@@ -757,6 +757,189 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         }
     }
 
+    public Map<String, Object> contents() throws WebAPIException {
+        Map<String,Object> contentsMap = new HashMap<>();
+        contentsMap.put("panelName", panel.getName());
+        contentsMap.put("diseaseName", diseaseLabel.getText());
+        contentsMap.put("sampleSource", panel.getSampleSource());
+        contentsMap.put("panelCode", panel.getCode());
+        contentsMap.put("sampleName", sample.getName());
+        contentsMap.put("patientCode", "SS17-01182");
+        SecureRandom random = new SecureRandom();
+        contentsMap.put("reportID", String.format("%05d-%05d", sample.getId(), random.nextInt(99999)));
+
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM. dd yyyy");
+        contentsMap.put("date", sdf.format(date));
+
+        List<VariantAndInterpretationEvidence> variantList = new ArrayList<>();
+        if(!tierOneVariantsTable.getItems().isEmpty()) variantList.addAll(tierOneVariantsTable.getItems().stream().collect(Collectors.toList()));
+        if(!tierTwoVariantsTable.getItems().isEmpty()) variantList.addAll(tierTwoVariantsTable.getItems().stream().collect(Collectors.toList()));
+        //if(tierOne != null && !tierOne.isEmpty()) variantList.addAll(tierOne);
+        //if(tierTwo != null && !tierTwo.isEmpty()) variantList.addAll(tierTwo);
+
+        List<VariantAndInterpretationEvidence> negativeResult = new ArrayList<>();
+        //리포트에서 제외된 negative 정보를 제거
+        if(negativeList != null && !negativeList.isEmpty()) {
+            negativeResult.addAll(negativeVariantsTable.getItems().stream().filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).collect(Collectors.toList()));
+        }
+        //리포트에서 제외된 variant를 제거
+        if(!variantList.isEmpty()) {
+            variantList = variantList.stream().filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).collect(Collectors.toList());
+        }
+
+        List<VariantAndInterpretationEvidence> clinicalVariantList = new ArrayList<>();
+
+        clinicalVariantList.addAll(variantList);
+
+        //if(tierThree != null && !tierThree.isEmpty()) variantList.addAll(tierThree);
+        if(!tierThreeVariantsTable.getItems().isEmpty()) variantList.addAll(tierThreeVariantsTable.getItems().stream().filter(tierThree ->
+                tierThree.getSnpInDel().getIncludedInReport().equalsIgnoreCase("Y")).collect(Collectors.toList()));
+
+        for(VariantAndInterpretationEvidence variant : variantList) {
+            variant.getSnpInDel().getSnpInDelExpression().setTranscript(ConvertUtil.insertTextAtFixedPosition(variant.getSnpInDel().getSnpInDelExpression().getTranscript(), 15, "\n"));
+            variant.getSnpInDel().getSnpInDelExpression().setNtChange(ConvertUtil.insertTextAtFixedPosition(variant.getSnpInDel().getSnpInDelExpression().getNtChange(), 15, "\n"));
+            variant.getSnpInDel().getSnpInDelExpression().setAaChange(ConvertUtil.insertTextAtFixedPosition(variant.getSnpInDel().getSnpInDelExpression().getAaChange(), 15, "\n"));
+        }
+
+        Integer evidenceACount = 0;
+        Integer evidenceBCount = 0;
+        Integer evidenceCCount = 0;
+        Integer evidenceDCount = 0;
+
+        if(!tierOneVariantsTable.getItems().isEmpty()) {
+            for(VariantAndInterpretationEvidence variant : tierOneVariantsTable.getItems().stream().filter(tierOne ->
+                    tierOne.getSnpInDel().getIncludedInReport().equalsIgnoreCase("Y")).collect(Collectors.toList())) {
+                if("Y".equalsIgnoreCase(variant.getSnpInDel().getIncludedInReport()) && variant.getInterpretationEvidence() != null) {
+                    if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelA())) evidenceACount++;
+                    if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelB())) evidenceBCount++;
+                    if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelC())) evidenceCCount++;
+                    if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelD())) evidenceDCount++;
+                    if("T2".equals(variant.getSnpInDel().getSwTier())
+                            && StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelB())) evidenceBCount++;
+                }
+            }
+        }
+
+        if(!tierTwoVariantsTable.getItems().isEmpty()) {
+            for(VariantAndInterpretationEvidence variant : tierTwoVariantsTable.getItems().stream().filter(tierTwo ->
+                    tierTwo.getSnpInDel().getIncludedInReport().equalsIgnoreCase("Y")).collect(Collectors.toList())) {
+                if("Y".equalsIgnoreCase(variant.getSnpInDel().getIncludedInReport()) && variant.getInterpretationEvidence() != null) {
+                    if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelA())) evidenceACount++;
+                    if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelB())) evidenceBCount++;
+                    if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelC())) evidenceCCount++;
+                    if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelD())) evidenceDCount++;
+                    if("T1".equals(variant.getSnpInDel().getSwTier())
+                            && StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelD())) evidenceDCount++;
+                }
+            }
+        }
+
+        contentsMap.put("clinicalVariantList", clinicalVariantList);
+        contentsMap.put("variantList", variantList);
+        contentsMap.put("tierThreeVariantList", tierThree);
+        contentsMap.put("tierOneCount", tierOneVariantsTable.getItems().filtered(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).size());
+        contentsMap.put("tierTwoCount", tierTwoVariantsTable.getItems().filtered(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).size());
+        contentsMap.put("tierThreeCount", tierThreeVariantsTable.getItems().filtered(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).size());
+        contentsMap.put("tierFourCount", (tierFour != null) ? tierFour.size() : 0);
+        contentsMap.put("evidenceACount", evidenceACount);
+        contentsMap.put("evidenceBCount", evidenceBCount);
+        contentsMap.put("evidenceCCount", evidenceCCount);
+        contentsMap.put("evidenceDCount", evidenceDCount);
+        contentsMap.put("negativeList", negativeResult);
+        contentsMap.put("qcData", sample.getQcData());
+
+        //Genes in panel
+
+        HttpClientResponse response = apiService.get("/analysisResults/variantCountByGeneForSomaticDNA/" + sample.getId(),
+                null, null, false);
+        if (response != null) {
+            List<VariantCountByGene> variantCountByGenes = (List<VariantCountByGene>) response
+                    .getMultiObjectBeforeConvertResponseToJSON(VariantCountByGene.class,
+                            false);
+
+            variantCountByGenes = filteringGeneList(variantCountByGenes);
+
+            variantCountByGenes = variantCountByGenes.stream().sorted(Comparator.comparing(VariantCountByGene::getGeneSymbol)).collect(Collectors.toList());
+
+            contentsMap.put("variantCountByGenes", variantCountByGenes);
+            int geneTableMaxRowCount = (int)Math.ceil(variantCountByGenes.size() / 7.0);
+            int geneTableMaxRowCount4 = (int)Math.ceil(variantCountByGenes.size() / 4.0);
+            contentsMap.put("geneTableCount", (7 * geneTableMaxRowCount) - 1);
+            contentsMap.put("geneTableCount4", (4 * geneTableMaxRowCount4) - 1);
+
+            int tableOneSize = (int)Math.ceil((double)variantCountByGenes.size() / 3);
+            int tableTwoSize = (int)Math.ceil((double)(variantCountByGenes.size() - tableOneSize) / 2);
+
+            Object[] genesInPanelTableOne = variantCountByGenes.toArray();
+            //Gene List를 3등분함
+            contentsMap.put("genesInPanelTableOne", Arrays.copyOfRange(genesInPanelTableOne, 0, tableOneSize));
+            contentsMap.put("genesInPanelTableTwo", Arrays.copyOfRange(genesInPanelTableOne, tableOneSize, tableOneSize + tableTwoSize));
+            contentsMap.put("genesInPanelTableThree", Arrays.copyOfRange(genesInPanelTableOne, tableOneSize + tableTwoSize, variantCountByGenes.size()));
+
+            if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
+                response = apiService.get("virtualPanels/" + virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue(),
+                        null, null, false);
+
+                VirtualPanel virtualPanel = response.getObjectBeforeConvertResponseToJSON(VirtualPanel.class);
+
+                Set<String> list = new HashSet<>();
+
+                list.addAll(Arrays.stream(virtualPanel.getEssentialGenes().replaceAll("\\p{Z}", "")
+                        .split(",")).collect(Collectors.toSet()));
+
+                Set<String> allGeneList = returnGeneList(virtualPanel.getEssentialGenes(), virtualPanel.getOptionalGenes());
+
+                contentsMap.put("essentialGenes", list);
+                contentsMap.put("allGeneList", allGeneList);
+                contentsMap.put("virtualPanelName", virtualPanel.getName());
+
+            }
+
+            response = apiService.get("/runs/" + sample.getRunId(), null,
+                    null, false);
+
+            RunWithSamples runWithSamples = response.getObjectBeforeConvertResponseToJSON(RunWithSamples.class);
+            String runSequencer = runWithSamples.getRun().getSequencingPlatform();
+
+            if(runSequencer.equalsIgnoreCase("MISEQ")) {
+                contentsMap.put("sequencer",SequencerCode.MISEQ.getDescription());
+            } else {
+                contentsMap.put("sequencer",SequencerCode.MISEQ_DX.getDescription());
+            }
+
+            response = apiService.get("/analysisResults/sampleQCs/" + sample.getId(), null,
+                    null, false);
+
+            List<SampleQC> qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
+
+            contentsMap.put("totalBase",findQCResult(qcList, "total_base"));
+            contentsMap.put("q30",findQCResult(qcList, "q30_trimmed_base"));
+            contentsMap.put("mappedBase",findQCResult(qcList, "mapped_base"));
+            contentsMap.put("onTarget",findQCResult(qcList, "on_target"));
+            contentsMap.put("onTargetCoverage",findQCResult(qcList, "on_target_coverage"));
+            contentsMap.put("duplicatedReads",findQCResult(qcList, "duplicated_reads"));
+            contentsMap.put("roiCoverage",findQCResult(qcList, "roi_coverage"));
+
+            List<String> conclusionLineList = null;
+            if(!StringUtils.isEmpty(conclusionsTextArea.getText())) {
+                conclusionLineList = new ArrayList<>();
+                String[] lines = conclusionsTextArea.getText().split("\n");
+                if(lines != null && lines.length > 0) {
+                    for (String line : lines) {
+                        conclusionLineList.add(line);
+                    }
+                } else {
+                    conclusionLineList.add(conclusionsTextArea.getText());
+                }
+            }
+            contentsMap.put("conclusions", conclusionLineList);
+
+        }
+
+        return contentsMap;
+    }
+
     public boolean createPDF(boolean isDraft) {
         boolean created = true;
         String reportCreationErrorMsg = "An error occurred during the creation of the report document.";
@@ -773,6 +956,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             if(isDraft) {
                 baseSaveName = String.format("DRAFT_Report_%s", sample.getName());
             }
+
             // Show save bedFile dialog
             FileChooser fileChooser = new FileChooser();
             if(outputType != null && outputType.equalsIgnoreCase("MS_WORD")) {
@@ -784,6 +968,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             File file = fileChooser.showSaveDialog(this.getMainApp().getPrimaryStage());
 
             if(file != null) {
+
+                Map<String, Object> contentsMap = contents();
+
                 String draftImageStr = String.format("url('%s')", this.getClass().getClassLoader().getResource("layout/images/DRAFT.png"));
                 String ngenebioLogo = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/ngenebio_logo.png"));
                 String testInformationText = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/test_information1.png"));
@@ -791,185 +978,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 String pertinetNegativeText = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/pertinent_negative.png"));
                 String variantDetailText = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/variant_detail.png"));
                 String dataQcText = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/data_qc.png"));
-                Map<String,Object> contentsMap = new HashMap<>();
-                contentsMap.put("panelName", panel.getName());
-                contentsMap.put("diseaseName", diseaseLabel.getText());
-                contentsMap.put("sampleSource", panel.getSampleSource());
-                contentsMap.put("panelCode", panel.getCode());
-                contentsMap.put("sampleName", sample.getName());
-                contentsMap.put("patientCode", "SS17-01182");
-                SecureRandom random = new SecureRandom();
-                contentsMap.put("reportID", String.format("%05d-%05d", sample.getId(), random.nextInt(99999)));
-
-                Date date = new Date();
-                SimpleDateFormat sdf = new SimpleDateFormat("MMM. dd yyyy");
-                contentsMap.put("date", sdf.format(date));
-
-                List<VariantAndInterpretationEvidence> variantList = new ArrayList<>();
-                if(!tierOneVariantsTable.getItems().isEmpty()) variantList.addAll(tierOneVariantsTable.getItems().stream().collect(Collectors.toList()));
-                if(!tierTwoVariantsTable.getItems().isEmpty()) variantList.addAll(tierTwoVariantsTable.getItems().stream().collect(Collectors.toList()));
-                //if(tierOne != null && !tierOne.isEmpty()) variantList.addAll(tierOne);
-                //if(tierTwo != null && !tierTwo.isEmpty()) variantList.addAll(tierTwo);
-
-                List<VariantAndInterpretationEvidence> negativeResult = new ArrayList<>();
-                //리포트에서 제외된 negative 정보를 제거
-                if(negativeList != null && !negativeList.isEmpty()) {
-                    negativeResult.addAll(negativeVariantsTable.getItems().stream().filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).collect(Collectors.toList()));
-                }
-                //리포트에서 제외된 variant를 제거
-                if(!variantList.isEmpty()) {
-                    variantList = variantList.stream().filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).collect(Collectors.toList());
-                }
-
-                List<VariantAndInterpretationEvidence> clinicalVariantList = new ArrayList<>();
-
-                clinicalVariantList.addAll(variantList);
-
-                //if(tierThree != null && !tierThree.isEmpty()) variantList.addAll(tierThree);
-                if(!tierThreeVariantsTable.getItems().isEmpty()) variantList.addAll(tierThreeVariantsTable.getItems().stream().filter(tierThree ->
-                tierThree.getSnpInDel().getIncludedInReport().equalsIgnoreCase("Y")).collect(Collectors.toList()));
-
-                for(VariantAndInterpretationEvidence variant : variantList) {
-                    variant.getSnpInDel().getSnpInDelExpression().setTranscript(ConvertUtil.insertTextAtFixedPosition(variant.getSnpInDel().getSnpInDelExpression().getTranscript(), 15, "\n"));
-                    variant.getSnpInDel().getSnpInDelExpression().setNtChange(ConvertUtil.insertTextAtFixedPosition(variant.getSnpInDel().getSnpInDelExpression().getNtChange(), 15, "\n"));
-                    variant.getSnpInDel().getSnpInDelExpression().setAaChange(ConvertUtil.insertTextAtFixedPosition(variant.getSnpInDel().getSnpInDelExpression().getAaChange(), 15, "\n"));
-                }
-
-                Integer evidenceACount = 0;
-                Integer evidenceBCount = 0;
-                Integer evidenceCCount = 0;
-                Integer evidenceDCount = 0;
-
-                if(!tierOneVariantsTable.getItems().isEmpty()) {
-                    for(VariantAndInterpretationEvidence variant : tierOneVariantsTable.getItems().stream().filter(tierOne ->
-                    tierOne.getSnpInDel().getIncludedInReport().equalsIgnoreCase("Y")).collect(Collectors.toList())) {
-                        if("Y".equalsIgnoreCase(variant.getSnpInDel().getIncludedInReport()) && variant.getInterpretationEvidence() != null) {
-                            if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelA())) evidenceACount++;
-                            if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelB())) evidenceBCount++;
-                            if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelC())) evidenceCCount++;
-                            if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelD())) evidenceDCount++;
-                            if("T2".equals(variant.getSnpInDel().getSwTier())
-                                    && StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelB())) evidenceBCount++;
-                        }
-                    }
-                }
-
-                if(!tierTwoVariantsTable.getItems().isEmpty()) {
-                    for(VariantAndInterpretationEvidence variant : tierTwoVariantsTable.getItems().stream().filter(tierTwo ->
-                            tierTwo.getSnpInDel().getIncludedInReport().equalsIgnoreCase("Y")).collect(Collectors.toList())) {
-                        if("Y".equalsIgnoreCase(variant.getSnpInDel().getIncludedInReport()) && variant.getInterpretationEvidence() != null) {
-                            if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelA())) evidenceACount++;
-                            if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelB())) evidenceBCount++;
-                            if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelC())) evidenceCCount++;
-                            if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelD())) evidenceDCount++;
-                            if("T1".equals(variant.getSnpInDel().getSwTier())
-                                    && StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelD())) evidenceDCount++;
-                        }
-                    }
-                }
-
-                contentsMap.put("clinicalVariantList", clinicalVariantList);
-                contentsMap.put("variantList", variantList);
-                contentsMap.put("tierThreeVariantList", tierThree);
-                contentsMap.put("tierOneCount", tierOneVariantsTable.getItems().filtered(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).size());
-                contentsMap.put("tierTwoCount", tierTwoVariantsTable.getItems().filtered(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).size());
-                contentsMap.put("tierThreeCount", tierThreeVariantsTable.getItems().filtered(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).size());
-                contentsMap.put("tierFourCount", (tierFour != null) ? tierFour.size() : 0);
-                contentsMap.put("evidenceACount", evidenceACount);
-                contentsMap.put("evidenceBCount", evidenceBCount);
-                contentsMap.put("evidenceCCount", evidenceCCount);
-                contentsMap.put("evidenceDCount", evidenceDCount);
-                contentsMap.put("negativeList", negativeResult);
-                contentsMap.put("qcData", sample.getQcData());
-
-                //Genes in panel
-
-                HttpClientResponse response = apiService.get("/analysisResults/variantCountByGeneForSomaticDNA/" + sample.getId(),
-                        null, null, false);
-                if (response != null) {
-                    List<VariantCountByGene> variantCountByGenes = (List<VariantCountByGene>) response
-                            .getMultiObjectBeforeConvertResponseToJSON(VariantCountByGene.class,
-                                    false);
-
-                    variantCountByGenes = filteringGeneList(variantCountByGenes);
-
-                    variantCountByGenes = variantCountByGenes.stream().sorted(Comparator.comparing(VariantCountByGene::getGeneSymbol)).collect(Collectors.toList());
-
-                    contentsMap.put("variantCountByGenes", variantCountByGenes);
-                    int geneTableMaxRowCount = (int)Math.ceil(variantCountByGenes.size() / 7.0);
-                    int geneTableMaxRowCount4 = (int)Math.ceil(variantCountByGenes.size() / 4.0);
-                    contentsMap.put("geneTableCount", (7 * geneTableMaxRowCount) - 1);
-                    contentsMap.put("geneTableCount4", (4 * geneTableMaxRowCount4) - 1);
-
-                    int tableOneSize = (int)Math.ceil((double)variantCountByGenes.size() / 3);
-                    int tableTwoSize = (int)Math.ceil((double)(variantCountByGenes.size() - tableOneSize) / 2);
-
-                    Object[] genesInPanelTableOne = variantCountByGenes.toArray();
-                    //Gene List를 3등분함
-                    contentsMap.put("genesInPanelTableOne", Arrays.copyOfRange(genesInPanelTableOne, 0, tableOneSize));
-                    contentsMap.put("genesInPanelTableTwo", Arrays.copyOfRange(genesInPanelTableOne, tableOneSize, tableOneSize + tableTwoSize));
-                    contentsMap.put("genesInPanelTableThree", Arrays.copyOfRange(genesInPanelTableOne, tableOneSize + tableTwoSize, variantCountByGenes.size()));
-
-                    if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
-                        response = apiService.get("virtualPanels/" + virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue(),
-                                null, null, false);
-
-                        VirtualPanel virtualPanel = response.getObjectBeforeConvertResponseToJSON(VirtualPanel.class);
-
-                        Set<String> list = new HashSet<>();
-
-                        list.addAll(Arrays.stream(virtualPanel.getEssentialGenes().replaceAll("\\p{Z}", "")
-                                .split(",")).collect(Collectors.toSet()));
-
-                        Set<String> allGeneList = returnGeneList(virtualPanel.getEssentialGenes(), virtualPanel.getOptionalGenes());
-
-                        contentsMap.put("essentialGenes", list);
-                        contentsMap.put("allGeneList", allGeneList);
-                        contentsMap.put("virtualPanelName", virtualPanel.getName());
-
-                    }
-
-                    response = apiService.get("/runs/" + sample.getRunId(), null,
-                            null, false);
-
-                    RunWithSamples runWithSamples = response.getObjectBeforeConvertResponseToJSON(RunWithSamples.class);
-                    String runSequencer = runWithSamples.getRun().getSequencingPlatform();
-
-                    if(runSequencer.equalsIgnoreCase("MISEQ")) {
-                        contentsMap.put("sequencer",SequencerCode.MISEQ.getDescription());
-                    } else {
-                        contentsMap.put("sequencer",SequencerCode.MISEQ_DX.getDescription());
-                    }
-
-                    response = apiService.get("/analysisResults/sampleQCs/" + sample.getId(), null,
-                            null, false);
-
-                    List<SampleQC> qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
-
-                    contentsMap.put("totalBase",findQCResult(qcList, "total_base"));
-                    contentsMap.put("q30",findQCResult(qcList, "q30_trimmed_base"));
-                    contentsMap.put("mappedBase",findQCResult(qcList, "mapped_base"));
-                    contentsMap.put("onTarget",findQCResult(qcList, "on_target"));
-                    contentsMap.put("onTargetCoverage",findQCResult(qcList, "on_target_coverage"));
-                    contentsMap.put("duplicatedReads",findQCResult(qcList, "duplicated_reads"));
-                    contentsMap.put("roiCoverage",findQCResult(qcList, "roi_coverage"));
-
-                    List<String> conclusionLineList = null;
-                    if(!StringUtils.isEmpty(conclusionsTextArea.getText())) {
-                        conclusionLineList = new ArrayList<>();
-                        String[] lines = conclusionsTextArea.getText().split("\n");
-                        if(lines != null && lines.length > 0) {
-                            for (String line : lines) {
-                                conclusionLineList.add(line);
-                            }
-                        } else {
-                            conclusionLineList.add(conclusionsTextArea.getText());
-                        }
-                    }
-                    contentsMap.put("conclusions", conclusionLineList);
-
-                }
-
                 Map<String, Object> model = new HashMap<>();
                 model.put("isDraft", isDraft);
                 //model.put("qcResult", sample.getQc());
@@ -1005,7 +1013,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         }
                     }
 
-                    response = apiService.get("reportTemplate/" + panel.getReportTemplateId(), null, null, false);
+                    HttpClientResponse response = apiService.get("reportTemplate/" + panel.getReportTemplateId(), null, null, false);
 
                     final ReportContents reportContents = response.getObjectBeforeConvertResponseToJSON(ReportContents.class);
 

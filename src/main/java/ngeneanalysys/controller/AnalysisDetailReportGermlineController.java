@@ -26,13 +26,19 @@ import ngeneanalysys.model.render.DatepickerConverter;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.PDFCreateService;
 import ngeneanalysys.task.ImageFileDownloadTask;
+import ngeneanalysys.task.JarDownloadTask;
 import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -579,20 +585,32 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
     public boolean createPDF(boolean isDraft) {
         boolean created = true;
-
-        // 보고서 파일명 기본값
-        String baseSaveName = String.format("FINAL_Report_%s", sample.getName());
-        if(isDraft) {
-            baseSaveName = String.format("DRAFT_Report_%s", sample.getName());
-        }
-
-        // Show save file dialog
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf"));
-        fileChooser.setInitialFileName(baseSaveName);
-        File file = fileChooser.showSaveDialog(this.getMainApp().getPrimaryStage());
-
+        String reportCreationErrorMsg = "An error occurred during the creation of the report document.";
         try {
+            String outputType = "PDF";
+            if(panel.getReportTemplateId() != null) {
+                HttpClientResponse response = apiService.get("reportTemplate/" + panel.getReportTemplateId(), null, null, false);
+                ReportContents reportContents = response.getObjectBeforeConvertResponseToJSON(ReportContents.class);
+                outputType = reportContents.getReportTemplate().getOutputType();
+            }
+
+            // 보고서 파일명 기본값
+            String baseSaveName = String.format("FINAL_Report_%s", sample.getName());
+            if(isDraft) {
+                baseSaveName = String.format("DRAFT_Report_%s", sample.getName());
+            }
+
+            // Show save file dialog
+            FileChooser fileChooser = new FileChooser();
+            if(outputType != null && outputType.equalsIgnoreCase("MS_WORD")) {
+                fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF (*.docx)", "*.docx"));
+            } else {
+                fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf"));
+            }
+            fileChooser.setInitialFileName(baseSaveName);
+            File file = fileChooser.showSaveDialog(this.getMainApp().getPrimaryStage());
+
+
             if(file != null) {
                 String draftImageStr = String.format("url('%s')", this.getClass().getClassLoader().getResource("layout/images/DRAFT.png"));
                 String ngenebioLogo = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/ngenebio_logo_small.png"));
@@ -702,37 +720,87 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
                     ReportContents reportContents = response.getObjectBeforeConvertResponseToJSON(ReportContents.class);
 
-                    List<ReportImage> images = reportContents.getReportImages();
+                    if(reportContents.getReportTemplate().getOutputType() != null
+                            && reportContents.getReportTemplate().getOutputType().equalsIgnoreCase("MS_WORD")) {
+                        List<ReportComponent> components = reportContents.getReportComponents();
 
-                    for(ReportImage image : images) {
-                        String path = "url('file:/" + CommonConstants.BASE_FULL_PATH  + File.separator + "fop" + File.separator + image.getReportTemplateId()
-                                + File.separator + image.getName() + "')";
-                        path = path.replaceAll("\\\\", "/");
-                        String name = image.getName().substring(0, image.getName().lastIndexOf('.'));
-                        logger.info(name + " : " + path);
-                        model.put(name, path);
-                    }
+                        if(components == null || components.isEmpty()) throw new Exception();
+                        final Comparator<ReportComponent> comp = (p1, p2) -> Integer.compare( p1.getId(), p2.getId());
+                        final ReportComponent component = components.stream().max(comp).get();
+                        final String filePath = CommonConstants.BASE_FULL_PATH + File.separator + "word" + File.separator + component.getId();
+                        File jarFile = new File(filePath, component.getName());
 
-                    FileUtil.saveVMFile(reportContents.getReportTemplate());
+                        components.remove(component);
 
-                    Task task = new ImageFileDownloadTask(this, reportContents.getReportImages());
-
-                    Thread thread = new Thread(task);
-                    thread.setDaemon(true);
-                    thread.start();
-
-                    final String contents1 = velocityUtil.getContents( reportContents.getReportTemplate().getId()+ "/" + reportContents.getReportTemplate().getName() + ".vm", "UTF-8", model);
-
-                    task.setOnSucceeded(ev -> {
-                        try {
-                            //이미지파일이 모두 다운로드 되었다면 PDF 파일을 생성함
-                            final boolean created1 = pdfCreateService.createPDF(file, contents1);
-                            createdCheck(created1, file);
-                        } catch (Exception e) {
-                            DialogUtil.error("Save Fail.", "An error occurred during the creation of the report document.", getMainApp().getPrimaryStage(), false);
-                            e.printStackTrace();
+                        if(!components.isEmpty()) {
+                            for (ReportComponent cmp : components) {
+                                File oldVersionFolder = new File(CommonConstants.BASE_FULL_PATH + File.separator + "word" + File.separator + cmp.getId());
+                                if(oldVersionFolder.exists()) {
+                                    FileUtils.deleteQuietly(oldVersionFolder);
+                                }
+                            }
                         }
-                    });
+
+                        if(!jarFile.exists()) {
+
+                            File folder = new File(filePath);
+                            if (!folder.exists()) folder.mkdirs();
+
+                            Task task = new JarDownloadTask(this, component);
+
+                            Thread thread = new Thread(task);
+                            thread.setDaemon(true);
+                            thread.start();
+
+                            task.setOnSucceeded(ev -> {
+                                try {
+                                    final File jarFile1 = new File(filePath, component.getName());
+                                    URL[] jarUrls = new URL[]{jarFile1.toURI().toURL()};
+                                    createWordFile(jarUrls, file, contentsMap, reportCreationErrorMsg);
+                                } catch (MalformedURLException murle) {
+                                    DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + murle.getMessage(), getMainApp().getPrimaryStage(), false);
+                                    murle.printStackTrace();
+                                }
+                            });
+                        } else {
+                            URL[] jarUrls = new URL[]{jarFile.toURI().toURL()};
+                            createWordFile(jarUrls, file, contentsMap, reportCreationErrorMsg);
+                        }
+
+                    } else {
+
+                        List<ReportImage> images = reportContents.getReportImages();
+
+                        for (ReportImage image : images) {
+                            String path = "url('file:/" + CommonConstants.BASE_FULL_PATH + File.separator + "fop" + File.separator + image.getReportTemplateId()
+                                    + File.separator + image.getName() + "')";
+                            path = path.replaceAll("\\\\", "/");
+                            String name = image.getName().substring(0, image.getName().lastIndexOf('.'));
+                            logger.info(name + " : " + path);
+                            model.put(name, path);
+                        }
+
+                        FileUtil.saveVMFile(reportContents.getReportTemplate());
+
+                        Task task = new ImageFileDownloadTask(this, reportContents.getReportImages());
+
+                        Thread thread = new Thread(task);
+                        thread.setDaemon(true);
+                        thread.start();
+
+                        final String contents1 = velocityUtil.getContents(reportContents.getReportTemplate().getId() + "/" + reportContents.getReportTemplate().getName() + ".vm", "UTF-8", model);
+
+                        task.setOnSucceeded(ev -> {
+                            try {
+                                //이미지파일이 모두 다운로드 되었다면 PDF 파일을 생성함
+                                final boolean created1 = pdfCreateService.createPDF(file, contents1);
+                                createdCheck(created1, file);
+                            } catch (Exception e) {
+                                DialogUtil.error("Save Fail.", "An error occurred during the creation of the report document.", getMainApp().getPrimaryStage(), false);
+                                e.printStackTrace();
+                            }
+                        });
+                    }
                 }
             }
         } catch(FileNotFoundException fnfe){
@@ -745,6 +813,31 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
 
         return created;
+    }
+
+    public void createWordFile(URL[] jarUrls, File file , Map<String, Object> contentsMap, String reportCreationErrorMsg) {
+        try (URLClassLoader classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader())) {
+
+            Thread.currentThread().setContextClassLoader(classLoader);
+            @SuppressWarnings("unchecked")
+            Class classToLoad = Class.forName("word.create.App", true, classLoader);
+            logger.info("application init..");
+            Method[] methods = classToLoad.getMethods();
+            Method setParams = classToLoad.getMethod("setParams", Map.class);
+            Method updateEmbeddedDoc = classToLoad.getMethod("updateEmbeddedDoc");
+            Method updateWordFile = classToLoad.getDeclaredMethod("updateWordFile");
+            Method setWriteFilePath = classToLoad.getDeclaredMethod("setWriteFilePath", String.class);
+            Object application = classToLoad.newInstance();
+            Object result = setParams.invoke(application, contentsMap);
+            result = setWriteFilePath.invoke(application, file.getPath());
+            result = updateEmbeddedDoc.invoke(application);
+            result = updateWordFile.invoke(application);
+            System.out.print("test");
+            createdCheck(true, file);
+        } catch (Exception e) {
+            DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);
+            e.printStackTrace();
+        }
     }
 
     public void createdCheck(boolean created, File file) {

@@ -69,7 +69,6 @@ public class AnalysisDetailSNPsINDELsLowConfidenceController extends SubPaneCont
 
                 //if(key.equalsIgnoreCase("WARNING")) continue;
 
-
                 if (key.equalsIgnoreCase("low_variant_coverage_depth") ||
                         key.equalsIgnoreCase("low_variant_fraction") ||
                         key.equalsIgnoreCase("homopolymer_region") ||
@@ -89,7 +88,7 @@ public class AnalysisDetailSNPsINDELsLowConfidenceController extends SubPaneCont
                     String warningString = (String) getParamMap().get(key);
                     Label warningLabel = new Label();
                     warningLabel.getStyleClass().add("font_size_12");
-                    warningLabel.setText(warningString);
+                    warningLabel.setText(warningString.toUpperCase());
 
                     if (!StringUtils.isEmpty(warningString)) {
                         if (warningString.equalsIgnoreCase("YES")) {

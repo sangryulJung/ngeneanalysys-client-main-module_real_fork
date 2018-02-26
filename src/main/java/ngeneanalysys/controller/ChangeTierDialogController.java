@@ -131,6 +131,7 @@ public class ChangeTierDialogController extends SubPaneController {
         clinicalVariantTypeComboBox.getItems().add("type D");
         clinicalVariantTypeComboBox.getItems().add("N-term");
         clinicalVariantTypeComboBox.getItems().add("C-term");
+        clinicalVariantTypeComboBox.getItems().add("splicing");
 
         try {
             HttpClientResponse httpClientResponse = apiService
