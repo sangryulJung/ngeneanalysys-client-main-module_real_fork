@@ -500,10 +500,10 @@ public class WordCreator {
         setTableCellText(row.getCell(1), impacts, 8, false, null);
         if(impacts.equalsIgnoreCase("Therapeutic")) {
             setVariantInformation(row.getCell(0), variant);
-            setTableCellText(row.getCell(2), variant.getInterpretationEvidence().getEvidenceLevelA(), 8, false, null);
-            setTableCellText(row.getCell(3), variant.getInterpretationEvidence().getEvidenceLevelB(), 8, false, null);
-            setTableCellText(row.getCell(4), variant.getInterpretationEvidence().getEvidenceLevelC(), 8, false, null);
-            setTableCellText(row.getCell(5), variant.getInterpretationEvidence().getEvidenceLevelD(), 8, false, null);
+            setTableCellText(row.getCell(2), variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelA(), 8, false, null);
+            setTableCellText(row.getCell(3), variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelB(), 8, false, null);
+            setTableCellText(row.getCell(4), variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelC(), 8, false, null);
+            setTableCellText(row.getCell(5), variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelD(), 8, false, null);
         } else {
             setTableCellText(row.getCell(2), null, 8, false, null);
             setTableCellText(row.getCell(3), null, 8, false, null);

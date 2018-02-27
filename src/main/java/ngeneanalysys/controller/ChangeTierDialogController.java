@@ -45,31 +45,16 @@ public class ChangeTierDialogController extends SubPaneController {
     private ComboBox<String> clinicalVariantTypeComboBox;
 
     @FXML
-    private TextField dbRefTextField;
+    private TextField therapeuticEvidenceATextField;
 
     @FXML
-    private TextField dbAltTextField;
+    private TextField therapeuticEvidenceBTextField;
 
     @FXML
-    private TextField dbNtChangeTextField;
+    private TextField therapeuticEvidenceCTextField;
 
     @FXML
-    private TextField dbTranscriptTextField;
-
-    @FXML
-    private TextField evidenceATextField;
-
-    @FXML
-    private TextField evidenceBTextField;
-
-    @FXML
-    private TextField evidenceCTextField;
-
-    @FXML
-    private TextField evidenceDTextField;
-
-    @FXML
-    private TextField evidenceBenignTextField;
+    private TextField therapeuticEvidenceDTextField;
 
     @FXML
     private TextField commentTextField;
@@ -142,32 +127,17 @@ public class ChangeTierDialogController extends SubPaneController {
                 if(!StringUtils.isEmpty(interpretation.getClinicalVariantType()))
                     clinicalVariantTypeComboBox.getSelectionModel().select(interpretation.getClinicalVariantType());
 
-                if(!StringUtils.isEmpty(interpretation.getDbAlt()))
-                    dbAltTextField.setText(interpretation.getDbAlt());
+                if(!StringUtils.isEmpty(interpretation.getTherapeuticEvidence().getLevelA()))
+                    therapeuticEvidenceATextField.setText(interpretation.getTherapeuticEvidence().getLevelA());
 
-                if(!StringUtils.isEmpty(interpretation.getDbNtChange()))
-                    dbNtChangeTextField.setText(interpretation.getDbNtChange());
+                if(!StringUtils.isEmpty(interpretation.getTherapeuticEvidence().getLevelB()))
+                    therapeuticEvidenceBTextField.setText(interpretation.getTherapeuticEvidence().getLevelB());
 
-                if(!StringUtils.isEmpty(interpretation.getDbRef()))
-                    dbRefTextField.setText(interpretation.getDbRef());
+                if(!StringUtils.isEmpty(interpretation.getTherapeuticEvidence().getLevelC()))
+                    therapeuticEvidenceCTextField.setText(interpretation.getTherapeuticEvidence().getLevelC());
 
-                if(!StringUtils.isEmpty(interpretation.getDbTranscript()))
-                    dbTranscriptTextField.setText(interpretation.getDbTranscript());
-
-                if(!StringUtils.isEmpty(interpretation.getEvidenceLevelA()))
-                    evidenceATextField.setText(interpretation.getEvidenceLevelA());
-
-                if(!StringUtils.isEmpty(interpretation.getEvidenceLevelB()))
-                    evidenceBTextField.setText(interpretation.getEvidenceLevelB());
-
-                if(!StringUtils.isEmpty(interpretation.getEvidenceLevelC()))
-                    evidenceCTextField.setText(interpretation.getEvidenceLevelC());
-
-                if(!StringUtils.isEmpty(interpretation.getEvidenceLevelD()))
-                    evidenceDTextField.setText(interpretation.getEvidenceLevelD());
-
-                if(!StringUtils.isEmpty(interpretation.getEvidenceBenign()))
-                    evidenceBenignTextField.setText(interpretation.getEvidenceBenign());
+                if(!StringUtils.isEmpty(interpretation.getTherapeuticEvidence().getLevelD()))
+                    therapeuticEvidenceDTextField.setText(interpretation.getTherapeuticEvidence().getLevelD());
 
             }
         } catch (WebAPIException wae) {
@@ -205,15 +175,10 @@ public class ChangeTierDialogController extends SubPaneController {
         SnpInDelInterpretation snpInDelInterpretation = new SnpInDelInterpretation();
 
         snpInDelInterpretation.setSnpInDelId(selectedItem.getSnpInDel().getId());
-        snpInDelInterpretation.setEvidenceLevelA(evidenceATextField.getText());
-        snpInDelInterpretation.setEvidenceLevelB(evidenceBTextField.getText());
-        snpInDelInterpretation.setEvidenceLevelC(evidenceCTextField.getText());
-        snpInDelInterpretation.setEvidenceLevelD(evidenceDTextField.getText());
-        snpInDelInterpretation.setEvidenceBenign(evidenceBenignTextField.getText());
-        snpInDelInterpretation.setDbRef(dbRefTextField.getText());
-        snpInDelInterpretation.setDbAlt(dbAltTextField.getText());
-        snpInDelInterpretation.setDbNtChange(dbNtChangeTextField.getText());
-        snpInDelInterpretation.setDbTranscript(dbTranscriptTextField.getText());
+        snpInDelInterpretation.getTherapeuticEvidence().setLevelA(therapeuticEvidenceATextField.getText());
+        snpInDelInterpretation.getTherapeuticEvidence().setLevelB(therapeuticEvidenceBTextField.getText());
+        snpInDelInterpretation.getTherapeuticEvidence().setLevelC(therapeuticEvidenceCTextField.getText());
+        snpInDelInterpretation.getTherapeuticEvidence().setLevelD(therapeuticEvidenceDTextField.getText());
         snpInDelInterpretation.setClinicalVariantType(clinicalVariantTypeComboBox.getSelectionModel().getSelectedItem());
 
         params.put("snpInDelInterpretation", snpInDelInterpretation);

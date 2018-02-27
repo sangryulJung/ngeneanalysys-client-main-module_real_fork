@@ -308,32 +308,32 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
             for (Node child : childs) {
                 child.getStyleClass().removeAll(child.getStyleClass());
                 boolean flag = false;
-                if(((Label)child).getText().equals("A") && !StringUtils.isEmpty(snpInDelInterpretation.getEvidenceLevelA())) {
+                if(((Label)child).getText().equals("A") && !StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelA())) {
                     child.getStyleClass().add("prediction_E");
                     //resultTextArea.setText(snpInDelInterpretation.getInterpretationEvidenceA());
                     child.setStyle("-fx-cursor:hand;");
-                    child.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> resultTextArea.setText(snpInDelInterpretation.getEvidenceLevelA()));
+                    child.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> resultTextArea.setText(snpInDelInterpretation.getTherapeuticEvidence().getLevelA()));
                     flag = true;
                 }
-                if(((Label)child).getText().equals("B") && !StringUtils.isEmpty(snpInDelInterpretation.getEvidenceLevelB())) {
+                if(((Label)child).getText().equals("B") && !StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelB())) {
                     child.getStyleClass().add("prediction_E");
                     //resultTextArea.setText(snpInDelInterpretation.getInterpretationEvidenceB());
                     child.setStyle("-fx-cursor:hand;");
-                    child.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> resultTextArea.setText(snpInDelInterpretation.getEvidenceLevelB()));
+                    child.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> resultTextArea.setText(snpInDelInterpretation.getTherapeuticEvidence().getLevelB()));
                     flag = true;
                 }
-                if(((Label)child).getText().equals("C") && !StringUtils.isEmpty(snpInDelInterpretation.getEvidenceLevelC())) {
+                if(((Label)child).getText().equals("C") && !StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelC())) {
                     child.getStyleClass().add("prediction_E");
                     //resultTextArea.setText(snpInDelInterpretation.getInterpretationEvidenceC());
                     child.setStyle("-fx-cursor:hand;");
-                    child.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> resultTextArea.setText(snpInDelInterpretation.getEvidenceLevelC()));
+                    child.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> resultTextArea.setText(snpInDelInterpretation.getTherapeuticEvidence().getLevelC()));
                     flag = true;
                 }
-                if(((Label)child).getText().equals("D") && !StringUtils.isEmpty(snpInDelInterpretation.getEvidenceLevelD())) {
+                if(((Label)child).getText().equals("D") && !StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelD())) {
                     child.getStyleClass().add("prediction_E");
                     //resultTextArea.setText(snpInDelInterpretation.getInterpretationEvidenceD());
                     child.setStyle("-fx-cursor:hand;");
-                    child.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> resultTextArea.setText(snpInDelInterpretation.getEvidenceLevelD()));
+                    child.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> resultTextArea.setText(snpInDelInterpretation.getTherapeuticEvidence().getLevelD()));
                     flag = true;
                 }
                 if(((Label)child).getText().equals("EVIDENCE")) {

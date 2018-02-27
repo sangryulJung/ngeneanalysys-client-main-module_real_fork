@@ -575,14 +575,14 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     public SimpleStringProperty returnTherapeutic(SnpInDelInterpretation snpInDelInterpretation) {
         String text = "";
         if(snpInDelInterpretation != null) {
-            if (!StringUtils.isEmpty(snpInDelInterpretation.getEvidenceLevelA()))
-                text += snpInDelInterpretation.getEvidenceLevelA() + ", ";
-            if (!StringUtils.isEmpty(snpInDelInterpretation.getEvidenceLevelB()))
-                text += snpInDelInterpretation.getEvidenceLevelB() + ", ";
-            if (!StringUtils.isEmpty(snpInDelInterpretation.getEvidenceLevelC()))
-                text += snpInDelInterpretation.getEvidenceLevelC() + ", ";
-            if (!StringUtils.isEmpty(snpInDelInterpretation.getEvidenceLevelD()))
-                text += snpInDelInterpretation.getEvidenceLevelD() + ", ";
+            if (!StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelA()))
+                text += snpInDelInterpretation.getTherapeuticEvidence().getLevelA() + ", ";
+            if (!StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelB()))
+                text += snpInDelInterpretation.getTherapeuticEvidence().getLevelB() + ", ";
+            if (!StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelC()))
+                text += snpInDelInterpretation.getTherapeuticEvidence().getLevelC() + ", ";
+            if (!StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelD()))
+                text += snpInDelInterpretation.getTherapeuticEvidence().getLevelD() + ", ";
         }
         if(!"".equals(text)) {
             text = text.substring(0, text.length() - 2);
@@ -811,12 +811,12 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             for(VariantAndInterpretationEvidence variant : tierOneVariantsTable.getItems().stream().filter(tierOne ->
                     tierOne.getSnpInDel().getIncludedInReport().equalsIgnoreCase("Y")).collect(Collectors.toList())) {
                 if("Y".equalsIgnoreCase(variant.getSnpInDel().getIncludedInReport()) && variant.getInterpretationEvidence() != null) {
-                    if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelA())) evidenceACount++;
-                    if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelB())) evidenceBCount++;
-                    if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelC())) evidenceCCount++;
-                    if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelD())) evidenceDCount++;
+                    if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelA())) evidenceACount++;
+                    if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelB())) evidenceBCount++;
+                    if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelC())) evidenceCCount++;
+                    if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelD())) evidenceDCount++;
                     if("T2".equals(variant.getSnpInDel().getSwTier())
-                            && StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelB())) evidenceBCount++;
+                            && StringUtils.isEmpty(variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelB())) evidenceBCount++;
                 }
             }
         }
@@ -825,12 +825,12 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             for(VariantAndInterpretationEvidence variant : tierTwoVariantsTable.getItems().stream().filter(tierTwo ->
                     tierTwo.getSnpInDel().getIncludedInReport().equalsIgnoreCase("Y")).collect(Collectors.toList())) {
                 if("Y".equalsIgnoreCase(variant.getSnpInDel().getIncludedInReport()) && variant.getInterpretationEvidence() != null) {
-                    if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelA())) evidenceACount++;
-                    if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelB())) evidenceBCount++;
-                    if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelC())) evidenceCCount++;
-                    if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelD())) evidenceDCount++;
+                    if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelA())) evidenceACount++;
+                    if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelB())) evidenceBCount++;
+                    if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelC())) evidenceCCount++;
+                    if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelD())) evidenceDCount++;
                     if("T1".equals(variant.getSnpInDel().getSwTier())
-                            && StringUtils.isEmpty(variant.getInterpretationEvidence().getEvidenceLevelD())) evidenceDCount++;
+                            && StringUtils.isEmpty(variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelD())) evidenceDCount++;
                 }
             }
         }

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -10,9 +15,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="320.0" prefWidth="500.0" styleClass="bg_gray_f3" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.ChangeTierDialogController">
+<AnchorPane prefHeight="340.0" prefWidth="500.0" styleClass="bg_gray_f3" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.ChangeTierDialogController">
    <children>
-      <VBox prefHeight="100.0" prefWidth="500.0">
+      <VBox prefHeight="100.0" prefWidth="500.0" spacing="2.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="200.0">
                <children>
@@ -31,9 +36,9 @@
                   </Label>
                </children>
             </HBox>
-            <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="33.0" prefWidth="450.0">
+            <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="33.0" prefWidth="450.0">
                <children>
-                  <Label prefWidth="100.0" text="variant type">
+                  <Label prefWidth="100.0" text="Variant Type :">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
@@ -44,153 +49,64 @@
                   <Insets bottom="2.0" top="10.0" />
                </VBox.margin>
             </HBox>
+            <Accordion>
+              <panes>
+                <TitledPane animated="false" text="Therapeutic">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <VBox prefHeight="200.0" prefWidth="100.0" spacing="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="33.0" prefWidth="450.0">
+                                       <children>
+                                          <Label prefWidth="30.0" text="A :" />
+                                          <TextField fx:id="therapeuticEvidenceATextField" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="432.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="33.0" prefWidth="450.0">
+                                       <children>
+                                          <Label prefWidth="30.0" text="B :" />
+                                          <TextField fx:id="therapeuticEvidenceBTextField" prefWidth="432.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="33.0" prefWidth="450.0">
+                                       <children>
+                                          <Label prefWidth="30.0" text="C :" />
+                                          <TextField fx:id="therapeuticEvidenceCTextField" prefWidth="432.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="33.0" prefWidth="450.0">
+                                       <children>
+                                          <Label prefWidth="30.0" text="D :" />
+                                          <TextField fx:id="therapeuticEvidenceDTextField" prefWidth="432.0" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </TitledPane>
+                <TitledPane animated="false" text="Diagnosis">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  </content>
+                </TitledPane>
+                <TitledPane animated="false" text="Prognosis">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  </content>
+                </TitledPane>
+              </panes>
+            </Accordion>
             <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="33.0" prefWidth="450.0">
                <children>
-                  <Label prefWidth="100.0" text="dbRef">
+                  <Label prefWidth="100.0" text="Comment :">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField fx:id="dbRefTextField" prefWidth="130.0">
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </TextField>
-                  <Label prefWidth="100.0" text="dbAlt">
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </Label>
-                  <TextField fx:id="dbAltTextField" prefWidth="130.0">
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </TextField>
-               </children>
-               <VBox.margin>
-                  <Insets bottom="2.0" />
-               </VBox.margin>
-            </HBox>
-            <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="33.0" prefWidth="450.0">
-               <children>
-                  <Label prefWidth="100.0" text="dbNtChange">
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </Label>
-                  <TextField fx:id="dbNtChangeTextField" prefWidth="130.0">
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </TextField>
-                  <Label prefWidth="100.0" text="dbTranscript">
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </Label>
-                  <TextField fx:id="dbTranscriptTextField" prefWidth="130.0">
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </TextField>
-               </children>
-               <VBox.margin>
-                  <Insets bottom="2.0" />
-               </VBox.margin>
-            </HBox>
-            <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="33.0" prefWidth="450.0">
-               <children>
-                  <Label prefWidth="100.0" text="evidence A">
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </Label>
-                  <TextField fx:id="evidenceATextField" prefWidth="380.0">
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </TextField>
-               </children>
-               <VBox.margin>
-                  <Insets bottom="2.0" />
-               </VBox.margin>
-            </HBox>
-            <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="33.0" prefWidth="450.0">
-               <children>
-                  <Label prefWidth="100.0" text="evidence B">
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </Label>
-                  <TextField fx:id="evidenceBTextField" prefWidth="380.0">
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </TextField>
-               </children>
-               <VBox.margin>
-                  <Insets bottom="2.0" />
-               </VBox.margin>
-            </HBox>
-            <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="33.0" prefWidth="450.0">
-               <children>
-                  <Label prefWidth="100.0" text="evidence C">
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </Label>
-                  <TextField fx:id="evidenceCTextField" prefWidth="380.0">
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </TextField>
-               </children>
-               <VBox.margin>
-                  <Insets bottom="2.0" />
-               </VBox.margin>
-            </HBox>
-            <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="33.0" prefWidth="450.0">
-               <children>
-                  <Label prefWidth="100.0" text="evidence D">
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </Label>
-                  <TextField fx:id="evidenceDTextField" prefWidth="380.0">
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </TextField>
-               </children>
-               <VBox.margin>
-                  <Insets bottom="2.0" />
-               </VBox.margin>
-            </HBox>
-            <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="33.0" prefWidth="450.0">
-               <children>
-                  <Label prefWidth="100.0" text="evidence Benign">
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </Label>
-                  <TextField fx:id="evidenceBenignTextField" prefWidth="380.0">
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </TextField>
-               </children>
-               <VBox.margin>
-                  <Insets bottom="2.0" />
-               </VBox.margin>
-            </HBox>
-            <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="33.0" prefWidth="450.0">
-               <children>
-                  <Label prefWidth="100.0" text="comment">
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </Label>
-                  <TextField fx:id="commentTextField" prefWidth="380.0">
+                  <TextField fx:id="commentTextField" prefWidth="432.0">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>

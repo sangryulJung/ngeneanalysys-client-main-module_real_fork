@@ -178,14 +178,14 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
             SnpInDelInterpretation snpInDelInterpretation = cellData.getValue().getInterpretationEvidence();
             String text = "";
             if(snpInDelInterpretation != null) {
-                if (!StringUtils.isEmpty(snpInDelInterpretation.getEvidenceLevelA()))
-                    text += snpInDelInterpretation.getEvidenceLevelA() + ", ";
-                if (!StringUtils.isEmpty(snpInDelInterpretation.getEvidenceLevelB()))
-                    text += snpInDelInterpretation.getEvidenceLevelB() + ", ";
-                if (!StringUtils.isEmpty(snpInDelInterpretation.getEvidenceLevelC()))
-                    text += snpInDelInterpretation.getEvidenceLevelC() + ", ";
-                if (!StringUtils.isEmpty(snpInDelInterpretation.getEvidenceLevelD()))
-                    text += snpInDelInterpretation.getEvidenceLevelD() + ", ";
+                if (!StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelA()))
+                    text += snpInDelInterpretation.getTherapeuticEvidence().getLevelA() + ", ";
+                if (!StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelB()))
+                    text += snpInDelInterpretation.getTherapeuticEvidence().getLevelB() + ", ";
+                if (!StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelC()))
+                    text += snpInDelInterpretation.getTherapeuticEvidence().getLevelC() + ", ";
+                if (!StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelD()))
+                    text += snpInDelInterpretation.getTherapeuticEvidence().getLevelD() + ", ";
             }
             if(!"".equals(text)) {
                 text = text.substring(0, text.length() - 2);
@@ -215,10 +215,10 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
     }
 
     public long countTherapeutic (List<SnpInDelInterpretation> snpInDelInterpretations) {
-        return snpInDelInterpretations.stream().filter(item -> (!StringUtils.isEmpty(item.getEvidenceLevelA()) ||
-                !StringUtils.isEmpty(item.getEvidenceLevelB()) ||
-                !StringUtils.isEmpty(item.getEvidenceLevelC()) ||
-                !StringUtils.isEmpty(item.getEvidenceLevelD()))).count();
+        return snpInDelInterpretations.stream().filter(item -> (!StringUtils.isEmpty(item.getTherapeuticEvidence().getLevelA()) ||
+                !StringUtils.isEmpty(item.getTherapeuticEvidence().getLevelB()) ||
+                !StringUtils.isEmpty(item.getTherapeuticEvidence().getLevelC()) ||
+                !StringUtils.isEmpty(item.getTherapeuticEvidence().getLevelD()))).count();
     }
 
     public void setDisplayItem() {
@@ -264,10 +264,10 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                         snpInDelInterpretations.add(item.getInterpretationEvidence());
                 });
 
-                long count = snpInDelInterpretations.stream().filter(item -> (!StringUtils.isEmpty(item.getEvidenceLevelA()) ||
-                        !StringUtils.isEmpty(item.getEvidenceLevelB()) ||
-                        !StringUtils.isEmpty(item.getEvidenceLevelC()) ||
-                        !StringUtils.isEmpty(item.getEvidenceLevelD()))).count();
+                long count = snpInDelInterpretations.stream().filter(item -> (!StringUtils.isEmpty(item.getTherapeuticEvidence().getLevelA()) ||
+                        !StringUtils.isEmpty(item.getTherapeuticEvidence().getLevelB()) ||
+                        !StringUtils.isEmpty(item.getTherapeuticEvidence().getLevelC()) ||
+                        !StringUtils.isEmpty(item.getTherapeuticEvidence().getLevelD()))).count();
                 tierOneTherapeuticLabel.setText(String.valueOf(count));
             }
 
