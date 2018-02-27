@@ -20,16 +20,18 @@ public class Panel {
     private Boolean isDefault;
     private Integer warningReadDepth;
     private BigDecimal warningMAF;
-    private BigDecimal reportCutoffMAF;
+
+    public ReportCutOffParams getReportCutOffParams() {
+        return reportCutOffParams;
+    }
+
+    public void setReportCutOffParams(ReportCutOffParams reportCutOffParams) {
+        this.reportCutOffParams = reportCutOffParams;
+    }
+
+    private ReportCutOffParams reportCutOffParams;
 
     private Integer reportTemplateId;
-
-    /**
-     * @return reportCutoffMAF
-     */
-    public BigDecimal getReportCutoffMAF() {
-        return reportCutoffMAF;
-    }
 
     /**
      * @return reportTemplateId
@@ -101,6 +103,7 @@ public class Panel {
                 ", isDefault=" + isDefault +
                 ", warningReadDepth=" + warningReadDepth +
                 ", warningMAF=" + warningMAF +
+                ", reportCutOffParams=" + reportCutOffParams +
                 ", reportTemplateId=" + reportTemplateId +
                 '}';
     }

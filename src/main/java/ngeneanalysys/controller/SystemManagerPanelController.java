@@ -644,10 +644,10 @@ public class SystemManagerPanelController extends SubPaneController {
                     warningReadDepthTextField.setDisable(false);
                     warningReadDepthTextField.setText(panel.getWarningReadDepth().toString());
                 }
-                if(panel.getReportCutoffMAF() != null) {
+                if(panel.getReportCutOffParams().getMinAlleleFrequency() != null) {
                     reportCutOffMAFCheckBox.setSelected(true);
                     reportCutOffMAFTextField.setDisable(false);
-                    reportCutOffMAFTextField.setText(panel.getReportCutoffMAF().toString());
+                    reportCutOffMAFTextField.setText(panel.getReportCutOffParams().getMinAlleleFrequency().toString());
                 }
 
                 Optional<ComboBoxItem> sampleSourceItem =

@@ -14,6 +14,7 @@ public class SnpInDelExpression {
     private String ntChange;
     private String ntChangeBic;
     private String aaChange;
+    private String aaChangeSingleLetter;
     private String zygosity;
 
     /**
@@ -112,6 +113,14 @@ public class SnpInDelExpression {
      */
     public void setZygosity(String zygosity) {
         this.zygosity = zygosity;
+    }
+
+    public String getAaChangeSingleLetter() {
+        return aaChangeSingleLetter;
+    }
+
+    public void setAaChangeSingleLetter(String aaChangeSingleLetter) {
+        this.aaChangeSingleLetter = aaChangeSingleLetter;
     }
 
     public String getAaChangeConversion() {

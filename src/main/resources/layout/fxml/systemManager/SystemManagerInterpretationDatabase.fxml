@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -17,7 +22,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="530.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemManagerInterpretationDatabaseController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="530.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemManagerInterpretationDatabaseController">
    <stylesheets>
       <URL value="@../../css/common.css" />
       <URL value="@../../css/experimenter.css" />
@@ -72,28 +77,57 @@
                                     <TableColumn fx:id="versionTableColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" styleClass="txt_black" text="Version" />
                                     <TableColumn fx:id="chrTableColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="50.0" styleClass="txt_black" text="Chr" />
                                     <TableColumn fx:id="geneTableColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="90.0" styleClass="txt_black" text="Gene" />
-                                    <TableColumn fx:id="positionTableColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" styleClass="txt_black" text="Position" />
-                                    <TableColumn fx:id="dbRefTableColumn" minWidth="-Infinity" prefWidth="90.0" styleClass="txt_black" text="DB Ref" visible="false" />
-                                    <TableColumn fx:id="dbAltTableColumn" prefWidth="90.0" styleClass="txt_black" text="DB Alt" visible="false" />
-                                    <TableColumn fx:id="ngsRefTableColumn" prefWidth="90.0" styleClass="txt_black" text="NGS Ref" />
-                                    <TableColumn fx:id="ngsAltTableColumn" prefWidth="90.0" styleClass="txt_black" text="NGS Alt" />
+                                    <TableColumn fx:id="transcriptTableColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" styleClass="txt_black" text="Transcript" />
+                                    <TableColumn fx:id="hgvscTableColumn" minWidth="-Infinity" prefWidth="90.0" styleClass="txt_black" text="HGVS.c" visible="false" />
+                                    <TableColumn fx:id="hgvspTableColumn" prefWidth="90.0" styleClass="txt_black" text="HGVS.p" visible="false" />
+                                    <TableColumn fx:id="codingConsequenceTableColumn" prefWidth="90.0" styleClass="txt_black" text="Coding Consequence" />
                                     <TableColumn fx:id="typeTableColumn" minWidth="-Infinity" prefWidth="80.0" styleClass="txt_black" text="Type" />
-                                    <TableColumn fx:id="Tier1ATableColumn" minWidth="-Infinity" prefWidth="90.0" text="Tier I">
+                                    <TableColumn prefWidth="75.0" text="Therapeutic">
                                        <columns>
-                                          <TableColumn fx:id="evidenceATableColumn" minWidth="-Infinity" prefWidth="90.0" styleClass="txt_black" text="Evidence A" />
-                                          <TableColumn fx:id="evidenceBTableColumn" minWidth="-Infinity" prefWidth="90.0" styleClass="txt_black" text="Evidence B" />
+                                          <TableColumn fx:id="Tier1ATableColumn" minWidth="-Infinity" prefWidth="90.0" text="Tier I">
+                                             <columns>
+                                                <TableColumn fx:id="therapeuticEvidenceATableColumn" minWidth="-Infinity" prefWidth="90.0" styleClass="txt_black" text="Evidence A" />
+                                                <TableColumn fx:id="therapeuticEvidenceBTableColumn" minWidth="-Infinity" prefWidth="90.0" styleClass="txt_black" text="Evidence B" />
+                                             </columns>
+                                          </TableColumn>
+                                          <TableColumn fx:id="Tier2TableColumn" prefWidth="139.55560302734375" text="Tier II">
+                                             <columns>
+                                                <TableColumn fx:id="therapeuticEvidenceCTableColumn" prefWidth="90.0" styleClass="txt_black" text="Evidence C" />
+                                                <TableColumn fx:id="therapeuticEvidenceDTableColumn" prefWidth="90.0" styleClass="txt_black" text="Evidence D" />
+                                             </columns>
+                                          </TableColumn>
                                        </columns>
                                     </TableColumn>
-                                    <TableColumn fx:id="Tier2TableColumn" prefWidth="139.55560302734375" text="Tier II">
+                                    <TableColumn prefWidth="75.0" text="Diagnosis">
                                        <columns>
-                                          <TableColumn fx:id="evidenceCTableColumn" prefWidth="90.0" styleClass="txt_black" text="Evidence C" />
-                                          <TableColumn fx:id="evidenceDTableColumn" prefWidth="90.0" styleClass="txt_black" text="Evidence D" />
+                                          <TableColumn fx:id="Tier1ATableColumn1" minWidth="-Infinity" prefWidth="90.0" text="Tier I">
+                                             <columns>
+                                                <TableColumn fx:id="diagnosisEvidenceATableColumn" minWidth="-Infinity" prefWidth="90.0" styleClass="txt_black" text="Evidence A" />
+                                                <TableColumn fx:id="diagnosisEvidenceBTableColumn" minWidth="-Infinity" prefWidth="90.0" styleClass="txt_black" text="Evidence B" />
+                                             </columns>
+                                          </TableColumn>
+                                          <TableColumn fx:id="Tier2TableColumn1" prefWidth="139.55560302734375" text="Tier II">
+                                             <columns>
+                                                <TableColumn fx:id="diagnosisEvidenceCTableColumn" prefWidth="90.0" styleClass="txt_black" text="Evidence C" />
+                                                <TableColumn fx:id="diagnosisEvidenceDTableColumn" prefWidth="90.0" styleClass="txt_black" text="Evidence D" />
+                                             </columns>
+                                          </TableColumn>
                                        </columns>
                                     </TableColumn>
-                                    <TableColumn fx:id="evidenceNegativeTableColumn" minWidth="-Infinity" prefWidth="120.0" styleClass="txt_black" text="Pertinent Negative" visible="false" />
-                                    <TableColumn fx:id="tier4TableColumn" prefWidth="139.55560302734375" text="Tier IV">
+                                    <TableColumn prefWidth="75.0" text="Prognosis">
                                        <columns>
-                                          <TableColumn fx:id="benignTableColumn" prefWidth="90.0" styleClass="txt_black" text="Benign" />
+                                          <TableColumn fx:id="Tier1ATableColumn11" minWidth="-Infinity" prefWidth="90.0" text="Tier I">
+                                             <columns>
+                                                <TableColumn fx:id="prognosisEvidenceATableColumn" minWidth="-Infinity" prefWidth="90.0" styleClass="txt_black" text="Evidence A" />
+                                                <TableColumn fx:id="prognosisEvidenceBTableColumn" minWidth="-Infinity" prefWidth="90.0" styleClass="txt_black" text="Evidence B" />
+                                             </columns>
+                                          </TableColumn>
+                                          <TableColumn fx:id="Tier2TableColumn11" prefWidth="139.55560302734375" text="Tier II">
+                                             <columns>
+                                                <TableColumn fx:id="prognosisEvidenceCTableColumn" prefWidth="90.0" styleClass="txt_black" text="Evidence C" />
+                                                <TableColumn fx:id="prognosisEvidenceDTableColumn" prefWidth="90.0" styleClass="txt_black" text="Evidence D" />
+                                             </columns>
+                                          </TableColumn>
                                        </columns>
                                     </TableColumn>
                                     <TableColumn fx:id="createdAtTableColumn" prefWidth="108.0" styleClass="txt_black" text="Date" visible="false" />

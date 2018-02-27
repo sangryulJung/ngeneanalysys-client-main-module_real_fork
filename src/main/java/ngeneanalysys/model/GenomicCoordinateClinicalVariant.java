@@ -9,271 +9,163 @@ import org.joda.time.DateTime;
 public class GenomicCoordinateClinicalVariant {
     private Integer id;
     private Integer diseaseId;
-    private String clinicalVariantVersion;
     private String tier;
-    private GenomicCoordinateForCV genomicCoordinateForCV;
-    private String dbNtChange;
-    private String dbTranscript;
+    private String clinicalVariantVersion;
+    private String chr;
+    private String gene;
+    private String transcript;
+    private String hgvsc;
+    private String hgvsp;
+    private String codingConsequence;
     private String clinicalVariantType;
-    private String evidenceLevelA;
-    private String evidenceLevelB;
-    private String evidenceLevelC;
-    private String evidenceLevelD;
-    private String evidenceLevelBenign;
-    private String evidencePertinentNegative;
+    private ClinicalEvidence therapeuticEvidence;
+    private ClinicalEvidence prognosisEvidence;
+    private ClinicalEvidence diagnosisEvidence;
     private DateTime createdAt;
     private DateTime updatedAt;
     private DateTime deletedAt;
     private Integer deleted;
 
-    /**
-     * @return dbTranscript
-     */
-    public String getDbTranscript() {
-        return dbTranscript;
-    }
-
-    /**
-     * @param dbTranscript
-     */
-    public void setDbTranscript(String dbTranscript) {
-        this.dbTranscript = dbTranscript;
-    }
-
-    /**
-     * @return Tier
-     */
-    public String getTier() {
-        return tier;
-    }
-
-    /**
-     * @param tier
-     */
-    public void setTier(String tier) {
-        this.tier = tier;
-    }
-
-    /**
-     * @return id
-     */
     public Integer getId() {
         return id;
     }
 
-    /**
-     * @param id
-     */
     public void setId(Integer id) {
         this.id = id;
     }
 
-    /**
-     * @return diseaseId
-     */
     public Integer getDiseaseId() {
         return diseaseId;
     }
 
-    /**
-     * @param diseaseId
-     */
     public void setDiseaseId(Integer diseaseId) {
         this.diseaseId = diseaseId;
     }
 
-    /**
-     * @return clinicalVariantVersion
-     */
+    public String getTier() {
+        return tier;
+    }
+
+    public void setTier(String tier) {
+        this.tier = tier;
+    }
+
     public String getClinicalVariantVersion() {
         return clinicalVariantVersion;
     }
 
-    /**
-     * @param clinicalVariantVersion
-     */
     public void setClinicalVariantVersion(String clinicalVariantVersion) {
         this.clinicalVariantVersion = clinicalVariantVersion;
     }
 
-    /**
-     * @return genomicCoordinateForCV
-     */
-    public GenomicCoordinateForCV getGenomicCoordinateForCV() {
-        return genomicCoordinateForCV;
+    public String getChr() {
+        return chr;
     }
 
-    /**
-     * @param genomicCoordinateForCV
-     */
-    public void setGenomicCoordinateForCV(GenomicCoordinateForCV genomicCoordinateForCV) {
-        this.genomicCoordinateForCV = genomicCoordinateForCV;
+    public void setChr(String chr) {
+        this.chr = chr;
     }
 
-    /**
-     * @return dbNtChange
-     */
-    public String getDbNtChange() {
-        return dbNtChange;
+    public String getGene() {
+        return gene;
     }
 
-    /**
-     * @param dbNtChange
-     */
-    public void setDbNtChange(String dbNtChange) {
-        this.dbNtChange = dbNtChange;
+    public void setGene(String gene) {
+        this.gene = gene;
     }
 
-    /**
-     * @return clinicalVariantType
-     */
+    public String getTranscript() {
+        return transcript;
+    }
+
+    public void setTranscript(String transcript) {
+        this.transcript = transcript;
+    }
+
+    public String getHgvsc() {
+        return hgvsc;
+    }
+
+    public void setHgvsc(String hgvsc) {
+        this.hgvsc = hgvsc;
+    }
+
+    public String getHgvsp() {
+        return hgvsp;
+    }
+
+    public void setHgvsp(String hgvsp) {
+        this.hgvsp = hgvsp;
+    }
+
+    public String getCodingConsequence() {
+        return codingConsequence;
+    }
+
+    public void setCodingConsequence(String codingConsequence) {
+        this.codingConsequence = codingConsequence;
+    }
+
     public String getClinicalVariantType() {
         return clinicalVariantType;
     }
 
-    /**
-     * @param clinicalVariantType
-     */
     public void setClinicalVariantType(String clinicalVariantType) {
         this.clinicalVariantType = clinicalVariantType;
     }
 
-    /**
-     * @return evidenceLevelA
-     */
-    public String getEvidenceLevelA() {
-        return evidenceLevelA;
+    public ClinicalEvidence getTherapeuticEvidence() {
+        return therapeuticEvidence;
     }
 
-    /**
-     * @param evidenceLevelA
-     */
-    public void setEvidenceLevelA(String evidenceLevelA) {
-        this.evidenceLevelA = evidenceLevelA;
+    public void setTherapeuticEvidence(ClinicalEvidence therapeuticEvidence) {
+        this.therapeuticEvidence = therapeuticEvidence;
     }
 
-    /**
-     * @return evidenceLevelB
-     */
-    public String getEvidenceLevelB() {
-        return evidenceLevelB;
+    public ClinicalEvidence getPrognosisEvidence() {
+        return prognosisEvidence;
     }
 
-    /**
-     * @param evidenceLevelB
-     */
-    public void setEvidenceLevelB(String evidenceLevelB) {
-        this.evidenceLevelB = evidenceLevelB;
+    public void setPrognosisEvidence(ClinicalEvidence prognosisEvidence) {
+        this.prognosisEvidence = prognosisEvidence;
     }
 
-    /**
-     * @return evidenceLevelC
-     */
-    public String getEvidenceLevelC() {
-        return evidenceLevelC;
+    public ClinicalEvidence getDiagnosisEvidence() {
+        return diagnosisEvidence;
     }
 
-    /**
-     * @param evidenceLevelC
-     */
-    public void setEvidenceLevelC(String evidenceLevelC) {
-        this.evidenceLevelC = evidenceLevelC;
+    public void setDiagnosisEvidence(ClinicalEvidence diagnosisEvidence) {
+        this.diagnosisEvidence = diagnosisEvidence;
     }
 
-    /**
-     * @return evidenceLevelD
-     */
-    public String getEvidenceLevelD() {
-        return evidenceLevelD;
-    }
-
-    /**
-     * @param evidenceLevelD
-     */
-    public void setEvidenceLevelD(String evidenceLevelD) {
-        this.evidenceLevelD = evidenceLevelD;
-    }
-
-    /**
-     * @return evidenceLevelBenign
-     */
-    public String getEvidenceLevelBenign() {
-        return evidenceLevelBenign;
-    }
-
-    /**
-     * @param evidenceLevelBenign
-     */
-    public void setEvidenceLevelBenign(String evidenceLevelBenign) {
-        this.evidenceLevelBenign = evidenceLevelBenign;
-    }
-
-    /**
-     * @return evidencePertinentNegative
-     */
-    public String getEvidencePertinentNegative() {
-        return evidencePertinentNegative;
-    }
-
-    /**
-     * @param evidencePertinentNegative
-     */
-    public void setEvidencePertinentNegative(String evidencePertinentNegative) {
-        this.evidencePertinentNegative = evidencePertinentNegative;
-    }
-
-    /**
-     * @return createdAt
-     */
     public DateTime getCreatedAt() {
         return createdAt;
     }
 
-    /**
-     * @param createdAt
-     */
     public void setCreatedAt(DateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    /**
-     * @return updatedAt
-     */
     public DateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    /**
-     * @param updatedAt
-     */
     public void setUpdatedAt(DateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    /**
-     * @return deletedAt
-     */
     public DateTime getDeletedAt() {
         return deletedAt;
     }
 
-    /**
-     * @param deletedAt
-     */
     public void setDeletedAt(DateTime deletedAt) {
         this.deletedAt = deletedAt;
     }
 
-    /**
-     * @return deleted
-     */
     public Integer getDeleted() {
         return deleted;
     }
 
-    /**
-     * @param deleted
-     */
     public void setDeleted(Integer deleted) {
         this.deleted = deleted;
     }

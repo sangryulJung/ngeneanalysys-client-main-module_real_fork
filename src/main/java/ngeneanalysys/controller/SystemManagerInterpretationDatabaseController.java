@@ -59,40 +59,55 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
     private TableColumn<GenomicCoordinateClinicalVariant, String> geneTableColumn;
 
     @FXML
-    private TableColumn<GenomicCoordinateClinicalVariant, String> positionTableColumn;
+    private TableColumn<GenomicCoordinateClinicalVariant, String> transcriptTableColumn;
 
     @FXML
-    private TableColumn<GenomicCoordinateClinicalVariant, String> dbRefTableColumn;
+    private TableColumn<GenomicCoordinateClinicalVariant, String> hgvscTableColumn;
 
     @FXML
-    private TableColumn<GenomicCoordinateClinicalVariant, String> dbAltTableColumn;
+    private TableColumn<GenomicCoordinateClinicalVariant, String> hgvspTableColumn;
 
     @FXML
-    private TableColumn<GenomicCoordinateClinicalVariant, String> ngsRefTableColumn;
-
-    @FXML
-    private TableColumn<GenomicCoordinateClinicalVariant, String> ngsAltTableColumn;
+    private TableColumn<GenomicCoordinateClinicalVariant, String> codingConsequenceTableColumn;
 
     @FXML
     private TableColumn<GenomicCoordinateClinicalVariant, String> typeTableColumn;
 
     @FXML
-    private TableColumn<GenomicCoordinateClinicalVariant, String> evidenceATableColumn;
+    private TableColumn<GenomicCoordinateClinicalVariant, String> therapeuticEvidenceATableColumn;
 
     @FXML
-    private TableColumn<GenomicCoordinateClinicalVariant, String> evidenceBTableColumn;
+    private TableColumn<GenomicCoordinateClinicalVariant, String> therapeuticEvidenceBTableColumn;
 
     @FXML
-    private TableColumn<GenomicCoordinateClinicalVariant, String> evidenceCTableColumn;
+    private TableColumn<GenomicCoordinateClinicalVariant, String> therapeuticEvidenceCTableColumn;
 
     @FXML
-    private TableColumn<GenomicCoordinateClinicalVariant, String> evidenceDTableColumn;
+    private TableColumn<GenomicCoordinateClinicalVariant, String> therapeuticEvidenceDTableColumn;
 
     @FXML
-    private TableColumn<GenomicCoordinateClinicalVariant, String> evidenceNegativeTableColumn;
+    private TableColumn<GenomicCoordinateClinicalVariant, String> diagnosisEvidenceATableColumn;
 
     @FXML
-    private TableColumn<GenomicCoordinateClinicalVariant, String> benignTableColumn;
+    private TableColumn<GenomicCoordinateClinicalVariant, String> diagnosisEvidenceBTableColumn;
+
+    @FXML
+    private TableColumn<GenomicCoordinateClinicalVariant, String> diagnosisEvidenceCTableColumn;
+
+    @FXML
+    private TableColumn<GenomicCoordinateClinicalVariant, String> diagnosisEvidenceDTableColumn;
+
+    @FXML
+    private TableColumn<GenomicCoordinateClinicalVariant, String> prognosisEvidenceATableColumn;
+
+    @FXML
+    private TableColumn<GenomicCoordinateClinicalVariant, String> prognosisEvidenceBTableColumn;
+
+    @FXML
+    private TableColumn<GenomicCoordinateClinicalVariant, String> prognosisEvidenceCTableColumn;
+
+    @FXML
+    private TableColumn<GenomicCoordinateClinicalVariant, String> prognosisEvidenceDTableColumn;
 
     @FXML
     private TableColumn<GenomicCoordinateClinicalVariant, String> createdAtTableColumn;
@@ -128,43 +143,37 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
             (t.getTableView().getItems().get(t.getTablePosition().getRow())).setClinicalVariantVersion(t.getNewValue());
         });
 
-        chrTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getGenomicCoordinateForCV().getChr()));
+        chrTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getChr()));
         chrTableColumn.setCellFactory(tableColumn -> new EditingCell());
         chrTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
-            (t.getTableView().getItems().get(t.getTablePosition().getRow())).getGenomicCoordinateForCV().setChr(t.getNewValue());
+            (t.getTableView().getItems().get(t.getTablePosition().getRow())).setChr(t.getNewValue());
         });
-        geneTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getGenomicCoordinateForCV().getGene()));
+        geneTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getGene()));
         geneTableColumn.setCellFactory(tableColumn -> new EditingCell());
         geneTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
-            (t.getTableView().getItems().get(t.getTablePosition().getRow())).getGenomicCoordinateForCV().setGene(t.getNewValue());
+            (t.getTableView().getItems().get(t.getTablePosition().getRow())).setGene(t.getNewValue());
         });
-        positionTableColumn.setCellValueFactory(item -> new SimpleStringProperty((item.getValue().getGenomicCoordinateForCV().getPosition() != null) ?
-                item.getValue().getGenomicCoordinateForCV().getPosition().toString() : null));
-        positionTableColumn.setCellFactory(tableColumn -> new EditingCell());
-        positionTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
+        transcriptTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getTranscript()));
+        transcriptTableColumn.setCellFactory(tableColumn -> new EditingCell());
+        transcriptTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
             if(!StringUtils.isEmpty(t.getNewValue()))
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).getGenomicCoordinateForCV().setPosition(Integer.parseInt(t.getNewValue()));
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setTranscript(t.getNewValue());
         });
-        dbRefTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getGenomicCoordinateForCV().getDbRef()));
-        dbRefTableColumn.setCellFactory(tableColumn -> new EditingCell());
-        dbRefTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
-            (t.getTableView().getItems().get(t.getTablePosition().getRow())).getGenomicCoordinateForCV().setDbRef(t.getNewValue());
+        hgvscTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getHgvsc()));
+        hgvscTableColumn.setCellFactory(tableColumn -> new EditingCell());
+        hgvscTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
+            (t.getTableView().getItems().get(t.getTablePosition().getRow())).setHgvsc(t.getNewValue());
         });
-        dbAltTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getGenomicCoordinateForCV().getDbAlt()));
-        dbAltTableColumn.setCellFactory(tableColumn -> new EditingCell());
-        dbAltTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
-            (t.getTableView().getItems().get(t.getTablePosition().getRow())).getGenomicCoordinateForCV().setDbAlt(t.getNewValue());
+        hgvspTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getHgvsp()));
+        hgvspTableColumn.setCellFactory(tableColumn -> new EditingCell());
+        hgvspTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
+            (t.getTableView().getItems().get(t.getTablePosition().getRow())).setHgvsp(t.getNewValue());
         });
 
-        ngsRefTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getGenomicCoordinateForCV().getNgsRef()));
-        ngsRefTableColumn.setCellFactory(tableColumn -> new EditingCell());
-        ngsRefTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
-            (t.getTableView().getItems().get(t.getTablePosition().getRow())).getGenomicCoordinateForCV().setNgsRef(t.getNewValue());
-        });
-        ngsAltTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getGenomicCoordinateForCV().getNgsAlt()));
-        ngsAltTableColumn.setCellFactory(tableColumn -> new EditingCell());
-        ngsAltTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
-            (t.getTableView().getItems().get(t.getTablePosition().getRow())).getGenomicCoordinateForCV().setNgsAlt(t.getNewValue());
+        codingConsequenceTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getCodingConsequence()));
+        codingConsequenceTableColumn.setCellFactory(tableColumn -> new EditingCell());
+        codingConsequenceTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
+            (t.getTableView().getItems().get(t.getTablePosition().getRow())).setCodingConsequence(t.getNewValue());
         });
 
         typeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getClinicalVariantType()));
@@ -173,23 +182,41 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
             (t.getTableView().getItems().get(t.getTablePosition().getRow())).setClinicalVariantType(t.getNewValue());
         });
 
-        evidenceATableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getEvidenceLevelA()));
-        evidenceATableColumn.setCellFactory(tableColumn -> new PopUpTableCell("evidenceA"));
+        therapeuticEvidenceATableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getTherapeuticEvidence().getLevelA()));
+        therapeuticEvidenceATableColumn.setCellFactory(tableColumn -> new PopUpTableCell("therapeuticEvidenceA"));
 
-        evidenceBTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getEvidenceLevelB()));
-        evidenceBTableColumn.setCellFactory(tableColumn -> new PopUpTableCell("evidenceB"));
+        therapeuticEvidenceBTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getTherapeuticEvidence().getLevelB()));
+        therapeuticEvidenceBTableColumn.setCellFactory(tableColumn -> new PopUpTableCell("therapeuticEvidenceB"));
 
-        evidenceCTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getEvidenceLevelC()));
-        evidenceCTableColumn.setCellFactory(tableColumn -> new PopUpTableCell("evidenceC"));
+        therapeuticEvidenceCTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getTherapeuticEvidence().getLevelC()));
+        therapeuticEvidenceCTableColumn.setCellFactory(tableColumn -> new PopUpTableCell("therapeuticEvidenceC"));
 
-        evidenceDTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getEvidenceLevelD()));
-        evidenceDTableColumn.setCellFactory(tableColumn -> new PopUpTableCell("evidenceD"));
+        therapeuticEvidenceDTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getTherapeuticEvidence().getLevelD()));
+        therapeuticEvidenceDTableColumn.setCellFactory(tableColumn -> new PopUpTableCell("therapeuticEvidenceD"));
 
-        evidenceNegativeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getEvidencePertinentNegative()));
-        evidenceNegativeTableColumn.setCellFactory(tableColumn -> new PopUpTableCell("PertinentNegative"));
+        diagnosisEvidenceATableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getDiagnosisEvidence().getLevelA()));
+        diagnosisEvidenceATableColumn.setCellFactory(tableColumn -> new PopUpTableCell("diagnosisEvidenceA"));
 
-        benignTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getEvidenceLevelBenign()));
-        benignTableColumn.setCellFactory(tableColumn -> new PopUpTableCell("evidenceBenign"));
+        diagnosisEvidenceBTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getDiagnosisEvidence().getLevelB()));
+        diagnosisEvidenceBTableColumn.setCellFactory(tableColumn -> new PopUpTableCell("diagnosisEvidenceB"));
+
+        diagnosisEvidenceCTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getDiagnosisEvidence().getLevelC()));
+        diagnosisEvidenceCTableColumn.setCellFactory(tableColumn -> new PopUpTableCell("diagnosisEvidenceC"));
+
+        diagnosisEvidenceDTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getDiagnosisEvidence().getLevelD()));
+        diagnosisEvidenceDTableColumn.setCellFactory(tableColumn -> new PopUpTableCell("diagnosisEvidenceD"));
+
+        prognosisEvidenceATableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getPrognosisEvidence().getLevelA()));
+        prognosisEvidenceATableColumn.setCellFactory(tableColumn -> new PopUpTableCell("prognosisEvidenceA"));
+
+        prognosisEvidenceBTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getPrognosisEvidence().getLevelB()));
+        prognosisEvidenceBTableColumn.setCellFactory(tableColumn -> new PopUpTableCell("prognosisEvidenceB"));
+
+        prognosisEvidenceCTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getPrognosisEvidence().getLevelC()));
+        prognosisEvidenceCTableColumn.setCellFactory(tableColumn -> new PopUpTableCell("prognosisEvidenceC"));
+
+        prognosisEvidenceDTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getPrognosisEvidence().getLevelD()));
+        prognosisEvidenceDTableColumn.setCellFactory(tableColumn -> new PopUpTableCell("prognosisEvidenceD"));
 
         createdAtTableColumn.setCellValueFactory(item -> new SimpleStringProperty(DateFormatUtils.format(
                 item.getValue().getCreatedAt().toDate(), "yyyy-MM-dd")));
@@ -288,7 +315,7 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
                 try {
 
                     if(item.getDiseaseId() == null || StringUtils.isEmpty(item.getTier()) || StringUtils.isEmpty(item.getClinicalVariantVersion())
-                            || StringUtils.isEmpty(item.getGenomicCoordinateForCV().getChr()) || StringUtils.isEmpty(item.getGenomicCoordinateForCV().getGene())) {
+                            || StringUtils.isEmpty(item.getChr()) || StringUtils.isEmpty(item.getGene())) {
                         break;
                     }
 
@@ -330,7 +357,9 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
     private void interpretationAdd() {
         GenomicCoordinateClinicalVariant genomicCoordinateClinicalVariant = new GenomicCoordinateClinicalVariant();
         genomicCoordinateClinicalVariant.setDiseaseId(evidenceListTable.getItems().size());
-        genomicCoordinateClinicalVariant.setGenomicCoordinateForCV(new GenomicCoordinateForCV());
+        genomicCoordinateClinicalVariant.setTherapeuticEvidence(new ClinicalEvidence());
+        genomicCoordinateClinicalVariant.setDiagnosisEvidence(new ClinicalEvidence());
+        genomicCoordinateClinicalVariant.setPrognosisEvidence(new ClinicalEvidence());
         evidenceListTable.getItems().add(0, genomicCoordinateClinicalVariant);
 
         if(evidenceListTable.getItems().size() > 17) {
@@ -602,19 +631,24 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
                         PopUpTableCell.this.getIndex());
 
                 TextInputDialog dialog = new TextInputDialog();
-                if(item.equalsIgnoreCase("evidenceA") && !StringUtils.isEmpty(variant.getEvidenceLevelA())) {
-                    dialog.getEditor().setText(variant.getEvidenceLevelA());
-                } else if(item.equalsIgnoreCase("evidenceB") &&!StringUtils.isEmpty(variant.getEvidenceLevelB())) {
-                    dialog.getEditor().setText(variant.getEvidenceLevelB());
-                } else if(item.equalsIgnoreCase("evidenceC") &&!StringUtils.isEmpty(variant.getEvidenceLevelC())) {
-                    dialog.getEditor().setText(variant.getEvidenceLevelC());
-                } else if(item.equalsIgnoreCase("evidenceD") &&!StringUtils.isEmpty(variant.getEvidenceLevelD())) {
-                    dialog.getEditor().setText(variant.getEvidenceLevelD());
-                } else if(item.equalsIgnoreCase("PertinentNegative") && !StringUtils.isEmpty(variant.getEvidencePertinentNegative())) {
-                    dialog.getEditor().setText(variant.getEvidencePertinentNegative());
-                } else if(item.equalsIgnoreCase("evidenceBenign") && !StringUtils.isEmpty(variant.getEvidenceLevelBenign())) {
-                    dialog.getEditor().setText(variant.getEvidenceLevelBenign());
+                if(item.equalsIgnoreCase("therapeuticEvidenceA") && !StringUtils.isEmpty(variant.getTherapeuticEvidence().getLevelA())) {
+                    dialog.getEditor().setText(variant.getTherapeuticEvidence().getLevelA());
+                } else if(item.equalsIgnoreCase("therapeuticEvidenceB") &&!StringUtils.isEmpty(variant.getTherapeuticEvidence().getLevelB())) {
+                    dialog.getEditor().setText(variant.getTherapeuticEvidence().getLevelB());
+                } else if(item.equalsIgnoreCase("therapeuticEvidenceC") &&!StringUtils.isEmpty(variant.getTherapeuticEvidence().getLevelC())) {
+                    dialog.getEditor().setText(variant.getTherapeuticEvidence().getLevelC());
+                } else if(item.equalsIgnoreCase("therapeuticEvidenceD") &&!StringUtils.isEmpty(variant.getTherapeuticEvidence().getLevelD())) {
+                    dialog.getEditor().setText(variant.getTherapeuticEvidence().getLevelD());
+                } else if(item.equalsIgnoreCase("diagnosisEvidenceA") && !StringUtils.isEmpty(variant.getDiagnosisEvidence().getLevelA())) {
+                    dialog.getEditor().setText(variant.getDiagnosisEvidence().getLevelA());
+                } else if(item.equalsIgnoreCase("diagnosisEvidenceB") &&!StringUtils.isEmpty(variant.getDiagnosisEvidence().getLevelB())) {
+                    dialog.getEditor().setText(variant.getDiagnosisEvidence().getLevelB());
+                } else if(item.equalsIgnoreCase("diagnosisEvidenceC") &&!StringUtils.isEmpty(variant.getDiagnosisEvidence().getLevelC())) {
+                    dialog.getEditor().setText(variant.getDiagnosisEvidence().getLevelC());
+                } else if(item.equalsIgnoreCase("diagnosisEvidenceD") &&!StringUtils.isEmpty(variant.getDiagnosisEvidence().getLevelD())) {
+                    dialog.getEditor().setText(variant.getDiagnosisEvidence().getLevelD());
                 }
+
                 dialog.getDialogPane().setMinWidth(450);
                 dialog.setTitle("Text Input Dialog");
                 dialog.setHeaderText("Please enter " + item +"");
@@ -622,18 +656,30 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
                 Optional<String> result = dialog.showAndWait();
 
                 result.ifPresent(text -> {
-                    if(item.equalsIgnoreCase("evidenceA")) {
-                        variant.setEvidenceLevelA(text);
-                    } else if(item.equalsIgnoreCase("evidenceB")) {
-                        variant.setEvidenceLevelB(text);
-                    } else if(item.equalsIgnoreCase("evidenceC")) {
-                        variant.setEvidenceLevelC(text);
-                    } else if(item.equalsIgnoreCase("evidenceD")) {
-                        variant.setEvidenceLevelD(text);
-                    } else if(item.equalsIgnoreCase("PertinentNegative")) {
-                        variant.setEvidencePertinentNegative(text);
-                    } else if(item.equalsIgnoreCase("evidenceBenign")) {
-                        variant.setEvidenceLevelBenign(text);
+                    if(item.equalsIgnoreCase("therapeuticEvidenceA")) {
+                        variant.getTherapeuticEvidence().setLevelA(text);
+                    } else if(item.equalsIgnoreCase("therapeuticEvidenceB")) {
+                        variant.getTherapeuticEvidence().setLevelB(text);
+                    } else if(item.equalsIgnoreCase("therapeuticEvidenceC")) {
+                        variant.getTherapeuticEvidence().setLevelC(text);
+                    } else if(item.equalsIgnoreCase("therapeuticEvidenceD")) {
+                        variant.getTherapeuticEvidence().setLevelD(text);
+                    } else if(item.equalsIgnoreCase("diagnosisEvidenceA")) {
+                        variant.getDiagnosisEvidence().setLevelA(text);
+                    } else if(item.equalsIgnoreCase("diagnosisEvidenceB")) {
+                        variant.getDiagnosisEvidence().setLevelB(text);
+                    } else if(item.equalsIgnoreCase("diagnosisEvidenceC")) {
+                        variant.getDiagnosisEvidence().setLevelC(text);
+                    } else if(item.equalsIgnoreCase("diagnosisEvidenceD")) {
+                        variant.getDiagnosisEvidence().setLevelD(text);
+                    } else if(item.equalsIgnoreCase("prognosisEvidenceA")) {
+                        variant.getPrognosisEvidence().setLevelA(text);
+                    } else if(item.equalsIgnoreCase("prognosisEvidenceB")) {
+                        variant.getPrognosisEvidence().setLevelB(text);
+                    } else if(item.equalsIgnoreCase("prognosisEvidenceC")) {
+                        variant.getPrognosisEvidence().setLevelC(text);
+                    } else if(item.equalsIgnoreCase("prognosisEvidenceD")) {
+                        variant.getPrognosisEvidence().setLevelD(text);
                     }
                     commitEdit(text);
                     addModifiedList(variant);
