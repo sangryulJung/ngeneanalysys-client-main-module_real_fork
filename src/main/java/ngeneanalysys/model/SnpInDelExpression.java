@@ -16,6 +16,21 @@ public class SnpInDelExpression {
     private String aaChange;
     private String aaChangeSingleLetter;
     private String zygosity;
+    private String aachangeSingleLetter;
+
+    /**
+     * @return aachangeSingleLetter
+     */
+    public String getAachangeSingleLetter() {
+        return aachangeSingleLetter;
+    }
+
+    /**
+     * @param aachangeSingleLetter
+     */
+    public void setAachangeSingleLetter(String aachangeSingleLetter) {
+        this.aachangeSingleLetter = aachangeSingleLetter;
+    }
 
     /**
      * @return variantType

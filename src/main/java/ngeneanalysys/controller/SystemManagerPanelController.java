@@ -46,6 +46,7 @@ import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
@@ -93,10 +94,25 @@ public class SystemManagerPanelController extends SubPaneController {
     private CheckBox warningMAFCheckBox;
 
     @FXML
-    private TextField reportCutOffMAFTextField;
+    private ComboBox<String> scopeComboBox;
 
     @FXML
-    private CheckBox reportCutOffMAFCheckBox;
+    private CheckBox scopeCheckBox;
+
+    @FXML
+    private TextField minAlleleFrequencyTextField;
+
+    @FXML
+    private TextField minReadDepthTextField;
+
+    @FXML
+    private TextField minAlternateCountTextField;
+
+    @FXML
+    private TextField populationFrequencyDBsTextField;
+
+    @FXML
+    private TextField populationFrequencyTextField;
 
     @FXML
     private Button roiFileSelectionButton;
@@ -191,8 +207,6 @@ public class SystemManagerPanelController extends SubPaneController {
 
         warningMAFTextField.setTextFormatter(returnFormatter());
 
-        reportCutOffMAFTextField.setTextFormatter(returnFormatter());
-
         warningReadDepthTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             if(!newValue.matches("[0-9]*")) warningReadDepthTextField.setText(oldValue);
         });
@@ -205,14 +219,13 @@ public class SystemManagerPanelController extends SubPaneController {
             warningReadDepthTextField.setDisable(!newValue)
         );
 
-        reportCutOffMAFCheckBox.selectedProperty().addListener((observable, oldValue,  newValue) ->
-                reportCutOffMAFTextField.setDisable(!newValue)
-        );
-
-
         targetComboBox.setConverter(new ComboBoxConverter());
         targetComboBox.getItems().add(new ComboBoxItem("DNA", "DNA"));
         targetComboBox.getItems().add(new ComboBoxItem("RNA", "RNA"));
+        targetComboBox.getSelectionModel().selectFirst();
+
+        scopeComboBox.getItems().add("All Variants");
+        scopeComboBox.getItems().add("VUS Variants");
         targetComboBox.getSelectionModel().selectFirst();
 
         analysisTypeComboBox.setConverter(new ComboBoxConverter());
@@ -250,6 +263,15 @@ public class SystemManagerPanelController extends SubPaneController {
                         item.getValue().getDeletedAt().toDate(), "yyyy-MM-dd"));
             else
                 return new SimpleStringProperty("");
+        });
+
+        scopeCheckBox.selectedProperty().addListener((ov, oldValue, newValue) -> {
+            scopeComboBox.setDisable(!newValue);
+            minAlleleFrequencyTextField.setDisable(!newValue);
+            minReadDepthTextField.setDisable(!newValue);
+            minAlternateCountTextField.setDisable(!newValue);
+            populationFrequencyDBsTextField.setDisable(!newValue);
+            populationFrequencyTextField.setDisable(!newValue);
         });
 
         editPanelTableColumn.setSortable(false);
@@ -415,6 +437,33 @@ public class SystemManagerPanelController extends SubPaneController {
         }
     }
 
+    public ReportCutOffParams setReportCutOffParams() {
+        ReportCutOffParams reportCutOffParams = new ReportCutOffParams();
+        if(scopeCheckBox.isSelected() && !StringUtils.isEmpty(scopeCheckBox.getText())) {
+            reportCutOffParams.setScope(scopeComboBox.getSelectionModel().getSelectedItem());
+
+            try {
+                BigDecimal reportCutOffMinAlleleFrequency = new BigDecimal(minAlleleFrequencyTextField.getText());
+                reportCutOffParams.setMinAlleleFrequency(reportCutOffMinAlleleFrequency);
+            } catch (Exception e) { }
+            try {
+                Integer reportCutoffMinReadDepth = Integer.parseInt(minReadDepthTextField.getText());
+                reportCutOffParams.setMinReadDepth(reportCutoffMinReadDepth);
+            } catch (Exception e) { }
+            try {
+                Integer reportCutOffMinAlternateCount = Integer.parseInt(minAlternateCountTextField.getText());
+                reportCutOffParams.setMinAlternateCount(reportCutOffMinAlternateCount);
+            } catch (Exception e) { }
+            reportCutOffParams.setPopulationFrequencyDBs(populationFrequencyDBsTextField.getText());
+            try {
+                BigDecimal reportCutOffPopulationFrequency = new BigDecimal(populationFrequencyTextField.getText());
+                reportCutOffParams.setPopulationFrequency(reportCutOffPopulationFrequency);
+            } catch (Exception e) { }
+        }
+
+        return reportCutOffParams;
+    }
+
     @FXML
     public void savePanel() {
         String panelName = panelNameTextField.getText();
@@ -432,9 +481,10 @@ public class SystemManagerPanelController extends SubPaneController {
             if(warningMAFCheckBox.isSelected() && !StringUtils.isEmpty(warningMAFTextField.getText())) {
                 params.put("warningMAF", warningMAFTextField.getText());
             }
-            if(reportCutOffMAFCheckBox.isSelected() && !StringUtils.isEmpty(reportCutOffMAFTextField.getText())) {
-                params.put("reportCutoffMAF", reportCutOffMAFTextField.getText());
-            }
+
+            ReportCutOffParams reportCutOffParams = setReportCutOffParams();
+
+            params.put("reportCutOffParams", reportCutOffParams);
 
             params.put("target", targetComboBox.getSelectionModel().getSelectedItem().getValue());
             params.put("analysisType", analysisTypeComboBox.getSelectionModel().getSelectedItem().getValue());
@@ -530,7 +580,7 @@ public class SystemManagerPanelController extends SubPaneController {
         panelNameTextField.setText("");
         panelCodeTextField.setText("");
         warningMAFTextField.setText("");
-        reportCutOffMAFTextField.setText("");
+        scopeComboBox.getSelectionModel().selectFirst();
         warningReadDepthTextField.setText("");
         sampleSourceComboBox.getSelectionModel().selectFirst();
         analysisTypeComboBox.getSelectionModel().selectFirst();
@@ -543,16 +593,21 @@ public class SystemManagerPanelController extends SubPaneController {
         reportTemplateComboBox.getSelectionModel().selectFirst();
         warningReadDepthCheckBox.setSelected(false);
         warningMAFCheckBox.setSelected(false);
-        reportCutOffMAFCheckBox.setSelected(false);
+        scopeCheckBox.setSelected(false);
+        minAlleleFrequencyTextField.setText("");
+        minReadDepthTextField.setText("");
+        minAlternateCountTextField.setText("");
+        populationFrequencyDBsTextField.setText("");
+        populationFrequencyTextField.setText("");
     }
 
     public void setDisabledItem(boolean condition) {
         warningReadDepthTextField.setDisable(true);
         warningMAFTextField.setDisable(true);
-        reportCutOffMAFTextField.setDisable(true);
+        scopeComboBox.setDisable(true);
         warningReadDepthCheckBox.setDisable(condition);
         warningMAFCheckBox.setDisable(condition);
-        reportCutOffMAFCheckBox.setDisable(condition);
+        scopeCheckBox.setDisable(condition);
         panelNameTextField.setDisable(condition);
         panelCodeTextField.setDisable(condition);
         sampleSourceComboBox.setDisable(condition);
@@ -563,6 +618,11 @@ public class SystemManagerPanelController extends SubPaneController {
         groupCheckComboBox.setDisable(condition);
         diseaseCheckComboBox.setDisable(condition);
         reportTemplateComboBox.setDisable(condition);
+        minAlleleFrequencyTextField.setDisable(true);
+        minReadDepthTextField.setDisable(true);
+        minAlternateCountTextField.setDisable(true);
+        populationFrequencyDBsTextField.setDisable(true);
+        populationFrequencyTextField.setDisable(true);
     }
 
     public void deletePanel(Integer panelId) {
@@ -644,10 +704,18 @@ public class SystemManagerPanelController extends SubPaneController {
                     warningReadDepthTextField.setDisable(false);
                     warningReadDepthTextField.setText(panel.getWarningReadDepth().toString());
                 }
-                if(panel.getReportCutOffParams().getMinAlleleFrequency() != null) {
-                    reportCutOffMAFCheckBox.setSelected(true);
-                    reportCutOffMAFTextField.setDisable(false);
-                    reportCutOffMAFTextField.setText(panel.getReportCutOffParams().getMinAlleleFrequency().toString());
+                if(panel.getReportCutOffParams().getScope() != null) {
+                    ReportCutOffParams params = panel.getReportCutOffParams();
+                    scopeCheckBox.setSelected(true);
+                    scopeComboBox.setDisable(false);
+                    scopeComboBox.getSelectionModel().select(params.getScope());
+
+                    if(panel.getReportCutOffParams().getMinAlleleFrequency() != null) minAlleleFrequencyTextField.setText(params.getMinAlleleFrequency().toString());
+                    if(panel.getReportCutOffParams().getMinReadDepth() != null) minReadDepthTextField.setText(params.getMinReadDepth().toString());
+                    if(panel.getReportCutOffParams().getMinAlternateCount() != null) minAlternateCountTextField.setText(params.getMinAlternateCount().toString());
+                    if(panel.getReportCutOffParams().getPopulationFrequencyDBs() != null) populationFrequencyDBsTextField.setText(params.getPopulationFrequencyDBs());
+                    if(panel.getReportCutOffParams().getPopulationFrequency() != null) populationFrequencyTextField.setText(params.getPopulationFrequency().toString());
+
                 }
 
                 Optional<ComboBoxItem> sampleSourceItem =

@@ -1113,9 +1113,11 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     }
 
     public void createWordFile(URL[] jarUrls, File file , Map<String, Object> contentsMap, String reportCreationErrorMsg) {
-        try (URLClassLoader classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader())) {
-
-            Thread.currentThread().setContextClassLoader(classLoader);
+        //try (URLClassLoader classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader())) {
+        URLClassLoader classLoader = null;
+        try {
+            classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader());
+            //Thread.currentThread().setContextClassLoader(classLoader);
             @SuppressWarnings("unchecked")
             Class classToLoad = Class.forName("word.create.App", true, classLoader);
             logger.info("application init..");
@@ -1129,11 +1131,17 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             result = setWriteFilePath.invoke(application, file.getPath());
             result = updateEmbeddedDoc.invoke(application);
             result = updateWordFile.invoke(application);
-            System.out.print("test");
             createdCheck(true, file);
         } catch (Exception e) {
             DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);
             e.printStackTrace();
+        } finally {
+            try {
+                if(classLoader != null) classLoader.close();
+            } catch (IOException e) {
+                DialogUtil.error("close error", e.getMessage(), getMainApp().getPrimaryStage(), false);
+            }
+
         }
     }
 

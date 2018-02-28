@@ -7,6 +7,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Pagination?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -18,119 +19,171 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" prefHeight="558.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemManagerPanelController">
+<AnchorPane maxHeight="558.0" prefHeight="558.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemManagerPanelController">
    <stylesheets>
       <URL value="@../../css/common.css" />
       <URL value="@../../css/experimenter.css" />
    </stylesheets>
    <children>
-      <HBox prefHeight="558.0" prefWidth="1220.0">
+      <HBox prefHeight="558.0" prefWidth="1280.0">
          <children>
-            <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="592.0" prefWidth="374.0">
-               <children>
-                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="74.0" prefWidth="200.0">
+            <ScrollPane hbarPolicy="NEVER" maxHeight="528.0" maxWidth="385.0" prefHeight="528.0" prefWidth="385.0" vbarPolicy="ALWAYS">
+               <HBox.margin>
+                  <Insets right="1.0" />
+               </HBox.margin>
+               <content>
+                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="592.0" prefWidth="374.0">
                      <children>
-                        <HBox alignment="CENTER" prefHeight="29.0" prefWidth="200.0">
+                        <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="374.0">
                            <children>
-                              <Label fx:id="titleLabel" />
+                              <HBox alignment="CENTER" prefHeight="29.0" prefWidth="200.0">
+                                 <children>
+                                    <Label fx:id="titleLabel" />
+                                 </children>
+                              </HBox>
                            </children>
-                        </HBox>
-                        <HBox alignment="BOTTOM_LEFT" prefHeight="29.0" prefWidth="200.0">
+                        </VBox>
+                        <GridPane fx:id="panelEditGridPane" hgap="5.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="160.66665649414062" minWidth="-Infinity" prefWidth="158.44442749023438" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="210.55557250976562" />
+                          </columnConstraints>
+                          <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
                            <children>
-                              <VBox prefHeight="170.0" prefWidth="150.0" spacing="10.0" />
+                              <TextField fx:id="panelNameTextField" maxWidth="1.7976931348623157E308" prefWidth="150.0" styleClass="txt_black" GridPane.columnIndex="1" />
+                              <TextField fx:id="panelCodeTextField" maxWidth="1.7976931348623157E308" prefWidth="150.0" styleClass="txt_black" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <ComboBox fx:id="analysisTypeComboBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <Label text="Panel name" GridPane.halignment="RIGHT" />
+                              <Label text="Code" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                              <Label text="Target" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                              <Label text="Analysis Type" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                              <Label text="Sample Source" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+                              <ComboBox fx:id="targetComboBox" maxWidth="1.7976931348623157E308" prefWidth="188.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <ComboBox fx:id="sampleSourceComboBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <Label text="Library Type" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+                              <ComboBox fx:id="libraryTypeComboBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <Label text="Group" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
+                              <Label text="Disease" GridPane.halignment="RIGHT" GridPane.rowIndex="7" />
+                              <Label text="Report Template" GridPane.halignment="RIGHT" GridPane.rowIndex="8" />
+                              <ComboBox fx:id="reportTemplateComboBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                              <Label text="Warning Read Depth( X )" GridPane.halignment="RIGHT" GridPane.rowIndex="9" />
+                              <Label text="Warning MAF( % )" GridPane.halignment="RIGHT" GridPane.rowIndex="10" />
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                                 <children>
+                                    <TextField fx:id="warningReadDepthTextField" maxHeight="38.0" maxWidth="170.0" prefWidth="160.0" promptText="100" styleClass="txt_black">
+                                       <HBox.margin>
+                                          <Insets right="3.0" />
+                                       </HBox.margin>
+                                    </TextField>
+                                    <CheckBox fx:id="warningReadDepthCheckBox" mnemonicParsing="false" text="Edit" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="11">
+                                 <children>
+                                    <ComboBox fx:id="scopeComboBox" maxWidth="1.7976931348623157E308" prefWidth="160.0">
+                                       <HBox.margin>
+                                          <Insets right="3.0" />
+                                       </HBox.margin>
+                                    </ComboBox>
+                                    <CheckBox fx:id="scopeCheckBox" mnemonicParsing="false" text="Edit" />
+                                 </children>
+                              </HBox>
+                              <Label text="Scope" GridPane.halignment="RIGHT" GridPane.rowIndex="11" />
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                                 <children>
+                                    <TextField fx:id="warningMAFTextField" maxWidth="170.0" prefWidth="160.0" promptText="5.0" styleClass="txt_black">
+                                       <HBox.margin>
+                                          <Insets right="3.0" />
+                                       </HBox.margin>
+                                    </TextField>
+                                    <CheckBox fx:id="warningMAFCheckBox" mnemonicParsing="false" text="Edit" />
+                                 </children>
+                              </HBox>
+                              <Label text="Min Allele Frequency" GridPane.halignment="RIGHT" GridPane.rowIndex="12" />
+                              <Label text="Min Read Depth" GridPane.halignment="RIGHT" GridPane.rowIndex="13" />
+                              <Label text="Min Alternate Count" GridPane.halignment="RIGHT" GridPane.rowIndex="14" />
+                              <Label text="Population Frequency DBs" GridPane.halignment="RIGHT" GridPane.rowIndex="15" />
+                              <Label text="Population Frequency" GridPane.halignment="RIGHT" GridPane.rowIndex="16" />
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="12">
+                                 <children>
+                                    <TextField fx:id="minAlleleFrequencyTextField" maxHeight="38.0" maxWidth="170.0" prefWidth="160.0" styleClass="txt_black">
+                                       <HBox.margin>
+                                          <Insets right="3.0" />
+                                       </HBox.margin>
+                                    </TextField>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="13">
+                                 <children>
+                                    <TextField fx:id="minReadDepthTextField" maxHeight="38.0" maxWidth="170.0" prefWidth="160.0" styleClass="txt_black">
+                                       <HBox.margin>
+                                          <Insets right="3.0" />
+                                       </HBox.margin>
+                                    </TextField>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="14">
+                                 <children>
+                                    <TextField fx:id="minAlternateCountTextField" maxHeight="38.0" maxWidth="170.0" prefWidth="160.0" styleClass="txt_black">
+                                       <HBox.margin>
+                                          <Insets right="3.0" />
+                                       </HBox.margin>
+                                    </TextField>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="15">
+                                 <children>
+                                    <TextField fx:id="populationFrequencyDBsTextField" maxHeight="38.0" maxWidth="170.0" prefWidth="160.0" styleClass="txt_black">
+                                       <HBox.margin>
+                                          <Insets right="3.0" />
+                                       </HBox.margin>
+                                    </TextField>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="16">
+                                 <children>
+                                    <TextField fx:id="populationFrequencyTextField" maxHeight="38.0" maxWidth="170.0" prefWidth="160.0" styleClass="txt_black">
+                                       <HBox.margin>
+                                          <Insets right="3.0" />
+                                       </HBox.margin>
+                                    </TextField>
+                                 </children>
+                              </HBox>
                            </children>
-                           <VBox.margin>
-                              <Insets top="20.0" />
-                           </VBox.margin>
+                        </GridPane>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="300.0">
+                           <children>
+                              <Button fx:id="roiFileSelectionButton" mnemonicParsing="false" onAction="#selectROIFile" text="Select ROI file">
+                                 <HBox.margin>
+                                    <Insets right="10.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button fx:id="panelSaveButton" mnemonicParsing="false" onAction="#savePanel" text="Save" />
+                           </children>
                         </HBox>
                      </children>
                   </VBox>
-                  <GridPane fx:id="panelEditGridPane" hgap="5.0">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="189.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <TextField fx:id="panelNameTextField" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" />
-                        <TextField fx:id="panelCodeTextField" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <ComboBox fx:id="analysisTypeComboBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Label text="Panel name" GridPane.halignment="RIGHT" />
-                        <Label text="Code" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                        <Label text="Target" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                        <Label text="Analysis Type" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                        <Label text="Sample Source" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
-                        <ComboBox fx:id="targetComboBox" maxWidth="1.7976931348623157E308" prefWidth="188.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <ComboBox fx:id="sampleSourceComboBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <Label text="Library Type" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-                        <ComboBox fx:id="libraryTypeComboBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <Label text="Group" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
-                        <Label text="Disease" GridPane.halignment="RIGHT" GridPane.rowIndex="7" />
-                        <Label text="Report Template" GridPane.halignment="RIGHT" GridPane.rowIndex="8" />
-                        <ComboBox fx:id="reportTemplateComboBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                        <Label text="Warning Read Depth( X )" GridPane.halignment="RIGHT" GridPane.rowIndex="9" />
-                        <Label text="Warning MAF( % )" GridPane.halignment="RIGHT" GridPane.rowIndex="11" />
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
-                           <children>
-                              <TextField fx:id="warningReadDepthTextField" maxHeight="38.0" maxWidth="170.0" prefWidth="170.0" promptText="100">
-                                 <HBox.margin>
-                                    <Insets right="3.0" />
-                                 </HBox.margin>
-                              </TextField>
-                              <CheckBox fx:id="warningReadDepthCheckBox" mnemonicParsing="false" text="Edit" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="11">
-                           <children>
-                              <TextField fx:id="warningMAFTextField" maxWidth="170.0" prefWidth="170.0" promptText="5.0">
-                                 <HBox.margin>
-                                    <Insets right="3.0" />
-                                 </HBox.margin>
-                              </TextField>
-                              <CheckBox fx:id="warningMAFCheckBox" mnemonicParsing="false" text="Edit" />
-                           </children>
-                        </HBox>
-                        <Label text="Report Cut Off MAF(%)" GridPane.halignment="RIGHT" GridPane.rowIndex="10" />
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
-                           <children>
-                              <TextField fx:id="reportCutOffMAFTextField" maxHeight="38.0" maxWidth="170.0" prefWidth="170.0" promptText="5.0">
-                                 <HBox.margin>
-                                    <Insets right="3.0" />
-                                 </HBox.margin>
-                              </TextField>
-                              <CheckBox fx:id="reportCutOffMAFCheckBox" mnemonicParsing="false" text="Edit" />
-                           </children>
-                        </HBox>
-                     </children>
-                  </GridPane>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="300.0">
-                     <children>
-                        <Button fx:id="roiFileSelectionButton" mnemonicParsing="false" onAction="#selectROIFile" text="Select ROI file">
-                           <HBox.margin>
-                              <Insets right="10.0" />
-                           </HBox.margin></Button>
-                        <Button fx:id="panelSaveButton" mnemonicParsing="false" onAction="#savePanel" text="Save" />
-                     </children>
-                  </HBox>
-               </children>
-               <HBox.margin>
-                  <Insets right="5.0" />
-               </HBox.margin>
-            </VBox>
-            <HBox alignment="CENTER" prefHeight="592.0" prefWidth="20.0">
+               </content>
+            </ScrollPane>
+            <HBox alignment="CENTER" prefHeight="592.0" prefWidth="10.0">
                <children>
                   <Separator orientation="VERTICAL" prefHeight="556.0" prefWidth="0.0">
                      <HBox.margin>

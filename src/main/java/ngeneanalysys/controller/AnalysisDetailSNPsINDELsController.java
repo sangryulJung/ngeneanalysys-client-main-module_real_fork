@@ -1240,8 +1240,9 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
         TableColumn<VariantAndInterpretationEvidence, String> aaChangeConversion = new TableColumn<>("AA change(Single)");
         aaChangeConversion.setPrefWidth(90);
-        aaChangeConversion.setCellValueFactory(cellData -> new SimpleStringProperty(
-                cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChangeConversion()));
+        aaChangeConversion.setCellValueFactory(cellData -> cellData.getValue().getSnpInDel().getSnpInDelExpression().getAachangeSingleLetter() == null ?
+                new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChangeConversion()) :
+                new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAachangeSingleLetter()));
 
         variantListTableView.getColumns().addAll(warn, report, type, codCons, gene, strand, transcript, ntChange, aaChange, aaChangeConversion);
 
