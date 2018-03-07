@@ -31,6 +31,9 @@ public class Panel {
 
     private ReportCutOffParams reportCutOffParams;
 
+    private String essentialGenes;
+    private String geneRepresentativeTranscript;
+
     private Integer reportTemplateId;
 
     /**
@@ -86,6 +89,14 @@ public class Panel {
 
     public BigDecimal getWarningMAF() { return warningMAF; }
 
+    public String getEssentialGenes() {
+        return essentialGenes;
+    }
+
+    public void setGeneRepresentativeTranscript(String geneRepresentativeTranscript) {
+        this.geneRepresentativeTranscript = geneRepresentativeTranscript;
+    }
+
     @Override
     public String toString() {
         return "Panel{" +
@@ -104,6 +115,8 @@ public class Panel {
                 ", warningReadDepth=" + warningReadDepth +
                 ", warningMAF=" + warningMAF +
                 ", reportCutOffParams=" + reportCutOffParams +
+                ", essentialGenes='" + essentialGenes + '\'' +
+                ", geneRepresentativeTranscript='" + geneRepresentativeTranscript + '\'' +
                 ", reportTemplateId=" + reportTemplateId +
                 '}';
     }
