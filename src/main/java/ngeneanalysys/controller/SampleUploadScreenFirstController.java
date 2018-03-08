@@ -97,6 +97,17 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     public void setServerItem(String path) {
         isServerItem = true;
         logger.info(path);
+        try {
+            Map<String, Object> params = new HashMap<>();
+            params.put("runDir", path);
+
+            HttpClientResponse response = apiService.get("sampleSheet", params, null, false);
+
+            logger.info("ok");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -230,7 +241,19 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     @FXML
     private void serverRunFolderAction() {
-        logger.info("run");
+        try {
+            // Load the fxml file and create a new stage for the popup dialog
+            FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.SERVER_DIRECTORY_VIEW);
+            Pane page = loader.load();
+            ServerDirectoryViewController controller = loader.getController();
+            controller.setSampleUploadController(this.sampleUploadController);
+            controller.setSampleUploadScreenFirstController(this);
+            controller.setRun(true);
+            controller.setPath("/TST170/Files");
+            controller.show(page);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void tableEdit() {

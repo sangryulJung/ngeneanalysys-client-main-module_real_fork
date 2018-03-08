@@ -6,8 +6,8 @@ package ngeneanalysys.model;
  */
 public class ServerFile {
     private String name;
-    private Boolean isFile;
-    private Boolean isEmpty;
+    private String isFile;
+    private String isEmpty;
 
     /**
      * @return name
@@ -19,14 +19,19 @@ public class ServerFile {
     /**
      * @return isFile
      */
-    public Boolean getFile() {
+    public String getIsFile() {
         return isFile;
     }
 
     /**
      * @return isEmpty
      */
-    public Boolean getEmpty() {
+    public String getIsEmpty() {
         return isEmpty;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }
