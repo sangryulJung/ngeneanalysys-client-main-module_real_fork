@@ -12,6 +12,8 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.BaseStageController;
+import ngeneanalysys.model.ServerFile;
+import ngeneanalysys.model.ServerFileInfo;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
@@ -34,7 +36,7 @@ public class ServerDirectoryViewController extends BaseStageController {
     private APIService apiService;
 
     @FXML
-    private TreeView<String> serverItemTreeView;
+    private TreeView<ServerFile> serverItemTreeView;
 
     private SampleUploadController sampleUploadController;
 
@@ -98,16 +100,17 @@ public class ServerDirectoryViewController extends BaseStageController {
         try {
             Map<String, Object> params = new HashMap<>();
 
-            HttpClientResponse response = apiService.get("/serverFileInfo", params, null, false);
-
+            HttpClientResponse response = apiService.get("/runDir", params, null, false);
             logger.info(response.getContentString());
+            ServerFileInfo serverFileInfo = response.getObjectBeforeConvertResponseToJSON(ServerFileInfo.class);
+            logger.info(serverFileInfo.toString());
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         String rootString = "root";
-        TreeItem<String> root = new TreeItem(rootString, new ImageView(folderImage));
+        TreeItem<ServerFile> root = new TreeItem(rootString, new ImageView(folderImage));
         root.setExpanded(true);
 
 
@@ -122,10 +125,10 @@ public class ServerDirectoryViewController extends BaseStageController {
     private void submit() {
         if(serverItemTreeView.getSelectionModel().getSelectedItem() != null) {
             String path = "";
-            path = serverItemTreeView.getSelectionModel().getSelectedItem().getValue();
-            TreeItem<String> parent = serverItemTreeView.getSelectionModel().getSelectedItem().getParent();
+            path = serverItemTreeView.getSelectionModel().getSelectedItem().getValue().getName();
+            TreeItem<ServerFile> parent = serverItemTreeView.getSelectionModel().getSelectedItem().getParent();
             while (parent != null) {
-                path = parent.getValue() +   "/" + path;
+                path = parent.getValue().getName() +   "/" + path;
                 parent = parent.getParent();
             }
 

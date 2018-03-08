@@ -18,23 +18,17 @@ public class Panel {
     private DateTime deletedAt;
     private Integer deleted;
     private Boolean isDefault;
-    private Integer warningReadDepth;
-    private BigDecimal warningMAF;
 
-    public ReportCutOffParams getReportCutOffParams() {
-        return reportCutOffParams;
-    }
-
-    public void setReportCutOffParams(ReportCutOffParams reportCutOffParams) {
-        this.reportCutOffParams = reportCutOffParams;
-    }
-
-    private ReportCutOffParams reportCutOffParams;
-
-    private String essentialGenes;
-    private String geneRepresentativeTranscript;
+    private VariantConfig variantConfig;
 
     private Integer reportTemplateId;
+
+    /**
+     * @return variantConfig
+     */
+    public VariantConfig getVariantConfig() {
+        return variantConfig;
+    }
 
     /**
      * @return reportTemplateId
@@ -85,21 +79,6 @@ public class Panel {
 
     public Boolean getIsDefault() { return isDefault; }
 
-    public Integer getWarningReadDepth() { return warningReadDepth; }
-
-    public BigDecimal getWarningMAF() { return warningMAF; }
-
-    public String getEssentialGenes() {
-        return essentialGenes;
-    }
-
-    /**
-     * @return geneRepresentativeTranscript
-     */
-    public String getGeneRepresentativeTranscript() {
-        return geneRepresentativeTranscript;
-    }
-
     @Override
     public String toString() {
         return "Panel{" +
@@ -115,11 +94,6 @@ public class Panel {
                 ", deletedAt=" + deletedAt +
                 ", deleted=" + deleted +
                 ", isDefault=" + isDefault +
-                ", warningReadDepth=" + warningReadDepth +
-                ", warningMAF=" + warningMAF +
-                ", reportCutOffParams=" + reportCutOffParams +
-                ", essentialGenes='" + essentialGenes + '\'' +
-                ", geneRepresentativeTranscript='" + geneRepresentativeTranscript + '\'' +
                 ", reportTemplateId=" + reportTemplateId +
                 '}';
     }

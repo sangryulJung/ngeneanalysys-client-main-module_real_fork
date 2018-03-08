@@ -482,23 +482,24 @@ public class SystemManagerPanelController extends SubPaneController {
             Map<String,Object> params = new HashMap<>();
             params.put("name", panelName);
             params.put("code", code);
+            VariantConfig variantConfig = new VariantConfig();
             if(warningReadDepthCheckBox.isSelected() && !StringUtils.isEmpty(warningReadDepthTextField.getText())) {
-                params.put("warningReadDepth", Integer.parseInt(warningReadDepthTextField.getText()));
+                variantConfig.setWarningReadDepth(Integer.parseInt(warningReadDepthTextField.getText()));
             }
             if(warningMAFCheckBox.isSelected() && !StringUtils.isEmpty(warningMAFTextField.getText())) {
-                params.put("warningMAF", warningMAFTextField.getText());
+                variantConfig.setWarningMAF(new BigDecimal(warningMAFTextField.getText()));
             }
 
-            ReportCutOffParams reportCutOffParams = setReportCutOffParams();
+            variantConfig.setReportCutOffParams(setReportCutOffParams());
 
-            params.put("reportCutOffParams", reportCutOffParams);
-            params.put("essentialGenes", essentialGenesTextField.getText());
-            params.put("geneRepresentativeTranscript", geneRepresentativeTranscriptTextField.getText());
+            variantConfig.setEssentialGenes(essentialGenesTextField.getText());
+            variantConfig.setGeneRepresentativeTranscript(geneRepresentativeTranscriptTextField.getText());
 
             params.put("target", targetComboBox.getSelectionModel().getSelectedItem().getValue());
             params.put("analysisType", analysisTypeComboBox.getSelectionModel().getSelectedItem().getValue());
             params.put("libraryType", libraryTypeComboBox.getSelectionModel().getSelectedItem().getValue());
             params.put("sampleSource", sampleSourceComboBox.getSelectionModel().getSelectedItem().getValue());
+            params.put("variantConfig", variantConfig);
 
             String reportId = null;
             if(!reportTemplateComboBox.getSelectionModel().isEmpty()) {
@@ -698,32 +699,32 @@ public class SystemManagerPanelController extends SubPaneController {
 
                 panelNameTextField.setText(panel.getName());
                 panelCodeTextField.setText(panel.getCode());
-                if(panel.getWarningMAF() != null) {
+                if(panel.getVariantConfig().getWarningMAF() != null) {
                     warningMAFCheckBox.setSelected(true);
                     warningMAFTextField.setDisable(false);
-                    warningMAFTextField.setText(panel.getWarningMAF().toString());
+                    warningMAFTextField.setText(panel.getVariantConfig().getWarningMAF().toString());
                 }
-                if(panel.getWarningReadDepth() != null) {
+                if(panel.getVariantConfig().getWarningReadDepth() != null) {
                     warningReadDepthCheckBox.setSelected(true);
                     warningReadDepthTextField.setDisable(false);
-                    warningReadDepthTextField.setText(panel.getWarningReadDepth().toString());
+                    warningReadDepthTextField.setText(panel.getVariantConfig().getWarningReadDepth().toString());
                 }
-                if(panel.getReportCutOffParams().getScope() != null) {
-                    ReportCutOffParams params = panel.getReportCutOffParams();
+                if(panel.getVariantConfig().getReportCutOffParams().getScope() != null) {
+                    ReportCutOffParams params = panel.getVariantConfig().getReportCutOffParams();
                     scopeCheckBox.setSelected(true);
                     scopeComboBox.setDisable(false);
                     scopeComboBox.getSelectionModel().select(params.getScope());
 
-                    if(panel.getReportCutOffParams().getMinAlleleFrequency() != null) minAlleleFrequencyTextField.setText(params.getMinAlleleFrequency().toString());
-                    if(panel.getReportCutOffParams().getMinReadDepth() != null) minReadDepthTextField.setText(params.getMinReadDepth().toString());
-                    if(panel.getReportCutOffParams().getMinAlternateCount() != null) minAlternateCountTextField.setText(params.getMinAlternateCount().toString());
-                    if(panel.getReportCutOffParams().getPopulationFrequencyDBs() != null) populationFrequencyDBsTextField.setText(params.getPopulationFrequencyDBs());
-                    if(panel.getReportCutOffParams().getPopulationFrequency() != null) populationFrequencyTextField.setText(params.getPopulationFrequency().toString());
+                    if(panel.getVariantConfig().getReportCutOffParams().getMinAlleleFrequency() != null) minAlleleFrequencyTextField.setText(params.getMinAlleleFrequency().toString());
+                    if(panel.getVariantConfig().getReportCutOffParams().getMinReadDepth() != null) minReadDepthTextField.setText(params.getMinReadDepth().toString());
+                    if(panel.getVariantConfig().getReportCutOffParams().getMinAlternateCount() != null) minAlternateCountTextField.setText(params.getMinAlternateCount().toString());
+                    if(panel.getVariantConfig().getReportCutOffParams().getPopulationFrequencyDBs() != null) populationFrequencyDBsTextField.setText(params.getPopulationFrequencyDBs());
+                    if(panel.getVariantConfig().getReportCutOffParams().getPopulationFrequency() != null) populationFrequencyTextField.setText(params.getPopulationFrequency().toString());
 
                 }
 
-                if(panel.getEssentialGenes() != null) essentialGenesTextField.setText(panel.getEssentialGenes());
-                if(panel.getGeneRepresentativeTranscript() != null) geneRepresentativeTranscriptTextField.setText(panel.getGeneRepresentativeTranscript());
+                if(panel.getVariantConfig().getEssentialGenes() != null) essentialGenesTextField.setText(panel.getVariantConfig().getEssentialGenes());
+                if(panel.getVariantConfig().getGeneRepresentativeTranscript() != null) geneRepresentativeTranscriptTextField.setText(panel.getVariantConfig().getGeneRepresentativeTranscript());
 
                 Optional<ComboBoxItem> sampleSourceItem =
                         sampleSourceComboBox.getItems().stream().filter(item -> item.getValue().equalsIgnoreCase(panel.getSampleSource())).findFirst();
