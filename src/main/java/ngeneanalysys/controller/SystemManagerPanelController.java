@@ -492,6 +492,8 @@ public class SystemManagerPanelController extends SubPaneController {
             ReportCutOffParams reportCutOffParams = setReportCutOffParams();
 
             params.put("reportCutOffParams", reportCutOffParams);
+            params.put("essentialGenes", essentialGenesTextField.getText());
+            params.put("geneRepresentativeTranscript", geneRepresentativeTranscriptTextField.getText());
 
             params.put("target", targetComboBox.getSelectionModel().getSelectedItem().getValue());
             params.put("analysisType", analysisTypeComboBox.getSelectionModel().getSelectedItem().getValue());
@@ -647,6 +649,7 @@ public class SystemManagerPanelController extends SubPaneController {
     @FXML
     public void panelAdd() {
         titleLabel.setText("panel add");
+        panelId = 0;
         setDisabledItem(false);
         resetItem();
     }
