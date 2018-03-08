@@ -93,8 +93,11 @@ public class Panel {
         return essentialGenes;
     }
 
-    public void setGeneRepresentativeTranscript(String geneRepresentativeTranscript) {
-        this.geneRepresentativeTranscript = geneRepresentativeTranscript;
+    /**
+     * @return geneRepresentativeTranscript
+     */
+    public String getGeneRepresentativeTranscript() {
+        return geneRepresentativeTranscript;
     }
 
     @Override
