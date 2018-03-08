@@ -254,6 +254,7 @@ public class SampleUploadController extends BaseStageController{
 
     }
 
+
     public String getRunName() {
         return textFieldRunName.getText();
     }

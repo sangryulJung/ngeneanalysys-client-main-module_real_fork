@@ -163,8 +163,8 @@ public class MainController extends BaseStageController {
         primaryStage.setResizable(true);
         primaryStage.setMinHeight(setWindowHeight + 35);
         primaryStage.setHeight(setWindowHeight + 35);
-        primaryStage.setMinWidth(1290);
-        primaryStage.setWidth(1290);
+        primaryStage.setMinWidth(1280);
+        primaryStage.setWidth(1280);
         primaryStage.setResizable(false);
         primaryStage.centerOnScreen();
         primaryStage.show();
@@ -320,7 +320,7 @@ public class MainController extends BaseStageController {
             topMenus = new TopMenu[3];
             topMenuContent = new Node[topMenus.length];
             TopMenu menu = new TopMenu();
-            menu.setMenuName("System Manager");
+            menu.setMenuName("MANAGER");
             menu.setFxmlPath(FXMLConstants.SYSTEM_MANAGER_HOME);
             menu.setDisplayOrder(2);
             menu.setStaticMenu(true);
@@ -330,14 +330,14 @@ public class MainController extends BaseStageController {
             topMenuContent = new Node[topMenus.length];
         }
         TopMenu menu = new TopMenu();
-        menu.setMenuName("Home");
+        menu.setMenuName("DASH BOARD");
         menu.setFxmlPath(FXMLConstants.HOME);
         menu.setDisplayOrder(0);
         menu.setStaticMenu(true);
         topMenus[0] = menu;
 
         menu = new TopMenu();
-        menu.setMenuName("Past Result");
+        menu.setMenuName("RESULT");
         menu.setFxmlPath(FXMLConstants.PAST_RESULTS);
         menu.setDisplayOrder(1);
         menu.setStaticMenu(true);
@@ -569,12 +569,12 @@ public class MainController extends BaseStageController {
 
                 if("homeWrapper".equals(currentShowFrameId)) {	// 이전 화면이 분석자 HOME인 경우 자동 새로고침 토글
                     homeController.autoRefreshTimeline.stop();
-                    homeController.sampleListAutoRefreshTimeline.stop();
+                    //homeController.sampleListAutoRefreshTimeline.stop();
                 } else if("experimentPastResultsWrapper".equals(currentShowFrameId)) {	// 이전 화면이 분석자 Past Results인 경우 자동 새로고침 토글
                     pastResultsController.pauseAutoRefresh();
                 } else if ("systemManagerHomeWrapper".equals(currentShowFrameId)) {
                     homeController.autoRefreshTimeline.stop();
-                    homeController.sampleListAutoRefreshTimeline.stop();
+                    //homeController.sampleListAutoRefreshTimeline.stop();
                     pastResultsController.pauseAutoRefresh();
                 }
 
@@ -582,7 +582,7 @@ public class MainController extends BaseStageController {
                     // 최초 화면 출력이 아닌 경우 분석자 HOME 화면 자동 새로고침 기능 시작
                     if(!isFirstShow) {
                         homeController.autoRefreshTimeline.play();
-                        homeController.sampleListAutoRefreshTimeline.play();
+                        //homeController.sampleListAutoRefreshTimeline.play();
                     }
                 } else if("experimentPastResultsWrapper".equals(mainFrame.getCenter().getId())) {	// 현재 출력화면이 분석자 Past Results 화면인 경우 다른 화면의 자동 새로고침 실행 토글 처리
                     // 최초 화면 출력이 아닌 경우 분석자 Past Results 화면 자동 새로고침 기능 시작
@@ -690,7 +690,6 @@ public class MainController extends BaseStageController {
             // 분석자 HOME 자동 새로고침 기능 중지
             if(homeController != null && homeController.autoRefreshTimeline != null) {
                 homeController.autoRefreshTimeline.stop();
-                homeController.sampleListAutoRefreshTimeline.stop();
             }
 
             // 분석자 Past Results 자동 새로고침 기능 중지

@@ -1,25 +1,23 @@
 package ngeneanalysys.controller;
 
 import javafx.animation.Animation;
+import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Pagination;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
+import ngeneanalysys.animaition.HddStatusTimer;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.model.*;
-import ngeneanalysys.model.Panel;
 import ngeneanalysys.model.paged.PagedRun;
-import ngeneanalysys.model.paged.PagedSample;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
@@ -30,9 +28,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
-
-import static ngeneanalysys.code.AnalysisJobStatusCode.*;
 
 /**
  * @author Jang
@@ -42,87 +37,46 @@ public class HomeController extends SubPaneController{
     private static Logger logger = LoggerUtil.getLogger();
 
     @FXML
-    private Canvas cpuCanvas;
-
-    @FXML
-    private Canvas memoryCanvas;
-
-    @FXML
     private Canvas hddCanvas;
+
+    @FXML
+    private Canvas availableCanvas;
 
     @FXML
     private GridPane homeWrapper;
 
     @FXML
-    private GridPane runListGridPane;
+    private HBox runListHBox;
 
-    @FXML
-    private GridPane sampleListGridPane;
-
-    @FXML
-    private Label runningSampleAnalysisJobCount;
-
-    @FXML
-    private Label queuedSampleAnalysisJobCount;
-
-    @FXML
-    private Label completedSampleAnalysisJobCount;
-
-    @FXML
-    private Label failedSampleAnalysisJobCount;
-
-    @FXML
-    private Button buttonUpload;
-
-    @FXML
-    private Pagination sampleListPagination;
 
     /** API Service */
     private APIService apiService;
     /** Timer */
     public Timeline autoRefreshTimeline;
 
-    public Timeline sampleListAutoRefreshTimeline;
-
-    private List<TextField> runNameFields;
-    private List<RunAnalysisJobStatusBox> runStatusFields;
-    private List<TextField> runDateFields;
-    private List<TextField> sampleNameFields;
-    private List<TextField> samplePanelFields;
-    private List<SampleAnalysisJobStatusBox> sampleStatusFields;
-
-    private int currentRunId = -1;
-    private int currentPage = -1;
+    private List<RunStatusVBox> runList;
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("ExperimenterHomeController show..");
+        logger.info("HomeController show..");
 
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
 
+        homeWrapper.getChildren().add(maskerPane);
+        maskerPane.setPrefWidth(getMainController().getMainFrame().getWidth());
+        maskerPane.setPrefHeight(getMainController().getMainFrame().getHeight());
+        maskerPane.setVisible(false);
+
         getMainController().getPrimaryStage().setMaxWidth(1000);
         this.mainController.getMainFrame().setCenter(root);
-        //testAddRuns();
+
         initRunListLayout();
-        initSampleListLayout();
         showRunList();
         autoRefreshTimeline = new Timeline(new KeyFrame(Duration.millis(Integer.parseInt(config.getProperty("analysis.job.auto.refresh.period")) * 1000),
                 ae -> showRunList()));
         autoRefreshTimeline.setCycleCount(Animation.INDEFINITE);
         autoRefreshTimeline.play();
-
-        sampleListAutoRefreshTimeline = new Timeline(new KeyFrame(Duration.millis(Integer.parseInt(config.getProperty("analysis.job.auto.refresh.period")) * 1000),
-                ae -> autoUpdateSampleList()));
-        sampleListAutoRefreshTimeline.setCycleCount(Animation.INDEFINITE);
-        sampleListAutoRefreshTimeline.play();
-
-    }
-
-    private void autoUpdateSampleList() {
-        if(currentPage != -1 && currentRunId != -1) {
-            showSampleList(currentRunId, currentPage);
-        }
     }
 
     /**
@@ -130,6 +84,7 @@ public class HomeController extends SubPaneController{
      */
     @FXML
     public void showUploadFASTQ() {
+        maskerPane.setVisible(true);
         try {
             // Load the fxml file and create a new stage for the popup dialog
             FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.ANALYSIS_SAMPLE_UPLOAD_MAIN);
@@ -142,10 +97,30 @@ public class HomeController extends SubPaneController{
         } catch (IOException e) {
             e.printStackTrace();
         }
+        maskerPane.setVisible(false);
+    }
+
+    private void initRunListLayout() {
+        final int maxRunNumberOfPage = 10;
+        try {
+            runList = new ArrayList<>();
+            for (int i = 0; i < maxRunNumberOfPage; i++) {
+                RunStatusVBox box = new RunStatusVBox();
+                runList.add(box);
+                runListHBox.setPrefWidth(runListHBox.getPrefWidth() + 240);
+                runListHBox.getChildren().add(box);
+                runListHBox.setSpacing(5);
+                AnimationTimer hddStatusTier = new HddStatusTimer(hddCanvas.getGraphicsContext2D(), 0.2, "Usage",
+                "4.32/20 TB", 10);
+                hddStatusTier.start();
+            }
+        } catch (Exception e) {
+            logger.error("HOME -> initRunListLayout", e);
+        }
     }
 
     private void showRunList() {
-        final int maxRunNumberOfPage = runListGridPane.getRowConstraints().size();
+        final int maxRunNumberOfPage = 10;
         CompletableFuture<PagedRun> getPagedRun = new CompletableFuture<>();
         CompletableFuture.supplyAsync(() -> {
             HttpClientResponse response;
@@ -170,308 +145,123 @@ public class HomeController extends SubPaneController{
             int runCount = pagedRun.getResult().size();
             for(int i = 0; i < runCount; i++) {
                 Run run = pagedRun.getResult().get(i);
-                runNameFields.get(i).setText(run.getName());
-                runNameFields.get(i).setOnMouseClicked(e -> {
-                    //showSampleList(run.getId(), 0);
-                    selectRunList(maxRunNumberOfPage, (Node)e.getSource());
-                    if(e.getClickCount() == 1) {
-                        sampleListPagination.setPageFactory(page -> {
-                            showSampleList(run.getId(), page);
-                            currentRunId = run.getId();
-                            currentPage = page;
-                            return new VBox();
-                        });
-                    } else if(e.getClickCount() == 2) {
-                        try {
-                            // Load the fxml file and create a new stage for the popup dialog
-                            FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.ANALYSIS_SAMPLE_UPLOAD_MAIN);
-                            Pane page = loader.load();
-                            SampleUploadController controller = loader.getController();
-                            controller.setRun(run);
-                            controller.setMainController(this.mainController);
-                            controller.setHomeController(this);
-                            controller.show(page);
-                            showRunList();
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                        }
-                    }
-                });
+                runList.get(i).setRunStatus(run);
 
-                runStatusFields.get(i).setStatus(run.getStatus());
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                runDateFields.get(i).setText(format.format(run.getCreatedAt().toDate()));
             }
             for(int i = runCount; i < maxRunNumberOfPage; i++){
-                runNameFields.get(i).setText("");
-                runNameFields.get(i).setOnMouseClicked(null);
-                runDateFields.get(i).setText("");
-                runStatusFields.get(i).setBorder(null);
-                runStatusFields.get(i).setStatus(null);
+                runList.get(i).reset();
             }
         } catch (Exception e) {
             logger.error("HOME -> SHOW RUN LIST", e);
         }
     }
 
-    private void selectRunList(int maxRunNumberOfPage, Node selectedNode) {
-        int rowIndex = -1;
-        if(selectedNode != null) {
-            rowIndex = GridPane.getRowIndex(selectedNode);
-        }
-
-        for(int i = 0; i < maxRunNumberOfPage; i++){
-            StringBuilder style = new StringBuilder("-fx-font-size:11;");
-            style.append("-fx-border-width: 0 0 0 0;-fx-border-color:black;");
-            style.append("-fx-border-radius:0;-fx-max-height:30;-fx-background-color:transparent;-fx-cursor:hand;");
-            if (rowIndex == i) {
-                //style.append("-fx-background-color:#ECAB85;");
-                runNameFields.get(i).setStyle(style.toString() + "-fx-padding : 0 0 0 20;-fx-background-image : url('/layout/images/arrow_end_on.png');-fx-background-repeat:no-repeat;-fx-background-position: left center;");
-                //runNameFields.get(i).setStyle(style.toString() + "-fx-border-width: 0 0 2 0;-fx-border-color:#C30D23;");
-                runStatusFields.get(i).setStyle("-fx-alignment:center;");
-            } else {
-                //style.append("-fx-background-color:transparent;");
-                runNameFields.get(i).setStyle(style.toString());
-                runStatusFields.get(i).setStyle("-fx-alignment:center;");
-            }
-
-            runDateFields.get(i).setStyle(style.toString() + "-fx-alignment:center;");
-        }
-    }
-
-    private void initRunListLayout() {
-        final int maxRunNumberOfPage = runListGridPane.getRowConstraints().size();
-        try {
-            runNameFields = new ArrayList<>();
-            runStatusFields = new ArrayList<>();
-            runDateFields = new ArrayList<>();
-            for (int i = 0; i < maxRunNumberOfPage; i++) {
-                TextField runNameField = new TextField();
-                runNameField.setEditable(false);
-                TextField runDateField = new TextField();
-                runDateField.setEditable(false);
-                runNameFields.add(runNameField);
-                runListGridPane.add(runNameFields.get(i), 0, i);
-                runStatusFields.add(new RunAnalysisJobStatusBox());
-                runListGridPane.add(runStatusFields.get(i), 1, i);
-                runDateFields.add(runDateField);
-                runListGridPane.add(runDateFields.get(i), 2, i);
-            }
-            selectRunList(maxRunNumberOfPage, null);
-        } catch (Exception e) {
-            logger.error("HOME -> initRunListLayout", e);
-        }
-    }
-
-    private void initSampleListLayout() {
-        final int maxItemNumberOfPage = sampleListGridPane.getRowConstraints().size() - 1;
-        try {
-            sampleNameFields = new ArrayList<>();
-            samplePanelFields = new ArrayList<>();
-            sampleStatusFields = new ArrayList<>();
-            for (int i = 0; i < maxItemNumberOfPage; i++) {
-                TextField sampleNameField = new TextField();
-                sampleNameField.setEditable(false);
-                sampleNameFields.add(sampleNameField);
-                StringBuilder style = new StringBuilder("-fx-font-size:11;");
-                style.append("-fx-border-width: 0 0 0 0;-fx-border-color:black;");
-                style.append("-fx-border-radius:0;-fx-background-color:transparent;");
-                style.append("-fx-max-height:30;");
-                style.append("-fx-min-height:30;");
-                sampleNameField.setStyle(style.toString());
-                SampleAnalysisJobStatusBox sampleStatusField = new SampleAnalysisJobStatusBox();
-                sampleStatusFields.add(sampleStatusField);
-                sampleStatusField.setStyle("-fx-alignment:center");
-
-                TextField samplePanelField = new TextField();
-                samplePanelField.setEditable(false);
-                samplePanelField.setStyle(style.toString());
-                samplePanelFields.add(samplePanelField);
-
-                sampleListGridPane.add(sampleNameField, 0, i);
-                sampleListGridPane.add(sampleStatusField, 2, i);
-                sampleListGridPane.add(samplePanelField, 1, i);
-            }
-            sampleListPagination.setVisible(false);
-        } catch (Exception e) {
-            logger.error("HOME -> initSampleListLayout", e);
-        }
-    }
-    private void showSampleList(int runId, int pageIndex){
-        final int maxItemNumberOfPage = sampleListGridPane.getRowConstraints().size() - 1;
-        /*CompletableFuture<List<Panel>> getPanels = new CompletableFuture<>();
-        getPanels.supplyAsync(() -> {
-            HttpClientResponse response = null;
-            try {
-                response = apiService.get("/panels", null, null, false);
-                List<Panel> panels = (List<Panel>)response.getMultiObjectBeforeConvertResponseToJSON(Panel.class, false);
-                getPanels.complete(panels);
-            } catch (Exception e) {
-                getPanels.completeExceptionally(e);
-            }
-            return getPanels;
-        });*/
-
-        CompletableFuture<PagedSample> getPagedSample = new CompletableFuture<>();
-        CompletableFuture.supplyAsync(() -> {
-            HttpClientResponse response;
-            Map<String, Object> params = new HashMap<>();
-            try {
-                params.clear();
-                params.put("runId", runId);
-                params.put("limit", maxItemNumberOfPage);
-                params.put("offset", maxItemNumberOfPage * pageIndex);
-                response = apiService.get("/samples", params, null, false);
-
-                PagedSample pagedSample = response.getObjectBeforeConvertResponseToJSON(PagedSample.class);
-                //logger.info(pagedSample.toString());
-                logger.info(pagedSample.getCount() + "");
-                getPagedSample.complete(pagedSample);
-            } catch (Exception e) {
-                getPagedSample.completeExceptionally(e);
-            }
-            return getPagedSample;
-        });
-        try {
-            List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
-            Map<Integer, Panel> mapPanels = panels.stream().collect(Collectors.toMap(Panel::getId, p -> p));
-            PagedSample pagedSample = getPagedSample.get();
-            runningSampleAnalysisJobCount.setText(
-                    pagedSample.getSampleAnalysisJobCount().getRunningSampleCount().toString());
-            completedSampleAnalysisJobCount.setText(
-                    pagedSample.getSampleAnalysisJobCount().getCompletedSampleCount().toString());
-            queuedSampleAnalysisJobCount.setText(
-                    pagedSample.getSampleAnalysisJobCount().getQueuedSampleCount().toString());
-            failedSampleAnalysisJobCount.setText(
-                    pagedSample.getSampleAnalysisJobCount().getFailedSampleCount().toString());
-            sampleListPagination.setCurrentPageIndex(pageIndex);
-            sampleListPagination.setMaxPageIndicatorCount(3);
-            sampleListPagination.setPageCount((int)Math.ceil((double)pagedSample.getCount() / maxItemNumberOfPage));
-            if (sampleListPagination.getPageCount() < 2)
-                sampleListPagination.setVisible(false);
-            else
-                sampleListPagination.setVisible(true);
-            int sampleCount = pagedSample.getResult().size();
-            List<Sample> sortedSamples = pagedSample.getResult().stream().sorted((s1, s2) -> {
-                if (s1.getId() > s2.getId()) {
-                    return 0;
-                }
-                else {
-                    return -1;
-                }
-            }).collect(Collectors.toList());
-            for(int i = 0; i < sampleCount; i++) {
-                Sample sample = sortedSamples.get(i);
-                sampleNameFields.get(i).setText(sample.getName());
-                sampleStatusFields.get(i).setStatus(sample.getSampleStatus());
-                sampleStatusFields.get(i).setVisible(true);
-                samplePanelFields.get(i).setText(mapPanels.get(sample.getPanelId()).getName());
-            }
-            for(int i = sampleCount; i < maxItemNumberOfPage; i++){
-                sampleNameFields.get(i).setText("");
-                sampleStatusFields.get(i).setVisible(false);
-                samplePanelFields.get(i).setText("");
-            }
-        } catch (Exception e) {
-            logger.error("HOME -> SHOW RUN LIST", e);
-        }
-    }
-
-    class RunAnalysisJobStatusBox extends VBox {
-        private HBox statusBox;
+    class RunStatusVBox extends VBox {
+        private Label runName;
         private Label statusLabel;
-        RunAnalysisJobStatusBox() {
-            super();
-            statusBox = new HBox();
+        private Label startDateLabel;
+        private HBox startDateHBox;
+        private Label FinishDateLabel;
+        private HBox FinishDateHBox;
+        private Label completeLabel;
+        private HBox completeHBox;
+        private Label queuedLabel;
+        private HBox queuedHBox;
+        private Label runningLabel;
+        private HBox runningHBox;
+        private Label FailedLabel;
+        private HBox FailedHBox;
+
+        private VBox itemVBox;
+
+        public RunStatusVBox() {
+            this.setPrefSize(220, 220);
+            this.setMinSize(220, 220);
+            this.setStyle("-fx-effect: dropshadow(gaussian, rgba(0.0, 0.0, 0.0, 0.5), 0.5, 0.5, 0.0, 0.0);" +
+                    "-fx-background-color: white;");
+            HBox topHBox = new HBox();
+            topHBox.setPrefHeight(25);
+            runName = new Label();
             statusLabel = new Label();
-            statusBox.getChildren().add(statusLabel);
-            this.getChildren().add(statusBox);
-            statusBox.setStyle("-fx-alignment:center");
+
+            topHBox.getChildren().add(runName);
+            Insets runNameInsets = new Insets(4,0,0,10);
+            runName.setPadding(runNameInsets);
+            topHBox.setAlignment(Pos.CENTER_LEFT);
+
+            this.getChildren().add(topHBox);
+
+            VBox backgroundVBox = new VBox();
+            Insets insets = new Insets(7,7,7,7);
+            backgroundVBox.setPadding(insets);
+
+            itemVBox = new VBox();
+            itemVBox.setStyle("-fx-background-color : f0f0f0;");
+            itemVBox.setPrefHeight(190);
+            Insets itemInsets = new Insets(10,0,0,10);
+            itemVBox.setPadding(itemInsets);
+            startDateLabel = new Label();
+            startDateHBox = createHBox(startDateLabel, "Start Date : ");
+            FinishDateLabel = new Label();
+            FinishDateHBox = createHBox(FinishDateLabel, "Finish Date: ");
+            completeLabel = new Label();
+            completeHBox = createHBox(completeLabel, "Complete : ");
+            queuedLabel = new Label();
+            queuedHBox = createHBox(queuedLabel, "Queued : ");
+            runningLabel = new Label();
+            runningHBox = createHBox(runningLabel, "Running : ");
+            FailedLabel = new Label();
+            FailedHBox = createHBox(FailedLabel, "Failed : ");
+
+            backgroundVBox.getChildren().add(itemVBox);
+
+            this.getChildren().add(backgroundVBox);
+
+
         }
-        protected void setStatus(String status) {
-            statusLabel.setText(status);
-            statusLabel.setId("jobStatus_" + status);
+
+        public HBox createHBox(Label label, String titleLabelString) {
+            HBox box = new HBox();
+            box.setPrefHeight(20);
+            Label titleLabel = new Label(titleLabelString);
+            titleLabel.setStyle("-fx-text-fill : gray; -fx-font-family : Noto Sans CJK KR Regular;");
+            box.getChildren().add(titleLabel);
+            box.getChildren().add(label);
+
+            return box;
         }
+
+        public void setRunStatus(Run run) {
+            runName.setText(run.getName());
+
+            /////////////run status 설정
+
+            ///////////////////////
+            SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+            if(run.getCreatedAt() != null)
+                startDateLabel.setText(format.format(run.getCreatedAt().toDate()));
+            if(run.getCompletedAt() != null)
+                FinishDateLabel.setText(format.format(run.getCompletedAt().toDate()));
+            if(!itemVBox.getChildren().contains(startDateHBox))
+                itemVBox.getChildren().add(startDateHBox);
+            if(!itemVBox.getChildren().contains(FinishDateHBox))
+                itemVBox.getChildren().add(FinishDateHBox);
+
+        }
+
+        public void reset() {
+            runName.setText("");
+            statusLabel.setText("");
+            startDateLabel.setText("");
+            FinishDateLabel.setText("");
+            FinishDateLabel.setText("");
+            completeLabel.setText("");
+            queuedLabel.setText("");
+            runningLabel.setText("");
+            FailedLabel.setText("");
+            //itemVBox.getChildren().removeAll(itemVBox.getChildren());
+        }
+
     }
 
-    class SampleAnalysisJobStatusBox extends VBox {
-        private HBox statusBox;
-        private Label statusLabelUpload;
-        private Label statusLabelPipeline;
-        private Label statusLabelComplete;
-        private TextField statusMsgTextField;
-        SampleAnalysisJobStatusBox() {
-            super();
-            setVisible(false);
-            statusBox = new HBox();
-            statusBox.setSpacing(5.0);
-            statusLabelUpload = new Label();
-            statusLabelPipeline = new Label();
-            statusLabelComplete = new Label();
-            statusMsgTextField = new TextField();
-            String style = "-fx-font-size:9;" + "-fx-border-width: 0 0 0 0;-fx-border-color:black;" +
-                    "-fx-border-radius:0;-fx-background-color:transparent;" +
-                    "-fx-max-height:30;" +
-                    "-fx-min-height:30;";
-            statusMsgTextField.setStyle(style);
-            statusBox.getChildren().add(statusLabelUpload);
-            //statusBox.getChildren().add(new ImageView(resourceUtil.getImage("/layout/images/icon-arrow_margin.png")));
-            statusBox.getChildren().add(new VBox());
-            statusBox.getChildren().add(statusLabelPipeline);
-            //statusBox.getChildren().add(new ImageView(resourceUtil.getImage("/layout/images/icon-arrow_margin.png")));
-            statusBox.getChildren().add(new VBox());
-            statusBox.getChildren().add(statusLabelComplete);
-            statusBox.getChildren().add(statusMsgTextField);
-            this.getChildren().add(statusBox);
-            statusBox.setStyle("-fx-alignment:center;");
-        }
-        protected void setStatus(SampleStatus status) {
-            if (status.getStep().equals(SAMPLE_ANALYSIS_STEP_UPLOAD)) {
-                statusLabelUpload.setText(SAMPLE_ANALYSIS_STEP_UPLOAD);
-                statusLabelUpload.setId("detail_jobStatus_" + status.getStatus());
-                statusLabelPipeline.setText(SAMPLE_ANALYSIS_STEP_PIPELINE);
-                statusLabelPipeline.setId("detail_jobStatus_" + SAMPLE_ANALYSIS_STATUS_NONE);
-                statusLabelComplete.setText(SAMPLE_ANALYSIS_STATUS_COMPLETE);
-                statusLabelComplete.setId("detail_complete_jobStatus_" + SAMPLE_ANALYSIS_STATUS_NONE);
-            } else if (status.getStep().equals(SAMPLE_ANALYSIS_STEP_PIPELINE)) {
-                statusLabelUpload.setText(SAMPLE_ANALYSIS_STEP_UPLOAD);
-                statusLabelUpload.setId("detail_jobStatus_" + SAMPLE_ANALYSIS_STATUS_COMPLETE);
-                switch (status.getStatus()) {
-                    case SAMPLE_ANALYSIS_STATUS_COMPLETE:
-                        statusLabelPipeline.setText(SAMPLE_ANALYSIS_STEP_PIPELINE);
-                        statusLabelPipeline.setId("detail_jobStatus_" + SAMPLE_ANALYSIS_STATUS_COMPLETE);
-                        statusLabelComplete.setText(SAMPLE_ANALYSIS_STATUS_COMPLETE);
-                        statusLabelComplete.setId("detail_complete_jobStatus_" + SAMPLE_ANALYSIS_STATUS_COMPLETE);
-                        break;
-                    case SAMPLE_ANALYSIS_STATUS_FAIL:
-                        statusLabelPipeline.setText(SAMPLE_ANALYSIS_STEP_PIPELINE);
-                        statusLabelPipeline.setId("detail_jobStatus_" + SAMPLE_ANALYSIS_STATUS_FAIL);
-                        if (status.getProgressPercentage() != null) {
-                            statusLabelComplete.setText(SAMPLE_ANALYSIS_STATUS_FAIL +
-                                    "(" + status.getProgressPercentage() + "%)");
-                        } else {
-                            statusLabelComplete.setText(SAMPLE_ANALYSIS_STATUS_FAIL);
-                        }
-                        statusLabelComplete.setId("detail_complete_jobStatus_" + SAMPLE_ANALYSIS_STATUS_FAIL);
-                        break;
-                    default:
-                        statusLabelPipeline.setText(SAMPLE_ANALYSIS_STEP_PIPELINE);
-                        statusLabelPipeline.setId("detail_jobStatus_" + status.getStatus());
-                        if (status.getProgressPercentage() != null) {
-                            statusLabelComplete.setText(SAMPLE_ANALYSIS_STATUS_COMPLETE + "(" + status.getProgressPercentage() + "%)");
-                        } else {
-                            statusLabelComplete.setText(SAMPLE_ANALYSIS_STATUS_COMPLETE);
-                        }
-
-                        statusLabelComplete.setId("detail_complete_jobStatus_" + SAMPLE_ANALYSIS_STATUS_NONE);
-                        break;
-                }
-            }
-            if(status.getStatusMsg() != null) {
-                statusMsgTextField.setText(status.getStatusMsg());
-            } else {
-                statusMsgTextField.setText("");
-            }
-        }
-    }
 }

@@ -984,7 +984,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
         AnimationTimer siftTimer1 = new ClinicalSignificantTimer(
                 siftCanvas.getGraphicsContext2D(), siftValue, "SIFT", String.format("%7s", siftScore), this.gaugeSpeed);
         AnimationTimer polyphenTimer1 = new ClinicalSignificantTimer(
-                polyphenCanvas.getGraphicsContext2D(), polyphenValue, "POLYPHEN2", String.format("%7s", polyphenScore), this.gaugeSpeed);
+                polyphenCanvas.getGraphicsContext2D(), polyphenValue, "MetaSVM", String.format("%7s", polyphenScore), this.gaugeSpeed);
         AnimationTimer mtTimer1 = new ClinicalSignificantTimer(
                 mtCanvas.getGraphicsContext2D(), mtValue, "MUTATIONTASTER", mtText, this.gaugeSpeed);
         siftCanvas.setOnMouseEntered(event -> siftTimer1.start());

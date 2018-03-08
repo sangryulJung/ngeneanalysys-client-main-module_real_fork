@@ -20,6 +20,26 @@ public class Panel {
     private Boolean isDefault;
     private Integer warningReadDepth;
     private BigDecimal warningMAF;
+    private String essentialGenes;
+    private String geneRepresentativeTranscript;
+
+    private ReportCutOffParams reportCutOffParams;
+
+    /**
+     * @return essentialGenes
+     */
+    public String getEssentialGenes() {
+        return essentialGenes;
+    }
+
+    /**
+     * @return geneRepresentativeTranscript
+     */
+    public String getGeneRepresentativeTranscript() {
+        return geneRepresentativeTranscript;
+    }
+
+    private Integer reportTemplateId;
 
     public ReportCutOffParams getReportCutOffParams() {
         return reportCutOffParams;
@@ -28,10 +48,6 @@ public class Panel {
     public void setReportCutOffParams(ReportCutOffParams reportCutOffParams) {
         this.reportCutOffParams = reportCutOffParams;
     }
-
-    private ReportCutOffParams reportCutOffParams;
-
-    private Integer reportTemplateId;
 
     /**
      * @return reportTemplateId

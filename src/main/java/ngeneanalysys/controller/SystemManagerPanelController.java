@@ -226,6 +226,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
         scopeComboBox.getItems().add("All Variants");
         scopeComboBox.getItems().add("VUS Variants");
+        scopeComboBox.getItems().add("Optional Genes");
         targetComboBox.getSelectionModel().selectFirst();
 
         analysisTypeComboBox.setConverter(new ComboBoxConverter());

@@ -1442,3 +1442,7 @@ Button {
 	-fx-pref-height:20;
 	-fx-max-height:20;
 }
+
+.font_Sans_Regular {
+    -fx-font-family : "Noto Sans CJK KR Regular";
+}

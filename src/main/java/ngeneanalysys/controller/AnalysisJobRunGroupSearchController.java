@@ -264,7 +264,7 @@ public class AnalysisJobRunGroupSearchController extends BaseStageController {
      * @param run
      */
     public void returnJobRunGroup(Run run) {
-        this.pastResultsController.setSearchJobRunGroupInfo(run.getId(), run.getName());
+        //this.pastResultsController.setSearchJobRunGroupInfo(run.getId(), run.getName());
         // dialog close
         ((Stage) searchButton.getScene().getWindow()).close();
     }
