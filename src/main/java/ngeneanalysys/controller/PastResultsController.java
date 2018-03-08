@@ -10,6 +10,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.ExperimentTypeCode;
@@ -363,7 +364,21 @@ public class PastResultsController extends SubPaneController {
 		public void setSampleList(List<SampleView> sampleList) {
 			for(SampleView sampleView : sampleList) {
 				HBox itemHBox = new HBox();
+				final SampleView sample = sampleView;
+				itemHBox.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+					if(event.getClickCount() == 2) {
+						Map<String, Object> detailViewParamMap = new HashMap<>();
+						detailViewParamMap.put("id", sample.getId());
 
+						TopMenu menu = new TopMenu();
+						menu.setId("sample_" + sample.getId());
+						menu.setMenuName(sample.getName());
+						menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_LAYOUT);
+						menu.setParamMap(detailViewParamMap);
+						menu.setStaticMenu(false);
+						mainController.addTopMenu(menu, 2, true);
+					}
+				});
 				String styleClass = "sample_list_label";
 				Label name = new Label(sampleView.getName());
 				labelSize(name, 150., styleClass);

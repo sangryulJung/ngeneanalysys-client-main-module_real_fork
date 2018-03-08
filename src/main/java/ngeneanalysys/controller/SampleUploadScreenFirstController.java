@@ -151,6 +151,16 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             fileList = fileList.stream().filter(file -> file.getName().endsWith(".fastq.gz")).collect(Collectors.toList());
 
             while (!fileList.isEmpty()) {
+                List<File> undeterminedFile = new ArrayList<>();
+                fileList.stream().forEach(file -> {
+                    if(file.getName().toUpperCase().startsWith("UNDETERMINED_"))
+                        undeterminedFile.add(file);
+                });
+
+                if(!undeterminedFile.isEmpty()) fileList.removeAll(undeterminedFile);
+
+                if(fileList.isEmpty()) return;
+
                 mainController.getBasicInformationMap().put("path", folder.getAbsolutePath());
                 File fastqFile = fileList.get(0);
                 String fastqFilePairName = FileUtil.getFASTQFilePairName(fastqFile.getName());
