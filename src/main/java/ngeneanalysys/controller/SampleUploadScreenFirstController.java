@@ -1,5 +1,7 @@
 package ngeneanalysys.controller;
 
+import com.opencsv.CSVReader;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
@@ -19,6 +21,7 @@ import ngeneanalysys.model.paged.PagedAnalysisFile;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.task.SampleSheetDownloadTask;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.FileUtil;
 import ngeneanalysys.util.LoggerUtil;
@@ -29,7 +32,9 @@ import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -56,15 +61,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     @FXML
     private ToggleGroup selectFile;
 
-    @FXML
-    private RadioButton localFastqFilesRadioButton;
-
-    @FXML
-    private RadioButton serverFastqFilesRadioButton;
-
-    @FXML
-    private RadioButton serverRunFolderRadioButton;
-
     private APIService apiService;
 
     List<Panel> panels = null;
@@ -78,8 +74,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     List<AnalysisFile> uploadFileData = null;
 
     List<TextField> sampleNameTextFieldList = new ArrayList<>();
-
-    List<Button> fileSelectButtonList = new ArrayList<>();
 
     List<TextField> patientIdTextFieldList = new ArrayList<>();
 
@@ -101,13 +95,38 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             Map<String, Object> params = new HashMap<>();
             params.put("runDir", path);
 
-            HttpClientResponse response = apiService.get("sampleSheet", params, null, false);
+            Task<Void> task = new SampleSheetDownloadTask(this.sampleUploadController, this, path);
+            final Thread downloadThread = new Thread(task);
 
-            logger.info("ok");
+            downloadThread.setDaemon(true);
+            downloadThread.start();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void setSampleSheet(String path) {
+        try(CSVReader csvReader = new CSVReader(new InputStreamReader(new FileInputStream(path)))) {
+            String[] s;
+            boolean tableData = false;
+            while((s = csvReader.readNext()) != null) {
+                if (tableData && sampleArrayList.size() < 23) {
+                    final String sampleName = s[1];
+                    logger.info(s[0]);
+                    Sample sample = new Sample();
+                    sample.setName(sampleName);
+                    sampleArrayList.add(sample);
+                } else if(s[0].equalsIgnoreCase("Sample_ID")) {
+                    tableData = true;
+                }
+            }
+            tableEdit();
+
+        } catch (IOException e) {
+            DialogUtil.alert("not found", "file not found", this.getMainApp().getPrimaryStage(), true);
+        }
+
     }
 
     /**
@@ -249,7 +268,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             controller.setSampleUploadController(this.sampleUploadController);
             controller.setSampleUploadScreenFirstController(this);
             controller.setRun(true);
-            controller.setPath("/TST170/Files");
             controller.show(page);
         } catch (IOException e) {
             e.printStackTrace();
