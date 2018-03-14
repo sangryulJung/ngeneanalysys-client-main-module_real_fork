@@ -443,7 +443,6 @@ Button {
 .table-view .column-header-background .nested-column-header .label{
 	-fx-font-size:12px;
 	-fx-font-weight:bold;
-	-fx-text-fill:#fff;
 	/*-fx-border-color:
                 transparent
                 derive(-fx-base, 60%)
@@ -461,9 +460,9 @@ Button {
 
 .table-view .column-header {
 	-fx-pref-height:30;
-	-fx-background-color:#C30D23;
-	-fx-border-width : 0.5;
-	-fx-border-color:#ffffff;
+	-fx-background-color: #ffffff;
+	-fx-border-width : 0 0 1 0;
+	-fx-border-color:#adadad;
                     //transparent
                     //derive(-fx-base, 60%)
                     //transparent
@@ -477,21 +476,21 @@ Button {
 	-fx-font-size:12px;
 }
 
-.table-view:focused .table-row-cell:filled:focused:selected {
+/*.table-view:focused .table-row-cell:filled:focused:selected {
     -fx-background-color: #eba181;
     -fx-background-insets: 0, 1, 2;
     -fx-background: -fx-accent;
     -fx-text-fill: -fx-selection-bar-text;
     //-fx-border-color : green;
-}
+}*/
 
 /* Selected row when table not focused */
-.table-row-cell:filled:focused:selected {
+/*.table-row-cell:filled:focused:selected {
     -fx-background-color: #eba181;
     -fx-background-insets: 0, 1, 2;
     -fx-background: -fx-accent;
     -fx-text-fill: -fx-selection-bar-text;
-}
+}*/
 
 .table-row-cell:empty {
 }
@@ -500,13 +499,13 @@ Button {
 }
 
 .table-row-cell:selected {
-	-fx-background:#87CEEB;
+	//-fx-background:#87CEEB;
 }
 
 .table-view .table-cell .label {
 	-fx-text-fill:#656565;
 }
-
+/*
 .table-view:row-selection .column-header-background .nested-column-header .sub_column {
 	-fx-background-color:#cbd3d7;
  	-fx-border-color:#c3c3c3 #c3c3c3 #c3c3c3 #c3c3c3;
@@ -515,7 +514,7 @@ Button {
 
 .sub_table .column-header, .sub_table .column-header-background .filler {
 	-fx-background-color:#acb5ba;
-}
+}*/
 
 .listHeader {
 	-fx-border-color:#000;

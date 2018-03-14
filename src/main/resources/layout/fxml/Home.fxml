@@ -68,17 +68,19 @@
       <Label styleClass="font_size_16" text="LATEST ANALYSIS STATUS" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
          <children>
-            <VBox prefHeight="200.0" prefWidth="100.0" styleClass="small_icon_q" />
+            <VBox maxHeight="-Infinity" prefHeight="200.0" prefWidth="100.0" styleClass="small_icon_q" />
             <Label text="Queued">
                <HBox.margin>
                   <Insets left="3.0" right="5.0" />
                </HBox.margin>
             </Label>
+            <VBox maxHeight="-Infinity" prefHeight="200.0" prefWidth="100.0" styleClass="small_icon_r" />
             <Label text="Runing">
                <HBox.margin>
                   <Insets left="3.0" right="5.0" />
                </HBox.margin>
             </Label>
+            <VBox maxHeight="-Infinity" prefHeight="200.0" prefWidth="100.0" styleClass="small_icon_c" />
             <Label text="Complete">
                <HBox.margin>
                   <Insets left="3.0" right="5.0" />

@@ -59,16 +59,10 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
     private Label tierThreeGenesCountLabel;
 
     @FXML
-    private Label tierThreeTherapeuticLabel;
-
-    @FXML
     private Label tierFourVariantsCountLabel;
 
     @FXML
     private Label tierFourGenesCountLabel;
-
-    @FXML
-    private Label tierFourTherapeuticLabel;
 
     @FXML
     private TableView<VariantAndInterpretationEvidence> tierTable;
@@ -87,21 +81,6 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
 
     @FXML
     private TableColumn<VariantAndInterpretationEvidence, BigDecimal> alleleFrequencyColumn;
-
-    @FXML
-    private TableView<VariantAndInterpretationEvidence> pertinentNegativesTable;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> negativeGeneColumn;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> negativeVariantColumn;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> negativeCauseColumn;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, BigDecimal> negativeAlleleFrequencyColumn;
 
     @FXML
     private Label totalBaseLabel;
@@ -145,9 +124,6 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
     @FXML
     private Tooltip roiCoverageTooltip;
 
-    @FXML
-    private Label diseaseLabel;
-
     /** API 서버 통신 서비스 */
     private APIService apiService;
 
@@ -158,13 +134,6 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         apiService.setStage(getMainController().getPrimaryStage());
 
         Sample sample = (Sample) getParamMap().get("sample");
-
-        List<Diseases> diseases = (List<Diseases>) mainController.getBasicInformationMap().get("diseases");
-        Optional<Diseases> diseasesOptional = diseases.stream().filter(disease -> disease.getId() == sample.getDiseaseId()).findFirst();
-        if(diseasesOptional.isPresent()) {
-            String diseaseName = diseasesOptional.get().getName();
-            diseaseLabel.setText(diseaseName);
-        }
 
         //Tier Table Setting
         tierColumn.setCellValueFactory(cellData -> new SimpleStringProperty(
@@ -193,13 +162,6 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
 
             return new SimpleStringProperty(text);
             });
-
-        //Negative Table Setting
-        negativeGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
-        negativeVariantColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
-        //negativeCauseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getInterpretationEvidence() != null
-        //        ? cellData.getValue().getInterpretationEvidence().getEvidencePersistentNegative() : ""));
-        negativeAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()));
 
         setDisplayItem();
     }
@@ -245,7 +207,6 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
             List<VariantAndInterpretationEvidence> tierFour = settingTierList(list, "T4");
 
             if(!tierTable.getItems().isEmpty()) tierTable.getItems().removeAll(tierTable.getItems());
-            if(!pertinentNegativesTable.getItems().isEmpty()) pertinentNegativesTable.getItems().removeAll(pertinentNegativesTable.getItems());
 
             if(tierOne != null) {
                 tierTable.getItems().addAll(FXCollections.observableArrayList(tierOne));
@@ -309,9 +270,6 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                     if (item.getInterpretationEvidence() != null)
                         snpInDelInterpretations.add(item.getInterpretationEvidence());
                 });
-
-                long count = countTherapeutic(snpInDelInterpretations);
-                tierThreeTherapeuticLabel.setText(String.valueOf(count));
             }
 
             if(tierFour != null) {
@@ -330,13 +288,6 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                     if (item.getInterpretationEvidence() != null)
                         snpInDelInterpretations.add(item.getInterpretationEvidence());
                 });
-
-                long count = countTherapeutic(snpInDelInterpretations);
-                tierFourTherapeuticLabel.setText(String.valueOf(count));
-            }
-
-            if(negativeList != null) {
-                pertinentNegativesTable.setItems(FXCollections.observableArrayList(negativeList));
             }
 
         } catch (Exception e) {

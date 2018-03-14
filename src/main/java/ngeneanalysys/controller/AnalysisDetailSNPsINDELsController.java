@@ -284,11 +284,6 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             filterTitle.setText("Tier Filter");
             setTierFilterBox();
         }
-
-        // Scene Init
-        Scene scene = new Scene(root);
-        currentStage.setScene(scene);
-        currentStage.showAndWait();
     }
 
     public void setTierFilterBox() {

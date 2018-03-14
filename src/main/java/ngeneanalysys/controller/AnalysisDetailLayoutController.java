@@ -16,9 +16,7 @@ import ngeneanalysys.code.enums.AnalysisDetailTabMenuCode;
 import ngeneanalysys.code.enums.ExperimentTypeCode;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
-import ngeneanalysys.model.AnalysisResultSummary;
-import ngeneanalysys.model.Panel;
-import ngeneanalysys.model.Sample;
+import ngeneanalysys.model.*;
 import ngeneanalysys.model.render.AnalysisDetailTabItem;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.FXMLLoadUtil;
@@ -38,35 +36,19 @@ import java.util.Optional;
 public class AnalysisDetailLayoutController extends SubPaneController {
     private static Logger logger = LoggerUtil.getLogger();
 
-    @FXML
-    private HBox summaryBgHBox;
-
-    @FXML
-    private HBox summaryHBox;
-
-    /** 상단 샘플 요약 정보 > 샘플 아이디 */
-    @FXML
-    private Label sampleIdLabel;
-
     /** 상단 샘플 요약 정보 > 사용 패널키트 */
     @FXML
     private Label kitLabel;
-
-    /** 상단 샘플 요약 정보 > 실험방법 */
-    @FXML
-    private Label experimentLabel;
 
     /** 상단 샘플 요약 정보 > 샘플명 */
     @FXML
     private Label sampleNameLabel;
 
-    /** 상단 샘플 요약 정보 > FASTQC 레벨 */
     @FXML
-    private Label qcLabel;
+    private Label runNameLabel;
 
-    /** 상단 샘플 요약 정보 > FASTQC 레벨 아이콘 이미지 */
     @FXML
-    private ImageView qcImageView;
+    private Label diseaseLabel;
 
     /** 상단 탭메뉴 영역 */
     @FXML
@@ -93,6 +75,8 @@ public class AnalysisDetailLayoutController extends SubPaneController {
 
     private AnalysisDetailReportGermlineController analysisDetailReportGermlineController;
 
+    private AnalysisDetailSNPsINDELsController analysisDetailSNPsINDELsController;
+
     /** API 서버 통신 서비스 */
     private APIService apiService;
 
@@ -118,7 +102,10 @@ public class AnalysisDetailLayoutController extends SubPaneController {
 
             getParamMap().put("sample", sample);
 
-            sampleIdLabel.setText(String.format("#%s", sample.getId()));
+            response = apiService.get("runs/" + sample.getRunId() , null, null, true);
+            RunWithSamples run = response.getObjectBeforeConvertResponseToJSON(RunWithSamples.class);
+
+
             List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
             if(panels != null && !panels.isEmpty()) {
                 Optional<Panel> optionalPanel = panels.stream().filter(panel -> panel.getId().equals(sample.getPanelId())).findFirst();
@@ -126,20 +113,21 @@ public class AnalysisDetailLayoutController extends SubPaneController {
                     this.panel = optionalPanel.get();
                     getParamMap().put("panel", panel);
                     kitLabel.setText(optionalPanel.get().getName());
-                    experimentLabel.setText(optionalPanel.get().getAnalysisType());
                 }
             }
-            /*experimentLabel.setText(sample.getAnalysisType());*/
+
             sampleNameLabel.setText(sample.getName());
 
-            String fastQC = sample.getQcResult();
-            /*fastQC = (StringUtils.isEmpty(fastQC) && sample.getQcData() != null)
-                    ? sample.getAnalysisResultSummary().getQualityControl() : fastQC;*/
-            fastQC = (!StringUtils.isEmpty(fastQC)) ? fastQC.toUpperCase() : "NONE";
-            qcLabel.setText(fastQC);
-            qcLabel.getStyleClass().add("font_size_12");
-            qcLabel.getStyleClass().add(String.format("FASTQC_%s", fastQC.toUpperCase()));
-            qcImageView.setImage(resourceUtil.getImage("/layout/images/icon_qc_" + fastQC.toLowerCase() + ".png"));
+            List<Diseases> diseases = (List<Diseases>) mainController.getBasicInformationMap().get("diseases");
+            Optional<Diseases> diseasesOptional = diseases.stream().filter(disease -> disease.getId() == sample.getDiseaseId()).findFirst();
+            if(diseasesOptional.isPresent()) {
+                String diseaseName = diseasesOptional.get().getName();
+                diseaseLabel.setText(diseaseName);
+            }
+
+            runNameLabel.setText(run.getRun().getName());
+
+
 
         } catch (WebAPIException e) {
             e.printStackTrace();
@@ -238,6 +226,12 @@ public class AnalysisDetailLayoutController extends SubPaneController {
                             analysisDetailReportGermlineController.setParamMap(getParamMap());
                             analysisDetailReportGermlineController.show((Parent) node);
                             break;
+                        case FXMLConstants.ANALYSIS_DETAIL_SNPS_INDELS_LAYOUT:
+                            analysisDetailSNPsINDELsController = loader.getController();
+                            analysisDetailSNPsINDELsController.setParamMap(getParamMap());
+                            analysisDetailSNPsINDELsController.setMainController(this.mainController);
+                            analysisDetailSNPsINDELsController.show((Parent) node);
+                        break;
                         default:
                             break;
                     }

@@ -9,31 +9,37 @@
 }
 
 .small_icon_q {
-    -fx-background-image:url('../images/renewal/small_icon_q');
+    -fx-background-image:url('../images/renewal/small_icon_q.png');
+    -fx-background-repeat: no-repeat;
     -fx-pref-width:19;
     -fx-pref-height:19;
 }
 
 .small_icon_r {
-    -fx-background-image:url('../images/renewal/small_icon_r');
+    -fx-background-image:url('../images/renewal/small_icon_r.png');
+    -fx-background-repeat: no-repeat;
     -fx-pref-width:19;
-        -fx-pref-height:19;
+    -fx-pref-height:19;
 }
 
 .small_icon_c {
-    -fx-background-image:url('../images/renewal/small_icon_c');
+    -fx-background-image:url('../images/renewal/small_icon_c.png');
+    -fx-background-repeat: no-repeat;
     -fx-pref-width:19;
-        -fx-pref-height:19;
+    -fx-pref-height:19;
 }
 
 .icon_q {
-    -fx-background-image:url('../images/renewal/icon_q');
+    -fx-background-image:url('../images/renewal/icon_q.png');
+    -fx-background-repeat: no-repeat;
 }
 
 .icon_r {
-    -fx-background-image:url('../images/renewal/icon_r');
+    -fx-background-image:url('../images/renewal/icon_r.png');
+    -fx-background-repeat: no-repeat;
 }
 
 .icon_c {
-    -fx-background-image:url('../images/renewal/icon_c');
+    -fx-background-image:url('../images/renewal/icon_c.png');
+    -fx-background-repeat: no-repeat;
 }
