@@ -695,27 +695,27 @@ public class SystemManagerPanelController extends SubPaneController {
 
                 panelNameTextField.setText(panel.getName());
                 panelCodeTextField.setText(panel.getCode());
-                if(panel.getWarningMAF() != null) {
+                if(panel.getVariantConfig().getWarningMAF() != null) {
                     warningMAFCheckBox.setSelected(true);
                     warningMAFTextField.setDisable(false);
-                    warningMAFTextField.setText(panel.getWarningMAF().toString());
+                    warningMAFTextField.setText(panel.getVariantConfig().getWarningMAF().toString());
                 }
-                if(panel.getWarningReadDepth() != null) {
+                if(panel.getVariantConfig().getWarningReadDepth() != null) {
                     warningReadDepthCheckBox.setSelected(true);
                     warningReadDepthTextField.setDisable(false);
-                    warningReadDepthTextField.setText(panel.getWarningReadDepth().toString());
+                    warningReadDepthTextField.setText(panel.getVariantConfig().getWarningReadDepth().toString());
                 }
-                if(panel.getReportCutOffParams().getScope() != null) {
-                    ReportCutOffParams params = panel.getReportCutOffParams();
+                if(panel.getVariantConfig().getReportCutOffParams().getScope() != null) {
+                    ReportCutOffParams params = panel.getVariantConfig().getReportCutOffParams();
                     scopeCheckBox.setSelected(true);
                     scopeComboBox.setDisable(false);
                     scopeComboBox.getSelectionModel().select(params.getScope());
 
-                    if(panel.getReportCutOffParams().getMinAlleleFrequency() != null) minAlleleFrequencyTextField.setText(params.getMinAlleleFrequency().toString());
-                    if(panel.getReportCutOffParams().getMinReadDepth() != null) minReadDepthTextField.setText(params.getMinReadDepth().toString());
-                    if(panel.getReportCutOffParams().getMinAlternateCount() != null) minAlternateCountTextField.setText(params.getMinAlternateCount().toString());
-                    if(panel.getReportCutOffParams().getPopulationFrequencyDBs() != null) populationFrequencyDBsTextField.setText(params.getPopulationFrequencyDBs());
-                    if(panel.getReportCutOffParams().getPopulationFrequency() != null) populationFrequencyTextField.setText(params.getPopulationFrequency().toString());
+                    if(panel.getVariantConfig().getReportCutOffParams().getMinAlleleFrequency() != null) minAlleleFrequencyTextField.setText(params.getMinAlleleFrequency().toString());
+                    if(panel.getVariantConfig().getReportCutOffParams().getMinReadDepth() != null) minReadDepthTextField.setText(params.getMinReadDepth().toString());
+                    if(panel.getVariantConfig().getReportCutOffParams().getMinAlternateCount() != null) minAlternateCountTextField.setText(params.getMinAlternateCount().toString());
+                    if(panel.getVariantConfig().getReportCutOffParams().getPopulationFrequencyDBs() != null) populationFrequencyDBsTextField.setText(params.getPopulationFrequencyDBs());
+                    if(panel.getVariantConfig().getReportCutOffParams().getPopulationFrequency() != null) populationFrequencyTextField.setText(params.getPopulationFrequency().toString());
 
                 }
 

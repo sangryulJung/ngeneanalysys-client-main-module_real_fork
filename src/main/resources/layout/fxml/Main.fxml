@@ -38,7 +38,7 @@
          <children>
             <HBox id="topMenuArea" alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="900.0">
                <children>
-                  <HBox alignment="TOP_RIGHT" minWidth="160.0" prefHeight="50.0" prefWidth="300.0" styleClass="bg_main_header_logo" />
+                  <HBox alignment="TOP_RIGHT" minWidth="160.0" prefHeight="40.0" prefWidth="300.0" styleClass="bg_main_header_logo" />
                   <Button fx:id="topMenuScrollLeftButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#moveScrollLeft" prefHeight="23.0" prefWidth="8.0" styleClass="scroll_left_btn" visible="false" HBox.hgrow="NEVER">
                      <HBox.margin>
                         <Insets left="5.0" right="5.0" />
@@ -84,7 +84,7 @@
                               <Image url="@../images/icon_user1.png" />
                            </image>
                         </ImageView>
-                        <Label fx:id="loginUserName" alignment="TOP_CENTER" prefWidth="129.0" text="Login User Account" textFill="WHITE">
+                        <Label fx:id="loginUserName" alignment="TOP_CENTER" prefWidth="129.0" style="-fx-font-family: Noto Sans CJK KR Regular;" text="Login User Account" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
@@ -94,6 +94,7 @@
                            <styleClass>
                               <String fx:value="font_size_12" />
                               <String fx:value="user_name" />
+                              <String fx:value="font_Sans_Regular" />
                            </styleClass>
                         </Label>
                         <MenuBar fx:id="userMenuBar" maxHeight="25.0" maxWidth="32.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="32.0">
@@ -139,7 +140,7 @@
                   <Insets right="5.0" />
                </padding>
             </Label>
-            <HBox alignment="TOP_RIGHT" minWidth="160.0" prefHeight="50.0" prefWidth="300.0" styleClass="bg_main_header_logo" />
+            <HBox alignment="TOP_RIGHT" minWidth="160.0" prefHeight="50.0" prefWidth="300.0" styleClass="bg_company_logo" />
          </children>
       </HBox>      
    </children>

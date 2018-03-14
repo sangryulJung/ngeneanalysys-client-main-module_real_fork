@@ -50,8 +50,8 @@ public class PanelView extends Panel {
                 ", deletedAt=" + getDeletedAt() +
                 ", deleted=" + getDeleted() +
                 ", isDefault=" + getIsDefault() +
-                ", warningReadDepth=" + getWarningReadDepth() +
-                ", warningMAF=" + getWarningMAF() +
+                ", warningReadDepth=" + getVariantConfig().getWarningReadDepth() +
+                ", warningMAF=" + getVariantConfig().getWarningMAF() +
                 ", reportTemplateId=" + getReportTemplateId() +
                 ", memberGroupIds=" + memberGroupIds +
                 ", diseaseIds=" + diseaseIds +

@@ -7,3 +7,33 @@
 .text_header {
     -fx-text-fill : #666465;
 }
+
+.small_icon_q {
+    -fx-background-image:url('../images/renewal/small_icon_q');
+    -fx-pref-width:19;
+    -fx-pref-height:19;
+}
+
+.small_icon_r {
+    -fx-background-image:url('../images/renewal/small_icon_r');
+    -fx-pref-width:19;
+        -fx-pref-height:19;
+}
+
+.small_icon_c {
+    -fx-background-image:url('../images/renewal/small_icon_c');
+    -fx-pref-width:19;
+        -fx-pref-height:19;
+}
+
+.icon_q {
+    -fx-background-image:url('../images/renewal/icon_q');
+}
+
+.icon_r {
+    -fx-background-image:url('../images/renewal/icon_r');
+}
+
+.icon_c {
+    -fx-background-image:url('../images/renewal/icon_c');
+}

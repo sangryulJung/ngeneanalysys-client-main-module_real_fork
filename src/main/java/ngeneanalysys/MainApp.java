@@ -97,7 +97,7 @@ public class MainApp extends Application {
 		}
 
 		FXMLLoader loader = load(FXMLConstants.LOGIN);
-		AnchorPane pane = loader.load();
+		GridPane pane = loader.load();
 		LoginController controller = loader.getController();
 		controller.setMainApp(this);
 		controller.show(pane);
