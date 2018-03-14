@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="558.0" prefHeight="558.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemManagerPanelController">
+<AnchorPane maxHeight="558.0" prefHeight="558.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemManagerPanelController">
    <stylesheets>
       <URL value="@../../css/common.css" />
       <URL value="@../../css/experimenter.css" />
@@ -171,8 +171,8 @@
                               </HBox>
                               <Label text="Essential Genes" GridPane.halignment="RIGHT" GridPane.rowIndex="10" />
                               <TextField fx:id="essentialGenesTextField" styleClass="txt_black" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-                              <Label text="Gene Representative Transcript" GridPane.halignment="RIGHT" GridPane.rowIndex="11" />
-                              <TextField fx:id="geneRepresentativeTranscriptTextField" styleClass="txt_black" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                              <Label text="Canonical Transcripts" GridPane.halignment="RIGHT" GridPane.rowIndex="11" />
+                              <TextField fx:id="canonicalTranscriptTextField" styleClass="txt_black" GridPane.columnIndex="1" GridPane.rowIndex="11" />
                            </children>
                         </GridPane>
                         <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="300.0">
