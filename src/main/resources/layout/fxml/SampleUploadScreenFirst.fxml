@@ -75,7 +75,7 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </RadioButton>
-                  <RadioButton fx:id="serverRunFolderRadioButton" mnemonicParsing="false" onMouseClicked="#serverRunFolderAction" text="Server Run Folder" toggleGroup="$selectFile" />
+                  <RadioButton fx:id="serverRunFolderRadioButton" disable="true" mnemonicParsing="false" onMouseClicked="#serverRunFolderAction" text="Server Run Folder" toggleGroup="$selectFile" />
                </children>
             </HBox>
          </children>

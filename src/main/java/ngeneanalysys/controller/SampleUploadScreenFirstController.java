@@ -61,6 +61,15 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     @FXML
     private ToggleGroup selectFile;
 
+    @FXML
+    protected RadioButton localFastqFilesRadioButton;
+
+    @FXML
+    protected RadioButton serverFastqFilesRadioButton;
+
+    @FXML
+    protected RadioButton serverRunFolderRadioButton;
+
     private APIService apiService;
 
     List<Panel> panels = null;
@@ -715,7 +724,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     public void panelSetting(ComboBox<ComboBoxItem> panelBox) {
         List<Panel> panelList = new ArrayList<>();
         if(isServerItem) {
-            panelList.addAll(panels.stream().filter(panel -> panel.getName().contains("TST")).collect(Collectors.toList()));
+            panelList.addAll(panels.stream().filter(panel -> panel.getName().startsWith("TruSight Tumor 170")).collect(Collectors.toList()));
         } else {
             panelList.addAll(panels);
         }

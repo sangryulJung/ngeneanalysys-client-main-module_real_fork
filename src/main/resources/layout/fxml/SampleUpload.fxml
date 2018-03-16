@@ -61,7 +61,7 @@
                      </toggleGroup>
                   </RadioButton>
                   <RadioButton fx:id="sequencerMiSeqRadioButton" mnemonicParsing="false" text="Illumina MiSeq" toggleGroup="$sequencerType" />
-                  <RadioButton fx:id="sequencerMiSeqRadioButton1" mnemonicParsing="false" text="NextSeq DX" toggleGroup="$sequencerType" />
+                  <RadioButton fx:id="nextSeqDxRadioButton" mnemonicParsing="false" text="NextSeq DX" toggleGroup="$sequencerType" />
                   <Label styleClass="help_tooltip">
                      <tooltip>
                         <Tooltip text="Choose sequencing instrument platform" />
