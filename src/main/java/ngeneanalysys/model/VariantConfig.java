@@ -12,7 +12,7 @@ public class VariantConfig {
     private BigDecimal warningMAF;
     private ReportCutOffParams reportCutOffParams;
     private String essentialGenes;
-    private String geneRepresentativeTranscript;
+    private String canonicalTranscripts;
 
     /**
      * @param warningReadDepth
@@ -42,12 +42,6 @@ public class VariantConfig {
         this.essentialGenes = essentialGenes;
     }
 
-    /**
-     * @param geneRepresentativeTranscript
-     */
-    public void setGeneRepresentativeTranscript(String geneRepresentativeTranscript) {
-        this.geneRepresentativeTranscript = geneRepresentativeTranscript;
-    }
 
     /**
      * @return warningReadDepth
@@ -77,10 +71,11 @@ public class VariantConfig {
         return essentialGenes;
     }
 
-    /**
-     * @return geneRepresentativeTranscript
-     */
-    public String getGeneRepresentativeTranscript() {
-        return geneRepresentativeTranscript;
+    public String getCanonicalTranscripts() {
+        return canonicalTranscripts;
+    }
+
+    public void setCanonicalTranscripts(String canonicalTranscripts) {
+        this.canonicalTranscripts = canonicalTranscripts;
     }
 }

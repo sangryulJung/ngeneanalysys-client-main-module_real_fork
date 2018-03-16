@@ -169,7 +169,7 @@ public class SystemManagerPanelController extends SubPaneController {
     private TextField essentialGenesTextField;
 
     @FXML
-    private TextField geneRepresentativeTranscriptTextField;
+    private TextArea canonicalTranscriptTextArea;
 
     @FXML
     private Label titleLabel;
@@ -493,7 +493,7 @@ public class SystemManagerPanelController extends SubPaneController {
             variantConfig.setReportCutOffParams(setReportCutOffParams());
 
             variantConfig.setEssentialGenes(essentialGenesTextField.getText());
-            variantConfig.setGeneRepresentativeTranscript(geneRepresentativeTranscriptTextField.getText());
+            variantConfig.setCanonicalTranscripts(canonicalTranscriptTextArea.getText());
 
             params.put("target", targetComboBox.getSelectionModel().getSelectedItem().getValue());
             params.put("analysisType", analysisTypeComboBox.getSelectionModel().getSelectedItem().getValue());
@@ -600,7 +600,7 @@ public class SystemManagerPanelController extends SubPaneController {
         populationFrequencyDBsTextField.setText("");
         populationFrequencyTextField.setText("");
         essentialGenesTextField.setText("");
-        geneRepresentativeTranscriptTextField.setText("");
+        canonicalTranscriptTextArea.setText("");
     }
 
     private void setDisabledItem(boolean condition) {
@@ -626,7 +626,7 @@ public class SystemManagerPanelController extends SubPaneController {
         populationFrequencyDBsTextField.setDisable(true);
         populationFrequencyTextField.setDisable(true);
         essentialGenesTextField.setDisable(condition);
-        geneRepresentativeTranscriptTextField.setDisable(condition);
+        canonicalTranscriptTextArea.setDisable(condition);
     }
 
     public void deletePanel(Integer panelId) {
@@ -724,7 +724,7 @@ public class SystemManagerPanelController extends SubPaneController {
                 }
 
                 if(panel.getVariantConfig().getEssentialGenes() != null) essentialGenesTextField.setText(panel.getVariantConfig().getEssentialGenes());
-                if(panel.getVariantConfig().getGeneRepresentativeTranscript() != null) geneRepresentativeTranscriptTextField.setText(panel.getVariantConfig().getGeneRepresentativeTranscript());
+                if(panel.getVariantConfig().getCanonicalTranscripts() != null) canonicalTranscriptTextArea.setText(panel.getVariantConfig().getCanonicalTranscripts());
 
                 Optional<ComboBoxItem> sampleSourceItem =
                         sampleSourceComboBox.getItems().stream().filter(item -> item.getValue().equalsIgnoreCase(panel.getSampleSource())).findFirst();
