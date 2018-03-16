@@ -12,11 +12,11 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane fx:id="snvWrapper" prefHeight="380.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNVController">
+<GridPane fx:id="snvWrapper" prefHeight="380.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNVController">
    <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="250.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="200.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="0.0" prefWidth="0.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="1030.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="940.0" />
    </columnConstraints>
    <rowConstraints>
       <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
@@ -27,22 +27,22 @@
             <Insets bottom="10.0" />
          </padding>
       </TableView>
-      <HBox prefHeight="100.0" prefWidth="250.0">
+      <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
-            <VBox fx:id="filterArea" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #a8bbd9;">
+            <VBox fx:id="filterArea" minWidth="-Infinity" prefHeight="200.0" prefWidth="150.0" style="-fx-background-color: #a8bbd9;">
                <HBox.margin>
                   <Insets />
                </HBox.margin></VBox>
-            <Button fx:id="leftSizeButton" maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefWidth="50.0" styleClass="btn_fold">
+            <Button fx:id="leftSizeButton" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="50.0" styleClass="btn_fold">
                <HBox.margin>
                   <Insets />
                </HBox.margin></Button>
          </children>
       </HBox>
-      <HBox prefHeight="100.0" prefWidth="1030.0" GridPane.columnIndex="2">
+      <HBox fx:id="rightContentsHBox" GridPane.columnIndex="2">
          <children>
-            <Button fx:id="rightSizeButton" maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefWidth="50.0" styleClass="right_btn_fold" />
-            <Accordion fx:id="overviewAccordion" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="980.0">
+            <Button fx:id="rightSizeButton" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="50.0" styleClass="right_btn_fold" />
+            <Accordion fx:id="overviewAccordion" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="890.0">
               <panes>
                 <TitledPane animated="false" maxWidth="-Infinity" minWidth="-Infinity" text="untitled 1" />
                 <TitledPane animated="false" maxWidth="-Infinity" minWidth="-Infinity" text="untitled 2" />

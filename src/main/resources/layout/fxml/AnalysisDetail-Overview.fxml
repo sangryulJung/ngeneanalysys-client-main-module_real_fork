@@ -16,11 +16,9 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="experimentPastResultsWrapper" prefHeight="410.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailOverviewController">
+<GridPane fx:id="experimentPastResultsWrapper" prefHeight="410.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailOverviewController">
    <columnConstraints>
-      <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="20.0" />
-      <ColumnConstraints hgrow="SOMETIMES" prefWidth="1240.0" />
-      <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="20.0" />
+      <ColumnConstraints hgrow="SOMETIMES" prefWidth="1140.0" />
    </columnConstraints>
    <rowConstraints>
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" vgrow="NEVER" />
@@ -31,7 +29,7 @@
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="80.0" valignment="TOP" vgrow="NEVER" />
    </rowConstraints>
    <children>
-      <HBox alignment="CENTER_LEFT" prefHeight="30.0" GridPane.columnIndex="1">
+      <HBox alignment="CENTER_LEFT" prefHeight="30.0">
          <children>
             <HBox alignment="BOTTOM_LEFT" HBox.hgrow="ALWAYS">
                <children>
@@ -50,7 +48,7 @@
             <HBox alignment="BOTTOM_RIGHT" />
          </children>
       </HBox>
-      <TableView fx:id="tierTable" prefHeight="149.0" prefWidth="966.0" style="-fx-border-width: 0;" GridPane.columnIndex="1" GridPane.rowIndex="3">
+      <TableView fx:id="tierTable" prefHeight="149.0" prefWidth="966.0" style="-fx-border-width: 0;" GridPane.rowIndex="3">
          <columns>
             <TableColumn fx:id="tierColumn" editable="false" prefWidth="75.0" sortable="false" text="Tier" />
             <TableColumn fx:id="geneColumn" editable="false" prefWidth="100.0" sortable="false" text="Gene" />
@@ -59,7 +57,7 @@
             <TableColumn fx:id="therapeuticColumn" editable="false" prefWidth="791.5556640625" sortable="false" text="Therapeutic drug and prognosis" />
          </columns>
       </TableView>
-      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5">
          <children>
             <VBox prefHeight="75.0" prefWidth="864.0">
                <children>
@@ -171,7 +169,7 @@
             </VBox>
          </children>
       </HBox>
-      <Label alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="85.0" style="-fx-pref-height: 30;" text="QC MATRIX" GridPane.columnIndex="1" GridPane.rowIndex="4">
+      <Label alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="85.0" style="-fx-pref-height: 30;" text="QC MATRIX" GridPane.rowIndex="4">
          <styleClass>
             <String fx:value="h2" />
             <String fx:value="txt_black" />
@@ -181,7 +179,7 @@
             <Insets />
          </GridPane.margin>
       </Label>
-      <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="1">
          <children>
             <GridPane prefWidth="240.0">
               <columnConstraints>

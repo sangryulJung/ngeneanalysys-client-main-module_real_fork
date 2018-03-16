@@ -6,6 +6,7 @@ import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.util.LoggerUtil;
@@ -36,27 +37,30 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     private TableView variantListTableView;
 
     @FXML
+    private HBox rightContentsHBox;
+
+    @FXML
     private VBox filterArea;
 
     private AnalysisDetailVariantsController variantsController;
 
     private final double leftFoldedWidth = 50;
-    private final double leftExpandedWidth = 250;
+    private final double leftExpandedWidth = 200;
 
     private final double rightFoldedWidth = 50;
-    private final double rightStandardWidth = 1030;
-    private final double rightFullWidth = 1230;
+    private final double rightStandardWidth = 940;
+    private final double rightFullWidth = 1090;
 
     private final double centerFoldedWidth = 0;
-    private final double centerStandardWidth = 980;
-    private final double centerFullWidth = 1180;
+    private final double centerStandardWidth = 890;
+    private final double centerFullWidth = 1040;
 
     private final double minSize = 0;
-    private final double standardAccordionSize = 930;
-    private final double maxAccordionSize = 1180;
+    private final double standardAccordionSize = 890;
+    private final double maxAccordionSize = 1040;
 
-    private final double standardTableSize = 930;
-    private final double maxTableSize = 1180;
+    private final double standardTableSize = 890;
+    private final double maxTableSize = 1040;
 
     /**
      * @param variantsController
@@ -96,25 +100,27 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         snvWrapper.getColumnConstraints().get(0).setPrefWidth(this.leftExpandedWidth);
         if(snvWrapper.getColumnConstraints().get(1).getPrefWidth() == 0) {
             snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightStandardWidth);
+            rightContentsHBox.setPrefWidth(this.rightStandardWidth);
             overviewAccordion.setPrefWidth(this.standardAccordionSize);
             //variantListTableView.setPrefWidth(this.minSize);
         } else {
-            snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerFullWidth);
+            snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerStandardWidth);
             overviewAccordion.setPrefWidth(this.minSize);
             //variantListTableView.setPrefWidth(this.standardTableSize);
         }
-        filterArea.setPrefWidth(200);
+        filterArea.setPrefWidth(150);
         leftSizeButton.getStyleClass().clear();
         leftSizeButton.getStyleClass().add("btn_fold");
     }
     private void foldLeft(){
-        snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.leftFoldedWidth);
+        snvWrapper.getColumnConstraints().get(0).setPrefWidth(this.leftFoldedWidth);
+        rightContentsHBox.setPrefWidth(this.rightStandardWidth);
         if(snvWrapper.getColumnConstraints().get(1).getPrefWidth() == 0) {
             snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightFullWidth);
             overviewAccordion.setPrefWidth(this.maxAccordionSize);
             //variantListTableView.setPrefWidth(this.minSize);
         } else {
-            snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerStandardWidth);
+            snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerFullWidth);
             overviewAccordion.setPrefWidth(this.minSize);
             //variantListTableView.setPrefWidth(this.maxTableSize);
         }
@@ -141,8 +147,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
     private void foldRight(){
         snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightFoldedWidth);
-        if(snvWrapper.getColumnConstraints().get(0).getPrefWidth() == 250) {
+        if(snvWrapper.getColumnConstraints().get(0).getPrefWidth() == 200) {
             snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerStandardWidth);
+            //rightContentsHBox.setPrefWidth();
             overviewAccordion.setPrefWidth(this.standardAccordionSize);
         } else {
             snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerFullWidth);
