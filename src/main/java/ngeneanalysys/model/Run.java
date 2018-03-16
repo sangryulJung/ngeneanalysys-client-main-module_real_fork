@@ -24,7 +24,10 @@ public class Run implements Serializable {
     private String status;
 
     @JsonProperty(value = "statusMsg")
-   private String statusMsg;
+    private String statusMsg;
+
+    @JsonProperty(value = "serverRunDir")
+    private String serverRunDir;
 
     @JsonProperty(value = "createdAt")
     private DateTime createdAt;
@@ -104,6 +107,8 @@ public class Run implements Serializable {
         return statusMsg;
     }
 
+    public String getServerRunDir() { return serverRunDir; }
+
     public DateTime getCreatedAt() {
         return createdAt;
     }
@@ -137,12 +142,16 @@ public class Run implements Serializable {
                 ", sequencingPlatform='" + sequencingPlatform + '\'' +
                 ", status='" + status + '\'' +
                 ", statusMsg='" + statusMsg + '\'' +
+                ", serverRunDir='" + serverRunDir + '\'' +
                 ", createdAt=" + createdAt +
                 ", startedAt=" + startedAt +
                 ", completedAt=" + completedAt +
                 ", updatedAt=" + updatedAt +
                 ", deletedAt=" + deletedAt +
                 ", deleted=" + deleted +
+                ", memberName='" + memberName + '\'' +
+                ", loginId='" + loginId + '\'' +
+                ", memberGroupName='" + memberGroupName + '\'' +
                 '}';
     }
 }
