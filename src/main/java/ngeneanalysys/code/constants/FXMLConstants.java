@@ -57,9 +57,6 @@ public class FXMLConstants {
 	/** FAST 파일 업로드 창 */
 	public static final String ANALYSIS_SAMPLE_UPLOAD_PROGRESS_TASK = "/layout/fxml/AnalysisSampleUploadProgressTask.fxml";
 	
-	/** FAST 파일 업로드 상세 정보 창 */
-	public static final String ANALYSIS_SAMPLE_UPLOAD_PROGRESS_DETAIL = "/layout/fxml/AnalysisSampleUploadProgressDetail.fxml";
-	
 	/** 분석 상세 레이아웃 화면 */
 	public static final String ANALYSIS_DETAIL_LAYOUT = "/layout/fxml/AnalysisDetailLayout.fxml";
 	
@@ -164,5 +161,9 @@ public class FXMLConstants {
 	public static final String VIRTUAL_PANEL_EDIT = "/layout/fxml/VirtualPanelEdit.fxml";
 
 	public static final String SERVER_DIRECTORY_VIEW = "/layout/fxml/serverDirectoryView.fxml";
+
+	public static final String ANALYSIS_DETAIL_VARIANTS = "/layout/fxml/AnalysisDetail-Variants.fxml";
+
+	public static final String ANALYSIS_DETAIL_VARIANTS_SNV = "/layout/fxml/AnalysisDetail-SNV.fxml";
 
 }

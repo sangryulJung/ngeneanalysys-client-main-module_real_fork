@@ -77,6 +77,8 @@ public class AnalysisDetailLayoutController extends SubPaneController {
 
     private AnalysisDetailSNPsINDELsController analysisDetailSNPsINDELsController;
 
+    private AnalysisDetailVariantsController analysisDetailVariantsController;
+
     /** API 서버 통신 서비스 */
     private APIService apiService;
 
@@ -232,6 +234,12 @@ public class AnalysisDetailLayoutController extends SubPaneController {
                             analysisDetailSNPsINDELsController.setMainController(this.mainController);
                             analysisDetailSNPsINDELsController.show((Parent) node);
                         break;
+                        case FXMLConstants.ANALYSIS_DETAIL_VARIANTS:
+                            analysisDetailVariantsController = loader.getController();
+                            analysisDetailVariantsController.setParamMap(getParamMap());
+                            analysisDetailVariantsController.setMainController(this.mainController);
+                            analysisDetailVariantsController.show((Parent) node);
+                            break;
                         default:
                             break;
                     }

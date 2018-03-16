@@ -7,6 +7,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -91,6 +93,29 @@
       <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="360.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
          <children>
             <Label styleClass="font_size_16" text="NEWS &amp; TIP" />
+            <Label alignment="TOP_LEFT" maxHeight="42.0" maxWidth="1.7976931348623157E308" minHeight="42.0" prefHeight="42.0" styleClass="font_size_14" text="Title" wrapText="true">
+               <VBox.margin>
+                  <Insets left="15.0" />
+               </VBox.margin>
+            </Label>
+            <Label alignment="TOP_LEFT" maxHeight="120.0" maxWidth="1.7976931348623157E308" minHeight="120.0" prefHeight="120.0" style="-fx-font-family: Noto Sans CJK KR Regular;" styleClass="font_size_12" text="Title" wrapText="true">
+               <VBox.margin>
+                  <Insets left="15.0" />
+               </VBox.margin>
+            </Label>
+            <HBox fx:id="toggleGroupHBox" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="20.0" spacing="10.0">
+               <children>
+                  <ToggleButton mnemonicParsing="false" styleClass="toggle_button">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="newsTipGroup" />
+                     </toggleGroup>
+                  </ToggleButton>
+                  <ToggleButton mnemonicParsing="false" styleClass="toggle_button" toggleGroup="$newsTipGroup" />
+                  <ToggleButton mnemonicParsing="false" styleClass="toggle_button" toggleGroup="$newsTipGroup" />
+                  <ToggleButton mnemonicParsing="false" styleClass="toggle_button" toggleGroup="$newsTipGroup" />
+                  <ToggleButton mnemonicParsing="false" styleClass="toggle_button" toggleGroup="$newsTipGroup" />
+               </children>
+            </HBox>
          </children>
       </VBox>
       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
@@ -98,16 +123,26 @@
             <Label styleClass="font_size_16" text="SW INFO" />
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <HBox prefHeight="30.0" prefWidth="200.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
                      <VBox.margin>
                         <Insets top="50.0" />
                      </VBox.margin>
                      <children>
+                        <Button mnemonicParsing="false" styleClass="sw_info_arrow">
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin>
+                        </Button>
                         <Label text="Analysis Tools" />
                      </children>
                   </HBox>
-                  <HBox prefHeight="30.0" prefWidth="200.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
                      <children>
+                        <Button mnemonicParsing="false" styleClass="sw_info_arrow">
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin>
+                        </Button>
                         <Label text="Annotation Database" />
                      </children>
                   </HBox>

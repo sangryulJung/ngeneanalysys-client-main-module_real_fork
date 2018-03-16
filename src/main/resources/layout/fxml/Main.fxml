@@ -49,7 +49,7 @@
                         <Insets right="5.0" />
                      </HBox.margin>
                      <children>
-                        <ScrollPane fx:id="topMenuScrollPane" focusTraversable="false" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="900.0" minHeight="-Infinity" pannable="true" prefHeight="45.0" prefWidth="700.0" vbarPolicy="NEVER">
+                        <ScrollPane fx:id="topMenuScrollPane" focusTraversable="false" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="900.0" minHeight="-Infinity" pannable="true" prefHeight="60.0" prefWidth="700.0" vbarPolicy="NEVER">
                            <content>
                               <GridPane>
                                  <columnConstraints>

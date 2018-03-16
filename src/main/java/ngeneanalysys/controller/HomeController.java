@@ -182,13 +182,19 @@ public class HomeController extends SubPaneController{
             HBox topHBox = new HBox();
             topHBox.setPrefHeight(25);
             runName = new Label();
+            runName.setMinWidth(190);
+            runName.setPrefWidth(190);
             statusLabel = new Label();
+            statusLabel.setMinWidth(18);
+            statusLabel.setPrefWidth(18);
 
             topHBox.getChildren().add(runName);
+            topHBox.getChildren().add(statusLabel);
             Insets runNameInsets = new Insets(4,0,0,10);
             runName.setPadding(runNameInsets);
+            Insets statusInsets = new Insets(4,0,0,0);
+            statusLabel.setPadding(statusInsets);
             topHBox.setAlignment(Pos.CENTER_LEFT);
-
             this.getChildren().add(topHBox);
 
             VBox backgroundVBox = new VBox();
@@ -233,9 +239,14 @@ public class HomeController extends SubPaneController{
 
         public void setRunStatus(Run run) {
             runName.setText(run.getName());
-
             /////////////run status 설정
-
+            if(run.getStatus().toUpperCase().equals("QUEUED")) {
+                statusLabel.getStyleClass().add("queued_icon");
+            } else if(run.getStatus().toUpperCase().equals("RUNNING")) {
+                statusLabel.getStyleClass().add("run_icon");
+            } else if(run.getStatus().toUpperCase().equals("COMPLETE")) {
+                statusLabel.getStyleClass().add("complete_icon");
+            }
             ///////////////////////
             SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
             if(run.getCreatedAt() != null)
@@ -251,7 +262,7 @@ public class HomeController extends SubPaneController{
 
         public void reset() {
             runName.setText("");
-            statusLabel.setText("");
+            statusLabel.getStyleClass().removeAll(startDateHBox.getStyleClass());
             startDateLabel.setText("");
             FinishDateLabel.setText("");
             FinishDateLabel.setText("");
