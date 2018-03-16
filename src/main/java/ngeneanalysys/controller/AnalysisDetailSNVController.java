@@ -52,10 +52,10 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     private final double centerFullWidth = 1180;
 
     private final double minSize = 0;
-    private final double standardAccordionSize = 980;
+    private final double standardAccordionSize = 930;
     private final double maxAccordionSize = 1180;
 
-    private final double standardTableSize = 980;
+    private final double standardTableSize = 930;
     private final double maxTableSize = 1180;
 
     /**
@@ -97,11 +97,11 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         if(snvWrapper.getColumnConstraints().get(1).getPrefWidth() == 0) {
             snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightStandardWidth);
             overviewAccordion.setPrefWidth(this.standardAccordionSize);
-            variantListTableView.setPrefWidth(this.minSize);
+            //variantListTableView.setPrefWidth(this.minSize);
         } else {
             snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerFullWidth);
             overviewAccordion.setPrefWidth(this.minSize);
-            variantListTableView.setPrefWidth(this.standardTableSize);
+            //variantListTableView.setPrefWidth(this.standardTableSize);
         }
         filterArea.setPrefWidth(200);
         leftSizeButton.getStyleClass().clear();
@@ -112,11 +112,11 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         if(snvWrapper.getColumnConstraints().get(1).getPrefWidth() == 0) {
             snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightFullWidth);
             overviewAccordion.setPrefWidth(this.maxAccordionSize);
-            variantListTableView.setPrefWidth(this.minSize);
+            //variantListTableView.setPrefWidth(this.minSize);
         } else {
             snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerStandardWidth);
             overviewAccordion.setPrefWidth(this.minSize);
-            variantListTableView.setPrefWidth(this.maxTableSize);
+            //variantListTableView.setPrefWidth(this.maxTableSize);
         }
         filterArea.setPrefWidth(0);
         leftSizeButton.getStyleClass().clear();
@@ -131,7 +131,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         if(snvWrapper.getColumnConstraints().get(0).getPrefWidth() == 250) {
             snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightStandardWidth);
 
-            variantListTableView.setPrefWidth(this.minSize);
+            //variantListTableView.setPrefWidth(this.minSize);
         } else {
             snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightFullWidth);
         }
@@ -143,10 +143,11 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightFoldedWidth);
         if(snvWrapper.getColumnConstraints().get(0).getPrefWidth() == 250) {
             snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerStandardWidth);
+            overviewAccordion.setPrefWidth(this.standardAccordionSize);
         } else {
             snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerFullWidth);
         }
-        overviewAccordion.setPrefWidth(this.standardAccordionSize);
+
         rightSizeButton.getStyleClass().clear();
         rightSizeButton.getStyleClass().add("right_btn_expand");
     }
