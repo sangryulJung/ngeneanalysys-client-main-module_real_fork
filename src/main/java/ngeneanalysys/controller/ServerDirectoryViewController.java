@@ -146,7 +146,7 @@ public class ServerDirectoryViewController extends BaseStageController {
             TreeItem<ServerFile> leaf = null;
             if(file.getIsFile().equalsIgnoreCase("false")) {
                 leaf = new TreeItem(file, new ImageView(folderImage));
-            } else if(!isRun){
+            } else if(!isRun && file.getName().toLowerCase().endsWith(".fastq.gz")){
                 leaf = new TreeItem(file, new ImageView(fastqImage));
             }
             if(leaf != null) root.getChildren().add(leaf);
@@ -167,7 +167,12 @@ public class ServerDirectoryViewController extends BaseStageController {
                 sampleUploadScreenFirstController.setServerItem(getPathRemoveRoot(current));
             } else {
                 //select fastq files
-
+                TreeItem<ServerFile> current = serverItemTreeView.getSelectionModel().getSelectedItem();
+                if(current.getValue().getName().toLowerCase().endsWith(".fastq.gz")) {
+                    sampleUploadScreenFirstController.setServerItem(getPathRemoveRoot(current.getParent()));
+                } else {
+                    return;
+                }
             }
 
             closeDialog();

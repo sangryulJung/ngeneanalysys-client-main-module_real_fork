@@ -85,6 +85,8 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     private boolean isServerItem = false;
 
+    private String runPath = "";
+
     //화면에 표시될 row 수
     private int totalRow = 0;
 
@@ -94,7 +96,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         try {
             Map<String, Object> params = new HashMap<>();
             params.put("runDir", path);
-
+            runPath = path;
             Task<Void> task = new SampleSheetDownloadTask(this.sampleUploadController, this, path);
             final Thread downloadThread = new Thread(task);
 
@@ -110,12 +112,13 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         try(CSVReader csvReader = new CSVReader(new InputStreamReader(new FileInputStream(path)))) {
             String[] s;
             boolean tableData = false;
+            int i = 1;
             while((s = csvReader.readNext()) != null) {
                 if (tableData && sampleArrayList.size() < 23) {
                     final String sampleName = s[1];
                     logger.info(s[0]);
                     Sample sample = new Sample();
-                    sample.setName(sampleName);
+                    sample.setName(sampleName + "_S" + i++);
                     sampleArrayList.add(sample);
                 } else if(s[0].equalsIgnoreCase("Sample_ID")) {
                     tableData = true;
@@ -576,6 +579,11 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                         params.put("name", sampleUploadController.getRunName());
                     }
                     params.put("sequencingPlatform", sampleUploadController.getSequencerType().getUserData());
+
+                    if(isServerItem) {
+                        params.put("serverRunDir", runPath);
+                    }
+
                     response = apiService.post("/runs", params, null, true);
                     run = response.getObjectBeforeConvertResponseToJSON(Run.class);
                     mainController.getBasicInformationMap().put("runId", run.getId());
@@ -705,9 +713,15 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     }
 
     public void panelSetting(ComboBox<ComboBoxItem> panelBox) {
+        List<Panel> panelList = new ArrayList<>();
+        if(isServerItem) {
+            panelList.addAll(panels.stream().filter(panel -> panel.getName().contains("TST")).collect(Collectors.toList()));
+        } else {
+            panelList.addAll(panels);
+        }
         panelBox.setConverter(new ComboBoxConverter());
         panelBox.getItems().add(new ComboBoxItem());
-        for(Panel panel :  panels) {
+        for(Panel panel :  panelList) {
             panelBox.getItems().add(new ComboBoxItem(panel.getId().toString(), panel.getName()));
         }
         panelBox.getSelectionModel().selectFirst();

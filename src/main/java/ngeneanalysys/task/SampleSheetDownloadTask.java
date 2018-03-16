@@ -5,7 +5,6 @@ import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.SampleUploadController;
 import ngeneanalysys.controller.SampleUploadScreenFirstController;
 import ngeneanalysys.service.APIService;
-import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.httpclient.HttpClientUtil;
 import org.apache.http.HttpEntity;
