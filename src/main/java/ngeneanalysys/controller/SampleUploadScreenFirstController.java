@@ -118,6 +118,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     }
 
     public void setSampleSheet(String path) {
+        if(!sampleArrayList.isEmpty()) sampleArrayList.removeAll(sampleArrayList);
         try(CSVReader csvReader = new CSVReader(new InputStreamReader(new FileInputStream(path)))) {
             String[] s;
             boolean tableData = false;
@@ -309,6 +310,9 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                         return;
                     }
                 });
+            } else {
+                ComboBox<ComboBoxItem> disease = diseaseComboBoxList.get(row);
+                disease.getSelectionModel().clearSelection();
             }
 
             if(sample.getPanelId() != null) {
@@ -325,6 +329,11 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                         return;
                     }
                 });
+            } else {
+                ComboBox<ComboBoxItem> panel = panelComboBoxList.get(row);
+                TextField sampleSource = sampleSourceTextFieldList.get(row);
+                panel.getSelectionModel().select(0);
+                sampleSource.setText("");
             }
 
             //sample Status 가 존재한다면 그에 따른 추가기능의 설정
