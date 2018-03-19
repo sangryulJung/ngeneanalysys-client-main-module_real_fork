@@ -72,25 +72,25 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     private APIService apiService;
 
-    List<Panel> panels = null;
+    private List<Panel> panels = null;
 
-    List<Diseases> diseases = null;
+    private List<Diseases> diseases = null;
 
-    Map<String, Map<String, Object>> fileMap = null;
+    private Map<String, Map<String, Object>> fileMap = null;
 
-    List<File> uploadFileList = null;
+    private List<File> uploadFileList = null;
 
-    List<AnalysisFile> uploadFileData = null;
+    private List<AnalysisFile> uploadFileData = null;
 
-    List<TextField> sampleNameTextFieldList = new ArrayList<>();
+    private List<TextField> sampleNameTextFieldList = new ArrayList<>();
 
-    List<TextField> patientIdTextFieldList = new ArrayList<>();
+    private List<TextField> patientIdTextFieldList = new ArrayList<>();
 
-    List<ComboBox<ComboBoxItem>> diseaseComboBoxList = new ArrayList<>();
+    private List<ComboBox<ComboBoxItem>> diseaseComboBoxList = new ArrayList<>();
 
-    List<ComboBox<ComboBoxItem>> panelComboBoxList = new ArrayList<>();
+    private List<ComboBox<ComboBoxItem>> panelComboBoxList = new ArrayList<>();
 
-    List<TextField> sampleSourceTextFieldList = new ArrayList<>();
+    private List<TextField> sampleSourceTextFieldList = new ArrayList<>();
 
     private boolean isServerItem = false;
 
@@ -99,7 +99,27 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     //화면에 표시될 row 수
     private int totalRow = 0;
 
-    public void setServerItem(String path) {
+    public void setServerFASTQ(String path) {
+        isServerItem = true;
+
+        try {
+            Map<String, Object> params = new HashMap<>();
+            params.put("subPath", path);
+            HttpClientResponse response = apiService.get("/runDir", params, null, false);
+            ServerFileInfo serverFileInfo = response.getObjectBeforeConvertResponseToJSON(ServerFileInfo.class);
+
+            List<ServerFile> serverFiles = serverFileInfo.getChild().stream()
+                    .filter(serverFile -> serverFile.getName().toLowerCase().endsWith("fastq.gz"))
+                    .collect(Collectors.toList());
+
+            setServerFastqList(serverFiles);
+
+        } catch (WebAPIException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setServerRun(String path) {
         isServerItem = true;
         logger.info(path);
         try {
@@ -117,18 +137,55 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         }
     }
 
+    public boolean searchSameSample(String fairName) {
+        if(sampleArrayList == null || sampleArrayList.isEmpty()) return false;
+
+        return sampleArrayList.stream().anyMatch(item -> item.getName().equalsIgnoreCase(fairName));
+    }
+
+
+    public void setServerFastqList(List<ServerFile> serverFiles) {
+        List<ServerFile> undeterminedFile = new ArrayList<>();
+        serverFiles.stream().forEach(file -> {
+            if(file.getName().toUpperCase().startsWith("UNDETERMINED_"))
+                undeterminedFile.add(file);
+        });
+
+        if(!undeterminedFile.isEmpty()) serverFiles.removeAll(undeterminedFile);
+
+        while (!serverFiles.isEmpty()) {
+            ServerFile serverFile = serverFiles.get(0);
+            String fastqFilePairName = FileUtil.getFASTQFilePairName(serverFile.getName());
+
+            List<ServerFile> pairFileList = serverFiles.stream().filter(file ->
+                    file.getName().startsWith(fastqFilePairName)).collect(Collectors.toList());
+
+            //fastq 파일이 짝을 이루고 올리는데 실패한 파일인 경우
+           if (pairFileList.size() == 2 && !checkSameSample(fastqFilePairName)) {
+                Sample sample = new Sample();
+                sample.setName(fastqFilePairName);
+                sampleArrayList.add(sample);
+            }
+
+            if(sampleArrayList.size() == 23) break;
+
+            serverFiles.removeAll(pairFileList);
+        }
+
+        tableEdit();
+    }
+
     public void setSampleSheet(String path) {
         if(!sampleArrayList.isEmpty()) sampleArrayList.removeAll(sampleArrayList);
         try(CSVReader csvReader = new CSVReader(new InputStreamReader(new FileInputStream(path)))) {
             String[] s;
             boolean tableData = false;
-            int i = 1;
             while((s = csvReader.readNext()) != null) {
                 if (tableData && sampleArrayList.size() < 23) {
                     final String sampleName = s[1];
                     logger.info(s[0]);
                     Sample sample = new Sample();
-                    sample.setName(sampleName + "_S" + i++);
+                    sample.setName(sampleName);
                     sampleArrayList.add(sample);
                 } else if(s[0].equalsIgnoreCase("Sample_ID")) {
                     tableData = true;
@@ -193,16 +250,15 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             List<File> fileList = new ArrayList<>(Arrays.asList(fileArray));
             fileList = fileList.stream().filter(file -> file.getName().endsWith(".fastq.gz")).collect(Collectors.toList());
 
+            List<File> undeterminedFile = new ArrayList<>();
+            fileList.stream().forEach(file -> {
+                if(file.getName().toUpperCase().startsWith("UNDETERMINED_"))
+                    undeterminedFile.add(file);
+            });
+
+            if(!undeterminedFile.isEmpty()) fileList.removeAll(undeterminedFile);
+
             while (!fileList.isEmpty()) {
-                List<File> undeterminedFile = new ArrayList<>();
-                fileList.stream().forEach(file -> {
-                    if(file.getName().toUpperCase().startsWith("UNDETERMINED_"))
-                        undeterminedFile.add(file);
-                });
-
-                if(!undeterminedFile.isEmpty()) fileList.removeAll(undeterminedFile);
-
-                if(fileList.isEmpty()) return;
 
                 mainController.getBasicInformationMap().put("path", folder.getAbsolutePath());
                 File fastqFile = fileList.get(0);

@@ -1,6 +1,5 @@
 package ngeneanalysys.controller;
 
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -8,7 +7,6 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -18,7 +16,6 @@ import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.ServerFile;
 import ngeneanalysys.model.ServerFileInfo;
 import ngeneanalysys.service.APIService;
-import ngeneanalysys.task.SampleSheetDownloadTask;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
@@ -115,7 +112,7 @@ public class ServerDirectoryViewController extends BaseStageController {
             serverItemTreeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                 if(newValue.getValue().getIsFile().equalsIgnoreCase("true")) return;
                 try {
-                    if(!isRun && (newValue.getChildren() == null || newValue.getChildren().isEmpty())) {
+                    if(/*!isRun && */(newValue.getChildren() == null || newValue.getChildren().isEmpty())) {
                         Map<String, Object> params = new HashMap<>();
                         params.put("subPath", getPathRemoveRoot(newValue));
                         HttpClientResponse response2 = apiService.get("/runDir", params, null, false);
@@ -164,12 +161,12 @@ public class ServerDirectoryViewController extends BaseStageController {
 
             if(isRun) {
                 TreeItem<ServerFile> current = serverItemTreeView.getSelectionModel().getSelectedItem();
-                sampleUploadScreenFirstController.setServerItem(getPathRemoveRoot(current));
+                sampleUploadScreenFirstController.setServerRun(getPathRemoveRoot(current));
             } else {
-                //select fastq files
+                //select FASTQ files
                 TreeItem<ServerFile> current = serverItemTreeView.getSelectionModel().getSelectedItem();
                 if(current.getValue().getName().toLowerCase().endsWith(".fastq.gz")) {
-                    sampleUploadScreenFirstController.setServerItem(getPathRemoveRoot(current.getParent()));
+                    sampleUploadScreenFirstController.setServerFASTQ(getPathRemoveRoot(current.getParent()));
                 } else {
                     return;
                 }
