@@ -5,16 +5,25 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.BaseStageController;
+import ngeneanalysys.exceptions.WebAPIException;
+import ngeneanalysys.model.ServerFile;
+import ngeneanalysys.model.ServerFileInfo;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
+import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Jang
@@ -29,11 +38,23 @@ public class ServerDirectoryViewController extends BaseStageController {
     private APIService apiService;
 
     @FXML
-    private TreeView<String> serverItemTreeView;
+    private TreeView<ServerFile> serverItemTreeView;
 
     private SampleUploadController sampleUploadController;
 
     private SampleUploadScreenFirstController sampleUploadScreenFirstController;
+
+    private boolean isRun = false;
+
+    private final Image folderImage = resourceUtil.getImage("/layout/images/P6_3.png", 18, 18);
+    private final Image fastqImage = resourceUtil.getImage("/layout/images/P6_4.png", 18, 18);
+
+    /**
+     * @param run
+     */
+    public void setRun(boolean run) {
+        isRun = run;
+    }
 
     /**
      * @param sampleUploadScreenFirstController
@@ -77,13 +98,57 @@ public class ServerDirectoryViewController extends BaseStageController {
     }
 
     private void setDirectory() {
-        String rootString = "root";
-        TreeItem<String> root = new TreeItem(rootString);
+
+        try {
+            HttpClientResponse response = apiService.get("/runDir", null, null, false);
+            logger.info(response.getContentString());
+            ServerFileInfo serverFileInfo = response.getObjectBeforeConvertResponseToJSON(ServerFileInfo.class);
+            logger.info(serverFileInfo.toString());
+
+            TreeItem<ServerFile> root = new TreeItem(serverFileInfo.getParent(), new ImageView(folderImage));
+
+            createLeaf(serverFileInfo.getChild(), root);
+
+            serverItemTreeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                if(newValue.getValue().getIsFile().equalsIgnoreCase("true")) return;
+                try {
+                    if(/*!isRun && */(newValue.getChildren() == null || newValue.getChildren().isEmpty())) {
+                        Map<String, Object> params = new HashMap<>();
+                        params.put("subPath", getPathRemoveRoot(newValue));
+                        HttpClientResponse response2 = apiService.get("/runDir", params, null, false);
+                        logger.info(response2.getContentString());
+                        ServerFileInfo serverFileInfo2 = response2.getObjectBeforeConvertResponseToJSON(ServerFileInfo.class);
+                        logger.info(serverFileInfo2.toString());
+
+                        createLeaf(serverFileInfo2.getChild(), newValue);
+                    }
+                } catch (WebAPIException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            serverItemTreeView.setRoot(root);
+            serverItemTreeView.setShowRoot(true);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createLeaf(List<ServerFile> child, TreeItem<ServerFile> root) {
+        if(child == null) return;
+
         root.setExpanded(true);
+        for(ServerFile file : child) {
+            TreeItem<ServerFile> leaf = null;
+            if(file.getIsFile().equalsIgnoreCase("false")) {
+                leaf = new TreeItem(file, new ImageView(folderImage));
+            } else if(!isRun && file.getName().toLowerCase().endsWith(".fastq.gz")){
+                leaf = new TreeItem(file, new ImageView(fastqImage));
+            }
+            if(leaf != null) root.getChildren().add(leaf);
+        }
 
-
-        serverItemTreeView.setRoot(root);
-        serverItemTreeView.setShowRoot(true);
     }
 
     @FXML
@@ -92,11 +157,41 @@ public class ServerDirectoryViewController extends BaseStageController {
     @FXML
     private void submit() {
         if(serverItemTreeView.getSelectionModel().getSelectedItem() != null) {
-            sampleUploadScreenFirstController.setServerItem();
+            String path = "";
+
+            if(isRun) {
+                TreeItem<ServerFile> current = serverItemTreeView.getSelectionModel().getSelectedItem();
+                sampleUploadScreenFirstController.setServerRun(getPathRemoveRoot(current));
+            } else {
+                //select FASTQ files
+                TreeItem<ServerFile> current = serverItemTreeView.getSelectionModel().getSelectedItem();
+                if(current.getValue().getName().toLowerCase().endsWith(".fastq.gz")) {
+                    sampleUploadScreenFirstController.setServerFASTQ(getPathRemoveRoot(current.getParent()));
+                } else {
+                    return;
+                }
+            }
+
             closeDialog();
         } else {
             logger.info("directory item is not selected");
         }
+    }
+
+    private String getPathRemoveRoot(TreeItem<ServerFile> item) {
+        String path = "";
+
+        TreeItem<ServerFile> current = item;
+        while (current != null && current != serverItemTreeView.getRoot()) {
+            if (path.equalsIgnoreCase("")) {
+                path = current.getValue().getName();
+            } else {
+                path = current.getValue().getName() + "/" + path;
+            }
+            current = current.getParent();
+        }
+
+        return path;
     }
 
 }

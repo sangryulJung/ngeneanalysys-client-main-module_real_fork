@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -56,14 +57,14 @@ public class SampleUploadController extends BaseStageController{
     @FXML
     private TextField textFieldRunName;
 
-    public ToggleGroup getSequencerType() {
-        return sequencerType;
-    }
     @FXML
     private RadioButton sequencerMiSeqDXRadioButton;
 
     @FXML
     private RadioButton sequencerMiSeqRadioButton;
+
+    @FXML
+    private RadioButton nextSeqDxRadioButton;
 
     @FXML
     private ToggleGroup sequencerType;
@@ -85,6 +86,10 @@ public class SampleUploadController extends BaseStageController{
     private List<File> uploadFileList = new ArrayList<>();
 
     private List<AnalysisFile> uploadFileData = new ArrayList<>();
+
+    public ToggleGroup getSequencerType() {
+        return sequencerType;
+    }
 
     /**
      * @return run
@@ -195,6 +200,30 @@ public class SampleUploadController extends BaseStageController{
                 alert.setContentText("");
 
                 alert.showAndWait();*/
+            }
+        });
+
+        nextSeqDxRadioButton.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
+            if(sampleUploadScreenFirstController != null) {
+                sampleUploadScreenFirstController.localFastqFilesRadioButton.setDisable(true);
+                sampleUploadScreenFirstController.serverFastqFilesRadioButton.setDisable(true);
+                sampleUploadScreenFirstController.serverRunFolderRadioButton.setDisable(false);
+            }
+        });
+
+        sequencerMiSeqDXRadioButton.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
+            if(sampleUploadScreenFirstController != null) {
+                sampleUploadScreenFirstController.localFastqFilesRadioButton.setDisable(false);
+                sampleUploadScreenFirstController.serverFastqFilesRadioButton.setDisable(false);
+                sampleUploadScreenFirstController.serverRunFolderRadioButton.setDisable(true);
+            }
+        });
+
+        sequencerMiSeqRadioButton.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
+            if(sampleUploadScreenFirstController != null) {
+                sampleUploadScreenFirstController.localFastqFilesRadioButton.setDisable(false);
+                sampleUploadScreenFirstController.serverFastqFilesRadioButton.setDisable(false);
+                sampleUploadScreenFirstController.serverRunFolderRadioButton.setDisable(true);
             }
         });
 

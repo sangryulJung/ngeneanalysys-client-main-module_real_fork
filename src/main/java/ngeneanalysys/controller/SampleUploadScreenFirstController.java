@@ -1,5 +1,7 @@
 package ngeneanalysys.controller;
 
+import com.opencsv.CSVReader;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
@@ -19,6 +21,7 @@ import ngeneanalysys.model.paged.PagedAnalysisFile;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.task.SampleSheetDownloadTask;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.FileUtil;
 import ngeneanalysys.util.LoggerUtil;
@@ -29,7 +32,9 @@ import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -57,46 +62,141 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     private ToggleGroup selectFile;
 
     @FXML
-    private RadioButton localFastqFilesRadioButton;
+    protected RadioButton localFastqFilesRadioButton;
 
     @FXML
-    private RadioButton serverFastqFilesRadioButton;
+    protected RadioButton serverFastqFilesRadioButton;
 
     @FXML
-    private RadioButton serverRunFolderRadioButton;
+    protected RadioButton serverRunFolderRadioButton;
 
     private APIService apiService;
 
-    List<Panel> panels = null;
+    private List<Panel> panels = null;
 
-    List<Diseases> diseases = null;
+    private List<Diseases> diseases = null;
 
-    Map<String, Map<String, Object>> fileMap = null;
+    private Map<String, Map<String, Object>> fileMap = null;
 
-    List<File> uploadFileList = null;
+    private List<File> uploadFileList = null;
 
-    List<AnalysisFile> uploadFileData = null;
+    private List<AnalysisFile> uploadFileData = null;
 
-    List<TextField> sampleNameTextFieldList = new ArrayList<>();
+    private List<TextField> sampleNameTextFieldList = new ArrayList<>();
 
-    List<Button> fileSelectButtonList = new ArrayList<>();
+    private List<TextField> patientIdTextFieldList = new ArrayList<>();
 
-    List<TextField> patientIdTextFieldList = new ArrayList<>();
+    private List<ComboBox<ComboBoxItem>> diseaseComboBoxList = new ArrayList<>();
 
-    List<ComboBox<ComboBoxItem>> diseaseComboBoxList = new ArrayList<>();
+    private List<ComboBox<ComboBoxItem>> panelComboBoxList = new ArrayList<>();
 
-    List<ComboBox<ComboBoxItem>> panelComboBoxList = new ArrayList<>();
-
-    List<TextField> sampleSourceTextFieldList = new ArrayList<>();
+    private List<TextField> sampleSourceTextFieldList = new ArrayList<>();
 
     private boolean isServerItem = false;
+
+    private String runPath = "";
 
     //화면에 표시될 row 수
     private int totalRow = 0;
 
-
-    public void setServerItem() {
+    public void setServerFASTQ(String path) {
         isServerItem = true;
+
+        try {
+            Map<String, Object> params = new HashMap<>();
+            params.put("subPath", path);
+            HttpClientResponse response = apiService.get("/runDir", params, null, false);
+            ServerFileInfo serverFileInfo = response.getObjectBeforeConvertResponseToJSON(ServerFileInfo.class);
+
+            List<ServerFile> serverFiles = serverFileInfo.getChild().stream()
+                    .filter(serverFile -> serverFile.getName().toLowerCase().endsWith("fastq.gz"))
+                    .collect(Collectors.toList());
+
+            setServerFastqList(serverFiles);
+
+        } catch (WebAPIException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setServerRun(String path) {
+        isServerItem = true;
+        logger.info(path);
+        try {
+            Map<String, Object> params = new HashMap<>();
+            params.put("runDir", path);
+            runPath = path;
+            Task<Void> task = new SampleSheetDownloadTask(this.sampleUploadController, this, path);
+            final Thread downloadThread = new Thread(task);
+
+            downloadThread.setDaemon(true);
+            downloadThread.start();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean searchSameSample(String fairName) {
+        if(sampleArrayList == null || sampleArrayList.isEmpty()) return false;
+
+        return sampleArrayList.stream().anyMatch(item -> item.getName().equalsIgnoreCase(fairName));
+    }
+
+
+    public void setServerFastqList(List<ServerFile> serverFiles) {
+        List<ServerFile> undeterminedFile = new ArrayList<>();
+        serverFiles.stream().forEach(file -> {
+            if(file.getName().toUpperCase().startsWith("UNDETERMINED_"))
+                undeterminedFile.add(file);
+        });
+
+        if(!undeterminedFile.isEmpty()) serverFiles.removeAll(undeterminedFile);
+
+        while (!serverFiles.isEmpty()) {
+            ServerFile serverFile = serverFiles.get(0);
+            String fastqFilePairName = FileUtil.getFASTQFilePairName(serverFile.getName());
+
+            List<ServerFile> pairFileList = serverFiles.stream().filter(file ->
+                    file.getName().startsWith(fastqFilePairName)).collect(Collectors.toList());
+
+            //fastq 파일이 짝을 이루고 올리는데 실패한 파일인 경우
+           if (pairFileList.size() == 2 && !checkSameSample(fastqFilePairName)) {
+                Sample sample = new Sample();
+                sample.setName(fastqFilePairName);
+                sampleArrayList.add(sample);
+            }
+
+            if(sampleArrayList.size() == 23) break;
+
+            serverFiles.removeAll(pairFileList);
+        }
+
+        tableEdit();
+    }
+
+    public void setSampleSheet(String path) {
+        if(!sampleArrayList.isEmpty()) sampleArrayList.removeAll(sampleArrayList);
+        try(CSVReader csvReader = new CSVReader(new InputStreamReader(new FileInputStream(path)))) {
+            String[] s;
+            boolean tableData = false;
+            while((s = csvReader.readNext()) != null) {
+                if (tableData && sampleArrayList.size() < 23) {
+                    final String sampleName = s[1];
+                    logger.info(s[0]);
+                    Sample sample = new Sample();
+                    sample.setName(sampleName);
+                    sampleArrayList.add(sample);
+                } else if(s[0].equalsIgnoreCase("Sample_ID")) {
+                    tableData = true;
+                }
+            }
+            tableEdit();
+
+        } catch (IOException e) {
+            DialogUtil.alert("not found", "file not found", this.getMainApp().getPrimaryStage(), true);
+        }
+
     }
 
     /**
@@ -150,16 +250,15 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             List<File> fileList = new ArrayList<>(Arrays.asList(fileArray));
             fileList = fileList.stream().filter(file -> file.getName().endsWith(".fastq.gz")).collect(Collectors.toList());
 
+            List<File> undeterminedFile = new ArrayList<>();
+            fileList.stream().forEach(file -> {
+                if(file.getName().toUpperCase().startsWith("UNDETERMINED_"))
+                    undeterminedFile.add(file);
+            });
+
+            if(!undeterminedFile.isEmpty()) fileList.removeAll(undeterminedFile);
+
             while (!fileList.isEmpty()) {
-                List<File> undeterminedFile = new ArrayList<>();
-                fileList.stream().forEach(file -> {
-                    if(file.getName().toUpperCase().startsWith("UNDETERMINED_"))
-                        undeterminedFile.add(file);
-                });
-
-                if(!undeterminedFile.isEmpty()) fileList.removeAll(undeterminedFile);
-
-                if(fileList.isEmpty()) return;
 
                 mainController.getBasicInformationMap().put("path", folder.getAbsolutePath());
                 File fastqFile = fileList.get(0);
@@ -230,7 +329,18 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     @FXML
     private void serverRunFolderAction() {
-        logger.info("run");
+        try {
+            // Load the fxml file and create a new stage for the popup dialog
+            FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.SERVER_DIRECTORY_VIEW);
+            Pane page = loader.load();
+            ServerDirectoryViewController controller = loader.getController();
+            controller.setSampleUploadController(this.sampleUploadController);
+            controller.setSampleUploadScreenFirstController(this);
+            controller.setRun(true);
+            controller.show(page);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void tableEdit() {
@@ -256,6 +366,9 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                         return;
                     }
                 });
+            } else {
+                ComboBox<ComboBoxItem> disease = diseaseComboBoxList.get(row);
+                disease.getSelectionModel().clearSelection();
             }
 
             if(sample.getPanelId() != null) {
@@ -272,6 +385,11 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                         return;
                     }
                 });
+            } else {
+                ComboBox<ComboBoxItem> panel = panelComboBoxList.get(row);
+                TextField sampleSource = sampleSourceTextFieldList.get(row);
+                panel.getSelectionModel().select(0);
+                sampleSource.setText("");
             }
 
             //sample Status 가 존재한다면 그에 따른 추가기능의 설정
@@ -535,6 +653,11 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                         params.put("name", sampleUploadController.getRunName());
                     }
                     params.put("sequencingPlatform", sampleUploadController.getSequencerType().getUserData());
+
+                    if(isServerItem) {
+                        params.put("serverRunDir", runPath);
+                    }
+
                     response = apiService.post("/runs", params, null, true);
                     run = response.getObjectBeforeConvertResponseToJSON(Run.class);
                     mainController.getBasicInformationMap().put("runId", run.getId());
@@ -551,7 +674,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                     e.printStackTrace();
                 }
 
-                if(!isServerItem &&(uploadFileData != null && !uploadFileData.isEmpty()) &&
+                if((uploadFileData != null && !uploadFileData.isEmpty()) &&
                         (uploadFileList != null && !uploadFileList.isEmpty()))
                     this.mainController.runningAnalysisRequestUpload(uploadFileData, uploadFileList, run);
                 logger.info("submit");
@@ -664,9 +787,15 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     }
 
     public void panelSetting(ComboBox<ComboBoxItem> panelBox) {
+        List<Panel> panelList = new ArrayList<>();
+        if(isServerItem) {
+            panelList.addAll(panels.stream().filter(panel -> panel.getName().startsWith("TruSight Tumor 170")).collect(Collectors.toList()));
+        } else {
+            panelList.addAll(panels);
+        }
         panelBox.setConverter(new ComboBoxConverter());
         panelBox.getItems().add(new ComboBoxItem());
-        for(Panel panel :  panels) {
+        for(Panel panel :  panelList) {
             panelBox.getItems().add(new ComboBoxItem(panel.getId().toString(), panel.getName()));
         }
         panelBox.getSelectionModel().selectFirst();
@@ -862,7 +991,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         List<File> fileList = fileChooser.showOpenMultipleDialog(this.sampleUploadController.getCurrentStage());
         List<File> addFileList = new ArrayList<>();
 
-        if (fileList != null && !fileList.isEmpty()) {
+        if(fileList != null && !fileList.isEmpty()) {
             String chooseDirectoryPath = FilenameUtils.getFullPath(fileList.get(0).getAbsolutePath());
             logger.info(String.format("directory path of choose bedFile : %s", chooseDirectoryPath));
             File directory = new File(chooseDirectoryPath);
@@ -881,9 +1010,9 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 Optional<AnalysisFile> optionalFile = uploadFileData.stream().filter(item ->
                         item.getName().contains(fastqFilePairName)).findFirst();
                 Sample sample = null;
-                if (optionalFile.isPresent()) sample = getSameSample(optionalFile.get().getSampleId());
+                if(optionalFile.isPresent()) sample = getSameSample(optionalFile.get().getSampleId());
                 //fastq 파일이 짝을 이루고 올리는데 실패한 파일인 경우
-                if (pairFileList.size() == 2 && sample != null) {
+                if(pairFileList.size() == 2 && sample != null) {
                     List<File> failedFileList = new ArrayList<>();
                     List<AnalysisFile> selectedAnalysisFileList = new ArrayList<>();
                     for (File selectedFile : pairFileList) {
@@ -893,23 +1022,23 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                             failedFileList.add(selectedFile);
 
                             //meta data 정보가 하나만 입력이 되어있는 경우
-                            if ("NOT_FOUND".equals(fileOptional.get().getStatus())) {
+                            if("NOT_FOUND".equals(fileOptional.get().getStatus())) {
                                 failedAnalysisFileList.remove(fileOptional.get());
-                                addUploadFile(selectedFile, fastqFilePairName);
+                                addUploadFile(selectedFile,fastqFilePairName);
                             } else {
                                 //메타 데이터 정보가 온전히 존재하고 파일 업로드에 실패한 경우
                                 selectedAnalysisFileList.add(fileOptional.get());
                             }
 
                             //meta data 정보가 없는 경우
-                        } else if (sample.getSampleStatus() != null && sample.getSampleStatus().getStep().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STEP_UPLOAD)
+                        } else if(sample.getSampleStatus() != null && sample.getSampleStatus().getStep().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STEP_UPLOAD)
                                 && sample.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_QUEUED)) {
                             failedFileList.add(selectedFile);
                         }
                     }
-                    if (!failedFileList.isEmpty()) addUploadFile(failedFileList, fastqFilePairName, false);
+                    if(!failedFileList.isEmpty()) addUploadFile(failedFileList, fastqFilePairName, false);
 
-                    if (!selectedAnalysisFileList.isEmpty()) uploadFileData.addAll(selectedAnalysisFileList);
+                    if(!selectedAnalysisFileList.isEmpty()) uploadFileData.addAll(selectedAnalysisFileList);
                 } else if (pairFileList.size() == 2 && !checkSameSample(fastqFilePairName)) {
                     addUploadFile(pairFileList, fastqFilePairName, true);
                 }

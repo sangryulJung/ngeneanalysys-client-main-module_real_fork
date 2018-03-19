@@ -166,6 +166,12 @@ public class SystemManagerPanelController extends SubPaneController {
     private TableColumn<PanelView, Boolean> virtualPanelColumn;
 
     @FXML
+    private TextField essentialGenesTextField;
+
+    @FXML
+    private TextArea canonicalTranscriptTextArea;
+
+    @FXML
     private Label titleLabel;
 
     @FXML
@@ -476,21 +482,24 @@ public class SystemManagerPanelController extends SubPaneController {
             Map<String,Object> params = new HashMap<>();
             params.put("name", panelName);
             params.put("code", code);
+            VariantConfig variantConfig = new VariantConfig();
             if(warningReadDepthCheckBox.isSelected() && !StringUtils.isEmpty(warningReadDepthTextField.getText())) {
-                params.put("warningReadDepth", Integer.parseInt(warningReadDepthTextField.getText()));
+                variantConfig.setWarningReadDepth(Integer.parseInt(warningReadDepthTextField.getText()));
             }
             if(warningMAFCheckBox.isSelected() && !StringUtils.isEmpty(warningMAFTextField.getText())) {
-                params.put("warningMAF", warningMAFTextField.getText());
+                variantConfig.setWarningMAF(new BigDecimal(warningMAFTextField.getText()));
             }
 
-            ReportCutOffParams reportCutOffParams = setReportCutOffParams();
+            variantConfig.setReportCutOffParams(setReportCutOffParams());
 
-            params.put("reportCutOffParams", reportCutOffParams);
+            variantConfig.setEssentialGenes(essentialGenesTextField.getText());
+            variantConfig.setCanonicalTranscripts(canonicalTranscriptTextArea.getText());
 
             params.put("target", targetComboBox.getSelectionModel().getSelectedItem().getValue());
             params.put("analysisType", analysisTypeComboBox.getSelectionModel().getSelectedItem().getValue());
             params.put("libraryType", libraryTypeComboBox.getSelectionModel().getSelectedItem().getValue());
             params.put("sampleSource", sampleSourceComboBox.getSelectionModel().getSelectedItem().getValue());
+            params.put("variantConfig", variantConfig);
 
             String reportId = null;
             if(!reportTemplateComboBox.getSelectionModel().isEmpty()) {
@@ -546,18 +555,8 @@ public class SystemManagerPanelController extends SubPaneController {
 
                 task.setOnSucceeded(ev -> {
                     try {
-                        /*final HttpClientResponse response1 = apiService.get("/panels", null, null, false);
-                        final PagedPanel panels = response1.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
-                        mainController.getBasicInformationMap().put("panels", panels.getResult());*/
-
                         mainController.settingPanelAndDiseases();
 
-                        //final HttpClientResponse response2 = apiService.get("/admin/panels", null, null, false);
-                        //final PagedPanel tablePanels = response2.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
-                        //mainController.getBasicInformationMap().put("panels", panels.getResult());
-
-                        //panelListTable.getItems().clear();
-                        //panelListTable.getItems().addAll(tablePanels.getResult());
                         setPanelList(1);
                         resetItem();
                         setDisabledItem(true);
@@ -576,7 +575,7 @@ public class SystemManagerPanelController extends SubPaneController {
         }
     }
 
-    public void resetItem() {
+    private void resetItem() {
         reportTemplateComboBoxSetting();
         panelNameTextField.setText("");
         panelCodeTextField.setText("");
@@ -600,9 +599,11 @@ public class SystemManagerPanelController extends SubPaneController {
         minAlternateCountTextField.setText("");
         populationFrequencyDBsTextField.setText("");
         populationFrequencyTextField.setText("");
+        essentialGenesTextField.setText("");
+        canonicalTranscriptTextArea.setText("");
     }
 
-    public void setDisabledItem(boolean condition) {
+    private void setDisabledItem(boolean condition) {
         warningReadDepthTextField.setDisable(true);
         warningMAFTextField.setDisable(true);
         scopeComboBox.setDisable(true);
@@ -624,6 +625,8 @@ public class SystemManagerPanelController extends SubPaneController {
         minAlternateCountTextField.setDisable(true);
         populationFrequencyDBsTextField.setDisable(true);
         populationFrequencyTextField.setDisable(true);
+        essentialGenesTextField.setDisable(condition);
+        canonicalTranscriptTextArea.setDisable(condition);
     }
 
     public void deletePanel(Integer panelId) {
@@ -647,6 +650,7 @@ public class SystemManagerPanelController extends SubPaneController {
     @FXML
     public void panelAdd() {
         titleLabel.setText("panel add");
+        panelId = 0;
         setDisabledItem(false);
         resetItem();
     }
@@ -718,6 +722,9 @@ public class SystemManagerPanelController extends SubPaneController {
                     if(panel.getVariantConfig().getReportCutOffParams().getPopulationFrequency() != null) populationFrequencyTextField.setText(params.getPopulationFrequency().toString());
 
                 }
+
+                if(panel.getVariantConfig().getEssentialGenes() != null) essentialGenesTextField.setText(panel.getVariantConfig().getEssentialGenes());
+                if(panel.getVariantConfig().getCanonicalTranscripts() != null) canonicalTranscriptTextArea.setText(panel.getVariantConfig().getCanonicalTranscripts());
 
                 Optional<ComboBoxItem> sampleSourceItem =
                         sampleSourceComboBox.getItems().stream().filter(item -> item.getValue().equalsIgnoreCase(panel.getSampleSource())).findFirst();
