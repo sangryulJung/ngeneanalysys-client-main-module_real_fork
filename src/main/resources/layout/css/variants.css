@@ -46,29 +46,58 @@
 }
 
 .btn_fold {
+    -fx-background-radius : 0;
     -fx-background-color : #a8bbd9;
     -fx-background-image:url('../images/renewal/white_left_arrow.png');
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
+    -fx-border-radius : 0;
+    -fx-border-width : 0;
 }
 
 .btn_expand {
+    -fx-background-radius : 0;
     -fx-background-color : #a8bbd9;
     -fx-background-image:url('../images/renewal/white_right_arrow.png');
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
+    -fx-border-radius : 0;
+    -fx-border-width : 0;
 }
 
 .right_btn_fold {
+    -fx-background-radius : 0;
     -fx-background-color : #f2f5fa;
     -fx-background-image:url('../images/renewal/skyblue_right_arrow.png');
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
+    -fx-border-radius : 0;
+    -fx-border-width : 0;
 }
 
 .right_btn_expand {
+    -fx-background-radius : 0;
     -fx-background-color : #a8bbd9;
     -fx-background-image:url('../images/renewal/white_left_arrow.png');
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
+    -fx-border-radius : 0;
+    -fx-border-width : 0;
+}
+
+#filterAddBtn {
+    -fx-background-color : transparent;
+    -fx-text-fill : #ffffff;
+    -fx-border-radius : 0;
+    -fx-pref-width : 110;
+    -fx-border-color: #FFFFFF;
+    -fx-border-width:1;
+}
+
+#overviewAccordion .titled-pane > .title {
+    -fx-background-color : #f2f5fa;
+}
+
+#overviewAccordion .titled-pane > .title > .label {
+    -fx-text-fill : #ffffff;
 }

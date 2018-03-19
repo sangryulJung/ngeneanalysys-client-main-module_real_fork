@@ -3,6 +3,8 @@ package ngeneanalysys.controller;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -12,17 +14,23 @@ import javafx.scene.layout.VBox;
 import ngeneanalysys.code.enums.ExperimentTypeCode;
 import ngeneanalysys.code.enums.PredictionTypeCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
+import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.Panel;
 import ngeneanalysys.model.Sample;
 import ngeneanalysys.model.VariantAndInterpretationEvidence;
+import ngeneanalysys.model.paged.PagedVariantAndInterpretationEvidence;
 import ngeneanalysys.model.render.SNPsINDELsList;
+import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.ConvertUtil;
+import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
+import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * @author Jang
@@ -30,6 +38,8 @@ import java.math.BigDecimal;
  */
 public class AnalysisDetailSNVController extends AnalysisDetailCommonController {
     private static Logger logger = LoggerUtil.getLogger();
+
+    private APIService apiService;
 
     @FXML
     private GridPane snvWrapper;
@@ -52,10 +62,15 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     @FXML
     private VBox filterArea;
 
+    @FXML
+    private Label totalVariantCountLabel;
+
     Sample sample = null;
     Panel panel = null;
 
     private AnalysisDetailVariantsController variantsController;
+    //VariantList
+    List<VariantAndInterpretationEvidence> list = null;
 
     private final double leftFoldedWidth = 50;
     private final double leftExpandedWidth = 200;
@@ -86,6 +101,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     public void show(Parent root) throws IOException {
         logger.info("init snv controller");
 
+        apiService = APIService.getInstance();
+
         sample = (Sample)paramMap.get("sample");
         panel = (Panel)paramMap.get("panel");
 
@@ -109,6 +126,10 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             }
         });
 
+        setTableViewColumn();
+
+        showVariantList(0);
+
         variantsController.getDetailContents().setCenter(root);
     }
 
@@ -118,11 +139,11 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightStandardWidth);
             rightContentsHBox.setPrefWidth(this.rightStandardWidth);
             overviewAccordion.setPrefWidth(this.standardAccordionSize);
-            //variantListTableView.setPrefWidth(this.minSize);
+            variantListTableView.setPrefWidth(this.minSize);
         } else {
             snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerStandardWidth);
             overviewAccordion.setPrefWidth(this.minSize);
-            //variantListTableView.setPrefWidth(this.standardTableSize);
+            variantListTableView.setPrefWidth(this.standardTableSize);
         }
         filterArea.setPrefWidth(150);
         leftSizeButton.getStyleClass().clear();
@@ -134,11 +155,11 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         if(snvWrapper.getColumnConstraints().get(1).getPrefWidth() == 0) {
             snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightFullWidth);
             overviewAccordion.setPrefWidth(this.maxAccordionSize);
-            //variantListTableView.setPrefWidth(this.minSize);
+            variantListTableView.setPrefWidth(this.minSize);
         } else {
             snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerFullWidth);
             overviewAccordion.setPrefWidth(this.minSize);
-            //variantListTableView.setPrefWidth(this.maxTableSize);
+            variantListTableView.setPrefWidth(this.maxTableSize);
         }
         filterArea.setPrefWidth(0);
         leftSizeButton.getStyleClass().clear();
@@ -152,12 +173,13 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerFoldedWidth);
         if(snvWrapper.getColumnConstraints().get(0).getPrefWidth() == 250) {
             snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightStandardWidth);
-
-            //variantListTableView.setPrefWidth(this.minSize);
+            overviewAccordion.setPrefWidth(this.standardAccordionSize);
         } else {
             snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightFullWidth);
+            overviewAccordion.setPrefWidth(this.maxAccordionSize);
         }
-        overviewAccordion.setPrefWidth(this.minSize);
+        variantListTableView.setPrefWidth(this.minSize);
+
         rightSizeButton.getStyleClass().clear();
         rightSizeButton.getStyleClass().add("right_btn_fold");
     }
@@ -166,7 +188,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         if(snvWrapper.getColumnConstraints().get(0).getPrefWidth() == 200) {
             snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerStandardWidth);
             //rightContentsHBox.setPrefWidth();
-            overviewAccordion.setPrefWidth(this.standardAccordionSize);
+            //overviewAccordion.setPrefWidth(this.standardAccordionSize);
         } else {
             snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerFullWidth);
         }
@@ -174,6 +196,48 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         rightSizeButton.getStyleClass().clear();
         rightSizeButton.getStyleClass().add("right_btn_expand");
     }
+
+    public void showVariantList(int selectedIdx) {
+
+        try {
+            // API 서버 조회
+            HttpClientResponse response = apiService.get("/analysisResults/sampleSnpInDels/"+ sample.getId(), null,
+                    null, false);
+            PagedVariantAndInterpretationEvidence analysisResultVariantList = response.getObjectBeforeConvertResponseToJSON(PagedVariantAndInterpretationEvidence.class);
+
+            List<VariantAndInterpretationEvidence> list = analysisResultVariantList.getResult();
+            this.list = list;
+
+            ObservableList<VariantAndInterpretationEvidence> displayList = null;
+
+            if (list != null && !list.isEmpty()) {
+                displayList = FXCollections.observableArrayList(list);
+                logger.info(displayList.size() + "");
+            }
+
+            // 리스트 삽입
+            if (variantListTableView.getItems() != null && variantListTableView.getItems().size() > 0) {
+                variantListTableView.getItems().clear();
+            }
+            variantListTableView.setItems(displayList);
+
+            // 화면 출력
+            if (displayList != null && displayList.size() > 0) {
+                variantListTableView.getSelectionModel().select(selectedIdx);
+                //showVariantDetail(displayList.get(selectedIdx));
+            }
+
+        } catch (WebAPIException wae) {
+            variantListTableView.setItems(null);
+            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+                    getMainApp().getPrimaryStage(), true);
+        } catch (Exception e) {
+            variantListTableView.setItems(null);
+            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+        }
+    }
+
+
 
     public void setTableViewColumn() {
         if(panel != null && ExperimentTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {

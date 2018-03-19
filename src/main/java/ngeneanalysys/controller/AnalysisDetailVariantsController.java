@@ -72,6 +72,7 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
         topMenuContent = new Node[topMenus.length];
         TopMenu menu = new TopMenu();
         menu.setMenuName("SNV");
+        menu.setParamMap(getParamMap());
         menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_VARIANTS_SNV);
         menu.setDisplayOrder(0);
         menu.setStaticMenu(true);
