@@ -6,7 +6,6 @@
 #tabMenuHBox Region {
 	-fx-background-color: #fff;
 	-fx-background-radius:0 0 0 0;
-	-fx-border-width:0;
 	-fx-pref-width:110;
 	-fx-pref-height:35;
 	-fx-background-image:url('../images/renewal/arrow_5x11.png');
@@ -100,4 +99,47 @@
 
 #overviewAccordion .titled-pane > .title > .label {
     -fx-text-fill : #ffffff;
+}
+
+#overviewAccordion .titled-pane > .content {
+    -fx-background-color : transparent;
+    -fx-border-width  : 0;
+
+}
+
+#overviewAccordion .titled-pane > .title > .arrow-button {
+    -fx-background-radius : 0;
+    /*-fx-pref-width : 16;
+    -fx-pref-height : 16;*/
+}
+
+#overviewAccordion .titled-pane > .title > .arrow-button > .arrow {
+    //-fx-background-color : transparent;
+
+    /*-fx-background-image:url('../images/renewal/variant_view.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-insets: 0;
+    -fx-background-radius : 0;
+    -fx-pref-width : 16;
+    -fx-pref-height : 16;*/
+}
+
+.impactsLabel {
+    -fx-border-width: 1 1 1 0;
+    -fx-border-color : #d2d0d0;
+}
+
+.tier1Label {
+    -fx-border-width: 1 1 1 0;
+    -fx-border-color : #d2d0d0;
+    -fx-background-color : orange;
+    -fx-text-fill : #fff;
+}
+
+.tier2Label {
+    -fx-border-width: 1 1 1 0;
+    -fx-border-color : #d2d0d0;
+    -fx-background-color : green;
+    -fx-text-fill : #fff;
 }

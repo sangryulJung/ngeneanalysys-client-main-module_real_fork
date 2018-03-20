@@ -1,6 +1,7 @@
 package ngeneanalysys.controller;
 
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -22,6 +23,7 @@ import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedVariantAndInterpretationEvidence;
+import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.model.render.DatepickerConverter;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.PDFCreateService;
@@ -36,6 +38,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -63,49 +66,34 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
     private VelocityUtil velocityUtil = new VelocityUtil();
 
     @FXML
-    private Label diseaseLabel;
-
-    @FXML
-    private Label panelLabel;
-
-    @FXML
     private TextArea conclusionsTextArea;
 
     @FXML
-    private TableView<VariantAndInterpretationEvidence> pathogenicVariantsTable;
+    private TableView<VariantAndInterpretationEvidence> variantsTable;
 
     @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> pathogenicGeneColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> tierColumn;
 
     @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> pathogenicVariantsColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> chrColumn;
 
     @FXML
-    private TableColumn<VariantAndInterpretationEvidence, Boolean> pathogenicExceptColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> geneColumn;
 
     @FXML
-    private TableView<VariantAndInterpretationEvidence> likelyPathogenicVariantsTable;
+    private TableColumn<VariantAndInterpretationEvidence, Integer> positionColumn;
 
     @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> likelyPathogenicGeneColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> refSeqColumn;
 
     @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> likelyPathogenicVariantsColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> ntChangeColumn;
 
     @FXML
-    private TableColumn<VariantAndInterpretationEvidence, Boolean> likelyPathogenicExceptColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> aaChangeColumn;
 
     @FXML
-    private TableView<VariantAndInterpretationEvidence> uncertainSignificanceVariantsTable;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> uncertainSignificanceGeneColumn;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> uncertainSignificanceVariantsColumn;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, Boolean> uncertainSignificanceExceptColumn;
+    private TableColumn<VariantAndInterpretationEvidence, BigDecimal> alleleFrequencyColumn;
 
     @FXML
     private GridPane customFieldGridPane;
@@ -120,7 +108,9 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
     private Label conclusions;
 
     @FXML
-    private Label patientIdLabel;
+    private FlowPane targetGenesFlowPane;
+    @FXML
+    private ComboBox<ComboBoxItem> virtualPanelComboBox;
 
     Sample sample = null;
 
@@ -145,15 +135,133 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
     private boolean reportData = false;
 
 
+    public void setTargetGenesList() {
+        if(!targetGenesFlowPane.getChildren().isEmpty()) {
+            mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() - targetGenesFlowPane.getPrefHeight());
+            contentVBox.setPrefHeight(contentVBox.getPrefHeight() - targetGenesFlowPane.getPrefHeight());
+            targetGenesFlowPane.getChildren().removeAll(targetGenesFlowPane.getChildren());
+            targetGenesFlowPane.setPrefHeight(0);
+        }
+        try {
+            HttpClientResponse response = apiService.get("/analysisResults/variantCountByGeneForSomaticDNA/" + sample.getId(),
+                    null, null, false);
+            if (response != null) {
+                List<VariantCountByGene> variantCountByGenes = (List<VariantCountByGene>) response
+                        .getMultiObjectBeforeConvertResponseToJSON(VariantCountByGene.class,
+                                false);
+
+                variantCountByGenes = filteringGeneList(variantCountByGenes);
+
+                if(variantCountByGenes != null && !variantCountByGenes.isEmpty()) {
+                    targetGenesFlowPane.setPrefHeight(targetGenesFlowPane.getPrefHeight() + 30);
+                    mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 30);
+                    contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 30);
+                }
+
+                variantCountByGenes = variantCountByGenes.stream().sorted(Comparator.comparing(VariantCountByGene::getGeneSymbol)).collect(Collectors.toList());
+                Set<String> allGeneList = null;
+                Set<String> list = new HashSet<>();
+                if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
+                    response = apiService.get("virtualPanels/" + virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue(),
+                            null, null, false);
+
+                    VirtualPanel virtualPanel = response.getObjectBeforeConvertResponseToJSON(VirtualPanel.class);
+
+                    allGeneList = returnGeneList(virtualPanel.getEssentialGenes(), virtualPanel.getOptionalGenes());
+
+                    String essentialGenes = virtualPanel.getEssentialGenes().replaceAll("\\p{Z}", "");
+
+                    list.addAll(Arrays.stream(essentialGenes.split(",")).collect(Collectors.toSet()));
+
+                }
+
+
+                for(VariantCountByGene gene : variantCountByGenes) {
+                    Label label = new Label(gene.getGeneSymbol());
+                    if(discriminationOfMutation(gene)) {
+                        label.getStyleClass().add("text_color_blue");
+                    } else {
+                        label.getStyleClass().add("text_color_white");
+                    }
+
+                    if(allGeneList == null || !list.contains(gene.getGeneSymbol())) {
+                        label.getStyleClass().add("target_gene_variant_not");
+                    } else {
+                        label.getStyleClass().add("target_gene_variant");
+                    }
+
+
+
+                    targetGenesFlowPane.getChildren().add(label);
+                    if(targetGenesFlowPane.getChildren().size() % 15 == 1) {
+                        targetGenesFlowPane.setPrefHeight(targetGenesFlowPane.getPrefHeight() + 28);
+                        mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 28);
+                        contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 28);
+                    }
+                }
+            }
+        } catch (WebAPIException wae) {
+            wae.printStackTrace();
+        }
+    }
+
+    public boolean discriminationOfMutation(VariantCountByGene gene) {
+        return (gene.getTier3IndelCount() > 0 || gene.getTier3SnpCount() > 00 ||
+                gene.getTier1IndelCount() > 0 || gene.getTier1SnpCount() > 0 ||
+                gene.getTier2IndelCount() > 0 || gene.getTier2SnpCount() > 0) ? true : false;
+    }
+
+    public Set<String> returnGeneList(String essentialGenes, String optionalGenes) {
+        Set<String> list = new HashSet<>();
+
+        essentialGenes = essentialGenes.replaceAll("\\p{Z}", "");
+
+        list.addAll(Arrays.stream(essentialGenes.split(",")).collect(Collectors.toSet()));
+
+        if(!StringUtils.isEmpty(optionalGenes)) {
+            optionalGenes = optionalGenes.replaceAll("\\p{Z}", "");
+
+            list.addAll(Arrays.stream(optionalGenes.split(",")).collect(Collectors.toSet()));
+        }
+
+        return list;
+    }
+
+
+    public List<VariantCountByGene> filteringGeneList(List<VariantCountByGene> list) {
+        List<VariantCountByGene> filteringList = new ArrayList<>();
+        if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
+            try {
+                HttpClientResponse response = apiService.get("virtualPanels/" + virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue(),
+                        null, null, false);
+
+                VirtualPanel virtualPanel = response.getObjectBeforeConvertResponseToJSON(VirtualPanel.class);
+
+                Set<String> geneList = returnGeneList(virtualPanel.getEssentialGenes(), virtualPanel.getOptionalGenes());
+
+                for(VariantCountByGene variantCountByGene : list) {
+                    if(geneList.contains(variantCountByGene.getGeneSymbol())) {
+                        filteringList.add(variantCountByGene);
+                    }
+                }
+            } catch (WebAPIException wae) {
+                return list;
+            }
+        }
+
+        if(filteringList.isEmpty()) {
+            return list;
+        }
+
+        return filteringList;
+    }
+
+
     @Override
     public void show(Parent root) throws IOException {
         logger.info("show..");
 
-        tableCellUpdateFix(pathogenicVariantsTable);
-
-        tableCellUpdateFix(likelyPathogenicVariantsTable);
-
-        tableCellUpdateFix(uncertainSignificanceVariantsTable);
+        tableCellUpdateFix(variantsTable);
 
         // API 서비스 클래스 init
         apiService = APIService.getInstance();
@@ -169,40 +277,20 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
         sample = (Sample)paramMap.get("sample");
 
-        patientIdLabel.setText(sample.getPaitentId());
-
-        settingTableViewDragAndDrop(pathogenicVariantsTable, "P");
-        settingTableViewDragAndDrop(likelyPathogenicVariantsTable, "LP");
-        settingTableViewDragAndDrop(uncertainSignificanceVariantsTable, "US");
-
-        pathogenicGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
-        pathogenicVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
-        pathogenicExceptColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
-        pathogenicExceptColumn.setCellFactory(param -> new ReportedCheckBox(this));
-
-        likelyPathogenicGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
-        likelyPathogenicVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
-        likelyPathogenicExceptColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
-        likelyPathogenicExceptColumn.setCellFactory(param -> new ReportedCheckBox(this));
-
-        uncertainSignificanceGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
-        uncertainSignificanceVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
-        uncertainSignificanceExceptColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
-        uncertainSignificanceExceptColumn.setCellFactory(param -> new ReportedCheckBox(this));
-
-        List<Diseases> diseases = (List<Diseases>) mainController.getBasicInformationMap().get("diseases");
-        Optional<Diseases> diseasesOptional = diseases.stream().filter(disease -> disease.getId() == sample.getDiseaseId()).findFirst();
-        if(diseasesOptional.isPresent()) {
-            String diseaseName = diseasesOptional.get().getName();
-            diseaseLabel.setText(diseaseName);
-        }
+        tierColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSwTier()));
+        chrColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getChromosome()));
+        geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
+        positionColumn.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getSnpInDel().getGenomicCoordinate().getStartPosition()));
+        refSeqColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getRefSequence()));
+        ntChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
+        aaChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChange()));
+        alleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()));
 
         List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
         Optional<Panel> panelOptional = panels.stream().filter(panelItem -> panelItem.getId().equals(sample.getPanelId())).findFirst();
         if(panelOptional.isPresent()) {
             panel = panelOptional.get();
             String panelName = panel.getName();
-            panelLabel.setText(panelName);
         }
 
         HttpClientResponse response = null;
@@ -371,11 +459,32 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
             benignList = settingPathogenicityList(list, "B");
 
-            orderingAndAddTableItem(pathogenicVariantsTable, pathogenicList);
+            List<VariantAndInterpretationEvidence> tableList = new ArrayList<>();
 
-            orderingAndAddTableItem(likelyPathogenicVariantsTable, likelyPathgenicList);
+            if(pathogenicList != null && !pathogenicList.isEmpty()) {
+                Collections.sort(pathogenicList,
+                        (a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
+                tableList.addAll(pathogenicList);
+            }
 
-            orderingAndAddTableItem(uncertainSignificanceVariantsTable, uncertainSignificanceList);
+            if(likelyPathgenicList != null && !likelyPathgenicList.isEmpty()) {
+                Collections.sort(likelyPathgenicList,
+                        (a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
+                tableList.addAll(likelyPathgenicList);
+            }
+
+            if(uncertainSignificanceList != null && !uncertainSignificanceList.isEmpty()) {
+                Collections.sort(uncertainSignificanceList,
+                        (a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
+
+                tableList.addAll(uncertainSignificanceList);
+            }
+
+            if(variantsTable.getItems() != null && !variantsTable.getItems().isEmpty()) {
+                variantsTable.getItems().removeAll(variantsTable.getItems());
+            }
+
+            variantsTable.getItems().addAll(tableList);
         } catch (WebAPIException wae) {
             DialogUtil.error(wae.getHeaderText(), wae.getContents(), this.getMainApp().getPrimaryStage(), true);
         }
@@ -387,22 +496,6 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
             // close text box
             tableView.edit(-1, null);
         });
-    }
-
-    public void settingTableViewDragAndDrop(TableView<VariantAndInterpretationEvidence> tableView, String pathogenicity) {
-        if(!StringUtils.isEmpty(pathogenicity) && tableView != null) {
-            tableView.setOnDragDetected(e -> onDragDetected(e, tableView));
-            tableView.setOnDragDone(e -> onDragDone(e));
-            tableView.setOnDragOver(e -> onDragOver(e, tableView));
-            tableView.setOnDragExited(e -> onDragExited(e, tableView));
-            tableView.setOnDragDropped(e -> onDragDropped(e, tableView, pathogenicity));
-
-            tableView.setRowFactory(tv -> {
-                TableRow<VariantAndInterpretationEvidence> rowData = new TableRow<>();
-                rowData.setOnDragDetected(e -> rowItem = rowData);
-                return rowData;
-            });
-        }
     }
 
     public void orderingAndAddTableItem(TableView<VariantAndInterpretationEvidence> tableView,
@@ -656,12 +749,9 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 }
 
                 List<VariantAndInterpretationEvidence> list = new ArrayList<>();
-                if(pathogenicVariantsTable.getItems() != null
-                        && !pathogenicVariantsTable.getItems().isEmpty()) list.addAll(pathogenicVariantsTable.getItems());
-                if(likelyPathogenicVariantsTable.getItems() != null
-                        && !likelyPathogenicVariantsTable.getItems().isEmpty()) list.addAll(likelyPathogenicVariantsTable.getItems());
-                if(uncertainSignificanceVariantsTable.getItems() != null
-                        && !uncertainSignificanceVariantsTable.getItems().isEmpty()) list.addAll(uncertainSignificanceVariantsTable.getItems());
+                if(pathogenicList != null && !pathogenicList.isEmpty()) list.addAll(pathogenicList);
+                if(likelyPathgenicList != null && !likelyPathgenicList.isEmpty()) list.addAll(likelyPathgenicList);
+                if(uncertainSignificanceList != null && !uncertainSignificanceList.isEmpty()) list.addAll(uncertainSignificanceList);
                 if(likelyBenignList != null && !likelyBenignList.isEmpty()) list.addAll(likelyBenignList);
                 if(benignList != null && !benignList.isEmpty()) list.addAll(benignList);
 
@@ -942,89 +1032,4 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         selectedTable = null;
         rowItem = null;
     }
-
-    public void selectClear(String pathogenicity) {
-        if(pathogenicity.equals("P")) {
-            pathogenicVariantsTable.getSelectionModel().clearSelection();
-        } else if(pathogenicity.equals("LP")) {
-            likelyPathogenicVariantsTable.getSelectionModel().clearSelection();
-        } else if(pathogenicity.equals("US")) {
-            uncertainSignificanceVariantsTable.getSelectionModel().clearSelection();
-        }
-    }
-
-
-    ////////////////////////////////////////////////////////////////////////////////////
-
-    /*
-    TableView 간의 Drag and Drop 기능 구현
-     */
-
-    /**
-     *
-     * @param e
-     * @param table
-     */
-    public void onDragDetected(MouseEvent e, TableView<VariantAndInterpretationEvidence> table) {
-        VariantAndInterpretationEvidence selectedVariant = table.getSelectionModel().getSelectedItem();
-        if(selectedVariant == null) return;
-
-        selectedTable = table;
-
-        selectedItem = selectedVariant;
-
-        Dragboard db = table.startDragAndDrop(TransferMode.ANY);
-        ClipboardContent content = new ClipboardContent();
-        //저장된 row를 기준으로 스냅샷 생성
-        SnapshotParameters sp = new SnapshotParameters();
-        sp.setTransform(Transform.scale(2, 2));
-
-        db.setDragView(rowItem.snapshot(sp, null));
-
-        content.putString(selectedVariant.toString());
-        db.setContent(content);
-        e.consume();
-    }
-
-    public void onDragDone(DragEvent e) {
-        e.consume();
-    }
-
-    public void onDragOver(DragEvent t, TableView<VariantAndInterpretationEvidence> table) {
-        if(selectedTable != table) {
-            t.acceptTransferModes(TransferMode.ANY);
-            DropShadow dropShadow = new DropShadow();
-            dropShadow.setRadius(5.0);
-            dropShadow.setOffsetX(3.0);
-            dropShadow.setOffsetY(3.0);
-            dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
-            table.setEffect(dropShadow);
-        }
-    }
-
-    public void onDragExited(DragEvent t, TableView<VariantAndInterpretationEvidence> table) {
-        t.acceptTransferModes(TransferMode.ANY);
-        table.setEffect(null);
-        t.consume();
-    }
-
-    public void onDragDropped(DragEvent t, TableView<VariantAndInterpretationEvidence> table, String pathogenicity) {
-        System.out.println("change Pathogenicity " + pathogenicity);
-        if(selectedItem != null && selectedTable != table) {
-            try {
-                FXMLLoader loader = mainApp.load(FXMLConstants.CHANGE_PATHOGENICITY);
-                Node root = loader.load();
-                ChangePathogenicityController changePathogenicityController = loader.getController();
-                changePathogenicityController.setMainController(this.getMainController());
-                changePathogenicityController.setAnalysisDetailReportGermlineController(this);
-                changePathogenicityController.settingItem(table, pathogenicity, selectedItem, rowItem);
-                changePathogenicityController.show((Parent) root);
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
-            }
-
-        }
-        t.setDropCompleted(true);
-    }
-
 }

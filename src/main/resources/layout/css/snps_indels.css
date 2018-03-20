@@ -364,3 +364,32 @@
 .table-view .column-header.header {
     -fx-font-size: 15;
 }
+
+#targetGenesFlowPane {
+    -fx-border-color : #000;
+    -fx-border-width : 0.5 0 0.5 0;
+}
+
+#targetGenesFlowPane > .target_gene_variant_not {
+    -fx-alignment : center;
+    -fx-background-radius : 10 10;
+    -fx-background-color : black;
+    -fx-pref-width : 65;
+    -fx-pref-height : 15;
+}
+
+#targetGenesFlowPane > .target_gene_variant {
+    -fx-alignment : center;
+    -fx-background-radius : 10 10;
+    -fx-background-color : #ff0000;
+    -fx-pref-width : 65;
+    -fx-pref-height : 15;
+}
+
+#targetGenesFlowPane > .text_color_white {
+    -fx-text-fill : #ffffff;
+}
+
+#targetGenesFlowPane > .text_color_blue {
+    -fx-text-fill : #0000FF;
+}

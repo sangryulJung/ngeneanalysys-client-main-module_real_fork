@@ -40,8 +40,6 @@ public class ChangeTierDialogController extends SubPaneController {
 
     private VariantAndInterpretationEvidence selectedItem = null;
 
-    private AnalysisDetailReportController analysisDetailReportController;
-
     @FXML
     private ComboBox<String> clinicalVariantTypeComboBox;
 
@@ -92,13 +90,6 @@ public class ChangeTierDialogController extends SubPaneController {
     private TableRow<VariantAndInterpretationEvidence> rowItem;
 
     private boolean typeSomatic = true;
-
-    /**
-     * @param analysisDetailReportController
-     */
-    public void setAnalysisDetailReportController(AnalysisDetailReportController analysisDetailReportController) {
-        this.analysisDetailReportController = analysisDetailReportController;
-    }
 
     public void settingItem(TableView<VariantAndInterpretationEvidence> table, String tier, VariantAndInterpretationEvidence selectedItem
             , TableRow<VariantAndInterpretationEvidence> rowItem) {
@@ -260,11 +251,6 @@ public class ChangeTierDialogController extends SubPaneController {
                 wae.printStackTrace();
                 DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
             }
-            if(analysisDetailReportController != null) {
-                /*selectedItem.getSnpInDel().setExpertTier(tier);*/
-                analysisDetailReportController.resetData(table);
-                analysisDetailReportController.setVariantsList();
-            }
 
             dialogStage.close();
         }
@@ -272,11 +258,6 @@ public class ChangeTierDialogController extends SubPaneController {
 
     @FXML
     public void cancel() {
-        if(analysisDetailReportController != null) {
-            analysisDetailReportController.selectClear(getCurrentTier());
-            selectedItem = null;
-            rowItem = null;
-        }
         dialogStage.close();
     }
 

@@ -19,7 +19,8 @@ import java.io.IOException;
  * @author Jang
  * @since 2017-08-31
  */
-public class AnalysisDetailSNPsINDELsMemoController extends SubPaneController {
+public class
+AnalysisDetailSNPsINDELsMemoController extends SubPaneController {
     private static Logger logger = LoggerUtil.getLogger();
 
     @FXML
@@ -46,6 +47,15 @@ public class AnalysisDetailSNPsINDELsMemoController extends SubPaneController {
     private AnalysisDetailSNPsINDELsController analysisDetailSNPsINDELsController;
 
     private AnalysisDetailFusionGeneController analysisDetailFusionGeneController;
+
+    private AnalysisDetailSNVController analysisDetailSNVController;
+
+    /**
+     * @param analysisDetailSNVController
+     */
+    public void setAnalysisDetailSNVController(AnalysisDetailSNVController analysisDetailSNVController) {
+        this.analysisDetailSNVController = analysisDetailSNVController;
+    }
 
     /**
      * @return analysisDetailFusionGeneController

@@ -1,6 +1,5 @@
 package ngeneanalysys.controller;
 
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
@@ -9,13 +8,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.control.*;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.transform.Transform;
 import javafx.stage.FileChooser;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.constants.FXMLConstants;
@@ -75,91 +70,34 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     private VelocityUtil velocityUtil = new VelocityUtil();
 
     @FXML
-    private Label diseaseLabel;
-
-    @FXML
-    private Label panelLabel;
-
-    @FXML
     private TextArea conclusionsTextArea;
 
     @FXML
-    private TableView<VariantAndInterpretationEvidence> tierOneVariantsTable;
+    private TableView<VariantAndInterpretationEvidence> variantsTable;
 
     @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> tierOneGeneColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> tierColumn;
 
     @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> tierOneVariantsColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> chrColumn;
 
     @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> tierOneTherapeuticColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> geneColumn;
 
     @FXML
-    private TableColumn<VariantAndInterpretationEvidence, BigDecimal> tierOneAlleleFrequencyColumn;
+    private TableColumn<VariantAndInterpretationEvidence, Integer> positionColumn;
 
     @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> tierOneDrugColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> refSeqColumn;
 
     @FXML
-    private TableColumn<VariantAndInterpretationEvidence, Boolean> tierOneExceptColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> ntChangeColumn;
 
     @FXML
-    private TableView<VariantAndInterpretationEvidence> tierTwoVariantsTable;
+    private TableColumn<VariantAndInterpretationEvidence, String> aaChangeColumn;
 
     @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> tierTwoGeneColumn;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> tierTwoVariantsColumn;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> tierTwoTherapeuticColumn;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, BigDecimal> tierTwoAlleleFrequencyColumn;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> tierTwoDrugColumn;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, Boolean> tierTwoExceptColumn;
-
-    @FXML
-    private TableView<VariantAndInterpretationEvidence> tierThreeVariantsTable;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> tierThreeGeneColumn;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> tierThreeVariantsColumn;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> tierThreeTherapeuticColumn;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, BigDecimal> tierThreeAlleleFrequencyColumn;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, Boolean> tierThreeExceptColumn;
-
-    @FXML
-    private TableView<VariantAndInterpretationEvidence> negativeVariantsTable;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> negativeGeneColumn;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> negativeVariantsColumn;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> negativeCauseColumn;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> negativeAlleleFrequencyColumn;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, Boolean> negativeExceptColumn;
+    private TableColumn<VariantAndInterpretationEvidence, BigDecimal> alleleFrequencyColumn;
 
     @FXML
     private GridPane customFieldGridPane;
@@ -174,50 +112,36 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     private Label conclusions;
 
     @FXML
-    private Label patientIdLabel;
-
-    @FXML
     private ComboBox<ComboBoxItem> virtualPanelComboBox;
 
-    Sample sample = null;
+    @FXML
+    private FlowPane targetGenesFlowPane;
 
-    Panel panel = null;
+    private Sample sample = null;
 
-    List<VariantAndInterpretationEvidence> tierOne = null;
+    private Panel panel = null;
 
-    List<VariantAndInterpretationEvidence> tierTwo = null;
+    private List<VariantAndInterpretationEvidence> tierOne = null;
 
-    List<VariantAndInterpretationEvidence> tierThree = null;
+    private List<VariantAndInterpretationEvidence> tierTwo = null;
 
-    List<VariantAndInterpretationEvidence> tierFour = null;
+    private List<VariantAndInterpretationEvidence> tierThree = null;
 
-    List<VariantAndInterpretationEvidence> negativeList = null;
+    private List<VariantAndInterpretationEvidence> tierFour = null;
+
+    private List<VariantAndInterpretationEvidence> negativeList = null;
 
     private VariantAndInterpretationEvidence selectedItem = null;
 
     private TableView<VariantAndInterpretationEvidence> selectedTable = null;
 
-    private TableRow<VariantAndInterpretationEvidence> rowItem;
-
     private boolean reportData = false;
-
-    @FXML
-    private GridPane mainGridPane;
 
     @Override
     public void show(Parent root) throws IOException {
         logger.info("show..");
 
-        tableCellUpdateFix(tierOneVariantsTable);
-        tableCellUpdateFix(tierTwoVariantsTable);
-        tableCellUpdateFix(tierThreeVariantsTable);
-        tableCellUpdateFix(negativeVariantsTable);
-
-        //Drag & Drop 으로 Variant의 Tier를 변경
-
-        settingTableViewDragAndDrop(tierOneVariantsTable, "T1");
-        settingTableViewDragAndDrop(tierTwoVariantsTable, "T2");
-        settingTableViewDragAndDrop(tierThreeVariantsTable, "T3");
+        tableCellUpdateFix(variantsTable);
 
         // API 서비스 클래스 init
         apiService = APIService.getInstance();
@@ -233,49 +157,19 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
         sample = (Sample)paramMap.get("sample");
 
-        patientIdLabel.setText(sample.getPaitentId());
-
-        tierOneGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
-        tierOneVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
-        tierOneAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()));
-        tierOneExceptColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
-        tierOneExceptColumn.setCellFactory(param -> new ReportedCheckBox(this));
-        tierOneTherapeuticColumn.setCellValueFactory(cellData -> returnTherapeutic(cellData.getValue().getInterpretationEvidence()));
-
-        tierTwoGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
-        tierTwoVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
-        tierTwoAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()));
-        tierTwoExceptColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
-        tierTwoExceptColumn.setCellFactory(param -> new ReportedCheckBox(this));
-        tierTwoTherapeuticColumn.setCellValueFactory(cellData -> returnTherapeutic(cellData.getValue().getInterpretationEvidence()));
-
-        tierThreeGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
-        tierThreeVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
-        tierThreeAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()));
-        tierThreeExceptColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
-        tierThreeExceptColumn.setCellFactory(param -> new ReportedCheckBox(this));
-        tierThreeTherapeuticColumn.setCellValueFactory(cellData -> returnTherapeutic(cellData.getValue().getInterpretationEvidence()));
-
-        negativeGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
-        negativeVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
-        //negativeCauseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getInterpretationEvidence().getEvidencePersistentNegative()));
-        negativeAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction().toString()));
-        negativeExceptColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
-        negativeExceptColumn.setCellFactory(param -> new ReportedCheckBox(this));
-
-        List<Diseases> diseases = (List<Diseases>) mainController.getBasicInformationMap().get("diseases");
-        Optional<Diseases> diseasesOptional = diseases.stream().filter(disease -> disease.getId() == sample.getDiseaseId()).findFirst();
-        if(diseasesOptional.isPresent()) {
-            String diseaseName = diseasesOptional.get().getName();
-            diseaseLabel.setText(diseaseName);
-        }
+        tierColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSwTier()));
+        chrColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getChromosome()));
+        geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
+        positionColumn.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getSnpInDel().getGenomicCoordinate().getStartPosition()));
+        refSeqColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getRefSequence()));
+        ntChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
+        aaChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChange()));
+        alleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()));
 
         List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
         Optional<Panel> panelOptional = panels.stream().filter(panelItem -> panelItem.getId().equals(sample.getPanelId())).findFirst();
         if(panelOptional.isPresent()) {
             panel = panelOptional.get();
-            String panelName = panel.getName();
-            panelLabel.setText(panelName);
         }
 
         setVirtualPanel();
@@ -380,8 +274,81 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
         virtualPanelComboBox.getSelectionModel().selectedItemProperty().addListener((ov, t, t1) -> {
             if(!t1.equals(t)) setVariantsList();
+            if(!t1.equals(t)) setTargetGenesList();
         });
 
+        setTargetGenesList();
+
+    }
+
+    public void setTargetGenesList() {
+        if(!targetGenesFlowPane.getChildren().isEmpty()) {
+            mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() - targetGenesFlowPane.getPrefHeight());
+            contentVBox.setPrefHeight(contentVBox.getPrefHeight() - targetGenesFlowPane.getPrefHeight());
+            targetGenesFlowPane.getChildren().removeAll(targetGenesFlowPane.getChildren());
+            targetGenesFlowPane.setPrefHeight(0);
+        }
+        try {
+            HttpClientResponse response = apiService.get("/analysisResults/variantCountByGeneForSomaticDNA/" + sample.getId(),
+                    null, null, false);
+            if (response != null) {
+                List<VariantCountByGene> variantCountByGenes = (List<VariantCountByGene>) response
+                        .getMultiObjectBeforeConvertResponseToJSON(VariantCountByGene.class,
+                                false);
+
+                variantCountByGenes = filteringGeneList(variantCountByGenes);
+
+                if(variantCountByGenes != null && !variantCountByGenes.isEmpty()) {
+                    targetGenesFlowPane.setPrefHeight(targetGenesFlowPane.getPrefHeight() + 30);
+                    mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 30);
+                    contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 30);
+                }
+
+                variantCountByGenes = variantCountByGenes.stream().sorted(Comparator.comparing(VariantCountByGene::getGeneSymbol)).collect(Collectors.toList());
+                Set<String> allGeneList = null;
+                Set<String> list = new HashSet<>();
+                if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
+                    response = apiService.get("virtualPanels/" + virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue(),
+                            null, null, false);
+
+                    VirtualPanel virtualPanel = response.getObjectBeforeConvertResponseToJSON(VirtualPanel.class);
+
+                    allGeneList = returnGeneList(virtualPanel.getEssentialGenes(), virtualPanel.getOptionalGenes());
+
+                    String essentialGenes = virtualPanel.getEssentialGenes().replaceAll("\\p{Z}", "");
+
+                    list.addAll(Arrays.stream(essentialGenes.split(",")).collect(Collectors.toSet()));
+
+                }
+
+
+                for(VariantCountByGene gene : variantCountByGenes) {
+                    Label label = new Label(gene.getGeneSymbol());
+                    if(discriminationOfMutation(gene)) {
+                        label.getStyleClass().add("text_color_blue");
+                    } else {
+                        label.getStyleClass().add("text_color_white");
+                    }
+
+                    if(allGeneList == null || !list.contains(gene.getGeneSymbol())) {
+                        label.getStyleClass().add("target_gene_variant_not");
+                    } else {
+                        label.getStyleClass().add("target_gene_variant");
+                    }
+
+
+
+                    targetGenesFlowPane.getChildren().add(label);
+                    if(targetGenesFlowPane.getChildren().size() % 15 == 1) {
+                        targetGenesFlowPane.setPrefHeight(targetGenesFlowPane.getPrefHeight() + 28);
+                        mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 28);
+                        contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 28);
+                    }
+                }
+            }
+        } catch (WebAPIException wae) {
+            wae.printStackTrace();
+        }
     }
 
     public void tableCellUpdateFix(TableView<VariantAndInterpretationEvidence> tableView) {
@@ -453,10 +420,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     }
                 }
             } catch (WebAPIException wae) {
-
+                return list;
             }
-        } else {
-            return list;
         }
 
         if(filteringList.isEmpty()) {
@@ -490,17 +455,42 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
             tierFour = settingTierList(list, "T4");
 
-            orderingAndAddTableItem(tierOneVariantsTable, tierOne);
+            List<VariantAndInterpretationEvidence> tableList = new ArrayList<>();
 
-            orderingAndAddTableItem(tierTwoVariantsTable, tierTwo);
+            if(tierOne != null && !tierOne.isEmpty()) {
+                Collections.sort(tierOne,
+                        (a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
+                tableList.addAll(tierOne);
+            }
 
-            orderingAndAddTableItem(tierThreeVariantsTable, tierThree);
+            if(tierTwo != null && !tierTwo.isEmpty()) {
+                Collections.sort(tierTwo,
+                        (a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
+                tableList.addAll(tierTwo);
+            }
 
-            orderingAndAddTableItem(negativeVariantsTable, negativeList);
+            if(tierThree != null && !tierThree.isEmpty()) {
+                Collections.sort(tierThree,
+                        (a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
+
+                tableList.addAll(tierThree);
+            }
+
+            if(variantsTable.getItems() != null && !variantsTable.getItems().isEmpty()) {
+                variantsTable.getItems().removeAll(variantsTable.getItems());
+            }
+
+            variantsTable.getItems().addAll(tableList);
 
         } catch (WebAPIException wae) {
             DialogUtil.error(wae.getHeaderText(), wae.getContents(), this.getMainApp().getPrimaryStage(), true);
         }
+    }
+
+    public boolean discriminationOfMutation(VariantCountByGene gene) {
+        return (gene.getTier3IndelCount() > 0 || gene.getTier3SnpCount() > 00 ||
+                gene.getTier1IndelCount() > 0 || gene.getTier1SnpCount() > 0 ||
+                gene.getTier2IndelCount() > 0 || gene.getTier2SnpCount() > 0) ? true : false;
     }
 
     public void setVirtualPanel() {
@@ -528,37 +518,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             }
         } catch (WebAPIException wae) {
             wae.printStackTrace();
-        }
-    }
-
-    public void settingTableViewDragAndDrop(TableView<VariantAndInterpretationEvidence> tableView, String tier) {
-        if(!StringUtils.isEmpty(tier) && tableView != null) {
-            tableView.setOnDragDetected(e -> onDragDetected(e, tableView));
-            tableView.setOnDragDone(e -> onDragDone(e));
-            tableView.setOnDragOver(e -> onDragOver(e, tableView));
-            tableView.setOnDragExited(e -> onDragExited(e, tableView));
-            tableView.setOnDragDropped(e -> onDragDropped(e, tableView, tier));
-            tableView.setOnMouseClicked(e -> onClicked(e, tableView , tier));
-
-            tableView.setRowFactory(tv -> {
-                TableRow<VariantAndInterpretationEvidence> rowData = new TableRow<>();
-                rowData.setOnDragDetected(e -> rowItem = rowData);
-                return rowData;
-            });
-        }
-    }
-
-    public void orderingAndAddTableItem(TableView<VariantAndInterpretationEvidence> tableView,
-                                        List<VariantAndInterpretationEvidence> tierList) {
-        if(tierList != null && !tierList.isEmpty()) {
-
-            if(tableView.getItems() != null && !tableView.getItems().isEmpty()) {
-                tableView.getItems().removeAll(tableView.getItems());
-            }
-
-            Collections.sort(tierList,
-                    (a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
-            tableView.getItems().addAll(tierList);
         }
     }
 
@@ -760,7 +719,12 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     public Map<String, Object> contents() throws WebAPIException {
         Map<String,Object> contentsMap = new HashMap<>();
         contentsMap.put("panelName", panel.getName());
-        contentsMap.put("diseaseName", diseaseLabel.getText());
+        List<Diseases> diseases = (List<Diseases>) mainController.getBasicInformationMap().get("diseases");
+        Optional<Diseases> diseasesOptional = diseases.stream().filter(disease -> disease.getId() == sample.getDiseaseId()).findFirst();
+        if(diseasesOptional.isPresent()) {
+            String diseaseName = diseasesOptional.get().getName();
+            contentsMap.put("diseaseName", diseaseName);
+        }
         contentsMap.put("sampleSource", panel.getSampleSource());
         contentsMap.put("panelCode", panel.getCode());
         contentsMap.put("sampleName", sample.getName());
@@ -773,15 +737,13 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         contentsMap.put("date", sdf.format(date));
 
         List<VariantAndInterpretationEvidence> variantList = new ArrayList<>();
-        if(!tierOneVariantsTable.getItems().isEmpty()) variantList.addAll(tierOneVariantsTable.getItems().stream().collect(Collectors.toList()));
-        if(!tierTwoVariantsTable.getItems().isEmpty()) variantList.addAll(tierTwoVariantsTable.getItems().stream().collect(Collectors.toList()));
-        //if(tierOne != null && !tierOne.isEmpty()) variantList.addAll(tierOne);
-        //if(tierTwo != null && !tierTwo.isEmpty()) variantList.addAll(tierTwo);
+        if(tierOne != null && !tierOne.isEmpty()) variantList.addAll(tierOne);
+        if(tierTwo != null && !tierTwo.isEmpty()) variantList.addAll(tierTwo);
 
         List<VariantAndInterpretationEvidence> negativeResult = new ArrayList<>();
         //리포트에서 제외된 negative 정보를 제거
         if(negativeList != null && !negativeList.isEmpty()) {
-            negativeResult.addAll(negativeVariantsTable.getItems().stream().filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).collect(Collectors.toList()));
+            negativeResult.addAll(negativeList.stream().filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).collect(Collectors.toList()));
         }
         //리포트에서 제외된 variant를 제거
         if(!variantList.isEmpty()) {
@@ -793,7 +755,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         clinicalVariantList.addAll(variantList);
 
         //if(tierThree != null && !tierThree.isEmpty()) variantList.addAll(tierThree);
-        if(!tierThreeVariantsTable.getItems().isEmpty()) variantList.addAll(tierThreeVariantsTable.getItems().stream().filter(tierThree ->
+        if(tierThree != null && !tierThree.isEmpty()) variantList.addAll(tierThree.stream().filter(tierThree ->
                 tierThree.getSnpInDel().getIncludedInReport().equalsIgnoreCase("Y")).collect(Collectors.toList()));
 
         for(VariantAndInterpretationEvidence variant : variantList) {
@@ -807,8 +769,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         Integer evidenceCCount = 0;
         Integer evidenceDCount = 0;
 
-        if(!tierOneVariantsTable.getItems().isEmpty()) {
-            for(VariantAndInterpretationEvidence variant : tierOneVariantsTable.getItems().stream().filter(tierOne ->
+        if(tierOne != null && !tierOne.isEmpty()) {
+            for(VariantAndInterpretationEvidence variant : tierOne.stream().filter(tierOne ->
                     tierOne.getSnpInDel().getIncludedInReport().equalsIgnoreCase("Y")).collect(Collectors.toList())) {
                 if("Y".equalsIgnoreCase(variant.getSnpInDel().getIncludedInReport()) && variant.getInterpretationEvidence() != null) {
                     if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelA())) evidenceACount++;
@@ -821,8 +783,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             }
         }
 
-        if(!tierTwoVariantsTable.getItems().isEmpty()) {
-            for(VariantAndInterpretationEvidence variant : tierTwoVariantsTable.getItems().stream().filter(tierTwo ->
+        if(tierTwo != null && !tierTwo.isEmpty()) {
+            for(VariantAndInterpretationEvidence variant : tierTwo.stream().filter(tierTwo ->
                     tierTwo.getSnpInDel().getIncludedInReport().equalsIgnoreCase("Y")).collect(Collectors.toList())) {
                 if("Y".equalsIgnoreCase(variant.getSnpInDel().getIncludedInReport()) && variant.getInterpretationEvidence() != null) {
                     if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelA())) evidenceACount++;
@@ -838,9 +800,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         contentsMap.put("clinicalVariantList", clinicalVariantList);
         contentsMap.put("variantList", variantList);
         contentsMap.put("tierThreeVariantList", tierThree);
-        contentsMap.put("tierOneCount", tierOneVariantsTable.getItems().filtered(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).size());
-        contentsMap.put("tierTwoCount", tierTwoVariantsTable.getItems().filtered(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).size());
-        contentsMap.put("tierThreeCount", tierThreeVariantsTable.getItems().filtered(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).size());
+        contentsMap.put("tierOneCount", (int)tierOne.stream().filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).count());
+        contentsMap.put("tierTwoCount", (int)tierTwo.stream().filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).count());
+        contentsMap.put("tierThreeCount", (int)tierThree.stream().filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).count());
         contentsMap.put("tierFourCount", (tierFour != null) ? tierFour.size() : 0);
         contentsMap.put("evidenceACount", evidenceACount);
         contentsMap.put("evidenceBCount", evidenceBCount);
@@ -1127,10 +1089,10 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             Method updateWordFile = classToLoad.getDeclaredMethod("updateWordFile");
             Method setWriteFilePath = classToLoad.getDeclaredMethod("setWriteFilePath", String.class);
             Object application = classToLoad.newInstance();
-            Object result = setParams.invoke(application, contentsMap);
-            result = setWriteFilePath.invoke(application, file.getPath());
-            result = updateEmbeddedDoc.invoke(application);
-            result = updateWordFile.invoke(application);
+            setParams.invoke(application, contentsMap);
+            setWriteFilePath.invoke(application, file.getPath());
+            updateEmbeddedDoc.invoke(application);
+            updateWordFile.invoke(application);
             createdCheck(true, file);
         } catch (Exception e) {
             DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);
@@ -1283,117 +1245,5 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
         }
 
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////
-
-    /*
-    TableView 간의 Drag and Drop 기능 구현
-     */
-
-    /**
-     *
-     * @param e
-     * @param table
-     */
-    public void onDragDetected(MouseEvent e, TableView<VariantAndInterpretationEvidence> table) {
-        VariantAndInterpretationEvidence selectedVariant = table.getSelectionModel().getSelectedItem();
-        if(selectedVariant == null) return;
-
-        selectedTable = table;
-
-        selectedItem = selectedVariant;
-
-        Dragboard db = table.startDragAndDrop(TransferMode.ANY);
-        ClipboardContent content = new ClipboardContent();
-        //저장된 row를 기준으로 스냅샷 생성
-        SnapshotParameters sp = new SnapshotParameters();
-        sp.setTransform(Transform.scale(2, 2));
-
-        db.setDragView(rowItem.snapshot(sp, null));
-
-        content.putString(selectedVariant.toString());
-        db.setContent(content);
-        e.consume();
-    }
-
-    public void onDragDone(DragEvent e) {
-        e.consume();
-    }
-
-    public void onDragOver(DragEvent t, TableView<VariantAndInterpretationEvidence> table) {
-        if(selectedTable != table) {
-            t.acceptTransferModes(TransferMode.ANY);
-            DropShadow dropShadow = new DropShadow();
-            dropShadow.setRadius(5.0);
-            dropShadow.setOffsetX(3.0);
-            dropShadow.setOffsetY(3.0);
-            dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
-            table.setEffect(dropShadow);
-        }
-    }
-
-    public void onDragExited(DragEvent t, TableView<VariantAndInterpretationEvidence> table) {
-        t.acceptTransferModes(TransferMode.ANY);
-        table.setEffect(null);
-        t.consume();
-    }
-
-    public void onDragDropped(DragEvent t, TableView<VariantAndInterpretationEvidence> table, String tier) {
-        if(selectedItem != null && selectedTable != table) {
-            try {
-                FXMLLoader loader = mainApp.load(FXMLConstants.CHANGE_TIER);
-                Node root = loader.load();
-                ChangeTierDialogController changeTierDialogController = loader.getController();
-                changeTierDialogController.setMainController(this.getMainController());
-                changeTierDialogController.setAnalysisDetailReportController(this);
-                changeTierDialogController.settingItem(table, tier, selectedItem, rowItem);
-                changeTierDialogController.show((Parent) root);
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
-            }
-
-        }
-        t.setDropCompleted(true);
-    }
-
-    public void onClicked(MouseEvent e,TableView<VariantAndInterpretationEvidence> table, String tier) {
-
-        if(e.getClickCount() == 2) {
-            VariantAndInterpretationEvidence variantAndInterpretationEvidence = table.getSelectionModel().getSelectedItem();
-            try {
-                FXMLLoader loader = mainApp.load(FXMLConstants.CHANGE_TIER);
-                Node root = loader.load();
-                ChangeTierDialogController changeTierDialogController = loader.getController();
-                changeTierDialogController.setMainController(this.getMainController());
-                changeTierDialogController.setAnalysisDetailReportController(this);
-                changeTierDialogController.settingTier(tier, variantAndInterpretationEvidence);
-                changeTierDialogController.show((Parent) root);
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
-            }
-        }
-    }
-
-    public void resetData(TableView<VariantAndInterpretationEvidence> table) {
-        if(selectedTable != null && table != null) {
-            selectedTable.getItems().remove(selectedItem);
-            table.getItems().add(selectedItem);
-        }
-        selectedItem = null;
-        selectedTable = null;
-        rowItem = null;
-    }
-
-    public void selectClear(String tier) {
-        if(tier.equals("T1")) {
-            tierOneVariantsTable.getSelectionModel().clearSelection();
-        } else if(tier.equals("T2")) {
-            tierTwoVariantsTable.getSelectionModel().clearSelection();
-        } else if(tier.equals("T3")) {
-            tierThreeVariantsTable.getSelectionModel().clearSelection();
-        } else if(tier.equals("TN")) {
-            negativeVariantsTable.getSelectionModel().clearSelection();
-        }
     }
 }

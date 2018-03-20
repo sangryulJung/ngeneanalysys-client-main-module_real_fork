@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane fx:id="snvWrapper" prefHeight="380.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNVController">
+<GridPane fx:id="snvWrapper" prefHeight="380.0" prefWidth="1140.0" style="-fx-background-color: #f2f5fa;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNVController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="200.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="0.0" prefWidth="0.0" />
@@ -29,6 +29,9 @@
          <padding>
             <Insets bottom="10.0" />
          </padding>
+         <GridPane.margin>
+            <Insets left="5.0" right="5.0" top="20.0" />
+         </GridPane.margin>
       </TableView>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
@@ -64,15 +67,20 @@
                </HBox.margin></Button>
          </children>
       </HBox>
-      <HBox fx:id="rightContentsHBox" style="-fx-background-color: #fff;" GridPane.columnIndex="2">
+      <HBox fx:id="rightContentsHBox" style="-fx-background-color: #f2f5fa;" GridPane.columnIndex="2">
          <children>
             <Button fx:id="rightSizeButton" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="50.0" styleClass="right_btn_fold" />
             <Accordion fx:id="overviewAccordion" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="890.0">
               <panes>
-                <TitledPane animated="false" maxWidth="-Infinity" minWidth="-Infinity" text="untitled 1" />
-                <TitledPane animated="false" maxWidth="-Infinity" minWidth="-Infinity" text="untitled 2" />
-                <TitledPane animated="false" maxWidth="-Infinity" minWidth="-Infinity" text="untitled 3" />
+                <TitledPane animated="false" maxWidth="-Infinity" minWidth="-Infinity" text="Variant Detail" />
+                <TitledPane animated="false" maxWidth="-Infinity" minWidth="-Infinity" text="Prediction &amp; Interpretation" />
+                <TitledPane animated="false" maxWidth="-Infinity" minWidth="-Infinity" text="Clinical Significant" />
+                  <TitledPane animated="false" maxWidth="-Infinity" minWidth="-Infinity" text="Statistics" />
+                  <TitledPane fx:id="interpretationLogsTitledPane" animated="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" text="Interpretation Log" />
               </panes>
+               <HBox.margin>
+                  <Insets top="20.0" />
+               </HBox.margin>
             </Accordion>
          </children>
       </HBox>

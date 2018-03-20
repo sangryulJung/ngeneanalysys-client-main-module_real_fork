@@ -166,4 +166,8 @@ public class FXMLConstants {
 
 	public static final String ANALYSIS_DETAIL_VARIANTS_SNV = "/layout/fxml/AnalysisDetail-SNV.fxml";
 
+	public static final String ANALYSIS_DETAIL_INTERPRETATION_LOGS = "/layout/fxml/variantDetail/AnalysisDetail-SNPs-INDELs-Memo.fxml";
+
+	public static final String ANALYSIS_DETAIL_INTERPRETATION = "/layout/fxml/variantDetail/AnalysisDetail-Interpretation.fxml";
+
 }

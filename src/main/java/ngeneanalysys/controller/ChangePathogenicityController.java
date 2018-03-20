@@ -39,8 +39,6 @@ public class ChangePathogenicityController extends SubPaneController {
 
     private VariantAndInterpretationEvidence selectedItem = null;
 
-    private AnalysisDetailReportGermlineController analysisDetailReportGermlineController;
-
     @FXML
     private TextField commentTextField;
 
@@ -49,21 +47,10 @@ public class ChangePathogenicityController extends SubPaneController {
 
     private Stage dialogStage;
 
-    private TableRow<VariantAndInterpretationEvidence> rowItem;
-
-    /**
-     * @param analysisDetailReportGermlineController
-     */
-    public void setAnalysisDetailReportGermlineController(AnalysisDetailReportGermlineController analysisDetailReportGermlineController) {
-        this.analysisDetailReportGermlineController = analysisDetailReportGermlineController;
-    }
-
-    public void settingItem(TableView<VariantAndInterpretationEvidence> table, String pathogenicity, VariantAndInterpretationEvidence selectedItem
-            , TableRow<VariantAndInterpretationEvidence> rowItem) {
+    public void settingItem(TableView<VariantAndInterpretationEvidence> table, String pathogenicity, VariantAndInterpretationEvidence selectedItem) {
         this.table =table;
         this.pathogenicity = pathogenicity;
         this.selectedItem = selectedItem;
-        this.rowItem = rowItem;
     }
 
     public void settingTier(String pathogenicity, VariantAndInterpretationEvidence selectedItem) {
@@ -114,22 +101,12 @@ public class ChangePathogenicityController extends SubPaneController {
                 DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
             }
 
-            if (analysisDetailReportGermlineController != null) {
-                /*selectedItem.getSnpInDel().setExpertPathogenicityLevel(tier);*/
-                analysisDetailReportGermlineController.resetData(table);
-                analysisDetailReportGermlineController.setVariantsList();
-            }
             dialogStage.close();
         }
     }
 
     @FXML
     public void cancel() {
-        if(analysisDetailReportGermlineController != null) {
-            analysisDetailReportGermlineController.selectClear(getCurrentPathogenicity());
-            selectedItem = null;
-            rowItem = null;
-        }
         dialogStage.close();
     }
 

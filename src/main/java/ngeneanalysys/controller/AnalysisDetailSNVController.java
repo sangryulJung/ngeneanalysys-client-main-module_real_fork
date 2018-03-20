@@ -6,18 +6,20 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.ExperimentTypeCode;
 import ngeneanalysys.code.enums.PredictionTypeCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
-import ngeneanalysys.model.Panel;
-import ngeneanalysys.model.Sample;
-import ngeneanalysys.model.VariantAndInterpretationEvidence;
+import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedVariantAndInterpretationEvidence;
 import ngeneanalysys.model.render.SNPsINDELsList;
 import ngeneanalysys.service.APIService;
@@ -54,7 +56,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     private Accordion overviewAccordion;
 
     @FXML
-    private TableView variantListTableView;
+    private TableView<VariantAndInterpretationEvidence> variantListTableView;
 
     @FXML
     private HBox rightContentsHBox;
@@ -65,6 +67,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     @FXML
     private Label totalVariantCountLabel;
 
+    @FXML
+    private TitledPane interpretationLogsTitledPane;
+
     Sample sample = null;
     Panel panel = null;
 
@@ -72,23 +77,28 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     //VariantList
     List<VariantAndInterpretationEvidence> list = null;
 
+    /** 현재 선택된 변이 정보 객체 */
+    private VariantAndInterpretationEvidence selectedAnalysisResultVariant;
+    /** 현재 선택된 변이 리스트 객체의 index */
+    private int selectedVariantIndex;
+
     private final double leftFoldedWidth = 50;
     private final double leftExpandedWidth = 200;
 
     private final double rightFoldedWidth = 50;
-    private final double rightStandardWidth = 940;
-    private final double rightFullWidth = 1090;
+    private final double rightStandardWidth = 890;
+    private final double rightFullWidth = 1040;
 
     private final double centerFoldedWidth = 0;
     private final double centerStandardWidth = 890;
     private final double centerFullWidth = 1040;
 
     private final double minSize = 0;
-    private final double standardAccordionSize = 890;
-    private final double maxAccordionSize = 1040;
+    private final double standardAccordionSize = 840;
+    private final double maxAccordionSize = 990;
 
-    private final double standardTableSize = 890;
-    private final double maxTableSize = 1040;
+    private final double standardTableSize = 830;
+    private final double maxTableSize = 980;
 
     /**
      * @param variantsController
@@ -164,10 +174,120 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         filterArea.setPrefWidth(0);
         leftSizeButton.getStyleClass().clear();
         leftSizeButton.getStyleClass().add("btn_expand");
+
+        // 목록 클릭 시 변이 상세정보 출력 이벤트 바인딩
+        variantListTableView.setRowFactory(tv -> {
+            TableRow<VariantAndInterpretationEvidence> row = new TableRow<>();
+            row.setOnMouseClicked(e -> {
+                if (e.getClickCount() == 1 && (!row.isEmpty())) {
+                    showVariantDetail(variantListTableView.getSelectionModel().getSelectedItem());
+                }
+            });
+            return row;
+        });
+
+        // 선택된 목록에서 엔터키 입력시 변이 상세정보 출력 이벤트 바인딩
+        variantListTableView.setOnKeyPressed(keyEvent -> {
+            if(keyEvent.getCode().equals(KeyCode.ENTER)) {
+                showVariantDetail(variantListTableView.getSelectionModel().getSelectedItem());
+            }
+        });
+
     }
 
+    /**
+     * Memo 탭 화면 출력
+     */
+    public void showMemoTab(ObservableList<SnpInDelInterpretationLogs> memoList) {
+        try {
+            FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_INTERPRETATION_LOGS);
+            Node node = loader.load();
+            AnalysisDetailSNPsINDELsMemoController controller = loader.getController();
+            controller.setMainController(this.getMainController());
+            controller.setAnalysisDetailSNVController(this);
+            controller.show((Parent) node);
+            controller.displayList(memoList);
+            interpretationLogsTitledPane.setContent(node);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 선택된 변이 상세 정보 출력
+     * @param analysisResultVariant
+     */
+    @SuppressWarnings("unchecked")
+    public void showVariantDetail(VariantAndInterpretationEvidence analysisResultVariant) {
+        // 선택된 변이의 목록에서의 인덱스 정보 설정.
+        selectedVariantIndex = variantListTableView.getItems().indexOf(analysisResultVariant);
+        // 선택된 변이 객체 정보 설정
+        selectedAnalysisResultVariant = analysisResultVariant;
+        // 탭 메뉴 활성화 토글
+        /*setDetailTabActivationToggle(false);
+        try {
+            // Detail 데이터 API 요청
+            HttpClientResponse responseDetail = apiService.get(
+                    "/analysisResults/snpInDels/" + selectedAnalysisResultVariant.getSnpInDel().getId(), null, null, false);
+            // 상세 데이터 요청이 정상 요청된 경우 진행.
+            SnpInDel snpInDel
+                    = responseDetail.getObjectBeforeConvertResponseToJSON(SnpInDel.class);
+            VariantAndInterpretationEvidence variantAndInterpretationEvidence = new VariantAndInterpretationEvidence();
+
+            variantAndInterpretationEvidence.setSnpInDel(snpInDel);
+            variantAndInterpretationEvidence.setInterpretationEvidence(selectedAnalysisResultVariant.getInterpretationEvidence());
+
+            if(analysisResultVariant != null) {
+                if (subTabOverview != null){
+                    showOverviewTab(variantAndInterpretationEvidence);
+                }
+            }
+        } catch (WebAPIException wae) {
+            wae.printStackTrace();
+            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+                    getMainApp().getPrimaryStage(), true);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+        }
+*/
+        try {
+            // Memo 데이터 API 요청
+            //Map<String, Object> commentParamMap = new HashMap<>();
+            HttpClientResponse responseMemo = apiService.get("/analysisResults/snpInDelInterpretationLogs/" + selectedAnalysisResultVariant.getSnpInDel().getId() , null, null, false);
+
+            // Flagging Comment 데이터 요청이 정상 요청된 경우 진행.
+            SnpInDelInterpretationLogsList memoList = responseMemo.getObjectBeforeConvertResponseToJSON(SnpInDelInterpretationLogsList.class);
+
+            /*if("SOMATIC".equalsIgnoreCase(panel.getAnalysisType())) {
+                settingTierArea();
+                checkBoxSetting(addToReportCheckBox, analysisResultVariant.getSnpInDel().getIncludedInReport());
+            } else {
+                settingGermlineArea();
+                checkBoxSetting(addToGermlineReportCheckBox, analysisResultVariant.getSnpInDel().getIncludedInReport());
+            }*/
 
 
+            // comment tab 화면 출력
+            if (interpretationLogsTitledPane.getContent() == null)
+                    showMemoTab(FXCollections.observableList(memoList.getResult()));
+        } catch (WebAPIException wae) {
+            wae.printStackTrace();
+            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+                    getMainApp().getPrimaryStage(), true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+        }
+
+        // warnings 탭 출력
+        //if(subTabLowConfidence != null) showLowConfidenceTab(selectedAnalysisResultVariant.getSnpInDel().getWarningReason());
+
+        // 첫번째 탭 선택 처리
+        overviewAccordion.setExpandedPane(interpretationLogsTitledPane);
+        //setDetailTabActivationToggle(true);
+    }
 
     private void expandRight() {
         snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerFoldedWidth);
@@ -224,7 +344,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             // 화면 출력
             if (displayList != null && displayList.size() > 0) {
                 variantListTableView.getSelectionModel().select(selectedIdx);
-                //showVariantDetail(displayList.get(selectedIdx));
+                showVariantDetail(displayList.get(selectedIdx));
             }
 
         } catch (WebAPIException wae) {
@@ -239,7 +359,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
 
 
-    public void setTableViewColumn() {
+    private void setTableViewColumn() {
         if(panel != null && ExperimentTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             TableColumn<VariantAndInterpretationEvidence, String> swTier = new TableColumn<>("Tier");
             swTier.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.tierConvert(cellData.getValue().getSnpInDel().getSwTier())));
@@ -487,7 +607,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         clinVarDisease.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarDisease()));
         clinVarDisease.setVisible(false);
 
-        variantListTableView.getColumns().addAll(kohbraPatient, kohbraFrequency,/* polyphen2, sift, mutationTaster,*/ variantNum, refGenomeVer, leftSequence, rightSequence
+        variantListTableView.getColumns().addAll(kohbraPatient, kohbraFrequency, variantNum, refGenomeVer, leftSequence, rightSequence
                 ,genomicCoordinate, dbSnpRsId, clinVarDisease);
 
         if(panel != null && ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
@@ -570,7 +690,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     }
 
-    public String cutVariantTypeString(String variantType) {
+    private String cutVariantTypeString(String variantType) {
         if(variantType.contains(":")) return variantType.substring(0, variantType.indexOf(':'));
         return variantType;
     }

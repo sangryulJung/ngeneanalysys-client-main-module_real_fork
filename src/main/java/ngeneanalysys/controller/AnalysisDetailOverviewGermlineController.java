@@ -74,12 +74,6 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
     private TableColumn<VariantAndInterpretationEvidence, String> variantColumn;
 
     @FXML
-    private Label diseasetextLabel;
-
-    @FXML
-    private Label diseaseLabel;
-
-    @FXML
     private Tooltip roiCoverageTooltip;
 
     @FXML
@@ -115,18 +109,6 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
         apiService.setStage(getMainController().getPrimaryStage());
 
         Sample sample = (Sample) getParamMap().get("sample");
-
-        List<Diseases> diseases = (List<Diseases>) mainController.getBasicInformationMap().get("diseases");
-        Optional<Diseases> diseasesOptional = diseases.stream().filter(disease -> disease.getId() == sample.getDiseaseId()).findFirst();
-        if(diseasesOptional.isPresent()) {
-            String diseaseName = diseasesOptional.get().getName();
-            if(!diseaseName.equalsIgnoreCase("N/A")) {
-                diseaseLabel.setText(diseaseName);
-            } else {
-                diseasetextLabel.setText("");
-                diseaseLabel.setText("");
-            }
-        }
 
         //Tier Table Setting
         pathogenicityColumn.setCellValueFactory(cellData -> new SimpleStringProperty(
@@ -180,8 +162,6 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
 
             }
 
-            //List<SnpInDel> tierTwo = variantTierMap.get("T2");
-
             if(likeylyPathogenic != null) {
                 pathogenicityTable.getItems().addAll(FXCollections.observableArrayList(likeylyPathogenic));
                 lpVariantsCountLabel.setText(String.valueOf(likeylyPathogenic.size()));
@@ -201,8 +181,6 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
                 });
             }
 
-            //List<SnpInDel> tierThree  = variantTierMap.get("T3");
-
             if(uncertatinSignificance != null) {
                 pathogenicityTable.getItems().addAll(FXCollections.observableArrayList(uncertatinSignificance));
                 usVariantsCountLabel.setText(String.valueOf(uncertatinSignificance.size()));
@@ -221,8 +199,6 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
                         snpInDelInterpretations.add(item.getInterpretationEvidence());
                 });
             }
-
-            //List<SnpInDel> tierFour  = variantTierMap.get("T4");
 
             if(likelyBenign != null) {
                 lbVariantsCountLabel.setText(String.valueOf(likelyBenign.size()));
