@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="222.0" prefWidth="360.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailPopulationFrequenciesController">
+   <children>
+      <HBox alignment="TOP_CENTER" prefHeight="18.0" prefWidth="360.0">
+         <children>
+            <Label styleClass="title1" text="POPULATION">
+               <padding>
+                  <Insets top="-5.0" />
+               </padding>
+            </Label>
+            <Label styleClass="title1" text="FREQUENCIES" />
+         </children>
+      </HBox>
+      <GridPane fx:id="populationFrequencyGraphGridPane" prefWidth="390.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="NEVER" maxWidth="190.0" minWidth="10.0" prefWidth="180.0" />
+            <ColumnConstraints hgrow="NEVER" maxWidth="245.0" minWidth="10.0" prefWidth="180.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="25.0" minHeight="10.0" prefHeight="23.0" vgrow="NEVER" />
+            <RowConstraints maxHeight="25.0" minHeight="10.0" prefHeight="23.0" vgrow="NEVER" />
+         </rowConstraints>
+         <children>
+            <HBox alignment="CENTER" minWidth="166.0" styleClass="population_frequency_graph">
+               <children>
+                  <Label alignment="CENTER_RIGHT" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="65.0" styleClass="title" text="ESP54000" />
+                  <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="8.0" prefWidth="75.0" styleClass="horizon_stick" HBox.hgrow="NEVER">
+                     <children>
+                        <Label />
+                     </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </HBox>
+                  <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" styleClass="percent" text="0.99" />
+               </children>
+            </HBox>
+         </children>
+      </GridPane>
+   </children>
+   <stylesheets>
+      <URL value="@../../css/common.css" />
+      <URL value="@../../css/variantDetail.css" />
+   </stylesheets>
+</VBox>

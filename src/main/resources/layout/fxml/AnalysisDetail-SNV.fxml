@@ -70,13 +70,13 @@
       <HBox fx:id="rightContentsHBox" style="-fx-background-color: #f2f5fa;" GridPane.columnIndex="2">
          <children>
             <Button fx:id="rightSizeButton" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="50.0" styleClass="right_btn_fold" />
-            <Accordion fx:id="overviewAccordion" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="890.0">
+            <Accordion fx:id="overviewAccordion" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="870.0">
               <panes>
                 <TitledPane fx:id="variantDetailTitledPane" animated="false" maxWidth="-Infinity" minWidth="-Infinity" text="Variant Detail" />
                 <TitledPane fx:id="interpretationTitledPane" animated="false" maxWidth="-Infinity" minWidth="-Infinity" text="Prediction &amp; Interpretation" />
                 <TitledPane fx:id="clinicalSignificantTitledPane" animated="false" maxWidth="-Infinity" minWidth="-Infinity" text="Clinical Significant" />
                   <TitledPane fx:id="statisticsTitledPane" animated="false" maxWidth="-Infinity" minWidth="-Infinity" text="Statistics" />
-                  <TitledPane fx:id="interpretationLogsTitledPane" animated="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" text="Interpretation Log" />
+                  <TitledPane fx:id="interpretationLogsTitledPane" animated="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="890.0" text="Interpretation Log" />
               </panes>
                <HBox.margin>
                   <Insets top="20.0" />

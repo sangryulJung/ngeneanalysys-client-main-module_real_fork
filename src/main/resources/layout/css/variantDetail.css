@@ -74,7 +74,7 @@
 	-fx-border-color:#A7A7A7;
 }
 
-#depthValueLabel, #overviewWrapper #fractionValueLabel {
+#depthValueLabel, #fractionValueLabel {
 	-fx-background-color:#F6545C;
 }
 
@@ -166,9 +166,9 @@
 	-fx-background-radius: 0;
 }
 #populationFrequencyGraphGridPane {
-	-fx-min-width:370;
-	-fx-pref-width:370;
-	-fx-max-width:370;
+	-fx-min-width:360;
+	-fx-pref-width:360;
+	-fx-max-width:360;
 	-fx-padding:10 0 0 0;
 }
 
@@ -239,7 +239,7 @@
 	-fx-padding:0;
 }
 
-#overviewWrapper .button.link:hover {
+.button.link:hover {
 	-fx-background-color:#6CB873;
 	-fx-text-fill:#fff;
 }

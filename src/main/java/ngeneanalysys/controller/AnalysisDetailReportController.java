@@ -133,8 +133,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
     private VariantAndInterpretationEvidence selectedItem = null;
 
-    private TableView<VariantAndInterpretationEvidence> selectedTable = null;
-
     private boolean reportData = false;
 
     @Override
@@ -1172,78 +1170,5 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         } catch (Exception e) {
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }*/
-    }
-
-
-    private class ReportedCheckBox extends TableCell<VariantAndInterpretationEvidence, Boolean> {
-        HBox box = null;
-        final CheckBox checkBox = new CheckBox();
-
-        ReportedCheckBox(AnalysisDetailReportController analysisDetailReportController) {
-            checkBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-                VariantAndInterpretationEvidence analysisResultVariant = ReportedCheckBox.this.getTableView().getItems().get(
-                        ReportedCheckBox.this.getIndex());
-
-                selectedItem = analysisResultVariant;
-
-                TextInputDialog dialog = new TextInputDialog();
-                dialog.setContentText("cause:");
-                dialog.setTitle("Reported variant");
-
-                if (!checkBox.isSelected()) {
-                    try {
-                        FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
-                        Node root = loader.load();
-                        ExcludeReportDialogController excludeReportDialogController = loader.getController();
-                        excludeReportDialogController.setMainController(mainController);
-                        //excludeReportDialogController.setAnalysisDetailReportController(analysisDetailReportController);
-                        excludeReportDialogController.settingItem("Y", selectedItem, checkBox);
-                        excludeReportDialogController.show((Parent) root);
-                    } catch (IOException ioe) {
-                        ioe.printStackTrace();
-                    }
-                } else {
-                    try {
-                        FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
-                        Node root = loader.load();
-                        ExcludeReportDialogController excludeReportDialogController = loader.getController();
-                        excludeReportDialogController.setMainController(mainController);
-                        excludeReportDialogController.settingItem("N", selectedItem, checkBox);
-                        excludeReportDialogController.show((Parent) root);
-                    } catch (IOException ioe) {
-                        ioe.printStackTrace();
-                    }
-                }
-            });
-        }
-
-        @Override
-        protected void updateItem(Boolean item, boolean empty) {
-            super.updateItem(item, empty);
-            if(isEmpty()) {
-                setGraphic(null);
-                return;
-            }
-            if(box == null) {
-                VariantAndInterpretationEvidence analysisResultVariant = ReportedCheckBox.this.getTableView().getItems().get(
-                        ReportedCheckBox.this.getIndex());
-
-                if (analysisResultVariant.getSnpInDel().getIncludedInReport().equalsIgnoreCase("N")) {
-                    checkBox.setSelected(true);
-                }
-
-                box = new HBox();
-
-                box.setAlignment(Pos.CENTER);
-
-                box.setSpacing(10);
-                checkBox.setStyle("-fx-cursor:hand;");
-                box.getChildren().add(checkBox);
-            }
-
-            setGraphic(box);
-
-        }
-
     }
 }

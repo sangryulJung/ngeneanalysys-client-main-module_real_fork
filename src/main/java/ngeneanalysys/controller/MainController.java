@@ -155,7 +155,8 @@ public class MainController extends BaseStageController {
 
         primaryStage = this.mainApp.getPrimaryStage();
         primaryStage.setScene(new Scene(root));
-        primaryStage.setTitle(CommonConstants.SYSTEM_NAME);
+        //primaryStage.setTitle(CommonConstants.SYSTEM_NAME);
+        primaryStage.setTitle("");
         // OS가 Window인 경우 아이콘 출력.
         if (System.getProperty("os.name").toLowerCase().contains("window")) {
             primaryStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));

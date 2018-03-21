@@ -7,15 +7,15 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="overviewWrapper" maxHeight="-Infinity" minWidth="-Infinity" prefHeight="204.0" prefWidth="890.0" styleClass="bg_white" stylesheets="@../../css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNPsINDELsMemoController">
+<GridPane fx:id="overviewWrapper" maxHeight="-Infinity" minWidth="-Infinity" prefHeight="224.0" prefWidth="870.0" style="-fx-background-color: #f2f5fa;" stylesheets="@../../css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNPsINDELsMemoController">
    <columnConstraints>
       <ColumnConstraints hgrow="ALWAYS" minWidth="-Infinity" percentWidth="100.0" prefWidth="1070.0" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints fillHeight="false" maxHeight="204.0" minHeight="-Infinity" prefHeight="204.0" />
+      <RowConstraints fillHeight="false" maxHeight="224.0" minHeight="-Infinity" prefHeight="224.0" />
    </rowConstraints>
    <children>
-      <TableView fx:id="memoListTableView" minHeight="-Infinity" prefHeight="180.0" prefWidth="870.0" styleClass="sub_table" tableMenuButtonVisible="true">
+      <TableView fx:id="memoListTableView" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="224.0" prefWidth="870.0" style="-fx-background-color: #fff;" styleClass="sub_table" tableMenuButtonVisible="true">
         <columns>
           <TableColumn fx:id="dateColumn" prefWidth="130.0" styleClass="alignment_center" text="date" />
           <TableColumn fx:id="typeColumn" prefWidth="120.0" styleClass="alignment_center" text="type" />
@@ -25,7 +25,7 @@
             <TableColumn fx:id="commentColumn" prefWidth="520.0" text="comment" />
         </columns>
          <GridPane.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            <Insets />
          </GridPane.margin>
       </TableView>
    </children>

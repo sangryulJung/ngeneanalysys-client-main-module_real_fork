@@ -18,6 +18,10 @@ import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.ExperimentTypeCode;
 import ngeneanalysys.code.enums.PredictionTypeCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
+import ngeneanalysys.controller.fragment.AnalysisDetailClinicalSignificantController;
+import ngeneanalysys.controller.fragment.AnalysisDetailInterpretationController;
+import ngeneanalysys.controller.fragment.AnalysisDetailVariantDetailController;
+import ngeneanalysys.controller.fragment.AnalysisDetailVariantStatisticsController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedVariantAndInterpretationEvidence;
@@ -106,8 +110,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     private final double centerFullWidth = 1040;
 
     private final double minSize = 0;
-    private final double standardAccordionSize = 840;
-    private final double maxAccordionSize = 990;
+    private final double standardAccordionSize = 870;
+    private final double maxAccordionSize = 970;
 
     private final double standardTableSize = 830;
     private final double maxTableSize = 980;
@@ -194,6 +198,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         leftSizeButton.getStyleClass().clear();
         leftSizeButton.getStyleClass().add("btn_fold");
     }
+
     private void foldLeft(){
         snvWrapper.getColumnConstraints().get(0).setPrefWidth(this.leftFoldedWidth);
         rightContentsHBox.setPrefWidth(this.rightStandardWidth);
@@ -209,6 +214,62 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         filterArea.setPrefWidth(0);
         leftSizeButton.getStyleClass().clear();
         leftSizeButton.getStyleClass().add("btn_expand");
+    }
+
+    private void expandRight() {
+        snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerFoldedWidth);
+        if(snvWrapper.getColumnConstraints().get(0).getPrefWidth() == 200) {
+            snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightStandardWidth);
+            overviewAccordion.setPrefWidth(this.standardAccordionSize);
+        } else {
+            snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightFullWidth);
+            overviewAccordion.setPrefWidth(this.maxAccordionSize);
+        }
+        variantListTableView.setPrefWidth(this.minSize);
+
+        rightSizeButton.getStyleClass().clear();
+        rightSizeButton.getStyleClass().add("right_btn_fold");
+    }
+
+    private void foldRight(){
+        snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightFoldedWidth);
+        if(snvWrapper.getColumnConstraints().get(0).getPrefWidth() == 200) {
+            snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerStandardWidth);
+            rightContentsHBox.setPrefWidth(minSize);
+        } else {
+            snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerFullWidth);
+        }
+
+        rightSizeButton.getStyleClass().clear();
+        rightSizeButton.getStyleClass().add("right_btn_expand");
+    }
+
+    public void showVariantStatistics() {
+        try {
+            FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_VARIANT_STATISTICS);
+            Node node = loader.load();
+            AnalysisDetailVariantStatisticsController variantStatisticsController = loader.getController();
+            variantStatisticsController.setMainController(this.getMainController());
+            variantStatisticsController.setParamMap(paramMap);
+            variantStatisticsController.show((Parent) node);
+            statisticsTitledPane.setContent(node);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showDetailTab() {
+        try {
+            FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_VARIANT_DETAIL);
+            Node node = loader.load();
+            AnalysisDetailVariantDetailController controller = loader.getController();
+            controller.setMainController(this.getMainController());
+            controller.setParamMap(paramMap);
+            controller.show((Parent) node);
+            variantDetailTitledPane.setContent(node);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -270,15 +331,33 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             variantAndInterpretationEvidence.setSnpInDel(snpInDel);
             variantAndInterpretationEvidence.setInterpretationEvidence(selectedAnalysisResultVariant.getInterpretationEvidence());
 
+            paramMap.put("variant", analysisResultVariant);
+
+            HttpClientResponse response = apiService.get("/analysisResults/snpInDelTranscripts/" + analysisResultVariant.getSnpInDel().getId(), null, null, false);
+            List<SnpInDelTranscript> snpInDelTranscripts = (List<SnpInDelTranscript>) response.getMultiObjectBeforeConvertResponseToJSON(SnpInDelTranscript.class, false);
+            paramMap.put("snpInDelTranscripts", snpInDelTranscripts);
+
+            response = apiService.get("/analysisResults/snpInDelStatistics/" + analysisResultVariant.getSnpInDel().getId(), null, null, false);
+            VariantStatistics variantStatistics = response.getObjectBeforeConvertResponseToJSON(VariantStatistics.class);
+            paramMap.put("variantStatistics", variantStatistics);
+
+            response = apiService.get(
+                    "/analysisResults/snpInDelExtraInfos/" + analysisResultVariant.getSnpInDel().getId(), null, null, false);
+
+            List<SnpInDelExtraInfo> item = (List<SnpInDelExtraInfo>)response.getMultiObjectBeforeConvertResponseToJSON(SnpInDelExtraInfo.class, false);
+            paramMap.put("detail", item);
+
+            showVariantStatistics();
+
             if(analysisResultVariant != null) {
-                //if (subTabOverview != null){
-                    //showOverviewTab(variantAndInterpretationEvidence);
-                //}
+                showDetailTab();
             }
             if(panel.getAnalysisType().equalsIgnoreCase(ExperimentTypeCode.SOMATIC.getDescription())) {
                 showPredictionAndInterpretation(variantAndInterpretationEvidence.getInterpretationEvidence());
+                overviewAccordion.getPanes().remove(clinicalSignificantTitledPane);
             } else {
                 overviewAccordion.getPanes().remove(interpretationTitledPane);
+                showClinicalSignificant();
             }
 
         } catch (WebAPIException wae) {
@@ -299,15 +378,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             // Flagging Comment 데이터 요청이 정상 요청된 경우 진행.
             SnpInDelInterpretationLogsList memoList = responseMemo.getObjectBeforeConvertResponseToJSON(SnpInDelInterpretationLogsList.class);
 
-            /*if("SOMATIC".equalsIgnoreCase(panel.getAnalysisType())) {
-                settingTierArea();
-                checkBoxSetting(addToReportCheckBox, analysisResultVariant.getSnpInDel().getIncludedInReport());
-            } else {
-                settingGermlineArea();
-                checkBoxSetting(addToGermlineReportCheckBox, analysisResultVariant.getSnpInDel().getIncludedInReport());
-            }*/
-
-
             // comment tab 화면 출력
             if (interpretationLogsTitledPane.getContent() == null)
                     showMemoTab(FXCollections.observableList(memoList.getResult()));
@@ -320,39 +390,22 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
 
-        // warnings 탭 출력
-        //if(subTabLowConfidence != null) showLowConfidenceTab(selectedAnalysisResultVariant.getSnpInDel().getWarningReason());
-
         // 첫번째 탭 선택 처리
         overviewAccordion.setExpandedPane(variantDetailTitledPane);
         //setDetailTabActivationToggle(true);
     }
 
-    private void expandRight() {
-        snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerFoldedWidth);
-        if(snvWrapper.getColumnConstraints().get(0).getPrefWidth() == 250) {
-            snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightStandardWidth);
-            overviewAccordion.setPrefWidth(this.standardAccordionSize);
-        } else {
-            snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightFullWidth);
-            overviewAccordion.setPrefWidth(this.maxAccordionSize);
+    private void showClinicalSignificant() {
+        try {
+            FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_CLINICAL_SIGNIFICANT);
+            Node node = loader.load();
+            AnalysisDetailClinicalSignificantController controller = loader.getController();
+            controller.setMainController(this.getMainController());
+            controller.show((Parent) node);
+            clinicalSignificantTitledPane.setContent(node);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        variantListTableView.setPrefWidth(this.minSize);
-
-        rightSizeButton.getStyleClass().clear();
-        rightSizeButton.getStyleClass().add("right_btn_fold");
-    }
-    private void foldRight(){
-        snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightFoldedWidth);
-        if(snvWrapper.getColumnConstraints().get(0).getPrefWidth() == 200) {
-            snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerStandardWidth);
-            rightContentsHBox.setPrefWidth(minSize);
-        } else {
-            snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerFullWidth);
-        }
-
-        rightSizeButton.getStyleClass().clear();
-        rightSizeButton.getStyleClass().add("right_btn_expand");
     }
 
     public void showVariantList(int selectedIdx) {
@@ -394,8 +447,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
-
-
 
     private void setTableViewColumn() {
         if(panel != null && ExperimentTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {

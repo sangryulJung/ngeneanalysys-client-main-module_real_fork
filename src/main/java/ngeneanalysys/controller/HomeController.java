@@ -16,9 +16,11 @@ import javafx.util.Duration;
 import ngeneanalysys.animaition.HddStatusTimer;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
+import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedRun;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
@@ -101,7 +103,7 @@ public class HomeController extends SubPaneController{
     }
 
     private void initRunListLayout() {
-        final int maxRunNumberOfPage = 10;
+        final int maxRunNumberOfPage = 3;
         try {
             runList = new ArrayList<>();
             for (int i = 0; i < maxRunNumberOfPage; i++) {
@@ -110,17 +112,31 @@ public class HomeController extends SubPaneController{
                 runListHBox.setPrefWidth(runListHBox.getPrefWidth() + 240);
                 runListHBox.getChildren().add(box);
                 runListHBox.setSpacing(5);
-                AnimationTimer hddStatusTier = new HddStatusTimer(hddCanvas.getGraphicsContext2D(), 0.2, "Usage",
-                "4.32/20 TB", 10);
-                hddStatusTier.start();
             }
+            hddCheck();
         } catch (Exception e) {
             logger.error("HOME -> initRunListLayout", e);
         }
     }
 
+    private void hddCheck() {
+        try {
+            HttpClientResponse response = apiService.get("/storageUsage", null, null, false);
+
+            StorageUsage storageUsage = response.getObjectBeforeConvertResponseToJSON(StorageUsage.class);
+            double value = (double)storageUsage.getFreeSpace() / storageUsage.getTotalSpace();
+            String textLabel = ConvertUtil.convertFileSizeFormat(storageUsage.getFreeSpace()) + " / " + ConvertUtil.convertFileSizeFormat(storageUsage.getTotalSpace());
+            AnimationTimer hddStatusTier = new HddStatusTimer(hddCanvas.getGraphicsContext2D(), value, "Usage",
+                    textLabel, 10);
+            hddStatusTier.start();
+        } catch (WebAPIException wae) {
+
+        }
+    }
+
     private void showRunList() {
-        final int maxRunNumberOfPage = 10;
+        hddCheck();
+        final int maxRunNumberOfPage = 3;
         CompletableFuture<PagedRun> getPagedRun = new CompletableFuture<>();
         CompletableFuture.supplyAsync(() -> {
             HttpClientResponse response;
@@ -146,10 +162,12 @@ public class HomeController extends SubPaneController{
             for(int i = 0; i < runCount; i++) {
                 Run run = pagedRun.getResult().get(i);
                 runList.get(i).setRunStatus(run);
+                runList.get(i).setVisible(true);
 
             }
             for(int i = runCount; i < maxRunNumberOfPage; i++){
                 runList.get(i).reset();
+                runList.get(i).setVisible(false);
             }
         } catch (Exception e) {
             logger.error("HOME -> SHOW RUN LIST", e);

@@ -577,6 +577,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             Sample sample = null;
             sample = sampleArrayList.get(i);
             if(sample.getId() != null) continue;
+            if(sample.getRunId() == null) sample.setRunId(-1);
 
             TextField sampleName = sampleNameTextFieldList.get(i);
             if(sampleName.getText().isEmpty()) continue;
@@ -643,7 +644,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
                 Map<String, Object> params = new HashMap<>();
                 HttpClientResponse response = null;
-                Run run = null;
+                RunWithSamples run = null;
                 try {
                     if(sampleUploadController.getRunName() == null || "".equals(sampleUploadController.getRunName())) {
                         Date date = new Date();
@@ -658,17 +659,22 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                         params.put("serverRunDir", runPath);
                     }
 
+                    saveSampleData();
+                    List<Map<String, Object>> list = returnSampleMap();
+
+                    params.put("sampleCreateRequests", list);
+
                     response = apiService.post("/runs", params, null, true);
-                    run = response.getObjectBeforeConvertResponseToJSON(Run.class);
-                    mainController.getBasicInformationMap().put("runId", run.getId());
+                    run = response.getObjectBeforeConvertResponseToJSON(RunWithSamples.class);
+                    mainController.getBasicInformationMap().put("runId", run.getRun().getId());
                     logger.info(run.toString());
 
-                    saveSampleData();
 
-                    for (Sample sample : sampleArrayList) {
+
+                    /*for (Sample sample : sampleArrayList) {
                         sample.setRunId(run.getId());
                         sampleUpload(sample);
-                    }
+                    }*/
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -676,7 +682,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
                 if((uploadFileData != null && !uploadFileData.isEmpty()) &&
                         (uploadFileList != null && !uploadFileList.isEmpty()))
-                    this.mainController.runningAnalysisRequestUpload(uploadFileData, uploadFileList, run);
+                    this.mainController.runningAnalysisRequestUpload(uploadFileData, uploadFileList, run.getRun());
                 logger.info("submit");
                 closeDialog();
             }
@@ -718,6 +724,45 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 postAnalysisFilesData(sample);
             }
         }
+    }
+
+    public List<Map<String, Object>> returnSampleMap() throws  Exception {
+        List<Map<String, Object>> list = new ArrayList<>();
+        for(Sample sample : sampleArrayList) {
+            Map<String, Object> params = new HashMap<>();
+            HttpClientResponse response = null;
+
+            params.put("runId", sample.getRunId());
+            params.put("name", sample.getName());
+            params.put("patientId", sample.getPaitentId());
+            params.put("panelId", sample.getPanelId());
+            params.put("diseaseId", sample.getDiseaseId());
+//        params.put("analysisType", sample.getAnalysisType());
+//        params.put("sampleSource", sample.getSampleSource());
+            params.put("inputFType", "FASTQ.GZ");
+            Map<String, String> sampleSheet = new HashMap<>();
+            SampleSheet sampleSheet1 = sample.getSampleSheet();
+            sampleSheet.put("sampleId", sampleSheet1.getSampleId());
+            sampleSheet.put("sampleName", sampleSheet1.getSampleName());
+            sampleSheet.put("samplePlate", sampleSheet1.getSamplePlate());
+            sampleSheet.put("sampleWell", sampleSheet1.getSampleWell());
+            sampleSheet.put("i7IndexId", sampleSheet1.getI7IndexId());
+            sampleSheet.put("sampleIndex", sampleSheet1.getSampleIndex());
+            sampleSheet.put("sampleProject", sampleSheet1.getSampleProject());
+            sampleSheet.put("description", sampleSheet1.getDescription());
+            params.put("sampleSheet", sampleSheet);
+            Map<String, String> qcData = new HashMap<>();
+            QcData qcData1 = sample.getQcData();
+            qcData.put("dnaQC", qcData1.getDnaQC());
+            qcData.put("libraryQC", qcData1.getLibraryQC());
+            qcData.put("seqClusterDensity", qcData1.getSeqClusterDensity());
+            qcData.put("seqQ30", qcData1.getSeqQ30());
+            qcData.put("seqClusterPF", qcData1.getSeqClusterPF());
+            qcData.put("seqIndexingPFCV", qcData1.getSeqIndexingPFCV());
+            params.put("qcData", qcData);
+            list.add(params);
+        }
+        return list;
     }
 
     public void sampleUpload(Sample sample) throws  Exception {

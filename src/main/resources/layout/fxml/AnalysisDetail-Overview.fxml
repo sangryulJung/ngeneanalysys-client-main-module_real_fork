@@ -179,7 +179,7 @@
             <Insets />
          </GridPane.margin>
       </Label>
-      <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="1">
+      <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="1">
          <children>
             <GridPane prefWidth="240.0">
               <columnConstraints>
@@ -323,38 +323,6 @@
                      <children>
                         <Circle fill="#1f2d87" radius="35.0" stroke="BLACK" strokeType="INSIDE" />
                         <Label style="-fx-text-fill: #ffffff;" styleClass="font_size_24" text="Tier IV" />
-                     </children>
-                  </StackPane>
-               </children>
-            </GridPane>
-            <GridPane prefWidth="240.0">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="140.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-               <children>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
-                     <children>
-                        <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
-                           <children>
-                              <Label style="-fx-font-family: Noto Sans CJK KR Regular;" text="Variants : " />
-                           </children>
-                        </HBox>
-                        <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
-                           <children>
-                              <Label style="-fx-font-family: Noto Sans CJK KR Regular;" text="gene : " />
-                           </children>
-                        </HBox>
-                        <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0" />
-                     </children>
-                  </VBox>
-                  <StackPane prefHeight="150.0" prefWidth="200.0">
-                     <children>
-                        <Circle fill="#5a64a5" radius="35.0" stroke="BLACK" strokeType="INSIDE" />
-                        <Label style="-fx-text-fill: #ffffff;" styleClass="font_size_24" text="Tier N" />
                      </children>
                   </StackPane>
                </children>

@@ -170,4 +170,15 @@ public class FXMLConstants {
 
 	public static final String ANALYSIS_DETAIL_INTERPRETATION = "/layout/fxml/variantDetail/AnalysisDetail-Interpretation.fxml";
 
+	public static final String ANALYSIS_DETAIL_VARIANT_STATISTICS = "/layout/fxml/variantDetail/VariantStatistics.fxml";
+
+	public static final String ANALYSIS_DETAIL_CLINICAL_SIGNIFICANT = "/layout/fxml/variantDetail/ClinicalSignificant.fxml";
+
+	public static final String ANALYSIS_DETAIL_VARIANT_DETAIL = "/layout/fxml/variantDetail/VariantDetail.fxml";
+
+	public static final String ANALYSIS_DETAIL_READ_DEPTH = "/layout/fxml/variantDetail/ReadDepthVariantFraction.fxml";
+
+	public static final String ANALYSIS_DETAIL_VARIANT_NOMENCLATURE = "/layout/fxml/variantDetail/VariantNomenclature.fxml";
+
+	public static final String ANALYSIS_DETAIL_POPULATION_FREQUENCIES = "/layout/fxml/variantDetail/PopulationFrequencies.fxml";
 }

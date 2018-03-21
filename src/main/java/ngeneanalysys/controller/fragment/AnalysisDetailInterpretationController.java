@@ -1,4 +1,4 @@
-package ngeneanalysys.controller;
+package ngeneanalysys.controller.fragment;
 
 import javafx.fxml.FXML;
 import javafx.scene.Parent;

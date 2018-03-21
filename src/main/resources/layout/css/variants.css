@@ -95,6 +95,7 @@
 
 #overviewAccordion .titled-pane > .title {
     -fx-background-color : #f2f5fa;
+    -fx-pref-height : 26;
 }
 
 #overviewAccordion .titled-pane > .title > .label {
@@ -109,13 +110,10 @@
 
 #overviewAccordion .titled-pane > .title > .arrow-button {
     -fx-background-radius : 0;
-    /*-fx-pref-width : 16;
-    -fx-pref-height : 16;*/
 }
 
 #overviewAccordion .titled-pane > .title > .arrow-button > .arrow {
     //-fx-background-color : transparent;
-
     /*-fx-background-image:url('../images/renewal/variant_view.png');
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+
+<FlowPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="224.0" prefWidth="870.0" prefWrapLength="870.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailVariantStatisticsController">
+   <children>
+      <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefHeight="222.0" prefWidth="300.0">
+         <children>
+            <Label styleClass="title1" text="VARIANT">
+               <padding>
+                  <Insets right="2.0" />
+               </padding>
+            </Label>
+            <Label styleClass="title1" text="STATISTICS" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" prefHeight="143.0" prefWidth="500.0" spacing="10.0">
+         <children>
+            <Canvas fx:id="canvasVariantStatisticsRun" height="125.0" width="120.0" HBox.hgrow="NEVER">
+               <HBox.margin>
+                  <Insets top="10.0" />
+               </HBox.margin>
+            </Canvas>
+            <Canvas fx:id="canvasVariantStatisticsPanel" height="125.0" width="120.0">
+               <HBox.margin>
+                  <Insets top="10.0" />
+               </HBox.margin>
+            </Canvas>
+            <Canvas fx:id="canvasVariantStatisticsGroup" height="125.0" width="120.0">
+               <HBox.margin>
+                  <Insets top="10.0" />
+               </HBox.margin>
+            </Canvas>
+         </children>
+      </HBox>
+   </children>
+   <stylesheets>
+      <URL value="@../../css/common.css" />
+      <URL value="@../../css/snps_indels_overview.css" />
+   </stylesheets>
+</FlowPane>
