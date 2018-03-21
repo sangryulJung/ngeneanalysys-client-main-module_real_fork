@@ -66,6 +66,9 @@ public class JarDownloadTask extends Task {
             String downloadUrl = "/admin/reportComponent/" + component.getId();
             //String path = CommonConstants.BASE_FULL_PATH  + File.separator + "fop" + File.separator + reportImage.getReportTemplateId() + File.separator + reportImage.getName();
             String path = CommonConstants.BASE_FULL_PATH  + File.separator + "word" + File.separator + component.getId() + File.separator + component.getName();
+
+            File file = new File(path);
+
             OutputStream os = null;
             try {
                 String connectURL = apiService.getConvertConnectURL(downloadUrl);
@@ -100,7 +103,7 @@ public class JarDownloadTask extends Task {
                     long fileLength = entity.getContentLength();
 
                     InputStream is = content;
-                    os = Files.newOutputStream(Paths.get(path));
+                    os = Files.newOutputStream(Paths.get(file.toURI()));
 
                     long nread = 0L;
                     byte[] buf = new byte[8192];

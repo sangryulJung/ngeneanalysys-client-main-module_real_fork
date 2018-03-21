@@ -68,6 +68,18 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     private Label totalVariantCountLabel;
 
     @FXML
+    private TitledPane variantDetailTitledPane;
+
+    @FXML
+    private TitledPane interpretationTitledPane;
+
+    @FXML
+    private TitledPane clinicalSignificantTitledPane;
+
+    @FXML
+    private TitledPane statisticsTitledPane;
+
+    @FXML
     private TitledPane interpretationLogsTitledPane;
 
     Sample sample = null;
@@ -136,6 +148,29 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             }
         });
 
+        // 목록 클릭 시 변이 상세정보 출력 이벤트 바인딩
+        variantListTableView.setRowFactory(tv -> {
+            TableRow<VariantAndInterpretationEvidence> row = new TableRow<>();
+            row.setOnMouseClicked(e -> {
+                if (e.getClickCount() == 1 && (!row.isEmpty())) {
+                    showVariantDetail(variantListTableView.getSelectionModel().getSelectedItem());
+                } else if (e.getClickCount() == 2 && (!row.isEmpty())) {
+                    showVariantDetail(variantListTableView.getSelectionModel().getSelectedItem());
+                    expandRight();
+                }
+            });
+            return row;
+        });
+
+        // 선택된 목록에서 엔터키 입력시 변이 상세정보 출력 이벤트 바인딩
+        variantListTableView.setOnKeyPressed(keyEvent -> {
+            if(keyEvent.getCode().equals(KeyCode.ENTER)) {
+                showVariantDetail(variantListTableView.getSelectionModel().getSelectedItem());
+                expandRight();
+            }
+        });
+
+
         setTableViewColumn();
 
         showVariantList(0);
@@ -174,25 +209,23 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         filterArea.setPrefWidth(0);
         leftSizeButton.getStyleClass().clear();
         leftSizeButton.getStyleClass().add("btn_expand");
+    }
 
-        // 목록 클릭 시 변이 상세정보 출력 이벤트 바인딩
-        variantListTableView.setRowFactory(tv -> {
-            TableRow<VariantAndInterpretationEvidence> row = new TableRow<>();
-            row.setOnMouseClicked(e -> {
-                if (e.getClickCount() == 1 && (!row.isEmpty())) {
-                    showVariantDetail(variantListTableView.getSelectionModel().getSelectedItem());
-                }
-            });
-            return row;
-        });
-
-        // 선택된 목록에서 엔터키 입력시 변이 상세정보 출력 이벤트 바인딩
-        variantListTableView.setOnKeyPressed(keyEvent -> {
-            if(keyEvent.getCode().equals(KeyCode.ENTER)) {
-                showVariantDetail(variantListTableView.getSelectionModel().getSelectedItem());
-            }
-        });
-
+    /**
+     * Memo 탭 화면 출력
+     */
+    public void showPredictionAndInterpretation(SnpInDelInterpretation interpretation) {
+        try {
+            FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_INTERPRETATION);
+            Node node = loader.load();
+            AnalysisDetailInterpretationController controller = loader.getController();
+            controller.setMainController(this.getMainController());
+            controller.show((Parent) node);
+            controller.setLabel(interpretation);
+            interpretationTitledPane.setContent(node);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -224,7 +257,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         // 선택된 변이 객체 정보 설정
         selectedAnalysisResultVariant = analysisResultVariant;
         // 탭 메뉴 활성화 토글
-        /*setDetailTabActivationToggle(false);
+        //setDetailTabActivationToggle(false);
         try {
             // Detail 데이터 API 요청
             HttpClientResponse responseDetail = apiService.get(
@@ -238,10 +271,16 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             variantAndInterpretationEvidence.setInterpretationEvidence(selectedAnalysisResultVariant.getInterpretationEvidence());
 
             if(analysisResultVariant != null) {
-                if (subTabOverview != null){
-                    showOverviewTab(variantAndInterpretationEvidence);
-                }
+                //if (subTabOverview != null){
+                    //showOverviewTab(variantAndInterpretationEvidence);
+                //}
             }
+            if(panel.getAnalysisType().equalsIgnoreCase(ExperimentTypeCode.SOMATIC.getDescription())) {
+                showPredictionAndInterpretation(variantAndInterpretationEvidence.getInterpretationEvidence());
+            } else {
+                overviewAccordion.getPanes().remove(interpretationTitledPane);
+            }
+
         } catch (WebAPIException wae) {
             wae.printStackTrace();
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
@@ -251,7 +290,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             e.printStackTrace();
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
-*/
+
         try {
             // Memo 데이터 API 요청
             //Map<String, Object> commentParamMap = new HashMap<>();
@@ -285,7 +324,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         //if(subTabLowConfidence != null) showLowConfidenceTab(selectedAnalysisResultVariant.getSnpInDel().getWarningReason());
 
         // 첫번째 탭 선택 처리
-        overviewAccordion.setExpandedPane(interpretationLogsTitledPane);
+        overviewAccordion.setExpandedPane(variantDetailTitledPane);
         //setDetailTabActivationToggle(true);
     }
 
@@ -307,8 +346,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightFoldedWidth);
         if(snvWrapper.getColumnConstraints().get(0).getPrefWidth() == 200) {
             snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerStandardWidth);
-            //rightContentsHBox.setPrefWidth();
-            //overviewAccordion.setPrefWidth(this.standardAccordionSize);
+            rightContentsHBox.setPrefWidth(minSize);
         } else {
             snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerFullWidth);
         }

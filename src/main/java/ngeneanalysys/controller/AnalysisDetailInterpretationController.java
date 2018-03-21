@@ -66,35 +66,35 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         if(interpretation == null) return;
 
         if(interpretation.getTherapeuticEvidence() != null) {
-            if (StringUtils.isEmpty(interpretation.getTherapeuticEvidence().getLevelA()))
+            if (!StringUtils.isEmpty(interpretation.getTherapeuticEvidence().getLevelA()))
                 TherapeuticALabel.setText(interpretation.getTherapeuticEvidence().getLevelA());
-            if (StringUtils.isEmpty(interpretation.getTherapeuticEvidence().getLevelB()))
+            if (!StringUtils.isEmpty(interpretation.getTherapeuticEvidence().getLevelB()))
                 TherapeuticBLabel.setText(interpretation.getTherapeuticEvidence().getLevelB());
-            if (StringUtils.isEmpty(interpretation.getTherapeuticEvidence().getLevelC()))
+            if (!StringUtils.isEmpty(interpretation.getTherapeuticEvidence().getLevelC()))
                 TherapeuticCLabel.setText(interpretation.getTherapeuticEvidence().getLevelC());
-            if (StringUtils.isEmpty(interpretation.getTherapeuticEvidence().getLevelD()))
+            if (!StringUtils.isEmpty(interpretation.getTherapeuticEvidence().getLevelD()))
                 TherapeuticDLabel.setText(interpretation.getTherapeuticEvidence().getLevelD());
         }
 
         if(interpretation.getPrognosisEvidence() != null) {
-            if (StringUtils.isEmpty(interpretation.getPrognosisEvidence().getLevelA()))
+            if (!StringUtils.isEmpty(interpretation.getPrognosisEvidence().getLevelA()))
                 PrognosisALabel.setText(interpretation.getPrognosisEvidence().getLevelA());
-            if (StringUtils.isEmpty(interpretation.getPrognosisEvidence().getLevelB()))
+            if (!StringUtils.isEmpty(interpretation.getPrognosisEvidence().getLevelB()))
                 PrognosisBLabel.setText(interpretation.getPrognosisEvidence().getLevelB());
-            if (StringUtils.isEmpty(interpretation.getPrognosisEvidence().getLevelC()))
+            if (!StringUtils.isEmpty(interpretation.getPrognosisEvidence().getLevelC()))
                 PrognosisCLabel.setText(interpretation.getPrognosisEvidence().getLevelC());
-            if (StringUtils.isEmpty(interpretation.getPrognosisEvidence().getLevelD()))
+            if (!StringUtils.isEmpty(interpretation.getPrognosisEvidence().getLevelD()))
                 PrognosisDLabel.setText(interpretation.getPrognosisEvidence().getLevelD());
         }
 
         if(interpretation.getDiagnosisEvidence() != null) {
-            if (StringUtils.isEmpty(interpretation.getDiagnosisEvidence().getLevelA()))
+            if (!StringUtils.isEmpty(interpretation.getDiagnosisEvidence().getLevelA()))
                 DiagnosisALabel.setText(interpretation.getDiagnosisEvidence().getLevelA());
-            if (StringUtils.isEmpty(interpretation.getDiagnosisEvidence().getLevelB()))
+            if (!StringUtils.isEmpty(interpretation.getDiagnosisEvidence().getLevelB()))
                 DiagnosisBLabel.setText(interpretation.getDiagnosisEvidence().getLevelB());
-            if (StringUtils.isEmpty(interpretation.getDiagnosisEvidence().getLevelC()))
+            if (!StringUtils.isEmpty(interpretation.getDiagnosisEvidence().getLevelC()))
                 DiagnosisCLabel.setText(interpretation.getDiagnosisEvidence().getLevelC());
-            if (StringUtils.isEmpty(interpretation.getDiagnosisEvidence().getLevelD()))
+            if (!StringUtils.isEmpty(interpretation.getDiagnosisEvidence().getLevelD()))
                 DiagnosisDLabel.setText(interpretation.getDiagnosisEvidence().getLevelD());
         }
 
