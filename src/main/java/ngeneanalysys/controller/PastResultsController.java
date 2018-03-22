@@ -5,32 +5,19 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import ngeneanalysys.code.constants.FXMLConstants;
-import ngeneanalysys.code.enums.ExperimentTypeCode;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedSampleView;
-import ngeneanalysys.util.WorksheetUtil;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.controlsfx.control.PopOver;
 import org.slf4j.Logger;
 
 import ngeneanalysys.code.AnalysisJobStatusCode;
-import ngeneanalysys.code.enums.SampleSourceCode;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
-import ngeneanalysys.model.render.ComboBoxConverter;
-import ngeneanalysys.model.render.ComboBoxItem;
-import ngeneanalysys.model.render.DatepickerConverter;
 import ngeneanalysys.service.APIService;
-import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
@@ -38,16 +25,11 @@ import ngeneanalysys.util.httpclient.HttpClientResponse;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
-import javafx.scene.control.TextField;
 import javafx.util.Duration;
 
 /**
@@ -335,15 +317,19 @@ public class PastResultsController extends SubPaneController {
 			String styleClass = "sample_header";
 			Label name = new Label("NAME");
 			labelSize(name, 150., styleClass);
+			name.getStyleClass().add("sample_header");
 			Label status = new Label("STATUS");
 			labelSize(status, 90., styleClass);
+			status.getStyleClass().add("sample_header");
 			Label panel = new Label("PANEL");
 			labelSize(panel, 150., styleClass);
+			panel.getStyleClass().add("sample_header");
 			Label variants = new Label("VARIANTS");
 			labelSize(variants, 320., styleClass);
+			variants.getStyleClass().add("sample_header");
 			Label qc = new Label("QC");
 			labelSize(qc, 100., styleClass);
-
+			qc.getStyleClass().add("sample_header");
 			titleBox.getChildren().add(name);
 			titleBox.getChildren().add(status);
 			titleBox.getChildren().add(panel);
@@ -358,12 +344,12 @@ public class PastResultsController extends SubPaneController {
 			label.setPrefWidth(size);
 			label.setPrefHeight(40);
 			label.setAlignment(Pos.CENTER);
-			label.getStyleClass().add("sample_header");
 		}
 
 		public void setSampleList(List<SampleView> sampleList) {
 			for(SampleView sampleView : sampleList) {
 				HBox itemHBox = new HBox();
+				itemHBox.setStyle(itemHBox.getStyle() + "-fx-cursor:hand;");
 				final SampleView sample = sampleView;
 				itemHBox.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 					if(event.getClickCount() == 2) {

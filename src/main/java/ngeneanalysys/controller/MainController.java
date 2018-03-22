@@ -1,6 +1,7 @@
 package ngeneanalysys.controller;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
@@ -9,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
@@ -55,6 +57,13 @@ public class MainController extends BaseStageController {
     private CacheMemoryService cacheMemoryService;
 
     /** 최상단 탭메뉴 정보 배열  */
+    private TopMenu[] sampleMenu = null;
+    /** 최상단 탭메뉴 화면 출력중인 컨텐츠 Scene 배열  */
+    private Node[] sampleContent;
+
+    private String currentSampleName = null;
+
+    /** 최상단 탭메뉴 정보 배열  */
     private TopMenu[] topMenus = null;
     /** 최상단 탭메뉴 화면 출력중인 컨텐츠 Scene 배열  */
     private Node[] topMenuContent;
@@ -75,14 +84,6 @@ public class MainController extends BaseStageController {
     /** 메인 레이아웃 화면 Stage */
     private Stage primaryStage;
 
-    /** 상단 탭 메뉴 Area */
-    @FXML
-    private ScrollPane topMenuScrollPane;
-
-    /** 상단 탭 메뉴 Area */
-    @FXML
-    private HBox topMenuArea;
-
     /** 상단 로그인 사용자명 */
     @FXML
     private Label loginUserName;
@@ -102,6 +103,18 @@ public class MainController extends BaseStageController {
     /** 클라이언트 빌드 정보 라벨 */
     @FXML
     private Label labelSystemBuild;
+
+    @FXML
+    private Label managerBtn;
+
+    @FXML
+    private Label dashBoardBtn;
+
+    @FXML
+    private Label resultsBtn;
+
+    @FXML
+    private HBox topMenuArea1;
 
     private Map<String, Object> basicInformationMap = new HashMap<>();
 
@@ -200,7 +213,7 @@ public class MainController extends BaseStageController {
 
         //상단 메뉴 설정
         initDefaultTopMenu(role);
-        refreshShowTopMenu(-1);
+        //refreshShowTopMenu(-1);
         showTopMenuContents(null, 0);
 
         //상단 사용자 시스템 메뉴 설정
@@ -213,6 +226,10 @@ public class MainController extends BaseStageController {
         logger.info(String.format("v %s (Build Date %s)", buildVersion, buildDate));
 
         // 중단된 분석 요청 작업이 있는지 체크
+
+        dashBoardBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showTopMenuContents(topMenus[0], 0));
+        resultsBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showTopMenuContents(topMenus[1], 1));
+        managerBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showTopMenuContents(topMenus[3], 3));
 
         settingPanelAndDiseases();
     }
@@ -282,104 +299,38 @@ public class MainController extends BaseStageController {
      */
     public void initDefaultTopMenu(String role) {
         if(UserTypeBit.ADMIN.name().equalsIgnoreCase(role)) {
-            topMenus = new TopMenu[3];
+            topMenus = new TopMenu[4];
             topMenuContent = new Node[topMenus.length];
             TopMenu menu = new TopMenu();
             menu.setMenuName("MANAGER");
             menu.setFxmlPath(FXMLConstants.SYSTEM_MANAGER_HOME);
-            menu.setDisplayOrder(2);
+            menu.setDisplayOrder(3);
             menu.setStaticMenu(true);
-            topMenus[2] = menu;
+            topMenus[3] = menu;
         } else {
-            topMenus = new TopMenu[2];
+            topMenus = new TopMenu[3];
             topMenuContent = new Node[topMenus.length];
         }
         TopMenu menu = new TopMenu();
         menu.setMenuName("DASH BOARD");
         menu.setFxmlPath(FXMLConstants.HOME);
-        menu.setDisplayOrder(0);
         menu.setStaticMenu(true);
+        menu.setDisplayOrder(0);
         topMenus[0] = menu;
 
         menu = new TopMenu();
         menu.setMenuName("RESULT");
         menu.setFxmlPath(FXMLConstants.PAST_RESULTS);
-        menu.setDisplayOrder(1);
         menu.setStaticMenu(true);
+        menu.setDisplayOrder(1);
         topMenus[1] = menu;
-    }
 
-    /**
-     * 상단 메뉴 새로 출력
-     * @param selectIdx
-     */
-    public void refreshShowTopMenu(int selectIdx) {
-        // 기존 메뉴 엘레멘트 제거
-        topMenuArea.getChildren().removeAll(topMenuArea.getChildren());
-        if(topMenus != null && topMenus.length > 0) {
-            int idx = 0;
-            Group[] topMenuGroups = new Group[topMenus.length];
-            for (TopMenu topMenu : topMenus) {
-                Group menu = new Group();
-
-                if (selectIdx >= 0 && idx == selectIdx) {
-                    menu.setId("selectedMenu");
-                }
-
-                Region region = new Region();
-                region.setLayoutX(5);
-
-                Label menuName = new Label(topMenu.getMenuName());
-                menuName.setLayoutX(0);
-                //menuName.setLayoutY(5);
-
-                if (!topMenu.isStaticMenu()) {
-                    region.setId("addMenu");
-                    menuName.setId("addMenuLabel");
-
-                    // 닫기 버튼 삽입
-                    Button closeButton = new Button("");
-                    closeButton.getStyleClass().add("close_btn");
-                    closeButton.setLayoutX(158);
-                    closeButton.setLayoutY(13);
-
-                    //메뉴 삭제 이벤트 바인딩
-                    closeButton.setOnMouseClicked(event -> {
-                        logger.info("remove top menu idx : " + topMenu.getDisplayOrder());
-                        // 해당 메뉴 객체 삭제
-                        removeTopMenu(topMenu.getDisplayOrder());
-                        // 다른 메뉴 출력
-                        if(selectedTopMenuIdx == topMenu.getDisplayOrder()) {
-                            logger.info("현재 보고 있는 메뉴 삭제");
-                            selectedTopMenuIdx -= 1;
-                            // 상단 메뉴 출력 새로고침
-                            refreshShowTopMenu(-1);
-                            // 현재 선택된 메뉴를 삭제하는 경우 바로 좌측 메뉴 출력
-                            showTopMenuContents(topMenus[selectedTopMenuIdx], 0);
-                        } else if(selectedTopMenuIdx < topMenu.getDisplayOrder()) {
-                            logger.info("현재 보고 있는 메뉴 다음 메뉴 삭제");
-                            refreshShowTopMenu(selectedTopMenuIdx);
-                        } else {
-                            logger.info("현재 보고 있는 메뉴 이전 메뉴 삭제");
-                            selectedTopMenuIdx = selectedTopMenuIdx - 1;
-                            refreshShowTopMenu(selectedTopMenuIdx);
-                        }
-                    });
-                    menu.getChildren().setAll(region, menuName, closeButton);
-                } else {
-                    menu.getChildren().setAll(region, menuName);
-                }
-
-                // 마우스 커서 타입 설정
-                menu.setCursor(Cursor.HAND);
-                menu.setOnMouseClicked(event -> showTopMenuContents(topMenu, 0));
-
-                topMenuGroups[idx] = menu;
-                idx++;
-            }
-            topMenuArea.getChildren().setAll(topMenuGroups);
-
-        }
+        menu = new TopMenu();
+        menu.setMenuName("SAMPLE");
+        menu.setFxmlPath(null);
+        menu.setStaticMenu(true);
+        menu.setDisplayOrder(2);
+        topMenus[2] = menu;
     }
 
     /**
@@ -429,7 +380,6 @@ public class MainController extends BaseStageController {
 
             // 추가 대상 메뉴 컨텐츠 출력 설정인 경우
             if(isDisplay) {
-                refreshShowTopMenu(-1);
                 selectedTopMenuIdx = addPositionIdx;
                 showTopMenuContents(menu, 0);
             } else {
@@ -437,12 +387,10 @@ public class MainController extends BaseStageController {
                 if(selectedTopMenuIdx >= addPositionIdx) {
                     selectedTopMenuIdx++;
                 }
-                refreshShowTopMenu(selectedTopMenuIdx);
             }
         } else {
             // 이미 추가 되어있는 경우 해당 메뉴 화면으로 전환함.
             selectedTopMenuIdx = addedMenuIdx;
-            refreshShowTopMenu(selectedTopMenuIdx);
             showTopMenuContents(null, addedMenuIdx);
         }
 
@@ -476,13 +424,14 @@ public class MainController extends BaseStageController {
         mainFrame.setCenter(null);
         if(menu == null) menu = topMenus[showIdx];
 
-        Group group = (Group) topMenuArea.getChildren().get(menu.getDisplayOrder());
-        group.setId("selectedMenu");
+        //Group group = (Group) topMenuArea.getChildren().get(menu.getDisplayOrder());
+        Node item = topMenuArea1.getChildren().get(showIdx);
+        item.setId("selectedMenu");
 
         // 현재 선택된 메뉴와 컨텐츠 출력 대상 메뉴가 다른경우
         if(selectedTopMenuIdx != menu.getDisplayOrder()) {
             // 기존 선택 메뉴 아이디 제거
-            Group preSelectMenuGroup = (Group) topMenuArea.getChildren().get(selectedTopMenuIdx);
+            Node preSelectMenuGroup = topMenuArea1.getChildren().get(selectedTopMenuIdx);
             preSelectMenuGroup.setId(null);
         }
 
@@ -716,26 +665,6 @@ public class MainController extends BaseStageController {
     public void clearProgressTaskArea() {
         this.analysisSampleUploadProgressTaskController = null;
         progressTaskContentArea.getChildren().removeAll(progressTaskContentArea.getChildren());
-    }
-
-    /**
-     * 상단 탭 메뉴 스크롤 왼족으로 이동
-     */
-    @FXML
-    public void moveScrollLeft() {
-        double moveLength = topMenuScrollPane.getWidth()/topMenuArea.getWidth();
-        logger.info(String.format("scroll move [left] H-value : %s, move length : %s", topMenuScrollPane.getHvalue(), moveLength));
-        topMenuScrollPane.setHvalue(topMenuScrollPane.getHvalue() - moveLength);
-    }
-
-    /**
-     * 상단 탭 메뉴 스크롤 오른족으로 이동
-     */
-    @FXML
-    public void moveScrollRight() {
-        double moveLength = topMenuScrollPane.getWidth()/topMenuArea.getWidth();
-        logger.info(String.format("scroll move [right] H-value : %s, move length : %s", topMenuScrollPane.getHvalue(), moveLength));
-        topMenuScrollPane.setHvalue(topMenuScrollPane.getHvalue() + moveLength);
     }
 
     /**
