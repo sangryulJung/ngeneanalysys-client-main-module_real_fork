@@ -248,6 +248,8 @@ public class SampleUploadController extends BaseStageController{
 
         sequencerMiSeqRadioButton.setOnAction(ev -> sequencerType.setUserData(SequencerCode.MISEQ.getDescription()));
 
+        nextSeqDxRadioButton.setOnAction(ev -> sequencerType.setUserData(SequencerCode.MISEQ.getDescription()));
+
         switch (scene) {
             case 1 :
                 loader = FXMLLoadUtil.load(FXMLConstants.ANALYSIS_SAMPLE_UPLOAD_FIRST);
