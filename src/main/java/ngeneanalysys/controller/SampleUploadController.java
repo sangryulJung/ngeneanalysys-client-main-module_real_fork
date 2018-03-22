@@ -248,7 +248,7 @@ public class SampleUploadController extends BaseStageController{
 
         sequencerMiSeqRadioButton.setOnAction(ev -> sequencerType.setUserData(SequencerCode.MISEQ.getDescription()));
 
-        nextSeqDxRadioButton.setOnAction(ev -> sequencerType.setUserData(SequencerCode.MISEQ.getDescription()));
+        nextSeqDxRadioButton.setOnAction(ev -> sequencerType.setUserData(SequencerCode.NEXTSEQ_DX.getDescription()));
 
         switch (scene) {
             case 1 :
