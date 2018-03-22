@@ -1,19 +1,15 @@
 package ngeneanalysys.controller;
 
 import javafx.event.ActionEvent;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.util.Duration;
@@ -25,6 +21,8 @@ import ngeneanalysys.controller.extend.BaseStageController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedPanel;
+import ngeneanalysys.model.render.ComboBoxConverter;
+import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.CacheMemoryService;
 import ngeneanalysys.util.DialogUtil;
@@ -39,10 +37,7 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @author Jang
@@ -57,11 +52,11 @@ public class MainController extends BaseStageController {
     private CacheMemoryService cacheMemoryService;
 
     /** 최상단 탭메뉴 정보 배열  */
-    private TopMenu[] sampleMenu = null;
+    private TopMenu[] sampleMenu = new TopMenu[]{};
     /** 최상단 탭메뉴 화면 출력중인 컨텐츠 Scene 배열  */
-    private Node[] sampleContent;
+    private Node[] sampleContent = new Node[]{};
 
-    private String currentSampleName = null;
+    private String currentSampleId = null;
 
     /** 최상단 탭메뉴 정보 배열  */
     private TopMenu[] topMenus = null;
@@ -110,6 +105,8 @@ public class MainController extends BaseStageController {
     @FXML
     private Label dashBoardBtn;
 
+    @FXML ComboBox<ComboBoxItem> sampleList;
+
     @FXML
     private Label resultsBtn;
 
@@ -119,7 +116,7 @@ public class MainController extends BaseStageController {
     private Map<String, Object> basicInformationMap = new HashMap<>();
 
     /**
-     * @return basicInformationMap
+     * @return Map<String, Object>
      */
     public Map<String, Object> getBasicInformationMap() {
         return basicInformationMap;
@@ -127,7 +124,7 @@ public class MainController extends BaseStageController {
 
     /**
      * 메인 컨텐츠 프레임 Pane Node 객체 반환
-     * @return
+     * @return BorderPane
      */
     public BorderPane getMainFrame() {
         return this.mainFrame;
@@ -135,7 +132,7 @@ public class MainController extends BaseStageController {
 
     /**
      * 메인 레이아웃의 Stage 객체 반환
-     * @return
+     * @return Stage
      */
     public Stage getPrimaryStage() {
         return this.primaryStage;
@@ -214,7 +211,7 @@ public class MainController extends BaseStageController {
         //상단 메뉴 설정
         initDefaultTopMenu(role);
         //refreshShowTopMenu(-1);
-        showTopMenuContents(null, 0);
+        showTopMenuContents(0);
 
         //상단 사용자 시스템 메뉴 설정
         initTopUserMenu(role);
@@ -227,9 +224,21 @@ public class MainController extends BaseStageController {
 
         // 중단된 분석 요청 작업이 있는지 체크
 
-        dashBoardBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showTopMenuContents(topMenus[0], 0));
-        resultsBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showTopMenuContents(topMenus[1], 1));
-        managerBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showTopMenuContents(topMenus[3], 3));
+        dashBoardBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showTopMenuContents(0));
+        resultsBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showTopMenuContents(1));
+        managerBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showTopMenuContents(3));
+        sampleList.setConverter(new ComboBoxConverter());
+
+        sampleList.setOnAction(event -> {
+            ComboBox<ComboBoxItem> obj = (ComboBox<ComboBoxItem>) event.getSource();
+            ComboBoxItem item = obj.getSelectionModel().getSelectedItem();
+            Optional<TopMenu> optionalTopMenu =  Arrays.stream(sampleMenu).filter(menu ->
+                menu.getId().equalsIgnoreCase(item.getValue())).findFirst();
+            if(optionalTopMenu.isPresent()) {
+                showSampleDetail(optionalTopMenu.get());
+            }
+            obj.getSelectionModel().clearSelection(obj.getItems().indexOf(item));
+        });
 
         settingPanelAndDiseases();
     }
@@ -343,7 +352,7 @@ public class MainController extends BaseStageController {
         // 중복 체크
         boolean isAdded = false;
         int addedMenuIdx = 0;
-        for(TopMenu topMenu : this.topMenus) {
+        for(TopMenu topMenu : this.sampleMenu) {
             if(!StringUtils.isEmpty(menu.getId()) && !StringUtils.isEmpty(topMenu.getId()) &&
                     menu.getId().equals(topMenu.getId())) {
                     isAdded = true;
@@ -355,43 +364,31 @@ public class MainController extends BaseStageController {
 
         // 추가되어 있지 않은 경우 추가
         if(!isAdded) {
-            TopMenu[] newMenus = new TopMenu[topMenus.length + 1];
-            TopMenu addMenu = null;
-            Node[] newSubScenes = new Node[topMenus.length + 1];
+            ComboBoxItem item = new ComboBoxItem();
+            item.setText(menu.getMenuName());
+            item.setValue(menu.getId());
+            sampleList.getItems().add(item);
+            TopMenu[] newMenus = new TopMenu[this.sampleMenu.length + 1];
+            TopMenu addMenu = menu;
+            addMenu.setDisplayOrder(newMenus.length - 1);
+            Node[] newSubScenes = new Node[this.sampleMenu.length + 1];
             Node addNode = null;
-            for (int i = 0; i < newMenus.length; i++) {
-                if(i == addPositionIdx) {
-                    addMenu = menu;
-                    addNode = null;
-                } else if(i < addPositionIdx) {
-                    addMenu = topMenus[i];
-                    addNode = topMenuContent[i];
-                } else {
-                    addMenu = topMenus[i-1];
-                    addNode = topMenuContent[i-1];
-                }
-                // 메뉴 출력 순서 업데이트
-                addMenu.setDisplayOrder(i);
-                newMenus[i] = addMenu;
-                newSubScenes[i] = addNode;
-            }
-            topMenus = newMenus;
-            topMenuContent = newSubScenes;
+            System.arraycopy(this.sampleMenu, 0, newMenus, 0, sampleMenu.length);
+            System.arraycopy(this.sampleContent, 0, newSubScenes, 0, sampleContent.length);
+
+            newMenus[newMenus.length - 1] = addMenu;
+            newSubScenes[newSubScenes.length - 1] = addNode;
+
+            sampleMenu = newMenus;
+            sampleContent = newSubScenes;
 
             // 추가 대상 메뉴 컨텐츠 출력 설정인 경우
             if(isDisplay) {
-                selectedTopMenuIdx = addPositionIdx;
-                showTopMenuContents(menu, 0);
-            } else {
-                // 기존 메뉴 선택 상태 처리
-                if(selectedTopMenuIdx >= addPositionIdx) {
-                    selectedTopMenuIdx++;
-                }
+                showSampleDetail(menu);
             }
         } else {
             // 이미 추가 되어있는 경우 해당 메뉴 화면으로 전환함.
-            selectedTopMenuIdx = addedMenuIdx;
-            showTopMenuContents(null, addedMenuIdx);
+            showSampleDetail(menu);
         }
 
     }
@@ -412,19 +409,51 @@ public class MainController extends BaseStageController {
             }
             topMenus = newTopMenus;
         }
+    }
+
+    public void showSampleDetail(final TopMenu menu) {
+        boolean isFirstShow = false;
+        if(selectedTopMenuIdx != 2) {
+
+            Node item = topMenuArea1.getChildren().get(2);
+            item.setId("selectedMenu");
+
+            Node preSelectMenuGroup = topMenuArea1.getChildren().get(selectedTopMenuIdx);
+            preSelectMenuGroup.setId(null);
+
+            selectedTopMenuIdx = 2;
+        }
+
+        if(sampleContent[menu.getDisplayOrder()] == null) {
+            isFirstShow = true;
+            try {
+                FXMLLoader loader = mainApp.load(menu.getFxmlPath());
+                Node node = loader.load();
+                AnalysisDetailLayoutController analysisDetailLayoutController = loader.getController();
+                analysisDetailLayoutController.setMainController(this);
+                analysisDetailLayoutController.setParamMap(menu.getParamMap());
+                analysisDetailLayoutController.show((Parent) node);
+            } catch (Exception e) {
+
+            }
+            sampleContent[menu.getDisplayOrder()] = mainFrame.getCenter();
+        } else {
+            mainFrame.setCenter(sampleContent[menu.getDisplayOrder()]);
+        }
+
+        setAuto(isFirstShow);
 
     }
 
     /**
      * 선택 상단 메뉴 컨텐츠 출력
-     * @param menu
      * @param showIdx
      */
-    public void showTopMenuContents(TopMenu menu, int showIdx) {
+    public void showTopMenuContents(int showIdx) {
+        if(showIdx == 2) return;
         mainFrame.setCenter(null);
-        if(menu == null) menu = topMenus[showIdx];
+        TopMenu menu = topMenus[showIdx];
 
-        //Group group = (Group) topMenuArea.getChildren().get(menu.getDisplayOrder());
         Node item = topMenuArea1.getChildren().get(showIdx);
         item.setId("selectedMenu");
 
@@ -461,12 +490,6 @@ public class MainController extends BaseStageController {
                             pastResultsController.setParamMap(menu.getParamMap());
                             pastResultsController.show((Parent) node);
                             break;
-                        case FXMLConstants.ANALYSIS_DETAIL_LAYOUT:
-                            AnalysisDetailLayoutController analysisDetailLayoutController = loader.getController();
-                            analysisDetailLayoutController.setMainController(this);
-                            analysisDetailLayoutController.setParamMap(menu.getParamMap());
-                            analysisDetailLayoutController.show((Parent) node);
-                            break;
                         case FXMLConstants.SYSTEM_MANAGER_HOME:
                             systemManagerHomeController= loader.getController();
                             systemManagerHomeController.setMainController(this);
@@ -481,33 +504,35 @@ public class MainController extends BaseStageController {
                     mainFrame.setCenter(topMenuContent[menu.getDisplayOrder()]);
                 }
 
-                if("homeWrapper".equals(currentShowFrameId)) {	// 이전 화면이 분석자 HOME인 경우 자동 새로고침 토글
-                    homeController.autoRefreshTimeline.stop();
-                    //homeController.sampleListAutoRefreshTimeline.stop();
-                } else if("experimentPastResultsWrapper".equals(currentShowFrameId)) {	// 이전 화면이 분석자 Past Results인 경우 자동 새로고침 토글
-                    pastResultsController.pauseAutoRefresh();
-                } else if ("systemManagerHomeWrapper".equals(currentShowFrameId)) {
-                    homeController.autoRefreshTimeline.stop();
-                    //homeController.sampleListAutoRefreshTimeline.stop();
-                    pastResultsController.pauseAutoRefresh();
-                }
+                setAuto(isFirstShow);
 
-                if("homeWrapper".equals(mainFrame.getCenter().getId())) {	// 현재 출력화면이 분석자 HOME 화면인 경우 다른 화면의 자동 새로고침 실행 토글 처리
-                    // 최초 화면 출력이 아닌 경우 분석자 HOME 화면 자동 새로고침 기능 시작
-                    if(!isFirstShow) {
-                        homeController.autoRefreshTimeline.play();
-                        //homeController.sampleListAutoRefreshTimeline.play();
-                    }
-                } else if("experimentPastResultsWrapper".equals(mainFrame.getCenter().getId())) {	// 현재 출력화면이 분석자 Past Results 화면인 경우 다른 화면의 자동 새로고침 실행 토글 처리
-                    // 최초 화면 출력이 아닌 경우 분석자 Past Results 화면 자동 새로고침 기능 시작
-                    if(!isFirstShow) pastResultsController.resumeAutoRefresh();
-                }
-
-                currentShowFrameId = mainFrame.getCenter().getId();
             }
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
         }
+    }
+
+    public void setAuto(boolean isFirstShow) {
+        if("homeWrapper".equals(currentShowFrameId)) {	// 이전 화면이 분석자 HOME인 경우 자동 새로고침 토글
+            homeController.autoRefreshTimeline.stop();
+        } else if("experimentPastResultsWrapper".equals(currentShowFrameId)) {	// 이전 화면이 분석자 Past Results인 경우 자동 새로고침 토글
+            pastResultsController.pauseAutoRefresh();
+        } else if ("systemManagerHomeWrapper".equals(currentShowFrameId)) {
+            homeController.autoRefreshTimeline.stop();
+            pastResultsController.pauseAutoRefresh();
+        }
+
+        if("homeWrapper".equals(mainFrame.getCenter().getId())) {	// 현재 출력화면이 분석자 HOME 화면인 경우 다른 화면의 자동 새로고침 실행 토글 처리
+            // 최초 화면 출력이 아닌 경우 분석자 HOME 화면 자동 새로고침 기능 시작
+            if(!isFirstShow) {
+                homeController.autoRefreshTimeline.play();
+            }
+        } else if("experimentPastResultsWrapper".equals(mainFrame.getCenter().getId())) {	// 현재 출력화면이 분석자 Past Results 화면인 경우 다른 화면의 자동 새로고침 실행 토글 처리
+            // 최초 화면 출력이 아닌 경우 분석자 Past Results 화면 자동 새로고침 기능 시작
+            if(!isFirstShow) pastResultsController.resumeAutoRefresh();
+        }
+
+        currentShowFrameId = mainFrame.getCenter().getId();
     }
 
     /**
