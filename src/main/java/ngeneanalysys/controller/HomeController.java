@@ -10,10 +10,12 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 import ngeneanalysys.animaition.HddStatusTimer;
+import ngeneanalysys.code.UserTypeCode;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
@@ -22,6 +24,7 @@ import ngeneanalysys.model.paged.PagedRun;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.LoggerUtil;
+import ngeneanalysys.util.LoginSessionUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
@@ -50,6 +53,8 @@ public class HomeController extends SubPaneController{
     @FXML
     private HBox runListHBox;
 
+    @FXML
+    private Button noticeEditBtn;
 
     /** API Service */
     private APIService apiService;
@@ -70,6 +75,14 @@ public class HomeController extends SubPaneController{
         maskerPane.setPrefHeight(getMainController().getMainFrame().getHeight());
         maskerPane.setVisible(false);
 
+        LoginSession loginSession = LoginSessionUtil.getCurrentLoginSession();
+
+        if(!loginSession.getRole().equalsIgnoreCase(UserTypeCode.USER_TYPE_ADMIN)) {
+            noticeEditBtn.setVisible(false);
+        } else {
+            noticeEditBtn.setVisible(true);
+        }
+
         getMainController().getPrimaryStage().setMaxWidth(1000);
         this.mainController.getMainFrame().setCenter(root);
 
@@ -79,6 +92,7 @@ public class HomeController extends SubPaneController{
                 ae -> showRunList()));
         autoRefreshTimeline.setCycleCount(Animation.INDEFINITE);
         autoRefreshTimeline.play();
+
     }
 
     /**
@@ -126,7 +140,7 @@ public class HomeController extends SubPaneController{
             StorageUsage storageUsage = response.getObjectBeforeConvertResponseToJSON(StorageUsage.class);
             double value = (double)storageUsage.getFreeSpace() / storageUsage.getTotalSpace();
             String textLabel = ConvertUtil.convertFileSizeFormat(storageUsage.getFreeSpace()) + " / " + ConvertUtil.convertFileSizeFormat(storageUsage.getTotalSpace());
-            AnimationTimer hddStatusTier = new HddStatusTimer(hddCanvas.getGraphicsContext2D(), value, "Usage",
+            AnimationTimer hddStatusTier = new HddStatusTimer(hddCanvas.getGraphicsContext2D(), value, "Free Space",
                     textLabel, 10);
             hddStatusTier.start();
         } catch (WebAPIException wae) {

@@ -67,7 +67,7 @@
             </HBox>
          </content>
       </ScrollPane>
-      <Label styleClass="font_size_16" text="LATEST ANALYSIS STATUS" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <Label styleClass="font_size_16" text="LATEST ANALYSIS" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
          <children>
             <VBox maxHeight="-Infinity" prefHeight="200.0" prefWidth="100.0" styleClass="small_icon_q" />
@@ -92,7 +92,16 @@
       </HBox>
       <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="360.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
          <children>
-            <Label styleClass="font_size_16" text="NEWS &amp; TIP" />
+            <HBox prefHeight="26.0" prefWidth="200.0">
+               <children>
+                  <Label styleClass="font_size_16" text="NEWS &amp; TIP">
+                     <padding>
+                        <Insets right="10.0" />
+                     </padding>
+                  </Label>
+                  <Button fx:id="noticeEditBtn" mnemonicParsing="false" text="*" />
+               </children>
+            </HBox>
             <Label alignment="TOP_LEFT" maxHeight="42.0" maxWidth="1.7976931348623157E308" minHeight="42.0" prefHeight="42.0" styleClass="font_size_14" text="Title" wrapText="true">
                <VBox.margin>
                   <Insets left="15.0" />

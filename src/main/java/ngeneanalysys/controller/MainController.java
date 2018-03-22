@@ -75,14 +75,6 @@ public class MainController extends BaseStageController {
     /** 메인 레이아웃 화면 Stage */
     private Stage primaryStage;
 
-    /** 상단 탭 메뉴 > 스크롤 왼쪽으로 이동 버튼 */
-    @FXML
-    private Button topMenuScrollLeftButton;
-
-    /** 상단 탭 메뉴 > 스크롤 오른쪽으로 이동 버튼 */
-    @FXML
-    private Button topMenuScrollRightButton;
-
     /** 상단 탭 메뉴 Area */
     @FXML
     private ScrollPane topMenuScrollPane;
@@ -206,34 +198,6 @@ public class MainController extends BaseStageController {
         //우상단 로그인 사용자명 삽입
         loginUserName.setText(loginSession.getName());
 
-        //상단 탭메뉴 스크롤 영역 설정
-        topMenuScrollPane.widthProperty().addListener((ov, oldWidth, newWidth) -> {
-            if (oldWidth != newWidth) {
-                logger.debug(String.format("current top tab menu scroll pane area width :%s, topMenuArea width : %s ", newWidth, topMenuArea.getWidth()));
-                if (newWidth.doubleValue() < topMenuArea.getWidth()) {
-                    topMenuScrollLeftButton.setVisible(true);
-                    topMenuScrollRightButton.setVisible(true);
-                } else {
-                    topMenuScrollLeftButton.setVisible(false);
-                    topMenuScrollRightButton.setVisible(false);
-                }
-            }
-        });
-
-        //상단 탭메뉴 영역 가로사이즈 리스너 바인딩
-        topMenuArea.widthProperty().addListener((ov, oldWidth, newWidth) -> {
-            if(oldWidth != newWidth) {
-                logger.debug(String.format("current top tab menu area width :%s, scroll pane area width : %s ", newWidth, topMenuScrollPane.getWidth()));
-                if(newWidth.doubleValue() > topMenuScrollPane.getWidth()) {
-                    topMenuScrollLeftButton.setVisible(true);
-                    topMenuScrollRightButton.setVisible(true);
-                } else {
-                    topMenuScrollLeftButton.setVisible(false);
-                    topMenuScrollRightButton.setVisible(false);
-                }
-            }
-        });
-
         //상단 메뉴 설정
         initDefaultTopMenu(role);
         refreshShowTopMenu(-1);
@@ -351,7 +315,7 @@ public class MainController extends BaseStageController {
      */
     public void refreshShowTopMenu(int selectIdx) {
         // 기존 메뉴 엘레멘트 제거
-        topMenuArea.getChildren().removeAll();
+        topMenuArea.getChildren().removeAll(topMenuArea.getChildren());
         if(topMenus != null && topMenus.length > 0) {
             int idx = 0;
             Group[] topMenuGroups = new Group[topMenus.length];

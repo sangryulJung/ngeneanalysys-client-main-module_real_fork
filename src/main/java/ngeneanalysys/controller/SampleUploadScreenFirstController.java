@@ -164,6 +164,8 @@ public class SampleUploadScreenFirstController extends BaseStageController{
            if (pairFileList.size() == 2 && !checkSameSample(fastqFilePairName)) {
                 Sample sample = new Sample();
                 sample.setName(fastqFilePairName);
+                sample.setSampleSheet(new SampleSheet());
+                sample.setQcData(new QcData());
                 sampleArrayList.add(sample);
             }
 
@@ -186,6 +188,8 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                     logger.info(s[0]);
                     Sample sample = new Sample();
                     sample.setName(sampleName);
+                    sample.setSampleSheet(new SampleSheet());
+                    sample.setQcData(new QcData());
                     sampleArrayList.add(sample);
                 } else if(s[0].equalsIgnoreCase("Sample_ID")) {
                     tableData = true;
@@ -669,8 +673,11 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                     mainController.getBasicInformationMap().put("runId", run.getRun().getId());
                     logger.info(run.toString());
 
+                    List<Sample> samples = run.getSamples();
 
-
+                    for(Sample sample : samples) {
+                        postAnalysisFilesData(sample);
+                    }
                     /*for (Sample sample : sampleArrayList) {
                         sample.setRunId(run.getId());
                         sampleUpload(sample);
