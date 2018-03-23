@@ -16,10 +16,10 @@
 <GridPane fx:id="experimentPastResultsWrapper" prefHeight="555.0" prefWidth="1200.0" styleClass="background_white" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.PastResultsController">
    <columnConstraints>
       <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
-      <ColumnConstraints hgrow="SOMETIMES" prefWidth="300.0" />
+      <ColumnConstraints hgrow="SOMETIMES" prefWidth="350.0" />
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="510.0" />
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="300.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="250.0" />
       <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
    </columnConstraints>
    <rowConstraints>
@@ -56,7 +56,7 @@
       </GridPane>
       <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3">
          <content>
-            <VBox fx:id="resultVBox" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="810.0" />
+            <VBox fx:id="resultVBox" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="860.0" />
          </content>
       </ScrollPane>
       <Label style="-fx-font-size: 24;" text="RESULTS" GridPane.columnIndex="1" GridPane.rowIndex="1" />

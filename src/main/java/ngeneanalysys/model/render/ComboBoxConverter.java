@@ -20,6 +20,7 @@ public class ComboBoxConverter extends StringConverter<ComboBoxItem> {
 	 */
 	@Override
 	public String toString(ComboBoxItem object) {
+		if(object == null) return "";
 		mapItems.put(object.getValue(), object);
 		return object.getText();
 	}

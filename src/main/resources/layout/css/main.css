@@ -164,6 +164,8 @@
     -fx-alignment : center;
     -fx-font-size : 14px;
     -fx-cursor:hand;
+    -fx-border-width : 0 0 3 0;
+    -fx-border-color : white;
 }
 
 #topMenuArea1 > .label#selectedMenu {
@@ -171,7 +173,7 @@
     -fx-border-color : red;
 }
 
-#topMenuArea1 > .combo-box {
+#topMenuArea1 .combo-box {
     -fx-min-height : 60;
     -fx-pref-height : 60;
     -fx-max-height : 60;
@@ -182,9 +184,42 @@
     -fx-alignment : center;
     -fx-font-size : 14px;
     -fx-cursor:hand;
+    -fx-border-width : 0 0 3 0;
+    -fx-border-color : white;
 }
 
-#topMenuArea1 > .combo-box#selectedMenu {
+#topMenuArea1 .combo-box#selectedMenu {
+    -fx-border-width : 0 0 3 0;
+    -fx-border-color : white;
+}
+
+#topMenuArea1 #sampleListVBox > .combo-box .arrow, #topMenuArea1 #sampleListVBox > .combo-box .button{
+    -fx-background-color : transparent;
+}
+
+#topMenuArea1 #sampleListVBox {
+    -fx-cursor:hand;
+}
+
+#topMenuArea1 #sampleListStackPane {
+    -fx-min-height : 60;
+    -fx-pref-height : 60;
+    -fx-max-height : 60;
+    -fx-min-width : 80;
+    -fx-min-width : 100;
+    -fx-pref-width : 100;
+    -fx-max-width : 100;
+}
+
+#topMenuArea1 #sampleListStackPane .label {
+    -fx-alignment : center;
+    -fx-font-size : 14px;
+    -fx-cursor:hand;
+    -fx-border-width : 0 0 3 0;
+    -fx-border-color : white;
+}
+
+#topMenuArea1 #sampleListVBox .label#selectedMenu {
     -fx-border-width : 0 0 3 0;
     -fx-border-color : red;
 }

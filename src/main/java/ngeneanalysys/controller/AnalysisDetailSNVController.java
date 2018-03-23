@@ -1,5 +1,6 @@
 package ngeneanalysys.controller;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -156,12 +157,21 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         variantListTableView.setRowFactory(tv -> {
             TableRow<VariantAndInterpretationEvidence> row = new TableRow<>();
             row.setOnMouseClicked(e -> {
-                if (e.getClickCount() == 1 && (!row.isEmpty())) {
+
+                if (e.getClickCount() <= 2) {
+                    logger.info(e.getClickCount() + " Click count");
+                    Platform.runLater(() -> showVariantDetail(variantListTableView.getSelectionModel().getSelectedItem()));
+                   if(e.getClickCount() == 2) {
+                       expandRight();
+                   }
+                }
+
+                /*if (e.getClickCount() == 1 && (!row.isEmpty())) {
                     showVariantDetail(variantListTableView.getSelectionModel().getSelectedItem());
                 } else if (e.getClickCount() == 2 && (!row.isEmpty())) {
                     showVariantDetail(variantListTableView.getSelectionModel().getSelectedItem());
                     expandRight();
-                }
+                }*/
             });
             return row;
         });

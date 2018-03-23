@@ -1,15 +1,18 @@
 package ngeneanalysys.controller;
 
+import com.sun.javafx.scene.control.skin.ComboBoxListViewSkin;
+import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.util.Duration;
@@ -105,13 +108,19 @@ public class MainController extends BaseStageController {
     @FXML
     private Label dashBoardBtn;
 
-    @FXML ComboBox<ComboBoxItem> sampleList;
-
     @FXML
     private Label resultsBtn;
 
     @FXML
     private HBox topMenuArea1;
+
+    @FXML
+    private Label sampleListLabel;
+
+    @FXML
+    private StackPane sampleListStackPane;
+
+    ComboBox<ComboBoxItem> sampleList;
 
     private Map<String, Object> basicInformationMap = new HashMap<>();
 
@@ -210,7 +219,6 @@ public class MainController extends BaseStageController {
 
         //상단 메뉴 설정
         initDefaultTopMenu(role);
-        //refreshShowTopMenu(-1);
         showTopMenuContents(0);
 
         //상단 사용자 시스템 메뉴 설정
@@ -227,20 +235,94 @@ public class MainController extends BaseStageController {
         dashBoardBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showTopMenuContents(0));
         resultsBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showTopMenuContents(1));
         managerBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showTopMenuContents(3));
-        sampleList.setConverter(new ComboBoxConverter());
 
-        sampleList.setOnAction(event -> {
-            ComboBox<ComboBoxItem> obj = (ComboBox<ComboBoxItem>) event.getSource();
-            ComboBoxItem item = obj.getSelectionModel().getSelectedItem();
-            Optional<TopMenu> optionalTopMenu =  Arrays.stream(sampleMenu).filter(menu ->
-                menu.getId().equalsIgnoreCase(item.getValue())).findFirst();
-            if(optionalTopMenu.isPresent()) {
-                showSampleDetail(optionalTopMenu.get());
+        final ComboBox<ComboBoxItem> sampleList = new ComboBox<ComboBoxItem>() {
+            @Override
+            protected javafx.scene.control.Skin<?> createDefaultSkin() {
+                return new ComboBoxListViewSkin<ComboBoxItem>( this ) {
+                    @Override
+                    protected boolean isHideOnClickEnabled() {
+                        return false;
+                    }
+                };
             }
-            obj.getSelectionModel().clearSelection(obj.getItems().indexOf(item));
+        };
+
+        this.sampleList = sampleList;
+        sampleList.getStyleClass().addAll("combo-box", "combo-box-base");
+        sampleListStackPane.getChildren().add(0, sampleList);
+
+        sampleListStackPane.setOnMouseClicked(ev -> {
+            if(!sampleList.getItems().isEmpty()) sampleList.show();
         });
 
+        sampleList.setConverter(new ComboBoxConverter());
+        sampleList.setVisibleRowCount(15);
+        sampleList.setCellFactory(lv ->
+            new ListCell<ComboBoxItem>() {
+                private HBox graphic;
+
+                {
+                    Label label = new Label();
+                    label.getStyleClass().removeAll(label.getStyleClass());
+
+                    label.textProperty().bind(Bindings.convert(itemProperty()));
+
+                    label.setMinWidth(150);
+                    label.setPrefWidth(150);
+                    label.setMaxWidth(150);
+
+                    label.setOnMouseClicked(event -> {
+                        if(itemProperty() == null) return;
+                        Optional<TopMenu> optionalTopMenu = Arrays.stream(sampleMenu).filter(menu ->
+                                menu.getId().equalsIgnoreCase(itemProperty().getValue().getValue())).findFirst();
+                        if (optionalTopMenu.isPresent()) {
+                            showSampleDetail(optionalTopMenu.get());
+                        }
+                        clearComboBox();
+                        sampleList.hide();
+                    });
+
+                    Button btn = new Button("X");
+                    btn.setPrefWidth(6);
+                    btn.setPrefHeight(6);
+                    btn.addEventHandler(MouseEvent.MOUSE_CLICKED, event-> {
+                        ComboBoxItem item = getItem();
+                        if (isSelected()) {
+
+                            Platform.runLater(() -> sampleList.getSelectionModel().select(null));
+                        }
+
+                        removeTopMenu(item.getValue());
+                        sampleList.getItems().remove(item);
+                    });
+
+                    graphic = new HBox(label, btn);
+                    graphic.setPrefWidth(170);
+                    graphic.setAlignment(Pos.CENTER);
+                    graphic.setHgrow(label, Priority.ALWAYS);
+                    setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+                }
+
+                @Override
+                protected void updateItem(ComboBoxItem item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(graphic);
+                    }
+                }
+
+            });
+
+
+
         settingPanelAndDiseases();
+    }
+
+    public void clearComboBox() {
+        Platform.runLater(() -> sampleList.getSelectionModel().clearSelection());//sampleList.setValue(null);
     }
 
     public void settingPanelAndDiseases() {
@@ -395,19 +477,27 @@ public class MainController extends BaseStageController {
 
     /**
      * 지정 배열의 상단 메뉴 엘레멘트 삭제
-     * @param removeIdx
+     * @param id
      */
-    private void removeTopMenu(int removeIdx) {
-        if(topMenus != null && topMenus.length > 0) {
+    private void removeTopMenu(String id) {
+        if(sampleMenu != null && sampleMenu.length > 0) {
+            int removeIdx = -1;
+            for(int i = 0; i < sampleMenu.length ; i++) {
+                if(sampleMenu[i].getId().equalsIgnoreCase(id)) {
+                    removeIdx = i;
+                    break;
+                }
+            }
+
             int idx = 0;
-            TopMenu[] newTopMenus = ArrayUtils.remove(topMenus, removeIdx);
-            topMenuContent = ArrayUtils.remove(topMenuContent, removeIdx);
+            TopMenu[] newTopMenus = ArrayUtils.remove(sampleMenu, removeIdx);
+            sampleContent = ArrayUtils.remove(sampleContent, removeIdx);
             for (TopMenu topMenu : newTopMenus) {
                 topMenu.setDisplayOrder(idx);
                 newTopMenus[idx] = topMenu;
                 idx++;
             }
-            topMenus = newTopMenus;
+            sampleMenu = newTopMenus;
         }
     }
 
@@ -415,8 +505,7 @@ public class MainController extends BaseStageController {
         boolean isFirstShow = false;
         if(selectedTopMenuIdx != 2) {
 
-            Node item = topMenuArea1.getChildren().get(2);
-            item.setId("selectedMenu");
+            sampleListLabel.setId("selectedMenu");
 
             Node preSelectMenuGroup = topMenuArea1.getChildren().get(selectedTopMenuIdx);
             preSelectMenuGroup.setId(null);
@@ -461,7 +550,11 @@ public class MainController extends BaseStageController {
         if(selectedTopMenuIdx != menu.getDisplayOrder()) {
             // 기존 선택 메뉴 아이디 제거
             Node preSelectMenuGroup = topMenuArea1.getChildren().get(selectedTopMenuIdx);
-            preSelectMenuGroup.setId(null);
+            if(selectedTopMenuIdx != 2) {
+                preSelectMenuGroup.setId(null);
+            } else {
+                sampleListLabel.setId(null);
+            }
         }
 
         selectedTopMenuIdx = menu.getDisplayOrder();
@@ -593,7 +686,7 @@ public class MainController extends BaseStageController {
         }
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.initOwner((Window) this.primaryStage);
+        alert.initOwner(this.primaryStage);
         alert.setTitle("Confirmation Dialog");
         alert.setHeaderText(alertHeaderText);
         alert.setContentText(alertContentText);
@@ -601,11 +694,10 @@ public class MainController extends BaseStageController {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() &&result.get() == ButtonType.OK){
             // 진행중인 분석 요청건이 있는 경우 정지 처리
-            if(progressTaskContentArea.getChildren() != null && progressTaskContentArea.getChildren().size() > 0) {
-                if(this.analysisSampleUploadProgressTaskController != null) {
-                    this.analysisSampleUploadProgressTaskController.pauseUpload();
-                    this.analysisSampleUploadProgressTaskController.interruptForce();
-                }
+            if(progressTaskContentArea.getChildren() != null && progressTaskContentArea.getChildren().size() > 0
+                    && this.analysisSampleUploadProgressTaskController != null) {
+                this.analysisSampleUploadProgressTaskController.pauseUpload();
+                this.analysisSampleUploadProgressTaskController.interruptForce();
             }
             isLogoutContinue = true;
         } else {
@@ -633,7 +725,6 @@ public class MainController extends BaseStageController {
 
             // 분석자 Past Results 자동 새로고침 기능 중지
             if(pastResultsController != null) {
-                //pastResultsController.autoRefreshTimeline.stop();
                 pastResultsController.pauseAutoRefresh();
             }
 
@@ -724,7 +815,7 @@ public class MainController extends BaseStageController {
 
         // 현재 화면에 출력중인 화면이 분석자 Past Results 화면인 경우
         if("experimentPastResultsWrapper".equals(currentShowFrameId)) {
-            pastResultsController.startAutoRefresh();
+            if(pastResultsController != null) pastResultsController.startAutoRefresh();
             if(homeController != null) {
                 homeController.autoRefreshTimeline.play();
             }
