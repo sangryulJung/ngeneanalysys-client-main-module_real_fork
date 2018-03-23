@@ -219,7 +219,7 @@
     -fx-border-color : white;
 }
 
-#topMenuArea1 #sampleListVBox .label#selectedMenu {
+#topMenuArea1 #sampleListStackPane .label#selectedMenu {
     -fx-border-width : 0 0 3 0;
     -fx-border-color : red;
 }

@@ -288,13 +288,11 @@ public class MainController extends BaseStageController {
                     btn.setPrefHeight(6);
                     btn.addEventHandler(MouseEvent.MOUSE_CLICKED, event-> {
                         ComboBoxItem item = getItem();
-                        if (isSelected()) {
-
-                            Platform.runLater(() -> sampleList.getSelectionModel().select(null));
-                        }
 
                         removeTopMenu(item.getValue());
                         sampleList.getItems().remove(item);
+                        sampleList.hide();
+                        Platform.runLater(() -> sampleList.getSelectionModel().select(null));
                     });
 
                     graphic = new HBox(label, btn);
@@ -498,6 +496,17 @@ public class MainController extends BaseStageController {
                 idx++;
             }
             sampleMenu = newTopMenus;
+
+            if(currentSampleId == null) {
+
+            } else if(sampleMenu.length == 0) {
+                currentSampleId = null;
+                showTopMenuContents(1);
+            } else {
+                currentSampleId = sampleMenu[removeIdx - 1].getId();
+                showSampleDetail(sampleMenu[removeIdx - 1]);
+            }
+
         }
     }
 
@@ -512,6 +521,7 @@ public class MainController extends BaseStageController {
 
             selectedTopMenuIdx = 2;
         }
+        currentSampleId = menu.getId();
 
         if(sampleContent[menu.getDisplayOrder()] == null) {
             isFirstShow = true;
@@ -542,6 +552,8 @@ public class MainController extends BaseStageController {
         if(showIdx == 2) return;
         mainFrame.setCenter(null);
         TopMenu menu = topMenus[showIdx];
+
+        currentSampleId = null;
 
         Node item = topMenuArea1.getChildren().get(showIdx);
         item.setId("selectedMenu");
