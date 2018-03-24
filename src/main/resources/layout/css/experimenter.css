@@ -19,14 +19,9 @@
     -fx-background-color : #fff;
 }
 
-#searchBtn {
-    -fx-background-color : #263d5f;
-    -fx-text-fill : #fff;
-}
-
 .sample_header {
     -fx-background-color : #8f9fb9;
-        -fx-text-fill : #fff;
+    -fx-text-fill : #fff;
 }
 
 .sample_list_label {

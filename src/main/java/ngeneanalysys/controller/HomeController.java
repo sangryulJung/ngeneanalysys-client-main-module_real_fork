@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 import ngeneanalysys.animaition.HddStatusTimer;
@@ -20,6 +21,7 @@ import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
+import ngeneanalysys.model.paged.PagedNotice;
 import ngeneanalysys.model.paged.PagedRun;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.ConvertUtil;
@@ -56,6 +58,20 @@ public class HomeController extends SubPaneController{
     @FXML
     private Button noticeEditBtn;
 
+    @FXML
+    private Label noticeTitleLabel;
+
+    @FXML
+    private Label dateLabel;
+
+    @FXML
+    private Label noticeContentsLabel;
+
+    @FXML
+    private ToggleGroup newsTipGroup;
+
+    private List<NoticeView> noticeList = null;
+
     /** API Service */
     private APIService apiService;
     /** Timer */
@@ -82,6 +98,11 @@ public class HomeController extends SubPaneController{
         } else {
             noticeEditBtn.setVisible(true);
         }
+
+        newsTipGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue == null) return;
+            if(!noticeLabelSetting(newsTipGroup.getToggles().indexOf(newValue))) newsTipGroup.selectToggle(oldValue);
+        });
 
         getMainController().getPrimaryStage().setMaxWidth(1000);
         this.mainController.getMainFrame().setCenter(root);
@@ -133,6 +154,36 @@ public class HomeController extends SubPaneController{
         }
     }
 
+    private void setNoticeArea() {
+        try {
+            Map<String, Object> params = new HashMap<>();
+
+            params.put("limit", 5);
+            params.put("offset", 0);
+
+            HttpClientResponse response = apiService.get("/notices", params, null, false);
+
+             noticeList =response.getObjectBeforeConvertResponseToJSON(PagedNotice.class).getResult();
+
+             if(noticeList != null && !noticeList.isEmpty()) {
+                    noticeLabelSetting(0);
+             }
+
+        } catch (WebAPIException wae) {
+
+        }
+
+    }
+
+    public boolean noticeLabelSetting(int index) {
+        if(noticeList == null || index > noticeList.size() -1) return false;
+        NoticeView noticeView = noticeList.get(index);
+        noticeTitleLabel.setText(noticeView.getTitle());
+        dateLabel.setText(noticeView.getCreateAt().toString());
+        noticeContentsLabel.setText(noticeView.getContents());
+        return true;
+    }
+
     private void hddCheck() {
         try {
             HttpClientResponse response = apiService.get("/storageUsage", null, null, false);
@@ -149,6 +200,7 @@ public class HomeController extends SubPaneController{
     }
 
     private void showRunList() {
+        setNoticeArea();
         hddCheck();
         final int maxRunNumberOfPage = 3;
         CompletableFuture<PagedRun> getPagedRun = new CompletableFuture<>();

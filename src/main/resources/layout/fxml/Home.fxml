@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane fx:id="homeWrapper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="555.0" minWidth="600.0" prefHeight="555.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.HomeController">
+<GridPane fx:id="homeWrapper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="555.0" minWidth="1200.0" prefHeight="555.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.HomeController">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="360.0" />
@@ -102,12 +102,17 @@
                   <Button fx:id="noticeEditBtn" mnemonicParsing="false" text="*" />
                </children>
             </HBox>
-            <Label alignment="TOP_LEFT" maxHeight="42.0" maxWidth="1.7976931348623157E308" minHeight="42.0" prefHeight="42.0" styleClass="font_size_14" text="Title" wrapText="true">
+            <Label fx:id="noticeTitleLabel" alignment="TOP_LEFT" maxHeight="42.0" maxWidth="1.7976931348623157E308" minHeight="42.0" prefHeight="42.0" styleClass="font_size_14" text="Title" wrapText="true">
                <VBox.margin>
                   <Insets left="15.0" />
                </VBox.margin>
             </Label>
-            <Label alignment="TOP_LEFT" maxHeight="120.0" maxWidth="1.7976931348623157E308" minHeight="120.0" prefHeight="120.0" style="-fx-font-family: Noto Sans CJK KR Regular;" styleClass="font_size_12" text="Title" wrapText="true">
+            <Label fx:id="dateLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" styleClass="font_size_12" text="Date" wrapText="true">
+               <VBox.margin>
+                  <Insets bottom="3.0" left="15.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="noticeContentsLabel" alignment="TOP_LEFT" maxHeight="100.0" maxWidth="1.7976931348623157E308" minHeight="100.0" prefHeight="100.0" style="-fx-font-family: Noto Sans CJK KR Regular;" styleClass="font_size_12" text="Contents" wrapText="true">
                <VBox.margin>
                   <Insets left="15.0" />
                </VBox.margin>

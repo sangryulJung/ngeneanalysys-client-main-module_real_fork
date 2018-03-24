@@ -430,30 +430,19 @@ Button {
  
 /** Base Table View CSS */
 .table-view {
-	-fx-background-color:transparent;
+	-fx-background-color: #FFFFFF;
  	-fx-border-color:#FFFFFF;
  	-fx-border-width:0;
  	-fx-padding:0;
 }
-/*
-.table-view:focused, .table-view .column-header-background, .table-view .column-header-background .label{
-	-fx-background-color:#C30D23;
-}
-*/
+
 .table-view .column-header-background .nested-column-header .label{
 	-fx-font-size:12px;
 	-fx-font-weight:bold;
-	/*-fx-border-color:
-                transparent
-                derive(-fx-base, 60%)
-                transparent
-                transparent;
-    -fx-border-width : 0 1 0 0;
-    -fx-border-insets: 3 2 3 -3;*/
 }
 
 .table-view .column-header-background .filler {
- 	-fx-background-color:#C30D23;
+ 	-fx-background-color:#FFFFFF;
 	-fx-border-color:#ffffff;
 	-fx-border-width:0.5;
 }
@@ -462,13 +451,7 @@ Button {
 	-fx-pref-height:30;
 	-fx-background-color: #ffffff;
 	-fx-border-width : 0 0 1 0;
-	-fx-border-color:#adadad;
-                    //transparent
-                    //derive(-fx-base, 60%)
-                    //transparent
-                    //transparent;
- 	/*-fx-border-color:#000 #000 #000 #c3c3c3;
- 	-fx-border-width:0 0 0 0;*/
+	-fx-border-color:#FFFFFF;
 }
 
 .table-row-cell {
@@ -1444,4 +1427,18 @@ Button {
 
 .font_Sans_Regular {
     -fx-font-family : "Noto Sans CJK KR Regular";
+}
+
+.submitBtn {
+    -fx-background-color : #263d5f;
+    -fx-text-fill : #fff;
+    -fx-background-radius : 0;
+    -fx-alignment : center-left;
+}
+
+.cancelBtn {
+    -fx-background-color : #999999;
+    -fx-text-fill : #fff;
+    -fx-background-radius : 0;
+    -fx-alignment : center-left;
 }

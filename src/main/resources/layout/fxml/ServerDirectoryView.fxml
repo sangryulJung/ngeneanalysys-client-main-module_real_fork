@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.ServerDirectoryViewController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="500.0" style="-fx-background-color: #f2f5fa;" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.ServerDirectoryViewController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="15.0" />
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="470.0" />
@@ -24,12 +24,12 @@
       <TreeView fx:id="serverItemTreeView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <children>
-            <Button mnemonicParsing="false" onAction="#closeDialog" text="CANCEL">
+            <Button mnemonicParsing="false" onAction="#closeDialog" prefWidth="90.0" styleClass="cancelBtn" text="CANCEL     〉">
                <HBox.margin>
                   <Insets right="10.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#submit" text="SUBMIT" />
+            <Button mnemonicParsing="false" onAction="#submit" prefWidth="90.0" styleClass="submitBtn" text="CONFIRM  〉" />
          </children>
       </HBox>
    </children>

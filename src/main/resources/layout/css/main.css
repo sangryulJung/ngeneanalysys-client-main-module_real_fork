@@ -170,7 +170,7 @@
 
 #topMenuArea1 > .label#selectedMenu {
     -fx-border-width : 0 0 3 0;
-    -fx-border-color : red;
+    -fx-border-color : #990000;
 }
 
 #topMenuArea1 .combo-box {
@@ -221,5 +221,5 @@
 
 #topMenuArea1 #sampleListStackPane .label#selectedMenu {
     -fx-border-width : 0 0 3 0;
-    -fx-border-color : red;
+    -fx-border-color : #990000;
 }

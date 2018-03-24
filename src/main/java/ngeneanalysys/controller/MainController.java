@@ -314,8 +314,6 @@ public class MainController extends BaseStageController {
 
             });
 
-
-
         settingPanelAndDiseases();
     }
 

@@ -76,7 +76,7 @@
                   <Insets top="10.0" />
                </VBox.margin>
             </VBox>
-            <Button fx:id="searchBtn" mnemonicParsing="false" text="SEARCH      〉">
+            <Button fx:id="searchBtn" mnemonicParsing="false" styleClass="submitBtn" text="SEARCH      〉">
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>

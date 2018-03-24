@@ -4,6 +4,7 @@ import com.opencsv.CSVReader;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -83,8 +84,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     private List<AnalysisFile> uploadFileData = null;
 
     private List<TextField> sampleNameTextFieldList = new ArrayList<>();
-
-    private List<TextField> patientIdTextFieldList = new ArrayList<>();
 
     private List<ComboBox<ComboBoxItem>> diseaseComboBoxList = new ArrayList<>();
 
@@ -360,8 +359,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
             sampleNameTextFieldList.get(row).setText(sample.getName());
 
-            patientIdTextFieldList.get(row).setText((sample.getPaitentId() != null) ? sample.getPaitentId() : "");
-
             if(sample.getDiseaseId() != null) {
                 ComboBox<ComboBoxItem> disease = diseaseComboBoxList.get(row);
                 disease.getItems().forEach(diseaseItem ->{
@@ -435,7 +432,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 }
 
                 sampleNameTextFieldList.get(row).setDisable(true);
-                patientIdTextFieldList.get(row).setDisable(true);
                 panelComboBoxList.get(row).setDisable(true);
                 diseaseComboBoxList.get(row).setDisable(true);
                 sampleSourceTextFieldList.get(row).setDisable(true);
@@ -465,11 +461,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 }
             });
         });
-
-        TextField paitentId = new TextField();
-        paitentId.setStyle("-fx-text-inner-color: black; -fx-border-width: 0;");
-        paitentId.setMaxWidth(Double.MAX_VALUE);
-        patientIdTextFieldList.add(paitentId);
 
         ComboBox<ComboBoxItem> disease  = new ComboBox<>();
         disease.setConverter(new ComboBoxConverter());
@@ -520,11 +511,10 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         source.setMaxWidth(Double.MAX_VALUE);
         sampleSourceTextFieldList.add(source);
         source.setEditable(false);
+        source.setAlignment(Pos.CENTER);
         source.setStyle("-fx-text-inner-color: black; -fx-border-width: 0;");
-        //source.setText(panels.get(0).getSampleSource());
 
-        //standardDataGridPane.addRow(row, sampleName, select, panel, source, disease, paitentId);
-        standardDataGridPane.addRow(row, sampleName, panel, source, disease, paitentId);
+        standardDataGridPane.addRow(row, sampleName, panel, source, disease);
         panel.getSelectionModel().select(0);
     }
 
@@ -593,9 +583,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
             ComboBox<ComboBoxItem> diseaseId = diseaseComboBoxList.get(i);
             sample.setDiseaseId(Integer.parseInt(diseaseId.getSelectionModel().getSelectedItem().getValue()));
-
-            TextField patientId = patientIdTextFieldList.get(i);
-            sample.setPaitentId(patientId.getText());
         }
     }
 
@@ -714,9 +701,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
                     ComboBox<ComboBoxItem> diseaseId = diseaseComboBoxList.get(row);
                     sample.setDiseaseId(Integer.parseInt(diseaseId.getSelectionModel().getSelectedItem().getValue()));
-
-                    TextField patientId = patientIdTextFieldList.get(row);
-                    sample.setPaitentId(patientId.getText());
                 }
 
                 try {
@@ -741,7 +725,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
             params.put("runId", sample.getRunId());
             params.put("name", sample.getName());
-            params.put("patientId", sample.getPaitentId());
             params.put("panelId", sample.getPanelId());
             params.put("diseaseId", sample.getDiseaseId());
 //        params.put("analysisType", sample.getAnalysisType());
@@ -780,7 +763,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         params.put("runId", sample.getRunId());
         params.put("name", sample.getName());
         params.put("patientId", sample.getPaitentId());
-        params.put("panelId", sample.getPanelId());
         params.put("diseaseId", sample.getDiseaseId());
 //        params.put("analysisType", sample.getAnalysisType());
 //        params.put("sampleSource", sample.getSampleSource());
