@@ -86,3 +86,26 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position : center;
 }
+.failed_icon {
+    -fx-background-color : #FF0000;
+    -fx-background-radius : 30;
+    -fx-alignment : center;
+    -fx-text-fill : white;
+    -fx-pref-width : 17;
+    -fx-pref-height : 17;
+    -fx-min-width : 17;
+    -fx-min-height : 17;
+    -fx-text-size : 10;
+}
+
+.new_analysis_button {
+    -fx-background-color :  #263d5f;
+    -fx-text-fill : #FFFFFF;
+    -fx-font-size : 17;
+    -fx-background-radius : 0;
+    -fx-alignment : top-center;
+    -fx-padding : 70 0 0 0;
+    -fx-background-image:url('../images/renewal/plus_icon.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-position : center;
+}

@@ -7,11 +7,14 @@ import java.util.stream.Collectors;
 
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedSampleView;
+import ngeneanalysys.model.render.ComboBoxConverter;
+import ngeneanalysys.model.render.ComboBoxItem;
 import org.slf4j.Logger;
 
 import ngeneanalysys.code.AnalysisJobStatusCode;
@@ -54,6 +57,12 @@ public class PastResultsController extends SubPaneController {
 	@FXML
 	private VBox resultVBox;
 
+	@FXML
+	private ComboBox<ComboBoxItem> searchComboBox;
+
+	@FXML
+	private FlowPane searchListFlowPane;
+
 	/** API Service */
 	private APIService apiService;
 	
@@ -76,16 +85,14 @@ public class PastResultsController extends SubPaneController {
 		apiService = APIService.getInstance();
 		apiService.setStage(getMainController().getPrimaryStage());
 
+		runStatusGirdPanes = new ArrayList<>();
+
 		// masker pane init
 		experimentPastResultsWrapper.getChildren().add(maskerPane);
 		maskerPane.setPrefWidth(getMainController().getMainFrame().getWidth());
 		maskerPane.setPrefHeight(getMainController().getMainFrame().getHeight());
 		maskerPane.setVisible(false);
 
-		logger.info("choosePanel init..");
-		initRunListLayout();
-
-		initSampleListLayout();
 		// 페이지 이동 이벤트 바인딩
 		paginationList.setPageFactory(pageIndex -> {
 				setList(pageIndex + 1);
@@ -93,8 +100,8 @@ public class PastResultsController extends SubPaneController {
 		});
 
 		// 시스템 설정에서 자동 새로고침 설정이 true 인경우 자동 새로고팀 실행
-		//startAutoRefresh();
-		
+		startAutoRefresh();
+		setComboBoxItem();
 		this.mainController.getMainFrame().setCenter(root);
 	}
 	
@@ -128,6 +135,12 @@ public class PastResultsController extends SubPaneController {
 				autoRefreshTimeline.stop();
 			}
 		}
+	}
+
+	public void setComboBoxItem() {
+		searchComboBox.setConverter(new ComboBoxConverter());
+		searchComboBox.getItems().add(new ComboBoxItem("String", "RUN"));
+		searchComboBox.getItems().add(new ComboBoxItem("String", "PANEL"));
 	}
 	
 	/**
@@ -249,41 +262,36 @@ public class PastResultsController extends SubPaneController {
 	}
 
 	private void setVBoxPrefSize(Node node) {
-		if(node instanceof GridPane) resultVBox.setPrefHeight(resultVBox.getPrefHeight() + ((GridPane)node).getPrefHeight());
-	}
-
-	private void initRunListLayout() {
-		try {
-			runStatusGirdPanes = new ArrayList<>();
-			for (int i = 0; i < itemCountPerPage; i++) {
-				RunStatusGirdPane gridPane = new RunStatusGirdPane();
-				runStatusGirdPanes.add(gridPane);
-				resultVBox.getChildren().add(gridPane);
-				Run run = new Run();
-				run.setName("hhh");
-				run.setSequencingPlatform("zzz");
-				gridPane.setLabel(run);
-				setVBoxPrefSize(gridPane);
-			}
-			logger.info("hhh");
-		} catch (Exception e) {
-			logger.error("HOME -> initRunListLayout", e);
+		if(node instanceof GridPane) {
+			resultVBox.setPrefHeight(resultVBox.getPrefHeight() + ((GridPane)node).getPrefHeight());
+		} else if(node instanceof VBox) {
+			resultVBox.setPrefHeight(resultVBox.getPrefHeight() + ((VBox)node).getPrefHeight());
 		}
 	}
 
-	public void initSampleListLayout() {
-
-	}
 	/**
 	 * 샘플 목록 화면 출력
 	 * 
 	 * @param list
 	 */
 	public void renderSampleList(List<SampleView> list) {
+		resultVBox.getChildren().removeAll(resultVBox.getChildren());
+		resultVBox.setPrefHeight(0);
 		if (list != null && !list.isEmpty()) {
+
+			RunStatusGirdPane gridPane = new RunStatusGirdPane();
+			runStatusGirdPanes.add(gridPane);
+			resultVBox.getChildren().add(gridPane);
+			Run run = new Run();
+			run.setName("hhh");
+			run.setSequencingPlatform("zzz");
+			gridPane.setLabel(run);
+			setVBoxPrefSize(gridPane);
+
 			SampleInfoVBox vbox = new SampleInfoVBox();
 			vbox.setSampleList(list);
 			resultVBox.getChildren().add(vbox);
+			setVBoxPrefSize(vbox);
 		}
 	}
 
@@ -328,7 +336,7 @@ public class PastResultsController extends SubPaneController {
 			labelSize(variants, 320., styleClass);
 			variants.getStyleClass().add("sample_header");
 			Label qc = new Label("QC");
-			labelSize(qc, 100., styleClass);
+			labelSize(qc, 98., styleClass);
 			qc.getStyleClass().add("sample_header");
 			titleBox.getChildren().add(name);
 			titleBox.getChildren().add(status);
@@ -337,12 +345,12 @@ public class PastResultsController extends SubPaneController {
 			titleBox.getChildren().add(qc);
 
 			this.getChildren().add(titleBox);
-
+			this.setPrefHeight(30);
 		}
 
 		public void labelSize(Label label, Double size, String style) {
 			label.setPrefWidth(size);
-			label.setPrefHeight(40);
+			label.setPrefHeight(30);
 			label.setAlignment(Pos.CENTER);
 		}
 
@@ -384,6 +392,7 @@ public class PastResultsController extends SubPaneController {
 				itemHBox.getChildren().add(qc);
 
 				this.getChildren().add(itemHBox);
+				this.setPrefHeight(this.getPrefHeight() + 30);
 			}
 		}
 	}

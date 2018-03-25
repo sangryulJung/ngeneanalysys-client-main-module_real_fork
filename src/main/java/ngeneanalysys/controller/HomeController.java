@@ -261,24 +261,25 @@ public class HomeController extends SubPaneController{
         public RunStatusVBox() {
             this.setPrefSize(220, 220);
             this.setMinSize(220, 220);
-            this.setStyle("-fx-effect: dropshadow(gaussian, rgba(0.0, 0.0, 0.0, 0.5), 0.5, 0.5, 0.0, 0.0);" +
+            this.setStyle("-fx-effect: dropshadow(gaussian, rgba(0.0, 0.0, 0.0, 0.7), 0.7, 0.7, 0.0, 0.0);" +
                     "-fx-background-color: white;");
             HBox topHBox = new HBox();
             topHBox.setPrefHeight(25);
             runName = new Label();
+            runName.setAlignment(Pos.CENTER_LEFT);
+            runName.setMinHeight(16);
+            runName.setPrefHeight(16);
             runName.setMinWidth(190);
             runName.setPrefWidth(190);
             statusLabel = new Label();
-            statusLabel.setMinWidth(18);
-            statusLabel.setPrefWidth(18);
+            statusLabel.setMinWidth(17);
+            statusLabel.setPrefWidth(17);
 
             topHBox.getChildren().add(runName);
             topHBox.getChildren().add(statusLabel);
-            Insets runNameInsets = new Insets(4,0,0,10);
+            Insets runNameInsets = new Insets(0,0,0,10);
             runName.setPadding(runNameInsets);
-            Insets statusInsets = new Insets(4,0,0,0);
-            statusLabel.setPadding(statusInsets);
-            topHBox.setAlignment(Pos.CENTER_LEFT);
+            topHBox.setAlignment(Pos.BOTTOM_LEFT);
             this.getChildren().add(topHBox);
 
             VBox backgroundVBox = new VBox();
@@ -330,6 +331,9 @@ public class HomeController extends SubPaneController{
                 statusLabel.getStyleClass().add("run_icon");
             } else if(run.getStatus().toUpperCase().equals("COMPLETE")) {
                 statusLabel.getStyleClass().add("complete_icon");
+            } else {
+                statusLabel.getStyleClass().addAll("label", "failed_icon");
+                statusLabel.setText("F");
             }
             ///////////////////////
             SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");

@@ -55,7 +55,7 @@
          <content>
             <HBox fx:id="runListHBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="230.0">
                <children>
-                  <Button fx:id="buttonUpload" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showUploadFASTQ" prefHeight="220.0" prefWidth="220.0" style="-fx-background-color: #263d5f; -fx-text-fill: white; -fx-font-size: 17;" text="New Analysis">
+                  <Button fx:id="buttonUpload" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showUploadFASTQ" prefHeight="220.0" prefWidth="220.0" styleClass="new_analysis_button" text="New Analysis">
                      <HBox.margin>
                         <Insets right="5.0" />
                      </HBox.margin>

@@ -8,6 +8,7 @@
 <?import javafx.scene.control.Pagination?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -56,14 +57,14 @@
       </GridPane>
       <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3">
          <content>
-            <VBox fx:id="resultVBox" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="860.0" />
+            <VBox fx:id="resultVBox" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="858.0" />
          </content>
       </ScrollPane>
       <Label style="-fx-font-size: 24;" text="RESULTS" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="4" GridPane.rowIndex="2" GridPane.rowSpan="2">
          <children>
             <Label styleClass="font_size_16" text="Search" />
-            <ComboBox maxWidth="250.0" prefWidth="250.0">
+            <ComboBox fx:id="searchComboBox" maxWidth="250.0" prefWidth="250.0">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -86,6 +87,8 @@
                   <Insets top="10.0" />
                </VBox.margin>
             </Label>
+            <FlowPane fx:id="searchListFlowPane" prefHeight="200.0" prefWidth="200.0" />
+            <Button mnemonicParsing="false" styleClass="submitBtn" text="RESET     〉" />
          </children>
       </VBox>
       <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
