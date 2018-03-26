@@ -1,3 +1,13 @@
+.combo-box {
+    -fx-background-radius : 0;
+    -fx-border-radius : 0;
+}
+
+.text-field {
+    -fx-background-radius : 0;
+    -fx-border-radius : 0;
+}
+
 #runListHeaderGridPane, #sampleListHeaderGridPane {
 	-fx-border-width:0;
 	-fx-background-color:#f2f5fa;
@@ -26,5 +36,64 @@
 
 .sample_list_label {
     -fx-background-color : #f7f7f7;
-    -fx-text-fill : #fff;
+    -fx-text-fill : #000000;
+}
+
+.lv_i_icon {
+    -fx-background-radius : 20;
+    -fx-pref-width : 25;
+    -fx-pref-height : 16;
+    -fx-text-fill : #FFFFFF;
+    -fx-alignment : center;
+    -fx-background-color : #62CCFE;
+}
+
+.lv_ii_icon {
+    -fx-background-radius : 20;
+    -fx-pref-width : 25;
+    -fx-pref-height : 16;
+    -fx-text-fill : #FFFFFF;
+    -fx-alignment : center;
+    -fx-background-color : #53b8eb;
+}
+
+.lv_iii_icon {
+    -fx-background-radius : 20;
+    -fx-pref-width : 25;
+    -fx-pref-height : 16;
+    -fx-text-fill : #FFFFFF;
+    -fx-alignment : center;
+    -fx-background-color : #54c7cd;
+}
+
+.lv_iv_icon {
+    -fx-background-radius : 20;
+    -fx-pref-width : 25;
+    -fx-pref-height : 16;
+    -fx-text-fill : #FFFFFF;
+    -fx-alignment : center;
+    -fx-background-color : #439eb3;
+}
+
+.lv_v_icon {
+    -fx-background-radius : 20;
+    -fx-pref-width : 25;
+    -fx-pref-height : 16;
+    -fx-text-fill : #FFFFFF;
+    -fx-alignment : center;
+    -fx-background-color : #229db8;
+}
+
+.count_label {
+    -fx-pref-width : 28;
+    -fx-alignment : center-left;
+    -fx-pref-height : 16;
+    /*-fx-font-family: "Noto Sans CJK KR Regular";*/
+    -fx-font-weight : 100;
+}
+
+.variant_hbox {
+    -fx-background-color : #f7f7f7;
+    -fx-alignment : center;
+    -fx-pref-height : 30;
 }

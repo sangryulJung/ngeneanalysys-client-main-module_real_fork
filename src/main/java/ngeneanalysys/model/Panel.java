@@ -19,9 +19,18 @@ public class Panel {
     private Integer deleted;
     private Boolean isDefault;
 
+    private QCPassConfig qcPassConfig;
+
     private VariantConfig variantConfig;
 
     private Integer reportTemplateId;
+
+    /**
+     * @return qcPassConfig
+     */
+    public QCPassConfig getQcPassConfig() {
+        return qcPassConfig;
+    }
 
     /**
      * @return variantConfig

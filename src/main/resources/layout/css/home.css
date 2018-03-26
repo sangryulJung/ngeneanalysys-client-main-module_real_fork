@@ -67,37 +67,6 @@
     -fx-cursor:hand;
 }
 
-.queued_icon {
-    -fx-background-color : transparent;
-    -fx-background-image:url('../images/renewal/small_icon_q.png');
-    -fx-background-repeat: no-repeat;
-    -fx-background-position : center;
-}
-
-.complete_icon {
-    -fx-background-color : transparent;
-    -fx-background-image:url('../images/renewal/small_icon_c.png');
-    -fx-background-repeat: no-repeat;
-    -fx-background-position : center;
-}
-.run_icon {
-    -fx-background-color : transparent;
-    -fx-background-image:url('../images/renewal/small_icon_r.png');
-    -fx-background-repeat: no-repeat;
-    -fx-background-position : center;
-}
-.failed_icon {
-    -fx-background-color : #FF0000;
-    -fx-background-radius : 30;
-    -fx-alignment : center;
-    -fx-text-fill : white;
-    -fx-pref-width : 17;
-    -fx-pref-height : 17;
-    -fx-min-width : 17;
-    -fx-min-height : 17;
-    -fx-text-size : 10;
-}
-
 .new_analysis_button {
     -fx-background-color :  #263d5f;
     -fx-text-fill : #FFFFFF;

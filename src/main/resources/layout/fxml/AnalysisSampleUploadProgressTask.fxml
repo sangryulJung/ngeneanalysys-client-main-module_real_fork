@@ -12,17 +12,17 @@
 
 <HBox fx:id="taskArea" alignment="CENTER_LEFT" maxHeight="25.0" maxWidth="1.7976931348623157E308" minHeight="25.0" minWidth="-Infinity" prefHeight="25.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisSampleUploadProgressTaskController">
    <children>
+      <ProgressBar fx:id="progressBar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="200.0" progress="0.0">
+         <HBox.margin>
+            <Insets bottom="1.0" left="10.0" />
+         </HBox.margin>
+      </ProgressBar>
       <Label alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="19.0" prefWidth="70.0" styleClass="taskTitle" text="Run Name" HBox.hgrow="NEVER" />
       <Label fx:id="refName" text="ref name print..">
          <HBox.margin>
             <Insets left="10.0" />
          </HBox.margin>
       </Label>
-      <ProgressBar fx:id="progressBar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="84.0" progress="0.0">
-         <HBox.margin>
-            <Insets bottom="1.0" left="10.0" />
-         </HBox.margin>
-      </ProgressBar>
       <TextFlow maxHeight="25.0" minHeight="25.0" minWidth="-Infinity" prefHeight="25.0" prefWidth="40.0">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="(" />

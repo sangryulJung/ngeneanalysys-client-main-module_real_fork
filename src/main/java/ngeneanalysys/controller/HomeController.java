@@ -325,12 +325,17 @@ public class HomeController extends SubPaneController{
         public void setRunStatus(Run run) {
             runName.setText(run.getName());
             /////////////run status 설정
+            statusLabel.setText("");
+            statusLabel.getStyleClass().removeAll(statusLabel.getStyleClass());
             if(run.getStatus().toUpperCase().equals("QUEUED")) {
-                statusLabel.getStyleClass().add("queued_icon");
+                statusLabel.getStyleClass().addAll("label", "queued_icon");
+                statusLabel.setText("Q");
             } else if(run.getStatus().toUpperCase().equals("RUNNING")) {
-                statusLabel.getStyleClass().add("run_icon");
+                statusLabel.getStyleClass().addAll("label","run_icon");
+                statusLabel.setText("R");
             } else if(run.getStatus().toUpperCase().equals("COMPLETE")) {
-                statusLabel.getStyleClass().add("complete_icon");
+                statusLabel.getStyleClass().addAll("label","complete_icon");
+                statusLabel.setText("C");
             } else {
                 statusLabel.getStyleClass().addAll("label", "failed_icon");
                 statusLabel.setText("F");

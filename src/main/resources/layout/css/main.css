@@ -223,3 +223,15 @@
     -fx-border-width : 0 0 3 0;
     -fx-border-color : #990000;
 }
+
+#topMenuArea1 #sampleListStackPane .remove_btn {
+    -fx-background-color : #666666;
+    -fx-background-radius : 30;
+    -fx-alignment : center;
+    -fx-text-fill : #FFFFFF;
+    -fx-pref-width : 17;
+    -fx-pref-height : 17;
+    -fx-min-width : 17;
+    -fx-min-height : 17;
+    -fx-text-size : 10;
+}

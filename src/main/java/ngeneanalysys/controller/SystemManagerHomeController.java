@@ -95,7 +95,7 @@ public class SystemManagerHomeController extends SubPaneController {
 
                 if(item != null) {
                     FXMLLoader loader = FXMLLoadUtil.load(item.getFxmlPath());
-                    Node node = (Node) loader.load();
+                    Node node = loader.load();
 
 
                     switch (item.getFxmlPath()) {

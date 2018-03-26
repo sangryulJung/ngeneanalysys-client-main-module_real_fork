@@ -72,7 +72,7 @@
                   <Insets top="10.0" />
                </VBox.margin>
             </ComboBox>
-            <VBox fx:id="filterSearchArea" prefHeight="25.0" prefWidth="100.0">
+            <VBox fx:id="filterSearchArea" prefHeight="26.0" prefWidth="100.0">
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
@@ -88,32 +88,44 @@
                </VBox.margin>
             </Label>
             <FlowPane fx:id="searchListFlowPane" prefHeight="200.0" prefWidth="200.0" />
-            <Button mnemonicParsing="false" styleClass="submitBtn" text="RESET     〉" />
+            <Button mnemonicParsing="false" styleClass="cancelBtn" text="RESET     〉" />
          </children>
       </VBox>
       <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
          <children>
-            <Label text="T" />
+            <Label styleClass="total_icon" text="T" />
             <Label style="-fx-font-family: Noto Sans CJK KR Regular;" text="100">
                <HBox.margin>
                   <Insets left="3.0" right="10.0" />
                </HBox.margin></Label>
-            <Label text="Q" />
+            <Label styleClass="queued_icon" text="Q">
+               <padding>
+                  <Insets top="-1.0" />
+               </padding></Label>
             <Label style="-fx-font-family: Noto Sans CJK KR Regular;" text="10">
                <HBox.margin>
                   <Insets left="3.0" right="10.0" />
                </HBox.margin></Label>
-            <Label text="R" />
+            <Label styleClass="run_icon" text="R">
+               <padding>
+                  <Insets top="-1.0" />
+               </padding></Label>
             <Label style="-fx-font-family: Noto Sans CJK KR Regular;" text="10">
                <HBox.margin>
                   <Insets left="3.0" right="10.0" />
                </HBox.margin></Label>
-            <Label text="C" />
+            <Label styleClass="complete_icon" text="C">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+               <padding>
+                  <Insets left="-1.0" top="-1.0" />
+               </padding></Label>
             <Label style="-fx-font-family: Noto Sans CJK KR Regular;" text="10">
                <HBox.margin>
                   <Insets left="3.0" right="10.0" />
                </HBox.margin></Label>
-            <Label text="F" />
+            <Label styleClass="failed_icon" text="F" />
             <Label prefHeight="19.0" prefWidth="0.0" style="-fx-font-family: Noto Sans CJK KR Regular;" text="1">
                <HBox.margin>
                   <Insets left="3.0" />

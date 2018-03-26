@@ -284,8 +284,10 @@ public class MainController extends BaseStageController {
                     });
 
                     Button btn = new Button("X");
-                    btn.setPrefWidth(6);
-                    btn.setPrefHeight(6);
+                    btn.getStyleClass().removeAll(btn.getStyleClass());
+                    btn.getStyleClass().add("remove_btn");
+                    /*btn.setPrefWidth(6);
+                    btn.setPrefHeight(6);*/
                     btn.addEventHandler(MouseEvent.MOUSE_CLICKED, event-> {
                         ComboBoxItem item = getItem();
 

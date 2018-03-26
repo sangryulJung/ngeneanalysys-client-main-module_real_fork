@@ -1442,3 +1442,65 @@ Button {
     -fx-background-radius : 0;
     -fx-alignment : center-left;
 }
+
+
+.queued_icon {
+    -fx-background-color : #d8a60d;
+    -fx-background-radius : 30;
+    -fx-padding : -1 0 0 0;
+    -fx-alignment : center;
+    -fx-text-fill : white;
+    -fx-pref-width : 17;
+    -fx-pref-height : 17;
+    -fx-min-width : 17;
+    -fx-min-height : 17;
+    -fx-text-size : 10;
+}
+
+.complete_icon {
+    -fx-background-color : #229db8;
+    -fx-background-radius : 30;
+    -fx-padding : -1 0 0 -1;
+    -fx-alignment : center;
+    -fx-text-fill : white;
+    -fx-pref-width : 17;
+    -fx-pref-height : 17;
+    -fx-min-width : 17;
+    -fx-min-height : 17;
+    -fx-text-size : 10;
+}
+.run_icon {
+    -fx-background-color : #69b415;
+    -fx-background-radius : 30;
+    -fx-padding : -1 0 0 0;
+    -fx-alignment : center;
+    -fx-text-fill : white;
+    -fx-pref-width : 17;
+    -fx-pref-height : 17;
+    -fx-min-width : 17;
+    -fx-min-height : 17;
+    -fx-text-size : 10;
+}
+.failed_icon {
+    -fx-background-color : #FF0000;
+    -fx-background-radius : 30;
+    -fx-alignment : center;
+    -fx-text-fill : white;
+    -fx-pref-width : 17;
+    -fx-pref-height : 17;
+    -fx-min-width : 17;
+    -fx-min-height : 17;
+    -fx-text-size : 10;
+}
+
+.total_icon {
+    -fx-background-color : #adadad;
+    -fx-background-radius : 30;
+    -fx-alignment : center;
+    -fx-text-fill : white;
+    -fx-pref-width : 17;
+    -fx-pref-height : 17;
+    -fx-min-width : 17;
+    -fx-min-height : 17;
+    -fx-text-size : 10;
+}

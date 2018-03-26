@@ -77,35 +77,35 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     private List<Diseases> diseases = null;
 
-    private Map<String, Map<String, Object>> fileMap = null;
+            private Map<String, Map<String, Object>> fileMap = null;
 
-    private List<File> uploadFileList = null;
+            private List<File> uploadFileList = null;
 
-    private List<AnalysisFile> uploadFileData = null;
+            private List<AnalysisFile> uploadFileData = null;
 
-    private List<TextField> sampleNameTextFieldList = new ArrayList<>();
+            private List<TextField> sampleNameTextFieldList = new ArrayList<>();
 
-    private List<ComboBox<ComboBoxItem>> diseaseComboBoxList = new ArrayList<>();
+            private List<ComboBox<ComboBoxItem>> diseaseComboBoxList = new ArrayList<>();
 
-    private List<ComboBox<ComboBoxItem>> panelComboBoxList = new ArrayList<>();
+            private List<ComboBox<ComboBoxItem>> panelComboBoxList = new ArrayList<>();
 
-    private List<TextField> sampleSourceTextFieldList = new ArrayList<>();
+            private List<TextField> sampleSourceTextFieldList = new ArrayList<>();
 
-    private boolean isServerItem = false;
+            private boolean isServerItem = false;
 
-    private String runPath = "";
+            private String runPath = "";
 
-    //화면에 표시될 row 수
-    private int totalRow = 0;
+            //화면에 표시될 row 수
+            private int totalRow = 0;
 
-    public void setServerFASTQ(String path) {
-        isServerItem = true;
+            public void setServerFASTQ(String path) {
+                isServerItem = true;
 
-        try {
-            Map<String, Object> params = new HashMap<>();
-            params.put("subPath", path);
-            HttpClientResponse response = apiService.get("/runDir", params, null, false);
-            ServerFileInfo serverFileInfo = response.getObjectBeforeConvertResponseToJSON(ServerFileInfo.class);
+                try {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("subPath", path);
+                    HttpClientResponse response = apiService.get("/runDir", params, null, false);
+                    ServerFileInfo serverFileInfo = response.getObjectBeforeConvertResponseToJSON(ServerFileInfo.class);
 
             List<ServerFile> serverFiles = serverFileInfo.getChild().stream()
                     .filter(serverFile -> serverFile.getName().toLowerCase().endsWith("fastq.gz"))
@@ -114,7 +114,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             setServerFastqList(serverFiles);
 
         } catch (WebAPIException e) {
-            e.printStackTrace();
+                DialogUtil.error(e.getHeaderText(), e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
 
@@ -326,7 +326,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             controller.setSampleUploadScreenFirstController(this);
             controller.show(page);
         } catch (IOException e) {
-            e.printStackTrace();
+            DialogUtil.error("FXML Load Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
 
@@ -342,7 +342,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             controller.setRun(true);
             controller.show(page);
         } catch (IOException e) {
-            e.printStackTrace();
+            DialogUtil.error("FXML Load Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
 
@@ -558,14 +558,14 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             diseaseComboBox.getSelectionModel().selectFirst();
 
         } catch (WebAPIException wae) {
-            wae.printStackTrace();
+            DialogUtil.error(wae.getHeaderText(), wae.getMessage(), getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
-            e.printStackTrace();
+            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
 
     public void saveSampleData() {
-        int rowCount = standardDataGridPane.getChildren().size() / 5;
+        int rowCount = standardDataGridPane.getChildren().size() / 4;
 
         for (int i = 0; i < rowCount; i++) {
             Sample sample = null;
@@ -671,7 +671,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                     }*/
 
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    DialogUtil.error("Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
                 }
 
                 if((uploadFileData != null && !uploadFileData.isEmpty()) &&
@@ -681,7 +681,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 closeDialog();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
 
@@ -717,7 +717,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         }
     }
 
-    public List<Map<String, Object>> returnSampleMap() throws  Exception {
+    public List<Map<String, Object>> returnSampleMap() {
         List<Map<String, Object>> list = new ArrayList<>();
         for(Sample sample : sampleArrayList) {
             Map<String, Object> params = new HashMap<>();
@@ -727,8 +727,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             params.put("name", sample.getName());
             params.put("panelId", sample.getPanelId());
             params.put("diseaseId", sample.getDiseaseId());
-//        params.put("analysisType", sample.getAnalysisType());
-//        params.put("sampleSource", sample.getSampleSource());
             params.put("inputFType", "FASTQ.GZ");
             Map<String, String> sampleSheet = new HashMap<>();
             SampleSheet sampleSheet1 = sample.getSampleSheet();
@@ -764,8 +762,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         params.put("name", sample.getName());
         params.put("patientId", sample.getPaitentId());
         params.put("diseaseId", sample.getDiseaseId());
-//        params.put("analysisType", sample.getAnalysisType());
-//        params.put("sampleSource", sample.getSampleSource());
         params.put("inputFType", "FASTQ.GZ");
         Map<String, String> sampleSheet = new HashMap<>();
         SampleSheet sampleSheet1 = sample.getSampleSheet();
@@ -791,7 +787,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         Sample sampleData = response.getObjectBeforeConvertResponseToJSON(Sample.class);
 
         postAnalysisFilesData(sampleData);
-
     }
 
     public void postAnalysisFilesData(Sample sample) {
@@ -811,9 +806,9 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                     logger.info(fileData.getName());
                     uploadFileData.add(fileData);
                 } catch (WebAPIException e) {
-                    e.printStackTrace();
+                    DialogUtil.error(e.getHeaderText(), e.getMessage(), getMainApp().getPrimaryStage(), true);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
                 }
 
             }

@@ -7,7 +7,9 @@ import java.util.stream.Collectors;
 
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import ngeneanalysys.code.constants.FXMLConstants;
@@ -15,6 +17,13 @@ import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedSampleView;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
+import ngeneanalysys.util.StringUtils;
+import org.controlsfx.control.textfield.AutoCompletionBinding;
+import org.controlsfx.control.textfield.CustomTextField;
+import org.controlsfx.control.textfield.TextFields;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 
 import ngeneanalysys.code.AnalysisJobStatusCode;
@@ -30,9 +39,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Pagination;
 import javafx.util.Duration;
 
 /**
@@ -62,6 +68,9 @@ public class PastResultsController extends SubPaneController {
 
 	@FXML
 	private FlowPane searchListFlowPane;
+
+	@FXML
+	private VBox filterSearchArea;
 
 	/** API Service */
 	private APIService apiService;
@@ -103,6 +112,68 @@ public class PastResultsController extends SubPaneController {
 		startAutoRefresh();
 		setComboBoxItem();
 		this.mainController.getMainFrame().setCenter(root);
+
+		searchComboBox.valueProperty().addListener((ov, oldV, newV) -> {
+			if(newV == null) return;
+			if(newV.getValue().equalsIgnoreCase("String")) {
+				filterSearchArea.getChildren().removeAll(filterSearchArea.getChildren());
+				//TextField textField = new TextField();
+				CustomTextField textField = new CustomTextField();
+				ImageView imageView = new ImageView(resourceUtil.getImage("/layout/images/renewal/search_icon.png"));
+				imageView.setStyle("-fx-cursor:hand;");
+				imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+					if(StringUtils.isEmpty(textField.getText())) return;
+
+				});
+				textField.setRight(imageView);
+				textField.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
+
+						if (searchComboBox.getSelectionModel().getSelectedItem().getText().equalsIgnoreCase("RUN") ||
+								searchComboBox.getSelectionModel().getSelectedItem().getText().equalsIgnoreCase("SAMPLE")) {
+							try {
+								Map<String, Object> params = new HashMap<>();
+								params.put("target", searchComboBox.getSelectionModel().getSelectedItem().getText().toLowerCase());
+								params.put("keyword", textField.getText());
+								params.put("resultCount", 15);
+								HttpClientResponse response = apiService.get("/filter", params, null, false);
+								logger.info(response.getContentString());
+								JSONParser jsonParser = new JSONParser();
+								JSONArray jsonArray = (JSONArray) jsonParser.parse(response.getContentString());
+								AutoCompletionBinding<String> binding = TextFields.bindAutoCompletion(textField, getAllData(jsonArray));
+								binding.setVisibleRowCount(10);
+
+							} catch (WebAPIException wae) {
+								wae.printStackTrace();
+							} catch (ParseException pe) {
+								pe.printStackTrace();
+							}
+						} else if (searchComboBox.getSelectionModel().getSelectedItem().getText().equalsIgnoreCase("PANEL")) {
+							List<Panel> panels = (List<Panel>) getMainController().getBasicInformationMap().get("panels");
+							List<Panel> filterPanel = null;
+							if (StringUtils.isEmpty(textField.getText())) {
+								filterPanel = panels.stream().filter(panel -> panel.getName().contains(textField.getText())).collect(Collectors.toList());
+							} else {
+								filterPanel = panels;
+							}
+							TextFields.bindAutoCompletion(textField, getAllPanel(filterPanel)).setVisibleRowCount(10);
+						}
+					});
+				textField.setPrefWidth(Double.MAX_VALUE);
+				filterSearchArea.getChildren().add(textField);
+			}
+		});
+	}
+
+	private Set<String> getAllData(JSONArray array) {
+		Set<String> data = new HashSet<>();
+		array.stream().forEach(item -> data.add(item.toString()));
+		return data;
+	}
+
+	private Set<String> getAllPanel(List<Panel> panelList) {
+		Set<String> panels = new HashSet<>();
+		panelList.stream().forEach(panel -> panels.add(panel.getName()));
+		return panels;
 	}
 	
 	/**
@@ -140,6 +211,7 @@ public class PastResultsController extends SubPaneController {
 	public void setComboBoxItem() {
 		searchComboBox.setConverter(new ComboBoxConverter());
 		searchComboBox.getItems().add(new ComboBoxItem("String", "RUN"));
+		searchComboBox.getItems().add(new ComboBoxItem("String", "SAMPLE"));
 		searchComboBox.getItems().add(new ComboBoxItem("String", "PANEL"));
 	}
 	
@@ -312,12 +384,6 @@ public class PastResultsController extends SubPaneController {
 	}
 
 	class SampleInfoVBox extends VBox {
-		private List<Label> sampleNames;
-		private List<Label> sampleStatus;
-		private List<Label> samplePanels;
-		private List<Label> sampleVariants;
-		private List<Label> sampleQCs;
-
 		public SampleInfoVBox() {
 			this.setPrefWidth(810);
 			this.setMaxWidth(Double.MAX_VALUE);
@@ -325,19 +391,14 @@ public class PastResultsController extends SubPaneController {
 			String styleClass = "sample_header";
 			Label name = new Label("NAME");
 			labelSize(name, 180., styleClass);
-			name.getStyleClass().add("sample_header");
 			Label status = new Label("STATUS");
 			labelSize(status, 90., styleClass);
-			status.getStyleClass().add("sample_header");
 			Label panel = new Label("PANEL");
 			labelSize(panel, 170., styleClass);
-			panel.getStyleClass().add("sample_header");
 			Label variants = new Label("VARIANTS");
 			labelSize(variants, 320., styleClass);
-			variants.getStyleClass().add("sample_header");
 			Label qc = new Label("QC");
 			labelSize(qc, 98., styleClass);
-			qc.getStyleClass().add("sample_header");
 			titleBox.getChildren().add(name);
 			titleBox.getChildren().add(status);
 			titleBox.getChildren().add(panel);
@@ -352,6 +413,7 @@ public class PastResultsController extends SubPaneController {
 			label.setPrefWidth(size);
 			label.setPrefHeight(30);
 			label.setAlignment(Pos.CENTER);
+			if(style != null) label.getStyleClass().add(style);
 		}
 
 		public void setSampleList(List<SampleView> sampleList) {
@@ -380,20 +442,52 @@ public class PastResultsController extends SubPaneController {
 				labelSize(status, 90., styleClass);
 				Label panel = new Label(sampleView.getPanelName());
 				labelSize(panel, 170., styleClass);
-				Label variants = new Label();
-				labelSize(variants, 320., styleClass);
+				HBox variants = new HBox();
+				variants.getStyleClass().add("variant_hbox");
+				setVariantHBox(variants, sampleView);
+				variants.setPrefWidth(320);
+				variants.setSpacing(10);
 				Label qc = new Label(sampleView.getQcResult());
 				labelSize(qc, 100., styleClass);
 
-				itemHBox.getChildren().add(name);
-				itemHBox.getChildren().add(status);
-				itemHBox.getChildren().add(panel);
-				itemHBox.getChildren().add(variants);
-				itemHBox.getChildren().add(qc);
+				itemHBox.getChildren().addAll(name, status, panel, variants, qc);
 
 				this.getChildren().add(itemHBox);
 				this.setPrefHeight(this.getPrefHeight() + 30);
 			}
+		}
+
+		private void setVariantHBox(HBox variantHBox, SampleView sample) {
+			AnalysisResultSummary summary = sample.getAnalysisResultSummary();
+			Label lv1Icon = new Label("T1");
+			lv1Icon.getStyleClass().add("lv_i_icon");
+			Label lv1Value = new Label(summary.getLevel1VariantCount().toString());
+			lv1Icon.setStyle("-fx-font-family : Noto Sans CJK KR Regular;");
+			lv1Value.getStyleClass().add("count_label");
+
+			Label lv2Icon = new Label("T2");
+			lv2Icon.getStyleClass().add("lv_ii_icon");
+			Label lv2Value = new Label(summary.getLevel2VariantCount().toString());
+			lv2Icon.setStyle("-fx-font-family : Noto Sans CJK KR Regular;");
+			lv2Value.getStyleClass().add("count_label");
+
+			Label lv3Icon = new Label("T3");
+			lv3Icon.getStyleClass().add("lv_i_icon");
+			Label lv3Value = new Label(summary.getLevel3VariantCount().toString());
+			lv3Icon.setStyle("-fx-font-family : Noto Sans CJK KR Regular;");
+			lv3Value.getStyleClass().add("count_label");
+
+			Label lv4Icon = new Label("T4");
+			lv4Icon.getStyleClass().add("lv_iv_icon");
+			Label lv4Value = new Label(summary.getLevel4VariantCount().toString());
+			//lv4Icon.setStyle("-fx-font-family : Noto Sans CJK KR Regular;");
+			lv4Value.getStyleClass().add("count_label");
+
+			variantHBox.getChildren()
+					.addAll(lv1Icon, lv1Value,
+					lv2Icon, lv2Value,
+					lv3Icon, lv3Value,
+					lv4Icon, lv4Value);
 		}
 	}
 
