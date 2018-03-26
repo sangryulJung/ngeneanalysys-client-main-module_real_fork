@@ -14,6 +14,55 @@ public class QCPassConfig {
     private Double roiCoveragePercentage;
 
     /**
+     * @param totalBasePair
+     */
+    public void setTotalBasePair(Integer totalBasePair) {
+        this.totalBasePair = totalBasePair;
+    }
+
+    /**
+     * @param q30TrimmedBasePercentage
+     */
+    public void setQ30TrimmedBasePercentage(Double q30TrimmedBasePercentage) {
+        this.q30TrimmedBasePercentage = q30TrimmedBasePercentage;
+    }
+
+    /**
+     * @param mappedBasePercentage
+     */
+    public void setMappedBasePercentage(Double mappedBasePercentage) {
+        this.mappedBasePercentage = mappedBasePercentage;
+    }
+
+    /**
+     * @param onTargetPercentage
+     */
+    public void setOnTargetPercentage(Double onTargetPercentage) {
+        this.onTargetPercentage = onTargetPercentage;
+    }
+
+    /**
+     * @param onTargetCoverage
+     */
+    public void setOnTargetCoverage(Double onTargetCoverage) {
+        this.onTargetCoverage = onTargetCoverage;
+    }
+
+    /**
+     * @param duplicatedReadsPercentage
+     */
+    public void setDuplicatedReadsPercentage(Double duplicatedReadsPercentage) {
+        this.duplicatedReadsPercentage = duplicatedReadsPercentage;
+    }
+
+    /**
+     * @param roiCoveragePercentage
+     */
+    public void setRoiCoveragePercentage(Double roiCoveragePercentage) {
+        this.roiCoveragePercentage = roiCoveragePercentage;
+    }
+
+    /**
      * @return totalBasePair
      */
     public Integer getTotalBasePair() {

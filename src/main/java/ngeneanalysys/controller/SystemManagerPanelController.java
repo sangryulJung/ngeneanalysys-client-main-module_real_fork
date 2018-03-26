@@ -60,6 +60,8 @@ public class SystemManagerPanelController extends SubPaneController {
 
     private APIService apiService;
 
+    private final String DATE_FORMAT = "yyyy-MM-dd";
+
     @FXML
     private TextField panelNameTextField;
 
@@ -180,11 +182,26 @@ public class SystemManagerPanelController extends SubPaneController {
     @FXML
     private Pagination panelPagination;
 
+    @FXML
+    private TextField totalBasePairTextField;
+    @FXML
+    private TextField q30TrimmedBasePercentageTextField;
+    @FXML
+    private TextField mappedBasePercentageTextField;
+    @FXML
+    private TextField onTargetPercentageTextField;
+    @FXML
+    private TextField onTargetCoverageTextField;
+    @FXML
+    private TextField duplicatedReadsPercentageTextField;
+    @FXML
+    private TextField roiCoveragePercentageTextField;
+
     private CheckComboBox<ComboBoxItem> groupCheckComboBox = null;
 
     private CheckComboBox<ComboBoxItem> diseaseCheckComboBox = null;
 
-    File bedFile = null;
+    private File bedFile = null;
 
     private int panelId = 0;
 
@@ -256,18 +273,18 @@ public class SystemManagerPanelController extends SubPaneController {
         sampleSourceComboBox.getSelectionModel().selectFirst();
 
         createdAtTableColumn.setCellValueFactory(item -> new SimpleStringProperty(DateFormatUtils.format(
-                item.getValue().getCreatedAt().toDate(), "yyyy-MM-dd")));
+                item.getValue().getCreatedAt().toDate(), DATE_FORMAT)));
         updatedAtTableColumn.setCellValueFactory(item -> {
             if (item.getValue().getUpdatedAt() != null )
                 return new SimpleStringProperty(DateFormatUtils.format(
-                    item.getValue().getUpdatedAt().toDate(), "yyyy-MM-dd"));
+                    item.getValue().getUpdatedAt().toDate(), DATE_FORMAT));
             else
                 return new SimpleStringProperty("");
         });
         deletedAtTableColumn.setCellValueFactory(item -> {
             if (item.getValue().getDeletedAt() != null )
                 return new SimpleStringProperty(DateFormatUtils.format(
-                        item.getValue().getDeletedAt().toDate(), "yyyy-MM-dd"));
+                        item.getValue().getDeletedAt().toDate(), DATE_FORMAT));
             else
                 return new SimpleStringProperty("");
         });
@@ -289,13 +306,9 @@ public class SystemManagerPanelController extends SubPaneController {
         virtualPanelColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
         virtualPanelColumn.setCellFactory(param -> new VirtualPanelButton());
 
-        HttpClientResponse response = null;
+        HttpClientResponse response;
 
         try {
-            //response = apiService.get("/admin/panels", null, null, false);
-            //final PagedPanel panels = response.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
-            //panelListTable.getItems().addAll(panels.getResult());
-
             response = apiService.get("/admin/memberGroups", null, null, false);
 
                 if(response != null) {
@@ -471,6 +484,41 @@ public class SystemManagerPanelController extends SubPaneController {
         return reportCutOffParams;
     }
 
+    public QCPassConfig setQCPassingConfig() {
+        QCPassConfig qcPassConfig = new QCPassConfig();
+
+        try {
+            Integer totalBasePair = new Integer(totalBasePairTextField.getText());
+            qcPassConfig.setTotalBasePair(totalBasePair);
+        } catch (Exception e) { }
+        try {
+            Double q30 = new Double(q30TrimmedBasePercentageTextField.getText());
+            qcPassConfig.setQ30TrimmedBasePercentage(q30);
+        } catch (Exception e) { }
+        try {
+            Double mappedBase = new Double(mappedBasePercentageTextField.getText());
+            qcPassConfig.setMappedBasePercentage(mappedBase);
+        } catch (Exception e) { }
+        try {
+            Double onTarget = new Double(onTargetPercentageTextField.getText());
+            qcPassConfig.setOnTargetCoverage(onTarget);
+        } catch (Exception e) { }
+        try {
+            Double onTargetCoverage = new Double(onTargetCoverageTextField.getText());
+            qcPassConfig.setOnTargetCoverage(onTargetCoverage);
+        } catch (Exception e) { }
+        try {
+            Double duplicated = new Double(duplicatedReadsPercentageTextField.getText());
+            qcPassConfig.setDuplicatedReadsPercentage(duplicated);
+        } catch (Exception e) { }
+        try {
+            Double roiCoverage = new Double(roiCoveragePercentageTextField.getText());
+            qcPassConfig.setRoiCoveragePercentage(roiCoverage);
+        } catch (Exception e) { }
+
+        return qcPassConfig;
+    }
+
     @FXML
     public void savePanel() {
         String panelName = panelNameTextField.getText();
@@ -494,7 +542,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
             variantConfig.setEssentialGenes(essentialGenesTextField.getText());
             variantConfig.setCanonicalTranscripts(canonicalTranscriptTextArea.getText());
-
+            params.put("qcPassConfig", setQCPassingConfig());
             params.put("target", targetComboBox.getSelectionModel().getSelectedItem().getValue());
             params.put("analysisType", analysisTypeComboBox.getSelectionModel().getSelectedItem().getValue());
             params.put("libraryType", libraryTypeComboBox.getSelectionModel().getSelectedItem().getValue());
@@ -601,6 +649,13 @@ public class SystemManagerPanelController extends SubPaneController {
         populationFrequencyTextField.setText("");
         essentialGenesTextField.setText("");
         canonicalTranscriptTextArea.setText("");
+        totalBasePairTextField.setText("");
+        q30TrimmedBasePercentageTextField.setText("");
+        mappedBasePercentageTextField.setText("");
+        onTargetPercentageTextField.setText("");
+        onTargetCoverageTextField.setText("");
+        duplicatedReadsPercentageTextField.setText("");
+        roiCoveragePercentageTextField.setText("");
     }
 
     private void setDisabledItem(boolean condition) {
@@ -627,6 +682,14 @@ public class SystemManagerPanelController extends SubPaneController {
         populationFrequencyTextField.setDisable(true);
         essentialGenesTextField.setDisable(condition);
         canonicalTranscriptTextArea.setDisable(condition);
+        totalBasePairTextField.setDisable(condition);
+        q30TrimmedBasePercentageTextField.setDisable(condition);
+        mappedBasePercentageTextField.setDisable(condition);
+        onTargetPercentageTextField.setDisable(condition);
+        onTargetCoverageTextField.setDisable(condition);
+        duplicatedReadsPercentageTextField.setDisable(condition);
+        roiCoveragePercentageTextField.setDisable(condition);
+
     }
 
     public void deletePanel(Integer panelId) {
@@ -721,6 +784,16 @@ public class SystemManagerPanelController extends SubPaneController {
                     if(panel.getVariantConfig().getReportCutOffParams().getPopulationFrequencyDBs() != null) populationFrequencyDBsTextField.setText(params.getPopulationFrequencyDBs());
                     if(panel.getVariantConfig().getReportCutOffParams().getPopulationFrequency() != null) populationFrequencyTextField.setText(params.getPopulationFrequency().toString());
 
+                }
+
+                if(panel.getQcPassConfig() != null) {
+                    if(panel.getQcPassConfig().getTotalBasePair() != null) totalBasePairTextField.setText(panel.getQcPassConfig().getTotalBasePair().toString());
+                    if(panel.getQcPassConfig().getDuplicatedReadsPercentage() != null) duplicatedReadsPercentageTextField.setText(panel.getQcPassConfig().getDuplicatedReadsPercentage().toString());
+                    if(panel.getQcPassConfig().getMappedBasePercentage() != null) mappedBasePercentageTextField.setText(panel.getQcPassConfig().getMappedBasePercentage().toString());
+                    if(panel.getQcPassConfig().getOnTargetCoverage() != null) onTargetCoverageTextField.setText(panel.getQcPassConfig().getOnTargetCoverage().toString());
+                    if(panel.getQcPassConfig().getOnTargetPercentage() != null) onTargetPercentageTextField.setText(panel.getQcPassConfig().getOnTargetPercentage().toString());
+                    if(panel.getQcPassConfig().getQ30TrimmedBasePercentage() != null) q30TrimmedBasePercentageTextField.setText(panel.getQcPassConfig().getQ30TrimmedBasePercentage().toString());
+                    if(panel.getQcPassConfig().getRoiCoveragePercentage() != null) roiCoveragePercentageTextField.setText(panel.getQcPassConfig().getRoiCoveragePercentage().toString());
                 }
 
                 if(panel.getVariantConfig().getEssentialGenes() != null) essentialGenesTextField.setText(panel.getVariantConfig().getEssentialGenes());

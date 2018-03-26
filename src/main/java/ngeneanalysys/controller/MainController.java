@@ -14,7 +14,6 @@ import javafx.scene.control.Menu;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import javafx.util.Duration;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.constants.FXMLConstants;
@@ -120,7 +119,7 @@ public class MainController extends BaseStageController {
     @FXML
     private StackPane sampleListStackPane;
 
-    ComboBox<ComboBoxItem> sampleList;
+    private ComboBox<ComboBoxItem> sampleList;
 
     private Map<String, Object> basicInformationMap = new HashMap<>();
 
@@ -249,6 +248,7 @@ public class MainController extends BaseStageController {
         };
 
         this.sampleList = sampleList;
+        sampleList.setDisable(true);
         sampleList.getStyleClass().addAll("combo-box", "combo-box-base");
         sampleListStackPane.getChildren().add(0, sampleList);
 
@@ -346,7 +346,8 @@ public class MainController extends BaseStageController {
             basicInformationMap.put("diseases", diseases);
 
         } catch (WebAPIException e) {
-            logger.info(e.getMessage());
+            DialogUtil.error(e.getHeaderText(), e.getMessage(), getMainApp().getPrimaryStage(),
+                    false);
         }
     }
 
@@ -444,6 +445,7 @@ public class MainController extends BaseStageController {
 
         // 추가되어 있지 않은 경우 추가
         if(!isAdded) {
+            if(sampleList.isDisabled()) sampleList.setDisable(false);
             ComboBoxItem item = new ComboBoxItem();
             item.setText(menu.getMenuName());
             item.setValue(menu.getId());
@@ -506,7 +508,7 @@ public class MainController extends BaseStageController {
                 currentSampleId = sampleMenu[removeIdx - 1].getId();
                 showSampleDetail(sampleMenu[removeIdx - 1]);
             }
-
+            if(sampleMenu == null || sampleMenu.length == 0) sampleList.setDisable(true);
         }
     }
 
@@ -769,7 +771,8 @@ public class MainController extends BaseStageController {
             }
             this.analysisSampleUploadProgressTaskController.show(box);
         } catch (IOException e) {
-            e.printStackTrace();
+            DialogUtil.error("ERROR", e.getMessage(), getMainApp().getPrimaryStage(),
+                    false);
         }
     }
 
