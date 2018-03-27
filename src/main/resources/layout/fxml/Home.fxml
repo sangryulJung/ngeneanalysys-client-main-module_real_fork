@@ -135,7 +135,7 @@
             </Label>
             <Label styleClass="failed_icon" text="F">
                <padding>
-                  <Insets left="-1.0" top="-1.0" />
+                  <Insets top="-1.0" />
                </padding>
             </Label>
             <Label style="-fx-font-family: Noto Sans CJK KR Regular;" styleClass="font_size_11" text="Fail">

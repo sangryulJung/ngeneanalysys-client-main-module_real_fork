@@ -76,12 +76,12 @@
                               <String fx:value="font_Sans_Regular" />
                            </styleClass>
                         </Label>
-                        <MenuBar fx:id="userMenuBar" maxHeight="25.0" maxWidth="32.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="32.0">
+                        <MenuBar fx:id="userMenuBar" maxHeight="20.0" maxWidth="32.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="32.0">
                           <menus>
                             <Menu fx:id="userSystemMenu" mnemonicParsing="false" />
                           </menus>
                            <HBox.margin>
-                              <Insets bottom="4.0" right="12.0" />
+                              <Insets bottom="15.0" />
                            </HBox.margin>
                            <cursor>
                               <Cursor fx:constant="HAND" />

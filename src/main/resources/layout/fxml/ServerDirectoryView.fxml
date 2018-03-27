@@ -24,12 +24,12 @@
       <TreeView fx:id="serverItemTreeView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <children>
-            <Button mnemonicParsing="false" onAction="#closeDialog" prefWidth="90.0" styleClass="cancelBtn" text="CANCEL     〉">
+            <Button mnemonicParsing="false" onAction="#closeDialog" prefWidth="90.0" style="-fx-alignment: center;" styleClass="cancelBtn" text="CANCEL">
                <HBox.margin>
                   <Insets right="10.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#submit" prefWidth="90.0" styleClass="submitBtn" text="CONFIRM  〉" />
+            <Button mnemonicParsing="false" onAction="#submit" prefWidth="90.0" style="-fx-alignment: center;" styleClass="submitBtn" text="SELECT" />
          </children>
       </HBox>
    </children>
