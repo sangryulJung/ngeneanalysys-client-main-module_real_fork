@@ -328,7 +328,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
         }
         tableEdit();
-
         maskerPane.setVisible(false);
     }
 
@@ -469,8 +468,9 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         }
         TextField sampleName = new TextField();
         sampleName.setStyle("-fx-text-inner-color: black; -fx-border-width: 0;");
-        sampleName.setMaxWidth(Double.MAX_VALUE);
+        sampleName.setMaxWidth(200);
         sampleName.setEditable(false);
+        sampleName.setAlignment(Pos.CENTER);
         sampleName.setCursor(Cursor.DEFAULT);
         sampleNameTextFieldList.add(sampleName);
         sampleName.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -486,7 +486,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
         ComboBox<ComboBoxItem> disease  = new ComboBox<>();
         disease.setConverter(new ComboBoxConverter());
-        disease.setMaxWidth(Double.MAX_VALUE);
+        disease.setMaxWidth(200);
         disease.setStyle("-fx-border-width: 0;");
         disease.setCursor(Cursor.HAND);
         diseaseComboBoxList.add(disease);
@@ -494,7 +494,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         //diseasesSetting(disease);
 
         ComboBox<ComboBoxItem> panel  = new ComboBox<>();
-        panel.setMaxWidth(Double.MAX_VALUE);
+        panel.setMaxWidth(200);
         panelComboBoxList.add(panel);
         panelSetting(panel);
         panel.setCursor(Cursor.HAND);
@@ -526,7 +526,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
         ComboBox<String> source = new ComboBox<>();
         source.getItems().addAll("BLOOD", "FFPE");
-        source.setMaxWidth(Double.MAX_VALUE);
+        source.setMaxWidth(200);
         sampleSourceComboBoxList.add(source);
         source.setStyle("-fx-text-inner-color: black; -fx-border-width: 0;");
 

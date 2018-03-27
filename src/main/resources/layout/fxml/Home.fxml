@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
@@ -48,7 +49,12 @@
                               <Insets right="6.0" />
                            </HBox.margin>
                         </ImageView>
-                        <Label styleClass="font_size_18" text="SYSTEM USAGE" />
+                        <Label text="SYSTEM USAGE">
+                           <styleClass>
+                              <String fx:value="font_size_18" />
+                              <String fx:value="font_gray" />
+                           </styleClass>
+                        </Label>
                      </children>
                   </HBox>
                   <HBox alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="190.0" prefWidth="360.0">
@@ -87,7 +93,12 @@
                   <Image url="@../images/renewal/latest_analysis.png" />
                </image>
             </ImageView>
-            <Label styleClass="font_size_18" text="LATEST ANALYSIS" />
+            <Label text="LATEST ANALYSIS">
+               <styleClass>
+                  <String fx:value="font_size_18" />
+                  <String fx:value="font_gray" />
+               </styleClass>
+            </Label>
          </children>
       </HBox>
       <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
@@ -97,7 +108,7 @@
                   <Insets left="-1.0" top="-2.0" />
                </padding>
             </Label>
-            <Label text="Queued">
+            <Label style="-fx-font-family: Noto Sans CJK KR Regular;" styleClass="font_size_11" text="Queued">
                <HBox.margin>
                   <Insets left="3.0" right="5.0" />
                </HBox.margin>
@@ -107,7 +118,7 @@
                   <Insets top="-1.0" />
                </padding>
             </Label>
-            <Label text="Runing">
+            <Label style="-fx-font-family: Noto Sans CJK KR Regular;" styleClass="font_size_11" text="Runing">
                <HBox.margin>
                   <Insets left="3.0" right="5.0" />
                </HBox.margin>
@@ -117,7 +128,7 @@
                   <Insets left="-1.0" top="-1.0" />
                </padding>
             </Label>
-            <Label text="Complete">
+            <Label style="-fx-font-family: Noto Sans CJK KR Regular;" styleClass="font_size_11" text="Complete">
                <HBox.margin>
                   <Insets left="3.0" right="5.0" />
                </HBox.margin>
@@ -136,10 +147,14 @@
                         <Insets right="6.0" />
                      </HBox.margin>
                   </ImageView>
-                  <Label styleClass="font_size_18" text="NEWS &amp; TIPS">
+                  <Label text="NEWS &amp; TIPS">
                      <padding>
                         <Insets right="10.0" />
                      </padding>
+                     <styleClass>
+                        <String fx:value="font_size_18" />
+                        <String fx:value="font_gray" />
+                     </styleClass>
                   </Label>
                </children>
             </HBox>
@@ -180,7 +195,12 @@
                         <Insets right="6.0" />
                      </HBox.margin>
                   </ImageView>
-                  <Label styleClass="font_size_18" text="TOOLS &amp; DATABASES" />
+                  <Label text="TOOLS &amp; DATABASES">
+                     <styleClass>
+                        <String fx:value="font_size_18" />
+                        <String fx:value="font_gray" />
+                     </styleClass>
+                  </Label>
                </children>
             </HBox>
             <VBox prefHeight="200.0" prefWidth="100.0">
@@ -190,7 +210,7 @@
                         <Insets />
                      </VBox.margin>
                      <children>
-                        <Label styleClass="tools_icon" text="〉">
+                        <Label style="-fx-font-size: 10;" styleClass="tools_icon" text="〉">
                            <HBox.margin>
                               <Insets right="3.0" />
                            </HBox.margin>
@@ -200,7 +220,7 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
                      <children>
-                        <Label styleClass="tools_icon" text="〉">
+                        <Label style="-fx-font-size: 10;" styleClass="tools_icon" text="〉">
                            <HBox.margin>
                               <Insets right="3.0" />
                            </HBox.margin>
