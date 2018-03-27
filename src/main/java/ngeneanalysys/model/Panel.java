@@ -12,7 +12,7 @@ public class Panel {
     private String target;
     private String analysisType;
     private String libraryType;
-    private String sampleSource;
+
     private DateTime createdAt;
     private DateTime updatedAt;
     private DateTime deletedAt;
@@ -68,10 +68,6 @@ public class Panel {
 
     public String getLibraryType() { return libraryType; }
 
-    public String getSampleSource() {
-        return sampleSource;
-    }
-
     public Integer getDeleted() {
         return deleted;
     }
@@ -97,12 +93,13 @@ public class Panel {
                 ", target='" + target + '\'' +
                 ", analysisType='" + analysisType + '\'' +
                 ", libraryType='" + libraryType + '\'' +
-                ", sampleSource='" + sampleSource + '\'' +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", deletedAt=" + deletedAt +
                 ", deleted=" + deleted +
                 ", isDefault=" + isDefault +
+                ", qcPassConfig=" + qcPassConfig +
+                ", variantConfig=" + variantConfig +
                 ", reportTemplateId=" + reportTemplateId +
                 '}';
     }

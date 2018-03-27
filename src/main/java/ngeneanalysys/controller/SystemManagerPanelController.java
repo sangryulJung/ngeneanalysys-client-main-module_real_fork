@@ -78,9 +78,6 @@ public class SystemManagerPanelController extends SubPaneController {
     private ComboBox<ComboBoxItem> libraryTypeComboBox;
 
     @FXML
-    private ComboBox<ComboBoxItem> sampleSourceComboBox;
-
-    @FXML
     private ComboBox<ComboBoxItem> reportTemplateComboBox;
 
     @FXML
@@ -136,9 +133,6 @@ public class SystemManagerPanelController extends SubPaneController {
 
     @FXML
     private TableColumn<PanelView, String> libraryTypeTableColumn;
-
-    @FXML
-    private TableColumn<PanelView, String> sampleSourceTableColumn;
 
     @FXML
     private TableColumn<PanelView, String> createdAtTableColumn;
@@ -217,7 +211,6 @@ public class SystemManagerPanelController extends SubPaneController {
         panelCodeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getCode()));
         panelTargetTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getTarget()));
         analysisTypeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getAnalysisType()));
-        sampleSourceTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getSampleSource()));
         libraryTypeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getLibraryType()));
         defaultPanelTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getIsDefault() ? "Y" : "N"));
         deletedTableColumn.setCellValueFactory(item -> new SimpleStringProperty((item.getValue().getDeleted() == 0) ? "N" : "Y"));
@@ -257,12 +250,6 @@ public class SystemManagerPanelController extends SubPaneController {
         libraryTypeComboBox.getItems().add(new ComboBoxItem(LibraryTypeCode.AMPLICON_BASED.getDescription(),
                 LibraryTypeCode.AMPLICON_BASED.getDescription()));
         libraryTypeComboBox.getSelectionModel().selectFirst();
-        sampleSourceComboBox.setConverter(new ComboBoxConverter());
-        sampleSourceComboBox.getItems().add(new ComboBoxItem(SampleSourceCode.BLOOD.getDescription()
-                , SampleSourceCode.BLOOD.getDescription()));
-        sampleSourceComboBox.getItems().add(new ComboBoxItem(SampleSourceCode.FFPE.getDescription(), SampleSourceCode.FFPE.getDescription()));
-        sampleSourceComboBox.getSelectionModel().selectFirst();
-
         createdAtTableColumn.setCellValueFactory(item -> new SimpleStringProperty(DateFormatUtils.format(
                 item.getValue().getCreatedAt().toDate(), DATE_FORMAT)));
         updatedAtTableColumn.setCellValueFactory(item -> {
@@ -525,7 +512,6 @@ public class SystemManagerPanelController extends SubPaneController {
             params.put("target", targetComboBox.getSelectionModel().getSelectedItem().getValue());
             params.put("analysisType", analysisTypeComboBox.getSelectionModel().getSelectedItem().getValue());
             params.put("libraryType", libraryTypeComboBox.getSelectionModel().getSelectedItem().getValue());
-            params.put("sampleSource", sampleSourceComboBox.getSelectionModel().getSelectedItem().getValue());
             params.put("variantConfig", variantConfig);
 
             String reportId = null;
@@ -608,7 +594,6 @@ public class SystemManagerPanelController extends SubPaneController {
         panelCodeTextField.setText("");
         warningMAFTextField.setText("");
         warningReadDepthTextField.setText("");
-        sampleSourceComboBox.getSelectionModel().selectFirst();
         analysisTypeComboBox.getSelectionModel().selectFirst();
         targetComboBox.getSelectionModel().selectFirst();
         libraryTypeComboBox.getSelectionModel().selectFirst();
@@ -642,7 +627,6 @@ public class SystemManagerPanelController extends SubPaneController {
         warningMAFCheckBox.setDisable(condition);
         panelNameTextField.setDisable(condition);
         panelCodeTextField.setDisable(condition);
-        sampleSourceComboBox.setDisable(condition);
         analysisTypeComboBox.setDisable(condition);
         targetComboBox.setDisable(condition);
         libraryTypeComboBox.setDisable(condition);
@@ -767,10 +751,6 @@ public class SystemManagerPanelController extends SubPaneController {
 
                 if(panel.getVariantConfig().getEssentialGenes() != null) essentialGenesTextField.setText(panel.getVariantConfig().getEssentialGenes());
                 if(panel.getVariantConfig().getCanonicalTranscripts() != null) canonicalTranscriptTextArea.setText(panel.getVariantConfig().getCanonicalTranscripts());
-
-                Optional<ComboBoxItem> sampleSourceItem =
-                        sampleSourceComboBox.getItems().stream().filter(item -> item.getValue().equalsIgnoreCase(panel.getSampleSource())).findFirst();
-                if(sampleSourceItem.isPresent()) sampleSourceComboBox.getSelectionModel().select(sampleSourceItem.get());
 
                 Optional<ComboBoxItem> analysisTypeItem =
                         analysisTypeComboBox.getItems().stream().filter(item -> item.getValue().equalsIgnoreCase(panel.getAnalysisType())).findFirst();

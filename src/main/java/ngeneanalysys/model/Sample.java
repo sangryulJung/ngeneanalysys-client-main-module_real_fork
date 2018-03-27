@@ -21,14 +21,14 @@ public class Sample {
     @JsonProperty("name")
     private String name;
 
-    @JsonProperty("patientId")
-    private String patientId;
-
     @JsonProperty("panelId")
     private Integer panelId;
 
     @JsonProperty("diseaseId")
     private Integer diseaseId;
+
+    @JsonProperty("sampleSource")
+    private String sampleSource;
 
     @JsonProperty("qcResult")
     private String qcResult;
@@ -129,20 +129,6 @@ public class Sample {
     }
 
     /**
-     * @return paitentId
-     */
-    public String getPaitentId() {
-        return patientId;
-    }
-
-    /**
-     * @param paitentId
-     */
-    public void setPaitentId(String paitentId) {
-        this.patientId = paitentId;
-    }
-
-    /**
      * @return panelId
      */
     public Integer getPanelId() {
@@ -168,6 +154,15 @@ public class Sample {
      */
     public void setDiseaseId(Integer diseaseId) {
         this.diseaseId = diseaseId;
+    }
+
+
+    public String getSampleSource() {
+        return sampleSource;
+    }
+
+    public void setSampleSource(String sampleSource) {
+        this.sampleSource = sampleSource;
     }
 
     /**
@@ -303,9 +298,9 @@ public class Sample {
                 ", runId=" + runId +
                 ", memberId=" + memberId +
                 ", name='" + name + '\'' +
-                ", patientId='" + patientId + '\'' +
                 ", panelId=" + panelId +
                 ", diseaseId=" + diseaseId +
+                ", sampleSource='" + sampleSource + '\'' +
                 ", qcResult='" + qcResult + '\'' +
                 ", inputFType='" + inputFType + '\'' +
                 ", sampleStatus=" + sampleStatus +
@@ -315,6 +310,7 @@ public class Sample {
                 ", deleted=" + deleted +
                 ", sampleSheet=" + sampleSheet +
                 ", qcData=" + qcData +
+                ", analysisResultSummary=" + analysisResultSummary +
                 '}';
     }
 }

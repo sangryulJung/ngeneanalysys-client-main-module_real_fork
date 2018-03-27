@@ -723,7 +723,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             String diseaseName = diseasesOptional.get().getName();
             contentsMap.put("diseaseName", diseaseName);
         }
-        contentsMap.put("sampleSource", panel.getSampleSource());
+        contentsMap.put("sampleSource", sample.getSampleSource());
         contentsMap.put("panelCode", panel.getCode());
         contentsMap.put("sampleName", sample.getName());
         contentsMap.put("patientCode", "SS17-01182");
