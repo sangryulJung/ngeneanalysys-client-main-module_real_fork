@@ -56,13 +56,13 @@
 				</Label>
             <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3">
                <children>
-                  <RadioButton fx:id="sequencerMiSeqDXRadioButton" mnemonicParsing="false" selected="true" text="Illumina MiSeq DX">
+                  <RadioButton fx:id="sequencerMiSeqDXRadioButton" mnemonicParsing="false" selected="true" text="Illumina MiSeqDX">
                      <toggleGroup>
                         <ToggleGroup fx:id="sequencerType" />
                      </toggleGroup>
                   </RadioButton>
                   <RadioButton fx:id="sequencerMiSeqRadioButton" mnemonicParsing="false" text="Illumina MiSeq" toggleGroup="$sequencerType" />
-                  <RadioButton fx:id="nextSeqDxRadioButton" mnemonicParsing="false" text="illumina NextSeq 550 Dx" toggleGroup="$sequencerType" />
+                  <RadioButton fx:id="nextSeqDxRadioButton" mnemonicParsing="false" text="Illumina NextSeq 550Dx" toggleGroup="$sequencerType" />
                   <Label styleClass="help_tooltip">
                      <tooltip>
                         <Tooltip text="Choose sequencing instrument platform" />

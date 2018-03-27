@@ -38,6 +38,7 @@
 }
 
 .bg_company_logo {
+
 	-fx-background-image:url('../images/ngenebio_logo_small.png');
 	-fx-background-repeat:no-repeat ;
 	-fx-alignment:center ;
