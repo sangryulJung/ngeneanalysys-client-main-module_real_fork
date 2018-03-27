@@ -60,7 +60,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
     private APIService apiService;
 
-    private final String DATE_FORMAT = "yyyy-MM-dd";
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
 
     @FXML
     private TextField panelNameTextField;

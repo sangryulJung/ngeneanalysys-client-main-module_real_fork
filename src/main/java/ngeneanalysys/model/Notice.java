@@ -11,7 +11,7 @@ public class Notice {
     private Integer memberId;
     private String title;
     private String contents;
-    private DateTime createAt;
+    private DateTime createdAt;
     private DateTime updatedAt;
     private DateTime deletedAt;
     private Integer deleted;
@@ -47,8 +47,8 @@ public class Notice {
     /**
      * @return createAt
      */
-    public DateTime getCreateAt() {
-        return createAt;
+    public DateTime getCreatedAt() {
+        return createdAt;
     }
 
     /**

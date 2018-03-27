@@ -56,9 +56,6 @@ public class HomeController extends SubPaneController{
     private HBox runListHBox;
 
     @FXML
-    private Button noticeEditBtn;
-
-    @FXML
     private Label noticeTitleLabel;
 
     @FXML
@@ -91,15 +88,8 @@ public class HomeController extends SubPaneController{
         maskerPane.setPrefHeight(getMainController().getMainFrame().getHeight());
         maskerPane.setVisible(false);
 
-        LoginSession loginSession = LoginSessionUtil.getCurrentLoginSession();
-
-        if(!loginSession.getRole().equalsIgnoreCase(UserTypeCode.USER_TYPE_ADMIN)) {
-            noticeEditBtn.setVisible(false);
-        } else {
-            noticeEditBtn.setVisible(true);
-        }
-
         newsTipGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            logger.info("init");
             if(newValue == null) return;
             if(!noticeLabelSetting(newsTipGroup.getToggles().indexOf(newValue))) newsTipGroup.selectToggle(oldValue);
         });
@@ -179,7 +169,7 @@ public class HomeController extends SubPaneController{
         if(noticeList == null || index > noticeList.size() -1) return false;
         NoticeView noticeView = noticeList.get(index);
         noticeTitleLabel.setText(noticeView.getTitle());
-        dateLabel.setText(noticeView.getCreateAt().toString());
+        dateLabel.setText(noticeView.getCreatedAt().toString());
         noticeContentsLabel.setText(noticeView.getContents());
         return true;
     }
@@ -253,16 +243,16 @@ public class HomeController extends SubPaneController{
         private HBox queuedHBox;
         private Label runningLabel;
         private HBox runningHBox;
-        private Label FailedLabel;
-        private HBox FailedHBox;
+        private Label failedLabel;
+        private HBox failedHBox;
 
         private VBox itemVBox;
 
         public RunStatusVBox() {
             this.setPrefSize(220, 220);
             this.setMinSize(220, 220);
-            this.setStyle("-fx-effect: dropshadow(gaussian, rgba(0.0, 0.0, 0.0, 0.7), 0.7, 0.7, 0.0, 0.0);" +
-                    "-fx-background-color: white;");
+            this.setStyle(this.getStyle() + "-fx-effect: dropshadow(gaussian, rgba(0.0, 0.0, 0.0, 0.7), 0.7, 0.7, 0.0, 0.0);" +
+                    "-fx-background-color: white; -fx-padding-width : 0.5 0.5 0.5 0.5; -fx-padding-color : black;");
             HBox topHBox = new HBox();
             topHBox.setPrefHeight(25);
             runName = new Label();
@@ -288,9 +278,10 @@ public class HomeController extends SubPaneController{
 
             itemVBox = new VBox();
             itemVBox.setStyle("-fx-background-color : f0f0f0;");
-            itemVBox.setPrefHeight(190);
+            itemVBox.setPrefHeight(185);
             Insets itemInsets = new Insets(10,0,0,10);
             itemVBox.setPadding(itemInsets);
+            itemVBox.setSpacing(5);
             startDateLabel = new Label();
             startDateHBox = createHBox(startDateLabel, "Start Date : ");
             FinishDateLabel = new Label();
@@ -301,14 +292,12 @@ public class HomeController extends SubPaneController{
             queuedHBox = createHBox(queuedLabel, "Queued : ");
             runningLabel = new Label();
             runningHBox = createHBox(runningLabel, "Running : ");
-            FailedLabel = new Label();
-            FailedHBox = createHBox(FailedLabel, "Failed : ");
+            failedLabel = new Label();
+            failedHBox = createHBox(failedLabel, "Failed : ");
 
             backgroundVBox.getChildren().add(itemVBox);
 
             this.getChildren().add(backgroundVBox);
-
-
         }
 
         public HBox createHBox(Label label, String titleLabelString) {
@@ -346,10 +335,24 @@ public class HomeController extends SubPaneController{
                 startDateLabel.setText(format.format(run.getCreatedAt().toDate()));
             if(run.getCompletedAt() != null)
                 FinishDateLabel.setText(format.format(run.getCompletedAt().toDate()));
+
+            completeLabel.setText("2");
+            runningLabel.setText("2");
+            queuedLabel.setText("2");
+            failedLabel.setText("2");
+
             if(!itemVBox.getChildren().contains(startDateHBox))
                 itemVBox.getChildren().add(startDateHBox);
             if(!itemVBox.getChildren().contains(FinishDateHBox))
                 itemVBox.getChildren().add(FinishDateHBox);
+            if(!itemVBox.getChildren().contains(completeHBox))
+                itemVBox.getChildren().add(completeHBox);
+            if(!itemVBox.getChildren().contains(runningHBox))
+                itemVBox.getChildren().add(runningHBox);
+            if(!itemVBox.getChildren().contains(queuedHBox))
+                itemVBox.getChildren().add(queuedHBox);
+            if(!itemVBox.getChildren().contains(failedHBox))
+                itemVBox.getChildren().add(failedHBox);
 
         }
 
@@ -362,7 +365,7 @@ public class HomeController extends SubPaneController{
             completeLabel.setText("");
             queuedLabel.setText("");
             runningLabel.setText("");
-            FailedLabel.setText("");
+            failedLabel.setText("");
             //itemVBox.getChildren().removeAll(itemVBox.getChildren());
         }
 

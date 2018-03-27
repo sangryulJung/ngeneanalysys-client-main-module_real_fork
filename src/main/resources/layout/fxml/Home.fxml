@@ -111,7 +111,6 @@
                         <Insets right="10.0" />
                      </padding>
                   </Label>
-                  <Button fx:id="noticeEditBtn" mnemonicParsing="false" text="*" />
                </children>
             </HBox>
             <Label fx:id="noticeTitleLabel" alignment="TOP_LEFT" maxHeight="42.0" maxWidth="1.7976931348623157E308" minHeight="42.0" prefHeight="42.0" styleClass="font_size_14" text="Title" wrapText="true">

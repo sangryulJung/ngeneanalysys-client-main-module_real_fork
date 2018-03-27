@@ -136,6 +136,9 @@ public class FXMLConstants {
 	public static final String SYSTEM_MANAGER_REPORT_TEMPLATE = "/layout/fxml/systemManager/SystemManagerReportTemplate.fxml";
 
 	/** 시스템 매니저 Evidence Database 관리 */
+	public static final String SYSTEM_MANAGER_NEWS_AND_TIPS = "/layout/fxml/systemManager/SystemManagerNewsAndTips.fxml";
+
+	/** 시스템 매니저 Evidence Database 관리 */
 	public static final String SYSTEM_MANAGER_INTERPRETATION_DATABASE = "/layout/fxml/systemManager/SystemManagerInterpretationDatabase.fxml";
 
 	/** 사용자 추가/수정 화면 */

@@ -7,6 +7,15 @@ package ngeneanalysys.model;
 public class NoticeView extends Notice {
     private String loginId;
 
+    private String memberName;
+
+    /**
+     * @return memberName
+     */
+    public String getMemberName() {
+        return memberName;
+    }
+
     /**
      * @return loginId
      */

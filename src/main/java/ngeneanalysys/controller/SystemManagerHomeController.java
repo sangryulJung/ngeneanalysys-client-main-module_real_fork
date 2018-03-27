@@ -47,6 +47,8 @@ public class SystemManagerHomeController extends SubPaneController {
 
     private SystemManagerInterpretationDatabaseController systemManagerInterpretationDatabaseController;
 
+    private SystemManagerNewsAndTipsController systemManagerNewsAndTipsController;
+
     @Override
     public void show(Parent root) throws IOException {
         logger.info("System Manager Home");
@@ -97,7 +99,6 @@ public class SystemManagerHomeController extends SubPaneController {
                     FXMLLoader loader = FXMLLoadUtil.load(item.getFxmlPath());
                     Node node = loader.load();
 
-
                     switch (item.getFxmlPath()) {
                         case FXMLConstants.SYSTEM_MANAGER_ANALYSIS_STATUS:
                             systemManagerAnalysisStatusController = loader.getController();
@@ -128,6 +129,11 @@ public class SystemManagerHomeController extends SubPaneController {
                             systemManagerInterpretationDatabaseController = loader.getController();
                             systemManagerInterpretationDatabaseController.setMainController(this.getMainController());
                             systemManagerInterpretationDatabaseController.show((Parent) node);
+                            break;
+                        case FXMLConstants.SYSTEM_MANAGER_NEWS_AND_TIPS :
+                            systemManagerNewsAndTipsController = loader.getController();
+                            systemManagerNewsAndTipsController.setMainController(this.getMainController());
+                            systemManagerNewsAndTipsController.show((Parent) node);
                             break;
                         default:
                             break;

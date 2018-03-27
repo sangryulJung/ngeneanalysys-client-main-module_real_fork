@@ -198,12 +198,15 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightStandardWidth);
             rightContentsHBox.setPrefWidth(this.rightStandardWidth);
             overviewAccordion.setPrefWidth(this.standardAccordionSize);
-            variantListTableView.setPrefWidth(this.minSize);
+            //variantListTableView.setPrefWidth(this.minSize);
+            variantListTableView.setVisible(false);
         } else {
             snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerStandardWidth);
-            overviewAccordion.setPrefWidth(this.minSize);
+            //overviewAccordion.setPrefWidth(this.minSize);
+            overviewAccordion.setVisible(false);
             variantListTableView.setPrefWidth(this.standardTableSize);
         }
+        filterArea.setVisible(true);
         filterArea.setPrefWidth(150);
         leftSizeButton.getStyleClass().clear();
         leftSizeButton.getStyleClass().add("btn_fold");
@@ -215,12 +218,17 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         if(snvWrapper.getColumnConstraints().get(1).getPrefWidth() == 0) {
             snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightFullWidth);
             overviewAccordion.setPrefWidth(this.maxAccordionSize);
-            variantListTableView.setPrefWidth(this.minSize);
+            overviewAccordion.setVisible(true);
+            //variantListTableView.setPrefWidth(this.minSize);
+            variantListTableView.setVisible(false);
         } else {
             snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerFullWidth);
-            overviewAccordion.setPrefWidth(this.minSize);
+            //overviewAccordion.setPrefWidth(this.minSize);
+            overviewAccordion.setVisible(false);
             variantListTableView.setPrefWidth(this.maxTableSize);
+            variantListTableView.setVisible(true);
         }
+        filterArea.setVisible(false);
         filterArea.setPrefWidth(0);
         leftSizeButton.getStyleClass().clear();
         leftSizeButton.getStyleClass().add("btn_expand");
@@ -231,12 +239,14 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         if(snvWrapper.getColumnConstraints().get(0).getPrefWidth() == 200) {
             snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightStandardWidth);
             overviewAccordion.setPrefWidth(this.standardAccordionSize);
+            overviewAccordion.setVisible(true);
         } else {
             snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightFullWidth);
             overviewAccordion.setPrefWidth(this.maxAccordionSize);
+            overviewAccordion.setVisible(true);
         }
-        variantListTableView.setPrefWidth(this.minSize);
-
+        //variantListTableView.setPrefWidth(this.minSize);
+        variantListTableView.setVisible(true);
         rightSizeButton.getStyleClass().clear();
         rightSizeButton.getStyleClass().add("right_btn_fold");
     }
@@ -245,9 +255,12 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightFoldedWidth);
         if(snvWrapper.getColumnConstraints().get(0).getPrefWidth() == 200) {
             snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerStandardWidth);
+            variantListTableView.setVisible(true);
             rightContentsHBox.setPrefWidth(minSize);
+            overviewAccordion.setVisible(false);
         } else {
             snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerFullWidth);
+            variantListTableView.setVisible(true);
         }
 
         rightSizeButton.getStyleClass().clear();
@@ -431,7 +444,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
             List<VariantAndInterpretationEvidence> list = analysisResultVariantList.getResult();
             this.list = list;
-
+            totalVariantCountLabel.setText(analysisResultVariantList.getCount().toString());
             ObservableList<VariantAndInterpretationEvidence> displayList = null;
 
             if (list != null && !list.isEmpty()) {
