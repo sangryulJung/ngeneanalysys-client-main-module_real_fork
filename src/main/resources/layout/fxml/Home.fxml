@@ -101,7 +101,7 @@
             </Label>
          </children>
       </HBox>
-      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
+      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3">
          <children>
             <Label styleClass="queued_icon" text="Q">
                <padding>
@@ -129,6 +129,16 @@
                </padding>
             </Label>
             <Label style="-fx-font-family: Noto Sans CJK KR Regular;" styleClass="font_size_11" text="Complete">
+               <HBox.margin>
+                  <Insets left="3.0" right="5.0" />
+               </HBox.margin>
+            </Label>
+            <Label styleClass="failed_icon" text="F">
+               <padding>
+                  <Insets left="-1.0" top="-1.0" />
+               </padding>
+            </Label>
+            <Label style="-fx-font-family: Noto Sans CJK KR Regular;" styleClass="font_size_11" text="Fail">
                <HBox.margin>
                   <Insets left="3.0" right="5.0" />
                </HBox.margin>
@@ -168,7 +178,7 @@
                   <Insets />
                </VBox.margin>
             </Label>
-            <HBox fx:id="toggleGroupHBox" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="20.0" spacing="10.0">
+            <HBox fx:id="toggleGroupHBox" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="330.0" prefHeight="20.0" prefWidth="330.0" spacing="10.0">
                <children>
                   <ToggleButton mnemonicParsing="false" styleClass="toggle_button">
                      <toggleGroup>

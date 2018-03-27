@@ -4,6 +4,7 @@ import com.opencsv.CSVReader;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Parent;
@@ -468,7 +469,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         }
         TextField sampleName = new TextField();
         sampleName.setStyle("-fx-text-inner-color: black; -fx-border-width: 0;");
-        sampleName.setMaxWidth(200);
+        sampleName.setMaxWidth(Double.MAX_VALUE);
         sampleName.setEditable(false);
         sampleName.setAlignment(Pos.CENTER);
         sampleName.setCursor(Cursor.DEFAULT);
@@ -531,6 +532,10 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         source.setStyle("-fx-text-inner-color: black; -fx-border-width: 0;");
 
         standardDataGridPane.addRow(row, sampleName, panel, source, disease);
+        GridPane.setHalignment(sampleName, HPos.CENTER);
+        GridPane.setHalignment(panel, HPos.CENTER);
+        GridPane.setHalignment(source, HPos.CENTER);
+        GridPane.setHalignment(disease, HPos.CENTER);
         panel.getSelectionModel().select(0);
     }
 
