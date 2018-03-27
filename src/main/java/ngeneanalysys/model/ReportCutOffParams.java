@@ -3,20 +3,11 @@ package ngeneanalysys.model;
 import java.math.BigDecimal;
 
 public class ReportCutOffParams {
-    private String scope;
     private BigDecimal minAlleleFrequency;
     private Integer minReadDepth;
     private Integer minAlternateCount;
     private String populationFrequencyDBs;
     private BigDecimal populationFrequency;
-
-    public String getScope() {
-        return scope;
-    }
-
-    public void setScope(String scope) {
-        this.scope = scope;
-    }
 
     public BigDecimal getMinAlleleFrequency() {
         return minAlleleFrequency;
@@ -61,8 +52,7 @@ public class ReportCutOffParams {
     @Override
     public String toString() {
         return "ReportCutOffParams{" +
-                "scope='" + scope + '\'' +
-                ", minAlleleFrequency=" + minAlleleFrequency +
+                "minAlleleFrequency=" + minAlleleFrequency +
                 ", minReadDepth=" + minReadDepth +
                 ", minAlternateCount=" + minAlternateCount +
                 ", populationFrequencyDBs='" + populationFrequencyDBs + '\'' +
