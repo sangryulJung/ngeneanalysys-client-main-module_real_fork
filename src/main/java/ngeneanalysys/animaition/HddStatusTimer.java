@@ -35,7 +35,7 @@ public class HddStatusTimer extends AnimationTimer {
     public HddStatusTimer(GraphicsContext gc, double value, String labelText1, String labelText2, double gaugeSpeed) {
         this.gc = gc;
         this.canvas = gc.getCanvas();
-        this.outerCircleSize = canvas.getWidth() - this.defaultMargin - 10;
+        this.outerCircleSize = canvas.getWidth() - this.defaultMargin - 20;
         this.innerOuterCircleGap = (this.innerLineWidth + this.outerLineWidth) / 2.0 + 3.0;
         this.innerCircleSize = this.outerCircleSize - (this.innerOuterCircleGap * 2);
         this.value = value;
@@ -50,17 +50,18 @@ public class HddStatusTimer extends AnimationTimer {
     public void handle(long now) {
         gc.clearRect(0, 0, this.canvas.getWidth(), this.canvas.getHeight());
         gc.setStroke(Color.web("#C5C5C5"));
-        gc.setLineWidth(15);
+        gc.setLineWidth(25);
         gc.strokeArc(this.defaultMargin + this.innerOuterCircleGap, this.defaultMargin + this.innerOuterCircleGap,
                 this.innerCircleSize, this.innerCircleSize, this.gaugeStartAngle, -360, this.arcType);
         gc.setStroke(Color.web("#a8bbd9"));
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setTextBaseline(VPos.CENTER);
-        gc.setFont(Font.font(10));
+        gc.setFont(Font.font(18));
         gc.setFill(Color.web("#8D8D8D"));
         gc.fillText(this.labelText1, this.defaultMargin + (this.outerCircleSize / 2.0),
                 this.defaultMargin + (this.outerCircleSize / 2.0) - this.labelMargin);
         gc.setFill(Color.BLACK);
+        gc.setFont(Font.font(10));
         gc.fillText(this.labelText2, this.defaultMargin + (this.outerCircleSize / 2.0),
                 this.defaultMargin + (this.outerCircleSize / 2.0) + this.labelMargin);
         //gc.setLineWidth(this.innerLineWidth);
@@ -68,7 +69,7 @@ public class HddStatusTimer extends AnimationTimer {
         if (currAngle > angle) {
             currAngle = angle;
         }
-        gc.setLineWidth(15);
+        gc.setLineWidth(25);
         gc.strokeArc(this.defaultMargin + this.innerOuterCircleGap, this.defaultMargin + this.innerOuterCircleGap,
                 this.innerCircleSize, this.innerCircleSize, this.gaugeStartAngle, -this.currAngle, this.arcType);
         if (currAngle >= angle) {

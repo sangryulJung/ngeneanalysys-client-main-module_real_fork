@@ -77,24 +77,27 @@
                   <Insets top="10.0" />
                </VBox.margin>
             </VBox>
-            <Button fx:id="searchBtn" mnemonicParsing="false" styleClass="submitBtn" text="SEARCH      〉">
+            <HBox prefHeight="27.0" prefWidth="200.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#resetSearchForm" styleClass="cancelBtn" text="RESET     〉" />
+                  <HBox maxHeight="1.7976931348623157E308" prefWidth="77.0" />
+                  <Button fx:id="searchBtn" mnemonicParsing="false" onAction="#search" styleClass="submitBtn" text="SEARCH      〉" />
+               </children>
+            </HBox>
+            <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="250.0" vbarPolicy="NEVER">
+               <content>
+                  <FlowPane fx:id="searchListFlowPane" maxHeight="-Infinity" minHeight="-Infinity" prefWidth="240.0" />
+               </content>
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
-            </Button>
-            <Label fx:id="filterListLabel" wrapText="true">
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-            </Label>
-            <FlowPane fx:id="searchListFlowPane" prefHeight="200.0" prefWidth="200.0" />
-            <Button mnemonicParsing="false" styleClass="cancelBtn" text="RESET     〉" />
+            </ScrollPane>
          </children>
       </VBox>
       <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
          <children>
             <Label styleClass="total_icon" text="T" />
-            <Label style="-fx-font-family: Noto Sans CJK KR Regular;" text="100">
+            <Label fx:id="totalCountLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" text="100">
                <HBox.margin>
                   <Insets left="3.0" right="10.0" />
                </HBox.margin></Label>
@@ -102,7 +105,7 @@
                <padding>
                   <Insets top="-1.0" />
                </padding></Label>
-            <Label style="-fx-font-family: Noto Sans CJK KR Regular;" text="10">
+            <Label fx:id="queueLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" text="10">
                <HBox.margin>
                   <Insets left="3.0" right="10.0" />
                </HBox.margin></Label>
@@ -110,7 +113,7 @@
                <padding>
                   <Insets top="-1.0" />
                </padding></Label>
-            <Label style="-fx-font-family: Noto Sans CJK KR Regular;" text="10">
+            <Label fx:id="runningLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" text="10">
                <HBox.margin>
                   <Insets left="3.0" right="10.0" />
                </HBox.margin></Label>
@@ -121,12 +124,12 @@
                <padding>
                   <Insets left="-1.0" top="-1.0" />
                </padding></Label>
-            <Label style="-fx-font-family: Noto Sans CJK KR Regular;" text="10">
+            <Label fx:id="completeLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" text="10">
                <HBox.margin>
                   <Insets left="3.0" right="10.0" />
                </HBox.margin></Label>
             <Label styleClass="failed_icon" text="F" />
-            <Label prefHeight="19.0" prefWidth="0.0" style="-fx-font-family: Noto Sans CJK KR Regular;" text="1">
+            <Label fx:id="failLabel" prefHeight="19.0" prefWidth="0.0" style="-fx-font-family: Noto Sans CJK KR Regular;" text="1">
                <HBox.margin>
                   <Insets left="3.0" />
                </HBox.margin></Label>

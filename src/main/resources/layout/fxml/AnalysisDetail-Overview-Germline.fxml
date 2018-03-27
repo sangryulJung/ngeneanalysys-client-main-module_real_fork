@@ -186,7 +186,7 @@
       </Label>
       <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="1">
          <children>
-            <GridPane prefWidth="240.0">
+            <GridPane prefWidth="240.0" style="-fx-background-color: #f2f5fa;">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="140.0" />
@@ -220,7 +220,7 @@
                   </VBox>
                </children>
             </GridPane>
-            <GridPane prefWidth="240.0">
+            <GridPane prefWidth="240.0" style="-fx-background-color: #f2f5fa;">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="140.0" />
@@ -253,7 +253,7 @@
                   </StackPane>
                </children>
             </GridPane>
-            <GridPane prefWidth="240.0">
+            <GridPane prefWidth="240.0" style="-fx-background-color: #f2f5fa;">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="140.0" />
@@ -287,7 +287,7 @@
                   </StackPane>
                </children>
             </GridPane>
-            <GridPane prefWidth="240.0">
+            <GridPane prefWidth="240.0" style="-fx-background-color: #f2f5fa;">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="140.0" />
@@ -321,7 +321,7 @@
                   </StackPane>
                </children>
             </GridPane>
-            <GridPane prefWidth="240.0">
+            <GridPane prefWidth="240.0" style="-fx-background-color: #f2f5fa;">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="140.0" />

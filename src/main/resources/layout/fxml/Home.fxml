@@ -9,6 +9,8 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -18,9 +20,9 @@
 <GridPane fx:id="homeWrapper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="555.0" minWidth="1200.0" prefHeight="555.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.HomeController">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="360.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="360.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="280.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="387.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="387.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="226.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="100.0" />
   </columnConstraints>
   <rowConstraints>
@@ -36,15 +38,23 @@
          <children>
             <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="360.0">
                <children>
-                  <Label styleClass="font_size_16" text="STORAGE">
-                     <VBox.margin>
-                        <Insets bottom="14.0" />
-                     </VBox.margin>
-                  </Label>
-                  <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="190.0" prefWidth="360.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Canvas fx:id="hddCanvas" height="180.0" width="180.0" />
-                        <Canvas fx:id="availableCanvas" height="180.0" width="180.0" />
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/renewal/system_usage.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets right="6.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <Label styleClass="font_size_18" text="SYSTEM USAGE" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="190.0" prefWidth="360.0">
+                     <children>
+                        <Canvas fx:id="hddCanvas" height="175.0" width="175.0" />
+                        <Canvas fx:id="availableCanvas" height="175.0" width="175.0" />
                      </children>
                   </HBox>
                </children>
@@ -67,8 +77,20 @@
             </HBox>
          </content>
       </ScrollPane>
-      <Label styleClass="font_size_16" text="LATEST ANALYSIS" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
+      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+         <children>
+            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+               <HBox.margin>
+                  <Insets right="6.0" />
+               </HBox.margin>
+               <image>
+                  <Image url="@../images/renewal/latest_analysis.png" />
+               </image>
+            </ImageView>
+            <Label styleClass="font_size_18" text="LATEST ANALYSIS" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
          <children>
             <Label styleClass="queued_icon" text="Q">
                <padding>
@@ -104,28 +126,31 @@
       </HBox>
       <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="360.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
          <children>
-            <HBox prefHeight="26.0" prefWidth="200.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="26.0" prefWidth="200.0">
                <children>
-                  <Label styleClass="font_size_16" text="NEWS &amp; TIP">
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/renewal/news_tips.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets right="6.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <Label styleClass="font_size_18" text="NEWS &amp; TIPS">
                      <padding>
                         <Insets right="10.0" />
                      </padding>
                   </Label>
                </children>
             </HBox>
-            <Label fx:id="noticeTitleLabel" alignment="TOP_LEFT" maxHeight="42.0" maxWidth="1.7976931348623157E308" minHeight="42.0" prefHeight="42.0" styleClass="font_size_14" text="Title" wrapText="true">
+            <Label fx:id="dateLabel" styleClass="font_size_12" text="2018. 03. 04" wrapText="true">
                <VBox.margin>
-                  <Insets left="15.0" />
+                  <Insets bottom="10.0" top="10.0" />
                </VBox.margin>
             </Label>
-            <Label fx:id="dateLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" styleClass="font_size_12" text="Date" wrapText="true">
+            <Label fx:id="noticeContentsLabel" alignment="TOP_LEFT" maxHeight="100.0" maxWidth="330.0" minHeight="100.0" prefHeight="100.0" style="-fx-font-family: Noto Sans CJK KR Regular;" styleClass="font_size_12" text="Based on the NGS laboratory facility and bioinformatics technology, we are focusing on core technology capacity in the IVD field including MDx, CDx and liquid biopsy, by conducting cooperative research &amp; development with major hospitals and companies in Korea and overseas." textAlignment="JUSTIFY" wrapText="true">
                <VBox.margin>
-                  <Insets bottom="3.0" left="15.0" />
-               </VBox.margin>
-            </Label>
-            <Label fx:id="noticeContentsLabel" alignment="TOP_LEFT" maxHeight="100.0" maxWidth="1.7976931348623157E308" minHeight="100.0" prefHeight="100.0" style="-fx-font-family: Noto Sans CJK KR Regular;" styleClass="font_size_12" text="Contents" wrapText="true">
-               <VBox.margin>
-                  <Insets left="15.0" />
+                  <Insets />
                </VBox.margin>
             </Label>
             <HBox fx:id="toggleGroupHBox" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="20.0" spacing="10.0">
@@ -145,29 +170,41 @@
       </VBox>
       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
          <children>
-            <Label styleClass="font_size_16" text="INFO" />
+            <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/renewal/tools_databases.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets right="6.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <Label styleClass="font_size_18" text="TOOLS &amp; DATABASES" />
+               </children>
+            </HBox>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
                      <VBox.margin>
-                        <Insets top="50.0" />
+                        <Insets />
                      </VBox.margin>
                      <children>
-                        <Button mnemonicParsing="false" styleClass="sw_info_arrow">
+                        <Label styleClass="tools_icon" text="〉">
                            <HBox.margin>
-                              <Insets right="5.0" />
+                              <Insets right="3.0" />
                            </HBox.margin>
-                        </Button>
+                        </Label>
                         <Label text="Analysis Tools" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
                      <children>
-                        <Button mnemonicParsing="false" styleClass="sw_info_arrow">
+                        <Label styleClass="tools_icon" text="〉">
                            <HBox.margin>
-                              <Insets right="5.0" />
+                              <Insets right="3.0" />
                            </HBox.margin>
-                        </Button>
+                        </Label>
                         <Label text="Annotation Database" />
                      </children>
                   </HBox>

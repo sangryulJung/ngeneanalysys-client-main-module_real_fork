@@ -60,8 +60,8 @@ Button {
 .text-area {
 	-fx-background-color:#fff;
 	-fx-background-insets:0;
-	-fx-background-radius:3;
-	-fx-border-radius :3;
+	-fx-background-radius:0;
+	-fx-border-radius : 0;
 	-fx-border-color:#c4c4c4;
 	-fx-border-width:1;
 	-fx-font-size:12px;
@@ -443,15 +443,15 @@ Button {
 
 .table-view .column-header-background .filler {
  	-fx-background-color:#FFFFFF;
-	-fx-border-color:#ffffff;
-	-fx-border-width:0.5;
+	-fx-border-color:#000000;
+	-fx-border-width:0 0 0.5 0;
 }
 
 .table-view .column-header {
 	-fx-pref-height:30;
 	-fx-background-color: #ffffff;
-	-fx-border-width : 0 0 1 0;
-	-fx-border-color:#FFFFFF;
+	-fx-border-width : 0 0 0.5 0;
+	-fx-border-color:#000000;
 }
 
 .table-row-cell {
@@ -476,6 +476,7 @@ Button {
 }*/
 
 .table-row-cell:empty {
+    -fx-background-color : white;
 }
  
 .table-row-cell:hover{
@@ -487,6 +488,17 @@ Button {
 
 .table-view .table-cell .label {
 	-fx-text-fill:#656565;
+	-fx-background-color : #FFFFFF;
+}
+
+.table-row-cell{
+    -fx-background-color: -fx-table-cell-border-color, #FFFFFF;
+    -fx-border-width : 0;
+}
+
+.table-row-cell:odd{
+    -fx-background-color: -fx-table-cell-border-color, #FFFFFF;
+    -fx-border-width : 0;
 }
 /*
 .table-view:row-selection .column-header-background .nested-column-header .sub_column {
@@ -1447,14 +1459,14 @@ Button {
 .queued_icon {
     -fx-background-color : #d8a60d;
     -fx-background-radius : 30;
-    -fx-padding : -1 0 0 0;
+    -fx-padding : -2 0 0 0;
     -fx-alignment : center;
     -fx-text-fill : white;
     -fx-pref-width : 17;
     -fx-pref-height : 17;
     -fx-min-width : 17;
     -fx-min-height : 17;
-    -fx-text-size : 10;
+    -fx-font-size : 11;
 }
 
 .complete_icon {
@@ -1493,6 +1505,20 @@ Button {
     -fx-text-size : 10;
 }
 
+.tools_icon {
+    -fx-background-color : #999999;
+    -fx-background-radius : 30;
+    -fx-padding : -1 -6 0 0;
+    -fx-alignment : center;
+    -fx-text-fill : white;
+    -fx-pref-width : 17;
+    -fx-pref-height : 17;
+    -fx-min-width : 17;
+    -fx-min-height : 17;
+    -fx-text-size : 8;
+    -fx-cursor:hand;
+}
+
 .total_icon {
     -fx-background-color : #adadad;
     -fx-background-radius : 30;
@@ -1503,4 +1529,49 @@ Button {
     -fx-min-width : 17;
     -fx-min-height : 17;
     -fx-text-size : 10;
+}
+.scroll-bar:horizontal .track,
+.scroll-bar:vertical .track{
+	-fx-background-color:white;
+	-fx-border-color: derive(black,90%);
+	-fx-background-radius: 0em;
+	-fx-border-radius:0em;
+}
+
+/* The increment and decrement button CSS class of scrollbar */
+.scroll-bar:horizontal .increment-button ,
+.scroll-bar:horizontal .decrement-button {
+    -fx-background-color: white;
+	-fx-background-radius: 0em;
+	-fx-padding:0 0 10 0;
+
+}
+
+/* The increment and decrement button CSS class of scrollbar */
+.scroll-bar:vertical .increment-button ,
+.scroll-bar:vertical .decrement-button {
+
+    -fx-background-color: white;
+	-fx-background-radius: 0em;
+	-fx-padding:0 10 0 0;
+
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+	-fx-shape: " ";
+	-fx-padding:0;
+}
+
+/* The main scrollbar **thumb** CSS class which we drag every time (movable) */
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-color:derive(black,90%);
+	-fx-background-insets: 2, 0, 0;
+	-fx-background-radius: 0;
+
+}
+
+.font_gray {
+    -fx-text-fill : #595959;
 }

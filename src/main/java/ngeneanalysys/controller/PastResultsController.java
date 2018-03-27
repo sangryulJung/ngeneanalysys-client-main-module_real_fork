@@ -58,9 +58,6 @@ public class PastResultsController extends SubPaneController {
 	private Pagination paginationList;
 
 	@FXML
-	private Button searchBtn;
-
-	@FXML
 	private VBox resultVBox;
 
 	@FXML
@@ -72,6 +69,17 @@ public class PastResultsController extends SubPaneController {
 	@FXML
 	private VBox filterSearchArea;
 
+	@FXML
+	private Label totalCountLabel;
+	@FXML
+	private Label queueLabel;
+	@FXML
+	private Label runningLabel;
+	@FXML
+	private Label completeLabel;
+	@FXML
+	private Label failLabel;
+
 	/** API Service */
 	private APIService apiService;
 	
@@ -79,7 +87,9 @@ public class PastResultsController extends SubPaneController {
 	public Timeline autoRefreshTimeline;
 	private int itemCountPerPage;
 
-	List<RunStatusGirdPane> runStatusGirdPanes;
+	private List<RunStatusGirdPane> runStatusGirdPanes;
+
+	private boolean oneItem = false;
 
 
 	/**
@@ -208,6 +218,10 @@ public class PastResultsController extends SubPaneController {
 		}
 	}
 
+	public void oneItemSearch(String option, String value) {
+
+	}
+
 	public void setComboBoxItem() {
 		searchComboBox.setConverter(new ComboBoxConverter());
 		searchComboBox.getItems().add(new ComboBoxItem("String", "RUN"));
@@ -285,6 +299,13 @@ public class PastResultsController extends SubPaneController {
 			if (response != null) {
 				PagedSampleView searchedSamples = response
 						.getObjectBeforeConvertResponseToJSON(PagedSampleView.class);
+
+				totalCountLabel.setText(searchedSamples.getSampleAnalysisJobCount().getRunCount().toString());
+				queueLabel.setText(searchedSamples.getSampleAnalysisJobCount().getQueuedSampleCount().toString());
+				runningLabel.setText(searchedSamples.getSampleAnalysisJobCount().getRunningSampleCount().toString());
+				completeLabel.setText(searchedSamples.getSampleAnalysisJobCount().getCompletedSampleCount().toString());
+				failLabel.setText(searchedSamples.getSampleAnalysisJobCount().getFailedSampleCount().toString());
+
 				List<SampleView> list = null;
 				if (searchedSamples != null) {
 					totalCount = searchedSamples.getCount();
@@ -372,6 +393,11 @@ public class PastResultsController extends SubPaneController {
 	 */
 	@FXML
 	public void search() {
+		if(searchComboBox.getSelectionModel().getSelectedItem() != null) {
+
+		}
+		searchComboBox.getSelectionModel().getSelectedItem();
+
 		setList(1);
 	}
 	
@@ -380,7 +406,7 @@ public class PastResultsController extends SubPaneController {
 	 */
 	@FXML
 	public void resetSearchForm() {
-
+		searchListFlowPane.getChildren().removeAll(searchListFlowPane.getChildren());
 	}
 
 	class SampleInfoVBox extends VBox {

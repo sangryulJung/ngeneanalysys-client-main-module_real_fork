@@ -112,6 +112,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     private Label conclusions;
 
     @FXML
+    private Label extraFields;
+
+    @FXML
     private ComboBox<ComboBoxItem> virtualPanelComboBox;
 
     @FXML
@@ -182,6 +185,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
                 ReportTemplate template = reportContents.getReportTemplate();
                 if (template.getContents() != null) {
+                    extraFields.setVisible(true);
                     Map<String, Object> variableList = JsonUtil.fromJsonToMap(template.getCustomFields());
 
                     if (variableList != null && !variableList.isEmpty()) {

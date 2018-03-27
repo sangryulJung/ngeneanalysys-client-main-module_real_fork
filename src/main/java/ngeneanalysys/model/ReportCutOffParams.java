@@ -8,6 +8,14 @@ public class ReportCutOffParams {
     private Integer minAlternateCount;
     private String populationFrequencyDBs;
     private BigDecimal populationFrequency;
+    private String scope;
+
+    /**
+     * @return scope
+     */
+    public String getScope() {
+        return scope;
+    }
 
     public BigDecimal getMinAlleleFrequency() {
         return minAlleleFrequency;

@@ -101,7 +101,7 @@
                            </VBox.margin>
                         </Label>
                         <TextArea fx:id="conclusionsTextArea" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="73.0" styleClass="txt_black" />
-                        <Label fx:id="conclusions1" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="font_size_18" text="REPORT EXTRA FIELDS">
+                        <Label fx:id="extraFields" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="font_size_18" text="REPORT EXTRA FIELDS" visible="false">
                            <VBox.margin>
                               <Insets top="15.0" />
                            </VBox.margin>

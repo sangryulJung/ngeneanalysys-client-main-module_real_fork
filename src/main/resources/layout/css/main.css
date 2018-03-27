@@ -162,7 +162,7 @@
     -fx-pref-width : 100;
     -fx-max-width : 100;
     -fx-alignment : center;
-    -fx-font-size : 14px;
+    -fx-font-size : 16px;
     -fx-cursor:hand;
     -fx-border-width : 0 0 3 0;
     -fx-border-color : white;
@@ -213,7 +213,7 @@
 
 #topMenuArea1 #sampleListStackPane .label {
     -fx-alignment : center;
-    -fx-font-size : 14px;
+    -fx-font-size : 16px;
     -fx-cursor:hand;
     -fx-border-width : 0 0 3 0;
     -fx-border-color : white;

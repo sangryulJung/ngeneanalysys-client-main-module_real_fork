@@ -74,7 +74,15 @@
     -fx-background-radius : 0;
     -fx-alignment : top-center;
     -fx-padding : 70 0 0 0;
-    -fx-background-image:url('../images/renewal/plus_icon.png');
+    -fx-background-image:url('../images/renewal/plus-symbol.png');
+    -fx-background-size : 24 24;
     -fx-background-repeat: no-repeat;
-    -fx-background-position : center;
+    -fx-background-position: center;
+}
+
+.run_box {
+    /*-fx-effect: dropshadow(gaussian, rgba(0.0, 0.0, 0.0, 0.7), 0.7, 0.7, 0.0, 0.0);*/
+    -fx-background-color: white;
+    -fx-border-width : 0.5 0.5 0.5 0.5;
+    -fx-border-color : black;
 }

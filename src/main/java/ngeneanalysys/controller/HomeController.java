@@ -10,13 +10,11 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 import ngeneanalysys.animaition.HddStatusTimer;
-import ngeneanalysys.code.UserTypeCode;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
@@ -26,7 +24,6 @@ import ngeneanalysys.model.paged.PagedRun;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.LoginSessionUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
@@ -55,8 +52,8 @@ public class HomeController extends SubPaneController{
     @FXML
     private HBox runListHBox;
 
-    @FXML
-    private Label noticeTitleLabel;
+    /*@FXML
+    private Label noticeTitleLabel;*/
 
     @FXML
     private Label dateLabel;
@@ -83,7 +80,7 @@ public class HomeController extends SubPaneController{
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
 
-        homeWrapper.getChildren().add(maskerPane);
+        homeWrapper.add(maskerPane,0 ,0, 5, 6);
         maskerPane.setPrefWidth(getMainController().getMainFrame().getWidth());
         maskerPane.setPrefHeight(getMainController().getMainFrame().getHeight());
         maskerPane.setVisible(false);
@@ -91,7 +88,11 @@ public class HomeController extends SubPaneController{
         newsTipGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             logger.info("init");
             if(newValue == null) return;
-            if(!noticeLabelSetting(newsTipGroup.getToggles().indexOf(newValue))) newsTipGroup.selectToggle(oldValue);
+            if(!noticeLabelSetting(newsTipGroup.getToggles().indexOf(newValue))) {
+                newsTipGroup.selectToggle(oldValue);
+            } else {
+                newsTipGroup.selectToggle(newValue);
+            }
         });
 
         getMainController().getPrimaryStage().setMaxWidth(1000);
@@ -134,9 +135,9 @@ public class HomeController extends SubPaneController{
             for (int i = 0; i < maxRunNumberOfPage; i++) {
                 RunStatusVBox box = new RunStatusVBox();
                 runList.add(box);
-                runListHBox.setPrefWidth(runListHBox.getPrefWidth() + 240);
+                runListHBox.setPrefWidth(runListHBox.getPrefWidth() + 247);
                 runListHBox.getChildren().add(box);
-                runListHBox.setSpacing(5);
+                runListHBox.setSpacing(37);
             }
             hddCheck();
         } catch (Exception e) {
@@ -157,6 +158,7 @@ public class HomeController extends SubPaneController{
 
              if(noticeList != null && !noticeList.isEmpty()) {
                     noticeLabelSetting(0);
+                    newsTipGroup.selectToggle(newsTipGroup.getToggles().get(0));
              }
 
         } catch (WebAPIException wae) {
@@ -168,7 +170,7 @@ public class HomeController extends SubPaneController{
     public boolean noticeLabelSetting(int index) {
         if(noticeList == null || index > noticeList.size() -1) return false;
         NoticeView noticeView = noticeList.get(index);
-        noticeTitleLabel.setText(noticeView.getTitle());
+        //noticeTitleLabel.setText(noticeView.getTitle());
         dateLabel.setText(noticeView.getCreatedAt().toString());
         noticeContentsLabel.setText(noticeView.getContents());
         return true;
@@ -184,6 +186,14 @@ public class HomeController extends SubPaneController{
             AnimationTimer hddStatusTier = new HddStatusTimer(hddCanvas.getGraphicsContext2D(), value, "Free Space",
                     textLabel, 10);
             hddStatusTier.start();
+
+            int totalCount = (int)(storageUsage.getTotalSpace() / 10737418240L);
+            double available = (double)storageUsage.getAvailableSampleCount() / totalCount;
+            String label = storageUsage.getAvailableSampleCount() + " / " + totalCount + " Samples";
+            AnimationTimer availableTier = new HddStatusTimer(availableCanvas.getGraphicsContext2D(), available, "Available",
+                    label, 10);
+            availableTier.start();
+
         } catch (WebAPIException wae) {
 
         }
@@ -232,6 +242,10 @@ public class HomeController extends SubPaneController{
 
     class RunStatusVBox extends VBox {
         private Label runName;
+        private Label panelLabel;
+        private HBox panelHBox;
+        private Label totalLabel;
+        private HBox totalHBox;
         private Label statusLabel;
         private Label startDateLabel;
         private HBox startDateHBox;
@@ -251,8 +265,7 @@ public class HomeController extends SubPaneController{
         public RunStatusVBox() {
             this.setPrefSize(220, 220);
             this.setMinSize(220, 220);
-            this.setStyle(this.getStyle() + "-fx-effect: dropshadow(gaussian, rgba(0.0, 0.0, 0.0, 0.7), 0.7, 0.7, 0.0, 0.0);" +
-                    "-fx-background-color: white; -fx-padding-width : 0.5 0.5 0.5 0.5; -fx-padding-color : black;");
+            this.getStyleClass().add("run_box");
             HBox topHBox = new HBox();
             topHBox.setPrefHeight(25);
             runName = new Label();
@@ -281,7 +294,10 @@ public class HomeController extends SubPaneController{
             itemVBox.setPrefHeight(185);
             Insets itemInsets = new Insets(10,0,0,10);
             itemVBox.setPadding(itemInsets);
-            itemVBox.setSpacing(5);
+            panelLabel = new Label();
+            panelHBox = createHBox(panelLabel, "Panel : ");
+            totalLabel = new Label();
+            totalHBox = createHBox(totalLabel, "Samples : ");
             startDateLabel = new Label();
             startDateHBox = createHBox(startDateLabel, "Start Date : ");
             FinishDateLabel = new Label();
@@ -304,9 +320,11 @@ public class HomeController extends SubPaneController{
             HBox box = new HBox();
             box.setPrefHeight(20);
             Label titleLabel = new Label(titleLabelString);
+            titleLabel.setPrefWidth(80);
             titleLabel.setStyle("-fx-text-fill : gray; -fx-font-family : Noto Sans CJK KR Regular;");
             box.getChildren().add(titleLabel);
             box.getChildren().add(label);
+            label.getStyleClass().add("font_gray");
 
             return box;
         }
@@ -336,11 +354,17 @@ public class HomeController extends SubPaneController{
             if(run.getCompletedAt() != null)
                 FinishDateLabel.setText(format.format(run.getCompletedAt().toDate()));
 
+            panelLabel.setText("TST 170");
+            totalLabel.setText("8");
             completeLabel.setText("2");
             runningLabel.setText("2");
             queuedLabel.setText("2");
-            failedLabel.setText("2");
+            failedLabel.setText("2 ");
 
+            if(!itemVBox.getChildren().contains(panelHBox))
+                itemVBox.getChildren().add(panelHBox);
+            if(!itemVBox.getChildren().contains(totalHBox))
+                itemVBox.getChildren().add(totalHBox);
             if(!itemVBox.getChildren().contains(startDateHBox))
                 itemVBox.getChildren().add(startDateHBox);
             if(!itemVBox.getChildren().contains(FinishDateHBox))
