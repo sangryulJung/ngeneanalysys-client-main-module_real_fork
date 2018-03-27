@@ -25,6 +25,9 @@ import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -171,7 +174,9 @@ public class HomeController extends SubPaneController{
         if(noticeList == null || index > noticeList.size() -1) return false;
         NoticeView noticeView = noticeList.get(index);
         //noticeTitleLabel.setText(noticeView.getTitle());
-        dateLabel.setText(noticeView.getCreatedAt().toString());
+
+        dateLabel.setText(DateFormatUtils.format(
+                noticeView.getCreatedAt().toDate(), "yyyy-MM-dd"));
         noticeContentsLabel.setText(noticeView.getContents());
         return true;
     }
