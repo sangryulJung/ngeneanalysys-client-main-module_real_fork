@@ -148,6 +148,9 @@ public class AnalysisDetailLayoutController extends SubPaneController {
                     (panel.getAnalysisType() != null && ExperimentTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType()))){
                 addTab(item, idx);
                 idx++;
+            } else if(item.getNodeId().equalsIgnoreCase("TAB_VARIANTS")) {
+                addTab(item, idx);
+                idx++;
             }
         }
 

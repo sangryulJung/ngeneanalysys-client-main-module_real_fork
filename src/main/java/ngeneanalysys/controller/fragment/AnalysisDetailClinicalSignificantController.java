@@ -2,10 +2,13 @@ package ngeneanalysys.controller.fragment;
 
 import javafx.animation.AnimationTimer;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
@@ -13,8 +16,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Polyline;
 import ngeneanalysys.animaition.ClinicalSignificantTimer;
+import ngeneanalysys.code.constants.FXMLConstants;
+import ngeneanalysys.controller.AnalysisDetailSNVController;
+import ngeneanalysys.controller.ChangePathogenicityController;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.model.SnpInDelExtraInfo;
+import ngeneanalysys.model.VariantAndInterpretationEvidence;
 import ngeneanalysys.model.render.SNPsINDELsOverviewRadarGraph;
 import ngeneanalysys.util.JsonUtil;
 import ngeneanalysys.util.LoggerUtil;
@@ -95,6 +102,29 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
     @FXML
     private Polyline frequenciesGraphPolyline;			/** clinical > FREQUENCIES > 그래프 영역 */
 
+    @FXML private Button pathogenic5;
+    @FXML private Button pathogenic4;
+    @FXML private Button pathogenic3;
+    @FXML private Button pathogenic2;
+    @FXML private Button pathogenic1;
+
+    private VariantAndInterpretationEvidence selectedAnalysisResultVariant;
+
+    private AnalysisDetailSNVController controller;
+
+    /**
+     * @param controller
+     */
+    public void setController(AnalysisDetailSNVController controller) {
+        this.controller = controller;
+    }
+
+    /**
+     * @param selectedAnalysisResultVariant
+     */
+    public void setSelectedAnalysisResultVariant(VariantAndInterpretationEvidence selectedAnalysisResultVariant) {
+        this.selectedAnalysisResultVariant = selectedAnalysisResultVariant;
+    }
 
     @Override
     public void show(Parent root) throws IOException {
@@ -498,6 +528,38 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
 
         popOver.setContentNode(scrollPane);
         popOver.show(label, 10);
+    }
+
+    @FXML
+    public void setGermlineFlag(ActionEvent event) {
+        Button actionButton = (Button) event.getSource();
+        String value = null;
+        if (actionButton == pathogenic5) {
+            value = "P";
+        } else if (actionButton == pathogenic4) {
+            value = "LP";
+        } else if (actionButton == pathogenic3) {
+            value = "US";
+        } else if (actionButton == pathogenic2) {
+            value = "LB";
+        } else if (actionButton == pathogenic1) {
+            value = "B";
+        }
+
+        if((selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity() == null && !selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicity().equals(value))
+                || (selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity() != null &&!selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals(value))) {
+            try {
+                FXMLLoader loader = mainApp.load(FXMLConstants.CHANGE_PATHOGENICITY);
+                Node root = loader.load();
+                ChangePathogenicityController changePathogenicityController = loader.getController();
+                changePathogenicityController.setMainController(this.getMainController());
+                changePathogenicityController.settingTier(value, selectedAnalysisResultVariant);
+                changePathogenicityController.show((Parent) root);
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+            controller.showVariantList(0);
+        }
     }
 
 }

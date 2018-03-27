@@ -16,7 +16,7 @@
 <?import javafx.scene.shape.Polyline?>
 <?import javafx.scene.text.Font?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="222.0" prefWidth="870.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailClinicalSignificantController">
+<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="222.0" prefWidth="870.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailClinicalSignificantController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="265.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="262.0" />
@@ -197,7 +197,7 @@
             </VBox>
          </children>
       </GridPane>
-      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="215.0" prefWidth="260.0" styleClass="clinical_significant_pathogenicity_vbox">
+      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="215.0" prefWidth="260.0" styleClass="clinical_significant_pathogenicity_vbox" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
          <children>
             <HBox fx:id="pathogenicityPredictionHBox" prefHeight="33.0" styleClass="clinical_significant_pathogenicity_hbox">
                <children>

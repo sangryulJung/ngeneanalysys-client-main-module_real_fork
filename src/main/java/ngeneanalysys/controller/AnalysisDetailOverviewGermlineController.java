@@ -260,7 +260,7 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
 
             qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
 
-            roiCoverageLabel.setText(findQCResult(qcList, "roi_coverage"));
+            /*roiCoverageLabel.setText(findQCResult(qcList, "roi_coverage"));
             roiCoverageTooltip.setText(findQCTooltipString(qcList, "roi_coverage"));
 
             meanReadLabel.setText(findQCResult(qcList, "mean_read_quality"));
@@ -270,7 +270,7 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
             retainedReadTooltip.setText(findQCTooltipString(qcList, "retained_reads"));
 
             coverageUniformityLabel.setText(findQCResult(qcList, "coverage_uniformity"));
-            coverageUniformityTooltip.setText(findQCTooltipString(qcList, "coverage_uniformity"));
+            coverageUniformityTooltip.setText(findQCTooltipString(qcList, "coverage_uniformity"));*/
 
         } catch(WebAPIException e) {
             e.printStackTrace();

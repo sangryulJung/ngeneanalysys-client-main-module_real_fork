@@ -1,24 +1,16 @@
 package ngeneanalysys.controller;
 
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.control.*;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.transform.Transform;
 import javafx.stage.FileChooser;
 import ngeneanalysys.code.constants.CommonConstants;
-import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
@@ -126,12 +118,6 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
     List<VariantAndInterpretationEvidence> benignList = null;
 
-    private VariantAndInterpretationEvidence selectedItem = null;
-
-    private TableView<VariantAndInterpretationEvidence> selectedTable = null;
-
-    private TableRow<VariantAndInterpretationEvidence> rowItem;
-
     private boolean reportData = false;
 
 
@@ -143,11 +129,11 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
             targetGenesFlowPane.setPrefHeight(0);
         }
         try {
-            HttpClientResponse response = apiService.get("/analysisResults/variantCountByGeneForSomaticDNA/" + sample.getId(),
+            HttpClientResponse response = apiService.get("/analysisResults/variantCountByGeneForGermlineDNA/" + sample.getId(),
                     null, null, false);
             if (response != null) {
-                List<VariantCountByGene> variantCountByGenes = (List<VariantCountByGene>) response
-                        .getMultiObjectBeforeConvertResponseToJSON(VariantCountByGene.class,
+                List<VariantCountByGeneForGermlineDNA> variantCountByGenes = (List<VariantCountByGeneForGermlineDNA>) response
+                        .getMultiObjectBeforeConvertResponseToJSON(VariantCountByGeneForGermlineDNA.class,
                                 false);
 
                 variantCountByGenes = filteringGeneList(variantCountByGenes);
@@ -158,10 +144,10 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                     contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 30);
                 }
 
-                variantCountByGenes = variantCountByGenes.stream().sorted(Comparator.comparing(VariantCountByGene::getGeneSymbol)).collect(Collectors.toList());
+                variantCountByGenes = variantCountByGenes.stream().sorted(Comparator.comparing(VariantCountByGeneForGermlineDNA::getGeneSymbol)).collect(Collectors.toList());
                 Set<String> allGeneList = null;
                 Set<String> list = new HashSet<>();
-                if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
+                if(!virtualPanelComboBox.getItems().isEmpty() && !StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
                     response = apiService.get("virtualPanels/" + virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue(),
                             null, null, false);
 
@@ -175,8 +161,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
                 }
 
-
-                for(VariantCountByGene gene : variantCountByGenes) {
+                for(VariantCountByGeneForGermlineDNA gene : variantCountByGenes) {
                     Label label = new Label(gene.getGeneSymbol());
                     if(discriminationOfMutation(gene)) {
                         label.getStyleClass().add("text_color_blue");
@@ -189,8 +174,6 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                     } else {
                         label.getStyleClass().add("target_gene_variant");
                     }
-
-
 
                     targetGenesFlowPane.getChildren().add(label);
                     if(targetGenesFlowPane.getChildren().size() % 15 == 1) {
@@ -205,10 +188,10 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         }
     }
 
-    public boolean discriminationOfMutation(VariantCountByGene gene) {
-        return (gene.getTier3IndelCount() > 0 || gene.getTier3SnpCount() > 00 ||
-                gene.getTier1IndelCount() > 0 || gene.getTier1SnpCount() > 0 ||
-                gene.getTier2IndelCount() > 0 || gene.getTier2SnpCount() > 0) ? true : false;
+    public boolean discriminationOfMutation(VariantCountByGeneForGermlineDNA gene) {
+        return (gene.getUncertainSignificanceInDelCount() > 0 || gene.getUncertainSignificanceSnpCount() > 0 ||
+                gene.getPathogenicInDelCount() > 0 || gene.getPathogenicSnpCount() > 0 ||
+                gene.getLikelyPathogenicInDelCount() > 0 || gene.getLikelyPathogenicSnpCount() > 0) ? true : false;
     }
 
     public Set<String> returnGeneList(String essentialGenes, String optionalGenes) {
@@ -228,25 +211,29 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
     }
 
 
-    public List<VariantCountByGene> filteringGeneList(List<VariantCountByGene> list) {
-        List<VariantCountByGene> filteringList = new ArrayList<>();
-        if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
-            try {
-                HttpClientResponse response = apiService.get("virtualPanels/" + virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue(),
-                        null, null, false);
+    public List<VariantCountByGeneForGermlineDNA> filteringGeneList(List<VariantCountByGeneForGermlineDNA> list) {
+        List<VariantCountByGeneForGermlineDNA> filteringList = new ArrayList<>();
+        try {
+            if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
 
-                VirtualPanel virtualPanel = response.getObjectBeforeConvertResponseToJSON(VirtualPanel.class);
+                    HttpClientResponse response = apiService.get("virtualPanels/" + virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue(),
+                            null, null, false);
 
-                Set<String> geneList = returnGeneList(virtualPanel.getEssentialGenes(), virtualPanel.getOptionalGenes());
+                    VirtualPanel virtualPanel = response.getObjectBeforeConvertResponseToJSON(VirtualPanel.class);
 
-                for(VariantCountByGene variantCountByGene : list) {
-                    if(geneList.contains(variantCountByGene.getGeneSymbol())) {
-                        filteringList.add(variantCountByGene);
+                    Set<String> geneList = returnGeneList(virtualPanel.getEssentialGenes(), virtualPanel.getOptionalGenes());
+
+                    for(VariantCountByGeneForGermlineDNA variantCountByGene : list) {
+                        if(geneList.contains(variantCountByGene.getGeneSymbol())) {
+                            filteringList.add(variantCountByGene);
+                        }
                     }
-                }
-            } catch (WebAPIException wae) {
-                return list;
+
             }
+        } catch (WebAPIException wae) {
+            return list;
+        } catch (Exception e) {
+            return list;
         }
 
         if(filteringList.isEmpty()) {
@@ -385,6 +372,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
             e.printStackTrace();
         }
 
+        setTargetGenesList();
     }
 
     public void createdStandardBRCAColumn() {

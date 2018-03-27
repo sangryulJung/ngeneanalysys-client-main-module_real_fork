@@ -411,6 +411,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             Node node = loader.load();
             AnalysisDetailClinicalSignificantController controller = loader.getController();
             controller.setMainController(this.getMainController());
+            controller.setParamMap(getParamMap());
+            controller.setSelectedAnalysisResultVariant(selectedAnalysisResultVariant);
+            controller.setController(this);
             controller.show((Parent) node);
             clinicalSignificantTitledPane.setContent(node);
         } catch (Exception e) {
