@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -403,6 +404,7 @@ public class PastResultsController extends SubPaneController {
 				resultVBox.getChildren().add(gridPane);
 				gridPane.setLabel(runSampleView.getRun());
 				setVBoxPrefSize(gridPane);
+				Insets insets = new Insets(10, 0, 0, 0);
 
 				SampleInfoVBox vbox = new SampleInfoVBox();
 				vbox.setSampleList(runSampleView.getSampleViews());

@@ -8,7 +8,6 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -39,51 +38,35 @@
       <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="160.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="160.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="160.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="180.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="10.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="rawDataDownload" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#rawDataDownloadButton" prefHeight="15.0" prefWidth="15.0" styleClass="fileDownloadButton" text="DOWNLOAD" GridPane.columnIndex="4" GridPane.halignment="RIGHT">
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <effect>
-                  <DropShadow blurType="TWO_PASS_BOX" color="#0000004a" />
-               </effect>
-            </Button>
-            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnSpan="2">
+            <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
                   <HBox prefHeight="30.0" prefWidth="200.0">
                      <children>
-                        <Label text="SAMPLE : ">
-                           <styleClass>
-                              <String fx:value="font_size_18" />
-                              <String fx:value="font_gray" />
-                           </styleClass>
-                        </Label>
                         <Label fx:id="sampleNameLabel" text="Label">
                            <styleClass>
                               <String fx:value="font_size_18" />
                               <String fx:value="font_gray" />
                            </styleClass>
+                           <HBox.margin>
+                              <Insets top="-3.0" />
+                           </HBox.margin>
                         </Label>
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER_LEFT" prefHeight="15.0" prefWidth="228.0">
-                     <children>
-                        <Label text="RUN : " />
-                        <Label fx:id="runNameLabel" text="run name" />
                      </children>
                   </HBox>
                </children>
             </VBox>
-            <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
                <children>
                   <Label text="PANEL : " />
                   <Label fx:id="kitLabel" text="Panel Name" textFill="#262b33">
@@ -92,17 +75,44 @@
                      </font>
                   </Label>
                </children>
+               <padding>
+                  <Insets top="2.0" />
+               </padding>
             </HBox>
-            <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
+            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3">
                <children>
                   <Label text="DISEASE : " />
                   <Label fx:id="diseaseLabel" text="Label" />
                </children>
+               <padding>
+                  <Insets top="2.0" />
+               </padding>
             </HBox>
-            <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3">
+            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4">
                <children>
                   <Label text="SEQUENCER : " />
                   <Label fx:id="sequencerLabel" text="Label" />
+               </children>
+               <GridPane.margin>
+                  <Insets top="2.0" />
+               </GridPane.margin>
+            </HBox>
+            <HBox prefHeight="15.0" prefWidth="228.0" GridPane.columnIndex="1">
+               <children>
+                  <Label text="RUN : " />
+                  <Label fx:id="runNameLabel" text="run name" />
+               </children>
+               <padding>
+                  <Insets top="2.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5">
+               <children>
+                  <Button fx:id="rawDataDownload" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#rawDataDownloadButton" prefHeight="15.0" prefWidth="15.0" styleClass="fileDownloadButton">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Button>
                </children>
             </HBox>
          </children>

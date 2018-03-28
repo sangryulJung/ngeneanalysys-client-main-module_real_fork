@@ -43,7 +43,10 @@
                   <Image url="@../images/renewal/latest_analysis.png" />
                </image>
             </ImageView>
-            <Label style="-fx-font-size: 18;" styleClass="font_gray" text="RESULTS" />
+            <Label alignment="TOP_LEFT" style="-fx-font-size: 18;" styleClass="font_gray" text="RESULTS">
+               <HBox.margin>
+                  <Insets top="-3.0" />
+               </HBox.margin></Label>
          </children>
       </HBox>
       <Pagination fx:id="paginationList" focusTraversable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" styleClass="font_size_9" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
@@ -177,6 +180,9 @@
                   <String fx:value="font_size_18" />
                   <String fx:value="font_gray" />
                </styleClass>
+               <HBox.margin>
+                  <Insets top="-5.0" />
+               </HBox.margin>
             </Label>
          </children>
       </HBox>
