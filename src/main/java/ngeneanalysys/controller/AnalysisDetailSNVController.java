@@ -206,38 +206,38 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         filterVBox.getChildren().removeAll(filterVBox.getChildren());
         filterVBox.setPrefHeight(0);
         if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
-            HBox hBox = tierHBoxCreate("T I", "T1");
+            HBox hBox = tierHBoxCreate("T I", "T1", "#f6545c");
             filterVBox.getChildren().add(hBox);
             filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
-            hBox = tierHBoxCreate("T II", "T2");
+            hBox = tierHBoxCreate("T II", "T2", "#ff9482");
             filterVBox.getChildren().add(hBox);
             filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
-            hBox = tierHBoxCreate("T III", "T3");
+            hBox = tierHBoxCreate("T III", "T3", "#70acf5");
             filterVBox.getChildren().add(hBox);
             filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
-            hBox = tierHBoxCreate("T IV", "T4");
+            hBox = tierHBoxCreate("T IV", "T4", "#1f2d87");
             filterVBox.getChildren().add(hBox);
             filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
         } else if(panel.getAnalysisType().equalsIgnoreCase("GERMLINE")) {
-            HBox hBox = pathogenicityHBoxCreate("P", "P");
+            HBox hBox = pathogenicityHBoxCreate("P", "P", "#f6545c");
             filterVBox.getChildren().add(hBox);
             filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
-            hBox = pathogenicityHBoxCreate("LP", "LP");
+            hBox = pathogenicityHBoxCreate("LP", "LP", "#ff9482");
             filterVBox.getChildren().add(hBox);
             filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
-            hBox = pathogenicityHBoxCreate("US", "US");
+            hBox = pathogenicityHBoxCreate("US", "US", "#70acf5");
             filterVBox.getChildren().add(hBox);
             filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
-            hBox = pathogenicityHBoxCreate("LB", "LB");
+            hBox = pathogenicityHBoxCreate("LB", "LB", "#1f2d87");
             filterVBox.getChildren().add(hBox);
             filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
-            hBox = pathogenicityHBoxCreate("B", "B");
+            hBox = pathogenicityHBoxCreate("B", "B", "#5a64a5");
             filterVBox.getChildren().add(hBox);
             filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
         }
     }
 
-    public HBox tierHBoxCreate(final String labelText, final String valueText) {
+    public HBox tierHBoxCreate(final String labelText, final String valueText, String color) {
         HBox hBox = new HBox();
         hBox.setPrefWidth(100);
         hBox.setPrefHeight(40);
@@ -248,6 +248,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         Label itemLabel = new Label();
         itemLabel.setWrapText(true);
         itemLabel.getStyleClass().addAll("filter_icon");
+        if(!StringUtils.isEmpty(color)) {
+            itemLabel.setStyle(itemLabel.getStyle() + "-fx-background-color : " + color + ";");
+        }
         itemLabel.setTextAlignment(TextAlignment.CENTER);
         itemLabel.setText(labelText);
         itemLabel.setOnMouseClicked(ev -> showVariantList(0, "Tier", valueText));
@@ -262,7 +265,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         return hBox;
     }
 
-    public HBox pathogenicityHBoxCreate(final String labelText, final String valueText) {
+    public HBox pathogenicityHBoxCreate(final String labelText, final String valueText, String color) {
         HBox hBox = new HBox();
         hBox.setPrefWidth(100);
         hBox.setPrefHeight(50);
@@ -272,6 +275,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         Label itemLabel = new Label();
         itemLabel.setWrapText(true);
         itemLabel.getStyleClass().addAll("filter_icon");
+        if(!StringUtils.isEmpty(color)) {
+            itemLabel.setStyle(itemLabel.getStyle() + "-fx-background-color : " + color + ";");
+        }
         itemLabel.setTextAlignment(TextAlignment.CENTER);
         itemLabel.setText(labelText);
         itemLabel.setOnMouseClicked(ev -> showVariantList(0, "Pathogenicity", valueText));

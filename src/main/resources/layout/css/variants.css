@@ -153,9 +153,18 @@
     -fx-pref-width : 40;
     -fx-pref-height : 40;
     -fx-alignment : center;
-    -fx-background-color : #FFFFFF;
+    -fx-background-color : #999999;
     -fx-background-radius : 50;
     -fx-font-size : 14;
+    -fx-text-fill : #FFFFFF;
     -fx-text-alignment : center;
     -fx-cursor : hand;
+}
+
+#filterAddBtn {
+    -fx-background-image:url('../images/icon_plus.png');
+    -fx-background-size:8
+    ;
+    -fx-background-repeat:no-repeat;
+    -fx-background-position : center;
 }

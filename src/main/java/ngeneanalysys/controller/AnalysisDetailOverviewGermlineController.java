@@ -1,5 +1,6 @@
 package ngeneanalysys.controller;
 
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -74,6 +75,19 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
     private TableColumn<VariantAndInterpretationEvidence, String> variantColumn;
 
     @FXML
+    private TableColumn<VariantAndInterpretationEvidence, Integer> positionColumn;
+
+    @FXML
+    private TableColumn<VariantAndInterpretationEvidence, String> refSeqColumn;
+
+    @FXML
+    private TableColumn<VariantAndInterpretationEvidence, String> ntChangeColumn;
+
+    @FXML
+    private TableColumn<VariantAndInterpretationEvidence, String> aaChangeColumn;
+
+
+    @FXML
     private Tooltip roiCoverageTooltip;
 
     @FXML
@@ -117,6 +131,10 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
                         cellData.getValue().getSnpInDel().getSwPathogenicity()));
         geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
         variantColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
+        positionColumn.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getSnpInDel().getGenomicCoordinate().getStartPosition()));
+        refSeqColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getRefSequence()));
+        ntChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
+        aaChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChange()));
 
         setDisplayItem();
     }

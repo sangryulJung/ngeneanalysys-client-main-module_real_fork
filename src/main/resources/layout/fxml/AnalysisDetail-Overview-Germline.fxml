@@ -52,11 +52,11 @@
          <columns>
             <TableColumn fx:id="pathogenicityColumn" editable="false" prefWidth="100.0" sortable="false" text="Pathogenicity" />
             <TableColumn fx:id="geneColumn" editable="false" prefWidth="100.0" sortable="false" text="Gene" />
-            <TableColumn editable="false" prefWidth="200.0" sortable="false" text="Position" />
+            <TableColumn fx:id="positionColumn" editable="false" prefWidth="200.0" sortable="false" text="Position" />
             <TableColumn fx:id="variantColumn" editable="false" prefWidth="200.0" sortable="false" text="Variant" />
-            <TableColumn editable="false" prefWidth="200.0" sortable="false" text="Transcript" />
-            <TableColumn editable="false" prefWidth="170.0" sortable="false" text="NT Change" />
-            <TableColumn editable="false" prefWidth="165.0" sortable="false" text="AA Change" />
+            <TableColumn fx:id="refSeqColumn" editable="false" prefWidth="200.0" sortable="false" text="Transcript" />
+            <TableColumn fx:id="ntChangeColumn" editable="false" prefWidth="170.0" sortable="false" text="NT Change" />
+            <TableColumn fx:id="aaChangeColumn" editable="false" prefWidth="165.0" sortable="false" text="AA Change" />
          </columns>
       </TableView>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5">

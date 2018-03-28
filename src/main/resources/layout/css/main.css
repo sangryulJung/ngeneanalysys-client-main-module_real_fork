@@ -214,11 +214,15 @@
 }
 
 #topMenuArea1 #sampleListStackPane .label {
-    -fx-alignment : center;
+    -fx-alignment : center-left;
     -fx-font-size : 16px;
     -fx-cursor:hand;
     -fx-border-width : 0 0 3 0;
     -fx-border-color : white;
+    -fx-background-image:url('../images/btn_user_set.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-size : 10 5;
+    -fx-background-position: right 5 center;
 }
 
 #topMenuArea1 #sampleListStackPane .label#selectedMenu {

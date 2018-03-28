@@ -77,6 +77,19 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
     private TableColumn<VariantAndInterpretationEvidence, String> variantColumn;
 
     @FXML
+    private TableColumn<VariantAndInterpretationEvidence, Integer> positionColumn;
+
+    @FXML
+    private TableColumn<VariantAndInterpretationEvidence, String> refSeqColumn;
+
+    @FXML
+    private TableColumn<VariantAndInterpretationEvidence, String> ntChangeColumn;
+
+    @FXML
+    private TableColumn<VariantAndInterpretationEvidence, String> aaChangeColumn;
+
+
+    @FXML
     private TableColumn<VariantAndInterpretationEvidence, String> therapeuticColumn;
 
     @FXML
@@ -143,6 +156,10 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
         variantColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
         alleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()));
+        positionColumn.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getSnpInDel().getGenomicCoordinate().getStartPosition()));
+        refSeqColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getRefSequence()));
+        ntChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
+        aaChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChange()));
         therapeuticColumn.setCellValueFactory(cellData -> {
             SnpInDelInterpretation snpInDelInterpretation = cellData.getValue().getInterpretationEvidence();
             String text = "";
