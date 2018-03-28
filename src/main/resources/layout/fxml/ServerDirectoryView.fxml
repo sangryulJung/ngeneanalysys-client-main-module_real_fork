@@ -29,7 +29,7 @@
                   <Insets right="10.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#submit" prefWidth="90.0" style="-fx-alignment: center;" styleClass="submitBtn" text="SELECT" />
+            <Button mnemonicParsing="false" onAction="#submit" prefWidth="90.0" style="-fx-alignment: center;" styleClass="submitBtn" text="OPEN" />
          </children>
       </HBox>
    </children>

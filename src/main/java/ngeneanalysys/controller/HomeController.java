@@ -306,7 +306,7 @@ public class HomeController extends SubPaneController{
             startDateLabel = new Label();
             startDateHBox = createHBox(startDateLabel, "Start Date : ");
             FinishDateLabel = new Label();
-            FinishDateHBox = createHBox(FinishDateLabel, "Finish Date: ");
+            FinishDateHBox = createHBox(FinishDateLabel, "Finished Date : ");
             completeLabel = new Label();
             completeHBox = createHBox(completeLabel, "Complete : ");
             queuedLabel = new Label();
@@ -325,7 +325,7 @@ public class HomeController extends SubPaneController{
             HBox box = new HBox();
             box.setPrefHeight(20);
             Label titleLabel = new Label(titleLabelString);
-            titleLabel.setPrefWidth(80);
+            titleLabel.setPrefWidth(85);
             titleLabel.setStyle("-fx-text-fill : gray; -fx-font-family : Noto Sans CJK KR Regular;");
             box.getChildren().add(titleLabel);
             box.getChildren().add(label);

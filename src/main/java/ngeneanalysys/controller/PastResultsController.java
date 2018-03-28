@@ -91,6 +91,12 @@ public class PastResultsController extends SubPaneController {
 
 	private boolean oneItem = false;
 
+	private Map<String, String> searchOption = new HashMap<>();
+
+	public void setSearchOption() {
+		searchOption.put("SAMPLE","sampleName");
+		searchOption.put("RUN","runName");
+	}
 
 	/**
 	 * 화면 출력
@@ -98,6 +104,7 @@ public class PastResultsController extends SubPaneController {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void show(Parent root) throws IOException {
+		setSearchOption();
 		logger.info("ExperimenterPastResultsController show..");
 		itemCountPerPage = 5;
 		// api service init..
@@ -132,8 +139,12 @@ public class PastResultsController extends SubPaneController {
 				ImageView imageView = new ImageView(resourceUtil.getImage("/layout/images/renewal/search_icon.png"));
 				imageView.setStyle("-fx-cursor:hand;");
 				imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-					if(StringUtils.isEmpty(textField.getText())) return;
-
+					if(StringUtils.isEmpty(textField.getText())) {
+						oneItem = false;
+					} else {
+						oneItem = true;
+					}
+					search();
 				});
 				textField.setRight(imageView);
 				textField.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
@@ -350,6 +361,22 @@ public class PastResultsController extends SubPaneController {
 		param.put("step", AnalysisJobStatusCode.JOB_RUN_GROUP_PIPELINE);
 		param.put("status", AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_COMPLETE);
 
+		if(oneItem) {
+			final CustomTextField textField = (CustomTextField)filterSearchArea.getChildren().get(0);
+			param.put(searchOption.get(searchComboBox.getSelectionModel().getSelectedItem().getText()), textField.getText());
+		} else if(!searchListFlowPane.getChildren().isEmpty()){
+			for(Node node : searchListFlowPane.getChildren()) {
+				String subPath = "";
+				VBox vbox = (VBox) node;
+				Label label = (Label) vbox.getChildren().get(0);
+				FlowPane flowPane = (FlowPane) vbox.getChildren().get(1);
+				for(Node item : flowPane.getChildren()) {
+					subPath += "&" + label.getText() + "=" + ((Label)item).getText();
+				}
+			}
+		} else {
+		}
+
 		/** End 검색 항목 설정 */
 		return param;
 	}
@@ -393,12 +420,51 @@ public class PastResultsController extends SubPaneController {
 	 */
 	@FXML
 	public void search() {
-		if(searchComboBox.getSelectionModel().getSelectedItem() != null) {
-
-		}
-		searchComboBox.getSelectionModel().getSelectedItem();
-
+		addSearchArea();
 		setList(1);
+	}
+
+	public void addSearchItem(final CustomTextField textField) {
+		VBox box = new VBox();
+		box.setPrefWidth(Double.MAX_VALUE);
+		box.setId(searchComboBox.getSelectionModel().getSelectedItem().getText());
+		Label title = new Label(searchComboBox.getSelectionModel().getSelectedItem().getText());
+		title.getStyleClass().add("font_size_13");
+		box.setSpacing(10);
+		box.getChildren().add(title);
+		FlowPane flowPane = new FlowPane();
+		flowPane.getChildren().add(new Label(textField.getText()));
+		box.getChildren().add(flowPane);
+		searchListFlowPane.getChildren().add(box);
+	}
+
+	public void addSearchArea() {
+		if(searchComboBox.getSelectionModel().getSelectedItem() != null && !oneItem) {
+			if(filterSearchArea.getChildren().get(0) instanceof CustomTextField) {
+				final CustomTextField textField = (CustomTextField)filterSearchArea.getChildren().get(0);
+				if(!StringUtils.isEmpty(textField.getText())) {
+					if(searchListFlowPane.getChildren().isEmpty()) {
+						addSearchItem(textField);
+					} else {
+						Node containNode = null;
+						for(Node node : searchListFlowPane.getChildren()) {
+							if(node.getId().equalsIgnoreCase(searchComboBox.getSelectionModel().getSelectedItem().getText())) {
+								containNode = node;
+								break;
+							}
+						}
+
+						if(containNode != null) {
+							VBox box = (VBox) containNode;
+							Node child = box.getChildren().get(1);
+							((FlowPane)child).getChildren().add(new Label(textField.getText()));
+						} else {
+							addSearchItem(textField);
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	/**
@@ -425,11 +491,7 @@ public class PastResultsController extends SubPaneController {
 			labelSize(variants, 320., styleClass);
 			Label qc = new Label("QC");
 			labelSize(qc, 98., styleClass);
-			titleBox.getChildren().add(name);
-			titleBox.getChildren().add(status);
-			titleBox.getChildren().add(panel);
-			titleBox.getChildren().add(variants);
-			titleBox.getChildren().add(qc);
+			titleBox.getChildren().addAll(name, panel, status, variants, qc);
 
 			this.getChildren().add(titleBox);
 			this.setPrefHeight(30);
@@ -437,7 +499,7 @@ public class PastResultsController extends SubPaneController {
 
 		public void labelSize(Label label, Double size, String style) {
 			label.setPrefWidth(size);
-			label.setPrefHeight(30);
+			label.setPrefHeight(35);
 			label.setAlignment(Pos.CENTER);
 			if(style != null) label.getStyleClass().add(style);
 		}
@@ -488,10 +550,10 @@ public class PastResultsController extends SubPaneController {
 				Label qc = new Label(sampleView.getQcResult());
 				labelSize(qc, 100., styleClass);
 
-				itemHBox.getChildren().addAll(name, statusHBox, panel, variants, qc);
+				itemHBox.getChildren().addAll(name, panel, statusHBox, variants, qc);
 
 				this.getChildren().add(itemHBox);
-				this.setPrefHeight(this.getPrefHeight() + 30);
+				this.setPrefHeight(this.getPrefHeight() + 35);
 			}
 		}
 

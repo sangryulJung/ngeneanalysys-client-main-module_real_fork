@@ -57,7 +57,7 @@
                      <children>
                         <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
                            <HBox.margin>
-                              <Insets bottom="10.0" left="5.0" right="6.0" />
+                              <Insets bottom="7.0" left="5.0" right="6.0" />
                            </HBox.margin>
                            <image>
                               <Image url="@../images/renewal/login_user.png" />
@@ -68,7 +68,7 @@
                               <Font name="System Bold" size="12.0" />
                            </font>
                            <HBox.margin>
-                              <Insets bottom="9.0" />
+                              <Insets bottom="6.0" />
                            </HBox.margin>
                            <styleClass>
                               <String fx:value="font_size_12" />
@@ -81,7 +81,7 @@
                             <Menu fx:id="userSystemMenu" mnemonicParsing="false" />
                           </menus>
                            <HBox.margin>
-                              <Insets bottom="15.0" />
+                              <Insets bottom="12.0" />
                            </HBox.margin>
                            <cursor>
                               <Cursor fx:constant="HAND" />

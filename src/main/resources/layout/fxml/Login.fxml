@@ -45,14 +45,14 @@
                   <RowConstraints minHeight="-Infinity" prefHeight="19.0" valignment="TOP" />
               </rowConstraints>
                <children>
-                  <Label alignment="TOP_LEFT" styleClass="title" text="Username" GridPane.valignment="CENTER" />
+                  <Label alignment="TOP_LEFT" styleClass="title" text="USERNAME" GridPane.valignment="CENTER" />
                   <TextField fx:id="inputLoginID" onKeyPressed="#checkValidateLoginID" pickOnBounds="false" promptText="Enter the Username" GridPane.rowIndex="1" />
                   <Label fx:id="labelLoginID" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="275.0" styleClass="title_warning" textFill="WHITE" visible="false" GridPane.rowIndex="2">
                      <font>
                         <Font size="10.0" />
                      </font>
                   </Label>
-                  <Label alignment="TOP_LEFT" styleClass="title" text="Password" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                  <Label alignment="TOP_LEFT" styleClass="title" text="PASSWORD" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
                   <PasswordField fx:id="inputPassword" maxHeight="40.0" minHeight="40.0" onKeyPressed="#checkValidatePassword" prefHeight="40.0" promptText="Enter the Password" GridPane.rowIndex="4" />
                   <Label fx:id="labelPassword" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="275.0" styleClass="title_warning" textFill="WHITE" visible="false" GridPane.rowIndex="5">
                      <font>
