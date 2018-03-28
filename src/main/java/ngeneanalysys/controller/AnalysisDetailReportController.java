@@ -297,7 +297,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 List<VariantCountByGene> variantCountByGenes = (List<VariantCountByGene>) response
                         .getMultiObjectBeforeConvertResponseToJSON(VariantCountByGene.class,
                                 false);
-
+                if (variantCountByGenes == null) {
+                    variantCountByGenes = new ArrayList<>();
+                }
                 variantCountByGenes = filteringGeneList(variantCountByGenes);
 
                 if(variantCountByGenes != null && !variantCountByGenes.isEmpty()) {
@@ -305,7 +307,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 30);
                     contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 30);
                 }
-
                 variantCountByGenes = variantCountByGenes.stream().sorted(Comparator.comparing(VariantCountByGene::getGeneSymbol)).collect(Collectors.toList());
                 Set<String> allGeneList = null;
                 Set<String> list = new HashSet<>();
