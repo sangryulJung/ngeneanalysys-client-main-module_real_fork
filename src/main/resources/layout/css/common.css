@@ -3,7 +3,7 @@
 	 url("../font/NotoSansCJKkr-Regular.otf"),
 	 url("../font/NotoSansKR-Regular.otf"),
 	 url("../font/NanumSquareB.ttf"),
-	 url("../font/NanumSquareR.ttf");
+	 url("../font/NanumSquareR.ttf"),
 }
 
 /** 기본 폰트 설정 */
@@ -428,7 +428,7 @@ Button {
 /**
  * End Pagination CSS
  */
- 
+
 /** Base Table View CSS */
 .table-view {
 	-fx-background-color: #FFFFFF;
@@ -463,7 +463,7 @@ Button {
 .table-row-cell:empty {
     -fx-background-color : white;
 }
- 
+
 .table-row-cell:hover{
 }
 
@@ -474,7 +474,6 @@ Button {
 .table-view .table-cell .label {
 	-fx-text-fill:#656565;
 	-fx-background-color : #FFFFFF;
-
 }
 
 .table-row-cell{
@@ -1147,9 +1146,9 @@ Button {
 	-fx-text-fill:#ffffff;
 }
 .btn_choose:hover {
-	-fx-background-color:#CFACA5;	
+	-fx-background-color:#CFACA5;
 }
-.progress-bar { 
+.progress-bar {
 	-fx-accent: #73739B;
 	-fx-background-insets:0;
 	-fx-padding:0;
@@ -1513,7 +1512,7 @@ Button {
 .scroll-bar:horizontal .increment-button ,
 .scroll-bar:horizontal .decrement-button {
     -fx-background-color: white;
-	-fx-background-radius: 5em;
+	-fx-background-radius: 0em;
 	-fx-padding:0 0 10 0;
 
 }
@@ -1523,7 +1522,7 @@ Button {
 .scroll-bar:vertical .decrement-button {
 
     -fx-background-color: white;
-	-fx-background-radius: 5em;
+	-fx-background-radius: 0em;
 	-fx-padding:0 10 0 0;
 
 }
@@ -1539,7 +1538,7 @@ Button {
 .scroll-bar:vertical .thumb {
     -fx-background-color:derive(black,90%);
 	-fx-background-insets: 2, 0, 0;
-	-fx-background-radius: 5em;
+	-fx-background-radius: 0;
 
 }
 
