@@ -16,7 +16,6 @@ import javafx.scene.layout.*;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedRunSampleView;
-import ngeneanalysys.model.paged.PagedSampleView;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.util.StringUtils;
@@ -404,12 +403,16 @@ public class PastResultsController extends SubPaneController {
 				resultVBox.getChildren().add(gridPane);
 				gridPane.setLabel(runSampleView.getRun());
 				setVBoxPrefSize(gridPane);
-				Insets insets = new Insets(10, 0, 0, 0);
 
 				SampleInfoVBox vbox = new SampleInfoVBox();
 				vbox.setSampleList(runSampleView.getSampleViews());
 				resultVBox.getChildren().add(vbox);
 				setVBoxPrefSize(vbox);
+				if(list.indexOf(runSampleView) < list.size() - 1) {
+                    Insets insets = new Insets(0, 0, 30, 0);
+                    VBox.setMargin(vbox, insets);
+                    resultVBox.setPrefHeight(resultVBox.getPrefHeight() + 30);
+                }
 			}
 		}
 	}
