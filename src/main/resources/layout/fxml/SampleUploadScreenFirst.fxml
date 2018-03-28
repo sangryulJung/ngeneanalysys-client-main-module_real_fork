@@ -54,7 +54,7 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="3">
                <children>
-                  <RadioButton fx:id="localFastqFilesRadioButton" mnemonicParsing="false" onMouseClicked="#localFastqFilesAction" text="Local FastqFiles">
+                  <RadioButton fx:id="localFastqFilesRadioButton" mnemonicParsing="false" onMouseClicked="#localFastqFilesAction" text="Local Fastq Files">
                      <HBox.margin>
                         <Insets left="10.0" right="10.0" />
                      </HBox.margin>

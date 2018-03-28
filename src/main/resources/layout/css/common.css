@@ -474,6 +474,7 @@ Button {
 .table-view .table-cell .label {
 	-fx-text-fill:#656565;
 	-fx-background-color : #FFFFFF;
+
 }
 
 .table-row-cell{

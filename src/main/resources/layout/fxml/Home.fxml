@@ -118,7 +118,7 @@
                   <Insets top="-1.0" />
                </padding>
             </Label>
-            <Label style="-fx-font-family: Noto Sans CJK KR Regular;" styleClass="font_size_11" text="Runing">
+            <Label style="-fx-font-family: Noto Sans CJK KR Regular;" styleClass="font_size_11" text="Running">
                <HBox.margin>
                   <Insets left="3.0" right="5.0" />
                </HBox.margin>

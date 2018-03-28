@@ -63,7 +63,7 @@
 }
 
 #settingURLButton {
-	-fx-background-image:url('../images/renewal/icon_settings.png');
+	-fx-background-image:url('../images/renewal/preference.png');
 	-fx-background-size: 24 24;
 	-fx-background-repeat: no-repeat;
 	-fx-background-color:transparent;

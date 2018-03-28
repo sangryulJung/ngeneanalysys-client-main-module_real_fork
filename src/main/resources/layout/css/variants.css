@@ -8,9 +8,6 @@
 	-fx-background-radius:0 0 0 0;
 	-fx-pref-width:110;
 	-fx-pref-height:35;
-	-fx-background-image:url('../images/renewal/arrow_5x11.png');
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: right 20 center;
     -fx-border-width: 0.5 0.5 0.5 0.5;
     -fx-border-color : #d2d0d0;
 }
@@ -18,7 +15,7 @@
 #tabMenuHBox .label {
 	-fx-font-size: 14;
 	-fx-text-fill:#000000;
-	-fx-alignment:center;
+	-fx-alignment : center;
 	-fx-padding:0 0 0 0;
 	-fx-pref-width:110;
 	-fx-pref-height:35;
@@ -29,19 +26,15 @@
 	/* top-left top-right bottom-right bottom-left */
 	-fx-background-radius:0;
 	-fx-border-width:0;
-	-fx-background-image:url('../images/renewal/arrow_5x11.png');
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: right 20 center;
     -fx-border-width: 0.5 0.5 0.5 0.5;
     -fx-border-color : #d2d0d0;
 }
 
 #tabMenuHBox #selectedMenu .label {
-	-fx-font-size: 12;
-	-fx-font-weight:bold;
+	-fx-font-size: 14;
 	-fx-text-fill: #ffffff;
-	-fx-alignment: center-left;
-	-fx-label-padding : 0 0 0 15;
+	-fx-alignment: center;
+	-fx-label-padding : 0 0 0 0;
 }
 
 .btn_fold {
@@ -157,10 +150,10 @@
 }
 
 .filter_icon {
-    -fx-pref-width : 50;
-    -fx-pref-height : 50;
+    -fx-pref-width : 40;
+    -fx-pref-height : 40;
     -fx-alignment : center;
-    -fx-background-color : #939193;
+    -fx-background-color : #FFFFFF;
     -fx-background-radius : 50;
     -fx-font-size : 14;
     -fx-text-alignment : center;

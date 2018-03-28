@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -55,95 +56,112 @@
             <Button layoutX="1155.0" layoutY="20.0" mnemonicParsing="false" onAction="#confirmPDFAsFinal" prefHeight="35.0" prefWidth="156.0" styleClass="btn_blue_sm" text="Confirm Final Report" />
          </children>
       </HBox>
-      <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" prefHeight="380.0" prefWidth="200.0" GridPane.valignment="CENTER">
-         <content>
-            <Pane fx:id="mainContentsPane" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="380.0" prefWidth="1120.0">
-               <children>
-                  <VBox fx:id="contentVBox" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="380.0" prefWidth="1120.0">
+      <HBox maxWidth="1140.0" minWidth="1140.0" prefHeight="100.0" prefWidth="1140.0">
+         <children>
+            <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" maxHeight="370.0" minHeight="370.0" prefHeight="370.0" prefWidth="1140.0">
+               <content>
+                  <Pane fx:id="mainContentsPane" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="370.0" prefWidth="1120.0">
                      <children>
-                        <GridPane>
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="12.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="8.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="12.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="8.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="12.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="8.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="12.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="8.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="12.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="8.0" prefWidth="100.0" />
-                          </columnConstraints>
-                           <VBox.margin>
-                              <Insets top="5.0" />
-                           </VBox.margin>
-                        </GridPane>
-                        <Label styleClass="font_size_18" text="DETECTED VARIANT">
-                           <VBox.margin>
-                              <Insets top="5.0" />
-                           </VBox.margin>
-                        </Label>
-                        <TableView fx:id="variantsTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="1120.0" style="-fx-border-width: 0;" styleClass="txt_black">
-                          <columns>
-                              <TableColumn fx:id="tierColumn" prefWidth="75.0" styleClass="txt_black" text="Tier" />
-                              <TableColumn fx:id="chrColumn" prefWidth="75.0" styleClass="txt_black" text="Chr" />
-                            <TableColumn fx:id="geneColumn" prefWidth="75.0" styleClass="txt_black" text="Gene" />
-                              <TableColumn fx:id="positionColumn" prefWidth="75.0" styleClass="txt_black" text="Position" />
-                            <TableColumn fx:id="refSeqColumn" prefWidth="75.0" styleClass="txt_black" text="Ref Seq" />
-                              <TableColumn fx:id="ntChangeColumn" prefWidth="75.0" styleClass="txt_black" text="NT Change" />
-                              <TableColumn fx:id="aaChangeColumn" prefWidth="75.0" styleClass="txt_black" text="AA Change" />
-                              <TableColumn fx:id="alleleFrequencyColumn" prefWidth="75.0" styleClass="txt_black" text="VAF" />
-                          </columns>
-                        </TableView>
-                        <Label fx:id="conclusions" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="font_size_18" text="CONCLUSION">
-                           <VBox.margin>
-                              <Insets top="15.0" />
-                           </VBox.margin>
-                        </Label>
-                        <TextArea fx:id="conclusionsTextArea" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="73.0" styleClass="txt_black" />
-                        <Label fx:id="extraFields" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="font_size_18" text="REPORT EXTRA FIELDS" visible="false">
-                           <VBox.margin>
-                              <Insets top="15.0" />
-                           </VBox.margin>
-                        </Label>
-                        <GridPane fx:id="customFieldGridPane" alignment="CENTER">
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                          </columnConstraints>
-                        </GridPane>
-                        <HBox prefHeight="28.0" prefWidth="200.0">
+                        <VBox fx:id="contentVBox" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="370.0" prefWidth="1120.0">
                            <children>
-                              <Label fx:id="conclusions11" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" styleClass="font_size_18" text="TARGET GENES" />
-                           </children>
-                        </HBox>
-                        <FlowPane fx:id="targetGenesFlowPane" hgap="10.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="1120.0" prefWrapLength="1120.0" vgap="10.0">
-                           <children>
-                              <Label styleClass="target_gene_variant_not" text="Label">
-                                 <FlowPane.margin>
-                                    <Insets />
-                                 </FlowPane.margin>
+                              <GridPane>
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="12.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="8.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="12.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="8.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="12.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="8.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="12.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="8.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="12.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="8.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                 <VBox.margin>
+                                    <Insets top="5.0" />
+                                 </VBox.margin>
+                              </GridPane>
+                              <Label text="DETECTED VARIANT">
+                                 <VBox.margin>
+                                    <Insets top="5.0" />
+                                 </VBox.margin>
+                                 <styleClass>
+                                    <String fx:value="font_size_18" />
+                                    <String fx:value="font_gray" />
+                                 </styleClass>
                               </Label>
-                              <Label styleClass="target_gene_variant_not" text="Label">
-                                 <FlowPane.margin>
-                                    <Insets />
-                                 </FlowPane.margin>
+                              <TableView fx:id="variantsTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="1120.0" style="-fx-border-width: 0;" styleClass="txt_black">
+                                <columns>
+                                    <TableColumn fx:id="tierColumn" prefWidth="75.0" styleClass="txt_black" text="Tier" />
+                                    <TableColumn fx:id="chrColumn" prefWidth="75.0" styleClass="txt_black" text="Chr" />
+                                  <TableColumn fx:id="geneColumn" prefWidth="75.0" styleClass="txt_black" text="Gene" />
+                                    <TableColumn fx:id="positionColumn" prefWidth="75.0" styleClass="txt_black" text="Position" />
+                                  <TableColumn fx:id="refSeqColumn" prefWidth="75.0" styleClass="txt_black" text="Ref Seq" />
+                                    <TableColumn fx:id="ntChangeColumn" prefWidth="75.0" styleClass="txt_black" text="NT Change" />
+                                    <TableColumn fx:id="aaChangeColumn" prefWidth="75.0" styleClass="txt_black" text="AA Change" />
+                                    <TableColumn fx:id="alleleFrequencyColumn" prefWidth="75.0" styleClass="txt_black" text="VAF" />
+                                </columns>
+                              </TableView>
+                              <Label fx:id="conclusions" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="CONCLUSION">
+                                 <VBox.margin>
+                                    <Insets top="15.0" />
+                                 </VBox.margin>
+                                 <styleClass>
+                                    <String fx:value="font_size_18" />
+                                    <String fx:value="font_gray" />
+                                 </styleClass>
                               </Label>
+                              <TextArea fx:id="conclusionsTextArea" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="73.0" styleClass="txt_black" />
+                              <Label fx:id="extraFields" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="font_size_18" text="REPORT EXTRA FIELDS" visible="false">
+                                 <VBox.margin>
+                                    <Insets top="15.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <GridPane fx:id="customFieldGridPane" alignment="CENTER">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                              </GridPane>
+                              <HBox prefHeight="28.0" prefWidth="200.0">
+                                 <children>
+                                    <Label fx:id="conclusions11" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" text="TARGET GENES">
+                                       <styleClass>
+                                          <String fx:value="font_size_18" />
+                                          <String fx:value="font_gray" />
+                                       </styleClass>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <FlowPane fx:id="targetGenesFlowPane" hgap="10.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="1120.0" prefWrapLength="1120.0" vgap="10.0">
+                                 <children>
+                                    <Label styleClass="target_gene_variant_not" text="Label">
+                                       <FlowPane.margin>
+                                          <Insets />
+                                       </FlowPane.margin>
+                                    </Label>
+                                    <Label styleClass="target_gene_variant_not" text="Label">
+                                       <FlowPane.margin>
+                                          <Insets />
+                                       </FlowPane.margin>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="15.0" top="15.0" />
+                                 </padding>
+                              </FlowPane>
                            </children>
-                           <padding>
-                              <Insets bottom="15.0" top="15.0" />
-                           </padding>
-                        </FlowPane>
+                        </VBox>
                      </children>
-                  </VBox>
-               </children>
-            </Pane>
-         </content>
-      </ScrollPane>
+                  </Pane>
+               </content>
+            </ScrollPane>
+         </children>
+      </HBox>
    </children>
    <stylesheets>
       <URL value="@../css/common.css" />

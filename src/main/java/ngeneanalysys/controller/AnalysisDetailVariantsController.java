@@ -122,7 +122,7 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
                 }
 
                 Region region = new Region();
-                region.setLayoutX(5);
+                //region.setLayoutX();
 
                 Label menuName = new Label(topMenu.getMenuName());
                 menuName.setLayoutX(0);

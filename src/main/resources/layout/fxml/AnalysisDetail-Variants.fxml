@@ -20,8 +20,11 @@
       <BorderPane fx:id="detailContents" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
       <HBox fx:id="tabMenuHBox" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="600.0">
          <GridPane.margin>
-            <Insets left="50.0" top="30.0" />
+            <Insets top="30.0" />
          </GridPane.margin>
+         <opaqueInsets>
+            <Insets left="-10.0" />
+         </opaqueInsets>
       </HBox>
    </children>
    <stylesheets>

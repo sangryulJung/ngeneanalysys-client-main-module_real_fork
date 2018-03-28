@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -118,7 +119,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     private final double minSize = 0;
     private final double standardAccordionSize = 870;
-    private final double maxAccordionSize = 970;
+    private final double maxAccordionSize = 1020;
 
     private final double standardTableSize = 830;
     private final double maxTableSize = 980;
@@ -195,6 +196,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         showVariantList(0, null, null);
 
+        foldLeft();
+        foldRight();
+
         variantsController.getDetailContents().setCenter(root);
     }
 
@@ -202,43 +206,44 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         filterVBox.getChildren().removeAll(filterVBox.getChildren());
         filterVBox.setPrefHeight(0);
         if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
-            HBox hBox = tierHBoxCreate("Tier I", "T1");
+            HBox hBox = tierHBoxCreate("T I", "T1");
             filterVBox.getChildren().add(hBox);
-            filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 60);
-            hBox = tierHBoxCreate("Tier II", "T2");
+            filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
+            hBox = tierHBoxCreate("T II", "T2");
             filterVBox.getChildren().add(hBox);
-            filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 60);
-            hBox = tierHBoxCreate("Tier III", "T3");
+            filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
+            hBox = tierHBoxCreate("T III", "T3");
             filterVBox.getChildren().add(hBox);
-            filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 60);
-            hBox = tierHBoxCreate("Tier IV", "T4");
+            filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
+            hBox = tierHBoxCreate("T IV", "T4");
             filterVBox.getChildren().add(hBox);
-            filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 60);
+            filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
         } else if(panel.getAnalysisType().equalsIgnoreCase("GERMLINE")) {
             HBox hBox = pathogenicityHBoxCreate("P", "P");
             filterVBox.getChildren().add(hBox);
-            filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 60);
+            filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
             hBox = pathogenicityHBoxCreate("LP", "LP");
             filterVBox.getChildren().add(hBox);
-            filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 60);
+            filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
             hBox = pathogenicityHBoxCreate("US", "US");
             filterVBox.getChildren().add(hBox);
-            filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 60);
+            filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
             hBox = pathogenicityHBoxCreate("LB", "LB");
             filterVBox.getChildren().add(hBox);
-            filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 60);
+            filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
             hBox = pathogenicityHBoxCreate("B", "B");
             filterVBox.getChildren().add(hBox);
-            filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 60);
+            filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
         }
     }
 
     public HBox tierHBoxCreate(final String labelText, final String valueText) {
         HBox hBox = new HBox();
         hBox.setPrefWidth(100);
-        hBox.setPrefHeight(50);
+        hBox.setPrefHeight(40);
         hBox.setSpacing(5);
         hBox.setAlignment(Pos.CENTER_LEFT);
+        hBox.setPadding(new Insets(0,0,0 ,20));
 
         Label itemLabel = new Label();
         itemLabel.setWrapText(true);

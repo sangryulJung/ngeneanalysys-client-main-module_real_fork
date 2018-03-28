@@ -24,12 +24,12 @@
       <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <TableView fx:id="variantListTableView" minWidth="-Infinity" prefWidth="0.0" tableMenuButtonVisible="true" GridPane.columnIndex="1">
+      <TableView fx:id="variantListTableView" minWidth="-Infinity" prefWidth="0.0" tableMenuButtonVisible="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
          <padding>
             <Insets bottom="10.0" />
          </padding>
          <GridPane.margin>
-            <Insets left="5.0" right="5.0" top="20.0" />
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </GridPane.margin>
       </TableView>
       <HBox prefHeight="100.0" prefWidth="200.0">
@@ -39,10 +39,16 @@
                   <Insets />
                </HBox.margin>
                <children>
-                  <Label styleClass="font_size_18" text="FILTER" textFill="WHITE" />
+                  <Label styleClass="font_size_18" text="FILTER" textFill="WHITE">
+                     <VBox.margin>
+                        <Insets left="24.0" />
+                     </VBox.margin></Label>
                   <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
                      <children>
-                        <Label styleClass="font_size_14" text="Total : " />
+                        <Label styleClass="font_size_14" text="Total : ">
+                           <HBox.margin>
+                              <Insets left="15.0" />
+                           </HBox.margin></Label>
                         <Label fx:id="totalVariantCountLabel" styleClass="font_size_14" text="size" />
                      </children>
                      <VBox.margin>
