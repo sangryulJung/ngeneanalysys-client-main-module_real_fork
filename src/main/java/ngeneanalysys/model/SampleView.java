@@ -2,6 +2,8 @@ package ngeneanalysys.model;
 
 import org.joda.time.DateTime;
 
+import java.util.List;
+
 public class SampleView {
     private Integer id;
     private String name;
@@ -24,6 +26,14 @@ public class SampleView {
     private DateTime updatedAt;
     private DateTime deletedAt;
     private Integer deleted;
+    private List<SampleQC> sampleQCs;
+
+    /**
+     * @return sampleQCs
+     */
+    public List<SampleQC> getSampleQCs() {
+        return sampleQCs;
+    }
 
     public Integer getId() {
         return id;

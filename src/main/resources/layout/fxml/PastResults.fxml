@@ -52,11 +52,11 @@
          </GridPane.margin></Pagination>
       <GridPane fx:id="sampleListHeaderGridPane" alignment="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="170.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="210.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="130.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="130.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="170.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="180.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="220.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="140.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="140.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="180.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -108,7 +108,7 @@
                   <Button fx:id="searchBtn" mnemonicParsing="false" onAction="#search" prefWidth="80.0" style="-fx-alignment: center;" styleClass="submitBtn" text="SEARCH" />
                </children>
             </HBox>
-            <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="250.0" vbarPolicy="NEVER">
+            <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="250.0">
                <content>
                   <FlowPane fx:id="searchListFlowPane" maxHeight="-Infinity" minHeight="-Infinity" prefWidth="240.0" />
                </content>

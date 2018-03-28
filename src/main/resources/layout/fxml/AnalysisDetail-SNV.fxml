@@ -8,7 +8,6 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -41,16 +40,22 @@
                </HBox.margin>
                <children>
                   <Label styleClass="font_size_18" text="FILTER" textFill="WHITE" />
-                  <HBox alignment="BOTTOM_LEFT" prefHeight="30.0" prefWidth="200.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
                      <children>
                         <Label styleClass="font_size_14" text="Total : " />
                         <Label fx:id="totalVariantCountLabel" styleClass="font_size_14" text="size" />
                      </children>
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin>
                   </HBox>
-                  <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="120.0">
-                    <content>
-                      <AnchorPane minHeight="0.0" minWidth="-Infinity" prefHeight="200.0" prefWidth="120.0" />
-                    </content>
+                  <ScrollPane hbarPolicy="NEVER" prefHeight="220.0" prefWidth="120.0">
+                     <content>
+                        <VBox fx:id="filterVBox" prefHeight="0.0" prefWidth="100.0" spacing="10.0" />
+                     </content>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
                   </ScrollPane>
                   <Button fx:id="filterAddBtn" mnemonicParsing="false" styleClass="font_size_18" text="+">
                      <VBox.margin>

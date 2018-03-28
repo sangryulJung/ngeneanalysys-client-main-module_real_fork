@@ -269,7 +269,7 @@ public class HttpClientUtil {
 			if (response.getEntity() != null) {
 				result.setEntity(response.getEntity());
 				try {
-					result.setContentString(convertReponseContent(response.getEntity().getContent()));
+					result.setContentString(convertResponseContent(response.getEntity().getContent()));
 				} catch (UnsupportedOperationException | IOException e) {
 					e.printStackTrace();
 					errorMessage = String.format("Server API ERROR(%s)\n\nContents is none.", status);
@@ -571,7 +571,7 @@ public class HttpClientUtil {
 	 * @param content
 	 * @return
 	 */
-	public static String convertReponseContent(InputStream content) {
+	public static String convertResponseContent(InputStream content) {
 		if (content == null) return null;
 		try {
 			BufferedReader rd = new BufferedReader(new InputStreamReader(content));

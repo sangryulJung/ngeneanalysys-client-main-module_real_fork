@@ -15,12 +15,14 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 import ngeneanalysys.animaition.HddStatusTimer;
+import ngeneanalysys.code.AnalysisJobStatusCode;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedNotice;
 import ngeneanalysys.model.paged.PagedRun;
+import ngeneanalysys.model.paged.PagedRunSampleView;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.LoggerUtil;
@@ -208,7 +210,7 @@ public class HomeController extends SubPaneController{
         setNoticeArea();
         hddCheck();
         final int maxRunNumberOfPage = 3;
-        CompletableFuture<PagedRun> getPagedRun = new CompletableFuture<>();
+        CompletableFuture<PagedRunSampleView> getPagedRun = new CompletableFuture<>();
         CompletableFuture.supplyAsync(() -> {
             HttpClientResponse response;
             Map<String, Object> params = new HashMap<>();
@@ -217,21 +219,22 @@ public class HomeController extends SubPaneController{
                 params.put("limit", maxRunNumberOfPage);
                 params.put("offset", 0);
 
-                response = apiService.get("/runs", params, null, false);
+                response = apiService.get("/searchSamples", params, null, false);
 
-                PagedRun pagedRun = response.getObjectBeforeConvertResponseToJSON(PagedRun.class);
+                PagedRunSampleView searchedSamples = response
+                        .getObjectBeforeConvertResponseToJSON(PagedRunSampleView.class);
                 //logger.info(pagedRun.toString());
-                getPagedRun.complete(pagedRun);
+                getPagedRun.complete(searchedSamples);
             } catch (Exception e) {
                 getPagedRun.completeExceptionally(e);
             }
             return getPagedRun;
         });
         try {
-            PagedRun pagedRun = getPagedRun.get();
-            int runCount = pagedRun.getResult().size();
+            PagedRunSampleView pagedRun = getPagedRun.get();
+            int runCount = pagedRun.getCount();
             for(int i = 0; i < runCount; i++) {
-                Run run = pagedRun.getResult().get(i);
+                RunSampleView run = pagedRun.getResult().get(i);
                 runList.get(i).setRunStatus(run);
                 runList.get(i).setVisible(true);
 
@@ -334,18 +337,18 @@ public class HomeController extends SubPaneController{
             return box;
         }
 
-        public void setRunStatus(Run run) {
-            runName.setText(run.getName());
+        public void setRunStatus(RunSampleView run) {
+            runName.setText(run.getRun().getName());
             /////////////run status 설정
             statusLabel.setText("");
             statusLabel.getStyleClass().removeAll(statusLabel.getStyleClass());
-            if(run.getStatus().toUpperCase().equals("QUEUED")) {
+            if(run.getRun().getStatus().toUpperCase().equals("QUEUED")) {
                 statusLabel.getStyleClass().addAll("label", "queued_icon");
                 statusLabel.setText("Q");
-            } else if(run.getStatus().toUpperCase().equals("RUNNING")) {
+            } else if(run.getRun().getStatus().toUpperCase().equals("RUNNING")) {
                 statusLabel.getStyleClass().addAll("label","run_icon");
                 statusLabel.setText("R");
-            } else if(run.getStatus().toUpperCase().equals("COMPLETE")) {
+            } else if(run.getRun().getStatus().toUpperCase().equals("COMPLETE")) {
                 statusLabel.getStyleClass().addAll("label","complete_icon");
                 statusLabel.setText("C");
             } else {
@@ -354,17 +357,23 @@ public class HomeController extends SubPaneController{
             }
             ///////////////////////
             SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
-            if(run.getCreatedAt() != null)
-                startDateLabel.setText(format.format(run.getCreatedAt().toDate()));
-            if(run.getCompletedAt() != null)
-                FinishDateLabel.setText(format.format(run.getCompletedAt().toDate()));
+            if(run.getRun().getCreatedAt() != null)
+                startDateLabel.setText(format.format(run.getRun().getCreatedAt().toDate()));
+            if(run.getRun().getCompletedAt() != null)
+                FinishDateLabel.setText(format.format(run.getRun().getCompletedAt().toDate()));
+            List<SampleView> sampleViews = run.getSampleViews();
 
-            panelLabel.setText("TST 170");
-            totalLabel.setText("8");
-            completeLabel.setText("2");
-            runningLabel.setText("2");
-            queuedLabel.setText("2");
-            failedLabel.setText("2 ");
+            panelLabel.setText(sampleViews.get(0).getPanelName());
+            int totalCount = sampleViews.size();
+            totalLabel.setText(String.valueOf(totalCount));
+            long completeCount = sampleViews.stream().filter(item -> item.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_COMPLETE)).count();
+            completeLabel.setText(String.valueOf(completeCount));
+            long runningCount = sampleViews.stream().filter(item -> item.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_RUNNING)).count();
+            runningLabel.setText(String.valueOf(runningCount));
+            long queuedCount = sampleViews.stream().filter(item -> item.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_QUEUED)).count();
+            queuedLabel.setText(String.valueOf(queuedCount));
+            long failCount = sampleViews.stream().filter(item -> item.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_FAIL)).count();
+            failedLabel.setText(String.valueOf(failCount));
 
             if(!itemVBox.getChildren().contains(panelHBox))
                 itemVBox.getChildren().add(panelHBox);

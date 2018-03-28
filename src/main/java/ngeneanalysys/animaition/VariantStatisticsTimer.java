@@ -13,7 +13,7 @@ public final class VariantStatisticsTimer extends AnimationTimer {
 	private double outerLineWidth = 1.0;
 	private double outerCircleSize = 0;
 	private double gaugeStartAngle = 90.0;
-	private double innerLineWidth = 5.0;
+	private double innerLineWidth = 10.0;
 	private double innerOuterCircleGap = 1.0;
 	private double innerCircleSize = 0.0;
 	private double defaultMargin = outerLineWidth + 10.0;
@@ -52,7 +52,7 @@ public final class VariantStatisticsTimer extends AnimationTimer {
 		gc.setStroke(Color.web("#F6545C"));
 		gc.setTextAlign(TextAlignment.CENTER);
 		gc.setTextBaseline(VPos.CENTER);
-		gc.setFont(Font.font(10));
+		gc.setFont(Font.font(16));
 		// gc2.strokeText("Hello", defaultMargin, defaultMargin);
 		gc.setFill(Color.web("#8D8D8D"));
 		gc.fillText(this.labelText1, this.defaultMargin + (this.outerCircleSize / 2.0),

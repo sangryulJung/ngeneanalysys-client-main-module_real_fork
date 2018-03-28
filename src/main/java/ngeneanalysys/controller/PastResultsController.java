@@ -14,6 +14,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.model.*;
+import ngeneanalysys.model.paged.PagedRunSampleView;
 import ngeneanalysys.model.paged.PagedSampleView;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
@@ -229,10 +230,6 @@ public class PastResultsController extends SubPaneController {
 		}
 	}
 
-	public void oneItemSearch(String option, String value) {
-
-	}
-
 	public void setComboBoxItem() {
 		searchComboBox.setConverter(new ComboBoxConverter());
 		searchComboBox.getItems().add(new ComboBoxItem("String", "RUN"));
@@ -308,19 +305,19 @@ public class PastResultsController extends SubPaneController {
 					false);
 
 			if (response != null) {
-				PagedSampleView searchedSamples = response
-						.getObjectBeforeConvertResponseToJSON(PagedSampleView.class);
+				PagedRunSampleView searchedSamples = response
+						.getObjectBeforeConvertResponseToJSON(PagedRunSampleView.class);
 
-				totalCountLabel.setText(searchedSamples.getSampleAnalysisJobCount().getRunCount().toString());
+				/*totalCountLabel.setText(searchedSamples.getSampleAnalysisJobCount().getRunCount().toString());
 				queueLabel.setText(searchedSamples.getSampleAnalysisJobCount().getQueuedSampleCount().toString());
 				runningLabel.setText(searchedSamples.getSampleAnalysisJobCount().getRunningSampleCount().toString());
 				completeLabel.setText(searchedSamples.getSampleAnalysisJobCount().getCompletedSampleCount().toString());
-				failLabel.setText(searchedSamples.getSampleAnalysisJobCount().getFailedSampleCount().toString());
+				failLabel.setText(searchedSamples.getSampleAnalysisJobCount().getFailedSampleCount().toString());*/
 
-				List<SampleView> list = null;
+				List<RunSampleView> list = null;
 				if (searchedSamples != null) {
 					totalCount = searchedSamples.getCount();
-					list = searchedSamples.getResult().stream().sorted((a, b) -> Integer.compare(b.getId(), a.getId())).collect(Collectors.toList());
+					list = searchedSamples.getResult().stream().sorted((a, b) -> Integer.compare(b.getRun().getId(), a.getRun().getId())).collect(Collectors.toList());
 				}
 				int pageCount = 0;
 				if (totalCount > 0) {
@@ -394,24 +391,22 @@ public class PastResultsController extends SubPaneController {
 	 * 
 	 * @param list
 	 */
-	public void renderSampleList(List<SampleView> list) {
+	public void renderSampleList(List<RunSampleView> list) {
 		resultVBox.getChildren().removeAll(resultVBox.getChildren());
 		resultVBox.setPrefHeight(0);
 		if (list != null && !list.isEmpty()) {
+			for(RunSampleView runSampleView : list) {
+				RunStatusGirdPane gridPane = new RunStatusGirdPane();
+				runStatusGirdPanes.add(gridPane);
+				resultVBox.getChildren().add(gridPane);
+				gridPane.setLabel(runSampleView.getRun());
+				setVBoxPrefSize(gridPane);
 
-			RunStatusGirdPane gridPane = new RunStatusGirdPane();
-			runStatusGirdPanes.add(gridPane);
-			resultVBox.getChildren().add(gridPane);
-			Run run = new Run();
-			run.setName("hhh");
-			run.setSequencingPlatform("zzz");
-			gridPane.setLabel(run);
-			setVBoxPrefSize(gridPane);
-
-			SampleInfoVBox vbox = new SampleInfoVBox();
-			vbox.setSampleList(list);
-			resultVBox.getChildren().add(vbox);
-			setVBoxPrefSize(vbox);
+				SampleInfoVBox vbox = new SampleInfoVBox();
+				vbox.setSampleList(runSampleView.getSampleViews());
+				resultVBox.getChildren().add(vbox);
+				setVBoxPrefSize(vbox);
+			}
 		}
 	}
 
@@ -426,7 +421,7 @@ public class PastResultsController extends SubPaneController {
 
 	public void addSearchItem(final CustomTextField textField) {
 		VBox box = new VBox();
-		box.setPrefWidth(Double.MAX_VALUE);
+		box.setPrefWidth(240);
 		box.setId(searchComboBox.getSelectionModel().getSelectedItem().getText());
 		Label title = new Label(searchComboBox.getSelectionModel().getSelectedItem().getText());
 		title.getStyleClass().add("font_size_13");
@@ -510,7 +505,8 @@ public class PastResultsController extends SubPaneController {
 				itemHBox.setStyle(itemHBox.getStyle() + "-fx-cursor:hand;");
 				final SampleView sample = sampleView;
 				itemHBox.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-					if(event.getClickCount() == 2) {
+					if(event.getClickCount() == 2 && sample.getSampleStatus().getStep().equalsIgnoreCase(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STEP_PIPELINE) &&
+							sample.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_COMPLETE)) {
 						Map<String, Object> detailViewParamMap = new HashMap<>();
 						detailViewParamMap.put("id", sample.getId());
 
@@ -597,15 +593,15 @@ public class PastResultsController extends SubPaneController {
 
 		public RunStatusGirdPane() {
 			ColumnConstraints col1 = new ColumnConstraints();
-			col1.setPrefWidth(170);
+			col1.setPrefWidth(180);
 			ColumnConstraints col2 = new ColumnConstraints();
-			col2.setPrefWidth(210);
+			col2.setPrefWidth(220);
 			ColumnConstraints col3 = new ColumnConstraints();
-			col3.setPrefWidth(130);
+			col3.setPrefWidth(140);
 			ColumnConstraints col4 = new ColumnConstraints();
-			col4.setPrefWidth(130);
+			col4.setPrefWidth(140);
 			ColumnConstraints col5 = new ColumnConstraints();
-			col5.setPrefWidth(170);
+			col5.setPrefWidth(180);
 			this.getColumnConstraints().addAll(col1, col2, col3, col4, col5);
 
 			runLabel = new Label();

@@ -155,3 +155,14 @@
 	-fx-max-height:16;
 	-fx-padding:1 0 0 0;
 }
+
+.filter_icon {
+    -fx-pref-width : 50;
+    -fx-pref-height : 50;
+    -fx-alignment : center;
+    -fx-background-color : #939193;
+    -fx-background-radius : 50;
+    -fx-font-size : 14;
+    -fx-text-alignment : center;
+    -fx-cursor : hand;
+}
