@@ -8,8 +8,8 @@
 
 /** 기본 폰트 설정 */
 * {
-	-fx-font-family: "Noto Sans CJK KR Bold";
-	/*-fx-font-family: "Noto Sans CJK KR Regular";*/
+	/*-fx-font-family: "Noto Sans CJK KR Bold";*/
+	-fx-font-family: "Noto Sans CJK KR Regular";
 	/*-fx-font-family: "Noto Sans KR Regular";*/
     /*-fx-font-family: "나눔스퀘어 Bold";*/
     /*-fx-font-family: "나눔스퀘어";*/
