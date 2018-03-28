@@ -231,9 +231,9 @@
     -fx-background-radius : 30;
     -fx-alignment : center;
     -fx-text-fill : #FFFFFF;
-    -fx-pref-width : 17;
-    -fx-pref-height : 17;
-    -fx-min-width : 17;
-    -fx-min-height : 17;
-    -fx-text-size : 10;
+    -fx-pref-width : 16;
+    -fx-pref-height : 16;
+    -fx-min-width : 16;
+    -fx-min-height : 16;
+    -fx-text-size : 9;
 }

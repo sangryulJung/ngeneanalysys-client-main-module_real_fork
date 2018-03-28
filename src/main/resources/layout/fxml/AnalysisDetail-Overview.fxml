@@ -58,7 +58,7 @@
             <TableColumn prefWidth="120.0" text="NT Change" />
             <TableColumn prefWidth="120.0" text="AA Change" />
             <TableColumn fx:id="alleleFrequencyColumn" prefWidth="120.0" text="VAF(Depth)" />
-            <TableColumn fx:id="therapeuticColumn" editable="false" prefWidth="190.0" sortable="false" text="Interpretation" />
+            <TableColumn fx:id="therapeuticColumn" editable="false" prefWidth="180.0" sortable="false" text="Interpretation" />
          </columns>
       </TableView>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5">

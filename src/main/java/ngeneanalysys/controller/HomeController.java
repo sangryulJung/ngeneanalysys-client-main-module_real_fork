@@ -233,7 +233,7 @@ public class HomeController extends SubPaneController{
         });
         try {
             PagedRunSampleView pagedRun = getPagedRun.get();
-            int runCount = pagedRun.getCount();
+            int runCount = pagedRun.getResult().size();
             for(int i = 0; i < runCount; i++) {
                 RunSampleView run = pagedRun.getResult().get(i);
                 runList.get(i).setRunStatus(run);

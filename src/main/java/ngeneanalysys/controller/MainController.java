@@ -543,7 +543,12 @@ public class MainController extends BaseStageController {
             }
             sampleContent[menu.getDisplayOrder()] = mainFrame.getCenter();
         } else {
-            mainFrame.setCenter(sampleContent[menu.getDisplayOrder()]);
+            for(int i = 0; i < sampleMenu.length ; i++) {
+                if(sampleMenu[i].getId().equalsIgnoreCase(menu.getId())) {
+                    mainFrame.setCenter(sampleContent[i]);
+                    break;
+                }
+            }
         }
 
         setAuto(isFirstShow);
