@@ -43,7 +43,7 @@ public class CommonConstants {
 	public static final String SYSTEM_NAME = "NGeneAnalySys";
 	
 	/** 시스템 Favicon Image 경로 */
-	public static final String SYSTEM_FAVICON_PATH = "/layout/images/renewal/icon_bi.png";
+	public static final String SYSTEM_FAVICON_PATH = "/layout/images/renewal/ngeneanalysis_48.png";
 	
 	/** 임시 디렉토리 경로 반환 */
 	public static final String TEMP_PATH = System.getProperty("java.io.tmpdir") + File.separator + "ngenebio_analysis" + File.separator;

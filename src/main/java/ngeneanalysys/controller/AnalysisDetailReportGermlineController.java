@@ -64,7 +64,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
     private TableView<VariantAndInterpretationEvidence> variantsTable;
 
     @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> tierColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> pathogenicityColumn;
 
     @FXML
     private TableColumn<VariantAndInterpretationEvidence, String> chrColumn;
@@ -264,7 +264,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
         sample = (Sample)paramMap.get("sample");
 
-        tierColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSwTier()));
+        pathogenicityColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSwPathogenicity()));
         chrColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getChromosome()));
         geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
         positionColumn.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getSnpInDel().getGenomicCoordinate().getStartPosition()));

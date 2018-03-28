@@ -46,14 +46,14 @@
               </rowConstraints>
                <children>
                   <Label alignment="TOP_LEFT" styleClass="title" text="USERNAME" GridPane.valignment="CENTER" />
-                  <TextField fx:id="inputLoginID" onKeyPressed="#checkValidateLoginID" pickOnBounds="false" promptText="Enter the Username" GridPane.rowIndex="1" />
+                  <TextField fx:id="inputLoginID" onKeyPressed="#checkValidateLoginID" pickOnBounds="false" promptText="Enter the Username" style="-fx-font-family: Noto Sans CJK KR Regular;" GridPane.rowIndex="1" />
                   <Label fx:id="labelLoginID" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="275.0" styleClass="title_warning" textFill="WHITE" visible="false" GridPane.rowIndex="2">
                      <font>
                         <Font size="10.0" />
                      </font>
                   </Label>
                   <Label alignment="TOP_LEFT" styleClass="title" text="PASSWORD" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-                  <PasswordField fx:id="inputPassword" maxHeight="40.0" minHeight="40.0" onKeyPressed="#checkValidatePassword" prefHeight="40.0" promptText="Enter the Password" GridPane.rowIndex="4" />
+                  <PasswordField fx:id="inputPassword" maxHeight="40.0" minHeight="40.0" onKeyPressed="#checkValidatePassword" prefHeight="40.0" promptText="Enter the Password" style="-fx-font-family: Noto Sans CJK KR Regular;" GridPane.rowIndex="4" />
                   <Label fx:id="labelPassword" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="275.0" styleClass="title_warning" textFill="WHITE" visible="false" GridPane.rowIndex="5">
                      <font>
                         <Font size="10.0" />
@@ -61,7 +61,7 @@
                   </Label>
                </children>
             </GridPane>
-            <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
+            <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
                <children>
                   <Button id="btnLogin" fx:id="loginBtn" alignment="TOP_LEFT" focusTraversable="false" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#runLogin" prefHeight="35.0" prefWidth="160.0" text="SIGN IN">
                      <font>
@@ -88,14 +88,9 @@
       </VBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
-            <ImageView fx:id="mainLogo" fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="mainLogo" fitHeight="60.0" fitWidth="320.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../images/login_logo.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="29.0" fitWidth="204.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/title.png" />
+                  <Image url="@../images/renewal/login_logo.png" />
                </image>
             </ImageView>
          </children>

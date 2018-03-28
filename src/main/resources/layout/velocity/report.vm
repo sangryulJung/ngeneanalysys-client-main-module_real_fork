@@ -726,13 +726,13 @@
                                 <fo:block padding-top="2.5mm" padding-bottom="2.5mm">Data throughput</fo:block>
                             </fo:table-cell>
                             <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">$contents.totalBase.qcUnit</fo:block>
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.totalBase) $contents.totalBase.qcUnit #end</fo:block>
                             </fo:table-cell>
                             <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">$contents.totalBase.qcValue</fo:block>
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.totalBase) $contents.totalBase.qcValue #end</fo:block>
                             </fo:table-cell>
                             <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm"><![CDATA[$contents.totalBase.qcThreshold]]></fo:block>
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.totalBase)<![CDATA[$contents.totalBase.qcThreshold]]> #end</fo:block>
                             </fo:table-cell>
                         </fo:table-row>
                         <fo:table-row>
@@ -740,13 +740,13 @@
                                 <fo:block padding-top="2.5mm" padding-bottom="2.5mm">base > Q30</fo:block>
                             </fo:table-cell>
                             <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">$contents.q30.qcUnit</fo:block>
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.q30)$contents.q30.qcUnit #end</fo:block>
                             </fo:table-cell>
                             <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">$contents.q30.qcValue</fo:block>
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.q30)$contents.q30.qcValue #end</fo:block>
                             </fo:table-cell>
                             <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm"><![CDATA[$contents.q30.qcThreshold]]></fo:block>
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.q30)<![CDATA[$contents.q30.qcThreshold]]> #end</fo:block>
                             </fo:table-cell>
                         </fo:table-row>
                         <fo:table-row>
@@ -754,13 +754,13 @@
                                 <fo:block padding-top="2.5mm" padding-bottom="2.5mm">Mapped %</fo:block>
                             </fo:table-cell>
                             <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">$contents.mappedBase.qcUnit</fo:block>
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.mappedBase)$contents.mappedBase.qcUnit #end</fo:block>
                             </fo:table-cell>
                             <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">$contents.mappedBase.qcValue</fo:block>
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.mappedBase)$contents.mappedBase.qcValue #end</fo:block>
                             </fo:table-cell>
                             <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm"><![CDATA[$contents.mappedBase.qcThreshold]]></fo:block>
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.mappedBase)<![CDATA[$contents.mappedBase.qcThreshold]]> #end</fo:block>
                             </fo:table-cell>
                         </fo:table-row>
                         <fo:table-row>
@@ -768,13 +768,13 @@
                                 <fo:block padding-top="2.5mm" padding-bottom="2.5mm">Duplication rate</fo:block>
                             </fo:table-cell>
                             <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">$contents.duplicatedReads.qcUnit</fo:block>
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.duplicatedReads)$contents.duplicatedReads.qcUnit #end</fo:block>
                             </fo:table-cell>
                             <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">$contents.duplicatedReads.qcValue</fo:block>
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.duplicatedReads)$contents.duplicatedReads.qcValue #end</fo:block>
                             </fo:table-cell>
                             <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm"><![CDATA[$contents.duplicatedReads.qcThreshold]]></fo:block>
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.duplicatedReads)<![CDATA[$contents.duplicatedReads.qcThreshold]]> #end</fo:block>
                             </fo:table-cell>
                         </fo:table-row>
                         <fo:table-row>
@@ -782,13 +782,13 @@
                                 <fo:block padding-top="2.5mm" padding-bottom="2.5mm">on-target rate</fo:block>
                             </fo:table-cell>
                             <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">$contents.onTarget.qcUnit</fo:block>
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.onTarget)$contents.onTarget.qcUnit #end</fo:block>
                             </fo:table-cell>
                             <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">$contents.onTarget.qcValue</fo:block>
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.onTarget)$contents.onTarget.qcValue #end</fo:block>
                             </fo:table-cell>
                             <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm"><![CDATA[$contents.onTarget.qcThreshold]]></fo:block>
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.onTarget)<![CDATA[$contents.onTarget.qcThreshold]]> #end</fo:block>
                             </fo:table-cell>
                         </fo:table-row>
                         <fo:table-row>
