@@ -28,7 +28,7 @@
             <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" percentHeight="0.0" prefHeight="10.0" vgrow="SOMETIMES" />
 			</rowConstraints>
 			<children>
-				<Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="formTitleLabel" text="Run Name">
+				<Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="font_size_14" text="Run">
 					<GridPane.margin>
 						<Insets right="20.0" />
 					</GridPane.margin>
@@ -49,20 +49,20 @@
 						<Insets right="20.0" />
 					</padding>
 				</HBox>
-				<Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="formTitleLabel" text="Sequencer" GridPane.columnIndex="2">
+				<Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="font_size_13" text="Sequencer" GridPane.columnIndex="2">
 					<GridPane.margin>
 						<Insets right="20.0" />
 					</GridPane.margin>
 				</Label>
             <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3">
                <children>
-                  <RadioButton fx:id="sequencerMiSeqDXRadioButton" mnemonicParsing="false" selected="true" text="Illumina MiSeqDX">
+                  <RadioButton fx:id="sequencerMiSeqDXRadioButton" mnemonicParsing="false" selected="true" style="-fx-font-family: Noto Sans CJK KR Regular;" text="Illumina MiSeqDX">
                      <toggleGroup>
                         <ToggleGroup fx:id="sequencerType" />
                      </toggleGroup>
                   </RadioButton>
-                  <RadioButton fx:id="sequencerMiSeqRadioButton" mnemonicParsing="false" text="Illumina MiSeq" toggleGroup="$sequencerType" />
-                  <RadioButton fx:id="nextSeqDxRadioButton" mnemonicParsing="false" text="Illumina NextSeq 550Dx" toggleGroup="$sequencerType" />
+                  <RadioButton fx:id="sequencerMiSeqRadioButton" mnemonicParsing="false" style="-fx-font-family: Noto Sans CJK KR Regular;" text="Illumina MiSeq" toggleGroup="$sequencerType" />
+                  <RadioButton fx:id="nextSeqDxRadioButton" mnemonicParsing="false" style="-fx-font-family: Noto Sans CJK KR Regular;" text="Illumina NextSeq 550Dx" toggleGroup="$sequencerType" />
                   <Label styleClass="help_tooltip">
                      <tooltip>
                         <Tooltip text="Choose sequencing instrument platform" />

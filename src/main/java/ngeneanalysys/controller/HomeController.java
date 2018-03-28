@@ -218,6 +218,7 @@ public class HomeController extends SubPaneController{
                 params.clear();
                 params.put("limit", maxRunNumberOfPage);
                 params.put("offset", 0);
+                params.put("ordering", "DESC");
 
                 response = apiService.get("/searchSamples", params, null, false);
 
@@ -307,9 +308,9 @@ public class HomeController extends SubPaneController{
             totalLabel = new Label();
             totalHBox = createHBox(totalLabel, "Samples : ");
             startDateLabel = new Label();
-            startDateHBox = createHBox(startDateLabel, "Start Date : ");
+            startDateHBox = createHBox(startDateLabel, "Start : ");
             FinishDateLabel = new Label();
-            FinishDateHBox = createHBox(FinishDateLabel, "Finished Date : ");
+            FinishDateHBox = createHBox(FinishDateLabel, "Finished : ");
             completeLabel = new Label();
             completeHBox = createHBox(completeLabel, "Complete : ");
             queuedLabel = new Label();
@@ -328,12 +329,12 @@ public class HomeController extends SubPaneController{
             HBox box = new HBox();
             box.setPrefHeight(20);
             Label titleLabel = new Label(titleLabelString);
-            titleLabel.setPrefWidth(85);
-            titleLabel.setStyle("-fx-text-fill : gray; -fx-font-family : Noto Sans CJK KR Regular;");
+            titleLabel.setPrefWidth(75);
+            titleLabel.getStyleClass().add("font_gray");
             box.getChildren().add(titleLabel);
             box.getChildren().add(label);
-            label.getStyleClass().add("font_gray");
-
+            label.setStyle("-fx-text-fill : gray; -fx-font-family : Noto Sans CJK KR Regular;");
+            label.setPrefWidth(120);
             return box;
         }
 

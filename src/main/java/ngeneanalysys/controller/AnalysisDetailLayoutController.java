@@ -50,6 +50,9 @@ public class AnalysisDetailLayoutController extends SubPaneController {
     @FXML
     private Label diseaseLabel;
 
+    @FXML
+    private Label sequencerLabel;
+
     /** 상단 탭메뉴 영역 */
     @FXML
     private TabPane topTabPane;
@@ -128,6 +131,8 @@ public class AnalysisDetailLayoutController extends SubPaneController {
             }
 
             runNameLabel.setText(run.getRun().getName());
+
+            sequencerLabel.setText(run.getRun().getSequencingPlatform());
 
 
 

@@ -505,8 +505,12 @@ public class MainController extends BaseStageController {
                 currentSampleId = null;
                 showTopMenuContents(1);
             } else {
-                currentSampleId = sampleMenu[removeIdx - 1].getId();
-                showSampleDetail(sampleMenu[removeIdx - 1]);
+                if(removeIdx > 0) {
+                    currentSampleId = sampleMenu[removeIdx - 1].getId();
+                    showSampleDetail(sampleMenu[removeIdx - 1]);
+                } else {
+                    showSampleDetail(sampleMenu[removeIdx]);
+                }
             }
             if(sampleMenu == null || sampleMenu.length == 0) sampleList.setDisable(true);
         }

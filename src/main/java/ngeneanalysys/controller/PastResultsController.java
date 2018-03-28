@@ -184,6 +184,8 @@ public class PastResultsController extends SubPaneController {
 				filterSearchArea.getChildren().add(textField);
 			}
 		});
+
+		searchComboBox.getSelectionModel().select(0);
 	}
 
 	private Set<String> getAllData(JSONArray array) {
@@ -475,17 +477,17 @@ public class PastResultsController extends SubPaneController {
 			this.setPrefWidth(810);
 			this.setMaxWidth(Double.MAX_VALUE);
 			HBox titleBox = new HBox();
-			String styleClass = "sample_header";
-			Label name = new Label("NAME");
+			String styleClass = "sample_list_label";
+			Label name = new Label("SAMPLE");
 			labelSize(name, 180., styleClass);
 			Label status = new Label("STATUS");
-			labelSize(status, 90., styleClass);
+			labelSize(status, 80., styleClass);
 			Label panel = new Label("PANEL");
 			labelSize(panel, 170., styleClass);
 			Label variants = new Label("VARIANTS");
-			labelSize(variants, 320., styleClass);
+			labelSize(variants, 340., styleClass);
 			Label qc = new Label("QC");
-			labelSize(qc, 98., styleClass);
+			labelSize(qc, 88., styleClass);
 			titleBox.getChildren().addAll(name, panel, status, variants, qc);
 
 			this.getChildren().add(titleBox);
@@ -519,11 +521,11 @@ public class PastResultsController extends SubPaneController {
 						mainController.addTopMenu(menu, 2, true);
 					}
 				});
-				String styleClass = "sample_list_label";
+				String styleClass = null;
 				Label name = new Label(sampleView.getName());
 				labelSize(name, 180., styleClass);
 				HBox statusHBox = new HBox();
-				statusHBox.setPrefWidth(90);
+				statusHBox.setPrefWidth(80);
 				statusHBox.getStyleClass().add("variant_hbox");
 				Label status = new Label(sampleView.getSampleStatus().getStatus().substring(0,1));
 				if(sampleView.getSampleStatus().getStatus().startsWith("C")) {
@@ -541,10 +543,12 @@ public class PastResultsController extends SubPaneController {
 				HBox variants = new HBox();
 				variants.getStyleClass().add("variant_hbox");
 				setVariantHBox(variants, sampleView);
-				variants.setPrefWidth(320);
-				variants.setSpacing(10);
-				Label qc = new Label(sampleView.getQcResult());
-				labelSize(qc, 100., styleClass);
+				variants.setPrefWidth(340);
+				variants.setSpacing(5);
+				String qcValue = sampleView.getQcResult();
+				if(qcValue.equalsIgnoreCase("NONE")) qcValue = "";
+				Label qc = new Label(qcValue);
+				labelSize(qc, 88., styleClass);
 
 				itemHBox.getChildren().addAll(name, panel, statusHBox, variants, qc);
 
@@ -555,32 +559,78 @@ public class PastResultsController extends SubPaneController {
 
 		private void setVariantHBox(HBox variantHBox, SampleView sample) {
 			AnalysisResultSummary summary = sample.getAnalysisResultSummary();
-			Label lv1Icon = new Label("T1");
-			lv1Icon.getStyleClass().add("lv_i_icon");
-			Label lv1Value = new Label(summary.getLevel1VariantCount().toString());
-			lv1Value.getStyleClass().add("count_label");
+			if(sample.getAnalysisType().equalsIgnoreCase("GERMLINE")) {
+				Label lv1Icon = new Label("P");
+				lv1Icon.getStyleClass().add("lv_i_icon");
+				Label lv1Value = new Label(summary.getLevel1VariantCount().toString());
+				lv1Value.getStyleClass().add("count_label");
+				lv1Value.setStyle("-fx-text-fill : gray; -fx-font-family : Noto Sans CJK KR Regular;");
 
-			Label lv2Icon = new Label("T2");
-			lv2Icon.getStyleClass().add("lv_ii_icon");
-			Label lv2Value = new Label(summary.getLevel2VariantCount().toString());
-			lv2Value.getStyleClass().add("count_label");
+				Label lv2Icon = new Label("LP");
+				lv2Icon.getStyleClass().add("lv_ii_icon");
+				Label lv2Value = new Label(summary.getLevel2VariantCount().toString());
+				lv2Value.getStyleClass().add("count_label");
+				lv2Value.setStyle("-fx-text-fill : gray; -fx-font-family : Noto Sans CJK KR Regular;");
 
-			Label lv3Icon = new Label("T3");
-			lv3Icon.getStyleClass().add("lv_i_icon");
-			Label lv3Value = new Label(summary.getLevel3VariantCount().toString());
-			lv3Value.getStyleClass().add("count_label");
+				Label lv3Icon = new Label("US");
+				lv3Icon.getStyleClass().add("lv_i_icon");
+				Label lv3Value = new Label(summary.getLevel3VariantCount().toString());
+				lv3Value.getStyleClass().add("count_label");
+				lv3Value.setStyle("-fx-text-fill : gray; -fx-font-family : Noto Sans CJK KR Regular;");
 
-			Label lv4Icon = new Label("T4");
-			lv4Icon.getStyleClass().add("lv_iv_icon");
-			Label lv4Value = new Label(summary.getLevel4VariantCount().toString());
-			lv4Value.getStyleClass().add("count_label");
+				Label lv4Icon = new Label("LB");
+				lv4Icon.getStyleClass().add("lv_iv_icon");
+				Label lv4Value = new Label(summary.getLevel4VariantCount().toString());
+				lv4Value.getStyleClass().add("count_label");
+				lv4Value.setStyle("-fx-text-fill : gray; -fx-font-family : Noto Sans CJK KR Regular;");
 
-			variantHBox.getChildren()
-					.addAll(lv1Icon, lv1Value,
-					lv2Icon, lv2Value,
-					lv3Icon, lv3Value,
-					lv4Icon, lv4Value);
+				Label lv5Icon = new Label("B");
+				lv5Icon.getStyleClass().add("lv_v_icon");
+				Label lv5Value = new Label(summary.getLevel5VariantCount().toString());
+				lv5Value.getStyleClass().add("count_label");
+				lv5Value.setStyle("-fx-text-fill : gray; -fx-font-family : Noto Sans CJK KR Regular;");
+
+				variantHBox.getChildren()
+						.addAll(lv1Icon, lv1Value,
+								lv2Icon, lv2Value,
+								lv3Icon, lv3Value,
+								lv4Icon, lv4Value,
+								lv5Icon, lv5Value);
+
+			} else if (sample.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
+				Label lv1Icon = new Label("T1");
+				lv1Icon.getStyleClass().add("lv_i_icon");
+				Label lv1Value = new Label(summary.getLevel1VariantCount().toString());
+				lv1Value.getStyleClass().add("count_label");
+				lv1Value.setStyle("-fx-text-fill : gray; -fx-font-family : Noto Sans CJK KR Regular;");
+
+				Label lv2Icon = new Label("T2");
+				lv2Icon.getStyleClass().add("lv_ii_icon");
+				Label lv2Value = new Label(summary.getLevel2VariantCount().toString());
+				lv2Value.getStyleClass().add("count_label");
+				lv2Value.setStyle("-fx-text-fill : gray; -fx-font-family : Noto Sans CJK KR Regular;");
+
+				Label lv3Icon = new Label("T3");
+				lv3Icon.getStyleClass().add("lv_i_icon");
+				Label lv3Value = new Label(summary.getLevel3VariantCount().toString());
+				lv3Value.getStyleClass().add("count_label");
+				lv3Value.setStyle("-fx-text-fill : gray; -fx-font-family : Noto Sans CJK KR Regular;");
+
+				Label lv4Icon = new Label("T4");
+				lv4Icon.getStyleClass().add("lv_iv_icon");
+				Label lv4Value = new Label(summary.getLevel4VariantCount().toString());
+				lv4Value.getStyleClass().add("count_label");
+				lv4Value.setStyle("-fx-text-fill : gray; -fx-font-family : Noto Sans CJK KR Regular;");
+
+				variantHBox.getChildren()
+						.addAll(lv1Icon, lv1Value,
+								lv2Icon, lv2Value,
+								lv3Icon, lv3Value,
+								lv4Icon, lv4Value);
+
+			}
 		}
+
 	}
 
 	class RunStatusGirdPane extends GridPane {
@@ -588,27 +638,22 @@ public class PastResultsController extends SubPaneController {
 		private Label sequencerLabel;
 		private Label submitDateLabel;
 		private Label finishDateLabel;
-		private Label userLabel;
-
 
 		public RunStatusGirdPane() {
 			ColumnConstraints col1 = new ColumnConstraints();
-			col1.setPrefWidth(180);
+			col1.setPrefWidth(225);
 			ColumnConstraints col2 = new ColumnConstraints();
-			col2.setPrefWidth(220);
+			col2.setPrefWidth(265);
 			ColumnConstraints col3 = new ColumnConstraints();
-			col3.setPrefWidth(140);
+			col3.setPrefWidth(185);
 			ColumnConstraints col4 = new ColumnConstraints();
-			col4.setPrefWidth(140);
-			ColumnConstraints col5 = new ColumnConstraints();
-			col5.setPrefWidth(180);
-			this.getColumnConstraints().addAll(col1, col2, col3, col4, col5);
+			col4.setPrefWidth(185);
+			this.getColumnConstraints().addAll(col1, col2, col3, col4);
 
 			runLabel = new Label();
 			sequencerLabel = new Label();
 			submitDateLabel = new Label();
 			finishDateLabel = new Label();
-			userLabel = new Label();
 
 			this.add(runLabel, 0, 0);
 
@@ -618,8 +663,6 @@ public class PastResultsController extends SubPaneController {
 			setLabelStyle(submitDateLabel);
 			this.add(finishDateLabel, 3, 0);
 			setLabelStyle(finishDateLabel);
-			this.add(userLabel, 4, 0);
-			setLabelStyle(userLabel);
 
 			this.setPrefHeight(35);
 			setLabelStyle(runLabel);
@@ -631,7 +674,8 @@ public class PastResultsController extends SubPaneController {
 			label.setMaxHeight(Double.MAX_VALUE);
 			label.setPrefHeight(35);
 			label.setAlignment(Pos.CENTER);
-			label.setStyle("-fx-font-family: Noto Sans CJK KR Regular;");
+			//label.setStyle("-fx-font-family: Noto Sans CJK KR Regular;");
+			label.getStyleClass().add("sample_header");
 		}
 
 		public void setLabel(Run run) {
@@ -642,7 +686,6 @@ public class PastResultsController extends SubPaneController {
 				submitDateLabel.setText(format.format(run.getCreatedAt().toDate()));
 			if (run.getCompletedAt() != null)
 			finishDateLabel.setText(format.format(run.getCompletedAt().toDate()));
-			userLabel.setText(run.getMemberName());
 		}
 
 	}

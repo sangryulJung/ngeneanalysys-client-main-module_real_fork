@@ -85,7 +85,7 @@
 }
 
 .count_label {
-    -fx-pref-width : 28;
+    -fx-pref-width : 35;
     -fx-alignment : center-left;
     -fx-pref-height : 16;
     /*-fx-font-family: "Noto Sans CJK KR Regular";*/
@@ -93,7 +93,7 @@
 }
 
 .variant_hbox {
-    -fx-background-color : #f7f7f7;
+    -fx-background-color : #FFFFFF;
     -fx-alignment : center;
     -fx-pref-height : 30;
 }
