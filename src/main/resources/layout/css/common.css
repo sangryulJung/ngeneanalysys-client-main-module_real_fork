@@ -474,11 +474,13 @@ Button {
 .table-view .table-cell .label {
 	-fx-text-fill:#656565;
 	-fx-background-color : #FFFFFF;
+	-fx-pref-height : 25;
 }
 
 .table-row-cell{
     -fx-background-color: -fx-table-cell-border-color, #FFFFFF;
     -fx-border-width : 0;
+    -fx-font-size : 13;
 }
 
 .listHeader {

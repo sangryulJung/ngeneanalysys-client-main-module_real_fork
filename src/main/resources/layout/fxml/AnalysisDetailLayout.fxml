@@ -69,7 +69,7 @@
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
                <children>
                   <Label text="PANEL : " />
-                  <Label fx:id="kitLabel" text="Panel Name" textFill="#262b33">
+                  <Label fx:id="kitLabel" styleClass="font_size_12" text="Panel Name" textFill="#262b33">
                      <font>
                         <Font size="11.0" />
                      </font>
