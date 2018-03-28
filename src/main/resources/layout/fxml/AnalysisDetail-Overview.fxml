@@ -134,7 +134,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;" GridPane.columnIndex="6">
                            <children>
-                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" text="Roi coverage" textFill="WHITE">
+                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" text="ROI coverage" textFill="WHITE">
                                  <tooltip>
                                     <Tooltip fx:id="roiCoverageTooltip" text="Empty Tooltip" />
                                  </tooltip></Label>
