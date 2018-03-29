@@ -12,7 +12,8 @@ public class Panel {
     private String target;
     private String analysisType;
     private String libraryType;
-
+    private String defaultSampleSource;
+    private Integer defaultDiseaseId;
     private DateTime createdAt;
     private DateTime updatedAt;
     private DateTime deletedAt;
@@ -37,6 +38,14 @@ public class Panel {
      */
     public VariantConfig getVariantConfig() {
         return variantConfig;
+    }
+
+    public String getDefaultSampleSource() {
+        return defaultSampleSource;
+    }
+
+    public Integer getDefaultDiseaseId() {
+        return defaultDiseaseId;
     }
 
     /**
@@ -93,6 +102,8 @@ public class Panel {
                 ", target='" + target + '\'' +
                 ", analysisType='" + analysisType + '\'' +
                 ", libraryType='" + libraryType + '\'' +
+                ", defaultSampleSource='" + defaultSampleSource + '\'' +
+                ", defaultDiseaseId=" + defaultDiseaseId +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", deletedAt=" + deletedAt +

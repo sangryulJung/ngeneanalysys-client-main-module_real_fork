@@ -78,6 +78,12 @@ public class SystemManagerPanelController extends SubPaneController {
     private ComboBox<ComboBoxItem> libraryTypeComboBox;
 
     @FXML
+    private ComboBox<ComboBoxItem> defaultSampleSourceComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> defaultDiseaseComboBox;
+
+    @FXML
     private ComboBox<ComboBoxItem> reportTemplateComboBox;
 
     @FXML
@@ -250,6 +256,12 @@ public class SystemManagerPanelController extends SubPaneController {
         libraryTypeComboBox.getItems().add(new ComboBoxItem(LibraryTypeCode.AMPLICON_BASED.getDescription(),
                 LibraryTypeCode.AMPLICON_BASED.getDescription()));
         libraryTypeComboBox.getSelectionModel().selectFirst();
+        defaultSampleSourceComboBox.setConverter(new ComboBoxConverter());
+        defaultSampleSourceComboBox.getItems().add(new ComboBoxItem(SampleSourceCode.FFPE.getDescription(),
+                SampleSourceCode.FFPE.getDescription()));
+        defaultSampleSourceComboBox.getItems().add(new ComboBoxItem(SampleSourceCode.BLOOD.getDescription(),
+                SampleSourceCode.BLOOD.getDescription()));
+        defaultSampleSourceComboBox.getSelectionModel().selectFirst();
         createdAtTableColumn.setCellValueFactory(item -> new SimpleStringProperty(DateFormatUtils.format(
                 item.getValue().getCreatedAt().toDate(), DATE_FORMAT)));
         updatedAtTableColumn.setCellValueFactory(item -> {
@@ -512,6 +524,7 @@ public class SystemManagerPanelController extends SubPaneController {
             params.put("target", targetComboBox.getSelectionModel().getSelectedItem().getValue());
             params.put("analysisType", analysisTypeComboBox.getSelectionModel().getSelectedItem().getValue());
             params.put("libraryType", libraryTypeComboBox.getSelectionModel().getSelectedItem().getValue());
+            params.put("defaultSampleSource", defaultSampleSourceComboBox.getSelectionModel().getSelectedItem().getValue());
             params.put("variantConfig", variantConfig);
 
             String reportId = null;
@@ -597,6 +610,7 @@ public class SystemManagerPanelController extends SubPaneController {
         analysisTypeComboBox.getSelectionModel().selectFirst();
         targetComboBox.getSelectionModel().selectFirst();
         libraryTypeComboBox.getSelectionModel().selectFirst();
+        defaultSampleSourceComboBox.getSelectionModel().selectFirst();
         bedFile = null;
         panelSaveButton.setDisable(true);
         groupCheckComboBox.getCheckModel().clearChecks();
@@ -761,12 +775,15 @@ public class SystemManagerPanelController extends SubPaneController {
 
                 Optional<ComboBoxItem> libraryTypeItem = libraryTypeComboBox.getItems().stream().filter(item -> item.getValue().equalsIgnoreCase(panel.getLibraryType())).findFirst();
                 if(libraryTypeItem.isPresent()) libraryTypeComboBox.getSelectionModel().select(libraryTypeItem.get());
+
+                Optional<ComboBoxItem> defaultSampleSourceItem = defaultSampleSourceComboBox.getItems().stream().filter(item -> item.getValue().equalsIgnoreCase(panel.getDefaultSampleSource())).findFirst();
+                if(defaultSampleSourceItem.isPresent()) defaultSampleSourceComboBox.getSelectionModel().select(defaultSampleSourceItem.get());
+
                 if(panel.getReportTemplateId() != null) {
                     Optional<ComboBoxItem> reportTemplate = reportTemplateComboBox.getItems().stream().filter(item -> item.getValue().equalsIgnoreCase(panel.getReportTemplateId().toString())).findFirst();
                     if (reportTemplate.isPresent())
                         reportTemplateComboBox.getSelectionModel().select(reportTemplate.get());
                 }
-
 
                 if(panelDetail != null) {
                     List<Integer> groupIds = panelDetail.getMemberGroupIds();
