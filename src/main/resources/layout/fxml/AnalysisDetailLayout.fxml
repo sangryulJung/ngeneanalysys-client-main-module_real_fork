@@ -68,7 +68,7 @@
             </VBox>
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
                <children>
-                  <Label maxWidth="49.0" minWidth="49.0" prefWidth="49.0" text="PANEL : " />
+                  <Label maxWidth="54.0" minWidth="54.0" prefWidth="54.0" text="PANEL : " />
                   <Label fx:id="kitLabel" styleClass="font_size_12" text="Panel Name" textFill="#262b33">
                      <font>
                         <Font size="11.0" />
@@ -81,7 +81,7 @@
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3">
                <children>
-                  <Label maxWidth="60.0" minWidth="60.0" prefWidth="60.0" text="DISEASE : " />
+                  <Label maxWidth="65.0" minWidth="65.0" prefWidth="65.0" text="DISEASE : " />
                   <Label fx:id="diseaseLabel" text="Label" />
                </children>
                <padding>
@@ -90,7 +90,7 @@
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4">
                <children>
-                  <Label maxWidth="83.0" minWidth="83.0" prefWidth="83.0" text="SEQUENCER : " />
+                  <Label maxWidth="88.0" minWidth="88.0" prefWidth="88.0" text="SEQUENCER : " />
                   <Label fx:id="sequencerLabel" text="Label" />
                </children>
                <GridPane.margin>
@@ -99,7 +99,7 @@
             </HBox>
             <HBox prefHeight="15.0" prefWidth="228.0" GridPane.columnIndex="1">
                <children>
-                  <Label maxWidth="36.0" minWidth="36.0" prefWidth="36.0" text="RUN : " />
+                  <Label maxWidth="41.0" minWidth="41.0" prefWidth="41.0" text="RUN : " />
                   <Label fx:id="runNameLabel" text="run name" />
                </children>
                <padding>
