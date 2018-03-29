@@ -40,7 +40,9 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -548,7 +550,10 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         try {
             // API 서버 조회
-            HttpClientResponse response = apiService.get("/analysisResults/sampleSnpInDels/"+ sample.getId(), null,
+            Map<String, Object> params = new HashMap<>();
+            params.put("limit", 100);
+            params.put("tierOrder", "ASC");
+            HttpClientResponse response = apiService.get("/analysisResults/sampleSnpInDels/"+ sample.getId(), params,
                     null, false);
             PagedVariantAndInterpretationEvidence analysisResultVariantList = response.getObjectBeforeConvertResponseToJSON(PagedVariantAndInterpretationEvidence.class);
 

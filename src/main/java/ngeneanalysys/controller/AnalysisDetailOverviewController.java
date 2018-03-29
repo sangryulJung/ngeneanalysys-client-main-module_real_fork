@@ -201,11 +201,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
     public void setDisplayItem() {
         Sample sample = (Sample) getParamMap().get("sample");
         try {
-            Map<String, Object> params = new HashMap<>();
-            params.put("limit", 100);
-            params.put("tierOrder", "ASC");
-
-            HttpClientResponse response = apiService.get("/analysisResults/sampleSnpInDels/" + sample.getId(),params,
+            HttpClientResponse response = apiService.get("/analysisResults/sampleSnpInDels/" + sample.getId(), null,
                     null, false);
 
             PagedVariantAndInterpretationEvidence analysisResultVariantList = response.getObjectBeforeConvertResponseToJSON(PagedVariantAndInterpretationEvidence.class);
