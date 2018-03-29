@@ -41,7 +41,7 @@
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="160.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="160.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="160.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="180.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="180.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="10.0" />
         </columnConstraints>
@@ -68,7 +68,7 @@
             </VBox>
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
                <children>
-                  <Label text="PANEL : " />
+                  <Label maxWidth="49.0" minWidth="49.0" prefWidth="49.0" text="PANEL : " />
                   <Label fx:id="kitLabel" styleClass="font_size_12" text="Panel Name" textFill="#262b33">
                      <font>
                         <Font size="11.0" />
@@ -81,7 +81,7 @@
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3">
                <children>
-                  <Label text="DISEASE : " />
+                  <Label maxWidth="60.0" minWidth="60.0" prefWidth="60.0" text="DISEASE : " />
                   <Label fx:id="diseaseLabel" text="Label" />
                </children>
                <padding>
@@ -90,7 +90,7 @@
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4">
                <children>
-                  <Label text="SEQUENCER : " />
+                  <Label maxWidth="83.0" minWidth="83.0" prefWidth="83.0" text="SEQUENCER : " />
                   <Label fx:id="sequencerLabel" text="Label" />
                </children>
                <GridPane.margin>
@@ -99,7 +99,7 @@
             </HBox>
             <HBox prefHeight="15.0" prefWidth="228.0" GridPane.columnIndex="1">
                <children>
-                  <Label text="RUN : " />
+                  <Label maxWidth="36.0" minWidth="36.0" prefWidth="36.0" text="RUN : " />
                   <Label fx:id="runNameLabel" text="run name" />
                </children>
                <padding>

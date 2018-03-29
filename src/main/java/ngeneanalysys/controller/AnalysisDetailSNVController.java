@@ -391,16 +391,18 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     /**
-     * Memo 탭 화면 출력
+     * Interpretation 탭 화면 출력
      */
-    private void showPredictionAndInterpretation(SnpInDelInterpretation interpretation) {
+    private void showPredictionAndInterpretation(VariantAndInterpretationEvidence variantAndInterpretationEvidence) {
         try {
             FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_INTERPRETATION);
             Node node = loader.load();
             AnalysisDetailInterpretationController controller = loader.getController();
             controller.setMainController(this.getMainController());
+            controller.setAnalysisDetailSNVController(this);
+            controller.setParamMap(getParamMap());
             controller.show((Parent) node);
-            controller.setLabel(interpretation);
+            controller.setLabel(variantAndInterpretationEvidence);
             interpretationTitledPane.setContent(node);
         } catch (Exception e) {
             e.printStackTrace();
@@ -471,7 +473,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 showDetailTab();
             }
             if(panel.getAnalysisType().equalsIgnoreCase(ExperimentTypeCode.SOMATIC.getDescription())) {
-                showPredictionAndInterpretation(variantAndInterpretationEvidence.getInterpretationEvidence());
+                showPredictionAndInterpretation(variantAndInterpretationEvidence);
                 overviewAccordion.getPanes().remove(clinicalSignificantTitledPane);
             } else {
                 overviewAccordion.getPanes().remove(interpretationTitledPane);
@@ -661,7 +663,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
                     label = new Label("R");
                     label.getStyleClass().remove("label");
-                    label.getStyleClass().add("prediction_A");
+                    label.getStyleClass().add("report_check");
                 }
                 setGraphic(label);
             }

@@ -193,11 +193,17 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                         Optional<Panel> panel = panels.stream().filter(item -> item.getName().contains("Tumor 170 DNA")).findFirst();
                         if(panel.isPresent()) {
                             sample.setPanelId(panel.get().getId());
+                            sample.setSampleSource(panel.get().getDefaultSampleSource());
+                            if(panel.get().getDefaultDiseaseId() != null)
+                                sample.setDiseaseId(panel.get().getDefaultDiseaseId());
                         }
                     } else if(s[8] != null && s[8].contains("RNA")) {
                         Optional<Panel> panel = panels.stream().filter(item -> item.getName().contains("Tumor 170 RNA")).findFirst();
                         if(panel.isPresent()) {
                             sample.setPanelId(panel.get().getId());
+                            sample.setSampleSource(panel.get().getDefaultSampleSource());
+                            if(panel.get().getDefaultDiseaseId() != null)
+                                sample.setDiseaseId(panel.get().getDefaultDiseaseId());
                         }
                     }
                     sample.setSampleSheet(new SampleSheet());
@@ -406,6 +412,8 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
             if(StringUtils.isEmpty(sample.getSampleSource()) && sampleSource.getSelectionModel().getSelectedItem() != null) {
                 sampleSource.getSelectionModel().select(0);
+            } else {
+                sampleSource.getSelectionModel().select(sample.getSampleSource());
             }
 
 
@@ -570,6 +578,12 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 diseaseComboBox.getItems().add(new ComboBoxItem("0", "N/A"));
             }
             diseaseComboBox.getSelectionModel().selectFirst();
+
+            if(panelDetail.getDefaultSampleSource() != null) {
+                sampleSourceComboBoxList.get(index).getSelectionModel().select(panelDetail.getDefaultSampleSource());
+            } else {
+                sampleSourceComboBoxList.get(index).getSelectionModel().clearSelection();
+            }
 
         } catch (WebAPIException wae) {
             DialogUtil.error(wae.getHeaderText(), wae.getMessage(), getMainApp().getPrimaryStage(), true);

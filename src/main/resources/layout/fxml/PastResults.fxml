@@ -31,8 +31,8 @@
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" valignment="TOP" vgrow="NEVER" />
       <RowConstraints maxHeight="99.0" minHeight="-Infinity" prefHeight="35.0" vgrow="NEVER" />
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" valignment="CENTER" vgrow="NEVER" />
-      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="380.0" valignment="TOP" vgrow="NEVER" />
-      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" valignment="TOP" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="400.0" valignment="TOP" vgrow="NEVER" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" valignment="TOP" vgrow="ALWAYS" />
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" />
    </rowConstraints>
    <children>

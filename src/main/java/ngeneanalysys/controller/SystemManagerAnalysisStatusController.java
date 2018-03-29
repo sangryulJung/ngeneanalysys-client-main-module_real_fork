@@ -303,7 +303,8 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
         HttpClientResponse response;
 
         try {
-            response = apiService.get("runs/" + id, null ,null, false);
+            response = apiService.get("admin/restartRun/" + id, null ,null, false);
+            /*response = apiService.get("runs/" + id, null ,null, false);
 
             RunWithSamples runWithSamples = response.getObjectBeforeConvertResponseToJSON(RunWithSamples.class);
 
@@ -317,7 +318,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
                     response = apiService.get("admin/restartSampleAnalysis/" + sample.getId(), null, null, false);
                     logger.info("status code : " + response.getStatus());
                 }
-            }
+            }*/
 
         } catch(WebAPIException wae) {
             DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);

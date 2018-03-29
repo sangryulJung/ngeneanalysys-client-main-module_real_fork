@@ -23,6 +23,7 @@ import ngeneanalysys.util.FXMLLoadUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
+import org.apache.commons.lang3.text.WordUtils;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -132,7 +133,7 @@ public class AnalysisDetailLayoutController extends SubPaneController {
 
             runNameLabel.setText(run.getRun().getName());
 
-            sequencerLabel.setText(run.getRun().getSequencingPlatform());
+            sequencerLabel.setText(WordUtils.capitalize(run.getRun().getSequencingPlatform()));
 
 
 

@@ -512,18 +512,22 @@ public class PastResultsController extends SubPaneController {
 				itemHBox.setStyle(itemHBox.getStyle() + "-fx-cursor:hand;");
 				final SampleView sample = sampleView;
 				itemHBox.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-					if(event.getClickCount() == 2 && sample.getSampleStatus().getStep().equalsIgnoreCase(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STEP_PIPELINE) &&
-							sample.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_COMPLETE)) {
-						Map<String, Object> detailViewParamMap = new HashMap<>();
-						detailViewParamMap.put("id", sample.getId());
+					if(event.getClickCount() == 2) {
+						if(sample.getSampleStatus().getStep().equalsIgnoreCase(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STEP_PIPELINE) &&
+								sample.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_COMPLETE)) {
+							Map<String, Object> detailViewParamMap = new HashMap<>();
+							detailViewParamMap.put("id", sample.getId());
 
-						TopMenu menu = new TopMenu();
-						menu.setId("sample_" + sample.getId());
-						menu.setMenuName(sample.getName());
-						menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_LAYOUT);
-						menu.setParamMap(detailViewParamMap);
-						menu.setStaticMenu(false);
-						mainController.addTopMenu(menu, 2, true);
+							TopMenu menu = new TopMenu();
+							menu.setId("sample_" + sample.getId());
+							menu.setMenuName(sample.getName());
+							menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_LAYOUT);
+							menu.setParamMap(detailViewParamMap);
+							menu.setStaticMenu(false);
+							mainController.addTopMenu(menu, 2, true);
+						} else if(sample.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_FAIL)) {
+							DialogUtil.alert("Job Status", sample.getSampleStatus().getStatusMsg(), mainController.getPrimaryStage(), true);
+						}
 					}
 				});
 				String styleClass = null;
@@ -539,6 +543,7 @@ public class PastResultsController extends SubPaneController {
 					status.getStyleClass().addAll("label","failed_icon");
 				} else if(sampleView.getSampleStatus().getStatus().startsWith("R")) {
 					status.getStyleClass().addAll("label","run_icon");
+					Tooltip tooltip = new Tooltip(sample.getSampleStatus().getProgressPercentage().toString());
 				} else if(sampleView.getSampleStatus().getStatus().startsWith("Q")) {
 					status.getStyleClass().addAll("label","queued_icon");
 				}

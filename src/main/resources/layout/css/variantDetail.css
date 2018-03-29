@@ -333,7 +333,7 @@
 	-fx-spacing:5;
 	-fx-min-height:20;
 	-fx-pref-height:20;
-	-fx-max-height:20;	
+	-fx-max-height:20;
 }
 .clinical_significant_pathogenicity_label {
 	-fx-alignment:center-right;

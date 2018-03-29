@@ -520,15 +520,15 @@
 									</fo:block>
 								</fo:table-cell>
 								<fo:table-cell border-width="0.5pt" background-color="#e7e7e8" border-right="solid 1mm white" text-align="left" padding-bottom="2mm" padding-top="2mm">
-									<fo:block>ESP6500: #if($variant.snpInDel.populationFrequency.esp6500) $variant.snpInDel.populationFrequency.esp6500
+									<fo:block>ESP6500: #if($variant.snpInDel.populationFrequency.esp6500 && $variant.snpInDel.populationFrequency.esp6500.all) $variant.snpInDel.populationFrequency.esp6500.all
 														#else no frequency data
 														#end
 									</fo:block>
-									<fo:block>1000G: #if($variant.snpInDel.populationFrequency.g1000) $variant.snpInDel.populationFrequency.g1000
+									<fo:block>1000G: #if($variant.snpInDel.populationFrequency.g1000 && $variant.snpInDel.populationFrequency.g1000.all) $variant.snpInDel.populationFrequency.g1000.all
 										#else no frequency data
 										#end
 									</fo:block>
-									<fo:block>ExAC: #if($variant.snpInDel.populationFrequency.exac) $variant.snpInDel.populationFrequency.exac
+									<fo:block>ExAC: #if($variant.snpInDel.populationFrequency.exac && $variant.snpInDel.populationFrequency.exac.all) $variant.snpInDel.populationFrequency.exac.all
 										#else no frequency data
 										#end
 									</fo:block>

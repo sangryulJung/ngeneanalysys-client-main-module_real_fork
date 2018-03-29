@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -50,6 +51,7 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * @author Jang
@@ -308,7 +310,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
                     groupCheckComboBox.getItems().addAll(items);
 
-                    panelEditGridPane.add(groupCheckComboBox, 1, 6);
+                    panelEditGridPane.add(groupCheckComboBox, 1, 5);
 
                     this.groupCheckComboBox = groupCheckComboBox;
 
@@ -331,12 +333,43 @@ public class SystemManagerPanelController extends SubPaneController {
 
                     diseaseCheckComboBox.getItems().addAll(items);
 
-                    panelEditGridPane.add(diseaseCheckComboBox, 1, 7);
+                    panelEditGridPane.add(diseaseCheckComboBox, 1, 6);
 
                     diseaseCheckComboBox.setPrefWidth(150);
                     diseaseCheckComboBox.setMaxWidth(Double.MAX_VALUE);
 
                     this.diseaseCheckComboBox = diseaseCheckComboBox;
+
+                    diseaseCheckComboBox.getCheckModel().getCheckedItems().addListener(new ListChangeListener<ComboBoxItem>() {
+                        @Override
+                        public void onChanged(Change<? extends ComboBoxItem> c) {
+                            List<ComboBoxItem> selectedItem = diseaseCheckComboBox.getCheckModel().getCheckedItems().stream().collect(Collectors.toList());
+                            if(defaultDiseaseComboBox.getItems().isEmpty()) {
+                                defaultDiseaseComboBox.getItems().addAll(selectedItem);
+                            } else {
+                                for(ComboBoxItem comboBoxItem : selectedItem) {
+                                    Optional<ComboBoxItem> combo  = defaultDiseaseComboBox.getItems().stream()
+                                                .filter(item -> item.getValue().equalsIgnoreCase(comboBoxItem.getValue()))
+                                                .findFirst();
+                                    if(!combo.isPresent()) {
+                                        defaultDiseaseComboBox.getItems().add(comboBoxItem);
+                                    }
+                                }
+                                List<ComboBoxItem> removeList = new ArrayList<>();
+
+                                for(ComboBoxItem comboBoxItem : defaultDiseaseComboBox.getItems()) {
+                                    Optional<ComboBoxItem> combo  = selectedItem.stream()
+                                            .filter(item -> item.getValue().equalsIgnoreCase(comboBoxItem.getValue()))
+                                            .findFirst();
+                                    if(!combo.isPresent()) {
+                                        removeList.add(comboBoxItem);
+                                    }
+                                }
+                                defaultDiseaseComboBox.getItems().removeAll(removeList);
+                            }
+                        }
+                    });
+
                 }
 
             } catch (WebAPIException wae) {
@@ -615,6 +648,8 @@ public class SystemManagerPanelController extends SubPaneController {
         panelSaveButton.setDisable(true);
         groupCheckComboBox.getCheckModel().clearChecks();
         diseaseCheckComboBox.getCheckModel().clearChecks();
+        defaultDiseaseComboBox.getSelectionModel().clearSelection();
+        defaultDiseaseComboBox.getItems().removeAll(defaultDiseaseComboBox.getItems());
         reportTemplateComboBox.getSelectionModel().selectFirst();
         warningReadDepthCheckBox.setSelected(false);
         warningMAFCheckBox.setSelected(false);
@@ -662,6 +697,8 @@ public class SystemManagerPanelController extends SubPaneController {
         onTargetCoverageTextField.setDisable(condition);
         duplicatedReadsPercentageTextField.setDisable(condition);
         roiCoveragePercentageTextField.setDisable(condition);
+        defaultDiseaseComboBox.setDisable(condition);
+        defaultSampleSourceComboBox.setDisable(condition);
 
     }
 
@@ -783,6 +820,15 @@ public class SystemManagerPanelController extends SubPaneController {
                     Optional<ComboBoxItem> reportTemplate = reportTemplateComboBox.getItems().stream().filter(item -> item.getValue().equalsIgnoreCase(panel.getReportTemplateId().toString())).findFirst();
                     if (reportTemplate.isPresent())
                         reportTemplateComboBox.getSelectionModel().select(reportTemplate.get());
+                }
+
+                if(StringUtils.isEmpty(panel.getDefaultSampleSource())) {
+                    Optional<ComboBoxItem> sampleSource =
+                                defaultSampleSourceComboBox.getItems().stream().filter(item -> item.getValue().equalsIgnoreCase(panel.getDefaultSampleSource()))
+                                .findFirst();
+                    if(sampleSource.isPresent()) {
+                        defaultSampleSourceComboBox.getSelectionModel().select(sampleSource.get());
+                    }
                 }
 
                 if(panelDetail != null) {
