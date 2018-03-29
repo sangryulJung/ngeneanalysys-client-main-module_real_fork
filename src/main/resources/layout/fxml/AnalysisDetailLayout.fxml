@@ -90,7 +90,7 @@
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4">
                <children>
-                  <Label maxWidth="88.0" minWidth="88.0" prefWidth="88.0" text="SEQUENCER : " />
+                  <Label maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="SEQUENCER : " />
                   <Label fx:id="sequencerLabel" text="Label" />
                </children>
                <GridPane.margin>
