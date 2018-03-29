@@ -22,9 +22,7 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -203,7 +201,11 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
     public void setDisplayItem() {
         Sample sample = (Sample) getParamMap().get("sample");
         try {
-            HttpClientResponse response = apiService.get("/analysisResults/sampleSnpInDels/" + sample.getId(), null,
+            Map<String, Object> params = new HashMap<>();
+            params.put("limit", 100);
+            params.put("tierOrder", "ASC");
+
+            HttpClientResponse response = apiService.get("/analysisResults/sampleSnpInDels/" + sample.getId(),params,
                     null, false);
 
             PagedVariantAndInterpretationEvidence analysisResultVariantList = response.getObjectBeforeConvertResponseToJSON(PagedVariantAndInterpretationEvidence.class);
