@@ -558,7 +558,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
             } catch (IOException ioe) {
                 ioe.printStackTrace();
             }
-            controller.showVariantList(controller.getCurrentPageIndex(),0, null, null);
+            controller.showVariantList(controller.getCurrentPageIndex() + 1,0, null, null);
         }
     }
 

@@ -633,6 +633,7 @@
 .pathogenic_review_checkbox {
 	-fx-spacing:5;
 	-fx-padding:10;
+	-fx-background-color : #FF0000;
 }
 .pathogenic_review_checkbox .check-box {
 	-fx-padding:5;

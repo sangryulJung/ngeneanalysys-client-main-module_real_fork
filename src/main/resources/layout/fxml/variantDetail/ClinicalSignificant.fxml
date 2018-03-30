@@ -16,7 +16,7 @@
 <?import javafx.scene.shape.Polyline?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="1040.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="222.0" prefWidth="870.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailClinicalSignificantController">
+<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="1040.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="256.0" prefWidth="870.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailClinicalSignificantController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="265.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="262.0" />
@@ -27,12 +27,12 @@
   </rowConstraints>
    <children>
       <VBox fx:id="clinicalSignificant" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="222.0" prefWidth="265.0" />
-      <GridPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="222.0" GridPane.columnIndex="1">
+      <GridPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="256.0" GridPane.columnIndex="1">
          <columnConstraints>
             <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" prefWidth="200.0" />
          </columnConstraints>
          <rowConstraints>
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="222.0" valignment="TOP" vgrow="NEVER" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="256.0" valignment="TOP" vgrow="NEVER" />
          </rowConstraints>
          <children>
             <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="250.0">
@@ -268,7 +268,7 @@
                   <Font size="11.0" />
                </font>
                <VBox.margin>
-                  <Insets top="3.0" />
+                  <Insets top="6.0" />
                </VBox.margin>
                <opaqueInsets>
                   <Insets />
@@ -303,7 +303,7 @@
                   </Label>
                </children>
                <VBox.margin>
-                  <Insets top="1.0" />
+                  <Insets top="5.0" />
                </VBox.margin>
             </HBox>
             <Label alignment="TOP_CENTER" maxHeight="16.0" maxWidth="1.7976931348623157E308" minHeight="16.0" prefHeight="16.0" prefWidth="140.0" styleClass="flagging_label" text="Pathogenicity">
@@ -311,7 +311,7 @@
                   <Font size="11.0" />
                </font>
                <VBox.margin>
-                  <Insets top="3.0" />
+                  <Insets top="6.0" />
                </VBox.margin>
             </Label>
             <HBox fx:id="pathogenicityArea" alignment="TOP_CENTER" minHeight="20.0" prefHeight="20.0" prefWidth="140.0">
@@ -343,13 +343,19 @@
                   </Button>
                </children>
                <VBox.margin>
-                  <Insets top="1.0" />
+                  <Insets top="5.0" />
                </VBox.margin>
             </HBox>
-            <VBox prefWidth="100.0" styleClass="pathogenic_review_checkbox">
+            <VBox alignment="CENTER" prefWidth="100.0" styleClass="pathogenic_review_checkbox">
                <children>
-                  <CheckBox fx:id="addToGermlineReportCheckBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="27.0" text="Add to Report" VBox.vgrow="ALWAYS" />
+                  <CheckBox fx:id="addToGermlineReportCheckBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="27.0" text="Add to Report" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin></CheckBox>
                </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
             </VBox>
          </children>
          <padding>

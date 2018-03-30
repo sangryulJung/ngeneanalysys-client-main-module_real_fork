@@ -105,8 +105,10 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     @FXML
     private Pagination variantPagination;
 
-    Sample sample = null;
-    Panel panel = null;
+    private Sample sample = null;
+    private Panel panel = null;
+    private String currentSortColumn = "";
+    private String sortValue = "ASC";
 
     private AnalysisDetailVariantsController variantsController;
     //VariantList
@@ -229,7 +231,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             return new VBox();
         });
 
-        totalTextLabel.setOnMouseClicked(ev -> showVariantList(currentPageIndex,0, null, null));
+        totalTextLabel.setOnMouseClicked(ev -> showVariantList(currentPageIndex + 1,0, null, null));
     }
 
     public void setDefaultFilter() {
@@ -283,7 +285,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
         itemLabel.setTextAlignment(TextAlignment.CENTER);
         itemLabel.setText(labelText);
-        itemLabel.setOnMouseClicked(ev -> showVariantList(currentPageIndex,0, "Tier", valueText));
+        itemLabel.setOnMouseClicked(ev -> showVariantList(currentPageIndex + 1,0, "tier", valueText));
         Long value = list.stream().filter(item ->
                 (!StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && item.getSnpInDel().getExpertTier().equalsIgnoreCase(valueText)) ||
                         (StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && item.getSnpInDel().getSwTier().equalsIgnoreCase(valueText)))
@@ -310,7 +312,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
         itemLabel.setTextAlignment(TextAlignment.CENTER);
         itemLabel.setText(labelText);
-        itemLabel.setOnMouseClicked(ev -> showVariantList(currentPageIndex, 0, "Pathogenicity", valueText));
+        itemLabel.setOnMouseClicked(ev -> showVariantList(currentPageIndex + 1, 0, "pathogenicity", valueText));
         Long value = list.stream().filter(item ->
                 (!StringUtils.isEmpty(item.getSnpInDel().getExpertPathogenicity()) && item.getSnpInDel().getExpertPathogenicity().equalsIgnoreCase(valueText)) ||
                         (StringUtils.isEmpty(item.getSnpInDel().getExpertPathogenicity()) && item.getSnpInDel().getSwPathogenicity().equalsIgnoreCase(valueText)))
@@ -571,7 +573,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             return list.stream().filter(variant ->
                     (!StringUtils.isEmpty(variant.getSnpInDel().getExpertTier()) && variant.getSnpInDel().getExpertTier().equalsIgnoreCase(val)) ||
                             (StringUtils.isEmpty(variant.getSnpInDel().getExpertTier()) && variant.getSnpInDel().getSwTier().equalsIgnoreCase(val))).collect(Collectors.toList());
-        } else if(item.equalsIgnoreCase("Pathgenicity")) {
+        } else if(item.equalsIgnoreCase("Pathogenicity")) {
             return list.stream().filter(variant ->
                     (!StringUtils.isEmpty(variant.getSnpInDel().getExpertPathogenicity()) && variant.getSnpInDel().getExpertPathogenicity().equalsIgnoreCase(val)) ||
                             (StringUtils.isEmpty(variant.getSnpInDel().getExpertPathogenicity()) && variant.getSnpInDel().getSwPathogenicity().equalsIgnoreCase(val))).collect(Collectors.toList());
@@ -589,7 +591,20 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             Map<String, Object> params = new HashMap<>();
             params.put("offset", offset);
             params.put("limit", limit);
-            params.put("tierOrder", "ASC");
+            if(StringUtils.isEmpty(currentSortColumn)) {
+                if(panel != null && ExperimentTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
+                    params.put("tierOrder", "ASC");
+                } else {
+                    params.put("pathogenicityOrder", "ASC");
+                }
+            } else {
+                params.put(currentSortColumn, sortValue);
+            }
+
+            if(!StringUtils.isEmpty(item) && !StringUtils.isEmpty(value)) {
+                params.put(item, value);
+            }
+
             HttpClientResponse response = apiService.get("/analysisResults/sampleSnpInDels/"+ sample.getId(), params,
                     null, false);
             PagedVariantAndInterpretationEvidence analysisResultVariantList = response.getObjectBeforeConvertResponseToJSON(PagedVariantAndInterpretationEvidence.class);
@@ -601,10 +616,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             totalVariantCountLabel.setText(analysisResultVariantList.getCount().toString());
             ObservableList<VariantAndInterpretationEvidence> displayList = null;
 
-            if(!StringUtils.isEmpty(item) && !StringUtils.isEmpty(value)) {
-                list = filteringList(list, value, item);
-                this.list = list;
-            }
+
 
             if (list != null && !list.isEmpty()) {
                 displayList = FXCollections.observableArrayList(list);
@@ -652,9 +664,29 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
     }
 
+    public void sortTable(String column) {
+        if(column.equalsIgnoreCase(currentSortColumn)) {
+            //이미 눌렀던 항목이면 정렬 토글
+            if(sortValue.equalsIgnoreCase("ASC")) {
+                sortValue = "DESC";
+            } else {
+                sortValue = "ASC";
+            }
+        } else {
+            //처음 누른 항목일 경우 오름차순 정렬
+            currentSortColumn = column;
+            sortValue = "ASC";
+        }
+        showVariantList(currentPageIndex + 1, 0, null, null);
+    }
+
     private void setTableViewColumn() {
         if(panel != null && ExperimentTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
-            TableColumn<VariantAndInterpretationEvidence, String> swTier = new TableColumn<>("Tier");
+            TableColumn<VariantAndInterpretationEvidence, String> swTier = new TableColumn<>();
+            Label swTierLabel = new Label("Tier");
+            swTier.setSortable(false);
+            swTierLabel.setOnMouseClicked(e -> sortTable("tierOrder"));
+            swTier.setGraphic(swTierLabel);
             swTier.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.tierConvert(cellData.getValue().getSnpInDel().getSwTier())));
 
             TableColumn<VariantAndInterpretationEvidence, String> expertTier = new TableColumn<>("Tier(User)");
@@ -662,8 +694,13 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
             variantListTableView.getColumns().addAll(swTier, expertTier);
         } else {
-            TableColumn<VariantAndInterpretationEvidence, String> swPathogenicityLevel = new TableColumn<>("Prediction");
+            TableColumn<VariantAndInterpretationEvidence, String> swPathogenicityLevel = new TableColumn<>();
             swPathogenicityLevel.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSwPathogenicity()));
+            swPathogenicityLevel.setSortable(false);
+            Label swPathogenicityLevelLabel = new Label("Prediction");
+            swPathogenicityLevel.setSortable(false);
+            swPathogenicityLevelLabel.setOnMouseClicked(e -> sortTable("pathogenicityOrder"));
+            swPathogenicityLevel.setGraphic(swPathogenicityLevelLabel);
             swPathogenicityLevel.setPrefWidth(55);
             swPathogenicityLevel.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
                 @Override

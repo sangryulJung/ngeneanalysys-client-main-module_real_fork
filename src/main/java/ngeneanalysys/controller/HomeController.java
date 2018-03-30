@@ -464,12 +464,14 @@ public class HomeController extends SubPaneController{
      */
     public void resumeAutoRefresh() {
         boolean isAutoRefreshOn = "true".equals(config.getProperty("analysis.job.auto.refresh"));
+        int refreshPeriodSecond = (Integer.parseInt(config.getProperty("analysis.job.auto.refresh.period")) * 1000) - 1;
         // 기능 실행중인 상태인 경우 실행
         if(autoRefreshTimeline != null && isAutoRefreshOn) {
             logger.info(String.format("[%s] timeline status : %s", this.getClass().getName(),
                     autoRefreshTimeline.getStatus()));
             // 시작
             if(autoRefreshTimeline.getStatus() == Animation.Status.PAUSED) {
+                autoRefreshTimeline.playFrom(Duration.millis(refreshPeriodSecond));
                 autoRefreshTimeline.play();
                 logger.info(String.format("[%s] auto refresh resume", this.getClass().getName()));
             }

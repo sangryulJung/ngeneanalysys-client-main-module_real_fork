@@ -476,3 +476,35 @@
 	-fx-text-alignment:center ;
 	-fx-alignment:center;
 }
+
+
+.pathogenic_review_checkbox {
+	/*-fx-spacing:5;*/
+	/*-fx-padding:10;*/
+	-fx-background-color : #a8bbd9;
+	-fx-min-width : 140;
+	-fx-pref-width : 140;
+	-fx-max-width : 140;
+	-fx-alignment : center;
+}
+.pathogenic_review_checkbox .check-box {
+	-fx-padding:5;
+	-fx-background-radius:5;
+	-fx-border-width:0;
+	-fx-text-fill:white;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+}
+.pathogenic_review_checkbox .check-box .text {
+	-fx-text-fill:white;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+}
+.pathogenic_review_checkbox .check-box .box {
+	-fx-pref-width:10;
+	-fx-pref-height:10;
+	-fx-background-color:white;
+	-fx-border-width:2;
+	-fx-border-color:white;
+	-fx-border-radius:2;
+}
