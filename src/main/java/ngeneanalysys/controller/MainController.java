@@ -630,19 +630,20 @@ public class MainController extends BaseStageController {
 
     public void setAuto(boolean isFirstShow) {
         if("homeWrapper".equals(currentShowFrameId)) {	// 이전 화면이 분석자 HOME인 경우 자동 새로고침 토글
-            homeController.autoRefreshTimeline.stop();
+            //homeController.autoRefreshTimeline.stop();
+            homeController.pauseAutoRefresh();
         } else if("experimentPastResultsWrapper".equals(currentShowFrameId)) {	// 이전 화면이 분석자 Past Results인 경우 자동 새로고침 토글
             pastResultsController.pauseAutoRefresh();
         } else if ("systemManagerHomeWrapper".equals(currentShowFrameId)) {
-            homeController.autoRefreshTimeline.stop();
+            //homeController.autoRefreshTimeline.stop();
+            homeController.pauseAutoRefresh();
             pastResultsController.pauseAutoRefresh();
         }
 
         if("homeWrapper".equals(mainFrame.getCenter().getId())) {	// 현재 출력화면이 분석자 HOME 화면인 경우 다른 화면의 자동 새로고침 실행 토글 처리
             // 최초 화면 출력이 아닌 경우 분석자 HOME 화면 자동 새로고침 기능 시작
-            if(!isFirstShow) {
-                homeController.autoRefreshTimeline.play();
-            }
+            if(!isFirstShow) homeController.resumeAutoRefresh();
+
         } else if("experimentPastResultsWrapper".equals(mainFrame.getCenter().getId())) {	// 현재 출력화면이 분석자 Past Results 화면인 경우 다른 화면의 자동 새로고침 실행 토글 처리
             // 최초 화면 출력이 아닌 경우 분석자 Past Results 화면 자동 새로고침 기능 시작
             if(!isFirstShow) pastResultsController.resumeAutoRefresh();
@@ -743,7 +744,7 @@ public class MainController extends BaseStageController {
 
             // 분석자 HOME 자동 새로고침 기능 중지
             if(homeController != null && homeController.autoRefreshTimeline != null) {
-                homeController.autoRefreshTimeline.stop();
+                homeController.pauseAutoRefresh();
             }
 
             // 분석자 Past Results 자동 새로고침 기능 중지
@@ -829,11 +830,11 @@ public class MainController extends BaseStageController {
      */
     public void applyAutoRefreshSettings() {
         // 현재 화면에 출력중인 화면이 분석자 HOME 화면인 경우
-        if("HomeWrapper".equals(currentShowFrameId)) {
-            homeController.autoRefreshTimeline.setDelay((Duration.millis(Integer.parseInt(config.getProperty("analysis.job.auto.refresh.period")) * 1000)));
-            homeController.autoRefreshTimeline.play();
+        if("homeWrapper".equals(currentShowFrameId)) {
+            homeController.startAutoRefresh();
             if(pastResultsController != null) {
                 pastResultsController.startAutoRefresh();
+                pastResultsController.pauseAutoRefresh();
             }
         }
 
@@ -841,7 +842,8 @@ public class MainController extends BaseStageController {
         if("experimentPastResultsWrapper".equals(currentShowFrameId)) {
             if(pastResultsController != null) pastResultsController.startAutoRefresh();
             if(homeController != null) {
-                homeController.autoRefreshTimeline.play();
+                homeController.startAutoRefresh();
+                homeController.pauseAutoRefresh();
             }
         }
     }

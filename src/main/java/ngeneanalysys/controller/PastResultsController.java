@@ -211,20 +211,20 @@ public class PastResultsController extends SubPaneController {
 			// 갱신 시간 간격
 			int refreshPeriodSecond = Integer.parseInt(config.getProperty("analysis.job.auto.refresh.period")) * 1000;
 			logger.info(String.format("auto refresh period second : %s millisecond", refreshPeriodSecond));
-			
-			// 타임라인 객체가 없는 경우
+
 			if(autoRefreshTimeline == null) {
 				autoRefreshTimeline = new Timeline(new KeyFrame(Duration.millis(refreshPeriodSecond),
 						ae -> setList(paginationList.getCurrentPageIndex() + 1)));
 				autoRefreshTimeline.setCycleCount(Animation.INDEFINITE);
-				autoRefreshTimeline.play();
 			} else {
 				logger.info(String.format("[%s] timeline restart", this.getClass().getName()));
 				autoRefreshTimeline.stop();
-				// 현재 선택된 시간간격으로 재설정
-				autoRefreshTimeline.setDelay(Duration.millis(refreshPeriodSecond));
-				autoRefreshTimeline.play();
+				autoRefreshTimeline.getKeyFrames().removeAll(autoRefreshTimeline.getKeyFrames());
+				autoRefreshTimeline.getKeyFrames().add(new KeyFrame(Duration.millis(refreshPeriodSecond),
+						ae -> setList(paginationList.getCurrentPageIndex() + 1)));
 			}
+
+			autoRefreshTimeline.play();
 		} else {
 			if(autoRefreshTimeline != null) {
 				autoRefreshTimeline.stop();
@@ -350,6 +350,7 @@ public class PastResultsController extends SubPaneController {
 		} catch (Exception e) {
 			DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(),
 					false);
+			e.printStackTrace();
 		}
 		maskerPane.setVisible(false);
 	}
@@ -458,12 +459,26 @@ public class PastResultsController extends SubPaneController {
 
 						if(containNode != null) {
 							VBox box = (VBox) containNode;
-							Node child = box.getChildren().get(1);
-							((FlowPane)child).getChildren().add(new Label(textField.getText()));
+							FlowPane child = (FlowPane) box.getChildren().get(1);
+							boolean isContain = false;
+							String text = textField.getText();
+							for(Node node : child.getChildren()) {
+                                if(((Label) node).getText().equalsIgnoreCase(text)) {
+                                    isContain = true;
+                                    break;
+                                }
+                            }
+                            if(!isContain) {
+							    Label label = new Label(text);
+                                child.getChildren().add(label);
+                                FlowPane.setMargin(label, new Insets(0, 0, 0, 10));
+
+                            }
 						} else {
 							addSearchItem(textField);
 						}
 					}
+                    textField.setText("");
 				}
 			}
 		}
@@ -543,7 +558,10 @@ public class PastResultsController extends SubPaneController {
 					status.getStyleClass().addAll("label","failed_icon");
 				} else if(sampleView.getSampleStatus().getStatus().startsWith("R")) {
 					status.getStyleClass().addAll("label","run_icon");
-					Tooltip tooltip = new Tooltip(sample.getSampleStatus().getProgressPercentage().toString());
+					if(sample.getSampleStatus().getProgressPercentage() != null) {
+                        Tooltip tooltip = new Tooltip(sample.getSampleStatus().getProgressPercentage().toString());
+                        status.setTooltip(tooltip);
+                    }
 				} else if(sampleView.getSampleStatus().getStatus().startsWith("Q")) {
 					status.getStyleClass().addAll("label","queued_icon");
 				}

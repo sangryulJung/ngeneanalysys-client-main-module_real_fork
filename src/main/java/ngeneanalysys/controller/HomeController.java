@@ -105,11 +105,8 @@ public class HomeController extends SubPaneController{
 
         initRunListLayout();
         showRunList();
-        autoRefreshTimeline = new Timeline(new KeyFrame(Duration.millis(Integer.parseInt(config.getProperty("analysis.job.auto.refresh.period")) * 1000),
-                ae -> showRunList()));
-        autoRefreshTimeline.setCycleCount(Animation.INDEFINITE);
-        autoRefreshTimeline.play();
 
+        startAutoRefresh();
     }
 
     /**
@@ -207,6 +204,8 @@ public class HomeController extends SubPaneController{
     }
 
     private void showRunList() {
+        if(autoRefreshTimeline != null)
+            logger.info("cycle time : " + autoRefreshTimeline.getCycleDuration());
         setNoticeArea();
         hddCheck();
         final int maxRunNumberOfPage = 3;
@@ -408,6 +407,73 @@ public class HomeController extends SubPaneController{
             //itemVBox.getChildren().removeAll(itemVBox.getChildren());
         }
 
+    }
+
+    /**
+     * 자동 새로고침 시작 처리
+     */
+    public void startAutoRefresh() {
+        boolean isAutoRefreshOn = "true".equals(config.getProperty("analysis.job.auto.refresh"));
+        logger.info(String.format("auto refresh on : %s", isAutoRefreshOn));
+
+        if(isAutoRefreshOn) {
+            // 갱신 시간 간격
+            int refreshPeriodSecond = Integer.parseInt(config.getProperty("analysis.job.auto.refresh.period")) * 1000;
+            logger.info(String.format("auto refresh period second : %s millisecond", refreshPeriodSecond));
+
+            if(autoRefreshTimeline == null) {
+                autoRefreshTimeline = new Timeline(new KeyFrame(Duration.millis(refreshPeriodSecond),
+                        ae -> showRunList()));
+                autoRefreshTimeline.setCycleCount(Animation.INDEFINITE);
+            } else {
+                logger.info(String.format("[%s] timeline restart", this.getClass().getName()));
+                autoRefreshTimeline.stop();
+                autoRefreshTimeline.getKeyFrames().removeAll(autoRefreshTimeline.getKeyFrames());
+                autoRefreshTimeline.getKeyFrames().add(new KeyFrame(Duration.millis(refreshPeriodSecond),
+                        ae -> showRunList()));
+            }
+
+            autoRefreshTimeline.play();
+
+        } else {
+            if(autoRefreshTimeline != null) {
+                autoRefreshTimeline.stop();
+            }
+        }
+    }
+
+    /**
+     * 자동 새로고침 일시정지
+     */
+    public void pauseAutoRefresh() {
+        boolean isAutoRefreshOn = "true".equals(config.getProperty("analysis.job.auto.refresh"));
+        // 기능 실행중인 상태인 경우 실행
+        if(autoRefreshTimeline != null && isAutoRefreshOn) {
+            logger.info(String.format("[%s] timeline status : %s", this.getClass().getName(),
+                    autoRefreshTimeline.getStatus()));
+            // 일시정지
+            if(autoRefreshTimeline.getStatus() == Animation.Status.RUNNING) {
+                autoRefreshTimeline.pause();
+                logger.info(String.format("[%s] auto refresh pause", this.getClass().getName()));
+            }
+        }
+    }
+
+    /**
+     * 자동 새로고침 시작
+     */
+    public void resumeAutoRefresh() {
+        boolean isAutoRefreshOn = "true".equals(config.getProperty("analysis.job.auto.refresh"));
+        // 기능 실행중인 상태인 경우 실행
+        if(autoRefreshTimeline != null && isAutoRefreshOn) {
+            logger.info(String.format("[%s] timeline status : %s", this.getClass().getName(),
+                    autoRefreshTimeline.getStatus()));
+            // 시작
+            if(autoRefreshTimeline.getStatus() == Animation.Status.PAUSED) {
+                autoRefreshTimeline.play();
+                logger.info(String.format("[%s] auto refresh resume", this.getClass().getName()));
+            }
+        }
     }
 
 }

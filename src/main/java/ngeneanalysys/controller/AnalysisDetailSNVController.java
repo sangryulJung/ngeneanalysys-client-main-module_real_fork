@@ -55,6 +55,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     private APIService apiService;
 
     @FXML
+    private Label totalTextLabel;
+
+    @FXML
     private GridPane snvWrapper;
 
     @FXML
@@ -71,6 +74,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     @FXML
     private HBox rightContentsHBox;
+
+    @FXML
+    private VBox tableVBox;
 
     @FXML
     private VBox filterArea;
@@ -95,6 +101,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     @FXML
     private VBox filterVBox;
+
+    @FXML
+    private Pagination variantPagination;
 
     Sample sample = null;
     Panel panel = null;
@@ -125,6 +134,15 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     private final double standardTableSize = 830;
     private final double maxTableSize = 980;
+
+    private Integer currentPageIndex = -1;
+
+    /**
+     * @return currentPageIndex
+     */
+    public Integer getCurrentPageIndex() {
+        return currentPageIndex;
+    }
 
     /**
      * @param variantsController
@@ -196,12 +214,22 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         setTableViewColumn();
 
-        showVariantList(0, null, null);
+        showVariantList(1, 0, null, null);
 
         foldLeft();
         foldRight();
 
         variantsController.getDetailContents().setCenter(root);
+
+        variantPagination.setPageFactory(pageIndex -> {
+            if(currentPageIndex != pageIndex) {
+                showVariantList(pageIndex + 1, 0, null, null);
+                currentPageIndex = pageIndex;
+            }
+            return new VBox();
+        });
+
+        totalTextLabel.setOnMouseClicked(ev -> showVariantList(currentPageIndex,0, null, null));
     }
 
     public void setDefaultFilter() {
@@ -255,7 +283,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
         itemLabel.setTextAlignment(TextAlignment.CENTER);
         itemLabel.setText(labelText);
-        itemLabel.setOnMouseClicked(ev -> showVariantList(0, "Tier", valueText));
+        itemLabel.setOnMouseClicked(ev -> showVariantList(currentPageIndex,0, "Tier", valueText));
         Long value = list.stream().filter(item ->
                 (!StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && item.getSnpInDel().getExpertTier().equalsIgnoreCase(valueText)) ||
                         (StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && item.getSnpInDel().getSwTier().equalsIgnoreCase(valueText)))
@@ -282,7 +310,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
         itemLabel.setTextAlignment(TextAlignment.CENTER);
         itemLabel.setText(labelText);
-        itemLabel.setOnMouseClicked(ev -> showVariantList(0, "Pathogenicity", valueText));
+        itemLabel.setOnMouseClicked(ev -> showVariantList(currentPageIndex, 0, "Pathogenicity", valueText));
         Long value = list.stream().filter(item ->
                 (!StringUtils.isEmpty(item.getSnpInDel().getExpertPathogenicity()) && item.getSnpInDel().getExpertPathogenicity().equalsIgnoreCase(valueText)) ||
                         (StringUtils.isEmpty(item.getSnpInDel().getExpertPathogenicity()) && item.getSnpInDel().getSwPathogenicity().equalsIgnoreCase(valueText)))
@@ -300,10 +328,11 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightStandardWidth);
             rightContentsHBox.setPrefWidth(this.rightStandardWidth);
             overviewAccordion.setPrefWidth(this.standardAccordionSize);
-            variantListTableView.setVisible(false);
+            tableVBox.setVisible(false);
         } else {
             snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerStandardWidth);
             overviewAccordion.setVisible(false);
+            tableVBox.setPrefWidth(this.centerStandardWidth);
             variantListTableView.setPrefWidth(this.standardTableSize);
         }
         filterArea.setVisible(true);
@@ -319,12 +348,13 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightFullWidth);
             overviewAccordion.setPrefWidth(this.maxAccordionSize);
             overviewAccordion.setVisible(true);
-            variantListTableView.setVisible(false);
+            tableVBox.setVisible(false);
         } else {
             snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerFullWidth);
             overviewAccordion.setVisible(false);
+            tableVBox.setPrefWidth(this.centerFullWidth);
             variantListTableView.setPrefWidth(this.maxTableSize);
-            variantListTableView.setVisible(true);
+            tableVBox.setVisible(true);
         }
         filterArea.setVisible(false);
         filterArea.setPrefWidth(0);
@@ -337,13 +367,14 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         if(snvWrapper.getColumnConstraints().get(0).getPrefWidth() == 200) {
             snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightStandardWidth);
             overviewAccordion.setPrefWidth(this.standardAccordionSize);
-            overviewAccordion.setVisible(true);
         } else {
             snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightFullWidth);
             overviewAccordion.setPrefWidth(this.maxAccordionSize);
-            overviewAccordion.setVisible(true);
+
         }
-        variantListTableView.setVisible(true);
+        overviewAccordion.setVisible(true);
+        tableVBox.setPrefWidth(this.minSize);
+        tableVBox.setVisible(false);
         rightSizeButton.getStyleClass().clear();
         rightSizeButton.getStyleClass().add("right_btn_fold");
     }
@@ -352,14 +383,16 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightFoldedWidth);
         if(snvWrapper.getColumnConstraints().get(0).getPrefWidth() == 200) {
             snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerStandardWidth);
-            variantListTableView.setVisible(true);
-            rightContentsHBox.setPrefWidth(minSize);
-            overviewAccordion.setVisible(false);
+            tableVBox.setPrefWidth(this.centerStandardWidth);
+            variantListTableView.setPrefWidth(this.standardTableSize);
         } else {
             snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerFullWidth);
-            variantListTableView.setVisible(true);
+            tableVBox.setPrefWidth(this.centerFullWidth);
+            variantListTableView.setPrefWidth(this.maxTableSize);
         }
-
+        rightContentsHBox.setPrefWidth(minSize);
+        overviewAccordion.setVisible(false);
+        tableVBox.setVisible(true);
         rightSizeButton.getStyleClass().clear();
         rightSizeButton.getStyleClass().add("right_btn_expand");
     }
@@ -546,19 +579,23 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         return list;
     }
 
-    public void showVariantList(int selectedIdx, String item, String value) {
+    public void showVariantList(int pageIndex, int selectedIdx, String item, String value) {
+        int totalCount = 0;
+        int limit = 100;
+        int offset = (pageIndex - 1)  * limit;
 
         try {
             // API 서버 조회
             Map<String, Object> params = new HashMap<>();
-            params.put("limit", 100);
+            params.put("offset", offset);
+            params.put("limit", limit);
             params.put("tierOrder", "ASC");
             HttpClientResponse response = apiService.get("/analysisResults/sampleSnpInDels/"+ sample.getId(), params,
                     null, false);
             PagedVariantAndInterpretationEvidence analysisResultVariantList = response.getObjectBeforeConvertResponseToJSON(PagedVariantAndInterpretationEvidence.class);
 
             List<VariantAndInterpretationEvidence> list = analysisResultVariantList.getResult();
-
+            totalCount = analysisResultVariantList.getCount();
             this.list = list;
             setDefaultFilter();
             totalVariantCountLabel.setText(analysisResultVariantList.getCount().toString());
@@ -584,6 +621,25 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             if (displayList != null && displayList.size() > 0) {
                 variantListTableView.getSelectionModel().select(selectedIdx);
                 showVariantDetail(displayList.get(selectedIdx));
+            }
+
+            int pageCount = 0;
+
+            if(totalCount > 0) {
+                pageCount = totalCount / limit;
+                variantPagination.setCurrentPageIndex(pageIndex - 1);
+                if(totalCount % limit > 0) {
+                    pageCount++;
+                }
+            }
+
+            logger.info("total count : " + totalCount + ", page count : " + pageCount);
+
+            if (pageCount > 0) {
+                variantPagination.setVisible(true);
+                variantPagination.setPageCount(pageCount);
+            } else {
+                variantPagination.setVisible(false);
             }
 
         } catch (WebAPIException wae) {

@@ -4,13 +4,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.AnalysisDetailTabMenuCode;
 import ngeneanalysys.code.enums.ExperimentTypeCode;
@@ -21,7 +16,6 @@ import ngeneanalysys.model.render.AnalysisDetailTabItem;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.FXMLLoadUtil;
 import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.apache.commons.lang3.text.WordUtils;
 import org.slf4j.Logger;
@@ -39,20 +33,26 @@ public class AnalysisDetailLayoutController extends SubPaneController {
 
     /** 상단 샘플 요약 정보 > 사용 패널키트 */
     @FXML
-    private Label kitLabel;
-
+    private Label panelLabel;
+    @FXML
+    private Tooltip panelNameTooltip;
     /** 상단 샘플 요약 정보 > 샘플명 */
     @FXML
     private Label sampleNameLabel;
-
+    @FXML
+    private Tooltip sampleNameTooltip;
     @FXML
     private Label runNameLabel;
-
+    @FXML
+    private Tooltip runNameTooltip;
     @FXML
     private Label diseaseLabel;
-
+    @FXML
+    private Tooltip diseaseTooltip;
     @FXML
     private Label sequencerLabel;
+    @FXML
+    private Tooltip sequencerTooltip;
 
     /** 상단 탭메뉴 영역 */
     @FXML
@@ -118,23 +118,25 @@ public class AnalysisDetailLayoutController extends SubPaneController {
                 if(optionalPanel.isPresent()) {
                     this.panel = optionalPanel.get();
                     getParamMap().put("panel", panel);
-                    kitLabel.setText(optionalPanel.get().getName());
+                    panelLabel.setText(optionalPanel.get().getName());
+                    panelNameTooltip.setText(optionalPanel.get().getName());
                 }
             }
 
             sampleNameLabel.setText(sample.getName());
-
+            sampleNameTooltip.setText(sample.getName());
             List<Diseases> diseases = (List<Diseases>) mainController.getBasicInformationMap().get("diseases");
             Optional<Diseases> diseasesOptional = diseases.stream().filter(disease -> disease.getId() == sample.getDiseaseId()).findFirst();
             if(diseasesOptional.isPresent()) {
                 String diseaseName = diseasesOptional.get().getName();
                 diseaseLabel.setText(diseaseName);
+                diseaseTooltip.setText(diseaseName);
             }
 
             runNameLabel.setText(run.getRun().getName());
-
+            runNameTooltip.setText(run.getRun().getName());
             sequencerLabel.setText(WordUtils.capitalize(run.getRun().getSequencingPlatform()));
-
+            sequencerTooltip.setText(WordUtils.capitalize(run.getRun().getSequencingPlatform()));
 
 
         } catch (WebAPIException e) {

@@ -8,6 +8,7 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -61,6 +62,9 @@
                            <HBox.margin>
                               <Insets top="-3.0" />
                            </HBox.margin>
+                           <tooltip>
+                              <Tooltip fx:id="sampleNameTooltip" text="Empty Tooltip" />
+                           </tooltip>
                         </Label>
                      </children>
                   </HBox>
@@ -69,10 +73,13 @@
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
                <children>
                   <Label maxWidth="54.0" minWidth="54.0" prefWidth="54.0" text="PANEL : " />
-                  <Label fx:id="kitLabel" styleClass="font_size_12" text="Panel Name" textFill="#262b33">
+                  <Label fx:id="panelLabel" styleClass="font_size_12" text="Panel Name" textFill="#262b33">
                      <font>
                         <Font size="11.0" />
                      </font>
+                     <tooltip>
+                        <Tooltip fx:id="panelNameTooltip" text="Empty Tooltip" />
+                     </tooltip>
                   </Label>
                </children>
                <padding>
@@ -82,7 +89,10 @@
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3">
                <children>
                   <Label maxWidth="65.0" minWidth="65.0" prefWidth="65.0" text="DISEASE : " />
-                  <Label fx:id="diseaseLabel" text="Label" />
+                  <Label fx:id="diseaseLabel" text="Label">
+                     <tooltip>
+                        <Tooltip fx:id="diseaseTooltip" text="Empty Tooltip" />
+                     </tooltip></Label>
                </children>
                <padding>
                   <Insets top="2.0" />
@@ -91,7 +101,10 @@
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4">
                <children>
                   <Label maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="SEQUENCER : " />
-                  <Label fx:id="sequencerLabel" text="Label" />
+                  <Label fx:id="sequencerLabel" text="Label">
+                     <tooltip>
+                        <Tooltip fx:id="sequencerTooltip" text="Empty Tooltip" />
+                     </tooltip></Label>
                </children>
                <GridPane.margin>
                   <Insets top="2.0" />
@@ -100,7 +113,10 @@
             <HBox prefHeight="15.0" prefWidth="228.0" GridPane.columnIndex="1">
                <children>
                   <Label maxWidth="41.0" minWidth="41.0" prefWidth="41.0" text="RUN : " />
-                  <Label fx:id="runNameLabel" text="run name" />
+                  <Label fx:id="runNameLabel" text="run name">
+                     <tooltip>
+                        <Tooltip fx:id="runNameTooltip" text="Empty Tooltip" />
+                     </tooltip></Label>
                </children>
                <padding>
                   <Insets top="2.0" />
