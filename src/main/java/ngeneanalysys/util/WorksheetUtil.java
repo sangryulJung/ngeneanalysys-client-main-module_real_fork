@@ -15,7 +15,6 @@ import javafx.stage.FileChooser;
 import ngeneanalysys.MainApp;
 import ngeneanalysys.controller.WorkProgressController;
 import ngeneanalysys.exceptions.ExcelParseException;
-import ngeneanalysys.model.QcData;
 import ngeneanalysys.task.ExportVariantDataTask;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.util.HSSFColor;
@@ -164,115 +163,6 @@ public class WorksheetUtil {
 		}
 		return result;
 	}
-
-	public static Map<String, QcData> readQCDataExcelSheet(File file) throws IOException, ExcelParseException {
-		XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(file));
-		XSSFSheet sheet = workbook.getSheetAt(0);
-		int lastRowNum = sheet.getLastRowNum();
-		String errorMessagePrefix = "\nPlease refer to the software manual.";
-		String errorMessage = null;
-		Map<String, QcData> list = new TreeMap<>();
-		//First Header Row Check
-		boolean isMatchCode = false;
-		if(lastRowNum <= 0) {
-			errorMessage = "Empty Data";
-		} else {
-			XSSFRow firstRow = sheet.getRow(0);
-			if(firstRow.getCell(0) == null || !"Date".equals(firstRow.getCell(0).toString())) {
-				errorMessage = "A Column first row must be 'Date'";
-			}
-			if(firstRow.getCell(1) == null || !"Patient ID".equals(firstRow.getCell(1).toString())) {
-				errorMessage = "B Column first row must be 'Patient ID'";
-			}
-			if(firstRow.getCell(2) == null || !"Name".equals(firstRow.getCell(2).toString())) {
-				errorMessage = "C Column first row must be 'Name'";
-			}
-			if(firstRow.getCell(3) == null || !"Gender".equals(firstRow.getCell(3).toString())) {
-				errorMessage = "D Column first row must be 'Gender'";
-			}
-			if(firstRow.getCell(4) == null || !"Panel".equals(firstRow.getCell(4).toString())) {
-				errorMessage = "E Column first row must be 'Panel'";
-			}
-			if(firstRow.getCell(5) == null || !"Disease".equals(firstRow.getCell(5).toString())) {
-				errorMessage = "F Column first row must be 'Disease'";
-			}
-			if(firstRow.getCell(6) == null || !"DNA QC".equals(firstRow.getCell(6).toString())) {
-				errorMessage = "G Column first row must be 'DNA QC'";
-			}
-			if(firstRow.getCell(7) == null || !"Library QC".equals(firstRow.getCell(7).toString())) {
-				errorMessage = "H Column first row must be 'Library QC'";
-			}
-			if(firstRow.getCell(8) == null || !"Seq. Cluster Density".equals(firstRow.getCell(8).toString())) {
-				errorMessage = "I Column first row must be 'Seq. Cluster Density'";
-			}
-			if(firstRow.getCell(9) == null || !"Seq. >=Q30".equals(firstRow.getCell(9).toString())) {
-				errorMessage = "J Column first row must be 'Seq. >=Q30'";
-			}
-			if(firstRow.getCell(10) == null || !"Seq. Cluster PF".equals(firstRow.getCell(10).toString())) {
-				errorMessage = "K Column first row must be 'Seq. Cluster PF'";
-			}
-			if(firstRow.getCell(11) == null || !"Seq. Indexing PF CV".equals(firstRow.getCell(11).toString())) {
-				errorMessage = "L Column first row must be 'Seq. Indexing PF CV'";
-			}
-		}
-		if(errorMessage != null) {
-			logger.error(errorMessage);
-			throw new ExcelParseException(errorMessage + errorMessagePrefix);
-		}
-
-		for(int i = 1 ; i <= lastRowNum ; i++) {
-			XSSFRow row = sheet.getRow(i);
-			QcData qcData = new QcData();
-
-			if(row.getCell(0).toString().equals("")) {
-				break;
-			}
-
-			if(!("Pass".equals(row.getCell(6).toString()) || "Fail".equals(row.getCell(6).toString()))) {
-				errorMessage = "Invalid : " + row.getCell(6).toString();
-			}
-			qcData.setDnaQC(row.getCell(6).toString());
-
-			if(!("Pass".equals(row.getCell(7).toString()) || "Fail".equals(row.getCell(7).toString()))) {
-				errorMessage = "Invalid : " + row.getCell(7).toString();
-			}
-			qcData.setLibraryQC(row.getCell(7).toString());
-
-			if(!("Pass".equals(row.getCell(8).toString()) || "Fail".equals(row.getCell(8).toString()))) {
-				errorMessage = "Invalid : " + row.getCell(8).toString();
-			}
-			qcData.setSeqClusterDensity(row.getCell(8).toString());
-
-			if(!("Pass".equals(row.getCell(9).toString()) || "Fail".equals(row.getCell(9).toString()))) {
-				errorMessage = "Invalid : " + row.getCell(9).toString();
-			}
-			qcData.setSeqQ30(row.getCell(9).toString());
-
-			if(!("Pass".equals(row.getCell(10).toString()) || "Fail".equals(row.getCell(10).toString()))) {
-				errorMessage = "Invalid : " + row.getCell(10).toString();
-			}
-			qcData.setSeqClusterPF(row.getCell(10).toString());
-
-			if(!("Pass".equals(row.getCell(11).toString()) || "Fail".equals(row.getCell(11).toString()))) {
-				errorMessage = "Invalid : " + row.getCell(11).toString();
-			}
-			qcData.setSeqIndexingPFCV(row.getCell(11).toString());
-
-			if(list.get(row.getCell(1).toString()) != null) {
-				errorMessage = "???";
-			}
-
-			list.put(row.getCell(2).toString(), qcData);
-		}
-
-		if(errorMessage != null) {
-			logger.error(errorMessage);
-			throw new ExcelParseException(errorMessage + errorMessagePrefix);
-		}
-
-		return list;
-	}
-
 
 	/*
 	public List<Patient> readPatientExcelSheet(String fileName) throws FileNotFoundException, IOException, ExcelParseException {

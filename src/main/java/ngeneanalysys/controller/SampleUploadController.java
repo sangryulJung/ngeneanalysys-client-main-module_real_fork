@@ -77,10 +77,6 @@ public class SampleUploadController extends BaseStageController{
 
     private SampleUploadScreenFirstController sampleUploadScreenFirstController;
 
-    private SampleUploadScreenSecondController sampleUploadScreenSecondController;
-
-    private SampleUploadScreenThirdController sampleUploadScreenThirdController;
-
     private Map<String, Map<String, Object>> fileMap = new HashMap<>();
 
     private List<File> uploadFileList = new ArrayList<>();
@@ -260,29 +256,9 @@ public class SampleUploadController extends BaseStageController{
                 sampleUploadScreenFirstController.show(box);
                 tableRegion.getChildren().add(box);
                 break;
-            case 2 :
-                loader = FXMLLoadUtil.load(FXMLConstants.ANALYSIS_SAMPLE_UPLOAD_SECOND);
-                box = loader.load();
-                sampleUploadScreenSecondController = loader.getController();
-                sampleUploadScreenSecondController.setMainController(mainController);
-                sampleUploadScreenSecondController.setSampleUploadController(this);
-                sampleUploadScreenSecondController.show(box);
-
-                tableRegion.getChildren().add(box);
-                break;
-            case 3 :
-                loader = FXMLLoadUtil.load(FXMLConstants.ANALYSIS_SAMPLE_UPLOAD_THIRD);
-                box = loader.load();
-                sampleUploadScreenThirdController = loader.getController();
-                sampleUploadScreenThirdController.setMainController(mainController);
-                sampleUploadScreenThirdController.setSampleUploadController(this);
-                sampleUploadScreenThirdController.show(box);
-                tableRegion.getChildren().add(box);
-                break;
             default:
                 break;
         }
-
     }
 
 

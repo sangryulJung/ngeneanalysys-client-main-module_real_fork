@@ -45,12 +45,6 @@ public class FXMLConstants {
 	/** FAST 파일 업로드 창 */
 	public static final String ANALYSIS_SAMPLE_UPLOAD_MAIN = "/layout/fxml/SampleUpload.fxml";
 
-	/** FAST 파일 업로드 창  1 */
-	public static final String ANALYSIS_SAMPLE_UPLOAD_SECOND = "/layout/fxml/SampleUploadScreenSecond.fxml";
-
-	/** FAST 파일 업로드 창 2 */
-	public static final String ANALYSIS_SAMPLE_UPLOAD_THIRD = "/layout/fxml/SampleUploadScreenThird.fxml";
-
 	/** FAST 파일 업로드 창 3 */
 	public static final String ANALYSIS_SAMPLE_UPLOAD_FIRST = "/layout/fxml/SampleUploadScreenFirst.fxml";
 	

@@ -812,7 +812,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         contentsMap.put("evidenceCCount", evidenceCCount);
         contentsMap.put("evidenceDCount", evidenceDCount);
         contentsMap.put("negativeList", negativeResult);
-        contentsMap.put("qcData", sample.getQcData());
 
         //Genes in panel
 

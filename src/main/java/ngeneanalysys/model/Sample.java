@@ -39,6 +39,9 @@ public class Sample {
     @JsonProperty("sampleStatus")
     private SampleStatus sampleStatus;
 
+    @JsonProperty("pipelineVersion")
+    private String pipelineVersion;
+
     @JsonProperty("createdAt")
     private DateTime createdAt;
 
@@ -50,11 +53,6 @@ public class Sample {
 
     @JsonProperty("deleted")
     private Integer deleted;
-
-    @JsonProperty("sampleSheet")
-    private SampleSheet sampleSheet;
-
-    private QcData qcData;
 
     private AnalysisResultSummary analysisResultSummary;
 
@@ -207,6 +205,14 @@ public class Sample {
         this.sampleStatus = sampleStatus;
     }
 
+    public String getPipelineVersion() {
+        return pipelineVersion;
+    }
+
+    public void setPipelineVersion(String pipelineVersion) {
+        this.pipelineVersion = pipelineVersion;
+    }
+
     /**
      * @return createdAt
      */
@@ -263,34 +269,6 @@ public class Sample {
         this.deleted = deleted;
     }
 
-    /**
-     * @return sampleSheet
-     */
-    public SampleSheet getSampleSheet() {
-        return sampleSheet;
-    }
-
-    /**
-     * @param sampleSheet
-     */
-    public void setSampleSheet(SampleSheet sampleSheet) {
-        this.sampleSheet = sampleSheet;
-    }
-
-    /**
-     * @return qcData
-     */
-    public QcData getQcData() {
-        return qcData;
-    }
-
-    /**
-     * @param qcData
-     */
-    public void setQcData(QcData qcData) {
-        this.qcData = qcData;
-    }
-
     @Override
     public String toString() {
         return "Sample{" +
@@ -304,12 +282,11 @@ public class Sample {
                 ", qcResult='" + qcResult + '\'' +
                 ", inputFType='" + inputFType + '\'' +
                 ", sampleStatus=" + sampleStatus +
+                ", pipelineVersion='" + pipelineVersion + '\'' +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", deletedAt=" + deletedAt +
                 ", deleted=" + deleted +
-                ", sampleSheet=" + sampleSheet +
-                ", qcData=" + qcData +
                 ", analysisResultSummary=" + analysisResultSummary +
                 '}';
     }

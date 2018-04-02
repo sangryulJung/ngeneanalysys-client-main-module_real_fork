@@ -170,8 +170,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
            if (pairFileList.size() == 2 && !checkSameSample(fastqFilePairName)) {
                 Sample sample = new Sample();
                 sample.setName(fastqFilePairName);
-                sample.setSampleSheet(new SampleSheet());
-                sample.setQcData(new QcData());
                 sampleArrayList.add(sample);
             }
 
@@ -211,8 +209,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                                 sample.setDiseaseId(panel.get().getDefaultDiseaseId());
                         }
                     }
-                    sample.setSampleSheet(new SampleSheet());
-                    sample.setQcData(new QcData());
                     sampleArrayList.add(sample);
                 } else if(s[0].equalsIgnoreCase("Sample_ID")) {
                     tableData = true;
@@ -784,26 +780,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             params.put("diseaseId", sample.getDiseaseId());
             params.put("sampleSource", sample.getSampleSource());
             params.put("inputFType", "FASTQ.GZ");
-            Map<String, String> sampleSheet = new HashMap<>();
-            SampleSheet sampleSheet1 = sample.getSampleSheet();
-            sampleSheet.put("sampleId", sampleSheet1.getSampleId());
-            sampleSheet.put("sampleName", sampleSheet1.getSampleName());
-            sampleSheet.put("samplePlate", sampleSheet1.getSamplePlate());
-            sampleSheet.put("sampleWell", sampleSheet1.getSampleWell());
-            sampleSheet.put("i7IndexId", sampleSheet1.getI7IndexId());
-            sampleSheet.put("sampleIndex", sampleSheet1.getSampleIndex());
-            sampleSheet.put("sampleProject", sampleSheet1.getSampleProject());
-            sampleSheet.put("description", sampleSheet1.getDescription());
-            params.put("sampleSheet", sampleSheet);
-            Map<String, String> qcData = new HashMap<>();
-            QcData qcData1 = sample.getQcData();
-            qcData.put("dnaQC", qcData1.getDnaQC());
-            qcData.put("libraryQC", qcData1.getLibraryQC());
-            qcData.put("seqClusterDensity", qcData1.getSeqClusterDensity());
-            qcData.put("seqQ30", qcData1.getSeqQ30());
-            qcData.put("seqClusterPF", qcData1.getSeqClusterPF());
-            qcData.put("seqIndexingPFCV", qcData1.getSeqIndexingPFCV());
-            params.put("qcData", qcData);
             list.add(params);
         }
         return list;
@@ -818,26 +794,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         params.put("name", sample.getName());
         params.put("diseaseId", sample.getDiseaseId());
         params.put("inputFType", "FASTQ.GZ");
-        Map<String, String> sampleSheet = new HashMap<>();
-        SampleSheet sampleSheet1 = sample.getSampleSheet();
-        sampleSheet.put("sampleId", sampleSheet1.getSampleId());
-        sampleSheet.put("sampleName", sampleSheet1.getSampleName());
-        sampleSheet.put("samplePlate", sampleSheet1.getSamplePlate());
-        sampleSheet.put("sampleWell", sampleSheet1.getSampleWell());
-        sampleSheet.put("i7IndexId", sampleSheet1.getI7IndexId());
-        sampleSheet.put("sampleIndex", sampleSheet1.getSampleIndex());
-        sampleSheet.put("sampleProject", sampleSheet1.getSampleProject());
-        sampleSheet.put("description", sampleSheet1.getDescription());
-        params.put("sampleSheet", sampleSheet);
-        Map<String, String> qcData = new HashMap<>();
-        QcData qcData1 = sample.getQcData();
-        qcData.put("dnaQC", qcData1.getDnaQC());
-        qcData.put("libraryQC", qcData1.getLibraryQC());
-        qcData.put("seqClusterDensity", qcData1.getSeqClusterDensity());
-        qcData.put("seqQ30", qcData1.getSeqQ30());
-        qcData.put("seqClusterPF", qcData1.getSeqClusterPF());
-        qcData.put("seqIndexingPFCV", qcData1.getSeqIndexingPFCV());
-        params.put("qcData", qcData);
         response = apiService.post("/samples", params, null, true);
         Sample sampleData = response.getObjectBeforeConvertResponseToJSON(Sample.class);
 
@@ -1003,8 +959,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         if(newFileCheck) {
             Sample sample = new Sample();
             sample.setName(fastqFilePairName);
-            sample.setSampleSheet(new SampleSheet());
-            sample.setQcData(new QcData());
             sampleArrayList.add(sample);
         }
     }
