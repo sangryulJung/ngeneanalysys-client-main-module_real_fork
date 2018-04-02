@@ -17,10 +17,7 @@ import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 
 /**
@@ -85,6 +82,26 @@ public class APIService {
         if(headers != null && headers.size() > 0) headerMap.putAll(headers);
 
         return HttpClientUtil.get(connectURL, params, headerMap, isJsonRequest);
+    }
+
+    /**
+     *
+     * @param url
+     * @param params
+     * @param headers
+     * @param searchParam
+     * @return
+     * @throws WebAPIException
+     */
+    public HttpClientResponse get(String url, Map<String,Object> params, Map<String,Object> headers, Map<String, List<Object>> searchParam) throws WebAPIException {
+        logger.debug("APIService.get..[" + url + "]");
+        String connectURL = getConvertConnectURL(url);
+        //헤더정보 삽입
+        Map<String, Object> headerMap = getDefaultHeaders(true);
+
+        if(headers != null && headers.size() > 0) headerMap.putAll(headers);
+
+        return HttpClientUtil.get(connectURL, params, headerMap, searchParam);
     }
 
     /**

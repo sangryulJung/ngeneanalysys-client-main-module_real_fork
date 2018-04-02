@@ -213,6 +213,43 @@ public class HttpClientUtil {
 	}
 
 	/**
+	 * get 설정 반환
+	 * @param url
+	 * @param params
+	 * @param headers
+	 * @param encoding
+	 * @return
+	 */
+	public static HttpGet initGet(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, Map<String, List<Object>> searchParam) {
+		HttpGet get = null;
+		try {
+			String requstURL = null;
+			// 파라미터 List 객체로 변환
+			List<NameValuePair> paramList = convertParam(params);
+			requstURL = url + "?" + URLEncodedUtils.format(paramList, encoding);
+
+			if(searchParam != null && !searchParam.isEmpty()) {
+				List<NameValuePair> paramSearchList = convertSearchParam(searchParam);
+				requstURL = requstURL + "&" + URLEncodedUtils.format(paramSearchList, encoding);
+			}
+
+			get = new HttpGet(requstURL);
+			// 지정된 헤더 삽입 정보가 있는 경우 추가
+			if(headers != null && headers.size() > 0) {
+				Iterator<String> keys = headers.keySet().iterator();
+				while (keys.hasNext()) {
+					String key = keys.next();
+					get.addHeader(key, headers.get(key).toString());
+				}
+			}
+			logger.info("GET:" + get.getURI());
+		} catch (Exception e) {
+			logger.error("get setting fail", e);
+		}
+		return get;
+	}
+
+	/**
 	 * HTTPS GET
 	 * @param url
 	 * @param params
@@ -228,6 +265,50 @@ public class HttpClientUtil {
 
 		try {
 			HttpGet get = initGet(url, params, headers, encoding, isJsonRequest);
+			httpclient = HttpClients.custom().setSSLSocketFactory(getSSLSocketFactory()).build();
+			try {
+				response = httpclient.execute(get);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			result = getHttpClientResponse(response);
+			return result;
+		} catch (WebAPIException wae) {
+			throw wae;
+		} finally {
+			if(httpclient != null) {
+				try {
+					httpclient.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			if(response != null) {
+				try {
+					response.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	/**
+	 * HTTPS GET
+	 * @param url
+	 * @param params
+	 * @param headers
+	 * @param encoding
+	 * @return
+	 * @throws WebAPIException
+	 */
+	public static HttpClientResponse get(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, Map<String, List<Object>> searchParam) throws WebAPIException {
+		CloseableHttpClient httpclient = null;
+		CloseableHttpResponse response = null;
+		HttpClientResponse result = null;
+
+		try {
+			HttpGet get = initGet(url, params, headers, encoding, searchParam);
 			httpclient = HttpClients.custom().setSSLSocketFactory(getSSLSocketFactory()).build();
 			try {
 				response = httpclient.execute(get);
@@ -302,6 +383,19 @@ public class HttpClientUtil {
 	 */
 	public static HttpClientResponse get(String url, Map<String, Object> params, Map<String, Object> headers, boolean isJsonRequest) throws WebAPIException {
 		return get(url, params, headers, HttpClientUtil.DEFAULT_ENCODING, isJsonRequest);
+	}
+
+	/**
+	 * HTTPS GET
+	 * @param url
+	 * @param params
+	 * @param headers
+	 * @param searchParam
+	 * @return
+	 * @throws WebAPIException
+	 */
+	public static HttpClientResponse get(String url, Map<String, Object> params, Map<String, Object> headers, Map<String, List<Object>> searchParam) throws WebAPIException {
+		return get(url, params, headers, HttpClientUtil.DEFAULT_ENCODING, searchParam);
 	}
 
 	/**
@@ -561,6 +655,25 @@ public class HttpClientUtil {
 			while (keys.hasNext()) {
 				String key = keys.next();
 				paramList.add(new BasicNameValuePair(key, params.get(key).toString()));
+			}
+		}
+		return paramList;
+	}
+	/**
+	 * Convert Parameter Map to List
+	 * @param params
+	 * @return
+	 */
+	public static List<NameValuePair> convertSearchParam(Map<String, List<Object>> params) {
+		List<NameValuePair> paramList = new ArrayList<>();
+		if (params != null && params.size() > 0) {
+			Iterator<String> keys = params.keySet().iterator();
+			while (keys.hasNext()) {
+				String key = keys.next();
+				List<Object> value = params.get(key);
+				for(Object obj : value) {
+					paramList.add(new BasicNameValuePair(key, obj.toString()));
+				}
 			}
 		}
 		return paramList;

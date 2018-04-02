@@ -42,13 +42,19 @@
                   <Insets right="10.0" />
                </HBox.margin>
             </ComboBox>
-            <Button mnemonicParsing="false" onAction="#save" prefHeight="35.0" prefWidth="95.0" styleClass="btn_patient_search1" text="Save" GridPane.columnIndex="5" GridPane.rowIndex="7" />
-            <Button layoutX="1155.0" layoutY="20.0" mnemonicParsing="false" onAction="#createPDFAsDraft" prefHeight="35.0" prefWidth="100.0" styleClass="btn_create_draft_report" text="Draft Report">
+            <Button maxHeight="25.0" minHeight="25.0" mnemonicParsing="false" onAction="#save" prefHeight="25.0" prefWidth="95.0" styleClass="submitBtn" text="Save" GridPane.columnIndex="5" GridPane.rowIndex="7">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin></Button>
+            <Button layoutX="1155.0" layoutY="20.0" maxHeight="25.0" minHeight="25.0" mnemonicParsing="false" onAction="#createPDFAsDraft" prefHeight="25.0" prefWidth="100.0" styleClass="cancelBtn" text="Draft Report">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>
             </Button>
-            <Button layoutX="1155.0" layoutY="20.0" mnemonicParsing="false" onAction="#createPDFAsFinal" prefHeight="35.0" prefWidth="100.0" styleClass="btn_create_final_report" text="Final Report" />
+            <Button layoutX="1155.0" layoutY="20.0" maxHeight="25.0" minHeight="25.0" mnemonicParsing="false" onAction="#createPDFAsFinal" prefHeight="25.0" prefWidth="100.0" styleClass="cancelBtn" text="Final Report">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin></Button>
          </children>
       </HBox>
       <HBox fx:id="completeBtnBox" alignment="BOTTOM_RIGHT" layoutX="30.0" layoutY="508.0" visible="false" GridPane.rowIndex="1">
@@ -93,7 +99,7 @@
                               <TableView fx:id="variantsTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="1120.0" style="-fx-border-width: 0;" styleClass="txt_black">
                                 <columns>
                                     <TableColumn fx:id="tierColumn" prefWidth="75.0" styleClass="txt_black" text="Tier" />
-                                    <TableColumn fx:id="chrColumn" prefWidth="200.0" styleClass="txt_black" text="Chr" />
+                                    <TableColumn fx:id="chrColumn" prefWidth="195.0" styleClass="txt_black" text="Chr" />
                                   <TableColumn fx:id="geneColumn" prefWidth="145.0" styleClass="txt_black" text="Gene" />
                                     <TableColumn fx:id="positionColumn" prefWidth="150.0" styleClass="txt_black" text="Position" />
                                   <TableColumn fx:id="refSeqColumn" prefWidth="200.0" styleClass="txt_black" text="Transcript" />
@@ -153,6 +159,9 @@
                                  <padding>
                                     <Insets bottom="15.0" top="15.0" />
                                  </padding>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
                               </FlowPane>
                            </children>
                         </VBox>

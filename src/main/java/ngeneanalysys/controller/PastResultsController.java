@@ -71,6 +71,9 @@ public class PastResultsController extends SubPaneController {
 	private VBox filterSearchArea;
 
 	@FXML
+	private ScrollPane mainContentsScrollPane;
+
+	@FXML
 	private Label totalCountLabel;
 	@FXML
 	private Label queueLabel;
@@ -97,6 +100,7 @@ public class PastResultsController extends SubPaneController {
 	public void setSearchOption() {
 		searchOption.put("SAMPLE","sampleName");
 		searchOption.put("RUN","runName");
+		searchOption.put("PANEL","panelName");
 	}
 
 	/**
@@ -106,7 +110,7 @@ public class PastResultsController extends SubPaneController {
 	@Override
 	public void show(Parent root) throws IOException {
 		setSearchOption();
-		logger.info("ExperimenterPastResultsController show..");
+		logger.info("PastResultsController show..");
 		itemCountPerPage = 5;
 		// api service init..
 		apiService = APIService.getInstance();
@@ -115,15 +119,16 @@ public class PastResultsController extends SubPaneController {
 		runStatusGirdPanes = new ArrayList<>();
 
 		// masker pane init
-		experimentPastResultsWrapper.getChildren().add(maskerPane);
+		experimentPastResultsWrapper.add(maskerPane, 0, 0, 6, 6);
 		maskerPane.setPrefWidth(getMainController().getMainFrame().getWidth());
 		maskerPane.setPrefHeight(getMainController().getMainFrame().getHeight());
 		maskerPane.setVisible(false);
 
 		// 페이지 이동 이벤트 바인딩
 		paginationList.setPageFactory(pageIndex -> {
-				setList(pageIndex + 1);
-				return new VBox();
+			mainContentsScrollPane.setVvalue(0);
+			setList(pageIndex + 1);
+			return new VBox();
 		});
 
 		// 시스템 설정에서 자동 새로고침 설정이 true 인경우 자동 새로고팀 실행
@@ -300,13 +305,13 @@ public class PastResultsController extends SubPaneController {
 		int offset = (page - 1) * itemCountPerPage;
 
 		Map<String, Object> param = getSearchParam();
+		Map<String, List<Object>> subParams = getSubSearchParam();
 		param.put("limit", itemCountPerPage);
 		param.put("offset", offset);
 		param.put("ordering", "DESC");
 		
 		try {
-			HttpClientResponse response = apiService.get("/searchSamples", param, null,
-					false);
+			HttpClientResponse response = apiService.get("/searchSamples", param, null, subParams);
 
 			if (response != null) {
 				PagedRunSampleView searchedSamples = response
@@ -366,14 +371,26 @@ public class PastResultsController extends SubPaneController {
 		if(oneItem) {
 			final CustomTextField textField = (CustomTextField)filterSearchArea.getChildren().get(0);
 			param.put(searchOption.get(searchComboBox.getSelectionModel().getSelectedItem().getText()), textField.getText());
-		} else if(!searchListFlowPane.getChildren().isEmpty()){
+		}
+
+		/** End 검색 항목 설정 */
+		return param;
+	}
+
+	private Map<String, List<Object>> getSubSearchParam() {
+		Map<String, List<Object>> param = new HashMap<>();
+
+		if(!oneItem && !searchListFlowPane.getChildren().isEmpty()){
 			for(Node node : searchListFlowPane.getChildren()) {
-				String subPath = "";
 				VBox vbox = (VBox) node;
 				Label label = (Label) vbox.getChildren().get(0);
 				FlowPane flowPane = (FlowPane) vbox.getChildren().get(1);
+				List<Object> value = new ArrayList<>();
 				for(Node item : flowPane.getChildren()) {
-					subPath += "&" + label.getText() + "=" + ((Label)item).getText();
+					value.add(((Label)item).getText());
+				}
+				if(searchOption.containsKey(label.getText())) {
+					param.put(searchOption.get(label.getText()), value);
 				}
 			}
 		} else {

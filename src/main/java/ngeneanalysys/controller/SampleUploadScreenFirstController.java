@@ -94,6 +94,8 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     private boolean isServerItem = false;
 
+    private boolean isServerFastq = false;
+
     private String runPath = "";
 
     //화면에 표시될 row 수
@@ -101,6 +103,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     public void setServerFASTQ(String path) {
         isServerItem = true;
+        isServerFastq = true;
         if(sampleArrayList.isEmpty()) sampleArrayList.removeAll(sampleArrayList);
         try {
             Map<String, Object> params = new HashMap<>();
@@ -121,6 +124,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     public void setServerRun(String path) {
         isServerItem = true;
+        isServerFastq = false;
         logger.info(path);
         if(sampleArrayList.isEmpty()) sampleArrayList.removeAll(sampleArrayList);
         try {
@@ -260,6 +264,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
         if(isServerItem && !sampleArrayList.isEmpty()) {
             isServerItem = false;
+            isServerFastq = false;
             sampleArrayList.removeAll(sampleArrayList);
         }
 
@@ -868,7 +873,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     public void panelSetting(ComboBox<ComboBoxItem> panelBox) {
         if(panelBox.getItems().isEmpty()) panelBox.getItems().removeAll(panelBox.getItems());
         List<Panel> panelList = new ArrayList<>();
-        if(isServerItem) {
+        if(isServerItem && !isServerFastq) {
             panelList.addAll(panels.stream().filter(panel -> panel.getName().startsWith("TruSight Tumor 170")).collect(Collectors.toList()));
         } else {
             panelList.addAll(panels);
@@ -1050,82 +1055,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 addUploadFile(pairFileList, fastqFilePairName, true);
             }
             mainController.getBasicInformationMap().put("path", chooseDirectoryPath);
-        }
-        tableEdit();
-
-        maskerPane.setVisible(false);
-    }
-
-
-    @FXML
-    public void showFileFindWindow2() {
-        maskerPane.setVisible(true);
-
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Choose File");
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-        FileChooser.ExtensionFilter fileExtensions =
-                new FileChooser.ExtensionFilter(
-                        "fastq", "*.fastq", "*.fastq.gz");
-        fileChooser.getExtensionFilters().add(fileExtensions);
-        List<File> fileList = fileChooser.showOpenMultipleDialog(this.sampleUploadController.getCurrentStage());
-        List<File> addFileList = new ArrayList<>();
-
-        if(fileList != null && !fileList.isEmpty()) {
-            String chooseDirectoryPath = FilenameUtils.getFullPath(fileList.get(0).getAbsolutePath());
-            logger.info(String.format("directory path of choose bedFile : %s", chooseDirectoryPath));
-            File directory = new File(chooseDirectoryPath);
-            //선택한 파일의 폴더 내 모든 FASTQ 파일 검색
-            List<File> fastqFilesInFolder = (List<File>) FileUtils.listFiles(directory, new String[]{"fastq.gz"}, false);
-
-            fileList = fileList.stream().filter(file -> file.getName().endsWith(".fastq.gz")).collect(Collectors.toList());
-            if(fileList.isEmpty()) DialogUtil.alert("not found", "not found fastq file", sampleUploadController.getCurrentStage(), true);
-            while (!fileList.isEmpty()) {
-                File fastqFile = fileList.get(0);
-                String fastqFilePairName = FileUtil.getFASTQFilePairName(fastqFile.getName());
-
-                List<File> pairFileList = fileList.stream().filter(file ->
-                        file.getName().startsWith(fastqFilePairName)).collect(Collectors.toList());
-
-                Optional<AnalysisFile> optionalFile = uploadFileData.stream().filter(item ->
-                        item.getName().contains(fastqFilePairName)).findFirst();
-                Sample sample = null;
-                if(optionalFile.isPresent()) sample = getSameSample(optionalFile.get().getSampleId());
-                //fastq 파일이 짝을 이루고 올리는데 실패한 파일인 경우
-                if(pairFileList.size() == 2 && sample != null) {
-                    List<File> failedFileList = new ArrayList<>();
-                    List<AnalysisFile> selectedAnalysisFileList = new ArrayList<>();
-                    for (File selectedFile : pairFileList) {
-                        Optional<AnalysisFile> fileOptional = failedAnalysisFileList.stream().filter(item ->
-                                selectedFile.getName().equals(item.getName())).findFirst();
-                        if (fileOptional.isPresent()) {
-                            failedFileList.add(selectedFile);
-
-                            //meta data 정보가 하나만 입력이 되어있는 경우
-                            if("NOT_FOUND".equals(fileOptional.get().getStatus())) {
-                                failedAnalysisFileList.remove(fileOptional.get());
-                                addUploadFile(selectedFile,fastqFilePairName);
-                            } else {
-                                //메타 데이터 정보가 온전히 존재하고 파일 업로드에 실패한 경우
-                                selectedAnalysisFileList.add(fileOptional.get());
-                            }
-
-                            //meta data 정보가 없는 경우
-                        } else if(sample.getSampleStatus() != null && sample.getSampleStatus().getStep().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STEP_UPLOAD)
-                                && sample.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_QUEUED)) {
-                            failedFileList.add(selectedFile);
-                        }
-                    }
-                    if(!failedFileList.isEmpty()) addUploadFile(failedFileList, fastqFilePairName, false);
-
-                    if(!selectedAnalysisFileList.isEmpty()) uploadFileData.addAll(selectedAnalysisFileList);
-                } else if (pairFileList.size() == 2 && !checkSameSample(fastqFilePairName)) {
-                    addUploadFile(pairFileList, fastqFilePairName, true);
-                }
-
-                fileList.removeAll(pairFileList);
-            }
-
         }
         tableEdit();
 

@@ -204,6 +204,7 @@ public class HomeController extends SubPaneController{
     }
 
     private void showRunList() {
+        maskerPane.setVisible(true);
         if(autoRefreshTimeline != null)
             logger.info("cycle time : " + autoRefreshTimeline.getCycleDuration());
         setNoticeArea();
@@ -246,6 +247,7 @@ public class HomeController extends SubPaneController{
         } catch (Exception e) {
             logger.error("HOME -> SHOW RUN LIST", e);
         }
+        maskerPane.setVisible(false);
     }
 
     class RunStatusVBox extends VBox {

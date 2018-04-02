@@ -435,6 +435,7 @@ Button {
  	-fx-border-color:#FFFFFF;
  	-fx-border-width:0;
  	-fx-padding:0;
+ 	-fx-table-cell-border-color: transparent;
 }
 
 .table-view .column-header-background .nested-column-header .label{
@@ -457,7 +458,9 @@ Button {
 
 .table-row-cell {
 	-fx-background-insets:0;
-	-fx-font-size:12px;
+	-fx-background-color: -fx-table-cell-border-color, #FFFFFF;
+    -fx-border-width : 0;
+    -fx-font-size : 13;
 }
 
 .table-row-cell:empty {
@@ -465,22 +468,18 @@ Button {
 }
 
 .table-row-cell:hover{
+    -fx-table-cell-border-color: transparent;
 }
 
 .table-row-cell:selected {
 	-fx-background-color : #999999;
+	-fx-table-cell-border-color: transparent;
 }
 
 .table-view .table-cell .label {
 	-fx-text-fill:#656565;
 	-fx-background-color : #FFFFFF;
 	-fx-pref-height : 25;
-}
-
-.table-row-cell{
-    -fx-background-color: -fx-table-cell-border-color, #FFFFFF;
-    -fx-border-width : 0;
-    -fx-font-size : 13;
 }
 
 .listHeader {
@@ -1417,14 +1416,14 @@ Button {
     -fx-background-color : #263d5f;
     -fx-text-fill : #fff;
     -fx-background-radius : 0;
-    -fx-alignment : center-left;
+    -fx-alignment : center;
 }
 
 .cancelBtn {
     -fx-background-color : #999999;
     -fx-text-fill : #fff;
     -fx-background-radius : 0;
-    -fx-alignment : center-left;
+    -fx-alignment : center;
 }
 
 
