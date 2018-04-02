@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -25,20 +20,20 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="558.0" prefHeight="558.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemManagerPanelController">
+<AnchorPane prefHeight="470.0" prefWidth="1200.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemManagerPanelController">
    <stylesheets>
       <URL value="@../../css/common.css" />
       <URL value="@../../css/experimenter.css" />
    </stylesheets>
    <children>
-      <HBox prefHeight="558.0" prefWidth="1280.0">
+      <HBox prefHeight="470.0" prefWidth="1200.0">
          <children>
-            <ScrollPane hbarPolicy="NEVER" maxHeight="528.0" maxWidth="385.0" prefHeight="528.0" prefWidth="385.0" vbarPolicy="ALWAYS">
+            <ScrollPane hbarPolicy="NEVER" maxHeight="470.0" maxWidth="385.0" prefHeight="470.0" prefWidth="385.0" vbarPolicy="ALWAYS">
                <HBox.margin>
                   <Insets right="1.0" />
                </HBox.margin>
                <content>
-                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="862.0" prefWidth="374.0">
+                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="862.0" prefWidth="359.0">
                      <children>
                         <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="374.0">
                            <children>
@@ -248,12 +243,12 @@
                         </GridPane>
                         <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="300.0">
                            <children>
-                              <Button fx:id="roiFileSelectionButton" mnemonicParsing="false" onAction="#selectROIFile" text="Select ROI file">
+                              <Button fx:id="roiFileSelectionButton" mnemonicParsing="false" onAction="#selectROIFile" styleClass="submitBtn" text="Select ROI file">
                                  <HBox.margin>
                                     <Insets right="10.0" />
                                  </HBox.margin>
                               </Button>
-                              <Button fx:id="panelSaveButton" mnemonicParsing="false" onAction="#savePanel" text="Save" />
+                              <Button fx:id="panelSaveButton" mnemonicParsing="false" onAction="#savePanel" styleClass="submitBtn" text="Save" />
                            </children>
                         </HBox>
                      </children>
@@ -288,7 +283,7 @@
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </padding>
                                  <children>
-                                    <Button mnemonicParsing="false" onAction="#panelAdd" text="+" />
+                                    <Button mnemonicParsing="false" onAction="#panelAdd" styleClass="submitBtn" text="+" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="180.0" spacing="5.0">
@@ -315,11 +310,11 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <TableView fx:id="panelListTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="405.0" prefWidth="877.0" tableMenuButtonVisible="true">
+                  <TableView fx:id="panelListTable" maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="835.0" tableMenuButtonVisible="true">
                     <columns>
                         <TableColumn fx:id="defaultPanelTableColumn" prefWidth="75.0" text="Default" />
                         <TableColumn fx:id="panelIdTableColumn" prefWidth="60.0" text="Panel Id" visible="false" />
-                        <TableColumn fx:id="panelNameTableColumn" prefWidth="350.0" text="Panel Name" />
+                        <TableColumn fx:id="panelNameTableColumn" prefWidth="335.0" text="Panel Name" />
                         <TableColumn fx:id="editPanelTableColumn" prefWidth="80.0" />
                         <TableColumn fx:id="virtualPanelColumn" prefWidth="195.0" style="-fx-alignment: center;" text="Virtual Panel" />
                         <TableColumn fx:id="panelCodeTableColumn" prefWidth="60.79998779296875" text="Code" />
@@ -337,13 +332,7 @@
                         <TableColumn fx:id="deletedTableColumn" prefWidth="55.0" style="-fx-alignment: center;" text="Deleted" />
                     </columns>
                   </TableView>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="48.0" prefWidth="900.0" spacing="5.0" VBox.vgrow="NEVER">
-                     <children>
-                        <Pagination fx:id="panelPagination" prefHeight="48.0" prefWidth="949.0" />
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" />
-                        <HBox alignment="CENTER" prefHeight="48.0" prefWidth="168.0" />
-                     </children>
-                  </HBox>
+                  <Pagination fx:id="panelPagination" prefHeight="48.0" prefWidth="800.0" />
                </children>
             </VBox>
          </children>

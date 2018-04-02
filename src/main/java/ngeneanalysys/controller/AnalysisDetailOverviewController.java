@@ -15,6 +15,7 @@ import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedVariantAndInterpretationEvidence;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.ConvertUtil;
+import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
@@ -144,8 +145,6 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
 
-        Sample sample = (Sample) getParamMap().get("sample");
-
         //Tier Table Setting
         tierColumn.setCellValueFactory(cellData -> new SimpleStringProperty(
                 !StringUtils.isEmpty(cellData.getValue().getSnpInDel().getExpertTier()) ?
@@ -181,7 +180,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         setDisplayItem();
     }
 
-    public List<VariantAndInterpretationEvidence> settingTierList(List<VariantAndInterpretationEvidence> allTierList, String tier) {
+    private List<VariantAndInterpretationEvidence> settingTierList(List<VariantAndInterpretationEvidence> allTierList, String tier) {
         if(!StringUtils.isEmpty(tier)) {
             return allTierList.stream().filter(item -> ((tier.equalsIgnoreCase(item.getSnpInDel().getExpertTier()) ||
                     (StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && tier.equalsIgnoreCase(item.getSnpInDel().getSwTier())))))
@@ -191,7 +190,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         return null;
     }
 
-    public long countTherapeutic (List<SnpInDelInterpretation> snpInDelInterpretations) {
+    private long countTherapeutic (List<SnpInDelInterpretation> snpInDelInterpretations) {
         return snpInDelInterpretations.stream().filter(item -> (!StringUtils.isEmpty(item.getTherapeuticEvidence().getLevelA()) ||
                 !StringUtils.isEmpty(item.getTherapeuticEvidence().getLevelB()) ||
                 !StringUtils.isEmpty(item.getTherapeuticEvidence().getLevelC()) ||
@@ -208,11 +207,6 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
 
             List<VariantAndInterpretationEvidence> list = analysisResultVariantList.getResult();
 
-            List<VariantAndInterpretationEvidence> negativeList = list.stream().filter(item ->
-                    ((!StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && "TN".equalsIgnoreCase(item.getSnpInDel().getExpertTier()))) ||
-                            (StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && "TN".equalsIgnoreCase(item.getSnpInDel().getSwTier())))
-                    .collect(Collectors.toList());
-
             List<VariantAndInterpretationEvidence> tierOne = settingTierList(list, "T1");
 
             List<VariantAndInterpretationEvidence> tierTwo = settingTierList(list, "T2");
@@ -227,7 +221,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                 tierTable.getItems().addAll(FXCollections.observableArrayList(tierOne));
                 tierOneVariantsCountLabel.setText(String.valueOf(tierOne.size()));
                 List<GenomicCoordinate> genomicCoordinates = new ArrayList<>();
-                tierOne.stream().forEach(item -> {
+                tierOne.forEach(item -> {
                     if (item.getSnpInDel().getGenomicCoordinate() != null)
                         genomicCoordinates.add(item.getSnpInDel().getGenomicCoordinate());
                 });
@@ -235,7 +229,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                 tierOneGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
 
                 List<SnpInDelInterpretation> snpInDelInterpretations = new ArrayList<>();
-                tierOne.stream().forEach(item -> {
+                tierOne.forEach(item -> {
                     if (item.getInterpretationEvidence() != null)
                         snpInDelInterpretations.add(item.getInterpretationEvidence());
                 });
@@ -252,7 +246,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                 tierTwoVariantsCountLabel.setText(String.valueOf(tierTwo.size()));
 
                 List<GenomicCoordinate> genomicCoordinates = new ArrayList<>();
-                tierTwo.stream().forEach(item -> {
+                tierTwo.forEach(item -> {
                     if (item.getSnpInDel().getGenomicCoordinate() != null)
                         genomicCoordinates.add(item.getSnpInDel().getGenomicCoordinate());
                 });
@@ -260,7 +254,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                 tierTwoGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
 
                 List<SnpInDelInterpretation> snpInDelInterpretations = new ArrayList<>();
-                tierTwo.stream().forEach(item -> {
+                tierTwo.forEach(item -> {
                     if (item.getInterpretationEvidence() != null)
                         snpInDelInterpretations.add(item.getInterpretationEvidence());
                 });
@@ -273,7 +267,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                 tierThreeVariantsCountLabel.setText(String.valueOf(tierThree.size()));
 
                 List<GenomicCoordinate> genomicCoordinates = new ArrayList<>();
-                tierThree.stream().forEach(item -> {
+                tierThree.forEach(item -> {
                     if (item.getSnpInDel().getGenomicCoordinate() != null)
                         genomicCoordinates.add(item.getSnpInDel().getGenomicCoordinate());
                 });
@@ -281,7 +275,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                 tierThreeGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
 
                 List<SnpInDelInterpretation> snpInDelInterpretations = new ArrayList<>();
-                tierThree.stream().forEach(item -> {
+                tierThree.forEach(item -> {
                     if (item.getInterpretationEvidence() != null)
                         snpInDelInterpretations.add(item.getInterpretationEvidence());
                 });
@@ -339,7 +333,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
             roiCoverageTooltip.setText(findQCTooltipString(qcList, "roi_coverage"));
 
         } catch(WebAPIException e) {
-            e.printStackTrace();
+            DialogUtil.alert("QC ERROR", e.getMessage(), this.getMainApp().getPrimaryStage(), true);
         }
     }
 

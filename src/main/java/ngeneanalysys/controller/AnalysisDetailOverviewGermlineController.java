@@ -14,6 +14,7 @@ import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedVariantAndInterpretationEvidence;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
@@ -122,8 +123,6 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
 
-        Sample sample = (Sample) getParamMap().get("sample");
-
         //Tier Table Setting
         pathogenicityColumn.setCellValueFactory(cellData -> new SimpleStringProperty(
                 !StringUtils.isEmpty(cellData.getValue().getSnpInDel().getExpertPathogenicity()) ?
@@ -149,11 +148,11 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
 
             List<VariantAndInterpretationEvidence> list = analysisResultVariantList.getResult();
 
-            List<VariantAndInterpretationEvidence> pathgenicList = returnVariant(list, "P");
+            List<VariantAndInterpretationEvidence> pathogenicList = returnVariant(list, "P");
 
-            List<VariantAndInterpretationEvidence> likeylyPathogenic = returnVariant(list, "LP");
+            List<VariantAndInterpretationEvidence> likelyPathogenic = returnVariant(list, "LP");
 
-            List<VariantAndInterpretationEvidence> uncertatinSignificance = returnVariant(list, "US");
+            List<VariantAndInterpretationEvidence> uncertainSignificance = returnVariant(list, "US");
 
             List<VariantAndInterpretationEvidence> likelyBenign = returnVariant(list, "LB");
 
@@ -161,11 +160,11 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
 
             if(!pathogenicityTable.getItems().isEmpty()) pathogenicityTable.getItems().removeAll(pathogenicityTable.getItems());
 
-            if(pathgenicList != null) {
-                pathogenicityTable.getItems().addAll(FXCollections.observableArrayList(pathgenicList));
-                pVariantsCountLabel.setText(String.valueOf(pathgenicList.size()));
+            if(pathogenicList != null) {
+                pathogenicityTable.getItems().addAll(FXCollections.observableArrayList(pathogenicList));
+                pVariantsCountLabel.setText(String.valueOf(pathogenicList.size()));
                 List<GenomicCoordinate> genomicCoordinates = new ArrayList<>();
-                pathgenicList.stream().forEach(item -> {
+                pathogenicList.forEach(item -> {
                     if (item.getSnpInDel().getGenomicCoordinate() != null)
                         genomicCoordinates.add(item.getSnpInDel().getGenomicCoordinate());
                 });
@@ -173,19 +172,19 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
                 pGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
 
                 List<SnpInDelInterpretation> snpInDelInterpretations = new ArrayList<>();
-                pathgenicList.stream().forEach(item -> {
+                pathogenicList.forEach(item -> {
                     if (item.getInterpretationEvidence() != null)
                         snpInDelInterpretations.add(item.getInterpretationEvidence());
                 });
 
             }
 
-            if(likeylyPathogenic != null) {
-                pathogenicityTable.getItems().addAll(FXCollections.observableArrayList(likeylyPathogenic));
-                lpVariantsCountLabel.setText(String.valueOf(likeylyPathogenic.size()));
+            if(likelyPathogenic != null) {
+                pathogenicityTable.getItems().addAll(FXCollections.observableArrayList(likelyPathogenic));
+                lpVariantsCountLabel.setText(String.valueOf(likelyPathogenic.size()));
 
                 List<GenomicCoordinate> genomicCoordinates = new ArrayList<>();
-                likeylyPathogenic.stream().forEach(item -> {
+                likelyPathogenic.forEach(item -> {
                     if (item.getSnpInDel().getGenomicCoordinate() != null)
                         genomicCoordinates.add(item.getSnpInDel().getGenomicCoordinate());
                 });
@@ -193,18 +192,18 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
                 lpGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
 
                 List<SnpInDelInterpretation> snpInDelInterpretations = new ArrayList<>();
-                likeylyPathogenic.stream().forEach(item -> {
+                likelyPathogenic.forEach(item -> {
                     if (item.getInterpretationEvidence() != null)
                         snpInDelInterpretations.add(item.getInterpretationEvidence());
                 });
             }
 
-            if(uncertatinSignificance != null) {
-                pathogenicityTable.getItems().addAll(FXCollections.observableArrayList(uncertatinSignificance));
-                usVariantsCountLabel.setText(String.valueOf(uncertatinSignificance.size()));
+            if(uncertainSignificance != null) {
+                pathogenicityTable.getItems().addAll(FXCollections.observableArrayList(uncertainSignificance));
+                usVariantsCountLabel.setText(String.valueOf(uncertainSignificance.size()));
 
                 List<GenomicCoordinate> genomicCoordinates = new ArrayList<>();
-                uncertatinSignificance.stream().forEach(item -> {
+                uncertainSignificance.forEach(item -> {
                     if (item.getSnpInDel().getGenomicCoordinate() != null)
                         genomicCoordinates.add(item.getSnpInDel().getGenomicCoordinate());
                 });
@@ -212,7 +211,7 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
                 usGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
 
                 List<SnpInDelInterpretation> snpInDelInterpretations = new ArrayList<>();
-                uncertatinSignificance.stream().forEach(item -> {
+                uncertainSignificance.forEach(item -> {
                     if (item.getInterpretationEvidence() != null)
                         snpInDelInterpretations.add(item.getInterpretationEvidence());
                 });
@@ -222,7 +221,7 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
                 lbVariantsCountLabel.setText(String.valueOf(likelyBenign.size()));
 
                 List<GenomicCoordinate> genomicCoordinates = new ArrayList<>();
-                likelyBenign.stream().forEach(item -> {
+                likelyBenign.forEach(item -> {
                     if (item.getSnpInDel().getGenomicCoordinate() != null)
                         genomicCoordinates.add(item.getSnpInDel().getGenomicCoordinate());
                 });
@@ -230,7 +229,7 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
                 lbGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
 
                 List<SnpInDelInterpretation> snpInDelInterpretations = new ArrayList<>();
-                likelyBenign.stream().forEach(item -> {
+                likelyBenign.forEach(item -> {
                     if (item.getInterpretationEvidence() != null)
                         snpInDelInterpretations.add(item.getInterpretationEvidence());
                 });
@@ -240,7 +239,7 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
                 bVariantsCountLabel.setText(String.valueOf(benign.size()));
 
                 List<GenomicCoordinate> genomicCoordinates = new ArrayList<>();
-                benign.stream().forEach(item -> {
+                benign.forEach(item -> {
                     if (item.getSnpInDel().getGenomicCoordinate() != null)
                         genomicCoordinates.add(item.getSnpInDel().getGenomicCoordinate());
                 });
@@ -248,7 +247,7 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
                 bGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
 
                 List<SnpInDelInterpretation> snpInDelInterpretations = new ArrayList<>();
-                benign.stream().forEach(item -> {
+                benign.forEach(item -> {
                     if (item.getInterpretationEvidence() != null)
                         snpInDelInterpretations.add(item.getInterpretationEvidence());
                 });
@@ -262,21 +261,19 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
         settingOverallQC(sample.getId());
     }
 
-    public List<VariantAndInterpretationEvidence> returnVariant(List<VariantAndInterpretationEvidence> list, String pathogenicity) {
+    private List<VariantAndInterpretationEvidence> returnVariant(List<VariantAndInterpretationEvidence> list, String pathogenicity) {
         return list.stream().filter(item -> ((pathogenicity.equalsIgnoreCase(item.getSnpInDel().getExpertPathogenicity()) ||
                 (StringUtils.isEmpty(item.getSnpInDel().getExpertPathogenicity()) && item.getSnpInDel().getSwPathogenicity().equalsIgnoreCase(pathogenicity)))))
                 .collect(Collectors.toList());
     }
 
-    public void settingOverallQC(int sampleId) {
-
-        List<SampleQC> qcList = null;
+    private void settingOverallQC(int sampleId) {
 
         try {
             HttpClientResponse response = apiService.get("/analysisResults/sampleQCs/" + sampleId, null,
                     null, false);
 
-            qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
+            List<SampleQC> qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
 
             roiCoverageLabel.setText(findQCResult(qcList, "roi_coverage"));
             roiCoverageTooltip.setText(findQCTooltipString(qcList, "roi_coverage"));
@@ -291,7 +288,7 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
             coverageUniformityTooltip.setText(findQCTooltipString(qcList, "coverage_uniformity"));
 
         } catch(WebAPIException e) {
-            e.printStackTrace();
+            DialogUtil.alert("QC ERROR", e.getMessage(), this.getMainApp().getPrimaryStage(), true);
         }
     }
 

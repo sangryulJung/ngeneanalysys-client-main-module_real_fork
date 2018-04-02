@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="558.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemManagerUserAccountController">
+<AnchorPane prefHeight="558.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemManagerUserAccountController">
    <children>
       <HBox prefHeight="592.0" prefWidth="1220.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -38,7 +38,7 @@
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </padding>
                               </HBox>
-                              <Button fx:id="groupSearchBtn" mnemonicParsing="false" onAction="#groupSearch" text="Search" />
+                              <Button fx:id="groupSearchBtn" mnemonicParsing="false" onAction="#groupSearch" styleClass="submitBtn" text="Search" />
                            </children>
                         </HBox>
                      </children>
@@ -55,7 +55,7 @@
                   <Pagination fx:id="groupPaginationList" pageCount="100" prefHeight="48.0" prefWidth="200.0" />
                   <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="300.0">
                      <children>
-                        <Button fx:id="groupAddBtn" mnemonicParsing="false" onAction="#groupAdd" text="group add" />
+                        <Button fx:id="groupAddBtn" mnemonicParsing="false" onAction="#groupAdd" styleClass="submitBtn" text="group add" />
                      </children>
                   </HBox>
                </children>
@@ -79,7 +79,7 @@
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="1.0">
                            <children>
-                              <Button fx:id="resetBtn" mnemonicParsing="false" onAction="#reset" text="Reset" />
+                              <Button fx:id="resetBtn" mnemonicParsing="false" onAction="#reset" styleClass="cancelBtn" text="Reset" />
                               <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="162.0" spacing="5.0">
                                  <children>
                                     <Label text="Login Id" />
@@ -116,7 +116,7 @@
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </padding>
                               </HBox>
-                              <Button fx:id="searchBtn" mnemonicParsing="false" onAction="#userSearch" text="Search" />
+                              <Button fx:id="searchBtn" mnemonicParsing="false" onAction="#userSearch" styleClass="submitBtn" text="Search" />
                            </children>
                         </HBox>
                      </children>
@@ -139,19 +139,19 @@
                   </TableView>
                   <HBox alignment="CENTER_RIGHT" prefHeight="48.0" prefWidth="900.0" spacing="5.0" VBox.vgrow="NEVER">
                      <children>
-                        <Button mnemonicParsing="false" text="&lt;&lt;" />
+                        <Button mnemonicParsing="false" styleClass="submitBtn" text="&lt;&lt;" />
                         <Pagination fx:id="paginationList" pageCount="100" />
-                        <Button mnemonicParsing="false" text="&gt;&gt;" />
+                        <Button mnemonicParsing="false" styleClass="submitBtn" text="&gt;&gt;" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
                            <children>
                               <Label text="page" />
                               <TextField fx:id="pageText" prefHeight="23.0" prefWidth="74.0" />
-                              <Button fx:id="pageBtn" mnemonicParsing="false" prefHeight="23.0" prefWidth="41.0" text="go" />
+                              <Button fx:id="pageBtn" mnemonicParsing="false" prefHeight="23.0" prefWidth="41.0" styleClass="submitBtn" text="go" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="48.0" prefWidth="168.0">
                            <children>
-                              <Button fx:id="userAddBtn" mnemonicParsing="false" onAction="#userAdd" text="user add" />
+                              <Button fx:id="userAddBtn" mnemonicParsing="false" onAction="#userAdd" styleClass="submitBtn" text="user add" />
                            </children>
                         </HBox>
                      </children>

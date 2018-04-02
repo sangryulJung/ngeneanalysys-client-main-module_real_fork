@@ -19,6 +19,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import ngeneanalysys.code.constants.FXMLConstants;
+import ngeneanalysys.code.enums.ACMGFilterCode;
 import ngeneanalysys.code.enums.ExperimentTypeCode;
 import ngeneanalysys.code.enums.PredictionTypeCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
@@ -687,11 +688,41 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             swTier.setSortable(false);
             swTierLabel.setOnMouseClicked(e -> sortTable("tierOrder"));
             swTier.setGraphic(swTierLabel);
-            swTier.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.tierConvert(cellData.getValue().getSnpInDel().getSwTier())));
-
+            swTier.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSwTier()));
+            swTier.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
+                @Override
+                public void updateItem(String item, boolean empty) {
+                    Label label = null;
+                    if(item != null) {
+                        String code = ACMGFilterCode.getCodeFromAlias(item);
+                        if(code != null && !"NONE".equals(code)) {
+                            label = new Label(item);
+                            label.getStyleClass().clear();
+                            swTier.getStyleClass().add("alignment_center");
+                            label.getStyleClass().add("tier_" + code);
+                        }
+                    }
+                    setGraphic(label);
+                }
+            });
             TableColumn<VariantAndInterpretationEvidence, String> expertTier = new TableColumn<>("Tier(User)");
             expertTier.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.tierConvert(cellData.getValue().getSnpInDel().getExpertTier())));
-
+            expertTier.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
+                @Override
+                public void updateItem(String item, boolean empty) {
+                    Label label = null;
+                    if(item != null) {
+                        String code = ACMGFilterCode.getCodeFromAlias(item);
+                        if(code != null && !"NONE".equals(code)) {
+                            label = new Label(item);
+                            label.getStyleClass().clear();
+                            expertTier.getStyleClass().add("alignment_center");
+                            label.getStyleClass().add("tier_" + code);
+                        }
+                    }
+                    setGraphic(label);
+                }
+            });
             variantListTableView.getColumns().addAll(swTier, expertTier);
         } else {
             TableColumn<VariantAndInterpretationEvidence, String> swPathogenicityLevel = new TableColumn<>();

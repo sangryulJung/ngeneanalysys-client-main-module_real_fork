@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="558.0" prefWidth="1280.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemManagerNewsAndTipsController">
+<AnchorPane prefHeight="558.0" prefWidth="1280.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemManagerNewsAndTipsController">
    <stylesheets>
       <URL value="@../../css/common.css" />
       <URL value="@../../css/experimenter.css" />
@@ -62,7 +62,7 @@
                   </GridPane>
                   <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="300.0">
                      <children>
-                        <Button fx:id="saveButton" mnemonicParsing="false" onAction="#save" text="Save" />
+                        <Button fx:id="saveButton" mnemonicParsing="false" onAction="#save" styleClass="submitBtn" text="Save" />
                      </children>
                   </HBox>
                </children>
@@ -92,7 +92,7 @@
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </padding>
                                  <children>
-                                    <Button mnemonicParsing="false" onAction="#noticeAdd" text="+" />
+                                    <Button mnemonicParsing="false" onAction="#noticeAdd" styleClass="submitBtn" text="+" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="180.0" spacing="5.0">

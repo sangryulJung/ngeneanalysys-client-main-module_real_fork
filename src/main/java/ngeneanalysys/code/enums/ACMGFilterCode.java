@@ -110,4 +110,20 @@ public enum ACMGFilterCode {
 		}
 		return aliasValue;
 	}
+
+	public static String getCodeFromAlias(String alias) {
+		String codeValue = null;
+		if (alias == null) {
+			codeValue = "NONE";
+		} else if (alias.equals(TIER_ONE.getAlias())) {
+			codeValue = TIER_ONE.getCode();
+		} else if (alias.equals(TIER_TWO.getAlias())) {
+			codeValue = TIER_TWO.getCode();
+		} else if (alias.equals(TIER_THREE.getAlias())) {
+			codeValue = TIER_THREE.getCode();
+		} else if (alias.equals(TIER_FOUR.getAlias())) {
+			codeValue = TIER_FOUR.getCode();
+		}
+		return codeValue;
+	}
 }
