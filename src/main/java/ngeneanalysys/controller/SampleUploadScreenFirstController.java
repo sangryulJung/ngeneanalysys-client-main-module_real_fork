@@ -108,6 +108,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         try {
             Map<String, Object> params = new HashMap<>();
             params.put("subPath", path);
+            runPath = path;
             HttpClientResponse response = apiService.get("/runDir", params, null, false);
             ServerFileInfo serverFileInfo = response.getObjectBeforeConvertResponseToJSON(ServerFileInfo.class);
 
@@ -776,7 +777,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         List<Map<String, Object>> list = new ArrayList<>();
         for(Sample sample : sampleArrayList) {
             Map<String, Object> params = new HashMap<>();
-            HttpClientResponse response = null;
 
             params.put("runId", sample.getRunId());
             params.put("name", sample.getName());

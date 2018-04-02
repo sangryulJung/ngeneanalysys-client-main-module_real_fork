@@ -30,7 +30,7 @@ public class FileUtil {
             String[] arr = fileName.split("_");
             int idx = 0;
             for (String name : arr) {
-                if (idx < arr.length - 2) {
+                if (idx < arr.length - 4) {
                     if (idx > 0)
                         pairName += "_";
                     pairName += name;

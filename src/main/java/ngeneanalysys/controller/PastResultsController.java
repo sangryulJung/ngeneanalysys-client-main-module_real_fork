@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
@@ -387,7 +388,7 @@ public class PastResultsController extends SubPaneController {
 				FlowPane flowPane = (FlowPane) vbox.getChildren().get(1);
 				List<Object> value = new ArrayList<>();
 				for(Node item : flowPane.getChildren()) {
-					value.add(((Label)item).getText());
+					value.add(item.getId());
 				}
 				if(searchOption.containsKey(label.getText())) {
 					param.put(searchOption.get(label.getText()), value);
@@ -449,6 +450,7 @@ public class PastResultsController extends SubPaneController {
 
 	public void addSearchItem(final CustomTextField textField) {
 		VBox box = new VBox();
+		box.setAlignment(Pos.CENTER_LEFT);
 		box.setPrefWidth(240);
 		box.setId(searchComboBox.getSelectionModel().getSelectedItem().getText());
 		Label title = new Label(searchComboBox.getSelectionModel().getSelectedItem().getText());
@@ -456,7 +458,22 @@ public class PastResultsController extends SubPaneController {
 		box.setSpacing(10);
 		box.getChildren().add(title);
 		FlowPane flowPane = new FlowPane();
-		flowPane.getChildren().add(new Label(textField.getText()));
+		HBox hBox = new HBox();
+		hBox.setId(textField.getText());
+		Label label = new Label(textField.getText());
+		Label xLabel = new Label("X");
+		xLabel.setCursor(Cursor.HAND);
+		xLabel.setOnMouseClicked(ev -> {
+			if(flowPane.getChildren().size() == 1) {
+				searchListFlowPane.getChildren().remove(box);
+			} else {
+				flowPane.getChildren().remove(hBox);
+			}
+		});
+		xLabel.getStyleClass().add("remove_btn");
+		hBox.getChildren().addAll(label, xLabel);
+		hBox.setSpacing(5);
+		flowPane.getChildren().add(hBox);
 		box.getChildren().add(flowPane);
 		searchListFlowPane.getChildren().add(box);
 	}
@@ -483,16 +500,29 @@ public class PastResultsController extends SubPaneController {
 							boolean isContain = false;
 							String text = textField.getText();
 							for(Node node : child.getChildren()) {
-                                if(((Label) node).getText().equalsIgnoreCase(text)) {
+                                if(node.getId().equalsIgnoreCase(text)) {
                                     isContain = true;
                                     break;
                                 }
                             }
                             if(!isContain) {
+								HBox hBox = new HBox();
+								hBox.setId(text);
 							    Label label = new Label(text);
-                                child.getChildren().add(label);
+							    Label xLabel = new Label("X");
+							    xLabel.getStyleClass().add("remove_btn");
+								xLabel.setCursor(Cursor.HAND);
+								xLabel.setOnMouseClicked(ev -> {
+									if(child.getChildren().size() == 1) {
+										searchListFlowPane.getChildren().remove(box);
+									} else {
+										child.getChildren().remove(hBox);
+									}
+								});
+								hBox.getChildren().addAll(label, xLabel);
+                                child.getChildren().add(hBox);
+								hBox.setSpacing(5);
                                 FlowPane.setMargin(label, new Insets(0, 0, 0, 10));
-
                             }
 						} else {
 							addSearchItem(textField);

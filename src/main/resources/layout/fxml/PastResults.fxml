@@ -99,7 +99,7 @@
                   <Button fx:id="searchBtn" mnemonicParsing="false" onAction="#search" prefWidth="80.0" style="-fx-alignment: center;" styleClass="submitBtn" text="SEARCH" />
                </children>
             </HBox>
-            <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="250.0">
+            <ScrollPane hbarPolicy="NEVER" prefHeight="340.0" prefWidth="250.0">
                <content>
                   <FlowPane fx:id="searchListFlowPane" maxHeight="-Infinity" minHeight="-Infinity" prefWidth="240.0" />
                </content>
