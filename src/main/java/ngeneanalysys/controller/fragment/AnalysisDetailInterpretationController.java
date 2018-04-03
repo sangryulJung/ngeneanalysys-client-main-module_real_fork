@@ -97,10 +97,10 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         apiService = APIService.getInstance();
 
         tierComboBox.setConverter(new ComboBoxConverter());
-        tierComboBox.getItems().add(new ComboBoxItem("T1", "T I"));
-        tierComboBox.getItems().add(new ComboBoxItem("T2", "T II"));
-        tierComboBox.getItems().add(new ComboBoxItem("T3", "T III"));
-        tierComboBox.getItems().add(new ComboBoxItem("T4", "T IV"));
+        tierComboBox.getItems().add(new ComboBoxItem("T1", "T1"));
+        tierComboBox.getItems().add(new ComboBoxItem("T2", "T2"));
+        tierComboBox.getItems().add(new ComboBoxItem("T3", "T3"));
+        tierComboBox.getItems().add(new ComboBoxItem("T4", "T4"));
         tierComboBox.getSelectionModel().select(0);
 
     }
@@ -109,16 +109,16 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         label.setAlignment(Pos.CENTER);
         if(!StringUtils.isEmpty(tier)) {
             if (tier.equalsIgnoreCase("T1")) {
-                label.setText("I");
+                label.setText("T1");
                 label.getStyleClass().add("tier_one");
             } else if (tier.equalsIgnoreCase("T2")) {
-                label.setText("I");
+                label.setText("T2");
                 label.getStyleClass().add("tier_two");
             } else if (tier.equalsIgnoreCase("T3")) {
-                label.setText("I");
+                label.setText("T3");
                 label.getStyleClass().add("tier_three");
             } else if (tier.equalsIgnoreCase("T4")) {
-                label.setText("I");
+                label.setText("T4");
                 label.getStyleClass().add("tier_four");
             }
         }

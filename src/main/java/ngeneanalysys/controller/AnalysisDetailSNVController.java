@@ -718,7 +718,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     private void setTableViewColumn() {
         if(panel != null && ExperimentTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             TableColumn<VariantAndInterpretationEvidence, String> swTier = new TableColumn<>();
-            createTableHeader(swTier, "Tier", "swTier" ,55.);
+            createTableHeader(swTier, "Prediction", "swTier" ,70d);
             swTier.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSwTier()));
             swTier.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
                 @Override
@@ -736,8 +736,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                     setGraphic(label);
                 }
             });
-            TableColumn<VariantAndInterpretationEvidence, String> expertTier = new TableColumn<>("Tier(User)");
-            createTableHeader(swTier, "Tier(User)", "" ,null);
+            TableColumn<VariantAndInterpretationEvidence, String> expertTier = new TableColumn<>("Tier");
+            createTableHeader(expertTier, "", "" ,null);
             expertTier.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getExpertTier()));
             expertTier.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
                 @Override
