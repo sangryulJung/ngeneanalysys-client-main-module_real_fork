@@ -27,6 +27,7 @@ public class SnpInDel implements Serializable {
 	private String includedInReport;
 	private String hasWarning;
 	private String warningReason;
+	private String lowConfidence;
 	private Integer variantNum;
 	private String comment;
 
@@ -228,11 +229,20 @@ public class SnpInDel implements Serializable {
 		return warningReason;
 	}
 
+
 	/**
 	 * @param warningReason
 	 */
 	public void setWarningReason(String warningReason) {
 		this.warningReason = warningReason;
+	}
+
+	public String getLowConfidence() {
+		return lowConfidence;
+	}
+
+	public void setLowConfidence(String lowConfidence) {
+		this.lowConfidence = lowConfidence;
 	}
 
 	/**
@@ -316,5 +326,30 @@ public class SnpInDel implements Serializable {
 			return cDNAbic;
 		}
 		return "";
+	}
+
+	@Override
+	public String
+	toString() {
+		return "SnpInDel{" +
+				"id=" + id +
+				", sampleId=" + sampleId +
+				", serialNumber='" + serialNumber + '\'' +
+				", swPathogenicity='" + swPathogenicity + '\'' +
+				", expertPathogenicity='" + expertPathogenicity + '\'' +
+				", swTier='" + swTier + '\'' +
+				", expertTier='" + expertTier + '\'' +
+				", includedInReport='" + includedInReport + '\'' +
+				", hasWarning='" + hasWarning + '\'' +
+				", warningReason='" + warningReason + '\'' +
+				", lowConfidence='" + lowConfidence + '\'' +
+				", variantNum=" + variantNum +
+				", comment='" + comment + '\'' +
+				", snpInDelExpression=" + snpInDelExpression +
+				", clinicalDB=" + clinicalDB +
+				", genomicCoordinate=" + genomicCoordinate +
+				", readInfo=" + readInfo +
+				", populationFrequency=" + populationFrequency +
+				'}';
 	}
 }
