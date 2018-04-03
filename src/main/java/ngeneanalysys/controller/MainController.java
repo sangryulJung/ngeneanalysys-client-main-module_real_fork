@@ -14,7 +14,6 @@ import javafx.scene.control.Menu;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.SystemMenuCode;
@@ -119,6 +118,9 @@ public class MainController extends BaseStageController {
     @FXML
     private StackPane sampleListStackPane;
 
+    @FXML
+    private GridPane mainGridPane;
+
     private ComboBox<ComboBoxItem> sampleList;
 
     private Map<String, Object> basicInformationMap = new HashMap<>();
@@ -181,6 +183,10 @@ public class MainController extends BaseStageController {
         primaryStage.show();
         logger.info(String.format("start %s", primaryStage.getTitle()));
 
+        mainGridPane.add(maskerPane,0 ,0, 4, 4);
+        maskerPane.setPrefWidth(primaryStage.getWidth());
+        maskerPane.setPrefHeight(primaryStage.getHeight());
+        maskerPane.setVisible(false);
 
         primaryStage.setOnCloseRequest(event -> {
             boolean isClose = false;
@@ -248,7 +254,9 @@ public class MainController extends BaseStageController {
         };
 
         this.sampleList = sampleList;
+        sampleList.getStyleClass().add("combo-box");
         sampleList.setDisable(true);
+        sampleListLabel.setDisable(true);
         sampleList.getStyleClass().addAll("combo-box", "combo-box-base");
         sampleListStackPane.getChildren().add(0, sampleList);
 
@@ -445,7 +453,10 @@ public class MainController extends BaseStageController {
 
         // 추가되어 있지 않은 경우 추가
         if(!isAdded) {
-            if(sampleList.isDisabled()) sampleList.setDisable(false);
+            if(sampleList.isDisabled()) {
+                sampleList.setDisable(false);
+                sampleListLabel.setDisable(false);
+            }
             ComboBoxItem item = new ComboBoxItem();
             item.setText(menu.getMenuName());
             item.setValue(menu.getId());
@@ -512,7 +523,10 @@ public class MainController extends BaseStageController {
                     showSampleDetail(sampleMenu[removeIdx]);
                 }
             }
-            if(sampleMenu == null || sampleMenu.length == 0) sampleList.setDisable(true);
+            if(sampleMenu == null || sampleMenu.length == 0) {
+                sampleList.setDisable(true);
+                sampleListLabel.setDisable(true);
+            }
         }
     }
 
@@ -630,12 +644,10 @@ public class MainController extends BaseStageController {
 
     public void setAuto(boolean isFirstShow) {
         if("homeWrapper".equals(currentShowFrameId)) {	// 이전 화면이 분석자 HOME인 경우 자동 새로고침 토글
-            //homeController.autoRefreshTimeline.stop();
             homeController.pauseAutoRefresh();
         } else if("experimentPastResultsWrapper".equals(currentShowFrameId)) {	// 이전 화면이 분석자 Past Results인 경우 자동 새로고침 토글
             pastResultsController.pauseAutoRefresh();
         } else if ("systemManagerHomeWrapper".equals(currentShowFrameId)) {
-            //homeController.autoRefreshTimeline.stop();
             homeController.pauseAutoRefresh();
             pastResultsController.pauseAutoRefresh();
         }
@@ -846,6 +858,10 @@ public class MainController extends BaseStageController {
                 homeController.pauseAutoRefresh();
             }
         }
+    }
+
+    public void setMainMaskerPane(boolean status) {
+        maskerPane.setVisible(status);
     }
 
 }

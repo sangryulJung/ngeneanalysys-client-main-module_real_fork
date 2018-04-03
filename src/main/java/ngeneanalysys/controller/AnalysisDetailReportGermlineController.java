@@ -104,19 +104,19 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
     @FXML
     private ComboBox<ComboBoxItem> virtualPanelComboBox;
 
-    Sample sample = null;
+    private Sample sample = null;
 
-    Panel panel = null;
+    private Panel panel = null;
 
-    List<VariantAndInterpretationEvidence> pathogenicList = null;
+    private List<VariantAndInterpretationEvidence> pathogenicList = null;
 
-    List<VariantAndInterpretationEvidence> likelyPathgenicList = null;
+    private List<VariantAndInterpretationEvidence> likelyPathgenicList = null;
 
-    List<VariantAndInterpretationEvidence> uncertainSignificanceList = null;
+    private List<VariantAndInterpretationEvidence> uncertainSignificanceList = null;
 
-    List<VariantAndInterpretationEvidence> likelyBenignList = null;
+    private List<VariantAndInterpretationEvidence> likelyBenignList = null;
 
-    List<VariantAndInterpretationEvidence> benignList = null;
+    private List<VariantAndInterpretationEvidence> benignList = null;
 
     private boolean reportData = false;
 
@@ -230,8 +230,6 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                     }
 
             }
-        } catch (WebAPIException wae) {
-            return list;
         } catch (Exception e) {
             return list;
         }
@@ -277,7 +275,6 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         Optional<Panel> panelOptional = panels.stream().filter(panelItem -> panelItem.getId().equals(sample.getPanelId())).findFirst();
         if(panelOptional.isPresent()) {
             panel = panelOptional.get();
-            String panelName = panel.getName();
         }
 
         HttpClientResponse response = null;
@@ -390,9 +387,9 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         int rowIndex = 0;
         int colIndex = 0;
 
-        String[] displayNameList =  {"Test No", "Test Name", "Organization", "Ordering Physician", "Contact", "Name", "Birthday", "Gender"};
+        String[] displayNameList =  {"Test No", "Test Name", "Organization", "Ordering Physician", "Contact", "Name", "Birthday", "Gender", "Patient ID"};
         String[] variableNameList =  {"manageNo", "inspectionItem", "clientOrganization", "clientName", "clientContact", "name",
-                "patientBirthday", "patientGender"};
+                "patientBirthday", "patientGender", "patientID "};
 
         for(int i = 0; i < displayNameList.length ; i++) {
             String displayName = displayNameList[i];
@@ -486,20 +483,6 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         });
     }
 
-    public void orderingAndAddTableItem(TableView<VariantAndInterpretationEvidence> tableView,
-                                        List<VariantAndInterpretationEvidence> pathogenicityList) {
-        if(pathogenicityList != null && !pathogenicityList.isEmpty()) {
-
-            if(tableView.getItems() != null && !tableView.getItems().isEmpty()) {
-                tableView.getItems().removeAll(tableView.getItems());
-            }
-
-            Collections.sort(pathogenicityList,
-                    (a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
-            tableView.getItems().addAll(pathogenicityList);
-        }
-    }
-
     public List<VariantAndInterpretationEvidence> settingPathogenicityList(List<VariantAndInterpretationEvidence> allTierList,
                                                                            String pathogenicity) {
         if(!StringUtils.isEmpty(pathogenicity)) {
@@ -575,6 +558,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
             } else {
                 response = apiService.post("/sampleReport/" + sample.getId(), params, null, true);
             }
+            logger.info("sample report status : " + response.getStatus());
         } catch (WebAPIException wae) {
             wae.printStackTrace();
         } catch (Exception e) {
@@ -937,7 +921,8 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                         getMainApp().getPrimaryStage(), false);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            DialogUtil.error("Save Fail.", "An error occurred during the creation of the report document.",
+                    getMainApp().getPrimaryStage(), false);
         }
     }
 }

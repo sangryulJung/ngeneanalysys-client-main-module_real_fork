@@ -112,7 +112,7 @@ public class HomeController extends SubPaneController{
      */
     @FXML
     public void showUploadFASTQ() {
-        maskerPane.setVisible(true);
+        getMainController().setMainMaskerPane(true);
         try {
             // Load the fxml file and create a new stage for the popup dialog
             FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.ANALYSIS_SAMPLE_UPLOAD_MAIN);
@@ -125,7 +125,7 @@ public class HomeController extends SubPaneController{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        maskerPane.setVisible(false);
+        getMainController().setMainMaskerPane(false);
     }
 
     private void initRunListLayout() {

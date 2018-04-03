@@ -269,7 +269,6 @@ public class SampleUploadController extends BaseStageController{
     public void closeDialog() { currentStage.close(); }
 
     public void sampleLoad() {
-        HttpClientResponse response = null;
         Map<String, Object> params = new HashMap<>();
         try {
             APIService apiService = APIService.getInstance();
@@ -277,7 +276,7 @@ public class SampleUploadController extends BaseStageController{
             params.put("runId", run.getId());
             params.put("limit", 23);
             params.put("offset", 0);
-            response = apiService.get("/samples", params, null, false);
+            HttpClientResponse response = apiService.get("/samples", params, null, false);
 
             PagedSample pagedSample = response.getObjectBeforeConvertResponseToJSON(PagedSample.class);
             samples = pagedSample.getResult();

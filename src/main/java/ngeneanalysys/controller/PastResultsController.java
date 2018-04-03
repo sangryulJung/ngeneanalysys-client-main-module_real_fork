@@ -574,6 +574,11 @@ public class PastResultsController extends SubPaneController {
 
 		public void setSampleList(List<SampleView> sampleList) {
 			for(SampleView sampleView : sampleList) {
+			    if(sampleView.getSampleStatus().getStatus().equalsIgnoreCase(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_QUEUED)) {
+			        this.setDisable(true);
+                } else {
+                    this.setDisable(false);
+                }
 				HBox itemHBox = new HBox();
 				itemHBox.setStyle(itemHBox.getStyle() + "-fx-cursor:hand;");
 				final SampleView sample = sampleView;

@@ -1,6 +1,5 @@
 package ngeneanalysys.controller;
 
-import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -41,10 +40,7 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.*;
 
 /**
  * @author Jang
@@ -108,8 +104,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     private Sample sample = null;
     private Panel panel = null;
-    private String currentSortColumn = "";
-    private String sortValue = "ASC";
+    private Map<String, String> sortMap = new HashMap<>();
+    private Map<String, String> filterMap = new HashMap<>();
 
     private AnalysisDetailVariantsController variantsController;
     //VariantList
@@ -190,7 +186,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
                 if (e.getClickCount() <= 2) {
                     logger.info(e.getClickCount() + " Click count");
-                    Platform.runLater(() -> showVariantDetail(variantListTableView.getSelectionModel().getSelectedItem()));
+                    //Platform.runLater(() -> showVariantDetail(variantListTableView.getSelectionModel().getSelectedItem()));
                    if(e.getClickCount() == 2) {
                        expandRight();
                    }
@@ -209,7 +205,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         // 선택된 목록에서 엔터키 입력시 변이 상세정보 출력 이벤트 바인딩
         variantListTableView.setOnKeyPressed(keyEvent -> {
             if(keyEvent.getCode().equals(KeyCode.ENTER)) {
-                showVariantDetail(variantListTableView.getSelectionModel().getSelectedItem());
+                //showVariantDetail(variantListTableView.getSelectionModel().getSelectedItem());
                 expandRight();
             }
         });
@@ -217,7 +213,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         setTableViewColumn();
 
-        showVariantList(1, 0, null, null);
+        showVariantList(1, 0);
 
         foldLeft();
         foldRight();
@@ -226,13 +222,21 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         variantPagination.setPageFactory(pageIndex -> {
             if(currentPageIndex != pageIndex) {
-                showVariantList(pageIndex + 1, 0, null, null);
+                showVariantList(pageIndex + 1, 0);
                 currentPageIndex = pageIndex;
             }
             return new VBox();
         });
 
-        totalTextLabel.setOnMouseClicked(ev -> showVariantList(currentPageIndex + 1,0, null, null));
+        totalTextLabel.setOnMouseClicked(ev -> {
+            filterMap.clear();
+            showVariantList(currentPageIndex + 1,0);
+        });
+    }
+
+    private void setFilter(String key, String value) {
+        filterMap.clear();
+        filterMap.put(key, value);
     }
 
     public void setDefaultFilter() {
@@ -286,7 +290,11 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
         itemLabel.setTextAlignment(TextAlignment.CENTER);
         itemLabel.setText(labelText);
-        itemLabel.setOnMouseClicked(ev -> showVariantList(currentPageIndex + 1,0, "tier", valueText));
+        itemLabel.setOnMouseClicked(ev -> {
+            foldRight();
+            setFilter("tier", valueText);
+            showVariantList(currentPageIndex + 1,0);
+        });
         Integer value = variantCount(valueText);
         Label valueLabel = new Label(value.toString());
 
@@ -310,7 +318,11 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
         itemLabel.setTextAlignment(TextAlignment.CENTER);
         itemLabel.setText(labelText);
-        itemLabel.setOnMouseClicked(ev -> showVariantList(currentPageIndex + 1, 0, "pathogenicity", valueText));
+        itemLabel.setOnMouseClicked(ev -> {
+            foldRight();
+            setFilter("pathogenicity", valueText);
+            showVariantList(currentPageIndex + 1, 0);
+        });
         Integer value = variantCount(valueText);
         Label valueLabel = new Label(value.toString());
 
@@ -378,6 +390,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     private void expandRight() {
+        showVariantDetail(variantListTableView.getSelectionModel().getSelectedItem());
         snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerFoldedWidth);
         if(snvWrapper.getColumnConstraints().get(0).getPrefWidth() == 200) {
             snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightStandardWidth);
@@ -581,20 +594,26 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
     }
 
-    public List<VariantAndInterpretationEvidence> filteringList(List<VariantAndInterpretationEvidence> list, String val, String item) {
-        if(item.equalsIgnoreCase("Tier")) {
-            return list.stream().filter(variant ->
-                    (!StringUtils.isEmpty(variant.getSnpInDel().getExpertTier()) && variant.getSnpInDel().getExpertTier().equalsIgnoreCase(val)) ||
-                            (StringUtils.isEmpty(variant.getSnpInDel().getExpertTier()) && variant.getSnpInDel().getSwTier().equalsIgnoreCase(val))).collect(Collectors.toList());
-        } else if(item.equalsIgnoreCase("Pathogenicity")) {
-            return list.stream().filter(variant ->
-                    (!StringUtils.isEmpty(variant.getSnpInDel().getExpertPathogenicity()) && variant.getSnpInDel().getExpertPathogenicity().equalsIgnoreCase(val)) ||
-                            (StringUtils.isEmpty(variant.getSnpInDel().getExpertPathogenicity()) && variant.getSnpInDel().getSwPathogenicity().equalsIgnoreCase(val))).collect(Collectors.toList());
+    public void setSortItem(Map<String, List<Object>> list) {
+        Set<String> keySets = sortMap.keySet();
+        List<Object> sortList = new ArrayList<>();
+        for(String key : keySets) {
+            sortList.add(key + " " + sortMap.get(key));
         }
-        return list;
+        if(!sortList.isEmpty()) list.put("sort", sortList);
     }
 
-    public void showVariantList(int pageIndex, int selectedIdx, String item, String value) {
+    public void setFilterItem(Map<String, List<Object>> list) {
+        Set<String> keySets = filterMap.keySet();
+        List<Object> sortList = new ArrayList<>();
+        for(String key : keySets) {
+            sortList.add(key + " " + filterMap.get(key));
+        }
+        if(!sortList.isEmpty()) list.put("search", sortList);
+    }
+
+
+    public void showVariantList(int pageIndex, int selectedIdx) {
         int totalCount = 0;
         int limit = 100;
         int offset = (pageIndex - 1)  * limit;
@@ -604,22 +623,14 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             Map<String, Object> params = new HashMap<>();
             params.put("offset", offset);
             params.put("limit", limit);
-            if(StringUtils.isEmpty(currentSortColumn)) {
-                if(panel != null && ExperimentTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
-                    params.put("tierOrder", "ASC");
-                } else {
-                    params.put("pathogenicityOrder", "ASC");
-                }
-            } else {
-                params.put(currentSortColumn, sortValue);
-            }
 
-            if(!StringUtils.isEmpty(item) && !StringUtils.isEmpty(value)) {
-                params.put(item, value);
-            }
+            Map<String, List<Object>> sortItem = new HashMap<>();
+
+            setSortItem(sortItem);
+            setFilterItem(sortItem);
 
             HttpClientResponse response = apiService.get("/analysisResults/sampleSnpInDels/"+ sample.getId(), params,
-                    null, false);
+                    null, sortItem);
             PagedVariantAndInterpretationEvidence analysisResultVariantList = response.getObjectBeforeConvertResponseToJSON(PagedVariantAndInterpretationEvidence.class);
 
             List<VariantAndInterpretationEvidence> list = analysisResultVariantList.getResult();
@@ -647,7 +658,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             // 화면 출력
             if (displayList != null && displayList.size() > 0) {
                 variantListTableView.getSelectionModel().select(selectedIdx);
-                showVariantDetail(displayList.get(selectedIdx));
+                //showVariantDetail(displayList.get(selectedIdx));
             }
 
             int pageCount = 0;
@@ -680,29 +691,34 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     public void sortTable(String column) {
-        if(column.equalsIgnoreCase(currentSortColumn)) {
-            //이미 눌렀던 항목이면 정렬 토글
-            if(sortValue.equalsIgnoreCase("ASC")) {
-                sortValue = "DESC";
+        if(sortMap.size() == 1 && sortMap.containsKey(column)) {
+            if(sortMap.get(column).equalsIgnoreCase("ASC")) {
+                sortMap.put(column, "DESC");
             } else {
-                sortValue = "ASC";
+                sortMap.remove(column);
             }
-        } else {
-            //처음 누른 항목일 경우 오름차순 정렬
-            currentSortColumn = column;
-            sortValue = "ASC";
+        } else if(sortMap.isEmpty()){
+            sortMap.put(column, "ASC");
+        } else if(sortMap.size() == 1) {
+            sortMap.clear();
+            sortMap.put(column, "ASC");
         }
-        showVariantList(currentPageIndex + 1, 0, null, null);
+        showVariantList(currentPageIndex + 1, 0);
+    }
+
+    private void createTableHeader(TableColumn<VariantAndInterpretationEvidence, ?> column, String name, String sortName, Double size) {
+        Label label = new Label(name);
+        column.setSortable(false);
+        if(!StringUtils.isEmpty(sortName)) label.setOnMouseClicked(e -> sortTable(sortName));
+        column.setGraphic(label);
+        if(size != null) column.setPrefWidth(size);
+        variantListTableView.getColumns().add(column);
     }
 
     private void setTableViewColumn() {
         if(panel != null && ExperimentTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             TableColumn<VariantAndInterpretationEvidence, String> swTier = new TableColumn<>();
-            Label swTierLabel = new Label("Tier");
-            swTier.setSortable(false);
-            swTierLabel.setOnMouseClicked(e -> sortTable("tierOrder"));
-            swTier.setGraphic(swTierLabel);
-            swTier.setPrefWidth(55);
+            createTableHeader(swTier, "Tier", "swTier" ,55.);
             swTier.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSwTier()));
             swTier.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
                 @Override
@@ -721,7 +737,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 }
             });
             TableColumn<VariantAndInterpretationEvidence, String> expertTier = new TableColumn<>("Tier(User)");
-            expertTier.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.tierConvert(cellData.getValue().getSnpInDel().getExpertTier())));
+            createTableHeader(swTier, "Tier(User)", "" ,null);
+            expertTier.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getExpertTier()));
             expertTier.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
                 @Override
                 public void updateItem(String item, boolean empty) {
@@ -738,16 +755,10 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                     setGraphic(label);
                 }
             });
-            variantListTableView.getColumns().addAll(swTier, expertTier);
         } else {
             TableColumn<VariantAndInterpretationEvidence, String> swPathogenicityLevel = new TableColumn<>();
+            createTableHeader(swPathogenicityLevel, "Prediction", "swPathogenicity" ,70.);
             swPathogenicityLevel.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSwPathogenicity()));
-            swPathogenicityLevel.setSortable(false);
-            Label swPathogenicityLevelLabel = new Label("Prediction");
-            swPathogenicityLevel.setSortable(false);
-            swPathogenicityLevelLabel.setOnMouseClicked(e -> sortTable("pathogenicityOrder"));
-            swPathogenicityLevel.setGraphic(swPathogenicityLevelLabel);
-            swPathogenicityLevel.setPrefWidth(55);
             swPathogenicityLevel.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
                 @Override
                 public void updateItem(String item, boolean empty) {
@@ -765,9 +776,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 }
             });
 
-            TableColumn<VariantAndInterpretationEvidence, String> expertPathogenicityLevel = new TableColumn<>("Pathogenicity");
+            TableColumn<VariantAndInterpretationEvidence, String> expertPathogenicityLevel = new TableColumn<>();
+            createTableHeader(expertPathogenicityLevel, "Pathogenicity", null ,90.);
             expertPathogenicityLevel.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getExpertPathogenicity()));
-            expertPathogenicityLevel.setPrefWidth(70);
             expertPathogenicityLevel.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
                 @Override
                 public void updateItem(String item, boolean empty) {
@@ -784,10 +795,14 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                     setGraphic(label);
                 }
             });
-            variantListTableView.getColumns().addAll(swPathogenicityLevel, expertPathogenicityLevel);
         }
 
-        TableColumn<VariantAndInterpretationEvidence, String> warn = new TableColumn<>("Warn");
+        TableColumn<VariantAndInterpretationEvidence, String> gene = new TableColumn<>();
+        createTableHeader(gene, "Gene", "gene" ,null);
+        gene.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
+
+        TableColumn<VariantAndInterpretationEvidence, String> warn = new TableColumn<>();
+        createTableHeader(warn, "Warn", null ,55.);
         warn.getStyleClass().add("alignment_center");
         warn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getHasWarning()));
         warn.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
@@ -797,7 +812,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             }
         });
 
-        TableColumn<VariantAndInterpretationEvidence, String> report = new TableColumn<>("Report");
+        TableColumn<VariantAndInterpretationEvidence, String> report = new TableColumn<>();
+        createTableHeader(report, "Report", null ,55.);
         report.getStyleClass().add("alignment_center");
         report.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getIncludedInReport()));
         report.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
@@ -813,47 +829,49 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             }
         });
 
-        TableColumn<VariantAndInterpretationEvidence, String> type = new TableColumn<>("Type");
+        TableColumn<VariantAndInterpretationEvidence, String> type = new TableColumn<>();
+        createTableHeader(type, "Type", null ,null);
         type.getStyleClass().clear();
         type.setCellValueFactory(cellData -> new SimpleStringProperty(cutVariantTypeString(cellData.getValue().getSnpInDel().getSnpInDelExpression().getVariantType())));
 
-        TableColumn<VariantAndInterpretationEvidence, String> codCons = new TableColumn<>("Cod.Cons");
+        TableColumn<VariantAndInterpretationEvidence, String> codCons = new TableColumn<>();
+        createTableHeader(codCons, "Cod.Cons", null ,null);
         codCons.getStyleClass().clear();
         codCons.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getCodingConsequence()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> gene = new TableColumn<>("Gene");
-        gene.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
-
-        TableColumn<VariantAndInterpretationEvidence, String> strand = new TableColumn<>("Strand");
+        TableColumn<VariantAndInterpretationEvidence, String> strand = new TableColumn<>();
+        createTableHeader(strand, "Strand", null ,55.);
         strand.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getStrand()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> transcript = new TableColumn<>("Transcript");
+        TableColumn<VariantAndInterpretationEvidence, String> transcript = new TableColumn<>();
+        createTableHeader(transcript, "Transcript", null ,null);
         transcript.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getTranscript()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> ntChange = new TableColumn<>("NT change");
-        ntChange.setPrefWidth(90);
+        TableColumn<VariantAndInterpretationEvidence, String> ntChange = new TableColumn<>();
+        createTableHeader(ntChange, "NT change", null ,90.);
         ntChange.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> aaChange = new TableColumn<>("AA change");
-        aaChange.setPrefWidth(90);
+        TableColumn<VariantAndInterpretationEvidence, String> aaChange = new TableColumn<>();
+        createTableHeader(aaChange, "AA change", null ,90.);
         aaChange.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChange()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> aaChangeConversion = new TableColumn<>("AA change(Single)");
-        aaChangeConversion.setPrefWidth(90);
+        TableColumn<VariantAndInterpretationEvidence, String> aaChangeConversion = new TableColumn<>();
+        createTableHeader(aaChangeConversion, "AA change(Single)", null ,90.);
         aaChangeConversion.setCellValueFactory(cellData -> cellData.getValue().getSnpInDel().getSnpInDelExpression().getAachangeSingleLetter() == null ?
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChangeConversion()) :
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAachangeSingleLetter()));
 
-        variantListTableView.getColumns().addAll(gene, warn, report, type, codCons, strand, transcript, ntChange, aaChange, aaChangeConversion);
+        //variantListTableView.getColumns().addAll(gene, warn, report, type, codCons, strand, transcript, ntChange, aaChange, aaChangeConversion);
 
         if(panel != null && ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
-            TableColumn<VariantAndInterpretationEvidence, String> ntChangeBIC = new TableColumn<>("NT change(BIC)");
+            TableColumn<VariantAndInterpretationEvidence, String> ntChangeBIC = new TableColumn<>();
+            createTableHeader(ntChangeBIC, "NT change(BIC)", null ,90.);
             ntChangeBIC.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getNtChangeBRCA()));
-            variantListTableView.getColumns().addAll(ntChangeBIC);
         }
 
-        TableColumn<VariantAndInterpretationEvidence, String> chr = new TableColumn<>("Chr");
-        chr.setComparator((s1, s2) -> {
+        TableColumn<VariantAndInterpretationEvidence, String> chr = new TableColumn<>();
+        createTableHeader(chr, "Chr", "chromosome" ,null);
+        /*chr.setComparator((s1, s2) -> {
             String value1 = s1.replaceAll("chr", "");
             String value2 = s2.replace("chr", "");
 
@@ -867,7 +885,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 value2 = "0" + value2;
             }
             return value1.compareToIgnoreCase(value2);
-        });
+        });*/
         chr.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getChromosome()));
 
         TableColumn<VariantAndInterpretationEvidence, String> ref = new TableColumn<>("Ref");
@@ -883,13 +901,16 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         TableColumn<VariantAndInterpretationEvidence, String> exon = new TableColumn<>("Exon");
         exon.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getExonNum()));
 
-        variantListTableView.getColumns().addAll(chr, ref, alt, zigosity, exon);
+        variantListTableView.getColumns().addAll(ref, alt, zigosity, exon);
 
         if(panel != null && ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             TableColumn<VariantAndInterpretationEvidence, String> exonBic = new TableColumn<>("Exon(BIC)");
             exonBic.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getExonNumBic()));
-            variantListTableView.getColumns().addAll(exonBic);
         }
+
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> fraction = new TableColumn<>();
+        createTableHeader(fraction, "Fraction", "alleleFraction" ,null);
+        fraction.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()));
 
         TableColumn<VariantAndInterpretationEvidence, Integer> refNum = new TableColumn<>("Ref.num");
         refNum.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getReadInfo().getRefReadNum()).asObject());
@@ -899,9 +920,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         TableColumn<VariantAndInterpretationEvidence, Integer> depth = new TableColumn<>("Depth");
         depth.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getReadInfo().getReadDepth()).asObject());
-
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> fraction = new TableColumn<>("Fraction");
-        fraction.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> thousandGenomics = new TableColumn<>("1KG");
         thousandGenomics.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getG1000().getAll())));
@@ -934,7 +952,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         cosmicOccurrence.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getCosmic().getCosmicOccurrence()));
         cosmicOccurrence.setVisible(false);
 
-        variantListTableView.getColumns().addAll(fraction ,refNum, altNum, depth, thousandGenomics, exac, esp, korean, clinVarAcc, clinVarClass, cosmicIds, cosmicCount, cosmicOccurrence);
+        variantListTableView.getColumns().addAll(refNum, altNum, depth, thousandGenomics, exac, esp, korean, clinVarAcc, clinVarClass, cosmicIds, cosmicCount, cosmicOccurrence);
 
         if(panel != null && ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             TableColumn<VariantAndInterpretationEvidence, String> bicClass = new TableColumn<>("BIC.Class");

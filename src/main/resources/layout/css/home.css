@@ -77,7 +77,7 @@
     -fx-background-image:url('../images/renewal/plus-symbol.png');
     -fx-background-size : 24 24;
     -fx-background-repeat: no-repeat;
-    -fx-background-position: center;
+    -fx-background-position: center 120;
 }
 
 .run_box {

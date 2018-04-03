@@ -210,9 +210,9 @@
     -fx-pref-height : 60;
     -fx-max-height : 60;
     -fx-min-width : 80;
-    -fx-min-width : 100;
-    -fx-pref-width : 100;
-    -fx-max-width : 100;
+    -fx-min-width : 110;
+    -fx-pref-width : 110;
+    -fx-max-width : 110;
 }
 
 #topMenuArea1 #sampleListStackPane .label {
@@ -243,4 +243,8 @@
     -fx-min-height : 16;
     -fx-text-size : 9;
     -fx-padding : -1 0 0 0;
+}
+
+#sampleListStackPane > .combo-box:disabled {
+    -fx-opacity: .0;
 }

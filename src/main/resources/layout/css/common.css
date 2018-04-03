@@ -1197,16 +1197,17 @@ Button {
 	-fx-background-color:#6C9DBB;
 }
 .btn_setting_save {
-	-fx-background-color:#FB4952;
-	-fx-font-size:11;
+	-fx-background-color: #990000;
+	-fx-background-radius: 0;
 	-fx-pref-height:35;
 	-fx-text-fill:#ffffff;
 }
 .btn_setting_save:hover {
-	-fx-background-color:#FB3741;
+	//-fx-background-color:#FB3741;
 }
 .btn_setting_close {
 	-fx-background-color:#959595;
+	-fx-background-radius : 0;
 	-fx-pref-height:35;
 	-fx-text-fill:#ffffff;
 	-fx-font-size:11;
@@ -1648,7 +1649,7 @@ Button {
     -fx-background-color: white;
     -fx-background-image: null;
     -fx-border-radius: 15px;
-    -fx-padding: 0px;
+    -fx-padding: 2px;
 }
 .radio-button .radio:selected {
     -fx-background-color: white;
@@ -1665,8 +1666,4 @@ Button {
 .radio-button -radio:indeterminate {
     -fx-background-color: white;
     -fx-background-image: null;
-}
-.radio-button .dot {
-    -fx-background-radius: 10px;
-    -fx-padding: 5px;
 }
