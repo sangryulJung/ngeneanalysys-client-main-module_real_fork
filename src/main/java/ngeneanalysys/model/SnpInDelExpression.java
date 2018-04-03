@@ -9,6 +9,7 @@ import ngeneanalysys.util.StringUtils;
  */
 public class SnpInDelExpression {
     private String variantType;
+    private String variantTypeExtension;
     private String transcript;
     private String codingConsequence;
     private String ntChange;
@@ -44,6 +45,12 @@ public class SnpInDelExpression {
      */
     public void setVariantType(String variantType) {
         this.variantType = variantType;
+    }
+
+    public String getVariantTypeExtension() { return variantTypeExtension; }
+
+    public void setVariantTypeExtension(String variantTypeExtension) {
+        this.variantTypeExtension = variantTypeExtension;
     }
 
     /**
@@ -140,5 +147,21 @@ public class SnpInDelExpression {
 
     public String getAaChangeConversion() {
         return ConvertUtil.getAminoAcid(aaChange);
+    }
+
+    @Override
+    public String toString() {
+        return "SnpInDelExpression{" +
+                "variantType='" + variantType + '\'' +
+                ", variantTypeExtension='" + variantTypeExtension + '\'' +
+                ", transcript='" + transcript + '\'' +
+                ", codingConsequence='" + codingConsequence + '\'' +
+                ", ntChange='" + ntChange + '\'' +
+                ", ntChangeBic='" + ntChangeBic + '\'' +
+                ", aaChange='" + aaChange + '\'' +
+                ", aaChangeSingleLetter='" + aaChangeSingleLetter + '\'' +
+                ", zygosity='" + zygosity + '\'' +
+                ", aachangeSingleLetter='" + aachangeSingleLetter + '\'' +
+                '}';
     }
 }
