@@ -287,10 +287,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         itemLabel.setTextAlignment(TextAlignment.CENTER);
         itemLabel.setText(labelText);
         itemLabel.setOnMouseClicked(ev -> showVariantList(currentPageIndex + 1,0, "tier", valueText));
-        Long value = list.stream().filter(item ->
-                (!StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && item.getSnpInDel().getExpertTier().equalsIgnoreCase(valueText)) ||
-                        (StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && item.getSnpInDel().getSwTier().equalsIgnoreCase(valueText)))
-                .count();
+        Integer value = variantCount(valueText);
         Label valueLabel = new Label(value.toString());
 
         hBox.getChildren().addAll(itemLabel, valueLabel);
@@ -314,15 +311,30 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         itemLabel.setTextAlignment(TextAlignment.CENTER);
         itemLabel.setText(labelText);
         itemLabel.setOnMouseClicked(ev -> showVariantList(currentPageIndex + 1, 0, "pathogenicity", valueText));
-        Long value = list.stream().filter(item ->
-                (!StringUtils.isEmpty(item.getSnpInDel().getExpertPathogenicity()) && item.getSnpInDel().getExpertPathogenicity().equalsIgnoreCase(valueText)) ||
-                        (StringUtils.isEmpty(item.getSnpInDel().getExpertPathogenicity()) && item.getSnpInDel().getSwPathogenicity().equalsIgnoreCase(valueText)))
-                .count();
+        Integer value = variantCount(valueText);
         Label valueLabel = new Label(value.toString());
 
         hBox.getChildren().addAll(itemLabel, valueLabel);
 
         return hBox;
+    }
+
+    private int variantCount(String text) {
+        int count = 0;
+        if(!StringUtils.isEmpty(text)) {
+            if(text.equalsIgnoreCase("P") || text.equalsIgnoreCase("T1")) {
+                count = sample.getAnalysisResultSummary().getLevel1VariantCount();
+            } else if(text.equalsIgnoreCase("LP")  || text.equalsIgnoreCase("T2")) {
+                count = sample.getAnalysisResultSummary().getLevel2VariantCount();
+            } else if(text.equalsIgnoreCase("US") || text.equalsIgnoreCase("T3")) {
+                count = sample.getAnalysisResultSummary().getLevel3VariantCount();
+            } else if(text.equalsIgnoreCase("LB") || text.equalsIgnoreCase("T4")) {
+                count = sample.getAnalysisResultSummary().getLevel4VariantCount();
+            } else if(text.equalsIgnoreCase("B")) {
+                count = sample.getAnalysisResultSummary().getLevel5VariantCount();
+            }
+        }
+        return count;
     }
 
     private void expandLeft() {
@@ -614,10 +626,12 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             totalCount = analysisResultVariantList.getCount();
             this.list = list;
             setDefaultFilter();
-            totalVariantCountLabel.setText(analysisResultVariantList.getCount().toString());
+            totalVariantCountLabel.setText(sample.getAnalysisResultSummary().getAllVariantCount().toString());
             ObservableList<VariantAndInterpretationEvidence> displayList = null;
 
+            response = apiService.get("/analysisResults/sampleSummary/"+ sample.getId(), null, null, false);
 
+            sample.setAnalysisResultSummary(response.getObjectBeforeConvertResponseToJSON(AnalysisResultSummary.class));
 
             if (list != null && !list.isEmpty()) {
                 displayList = FXCollections.observableArrayList(list);
@@ -688,6 +702,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             swTier.setSortable(false);
             swTierLabel.setOnMouseClicked(e -> sortTable("tierOrder"));
             swTier.setGraphic(swTierLabel);
+            swTier.setPrefWidth(55);
             swTier.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSwTier()));
             swTier.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
                 @Override
@@ -829,7 +844,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChangeConversion()) :
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAachangeSingleLetter()));
 
-        variantListTableView.getColumns().addAll(warn, report, type, codCons, gene, strand, transcript, ntChange, aaChange, aaChangeConversion);
+        variantListTableView.getColumns().addAll(gene, warn, report, type, codCons, strand, transcript, ntChange, aaChange, aaChangeConversion);
 
         if(panel != null && ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             TableColumn<VariantAndInterpretationEvidence, String> ntChangeBIC = new TableColumn<>("NT change(BIC)");

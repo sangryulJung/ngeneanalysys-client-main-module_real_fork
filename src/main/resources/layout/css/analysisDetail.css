@@ -99,9 +99,8 @@
 #topTabPane.tab-pane:top>.tab-header-area>.headers-region>.tab:selected>.tab-container>.tab-label {
 	-fx-alignment: CENTER;
 	-fx-text-fill: #ffffff;
-	-fx-font-weight: bold;
 	-fx-font-size:13px;
-	-fx-padding:0 25;
+	-fx-padding:0 30;
 	//-fx-background-image : url('../images/sample_detail_menu_active.png');
     -fx-background-repeat : no-repeat;
     -fx-background-color : #8f9fb9;

@@ -6,9 +6,9 @@
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -180,15 +180,15 @@
             </Label>
             <HBox fx:id="toggleGroupHBox" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="330.0" prefHeight="20.0" prefWidth="330.0" spacing="10.0">
                <children>
-                  <ToggleButton mnemonicParsing="false" styleClass="toggle_button">
+                  <RadioButton mnemonicParsing="false">
                      <toggleGroup>
                         <ToggleGroup fx:id="newsTipGroup" />
                      </toggleGroup>
-                  </ToggleButton>
-                  <ToggleButton mnemonicParsing="false" styleClass="toggle_button" toggleGroup="$newsTipGroup" />
-                  <ToggleButton mnemonicParsing="false" styleClass="toggle_button" toggleGroup="$newsTipGroup" />
-                  <ToggleButton mnemonicParsing="false" styleClass="toggle_button" toggleGroup="$newsTipGroup" />
-                  <ToggleButton mnemonicParsing="false" styleClass="toggle_button" toggleGroup="$newsTipGroup" />
+                  </RadioButton>
+                  <RadioButton mnemonicParsing="false" toggleGroup="$newsTipGroup" />
+                  <RadioButton mnemonicParsing="false" toggleGroup="$newsTipGroup" />
+                  <RadioButton mnemonicParsing="false" toggleGroup="$newsTipGroup" />
+                  <RadioButton mnemonicParsing="false" toggleGroup="$newsTipGroup" />
                </children>
             </HBox>
          </children>

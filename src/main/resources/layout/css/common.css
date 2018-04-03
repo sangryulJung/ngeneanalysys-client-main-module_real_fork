@@ -1231,6 +1231,24 @@ Button {
 	-fx-background-insets:0;
 	-fx-padding:0;
 }
+
+.progress-bar {
+	-fx-background-radius: 0;
+    -fx-background-color: #FFFFFF;
+    -fx-opacity: 0.5;
+}
+
+.progress-bar > .bar {
+	-fx-background-radius: 0;
+	-fx-background-color: linear-gradient(to right, #273d5f, #42c0cb, #273d5f);
+}
+
+.progress-bar > .track {
+	-fx-background-insets: 0;
+	-fx-background-color : white;
+    -fx-background-radius: 0;
+}
+
 .btn_workProgressCancel {
 	-fx-font-size:12;
 	-fx-background-color:#AAAAAA;
@@ -1622,4 +1640,33 @@ Button {
 
 .font_gray {
     -fx-text-fill : #595959;
+}
+
+.radio-button .radio {
+    -fx-border-width: 1px;
+    -fx-border-color: #000;
+    -fx-background-color: white;
+    -fx-background-image: null;
+    -fx-border-radius: 15px;
+    -fx-padding: 0px;
+}
+.radio-button .radio:selected {
+    -fx-background-color: white;
+    -fx-background-image: null;
+}
+.radio-button -radio:armed {
+    -fx-background-color: white;
+    -fx-background-image: null;
+}
+.radio-button -radio:determinate {
+    -fx-background-color: white;
+    -fx-background-image: null;
+}
+.radio-button -radio:indeterminate {
+    -fx-background-color: white;
+    -fx-background-image: null;
+}
+.radio-button .dot {
+    -fx-background-radius: 10px;
+    -fx-padding: 5px;
 }

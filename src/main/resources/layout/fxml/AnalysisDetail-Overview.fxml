@@ -172,7 +172,7 @@
                <children>
                   <StackPane prefHeight="150.0" prefWidth="200.0">
                      <children>
-                        <Circle fill="#f6545c" radius="35.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#f6545c" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
                         <Label style="-fx-text-fill: #ffffff;" styleClass="font_size_18" text="Tier I" />
                      </children>
                   </StackPane>
@@ -233,7 +233,7 @@
                   </VBox>
                   <StackPane prefHeight="150.0" prefWidth="200.0">
                      <children>
-                        <Circle fill="#ff9482" radius="35.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#ff9482" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
                         <Label style="-fx-text-fill: #ffffff;" styleClass="font_size_18" text="Tier II" />
                      </children>
                   </StackPane>
@@ -267,7 +267,7 @@
                   </VBox>
                   <StackPane prefHeight="150.0" prefWidth="200.0">
                      <children>
-                        <Circle fill="#70acf5" radius="35.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#70acf5" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
                         <Label style="-fx-text-fill: #ffffff;" styleClass="font_size_18" text="Tier III" />
                      </children>
                   </StackPane>
@@ -301,7 +301,7 @@
                   </VBox>
                   <StackPane prefHeight="150.0" prefWidth="200.0">
                      <children>
-                        <Circle fill="#1f2d87" radius="35.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#1f2d87" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
                         <Label style="-fx-text-fill: #ffffff;" styleClass="font_size_18" text="Tier IV" />
                      </children>
                   </StackPane>

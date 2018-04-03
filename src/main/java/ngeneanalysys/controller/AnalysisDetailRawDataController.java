@@ -316,6 +316,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
 
                 Label titleLabel = new Label("Download File : " + resultFile.getName());
                 ProgressBar progressBar = new ProgressBar();
+                progressBar.getStyleClass().add("progress-bar");
                 progressBar.progressProperty().bind(task.progressProperty());
                 Label messageLabel = new Label();
                 messageLabel.textProperty().bind(task.messageProperty());

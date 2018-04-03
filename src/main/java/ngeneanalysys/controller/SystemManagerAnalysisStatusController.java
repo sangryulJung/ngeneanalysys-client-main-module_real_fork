@@ -286,7 +286,8 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
     /** 작업 삭제 */
     public void deleteRun(Integer id) {
         try {
-            apiService.delete("/admin/runs/"+id);
+            HttpClientResponse response = apiService.delete("/admin/runs/"+id);
+            logger.info("status code : " + response.getStatus());
             listTable.getItems().clear();
             search();
         } catch (WebAPIException wae) {

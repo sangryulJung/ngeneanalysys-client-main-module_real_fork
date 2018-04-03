@@ -469,6 +469,7 @@ public class PastResultsController extends SubPaneController {
 			} else {
 				flowPane.getChildren().remove(hBox);
 			}
+			setList(1);
 		});
 		xLabel.getStyleClass().add("remove_btn");
 		hBox.getChildren().addAll(label, xLabel);

@@ -21,15 +21,12 @@ import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedNotice;
-import ngeneanalysys.model.paged.PagedRun;
 import ngeneanalysys.model.paged.PagedRunSampleView;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -93,6 +90,7 @@ public class HomeController extends SubPaneController{
         newsTipGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             logger.info("init");
             if(newValue == null) return;
+
             if(!noticeLabelSetting(newsTipGroup.getToggles().indexOf(newValue))) {
                 newsTipGroup.selectToggle(oldValue);
             } else {

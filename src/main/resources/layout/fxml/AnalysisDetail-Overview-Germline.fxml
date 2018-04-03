@@ -144,7 +144,7 @@
                <children>
                   <StackPane prefHeight="150.0" prefWidth="200.0">
                      <children>
-                        <Circle fill="#f6545c" radius="35.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#f6545c" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
                         <Label style="-fx-text-fill: #ffffff;" styleClass="font_size_24" text="P" />
                      </children>
                   </StackPane>
@@ -194,7 +194,7 @@
                   </VBox>
                   <StackPane prefHeight="150.0" prefWidth="200.0">
                      <children>
-                        <Circle fill="#ff9482" radius="35.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#ff9482" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
                         <Label style="-fx-text-fill: #ffffff;" styleClass="font_size_24" text="LP" />
                      </children>
                   </StackPane>
@@ -228,7 +228,7 @@
                   </VBox>
                   <StackPane prefHeight="150.0" prefWidth="200.0">
                      <children>
-                        <Circle fill="#70acf5" radius="35.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#70acf5" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
                         <Label style="-fx-text-fill: #ffffff;" styleClass="font_size_24" text="US" />
                      </children>
                   </StackPane>
@@ -262,7 +262,7 @@
                   </VBox>
                   <StackPane prefHeight="150.0" prefWidth="200.0">
                      <children>
-                        <Circle fill="#1f2d87" radius="35.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#1f2d87" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
                         <Label style="-fx-text-fill: #ffffff;" styleClass="font_size_24" text="LB" />
                      </children>
                   </StackPane>
@@ -296,7 +296,7 @@
                   </VBox>
                   <StackPane prefHeight="150.0" prefWidth="200.0">
                      <children>
-                        <Circle fill="#5a64a5" radius="35.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#5a64a5" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
                         <Label style="-fx-text-fill: #ffffff;" styleClass="font_size_24" text="B" />
                      </children>
                   </StackPane>

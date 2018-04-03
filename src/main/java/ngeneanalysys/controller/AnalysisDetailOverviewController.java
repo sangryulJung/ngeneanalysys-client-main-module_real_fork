@@ -4,11 +4,10 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
@@ -89,7 +88,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
 
 
     @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> therapeuticColumn;
+    private TableColumn<VariantAndInterpretationEvidence, Object> therapeuticColumn;
 
     @FXML
     private TableColumn<VariantAndInterpretationEvidence, BigDecimal> alleleFrequencyColumn;
@@ -157,25 +156,52 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         refSeqColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getRefSequence()));
         ntChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
         aaChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChange()));
-        therapeuticColumn.setCellValueFactory(cellData -> {
-            SnpInDelInterpretation snpInDelInterpretation = cellData.getValue().getInterpretationEvidence();
-            String text = "";
-            if(snpInDelInterpretation != null) {
-                if (!StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelA()))
-                    text += snpInDelInterpretation.getTherapeuticEvidence().getLevelA() + ", ";
-                if (!StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelB()))
-                    text += snpInDelInterpretation.getTherapeuticEvidence().getLevelB() + ", ";
-                if (!StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelC()))
-                    text += snpInDelInterpretation.getTherapeuticEvidence().getLevelC() + ", ";
-                if (!StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelD()))
-                    text += snpInDelInterpretation.getTherapeuticEvidence().getLevelD() + ", ";
-            }
-            if(!"".equals(text)) {
-                text = text.substring(0, text.length() - 2);
-            }
+        therapeuticColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getInterpretationEvidence()));
+        therapeuticColumn.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, Object>() {
+            @Override
+            public void updateItem(Object item, boolean empty) {
+                HBox hBox = new HBox();
+                hBox.setSpacing(5);
+                hBox.setAlignment(Pos.CENTER);
+                if(item != null) {
+                    SnpInDelInterpretation interpretation = (SnpInDelInterpretation) item;
+                    if(!StringUtils.isEmpty(interpretation.getTherapeuticEvidence().getLevelA())) {
+                        Label label = new Label("A");
+                        label.getStyleClass().remove("label");
+                        Tooltip tooltip = new Tooltip(interpretation.getTherapeuticEvidence().getLevelA());
+                        label.setTooltip(tooltip);
+                        label.getStyleClass().add("interpretation_A");
+                        hBox.getChildren().add(label);
+                    }
+                    if(!StringUtils.isEmpty(interpretation.getTherapeuticEvidence().getLevelB())) {
+                        Label label = new Label("B");
+                        Tooltip tooltip = new Tooltip(interpretation.getTherapeuticEvidence().getLevelB());
+                        label.setTooltip(tooltip);
+                        label.getStyleClass().remove("label");
+                        label.getStyleClass().add("interpretation_B");
+                        hBox.getChildren().add(label);
+                    }
+                    if(!StringUtils.isEmpty(interpretation.getTherapeuticEvidence().getLevelC())) {
+                        Label label = new Label("C");
+                        Tooltip tooltip = new Tooltip(interpretation.getTherapeuticEvidence().getLevelC());
+                        label.setTooltip(tooltip);
+                        label.getStyleClass().remove("label");
+                        label.getStyleClass().add("interpretation_C");
+                        hBox.getChildren().add(label);
+                    }
+                    if(!StringUtils.isEmpty(interpretation.getTherapeuticEvidence().getLevelD())) {
+                        Label label = new Label("D");
+                        Tooltip tooltip = new Tooltip(interpretation.getTherapeuticEvidence().getLevelD());
+                        label.setTooltip(tooltip);
+                        label.getStyleClass().remove("label");
+                        label.getStyleClass().add("interpretation_D");
+                        hBox.getChildren().add(label);
+                    }
 
-            return new SimpleStringProperty(text);
-            });
+                }
+                setGraphic(hBox);
+            }
+        });
 
         setDisplayItem();
     }
