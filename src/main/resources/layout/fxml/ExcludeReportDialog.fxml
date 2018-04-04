@@ -8,13 +8,13 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="100.0" prefWidth="450.0" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.ExcludeReportDialogController">
+<AnchorPane prefHeight="100.0" prefWidth="450.0" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.ExcludeReportDialogController">
    <children>
       <VBox prefHeight="100.0" prefWidth="450.0">
          <children>
             <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="70.0" prefWidth="450.0">
                <children>
-                  <Label text="comment">
+                  <Label text="Comment">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
