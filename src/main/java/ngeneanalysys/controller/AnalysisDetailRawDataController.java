@@ -124,7 +124,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
             //addFilterBox();
             filterTitleArea.setVisible(false);
             filterTitleArea.setPrefWidth(0);
-            filterList.getChildren().add(new Label("Raw Data Download: Upload fastq files, Mapped bedFile(BAM format), Variant bedFile(VCF format), Data QC Report(PDF) "));
+            filterList.getChildren().add(new Label("Analysis Result Data Download: Uploaded Fastq files, Mapped bedFile(BAM format), Variant bedFile(VCF format), Data QC Report(PDF) "));
             setList("ALL");
 
         } catch (WebAPIException wae) {
@@ -157,7 +157,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
         currentStage.setResizable(false);
         currentStage.initStyle(StageStyle.DECORATED);
         currentStage.initModality(Modality.APPLICATION_MODAL);
-        currentStage.setTitle(CommonConstants.SYSTEM_NAME + " > Raw Data Download");
+        currentStage.setTitle(CommonConstants.SYSTEM_NAME + " > Analysis Result Data Download");
         // OS가 Window인 경우 아이콘 출력.
         if (System.getProperty("os.name").toLowerCase().contains("window")) {
             currentStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
