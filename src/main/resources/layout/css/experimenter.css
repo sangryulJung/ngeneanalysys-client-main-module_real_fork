@@ -154,3 +154,11 @@
 	-fx-text-alignment:center ;
 	-fx-alignment:center;
 }
+
+#pathogenicityTable .table-cell {
+    -fx-alignment : center;
+}
+
+#tierTable .table-cell {
+    -fx-alignment : center;
+}

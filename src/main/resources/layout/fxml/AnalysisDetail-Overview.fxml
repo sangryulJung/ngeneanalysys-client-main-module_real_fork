@@ -54,11 +54,11 @@
             <TableColumn fx:id="geneColumn" editable="false" prefWidth="100.0" sortable="false" text="Gene" />
             <TableColumn fx:id="positionColumn" prefWidth="140.0" text="Position" />
             <TableColumn fx:id="variantColumn" editable="false" prefWidth="200.0" sortable="false" text="Variant" />
-            <TableColumn fx:id="transcriptColumn" prefWidth="75.0" text="Transcript" />
+            <TableColumn fx:id="transcriptColumn" prefWidth="125.0" text="Transcript" />
             <TableColumn fx:id="ntChangeColumn" prefWidth="120.0" text="NT Change" />
             <TableColumn fx:id="aaChangeColumn" prefWidth="120.0" text="AA Change" />
             <TableColumn fx:id="alleleFrequencyColumn" prefWidth="120.0" text="VAF(Depth)" />
-            <TableColumn fx:id="therapeuticColumn" editable="false" prefWidth="180.0" sortable="false" text="Interpretation" />
+            <TableColumn fx:id="therapeuticColumn" editable="false" prefWidth="130.0" sortable="false" text="Interpretation" />
          </columns>
       </TableView>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5">

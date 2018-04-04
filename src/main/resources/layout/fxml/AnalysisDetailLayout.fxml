@@ -88,7 +88,7 @@
             </VBox>
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
                <children>
-                  <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="49.0" text="PANEL : " />
+                  <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="54.0" text="PANEL : " />
                   <Label fx:id="panelLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" styleClass="font_size_12" text="Panel Name" textFill="#262b33">
                      <font>
                         <Font size="11.0" />
@@ -104,7 +104,7 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3">
                <children>
-                  <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="60.0" text="DISEASE : " />
+                  <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="65.0" text="DISEASE : " />
                   <Label fx:id="diseaseLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" text="Label">
                      <tooltip>
                         <Tooltip fx:id="diseaseTooltip" text="Empty Tooltip" />
@@ -116,7 +116,7 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4">
                <children>
-                  <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="83.0" text="SEQUENCER : " />
+                  <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="88.0" text="SEQUENCER : " />
                   <Label fx:id="sequencerLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" text="Label">
                      <tooltip>
                         <Tooltip fx:id="sequencerTooltip" text="Empty Tooltip" />
@@ -128,7 +128,7 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="15.0" prefWidth="228.0" GridPane.columnIndex="1">
                <children>
-                  <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="36.0" text="RUN : " />
+                  <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="40.0" text="RUN : " />
                   <Label fx:id="runNameLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" text="run name">
                      <tooltip>
                         <Tooltip fx:id="runNameTooltip" text="Empty Tooltip" />
