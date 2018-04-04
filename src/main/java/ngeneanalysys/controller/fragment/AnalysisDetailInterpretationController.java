@@ -162,6 +162,9 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
     public void returnTierClass(String tier, Label label) {
         label.setAlignment(Pos.CENTER);
+
+        if(label == userTierLabel) arrow.setVisible(true);
+
         label.getStyleClass().removeAll(label.getStyleClass());
         if(!StringUtils.isEmpty(tier)) {
             if (tier.equalsIgnoreCase("T1")) {
@@ -224,7 +227,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
             }
 
         } else {
-            DialogUtil.alert("comment error", "The comment field is empty.", mainController.getPrimaryStage(), true);
+            DialogUtil.warning("The comment field is empty", " ", mainController.getPrimaryStage(), true);
         }
     }
 

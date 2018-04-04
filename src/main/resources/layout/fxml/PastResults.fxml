@@ -45,7 +45,7 @@
             </ImageView>
             <Label alignment="TOP_LEFT" style="-fx-font-size: 18;" styleClass="font_gray" text="RESULTS">
                <HBox.margin>
-                  <Insets top="-3.0" />
+                  <Insets top="-4.0" />
                </HBox.margin></Label>
          </children>
       </HBox>

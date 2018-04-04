@@ -9,6 +9,8 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -52,8 +54,16 @@
          <children>
             <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <HBox prefHeight="30.0" prefWidth="200.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
                      <children>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/renewal/medical-samples.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin>
+                        </ImageView>
                         <Label fx:id="sampleNameLabel" text="Label">
                            <styleClass>
                               <String fx:value="font_size_18" />
@@ -67,6 +77,9 @@
                            </tooltip>
                         </Label>
                      </children>
+                     <padding>
+                        <Insets bottom="2.0" />
+                     </padding>
                   </HBox>
                </children>
                <padding>

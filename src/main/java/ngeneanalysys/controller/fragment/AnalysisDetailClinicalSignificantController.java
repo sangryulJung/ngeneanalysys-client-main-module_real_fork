@@ -171,6 +171,10 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
             }
         }
         String pathogenicity = selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity();
+        setPathogenicityArea(pathogenicity);
+    }
+
+    public void setPathogenicityArea(String pathogenicity) {
         for(Node node : pathogenicityArea.getChildren()) {
             Button button = (Button)node;
             button.getStyleClass().removeAll(button.getStyleClass());
@@ -201,7 +205,6 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                 button.getStyleClass().add("no_selected_user_tier");
                 button.setDisable(false);
             }
-
         }
     }
 
@@ -665,6 +668,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
             } catch (IOException ioe) {
                 ioe.printStackTrace();
             }
+            setPathogenicityArea(value);
             controller.showVariantList(controller.getCurrentPageIndex() + 1,0);
         }
     }

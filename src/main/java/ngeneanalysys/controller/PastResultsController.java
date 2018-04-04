@@ -575,7 +575,7 @@ public class PastResultsController extends SubPaneController {
 
 		public void setSampleList(List<SampleView> sampleList) {
 			for(SampleView sampleView : sampleList) {
-			    if(sampleView.getSampleStatus().getStatus().equalsIgnoreCase(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_QUEUED)) {
+			    if(!sampleView.getSampleStatus().getStatus().equalsIgnoreCase(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_COMPLETE)) {
 			        this.setDisable(true);
                 } else {
                     this.setDisable(false);

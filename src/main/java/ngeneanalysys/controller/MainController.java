@@ -723,7 +723,7 @@ public class MainController extends BaseStageController {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.initOwner(this.primaryStage);
-        alert.setTitle("Confirmation Dialog");
+        alert.setTitle("Log out");
         alert.setHeaderText(alertHeaderText);
         alert.setContentText(alertContentText);
 
