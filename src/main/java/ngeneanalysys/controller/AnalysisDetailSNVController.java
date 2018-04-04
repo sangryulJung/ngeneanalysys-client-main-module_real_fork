@@ -464,8 +464,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             controller.setMainController(this.getMainController());
             controller.setAnalysisDetailSNVController(this);
             controller.setParamMap(getParamMap());
-            controller.show((Parent) node);
             controller.setLabel(variantAndInterpretationEvidence);
+            controller.show((Parent) node);
             interpretationTitledPane.setContent(node);
         } catch (Exception e) {
             e.printStackTrace();
@@ -702,7 +702,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         } else if(sortMap.size() == 1) {
             sortMap.clear();
             sortMap.put(column, "ASC");
-        }
+         }
         showVariantList(currentPageIndex + 1, 0);
     }
 

@@ -3,6 +3,7 @@
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
@@ -11,8 +12,9 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<GridPane maxHeight="-Infinity" maxWidth="1020.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="256.0" prefWidth="880.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailInterpretationController">
+<GridPane maxHeight="-Infinity" maxWidth="1020.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="256.0" prefWidth="870.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailInterpretationController">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="1040.0" minWidth="10.0" prefWidth="840.0" />
   </columnConstraints>
@@ -24,30 +26,26 @@
    <children>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Label text="Prediction">
-               <HBox.margin>
-                  <Insets right="3.0" />
-               </HBox.margin></Label>
             <Label fx:id="swTierLabel" />
-            <Label text="Tier">
+            <Label fx:id="arrow" text="〉">
                <HBox.margin>
-                  <Insets left="50.0" right="3.0" />
+                  <Insets left="10.0" right="10.0" />
                </HBox.margin>
             </Label>
             <Label fx:id="userTierLabel" />
          </children>
       </HBox>
-      <HBox alignment="TOP_CENTER" prefHeight="175.0" prefWidth="200.0" GridPane.rowIndex="1">
+      <HBox alignment="TOP_CENTER" maxWidth="1020.0" prefHeight="175.0" prefWidth="880.0" GridPane.rowIndex="1">
          <children>
-          <AnchorPane maxWidth="1000.0" minHeight="0.0" minWidth="-Infinity" prefHeight="175.0" prefWidth="870.0">
+          <AnchorPane maxWidth="1010.0" minHeight="0.0" minWidth="870.0" prefHeight="175.0" prefWidth="1010.0">
                <children>
-                  <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="860.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="0.0">
+                  <GridPane maxHeight="-Infinity" maxWidth="1000.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="860.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="0.0">
                     <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="110.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="190.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="190.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="180.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="190.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="140.0" minWidth="-Infinity" prefWidth="110.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="215.0" minWidth="-Infinity" prefWidth="190.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="215.0" minWidth="-Infinity" prefWidth="190.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="215.0" minWidth="-Infinity" prefWidth="180.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="215.0" minWidth="-Infinity" prefWidth="190.0" />
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" vgrow="SOMETIMES" />
@@ -166,17 +164,27 @@
             </AnchorPane>
          </children>
       </HBox>
-      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" GridPane.rowIndex="2">
          <children>
+            <VBox alignment="CENTER" maxHeight="-Infinity" minWidth="111.0" prefHeight="24.0" prefWidth="111.0" styleClass="add_to_report_check_box">
+               <children>
+                  <CheckBox fx:id="addToReportCheckBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="27.0" prefWidth="110.0" styleClass="add" text="Add to Report" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </CheckBox>
+               </children>
+            </VBox>
             <Button alignment="TOP_RIGHT" mnemonicParsing="false" onAction="#saveInterpretation" prefWidth="60.0" style="-fx-alignment: center;" styleClass="submitBtn" text="Save" />
          </children>
          <padding>
-            <Insets right="20.0" />
+            <Insets right="10.0" />
          </padding>
       </HBox>
    </children>
    <stylesheets>
       <URL value="@../../css/common.css" />
       <URL value="@../../css/variants.css" />
+      <URL value="@../../css/variantDetail.css" />
    </stylesheets>
 </GridPane>

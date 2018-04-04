@@ -1197,13 +1197,13 @@ Button {
 	-fx-background-color:#6C9DBB;
 }
 .btn_setting_save {
-	-fx-background-color: #990000;
+	-fx-background-color: #0D5E97;
 	-fx-background-radius: 0;
 	-fx-pref-height:35;
 	-fx-text-fill:#ffffff;
 }
 .btn_setting_save:hover {
-	//-fx-background-color:#FB3741;
+	//-fx-background-color:#0D5E97;
 }
 .btn_setting_close {
 	-fx-background-color:#959595;

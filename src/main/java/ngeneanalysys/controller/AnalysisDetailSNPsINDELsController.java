@@ -858,7 +858,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                         if ("dbSNPButton".equals(id)) {
                             Button dbSNPButton = (Button) node;
 
-                            if(!StringUtils.isEmpty(geneId)) {
+                            if(!StringUtils.isEmpty(rsId)) {
                                 String fullUrlDBsnp = "https://www.ncbi.nlm.nih.gov/projects/SNP/snp_ref.cgi?rs=" + rsId.replaceAll("rs", "");
                                 dbSNPButton.setOnAction(event -> getMainApp().getHostServices().showDocument(fullUrlDBsnp));
                                 dbSNPButton.setDisable(false);

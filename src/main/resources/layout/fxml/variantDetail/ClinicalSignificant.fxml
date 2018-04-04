@@ -16,7 +16,7 @@
 <?import javafx.scene.shape.Polyline?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="1040.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="256.0" prefWidth="750.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailClinicalSignificantController">
+<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="1040.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="256.0" prefWidth="750.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailClinicalSignificantController">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="170.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" />
@@ -303,7 +303,7 @@
                   </Label>
                </children>
                <VBox.margin>
-                  <Insets top="5.0" />
+                  <Insets top="7.0" />
                </VBox.margin>
             </HBox>
             <Label alignment="TOP_CENTER" maxHeight="16.0" maxWidth="1.7976931348623157E308" minHeight="16.0" prefHeight="16.0" prefWidth="140.0" styleClass="flagging_label" text="Pathogenicity">
@@ -343,10 +343,10 @@
                   </Button>
                </children>
                <VBox.margin>
-                  <Insets top="5.0" />
+                  <Insets top="7.0" />
                </VBox.margin>
             </HBox>
-            <VBox alignment="CENTER" minWidth="111.0" prefHeight="27.0" prefWidth="111.0" styleClass="pathogenic_review_checkbox">
+            <VBox alignment="CENTER" minWidth="111.0" prefHeight="27.0" prefWidth="111.0" styleClass="add_to_report_check_box">
                <children>
                   <CheckBox fx:id="addToGermlineReportCheckBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="27.0" prefWidth="110.0" text="Add to Report" VBox.vgrow="ALWAYS">
                      <VBox.margin>

@@ -1,12 +1,18 @@
 package ngeneanalysys.controller.fragment;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
+import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.AnalysisDetailSNVController;
+import ngeneanalysys.controller.ExcludeReportDialogController;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.ClinicalEvidence;
@@ -79,6 +85,12 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     @FXML
     private TextField DiagnosisDLabel;
 
+    @FXML
+    private Label arrow;
+
+    @FXML
+    private CheckBox addToReportCheckBox;
+
     private VariantAndInterpretationEvidence variantAndInterpretationEvidence;
 
     private APIService apiService;
@@ -95,7 +107,9 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     @Override
     public void show(Parent root) throws IOException {
         apiService = APIService.getInstance();
-
+        if(StringUtils.isEmpty(variantAndInterpretationEvidence.getSnpInDel().getExpertTier())) arrow.setVisible(false);
+        addToReportCheckBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> addToReportBtn(addToReportCheckBox ));
+        checkBoxSetting(addToReportCheckBox, variantAndInterpretationEvidence.getSnpInDel().getIncludedInReport());
         tierComboBox.setConverter(new ComboBoxConverter());
         tierComboBox.getItems().add(new ComboBoxItem("T1", "T1"));
         tierComboBox.getItems().add(new ComboBoxItem("T2", "T2"));
@@ -105,8 +119,50 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
     }
 
+    public void addToReportBtn(CheckBox checkBox) {
+        if(variantAndInterpretationEvidence != null) {
+            String oldSymbol = variantAndInterpretationEvidence.getSnpInDel().getIncludedInReport();
+            if (checkBox.isSelected()) {
+                try {
+                    FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
+                    Node node = loader.load();
+                    ExcludeReportDialogController excludeReportDialogController = loader.getController();
+                    excludeReportDialogController.setMainController(mainController);
+                    excludeReportDialogController.settingItem("Y", variantAndInterpretationEvidence, checkBox);
+                    excludeReportDialogController.show((Parent) node);
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
+                }
+                if(!oldSymbol.equals(variantAndInterpretationEvidence.getSnpInDel().getIncludedInReport()))
+                    analysisDetailSNVController.showVariantList(analysisDetailSNVController.getCurrentPageIndex() + 1, 0);
+            } else {
+                try {
+                    FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
+                    Node node = loader.load();
+                    ExcludeReportDialogController excludeReportDialogController = loader.getController();
+                    excludeReportDialogController.setMainController(mainController);
+                    excludeReportDialogController.settingItem("N", variantAndInterpretationEvidence, checkBox);
+                    excludeReportDialogController.show((Parent) node);
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
+                }
+            }
+            if(!oldSymbol.equals(variantAndInterpretationEvidence.getSnpInDel().getIncludedInReport()))
+                analysisDetailSNVController.showVariantList(analysisDetailSNVController.getCurrentPageIndex() + 1, 0);
+        }
+    }
+
+    public void checkBoxSetting(CheckBox checkBox, String Symbol) {
+        if("Y".equals(Symbol)) {
+            checkBox.setSelected(true);
+        } else {
+            checkBox.setSelected(false);
+        }
+    }
+
     public void returnTierClass(String tier, Label label) {
         label.setAlignment(Pos.CENTER);
+        label.getStyleClass().removeAll(label.getStyleClass());
         if(!StringUtils.isEmpty(tier)) {
             if (tier.equalsIgnoreCase("T1")) {
                 label.setText("T1");
@@ -160,13 +216,15 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                 params.put("snpInDelId", variantAndInterpretationEvidence.getSnpInDel().getId());
 
                 apiService.put("analysisResults/snpInDels/" + variantAndInterpretationEvidence.getSnpInDel().getId() + "/updateTier", params, null, true);
-
+                returnTierClass(tier, userTierLabel);
                 analysisDetailSNVController.showVariantList(analysisDetailSNVController.getCurrentPageIndex() + 1, 0);
             } catch (WebAPIException wae) {
                 wae.printStackTrace();
                 DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
             }
 
+        } else {
+            DialogUtil.alert("comment error", "The comment field is empty.", mainController.getPrimaryStage(), true);
         }
     }
 

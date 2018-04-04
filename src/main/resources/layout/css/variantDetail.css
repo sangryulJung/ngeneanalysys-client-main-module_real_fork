@@ -20,23 +20,20 @@
 }
 
 .title3 {
-	-fx-font-size:15;
+	-fx-font-size:14;
 	-fx-text-fill:#000;
-	-fx-font-weight:bold;
 	-fx-padding:-5 0 0 0;
 }
 
 .ref {
-	-fx-font-size:15;
+	-fx-font-size:14;
 	-fx-text-fill:#000;
-	-fx-font-weight:bold;
 	-fx-padding:-5 0 0 0;
 }
 
 .alt {
-	-fx-font-size:15;
+	-fx-font-size:14;
 	-fx-text-fill:#F6645E ;
-	-fx-font-weight:bold;
 	-fx-padding:-5 0 0 0;
 }
 .variant_type {
@@ -478,7 +475,7 @@
 }
 
 
-.pathogenic_review_checkbox {
+.add_to_report_check_box {
 	/*-fx-spacing:5;*/
 	/*-fx-padding:10;*/
 	-fx-background-color : #a8bbd9;
@@ -487,7 +484,7 @@
 	-fx-max-width : 140;
 	-fx-alignment : center;
 }
-.pathogenic_review_checkbox .check-box {
+.add_to_report_check_box > .check-box {
 	-fx-padding:5;
 	-fx-background-radius:5;
 	-fx-border-width:0;
@@ -495,16 +492,24 @@
 	-fx-font-size:12;
 	-fx-font-weight:bold;
 }
-.pathogenic_review_checkbox .check-box .text {
+.add_to_report_check_box > .check-box .text {
 	-fx-text-fill:white;
 	-fx-font-size:12;
 	-fx-font-weight:bold;
 }
-.pathogenic_review_checkbox .check-box .box {
+.add_to_report_check_box > .check-box .box {
 	-fx-pref-width:10;
 	-fx-pref-height:10;
 	-fx-background-color:white;
 	-fx-border-width:2;
 	-fx-border-color:white;
 	-fx-border-radius:2;
+}
+
+#addToReportCheckBox {
+	-fx-background-color: #a8bbd9;
+}
+
+#addToGermlineReportCheckBox {
+	-fx-background-color: #a8bbd9;
 }

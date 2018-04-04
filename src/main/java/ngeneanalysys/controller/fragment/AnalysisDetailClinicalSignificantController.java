@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
@@ -19,6 +20,7 @@ import ngeneanalysys.animaition.ClinicalSignificantTimer;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.AnalysisDetailSNVController;
 import ngeneanalysys.controller.ChangePathogenicityController;
+import ngeneanalysys.controller.ExcludeReportDialogController;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.model.SnpInDelExtraInfo;
 import ngeneanalysys.model.VariantAndInterpretationEvidence;
@@ -42,6 +44,10 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
     private static Logger logger = LoggerUtil.getLogger();
 
     private final int gaugeSpeed = 10;
+
+    @FXML private HBox predictionArea;
+    @FXML private HBox pathogenicityArea;
+    @FXML private CheckBox addToGermlineReportCheckBox;
 
     @FXML
     private HBox pathogenicityPredictionHBox;
@@ -128,7 +134,108 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
 
     @Override
     public void show(Parent root) throws IOException {
+        setGermlineArea();
+        checkBoxSetting(addToGermlineReportCheckBox, selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport());
         showClinicalSignificantGraph();
+        addToGermlineReportCheckBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> addToReportBtn(addToGermlineReportCheckBox));
+    }
+
+    public void checkBoxSetting(CheckBox checkBox, String Symbol) {
+        if("Y".equals(Symbol)) {
+            checkBox.setSelected(true);
+        } else {
+            checkBox.setSelected(false);
+        }
+    }
+
+    public void setGermlineArea() {
+        if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicity() != null) {
+            for(Node node : predictionArea.getChildren()) {
+                Label label = (Label) node;
+                label.getStyleClass().removeAll(label.getStyleClass());
+                if(label.getId().equals(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicity())) {
+                    if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicity().equals("P")) {
+                        label.getStyleClass().add("prediction_A");
+                    } else if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicity().equals("LP")) {
+                        label.getStyleClass().add("prediction_B");
+                    } else if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicity().equals("US")) {
+                        label.getStyleClass().add("prediction_C");
+                    } else if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicity().equals("LB")) {
+                        label.getStyleClass().add("prediction_D");
+                    } else if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicity().equals("B")) {
+                        label.getStyleClass().add("prediction_E");
+                    }
+                } else {
+                    label.getStyleClass().add("prediction_none");
+                }
+            }
+        }
+        String pathogenicity = selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity();
+        for(Node node : pathogenicityArea.getChildren()) {
+            Button button = (Button)node;
+            button.getStyleClass().removeAll(button.getStyleClass());
+            button.getStyleClass().add("button");
+            if(!StringUtils.isEmpty(pathogenicity)) {
+                if(pathogenicity.equals(button.getText())) {
+                    if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals("P")) {
+                        button.getStyleClass().add("prediction_A_Selected");
+                        button.setDisable(true);
+                    } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals("LP")) {
+                        button.getStyleClass().add("prediction_B_Selected");
+                        button.setDisable(true);
+                    } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals("US")) {
+                        button.getStyleClass().add("prediction_C_Selected");
+                        button.setDisable(true);
+                    } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals("LB")) {
+                        button.getStyleClass().add("prediction_D_Selected");
+                        button.setDisable(true);
+                    } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals("B")) {
+                        button.getStyleClass().add("prediction_E_Selected");
+                        button.setDisable(true);
+                    }
+                } else {
+                    button.getStyleClass().add("no_selected_user_tier");
+                    button.setDisable(false);
+                }
+            } else {
+                button.getStyleClass().add("no_selected_user_tier");
+                button.setDisable(false);
+            }
+
+        }
+    }
+
+    public void addToReportBtn(CheckBox checkBox) {
+        if(selectedAnalysisResultVariant != null) {
+            String oldSymbol = selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport();
+            if (checkBox.isSelected()) {
+                try {
+                    FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
+                    Node node = loader.load();
+                    ExcludeReportDialogController excludeReportDialogController = loader.getController();
+                    excludeReportDialogController.setMainController(mainController);
+                    excludeReportDialogController.settingItem("Y", selectedAnalysisResultVariant, checkBox);
+                    excludeReportDialogController.show((Parent) node);
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
+                }
+                if(!oldSymbol.equals(selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport()))
+                    controller.showVariantList(controller.getCurrentPageIndex() + 1,0);
+            } else {
+                try {
+                    FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
+                    Node node = loader.load();
+                    ExcludeReportDialogController excludeReportDialogController = loader.getController();
+                    excludeReportDialogController.setMainController(mainController);
+                    excludeReportDialogController.settingItem("N", selectedAnalysisResultVariant, checkBox);
+                    excludeReportDialogController.show((Parent) node);
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
+                }
+            }
+            if(!oldSymbol.equals(selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport()))
+                controller.showVariantList(controller.getCurrentPageIndex() + 1,0);
+        }
     }
 
     /**

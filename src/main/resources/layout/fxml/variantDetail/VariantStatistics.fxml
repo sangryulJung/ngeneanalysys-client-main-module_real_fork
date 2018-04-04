@@ -10,17 +10,17 @@
    <children>
       <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="240.0" prefWidth="870.0" spacing="10.0">
          <children>
-            <Canvas fx:id="canvasVariantStatisticsRun" height="175.0" width="170.0" HBox.hgrow="NEVER">
+            <Canvas fx:id="canvasVariantStatisticsRun" height="145.0" width="140.0" HBox.hgrow="NEVER">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
             </Canvas>
-            <Canvas fx:id="canvasVariantStatisticsPanel" height="175.0" width="170.0">
+            <Canvas fx:id="canvasVariantStatisticsPanel" height="145.0" width="140.0">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
             </Canvas>
-            <Canvas fx:id="canvasVariantStatisticsGroup" height="175.0" width="170.0">
+            <Canvas fx:id="canvasVariantStatisticsGroup" height="145.0" width="140.0">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
