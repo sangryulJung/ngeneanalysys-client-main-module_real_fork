@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="analysisDetailWrapper" prefHeight="555.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailLayoutController">
+<GridPane fx:id="analysisDetailWrapper" prefHeight="555.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailLayoutController">
    <children>
       <TabPane fx:id="topTabPane" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="455.0" prefWidth="1280.0" scaleZ="2.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
          <GridPane.margin>
@@ -89,7 +89,7 @@
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
                <children>
                   <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="49.0" text="PANEL : " />
-                  <Label fx:id="panelLabel" styleClass="font_size_12" text="Panel Name" textFill="#262b33">
+                  <Label fx:id="panelLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" styleClass="font_size_12" text="Panel Name" textFill="#262b33">
                      <font>
                         <Font size="11.0" />
                      </font>
@@ -105,7 +105,7 @@
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3">
                <children>
                   <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="60.0" text="DISEASE : " />
-                  <Label fx:id="diseaseLabel" text="Label">
+                  <Label fx:id="diseaseLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" text="Label">
                      <tooltip>
                         <Tooltip fx:id="diseaseTooltip" text="Empty Tooltip" />
                      </tooltip></Label>
@@ -117,7 +117,7 @@
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4">
                <children>
                   <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="83.0" text="SEQUENCER : " />
-                  <Label fx:id="sequencerLabel" text="Label">
+                  <Label fx:id="sequencerLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" text="Label">
                      <tooltip>
                         <Tooltip fx:id="sequencerTooltip" text="Empty Tooltip" />
                      </tooltip></Label>
@@ -129,7 +129,7 @@
             <HBox alignment="CENTER_LEFT" prefHeight="15.0" prefWidth="228.0" GridPane.columnIndex="1">
                <children>
                   <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="36.0" text="RUN : " />
-                  <Label fx:id="runNameLabel" text="run name">
+                  <Label fx:id="runNameLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" text="run name">
                      <tooltip>
                         <Tooltip fx:id="runNameTooltip" text="Empty Tooltip" />
                      </tooltip></Label>
