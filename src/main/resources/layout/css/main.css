@@ -30,7 +30,7 @@
 }
 
 .bg_main_header_logo {
-	-fx-background-image:url('../images/renewal/title_logo.png');
+	-fx-background-image:url('../images/renewal/logo.png');
 	-fx-background-size : 180 26;
 	-fx-background-repeat:no-repeat ;
 	-fx-alignment:center ;

@@ -15,7 +15,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="200.0">
                <children>
-                  <Label styleClass="font_size_14" text="pathogenicity : ">
+                  <Label styleClass="font_size_14" text="Pathogenicity : ">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -32,7 +32,7 @@
             </HBox>
             <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="33.0" prefWidth="450.0">
                <children>
-                  <Label alignment="CENTER" prefWidth="100.0" text="comment">
+                  <Label alignment="CENTER" prefWidth="100.0" text="Comment">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>

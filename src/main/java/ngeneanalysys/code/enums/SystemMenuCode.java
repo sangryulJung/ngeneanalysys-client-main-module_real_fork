@@ -8,7 +8,7 @@ package ngeneanalysys.code.enums;
  */
 public enum SystemMenuCode {
 
-	EDIT("Edit", 15),
+	EDIT("User Profile", 15),
 	SETTINGS("Settings", 15),
 	SUPPORT("Support", 15),
 	LICENSE("License", 0),

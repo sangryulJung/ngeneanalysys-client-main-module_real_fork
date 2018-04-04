@@ -541,6 +541,7 @@ public class PastResultsController extends SubPaneController {
 	@FXML
 	public void resetSearchForm() {
 		searchListFlowPane.getChildren().removeAll(searchListFlowPane.getChildren());
+		setList(1);
 	}
 
 	class SampleInfoVBox extends VBox {

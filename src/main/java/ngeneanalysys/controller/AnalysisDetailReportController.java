@@ -222,7 +222,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                                 rowIndex++;
                             }
                             Label label = new Label(item.get("displayName"));
-                            label.setStyle("-fx-text-fill : #C20E20;");
+                            label.setStyle("-fx-text-fill : #595959;");
                             customFieldGridPane.add(label, colIndex++, rowIndex);
                             label.setMaxHeight(Double.MAX_VALUE);
                             label.setMaxWidth(Double.MAX_VALUE);

@@ -54,7 +54,7 @@
             <TableColumn fx:id="geneColumn" editable="false" prefWidth="100.0" sortable="false" text="Gene" />
             <TableColumn fx:id="positionColumn" prefWidth="140.0" text="Position" />
             <TableColumn fx:id="variantColumn" editable="false" prefWidth="200.0" sortable="false" text="Variant" />
-            <TableColumn fx:id="refSeqColumn" prefWidth="75.0" text="Transcript" />
+            <TableColumn fx:id="transcriptColumn" prefWidth="75.0" text="Transcript" />
             <TableColumn fx:id="ntChangeColumn" prefWidth="120.0" text="NT Change" />
             <TableColumn fx:id="aaChangeColumn" prefWidth="120.0" text="AA Change" />
             <TableColumn fx:id="alleleFrequencyColumn" prefWidth="120.0" text="VAF(Depth)" />

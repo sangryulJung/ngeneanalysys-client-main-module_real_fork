@@ -54,7 +54,7 @@
             <TableColumn fx:id="geneColumn" editable="false" prefWidth="100.0" sortable="false" text="Gene" />
             <TableColumn fx:id="positionColumn" editable="false" prefWidth="200.0" sortable="false" text="Position" />
             <TableColumn fx:id="variantColumn" editable="false" prefWidth="200.0" sortable="false" text="Variant" />
-            <TableColumn fx:id="refSeqColumn" editable="false" prefWidth="200.0" sortable="false" text="Transcript" />
+            <TableColumn fx:id="transcriptColumn" editable="false" prefWidth="200.0" sortable="false" text="Transcript" />
             <TableColumn fx:id="ntChangeColumn" editable="false" prefWidth="170.0" sortable="false" text="NT Change" />
             <TableColumn fx:id="aaChangeColumn" editable="false" prefWidth="165.0" sortable="false" text="AA Change" />
          </columns>
@@ -86,7 +86,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;" GridPane.columnIndex="1">
                            <children>
-                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="150.0" text="mean read quality" textFill="WHITE">
+                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="150.0" text="Mean read quality" textFill="WHITE">
                                  <tooltip>
                                     <Tooltip fx:id="meanReadTooltip" text="Empty Tooltip" />
                                  </tooltip>
@@ -95,7 +95,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;" GridPane.columnIndex="2">
                            <children>
-                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="150.0" text="retained read" textFill="WHITE">
+                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="150.0" text="Retained read" textFill="WHITE">
                                  <tooltip>
                                     <Tooltip fx:id="retainedReadTooltip" text="Empty Tooltip" />
                                  </tooltip>
@@ -105,7 +105,7 @@
                         <Label fx:id="meanReadLabel" text="pass" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;" GridPane.columnIndex="3">
                            <children>
-                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="150.0" text="corverage uniformity" textFill="WHITE">
+                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="150.0" text="Corverage uniformity" textFill="WHITE">
                                  <tooltip>
                                     <Tooltip fx:id="coverageUniformityTooltip" text="Empty Tooltip" />
                                  </tooltip>
@@ -158,7 +158,7 @@
                         </HBox>
                         <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                            <children>
-                              <Label style="-fx-font-family: Noto Sans CJK KR Regular;" text="gene : " />
+                              <Label style="-fx-font-family: Noto Sans CJK KR Regular;" text="Gene : " />
                               <Label fx:id="pGenesCountLabel" text="0" />
                            </children>
                         </HBox>
@@ -186,7 +186,7 @@
                         </HBox>
                         <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                            <children>
-                              <Label style="-fx-font-family: Noto Sans CJK KR Regular;" text="gene : " />
+                              <Label style="-fx-font-family: Noto Sans CJK KR Regular;" text="Gene : " />
                               <Label fx:id="lpGenesCountLabel" text="0" />
                            </children>
                         </HBox>
@@ -219,7 +219,7 @@
                         </HBox>
                         <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                            <children>
-                              <Label style="-fx-font-family: Noto Sans CJK KR Regular;" text="gene : " />
+                              <Label style="-fx-font-family: Noto Sans CJK KR Regular;" text="Gene : " />
                               <Label fx:id="usGenesCountLabel" text="0" />
                            </children>
                         </HBox>
@@ -253,7 +253,7 @@
                         </HBox>
                         <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                            <children>
-                              <Label style="-fx-font-family: Noto Sans CJK KR Regular;" text="gene : " />
+                              <Label style="-fx-font-family: Noto Sans CJK KR Regular;" text="Gene : " />
                               <Label fx:id="lbGenesCountLabel" text="0" />
                            </children>
                         </HBox>
@@ -287,7 +287,7 @@
                         </HBox>
                         <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                            <children>
-                              <Label style="-fx-font-family: Noto Sans CJK KR Regular;" text="gene : " />
+                              <Label style="-fx-font-family: Noto Sans CJK KR Regular;" text="Gene : " />
                               <Label fx:id="bGenesCountLabel" text="0" />
                            </children>
                         </HBox>

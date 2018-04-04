@@ -79,7 +79,7 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
     private TableColumn<VariantAndInterpretationEvidence, Integer> positionColumn;
 
     @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> refSeqColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> transcriptColumn;
 
     @FXML
     private TableColumn<VariantAndInterpretationEvidence, String> ntChangeColumn;
@@ -131,7 +131,7 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
         geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
         variantColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
         positionColumn.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getSnpInDel().getGenomicCoordinate().getStartPosition()));
-        refSeqColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getRefSequence()));
+        transcriptColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getTranscript()));
         ntChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
         aaChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChange()));
 
@@ -275,16 +275,16 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
 
             List<SampleQC> qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
 
-            roiCoverageLabel.setText(findQCResult(qcList, "roi_coverage"));
+            roiCoverageLabel.setText(findQCResult(qcList, "roi_coverage").toUpperCase());
             roiCoverageTooltip.setText(findQCTooltipString(qcList, "roi_coverage"));
 
-            meanReadLabel.setText(findQCResult(qcList, "mean_read_quality"));
+            meanReadLabel.setText(findQCResult(qcList, "mean_read_quality").toUpperCase());
             meanReadTooltip.setText(findQCTooltipString(qcList, "mean_read_quality"));
 
-            retainedReadLabel.setText(findQCResult(qcList, "retained_reads"));
+            retainedReadLabel.setText(findQCResult(qcList, "retained_reads").toUpperCase());
             retainedReadTooltip.setText(findQCTooltipString(qcList, "retained_reads"));
 
-            coverageUniformityLabel.setText(findQCResult(qcList, "coverage_uniformity"));
+            coverageUniformityLabel.setText(findQCResult(qcList, "coverage_uniformity").toUpperCase());
             coverageUniformityTooltip.setText(findQCTooltipString(qcList, "coverage_uniformity"));
 
         } catch(WebAPIException e) {
