@@ -54,6 +54,15 @@ public class Run implements Serializable {
 
     private String memberGroupName;
 
+    private RunStatus runStatus;
+
+    /**
+     * @return runStatus
+     */
+    public RunStatus getRunStatus() {
+        return runStatus;
+    }
+
     /**
      * @return memberGroupName
      */

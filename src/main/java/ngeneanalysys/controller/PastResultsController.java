@@ -430,7 +430,6 @@ public class PastResultsController extends SubPaneController {
 						value.add(searchOption.get(label.getText()) + " " + item.getId());
 					}
 				}
-
 			}
 			param.put("search", value);
 		}
@@ -600,7 +599,7 @@ public class PastResultsController extends SubPaneController {
 								hBox.getChildren().addAll(label, xLabel);
                                 child.getChildren().add(hBox);
 								hBox.setSpacing(5);
-                                FlowPane.setMargin(label, new Insets(0, 0, 0, 10));
+                                //FlowPane.setMargin(hBox, new Insets(0, 0, 0, 10));
                             }
 						} else {
 							addSearchItem(textField);
@@ -677,7 +676,6 @@ public class PastResultsController extends SubPaneController {
 								hBox.getChildren().add(xLabel);
 								child.getChildren().add(hBox);
 								hBox.setSpacing(5);
-								FlowPane.setMargin(label, new Insets(0, 0, 0, 10));
 							}
 						} else {
 							addSearchItem(minCreateAt, maxCreateAt, id);

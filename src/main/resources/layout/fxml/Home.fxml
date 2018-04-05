@@ -41,9 +41,9 @@
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/renewal/system_usage.png" />
+                              <Image url="@../images/renewal/system_usage_icon.png" />
                            </image>
                            <HBox.margin>
                               <Insets right="6.0" />

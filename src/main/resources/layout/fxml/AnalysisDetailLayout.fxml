@@ -58,7 +58,7 @@
                      <children>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/renewal/patient_sample.png" />
+                              <Image url="@../images/renewal/sample_icon.png" />
                            </image>
                            <HBox.margin>
                               <Insets bottom="2.0" right="5.0" />

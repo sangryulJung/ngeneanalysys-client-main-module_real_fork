@@ -488,6 +488,7 @@ public class HomeController extends SubPaneController{
     public void databaseView() {
         logger.info("popover");
 
+
         PopOver popOver = new PopOver();
         popOver.setArrowLocation(PopOver.ArrowLocation.RIGHT_TOP);
         popOver.setHeaderAlwaysVisible(true);
@@ -499,7 +500,7 @@ public class HomeController extends SubPaneController{
         popOver.setPrefWidth(460);
         popOver.setMinSize(460, 150);
         //popOver.setMinWidth(500);
-        popOver.setTitle("개발중");
+        popOver.setTitle("List of evidence in 28 criteria");
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
