@@ -41,9 +41,9 @@
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/renewal/system_usage_icon.png" />
+                              <Image url="@../images/renewal/tools_databases.png" />
                            </image>
                            <HBox.margin>
                               <Insets right="6.0" />
@@ -85,12 +85,12 @@
       </ScrollPane>
       <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
          <children>
-            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                <HBox.margin>
                   <Insets right="6.0" />
                </HBox.margin>
                <image>
-                  <Image url="@../images/renewal/latest_analysis.png" />
+                  <Image url="@../images/renewal/system_usage_icon.png" />
                </image>
             </ImageView>
             <Label text="LATEST ANALYSIS">
@@ -199,7 +199,7 @@
                <children>
                   <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/renewal/tools_databases.png" />
+                        <Image url="@../images/renewal/tools_icon.png" />
                      </image>
                      <HBox.margin>
                         <Insets right="6.0" />
