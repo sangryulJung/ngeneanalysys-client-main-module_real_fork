@@ -184,33 +184,26 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                 if(pathogenicity.equals(button.getText())) {
                     if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals("P")) {
                         button.getStyleClass().add("prediction_A_Selected");
-                        //button.setDisable(true);
                         button.setCursor(Cursor.DEFAULT);
                     } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals("LP")) {
                         button.getStyleClass().add("prediction_B_Selected");
-                        //button.setDisable(true);
                         button.setCursor(Cursor.DEFAULT);
                     } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals("US")) {
                         button.getStyleClass().add("prediction_C_Selected");
-                        //button.setDisable(true);
                         button.setCursor(Cursor.DEFAULT);
                     } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals("LB")) {
                         button.getStyleClass().add("prediction_D_Selected");
-                        //button.setDisable(true);
                         button.setCursor(Cursor.DEFAULT);
                     } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals("B")) {
                         button.getStyleClass().add("prediction_E_Selected");
-                        //button.setDisable(true);
                         button.setCursor(Cursor.DEFAULT);
                     }
                 } else {
                     button.getStyleClass().add("no_selected_user_tier");
-                    //button.setDisable(false);
                     button.setCursor(Cursor.HAND);
                 }
             } else {
                 button.getStyleClass().add("no_selected_user_tier");
-                //button.setDisable(false);
                 button.setCursor(Cursor.HAND);
             }
         }
@@ -668,9 +661,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                 || (selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity() != null &&!selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals(value))) {
             try {
                 FXMLLoader loader = mainController.getMainApp().load(FXMLConstants.CHANGE_PATHOGENICITY);
-                logger.info("load " + loader.toString());
                 Node root = loader.load();
-                logger.info("load");
                 ChangePathogenicityController changePathogenicityController = loader.getController();
                 changePathogenicityController.setMainController(this.getMainController());
                 changePathogenicityController.setClinicalSignificantController(this);

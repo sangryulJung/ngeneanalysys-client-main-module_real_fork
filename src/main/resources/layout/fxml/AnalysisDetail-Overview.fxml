@@ -91,7 +91,7 @@
                         <Label fx:id="totalBaseLabel" text="pass" GridPane.rowIndex="1" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;" GridPane.columnIndex="1">
                            <children>
-                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="150.0" text="q30 trimmed base" textFill="WHITE">
+                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="150.0" text="Q30 trimmed base" textFill="WHITE">
                                  <tooltip>
                                     <Tooltip fx:id="q30Tooltip" text="Empty Tooltip" />
                                  </tooltip></Label>

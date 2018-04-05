@@ -19,6 +19,8 @@ import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedRunSampleView;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
+import ngeneanalysys.model.render.DatepickerConverter;
+import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.StringUtils;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.CustomTextField;
@@ -102,6 +104,7 @@ public class PastResultsController extends SubPaneController {
 		searchOption.put("SAMPLE","sampleName");
 		searchOption.put("RUN","runName");
 		searchOption.put("PANEL","panelName");
+		searchOption.put("DATE","createdAt");
 	}
 
 	/**
@@ -139,9 +142,8 @@ public class PastResultsController extends SubPaneController {
 
 		searchComboBox.valueProperty().addListener((ov, oldV, newV) -> {
 			if(newV == null) return;
+			filterSearchArea.getChildren().removeAll(filterSearchArea.getChildren());
 			if(newV.getValue().equalsIgnoreCase("String")) {
-				filterSearchArea.getChildren().removeAll(filterSearchArea.getChildren());
-				//TextField textField = new TextField();
 				CustomTextField textField = new CustomTextField();
 				ImageView imageView = new ImageView(resourceUtil.getImage("/layout/images/renewal/search_icon.png"));
 				imageView.setStyle("-fx-cursor:hand;");
@@ -155,7 +157,6 @@ public class PastResultsController extends SubPaneController {
 				});
 				textField.setRight(imageView);
 				textField.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
-
 						if (searchComboBox.getSelectionModel().getSelectedItem().getText().equalsIgnoreCase("RUN") ||
 								searchComboBox.getSelectionModel().getSelectedItem().getText().equalsIgnoreCase("SAMPLE")) {
 							try {
@@ -188,6 +189,39 @@ public class PastResultsController extends SubPaneController {
 					});
 				textField.setPrefWidth(Double.MAX_VALUE);
 				filterSearchArea.getChildren().add(textField);
+			} else if(newV.getValue().equalsIgnoreCase("DATE")) {
+				DatePicker startDate = new DatePicker();
+				startDate.setPrefWidth(240);
+				DatePicker endDate = new DatePicker();
+				endDate.setPrefWidth(240);
+
+				String dateFormat = "yyyy-MM-dd";
+				startDate.setConverter(DatepickerConverter.getConverter(dateFormat));
+				startDate.setPromptText(dateFormat);
+				startDate.valueProperty().addListener(element -> {
+					if(startDate.getValue() != null && endDate.getValue() != null) {
+						int minDate = Integer.parseInt(startDate.getValue().toString().replace("-", ""));
+						int maxDate = Integer.parseInt(endDate.getValue().toString().replace("-", ""));
+						if(minDate > maxDate) {
+							DialogUtil.warning("선택한 날짜가 검색의 마지막 날짜 이후의 날짜입니다.", "Date is later than the last day of the selected date search.", getMainApp().getPrimaryStage(), true);
+							startDate.setValue(null);
+						}
+					}
+				});
+				endDate.setConverter(DatepickerConverter.getConverter(dateFormat));
+				endDate.setPromptText(dateFormat);
+				endDate.valueProperty().addListener(element -> {
+					if(endDate.getValue() != null && startDate.getValue() != null) {
+						int minDate = Integer.parseInt(startDate.getValue().toString().replace("-", ""));
+						int maxDate = Integer.parseInt(endDate.getValue().toString().replace("-", ""));
+						if(minDate > maxDate) {
+							DialogUtil.warning("선택한 날짜가 검색의 시작 날짜 이전의 날짜입니다.", "The selected date is the date before the search of the start date.", getMainApp().getPrimaryStage(), true);
+							endDate.setValue(null);
+						}
+					}
+				});
+
+				filterSearchArea.getChildren().addAll(startDate, endDate);
 			}
 		});
 
@@ -243,6 +277,7 @@ public class PastResultsController extends SubPaneController {
 		searchComboBox.getItems().add(new ComboBoxItem("String", "RUN"));
 		searchComboBox.getItems().add(new ComboBoxItem("String", "SAMPLE"));
 		searchComboBox.getItems().add(new ComboBoxItem("String", "PANEL"));
+		searchComboBox.getItems().add(new ComboBoxItem("Date", "DATE"));
 	}
 	
 	/**
@@ -365,13 +400,13 @@ public class PastResultsController extends SubPaneController {
 
 	private Map<String, Object> getSearchParam() {
 		Map<String, Object> param = new HashMap<>();
-		param.put("format", "json");		
-		param.put("step", AnalysisJobStatusCode.JOB_RUN_GROUP_PIPELINE);
-		param.put("status", AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_COMPLETE);
+		param.put("format", "json");
+		/*param.put("step", AnalysisJobStatusCode.JOB_RUN_GROUP_PIPELINE);
+		param.put("status", AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_COMPLETE);*/
 
 		if(oneItem) {
 			final CustomTextField textField = (CustomTextField)filterSearchArea.getChildren().get(0);
-			param.put(searchOption.get(searchComboBox.getSelectionModel().getSelectedItem().getText()), textField.getText());
+			param.put("search", searchOption.get(searchComboBox.getSelectionModel().getSelectedItem().getText()) + " " + textField.getText());
 		}
 
 		/** End 검색 항목 설정 */
@@ -380,21 +415,24 @@ public class PastResultsController extends SubPaneController {
 
 	private Map<String, List<Object>> getSubSearchParam() {
 		Map<String, List<Object>> param = new HashMap<>();
-
+		List<Object> sort = new ArrayList<>();
+		sort.add("runId DESC");
+		sort.add("sampleId ASC");
+		param.put("sort", sort);
 		if(!oneItem && !searchListFlowPane.getChildren().isEmpty()){
+			List<Object> value = new ArrayList<>();
 			for(Node node : searchListFlowPane.getChildren()) {
 				VBox vbox = (VBox) node;
 				Label label = (Label) vbox.getChildren().get(0);
 				FlowPane flowPane = (FlowPane) vbox.getChildren().get(1);
-				List<Object> value = new ArrayList<>();
-				for(Node item : flowPane.getChildren()) {
-					value.add(item.getId());
+				if (searchOption.containsKey(label.getText())) {
+					for (Node item : flowPane.getChildren()) {
+						value.add(searchOption.get(label.getText()) + " " + item.getId());
+					}
 				}
-				if(searchOption.containsKey(label.getText())) {
-					param.put(searchOption.get(label.getText()), value);
-				}
+
 			}
-		} else {
+			param.put("search", value);
 		}
 
 		/** End 검색 항목 설정 */
@@ -479,6 +517,46 @@ public class PastResultsController extends SubPaneController {
 		searchListFlowPane.getChildren().add(box);
 	}
 
+	public void addSearchItem(final String startDate, final String endDate, String id) {
+		VBox box = new VBox();
+		box.setAlignment(Pos.CENTER_LEFT);
+		box.setPrefWidth(240);
+		box.setId(searchComboBox.getSelectionModel().getSelectedItem().getText());
+		Label title = new Label(searchComboBox.getSelectionModel().getSelectedItem().getText());
+		title.getStyleClass().add("font_size_13");
+		box.setSpacing(10);
+		box.getChildren().add(title);
+		FlowPane flowPane = new FlowPane();
+		HBox hBox = new HBox();
+		hBox.setId(id);
+		Label startLabel = new Label(startDate);
+		Label label = new Label(" ~ ");
+		Label endLabel = new Label(endDate);
+		Label xLabel = new Label("X");
+		xLabel.setCursor(Cursor.HAND);
+		xLabel.setOnMouseClicked(ev -> {
+			if(flowPane.getChildren().size() == 1) {
+				searchListFlowPane.getChildren().remove(box);
+			} else {
+				flowPane.getChildren().remove(hBox);
+			}
+			setList(1);
+		});
+		xLabel.getStyleClass().add("remove_btn");
+		if(startDate != null && endDate != null) {
+			hBox.getChildren().addAll(startLabel, label, endLabel);
+		} else if(startDate != null) {
+			hBox.getChildren().add(startLabel);
+		} else if(endDate != null) {
+			hBox.getChildren().add(endLabel);
+		}
+		hBox.getChildren().add(xLabel);
+		hBox.setSpacing(5);
+		flowPane.getChildren().add(hBox);
+		box.getChildren().add(flowPane);
+		searchListFlowPane.getChildren().add(box);
+	}
+
 	public void addSearchArea() {
 		if(searchComboBox.getSelectionModel().getSelectedItem() != null && !oneItem) {
 			if(filterSearchArea.getChildren().get(0) instanceof CustomTextField) {
@@ -494,7 +572,6 @@ public class PastResultsController extends SubPaneController {
 								break;
 							}
 						}
-
 						if(containNode != null) {
 							VBox box = (VBox) containNode;
 							FlowPane child = (FlowPane) box.getChildren().get(1);
@@ -531,6 +608,84 @@ public class PastResultsController extends SubPaneController {
 					}
                     textField.setText("");
 				}
+			} else {
+				final DatePicker startDate = (DatePicker)filterSearchArea.getChildren().get(0);
+				final DatePicker endDate = (DatePicker)filterSearchArea.getChildren().get(1);
+				String minCreateAt = (startDate.getValue() != null) ? startDate.getValue().toString() : null;
+				String maxCreateAt = (endDate.getValue() != null) ? endDate.getValue().toString() : null;
+				String id = "";
+				if(!StringUtils.isEmpty(minCreateAt)) {
+					// 로컬 타임 표준시로 변환
+					String minCreateAtUTCDate = ConvertUtil.convertLocalTimeToUTC(minCreateAt + " 00:00:00", "yyyy-MM-dd HH:mm:ss", null);
+					id = "lt:"+minCreateAtUTCDate;
+				}
+				// Submitted [end]
+				if(!StringUtils.isEmpty(maxCreateAt)) {
+					// 로컬 타임 표준시로 변환
+					String maxCreateAtUTCDate = ConvertUtil.convertLocalTimeToUTC(maxCreateAt + " 23:59:59", "yyyy-MM-dd HH:mm:ss", null);
+					if(StringUtils.isEmpty(id)) {
+						id = "gt:"+maxCreateAtUTCDate;
+					} else {
+						id = ",gt:"+maxCreateAtUTCDate+",and";
+					}
+				}
+				if(!StringUtils.isEmpty(minCreateAt) || !StringUtils.isEmpty(maxCreateAt)) {
+					if(searchListFlowPane.getChildren().isEmpty()) {
+						addSearchItem(minCreateAt, maxCreateAt, id);
+					} else {
+						Node containNode = null;
+						for(Node node : searchListFlowPane.getChildren()) {
+							if(node.getId().equalsIgnoreCase(searchComboBox.getSelectionModel().getSelectedItem().getText())) {
+								containNode = node;
+								break;
+							}
+						}
+
+						if(containNode != null) {
+							VBox box = (VBox) containNode;
+							FlowPane child = (FlowPane) box.getChildren().get(1);
+							boolean isContain = false;
+							for(Node node : child.getChildren()) {
+								if(node.getId().equalsIgnoreCase(id)) {
+									isContain = true;
+									break;
+								}
+							}
+							if(!isContain) {
+								HBox hBox = new HBox();
+								hBox.setId(id);
+								Label startLabel = new Label(minCreateAt);
+								Label label = new Label(" ~ ");
+								Label endLabel = new Label(maxCreateAt);
+								Label xLabel = new Label("X");
+								xLabel.getStyleClass().add("remove_btn");
+								xLabel.setCursor(Cursor.HAND);
+								xLabel.setOnMouseClicked(ev -> {
+									if(child.getChildren().size() == 1) {
+										searchListFlowPane.getChildren().remove(box);
+									} else {
+										child.getChildren().remove(hBox);
+									}
+								});
+								if(startDate != null && endDate != null) {
+									hBox.getChildren().addAll(startLabel, label, endLabel);
+								} else if(startDate != null) {
+									hBox.getChildren().add(startLabel);
+								} else if(endDate != null) {
+									hBox.getChildren().add(endLabel);
+								}
+								hBox.getChildren().add(xLabel);
+								child.getChildren().add(hBox);
+								hBox.setSpacing(5);
+								FlowPane.setMargin(label, new Insets(0, 0, 0, 10));
+							}
+						} else {
+							addSearchItem(minCreateAt, maxCreateAt, id);
+						}
+					}
+				}
+				startDate.setValue(null);
+				endDate.setValue(null);
 			}
 		}
 	}

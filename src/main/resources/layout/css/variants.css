@@ -179,3 +179,7 @@
 	-fx-text-alignment:center ;
 	-fx-alignment:center;
 }
+
+#variantListTableView .column-header > .label  {
+    -fx-content-display: graphic-only;
+}

@@ -712,9 +712,8 @@
 
 .fileDownloadButton {
     -fx-background-color: transparent;
-    -fx-background-image: url('../images/renewal/download-button.png');
-    -fx-background-position :right;
-    /*-fx-background-size: 25 25;*/
+    -fx-background-image: url('../images/renewal/download_icon.png');
+    /*-fx-background-position :center;*/
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
     -fx-background-size : 24 24;

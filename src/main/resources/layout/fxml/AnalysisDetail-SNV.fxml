@@ -25,9 +25,8 @@
       <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <VBox fx:id="tableVBox" alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="0.0" GridPane.columnIndex="1">
+      <VBox fx:id="tableVBox" alignment="BOTTOM_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="0.0" GridPane.columnIndex="1">
          <children>
-            <Pagination fx:id="variantPagination" maxHeight="40.0" maxWidth="-Infinity" minHeight="40.0" minWidth="-Infinity" prefHeight="40.0" />
             <TableView fx:id="variantListTableView" maxHeight="325.0" maxWidth="-Infinity" minHeight="325.0" minWidth="-Infinity" prefHeight="325.0" tableMenuButtonVisible="true">
                <padding>
                   <Insets bottom="10.0" />
@@ -36,6 +35,7 @@
                   <Insets left="20.0" right="20.0" />
                </VBox.margin>
             </TableView>
+            <Pagination fx:id="variantPagination" maxHeight="40.0" maxWidth="-Infinity" minHeight="40.0" minWidth="-Infinity" prefHeight="40.0" />
          </children>
       </VBox>
       <HBox prefHeight="100.0" prefWidth="200.0">

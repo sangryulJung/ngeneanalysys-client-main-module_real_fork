@@ -173,12 +173,11 @@ public class MainController extends BaseStageController {
         if (System.getProperty("os.name").toLowerCase().contains("window")) {
             primaryStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
         }
-        primaryStage.setResizable(true);
+
         primaryStage.setMinHeight(setWindowHeight + 35);
         primaryStage.setHeight(setWindowHeight + 35);
         primaryStage.setMinWidth(1280);
         primaryStage.setWidth(1280);
-        primaryStage.setResizable(false);
         primaryStage.centerOnScreen();
         primaryStage.show();
         logger.info(String.format("start %s", primaryStage.getTitle()));
@@ -325,6 +324,7 @@ public class MainController extends BaseStageController {
             });
 
         settingPanelAndDiseases();
+        //primaryStage.setResizable(false);
     }
 
     public void clearComboBox() {
@@ -358,7 +358,6 @@ public class MainController extends BaseStageController {
                     false);
         }
     }
-
 
     /**
      * 상단 사용자 메뉴 설정 : 사용자 권한에 따른 메뉴 출력

@@ -85,12 +85,12 @@
                   <Insets />
                </VBox.margin>
             </ComboBox>
-            <VBox fx:id="filterSearchArea" prefHeight="26.0" prefWidth="100.0">
+            <VBox fx:id="filterSearchArea" maxHeight="-Infinity" minHeight="-Infinity" prefWidth="100.0" spacing="5.0">
                <VBox.margin>
                   <Insets bottom="10.0" top="10.0" />
                </VBox.margin>
             </VBox>
-            <HBox alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="200.0">
+            <HBox alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="200.0">
                <children>
                   <Button mnemonicParsing="false" onAction="#resetSearchForm" prefWidth="60.0" style="-fx-alignment: center;" styleClass="cancelBtn" text="RESET">
                      <HBox.margin>
@@ -99,7 +99,7 @@
                   <Button fx:id="searchBtn" mnemonicParsing="false" onAction="#search" prefWidth="80.0" style="-fx-alignment: center;" styleClass="submitBtn" text="SEARCH" />
                </children>
             </HBox>
-            <ScrollPane hbarPolicy="NEVER" prefHeight="340.0" prefWidth="250.0">
+            <ScrollPane hbarPolicy="NEVER" prefHeight="300.0" prefWidth="250.0">
                <content>
                   <FlowPane fx:id="searchListFlowPane" maxHeight="-Infinity" minHeight="-Infinity" prefWidth="240.0" />
                </content>
