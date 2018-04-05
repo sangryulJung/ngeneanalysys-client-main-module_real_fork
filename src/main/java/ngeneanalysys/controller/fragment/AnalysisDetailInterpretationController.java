@@ -227,7 +227,8 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
             }
 
         } else {
-            DialogUtil.warning("The comment field is empty", " ", mainController.getPrimaryStage(), true);
+                DialogUtil.warning("The comment field is empty", " ", mainController.getPrimaryStage(), true);
+            commentTextField.requestFocus();
         }
     }
 

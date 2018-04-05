@@ -37,7 +37,7 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField fx:id="commentTextField" prefWidth="380.0">
+                  <TextField fx:id="commentTextField" prefWidth="380.0" style="-fx-prompt-text-fill: FF3333;">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
@@ -46,7 +46,7 @@
             </HBox>
             <HBox alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="200.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#ok" prefWidth="80.0" styleClass="btn_setting_save" text="OK">
+                  <Button mnemonicParsing="false" onAction="#ok" prefWidth="80.0" styleClass="btn_setting_save" text="Save">
                      <HBox.margin>
                         <Insets right="20.0" />
                      </HBox.margin>

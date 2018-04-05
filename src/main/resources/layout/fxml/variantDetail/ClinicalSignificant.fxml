@@ -266,7 +266,7 @@
          <children>
             <VBox fx:id="pathogenicityVBox" alignment="TOP_CENTER" prefHeight="155.0" prefWidth="170.0">
                <children>
-                  <Label alignment="CENTER" maxHeight="16.0" maxWidth="1.7976931348623157E308" minHeight="16.0" prefHeight="16.0" styleClass="flagging_label" text="Prediction">
+                  <Label alignment="CENTER" maxHeight="17.0" maxWidth="1.7976931348623157E308" minHeight="17.0" prefHeight="17.0" style="-fx-font-size: 12;" text="Prediction">
                      <font>
                         <Font size="11.0" />
                      </font>
@@ -309,7 +309,7 @@
                         <Insets top="7.0" />
                      </VBox.margin>
                   </HBox>
-                  <Label alignment="TOP_CENTER" maxHeight="16.0" maxWidth="1.7976931348623157E308" minHeight="16.0" prefHeight="16.0" prefWidth="140.0" styleClass="flagging_label" text="Pathogenicity">
+                  <Label alignment="TOP_CENTER" maxHeight="17.0" maxWidth="1.7976931348623157E308" minHeight="17.0" prefHeight="17.0" prefWidth="140.0" style="-fx-font-size: 12;" text="Pathogenicity">
                      <font>
                         <Font size="11.0" />
                      </font>

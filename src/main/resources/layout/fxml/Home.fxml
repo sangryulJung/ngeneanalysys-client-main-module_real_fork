@@ -230,7 +230,7 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
                      <children>
-                        <Label style="-fx-font-size: 10;" styleClass="tools_icon" text="〉">
+                        <Label fx:id="annotationDatabaseButton" onMouseClicked="#databaseView" style="-fx-font-size: 10;" styleClass="tools_icon" text="〉">
                            <HBox.margin>
                               <Insets right="3.0" />
                            </HBox.margin>

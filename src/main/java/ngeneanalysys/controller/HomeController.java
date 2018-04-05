@@ -11,6 +11,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
@@ -25,8 +26,10 @@ import ngeneanalysys.model.paged.PagedRunSampleView;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.LoggerUtil;
+import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.controlsfx.control.PopOver;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -65,6 +68,9 @@ public class HomeController extends SubPaneController{
 
     @FXML
     private ToggleGroup newsTipGroup;
+
+    @FXML
+    private Label annotationDatabaseButton;
 
     private List<NoticeView> noticeList = null;
 
@@ -476,6 +482,39 @@ public class HomeController extends SubPaneController{
                 logger.info(String.format("[%s] auto refresh resume", this.getClass().getName()));
             }
         }
+    }
+
+    @FXML
+    public void databaseView() {
+        logger.info("popover");
+
+        PopOver popOver = new PopOver();
+        popOver.setArrowLocation(PopOver.ArrowLocation.RIGHT_TOP);
+        popOver.setHeaderAlwaysVisible(true);
+        popOver.setAutoHide(true);
+        popOver.setAutoFix(true);
+        popOver.setDetachable(true);
+        popOver.setArrowSize(15);
+        popOver.setMaxSize(460, 150);
+        popOver.setPrefWidth(460);
+        popOver.setMinSize(460, 150);
+        //popOver.setMinWidth(500);
+        popOver.setTitle("개발중");
+
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setMaxSize(460, 200);
+
+        VBox box = new VBox();
+        //box.setMaxSize(400, 200);
+        box.setMaxWidth(445);
+        box.getStyleClass().add("acmg_content_box");
+
+        scrollPane.setContent(box);
+
+        popOver.setContentNode(scrollPane);
+        popOver.show(annotationDatabaseButton, 10);
     }
 
 }

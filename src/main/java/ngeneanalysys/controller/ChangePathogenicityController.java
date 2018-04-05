@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
+import ngeneanalysys.controller.fragment.AnalysisDetailClinicalSignificantController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.VariantAndInterpretationEvidence;
 import ngeneanalysys.service.APIService;
@@ -33,8 +34,6 @@ public class ChangePathogenicityController extends SubPaneController {
 
     private APIService apiService = null;
 
-    private TableView<VariantAndInterpretationEvidence> table;
-
     private String pathogenicity;
 
     private VariantAndInterpretationEvidence selectedItem = null;
@@ -47,10 +46,13 @@ public class ChangePathogenicityController extends SubPaneController {
 
     private Stage dialogStage;
 
-    public void settingItem(TableView<VariantAndInterpretationEvidence> table, String pathogenicity, VariantAndInterpretationEvidence selectedItem) {
-        this.table =table;
-        this.pathogenicity = pathogenicity;
-        this.selectedItem = selectedItem;
+    private AnalysisDetailClinicalSignificantController clinicalSignificantController;
+
+    /**
+     * @param clinicalSignificantController
+     */
+    public void setClinicalSignificantController(AnalysisDetailClinicalSignificantController clinicalSignificantController) {
+        this.clinicalSignificantController = clinicalSignificantController;
     }
 
     public void settingTier(String pathogenicity, VariantAndInterpretationEvidence selectedItem) {
@@ -60,7 +62,7 @@ public class ChangePathogenicityController extends SubPaneController {
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("show..");
+        logger.info("show pathogenicity change");
         // Create the dialog Stage
 
         apiService = APIService.getInstance();
@@ -77,7 +79,9 @@ public class ChangePathogenicityController extends SubPaneController {
         dialogStage.setResizable(false);
 
         pathogenicityLabel.setText(getCurrentPathogenicity() + " > " + pathogenicity);
-
+        commentTextField.setOnKeyPressed(ev -> {
+            commentTextField.setPromptText("");
+        });
         // Schen Init
         Scene scene = new Scene(root);
         dialogStage.setScene(scene);
@@ -100,8 +104,10 @@ public class ChangePathogenicityController extends SubPaneController {
                 wae.printStackTrace();
                 DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
             }
-
+            clinicalSignificantController.setPathogenicityArea(pathogenicity);
             dialogStage.close();
+        } else {
+            commentTextField.setPromptText("The comment field is empty");
         }
     }
 

@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
@@ -183,27 +184,34 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                 if(pathogenicity.equals(button.getText())) {
                     if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals("P")) {
                         button.getStyleClass().add("prediction_A_Selected");
-                        button.setDisable(true);
+                        //button.setDisable(true);
+                        button.setCursor(Cursor.DEFAULT);
                     } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals("LP")) {
                         button.getStyleClass().add("prediction_B_Selected");
-                        button.setDisable(true);
+                        //button.setDisable(true);
+                        button.setCursor(Cursor.DEFAULT);
                     } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals("US")) {
                         button.getStyleClass().add("prediction_C_Selected");
-                        button.setDisable(true);
+                        //button.setDisable(true);
+                        button.setCursor(Cursor.DEFAULT);
                     } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals("LB")) {
                         button.getStyleClass().add("prediction_D_Selected");
-                        button.setDisable(true);
+                        //button.setDisable(true);
+                        button.setCursor(Cursor.DEFAULT);
                     } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals("B")) {
                         button.getStyleClass().add("prediction_E_Selected");
-                        button.setDisable(true);
+                        //button.setDisable(true);
+                        button.setCursor(Cursor.DEFAULT);
                     }
                 } else {
                     button.getStyleClass().add("no_selected_user_tier");
-                    button.setDisable(false);
+                    //button.setDisable(false);
+                    button.setCursor(Cursor.HAND);
                 }
             } else {
                 button.getStyleClass().add("no_selected_user_tier");
-                button.setDisable(false);
+                //button.setDisable(false);
+                button.setCursor(Cursor.HAND);
             }
         }
     }
@@ -659,16 +667,20 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
         if((selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity() == null && !selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicity().equals(value))
                 || (selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity() != null &&!selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals(value))) {
             try {
-                FXMLLoader loader = mainApp.load(FXMLConstants.CHANGE_PATHOGENICITY);
+                FXMLLoader loader = mainController.getMainApp().load(FXMLConstants.CHANGE_PATHOGENICITY);
+                logger.info("load " + loader.toString());
                 Node root = loader.load();
+                logger.info("load");
                 ChangePathogenicityController changePathogenicityController = loader.getController();
                 changePathogenicityController.setMainController(this.getMainController());
+                changePathogenicityController.setClinicalSignificantController(this);
                 changePathogenicityController.settingTier(value, selectedAnalysisResultVariant);
                 changePathogenicityController.show((Parent) root);
             } catch (IOException ioe) {
                 ioe.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            setPathogenicityArea(value);
             controller.showVariantList(controller.getCurrentPageIndex() + 1,0);
         }
     }
