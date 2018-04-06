@@ -742,6 +742,7 @@ public class PastResultsController extends SubPaneController {
 					if(event.getClickCount() == 2) {
 						if(sample.getSampleStatus().getStep().equalsIgnoreCase(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STEP_PIPELINE) &&
 								sample.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_COMPLETE)) {
+							
 							Map<String, Object> detailViewParamMap = new HashMap<>();
 							detailViewParamMap.put("id", sample.getId());
 

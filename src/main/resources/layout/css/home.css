@@ -89,7 +89,6 @@
 
 #tools_icond {
     -fx-graphic: url("../images/renewal/tools_icon.png");
-    -fx-background-position : center;
     -fx-pref-width : 24;
     -fx-pref-height : 24;
 }
