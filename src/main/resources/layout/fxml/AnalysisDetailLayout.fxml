@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="analysisDetailWrapper" prefHeight="555.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailLayoutController">
+<GridPane fx:id="analysisDetailWrapper" prefHeight="555.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailLayoutController">
    <children>
       <TabPane fx:id="topTabPane" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="455.0" prefWidth="1280.0" scaleZ="2.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
          <GridPane.margin>
@@ -111,7 +111,7 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4">
                <children>
-                  <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="88.0" text="SEQUENCER : " />
+                  <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="90.0" text="SEQUENCER : " />
                   <Label fx:id="sequencerLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" text="sequencer name">
                      <tooltip>
                         <Tooltip fx:id="sequencerTooltip" text="Empty Tooltip" />
