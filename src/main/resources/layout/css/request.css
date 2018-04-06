@@ -72,9 +72,10 @@
 }
 
 .help_tooltip {
-	-fx-background-image:url('../images/icon_help.png');
+    -fx-graphic: url("../images/renewal/help_icon.png");
+	/*-fx-background-image:url('../images/icon_help.png');
 	-fx-background-color:transparent;
-	-fx-background-repeat:no-repeat;
+	-fx-background-repeat:no-repeat;*/
 	-fx-min-width:16;
 	-fx-pref-width:16;
 	-fx-max-width:16;

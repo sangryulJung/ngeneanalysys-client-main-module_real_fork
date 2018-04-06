@@ -1573,7 +1573,13 @@ Button {
 }
 
 .tools_icon {
-    -fx-background-color : #999999;
+    -fx-cursor:hand;
+    -fx-graphic: url("../images/renewal/check_icon.png");
+    -fx-pref-width : 16;
+    -fx-pref-height : 16;
+    -fx-min-width : 16;
+    -fx-min-height : 16;
+    /*-fx-background-color : #999999;
     -fx-background-radius : 30;
     -fx-padding : -1 -6 0 0;
     -fx-alignment : center;
@@ -1583,7 +1589,7 @@ Button {
     -fx-min-width : 17;
     -fx-min-height : 17;
     -fx-text-size : 8;
-    -fx-cursor:hand;
+    -fx-cursor:hand;*/
 }
 
 .total_icon {
