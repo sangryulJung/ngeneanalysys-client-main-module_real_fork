@@ -80,7 +80,6 @@
     -fx-background-position: center 120;
 }
 
-
 .run_box {
     /*-fx-effect: dropshadow(gaussian, rgba(0.0, 0.0, 0.0, 0.7), 0.7, 0.7, 0.0, 0.0);*/
     -fx-background-color: white;
@@ -88,10 +87,9 @@
     -fx-border-color : black;
 }
 
-
 #tools_icond {
     -fx-graphic: url("../images/renewal/tools_icon.png");
     -fx-background-position : center;
-    -fx-pref-width : 20;
-    -fx-pref-height : 20;
+    -fx-pref-width : 24;
+    -fx-pref-height : 24;
 }
