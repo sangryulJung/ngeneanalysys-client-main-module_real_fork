@@ -197,14 +197,11 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
                <children>
-                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/renewal/tools_icon.png" />
-                     </image>
+                  <Label id="tools_icond">
                      <HBox.margin>
-                        <Insets right="6.0" />
+                        <Insets right="5.0" />
                      </HBox.margin>
-                  </ImageView>
+                  </Label>
                   <Label text="TOOLS &amp; DATABASES">
                      <styleClass>
                         <String fx:value="font_size_18" />

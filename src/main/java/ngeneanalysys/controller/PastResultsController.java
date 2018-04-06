@@ -799,36 +799,38 @@ public class PastResultsController extends SubPaneController {
 
 		private void setVariantHBox(HBox variantHBox, SampleView sample) {
 			AnalysisResultSummary summary = sample.getAnalysisResultSummary();
+			final String countLabelStyleClass = "count_label";
+			final String countLabelStyle = "-fx-text-fill : gray; -fx-font-family : Noto Sans CJK KR Regular;";
 			if(sample.getAnalysisType().equalsIgnoreCase("GERMLINE")) {
 				Label lv1Icon = new Label("P");
 				lv1Icon.getStyleClass().add("lv_i_icon");
 				Label lv1Value = new Label(summary.getLevel1VariantCount().toString());
-				lv1Value.getStyleClass().add("count_label");
-				lv1Value.setStyle("-fx-text-fill : gray; -fx-font-family : Noto Sans CJK KR Regular;");
+				lv1Value.getStyleClass().add(countLabelStyleClass);
+				lv1Value.setStyle(countLabelStyle);
 
 				Label lv2Icon = new Label("LP");
 				lv2Icon.getStyleClass().add("lv_ii_icon");
 				Label lv2Value = new Label(summary.getLevel2VariantCount().toString());
-				lv2Value.getStyleClass().add("count_label");
-				lv2Value.setStyle("-fx-text-fill : gray; -fx-font-family : Noto Sans CJK KR Regular;");
+				lv2Value.getStyleClass().add(countLabelStyleClass);
+				lv2Value.setStyle(countLabelStyle);
 
 				Label lv3Icon = new Label("US");
 				lv3Icon.getStyleClass().add("lv_i_icon");
 				Label lv3Value = new Label(summary.getLevel3VariantCount().toString());
-				lv3Value.getStyleClass().add("count_label");
-				lv3Value.setStyle("-fx-text-fill : gray; -fx-font-family : Noto Sans CJK KR Regular;");
+				lv3Value.getStyleClass().add(countLabelStyleClass);
+				lv3Value.setStyle(countLabelStyle);
 
 				Label lv4Icon = new Label("LB");
 				lv4Icon.getStyleClass().add("lv_iv_icon");
 				Label lv4Value = new Label(summary.getLevel4VariantCount().toString());
-				lv4Value.getStyleClass().add("count_label");
-				lv4Value.setStyle("-fx-text-fill : gray; -fx-font-family : Noto Sans CJK KR Regular;");
+				lv4Value.getStyleClass().add(countLabelStyleClass);
+				lv4Value.setStyle(countLabelStyle);
 
 				Label lv5Icon = new Label("B");
 				lv5Icon.getStyleClass().add("lv_v_icon");
 				Label lv5Value = new Label(summary.getLevel5VariantCount().toString());
-				lv5Value.getStyleClass().add("count_label");
-				lv5Value.setStyle("-fx-text-fill : gray; -fx-font-family : Noto Sans CJK KR Regular;");
+				lv5Value.getStyleClass().add(countLabelStyleClass);
+				lv5Value.setStyle(countLabelStyle);
 
 				variantHBox.getChildren()
 						.addAll(lv1Icon, lv1Value,
@@ -841,26 +843,26 @@ public class PastResultsController extends SubPaneController {
 				Label lv1Icon = new Label("T1");
 				lv1Icon.getStyleClass().add("lv_i_icon");
 				Label lv1Value = new Label(summary.getLevel1VariantCount().toString());
-				lv1Value.getStyleClass().add("count_label");
-				lv1Value.setStyle("-fx-text-fill : gray; -fx-font-family : Noto Sans CJK KR Regular;");
+				lv1Value.getStyleClass().add(countLabelStyleClass);
+				lv1Value.setStyle(countLabelStyle);
 
 				Label lv2Icon = new Label("T2");
 				lv2Icon.getStyleClass().add("lv_ii_icon");
 				Label lv2Value = new Label(summary.getLevel2VariantCount().toString());
-				lv2Value.getStyleClass().add("count_label");
-				lv2Value.setStyle("-fx-text-fill : gray; -fx-font-family : Noto Sans CJK KR Regular;");
+				lv2Value.getStyleClass().add(countLabelStyleClass);
+				lv2Value.setStyle(countLabelStyle);
 
 				Label lv3Icon = new Label("T3");
 				lv3Icon.getStyleClass().add("lv_i_icon");
 				Label lv3Value = new Label(summary.getLevel3VariantCount().toString());
-				lv3Value.getStyleClass().add("count_label");
-				lv3Value.setStyle("-fx-text-fill : gray; -fx-font-family : Noto Sans CJK KR Regular;");
+				lv3Value.getStyleClass().add(countLabelStyleClass);
+				lv3Value.setStyle(countLabelStyle);
 
 				Label lv4Icon = new Label("T4");
 				lv4Icon.getStyleClass().add("lv_iv_icon");
 				Label lv4Value = new Label(summary.getLevel4VariantCount().toString());
-				lv4Value.getStyleClass().add("count_label");
-				lv4Value.setStyle("-fx-text-fill : gray; -fx-font-family : Noto Sans CJK KR Regular;");
+				lv4Value.getStyleClass().add(countLabelStyleClass);
+				lv4Value.setStyle(countLabelStyle);
 
 				variantHBox.getChildren()
 						.addAll(lv1Icon, lv1Value,

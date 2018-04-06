@@ -4,6 +4,7 @@ import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -212,8 +213,10 @@ public class HomeController extends SubPaneController{
         if(autoRefreshTimeline != null)
             logger.info("cycle time : " + autoRefreshTimeline.getCycleDuration());
 
-        setNoticeArea();
-        hddCheck();
+        Platform.runLater(() -> {
+            hddCheck();
+            setNoticeArea();
+        });
         final int maxRunNumberOfPage = 3;
         CompletableFuture<PagedRun> getPagedRun = new CompletableFuture<>();
         CompletableFuture.supplyAsync(() -> {
