@@ -32,6 +32,7 @@ import ngeneanalysys.util.LoginSessionUtil;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.apache.commons.lang3.ArrayUtils;
+import org.controlsfx.control.MaskerPane;
 import org.slf4j.Logger;
 
 import java.awt.GraphicsDevice;
@@ -125,6 +126,12 @@ public class MainController extends BaseStageController {
 
     private Map<String, Object> basicInformationMap = new HashMap<>();
 
+    private MaskerPane contentsMaskerPane = new MaskerPane();
+
+    public void setContentsMaskerPaneVisible(boolean flag) {
+        contentsMaskerPane.setVisible(flag);
+    }
+
     /**
      * @return Map<String, Object>
      */
@@ -186,6 +193,11 @@ public class MainController extends BaseStageController {
         maskerPane.setPrefWidth(primaryStage.getWidth());
         maskerPane.setPrefHeight(primaryStage.getHeight());
         maskerPane.setVisible(false);
+
+        mainGridPane.add(contentsMaskerPane,1 ,2, 2, 1);
+        contentsMaskerPane.setPrefWidth(mainFrame.getPrefWidth());
+        contentsMaskerPane.setPrefHeight(mainFrame.getPrefHeight());
+        contentsMaskerPane.setVisible(false);
 
         primaryStage.setOnCloseRequest(event -> {
             boolean isClose = false;

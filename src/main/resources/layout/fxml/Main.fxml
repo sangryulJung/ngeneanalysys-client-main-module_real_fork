@@ -22,7 +22,7 @@
    <rowConstraints>
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" vgrow="ALWAYS" />
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" vgrow="ALWAYS" />
-      <RowConstraints minHeight="-Infinity" prefHeight="534.0" vgrow="ALWAYS" />
+      <RowConstraints minHeight="-Infinity" prefHeight="555.0" vgrow="ALWAYS" />
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" vgrow="NEVER" />
    </rowConstraints>
    <columnConstraints>

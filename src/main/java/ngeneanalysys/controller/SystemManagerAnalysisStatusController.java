@@ -122,7 +122,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
 
         id.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
         runName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
-        status.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
+        status.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRunStatus().getStatus()));
         loginIdColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLoginId()));
         memberNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getMemberName()));
         groupNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getMemberGroupName()));

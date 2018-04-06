@@ -22,6 +22,7 @@ import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedNotice;
+import ngeneanalysys.model.paged.PagedRun;
 import ngeneanalysys.model.paged.PagedRunSampleView;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.ConvertUtil;
@@ -89,8 +90,8 @@ public class HomeController extends SubPaneController{
         apiService.setStage(getMainController().getPrimaryStage());
 
         homeWrapper.add(maskerPane,0 ,0, 5, 6);
-        maskerPane.setPrefWidth(getMainController().getMainFrame().getWidth());
-        maskerPane.setPrefHeight(getMainController().getMainFrame().getHeight());
+        maskerPane.setPrefWidth(homeWrapper.getPrefWidth());
+        maskerPane.setPrefHeight(homeWrapper.getPrefHeight());
         maskerPane.setVisible(false);
 
         newsTipGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
@@ -145,7 +146,6 @@ public class HomeController extends SubPaneController{
                 runListHBox.getChildren().add(box);
                 runListHBox.setSpacing(37);
             }
-            hddCheck();
         } catch (Exception e) {
             logger.error("HOME -> initRunListLayout", e);
         }
@@ -208,13 +208,14 @@ public class HomeController extends SubPaneController{
     }
 
     private void showRunList() {
-        maskerPane.setVisible(true);
+        getMainController().setContentsMaskerPaneVisible(true);
         if(autoRefreshTimeline != null)
             logger.info("cycle time : " + autoRefreshTimeline.getCycleDuration());
+
         setNoticeArea();
         hddCheck();
         final int maxRunNumberOfPage = 3;
-        CompletableFuture<PagedRunSampleView> getPagedRun = new CompletableFuture<>();
+        CompletableFuture<PagedRun> getPagedRun = new CompletableFuture<>();
         CompletableFuture.supplyAsync(() -> {
             HttpClientResponse response;
             Map<String, Object> params = new HashMap<>();
@@ -224,10 +225,10 @@ public class HomeController extends SubPaneController{
                 params.put("offset", 0);
                 params.put("ordering", "DESC");
 
-                response = apiService.get("/searchSamples", params, null, false);
+                response = apiService.get("/runs", params, null, false);
 
-                PagedRunSampleView searchedSamples = response
-                        .getObjectBeforeConvertResponseToJSON(PagedRunSampleView.class);
+                PagedRun searchedSamples = response
+                        .getObjectBeforeConvertResponseToJSON(PagedRun.class);
                 //logger.info(pagedRun.toString());
                 getPagedRun.complete(searchedSamples);
             } catch (Exception e) {
@@ -236,10 +237,10 @@ public class HomeController extends SubPaneController{
             return getPagedRun;
         });
         try {
-            PagedRunSampleView pagedRun = getPagedRun.get();
+            PagedRun pagedRun = getPagedRun.get();
             int runCount = pagedRun.getResult().size();
             for(int i = 0; i < runCount; i++) {
-                RunSampleView run = pagedRun.getResult().get(i);
+                Run run = pagedRun.getResult().get(i);
                 runList.get(i).setRunStatus(run);
                 runList.get(i).setVisible(true);
 
@@ -251,7 +252,7 @@ public class HomeController extends SubPaneController{
         } catch (Exception e) {
             logger.error("HOME -> SHOW RUN LIST", e);
         }
-        maskerPane.setVisible(false);
+        getMainController().setContentsMaskerPaneVisible(false);
     }
 
     class RunStatusVBox extends VBox {
@@ -343,18 +344,18 @@ public class HomeController extends SubPaneController{
             return box;
         }
 
-        public void setRunStatus(RunSampleView run) {
-            runName.setText(run.getRun().getName());
+        public void setRunStatus(Run run) {
+            runName.setText(run.getName());
             /////////////run status 설정
             statusLabel.setText("");
             statusLabel.getStyleClass().removeAll(statusLabel.getStyleClass());
-            if(run.getRun().getStatus().toUpperCase().equals("QUEUED")) {
+            if(run.getRunStatus().getStatus().toUpperCase().equals("QUEUED")) {
                 statusLabel.getStyleClass().addAll("label", "queued_icon");
                 statusLabel.setText("Q");
-            } else if(run.getRun().getStatus().toUpperCase().equals("RUNNING")) {
+            } else if(run.getRunStatus().getStatus().toUpperCase().equals("RUNNING")) {
                 statusLabel.getStyleClass().addAll("label","run_icon");
                 statusLabel.setText("R");
-            } else if(run.getRun().getStatus().toUpperCase().equals("COMPLETE")) {
+            } else if(run.getRunStatus().getStatus().toUpperCase().equals("COMPLETE")) {
                 statusLabel.getStyleClass().addAll("label","complete_icon");
                 statusLabel.setText("C");
             } else {
@@ -363,23 +364,18 @@ public class HomeController extends SubPaneController{
             }
             ///////////////////////
             SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
-            if(run.getRun().getCreatedAt() != null)
-                startDateLabel.setText(format.format(run.getRun().getCreatedAt().toDate()));
-            if(run.getRun().getCompletedAt() != null)
-                FinishDateLabel.setText(format.format(run.getRun().getCompletedAt().toDate()));
-            List<SampleView> sampleViews = run.getSampleViews();
+            if(run.getCreatedAt() != null)
+                startDateLabel.setText(format.format(run.getCreatedAt().toDate()));
+            if(run.getCompletedAt() != null)
+                FinishDateLabel.setText(format.format(run.getCompletedAt().toDate()));
+            RunStatus runStatus = run.getRunStatus();
 
-            panelLabel.setText(sampleViews.get(0).getPanelName());
-            int totalCount = sampleViews.size();
-            totalLabel.setText(String.valueOf(totalCount));
-            long completeCount = sampleViews.stream().filter(item -> item.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_COMPLETE)).count();
-            completeLabel.setText(String.valueOf(completeCount));
-            long runningCount = sampleViews.stream().filter(item -> item.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_RUNNING)).count();
-            runningLabel.setText(String.valueOf(runningCount));
-            long queuedCount = sampleViews.stream().filter(item -> item.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_QUEUED)).count();
-            queuedLabel.setText(String.valueOf(queuedCount));
-            long failCount = sampleViews.stream().filter(item -> item.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_FAIL)).count();
-            failedLabel.setText(String.valueOf(failCount));
+            panelLabel.setText(run.getPanelName());
+            totalLabel.setText(String.valueOf(runStatus.getSampleCount()));
+            completeLabel.setText(String.valueOf(runStatus.getCompleteCount()));
+            runningLabel.setText(String.valueOf(runStatus.getRunningCount()));
+            queuedLabel.setText(String.valueOf(runStatus.getQueuedCount()));
+            failedLabel.setText(String.valueOf(runStatus.getFailedCount()));
 
             if(!itemVBox.getChildren().contains(panelHBox))
                 itemVBox.getChildren().add(panelHBox);
@@ -500,7 +496,7 @@ public class HomeController extends SubPaneController{
         popOver.setPrefWidth(460);
         popOver.setMinSize(460, 150);
         //popOver.setMinWidth(500);
-        popOver.setTitle("List of evidence in 28 criteria");
+        popOver.setTitle("test");
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);

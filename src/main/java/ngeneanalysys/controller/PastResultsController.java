@@ -2,6 +2,7 @@ package ngeneanalysys.controller;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -68,7 +69,7 @@ public class PastResultsController extends SubPaneController {
 	private ComboBox<ComboBoxItem> searchComboBox;
 
 	@FXML
-	private FlowPane searchListFlowPane;
+	private VBox searchListVBox;
 
 	@FXML
 	private VBox filterSearchArea;
@@ -344,7 +345,6 @@ public class PastResultsController extends SubPaneController {
 		Map<String, List<Object>> subParams = getSubSearchParam();
 		param.put("limit", itemCountPerPage);
 		param.put("offset", offset);
-		param.put("ordering", "DESC");
 		
 		try {
 			HttpClientResponse response = apiService.get("/searchSamples", param, null, subParams);
@@ -419,9 +419,9 @@ public class PastResultsController extends SubPaneController {
 		sort.add("runId DESC");
 		sort.add("sampleId ASC");
 		param.put("sort", sort);
-		if(!oneItem && !searchListFlowPane.getChildren().isEmpty()){
+		if(!oneItem && !searchListVBox.getChildren().isEmpty()){
 			List<Object> value = new ArrayList<>();
-			for(Node node : searchListFlowPane.getChildren()) {
+			for(Node node : searchListVBox.getChildren()) {
 				VBox vbox = (VBox) node;
 				Label label = (Label) vbox.getChildren().get(0);
 				FlowPane flowPane = (FlowPane) vbox.getChildren().get(1);
@@ -502,7 +502,7 @@ public class PastResultsController extends SubPaneController {
 		xLabel.setCursor(Cursor.HAND);
 		xLabel.setOnMouseClicked(ev -> {
 			if(flowPane.getChildren().size() == 1) {
-				searchListFlowPane.getChildren().remove(box);
+				searchListVBox.getChildren().remove(box);
 			} else {
 				flowPane.getChildren().remove(hBox);
 			}
@@ -513,7 +513,7 @@ public class PastResultsController extends SubPaneController {
 		hBox.setSpacing(5);
 		flowPane.getChildren().add(hBox);
 		box.getChildren().add(flowPane);
-		searchListFlowPane.getChildren().add(box);
+		searchListVBox.getChildren().add(box);
 	}
 
 	public void addSearchItem(final String startDate, final String endDate, String id) {
@@ -535,7 +535,7 @@ public class PastResultsController extends SubPaneController {
 		xLabel.setCursor(Cursor.HAND);
 		xLabel.setOnMouseClicked(ev -> {
 			if(flowPane.getChildren().size() == 1) {
-				searchListFlowPane.getChildren().remove(box);
+				searchListVBox.getChildren().remove(box);
 			} else {
 				flowPane.getChildren().remove(hBox);
 			}
@@ -553,7 +553,7 @@ public class PastResultsController extends SubPaneController {
 		hBox.setSpacing(5);
 		flowPane.getChildren().add(hBox);
 		box.getChildren().add(flowPane);
-		searchListFlowPane.getChildren().add(box);
+		searchListVBox.getChildren().add(box);
 	}
 
 	public void addSearchArea() {
@@ -561,11 +561,11 @@ public class PastResultsController extends SubPaneController {
 			if(filterSearchArea.getChildren().get(0) instanceof CustomTextField) {
 				final CustomTextField textField = (CustomTextField)filterSearchArea.getChildren().get(0);
 				if(!StringUtils.isEmpty(textField.getText())) {
-					if(searchListFlowPane.getChildren().isEmpty()) {
+					if(searchListVBox.getChildren().isEmpty()) {
 						addSearchItem(textField);
 					} else {
 						Node containNode = null;
-						for(Node node : searchListFlowPane.getChildren()) {
+						for(Node node : searchListVBox.getChildren()) {
 							if(node.getId().equalsIgnoreCase(searchComboBox.getSelectionModel().getSelectedItem().getText())) {
 								containNode = node;
 								break;
@@ -591,7 +591,7 @@ public class PastResultsController extends SubPaneController {
 								xLabel.setCursor(Cursor.HAND);
 								xLabel.setOnMouseClicked(ev -> {
 									if(child.getChildren().size() == 1) {
-										searchListFlowPane.getChildren().remove(box);
+										searchListVBox.getChildren().remove(box);
 									} else {
 										child.getChildren().remove(hBox);
 									}
@@ -599,7 +599,7 @@ public class PastResultsController extends SubPaneController {
 								hBox.getChildren().addAll(label, xLabel);
                                 child.getChildren().add(hBox);
 								hBox.setSpacing(5);
-                                //FlowPane.setMargin(hBox, new Insets(0, 0, 0, 10));
+                                FlowPane.setMargin(hBox, new Insets(0, 0, 0, 10));
                             }
 						} else {
 							addSearchItem(textField);
@@ -616,24 +616,26 @@ public class PastResultsController extends SubPaneController {
 				if(!StringUtils.isEmpty(minCreateAt)) {
 					// 로컬 타임 표준시로 변환
 					String minCreateAtUTCDate = ConvertUtil.convertLocalTimeToUTC(minCreateAt + " 00:00:00", "yyyy-MM-dd HH:mm:ss", null);
-					id = "lt:"+minCreateAtUTCDate;
+
+					id = "gt:"+startDate.getValue().atTime(0, 0, 0).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 				}
 				// Submitted [end]
 				if(!StringUtils.isEmpty(maxCreateAt)) {
 					// 로컬 타임 표준시로 변환
-					String maxCreateAtUTCDate = ConvertUtil.convertLocalTimeToUTC(maxCreateAt + " 23:59:59", "yyyy-MM-dd HH:mm:ss", null);
+					//String maxCreateAtUTCDate = ConvertUtil.convertLocalTimeToUTC(maxCreateAt + " 23:59:59", "yyyy-MM-dd HH:mm:ss", null);
+					long endMilli= endDate.getValue().atTime(23, 59, 59).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 					if(StringUtils.isEmpty(id)) {
-						id = "gt:"+maxCreateAtUTCDate;
+						id = "lt:"+endMilli;
 					} else {
-						id = ",gt:"+maxCreateAtUTCDate+",and";
+						id = id + ",lt:"+endMilli+",and";
 					}
 				}
 				if(!StringUtils.isEmpty(minCreateAt) || !StringUtils.isEmpty(maxCreateAt)) {
-					if(searchListFlowPane.getChildren().isEmpty()) {
+					if(searchListVBox.getChildren().isEmpty()) {
 						addSearchItem(minCreateAt, maxCreateAt, id);
 					} else {
 						Node containNode = null;
-						for(Node node : searchListFlowPane.getChildren()) {
+						for(Node node : searchListVBox.getChildren()) {
 							if(node.getId().equalsIgnoreCase(searchComboBox.getSelectionModel().getSelectedItem().getText())) {
 								containNode = node;
 								break;
@@ -661,7 +663,7 @@ public class PastResultsController extends SubPaneController {
 								xLabel.setCursor(Cursor.HAND);
 								xLabel.setOnMouseClicked(ev -> {
 									if(child.getChildren().size() == 1) {
-										searchListFlowPane.getChildren().remove(box);
+										searchListVBox.getChildren().remove(box);
 									} else {
 										child.getChildren().remove(hBox);
 									}
@@ -693,7 +695,7 @@ public class PastResultsController extends SubPaneController {
 	 */
 	@FXML
 	public void resetSearchForm() {
-		searchListFlowPane.getChildren().removeAll(searchListFlowPane.getChildren());
+		searchListVBox.getChildren().removeAll(searchListVBox.getChildren());
 		setList(1);
 	}
 

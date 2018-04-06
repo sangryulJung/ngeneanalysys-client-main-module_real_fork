@@ -150,6 +150,28 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         this.variantsController = variantsController;
     }
 
+    public void setAccordionContents() {
+        try {
+            // Memo 데이터 API 요청
+            //Map<String, Object> commentParamMap = new HashMap<>();
+            HttpClientResponse responseMemo = apiService.get("/analysisResults/snpInDelInterpretationLogs/" + selectedAnalysisResultVariant.getSnpInDel().getId() , null, null, false);
+
+            // Flagging Comment 데이터 요청이 정상 요청된 경우 진행.
+            SnpInDelInterpretationLogsList memoList = responseMemo.getObjectBeforeConvertResponseToJSON(SnpInDelInterpretationLogsList.class);
+
+            // comment tab 화면 출력
+            if (interpretationLogsTitledPane.getContent() == null)
+                showMemoTab(FXCollections.observableList(memoList.getResult()));
+        } catch (WebAPIException wae) {
+            wae.printStackTrace();
+            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+                    getMainApp().getPrimaryStage(), true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+        }
+    }
+
     @Override
     public void show(Parent root) throws IOException {
         logger.info("init snv controller");
@@ -158,6 +180,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         sample = (Sample)paramMap.get("sample");
         panel = (Panel)paramMap.get("panel");
+
+        interpretationLogsTitledPane.setOnMouseClicked(ev -> setAccordionContents());
 
         leftSizeButton.setOnMouseClicked(event -> {
             if (leftSizeButton.getStyleClass().get(0) == null){
@@ -183,21 +207,12 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         variantListTableView.setRowFactory(tv -> {
             TableRow<VariantAndInterpretationEvidence> row = new TableRow<>();
             row.setOnMouseClicked(e -> {
-
                 if (e.getClickCount() <= 2) {
                     logger.info(e.getClickCount() + " Click count");
-                    //Platform.runLater(() -> showVariantDetail(variantListTableView.getSelectionModel().getSelectedItem()));
                    if(e.getClickCount() == 2) {
                        expandRight();
                    }
                 }
-
-                /*if (e.getClickCount() == 1 && (!row.isEmpty())) {
-                    showVariantDetail(variantListTableView.getSelectionModel().getSelectedItem());
-                } else if (e.getClickCount() == 2 && (!row.isEmpty())) {
-                    showVariantDetail(variantListTableView.getSelectionModel().getSelectedItem());
-                    expandRight();
-                }*/
             });
             return row;
         });
@@ -205,7 +220,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         // 선택된 목록에서 엔터키 입력시 변이 상세정보 출력 이벤트 바인딩
         variantListTableView.setOnKeyPressed(keyEvent -> {
             if(keyEvent.getCode().equals(KeyCode.ENTER)) {
-                //showVariantDetail(variantListTableView.getSelectionModel().getSelectedItem());
                 expandRight();
             }
         });
@@ -549,26 +563,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                     getMainApp().getPrimaryStage(), true);
         }
         catch (Exception e) {
-            e.printStackTrace();
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
-        }
-
-        try {
-            // Memo 데이터 API 요청
-            //Map<String, Object> commentParamMap = new HashMap<>();
-            HttpClientResponse responseMemo = apiService.get("/analysisResults/snpInDelInterpretationLogs/" + selectedAnalysisResultVariant.getSnpInDel().getId() , null, null, false);
-
-            // Flagging Comment 데이터 요청이 정상 요청된 경우 진행.
-            SnpInDelInterpretationLogsList memoList = responseMemo.getObjectBeforeConvertResponseToJSON(SnpInDelInterpretationLogsList.class);
-
-            // comment tab 화면 출력
-            if (interpretationLogsTitledPane.getContent() == null)
-                    showMemoTab(FXCollections.observableList(memoList.getResult()));
-        } catch (WebAPIException wae) {
-            wae.printStackTrace();
-            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
-                    getMainApp().getPrimaryStage(), true);
-        } catch (Exception e) {
             e.printStackTrace();
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
