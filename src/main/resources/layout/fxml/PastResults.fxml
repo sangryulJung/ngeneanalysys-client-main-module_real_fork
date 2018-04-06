@@ -38,7 +38,7 @@
             <Label id="results_image_icon" />
             <Label alignment="TOP_LEFT" style="-fx-font-size: 18;" styleClass="font_gray" text="RESULTS">
                <HBox.margin>
-                  <Insets top="-4.0" />
+                  <Insets top="-2.0" />
                </HBox.margin></Label>
          </children>
       </HBox>

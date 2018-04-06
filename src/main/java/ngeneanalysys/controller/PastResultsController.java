@@ -146,7 +146,7 @@ public class PastResultsController extends SubPaneController {
 			filterSearchArea.getChildren().removeAll(filterSearchArea.getChildren());
 			if(newV.getValue().equalsIgnoreCase("String")) {
 				CustomTextField textField = new CustomTextField();
-				ImageView imageView = new ImageView(resourceUtil.getImage("/layout/images/renewal/search_icon.png"));
+				/*ImageView imageView = new ImageView(resourceUtil.getImage("/layout/images/renewal/search_icon.png"));
 				imageView.setStyle("-fx-cursor:hand;");
 				imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 					if(StringUtils.isEmpty(textField.getText())) {
@@ -156,7 +156,7 @@ public class PastResultsController extends SubPaneController {
 					}
 					search();
 				});
-				textField.setRight(imageView);
+				textField.setRight(imageView);*/
 				textField.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
 						if (searchComboBox.getSelectionModel().getSelectedItem().getText().equalsIgnoreCase("RUN") ||
 								searchComboBox.getSelectionModel().getSelectedItem().getText().equalsIgnoreCase("SAMPLE")) {
@@ -481,6 +481,7 @@ public class PastResultsController extends SubPaneController {
 	 */
 	@FXML
 	public void search() {
+		oneItem = false;
 		addSearchArea();
 		setList(1);
 	}

@@ -39,14 +39,14 @@
 }
 
 #inputLoginID {
-	-fx-background-image:url('../images/renewal/login_user.png');
+	-fx-background-image:url('../images/renewal/login_user_icon.png');
 	-fx-background-repeat: no-repeat;
 	-fx-background-size : 16 16;
 	-fx-background-position: left 10 center;
 }
 
 #inputPassword {
-	-fx-background-image:url('../images/renewal/login_pw.png');
+	-fx-background-image:url('../images/renewal/login_password_icon.png');
 	-fx-background-repeat: no-repeat;
 	-fx-background-size : 16 16;
 	-fx-background-position: left 10 center;
@@ -63,9 +63,10 @@
 }
 
 #settingURLButton {
-	-fx-background-image:url('../images/renewal/preference.png');
+    -fx-graphic: url("../images/renewal/preference_icon.png");
+	/*-fx-background-image:url('../images/renewal/preference.png');
 	-fx-background-size: 24 24;
-	-fx-background-repeat: no-repeat;
+	-fx-background-repeat: no-repeat;*/
 	-fx-background-color:transparent;
 	-fx-background-insets:0;
 	-fx-border-width:0;

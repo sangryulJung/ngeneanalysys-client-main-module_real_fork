@@ -164,7 +164,7 @@
 }
 
 #results_image_icon {
-    -fx-graphic: url("../images/renewal/results_icon.png");
+    -fx-graphic: url("../images/renewal/result_icon.png");
     -fx-pref-width : 24;
     -fx-pref-height : 24;
 }
