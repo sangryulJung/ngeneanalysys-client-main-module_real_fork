@@ -10,8 +10,6 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -41,14 +39,11 @@
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/renewal/tools_databases.png" />
-                           </image>
+                        <Label id="system_image_icon">
                            <HBox.margin>
-                              <Insets right="6.0" />
+                              <Insets right="5.0" />
                            </HBox.margin>
-                        </ImageView>
+                        </Label>
                         <Label text="SYSTEM USAGE">
                            <styleClass>
                               <String fx:value="font_size_18" />
@@ -85,14 +80,11 @@
       </ScrollPane>
       <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
          <children>
-            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+            <Label id="latest_image_icon">
                <HBox.margin>
-                  <Insets right="6.0" />
+                  <Insets right="5.0" />
                </HBox.margin>
-               <image>
-                  <Image url="@../images/renewal/system_usage_icon.png" />
-               </image>
-            </ImageView>
+            </Label>
             <Label text="LATEST ANALYSIS">
                <styleClass>
                   <String fx:value="font_size_18" />
@@ -149,14 +141,11 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="26.0" prefWidth="200.0">
                <children>
-                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/renewal/news_tips.png" />
-                     </image>
+                  <Label id="news_image_icon">
                      <HBox.margin>
-                        <Insets right="6.0" />
+                        <Insets right="5.0" />
                      </HBox.margin>
-                  </ImageView>
+                  </Label>
                   <Label text="NEWS &amp; TIPS">
                      <padding>
                         <Insets right="10.0" />
@@ -197,7 +186,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
                <children>
-                  <Label id="tools_icond">
+                  <Label id="tools_image_icon">
                      <HBox.margin>
                         <Insets right="5.0" />
                      </HBox.margin>

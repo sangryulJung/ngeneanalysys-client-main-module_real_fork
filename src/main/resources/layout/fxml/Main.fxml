@@ -7,8 +7,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -55,14 +53,11 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="238.0" styleClass="bg_main_header_right2" HBox.hgrow="NEVER">
                      <children>
-                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                        <Label id="user_image_icon">
                            <HBox.margin>
-                              <Insets bottom="7.0" left="5.0" right="6.0" />
+                              <Insets right="5.0" />
                            </HBox.margin>
-                           <image>
-                              <Image url="@../images/renewal/login_user.png" />
-                           </image>
-                        </ImageView>
+                        </Label>
                         <Label fx:id="loginUserName" alignment="TOP_LEFT" prefWidth="129.0" style="-fx-font-family: Noto Sans CJK KR Regular;" text="Login User Account" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="12.0" />

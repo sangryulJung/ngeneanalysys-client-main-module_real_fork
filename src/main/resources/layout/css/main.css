@@ -248,3 +248,9 @@
 #sampleListStackPane > .combo-box:disabled {
     -fx-opacity: .0;
 }
+
+#user_image_icon {
+    -fx-graphic: url("../images/renewal/user_icon.png");
+    -fx-pref-width : 16;
+    -fx-pref-height : 16;
+}

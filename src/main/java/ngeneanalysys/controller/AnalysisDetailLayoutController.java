@@ -1,5 +1,6 @@
 package ngeneanalysys.controller;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -91,12 +92,13 @@ public class AnalysisDetailLayoutController extends SubPaneController {
 
     @Override
     public void show(Parent root) throws IOException {
+        mainController.setContentsMaskerPaneVisible(true);
         logger.info("show..");
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
 
         sampleId = (int) getParamMap().get("id");
-
+        Platform.runLater(() -> {
         try {
             HttpClientResponse response = apiService.get("samples/" + sampleId, null, null, true);
 
@@ -111,33 +113,12 @@ public class AnalysisDetailLayoutController extends SubPaneController {
             response = apiService.get("runs/" + sample.getRunId() , null, null, true);
             RunWithSamples run = response.getObjectBeforeConvertResponseToJSON(RunWithSamples.class);
 
-
-            List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
-            if(panels != null && !panels.isEmpty()) {
-                Optional<Panel> optionalPanel = panels.stream().filter(panel -> panel.getId().equals(sample.getPanelId())).findFirst();
-                if(optionalPanel.isPresent()) {
-                    this.panel = optionalPanel.get();
-                    getParamMap().put("panel", panel);
-                    panelLabel.setText(optionalPanel.get().getName());
-                    panelNameTooltip.setText(optionalPanel.get().getName());
-                }
-            }
-
-            sampleNameLabel.setText(sample.getName());
-            sampleNameTooltip.setText(sample.getName());
-            List<Diseases> diseases = (List<Diseases>) mainController.getBasicInformationMap().get("diseases");
-            Optional<Diseases> diseasesOptional = diseases.stream().filter(disease -> disease.getId() == sample.getDiseaseId()).findFirst();
-            if(diseasesOptional.isPresent()) {
-                String diseaseName = diseasesOptional.get().getName();
-                diseaseLabel.setText(diseaseName);
-                diseaseTooltip.setText(diseaseName);
-            }
+            setPaneAndDisease();
 
             runNameLabel.setText(run.getRun().getName());
             runNameTooltip.setText(run.getRun().getName());
             sequencerLabel.setText(WordUtils.capitalize(run.getRun().getSequencingPlatform()));
             sequencerTooltip.setText(WordUtils.capitalize(run.getRun().getSequencingPlatform()));
-
 
         } catch (WebAPIException e) {
             e.printStackTrace();
@@ -172,8 +153,33 @@ public class AnalysisDetailLayoutController extends SubPaneController {
                 executeReloadByTab(newValue);
             }
         });
-
+        mainController.setContentsMaskerPaneVisible(false);
+        });
         this.mainController.getMainFrame().setCenter(root);
+
+    }
+
+    public void setPaneAndDisease() {
+        List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
+        if(panels != null && !panels.isEmpty()) {
+            Optional<Panel> optionalPanel = panels.stream().filter(panel -> panel.getId().equals(sample.getPanelId())).findFirst();
+            if(optionalPanel.isPresent()) {
+                this.panel = optionalPanel.get();
+                getParamMap().put("panel", panel);
+                panelLabel.setText(optionalPanel.get().getName());
+                panelNameTooltip.setText(optionalPanel.get().getName());
+            }
+        }
+
+        sampleNameLabel.setText(sample.getName());
+        sampleNameTooltip.setText(sample.getName());
+        List<Diseases> diseases = (List<Diseases>) mainController.getBasicInformationMap().get("diseases");
+        Optional<Diseases> diseasesOptional = diseases.stream().filter(disease -> disease.getId() == sample.getDiseaseId()).findFirst();
+        if(diseasesOptional.isPresent()) {
+            String diseaseName = diseasesOptional.get().getName();
+            diseaseLabel.setText(diseaseName);
+            diseaseTooltip.setText(diseaseName);
+        }
     }
 
     public void addTab(AnalysisDetailTabItem item, int idx) {

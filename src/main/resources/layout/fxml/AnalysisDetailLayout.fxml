@@ -9,8 +9,6 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.Tooltip?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -26,12 +24,12 @@
             <Insets top="5.0" />
          </GridPane.margin>
          <tabs>
-            <Tab text="test">
+            <Tab text="overview">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
               </content>
             </Tab>
-            <Tab text="test">
+            <Tab text="report">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
               </content>
@@ -56,15 +54,12 @@
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
                      <children>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/renewal/sample_icon.png" />
-                           </image>
+                        <Label id="sample_image_icon">
                            <HBox.margin>
-                              <Insets bottom="2.0" right="5.0" />
+                              <Insets right="5.0" />
                            </HBox.margin>
-                        </ImageView>
-                        <Label fx:id="sampleNameLabel" text="Label">
+                        </Label>
+                        <Label fx:id="sampleNameLabel" text="Sample Name">
                            <styleClass>
                               <String fx:value="font_size_18" />
                               <String fx:value="font_gray" />
@@ -105,7 +100,7 @@
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3">
                <children>
                   <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="65.0" text="DISEASE : " />
-                  <Label fx:id="diseaseLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" text="Label">
+                  <Label fx:id="diseaseLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" text="disease name">
                      <tooltip>
                         <Tooltip fx:id="diseaseTooltip" text="Empty Tooltip" />
                      </tooltip></Label>
@@ -117,7 +112,7 @@
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4">
                <children>
                   <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="88.0" text="SEQUENCER : " />
-                  <Label fx:id="sequencerLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" text="Label">
+                  <Label fx:id="sequencerLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" text="sequencer name">
                      <tooltip>
                         <Tooltip fx:id="sequencerTooltip" text="Empty Tooltip" />
                      </tooltip></Label>

@@ -712,11 +712,8 @@
 
 .fileDownloadButton {
     -fx-background-color: transparent;
-    -fx-background-image: url('../images/renewal/download_icon.png');
+    -fx-graphic: url("../images/renewal/download_icon.png");
     /*-fx-background-position :center;*/
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: center;
-    -fx-background-size : 24 24;
     -fx-border-width : 0;
     -fx-pref-width : 24px;
     -fx-pref-height : 24px;
@@ -727,3 +724,8 @@
     -fx-background-radius : 0;
 }
 
+#sample_image_icon {
+    -fx-graphic: url("../images/renewal/samples_icon.png");
+    -fx-pref-width : 24;
+    -fx-pref-height : 24;
+}

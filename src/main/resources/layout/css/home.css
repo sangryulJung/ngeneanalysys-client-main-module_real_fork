@@ -87,8 +87,26 @@
     -fx-border-color : black;
 }
 
-#tools_icond {
+#tools_image_icon {
     -fx-graphic: url("../images/renewal/tools_icon.png");
+    -fx-pref-width : 24;
+    -fx-pref-height : 24;
+}
+
+#latest_image_icon {
+    -fx-graphic: url("../images/renewal/latest_icon.png");
+    -fx-pref-width : 24;
+    -fx-pref-height : 24;
+}
+
+#news_image_icon {
+    -fx-graphic: url("../images/renewal/news_icon.png");
+    -fx-pref-width : 24;
+    -fx-pref-height : 24;
+}
+
+#system_image_icon {
+    -fx-graphic: url("../images/renewal/system_icon.png");
     -fx-pref-width : 24;
     -fx-pref-height : 24;
 }

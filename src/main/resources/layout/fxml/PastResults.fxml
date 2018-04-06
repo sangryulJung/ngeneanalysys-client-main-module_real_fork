@@ -9,8 +9,6 @@
 <?import javafx.scene.control.Pagination?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tooltip?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -37,11 +35,7 @@
    <children>
       <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
-            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/renewal/latest_analysis.png" />
-               </image>
-            </ImageView>
+            <Label id="results_image_icon" />
             <Label alignment="TOP_LEFT" style="-fx-font-size: 18;" styleClass="font_gray" text="RESULTS">
                <HBox.margin>
                   <Insets top="-4.0" />
@@ -166,21 +160,18 @@
       </HBox>
       <HBox prefHeight="38.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
          <children>
-            <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/renewal/search.png" />
-               </image>
+            <Label id="search_image_icon">
                <HBox.margin>
-                  <Insets right="6.0" />
+                  <Insets right="5.0" />
                </HBox.margin>
-            </ImageView>
+            </Label>
             <Label text="SEARCH">
                <styleClass>
                   <String fx:value="font_size_18" />
                   <String fx:value="font_gray" />
                </styleClass>
                <HBox.margin>
-                  <Insets top="-5.0" />
+                  <Insets top="-2.0" />
                </HBox.margin>
             </Label>
          </children>

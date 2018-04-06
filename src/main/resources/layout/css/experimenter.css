@@ -162,3 +162,15 @@
 #tierTable .table-cell {
     -fx-alignment : center;
 }
+
+#results_image_icon {
+    -fx-graphic: url("../images/renewal/results_icon.png");
+    -fx-pref-width : 24;
+    -fx-pref-height : 24;
+}
+
+#search_image_icon {
+    -fx-graphic: url("../images/renewal/search_icon.png");
+    -fx-pref-width : 24;
+    -fx-pref-height : 24;
+}
