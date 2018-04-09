@@ -801,7 +801,7 @@ public class PastResultsController extends SubPaneController {
 		private void setVariantHBox(HBox variantHBox, SampleView sample) {
 			AnalysisResultSummary summary = sample.getAnalysisResultSummary();
 			final String countLabelStyleClass = "count_label";
-			final String countLabelStyle = "-fx-text-fill : gray; -fx-font-family : Noto Sans CJK KR Regular;";
+			final String countLabelStyle = "-fx-text-fill : gray;";
 			if(sample.getAnalysisType().equalsIgnoreCase("GERMLINE")) {
 				Label lv1Icon = new Label("P");
 				lv1Icon.getStyleClass().add("lv_i_icon");

@@ -342,7 +342,7 @@ public class HomeController extends SubPaneController{
             titleLabel.getStyleClass().add("font_gray");
             box.getChildren().add(titleLabel);
             box.getChildren().add(label);
-            label.setStyle("-fx-text-fill : gray; -fx-font-family : Noto Sans CJK KR Regular;");
+            label.setStyle("-fx-text-fill : gray;");
             label.setPrefWidth(120);
             return box;
         }
