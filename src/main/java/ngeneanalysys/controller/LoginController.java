@@ -189,7 +189,7 @@ public class LoginController extends BaseStageController {
 
 	public boolean validateLoginID() {
 		if (StringUtils.isEmpty(inputLoginID.getText())) {
-			labelLoginID.setText("Please Enter the Username");
+			labelLoginID.setText("Please enter the username");
 			labelLoginID.setVisible(true);
 			return false;
 		} else {
@@ -200,7 +200,7 @@ public class LoginController extends BaseStageController {
 	}
 	public boolean validatePassword() {
 		if (StringUtils.isEmpty(inputPassword.getText())) {
-			labelPassword.setText("Please Enter the Password");
+			labelPassword.setText("Please enter the password");
 			labelPassword.setVisible(true);
 			return false;
 		} else {

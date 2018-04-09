@@ -33,7 +33,7 @@
       <VBox fx:id="mainContent" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="370.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <children>
             <TextField fx:id="inputLoginID" onKeyPressed="#checkValidateLoginID" pickOnBounds="false" promptText="User Name" style="-fx-font-family: Noto Sans CJK KR Regular;" />
-            <Label fx:id="labelLoginID" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" styleClass="title_warning" textFill="WHITE" visible="false">
+            <Label fx:id="labelLoginID" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" style="-fx-font-family: Noto Sans CJK KR Regular;" styleClass="title_warning" textFill="WHITE" visible="false">
                <font>
                   <Font size="10.0" />
                </font>
@@ -42,7 +42,7 @@
                </VBox.margin>
             </Label>
             <PasswordField fx:id="inputPassword" maxHeight="40.0" minHeight="40.0" onKeyPressed="#checkValidatePassword" prefHeight="40.0" promptText="Password" style="-fx-font-family: Noto Sans CJK KR Regular;" />
-            <Label fx:id="labelPassword" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" styleClass="title_warning" textFill="WHITE" visible="false">
+            <Label fx:id="labelPassword" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" style="-fx-font-family: Noto Sans CJK KR Regular;" styleClass="title_warning" textFill="WHITE" visible="false">
                <font>
                   <Font size="10.0" />
                </font>
@@ -79,20 +79,20 @@
                   <Insets left="25.0" />
                </VBox.margin>
             </HBox>
-            <HBox alignment="CENTER">
+            <HBox alignment="CENTER" maxWidth="130.0" minWidth="130.0" onMouseClicked="#openSettingURLDialog" prefWidth="130.0" style="-fx-cursor: hand;">
                <VBox.margin>
                   <Insets bottom="20.0" />
                </VBox.margin>
                <children>
-                  <Button fx:id="settingURLButton" mnemonicParsing="false" onAction="#openSettingURLDialog">
+                  <Button fx:id="settingURLButton" mnemonicParsing="false">
                      <HBox.margin>
                         <Insets right="5.0" />
                      </HBox.margin>
                   </Button>
-                  <Label style="-fx-text-fill: #FFFFFF; -fx-font-size: 10;" text="Service Setting" />
+                  <Label style="-fx-text-fill: #FFFFFF; -fx-font-family: Noto Sans CJK KR Regular;" text="Service Setting" />
                </children>
             </HBox>
-            <Label style="-fx-text-fill: #FFFFFF; -fx-font-size: 10; -fx-font-family: Noto Sans CJK KR Regular;" text="All content ⓒ 2018 Ngenebio, Inc." />
+            <Label style="-fx-text-fill: #FFFFFF; -fx-font-family: Noto Sans CJK KR Regular;" text="All content ⓒ 2018 NGeneBio, Inc." />
          </children>
          <GridPane.margin>
             <Insets />

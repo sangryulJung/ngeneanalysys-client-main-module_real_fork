@@ -106,7 +106,7 @@
                </font>
             </Label>
             <HBox fx:id="progressTaskContentArea" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="800.0" HBox.hgrow="ALWAYS" />
-            <Label fx:id="labelSystemBuild" alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxHeight="25.0" maxWidth="200.0" minHeight="25.0" minWidth="200.0" prefHeight="25.0" prefWidth="200.0" style="-fx-text-fill: #595959;" styleClass="font_gray" text="v 1.0 (Build Date 20160630)" textFill="WHITE">
+            <Label fx:id="labelSystemBuild" alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxHeight="25.0" maxWidth="200.0" minHeight="25.0" minWidth="200.0" prefHeight="25.0" prefWidth="200.0" style="-fx-text-fill: #FFFFFF;" styleClass="font_gray" text="v 1.0 (Build Date 20160630)" textFill="WHITE">
                <font>
                   <Font size="10.0" />
                </font>
