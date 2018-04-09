@@ -2,11 +2,13 @@ package ngeneanalysys.controller.fragment;
 
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.model.Sample;
 import ngeneanalysys.model.VariantAndInterpretationEvidence;
@@ -63,6 +65,8 @@ public class AnalysisDetailPopulationFrequenciesController extends SubPaneContro
      */
     public void addPopulationFrequencyGraph(int row, int col, String title, double percentage) {
         double graphPercentage = percentage * 100;
+        VBox vbox = new VBox();
+        vbox.setAlignment(Pos.CENTER);
         HBox hBox = new HBox();
         hBox.getStyleClass().add("population_frequency_graph");
 
@@ -74,16 +78,21 @@ public class AnalysisDetailPopulationFrequenciesController extends SubPaneContro
         graphHBox.getStyleClass().add("horizon_stick");
         Label graphLabel = new Label("");
         graphHBox.getChildren().add(graphLabel);
-        Label percentLabel = new Label((percentage > -1) ? String.format("%.2f", percentage) : "");
+        Label percentLabel = new Label((percentage > -1) ? String.valueOf(percentage) : "");
         percentLabel.getStyleClass().add("percent");
-        hBox.getChildren().setAll(titleLabel, graphHBox, percentLabel);
+        percentLabel.setPrefWidth(130);
+        percentLabel.setMinWidth(130);
+        percentLabel.setAlignment(Pos.CENTER_RIGHT);
+        percentLabel.getStyleClass().add("font_size_10");
+        hBox.getChildren().setAll(titleLabel, graphHBox);
+        vbox.getChildren().setAll(hBox, percentLabel);
         // 퍼센트 데이터가 없는 경우(-1) disable 처리함.
         if(percentage < 0) {
             hBox.setDisable(true);
         }
-        double graphHBoxWidth = 75.0;
+        double graphHBoxWidth = 74.0;
         //populationFrequencyGraphVBox.getChildren().add(hBox);
-        populationFrequencyGraphGridPane.add(hBox, col, row);
+        populationFrequencyGraphGridPane.add(vbox, col, row);
         if(graphPercentage > -1) {
             double widthByPercent = Math.round(graphHBoxWidth * (graphPercentage/100));
             // 애니메이션 타이머 실행

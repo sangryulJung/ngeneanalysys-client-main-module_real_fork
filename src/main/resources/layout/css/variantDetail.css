@@ -174,9 +174,9 @@
 	-fx-min-width:180;
 	-fx-pref-width:180;
 	-fx-max-width:180;
-	-fx-min-height:22;
-	-fx-pref-height:22;
-	-fx-max-height:22;
+	-fx-min-height:12;
+	-fx-pref-height:12;
+	-fx-max-height:12;
 }
 
 .population_frequency_graph .title {
@@ -512,4 +512,37 @@
 
 #addToGermlineReportCheckBox {
 	-fx-background-color: #a8bbd9;
+}
+
+
+#linkArea {
+	-fx-min-width:155;
+	-fx-pref-width:155;
+	-fx-max-width:155;
+	-fx-background-color:#ffffff;
+	-fx-padding:10;
+	-fx-alignment:center;
+}
+#linkArea .button {
+	-fx-alignment:top-center;
+}
+#linkArea .button.link {
+	-fx-background-color:#fff;
+	-fx-background-image:url('../images/icon_link_enable.png');
+	-fx-background-position:50% 80% ;
+	-fx-background-repeat:no-repeat ;
+	-fx-background-radius:3;
+	-fx-border-radius:3;
+	-fx-border-color:#CACACA;
+	-fx-font-size:11px;
+	-fx-text-fill:#000000;
+	-fx-padding:0;
+}
+
+#linkArea .button.link:hover {
+	-fx-background-image:url('../images/icon_link_over.png');
+}
+
+#linkArea .button.link:disabled {
+	-fx-background-image:url('../images/icon_link_disable.png');
 }

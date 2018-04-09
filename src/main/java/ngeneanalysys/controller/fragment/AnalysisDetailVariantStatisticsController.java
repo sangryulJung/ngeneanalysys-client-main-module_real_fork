@@ -2,9 +2,13 @@ package ngeneanalysys.controller.fragment;
 
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.layout.GridPane;
 import ngeneanalysys.animaition.VariantStatisticsTimer;
+import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.model.VariantStatistics;
 import ngeneanalysys.util.LoggerUtil;
@@ -30,9 +34,13 @@ public class AnalysisDetailVariantStatisticsController extends SubPaneController
     @FXML
     private Canvas canvasVariantStatisticsGroup;
 
+    @FXML
+    private GridPane variantStatisticsGirdPane;
+
     @Override
     public void show(Parent root) throws IOException {
         showVariantStatistics();
+        showPopulationFrequency();
     }
 
     /**
@@ -85,6 +93,20 @@ public class AnalysisDetailVariantStatisticsController extends SubPaneController
                     variantStatisticsGroupTimer1.start());
             canvasVariantStatisticsGroup.setOnMouseExited(event ->
                     variantStatisticsGroupTimer.start());
+        }
+    }
+
+    public void showPopulationFrequency() {
+        try {
+            FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_POPULATION_FREQUENCIES);
+            Node node = loader.load();
+            AnalysisDetailPopulationFrequenciesController controller = loader.getController();
+            controller.setMainController(this.getMainController());
+            controller.setParamMap(paramMap);
+            controller.show((Parent) node);
+            variantStatisticsGirdPane.add(node, 1, 0);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

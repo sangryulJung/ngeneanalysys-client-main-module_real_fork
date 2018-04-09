@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="500.0" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemMenuSupportController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="500.0" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemMenuSupportController">
    <children>
       <GridPane layoutX="20.0" layoutY="20.0">
          <columnConstraints>
@@ -26,7 +30,7 @@
                         <String fx:value="txt" />
                      </styleClass>
                   </Hyperlink>
-                  <Hyperlink focusTraversable="false" layoutX="10.0" layoutY="31.0" onAction="#openReleaseNotes" text="Show latest release notes">
+                  <Hyperlink focusTraversable="false" layoutX="10.0" layoutY="31.0" onAction="#openReleaseNotes" text="Show latest release notes" visible="false">
                      <styleClass>
                         <String fx:value="txt_support_label" />
                         <String fx:value="txt" />

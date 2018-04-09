@@ -226,5 +226,8 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
         transcriptAltTypeLabel.setText(transcriptAltType);
     }
 
+    public int getTranscriptComboBoxSelectedIndex() {
+        return transcriptComboBox.getSelectionModel().getSelectedIndex();
+    }
 
 }

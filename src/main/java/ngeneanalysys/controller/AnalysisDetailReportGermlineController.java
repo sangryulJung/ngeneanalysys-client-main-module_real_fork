@@ -389,7 +389,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
         String[] displayNameList =  {"Test No", "Test Name", "Organization", "Ordering Physician", "Contact", "Name", "Birthday", "Gender", "Patient ID"};
         String[] variableNameList =  {"manageNo", "inspectionItem", "clientOrganization", "clientName", "clientContact", "name",
-                "patientBirthday", "patientGender", "patientID "};
+                "patientBirthday", "patientGender", "patientID"};
 
         for(int i = 0; i < displayNameList.length ; i++) {
             String displayName = displayNameList[i];
@@ -683,6 +683,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 Map<String,Object> contentsMap = new HashMap<>();
                 contentsMap.put("panelName", panel.getName());
                 contentsMap.put("panelCode", panel.getCode());
+                contentsMap.put("sampleSource", sample.getSampleSource());
                 //리포트를 생성할 때마다 고유 ID 부여 report ID + random Int
                 contentsMap.put("reportingDate" , new Date().toString());
                 contentsMap.put("reportID", String.format("%05d-%05d", sample.getId(), random.nextInt(99999)));

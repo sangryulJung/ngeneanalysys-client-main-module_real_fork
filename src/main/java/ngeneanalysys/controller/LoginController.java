@@ -167,10 +167,10 @@ public class LoginController extends BaseStageController {
 			primaryStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
 		}
 
-		primaryStage.setMinWidth(410);
-		primaryStage.setWidth(410);
-		primaryStage.setMinHeight(370);
-		primaryStage.setHeight(370);
+		primaryStage.setMinWidth(430);
+		primaryStage.setWidth(430);
+		primaryStage.setMinHeight(410);
+		primaryStage.setHeight(410);
 		primaryStage.setResizable(false);
 		primaryStage.centerOnScreen();
 		primaryStage.show();
@@ -184,7 +184,6 @@ public class LoginController extends BaseStageController {
 			}
 			primaryStage.close();
 		});
-
 
 	}
 

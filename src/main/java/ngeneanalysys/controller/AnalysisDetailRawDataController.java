@@ -13,7 +13,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -38,9 +37,11 @@ import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Jang
@@ -60,9 +61,6 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
 
     /** 전체 파일 목록 객체 */
     private List<AnalysisFile> totalList;
-
-    /** 파일 목록 filter map 객체 */
-    private Map<String,Integer> filterMap;
 
     @FXML
     private HBox filterTitleArea;
@@ -109,19 +107,8 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
             totalList = null;
             AnalysisFileList analysisFileList = response.getObjectBeforeConvertResponseToJSON(AnalysisFileList.class);
             totalList = analysisFileList.getResult();
-            int foundFileCount = (int)totalList.stream().filter(item -> "FASTQ.GZ".equals(item.getFileType())).count();
+            totalList = totalList.stream().sorted(Comparator.comparing(AnalysisFile::getName)).collect(Collectors.toList());
 
-            /*for(AnalysisFilesSampleFileMeta sampleFileMeta : sample.getFileList()){
-                AnalysisResultFile analysisResultFile = new AnalysisResultFile();
-                analysisResultFile.setCreatedAt(sampleFileMeta.getCreatedAt());
-                analysisResultFile.setId(sampleFileMeta.getId());
-                analysisResultFile.setName(sampleFileMeta.getName());
-                analysisResultFile.setSampleId(sampleFileMeta.getSample());
-                analysisResultFile.setSize(sampleFileMeta.getSize());
-                analysisResultFile.setTag("FASTQ");
-                totalList.add(analysisResultFile);
-            }*/
-            //addFilterBox();
             filterTitleArea.setVisible(false);
             filterTitleArea.setPrefWidth(0);
             filterList.getChildren().add(new Label("Analysis Result Data Download: Uploaded Fastq files, Mapped bedFile(BAM format), Variant bedFile(VCF format), Data QC Report(PDF) "));
@@ -167,68 +154,6 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
         Scene scene = new Scene(root);
         currentStage.setScene(scene);
         currentStage.showAndWait();
-    }
-
-    /**
-     * 필터 박스 추가
-     */
-    @SuppressWarnings("static-access")
-    public void addFilterBox() {
-        if(totalList != null && !totalList.isEmpty()) {
-            this.filterMap = new HashMap<>();
-            for(AnalysisFile item : totalList) {
-                Integer count = (filterMap.containsKey(item.getFileType())) ? filterMap.get(item.getFileType()) : 0;
-                count++;
-                filterMap.put(item.getFileType(), count);
-            }
-
-            VBox allFilterBox = getFilterBox("ALL", totalList.size());
-            this.filterList.getChildren().add(allFilterBox);
-            this.filterList.setMargin(allFilterBox, new Insets(0, 5, 0, 0));
-
-            if(!filterMap.isEmpty() && filterMap.size() > 0) {
-                for(String key : filterMap.keySet()) {
-                    VBox box = getFilterBox(key, filterMap.get(key).intValue());
-                    this.filterList.getChildren().add(box);
-                    this.filterList.setMargin(box, new Insets(0, 5, 0, 0));
-                }
-            }
-        }
-    }
-
-    /**
-     * 필터 박스 반환
-     * @param tag
-     * @param count
-     * @return
-     */
-    public VBox getFilterBox(String tag, int count) {
-        VBox box = new VBox();
-        box.setId(tag);
-
-        Region region = new Region();
-
-        Label levelLabel = new Label(tag);
-        levelLabel.getStyleClass().add("level");
-
-        if("ALL".equals(tag)) {
-            box.getStyleClass().add("selected");
-            region.getStyleClass().add("level_ALL");
-            levelLabel.getStyleClass().add("txt_black");
-        }
-
-        Label countLabel = new Label(String.valueOf(count));
-        countLabel.getStyleClass().add("count");
-
-        box.getChildren().setAll(region, levelLabel, countLabel);
-
-        // 마우스 클릭 이벤트 바인딩
-        box.setOnMouseClicked(event -> {
-            setList(tag);
-            setOnSelectedFilter(tag);
-        });
-
-        return box;
     }
 
     /**

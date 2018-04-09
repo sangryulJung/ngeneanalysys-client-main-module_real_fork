@@ -140,7 +140,7 @@
 
 #mainBackground {
     -fx-background-color:none;
-    -fx-background-image:url('../images/renewal/main_background.jpg');
+    -fx-background-image:url('../images/renewal/main_background.png');
     -fx-background-repeat:no-repeat;
     -fx-background-size : cover;
 }
@@ -170,11 +170,13 @@
     -fx-border-width : 0 0 3 0;
     -fx-border-color : white;
     -fx-font-weight : bold;
+    -fx-text-fill: #273E5E;
+
 }
 
 #topMenuArea1 > .label#selectedMenu {
-    -fx-border-width : 0 0 3 0;
-    -fx-border-color : #990000;
+    -fx-border-width : 0 0 5 0;
+    -fx-border-color : #20CC7B;
 }
 
 #topMenuArea1 .combo-box {
@@ -217,19 +219,23 @@
 
 #topMenuArea1 #sampleListStackPane .label {
     -fx-alignment : center-left;
+    -fx-padding : 0 0 0 5;
     -fx-font-size : 16px;
     -fx-cursor:hand;
-    -fx-border-width : 0 0 3 0;
+    -fx-border-width : 0 0 5 0;
     -fx-border-color : white;
     -fx-background-image:url('../images/btn_user_set.png');
     -fx-background-repeat: no-repeat;
     -fx-background-size : 10 5;
     -fx-background-position: right 5 center;
+    -fx-min-width : 110;
+    -fx-pref-width : 110;
+    -fx-max-width : 110;
 }
 
 #topMenuArea1 #sampleListStackPane .label#selectedMenu {
-    -fx-border-width : 0 0 3 0;
-    -fx-border-color : #990000;
+    -fx-border-width : 0 0 5 0;
+    -fx-border-color : #20CC7B;
 }
 
 #topMenuArea1 #sampleListStackPane .remove_btn {
