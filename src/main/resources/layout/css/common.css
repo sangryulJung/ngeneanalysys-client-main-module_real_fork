@@ -1,5 +1,8 @@
 @font-face {
-	src: url("../font/NotoSansCJKkr-Bold.otf"),
+	src: url("../font/NotoSansKR-Light.otf"),
+	url("../font/NotoSansKR-Bold.otf"),
+	url("../font/NotoSansKR-Medium.otf"),
+	url("../font/NotoSansCJKkr-Bold.otf"),
 	 url("../font/NotoSansCJKkr-Regular.otf"),
 	 url("../font/NotoSansKR-Regular.otf"),
 	 url("../font/NanumSquareB.ttf"),
@@ -8,7 +11,7 @@
 
 /** 기본 폰트 설정 */
 * {
-	-fx-font-family: "Noto Sans CJK KR Bold";
+	-fx-font-family: "Noto Sans KR Light";
 	/*-fx-font-family: "Noto Sans CJK KR Regular";*/
 	/*-fx-font-family: "Noto Sans KR Regular";*/
     /*-fx-font-family: "나눔스퀘어 Bold";*/

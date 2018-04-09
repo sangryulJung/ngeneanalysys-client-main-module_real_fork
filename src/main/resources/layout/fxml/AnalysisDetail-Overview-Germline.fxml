@@ -33,13 +33,12 @@
          <children>
             <HBox alignment="BOTTOM_LEFT" HBox.hgrow="ALWAYS">
                <children>
-                  <Label alignment="TOP_LEFT" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" prefWidth="1240.0" text="DETECTED VARIANT SUMMARY">
+                  <Label alignment="TOP_LEFT" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" prefWidth="1240.0" style="-fx-font-family: Noto Sans KR Bold;" text="DETECTED VARIANT SUMMARY">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
                      <styleClass>
                         <String fx:value="font_size_15" />
-                        <String fx:value="weight_bold" />
                         <String fx:value="font_gray" />
                      </styleClass>
                   </Label>
@@ -121,11 +120,10 @@
             </VBox>
          </children>
       </HBox>
-      <Label alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="85.0" style="-fx-pref-height: 30;" text="QC MATRIX" GridPane.rowIndex="4">
+      <Label alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="85.0" style="-fx-pref-height: 30; -fx-font-family: Noto Sans KR Bold;" text="QC MATRIX" GridPane.rowIndex="4">
          <styleClass>
-            <String fx:value="h2" />
-            <String fx:value="txt_black" />
-            <String fx:value="weight_bold" />
+            <String fx:value="font_size_15" />
+            <String fx:value="txt_gray" />
          </styleClass>
          <GridPane.margin>
             <Insets />
@@ -145,20 +143,20 @@
                   <StackPane prefHeight="150.0" prefWidth="200.0">
                      <children>
                         <Circle fill="#f6545c" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                        <Label style="-fx-text-fill: #ffffff;" styleClass="font_size_24" text="P" />
+                        <Label style="-fx-text-fill: #ffffff; -fx-font-family: Noto Sans KR Bold;" styleClass="font_size_24" text="P" />
                      </children>
                   </StackPane>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
                      <children>
                         <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                            <children>
-                              <Label style="-fx-font-family: Noto Sans CJK KR Regular;" text="Variants : " />
+                              <Label style="-fx-font-family: Noto Sans KR Bold;" text="Variants : " />
                               <Label fx:id="pVariantsCountLabel" text="0" />
                            </children>
                         </HBox>
                         <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                            <children>
-                              <Label style="-fx-font-family: Noto Sans CJK KR Regular;" text="Gene : " />
+                              <Label style="-fx-font-family: Noto Sans KR Bold;" text="Gene : " />
                               <Label fx:id="pGenesCountLabel" text="0" />
                            </children>
                         </HBox>
@@ -180,13 +178,13 @@
                      <children>
                         <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                            <children>
-                              <Label style="-fx-font-family: Noto Sans CJK KR Regular;" text="Variants : " />
+                              <Label style="-fx-font-family: Noto Sans KR Bold;" text="Variants : " />
                               <Label fx:id="lpVariantsCountLabel" text="0" />
                            </children>
                         </HBox>
                         <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                            <children>
-                              <Label style="-fx-font-family: Noto Sans CJK KR Regular;" text="Gene : " />
+                              <Label style="-fx-font-family: Noto Sans KR Bold;" text="Gene : " />
                               <Label fx:id="lpGenesCountLabel" text="0" />
                            </children>
                         </HBox>
@@ -195,7 +193,7 @@
                   <StackPane prefHeight="150.0" prefWidth="200.0">
                      <children>
                         <Circle fill="#ff9482" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                        <Label style="-fx-text-fill: #ffffff;" styleClass="font_size_24" text="LP" />
+                        <Label style="-fx-text-fill: #ffffff; -fx-font-family: Noto Sans KR Bold;" styleClass="font_size_24" text="LP" />
                      </children>
                   </StackPane>
                </children>
@@ -213,13 +211,13 @@
                      <children>
                         <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                            <children>
-                              <Label style="-fx-font-family: Noto Sans CJK KR Regular;" text="Variants : " />
+                              <Label style="-fx-font-family: Noto Sans KR Bold;" text="Variants : " />
                               <Label fx:id="usVariantsCountLabel" text="0" />
                            </children>
                         </HBox>
                         <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                            <children>
-                              <Label style="-fx-font-family: Noto Sans CJK KR Regular;" text="Gene : " />
+                              <Label style="-fx-font-family: Noto Sans KR Bold;" text="Gene : " />
                               <Label fx:id="usGenesCountLabel" text="0" />
                            </children>
                         </HBox>
@@ -229,7 +227,7 @@
                   <StackPane prefHeight="150.0" prefWidth="200.0">
                      <children>
                         <Circle fill="#70acf5" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                        <Label style="-fx-text-fill: #ffffff;" styleClass="font_size_24" text="US" />
+                        <Label style="-fx-text-fill: #ffffff; -fx-font-family: Noto Sans KR Bold;" styleClass="font_size_24" text="US" />
                      </children>
                   </StackPane>
                </children>
@@ -247,13 +245,13 @@
                      <children>
                         <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                            <children>
-                              <Label style="-fx-font-family: Noto Sans CJK KR Regular;" text="Variants : " />
+                              <Label style="-fx-font-family: Noto Sans KR Bold;" text="Variants : " />
                               <Label fx:id="lbVariantsCountLabel" text="0" />
                            </children>
                         </HBox>
                         <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                            <children>
-                              <Label style="-fx-font-family: Noto Sans CJK KR Regular;" text="Gene : " />
+                              <Label style="-fx-font-family: Noto Sans KR Bold;" text="Gene : " />
                               <Label fx:id="lbGenesCountLabel" text="0" />
                            </children>
                         </HBox>
@@ -263,7 +261,7 @@
                   <StackPane prefHeight="150.0" prefWidth="200.0">
                      <children>
                         <Circle fill="#1f2d87" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                        <Label style="-fx-text-fill: #ffffff;" styleClass="font_size_24" text="LB" />
+                        <Label style="-fx-text-fill: #ffffff; -fx-font-family: Noto Sans KR Bold;" styleClass="font_size_24" text="LB" />
                      </children>
                   </StackPane>
                </children>
@@ -281,13 +279,13 @@
                      <children>
                         <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                            <children>
-                              <Label style="-fx-font-family: Noto Sans CJK KR Regular;" text="Variants : " />
+                              <Label style="-fx-font-family: Noto Sans KR Bold;" text="Variants : " />
                               <Label fx:id="bVariantsCountLabel" text="0" />
                            </children>
                         </HBox>
                         <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                            <children>
-                              <Label style="-fx-font-family: Noto Sans CJK KR Regular;" text="Gene : " />
+                              <Label style="-fx-font-family: Noto Sans KR Bold;" text="Gene : " />
                               <Label fx:id="bGenesCountLabel" text="0" />
                            </children>
                         </HBox>
@@ -297,7 +295,7 @@
                   <StackPane prefHeight="150.0" prefWidth="200.0">
                      <children>
                         <Circle fill="#5a64a5" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                        <Label style="-fx-text-fill: #ffffff;" styleClass="font_size_24" text="B" />
+                        <Label style="-fx-text-fill: #ffffff; -fx-font-family: Noto Sans KR Bold;" styleClass="font_size_24" text="B" />
                      </children>
                   </StackPane>
                </children>

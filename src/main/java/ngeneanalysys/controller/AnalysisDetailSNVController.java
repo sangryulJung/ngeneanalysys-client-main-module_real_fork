@@ -29,6 +29,7 @@ import ngeneanalysys.controller.fragment.AnalysisDetailVariantStatisticsControll
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedVariantAndInterpretationEvidence;
+import ngeneanalysys.model.render.LowConfidenceList;
 import ngeneanalysys.model.render.SNPsINDELsList;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.ConvertUtil;
@@ -50,9 +51,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     private static Logger logger = LoggerUtil.getLogger();
 
     private APIService apiService;
-
-    @FXML
-    private Label totalTextLabel;
 
     @FXML
     private GridPane snvWrapper;
@@ -207,7 +205,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         variantListTableView.setRowFactory(tv -> {
             TableRow<VariantAndInterpretationEvidence> row = new TableRow<>();
             row.setOnMouseClicked(e -> {
-                if (e.getClickCount() <= 2) {
+                if(e.getClickCount() == 1) {
+                    setSNVTabName();
+                } else if (e.getClickCount() <= 2) {
                     logger.info(e.getClickCount() + " Click count");
                    if(e.getClickCount() == 2) {
                        expandRight();
@@ -221,6 +221,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         variantListTableView.setOnKeyPressed(keyEvent -> {
             if(keyEvent.getCode().equals(KeyCode.ENTER)) {
                 expandRight();
+            } else if(keyEvent.getCode().equals(KeyCode.UP) || keyEvent.getCode().equals(KeyCode.DOWN)) {
+                setSNVTabName();
             }
         });
 
@@ -242,53 +244,76 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             return new VBox();
         });
 
-        totalTextLabel.setOnMouseClicked(ev -> {
+        /*totalTextLabel.setOnMouseClicked(ev -> {
             filterMap.clear();
             showVariantList(currentPageIndex + 1,0);
-        });
+        });*/
+    }
+
+    private void setSNVTabName() {
+        VariantAndInterpretationEvidence variant = variantListTableView.getSelectionModel()
+                .getSelectedItem();
+        String title = "";
+        if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
+            title = variant.getSnpInDel().getGenomicCoordinate().getGene() + " "
+                    + variant.getSnpInDel().getSnpInDelExpression().getCodingConsequence().split(";")[0] + " "
+                    + variant.getSnpInDel().getSnpInDelExpression().getTranscript() + " "
+                    + variant.getSnpInDel().getSnpInDelExpression().getNtChange() + " "
+                    + variant.getSnpInDel().getSnpInDelExpression().getAaChangeConversion();
+        } else {
+            title = variant.getSnpInDel().getGenomicCoordinate().getGene() + " "
+                    + variant.getSnpInDel().getSnpInDelExpression().getCodingConsequence().split(";")[0] + " "
+                    + variant.getSnpInDel().getSnpInDelExpression().getTranscript() + " "
+                    + variant.getSnpInDel().getSnpInDelExpression().getNtChange().split(":")[1] + " "
+                    + variant.getSnpInDel().getSnpInDelExpression().getAaChangeConversion().split(":")[1];
+        }
+        variantsController.setSNVTabName(title);
     }
 
     private void setFilter(String key, String value) {
         filterMap.clear();
-        filterMap.put(key, value);
+        if(key != null) filterMap.put(key, value);
     }
 
     public void setDefaultFilter() {
         filterVBox.getChildren().removeAll(filterVBox.getChildren());
         filterVBox.setPrefHeight(0);
+        HBox totalHBox = tierHBoxCreate("Total", null, null, "#FFFF00");
+        filterVBox.getChildren().add(totalHBox);
+        filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
         if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
-            HBox hBox = tierHBoxCreate("T I", "T1", "#f6545c");
+            HBox hBox = tierHBoxCreate("T I", "T1", "tier", "#f6545c");
             filterVBox.getChildren().add(hBox);
             filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
-            hBox = tierHBoxCreate("T II", "T2", "#ff9482");
+            hBox = tierHBoxCreate("T II", "T2", "tier", "#ff9482");
             filterVBox.getChildren().add(hBox);
             filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
-            hBox = tierHBoxCreate("T III", "T3", "#70acf5");
+            hBox = tierHBoxCreate("T III", "T3", "tier", "#70acf5");
             filterVBox.getChildren().add(hBox);
             filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
-            hBox = tierHBoxCreate("T IV", "T4", "#1f2d87");
+            hBox = tierHBoxCreate("T IV", "T4", "tier", "#1f2d87");
             filterVBox.getChildren().add(hBox);
             filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
         } else if(panel.getAnalysisType().equalsIgnoreCase("GERMLINE")) {
-            HBox hBox = pathogenicityHBoxCreate("P", "P", "#f6545c");
+            HBox hBox = tierHBoxCreate("P", "P", "pathogenicity", "#f6545c");
             filterVBox.getChildren().add(hBox);
             filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
-            hBox = pathogenicityHBoxCreate("LP", "LP", "#ff9482");
+            hBox = tierHBoxCreate("LP", "LP", "pathogenicity", "#ff9482");
             filterVBox.getChildren().add(hBox);
             filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
-            hBox = pathogenicityHBoxCreate("US", "US", "#70acf5");
+            hBox = tierHBoxCreate("US", "US", "pathogenicity", "#70acf5");
             filterVBox.getChildren().add(hBox);
             filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
-            hBox = pathogenicityHBoxCreate("LB", "LB", "#1f2d87");
+            hBox = tierHBoxCreate("LB", "LB", "pathogenicity", "#1f2d87");
             filterVBox.getChildren().add(hBox);
             filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
-            hBox = pathogenicityHBoxCreate("B", "B", "#5a64a5");
+            hBox = tierHBoxCreate("B", "B", "pathogenicity", "#5a64a5");
             filterVBox.getChildren().add(hBox);
             filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
         }
     }
 
-    public HBox tierHBoxCreate(final String labelText, final String valueText, String color) {
+    public HBox tierHBoxCreate(final String labelText, final String valueText, String key, String color) {
         HBox hBox = new HBox();
         hBox.setPrefWidth(100);
         hBox.setPrefHeight(40);
@@ -306,36 +331,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         itemLabel.setText(labelText);
         itemLabel.setOnMouseClicked(ev -> {
             foldRight();
-            setFilter("tier", valueText);
+            setFilter(key, valueText);
             showVariantList(currentPageIndex + 1,0);
-        });
-        Integer value = variantCount(valueText);
-        Label valueLabel = new Label(value.toString());
-
-        hBox.getChildren().addAll(itemLabel, valueLabel);
-
-        return hBox;
-    }
-
-    public HBox pathogenicityHBoxCreate(final String labelText, final String valueText, String color) {
-        HBox hBox = new HBox();
-        hBox.setPrefWidth(100);
-        hBox.setPrefHeight(50);
-        hBox.setSpacing(5);
-        hBox.setAlignment(Pos.CENTER_LEFT);
-
-        Label itemLabel = new Label();
-        itemLabel.setWrapText(true);
-        itemLabel.getStyleClass().addAll("filter_icon");
-        if(!StringUtils.isEmpty(color)) {
-            itemLabel.setStyle(itemLabel.getStyle() + "-fx-background-color : " + color + ";");
-        }
-        itemLabel.setTextAlignment(TextAlignment.CENTER);
-        itemLabel.setText(labelText);
-        itemLabel.setOnMouseClicked(ev -> {
-            foldRight();
-            setFilter("pathogenicity", valueText);
-            showVariantList(currentPageIndex + 1, 0);
         });
         Integer value = variantCount(valueText);
         Label valueLabel = new Label(value.toString());
@@ -359,6 +356,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             } else if(text.equalsIgnoreCase("B")) {
                 count = sample.getAnalysisResultSummary().getLevel5VariantCount();
             }
+        } else {
+            count = sample.getAnalysisResultSummary().getAllVariantCount();
         }
         return count;
     }
@@ -514,6 +513,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         selectedVariantIndex = variantListTableView.getItems().indexOf(analysisResultVariant);
         // 선택된 변이 객체 정보 설정
         selectedAnalysisResultVariant = analysisResultVariant;
+
         // 탭 메뉴 활성화 토글
         //setDetailTabActivationToggle(false);
         try {
@@ -631,7 +631,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             totalCount = analysisResultVariantList.getCount();
             this.list = list;
             setDefaultFilter();
-            totalVariantCountLabel.setText(sample.getAnalysisResultSummary().getAllVariantCount().toString());
+            //totalVariantCountLabel.setText(sample.getAnalysisResultSummary().getAllVariantCount().toString());
             ObservableList<VariantAndInterpretationEvidence> displayList = null;
 
             response = apiService.get("/analysisResults/sampleSummary/"+ sample.getId(), null, null, false);
@@ -673,7 +673,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             } else {
                 variantPagination.setVisible(false);
             }
-
+            setSNVTabName();
         } catch (WebAPIException wae) {
             variantListTableView.setItems(null);
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
@@ -682,6 +682,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             variantListTableView.setItems(null);
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
+
     }
 
     public void sortTable(String column) {
@@ -810,7 +811,13 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         createTableHeader(lowConfidence, "Low confidence", null ,null);
         lowConfidence.getStyleClass().add("alignment_center");
         lowConfidence.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getLowConfidence()));
-        lowConfidence.setVisible(false);
+        lowConfidence.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
+            @Override
+            public void updateItem(String item, boolean empty) {
+                setGraphic((!StringUtils.isEmpty(item)) ? LowConfidenceList.getWarningReasonPopOver(item) : null);
+            }
+        });
+        //lowConfidence.setVisible(false);
         /*warn.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
             @Override
             public void updateItem(String item, boolean empty) {

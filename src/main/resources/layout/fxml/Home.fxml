@@ -44,7 +44,7 @@
                               <Insets right="5.0" />
                            </HBox.margin>
                         </Label>
-                        <Label text="SYSTEM USAGE">
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="SYSTEM USAGE">
                            <styleClass>
                               <String fx:value="font_size_18" />
                               <String fx:value="font_gray" />
@@ -66,7 +66,7 @@
          <content>
             <HBox fx:id="runListHBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="230.0">
                <children>
-                  <Button fx:id="buttonUpload" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showUploadFASTQ" prefHeight="220.0" prefWidth="220.0" styleClass="new_analysis_button" text="New Analysis">
+                  <Button fx:id="buttonUpload" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showUploadFASTQ" prefHeight="220.0" prefWidth="220.0" style="-fx-font-family: Noto Sans KR Bold;" styleClass="new_analysis_button" text="New Analysis">
                      <HBox.margin>
                         <Insets right="5.0" />
                      </HBox.margin>
@@ -85,7 +85,7 @@
                   <Insets right="5.0" />
                </HBox.margin>
             </Label>
-            <Label text="LATEST ANALYSIS">
+            <Label style="-fx-font-family: Noto Sans KR Bold;" text="LATEST ANALYSIS">
                <styleClass>
                   <String fx:value="font_size_18" />
                   <String fx:value="font_gray" />
@@ -146,7 +146,7 @@
                         <Insets right="5.0" />
                      </HBox.margin>
                   </Label>
-                  <Label text="NEWS &amp; TIPS">
+                  <Label style="-fx-font-family: Noto Sans KR Bold;" text="NEWS &amp; TIPS">
                      <padding>
                         <Insets right="10.0" />
                      </padding>
@@ -162,7 +162,7 @@
                   <Insets bottom="10.0" top="10.0" />
                </VBox.margin>
             </Label>
-            <Label fx:id="noticeContentsLabel" alignment="TOP_LEFT" maxHeight="100.0" maxWidth="330.0" minHeight="100.0" prefHeight="100.0" style="-fx-font-family: Noto Sans CJK KR Regular;" styleClass="font_size_12" text="Based on the NGS laboratory facility and bioinformatics technology, we are focusing on core technology capacity in the IVD field including MDx, CDx and liquid biopsy, by conducting cooperative research &amp; development with major hospitals and companies in Korea and overseas." textAlignment="JUSTIFY" wrapText="true">
+            <Label fx:id="noticeContentsLabel" alignment="TOP_LEFT" maxHeight="100.0" maxWidth="330.0" minHeight="100.0" prefHeight="100.0" styleClass="font_size_12" text="Based on the NGS laboratory facility and bioinformatics technology, we are focusing on core technology capacity in the IVD field including MDx, CDx and liquid biopsy, by conducting cooperative research &amp; development with major hospitals and companies in Korea and overseas." textAlignment="JUSTIFY" wrapText="true">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -191,7 +191,7 @@
                         <Insets right="5.0" />
                      </HBox.margin>
                   </Label>
-                  <Label text="TOOLS &amp; DATABASES">
+                  <Label style="-fx-font-family: Noto Sans KR Bold;" text="TOOLS &amp; DATABASES">
                      <styleClass>
                         <String fx:value="font_size_18" />
                         <String fx:value="font_gray" />

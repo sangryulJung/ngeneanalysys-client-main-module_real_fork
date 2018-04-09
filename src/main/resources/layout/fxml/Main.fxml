@@ -41,14 +41,14 @@
                         <Insets right="5.0" />
                      </HBox.margin>
                      <children>
-                        <Label fx:id="dashBoardBtn" maxHeight="1.7976931348623157E308" text="DASHBOARD" />
-                        <Label fx:id="resultsBtn" maxHeight="1.7976931348623157E308" text="RESULTS" />
+                        <Label fx:id="dashBoardBtn" maxHeight="1.7976931348623157E308" style="-fx-font-family: Noto Sans KR Bold;" text="DASHBOARD" />
+                        <Label fx:id="resultsBtn" maxHeight="1.7976931348623157E308" style="-fx-font-family: Noto Sans KR Bold;" text="RESULTS" />
                         <StackPane fx:id="sampleListStackPane" prefHeight="150.0" prefWidth="200.0">
                            <children>
-                              <Label fx:id="sampleListLabel" maxHeight="60.0" maxWidth="100.0" minHeight="60.0" minWidth="100.0" prefHeight="60.0" prefWidth="100.0" style="-fx-background-color: white;" text="SAMPLES" />
+                              <Label fx:id="sampleListLabel" maxHeight="60.0" maxWidth="100.0" minHeight="60.0" minWidth="100.0" prefHeight="60.0" prefWidth="100.0" style="-fx-background-color: white; -fx-font-family: Noto Sans KR Bold;" text="SAMPLES" />
                            </children>
                         </StackPane>
-                        <Label fx:id="managerBtn" maxHeight="1.7976931348623157E308" text="MANAGER" />
+                        <Label fx:id="managerBtn" maxHeight="1.7976931348623157E308" style="-fx-font-family: Noto Sans KR Bold;" text="MANAGER" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="238.0" styleClass="bg_main_header_right2" HBox.hgrow="NEVER">
@@ -58,7 +58,7 @@
                               <Insets right="6.0" />
                            </HBox.margin>
                         </Label>
-                        <Label fx:id="loginUserName" alignment="TOP_LEFT" prefWidth="129.0" style="-fx-font-family: Noto Sans CJK KR Regular;" text="Login User Account" textFill="WHITE">
+                        <Label fx:id="loginUserName" alignment="TOP_LEFT" prefWidth="129.0" text="Login User Account" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
@@ -68,7 +68,6 @@
                            <styleClass>
                               <String fx:value="font_size_12" />
                               <String fx:value="user_name" />
-                              <String fx:value="font_Sans_Regular" />
                            </styleClass>
                         </Label>
                         <MenuBar fx:id="userMenuBar" maxHeight="20.0" maxWidth="32.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="32.0">

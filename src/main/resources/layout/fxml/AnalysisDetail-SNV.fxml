@@ -27,7 +27,7 @@
    <children>
       <VBox fx:id="tableVBox" alignment="BOTTOM_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="0.0" GridPane.columnIndex="1">
          <children>
-            <TableView fx:id="variantListTableView" maxHeight="325.0" maxWidth="-Infinity" minHeight="325.0" minWidth="-Infinity" prefHeight="325.0" tableMenuButtonVisible="true">
+            <TableView fx:id="variantListTableView" maxHeight="305.0" maxWidth="-Infinity" minHeight="305.0" minWidth="-Infinity" prefHeight="305.0" tableMenuButtonVisible="true">
                <padding>
                   <Insets bottom="10.0" />
                </padding>
@@ -37,6 +37,9 @@
             </TableView>
             <Pagination fx:id="variantPagination" maxHeight="40.0" maxWidth="-Infinity" minHeight="40.0" minWidth="-Infinity" prefHeight="40.0" />
          </children>
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
       </VBox>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
@@ -45,23 +48,11 @@
                   <Insets />
                </HBox.margin>
                <children>
-                  <Label styleClass="font_size_18" text="FILTER" textFill="WHITE">
+                  <Label style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_18" text="FILTER" textFill="WHITE">
                      <VBox.margin>
                         <Insets left="24.0" />
                      </VBox.margin></Label>
-                  <HBox alignment="CENTER_LEFT" prefHeight="27.0" prefWidth="200.0">
-                     <children>
-                        <Label fx:id="totalTextLabel" style="-fx-cursor: hand;" styleClass="font_size_14" text="Total : ">
-                           <HBox.margin>
-                              <Insets left="15.0" />
-                           </HBox.margin></Label>
-                        <Label fx:id="totalVariantCountLabel" styleClass="font_size_14" text="size" />
-                     </children>
-                     <VBox.margin>
-                        <Insets bottom="5.0" />
-                     </VBox.margin>
-                  </HBox>
-                  <ScrollPane hbarPolicy="NEVER" prefHeight="250.0" prefWidth="120.0">
+                  <ScrollPane hbarPolicy="NEVER" prefHeight="290.0" prefWidth="120.0">
                      <content>
                         <VBox fx:id="filterVBox" prefHeight="0.0" prefWidth="100.0" spacing="10.0" />
                      </content>

@@ -72,6 +72,11 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
 
     }
 
+    public void setSNVTabName(String text) {
+        topMenus[0].setMenuName("SNV : " + text);
+        refreshShowTopMenu(0);
+    }
+
     public void setDefaultTab() {
         if(panel.getTarget().equalsIgnoreCase("DNA")) {
             topMenus = new TopMenu[1];

@@ -52,7 +52,7 @@
             </Label>
             <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
                <children>
-                  <Button id="btnLogin" fx:id="loginBtn" alignment="TOP_LEFT" focusTraversable="false" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#runLogin" prefHeight="35.0" prefWidth="160.0" text="LOGIN">
+                  <Button id="btnLogin" fx:id="loginBtn" alignment="TOP_LEFT" focusTraversable="false" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#runLogin" prefHeight="35.0" prefWidth="160.0" style="-fx-font-family: Noto Sans KR Bold;" text="LOGIN">
                      <font>
                         <Font name="Malgun Gothic" size="12.0" />
                      </font>
@@ -89,10 +89,10 @@
                         <Insets right="5.0" />
                      </HBox.margin>
                   </Button>
-                  <Label style="-fx-text-fill: #FFFFFF; -fx-font-family: Noto Sans CJK KR Regular;" text="Service Setting" />
+                  <Label style="-fx-text-fill: #FFFFFF;" text="Service Setting" />
                </children>
             </HBox>
-            <Label style="-fx-text-fill: #FFFFFF; -fx-font-family: Noto Sans CJK KR Regular;" text="All content ⓒ 2018 NGeneBio, Inc." />
+            <Label style="-fx-text-fill: #FFFFFF;" text="All content ⓒ 2018 NGeneBio, Inc." />
          </children>
          <GridPane.margin>
             <Insets />
