@@ -14,10 +14,10 @@ import javafx.scene.text.TextAlignment;
  * @since 2018-03-06
  */
 public class HddStatusTimer extends AnimationTimer {
-    private double outerLineWidth = 1.0;
+    private double outerLineWidth = 0.0;
     private double outerCircleSize = 0;
-    private double gaugeStartAngle = 85.0;
-    private double innerLineWidth = 5.0;
+    private double gaugeStartAngle = 90.0;
+    private double innerLineWidth = 0.0;
     private double innerOuterCircleGap = 1.0;
     private double innerCircleSize = 0.0;
     private double defaultMargin = outerLineWidth + 10.0;
@@ -35,7 +35,7 @@ public class HddStatusTimer extends AnimationTimer {
     public HddStatusTimer(GraphicsContext gc, double value, String labelText1, String labelText2, double gaugeSpeed) {
         this.gc = gc;
         this.canvas = gc.getCanvas();
-        this.outerCircleSize = canvas.getWidth() - this.defaultMargin - 20;
+        this.outerCircleSize = canvas.getWidth() - this.defaultMargin - 1;
         this.innerOuterCircleGap = (this.innerLineWidth + this.outerLineWidth) / 2.0 + 3.0;
         this.innerCircleSize = this.outerCircleSize - (this.innerOuterCircleGap * 2);
         this.value = value;
@@ -50,10 +50,23 @@ public class HddStatusTimer extends AnimationTimer {
     public void handle(long now) {
         gc.clearRect(0, 0, this.canvas.getWidth(), this.canvas.getHeight());
         gc.setStroke(Color.web("#C5C5C5"));
-        gc.setLineWidth(25);
-        gc.strokeArc(this.defaultMargin + this.innerOuterCircleGap, this.defaultMargin + this.innerOuterCircleGap,
-                this.innerCircleSize, this.innerCircleSize, this.gaugeStartAngle, -360, this.arcType);
+        gc.setLineWidth(2);
+        for(int i = 0; i < 25; i++) {
+            gc.strokeArc(this.defaultMargin + this.innerOuterCircleGap + i, this.defaultMargin + this.innerOuterCircleGap + i,
+                    this.innerCircleSize - (i * 2), this.innerCircleSize - (i * 2), this.gaugeStartAngle, -360, this.arcType);
+        }
         gc.setStroke(Color.web("#a8bbd9"));
+
+        //gc.setLineWidth(this.innerLineWidth);
+        currAngle += angleStep;
+        if (currAngle > angle) {
+            currAngle = angle;
+        }
+        gc.setLineWidth(2);
+        for(int i = 0; i < 25; i++) {
+            gc.strokeArc(this.defaultMargin + this.innerOuterCircleGap + i, this.defaultMargin + this.innerOuterCircleGap + i,
+                    this.innerCircleSize - (i * 2), this.innerCircleSize - (i * 2), this.gaugeStartAngle, -this.currAngle, this.arcType);
+        }
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setTextBaseline(VPos.CENTER);
         gc.setFont(Font.font(18));
@@ -64,14 +77,8 @@ public class HddStatusTimer extends AnimationTimer {
         gc.setFont(Font.font(10));
         gc.fillText(this.labelText2, this.defaultMargin + (this.outerCircleSize / 2.0),
                 this.defaultMargin + (this.outerCircleSize / 2.0) + this.labelMargin);
-        //gc.setLineWidth(this.innerLineWidth);
-        currAngle += angleStep;
-        if (currAngle > angle) {
-            currAngle = angle;
-        }
-        gc.setLineWidth(25);
-        gc.strokeArc(this.defaultMargin + this.innerOuterCircleGap, this.defaultMargin + this.innerOuterCircleGap,
-                this.innerCircleSize, this.innerCircleSize, this.gaugeStartAngle, -this.currAngle, this.arcType);
+//        gc.strokeArc(this.defaultMargin + this.innerOuterCircleGap, this.defaultMargin + this.innerOuterCircleGap,
+//                this.innerCircleSize, this.innerCircleSize, this.gaugeStartAngle, -this.currAngle, this.arcType);
         if (currAngle >= angle) {
             stop();
             reset();

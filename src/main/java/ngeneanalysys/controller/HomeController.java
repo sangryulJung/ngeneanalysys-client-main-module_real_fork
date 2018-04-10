@@ -193,14 +193,14 @@ public class HomeController extends SubPaneController{
             double value = (double)storageUsage.getFreeSpace() / storageUsage.getTotalSpace();
             String textLabel = ConvertUtil.convertFileSizeFormat(storageUsage.getFreeSpace()) + " / " + ConvertUtil.convertFileSizeFormat(storageUsage.getTotalSpace());
             AnimationTimer hddStatusTier = new HddStatusTimer(hddCanvas.getGraphicsContext2D(), value, "Free Space",
-                    textLabel, 10);
+                    textLabel, 1);
             hddStatusTier.start();
 
             int totalCount = (int)(storageUsage.getTotalSpace() / 10737418240L);
             double available = (double)storageUsage.getAvailableSampleCount() / totalCount;
             String label = storageUsage.getAvailableSampleCount() + " / " + totalCount + " Samples";
             AnimationTimer availableTier = new HddStatusTimer(availableCanvas.getGraphicsContext2D(), available, "Available",
-                    label, 10);
+                    label, 1);
             availableTier.start();
 
         } catch (WebAPIException wae) {
