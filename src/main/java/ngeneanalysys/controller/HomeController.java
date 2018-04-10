@@ -486,8 +486,7 @@ public class HomeController extends SubPaneController{
     @FXML
     public void databaseView() {
         logger.info("popover");
-
-
+        
         PopOver popOver = new PopOver();
         popOver.setArrowLocation(PopOver.ArrowLocation.RIGHT_TOP);
         popOver.setHeaderAlwaysVisible(true);

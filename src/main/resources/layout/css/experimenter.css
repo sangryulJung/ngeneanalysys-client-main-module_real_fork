@@ -174,3 +174,39 @@
     -fx-pref-width : 24;
     -fx-pref-height : 24;
 }
+
+
+.run_queued_icon {
+    -fx-background-color : #d8a60d;
+    -fx-background-radius : 20;
+    -fx-pref-width : 25;
+    -fx-pref-height : 16;
+    -fx-text-fill : #FFFFFF;
+    -fx-alignment : center;
+}
+
+.run_complete_icon {
+    -fx-background-color : #229db8;
+    -fx-background-radius : 20;
+    -fx-pref-width : 25;
+    -fx-pref-height : 16;
+    -fx-text-fill : #FFFFFF;
+    -fx-alignment : center;
+}
+.run_run_icon {
+    -fx-background-color : #69b415;
+    -fx-background-radius : 30;
+    -fx-background-radius : 20;
+    -fx-pref-width : 25;
+    -fx-pref-height : 16;
+    -fx-text-fill : #FFFFFF;
+    -fx-alignment : center;
+}
+.run_failed_icon {
+    -fx-background-color : #FF0000;
+    -fx-background-radius : 20;
+    -fx-pref-width : 25;
+    -fx-pref-height : 16;
+    -fx-text-fill : #FFFFFF;
+    -fx-alignment : center;
+}

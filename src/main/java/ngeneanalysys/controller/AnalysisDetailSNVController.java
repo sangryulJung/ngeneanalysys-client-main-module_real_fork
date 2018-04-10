@@ -736,7 +736,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 }
             });
             TableColumn<VariantAndInterpretationEvidence, String> expertTier = new TableColumn<>("Tier");
-            createTableHeader(expertTier, "Tier", "" ,null);
+            createTableHeader(expertTier, "Tier", "expertTier" ,null);
             expertTier.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getExpertTier()));
             expertTier.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
                 @Override
@@ -776,7 +776,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             });
 
             TableColumn<VariantAndInterpretationEvidence, String> expertPathogenicityLevel = new TableColumn<>("Pathogenicity");
-            createTableHeader(expertPathogenicityLevel, "Pathogenicity", null ,90.);
+            createTableHeader(expertPathogenicityLevel, "Pathogenicity", "expertPathogenicity" ,90.);
             expertPathogenicityLevel.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getExpertPathogenicity()));
             expertPathogenicityLevel.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
                 @Override
@@ -812,7 +812,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         });
 
         TableColumn<VariantAndInterpretationEvidence, String> lowConfidence = new TableColumn<>("Low confidence");
-        createTableHeader(lowConfidence, "Low confidence", null ,null);
+        createTableHeader(lowConfidence, "Low confidence", "lowConfidence" ,null);
         lowConfidence.getStyleClass().add("alignment_center");
         lowConfidence.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getLowConfidence()));
         lowConfidence.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {

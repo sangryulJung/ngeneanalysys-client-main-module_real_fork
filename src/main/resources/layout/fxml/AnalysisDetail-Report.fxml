@@ -99,7 +99,7 @@
                               <TableView fx:id="variantsTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="1120.0" style="-fx-border-width: 0;" styleClass="txt_black">
                                 <columns>
                                     <TableColumn fx:id="tierColumn" prefWidth="75.0" styleClass="txt_black" text="Tier" />
-                                    <TableColumn fx:id="chrColumn" prefWidth="195.0" styleClass="txt_black" text="Chr" />
+                                    <TableColumn fx:id="chrColumn" prefWidth="125.0" styleClass="txt_black" text="Chr" />
                                   <TableColumn fx:id="geneColumn" prefWidth="145.0" styleClass="txt_black" text="Gene" />
                                     <TableColumn fx:id="positionColumn" prefWidth="150.0" styleClass="txt_black" text="Position" />
                                   <TableColumn fx:id="refSeqColumn" prefWidth="200.0" styleClass="txt_black" text="Transcript" />

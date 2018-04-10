@@ -15,7 +15,7 @@
                <HBox.margin>
                   <Insets right="10.0" />
                </HBox.margin></ComboBox>
-            <Label style="-fx-cursor: hand;" styleClass="title1" text="View In IGV" />
+            <Label onMouseClicked="#showIGV" style="-fx-cursor: hand;" styleClass="title1" text="View In IGV" />
          </children>
          <VBox.margin>
             <Insets />

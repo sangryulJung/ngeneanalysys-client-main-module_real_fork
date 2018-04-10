@@ -116,7 +116,7 @@ public class PastResultsController extends SubPaneController {
 	public void show(Parent root) throws IOException {
 		setSearchOption();
 		logger.info("PastResultsController show..");
-		itemCountPerPage = 5;
+		itemCountPerPage = 30;
 		// api service init..
 		apiService = APIService.getInstance();
 		apiService.setStage(getMainController().getPrimaryStage());
@@ -766,17 +766,17 @@ public class PastResultsController extends SubPaneController {
 				statusHBox.getStyleClass().add("variant_hbox");
 				Label status = new Label(sampleView.getSampleStatus().getStatus().substring(0,1));
 				if(sampleView.getSampleStatus().getStatus().startsWith("C")) {
-					status.getStyleClass().addAll("label","complete_icon");
+					status.getStyleClass().addAll("label","run_complete_icon");
 				} else if(sampleView.getSampleStatus().getStatus().startsWith("F")) {
-					status.getStyleClass().addAll("label","failed_icon");
+					status.getStyleClass().addAll("label","run_failed_icon");
 				} else if(sampleView.getSampleStatus().getStatus().startsWith("R")) {
-					status.getStyleClass().addAll("label","run_icon");
+					status.getStyleClass().addAll("label","run_run_icon");
 					if(sample.getSampleStatus().getProgressPercentage() != null) {
                         Tooltip tooltip = new Tooltip(sample.getSampleStatus().getProgressPercentage().toString());
                         status.setTooltip(tooltip);
                     }
 				} else if(sampleView.getSampleStatus().getStatus().startsWith("Q")) {
-					status.getStyleClass().addAll("label","queued_icon");
+					status.getStyleClass().addAll("label","run_queued_icon");
 				}
 				statusHBox.getChildren().add(status);
 				Label panel = new Label(sampleView.getPanelName());

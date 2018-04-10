@@ -1,24 +1,20 @@
 package ngeneanalysys.controller.fragment;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.AnalysisDetailSNVController;
 import ngeneanalysys.controller.ExcludeReportDialogController;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
-import ngeneanalysys.model.ClinicalEvidence;
-import ngeneanalysys.model.SnpInDel;
-import ngeneanalysys.model.SnpInDelInterpretation;
-import ngeneanalysys.model.VariantAndInterpretationEvidence;
+import ngeneanalysys.model.*;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
@@ -42,6 +38,9 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     private Label swTierLabel;
     @FXML
     private Label userTierLabel;
+
+    @FXML
+    private GridPane interpretationGridPane;
 
     @FXML
     private ComboBox<ComboBoxItem> tierComboBox;
@@ -91,6 +90,27 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     @FXML
     private CheckBox addToReportCheckBox;
 
+    @FXML
+    private TableView<SameVariantInterpretation> PastCasesTableView;
+
+    @FXML
+    private TableColumn<SameVariantInterpretation, String> pastCasesSampleColumn;
+
+    @FXML
+    private TableColumn<SameVariantInterpretation, String> pastCasesTypeColumn;
+
+    @FXML
+    private TableColumn<SameVariantInterpretation, String> pastCasesEvidenceColumn;
+
+    @FXML
+    private TableColumn<SameVariantInterpretation, String> pastCasesInterpretationColumn;
+
+    @FXML
+    private TableColumn<SameVariantInterpretation, String> pastCasesEvidenceCommentColumn;
+
+    @FXML
+    private TableColumn<SameVariantInterpretation, String> pastCasesDateColumn;
+
     private VariantAndInterpretationEvidence variantAndInterpretationEvidence;
 
     private APIService apiService;
@@ -116,6 +136,8 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         tierComboBox.getItems().add(new ComboBoxItem("T3", "T3"));
         tierComboBox.getItems().add(new ComboBoxItem("T4", "T4"));
         tierComboBox.getSelectionModel().select(0);
+
+        pastCasesSampleColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSampleName()));
 
     }
 
