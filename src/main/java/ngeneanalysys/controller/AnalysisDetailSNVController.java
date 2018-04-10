@@ -599,7 +599,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
         if(sortList.isEmpty()) {
             if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
-                sortList.add("swTier DESC");
+                sortList.add("swTier ASC");
             } else {
                 sortList.add("swPathogenicity DESC");
             }

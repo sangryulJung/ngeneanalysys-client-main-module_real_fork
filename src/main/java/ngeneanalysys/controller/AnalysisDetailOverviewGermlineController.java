@@ -95,18 +95,6 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
     private Label roiCoverageLabel;
 
     @FXML
-    private Tooltip meanReadTooltip;
-
-    @FXML
-    private Label meanReadLabel;
-
-    @FXML
-    private Tooltip retainedReadTooltip;
-
-    @FXML
-    private Label retainedReadLabel;
-
-    @FXML
     private Tooltip coverageUniformityTooltip;
 
     @FXML
@@ -277,12 +265,6 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
 
             roiCoverageLabel.setText(findQCResult(qcList, "roi_coverage").toUpperCase());
             roiCoverageTooltip.setText(findQCTooltipString(qcList, "roi_coverage"));
-
-            meanReadLabel.setText(findQCResult(qcList, "mean_read_quality").toUpperCase());
-            meanReadTooltip.setText(findQCTooltipString(qcList, "mean_read_quality"));
-
-            retainedReadLabel.setText(findQCResult(qcList, "retained_reads").toUpperCase());
-            retainedReadTooltip.setText(findQCTooltipString(qcList, "retained_reads"));
 
             coverageUniformityLabel.setText(findQCResult(qcList, "coverage_uniformity").toUpperCase());
             coverageUniformityTooltip.setText(findQCTooltipString(qcList, "coverage_uniformity"));

@@ -26,8 +26,8 @@
       <ColumnConstraints />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="380.0" valignment="BOTTOM" />
-      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" valignment="BOTTOM" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="370.0" valignment="BOTTOM" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" valignment="BOTTOM" />
    </rowConstraints>
    <children>
       <HBox fx:id="workBtnBox" alignment="CENTER_RIGHT" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
@@ -44,16 +44,16 @@
             </ComboBox>
             <Button maxHeight="25.0" minHeight="25.0" mnemonicParsing="false" onAction="#save" prefHeight="25.0" prefWidth="95.0" styleClass="submitBtn" text="Save" GridPane.columnIndex="5" GridPane.rowIndex="7">
                <HBox.margin>
-                  <Insets />
+                  <Insets bottom="3.0" />
                </HBox.margin></Button>
             <Button layoutX="1155.0" layoutY="20.0" maxHeight="25.0" minHeight="25.0" mnemonicParsing="false" onAction="#createPDFAsDraft" prefHeight="25.0" prefWidth="100.0" styleClass="cancelBtn" text="Draft Report">
                <HBox.margin>
-                  <Insets left="5.0" right="5.0" />
+                  <Insets bottom="3.0" left="5.0" right="5.0" />
                </HBox.margin>
             </Button>
             <Button layoutX="1155.0" layoutY="20.0" maxHeight="25.0" minHeight="25.0" mnemonicParsing="false" onAction="#createPDFAsFinal" prefHeight="25.0" prefWidth="100.0" styleClass="cancelBtn" text="Final Report">
                <HBox.margin>
-                  <Insets />
+                  <Insets bottom="3.0" />
                </HBox.margin></Button>
          </children>
       </HBox>
@@ -101,7 +101,7 @@
                                     <TableColumn fx:id="tierColumn" prefWidth="75.0" styleClass="txt_black" text="Prediction" />
                                     <TableColumn fx:id="userTierColumn" prefWidth="75.0" styleClass="txt_black" text="Tier" />
                                     <TableColumn fx:id="chrColumn" prefWidth="125.0" styleClass="txt_black" text="Chr" />
-                                  <TableColumn fx:id="geneColumn" prefWidth="145.0" styleClass="txt_black" text="Gene" />
+                                  <TableColumn fx:id="geneColumn" prefWidth="135.0" styleClass="txt_black" text="Gene" />
                                     <TableColumn fx:id="positionColumn" prefWidth="110.0" styleClass="txt_black" text="Position" />
                                   <TableColumn fx:id="refSeqColumn" prefWidth="200.0" styleClass="txt_black" text="Transcript" />
                                     <TableColumn fx:id="ntChangeColumn" prefWidth="150.0" styleClass="txt_black" text="NT Change" />
