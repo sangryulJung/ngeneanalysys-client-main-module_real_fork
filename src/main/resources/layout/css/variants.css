@@ -141,7 +141,7 @@
 }
 
 #variantListTableView .btn_warn {
-	-fx-background-image:url('../images/icon_warn_small.png');
+	-fx-background-image:url('../images/renewal/icon_warn_small.png');
 	-fx-background-size:16;
 	-fx-background-repeat:no-repeat;
 	-fx-background-color:transparent;

@@ -8,27 +8,18 @@
 
 <VBox fx:id="mainVBox" minWidth="350.0" prefHeight="256.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../../css/variantDetail.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.DetailSubInfoController">
    <children>
-      <HBox alignment="CENTER_LEFT" prefHeight="23.0" prefWidth="200.0" spacing="10.0">
+      <HBox alignment="CENTER" prefHeight="23.0" prefWidth="200.0" spacing="10.0">
          <children>
-            <Label id="external_link_icon" maxWidth="20.0" minWidth="20.0" prefWidth="20.0" />
-            <Label text="External Link" />
-            <ComboBox fx:id="externalLinkComboBox" prefWidth="150.0" />
+            <Label styleClass="title1" text="External Link" />
+            <ComboBox fx:id="externalLinkComboBox" onAction="#showLinkEvent" prefWidth="120.0">
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin></ComboBox>
+            <Label style="-fx-cursor: hand;" styleClass="title1" text="View In IGV" />
          </children>
          <VBox.margin>
             <Insets />
          </VBox.margin>
-         <padding>
-            <Insets left="10.0" />
-         </padding>
-      </HBox>
-      <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" onMouseClicked="#showIGV" prefHeight="23.0" prefWidth="135.0" spacing="10.0" style="-fx-cursor: hand;">
-         <children>
-            <Label id="view_in_igv_icon" maxWidth="20.0" minWidth="20.0" prefHeight="0.0" prefWidth="20.0" />
-            <Label text="View In IGV" />
-         </children>
-         <padding>
-            <Insets left="10.0" />
-         </padding>
       </HBox>
    </children>
 </VBox>

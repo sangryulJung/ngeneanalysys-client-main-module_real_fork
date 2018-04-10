@@ -43,7 +43,7 @@
          <children>
             <Label text="RefSeq Transcript : " HBox.hgrow="NEVER">
                <styleClass>
-                  <String fx:value="font_size_14" />
+                  <String fx:value="font_size_12" />
                   <String fx:value="txt_gray_656565" />
                </styleClass>
             </Label>

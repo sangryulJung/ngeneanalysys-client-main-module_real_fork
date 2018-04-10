@@ -46,7 +46,6 @@ public class AnalysisDetailVariantDetailController extends SubPaneController {
 
     private AnalysisDetailVariantNomenclatureController analysisDetailVariantNomenclatureController;
 
-
     @Override
     public void show(Parent root) throws IOException {
         panel = (Panel)paramMap.get("panel");
@@ -75,6 +74,7 @@ public class AnalysisDetailVariantDetailController extends SubPaneController {
             DetailSubInfoController controller = loader.getController();
             controller.setMainController(this.getMainController());
             controller.setParamMap(paramMap);
+            controller.setAnalysisDetailVariantNomenclatureController(analysisDetailVariantNomenclatureController);
             controller.show((Parent) node);
             detailWarpper.add(node, 2, 0);
         } catch (Exception e) {

@@ -1,5 +1,6 @@
 package ngeneanalysys.controller.fragment;
 
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -18,7 +19,9 @@ import ngeneanalysys.service.ALAMUTService;
 import ngeneanalysys.service.IGVService;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.JsonUtil;
+import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
+import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.util.List;
@@ -30,7 +33,7 @@ import java.util.Optional;
  * @since 2018-04-10
  */
 public class DetailSubInfoController extends SubPaneController {
-
+    private static Logger logger = LoggerUtil.getLogger();
     @FXML
     private VBox mainVBox;
     @FXML
@@ -47,6 +50,15 @@ public class DetailSubInfoController extends SubPaneController {
 
     /** Alamut 연동 서비스 */
     private ALAMUTService alamutService;
+
+    private AnalysisDetailVariantNomenclatureController analysisDetailVariantNomenclatureController;
+
+    /**
+     * @param analysisDetailVariantNomenclatureController
+     */
+    public void setAnalysisDetailVariantNomenclatureController(AnalysisDetailVariantNomenclatureController analysisDetailVariantNomenclatureController) {
+        this.analysisDetailVariantNomenclatureController = analysisDetailVariantNomenclatureController;
+    }
 
     @Override
     public void show(Parent root) throws IOException {
@@ -86,6 +98,15 @@ public class DetailSubInfoController extends SubPaneController {
         }
     }
 
+    @FXML
+    public void showLinkEvent(Event event) {
+        ComboBox<String> ev = (ComboBox<String>)event.getSource();
+        String item = ev.getSelectionModel().getSelectedItem();
+        if(!StringUtils.isEmpty(item)) {
+            showBrowser(item);
+        }
+    }
+
     public void showPopulationFrequency() {
         try {
             FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_POPULATION_FREQUENCIES);
@@ -116,23 +137,23 @@ public class DetailSubInfoController extends SubPaneController {
             Integer end = (variantInformationMap.containsKey("stop")) ? (Integer) variantInformationMap.get("stop") : null;
 
             if (!StringUtils.isEmpty(rsId)) {
-                externalLinkComboBox.getItems().addAll("dbSNP", "clinvar", "gnomes", "koEXID");
+                externalLinkComboBox.getItems().addAll("dbSNP", "ClinVar", "1000G", "KoEXID");
             }
             if (!StringUtils.isEmpty(geneId)) {
-                externalLinkComboBox.getItems().addAll("ncbi");
+                externalLinkComboBox.getItems().addAll("NCBI");
             }
             if (!StringUtils.isEmpty(exacFormat)) {
-                externalLinkComboBox.getItems().addAll("exAC", "gnomAD");
+                externalLinkComboBox.getItems().addAll("ExAC", "gnomAD");
             }
             if (selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getOncoKB() != null &&
                     !StringUtils.isEmpty(selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getOncoKB().getOncokbHgvsp())) {
-                externalLinkComboBox.getItems().addAll("oncoKB");
+                externalLinkComboBox.getItems().addAll("OncoKB");
             }
             if (!StringUtils.isEmpty(selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getCosmic().getCosmicIds())) {
-                externalLinkComboBox.getItems().addAll("cosmic");
+                externalLinkComboBox.getItems().addAll("COSMIC");
             }
             if (start != null && end != null) {
-                externalLinkComboBox.getItems().addAll("ucsc");
+                externalLinkComboBox.getItems().addAll("UCSC");
             }
 
         } else if(panel.getAnalysisType().equalsIgnoreCase("GERMLINE")) {
@@ -143,29 +164,29 @@ public class DetailSubInfoController extends SubPaneController {
             String urlUCSC = (variantInformationMap.containsKey("ucsc_url")) ? (String) variantInformationMap.get("ucsc_url") : null;
 
             if (!StringUtils.isEmpty(urlExAC)) {
-                externalLinkComboBox.getItems().add("exAC");
+                externalLinkComboBox.getItems().add("ExAC");
             }
             if (!StringUtils.isEmpty(urlBRCAExchange)) {
-                externalLinkComboBox.getItems().add("brcaExchange");
+                externalLinkComboBox.getItems().add("BRCA Exchange");
             }
             if (!StringUtils.isEmpty(urlClinvar)) {
-                externalLinkComboBox.getItems().add("clinvar");
+                externalLinkComboBox.getItems().add("ClinVar");
             }
             if (!StringUtils.isEmpty(urlNCBI)) {
-                externalLinkComboBox.getItems().add("ncbi");
+                externalLinkComboBox.getItems().add("NCBI");
             }
             if (!StringUtils.isEmpty(urlUCSC)) {
-                externalLinkComboBox.getItems().add("ucsc");
+                externalLinkComboBox.getItems().add("UCSC");
             }
             Map<String, Object> geneMap = returnResultsAfterSearch("gene");
             if (geneMap != null && !geneMap.isEmpty() && geneMap.containsKey("transcript")) {
                 Map<String, Map<String, String>> transcriptDataMap = (Map<String, Map<String, String>>) geneMap.get("transcript");
                 if (!transcriptDataMap.isEmpty() && transcriptDataMap.size() > 0) {
-                    externalLinkComboBox.getItems().add("alamut");
+                    externalLinkComboBox.getItems().add("ALAMUT");
                 }
             }
         }
-        
+
     }
 
     public void showBrowser(String item) {
@@ -175,22 +196,25 @@ public class DetailSubInfoController extends SubPaneController {
                 String rsId = (variantInformationMap.containsKey("rs_id")) ? (String) variantInformationMap.get("rs_id") : null;
                 String fullUrlDBsnp = "https://www.ncbi.nlm.nih.gov/projects/SNP/snp_ref.cgi?rs=" + rsId.replaceAll("rs", "");
                 getMainApp().getHostServices().showDocument(fullUrlDBsnp);
-            } else if("clinvar".equalsIgnoreCase(item)) {
+            } else if("ClinVar".equalsIgnoreCase(item)) {
                 String rsId = (variantInformationMap.containsKey("rs_id")) ? (String) variantInformationMap.get("rs_id") : null;
                 String fullUrlClinvar = "http://www.ncbi.nlm.nih.gov/clinvar?term=" + rsId;
                 getMainApp().getHostServices().showDocument(fullUrlClinvar);
-            } else if("gnomes".equalsIgnoreCase(item)) {
+            } else if("1000G".equalsIgnoreCase(item)) {
                 String rsId = (variantInformationMap.containsKey("rs_id")) ? (String) variantInformationMap.get("rs_id") : null;
                 String fullUrl1000G = "http://grch37.ensembl.org/Homo_sapiens/Variation/Population?db=core;v="
                         + rsId + ";vdb=variation";
                 getMainApp().getHostServices().showDocument(fullUrl1000G);
-            } else if("koEXID".equalsIgnoreCase(item)) {
-
-            } else if("ncbi".equalsIgnoreCase(item)) {
+            } else if("KoEXID".equalsIgnoreCase(item)) {
+                String rsId = (variantInformationMap.containsKey("rs_id")) ? (String) variantInformationMap.get("rs_id") : null;
+                String fullUrlKoKEXID = "http://koex.snu.ac.kr/koex_main.php?section=search&db_code=15&keyword_class=varid&search_keyword="
+                        + rsId;
+                getMainApp().getHostServices().showDocument(fullUrlKoKEXID);
+            } else if("NCBI".equalsIgnoreCase(item)) {
                 String geneId = (variantInformationMap.containsKey("geneid")) ? (String) variantInformationMap.get("geneid") : null;
                 String fullUrlNCBI = "http://www.ncbi.nlm.nih.gov/gene/" + geneId;
                 getMainApp().getHostServices().showDocument(fullUrlNCBI);
-            } else if("exAC".equalsIgnoreCase(item)) {
+            } else if("ExAC".equalsIgnoreCase(item)) {
                 String exacFormat = (variantInformationMap.containsKey("exac_url")) ? (String) variantInformationMap.get("exac_format") : null;
                 String fullUrlExAC = "http://exac.broadinstitute.org/variant/"
                         + exacFormat;
@@ -200,13 +224,13 @@ public class DetailSubInfoController extends SubPaneController {
                 String fullUrlExAC = "http://gnomad.broadinstitute.org/variant/"
                         + exacFormat;
                 getMainApp().getHostServices().showDocument(fullUrlExAC);
-            } else if("oncoKB".equalsIgnoreCase(item)) {
+            } else if("OncoKB".equalsIgnoreCase(item)) {
                 String fullUrlOncoKB = "http://oncokb.org/#/gene/"
                         + selectedAnalysisResultVariant.getSnpInDel().getGenomicCoordinate().getGene()
                         + "/variant/"
                         + selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getOncoKB().getOncokbHgvsp();
                 getMainApp().getHostServices().showDocument(fullUrlOncoKB);
-            } else if("cosmic".equalsIgnoreCase(item)) {
+            } else if("COSMIC".equalsIgnoreCase(item)) {
                 String cosmicId = selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getCosmic().getCosmicIds().replaceAll("COSM", "");
                 if (cosmicId.contains("|")) {
                     String[] ids = cosmicId.split("\\|");
@@ -228,7 +252,7 @@ public class DetailSubInfoController extends SubPaneController {
                     String fullUrlCOSMIC = "http://cancer.sanger.ac.uk/cosmic/mutation/overview?genome=37&id=" + cosmicId;
                     getMainApp().getHostServices().showDocument(fullUrlCOSMIC);
                 }
-            } else if("ucsc".equalsIgnoreCase(item)) {
+            } else if("UCSC".equalsIgnoreCase(item)) {
                 Integer start = (variantInformationMap.containsKey("start")) ? (Integer) variantInformationMap.get("start") : null;
                 Integer end = (variantInformationMap.containsKey("stop")) ? (Integer) variantInformationMap.get("stop") : null;
                 StringBuilder insertStart = new StringBuilder(start.toString());
@@ -254,7 +278,37 @@ public class DetailSubInfoController extends SubPaneController {
                 getMainApp().getHostServices().showDocument(fullUrlUCSC);
             }
         } else if(panel.getAnalysisType().equalsIgnoreCase("GERMLINE")) {
-
+            if("BRCA Exchange".equalsIgnoreCase(item)) {
+                String urlBRCAExchange = (variantInformationMap.containsKey("brca_exchange_url")) ? (String) variantInformationMap.get("brca_exchange_url") : null;
+                getMainApp().getHostServices().showDocument(urlBRCAExchange);
+            } else if("ClinVar".equalsIgnoreCase(item)) {
+                String urlClinvar = (variantInformationMap.containsKey("clinvar_url")) ? (String) variantInformationMap.get("clinvar_url") : null;
+                getMainApp().getHostServices().showDocument(urlClinvar);
+            } else if("NCBI".equalsIgnoreCase(item)) {
+                String urlNCBI = (variantInformationMap.containsKey("ncbi_url")) ? (String) variantInformationMap.get("ncbi_url") : null;
+                getMainApp().getHostServices().showDocument(urlNCBI);
+            } else if("UCSC".equalsIgnoreCase(item)) {
+                String urlUCSC = (variantInformationMap.containsKey("ucsc_url")) ? (String) variantInformationMap.get("ucsc_url") : null;
+                getMainApp().getHostServices().showDocument(urlUCSC);
+            } else if("ALAMUT".equalsIgnoreCase(item)) {
+                Map<String, Object> geneMap = returnResultsAfterSearch("gene");
+                Map<String, Map<String, String>> transcriptDataMap = (Map<String, Map<String, String>>) geneMap.get("transcript");
+                if (!transcriptDataMap.isEmpty() && transcriptDataMap.size() > 0) {
+                    int selectedIdx = this.analysisDetailVariantNomenclatureController.getTranscriptComboBoxSelectedIndex();
+                    logger.info(String.format("selected transcript combobox idx : %s", selectedIdx));
+                    Map<String, String> map = transcriptDataMap.get(String.valueOf(selectedIdx));
+                    if (!map.isEmpty() && map.size() > 0) {
+                        String transcript = map.get("transcript_name");
+                        String cDNA = map.get("hgvs.c");
+                        String sampleId = sample.getId().toString();
+                        String bamFileName = sample.getName() + "_final.bam";
+                        loadAlamut(transcript, cDNA, sampleId, bamFileName);
+                    }
+                }
+            } else if("ExAC".equalsIgnoreCase(item)) {
+                String urlExAC = (variantInformationMap.containsKey("exac_url")) ? (String) variantInformationMap.get("exac_url") : null;
+                getMainApp().getHostServices().showDocument(urlExAC);
+            }
         }
     }
 

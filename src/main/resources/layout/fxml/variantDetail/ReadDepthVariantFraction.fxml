@@ -88,12 +88,12 @@
       </HBox>
       <VBox alignment="TOP_RIGHT" prefHeight="30.0" prefWidth="100.0" GridPane.rowIndex="4">
          <children>
-            <Label style="-fx-font-family: Noto Sans CJK KR Regular;" styleClass="title3" text="mean">
+            <Label styleClass="title3" text="mean">
                <VBox.margin>
                   <Insets right="15.0" />
                </VBox.margin>
             </Label>
-            <Label fx:id="depthMeanLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" styleClass="title3" text="7000">
+            <Label fx:id="depthMeanLabel" styleClass="title3" text="7000">
                <VBox.margin>
                   <Insets right="15.0" />
                </VBox.margin>
@@ -174,7 +174,7 @@
       </HBox>
       <HBox GridPane.columnIndex="1" GridPane.rowIndex="4">
          <children>
-            <Label fx:id="fractionRef" style="-fx-font-family: Noto Sans CJK KR Regular;" styleClass="ref" text="G">
+            <Label fx:id="fractionRef" styleClass="ref" text="G">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -182,8 +182,8 @@
                   <Insets left="15.0" />
                </HBox.margin>
             </Label>
-            <Label style="-fx-font-family: Noto Sans CJK KR Regular;" styleClass="alt" text="/" />
-            <Label fx:id="fractionAlt" style="-fx-font-family: Noto Sans CJK KR Regular;" styleClass="alt" text="T" />
+            <Label styleClass="alt" text="/" />
+            <Label fx:id="fractionAlt" styleClass="alt" text="T" />
          </children>
          <GridPane.margin>
             <Insets top="5.0" />

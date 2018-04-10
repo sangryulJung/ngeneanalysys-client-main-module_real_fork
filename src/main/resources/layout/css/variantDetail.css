@@ -166,7 +166,7 @@
 	-fx-min-width:360;
 	-fx-pref-width:360;
 	-fx-max-width:360;
-	-fx-padding:10 0 0 0;
+	-fx-padding:0 0 0 0;
 }
 
 .population_frequency_graph {
@@ -548,9 +548,23 @@
 }
 
 #externalLinkComboBox {
-    -fx-background-color : #D9D9D9;
-    -fx-background-radius : 0;
-    -fx-border-width : 0;
+	-fx-background-color:#A9A9A9;
+	-fx-background-radius:3;
+	-fx-border-width:0;
+	-fx-pref-height : 20;
+}
+
+#externalLinkComboBox .list-cell {
+	-fx-background-insets:0;
+	-fx-padding:0 0 0 15;
+}
+
+#externalLinkComboBox .list-cell:selected {
+	-fx-text-fill:#fff;
+}
+
+#externalLinkComboBox .arrow-button .arrow {
+	-fx-background-color:#fff;
 }
 
 #external_link_icon {
