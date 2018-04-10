@@ -481,7 +481,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             controller.setMainController(this.getMainController());
             controller.setAnalysisDetailSNVController(this);
             controller.setParamMap(getParamMap());
-            controller.setLabel(variantAndInterpretationEvidence);
             controller.show((Parent) node);
             interpretationTitledPane.setContent(node);
         } catch (Exception e) {

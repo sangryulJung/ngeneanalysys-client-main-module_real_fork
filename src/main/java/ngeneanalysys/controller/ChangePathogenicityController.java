@@ -104,6 +104,7 @@ public class ChangePathogenicityController extends SubPaneController {
                 wae.printStackTrace();
                 DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
             }
+            clinicalSignificantController.setVariantPathogenicity(pathogenicity);
             clinicalSignificantController.setPathogenicityArea(pathogenicity);
             dialogStage.close();
         } else {

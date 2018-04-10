@@ -168,6 +168,10 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
         setPathogenicityArea(pathogenicity);
     }
 
+    public void setVariantPathogenicity(String pathogenicity) {
+        selectedAnalysisResultVariant.getSnpInDel().setExpertPathogenicity(pathogenicity);
+    }
+
     public void setPathogenicityArea(String pathogenicity) {
         for(Node node : pathogenicityArea.getChildren()) {
             Button button = (Button)node;

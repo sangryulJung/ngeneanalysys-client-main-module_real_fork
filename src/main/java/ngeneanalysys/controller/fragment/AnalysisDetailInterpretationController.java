@@ -1,6 +1,7 @@
 package ngeneanalysys.controller.fragment;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -21,6 +22,8 @@ import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
+import ngeneanalysys.util.httpclient.HttpClientResponse;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -38,51 +41,6 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     private Label swTierLabel;
     @FXML
     private Label userTierLabel;
-
-    @FXML
-    private GridPane interpretationGridPane;
-
-    @FXML
-    private ComboBox<ComboBoxItem> tierComboBox;
-
-    @FXML
-    private TextField commentTextField;
-
-    @FXML
-    private TextField TherapeuticALabel;
-
-    @FXML
-    private TextField TherapeuticBLabel;
-
-    @FXML
-    private TextField TherapeuticCLabel;
-
-    @FXML
-    private TextField TherapeuticDLabel;
-
-    @FXML
-    private TextField PrognosisALabel;
-
-    @FXML
-    private TextField PrognosisBLabel;
-
-    @FXML
-    private TextField PrognosisCLabel;
-
-    @FXML
-    private TextField PrognosisDLabel;
-
-    @FXML
-    private TextField DiagnosisALabel;
-
-    @FXML
-    private TextField DiagnosisBLabel;
-
-    @FXML
-    private TextField DiagnosisCLabel;
-
-    @FXML
-    private TextField DiagnosisDLabel;
 
     @FXML
     private Label arrow;
@@ -111,7 +69,25 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     @FXML
     private TableColumn<SameVariantInterpretation, String> pastCasesDateColumn;
 
-    private VariantAndInterpretationEvidence variantAndInterpretationEvidence;
+    @FXML
+    private TableView<SnpInDelInterpretationLogs> interpretationTableView;
+
+    @FXML
+    private TableColumn<SnpInDelInterpretationLogs, String> interpretationTypeColumn;
+
+    @FXML
+    private TableColumn<SnpInDelInterpretationLogs, String> interpretationEvidenceColumn;
+
+    @FXML
+    private TableColumn<SnpInDelInterpretationLogs, String> interpretationInterpretationColumn;
+
+    @FXML
+    private TableColumn<SnpInDelInterpretationLogs, String> interpretationEvidenceCommentColumn;
+
+    @FXML
+    private TableColumn<SnpInDelInterpretationLogs, String> interpretationDateColumn;
+
+    private VariantAndInterpretationEvidence selectedAnalysisResultVariant;
 
     private APIService apiService;
 
@@ -127,35 +103,70 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     @Override
     public void show(Parent root) throws IOException {
         apiService = APIService.getInstance();
-        if(StringUtils.isEmpty(variantAndInterpretationEvidence.getSnpInDel().getExpertTier())) arrow.setVisible(false);
+
+        selectedAnalysisResultVariant = (VariantAndInterpretationEvidence)paramMap.get("variant");
+
+        if(StringUtils.isEmpty(selectedAnalysisResultVariant.getSnpInDel().getExpertTier())) arrow.setVisible(false);
         addToReportCheckBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> addToReportBtn(addToReportCheckBox ));
-        checkBoxSetting(addToReportCheckBox, variantAndInterpretationEvidence.getSnpInDel().getIncludedInReport());
-        tierComboBox.setConverter(new ComboBoxConverter());
-        tierComboBox.getItems().add(new ComboBoxItem("T1", "T1"));
-        tierComboBox.getItems().add(new ComboBoxItem("T2", "T2"));
-        tierComboBox.getItems().add(new ComboBoxItem("T3", "T3"));
-        tierComboBox.getItems().add(new ComboBoxItem("T4", "T4"));
-        tierComboBox.getSelectionModel().select(0);
+        checkBoxSetting(addToReportCheckBox, selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport());
+
+        interpretationTypeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getInterpretationType()));
+        interpretationInterpretationColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNewValue()));
+        interpretationEvidenceCommentColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getComment()));
+        interpretationDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(org.apache.commons.lang3.time.DateFormatUtils.format(cellData.getValue().getCreatedAt().toDate(), "yyyy-MM-dd HH:mm:ss")));
 
         pastCasesSampleColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSampleName()));
+        pastCasesTypeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSampleName()));
+        pastCasesEvidenceColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSampleName()));
+        pastCasesInterpretationColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTier()));
+        pastCasesEvidenceCommentColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSampleName()));
+        //pastCasesDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(DateFormatUtils.format(cellData.getValue().getCreatedAt().toDate(), "yyyy-MM-dd hh:mm:ss")));
+
+        setInterpretationTable();
+        setPastCases();
+        setTier(selectedAnalysisResultVariant.getSnpInDel());
+
+    }
+
+    public void setInterpretationTable() {
+        try {
+            // Memo 데이터 API 요청
+            //Map<String, Object> commentParamMap = new HashMap<>();
+            HttpClientResponse responseMemo = apiService.get("/analysisResults/snpInDelInterpretationLogs/" + selectedAnalysisResultVariant.getSnpInDel().getId() , null, null, false);
+
+            // Flagging Comment 데이터 요청이 정상 요청된 경우 진행.
+            SnpInDelInterpretationLogsList memoList = responseMemo.getObjectBeforeConvertResponseToJSON(SnpInDelInterpretationLogsList.class);
+            if(!memoList.getResult().isEmpty()) interpretationTableView.getItems().addAll(memoList.getResult());
+
+        } catch (WebAPIException wae) {
+            wae.printStackTrace();
+            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+                    getMainApp().getPrimaryStage(), true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+        }
+    }
+
+    public void setPastCases() {
 
     }
 
     public void addToReportBtn(CheckBox checkBox) {
-        if(variantAndInterpretationEvidence != null) {
-            String oldSymbol = variantAndInterpretationEvidence.getSnpInDel().getIncludedInReport();
+        if(selectedAnalysisResultVariant != null) {
+            String oldSymbol = selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport();
             if (checkBox.isSelected()) {
                 try {
                     FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
                     Node node = loader.load();
                     ExcludeReportDialogController excludeReportDialogController = loader.getController();
                     excludeReportDialogController.setMainController(mainController);
-                    excludeReportDialogController.settingItem("Y", variantAndInterpretationEvidence, checkBox);
+                    excludeReportDialogController.settingItem("Y", selectedAnalysisResultVariant, checkBox);
                     excludeReportDialogController.show((Parent) node);
                 } catch (IOException ioe) {
                     ioe.printStackTrace();
                 }
-                if(!oldSymbol.equals(variantAndInterpretationEvidence.getSnpInDel().getIncludedInReport()))
+                if(!oldSymbol.equals(selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport()))
                     analysisDetailSNVController.showVariantList(analysisDetailSNVController.getCurrentPageIndex() + 1, 0);
             } else {
                 try {
@@ -163,13 +174,13 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                     Node node = loader.load();
                     ExcludeReportDialogController excludeReportDialogController = loader.getController();
                     excludeReportDialogController.setMainController(mainController);
-                    excludeReportDialogController.settingItem("N", variantAndInterpretationEvidence, checkBox);
+                    excludeReportDialogController.settingItem("N", selectedAnalysisResultVariant, checkBox);
                     excludeReportDialogController.show((Parent) node);
                 } catch (IOException ioe) {
                     ioe.printStackTrace();
                 }
             }
-            if(!oldSymbol.equals(variantAndInterpretationEvidence.getSnpInDel().getIncludedInReport()))
+            if(!oldSymbol.equals(selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport()))
                 analysisDetailSNVController.showVariantList(analysisDetailSNVController.getCurrentPageIndex() + 1, 0);
         }
     }
@@ -204,33 +215,12 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
             }
         }
     }
+
+
+
     @FXML
     public void saveInterpretation() {
-        String comment = commentTextField.getText();
-        String tier = tierComboBox.getSelectionModel().getSelectedItem().getValue();
-        Map<String, Object> params = new HashMap<>();
-
-        SnpInDelInterpretation snpInDelInterpretation = new SnpInDelInterpretation();
-
-        snpInDelInterpretation.setSnpInDelId(variantAndInterpretationEvidence.getSnpInDel().getId());
-        snpInDelInterpretation.setTherapeuticEvidence(new ClinicalEvidence());
-        snpInDelInterpretation.getTherapeuticEvidence().setLevelA(TherapeuticALabel.getText());
-        snpInDelInterpretation.getTherapeuticEvidence().setLevelB(TherapeuticBLabel.getText());
-        snpInDelInterpretation.getTherapeuticEvidence().setLevelC(TherapeuticCLabel.getText());
-        snpInDelInterpretation.getTherapeuticEvidence().setLevelD(TherapeuticDLabel.getText());
-
-        snpInDelInterpretation.setDiagnosisEvidence(new ClinicalEvidence());
-        snpInDelInterpretation.getDiagnosisEvidence().setLevelA(DiagnosisALabel.getText());
-        snpInDelInterpretation.getDiagnosisEvidence().setLevelB(DiagnosisBLabel.getText());
-        snpInDelInterpretation.getDiagnosisEvidence().setLevelC(DiagnosisCLabel.getText());
-        snpInDelInterpretation.getDiagnosisEvidence().setLevelD(DiagnosisDLabel.getText());
-
-        snpInDelInterpretation.setPrognosisEvidence(new ClinicalEvidence());
-        snpInDelInterpretation.getPrognosisEvidence().setLevelA(PrognosisALabel.getText());
-        snpInDelInterpretation.getPrognosisEvidence().setLevelB(PrognosisBLabel.getText());
-        snpInDelInterpretation.getPrognosisEvidence().setLevelC(PrognosisCLabel.getText());
-        snpInDelInterpretation.getPrognosisEvidence().setLevelD(PrognosisDLabel.getText());
-
+       /*
         params.put("snpInDelInterpretation", snpInDelInterpretation);
 
         if(!StringUtils.isEmpty(comment)) {
@@ -251,7 +241,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         } else {
                 DialogUtil.warning("The comment field is empty", " ", mainController.getPrimaryStage(), true);
             commentTextField.requestFocus();
-        }
+        }*/
     }
 
     public void setTier(SnpInDel snpInDel) {
@@ -259,63 +249,5 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         returnTierClass(snpInDel.getExpertTier(), userTierLabel);
     }
 
-    public void setLabel(VariantAndInterpretationEvidence variantAndInterpretationEvidence) {
-        this.variantAndInterpretationEvidence = variantAndInterpretationEvidence;
-        setTier(variantAndInterpretationEvidence.getSnpInDel());
 
-        setNull();
-
-        SnpInDelInterpretation interpretation = variantAndInterpretationEvidence.getInterpretationEvidence();
-
-        if(interpretation == null) return;
-
-        if(interpretation.getTherapeuticEvidence() != null) {
-            if (!StringUtils.isEmpty(interpretation.getTherapeuticEvidence().getLevelA()))
-                TherapeuticALabel.setText(interpretation.getTherapeuticEvidence().getLevelA());
-            if (!StringUtils.isEmpty(interpretation.getTherapeuticEvidence().getLevelB()))
-                TherapeuticBLabel.setText(interpretation.getTherapeuticEvidence().getLevelB());
-            if (!StringUtils.isEmpty(interpretation.getTherapeuticEvidence().getLevelC()))
-                TherapeuticCLabel.setText(interpretation.getTherapeuticEvidence().getLevelC());
-            if (!StringUtils.isEmpty(interpretation.getTherapeuticEvidence().getLevelD()))
-                TherapeuticDLabel.setText(interpretation.getTherapeuticEvidence().getLevelD());
-        }
-
-        if(interpretation.getPrognosisEvidence() != null) {
-            if (!StringUtils.isEmpty(interpretation.getPrognosisEvidence().getLevelA()))
-                PrognosisALabel.setText(interpretation.getPrognosisEvidence().getLevelA());
-            if (!StringUtils.isEmpty(interpretation.getPrognosisEvidence().getLevelB()))
-                PrognosisBLabel.setText(interpretation.getPrognosisEvidence().getLevelB());
-            if (!StringUtils.isEmpty(interpretation.getPrognosisEvidence().getLevelC()))
-                PrognosisCLabel.setText(interpretation.getPrognosisEvidence().getLevelC());
-            if (!StringUtils.isEmpty(interpretation.getPrognosisEvidence().getLevelD()))
-                PrognosisDLabel.setText(interpretation.getPrognosisEvidence().getLevelD());
-        }
-
-        if(interpretation.getDiagnosisEvidence() != null) {
-            if (!StringUtils.isEmpty(interpretation.getDiagnosisEvidence().getLevelA()))
-                DiagnosisALabel.setText(interpretation.getDiagnosisEvidence().getLevelA());
-            if (!StringUtils.isEmpty(interpretation.getDiagnosisEvidence().getLevelB()))
-                DiagnosisBLabel.setText(interpretation.getDiagnosisEvidence().getLevelB());
-            if (!StringUtils.isEmpty(interpretation.getDiagnosisEvidence().getLevelC()))
-                DiagnosisCLabel.setText(interpretation.getDiagnosisEvidence().getLevelC());
-            if (!StringUtils.isEmpty(interpretation.getDiagnosisEvidence().getLevelD()))
-                DiagnosisDLabel.setText(interpretation.getDiagnosisEvidence().getLevelD());
-        }
-
-    }
-
-    private void setNull() {
-        TherapeuticALabel.setText("");
-        TherapeuticBLabel.setText("");
-        TherapeuticCLabel.setText("");
-        TherapeuticDLabel.setText("");
-        PrognosisALabel.setText("");
-        PrognosisBLabel.setText("");
-        PrognosisCLabel.setText("");
-        PrognosisDLabel.setText("");
-        DiagnosisALabel.setText("");
-        DiagnosisBLabel.setText("");
-        DiagnosisCLabel.setText("");
-        DiagnosisDLabel.setText("");
-    }
 }
