@@ -251,23 +251,27 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     private void setSNVTabName() {
-        VariantAndInterpretationEvidence variant = variantListTableView.getSelectionModel()
-                .getSelectedItem();
-        String title = "";
-        if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
-            title = variant.getSnpInDel().getGenomicCoordinate().getGene() + " "
-                    + variant.getSnpInDel().getSnpInDelExpression().getCodingConsequence().split(";")[0] + " "
-                    + variant.getSnpInDel().getSnpInDelExpression().getTranscript() + " "
-                    + variant.getSnpInDel().getSnpInDelExpression().getNtChange() + " "
-                    + variant.getSnpInDel().getSnpInDelExpression().getAaChangeConversion();
+        if(variantListTableView.getItems() != null) {
+            VariantAndInterpretationEvidence variant = variantListTableView.getSelectionModel()
+                    .getSelectedItem();
+            String title = "";
+            if (panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
+                title = variant.getSnpInDel().getGenomicCoordinate().getGene() + " "
+                        + variant.getSnpInDel().getSnpInDelExpression().getCodingConsequence().split(";")[0] + " "
+                        + variant.getSnpInDel().getSnpInDelExpression().getTranscript() + " "
+                        + variant.getSnpInDel().getSnpInDelExpression().getNtChange() + " "
+                        + variant.getSnpInDel().getSnpInDelExpression().getAaChangeConversion();
+            } else {
+                title = variant.getSnpInDel().getGenomicCoordinate().getGene() + " "
+                        + variant.getSnpInDel().getSnpInDelExpression().getCodingConsequence().split(";")[0] + " "
+                        + variant.getSnpInDel().getSnpInDelExpression().getTranscript() + " "
+                        + variant.getSnpInDel().getSnpInDelExpression().getNtChange().split(":")[1] + " "
+                        + variant.getSnpInDel().getSnpInDelExpression().getAaChangeConversion().split(":")[1];
+            }
+            variantsController.setSNVTabName(title);
         } else {
-            title = variant.getSnpInDel().getGenomicCoordinate().getGene() + " "
-                    + variant.getSnpInDel().getSnpInDelExpression().getCodingConsequence().split(";")[0] + " "
-                    + variant.getSnpInDel().getSnpInDelExpression().getTranscript() + " "
-                    + variant.getSnpInDel().getSnpInDelExpression().getNtChange().split(":")[1] + " "
-                    + variant.getSnpInDel().getSnpInDelExpression().getAaChangeConversion().split(":")[1];
+            variantsController.setSNVTabName(null);
         }
-        variantsController.setSNVTabName(title);
     }
 
     private void setFilter(String key, String value) {

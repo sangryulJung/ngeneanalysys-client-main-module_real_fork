@@ -40,7 +40,6 @@ public class AnalysisDetailVariantStatisticsController extends SubPaneController
     @Override
     public void show(Parent root) throws IOException {
         showVariantStatistics();
-        showPopulationFrequency();
     }
 
     /**
@@ -95,20 +94,4 @@ public class AnalysisDetailVariantStatisticsController extends SubPaneController
                     variantStatisticsGroupTimer.start());
         }
     }
-
-    public void showPopulationFrequency() {
-        try {
-            FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_POPULATION_FREQUENCIES);
-            Node node = loader.load();
-            AnalysisDetailPopulationFrequenciesController controller = loader.getController();
-            controller.setMainController(this.getMainController());
-            controller.setParamMap(paramMap);
-            controller.show((Parent) node);
-            variantStatisticsGirdPane.add(node, 1, 0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
 }

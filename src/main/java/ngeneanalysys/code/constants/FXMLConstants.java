@@ -178,4 +178,8 @@ public class FXMLConstants {
 	public static final String ANALYSIS_DETAIL_VARIANT_NOMENCLATURE = "/layout/fxml/variantDetail/VariantNomenclature.fxml";
 
 	public static final String ANALYSIS_DETAIL_POPULATION_FREQUENCIES = "/layout/fxml/variantDetail/PopulationFrequencies.fxml";
+
+	public static final String ANALYSIS_DETAIL_DETAIL_SUB_INFO = "/layout/fxml/variantDetail/DetailSubInfo.fxml";
+
+	public static final String ANALYSIS_DETAIL_IN_SILICO_PREDICTIONS = "/layout/fxml/variantDetail/InSilicoPredictions.fxml";
 }

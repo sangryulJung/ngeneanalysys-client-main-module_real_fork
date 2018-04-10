@@ -44,8 +44,6 @@ import java.util.Optional;
 public class AnalysisDetailClinicalSignificantController extends SubPaneController {
     private static Logger logger = LoggerUtil.getLogger();
 
-    private final int gaugeSpeed = 10;
-
     @FXML private HBox predictionArea;
     @FXML private HBox pathogenicityArea;
     @FXML private CheckBox addToGermlineReportCheckBox;
@@ -58,12 +56,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
     private HBox pathogenicityClinVarHBox;
     @FXML
     private HBox pathogenicityEnigmaHBox;
-    @FXML
-    private Canvas polyphenCanvas;
-    @FXML
-    private Canvas siftCanvas;
-    @FXML
-    private Canvas mtCanvas;
+
     @FXML
     private VBox significantRadarGraphArea;				/** clinical > SIGNIFICANT > 그래프 박스 영역 */
     @FXML
@@ -361,31 +354,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                 mtText = (String)mtMap.get("text");
             }
         }
-        AnimationTimer siftTimer = new ClinicalSignificantTimer(
-                siftCanvas.getGraphicsContext2D(), siftValue, "SIFT", siftText, this.gaugeSpeed);
-        AnimationTimer polyphenTimer = new ClinicalSignificantTimer(
-                polyphenCanvas.getGraphicsContext2D(), polyphenValue, "MetaSVM", polyphenText, this.gaugeSpeed);
-        AnimationTimer mtTimer = new ClinicalSignificantTimer(
-                mtCanvas.getGraphicsContext2D(), mtValue, "MUTATIONTASTER", mtText, this.gaugeSpeed);
-        siftTimer.start();
-        polyphenTimer.start();
-        mtTimer.start();
-        AnimationTimer siftTimer1 = new ClinicalSignificantTimer(
-                siftCanvas.getGraphicsContext2D(), siftValue, "SIFT", String.format("%7s", siftScore), this.gaugeSpeed);
-        AnimationTimer polyphenTimer1 = new ClinicalSignificantTimer(
-                polyphenCanvas.getGraphicsContext2D(), polyphenValue, "MetaSVM", String.format("%7s", polyphenScore), this.gaugeSpeed);
-        AnimationTimer mtTimer1 = new ClinicalSignificantTimer(
-                mtCanvas.getGraphicsContext2D(), mtValue, "MUTATIONTASTER", mtText, this.gaugeSpeed);
-        siftCanvas.setOnMouseEntered(event -> siftTimer1.start());
-        siftCanvas.setOnMouseExited(event -> siftTimer.start());
-        polyphenCanvas.setOnMouseEntered(event -> polyphenTimer1.start());
-        polyphenCanvas.setOnMouseExited(event -> polyphenTimer.start());
-        mtCanvas.setOnMouseEntered(event -> mtTimer1.start());
-        mtCanvas.setOnMouseExited(event -> mtTimer.start());
-//		SNPsINDELsOverviewRadarGraph significantRadarGraph = new SNPsINDELsOverviewRadarGraph(significantRadarGraphArea,
-//				significantGraphPolyline, significantPercent0, significantPercent1, significantPercent2,
-//				significantPercent3, significantPercent4, significantPercent5);
-//		significantRadarGraph.display();
+
         double[] frequencyValue = new double[6];
         String[] frequencyValueText = new String[6];
         // 1KG SAS

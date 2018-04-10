@@ -82,10 +82,12 @@ public class AnalysisDetailPopulationFrequenciesController extends SubPaneContro
         percentLabel.getStyleClass().add("percent");
         percentLabel.setPrefWidth(130);
         percentLabel.setMinWidth(130);
-        percentLabel.setAlignment(Pos.CENTER_RIGHT);
-        percentLabel.getStyleClass().add("font_size_10");
+        percentLabel.setPrefHeight(10);
+        percentLabel.setMinHeight(10);
+        percentLabel.setAlignment(Pos.TOP_RIGHT);
+        percentLabel.getStyleClass().add("font_size_8");
         hBox.getChildren().setAll(titleLabel, graphHBox);
-        vbox.getChildren().setAll(hBox, percentLabel);
+        vbox.getChildren().setAll(percentLabel, hBox);
         // 퍼센트 데이터가 없는 경우(-1) disable 처리함.
         if(percentage < 0) {
             hBox.setDisable(true);
