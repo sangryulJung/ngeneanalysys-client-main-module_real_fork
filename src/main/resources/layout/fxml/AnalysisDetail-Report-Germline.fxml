@@ -44,16 +44,16 @@
             </ComboBox>
             <Button maxHeight="25.0" minHeight="25.0" mnemonicParsing="false" onAction="#save" prefHeight="25.0" prefWidth="95.0" styleClass="submitBtn" text="Save" GridPane.columnIndex="5" GridPane.rowIndex="7">
                <HBox.margin>
-                  <Insets />
+                  <Insets bottom="3.0" />
                </HBox.margin></Button>
             <Button layoutX="1155.0" layoutY="20.0" maxHeight="25.0" minHeight="25.0" mnemonicParsing="false" onAction="#createPDFAsDraft" prefHeight="25.0" prefWidth="100.0" styleClass="cancelBtn" text="Draft Report">
                <HBox.margin>
-                  <Insets left="5.0" right="5.0" />
+                  <Insets bottom="3.0" left="5.0" right="5.0" />
                </HBox.margin>
             </Button>
             <Button layoutX="1155.0" layoutY="20.0" maxHeight="25.0" minHeight="25.0" mnemonicParsing="false" onAction="#createPDFAsFinal" prefHeight="25.0" prefWidth="100.0" styleClass="cancelBtn" text="Final Report">
                <HBox.margin>
-                  <Insets />
+                  <Insets bottom="3.0" />
                </HBox.margin></Button>
          </children>
       </HBox>
@@ -106,7 +106,7 @@
                                     <TableColumn fx:id="positionColumn" prefWidth="100.0" styleClass="txt_black" text="Position" />
                                     <TableColumn fx:id="transcriptColumn" prefWidth="120.0" styleClass="txt_black" text="Transcript" />
                                     <TableColumn fx:id="ntChangeColumn" prefWidth="210.0" styleClass="txt_black" text="NT Change" />
-                                    <TableColumn fx:id="aaChangeColumn" prefWidth="230.0" styleClass="txt_black" text="AA Change" />
+                                    <TableColumn fx:id="aaChangeColumn" prefWidth="210.0" styleClass="txt_black" text="AA Change" />
                                     <TableColumn fx:id="alleleFrequencyColumn" prefWidth="75.0" styleClass="txt_black" text="VAF" />
                                  </columns>
                               </TableView>

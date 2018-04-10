@@ -79,6 +79,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     private TableColumn<VariantAndInterpretationEvidence, String> tierColumn;
 
     @FXML
+    private TableColumn<VariantAndInterpretationEvidence, String> userTierColumn;
+
+    @FXML
     private TableColumn<VariantAndInterpretationEvidence, String> chrColumn;
 
     @FXML
@@ -159,6 +162,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         sample = (Sample)paramMap.get("sample");
 
         tierColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSwTier()));
+        userTierColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getExpertTier()));
         chrColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getChromosome()));
         geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
         positionColumn.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getSnpInDel().getGenomicCoordinate().getStartPosition()));

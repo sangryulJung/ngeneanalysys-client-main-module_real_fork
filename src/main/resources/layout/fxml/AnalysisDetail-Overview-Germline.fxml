@@ -51,21 +51,19 @@
          <columns>
             <TableColumn fx:id="pathogenicityColumn" editable="false" prefWidth="100.0" sortable="false" text="Pathogenicity" />
             <TableColumn fx:id="geneColumn" editable="false" prefWidth="100.0" sortable="false" text="Gene" />
-            <TableColumn fx:id="positionColumn" editable="false" prefWidth="200.0" sortable="false" text="Position" />
-            <TableColumn fx:id="variantColumn" editable="false" prefWidth="200.0" sortable="false" text="Variant" />
-            <TableColumn fx:id="transcriptColumn" editable="false" prefWidth="200.0" sortable="false" text="Transcript" />
-            <TableColumn fx:id="ntChangeColumn" editable="false" prefWidth="170.0" sortable="false" text="NT Change" />
-            <TableColumn fx:id="aaChangeColumn" editable="false" prefWidth="165.0" sortable="false" text="AA Change" />
+            <TableColumn fx:id="positionColumn" editable="false" prefWidth="120.0" sortable="false" text="Position" />
+            <TableColumn fx:id="variantColumn" editable="false" prefWidth="160.0" sortable="false" text="Variant" />
+            <TableColumn fx:id="transcriptColumn" editable="false" prefWidth="180.0" sortable="false" text="Transcript" />
+            <TableColumn fx:id="ntChangeColumn" editable="false" prefWidth="250.0" sortable="false" text="NT Change" />
+            <TableColumn fx:id="aaChangeColumn" editable="false" prefWidth="225.0" sortable="false" text="AA Change" />
          </columns>
       </TableView>
-      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5">
+      <HBox maxWidth="570.0" minWidth="570.0" prefHeight="100.0" prefWidth="570.0" GridPane.rowIndex="5">
          <children>
             <VBox prefHeight="75.0" prefWidth="1140.0">
                <children>
                   <GridPane fx:id="dataQCResultGridPane" prefWidth="1140.0">
                      <columnConstraints>
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                      </columnConstraints>
@@ -85,25 +83,6 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;" GridPane.columnIndex="1">
                            <children>
-                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="150.0" text="Mean read quality" textFill="WHITE">
-                                 <tooltip>
-                                    <Tooltip fx:id="meanReadTooltip" text="Empty Tooltip" />
-                                 </tooltip>
-                              </Label>
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;" GridPane.columnIndex="2">
-                           <children>
-                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="150.0" text="Retained read" textFill="WHITE">
-                                 <tooltip>
-                                    <Tooltip fx:id="retainedReadTooltip" text="Empty Tooltip" />
-                                 </tooltip>
-                              </Label>
-                           </children>
-                        </HBox>
-                        <Label fx:id="meanReadLabel" text="pass" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;" GridPane.columnIndex="3">
-                           <children>
                               <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="150.0" text="Corverage uniformity" textFill="WHITE">
                                  <tooltip>
                                     <Tooltip fx:id="coverageUniformityTooltip" text="Empty Tooltip" />
@@ -111,8 +90,7 @@
                               </Label>
                            </children>
                         </HBox>
-                        <Label fx:id="retainedReadLabel" text="pass" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <Label fx:id="coverageUniformityLabel" text="pass" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <Label fx:id="coverageUniformityLabel" text="pass" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label fx:id="roiCoverageLabel" text="pass" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
