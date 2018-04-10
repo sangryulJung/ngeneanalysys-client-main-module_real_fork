@@ -107,7 +107,7 @@
                                     <TableColumn fx:id="transcriptColumn" prefWidth="120.0" styleClass="txt_black" text="Transcript" />
                                     <TableColumn fx:id="ntChangeColumn" prefWidth="210.0" styleClass="txt_black" text="NT Change" />
                                     <TableColumn fx:id="aaChangeColumn" prefWidth="210.0" styleClass="txt_black" text="AA Change" />
-                                    <TableColumn fx:id="alleleFrequencyColumn" prefWidth="75.0" styleClass="txt_black" text="VAF" />
+                                    <TableColumn fx:id="alleleFrequencyColumn" prefWidth="65.0" styleClass="txt_black" text="VAF" />
                                  </columns>
                               </TableView>
                               <Label fx:id="conclusions" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-font-family: Noto Sans KR Bold;" text="CONCLUSION">
