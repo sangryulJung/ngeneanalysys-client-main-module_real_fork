@@ -16,7 +16,7 @@ import org.controlsfx.control.PopOver;
  */
 public class LowConfidenceList {
 
-    public static Button getWarningReasonPopOver(String lowConfidence) {
+    public static Button getLowConfidencePopOver(String lowConfidence) {
         Button button = new Button();
         button.getStyleClass().add("btn_warn");
 

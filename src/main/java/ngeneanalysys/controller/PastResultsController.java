@@ -816,7 +816,7 @@ public class PastResultsController extends SubPaneController {
 				lv2Value.setStyle(countLabelStyle);
 
 				Label lv3Icon = new Label("US");
-				lv3Icon.getStyleClass().add("lv_i_icon");
+				lv3Icon.getStyleClass().add("lv_iii_icon");
 				Label lv3Value = new Label(summary.getLevel3VariantCount().toString());
 				lv3Value.getStyleClass().add(countLabelStyleClass);
 				lv3Value.setStyle(countLabelStyle);
@@ -854,7 +854,7 @@ public class PastResultsController extends SubPaneController {
 				lv2Value.setStyle(countLabelStyle);
 
 				Label lv3Icon = new Label("T3");
-				lv3Icon.getStyleClass().add("lv_i_icon");
+				lv3Icon.getStyleClass().add("lv_iii_icon");
 				Label lv3Value = new Label(summary.getLevel3VariantCount().toString());
 				lv3Value.getStyleClass().add(countLabelStyleClass);
 				lv3Value.setStyle(countLabelStyle);

@@ -45,7 +45,7 @@
     -fx-pref-height : 16;
     -fx-text-fill : #FFFFFF;
     -fx-alignment : center;
-    -fx-background-color : #62CCFE;
+    -fx-background-color : #F6545C;
 }
 
 .lv_ii_icon {
@@ -54,7 +54,7 @@
     -fx-pref-height : 16;
     -fx-text-fill : #FFFFFF;
     -fx-alignment : center;
-    -fx-background-color : #53b8eb;
+    -fx-background-color : #FF9482;
 }
 
 .lv_iii_icon {
@@ -63,7 +63,7 @@
     -fx-pref-height : 16;
     -fx-text-fill : #FFFFFF;
     -fx-alignment : center;
-    -fx-background-color : #54c7cd;
+    -fx-background-color : #70ACF5;
 }
 
 .lv_iv_icon {
@@ -72,7 +72,7 @@
     -fx-pref-height : 16;
     -fx-text-fill : #FFFFFF;
     -fx-alignment : center;
-    -fx-background-color : #439eb3;
+    -fx-background-color : #1F2D87;
 }
 
 .lv_v_icon {
@@ -81,7 +81,7 @@
     -fx-pref-height : 16;
     -fx-text-fill : #FFFFFF;
     -fx-alignment : center;
-    -fx-background-color : #229db8;
+    -fx-background-color : #5a64a5;
 }
 
 .count_label {

@@ -814,16 +814,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         lowConfidence.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
             @Override
             public void updateItem(String item, boolean empty) {
-                setGraphic((!StringUtils.isEmpty(item)) ? LowConfidenceList.getWarningReasonPopOver(item) : null);
+                setGraphic((!StringUtils.isEmpty(item)) ? LowConfidenceList.getLowConfidencePopOver(item) : null);
             }
         });
-        //lowConfidence.setVisible(false);
-        /*warn.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
-            @Override
-            public void updateItem(String item, boolean empty) {
-                setGraphic((!StringUtils.isEmpty(item)) ? SNPsINDELsList.getWarningReasonPopOver(item) : null);
-            }
-        });*/
 
         TableColumn<VariantAndInterpretationEvidence, String> report = new TableColumn<>("Report");
         createTableHeader(report, "Report", null ,55.);
