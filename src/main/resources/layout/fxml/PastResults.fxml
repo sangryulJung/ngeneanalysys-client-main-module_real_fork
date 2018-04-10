@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
@@ -15,7 +20,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane fx:id="experimentPastResultsWrapper" prefHeight="555.0" prefWidth="1200.0" styleClass="background_white" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.PastResultsController">
+<GridPane fx:id="experimentPastResultsWrapper" prefHeight="555.0" prefWidth="1200.0" styleClass="background_white" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.PastResultsController">
    <columnConstraints>
       <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
       <ColumnConstraints hgrow="SOMETIMES" prefWidth="350.0" />
@@ -29,8 +34,8 @@
       <RowConstraints maxHeight="99.0" minHeight="-Infinity" prefHeight="35.0" vgrow="NEVER" />
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" valignment="CENTER" vgrow="NEVER" />
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="400.0" valignment="TOP" vgrow="NEVER" />
-      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" valignment="TOP" vgrow="ALWAYS" />
-      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" valignment="TOP" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="15.0" />
    </rowConstraints>
    <children>
       <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
@@ -46,7 +51,7 @@
                </styleClass></Label>
          </children>
       </HBox>
-      <Pagination fx:id="paginationList" focusTraversable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" styleClass="font_size_9" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+      <Pagination fx:id="paginationList" focusTraversable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" styleClass="font_size_12" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
          <GridPane.margin>
             <Insets />
          </GridPane.margin></Pagination>

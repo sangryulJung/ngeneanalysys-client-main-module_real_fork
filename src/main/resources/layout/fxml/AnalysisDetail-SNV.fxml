@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Accordion?>
@@ -15,7 +20,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane fx:id="snvWrapper" prefHeight="380.0" prefWidth="1140.0" style="-fx-background-color: #f2f5fa;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNVController">
+<GridPane fx:id="snvWrapper" prefHeight="380.0" prefWidth="1140.0" style="-fx-background-color: #f2f5fa;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNVController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="200.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="0.0" prefWidth="0.0" />
@@ -35,7 +40,7 @@
                   <Insets left="20.0" right="20.0" />
                </VBox.margin>
             </TableView>
-            <Pagination fx:id="variantPagination" maxHeight="40.0" maxWidth="-Infinity" minHeight="40.0" minWidth="-Infinity" prefHeight="40.0" />
+            <Pagination fx:id="variantPagination" maxHeight="40.0" maxWidth="-Infinity" minHeight="40.0" minWidth="-Infinity" prefHeight="40.0" styleClass="font_size_12" />
          </children>
          <GridPane.margin>
             <Insets />
