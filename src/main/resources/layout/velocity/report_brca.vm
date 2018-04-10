@@ -161,7 +161,7 @@
 								<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt" font-weight="bold">Draw Date</fo:block>
 							</fo:table-cell>
 							<fo:table-cell padding="2mm" border-width="0.5pt" border-style="solid">
-								<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt" ></fo:block>
+								<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt" >$contents.DrawDate</fo:block>
 							</fo:table-cell>
 							<fo:table-cell padding="2mm" border-width="0.5pt" border-style="solid" border-left-style="double" border-left-width="2.0pt">
 								<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt" font-weight="bold">Date of Birth</fo:block>
@@ -175,7 +175,7 @@
 								<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt" font-weight="bold">Received Date</fo:block>
 							</fo:table-cell>
 							<fo:table-cell padding="2mm" border-width="0.5pt" border-style="solid">
-								<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt" ></fo:block>
+								<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt" >$contents.ReceivedDate</fo:block>
 							</fo:table-cell>
 							<fo:table-cell padding="2mm" border-width="0.5pt" border-style="solid" border-left-style="double" border-left-width="2.0pt">
 								<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt" font-weight="bold">Patient ID</fo:block>
@@ -185,11 +185,8 @@
 							</fo:table-cell>
 						</fo:table-row>
 						<fo:table-row>
-							<fo:table-cell padding="2mm" border-width="0.5pt" border-style="solid">
-								<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt" font-weight="bold">Report Date</fo:block>
-							</fo:table-cell>
-							<fo:table-cell padding="2mm" border-width="0.5pt" border-style="solid" >
-								<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt">${contents.reportingDate}</fo:block>
+							<fo:table-cell padding="2mm" border-width="0.5pt" border-style="solid" number-columns-spanned="2">
+								<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt" font-weight="bold"></fo:block>
 							</fo:table-cell>
 							<fo:table-cell padding="2mm" border-width="0.5pt" border-style="solid" border-left-style="double" border-left-width="2.0pt">
 								<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt" font-weight="bold">Gender</fo:block>

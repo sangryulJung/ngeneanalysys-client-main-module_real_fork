@@ -269,11 +269,6 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
         // 변이 발견 빈도수(Variant Frequency) 게이지 그래프 화면 출력
         showVariantStatistics();
 
-        // 링크 목록 화면 출력
-        //showLink();
-
-
-
         if(panel != null && "SOMATIC".equals(panel.getAnalysisType())) {
             variantInterpretation.setVisible(true);
             //clinicalSignificant.setVisible(false);

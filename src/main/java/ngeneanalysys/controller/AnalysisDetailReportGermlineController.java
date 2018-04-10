@@ -395,9 +395,10 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         int rowIndex = 0;
         int colIndex = 0;
 
-        String[] displayNameList =  {"Test No", "Test Name", "Organization", "Ordering Physician", "Contact", "Name", "Birthday", "Gender", "Patient ID"};
+        String[] displayNameList =  {"Test No", "Test Name", "Ordering Organization", "Ordering Physician", "Ordering Contact", "Patient Name",
+                "Patient Birthday", "Patient Gender", "Patient ID", "Specimen Draw Date", "Specimen Received Date"};
         String[] variableNameList =  {"manageNo", "inspectionItem", "clientOrganization", "clientName", "clientContact", "name",
-                "patientBirthday", "patientGender", "patientID"};
+                "patientBirthday", "patientGender", "patientID", "DrawDate", "ReceivedDate"};
 
         for(int i = 0; i < displayNameList.length ; i++) {
             String displayName = displayNameList[i];
@@ -414,7 +415,8 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
             label.setMaxWidth(Double.MAX_VALUE);
             label.setAlignment(Pos.CENTER);
 
-            if(displayName.equalsIgnoreCase("Birthday")) {
+            if(displayName.equalsIgnoreCase("Patient Birthday") || displayName.equalsIgnoreCase("Specimen Draw Date") ||
+                    displayName.equalsIgnoreCase("Specimen Received Date")) {
                 DatePicker datePicker = new DatePicker();
                 datePicker.setStyle(datePicker.getStyle() + "-fx-text-inner-color: black; -fx-control-inner-background: white;");
                 String dateType = "yyyy-MM-dd";
@@ -707,9 +709,10 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                     contentsMap.put("inspectorOrganization", user.getOrganization() + "/" + user.getDepartment());
                     contentsMap.put("inspectorName", user.getName());
                     contentsMap.put("inspectorContact", user.getPhone());
-                    if((sample.getSampleStatus() != null) && sample.getSampleStatus().getReportFinishedAt() != null) {
+                    /*if((sample.getSampleStatus() != null) && sample.getSampleStatus().getReportFinishedAt() != null) {
                         contentsMap.put("reportingDate", sample.getSampleStatus().getReportFinishedAt());
-                    }
+                    }*/
+                    contentsMap.put("reportingDate", org.apache.commons.lang3.time.DateFormatUtils.format(new Date(), "yyyy-MM-dd"));
                 }
 
                 for(int i = 0; i < customFieldGridPane.getChildren().size(); i++) {
