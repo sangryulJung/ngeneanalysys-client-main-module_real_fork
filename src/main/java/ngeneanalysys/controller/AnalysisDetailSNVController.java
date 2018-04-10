@@ -597,6 +597,13 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         for(String key : keySets) {
             sortList.add(key + " " + sortMap.get(key));
         }
+        if(sortList.isEmpty()) {
+            if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
+                sortList.add("swTier DESC");
+            } else {
+                sortList.add("swPathogenicity DESC");
+            }
+        }
         if(!sortList.isEmpty()) list.put("sort", sortList);
     }
 

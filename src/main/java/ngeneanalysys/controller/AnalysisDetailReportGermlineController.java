@@ -64,7 +64,13 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
     private TableView<VariantAndInterpretationEvidence> variantsTable;
 
     @FXML
+    private TableColumn<VariantAndInterpretationEvidence, String> predictionColumn;
+
+    @FXML
     private TableColumn<VariantAndInterpretationEvidence, String> pathogenicityColumn;
+
+    @FXML
+    private TableColumn<VariantAndInterpretationEvidence, String> reportedTableColumn;
 
     @FXML
     private TableColumn<VariantAndInterpretationEvidence, String> chrColumn;
@@ -76,7 +82,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
     private TableColumn<VariantAndInterpretationEvidence, Integer> positionColumn;
 
     @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> refSeqColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> transcriptColumn;
 
     @FXML
     private TableColumn<VariantAndInterpretationEvidence, String> ntChangeColumn;
@@ -262,11 +268,13 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
         sample = (Sample)paramMap.get("sample");
 
-        pathogenicityColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSwPathogenicity()));
+        predictionColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSwPathogenicity()));
+        pathogenicityColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getExpertPathogenicity()));
+        reportedTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getIncludedInReport()));
         chrColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getChromosome()));
         geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
         positionColumn.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getSnpInDel().getGenomicCoordinate().getStartPosition()));
-        refSeqColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getRefSequence()));
+        transcriptColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getTranscript()));
         ntChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
         aaChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChange()));
         alleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()));

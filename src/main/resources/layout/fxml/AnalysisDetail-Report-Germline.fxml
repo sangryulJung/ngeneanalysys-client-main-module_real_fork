@@ -26,8 +26,8 @@
       <ColumnConstraints />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="380.0" valignment="BOTTOM" />
-      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" valignment="BOTTOM" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="370.0" valignment="BOTTOM" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" valignment="BOTTOM" />
    </rowConstraints>
    <children>
       <HBox fx:id="workBtnBox" alignment="CENTER_RIGHT" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
@@ -98,13 +98,15 @@
                               </Label>
                               <TableView fx:id="variantsTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="1120.0" style="-fx-border-width: 0;" styleClass="txt_black">
                                  <columns>
-                                    <TableColumn fx:id="pathogenicityColumn" prefWidth="100.0" styleClass="txt_black" text="Pathogenicity" />
-                                    <TableColumn fx:id="chrColumn" prefWidth="195.0" styleClass="txt_black" text="Chr" />
-                                    <TableColumn fx:id="geneColumn" prefWidth="150.0" styleClass="txt_black" text="Gene" />
-                                    <TableColumn fx:id="positionColumn" prefWidth="150.0" styleClass="txt_black" text="Position" />
-                                    <TableColumn fx:id="refSeqColumn" prefWidth="200.0" styleClass="txt_black" text="Transcript" />
-                                    <TableColumn fx:id="ntChangeColumn" prefWidth="150.0" styleClass="txt_black" text="NT Change" />
-                                    <TableColumn fx:id="aaChangeColumn" prefWidth="100.0" styleClass="txt_black" text="AA Change" />
+                                    <TableColumn fx:id="reportedTableColumn" prefWidth="55.0" styleClass="txt_black" text="Reported" />
+                                    <TableColumn fx:id="predictionColumn" styleClass="txt_black" text="Prediction" />
+                                    <TableColumn fx:id="pathogenicityColumn" styleClass="txt_black" text="Pathogenicity" />
+                                    <TableColumn fx:id="chrColumn" prefWidth="95.0" styleClass="txt_black" text="Chr" />
+                                    <TableColumn fx:id="geneColumn" styleClass="txt_black" text="Gene" />
+                                    <TableColumn fx:id="positionColumn" prefWidth="100.0" styleClass="txt_black" text="Position" />
+                                    <TableColumn fx:id="transcriptColumn" prefWidth="120.0" styleClass="txt_black" text="Transcript" />
+                                    <TableColumn fx:id="ntChangeColumn" prefWidth="210.0" styleClass="txt_black" text="NT Change" />
+                                    <TableColumn fx:id="aaChangeColumn" prefWidth="230.0" styleClass="txt_black" text="AA Change" />
                                     <TableColumn fx:id="alleleFrequencyColumn" prefWidth="75.0" styleClass="txt_black" text="VAF" />
                                  </columns>
                               </TableView>
@@ -144,6 +146,9 @@
                                           <String fx:value="font_size_18" />
                                           <String fx:value="font_gray" />
                                        </styleClass>
+                                       <HBox.margin>
+                                          <Insets top="15.0" />
+                                       </HBox.margin>
                                     </Label>
                                  </children>
                               </HBox>
