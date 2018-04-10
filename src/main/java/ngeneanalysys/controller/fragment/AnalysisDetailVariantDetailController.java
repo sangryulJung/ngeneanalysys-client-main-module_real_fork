@@ -63,7 +63,23 @@ public class AnalysisDetailVariantDetailController extends SubPaneController {
         if(!detailWarpper.getChildren().isEmpty()) detailWarpper.getChildren().removeAll(detailWarpper.getChildren());
         showReadDepth();
         showVariantNomenclature();
-        showLink();
+        showDetailSub();
+        //showLink();
+
+    }
+
+    public void showDetailSub() {
+        try {
+            FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_DETAIL_SUB_INFO);
+            Node node = loader.load();
+            DetailSubInfoController controller = loader.getController();
+            controller.setMainController(this.getMainController());
+            controller.setParamMap(paramMap);
+            controller.show((Parent) node);
+            detailWarpper.add(node, 2, 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void showReadDepth() {

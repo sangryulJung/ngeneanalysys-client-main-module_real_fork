@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" maxHeight="125.0" minHeight="125.0" prefHeight="125.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.InSilicoPredictionsController">
+   <children>
+      <Label styleClass="title1" text="In Silico Predictions" />
+      <HBox maxWidth="240.0" minWidth="240.0" prefHeight="110.0" prefWidth="240.0">
+         <children>
+            <Canvas fx:id="polyphenCanvas" height="100.0" width="80.0">
+               <HBox.margin>
+                  <Insets top="10.0" />
+               </HBox.margin>
+            </Canvas>
+            <Canvas fx:id="siftCanvas" height="100.0" width="80.0">
+               <HBox.margin>
+                  <Insets top="10.0" />
+               </HBox.margin>
+            </Canvas>
+            <Canvas fx:id="mtCanvas" height="100.0" width="80.0">
+               <HBox.margin>
+                  <Insets top="10.0" />
+               </HBox.margin>
+            </Canvas>
+         </children>
+      </HBox>
+   </children>
+   <stylesheets>
+      <URL value="@../../css/common.css" />
+      <URL value="@../../css/variantDetail.css" />
+   </stylesheets>
+</VBox>

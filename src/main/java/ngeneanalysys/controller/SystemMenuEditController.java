@@ -206,6 +206,10 @@ public class SystemMenuEditController extends SubPaneController {
                     DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
                 }
 
+            } else {
+                DialogUtil.alert("Input Error", "Please current enter the password",
+                        dialogStage, true);
+                currentPasswordField.requestFocus();
             }
         }
     }

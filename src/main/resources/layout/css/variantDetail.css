@@ -546,3 +546,21 @@
 #linkArea .button.link:disabled {
 	-fx-background-image:url('../images/icon_link_disable.png');
 }
+
+#externalLinkComboBox {
+    -fx-background-color : #D9D9D9;
+    -fx-background-radius : 0;
+    -fx-border-width : 0;
+}
+
+#external_link_icon {
+    -fx-graphic: url("../images/renewal/link-image.png");
+    -fx-pref-width : 16;
+    -fx-pref-height : 16;
+}
+
+#view_in_igv_icon {
+    -fx-graphic: url("../images/renewal/igv-image.png");
+    -fx-pref-width : 16;
+    -fx-pref-height : 16;
+}

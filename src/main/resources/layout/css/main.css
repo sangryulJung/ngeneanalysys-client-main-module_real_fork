@@ -131,7 +131,7 @@
 
 .user_name {
 
-	-fx-text-fill : #868686;
+	-fx-text-fill : #273e5e;
 }
 
 #labelSystemBuild {
@@ -221,6 +221,7 @@
     -fx-alignment : center-left;
     -fx-padding : 0 0 0 5;
     -fx-font-size : 16px;
+    -fx-text-fill : #273e5e;
     -fx-cursor:hand;
     -fx-border-width : 0 0 5 0;
     -fx-border-color : white;

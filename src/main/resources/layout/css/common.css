@@ -1676,3 +1676,7 @@ Button {
     -fx-background-color: white;
     -fx-background-image: null;
 }
+
+.general_progress > .label {
+    -fx-text-fill : #FFFFFF;
+}
