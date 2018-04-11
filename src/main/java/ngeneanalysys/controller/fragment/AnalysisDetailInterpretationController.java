@@ -197,7 +197,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
     private class SaveButtonCreate extends TableCell<SnpInDelEvidence, Boolean> {
         HBox box = null;
-        final ImageView img = new ImageView(resourceUtil.getImage("/layout/images/modify.png", 18, 18));
+        final ImageView img = new ImageView(resourceUtil.getImage("/layout/images/renewal/save_icon.png", 16, 16));
 
         public SaveButtonCreate() {
             img.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
@@ -442,7 +442,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     /** 삭제 버튼 생성 */
     private class DeleteButtonCreate extends TableCell<SnpInDelEvidence, Boolean> {
         HBox box = null;
-        final ImageView img = new ImageView(resourceUtil.getImage("/layout/images/delete.png", 18, 18));
+        final ImageView img = new ImageView(resourceUtil.getImage("/layout/images/renewal/delete_icon.png", 16, 16));
 
         public DeleteButtonCreate() {
             img.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
@@ -608,25 +608,32 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         }
     }
 
-    public void returnTierClass(String tier, Label label) {
+    public void returnTierClass(String tier, Label label, Integer usertier) {
         label.setAlignment(Pos.CENTER);
-
-        if(label == userTierLabel) arrow.setVisible(true);
+        logger.info("+++++++++++++++");
+        logger.info(userTierLabel.getText()+" "+tier+" "+usertier);
+        if(usertier == 2 && tier != null) {arrow.setVisible(true);}
+        //else {arrow.setVisible(true);}
+        //if(label == userTierLabel) arrow.setVisible(true);
 
         label.getStyleClass().removeAll(label.getStyleClass());
         if(!StringUtils.isEmpty(tier)) {
             if (tier.equalsIgnoreCase("T1")) {
-                label.setText("T1");
-                label.getStyleClass().add("tier_one");
+                label.setText("Tier 1");
+                label.getStyleClass().add("tier_full");
+                //label.getStyleClass().add("tier_one");
             } else if (tier.equalsIgnoreCase("T2")) {
-                label.setText("T2");
-                label.getStyleClass().add("tier_two");
+                label.setText("Tier 2");
+                label.getStyleClass().add("tier_full");
+                //label.getStyleClass().add("tier_two");
             } else if (tier.equalsIgnoreCase("T3")) {
-                label.setText("T3");
-                label.getStyleClass().add("tier_three");
+                label.setText("Tier 3");
+                label.getStyleClass().add("tier_full");
+                //label.getStyleClass().add("tier_three");
             } else if (tier.equalsIgnoreCase("T4")) {
-                label.setText("T4");
-                label.getStyleClass().add("tier_four");
+                label.setText("Tier 4");
+                label.getStyleClass().add("tier_full");
+                //label.getStyleClass().add("tier_four");
             }
         }
     }
@@ -662,8 +669,8 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     }
 
     public void setTier(SnpInDel snpInDel) {
-        returnTierClass(snpInDel.getSwTier(), swTierLabel);
-        returnTierClass(snpInDel.getExpertTier(), userTierLabel);
+        returnTierClass(snpInDel.getSwTier(), swTierLabel,1);
+        returnTierClass(snpInDel.getExpertTier(), userTierLabel,2);
     }
 
     public void save(SnpInDelEvidence snpInDelEvidence) {

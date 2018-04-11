@@ -1389,6 +1389,13 @@ Button {
 	-fx-max-height:20;
 }
 
+.tier_full{
+	-fx-text-fill:#223654;
+	-fx-font-size:18; 
+	-fx-font-weight:bold;
+	-fx-font-family: Noto Sans KR Bold;
+}
+
 .no_selected_sw_tier {
 	-fx-border-color:#a6a6a6;
 	-fx-background-color:#fff;
