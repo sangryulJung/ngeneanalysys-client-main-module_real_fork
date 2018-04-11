@@ -131,6 +131,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     private Integer currentPageIndex = -1;
 
+    private AnalysisDetailInterpretationController interpretationController;
+
     /**
      * @return currentPageIndex
      */
@@ -368,6 +370,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         if(snvWrapper.getColumnConstraints().get(1).getPrefWidth() == 0) {
             snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightStandardWidth);
             rightContentsHBox.setPrefWidth(this.rightStandardWidth);
+            if(interpretationController !=null) interpretationController.setGridPaneWidth(this.standardAccordionSize - 10);
             overviewAccordion.setPrefWidth(this.standardAccordionSize);
             tableVBox.setVisible(false);
         } else {
@@ -388,6 +391,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         if(snvWrapper.getColumnConstraints().get(1).getPrefWidth() == 0) {
             snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightFullWidth);
             overviewAccordion.setPrefWidth(this.maxAccordionSize);
+            if(interpretationController !=null) interpretationController.setGridPaneWidth(this.maxAccordionSize - 10);
             overviewAccordion.setVisible(true);
             tableVBox.setVisible(false);
         } else {
@@ -409,10 +413,11 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         if(snvWrapper.getColumnConstraints().get(0).getPrefWidth() == 200) {
             snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightStandardWidth);
             overviewAccordion.setPrefWidth(this.standardAccordionSize);
+            if(interpretationController !=null) interpretationController.setGridPaneWidth(this.standardAccordionSize - 10);
         } else {
             snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightFullWidth);
             overviewAccordion.setPrefWidth(this.maxAccordionSize);
-
+            if(interpretationController !=null) interpretationController.setGridPaneWidth(this.maxAccordionSize - 10);
         }
         overviewAccordion.setVisible(true);
         tableVBox.setPrefWidth(this.minSize);
@@ -475,6 +480,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_INTERPRETATION);
             Node node = loader.load();
             AnalysisDetailInterpretationController controller = loader.getController();
+            interpretationController = controller;
             controller.setMainController(this.getMainController());
             controller.setAnalysisDetailSNVController(this);
             controller.setParamMap(getParamMap());
@@ -568,7 +574,11 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
 
         // 첫번째 탭 선택 처리
-        overviewAccordion.setExpandedPane(variantDetailTitledPane);
+        if(panel.getAnalysisType().equals("SOMATIC")) {
+            overviewAccordion.setExpandedPane(interpretationTitledPane);
+        } else {
+            overviewAccordion.setExpandedPane(variantDetailTitledPane);
+        }
         //setDetailTabActivationToggle(true);
     }
 

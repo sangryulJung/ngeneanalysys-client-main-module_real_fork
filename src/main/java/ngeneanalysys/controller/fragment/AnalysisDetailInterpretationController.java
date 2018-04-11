@@ -2,6 +2,7 @@ package ngeneanalysys.controller.fragment;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -16,6 +17,7 @@ import ngeneanalysys.controller.ExcludeReportDialogController;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
+import ngeneanalysys.model.paged.PagedSameVariantInterpretation;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
@@ -28,6 +30,7 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -49,7 +52,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     private CheckBox addToReportCheckBox;
 
     @FXML
-    private TableView<SameVariantInterpretation> PastCasesTableView;
+    private TableView<SameVariantInterpretation> pastCasesTableView;
 
     @FXML
     private TableColumn<SameVariantInterpretation, String> pastCasesSampleColumn;
@@ -70,28 +73,33 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     private TableColumn<SameVariantInterpretation, String> pastCasesDateColumn;
 
     @FXML
-    private TableView<SnpInDelInterpretationLogs> interpretationTableView;
+    private TableView<SameVariantInterpretation> interpretationTableView;
 
     @FXML
-    private TableColumn<SnpInDelInterpretationLogs, String> interpretationTypeColumn;
+    private TableColumn<SameVariantInterpretation, String> interpretationTypeColumn;
 
     @FXML
-    private TableColumn<SnpInDelInterpretationLogs, String> interpretationEvidenceColumn;
+    private TableColumn<SameVariantInterpretation, String> interpretationEvidenceColumn;
 
     @FXML
-    private TableColumn<SnpInDelInterpretationLogs, String> interpretationInterpretationColumn;
+    private TableColumn<SameVariantInterpretation, String> interpretationInterpretationColumn;
 
     @FXML
-    private TableColumn<SnpInDelInterpretationLogs, String> interpretationEvidenceCommentColumn;
+    private TableColumn<SameVariantInterpretation, String> interpretationEvidenceCommentColumn;
 
     @FXML
-    private TableColumn<SnpInDelInterpretationLogs, String> interpretationDateColumn;
+    private TableColumn<SameVariantInterpretation, String> interpretationDateColumn;
+
+    @FXML
+    private GridPane interpretationGridPane;
 
     private VariantAndInterpretationEvidence selectedAnalysisResultVariant;
 
     private APIService apiService;
 
     private AnalysisDetailSNVController analysisDetailSNVController;
+
+    private Sample sample;
 
     /**
      * @param analysisDetailSNVController
@@ -103,17 +111,17 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     @Override
     public void show(Parent root) throws IOException {
         apiService = APIService.getInstance();
-
+        sample = (Sample)getParamMap().get("sample");
         selectedAnalysisResultVariant = (VariantAndInterpretationEvidence)paramMap.get("variant");
 
         if(StringUtils.isEmpty(selectedAnalysisResultVariant.getSnpInDel().getExpertTier())) arrow.setVisible(false);
         addToReportCheckBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> addToReportBtn(addToReportCheckBox ));
         checkBoxSetting(addToReportCheckBox, selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport());
 
-        interpretationTypeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getInterpretationType()));
-        interpretationInterpretationColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNewValue()));
-        interpretationEvidenceCommentColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getComment()));
-        interpretationDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(org.apache.commons.lang3.time.DateFormatUtils.format(cellData.getValue().getCreatedAt().toDate(), "yyyy-MM-dd HH:mm:ss")));
+        interpretationTypeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDelInterpretation().getClinicalVariantType()));
+        //interpretationInterpretationColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
+        //interpretationEvidenceCommentColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getComment()));
+        //interpretationDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(org.apache.commons.lang3.time.DateFormatUtils.format(cellData.getValue().getCreatedAt().toDate(), "yyyy-MM-dd HH:mm:ss")));
 
         pastCasesSampleColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSampleName()));
         pastCasesTypeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSampleName()));
@@ -128,14 +136,20 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
     }
 
+    public void setGridPaneWidth(double size) {
+        interpretationGridPane.setPrefWidth(size);
+    }
+
     public void setInterpretationTable() {
         try {
+
             // Memo 데이터 API 요청
             //Map<String, Object> commentParamMap = new HashMap<>();
-            HttpClientResponse responseMemo = apiService.get("/analysisResults/snpInDelInterpretationLogs/" + selectedAnalysisResultVariant.getSnpInDel().getId() , null, null, false);
+            HttpClientResponse responseMemo = apiService.get("/analysisResults/snpInDelInterpretationLogs/" + selectedAnalysisResultVariant.getSnpInDel().getId()
+                    , null, null, false);
 
             // Flagging Comment 데이터 요청이 정상 요청된 경우 진행.
-            SnpInDelInterpretationLogsList memoList = responseMemo.getObjectBeforeConvertResponseToJSON(SnpInDelInterpretationLogsList.class);
+            PagedSameVariantInterpretation memoList = responseMemo.getObjectBeforeConvertResponseToJSON(PagedSameVariantInterpretation.class);
             if(!memoList.getResult().isEmpty()) interpretationTableView.getItems().addAll(memoList.getResult());
 
         } catch (WebAPIException wae) {
@@ -149,7 +163,30 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     }
 
     public void setPastCases() {
+        try {
+            Map<String, Object> params = new HashMap<>();
 
+            params.put("chromosome", selectedAnalysisResultVariant.getSnpInDel().getGenomicCoordinate().getChromosome());
+            params.put("gene", selectedAnalysisResultVariant.getSnpInDel().getGenomicCoordinate().getGene());
+            params.put("ntChange", selectedAnalysisResultVariant.getSnpInDel().getSnpInDelExpression().getNtChange());
+
+            HttpClientResponse response = apiService.get("/analysisResults/sameVariantInterpretations/" + selectedAnalysisResultVariant.getSnpInDel().getSampleId()
+                    , params, null, false);
+
+            List<SameVariantInterpretation> sameList = (List<SameVariantInterpretation>)response.getMultiObjectBeforeConvertResponseToJSON(SnpInDelInterpretationLogsList.class, false);
+            logger.info(sameList.size() + "");
+            if( sameList != null && !sameList.isEmpty()) {
+                pastCasesTableView.getItems().addAll(FXCollections.observableArrayList(sameList));
+            }
+
+        } catch (WebAPIException wae) {
+            wae.printStackTrace();
+            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+                    getMainApp().getPrimaryStage(), true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+        }
     }
 
     public void addToReportBtn(CheckBox checkBox) {

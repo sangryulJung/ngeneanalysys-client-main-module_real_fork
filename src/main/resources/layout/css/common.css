@@ -770,6 +770,7 @@ Button {
 	-fx-font-weight:bold;
 	-fx-text-fill:#656565;
 	-fx-pref-width:20;
+	-fx-pref-height : 20;
 	-fx-text-alignment:center ;
 	-fx-alignment:center;
 }
@@ -782,6 +783,7 @@ Button {
 	-fx-font-weight:bold;
 	-fx-text-fill:#fff;
 	-fx-pref-width:20;
+	-fx-pref-height : 20;
 	-fx-text-alignment:center ;
 	-fx-alignment:center;
 }
@@ -794,6 +796,7 @@ Button {
 	-fx-font-weight:bold;
 	-fx-text-fill:#fff;
 	-fx-pref-width:20;
+	-fx-pref-height : 20;
 	-fx-text-alignment:center ;
 	-fx-alignment:center;
 }
@@ -806,6 +809,7 @@ Button {
 	-fx-font-weight:bold;
 	-fx-text-fill:#fff;
 	-fx-pref-width:20;
+	-fx-pref-height : 20;
 	-fx-text-alignment:center ;
 	-fx-alignment:center;
 }
@@ -818,6 +822,7 @@ Button {
 	-fx-font-weight:bold;
 	-fx-text-fill:#fff;
 	-fx-pref-width:20;
+	-fx-pref-height : 20;
 	-fx-text-alignment:center ;
 	-fx-alignment:center;
 }
@@ -829,6 +834,7 @@ Button {
 	-fx-font-weight:bold;
 	-fx-text-fill:#fff;
 	-fx-pref-width:20;
+	-fx-pref-height : 20;
 	-fx-text-alignment:center ;
 	-fx-alignment:center;
 }
