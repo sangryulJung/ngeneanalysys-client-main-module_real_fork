@@ -74,9 +74,9 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
 
     public void setSNVTabName(String text) {
         if(!StringUtils.isEmpty(text)) {
-            topMenus[0].setMenuName("SNV : " + text);
+            topMenus[0].setMenuName("SNV/Indel : " + text);
         } else {
-            topMenus[0].setMenuName("SNV");
+            topMenus[0].setMenuName("SNV/Indel");
         }
         refreshShowTopMenu(0);
 

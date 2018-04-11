@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
@@ -17,7 +25,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="contentswrapper" prefHeight="410.0" prefWidth="430.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.LoginController">
+<GridPane fx:id="contentswrapper" prefHeight="410.0" prefWidth="430.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.LoginController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="20.0" />
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="370.0" />
@@ -92,7 +100,7 @@
                   <Label style="-fx-text-fill: #FFFFFF;" text="Service Setting" />
                </children>
             </HBox>
-            <Label style="-fx-text-fill: #FFFFFF;" text="All content ⓒ 2018 NGeneBio, Inc." />
+            <Label style="-fx-text-fill: #FFFFFF;" styleClass="font_size_10" text="All content ⓒ 2018 NGeneBio, Inc." />
          </children>
          <GridPane.margin>
             <Insets />
