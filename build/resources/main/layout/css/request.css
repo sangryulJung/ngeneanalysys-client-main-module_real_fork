@@ -1,0 +1,104 @@
+.field_height {
+	-fx-min-height:25;
+	-fx-pref-height:25;
+	-fx-max-height:25;
+}
+
+.fileList {
+	-fx-font-size:9px;
+	-fx-text-fill:#4d4d4d;
+}
+
+.incorrectValue {
+	-fx-text-fill:red;
+}
+
+.correctValue {
+	-fx-text-fill:black;
+}
+
+.formTitleLabel {
+	-fx-font-size:12px;
+	-fx-text-fill:#4d4d4d;
+}
+
+.formTitleLabelRequired {
+	-fx-font-size:12px;
+	-fx-text-fill:#F5525A;
+}
+
+#textFieldGruopName {
+	-fx-background-color:#fff;
+	-fx-background-radius :2;
+	-fx-border-radius :2;
+	-fx-border-color:#c4c4c4;
+	-fx-font-size:12px;
+	-fx-text-fill:#000;
+}
+
+#datePickerRequestDate {
+	-fx-background-color:#fff;
+	-fx-background-radius :2;
+	-fx-border-radius :2;
+	-fx-border-color:#c4c4c4;
+	-fx-font-size:12px;
+	-fx-text-fill:#000;
+}
+
+#buttonFileOpen {
+	-fx-background-color:#fff;
+	-fx-background-radius:2;
+	-fx-border-radius:2;
+	-fx-border-color:#c4c4c4;
+	-fx-text-fill:#000;
+	-fx-font-size:9px;
+	-fx-font-weight:bold;
+}
+
+#buttonFileOpen:hover {
+	-fx-background-color:#e4e4e4;
+}
+
+.table-column {
+	-fx-alignment: center;
+}
+
+#tableViewRegistForm .column-header .label {
+	-fx-font-size:12;
+}
+
+.check-box .text {
+	-fx-font-size:12;
+}
+
+.help_tooltip {
+    -fx-graphic: url("../images/renewal/help_icon.png");
+	/*-fx-background-image:url('../images/icon_help.png');
+	-fx-background-color:transparent;
+	-fx-background-repeat:no-repeat;*/
+	-fx-min-width:16;
+	-fx-pref-width:16;
+	-fx-max-width:16;
+	-fx-min-height:16;
+	-fx-pref-height:16;
+	-fx-max-height:16;
+}
+
+.help_tooltip_white {
+    -fx-graphic: url("../images/renewal/help_white_icon.png");
+	/*-fx-background-image:url('../images/icon_help.png');
+	-fx-background-color:transparent;
+	-fx-background-repeat:no-repeat;*/
+	-fx-min-width:14;
+	-fx-pref-width:14;
+	-fx-max-width:14;
+	-fx-min-height:14;
+	-fx-pref-height:14;
+	-fx-max-height:14;
+}
+
+#sampleSettingHeader {
+	-fx-background-color:#f2f5fa;
+	-fx-border-width : 0.5 0 0.5 0;
+    -fx-border-color : #999999;
+}

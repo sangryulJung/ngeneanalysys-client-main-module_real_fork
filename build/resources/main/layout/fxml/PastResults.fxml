@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Pagination?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<GridPane fx:id="experimentPastResultsWrapper" prefHeight="555.0" prefWidth="1200.0" styleClass="background_white" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.PastResultsController">
+   <columnConstraints>
+      <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
+      <ColumnConstraints hgrow="SOMETIMES" prefWidth="350.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="510.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="250.0" />
+      <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" valignment="TOP" vgrow="NEVER" />
+      <RowConstraints maxHeight="99.0" minHeight="-Infinity" prefHeight="35.0" vgrow="NEVER" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" valignment="CENTER" vgrow="NEVER" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="400.0" valignment="TOP" vgrow="NEVER" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" valignment="TOP" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="15.0" />
+   </rowConstraints>
+   <children>
+      <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <children>
+            <Label id="results_image_icon" />
+            <Label alignment="TOP_LEFT" style="-fx-font-family: Noto Sans KR Bold;" text="RESULTS">
+               <HBox.margin>
+                  <Insets top="2.0" />
+               </HBox.margin>
+               <styleClass>
+                  <String fx:value="font_gray" />
+                  <String fx:value="font_size_18" />
+               </styleClass></Label>
+         </children>
+      </HBox>
+      <Pagination fx:id="paginationList" focusTraversable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin></Pagination>
+      <GridPane fx:id="sampleListHeaderGridPane" alignment="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="225.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="265.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="185.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="185.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="header" text="RUN" />
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="header" text="SEQUENCER" GridPane.columnIndex="1" />
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="header" text="START DATE" GridPane.columnIndex="2" />
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="header" text="FINISHED DATE" GridPane.columnIndex="3" />
+         </children>
+      </GridPane>
+      <ScrollPane fx:id="mainContentsScrollPane" maxHeight="1.7976931348623157E308" maxWidth="870.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3">
+         <content>
+            <VBox fx:id="resultVBox" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="858.0" />
+         </content>
+      </ScrollPane>
+      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="4" GridPane.rowIndex="2" GridPane.rowSpan="2">
+         <children>
+            <ComboBox fx:id="searchComboBox" maxWidth="250.0" prefWidth="250.0">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </ComboBox>
+            <VBox fx:id="filterSearchArea" maxHeight="-Infinity" minHeight="-Infinity" prefWidth="100.0" spacing="5.0">
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+            </VBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="200.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#resetSearchForm" prefWidth="60.0" style="-fx-alignment: center;" styleClass="cancelBtn" text="RESET">
+                     <HBox.margin>
+                        <Insets right="15.0" />
+                     </HBox.margin></Button>
+                  <Button fx:id="searchBtn" mnemonicParsing="false" onAction="#search" prefWidth="80.0" style="-fx-alignment: center;" styleClass="submitBtn" text="SEARCH" />
+               </children>
+            </HBox>
+            <ScrollPane hbarPolicy="NEVER" prefHeight="300.0" prefWidth="250.0">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+               <content>
+                  <VBox fx:id="searchListVBox" maxHeight="-Infinity" minHeight="-Infinity" prefWidth="240.0" spacing="15.0" />
+               </content>
+            </ScrollPane>
+         </children>
+      </VBox>
+      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
+         <children>
+            <Label styleClass="total_icon" text="T">
+               <tooltip>
+                  <Tooltip text="Run Count" />
+               </tooltip></Label>
+            <Label fx:id="totalCountLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" text="100">
+               <HBox.margin>
+                  <Insets left="3.0" right="10.0" />
+               </HBox.margin></Label>
+            <Label styleClass="queued_icon" text="Q">
+               <padding>
+                  <Insets top="-1.0" />
+               </padding>
+               <tooltip>
+                  <Tooltip text="Queued Sample Count" />
+               </tooltip></Label>
+            <Label fx:id="queueLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" text="10">
+               <HBox.margin>
+                  <Insets left="3.0" right="10.0" />
+               </HBox.margin></Label>
+            <Label styleClass="run_icon" text="R">
+               <padding>
+                  <Insets top="-1.0" />
+               </padding>
+               <tooltip>
+                  <Tooltip text="Running Sample Count" />
+               </tooltip></Label>
+            <Label fx:id="runningLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" text="10">
+               <HBox.margin>
+                  <Insets left="3.0" right="10.0" />
+               </HBox.margin></Label>
+            <Label styleClass="complete_icon" text="C">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+               <padding>
+                  <Insets left="-1.0" top="-1.0" />
+               </padding>
+               <tooltip>
+                  <Tooltip text="Completed Sample Count" />
+               </tooltip></Label>
+            <Label fx:id="completeLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" text="10">
+               <HBox.margin>
+                  <Insets left="3.0" right="10.0" />
+               </HBox.margin></Label>
+            <Label styleClass="failed_icon" text="F">
+               <tooltip>
+                  <Tooltip text="Failed Sample Count" />
+               </tooltip></Label>
+            <Label fx:id="failLabel" prefHeight="19.0" prefWidth="0.0" style="-fx-font-family: Noto Sans CJK KR Regular;" text="1">
+               <HBox.margin>
+                  <Insets left="3.0" />
+               </HBox.margin></Label>
+         </children>
+      </HBox>
+      <HBox prefHeight="38.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
+         <children>
+            <Label id="search_image_icon">
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+            </Label>
+            <Label style="-fx-font-family: Noto Sans KR Bold;" text="SEARCH">
+               <styleClass>
+                  <String fx:value="font_size_18" />
+                  <String fx:value="font_gray" />
+               </styleClass>
+               <HBox.margin>
+                  <Insets top="1.0" />
+               </HBox.margin>
+            </Label>
+         </children>
+      </HBox>
+   </children>
+   <stylesheets>
+      <URL value="@../css/common.css" />
+      <URL value="@../css/experimenter.css" />
+   </stylesheets>
+</GridPane>

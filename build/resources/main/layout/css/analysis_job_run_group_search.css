@@ -1,0 +1,26 @@
+#searchArea {
+	-fx-background-color:#d6dde0;
+}
+
+#searchArea .label {
+	-fx-font-size:12px;
+	-fx-text-fill:#5a6971;
+}
+
+#list .table-column { -fx-alignment: CENTER; }
+
+.btn_search {
+	-fx-background-insets:0;
+	-fx-background-color: #FB4952;
+	-fx-background-radius :3;
+	-fx-border-width:0;
+	-fx-text-fill:#fff;
+	-fx-font-weight:bold;
+	-fx-padding:0;
+	-fx-graphic-text-gap:0;
+	-fx-font-size:12;
+}
+
+.btn_search:hover {
+	-fx-background-color: #CF2730;
+}

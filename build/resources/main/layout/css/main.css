@@ -1,0 +1,263 @@
+.layoutGrid {
+	-fx-border-width:0;
+}
+
+#mainHeader #userMenuBar {
+	-fx-background-color:transparent;
+}
+
+#mainHeader #userMenuBar:hover {
+	-fx-background-color:transparent;
+}
+
+#mainHeader #userMenuBar .menu {
+	-fx-background-image:url('../images/btn_user_set.png');
+	-fx-background-color:transparent ;
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center;
+}
+
+#mainHeader #userMenuBar .menu:hover {
+	-fx-background-color:transparent ;
+}
+
+#mainHeader #userMenuBar .menu .menu-item .label {
+	-fx-font-size:12px;
+}
+
+#mainHeader {
+    -fx-background-color : transparent;
+}
+
+.bg_main_header_logo {
+	-fx-background-image:url('../images/renewal/logo.png');
+	-fx-background-size : 180 26;
+	-fx-background-repeat:no-repeat ;
+	-fx-alignment:center ;
+	-fx-max-height:30;
+}
+
+.bg_company_logo {
+
+	-fx-background-image:url('../images/ngenebio_logo_small.png');
+	-fx-background-repeat:no-repeat ;
+	-fx-alignment:center ;
+	-fx-max-height:21;
+}
+
+#mainHeader .scroll-pane {
+}
+
+#mainHeader #topMenuArea {
+	-fx-padding: 5 0 0 0;
+}
+
+#mainHeader #topMenuArea > .group {
+	-fx-pref-width: 100;
+}
+
+#mainHeader #topMenuArea > Region {
+	//-fx-background-color:linear-gradient(#A0A0A0 0%, #858585 50%, #525051 100%);
+	-fx-background-radius:0 0 0 0;
+	-fx-border-width:0;
+	-fx-pref-width:105;
+	-fx-pref-height:40;
+}
+
+#mainHeader #topMenuArea > Region #addMenu {
+	//-fx-background-color: linear-gradient(#A0A0A0 0%, #858585 50%, #525051 100%);
+	-fx-background-radius:0;
+	-fx-pref-width:115;
+	-fx-pref-height:40;
+}
+
+#mainHeader #topMenuArea > .label {
+	-fx-font-size: 14;
+	-fx-text-fill:#000000;
+	-fx-alignment:center;
+	-fx-padding:0 0 0 0;
+	-fx-pref-width:105;
+	-fx-pref-height:40;
+
+}
+
+#mainHeader #topMenuArea > .label #addMenuLabel {
+	-fx-font-size: 12;
+	-fx-underline : true;
+	-fx-text-fill:#000000;
+	-fx-alignment:center;
+}
+
+#mainHeader #topMenuArea > .close_btn {
+	-fx-background-color:#DADADA;
+	-fx-background-image:url('../images/btn_tab_close.png');
+	-fx-padding:-5 15 0 0;
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center;
+}
+#mainHeader #topMenuArea > .close_btn:hover {
+	-fx-background-image:url('../images/btn_tab_close_on.png');
+}
+#mainHeader #topMenuArea > #selectedMenu Region {
+	//-fx-background-color:linear-gradient(#D7000F 0%, #C60213 50%, #A70A1E 100%);
+	/* top-left top-right bottom-right bottom-left */
+	-fx-background-radius:0;
+	-fx-border-width:0;
+}
+
+#mainHeader #topMenuArea > #selectedMenu .label {
+	-fx-font-size: 14;
+	-fx-font-weight:bold;
+	-fx-text-fill: #000000;
+	-fx-alignment:center;
+	-fx-border-width:0 0 2 0;
+    -fx-border-color : red;
+}
+
+#mainHeader #topMenuArea > #selectedMenu Region #addMenu {
+	//-fx-background-color:linear-gradient(#D7000F 0%, #C60213 50%, #A70A1E 100%);
+	-fx-background-radius:0;
+	-fx-border-width:0;
+}
+
+#mainHeader #topMenuArea > #selectedMenu .label #addMenuLabel {
+	-fx-font-size: 12;
+	-fx-underline : true;
+	-fx-text-fill: #000000;
+	-fx-alignment:center;
+	-fx-border-width:0 0 2 0;
+    -fx-border-color : red;
+}
+
+.user_name {
+
+	-fx-text-fill : #273e5e;
+}
+
+#labelSystemBuild {
+    -fx-text-fill : black;
+}
+
+#mainBackground {
+    -fx-background-color:none;
+    -fx-background-image:url('../images/renewal/main_background.png');
+    -fx-background-repeat:no-repeat;
+    -fx-background-size : cover;
+}
+
+#mainFrame {
+    -fx-background-color: white;
+}
+
+#sampleList {
+    -fx-min-height : 60;
+    -fx-pref-height : 60;
+    -fx-max-height : 60;
+    -fx-border-width : 0;
+}
+
+#topMenuArea1 > .label {
+    -fx-min-height : 60;
+    -fx-pref-height : 60;
+    -fx-max-height : 60;
+    -fx-min-width : 80;
+    -fx-min-width : 110;
+    -fx-pref-width : 110;
+    -fx-max-width : 110;
+    -fx-alignment : center;
+    -fx-font-size : 16px;
+    -fx-cursor:hand;
+    -fx-border-width : 0 0 3 0;
+    -fx-border-color : white;
+    -fx-font-weight : bold;
+    -fx-text-fill: #273E5E;
+
+}
+
+#topMenuArea1 > .label#selectedMenu {
+    -fx-border-width : 0 0 5 0;
+    -fx-border-color : #20CC7B;
+}
+
+#topMenuArea1 .combo-box {
+    -fx-min-height : 60;
+    -fx-pref-height : 60;
+    -fx-max-height : 60;
+    -fx-min-width : 80;
+    -fx-min-width : 100;
+    -fx-pref-width : 100;
+    -fx-max-width : 100;
+    -fx-alignment : center;
+    -fx-font-size : 14px;
+    -fx-cursor:hand;
+    -fx-border-width : 0 0 3 0;
+    -fx-border-color : white;
+}
+
+#topMenuArea1 .combo-box#selectedMenu {
+    -fx-border-width : 0 0 3 0;
+    -fx-border-color : white;
+}
+
+#topMenuArea1 #sampleListVBox > .combo-box .arrow, #topMenuArea1 #sampleListVBox > .combo-box .button{
+    -fx-background-color : transparent;
+}
+
+#topMenuArea1 #sampleListVBox {
+    -fx-cursor:hand;
+}
+
+#topMenuArea1 #sampleListStackPane {
+    -fx-min-height : 60;
+    -fx-pref-height : 60;
+    -fx-max-height : 60;
+    -fx-min-width : 80;
+    -fx-min-width : 110;
+    -fx-pref-width : 110;
+    -fx-max-width : 110;
+}
+
+#topMenuArea1 #sampleListStackPane .label {
+    -fx-alignment : center-left;
+    -fx-padding : 0 0 0 5;
+    -fx-font-size : 16px;
+    -fx-text-fill : #273e5e;
+    -fx-cursor:hand;
+    -fx-border-width : 0 0 5 0;
+    -fx-border-color : white;
+    -fx-background-image:url('../images/btn_user_set.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-size : 10 5;
+    -fx-background-position: right 5 center;
+    -fx-min-width : 110;
+    -fx-pref-width : 110;
+    -fx-max-width : 110;
+}
+
+#topMenuArea1 #sampleListStackPane .label#selectedMenu {
+    -fx-border-width : 0 0 5 0;
+    -fx-border-color : #20CC7B;
+}
+
+#topMenuArea1 #sampleListStackPane .remove_btn {
+    -fx-background-color : #666666;
+    -fx-background-radius : 30;
+    -fx-alignment : center;
+    -fx-text-fill : #FFFFFF;
+    -fx-pref-width : 16;
+    -fx-pref-height : 16;
+    -fx-min-width : 16;
+    -fx-min-height : 16;
+    -fx-text-size : 9;
+    -fx-padding : -1 0 0 0;
+}
+
+#sampleListStackPane > .combo-box:disabled {
+    -fx-opacity: .0;
+}
+
+#user_image_icon {
+    -fx-graphic: url("../images/renewal/user_icon.png");
+    -fx-pref-width : 16;
+    -fx-pref-height : 16;
+}
