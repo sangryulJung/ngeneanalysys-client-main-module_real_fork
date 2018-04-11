@@ -42,11 +42,8 @@
                   <Label fx:id="userTierLabel" />
                </children>
                <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
-               <padding>
                   <Insets left="10.0" />
-               </padding>
+               </GridPane.margin>
             </HBox>
             <VBox alignment="CENTER" maxHeight="-Infinity" minWidth="111.0" prefHeight="24.0" prefWidth="111.0" styleClass="add_to_report_check_box" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
                <children>
@@ -62,8 +59,8 @@
             </VBox>
             <HBox alignment="CENTER_RIGHT" maxWidth="1000.0" prefHeight="100.0" prefWidth="870.0" spacing="20.0" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                <children>
-                  <Button mnemonicParsing="false" styleClass="cancelBtn" text="Cancel" />
-                  <Button alignment="TOP_RIGHT" mnemonicParsing="false" onAction="#saveInterpretation" prefWidth="60.0" style="-fx-alignment: center;" styleClass="submitBtn" text="Save" />
+                  <Button mnemonicParsing="false" styleClass="cancelBtn" text="Cancel" visible="false" />
+                  <Button alignment="TOP_RIGHT" mnemonicParsing="false" onAction="#saveInterpretation" prefWidth="60.0" style="-fx-alignment: center;" styleClass="submitBtn" text="Add" />
                </children>
                <padding>
                   <Insets right="10.0" />
@@ -73,7 +70,6 @@
               <columns>
                 <TableColumn fx:id="interpretationTypeColumn" prefWidth="120.0" style="-fx-text-fill: #000000;" text="Type" />
                   <TableColumn fx:id="interpretationEvidenceColumn" prefWidth="120.0" style="-fx-text-fill: #000000;" text="Evidence" />
-                  <TableColumn fx:id="interpretationInterpretationColumn" prefWidth="150.0" style="-fx-text-fill: #000000;" text="Interpretation" />
                   <TableColumn fx:id="interpretationEvidenceCommentColumn" maxWidth="1.7976931348623157E308" prefWidth="190.0" style="-fx-text-fill: #000000;" text="Evidence Comment" />
                   <TableColumn fx:id="interpretationDateColumn" prefWidth="120.0" style="-fx-text-fill: #000000;" text="Date" />
               </columns>
@@ -93,9 +89,9 @@
               <columns>
                 <TableColumn fx:id="pastCasesSampleColumn" prefWidth="150.0" style="-fx-text-fill: #000000;" text="Sample" />
                 <TableColumn fx:id="pastCasesTypeColumn" prefWidth="120.0" style="-fx-text-fill: #000000;" text="Type" />
-                  <TableColumn fx:id="pastCasesEvidenceColumn" prefWidth="120.0" style="-fx-text-fill: #000000;" text="Evidence" />
-                  <TableColumn fx:id="pastCasesInterpretationColumn" prefWidth="150.0" style="-fx-text-fill: #000000;" text="Interpretation" />
-                  <TableColumn fx:id="pastCasesEvidenceCommentColumn" maxWidth="1.7976931348623157E308" prefWidth="190.0" style="-fx-text-fill: #000000;" text="Evidence Comment" />
+                  <TableColumn fx:id="pastCasesEvidenceColumn" prefWidth="90.0" style="-fx-text-fill: #000000;" text="Evidence" />
+                  <TableColumn fx:id="pastCasesInterpretationColumn" prefWidth="90.0" style="-fx-text-fill: #000000;" text="Interpretation" />
+                  <TableColumn fx:id="pastCasesEvidenceCommentColumn" maxWidth="1.7976931348623157E308" prefWidth="210.0" style="-fx-text-fill: #000000;" text="Evidence Comment" />
                   <TableColumn fx:id="pastCasesDateColumn" prefWidth="120.0" style="-fx-text-fill: #000000;" text="Date" />
               </columns>
                <GridPane.margin>
@@ -110,19 +106,19 @@
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </HBox>
-            <TableView fx:id="evidenceTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
-              <columns>
-                <TableColumn fx:id="evidenceTypeColumn" prefWidth="120.0" text="Type" />
-                <TableColumn fx:id="evidenceColumn" prefWidth="120.0" text="Evidence" />
-                  <TableColumn fx:id="evidenceInterpretationColumn" prefWidth="120.0" text="Interpretation" />
-                  <TableColumn fx:id="evidenceCommentColumn" prefWidth="320.0" text="Evidence Comment" />
+            <TableView fx:id="evidenceTableView" editable="true" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+               <columns>
+                  <TableColumn fx:id="evidenceTypeColumn" prefWidth="120.0" text="Type" />
+                  <TableColumn fx:id="evidenceColumn" prefWidth="120.0" text="Evidence" />
+                  <TableColumn fx:id="evidenceCommentColumn" prefWidth="320.0" style="-fx-text-fill: #000000;" styleClass="txt_black" text="Evidence Comment" />
                   <TableColumn fx:id="evidencePrimaryColumn" prefWidth="75.0" text="Primary" />
                   <TableColumn fx:id="evidenceSaveColumn" prefWidth="75.0" text="Save" />
-              </columns>
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </TableView>
+                  <TableColumn fx:id="evidenceDeleteColumn" prefWidth="75.0" text="Delete" />
+               </columns>
+                  <GridPane.margin>
+                     <Insets left="10.0" right="10.0" />
+                  </GridPane.margin>
+               </TableView>
          </children>
       </GridPane>
    </content>
