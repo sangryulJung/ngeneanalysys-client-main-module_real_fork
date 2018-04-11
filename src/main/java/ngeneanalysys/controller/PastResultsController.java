@@ -497,8 +497,11 @@ public class PastResultsController extends SubPaneController {
 		box.getChildren().add(title);
 		FlowPane flowPane = new FlowPane();
 		HBox hBox = new HBox();
+		hBox.setStyle(hBox.getStyle() + "-fx-background-color : #273e5e; -fx-background-radius : 20; -fx-padding : 2 5 2 5");
+		hBox.setAlignment(Pos.CENTER);
 		hBox.setId(textField.getText());
 		Label label = new Label(textField.getText());
+		label.setStyle(label.getStyle() + "-fx-text-fill : #FFFFFF;");
 		Label xLabel = new Label("X");
 		xLabel.setCursor(Cursor.HAND);
 		xLabel.setOnMouseClicked(ev -> {
@@ -528,10 +531,15 @@ public class PastResultsController extends SubPaneController {
 		box.getChildren().add(title);
 		FlowPane flowPane = new FlowPane();
 		HBox hBox = new HBox();
+		hBox.setStyle(hBox.getStyle() + "-fx-background-color : #273e5e; -fx-background-radius : 20; -fx-padding : 2 5 2 5");
+		hBox.setAlignment(Pos.CENTER);
 		hBox.setId(id);
 		Label startLabel = new Label(startDate);
+		startLabel.setStyle(startLabel.getStyle() + "-fx-text-fill : #FFFFFF;");
 		Label label = new Label(" ~ ");
+		label.setStyle(label.getStyle() + "-fx-text-fill : #FFFFFF;");
 		Label endLabel = new Label(endDate);
+		endLabel.setStyle(endLabel.getStyle() + "-fx-text-fill : #FFFFFF;");
 		Label xLabel = new Label("X");
 		xLabel.setCursor(Cursor.HAND);
 		xLabel.setOnMouseClicked(ev -> {
@@ -585,8 +593,11 @@ public class PastResultsController extends SubPaneController {
                             }
                             if(!isContain) {
 								HBox hBox = new HBox();
+								hBox.setStyle(hBox.getStyle() + "-fx-background-color : #273e5e; -fx-background-radius : 20; -fx-padding : 2 5 2 5");
+								hBox.setAlignment(Pos.CENTER);
 								hBox.setId(text);
 							    Label label = new Label(text);
+							    label.setStyle(label.getStyle() + "-fx-text-fill : #FFFFFF;");
 							    Label xLabel = new Label("X");
 							    xLabel.getStyleClass().add("remove_btn");
 								xLabel.setCursor(Cursor.HAND);
@@ -600,7 +611,7 @@ public class PastResultsController extends SubPaneController {
 								hBox.getChildren().addAll(label, xLabel);
                                 child.getChildren().add(hBox);
 								hBox.setSpacing(5);
-                                FlowPane.setMargin(hBox, new Insets(0, 0, 0, 10));
+                                FlowPane.setMargin(hBox, new Insets(0, 10, 0, 0));
                             }
 						} else {
 							addSearchItem(textField);
@@ -656,9 +667,14 @@ public class PastResultsController extends SubPaneController {
 							if(!isContain) {
 								HBox hBox = new HBox();
 								hBox.setId(id);
+								hBox.setStyle(hBox.getStyle() + "-fx-background-color : #273e5e; -fx-background-radius : 20; -fx-padding : 2 5 2 5");
+								hBox.setAlignment(Pos.CENTER);
 								Label startLabel = new Label(minCreateAt);
+								startLabel.setStyle(startLabel.getStyle() + "-fx-text-fill : #FFFFFF;");
 								Label label = new Label(" ~ ");
+								label.setStyle(label.getStyle() + "-fx-text-fill : #FFFFFF;");
 								Label endLabel = new Label(maxCreateAt);
+								endLabel.setStyle(endLabel.getStyle() + "-fx-text-fill : #FFFFFF;");
 								Label xLabel = new Label("X");
 								xLabel.getStyleClass().add("remove_btn");
 								xLabel.setCursor(Cursor.HAND);

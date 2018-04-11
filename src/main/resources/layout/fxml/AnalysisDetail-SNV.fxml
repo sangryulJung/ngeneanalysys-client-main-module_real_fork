@@ -34,7 +34,11 @@
                         <Insets left="20.0" right="20.0" />
                      </HBox.margin>
                   </Label>
+                  <Label maxWidth="10.0" minWidth="10.0" prefWidth="10.0" />
                </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
             </HBox>
             <TableView fx:id="variantListTableView" maxHeight="305.0" maxWidth="-Infinity" minHeight="305.0" minWidth="-Infinity" prefHeight="305.0" tableMenuButtonVisible="true">
                <padding>

@@ -99,15 +99,15 @@
 }
 
 .remove_btn {
-    -fx-background-color : #666666;
-    -fx-background-radius : 3;
+    -fx-background-color : #FFFFFF;
+    -fx-background-radius : 30;
     -fx-alignment : center;
-    -fx-text-fill : #FFFFFF;
+    -fx-text-fill : #000000;
     -fx-pref-width : 14;
     -fx-pref-height : 14;
     -fx-min-width : 14;
     -fx-min-height : 14;
-    -fx-text-size : 8;
+    -fx-font-size : 8;
     -fx-padding : -1 0 0 0;
 }
 
