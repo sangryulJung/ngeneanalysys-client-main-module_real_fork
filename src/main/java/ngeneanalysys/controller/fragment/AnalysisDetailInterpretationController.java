@@ -24,6 +24,7 @@ import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -147,19 +148,19 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         //////////////////////////////////////////////////
 
         interpretationTypeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDelEvidence().getEvidenceType()));
-        //interpretationInterpretationColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
-        //interpretationEvidenceCommentColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getComment()));
-        //interpretationDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(org.apache.commons.lang3.time.DateFormatUtils.format(cellData.getValue().getCreatedAt().toDate(), "yyyy-MM-dd HH:mm:ss")));
+        interpretationInterpretationColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDelEvidence().getEvidenceLevel()));
+        interpretationEvidenceCommentColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDelEvidence().getEvidence()));
+        interpretationDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(DateFormatUtils.format(cellData.getValue().getSnpInDelEvidence().getCreatedAt().toDate(), "yyyy-MM-dd HH:mm:ss")));
 
         pastCasesSampleColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSampleName()));
         pastCasesTypeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSampleName()));
         pastCasesEvidenceColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSampleName()));
         pastCasesInterpretationColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTier()));
         pastCasesEvidenceCommentColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSampleName()));
-        //pastCasesDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(DateFormatUtils.format(cellData.getValue().getCreatedAt().toDate(), "yyyy-MM-dd hh:mm:ss")));
+        pastCasesDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(DateFormatUtils.format(cellData.getValue().getSnpInDelEvidence().getCreatedAt().toDate(), "yyyy-MM-dd hh:mm:ss")));
 
-        //setInterpretationTable();
-        //setPastCases();
+        setInterpretationTable();
+        setPastCases();
         setTier(selectedAnalysisResultVariant.getSnpInDel());
 
     }
@@ -222,7 +223,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
             // Flagging Comment 데이터 요청이 정상 요청된 경우 진행.
             PagedSameVariantInterpretation memoList = responseMemo.getObjectBeforeConvertResponseToJSON(PagedSameVariantInterpretation.class);
-            if(!memoList.getResult().isEmpty()) interpretationTableView.getItems().addAll(memoList.getResult());
+            if(memoList != null && !memoList.getResult().isEmpty()) interpretationTableView.getItems().addAll(memoList.getResult());
 
         } catch (WebAPIException wae) {
             wae.printStackTrace();
