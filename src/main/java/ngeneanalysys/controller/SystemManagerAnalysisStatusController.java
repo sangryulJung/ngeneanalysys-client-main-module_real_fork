@@ -373,7 +373,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
         }
     }
 
-    /** 삭제 버튼 생성 */
+    /** 재실행 버튼 생성 */
     private class UpdateButtonCreate extends TableCell<Run, Boolean> {
         HBox box = null;
         final ImageView img = new ImageView(resourceUtil.getImage("/layout/images/refresh.png", 18, 18));

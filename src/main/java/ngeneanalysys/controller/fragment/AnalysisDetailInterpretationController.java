@@ -1,5 +1,7 @@
 package ngeneanalysys.controller.fragment;
 
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -8,8 +10,12 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.AnalysisDetailSNVController;
 import ngeneanalysys.controller.ExcludeReportDialogController;
@@ -17,8 +23,6 @@ import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedSameVariantInterpretation;
-import ngeneanalysys.model.render.ComboBoxConverter;
-import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
@@ -38,6 +42,8 @@ import java.util.Map;
  */
 public class AnalysisDetailInterpretationController extends SubPaneController {
     private static Logger logger = LoggerUtil.getLogger();
+
+    ToggleGroup toggleGroup = new ToggleGroup();
 
     @FXML
     private Label swTierLabel;
@@ -60,16 +66,16 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     private TableColumn<SnpInDelEvidence, String> evidenceColumn;
 
     @FXML
-    private TableColumn<SnpInDelEvidence, String> evidenceInterpretationColumn;
-
-    @FXML
     private TableColumn<SnpInDelEvidence, String> evidenceCommentColumn;
 
     @FXML
-    private TableColumn<SnpInDelEvidence, String> evidencePrimaryColumn;
+    private TableColumn<SnpInDelEvidence, Boolean> evidencePrimaryColumn;
 
     @FXML
-    private TableColumn<SnpInDelEvidence, String> evidenceSaveColumn;
+    private TableColumn<SnpInDelEvidence, Boolean> evidenceSaveColumn;
+
+    @FXML
+    private TableColumn<SnpInDelEvidence, Boolean> evidenceDeleteColumn;
 
     @FXML
     private TableView<SameVariantInterpretation> pastCasesTableView;
@@ -93,22 +99,19 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     private TableColumn<SameVariantInterpretation, String> pastCasesDateColumn;
 
     @FXML
-    private TableView<SameVariantInterpretation> interpretationTableView;
+    private TableView<SnpInDelPrimaryEvidenceLog> interpretationTableView;
 
     @FXML
-    private TableColumn<SameVariantInterpretation, String> interpretationTypeColumn;
+    private TableColumn<SnpInDelPrimaryEvidenceLog, String> interpretationTypeColumn;
 
     @FXML
-    private TableColumn<SameVariantInterpretation, String> interpretationEvidenceColumn;
+    private TableColumn<SnpInDelPrimaryEvidenceLog, String> interpretationEvidenceColumn;
 
     @FXML
-    private TableColumn<SameVariantInterpretation, String> interpretationInterpretationColumn;
+    private TableColumn<SnpInDelPrimaryEvidenceLog, String> interpretationEvidenceCommentColumn;
 
     @FXML
-    private TableColumn<SameVariantInterpretation, String> interpretationEvidenceCommentColumn;
-
-    @FXML
-    private TableColumn<SameVariantInterpretation, String> interpretationDateColumn;
+    private TableColumn<SnpInDelPrimaryEvidenceLog, String> interpretationDateColumn;
 
     @FXML
     private GridPane interpretationGridPane;
@@ -141,30 +144,180 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         addToReportCheckBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> addToReportBtn(addToReportCheckBox ));
         checkBoxSetting(addToReportCheckBox, selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport());
 
+        evidenceTableView.addEventFilter(ScrollEvent.ANY, scrollEvent -> {
+            evidenceTableView.refresh();
+            // close text box
+            evidenceTableView.edit(-1, null);
+        });
 
         ///////////////////////////////////////////////////
+        evidenceTypeColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getEvidenceType()));
+        evidenceTypeColumn.setCellFactory(item -> new TypeComboBoxCell());
 
+        evidenceColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getEvidenceLevel()));
+        evidenceColumn.setCellFactory(item -> new EvidenceLevelComboBoxCell());
+
+        evidencePrimaryColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getPrimaryEvidence()));
+        evidencePrimaryColumn.setCellFactory(item -> new PrimaryRadioButtonCell());
+
+        evidenceCommentColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getEvidence()));
+        evidenceCommentColumn.setCellFactory(tableColumn -> new EditingCell());
+        evidenceCommentColumn.setOnEditCommit((TableColumn.CellEditEvent<SnpInDelEvidence, String> t) -> {
+            (t.getTableView().getItems().get(t.getTablePosition().getRow())).setEvidence(t.getNewValue());
+        });
+
+        evidenceSaveColumn.setSortable(false);
+        evidenceSaveColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
+        evidenceSaveColumn.setCellFactory(param -> new SaveButtonCreate());
+
+        evidenceDeleteColumn.setSortable(false);
+        evidenceDeleteColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
+        evidenceDeleteColumn.setCellFactory(param -> new DeleteButtonCreate());
 
         //////////////////////////////////////////////////
 
-        interpretationTypeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDelEvidence().getEvidenceType()));
-        interpretationInterpretationColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDelEvidence().getEvidenceLevel()));
-        interpretationEvidenceCommentColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDelEvidence().getEvidence()));
-        interpretationDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(DateFormatUtils.format(cellData.getValue().getSnpInDelEvidence().getCreatedAt().toDate(), "yyyy-MM-dd HH:mm:ss")));
+        interpretationTypeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEvidenceType()));
+        interpretationEvidenceColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEvidenceLevel()));
+        interpretationEvidenceCommentColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEvidence()));
+        interpretationDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(DateFormatUtils.format(cellData.getValue().getCreatedAt().toDate(), "yyyy-MM-dd HH:mm:ss")));
 
         pastCasesSampleColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSampleName()));
-        pastCasesTypeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSampleName()));
-        pastCasesEvidenceColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSampleName()));
+        pastCasesTypeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDelEvidence().getEvidenceType()));
+        pastCasesEvidenceColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDelEvidence().getEvidenceLevel()));
         pastCasesInterpretationColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTier()));
-        pastCasesEvidenceCommentColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSampleName()));
+        pastCasesEvidenceCommentColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDelEvidence().getEvidence()));
         pastCasesDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(DateFormatUtils.format(cellData.getValue().getSnpInDelEvidence().getCreatedAt().toDate(), "yyyy-MM-dd hh:mm:ss")));
 
+        setEvidenceTable();
         setInterpretationTable();
         setPastCases();
         setTier(selectedAnalysisResultVariant.getSnpInDel());
 
     }
 
+    private class SaveButtonCreate extends TableCell<SnpInDelEvidence, Boolean> {
+        HBox box = null;
+        final ImageView img = new ImageView(resourceUtil.getImage("/layout/images/modify.png", 18, 18));
+
+        public SaveButtonCreate() {
+            img.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                /*Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+                String alertHeaderText = null;
+                String alertContentText = "Are you sure to restart this run?";
+
+                alert.setTitle("Confirmation Dialog");
+                SnpInDelEvidence run = SaveButtonCreate.this.getTableView().getItems().get(
+                        SaveButtonCreate.this.getIndex());
+                alert.setHeaderText(run.getName());
+                alert.setContentText(alertContentText);
+                logger.info(run.getId() + " : present id");
+                Optional<ButtonType> result = alert.showAndWait();
+                if(result.get() == ButtonType.OK) {
+                    restartRun(run.getId());
+                } else {
+                    logger.info(result.get() + " : button select");
+                    alert.close();
+                }*/
+
+                SnpInDelEvidence snpInDelEvidence = SaveButtonCreate.this.getTableView().getItems().get(
+                        SaveButtonCreate.this.getIndex());
+
+                save(snpInDelEvidence);
+            });
+        }
+
+        @Override
+        protected void updateItem(Boolean item, boolean empty) {
+            super.updateItem(item, empty);
+
+            if(item == null) {
+                setGraphic(null);
+                return;
+            }
+            img.setStyle("-fx-cursor:hand;");
+            box = new HBox();
+            box.setAlignment(Pos.CENTER);
+            box.getChildren().add(img);
+
+            setGraphic(box);
+        }
+    }
+
+    class EditingCell extends TableCell<SnpInDelEvidence, String> {
+        private TextField textField = null;
+
+        public EditingCell() {}
+
+        @Override
+        public void startEdit() {
+            if(!isEmpty()) {
+                super.startEdit();
+                createTextField();
+                setGraphic(textField);
+                setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+                textField.selectAll();
+            }
+        }
+
+        @Override
+        public void cancelEdit() {
+            super.cancelEdit();
+
+            setText(getItem());
+            setContentDisplay(ContentDisplay.TEXT_ONLY);
+        }
+
+        @Override
+        protected void updateItem(String item, boolean empty) {
+            super.updateItem(item, empty);
+
+            if(empty) {
+                setText(null);
+                setGraphic(null);
+            } else {
+                if(isEditing()) {
+                    if(textField != null) {
+                        textField.setText(getString());
+                    }
+                    setGraphic(textField);
+                    setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+                } else {
+                    setText(getString());
+                    setContentDisplay(ContentDisplay.TEXT_ONLY);
+                }
+            }
+
+        }
+
+        private void createTextField() {
+            textField = new TextField(getString());
+            textField.getStyleClass().add("txt_black");
+            textField.setMinWidth(this.getWidth() - this.getGraphicTextGap() * 2);
+            SnpInDelEvidence variant = this.getTableView().getItems().get(this.getTableRow().getIndex());
+            textField.setOnKeyPressed(t -> {
+                if(t.getCode() == KeyCode.ENTER) {
+                    commitEdit(textField.getText());
+                    //addModifiedList(variant);
+                } else if (t.getCode() == KeyCode.TAB) {
+                    commitEdit(textField.getText());
+                    //addModifiedList(variant);
+                } else if(t.getCode() == KeyCode.ESCAPE) {
+                    cancelEdit();
+                }
+            });
+            textField.focusedProperty().addListener((arg0, arg1, arg2) -> {
+                if (!arg2) {
+                    commitEdit(textField.getText());
+                    //addModifiedList(variant);
+                }
+            });
+        }
+
+        private String getString() {
+            return getItem() == null ? "" : getItem().toString();
+        }
+    }
 
     private class TypeComboBoxCell extends TableCell<SnpInDelEvidence, String> {
         private ComboBox<String> comboBox = new ComboBox<>();
@@ -189,17 +342,19 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                 return;
             }
 
-            SnpInDelEvidence snpInDelEvidence = TypeComboBoxCell.this.getTableView().getItems().get(
-                    TypeComboBoxCell.this.getIndex());
-
-
             if(comboBox.getItems().isEmpty()) {
-
 
                 if(panel.getAnalysisType().equals("SOMATIC")) {
                     comboBox.getItems().addAll("therapeutic", "prognosis", "diagnosis");
                 }
                 comboBox.getSelectionModel().selectFirst();
+
+                SnpInDelEvidence evidence = TypeComboBoxCell.this.getTableView().getItems().get(
+                        TypeComboBoxCell.this.getIndex());
+
+                if(evidence != null && !StringUtils.isEmpty(evidence.getEvidenceType())) {
+                    comboBox.getSelectionModel().select(evidence.getEvidenceType());
+                }
             }
             setGraphic(comboBox);
 
@@ -207,9 +362,158 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
     }
 
+    private class EvidenceLevelComboBoxCell extends TableCell<SnpInDelEvidence, String> {
+        private ComboBox<String> comboBox = new ComboBox<>();
+        boolean setting = false;
+
+        public EvidenceLevelComboBoxCell() {
+            comboBox.getSelectionModel().selectedItemProperty().addListener((ov, t, t1) -> {
+                SnpInDelEvidence snpInDelEvidence = EvidenceLevelComboBoxCell.this.getTableView().getItems().get(
+                        EvidenceLevelComboBoxCell.this.getIndex());
+
+                if(!StringUtils.isEmpty(t1)) {
+                    snpInDelEvidence.setEvidenceType(t1);
+                }
+            });
+        }
+
+        @Override
+        protected void updateItem(String item, boolean empty) {
+            super.updateItem(item, empty);
+            if(empty) {
+                setGraphic(null);
+                return;
+            }
+
+            if(comboBox.getItems().isEmpty()) {
+
+                if(panel.getAnalysisType().equals("SOMATIC")) {
+                    comboBox.getItems().addAll("A", "B", "C", "D");
+                }
+                comboBox.getSelectionModel().selectFirst();
+
+                SnpInDelEvidence evidence = EvidenceLevelComboBoxCell.this.getTableView().getItems().get(
+                        EvidenceLevelComboBoxCell.this.getIndex());
+
+                if(evidence != null && !StringUtils.isEmpty(evidence.getEvidenceLevel())) {
+                    comboBox.getSelectionModel().select(evidence.getEvidenceLevel());
+                }
+
+            }
+            setGraphic(comboBox);
+
+        }
+
+    }
+
+    private class PrimaryRadioButtonCell extends TableCell<SnpInDelEvidence, Boolean> {
+        private RadioButton radioButton = new RadioButton();
+        boolean setting = false;
+
+        public PrimaryRadioButtonCell() {
+
+            /*SnpInDelEvidence snpInDelEvidence = PrimaryRadioButtonCell.this.getTableView().getItems().get(
+                    PrimaryRadioButtonCell.this.getIndex());
+
+            if(snpInDelEvidence.getPrimaryEvidence()) toggleGroup.selectToggle(radioButton);*/
+
+            radioButton.setToggleGroup(toggleGroup);
+        }
+
+        @Override
+        protected void updateItem(Boolean item, boolean empty) {
+            super.updateItem(item, empty);
+            if(empty) {
+                setGraphic(null);
+                return;
+            }
+
+            SnpInDelEvidence evidence = PrimaryRadioButtonCell.this.getTableView().getItems().get(
+                    PrimaryRadioButtonCell.this.getIndex());
+
+            if(evidence != null && evidence.getPrimaryEvidence() != null && evidence.getPrimaryEvidence()) {
+                toggleGroup.selectToggle(radioButton);
+            }
+
+            setGraphic(radioButton);
+        }
+    }
+
+    /** 삭제 버튼 생성 */
+    private class DeleteButtonCreate extends TableCell<SnpInDelEvidence, Boolean> {
+        HBox box = null;
+        final ImageView img = new ImageView(resourceUtil.getImage("/layout/images/delete.png", 18, 18));
+
+        public DeleteButtonCreate() {
+            img.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                /*Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+                String alertHeaderText = null;
+                String alertContentText = "Are you sure to delete this run?";
+
+                alert.setTitle("Confirmation Dialog");
+                Run run = DeleteButtonCreate.this.getTableView().getItems().get(
+                        DeleteButtonCreate.this.getIndex());
+                alert.setHeaderText(run.getName());
+                alert.setContentText(alertContentText);
+                logger.info(run.getId() + " : present id");
+                Optional<ButtonType> result = alert.showAndWait();
+                if(result.get() == ButtonType.OK) {
+                    deleteRun(run.getId());
+                } else {
+                    logger.info(result.get() + " : button select");
+                    alert.close();
+                }*/
+                SnpInDelEvidence evidence = DeleteButtonCreate.this.getTableView().getItems().get(
+                        DeleteButtonCreate.this.getIndex());
+
+                delete(evidence);
+            });
+        }
+
+        @Override
+        protected void updateItem(Boolean item, boolean empty) {
+            super.updateItem(item, empty);
+
+            if(item == null) {
+                setGraphic(null);
+                return;
+            }
+            img.setStyle("-fx-cursor:hand;");
+            box = new HBox();
+            box.setAlignment(Pos.CENTER);
+            box.getChildren().add(img);
+
+            setGraphic(box);
+        }
+    }
+
 
     public void setGridPaneWidth(double size) {
         interpretationGridPane.setPrefWidth(size);
+    }
+
+    public void setEvidenceTable() {
+        if(evidenceTableView.getItems() != null) evidenceTableView.getItems().removeAll(evidenceTableView.getItems());
+        try {
+
+            // Memo 데이터 API 요청
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("snpInDelId", selectedAnalysisResultVariant.getSnpInDel().getId());
+            HttpClientResponse response = apiService.get("/analysisResults/evidences", paramMap, null, false);
+
+            // Flagging Comment 데이터 요청이 정상 요청된 경우 진행.
+            List<SnpInDelEvidence> list = (List<SnpInDelEvidence>)response.getMultiObjectBeforeConvertResponseToJSON(SnpInDelEvidence.class, false);
+            if(list != null && !list.isEmpty()) evidenceTableView.getItems().addAll(FXCollections.observableArrayList(list));
+
+        } catch (WebAPIException wae) {
+            wae.printStackTrace();
+            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+                    getMainApp().getPrimaryStage(), true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+        }
     }
 
     public void setInterpretationTable() {
@@ -222,8 +526,8 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                     , null, null, false);
 
             // Flagging Comment 데이터 요청이 정상 요청된 경우 진행.
-            PagedSameVariantInterpretation memoList = responseMemo.getObjectBeforeConvertResponseToJSON(PagedSameVariantInterpretation.class);
-            if(memoList != null && !memoList.getResult().isEmpty()) interpretationTableView.getItems().addAll(memoList.getResult());
+            List<SnpInDelPrimaryEvidenceLog> memoList = (List<SnpInDelPrimaryEvidenceLog>)responseMemo.getMultiObjectBeforeConvertResponseToJSON(SnpInDelPrimaryEvidenceLog.class, false);
+            if(memoList != null && !memoList.isEmpty()) interpretationTableView.getItems().addAll(FXCollections.observableArrayList(memoList));
 
         } catch (WebAPIException wae) {
             wae.printStackTrace();
@@ -248,7 +552,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                     , params, null, false);
 
             List<SameVariantInterpretation> sameList = (List<SameVariantInterpretation>)response.getMultiObjectBeforeConvertResponseToJSON(SameVariantInterpretation.class, false);
-            logger.info(sameList.size() + "");
+
             if( sameList != null && !sameList.isEmpty()) {
                 pastCasesTableView.getItems().addAll(FXCollections.observableArrayList(sameList));
             }
@@ -331,6 +635,8 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
     @FXML
     public void saveInterpretation() {
+        SnpInDelEvidence snpInDelEvidence = new SnpInDelEvidence();
+        evidenceTableView.getItems().add(snpInDelEvidence);
        /*
         params.put("snpInDelInterpretation", snpInDelInterpretation);
 
@@ -358,6 +664,47 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     public void setTier(SnpInDel snpInDel) {
         returnTierClass(snpInDel.getSwTier(), swTierLabel);
         returnTierClass(snpInDel.getExpertTier(), userTierLabel);
+    }
+
+    public void save(SnpInDelEvidence snpInDelEvidence) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("snpInDelId", selectedAnalysisResultVariant.getSnpInDel().getId());
+        params.put("evidence", snpInDelEvidence.getEvidence());
+        params.put("evidenceType", snpInDelEvidence.getEvidenceType());
+        params.put("evidence", snpInDelEvidence.getEvidence());
+
+        try {
+            if(snpInDelEvidence.getId() == null) {
+                apiService.post("analysisResults/evidences", params, null, false);
+            } else {
+                params.put("id", snpInDelEvidence.getId());
+                apiService.put("analysisResults/evidences", params, null, false);
+            }
+            setInterpretationTable();
+            setPastCases();
+            setEvidenceTable();
+        } catch (WebAPIException wae) {
+            wae.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void delete(SnpInDelEvidence snpInDelEvidence) {
+        try {
+
+            if(snpInDelEvidence.getId() != null) {
+                apiService.delete("analysisResults/evidences/" + snpInDelEvidence.getId());
+                setInterpretationTable();
+                setPastCases();
+                setEvidenceTable();
+            } else {
+                evidenceTableView.getItems().remove(snpInDelEvidence);
+            }
+        } catch (WebAPIException wae) {
+            wae.printStackTrace();
+        }
     }
 
 
