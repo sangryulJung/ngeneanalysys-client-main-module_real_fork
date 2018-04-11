@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
@@ -18,7 +23,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane fx:id="mainGridPane" prefHeight="410.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailReportGermlineController">
+<GridPane fx:id="mainGridPane" prefHeight="410.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailReportGermlineController">
    <columnConstraints>
       <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" prefWidth="405.0" />
       <ColumnConstraints />
@@ -87,7 +92,7 @@
                                     <Insets top="5.0" />
                                  </VBox.margin>
                               </GridPane>
-                              <Label text="DETECTED VARIANT">
+                              <Label style="-fx-font-family: Noto Sans KR Bold;" text="DETECTED VARIANT">
                                  <VBox.margin>
                                     <Insets top="5.0" />
                                  </VBox.margin>
@@ -110,7 +115,7 @@
                                     <TableColumn fx:id="alleleFrequencyColumn" prefWidth="65.0" styleClass="txt_black" text="VAF" />
                                  </columns>
                               </TableView>
-                              <Label fx:id="conclusions" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="CONCLUSION">
+                              <Label fx:id="conclusions" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-font-family: Noto Sans KR Bold;" text="CONCLUSION">
                                  <VBox.margin>
                                     <Insets top="15.0" />
                                  </VBox.margin>
@@ -120,7 +125,7 @@
                                  </styleClass>
                               </Label>
                               <TextArea fx:id="conclusionsTextArea" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="73.0" styleClass="txt_black" />
-                              <Label fx:id="conclusions1" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="REPORT EXTRA FIELDS">
+                              <Label fx:id="conclusions1" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-font-family: Noto Sans KR Bold;" text="REPORT EXTRA FIELDS">
                                  <VBox.margin>
                                     <Insets top="15.0" />
                                  </VBox.margin>
@@ -141,7 +146,7 @@
                               </GridPane>
                               <HBox prefHeight="28.0" prefWidth="200.0">
                                  <children>
-                                    <Label fx:id="conclusions11" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" text="TARGET GENES">
+                                    <Label fx:id="conclusions11" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" style="-fx-font-family: Noto Sans KR Bold;" text="TARGET GENES">
                                        <styleClass>
                                           <String fx:value="font_size_15" />
                                           <String fx:value="font_gray" />
