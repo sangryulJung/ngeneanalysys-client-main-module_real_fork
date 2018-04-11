@@ -51,7 +51,7 @@
                </styleClass></Label>
          </children>
       </HBox>
-      <Pagination fx:id="paginationList" focusTraversable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" styleClass="font_size_12" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+      <Pagination fx:id="paginationList" focusTraversable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
          <GridPane.margin>
             <Insets />
          </GridPane.margin></Pagination>
