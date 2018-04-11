@@ -146,7 +146,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
         //////////////////////////////////////////////////
 
-        interpretationTypeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDelInterpretation().getClinicalVariantType()));
+        interpretationTypeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDelEvidence().getEvidenceType()));
         //interpretationInterpretationColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
         //interpretationEvidenceCommentColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getComment()));
         //interpretationDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(org.apache.commons.lang3.time.DateFormatUtils.format(cellData.getValue().getCreatedAt().toDate(), "yyyy-MM-dd HH:mm:ss")));
