@@ -13,7 +13,7 @@ public final class VariantStatisticsTimer extends AnimationTimer {
 	private double outerLineWidth = 1.0;
 	private double outerCircleSize = 0;
 	private double gaugeStartAngle = 90.0;
-	private double innerLineWidth = 10.0;
+	private double innerLineWidth = 5.0;
 	private double innerOuterCircleGap = 1.0;
 	private double innerCircleSize = 0.0;
 	private double defaultMargin = outerLineWidth + 10.0;

@@ -77,7 +77,7 @@
             </TableView>
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="5">
                <children>
-                  <Label text="Past Cases" />
+                  <Label styleClass="font_size_15" text="Past Cases" />
                </children>
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
@@ -86,11 +86,11 @@
             <TableView fx:id="pastCasesTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="6">
               <columns>
                 <TableColumn fx:id="pastCasesSampleColumn" prefWidth="150.0" style="-fx-text-fill: #000000;" text="Sample" />
-                <TableColumn fx:id="pastCasesTypeColumn" prefWidth="120.0" text="Type" />
-                  <TableColumn fx:id="pastCasesEvidenceColumn" prefWidth="120.0" text="Evidence" />
-                  <TableColumn fx:id="pastCasesInterpretationColumn" prefWidth="150.0" text="Interpretation" />
-                  <TableColumn fx:id="pastCasesEvidenceCommentColumn" maxWidth="1.7976931348623157E308" prefWidth="190.0" text="Evidence Comment" />
-                  <TableColumn fx:id="pastCasesDateColumn" prefWidth="120.0" text="Date" />
+                <TableColumn fx:id="pastCasesTypeColumn" prefWidth="120.0" style="-fx-text-fill: #000000;" text="Type" />
+                  <TableColumn fx:id="pastCasesEvidenceColumn" prefWidth="120.0" style="-fx-text-fill: #000000;" text="Evidence" />
+                  <TableColumn fx:id="pastCasesInterpretationColumn" prefWidth="150.0" style="-fx-text-fill: #000000;" text="Interpretation" />
+                  <TableColumn fx:id="pastCasesEvidenceCommentColumn" maxWidth="1.7976931348623157E308" prefWidth="190.0" style="-fx-text-fill: #000000;" text="Evidence Comment" />
+                  <TableColumn fx:id="pastCasesDateColumn" prefWidth="120.0" style="-fx-text-fill: #000000;" text="Date" />
               </columns>
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
@@ -98,7 +98,7 @@
             </TableView>
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="3">
                <children>
-                  <Label text="Interpretation History" />
+                  <Label styleClass="font_size_15" text="Interpretation History" />
                </children>
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />

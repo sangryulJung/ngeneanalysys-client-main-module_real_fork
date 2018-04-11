@@ -130,8 +130,8 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         pastCasesEvidenceCommentColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSampleName()));
         //pastCasesDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(DateFormatUtils.format(cellData.getValue().getCreatedAt().toDate(), "yyyy-MM-dd hh:mm:ss")));
 
-        setInterpretationTable();
-        setPastCases();
+        //setInterpretationTable();
+        //setPastCases();
         setTier(selectedAnalysisResultVariant.getSnpInDel());
 
     }
@@ -141,11 +141,12 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     }
 
     public void setInterpretationTable() {
+        if(interpretationTableView.getItems() != null) interpretationTableView.getItems().removeAll(interpretationTableView.getItems());
         try {
 
             // Memo 데이터 API 요청
             //Map<String, Object> commentParamMap = new HashMap<>();
-            HttpClientResponse responseMemo = apiService.get("/analysisResults/snpInDelInterpretationLogs/" + selectedAnalysisResultVariant.getSnpInDel().getId()
+            HttpClientResponse responseMemo = apiService.get("/analysisResults/evidenceLog/" + selectedAnalysisResultVariant.getSnpInDel().getId()
                     , null, null, false);
 
             // Flagging Comment 데이터 요청이 정상 요청된 경우 진행.
@@ -163,6 +164,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     }
 
     public void setPastCases() {
+        if(pastCasesTableView.getItems() != null) pastCasesTableView.getItems().removeAll(pastCasesTableView.getItems());
         try {
             Map<String, Object> params = new HashMap<>();
 
