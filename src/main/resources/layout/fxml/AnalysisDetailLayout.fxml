@@ -25,7 +25,7 @@
 
 <GridPane fx:id="analysisDetailWrapper" prefHeight="555.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailLayoutController">
    <children>
-      <TabPane fx:id="topTabPane" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="455.0" prefWidth="1280.0" scaleZ="2.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
+      <TabPane fx:id="topTabPane" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="455.0" prefWidth="1280.0" scaleZ="2.0" styleClass="bo" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
          <GridPane.margin>
             <Insets top="5.0" />
          </GridPane.margin>
@@ -65,7 +65,7 @@
                               <Insets right="5.0" />
                            </HBox.margin>
                         </Label>
-                        <Label fx:id="sampleNameLabel" text="Sample Name">
+                        <Label fx:id="sampleNameLabel" style="-fx-font-family: Noto Sans KR Bold;" text="Sample Name">
                            <styleClass>
                               <String fx:value="font_size_18" />
                               <String fx:value="font_gray" />
