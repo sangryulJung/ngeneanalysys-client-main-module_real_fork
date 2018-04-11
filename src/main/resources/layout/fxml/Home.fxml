@@ -211,7 +211,7 @@
                               <Insets right="3.0" />
                            </HBox.margin>
                         </Label>
-                        <Label text="Analysis Tools" />
+                        <Label onMouseClicked="#toolsView" style="-fx-cursor: hand;" text="Analysis Tools" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
@@ -221,7 +221,7 @@
                               <Insets right="3.0" />
                            </HBox.margin>
                         </Label>
-                        <Label text="Annotation Database" />
+                        <Label onMouseClicked="#databaseView" style="-fx-cursor: hand;" text="Annotation Database" />
                      </children>
                   </HBox>
                </children>
