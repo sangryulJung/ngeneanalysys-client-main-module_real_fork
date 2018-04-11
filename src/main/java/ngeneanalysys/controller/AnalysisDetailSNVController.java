@@ -32,10 +32,7 @@ import ngeneanalysys.model.paged.PagedVariantAndInterpretationEvidence;
 import ngeneanalysys.model.render.LowConfidenceList;
 import ngeneanalysys.model.render.SNPsINDELsList;
 import ngeneanalysys.service.APIService;
-import ngeneanalysys.util.ConvertUtil;
-import ngeneanalysys.util.DialogUtil;
-import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.StringUtils;
+import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
@@ -709,6 +706,13 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             sortMap.put(column, "ASC");
          }
         showVariantList(currentPageIndex + 1, 0);
+    }
+
+    @FXML
+    public void excelDownload() {
+        Map<String, Object> params = new HashMap<>();
+        WorksheetUtil worksheetUtil = new WorksheetUtil();
+        worksheetUtil.exportVariantData("EXCEL", params, this.getMainApp(), sample.getId());
     }
 
     private void createTableHeader(TableColumn<VariantAndInterpretationEvidence, ?> column, String name, String sortName, Double size) {

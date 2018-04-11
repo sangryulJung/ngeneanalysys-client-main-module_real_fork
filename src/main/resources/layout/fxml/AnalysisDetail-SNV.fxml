@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Accordion?>
@@ -20,7 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane fx:id="snvWrapper" prefHeight="380.0" prefWidth="1140.0" style="-fx-background-color: #f2f5fa;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNVController">
+<GridPane fx:id="snvWrapper" prefHeight="380.0" prefWidth="1140.0" style="-fx-background-color: #f2f5fa;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNVController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="200.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="0.0" prefWidth="0.0" />
@@ -32,6 +27,15 @@
    <children>
       <VBox fx:id="tableVBox" alignment="BOTTOM_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="0.0" GridPane.columnIndex="1">
          <children>
+            <HBox alignment="BOTTOM_RIGHT" maxWidth="1040.0" minWidth="870.0" prefWidth="870.0">
+               <children>
+                  <Label id="excel_download_image" onMouseClicked="#excelDownload">
+                     <HBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
             <TableView fx:id="variantListTableView" maxHeight="305.0" maxWidth="-Infinity" minHeight="305.0" minWidth="-Infinity" prefHeight="305.0" tableMenuButtonVisible="true">
                <padding>
                   <Insets bottom="10.0" />

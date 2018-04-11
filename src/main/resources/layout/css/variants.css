@@ -168,8 +168,7 @@
 
 #filterAddBtn {
     -fx-background-image:url('../images/icon_plus.png');
-    -fx-background-size:8
-    ;
+    -fx-background-size:8;
     -fx-background-repeat:no-repeat;
     -fx-background-position : center;
 }
@@ -243,4 +242,14 @@
 	-fx-background-color:#cbd3d7;
  	-fx-border-color:#c3c3c3 #c3c3c3 #c3c3c3 #c3c3c3;
  	-fx-border-width:1 1 0 0;
+}
+
+#excel_download_image {
+    -fx-cursor:hand;
+    -fx-graphic: url("../images/renewal/excel16_icon.png");
+    -fx-pref-width : 16;
+    -fx-pref-height : 16;
+    -fx-min-width : 16;
+    -fx-min-height : 16;
+    -fx-cursor:hand;
 }

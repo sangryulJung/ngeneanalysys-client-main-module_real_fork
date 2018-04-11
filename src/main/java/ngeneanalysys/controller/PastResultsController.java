@@ -116,7 +116,7 @@ public class PastResultsController extends SubPaneController {
 	public void show(Parent root) throws IOException {
 		setSearchOption();
 		logger.info("PastResultsController show..");
-		itemCountPerPage = 30;
+		itemCountPerPage = 5;
 		// api service init..
 		apiService = APIService.getInstance();
 		apiService.setStage(getMainController().getPrimaryStage());
