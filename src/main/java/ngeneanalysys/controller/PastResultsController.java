@@ -758,28 +758,53 @@ public class PastResultsController extends SubPaneController {
 				final SampleView sample = sampleView;
 				
 				itemHBox.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
-					itemHBox.setStyle(itemHBox.getStyle() + "-fx-text-fill: #CD0034; -fx-font-size: 13px; -fx-font-family:  Noto Sans KR Bold; ");
+					//itemHBox.setStyle(itemHBox.getStyle() + "-fx-text-fill: #CD0034; -fx-font-size: 13px; -fx-font-family:  Noto Sans KR Bold; ");
 					//itemHBox.getChildren().clear();
 					Label current_sample = (Label)itemHBox.getChildren().get(0);
 					Label current_panel = (Label)itemHBox.getChildren().get(1);
 					Label current_qc = (Label)itemHBox.getChildren().get(4);
+					HBox current_variants = (HBox)itemHBox.getChildren().get(3);
+					
+					Label var1 = (Label)current_variants.getChildren().get(1);
+					Label var2 = (Label)current_variants.getChildren().get(3);
+					Label var3 = (Label)current_variants.getChildren().get(5);
+					Label var4 = (Label)current_variants.getChildren().get(7);
+					Label var5 = (Label)current_variants.getChildren().get(9);
+					
 					current_sample.setStyle(itemHBox.getStyle() + "-fx-text-fill: #CD0034;");
 					current_panel.setStyle(itemHBox.getStyle() + "-fx-text-fill: #CD0034;");
-					current_qc.setStyle(itemHBox.getStyle() + "-fx-text-fill: #CD0034;");
+					current_qc.setStyle(itemHBox.getStyle() + "-fx-text-fill: #CD0034;;");
+					var1.setStyle(itemHBox.getStyle() + "-fx-text-fill: #CD0034;");
+					var2.setStyle(itemHBox.getStyle() + "-fx-text-fill: #CD0034;");
+					var3.setStyle(itemHBox.getStyle() + "-fx-text-fill: #CD0034;");
+					var4.setStyle(itemHBox.getStyle() + "-fx-text-fill: #CD0034;");
+					var5.setStyle(itemHBox.getStyle() + "-fx-text-fill: #CD0034;");
 					//current_sample.setText(">> "+current_sample.getText());
-					logger.info(current_sample.getText());
+					//logger.info(var1.getText());
 			
 				});
 				itemHBox.addEventHandler(MouseEvent.MOUSE_EXITED, event -> {
-					itemHBox.setStyle(itemHBox.getStyle() + "-fx-text-fill: black;-fx-font-size: 13px; -fx-font-family:  Noto Sans KR Light;");
+					//itemHBox.setStyle(itemHBox.getStyle() + "-fx-text-fill: black;-fx-font-size: 13px; -fx-font-family:  Noto Sans KR Light;");
 					Label current_sample = (Label)itemHBox.getChildren().get(0);
 					Label current_panel = (Label)itemHBox.getChildren().get(1);
 					Label current_qc = (Label)itemHBox.getChildren().get(4);
+					HBox current_variants = (HBox)itemHBox.getChildren().get(3);
+					
+					Label var1 = (Label)current_variants.getChildren().get(1);
+					Label var2 = (Label)current_variants.getChildren().get(3);
+					Label var3 = (Label)current_variants.getChildren().get(5);
+					Label var4 = (Label)current_variants.getChildren().get(7);
+					Label var5 = (Label)current_variants.getChildren().get(9);
 					//current_sample.setText(current_sample.getText().split(">> ")[1]);
 					current_sample.setStyle(itemHBox.getStyle() + "-fx-text-fill: #323232;");
 					current_panel.setStyle(itemHBox.getStyle() + "-fx-text-fill: #323232;");
 					current_qc.setStyle(itemHBox.getStyle() + "-fx-text-fill: #323232;");
-					logger.info(current_sample.getText());
+					var1.setStyle(itemHBox.getStyle() + "-fx-text-fill: #323232;");
+					var2.setStyle(itemHBox.getStyle() + "-fx-text-fill: #323232;");
+					var3.setStyle(itemHBox.getStyle() + "-fx-text-fill: #323232;");
+					var4.setStyle(itemHBox.getStyle() + "-fx-text-fill: #323232;");
+					var5.setStyle(itemHBox.getStyle() + "-fx-text-fill: #323232;");
+					//logger.info(current_sample.getText());
 				});
 				itemHBox.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 					if(event.getClickCount() == 1) {
