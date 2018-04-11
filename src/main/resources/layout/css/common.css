@@ -1,12 +1,16 @@
 @font-face {
 	src: url("../font/NotoSansKR-Light.otf"),
-	url("../font/NotoSansKR-Bold.otf"),
-	url("../font/NotoSansKR-Medium.otf"),
-	url("../font/NotoSansCJKkr-Bold.otf"),
-	 url("../font/NotoSansCJKkr-Regular.otf"),
+	 url("../font/NotoSansKR-Bold.otf"),
+	 url("../font/NotoSansKR-Medium.otf"),
 	 url("../font/NotoSansKR-Regular.otf"),
+	 url("../font/NotoSansKR-DemiLight.otf"),
+	 url("../font/NotoSansCJKkr-Bold.otf"),
+	 url("../font/NotoSansCJKkr-Regular.otf"),
+	 url("../font/NotoSansCJKkr-DemiLight.otf"),	 
 	 url("../font/NanumSquareB.ttf"),
 	 url("../font/NanumSquareR.ttf");
+	 url("../font/NanumSquareR.ttf");
+	 
 }
 
 /** 기본 폰트 설정 */
@@ -403,7 +407,6 @@ Button {
 .pagination>.pagination-control>.control-box>.number-button:selected>.text {
 	-fx-font-size:12px;
 	-fx-fill:#0469b0;
-	-fx-font-weight:bold;
 	-fx-padding:0 10;
 }
 
@@ -770,7 +773,6 @@ Button {
 	-fx-font-weight:bold;
 	-fx-text-fill:#656565;
 	-fx-pref-width:20;
-	-fx-pref-height : 20;
 	-fx-text-alignment:center ;
 	-fx-alignment:center;
 }
@@ -783,7 +785,6 @@ Button {
 	-fx-font-weight:bold;
 	-fx-text-fill:#fff;
 	-fx-pref-width:20;
-	-fx-pref-height : 20;
 	-fx-text-alignment:center ;
 	-fx-alignment:center;
 }
@@ -796,7 +797,6 @@ Button {
 	-fx-font-weight:bold;
 	-fx-text-fill:#fff;
 	-fx-pref-width:20;
-	-fx-pref-height : 20;
 	-fx-text-alignment:center ;
 	-fx-alignment:center;
 }
@@ -809,7 +809,6 @@ Button {
 	-fx-font-weight:bold;
 	-fx-text-fill:#fff;
 	-fx-pref-width:20;
-	-fx-pref-height : 20;
 	-fx-text-alignment:center ;
 	-fx-alignment:center;
 }
@@ -822,7 +821,6 @@ Button {
 	-fx-font-weight:bold;
 	-fx-text-fill:#fff;
 	-fx-pref-width:20;
-	-fx-pref-height : 20;
 	-fx-text-alignment:center ;
 	-fx-alignment:center;
 }
@@ -834,7 +832,6 @@ Button {
 	-fx-font-weight:bold;
 	-fx-text-fill:#fff;
 	-fx-pref-width:20;
-	-fx-pref-height : 20;
 	-fx-text-alignment:center ;
 	-fx-alignment:center;
 }
