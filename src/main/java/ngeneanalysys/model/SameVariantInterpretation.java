@@ -13,7 +13,7 @@ public class SameVariantInterpretation {
     private String panelName;
     private String tier;
     private String pathogenicity;
-    private SnpInDelInterpretation snpInDelInterpretation;
+    private SnpInDelEvidence snpInDelEvidence;
 
     /**
      * @return runid
@@ -72,9 +72,9 @@ public class SameVariantInterpretation {
     }
 
     /**
-     * @return snpInDelInterpretation
+     * @return snpInDelEvidence
      */
-    public SnpInDelInterpretation getSnpInDelInterpretation() {
-        return snpInDelInterpretation;
+    public SnpInDelEvidence getSnpInDelEvidence() {
+        return snpInDelEvidence;
     }
 }
