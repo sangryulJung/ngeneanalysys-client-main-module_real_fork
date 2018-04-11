@@ -22,6 +22,7 @@ import ngeneanalysys.animaition.VariantStatisticsTimer;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.render.SNPsINDELsOverviewRadarGraph;
+import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.JsonUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
@@ -289,21 +290,23 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
 
     private void showVariantInterpretation() {
 
-        renderTier(swTierLabel, variant.getInterpretationEvidence(), variant.getSnpInDel().getSwTier());
-        renderTier(userTierLabel, variant.getInterpretationEvidence(), variant.getSnpInDel().getExpertTier());
-        renderEvidence(evidenceHBox, variant.getInterpretationEvidence());
+        renderTier(swTierLabel, variant.getSnpInDelEvidences(), variant.getSnpInDel().getSwTier());
+        renderTier(userTierLabel, variant.getSnpInDelEvidences(), variant.getSnpInDel().getExpertTier());
+        renderEvidence(evidenceHBox, variant.getSnpInDelEvidences());
     }
 
     //evidence 정보 표시
-    private void renderEvidence(HBox node, SnpInDelInterpretation snpInDelInterpretation) {
+    private void renderEvidence(HBox node, List<SnpInDelEvidence> snpInDelInterpretation) {
         if (node == null || snpInDelInterpretation == null) return;
+
         ObservableList<Node> childs = node.getChildren();
         resultTextArea.setText("");
         if (childs != null) {
             for (Node child : childs) {
                 child.getStyleClass().removeAll(child.getStyleClass());
                 boolean flag = false;
-                if(((Label)child).getText().equals("A") && !StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelA())) {
+                SnpInDelEvidence evidence = ConvertUtil.findPrimaryEvidence(snpInDelInterpretation);
+                /*if(((Label)child).getText().equals("A") && !StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelA())) {
                     child.getStyleClass().add("prediction_E");
                     //resultTextArea.setText(snpInDelInterpretation.getInterpretationEvidenceA());
                     child.setStyle("-fx-cursor:hand;");
@@ -330,7 +333,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
                     child.setStyle("-fx-cursor:hand;");
                     child.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> resultTextArea.setText(snpInDelInterpretation.getTherapeuticEvidence().getLevelD()));
                     flag = true;
-                }
+                }*/
                 if(((Label)child).getText().equals("EVIDENCE")) {
                     child.getStyleClass().add("clinical_significant_pathogenicity_label");
                     flag = true;
@@ -346,7 +349,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
     }
 
     //tier 정보 표시
-    private void renderTier(Label node, SnpInDelInterpretation snpInDelInterpretation, String tier) {
+    private void renderTier(Label node, List<SnpInDelEvidence> snpInDelInterpretation, String tier) {
         node.getStyleClass().removeAll(node.getStyleClass());
         if(tier == null) {
             node.getStyleClass().add("prediction_none");

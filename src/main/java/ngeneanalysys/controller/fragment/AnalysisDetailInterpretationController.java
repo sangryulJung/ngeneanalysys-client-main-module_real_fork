@@ -2,7 +2,6 @@ package ngeneanalysys.controller.fragment;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -25,7 +24,6 @@ import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
-import org.apache.commons.lang.time.DateFormatUtils;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -50,6 +48,27 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
     @FXML
     private CheckBox addToReportCheckBox;
+
+    @FXML
+    private TableView<SnpInDelEvidence> evidenceTableView;
+
+    @FXML
+    private TableColumn<SnpInDelEvidence, String> evidenceTypeColumn;
+
+    @FXML
+    private TableColumn<SnpInDelEvidence, String> evidenceColumn;
+
+    @FXML
+    private TableColumn<SnpInDelEvidence, String> evidenceInterpretationColumn;
+
+    @FXML
+    private TableColumn<SnpInDelEvidence, String> evidenceCommentColumn;
+
+    @FXML
+    private TableColumn<SnpInDelEvidence, String> evidencePrimaryColumn;
+
+    @FXML
+    private TableColumn<SnpInDelEvidence, String> evidenceSaveColumn;
 
     @FXML
     private TableView<SameVariantInterpretation> pastCasesTableView;
@@ -101,6 +120,8 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
     private Sample sample;
 
+    private Panel panel;
+
     /**
      * @param analysisDetailSNVController
      */
@@ -112,11 +133,18 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     public void show(Parent root) throws IOException {
         apiService = APIService.getInstance();
         sample = (Sample)getParamMap().get("sample");
+        panel = (Panel)getParamMap().get("panel");
         selectedAnalysisResultVariant = (VariantAndInterpretationEvidence)paramMap.get("variant");
 
         if(StringUtils.isEmpty(selectedAnalysisResultVariant.getSnpInDel().getExpertTier())) arrow.setVisible(false);
         addToReportCheckBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> addToReportBtn(addToReportCheckBox ));
         checkBoxSetting(addToReportCheckBox, selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport());
+
+
+        ///////////////////////////////////////////////////
+
+
+        //////////////////////////////////////////////////
 
         interpretationTypeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDelInterpretation().getClinicalVariantType()));
         //interpretationInterpretationColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
@@ -135,6 +163,49 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         setTier(selectedAnalysisResultVariant.getSnpInDel());
 
     }
+
+
+    private class TypeComboBoxCell extends TableCell<SnpInDelEvidence, String> {
+        private ComboBox<String> comboBox = new ComboBox<>();
+        boolean setting = false;
+
+        public TypeComboBoxCell() {
+            comboBox.getSelectionModel().selectedItemProperty().addListener((ov, t, t1) -> {
+                SnpInDelEvidence snpInDelEvidence = TypeComboBoxCell.this.getTableView().getItems().get(
+                        TypeComboBoxCell.this.getIndex());
+
+                if(!StringUtils.isEmpty(t1)) {
+                    snpInDelEvidence.setEvidenceType(t1);
+                }
+            });
+        }
+
+        @Override
+        protected void updateItem(String item, boolean empty) {
+            super.updateItem(item, empty);
+            if(empty) {
+                setGraphic(null);
+                return;
+            }
+
+            SnpInDelEvidence snpInDelEvidence = TypeComboBoxCell.this.getTableView().getItems().get(
+                    TypeComboBoxCell.this.getIndex());
+
+
+            if(comboBox.getItems().isEmpty()) {
+
+
+                if(panel.getAnalysisType().equals("SOMATIC")) {
+                    comboBox.getItems().addAll("therapeutic", "prognosis", "diagnosis");
+                }
+                comboBox.getSelectionModel().selectFirst();
+            }
+            setGraphic(comboBox);
+
+        }
+
+    }
+
 
     public void setGridPaneWidth(double size) {
         interpretationGridPane.setPrefWidth(size);

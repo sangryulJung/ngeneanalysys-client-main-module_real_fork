@@ -14,6 +14,7 @@ import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedVariantAndInterpretationEvidence;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
@@ -159,10 +160,10 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
 
                 pGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
 
-                List<SnpInDelInterpretation> snpInDelInterpretations = new ArrayList<>();
+                List<SnpInDelEvidence> snpInDelInterpretations = new ArrayList<>();
                 pathogenicList.forEach(item -> {
-                    if (item.getInterpretationEvidence() != null)
-                        snpInDelInterpretations.add(item.getInterpretationEvidence());
+                    if (ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences()) != null)
+                        snpInDelInterpretations.add(ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences()));
                 });
 
             }
@@ -179,10 +180,10 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
 
                 lpGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
 
-                List<SnpInDelInterpretation> snpInDelInterpretations = new ArrayList<>();
+                List<SnpInDelEvidence> snpInDelInterpretations = new ArrayList<>();
                 likelyPathogenic.forEach(item -> {
-                    if (item.getInterpretationEvidence() != null)
-                        snpInDelInterpretations.add(item.getInterpretationEvidence());
+                    if (ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences()) != null)
+                        snpInDelInterpretations.add(ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences()));
                 });
             }
 
@@ -198,10 +199,10 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
 
                 usGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
 
-                List<SnpInDelInterpretation> snpInDelInterpretations = new ArrayList<>();
+                List<SnpInDelEvidence> snpInDelInterpretations = new ArrayList<>();
                 uncertainSignificance.forEach(item -> {
-                    if (item.getInterpretationEvidence() != null)
-                        snpInDelInterpretations.add(item.getInterpretationEvidence());
+                    if (ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences()) != null)
+                        snpInDelInterpretations.add(ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences()));
                 });
             }
 
@@ -216,10 +217,10 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
 
                 lbGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
 
-                List<SnpInDelInterpretation> snpInDelInterpretations = new ArrayList<>();
+                List<SnpInDelEvidence> snpInDelInterpretations = new ArrayList<>();
                 likelyBenign.forEach(item -> {
-                    if (item.getInterpretationEvidence() != null)
-                        snpInDelInterpretations.add(item.getInterpretationEvidence());
+                    if (ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences()) != null)
+                        snpInDelInterpretations.add(ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences()));
                 });
             }
 
@@ -234,10 +235,10 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
 
                 bGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
 
-                List<SnpInDelInterpretation> snpInDelInterpretations = new ArrayList<>();
+                List<SnpInDelEvidence> snpInDelInterpretations = new ArrayList<>();
                 benign.forEach(item -> {
-                    if (item.getInterpretationEvidence() != null)
-                        snpInDelInterpretations.add(item.getInterpretationEvidence());
+                    if (ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences()) != null)
+                        snpInDelInterpretations.add(ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences()));
                 });
             }
 

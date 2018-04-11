@@ -562,7 +562,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             VariantAndInterpretationEvidence variantAndInterpretationEvidence = new VariantAndInterpretationEvidence();
 
             variantAndInterpretationEvidence.setSnpInDel(snpInDel);
-            variantAndInterpretationEvidence.setInterpretationEvidence(selectedAnalysisResultVariant.getInterpretationEvidence());
+            //variantAndInterpretationEvidence.setInterpretationEvidence(selectedAnalysisResultVariant.getInterpretationEvidence());
 
             if(analysisResultVariant != null) {
                 if (subTabOverview != null){

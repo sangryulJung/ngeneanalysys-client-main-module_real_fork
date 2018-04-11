@@ -4,11 +4,9 @@ import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TimeZone;
+import java.util.*;
 
+import ngeneanalysys.model.SnpInDelEvidence;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -159,6 +157,14 @@ public class ConvertUtil {
 
 	public static BigDecimal removeZero(BigDecimal bigDecimal) {
 		return (bigDecimal != null) ? bigDecimal.stripTrailingZeros() : null;
+	}
+
+	public static SnpInDelEvidence findPrimaryEvidence(List<SnpInDelEvidence> snpInDelEvidenceList) {
+		if (snpInDelEvidenceList == null || snpInDelEvidenceList.isEmpty()) return null;
+		for(SnpInDelEvidence snpInDelEvidence : snpInDelEvidenceList) {
+			if(snpInDelEvidence.getPrimaryEvidence()) return snpInDelEvidence;
+		}
+		return null;
 	}
 
 	public static String getAminoAcid(String aminoAcid) {
