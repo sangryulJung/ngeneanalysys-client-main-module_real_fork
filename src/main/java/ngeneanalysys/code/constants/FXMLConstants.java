@@ -30,6 +30,12 @@ public class FXMLConstants {
 	/** System Menu > Public Databases 정보 화면 */
 	public static final String SYSTEM_MENU_PUBLIC_DATABASES = "/layout/fxml/SystemMenu-PublicDatabases.fxml";
 
+	/** Public Databases 정보 화면 */
+	public static final String SYSTEM_MENU_PUBLIC_DATABASE = "/layout/fxml/SystemMenu-PublicDatabases1.fxml";
+
+	/** Tools 정보 화면 */
+	public static final String SYSTEM_MENU_TOOLS = "/layout/fxml/SystemMenu-PublicTools1.fxml";
+
 	/** 로그인 화면 */
 	public static final String LOGIN = "/layout/fxml/Login.fxml";
 

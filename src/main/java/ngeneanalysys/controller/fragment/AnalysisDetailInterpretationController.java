@@ -173,7 +173,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
             HttpClientResponse response = apiService.get("/analysisResults/sameVariantInterpretations/" + selectedAnalysisResultVariant.getSnpInDel().getSampleId()
                     , params, null, false);
 
-            List<SameVariantInterpretation> sameList = (List<SameVariantInterpretation>)response.getMultiObjectBeforeConvertResponseToJSON(SnpInDelInterpretationLogsList.class, false);
+            List<SameVariantInterpretation> sameList = (List<SameVariantInterpretation>)response.getMultiObjectBeforeConvertResponseToJSON(SameVariantInterpretation.class, false);
             logger.info(sameList.size() + "");
             if( sameList != null && !sameList.isEmpty()) {
                 pastCasesTableView.getItems().addAll(FXCollections.observableArrayList(sameList));

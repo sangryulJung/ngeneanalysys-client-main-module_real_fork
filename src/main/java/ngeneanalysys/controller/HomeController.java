@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
@@ -485,35 +486,27 @@ public class HomeController extends SubPaneController{
 
     @FXML
     public void databaseView() {
-        logger.info("popover");
-        
-        PopOver popOver = new PopOver();
-        popOver.setArrowLocation(PopOver.ArrowLocation.RIGHT_TOP);
-        popOver.setHeaderAlwaysVisible(true);
-        popOver.setAutoHide(true);
-        popOver.setAutoFix(true);
-        popOver.setDetachable(true);
-        popOver.setArrowSize(15);
-        popOver.setMaxSize(460, 150);
-        popOver.setPrefWidth(460);
-        popOver.setMinSize(460, 150);
-        //popOver.setMinWidth(500);
-        popOver.setTitle("test");
-
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setMaxSize(460, 200);
-
-        VBox box = new VBox();
-        //box.setMaxSize(400, 200);
-        box.setMaxWidth(445);
-        box.getStyleClass().add("acmg_content_box");
-
-        scrollPane.setContent(box);
-
-        popOver.setContentNode(scrollPane);
-        popOver.show(annotationDatabaseButton, 10);
+        try {
+            FXMLLoader loader = mainApp.load(FXMLConstants.SYSTEM_MENU_PUBLIC_DATABASE);
+            Node root = loader.load();
+            PublicDatabaseController publicDatabasesController = loader.getController();
+            publicDatabasesController.setMainController(this.getMainController());
+            publicDatabasesController.show((Parent) root);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
+    @FXML
+    private void toolsView() {
+        try {
+            FXMLLoader loader = mainApp.load(FXMLConstants.SYSTEM_MENU_TOOLS);
+            Node root = loader.load();
+            PublicToolsController publicToolsController = loader.getController();
+            publicToolsController.setMainController(this.getMainController());
+            publicToolsController.show((Parent) root);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

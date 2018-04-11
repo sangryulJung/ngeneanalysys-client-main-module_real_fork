@@ -29,6 +29,8 @@ import ngeneanalysys.controller.fragment.AnalysisDetailVariantStatisticsControll
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedVariantAndInterpretationEvidence;
+import ngeneanalysys.model.render.ComboBoxConverter;
+import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.model.render.LowConfidenceList;
 import ngeneanalysys.model.render.SNPsINDELsList;
 import ngeneanalysys.service.APIService;
@@ -92,15 +94,22 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     private TitledPane interpretationLogsTitledPane;
 
     @FXML
-    private VBox filterVBox;
+    private Pagination variantPagination;
 
     @FXML
-    private Pagination variantPagination;
+    private ComboBox<ComboBoxItem> filterComboBox;
+
+    @FXML
+    private Button filterAddBtn;
+
+    @FXML
+    private Label totalLabel;
+    @FXML
+    private Label searchCountLabel;
 
     private Sample sample = null;
     private Panel panel = null;
     private Map<String, String> sortMap = new HashMap<>();
-    private Map<String, String> filterMap = new HashMap<>();
 
     private AnalysisDetailVariantsController variantsController;
     //VariantList
@@ -133,6 +142,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     private AnalysisDetailInterpretationController interpretationController;
 
+    private Map<String, List<Object>> filterList = new HashMap<>();
+
     /**
      * @return currentPageIndex
      */
@@ -148,6 +159,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     public void setAccordionContents() {
+
         try {
             // Memo 데이터 API 요청
             //Map<String, Object> commentParamMap = new HashMap<>();
@@ -175,6 +187,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         apiService = APIService.getInstance();
 
+        filterAddBtn.setDisable(true);
+
         sample = (Sample)paramMap.get("sample");
         panel = (Panel)paramMap.get("panel");
 
@@ -189,6 +203,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 expandLeft();
             }
         });
+
+        setDefaultFilter();
 
         rightSizeButton.setOnMouseClicked(event -> {
             if (rightSizeButton.getStyleClass().get(0) == null){
@@ -247,6 +263,10 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             filterMap.clear();
             showVariantList(currentPageIndex + 1,0);
         });*/
+
+        filterComboBox.valueProperty().addListener((ob, ov, nv) -> {
+            showVariantList(1 ,0);
+        });
     }
 
     private void setSNVTabName() {
@@ -273,76 +293,39 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
     }
 
-    private void setFilter(String key, String value) {
-        filterMap.clear();
-        if(key != null) filterMap.put(key, value);
+    public void setStandardFilter(String sortName, String key, String value) {
+        List<Object> list = new ArrayList<>();
+        list.add(key + " " + value);
+        filterList.put(sortName, list);
     }
 
     public void setDefaultFilter() {
-        filterVBox.getChildren().removeAll(filterVBox.getChildren());
-        filterVBox.setPrefHeight(0);
-        HBox totalHBox = tierHBoxCreate("Total", null, null, "#FFFF00");
-        filterVBox.getChildren().add(totalHBox);
-        filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
+        filterComboBox.setConverter(new ComboBoxConverter());
+        filterComboBox.getItems().removeAll(filterComboBox.getItems());
+        totalLabel.setText("Showing " + sample.getAnalysisResultSummary().getAllVariantCount());
+        filterComboBox.getItems().add(new ComboBoxItem("Total", "Total : " + sample.getAnalysisResultSummary().getAllVariantCount()));
         if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
-            HBox hBox = tierHBoxCreate("T I", "T1", "tier", "#f6545c");
-            filterVBox.getChildren().add(hBox);
-            filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
-            hBox = tierHBoxCreate("T II", "T2", "tier", "#ff9482");
-            filterVBox.getChildren().add(hBox);
-            filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
-            hBox = tierHBoxCreate("T III", "T3", "tier", "#70acf5");
-            filterVBox.getChildren().add(hBox);
-            filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
-            hBox = tierHBoxCreate("T IV", "T4", "tier", "#1f2d87");
-            filterVBox.getChildren().add(hBox);
-            filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
+            filterComboBox.getItems().add(new ComboBoxItem("Tier 1", "Tier I : " + sample.getAnalysisResultSummary().getLevel1VariantCount()));
+            setStandardFilter("Tier 1", "tier", "T1");
+            filterComboBox.getItems().add(new ComboBoxItem("Tier 2", "Tier II : " + sample.getAnalysisResultSummary().getLevel2VariantCount()));
+            setStandardFilter("Tier 2", "tier", "T2");
+            filterComboBox.getItems().add(new ComboBoxItem("Tier 3", "Tier III : " + sample.getAnalysisResultSummary().getLevel3VariantCount()));
+            setStandardFilter("Tier 3", "tier", "T3");
+            filterComboBox.getItems().add(new ComboBoxItem("Tier 4", "Tier IV : " + sample.getAnalysisResultSummary().getLevel4VariantCount()));
+            setStandardFilter("Tier 4", "tier", "T4");
         } else if(panel.getAnalysisType().equalsIgnoreCase("GERMLINE")) {
-            HBox hBox = tierHBoxCreate("P", "P", "pathogenicity", "#f6545c");
-            filterVBox.getChildren().add(hBox);
-            filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
-            hBox = tierHBoxCreate("LP", "LP", "pathogenicity", "#ff9482");
-            filterVBox.getChildren().add(hBox);
-            filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
-            hBox = tierHBoxCreate("US", "US", "pathogenicity", "#70acf5");
-            filterVBox.getChildren().add(hBox);
-            filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
-            hBox = tierHBoxCreate("LB", "LB", "pathogenicity", "#1f2d87");
-            filterVBox.getChildren().add(hBox);
-            filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
-            hBox = tierHBoxCreate("B", "B", "pathogenicity", "#5a64a5");
-            filterVBox.getChildren().add(hBox);
-            filterVBox.setPrefHeight(filterVBox.getPrefHeight() + 50);
+            filterComboBox.getItems().add(new ComboBoxItem("Pathogenic", "Pathogenic : " + sample.getAnalysisResultSummary().getLevel1VariantCount()));
+            setStandardFilter("Pathogenic", "pathogenicity", "P");
+            filterComboBox.getItems().add(new ComboBoxItem("Likely Pathogenic", "Likely Pathogenic : " + sample.getAnalysisResultSummary().getLevel2VariantCount()));
+            setStandardFilter("Likely Pathogenic", "pathogenicity", "LP");
+            filterComboBox.getItems().add(new ComboBoxItem("Uncertain Significance", "Uncertain Significance : " + sample.getAnalysisResultSummary().getLevel3VariantCount()));
+            setStandardFilter("Uncertain Significance", "pathogenicity", "US");
+            filterComboBox.getItems().add(new ComboBoxItem("Likely Benign", "Likely Benign : " + sample.getAnalysisResultSummary().getLevel4VariantCount()));
+            setStandardFilter("Likely Benign", "pathogenicity", "LB");
+            filterComboBox.getItems().add(new ComboBoxItem("Benign", "Benign : "  + sample.getAnalysisResultSummary().getLevel5VariantCount()));
+            setStandardFilter("Benign", "pathogenicity", "B");
         }
-    }
-
-    public HBox tierHBoxCreate(final String labelText, final String valueText, String key, String color) {
-        HBox hBox = new HBox();
-        hBox.setPrefWidth(100);
-        hBox.setPrefHeight(40);
-        hBox.setSpacing(5);
-        hBox.setAlignment(Pos.CENTER_LEFT);
-        hBox.setPadding(new Insets(0,0,0 ,20));
-
-        Label itemLabel = new Label();
-        itemLabel.setWrapText(true);
-        itemLabel.getStyleClass().addAll("filter_icon");
-        if(!StringUtils.isEmpty(color)) {
-            itemLabel.setStyle(itemLabel.getStyle() + "-fx-background-color : " + color + ";");
-        }
-        itemLabel.setTextAlignment(TextAlignment.CENTER);
-        itemLabel.setText(labelText);
-        itemLabel.setOnMouseClicked(ev -> {
-            foldRight();
-            setFilter(key, valueText);
-            showVariantList(currentPageIndex + 1,0);
-        });
-        Integer value = variantCount(valueText);
-        Label valueLabel = new Label(value.toString());
-
-        hBox.getChildren().addAll(itemLabel, valueLabel);
-
-        return hBox;
+        filterComboBox.getSelectionModel().select(0);
     }
 
     private int variantCount(String text) {
@@ -615,12 +598,10 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     public void setFilterItem(Map<String, List<Object>> list) {
-        Set<String> keySets = filterMap.keySet();
-        List<Object> sortList = new ArrayList<>();
-        for(String key : keySets) {
-            sortList.add(key + " " + filterMap.get(key));
+        ComboBoxItem comboBoxItem = filterComboBox.getSelectionModel().getSelectedItem();
+        if(filterList.containsKey(comboBoxItem.getValue())) {
+            list.put("search", filterList.get(comboBoxItem.getValue()));
         }
-        if(!sortList.isEmpty()) list.put("search", sortList);
     }
 
 
@@ -647,7 +628,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             List<VariantAndInterpretationEvidence> list = analysisResultVariantList.getResult();
             totalCount = analysisResultVariantList.getCount();
             this.list = list;
-            setDefaultFilter();
+
+            searchCountLabel.setText("of " + totalCount + " variants");
+
             //totalVariantCountLabel.setText(sample.getAnalysisResultSummary().getAllVariantCount().toString());
             ObservableList<VariantAndInterpretationEvidence> displayList = null;
 

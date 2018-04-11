@@ -10,9 +10,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane prefHeight="475.0" prefWidth="1030.0" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ngenebio.app.controller.SystemMenuPublicDatabasesController">
+<ScrollPane prefHeight="475.0" prefWidth="1030.0" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.PublicDatabaseController">
    <content>
-      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1840.0" prefWidth="1015.0" styleClass="bg_gray_f3" stylesheets="@../css/database.css">
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1840.0" prefWidth="1015.0" styleClass="bg_gray_f3">
          <children>
             <VBox layoutX="264.0" layoutY="110.0" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1050.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
@@ -22,7 +22,7 @@
                            <styleClass>
                               <String fx:value="txt_black" />
                               <String fx:value="weight_bold" />
-                              <String fx:value="font_size_11" />
+                              <String fx:value="font_size_14" />
                            </styleClass>
                            <HBox.margin>
                               <Insets />
@@ -1082,7 +1082,7 @@
                            <styleClass>
                               <String fx:value="txt_black" />
                               <String fx:value="weight_bold" />
-                              <String fx:value="font_size_11" />
+                              <String fx:value="font_size_14" />
                            </styleClass>
                            <HBox.margin>
                               <Insets />

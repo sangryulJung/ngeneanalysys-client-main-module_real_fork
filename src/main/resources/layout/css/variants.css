@@ -86,7 +86,8 @@
     -fx-background-color : transparent;
     -fx-text-fill : #ffffff;
     -fx-border-radius : 0;
-    -fx-pref-width : 110;
+    -fx-pref-width : 130;
+    -fx-pref-height : 30;
     -fx-border-color: #FFFFFF;
     -fx-border-width:1;
 }
@@ -164,13 +165,6 @@
     -fx-text-fill : #FFFFFF;
     -fx-text-alignment : center;
     -fx-cursor : hand;
-}
-
-#filterAddBtn {
-    -fx-background-image:url('../images/icon_plus.png');
-    -fx-background-size:8;
-    -fx-background-repeat:no-repeat;
-    -fx-background-position : center;
 }
 
 #variantListTableView .report_check {
@@ -252,4 +246,10 @@
     -fx-min-width : 16;
     -fx-min-height : 16;
     -fx-cursor:hand;
+}
+
+#filterComboBox {
+    -fx-background-color : #D9D9D9;
+    -fx-border-width : 0;
+    -fx-background-radius : 0;
 }
