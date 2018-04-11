@@ -26,8 +26,8 @@
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="387.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="387.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="226.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="380.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="233.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="100.0" />
   </columnConstraints>
   <rowConstraints>
@@ -214,7 +214,7 @@
                      <children>
                         <Label onMouseClicked="#toolsView" style="-fx-font-size: 10;" styleClass="tools_icon" text="〉">
                            <HBox.margin>
-                              <Insets right="3.0" />
+                              <Insets right="5.0" />
                            </HBox.margin>
                         </Label>
                         <Label onMouseClicked="#toolsView" style="-fx-cursor: hand;" text="Analysis Tools" />
@@ -224,7 +224,7 @@
                      <children>
                         <Label fx:id="annotationDatabaseButton" onMouseClicked="#databaseView" style="-fx-font-size: 10;" styleClass="tools_icon" text="〉">
                            <HBox.margin>
-                              <Insets right="3.0" />
+                              <Insets right="5.0" />
                            </HBox.margin>
                         </Label>
                         <Label onMouseClicked="#databaseView" style="-fx-cursor: hand;" text="Annotation Database" />
