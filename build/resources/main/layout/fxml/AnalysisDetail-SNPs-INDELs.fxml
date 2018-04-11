@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="590.0" prefWidth="1280.0" style="-fx-background-color: #F7F7F7;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNPsINDELsController">
+	<top>
+		<HBox fx:id="filterArea" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" prefWidth="1278.0" style="-fx-background-color: #F7F7F7; -fx-border-color: #F7F7F7;" BorderPane.alignment="CENTER">
+			<padding>
+				<Insets left="19.0" />
+			</padding>
+			<children>
+            <VBox maxHeight="-Infinity" prefHeight="90.0" prefWidth="1256.0" style="-fx-background-color: #F7F7F7;">
+               <children>
+                  <HBox prefHeight="7.0" prefWidth="200.0" style="-fx-background-color: #C30D23;" />
+                  <HBox maxHeight="1.7976931348623157E308" prefHeight="62.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                     <children>
+            				<HBox alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="62.0" prefWidth="200.0" HBox.hgrow="NEVER">
+            					<children>
+            						<ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+            							<HBox.margin>
+            								<Insets right="15.0" />
+            							</HBox.margin>
+            							<image>
+            								<Image url="@../images/icon_03.png" />
+            							</image>
+            						</ImageView>
+            						<Label fx:id="filterTitle" prefHeight="26.0" prefWidth="121.0" style="-fx-font-size: 16;" text="Variant Filter">
+            							<HBox.margin>
+            								<Insets left="2.0" />
+            							</HBox.margin>
+            						</Label>
+            					</children>
+            				</HBox>
+            				<HBox HBox.hgrow="ALWAYS">
+            					<children>
+            						<HBox fx:id="filterList" prefHeight="62.0" HBox.hgrow="ALWAYS">
+            							<HBox.margin>
+            								<Insets />
+            							</HBox.margin>
+            							<padding>
+            								<Insets left="17.0" top="7.0" />
+            							</padding>
+            						</HBox>
+            						<HBox fx:id="iconAreaHBox" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="62.0" prefWidth="159.0" visible="false" HBox.hgrow="NEVER">
+            							<HBox.margin>
+            								<Insets left="14.0" />
+            							</HBox.margin>
+            						</HBox>
+            					</children>
+            					<HBox.margin>
+            						<Insets right="15.0" />
+            					</HBox.margin>
+            				</HBox>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="7.0" prefWidth="200.0" style="-fx-background-color: #C30D23;" />
+               </children>
+            </VBox>
+			</children>
+		</HBox>
+	</top>
+	<center>
+		<GridPane fx:id="mainGridPane" BorderPane.alignment="CENTER">
+			<columnConstraints>
+				<ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" prefWidth="1070.0" />
+            <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" minWidth="10.0" prefWidth="120.0" />
+			</columnConstraints>
+			<rowConstraints>
+				<RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="NEVER" />
+				<RowConstraints minHeight="110.0" prefHeight="30.0" vgrow="ALWAYS" />
+				<RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="304.0" valignment="TOP" vgrow="NEVER" />
+			</rowConstraints>
+			<children>
+				<HBox GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="NEVER">
+					<children>
+						<HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+							<children>
+								<Label maxHeight="32.0" maxWidth="-Infinity" minHeight="32.0" minWidth="-Infinity" prefHeight="32.0" prefWidth="190.0" style="-fx-font-size: 16; -fx-text-fill: #C30D23;" styleClass="list_title" text="Variant List - sorted by : " HBox.hgrow="NEVER">
+									<HBox.margin>
+										<Insets />
+									</HBox.margin>
+									<padding>
+										<Insets bottom="2.0" />
+									</padding>
+								</Label>
+								<HBox fx:id="sortListBox" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="32.0" prefWidth="750.0" styleClass="list_title" HBox.hgrow="SOMETIMES" />
+							</children>
+						</HBox>
+      						<HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="170.0">
+      							<children>
+      								<Button layoutX="965.0" layoutY="2.0" maxHeight="26.0" maxWidth="90.0" minHeight="26.0" minWidth="54.0" mnemonicParsing="false" onAction="#saveExcel" prefHeight="26.0" prefWidth="60.0" styleClass="btn_refresh" text="EXCEL">
+      									<HBox.margin>
+      										<Insets right="5.0" />
+      									</HBox.margin>
+      								</Button>
+      								<Button layoutX="1026.0" layoutY="2.0" maxHeight="26.0" maxWidth="57.0" minHeight="26.0" minWidth="45.0" mnemonicParsing="false" onAction="#saveCSV" prefHeight="26.0" prefWidth="60.0" styleClass="btn_refresh" text="CSV" />
+      							</children>
+      						</HBox>
+					</children>
+               <GridPane.margin>
+                  <Insets right="5.0" />
+               </GridPane.margin>
+				</HBox>
+				<TableView fx:id="variantListTableView" tableMenuButtonVisible="true" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+					<padding>
+						<Insets bottom="10.0" />
+					</padding>
+               <GridPane.margin>
+                  <Insets right="5.0" />
+               </GridPane.margin>
+				</TableView>
+				<TabPane fx:id="tabArea" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="304.0" prefWidth="1071.0" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="2">
+					<tabs>
+						<Tab text="OVERVIEW" />
+                  <Tab text="Untitled Tab">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    </content>
+                  </Tab>
+					</tabs>
+					<GridPane.margin>
+						<Insets />
+					</GridPane.margin>
+				</TabPane>
+            <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="32.0" prefWidth="50.0" GridPane.hgrow="NEVER" GridPane.rowIndex="2">
+               <children>
+                  <Button fx:id="overviewFoldButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="btn_fold">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+            <VBox alignment="BOTTOM_LEFT" prefHeight="320.0" prefWidth="50.0" style="-fx-background-color: #F7F7F7;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+                  <Pane prefHeight="155.0" prefWidth="157.0">
+                     <children>
+                        <VBox fx:id="tierChangeVBox" alignment="TOP_CENTER" prefHeight="155.0" prefWidth="157.0" visible="false">
+                           <children>
+                              <Label text="Tier Change" />
+                              <Label alignment="CENTER" maxHeight="16.0" maxWidth="1.7976931348623157E308" minHeight="16.0" prefHeight="16.0" styleClass="flagging_label" text="SW Tier">
+                                 <font>
+                                    <Font size="11.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="3.0" />
+                                 </VBox.margin>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                              </Label>
+                              <HBox fx:id="swTierArea" alignment="TOP_CENTER" maxHeight="20.0" maxWidth="158.0" minHeight="20.0" minWidth="138.0" prefHeight="20.0" prefWidth="138.0">
+                                 <children>
+                                    <Label fx:id="T1" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="no_selected_sw_tier" text="I">
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Label fx:id="T2" alignment="CENTER" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" prefHeight="20.0" prefWidth="20.0" styleClass="no_selected_sw_tier" text="II">
+                                       <HBox.margin>
+                                          <Insets left="4.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Label fx:id="T3" alignment="CENTER" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" prefHeight="20.0" prefWidth="20.0" styleClass="no_selected_sw_tier" text="III">
+                                       <HBox.margin>
+                                          <Insets left="4.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Label fx:id="T4" alignment="CENTER" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" prefHeight="20.0" prefWidth="20.0" styleClass="no_selected_sw_tier" text="IV">
+                                       <HBox.margin>
+                                          <Insets left="4.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="1.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <Label alignment="TOP_CENTER" maxHeight="16.0" maxWidth="1.7976931348623157E308" minHeight="16.0" prefHeight="16.0" prefWidth="140.0" styleClass="flagging_label" text="User Tier">
+                                 <font>
+                                    <Font size="11.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="3.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <HBox fx:id="userTierArea" alignment="TOP_CENTER" minHeight="20.0" prefHeight="20.0" prefWidth="140.0">
+                                 <children>
+                                    <Button fx:id="tierOne" layoutX="70.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setFlag" prefHeight="20.0" prefWidth="20.0" styleClass="tier_one" text="I">
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button fx:id="tierTwo" layoutX="50.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setFlag" prefHeight="20.0" prefWidth="20.0" styleClass="tier_two" text="II">
+                                       <HBox.margin>
+                                          <Insets left="4.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button fx:id="tierThree" layoutX="30.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setFlag" prefHeight="20.0" prefWidth="20.0" styleClass="tier_three" text="III">
+                                       <HBox.margin>
+                                          <Insets left="4.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button fx:id="tierFour" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setFlag" prefHeight="20.0" prefWidth="20.0" styleClass="tier_four" text="IV">
+                                       <HBox.margin>
+                                          <Insets left="4.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="1.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <VBox prefWidth="100.0" styleClass="pathogenic_review_checkbox">
+                                 <children>
+                                    <CheckBox fx:id="addToReportCheckBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="27.0" text="Add to Report" VBox.vgrow="ALWAYS" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </VBox>
+                        <VBox fx:id="pathogenicityVBox" alignment="TOP_CENTER" prefHeight="155.0" prefWidth="157.0">
+                           <children>
+                              <Label text="Pathogenicity Change" />
+                              <Label alignment="CENTER" maxHeight="16.0" maxWidth="1.7976931348623157E308" minHeight="16.0" prefHeight="16.0" styleClass="flagging_label" text="Prediction">
+                                 <font>
+                                    <Font size="11.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="3.0" />
+                                 </VBox.margin>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                              </Label>
+                              <HBox fx:id="predictionArea" alignment="TOP_CENTER" maxHeight="20.0" maxWidth="158.0" minHeight="20.0" minWidth="138.0" prefHeight="20.0" prefWidth="138.0">
+                                 <children>
+                                    <Label fx:id="P" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="prediction_none" text="P">
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Label fx:id="LP" alignment="CENTER" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" prefHeight="20.0" prefWidth="20.0" styleClass="prediction_none" text="LP">
+                                       <HBox.margin>
+                                          <Insets left="4.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Label fx:id="US" alignment="CENTER" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" prefHeight="20.0" prefWidth="20.0" styleClass="prediction_none" text="US">
+                                       <HBox.margin>
+                                          <Insets left="4.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Label fx:id="LB" alignment="CENTER" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" prefHeight="20.0" prefWidth="20.0" styleClass="prediction_none" text="LB">
+                                       <HBox.margin>
+                                          <Insets left="4.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Label fx:id="B" alignment="CENTER" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" prefHeight="20.0" prefWidth="20.0" styleClass="prediction_none" text="B">
+                                       <HBox.margin>
+                                          <Insets left="4.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="1.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <Label alignment="TOP_CENTER" maxHeight="16.0" maxWidth="1.7976931348623157E308" minHeight="16.0" prefHeight="16.0" prefWidth="140.0" styleClass="flagging_label" text="Pathogenicity">
+                                 <font>
+                                    <Font size="11.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="3.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <HBox fx:id="pathogenicityArea" alignment="TOP_CENTER" minHeight="20.0" prefHeight="20.0" prefWidth="140.0">
+                                 <children>
+                                    <Button fx:id="pathogenic5" layoutX="70.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setGermlineFlag" prefHeight="20.0" prefWidth="20.0" styleClass="pathogenic_5" text="P">
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button fx:id="pathogenic4" layoutX="50.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setGermlineFlag" prefHeight="20.0" prefWidth="20.0" styleClass="pathogenic_4" text="LP">
+                                       <HBox.margin>
+                                          <Insets left="4.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button fx:id="pathogenic3" layoutX="30.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setGermlineFlag" prefHeight="20.0" prefWidth="20.0" styleClass="pathogenic_3" text="US">
+                                       <HBox.margin>
+                                          <Insets left="4.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button fx:id="pathogenic2" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setGermlineFlag" prefHeight="20.0" prefWidth="20.0" styleClass="pathogenic_2" text="LB">
+                                       <HBox.margin>
+                                          <Insets left="4.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button fx:id="pathogenic1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setGermlineFlag" prefHeight="20.0" prefWidth="20.0" styleClass="pathogenic_1" text="B">
+                                       <HBox.margin>
+                                          <Insets left="4.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="1.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <VBox prefWidth="100.0" styleClass="pathogenic_review_checkbox">
+                                 <children>
+                                    <CheckBox fx:id="addToGermlineReportCheckBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="27.0" text="Add to Report" VBox.vgrow="ALWAYS" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </Pane>
+      				<VBox fx:id="linkArea" maxWidth="158.0" minWidth="140.0" prefHeight="132.0" prefWidth="158.0" style="-fx-background-color: #F7F7F7;">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </VBox>
+               </children>
+            </VBox>
+			</children>
+			<BorderPane.margin>
+				<Insets bottom="15.0" left="15.0" top="12.0" />
+			</BorderPane.margin>
+		</GridPane>
+	</center>
+
+	<stylesheets>
+		<URL value="@../css/common.css" />
+		<URL value="@../css/snps_indels.css" />
+		<URL value="@../css/analysisDetail.css" />
+	</stylesheets>
+</BorderPane>

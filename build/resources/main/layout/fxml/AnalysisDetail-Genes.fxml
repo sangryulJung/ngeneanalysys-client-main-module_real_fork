@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+<?import java.net.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.Pane?>
+
+<BorderPane prefHeight="558.0" prefWidth="1280.0" styleClass="detail_base_bg" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ngenebio.app.controller.AnalysisDetailGenesController">
+   <stylesheets>
+      <URL value="@../css/common.css" />
+      <URL value="@../css/analysisDetail.css" />
+      <URL value="@../css/gene.css" />
+   </stylesheets>
+   <left>
+      <VBox prefWidth="250.0" BorderPane.alignment="CENTER">
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+         <children>
+            <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0">
+               <children>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/icon_03.png" />
+                     </image>
+                  </ImageView>
+                  <Label text="Filter">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                     <styleClass>
+                        <String fx:value="font_size_13" />
+                        <String fx:value="weight_bold" />
+                        <String fx:value="txt_gray_656565" />
+                     </styleClass>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox prefHeight="30.0">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+               <children>
+                  <TextField fx:id="nameTextField" prefWidth="180.0" />
+                  <Button fx:id="addButton" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addFilter" prefWidth="25.0" styleClass="btn_blue_sm">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+            <ListView fx:id="filterListView" fixedCellSize="25.0" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </ListView>
+         </children>
+      </VBox>
+   </left>
+   <center>
+      <GridPane BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <HBox alignment="CENTER_LEFT">
+               <children>
+                  <Label fx:id="selectLabel" onMouseClicked="#toggleSelect" text="Select">
+                     <styleClass>
+                        <String fx:value="txt_blue" />
+                        <String fx:value="weight_bold" />
+                        <String fx:value="font_size_10" />
+                     </styleClass>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></Label>
+                  <Label layoutX="10.0" layoutY="10.0" styleClass="font_size_10" text="/">
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="unselectLabel" layoutX="45.0" layoutY="10.0" onMouseClicked="#toggleSelect" text="Unselect All">
+                     <styleClass>
+                        <String fx:value="txt_blue" />
+                        <String fx:value="weight_bold" />
+                        <String fx:value="font_size_10" />
+                     </styleClass>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></Label>
+               </children>
+            </HBox>
+            <TableView fx:id="geneTableView" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
+              <columns>
+                <TableColumn fx:id="filterColumn" editable="false" maxWidth="-Infinity" minWidth="45.0" prefWidth="45.0" resizable="false" sortable="false" text="Filter" />
+                <TableColumn fx:id="chromColumn" editable="false" maxWidth="-Infinity" minWidth="50.0" prefWidth="50.0" resizable="false" text="Chrom" />
+                  <TableColumn fx:id="nameColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="160.0" prefWidth="160.0" text="Name" />
+                  <TableColumn editable="false" maxWidth="-Infinity" minWidth="-1.0" prefWidth="-1.0" resizable="false" sortable="false" text="Prediction">
+                     <columns>
+                        <TableColumn fx:id="predictionAColumn" editable="false" maxWidth="-Infinity" minWidth="25.0" prefWidth="25.0" resizable="false">
+                           <styleClass>
+                              <String fx:value="sub_column" />
+                              <String fx:value="sub_column_prediction_A" />
+                           </styleClass></TableColumn>
+                        <TableColumn fx:id="predictionBColumn" editable="false" maxWidth="-Infinity" minWidth="25.0" prefWidth="25.0" resizable="false">
+                           <styleClass>
+                              <String fx:value="sub_column" />
+                              <String fx:value="sub_column_prediction_B" />
+                           </styleClass></TableColumn>
+                        <TableColumn fx:id="predictionCColumn" editable="false" maxWidth="-Infinity" minWidth="25.0" prefWidth="25.0" resizable="false">
+                           <styleClass>
+                              <String fx:value="sub_column" />
+                              <String fx:value="sub_column_prediction_C" />
+                           </styleClass></TableColumn>
+                        <TableColumn fx:id="predictionDColumn" editable="false" maxWidth="-Infinity" minWidth="25.0" prefWidth="25.0" resizable="false">
+                           <styleClass>
+                              <String fx:value="sub_column" />
+                              <String fx:value="sub_column_prediction_D" />
+                           </styleClass></TableColumn>
+                        <TableColumn fx:id="predictionEColumn" editable="false" maxWidth="-Infinity" minWidth="25.0" prefWidth="25.0" resizable="false">
+                           <styleClass>
+                              <String fx:value="sub_column" />
+                              <String fx:value="sub_column_prediction_E" />
+                           </styleClass></TableColumn>
+                     </columns>
+                  </TableColumn>
+                  <TableColumn fx:id="totalVariantColumn" editable="false" maxWidth="-Infinity" minWidth="85.0" prefWidth="85.0" resizable="false" text="Total Variant" />
+                  <TableColumn editable="false" maxWidth="-Infinity" minWidth="-1.0" prefWidth="-1.0" resizable="false" sortable="false" text="Pathogenicity">
+                     <columns>
+                        <TableColumn fx:id="pathogenicity5Column" editable="false" maxWidth="-Infinity" minWidth="25.0" prefWidth="25.0" resizable="false" text="5">
+                           <styleClass>
+                              <String fx:value="sub_column" />
+                              <String fx:value="sub_column_pathgenicity_5" />
+                           </styleClass></TableColumn>
+                        <TableColumn fx:id="pathogenicity4Column" editable="false" maxWidth="-Infinity" minWidth="25.0" prefWidth="25.0" resizable="false" text="4">
+                           <styleClass>
+                              <String fx:value="sub_column" />
+                              <String fx:value="sub_column_pathgenicity_4" />
+                           </styleClass></TableColumn>
+                        <TableColumn fx:id="pathogenicity3Column" editable="false" maxWidth="-Infinity" minWidth="25.0" prefWidth="25.0" resizable="false" text="3">
+                           <styleClass>
+                              <String fx:value="sub_column" />
+                              <String fx:value="sub_column_pathgenicity_3" />
+                           </styleClass></TableColumn>
+                        <TableColumn fx:id="pathogenicity2Column" editable="false" maxWidth="-Infinity" minWidth="25.0" prefWidth="25.0" resizable="false" text="2">
+                           <styleClass>
+                              <String fx:value="sub_column" />
+                              <String fx:value="sub_column_pathgenicity_2" />
+                           </styleClass></TableColumn>
+                        <TableColumn fx:id="pathogenicity1Column" editable="false" maxWidth="-Infinity" minWidth="25.0" prefWidth="25.0" resizable="false" text="1">
+                           <styleClass>
+                              <String fx:value="sub_column" />
+                              <String fx:value="sub_column_pathgenicity_1" />
+                           </styleClass></TableColumn>
+                     </columns>
+                  </TableColumn>
+                  <TableColumn editable="false" maxWidth="-Infinity" minWidth="-1.0" prefWidth="-1.0" resizable="false" sortable="false" text="Variant Types">
+                     <columns>
+                        <TableColumn fx:id="snpVariantTypesColumn" editable="false" maxWidth="-Infinity" minWidth="50.0" prefWidth="50.0" resizable="false" styleClass="sub_column" text="SNP" />
+                        <TableColumn fx:id="indelVariantTypesColumn" editable="false" maxWidth="-Infinity" minWidth="50.0" prefWidth="50.0" resizable="false" styleClass="sub_column" text="INDEL" />
+                        <TableColumn fx:id="cnvVariantTypesColumn" editable="false" maxWidth="-Infinity" minWidth="50.0" prefWidth="50.0" resizable="false" styleClass="sub_column" text="CNV" />
+                     </columns>
+                  </TableColumn>
+                  <TableColumn editable="false" maxWidth="-Infinity" minWidth="-1.0" prefWidth="-1.0" resizable="false" sortable="false" text="Coding Consequences">
+                     <columns>
+                        <TableColumn fx:id="fsftCodingConsequencesColumn" editable="false" maxWidth="-Infinity" minWidth="50.0" prefWidth="50.0" resizable="false" styleClass="sub_column" text="FSFT" />
+                        <TableColumn fx:id="mseCodingConsequencesColumn" editable="false" maxWidth="-Infinity" minWidth="50.0" prefWidth="50.0" resizable="false" styleClass="sub_column" text="M_SE" />
+                        <TableColumn fx:id="synCodingConsequencesColumn" editable="false" maxWidth="-Infinity" minWidth="50.0" prefWidth="50.0" resizable="false" styleClass="sub_column" text="SYN" />
+                        <TableColumn fx:id="fiveUtrCodingConsequencesColumn" editable="false" maxWidth="-Infinity" minWidth="50.0" prefWidth="50.0" resizable="false" styleClass="sub_column" text="5UTR" />
+                        <TableColumn fx:id="intrCodingConsequencesColumn" editable="false" maxWidth="-Infinity" minWidth="50.0" prefWidth="50.0" resizable="false" styleClass="sub_column" text="INTR" />
+                     </columns>
+                  </TableColumn>
+              </columns>
+            </TableView>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="20.0" right="20.0" top="20.0" />
+         </BorderPane.margin>
+      </GridPane>
+   </center>
+</BorderPane>

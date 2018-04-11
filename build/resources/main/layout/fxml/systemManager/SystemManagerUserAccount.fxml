@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Pagination?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="558.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemManagerUserAccountController">
+   <children>
+      <HBox prefHeight="592.0" prefWidth="1220.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox prefHeight="592.0" prefWidth="300.0">
+               <children>
+                  <VBox prefHeight="74.0" prefWidth="100.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="29.0" prefWidth="200.0">
+                           <children>
+                              <Label text="Group list" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="29.0" prefWidth="200.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="191.0" spacing="5.0">
+                                 <children>
+                                    <Label text="Group Name" />
+                                    <TextField fx:id="groupNameText" prefHeight="23.0" prefWidth="100.0" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <Button fx:id="groupSearchBtn" mnemonicParsing="false" onAction="#groupSearch" styleClass="submitBtn" text="Search" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <TableView fx:id="groupListTable" prefHeight="200.0" prefWidth="200.0">
+                    <columns>
+                        <TableColumn minWidth="7.000030517578125" prefWidth="20.399993896484375" />
+                      <TableColumn fx:id="userGroupId" prefWidth="27.5999755859375" text="Id" />
+                      <TableColumn fx:id="userGroupName" prefWidth="84.19998168945312" text="Group Name" />
+                        <TableColumn fx:id="userGroupDeleted" prefWidth="54.999969482421875" text="Deleted" />
+                        <TableColumn fx:id="userGroupModify" prefWidth="84.0" text="Group Modify" />
+                    </columns>
+                  </TableView>
+                  <Pagination fx:id="groupPaginationList" pageCount="100" prefHeight="48.0" prefWidth="200.0" />
+                  <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="300.0">
+                     <children>
+                        <Button fx:id="groupAddBtn" mnemonicParsing="false" onAction="#groupAdd" styleClass="submitBtn" text="group add" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <HBox alignment="CENTER" prefHeight="592.0" prefWidth="20.0">
+               <children>
+                  <Separator orientation="VERTICAL" prefHeight="200.0">
+                     <HBox.margin>
+                        <Insets bottom="2.0" />
+                     </HBox.margin></Separator>
+               </children>
+            </HBox>
+            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="592.0" prefWidth="860.0">
+               <children>
+                  <VBox prefHeight="74.0" prefWidth="900.0">
+                     <children>
+                        <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="900.0" VBox.vgrow="NEVER">
+                           <children>
+                              <Label text="User list" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="1.0">
+                           <children>
+                              <Button fx:id="resetBtn" mnemonicParsing="false" onAction="#reset" styleClass="cancelBtn" text="Reset" />
+                              <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="162.0" spacing="5.0">
+                                 <children>
+                                    <Label text="Login Id" />
+                                    <TextField fx:id="userIdText" prefHeight="23.0" prefWidth="100.0" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="180.0" spacing="5.0">
+                                 <children>
+                                    <Label text="Name" />
+                                    <TextField fx:id="userNameText" prefHeight="23.0" prefWidth="127.0" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="33.0" prefWidth="170.0" spacing="5.0">
+                                 <children>
+                                    <Label text="Type" />
+                                    <ComboBox fx:id="searchUserType" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="120.0" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="33.0" prefWidth="192.0" spacing="5.0">
+                                 <children>
+                                    <Label text="Group Name" />
+                                    <ComboBox fx:id="searchGroupName" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="100.0" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <Button fx:id="searchBtn" mnemonicParsing="false" onAction="#userSearch" styleClass="submitBtn" text="Search" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <TableView fx:id="userListTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
+                     <columns>
+                        <TableColumn fx:id="userCheckBox" prefWidth="33.0" />
+                        <TableColumn fx:id="id" minWidth="0.0" prefWidth="27.0" text="Id" visible="false" />
+                        <TableColumn fx:id="loginId" prefWidth="74.0" text="Login Id" />
+                        <TableColumn fx:id="name" prefWidth="71.0" text="Name" />
+                        <TableColumn fx:id="role" prefWidth="82.0" text="User Type" />
+                        <TableColumn fx:id="groupId" prefWidth="75.0" text="Group Id" visible="false" />
+                        <TableColumn fx:id="groupName" prefWidth="92.0" text="Group Name" />
+                        <TableColumn fx:id="createdAt" prefWidth="97.0" text="Created At" />
+                        <TableColumn fx:id="updatedAt" prefWidth="108.0" text="Updated At" />
+                        <TableColumn fx:id="deletedAt" prefWidth="108.0" text="Deleted At" visible="false" />
+                        <TableColumn fx:id="deleted" prefWidth="49.0" text="Deleted" />
+                        <TableColumn fx:id="userModify" prefWidth="83.0" text="User Modify" />
+                     </columns>
+                  </TableView>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="48.0" prefWidth="900.0" spacing="5.0" VBox.vgrow="NEVER">
+                     <children>
+                        <Button mnemonicParsing="false" styleClass="submitBtn" text="&lt;&lt;" />
+                        <Pagination fx:id="paginationList" pageCount="100" />
+                        <Button mnemonicParsing="false" styleClass="submitBtn" text="&gt;&gt;" />
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+                           <children>
+                              <Label text="page" />
+                              <TextField fx:id="pageText" prefHeight="23.0" prefWidth="74.0" />
+                              <Button fx:id="pageBtn" mnemonicParsing="false" prefHeight="23.0" prefWidth="41.0" styleClass="submitBtn" text="go" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="48.0" prefWidth="168.0">
+                           <children>
+                              <Button fx:id="userAddBtn" mnemonicParsing="false" onAction="#userAdd" styleClass="submitBtn" text="user add" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+   <stylesheets>
+      <URL value="@../../css/common.css" />
+      <URL value="@../../css/experimenter.css" />
+   </stylesheets>
+</AnchorPane>

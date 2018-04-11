@@ -1,0 +1,121 @@
+#addButton {
+	-fx-background-image:url('../images/icon_plus_white.png');
+	-fx-background-repeat: no-repeat;
+	-fx-background-insets:0;
+	-fx-background-size:12;
+	-fx-background-position:center;
+}
+
+#filterListView HBox {
+	-fx-alignment:center-left;
+	-fx-padding:2;
+	-fx-cursor:hand;
+}
+
+#filterListView HBox .label {
+	
+}
+
+#filterListView HBox .info {
+	-fx-background-color:transparent;
+	-fx-background-image:url('../images/icon_information.png');
+	-fx-background-repeat: no-repeat;
+	-fx-background-position:center;
+	-fx-background-size:12;
+	-fx-background-insets:0;
+	-fx-border-width:0;
+	-fx-min-width:12;
+	-fx-pref-width:12;
+	-fx-max-width:12;
+	-fx-min-height:12;
+	-fx-pref-height:12;
+	-fx-max-height:12;
+}
+
+#filterListView HBox .remove {
+	-fx-background-color:transparent;
+	-fx-background-image:url('../images/icon_wastebasket.png');
+	-fx-background-repeat: no-repeat;
+	-fx-background-position:center;
+	-fx-background-insets:0;
+	-fx-border-width:0;
+	-fx-min-width:11;
+	-fx-pref-width:11;
+	-fx-max-width:11;
+	-fx-min-height:12;
+	-fx-pref-height:12;
+	-fx-max-height:12;
+}
+#geneTableView {
+	
+}
+
+#geneTableView:row-selection .column-header-background .nested-column-header .sub_column_prediction_A .label {
+	-fx-background-image:url('../images/icon_prediction_A.png');
+	-fx-background-repeat: no-repeat;
+	-fx-background-position:2px;
+	-fx-background-size:16px;
+}
+
+#geneTableView:row-selection .column-header-background .nested-column-header .sub_column_prediction_B .label {
+	-fx-background-image:url('../images/icon_prediction_B.png');
+	-fx-background-repeat: no-repeat;
+	-fx-background-position:2px;
+	-fx-background-size:16px;
+}
+
+#geneTableView:row-selection .column-header-background .nested-column-header .sub_column_prediction_C .label {
+	-fx-background-image:url('../images/icon_prediction_C.png');
+	-fx-background-repeat: no-repeat;
+	-fx-background-position:2px;
+	-fx-background-size:16px;
+}
+
+#geneTableView:row-selection .column-header-background .nested-column-header .sub_column_prediction_D .label {
+	-fx-background-image:url('../images/icon_prediction_D.png');
+	-fx-background-repeat: no-repeat;
+	-fx-background-position:2px;
+	-fx-background-size:16px;
+}
+
+#geneTableView:row-selection .column-header-background .nested-column-header .sub_column_prediction_E .label {
+	-fx-background-image:url('../images/icon_prediction_E.png');
+	-fx-background-repeat: no-repeat;
+	-fx-background-position:2px;
+	-fx-background-size:16px;
+}
+
+#geneTableView:row-selection .column-header-background .nested-column-header .sub_column_pathgenicity_5 .label {
+	-fx-background-image:url('../images/icon_pathogenicity_5.png');
+	-fx-background-repeat: no-repeat;
+	-fx-background-position:2px;
+	-fx-background-size:16px;
+}
+
+#geneTableView:row-selection .column-header-background .nested-column-header .sub_column_pathgenicity_4 .label {
+	-fx-background-image:url('../images/icon_pathogenicity_4.png');
+	-fx-background-repeat: no-repeat;
+	-fx-background-position:2px;
+	-fx-background-size:16px;
+}
+
+#geneTableView:row-selection .column-header-background .nested-column-header .sub_column_pathgenicity_3 .label {
+	-fx-background-image:url('../images/icon_pathogenicity_3.png');
+	-fx-background-repeat: no-repeat;
+	-fx-background-position:2px;
+	-fx-background-size:16px;
+}
+
+#geneTableView:row-selection .column-header-background .nested-column-header .sub_column_pathgenicity_2 .label {
+	-fx-background-image:url('../images/icon_pathogenicity_2.png');
+	-fx-background-repeat: no-repeat;
+	-fx-background-position:2px;
+	-fx-background-size:16px;
+}
+
+#geneTableView:row-selection .column-header-background .nested-column-header .sub_column_pathgenicity_1 .label {
+	-fx-background-image:url('../images/icon_pathogenicity_1.png');
+	-fx-background-repeat: no-repeat;
+	-fx-background-position:2px;
+	-fx-background-size:16px;
+}

@@ -1,0 +1,1915 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane prefHeight="475.0" prefWidth="1030.0" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.PublicDatabaseController">
+   <content>
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1840.0" prefWidth="1015.0" styleClass="bg_gray_f3">
+         <children>
+            <VBox layoutX="264.0" layoutY="110.0" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1050.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="140.0">
+                     <children>
+                        <Label prefHeight="100.0" prefWidth="500.0" text="BRCAaccuTest, BRCAaccuTest PLUS">
+                           <styleClass>
+                              <String fx:value="txt_black" />
+                              <String fx:value="weight_bold" />
+                              <String fx:value="font_size_14" />
+                           </styleClass>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="140.0">
+                     <children>
+                        <Label prefWidth="130.0" text="Category">
+                           <styleClass>
+                              <String fx:value="txt_black" />
+                              <String fx:value="weight_bold" />
+                              <String fx:value="font_size_11" />
+                           </styleClass>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Label>
+                        <Label prefWidth="135.0" text="Database">
+                           <styleClass>
+                              <String fx:value="txt_black" />
+                              <String fx:value="weight_bold" />
+                              <String fx:value="font_size_11" />
+                           </styleClass>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Label>
+                        <Label prefWidth="80.0" text="Version">
+                           <styleClass>
+                              <String fx:value="txt_black" />
+                              <String fx:value="weight_bold" />
+                              <String fx:value="font_size_11" />
+                           </styleClass>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Label>
+                        <Label prefWidth="70.0" text="Release" />
+                        <Label text="Description">
+                           <styleClass>
+                              <String fx:value="txt_black" />
+                              <String fx:value="weight_bold" />
+                              <String fx:value="font_size_11" />
+                           </styleClass>
+                        </Label>
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </HBox>
+                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="235.0" prefWidth="1000.0">
+                     <children>
+                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                           <padding>
+                              <Insets top="3.0" />
+                           </padding>
+                        </Separator>
+                        <HBox prefHeight="300.0" prefWidth="200.0">
+                           <children>
+                              <VBox alignment="CENTER_LEFT" prefHeight="300.0" prefWidth="130.0">
+                                 <children>
+                                    <Label text="Population Database" wrapText="true">
+                                       <styleClass>
+                                          <String fx:value="txt_black" />
+                                          <String fx:value="weight_bold" />
+                                          <String fx:value="font_size_11" />
+                                       </styleClass>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="875.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="1019.0">
+                                       <children>
+                                          <Label prefHeight="40.0" prefWidth="135.0" text="1000 Genomes Project">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_656565" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="80.0" text="Phase3">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="40.0" prefWidth="70.0" text="May, 2013">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="42.0" prefWidth="580.0" text="Database of variants found during low-coverage and high-coverage genomic and targeted sequencing from 26 populations. Provides more diversity compared to the Exome Variant Server but also contains lower-quality data, and some cohorts contain related individuals. " wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="880.0">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                       <padding>
+                                          <Insets bottom="3.0" top="3.0" />
+                                       </padding>
+                                    </Separator>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="1019.0">
+                                       <children>
+                                          <Label prefHeight="36.0" prefWidth="135.0" text="ESP6500">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_656565" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="36.0" prefWidth="85.0" text="ESP6500SI-V2">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="36.0" prefWidth="65.0">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="42.0" prefWidth="580.0" text="Database of variants found during exome sequencing of several large cohorts of individuals of European and African American ancestry. Includes coverage data to inform the absence of variation. (6,503 samples drawn form multiple ESP cohorts and represents all of the ESP exome variant data)" wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="880.0">
+                                       <padding>
+                                          <Insets bottom="3.0" top="3.0" />
+                                       </padding>
+                                    </Separator>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="55.0" prefWidth="1019.0">
+                                       <children>
+                                          <Label prefHeight="50.0" prefWidth="135.0" text="gnomAD">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_656565" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="50.0" prefWidth="80.0" text="v2.0.1">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="50.0" prefWidth="70.0" text="Feb, 2017">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="70.0" prefWidth="580.0" text="The Genome Aggregation Database (gnomAD), is a coalition of investigators seeking to aggregate and harmonize exome and genome sequencing data from a variety of large-scale sequencing projects, and to make summary data available for the wider scientific community. The data set provided on this website spans 123,136 exomes and 15,496 genomes from unrelated individuals sequenced as part of various disease-specific and population genetic studies." wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="880.0">
+                                       <padding>
+                                          <Insets bottom="3.0" top="3.0" />
+                                       </padding>
+                                    </Separator>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="1019.0">
+                                       <children>
+                                          <Label prefHeight="28.0" prefWidth="135.0" text="ExAC">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_656565" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="80.0" text="Release 1.0">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="70.0" text="Aug, 2016">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="42.0" prefWidth="580.0" text="Database of variants found during exome sequencing of 61,486 unrelated individuals sequenced as part of various disease-specific and population genetic studies. Pediatric disease subjects as well as related individuals were excluded." wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="3.0" top="3.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1000.0">
+                     <children>
+                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1005.0">
+                           <padding>
+                              <Insets bottom="3.0" />
+                           </padding>
+                        </Separator>
+                        <HBox prefWidth="200.0">
+                           <children>
+                              <VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="130.0">
+                                 <children>
+                                    <Label text="Population Database (Korean)" wrapText="true">
+                                       <styleClass>
+                                          <String fx:value="txt_black" />
+                                          <String fx:value="weight_bold" />
+                                          <String fx:value="font_size_11" />
+                                       </styleClass>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="875.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="1019.0">
+                                       <children>
+                                          <Label prefHeight="28.0" prefWidth="135.0" text="KoEXID">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_656565" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="80.0">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="70.0" text="Aug, 2017">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="32.0" prefWidth="580.0" text="Analyzed data obtained by deep sequencing 1,303 Korean whole exomes; the data were generated by three independent whole exome sequencing projects (named the KOEX study)." wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets />
+                                             </HBox.margin>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="880.0">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                       <padding>
+                                          <Insets bottom="3.0" top="3.0" />
+                                       </padding>
+                                    </Separator>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="1019.0">
+                                       <children>
+                                          <Label prefHeight="35.0" prefWidth="135.0" text="KOVA">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_656565" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="80.0">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="35.0" prefWidth="70.0" text="Sep, 2017">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="44.0" prefWidth="580.0" text="To establish a genetic database of healthy Korean individuals, WES data from normal tissues from cancer patients (675 samples; 472 blood and 203 adjacent normal tissues) and blood samples from healthy individuals with no apparent clinical history (380 samples) were collected. " wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="880.0">
+                                       <padding>
+                                          <Insets bottom="3.0" top="3.0" />
+                                       </padding>
+                                    </Separator>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="1019.0">
+                                       <children>
+                                          <Label prefHeight="40.0" prefWidth="135.0" text="KRGDB">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_656565" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="80.0">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="40.0" prefWidth="70.0" text="Sep, 2017">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="42.0" prefWidth="580.0" text="Since 2012, Center for Genome Science of Korea National Research Institute of Health has conducted the whole genome sequencing project for 1,722 Korean individuals. The project investigated and analyzed 622 samples until 2014 (the first step), and 1,100 samples until 2016 (the second step)" wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                           <padding>
+                              <Insets top="3.0" />
+                           </padding>
+                        </Separator>
+                     </children>
+                     <padding>
+                        <Insets top="3.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="1000.0">
+                     <children>
+                        <HBox prefHeight="34.0" prefWidth="200.0">
+                           <children>
+                              <VBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="130.0">
+                                 <children>
+                                    <Label text="Variantion Dtabase" wrapText="true">
+                                       <styleClass>
+                                          <String fx:value="txt_black" />
+                                          <String fx:value="weight_bold" />
+                                          <String fx:value="font_size_11" />
+                                       </styleClass>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="870.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="1019.0">
+                                       <children>
+                                          <Label prefHeight="34.0" prefWidth="135.0" text="dbSNP">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_656565" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="2534.0" prefWidth="80.0" text="Build 150">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="34.0" prefWidth="70.0" text="Feb, 2017">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="34.0" prefWidth="580.0" text="Database of short genetic variations (typically =&lt;50bp) submitted from many sources. May lack details of the originating study and may contain pathogenic variants." wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                           <padding>
+                              <Insets top="3.0" />
+                           </padding>
+                        </Separator>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="1000.0">
+                     <children>
+                        <HBox prefHeight="25.0" prefWidth="200.0">
+                           <children>
+                              <VBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="130.0">
+                                 <children>
+                                    <Label text="Disease Database" wrapText="true">
+                                       <styleClass>
+                                          <String fx:value="txt_black" />
+                                          <String fx:value="weight_bold" />
+                                          <String fx:value="font_size_11" />
+                                       </styleClass>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="870.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="1019.0">
+                                       <children>
+                                          <Label prefHeight="28.0" prefWidth="135.0" text="Clinvar">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_656565" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="80.0">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="70.0" text="Sep, 2017">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="32.0" prefWidth="580.0" text="Database of assertions about the clinical significance and phenotype relationship of human variations." wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                           <padding>
+                              <Insets top="3.0" />
+                           </padding>
+                        </Separator>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1000.0">
+                     <children>
+                        <HBox prefWidth="200.0">
+                           <children>
+                              <VBox alignment="CENTER_LEFT" prefWidth="130.0">
+                                 <children>
+                                    <Label text="Disease Database (BRCA)" wrapText="true">
+                                       <styleClass>
+                                          <String fx:value="txt_black" />
+                                          <String fx:value="weight_bold" />
+                                          <String fx:value="font_size_11" />
+                                       </styleClass>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="870.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="35.0" prefWidth="1019.0">
+                                       <children>
+                                          <Label prefHeight="28.0" prefWidth="135.0" text="BIC">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_656565" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="80.0">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="70.0" text="Oct, 2017">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="32.0" prefWidth="580.0" text="An Open Access On-Line Breast Cancer Mutation Data Base" wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="880.0">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                       <padding>
+                                          <Insets bottom="3.0" top="3.0" />
+                                       </padding>
+                                    </Separator>
+                                    <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="45.0" prefWidth="1019.0">
+                                       <children>
+                                          <Label prefHeight="28.0" prefWidth="135.0" text="ARUP">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_656565" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="80.0">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="70.0" text="Sep, 2017">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="42.0" prefWidth="580.0" text="Through collaborations with the University of Utah Huntsman Cancer Institute (HCI), and with the WHO International Agency for Research on Cancer (IARC), the University of Utah Department of Pathology and ARUP Laboratories is pleased to host the BRCA mutation database. " wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="880.0">
+                                       <padding>
+                                          <Insets bottom="3.0" top="3.0" />
+                                       </padding>
+                                    </Separator>
+                                    <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="35.0" prefWidth="1019.0">
+                                       <children>
+                                          <Label prefHeight="28.0" prefWidth="135.0" text="ENIGMA">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_656565" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="80.0">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="70.0" text="May, 2016">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="32.0" prefWidth="580.0" text="Evidence-based Network for the Interpretation of Germline Mutant Alleles" wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="880.0">
+                                       <padding>
+                                          <Insets bottom="3.0" top="3.0" />
+                                       </padding>
+                                    </Separator>
+                                    <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="35.0" prefWidth="1019.0">
+                                       <children>
+                                          <Label prefHeight="28.0" prefWidth="135.0" text="LOVD">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_656565" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="80.0" text="v.3.0-19">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="70.0" text="Sep, 2017">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="32.0" prefWidth="580.0" text="Leiden Open Variation Database" wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="880.0">
+                                       <padding>
+                                          <Insets bottom="3.0" top="3.0" />
+                                       </padding>
+                                    </Separator>
+                                    <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="35.0" prefWidth="1019.0">
+                                       <children>
+                                          <Label prefHeight="28.0" prefWidth="135.0" text="KOHBRA">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_656565" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="80.0">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="70.0" text="May, 2016">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="32.0" prefWidth="580.0" text="In 2007, the Korean Hereditary Breast Cancer (KOHBRA) Study was established to obtain evidence for the accurate risk assessment and management of hereditary breast and ovarian cancer (HBOC) in Korea." wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="880.0">
+                                       <padding>
+                                          <Insets bottom="3.0" top="3.0" />
+                                       </padding>
+                                    </Separator>
+                                    <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="35.0" prefWidth="1019.0">
+                                       <children>
+                                          <Label prefHeight="28.0" prefWidth="135.0" text="BRCA Share">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_656565" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="80.0">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="70.0" text="Jun, 2017">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="32.0" prefWidth="580.0" text="BRCA Share (formerly UMD-Universal Mutation Database)" wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1000.0">
+                           <padding>
+                              <Insets top="3.0" />
+                           </padding>
+                        </Separator>
+                     </children>
+                     <padding>
+                        <Insets bottom="3.0" top="3.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="45.0" prefWidth="1000.0">
+                     <children>
+                        <HBox prefHeight="50.0" prefWidth="200.0">
+                           <children>
+                              <VBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="130.0">
+                                 <children>
+                                    <Label prefHeight="50.0" prefWidth="130.0" text="Missense prediction/ Nucleotide conservation prediction" wrapText="true">
+                                       <styleClass>
+                                          <String fx:value="txt_black" />
+                                          <String fx:value="weight_bold" />
+                                          <String fx:value="font_size_11" />
+                                       </styleClass>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="50.0" prefWidth="870.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="1019.0">
+                                       <children>
+                                          <Label prefHeight="40.0" prefWidth="135.0" text="dbNSFP">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_656565" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="80.0" text="v3.5">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="40.0" prefWidth="70.0" text="Aug, 2017">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="40.0" prefWidth="580.0" text="dbNSFP is a database developed for functional prediction and annotation of all potential non-synonymous single-nucleotide variants (nsSNVs) in the human genome." wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                           <padding>
+                              <Insets top="3.0" />
+                           </padding>
+                        </Separator>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="45.0" prefWidth="1000.0">
+                     <children>
+                        <HBox prefHeight="45.0" prefWidth="1000.0">
+                           <children>
+                              <VBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="130.0">
+                                 <children>
+                                    <Label text="Splice site prediction" wrapText="true">
+                                       <styleClass>
+                                          <String fx:value="txt_black" />
+                                          <String fx:value="weight_bold" />
+                                          <String fx:value="font_size_11" />
+                                       </styleClass>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="45.0" prefWidth="870.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="1019.0">
+                                       <children>
+                                          <Label prefHeight="28.0" prefWidth="135.0" text="dbscSNV">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_656565" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="80.0" text="v1.1">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="70.0" text="Apr, 2015">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="45.0" prefWidth="580.0" text="dbscSNV includes all potential human SNVs within splicing consensus regions (-3 to +8 at the 5' splice site and -12 to +2 at the 3' splice site), i.e. scSNVs, related functional annotations and two ensemble prediction scores for predicting their potential of altering splicing." wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                           <padding>
+                              <Insets top="3.0" />
+                           </padding>
+                        </Separator>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1000.0">
+                     <children>
+                        <HBox prefWidth="200.0">
+                           <children>
+                              <VBox alignment="CENTER_LEFT" prefWidth="130.0">
+                                 <children>
+                                    <Label text="Human Reference" wrapText="true">
+                                       <styleClass>
+                                          <String fx:value="txt_black" />
+                                          <String fx:value="weight_bold" />
+                                          <String fx:value="font_size_11" />
+                                       </styleClass>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="870.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="1019.0">
+                                       <children>
+                                          <Label prefHeight="32.0" prefWidth="135.0" text="Reference Genome Sequence" wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_656565" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="80.0" text="hg19">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="32.0" prefWidth="70.0">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="32.0" prefWidth="580.0" text="Source of full human genome reference sequences." wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="880.0">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                       <padding>
+                                          <Insets bottom="3.0" top="3.0" />
+                                       </padding>
+                                    </Separator>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="1019.0">
+                                       <children>
+                                          <Label prefHeight="28.0" prefWidth="135.0" text="RefSeqGene">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_656565" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="80.0">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="70.0">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="32.0" prefWidth="580.0" text="RefSeqGene defines genomic sequences to be used as reference standards for well-characterized genes and is part of the Locus Reference Genomic (LRG) Project." wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                           <padding>
+                              <Insets top="3.0" />
+                           </padding>
+                        </Separator>
+                     </children>
+                     <padding>
+                        <Insets top="3.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="140.0">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="140.0">
+                     <children>
+                        <Label prefHeight="100.0" prefWidth="500.0" text="HEMEaccuTest, SOLIDaccuTest">
+                           <styleClass>
+                              <String fx:value="txt_black" />
+                              <String fx:value="weight_bold" />
+                              <String fx:value="font_size_14" />
+                           </styleClass>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="140.0">
+                     <children>
+                        <Label prefWidth="130.0" text="Category">
+                           <styleClass>
+                              <String fx:value="txt_black" />
+                              <String fx:value="weight_bold" />
+                              <String fx:value="font_size_11" />
+                           </styleClass>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Label>
+                        <Label prefWidth="135.0" text="Database">
+                           <styleClass>
+                              <String fx:value="txt_black" />
+                              <String fx:value="weight_bold" />
+                              <String fx:value="font_size_11" />
+                           </styleClass>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Label>
+                        <Label prefWidth="80.0" text="Version">
+                           <styleClass>
+                              <String fx:value="txt_black" />
+                              <String fx:value="weight_bold" />
+                              <String fx:value="font_size_11" />
+                           </styleClass>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Label>
+                        <Label prefWidth="70.0" text="Release" />
+                        <Label text="Description">
+                           <styleClass>
+                              <String fx:value="txt_black" />
+                              <String fx:value="weight_bold" />
+                              <String fx:value="font_size_11" />
+                           </styleClass>
+                        </Label>
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </HBox>
+                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1000.0">
+                     <children>
+                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                           <padding>
+                              <Insets top="3.0" />
+                           </padding>
+                        </Separator>
+                        <HBox prefWidth="200.0">
+                           <children>
+                              <VBox alignment="CENTER_LEFT" prefWidth="130.0">
+                                 <children>
+                                    <Label text="Population Database" wrapText="true">
+                                       <styleClass>
+                                          <String fx:value="txt_black" />
+                                          <String fx:value="weight_bold" />
+                                          <String fx:value="font_size_11" />
+                                       </styleClass>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="870.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="1019.0">
+                                       <children>
+                                          <Label prefHeight="40.0" prefWidth="135.0" text="1000 Genomes Project">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_656565" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="80.0" text="Phase3">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="40.0" prefWidth="70.0" text="May, 2013">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="42.0" prefWidth="580.0" text="Database of variants found during low-coverage and high-coverage genomic and targeted sequencing from 26 populations. Provides more diversity compared to the Exome Variant Server but also contains lower-quality data, and some cohorts contain related individuals. " wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="880.0">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                       <padding>
+                                          <Insets bottom="3.0" top="3.0" />
+                                       </padding>
+                                    </Separator>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="1019.0">
+                                       <children>
+                                          <Label prefHeight="36.0" prefWidth="135.0" text="ESP6500">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_656565" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="36.0" prefWidth="85.0" text="ESP6500SI-V2">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="36.0" prefWidth="65.0">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="42.0" prefWidth="580.0" text="Database of variants found during exome sequencing of several large cohorts of individuals of European and African American ancestry. Includes coverage data to inform the absence of variation. (6,503 samples drawn form multiple ESP cohorts and represents all of the ESP exome variant data)" wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="880.0">
+                                       <padding>
+                                          <Insets bottom="3.0" top="3.0" />
+                                       </padding>
+                                    </Separator>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="1019.0">
+                                       <children>
+                                          <Label prefHeight="50.0" prefWidth="135.0" text="gnomAD">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_656565" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="50.0" prefWidth="80.0" text="v2.0.1">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="50.0" prefWidth="70.0" text="Feb, 2017" textAlignment="CENTER">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="70.0" prefWidth="580.0" text="The Genome Aggregation Database (gnomAD), is a coalition of investigators seeking to aggregate and harmonize exome and genome sequencing data from a variety of large-scale sequencing projects, and to make summary data available for the wider scientific community. The data set provided on this website spans 123,136 exomes and 15,496 genomes from unrelated individuals sequenced as part of various disease-specific and population genetic studies." wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="880.0">
+                                       <padding>
+                                          <Insets bottom="3.0" top="3.0" />
+                                       </padding>
+                                    </Separator>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="1019.0">
+                                       <children>
+                                          <Label prefHeight="28.0" prefWidth="135.0" text="ExAC">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_656565" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="80.0" text="Release 1.0">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="70.0" text="Aug, 2016">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="42.0" prefWidth="580.0" text="Database of variants found during exome sequencing of 61,486 unrelated individuals sequenced as part of various disease-specific and population genetic studies. Pediatric disease subjects as well as related individuals were excluded." wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="3.0" top="3.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1000.0">
+                     <children>
+                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1005.0">
+                           <padding>
+                              <Insets bottom="3.0" />
+                           </padding>
+                        </Separator>
+                        <HBox prefWidth="200.0">
+                           <children>
+                              <VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="130.0">
+                                 <children>
+                                    <Label text="Population Database (Korean)" wrapText="true">
+                                       <styleClass>
+                                          <String fx:value="txt_black" />
+                                          <String fx:value="weight_bold" />
+                                          <String fx:value="font_size_11" />
+                                       </styleClass>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="875.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="1019.0">
+                                       <children>
+                                          <Label prefHeight="28.0" prefWidth="135.0" text="KoEXID">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_656565" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="80.0">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="70.0" text="Aug, 2017">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="32.0" prefWidth="580.0" text="Analyzed data obtained by deep sequencing 1,303 Korean whole exomes; the data were generated by three independent whole exome sequencing projects (named the KOEX study)." wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets />
+                                             </HBox.margin>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="880.0">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                       <padding>
+                                          <Insets bottom="3.0" top="3.0" />
+                                       </padding>
+                                    </Separator>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="1019.0">
+                                       <children>
+                                          <Label prefHeight="35.0" prefWidth="135.0" text="KOVA">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_656565" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="80.0">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="35.0" prefWidth="70.0" text="Sep, 2017">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="44.0" prefWidth="580.0" text="To establish a genetic database of healthy Korean individuals, WES data from normal tissues from cancer patients (675 samples; 472 blood and 203 adjacent normal tissues) and blood samples from healthy individuals with no apparent clinical history (380 samples) were collected. " wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="880.0">
+                                       <padding>
+                                          <Insets bottom="3.0" top="3.0" />
+                                       </padding>
+                                    </Separator>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="1019.0">
+                                       <children>
+                                          <Label prefHeight="40.0" prefWidth="135.0" text="KRGDB">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_656565" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="80.0">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="40.0" prefWidth="70.0" text="Sep, 2017">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="42.0" prefWidth="580.0" text="Since 2012, Center for Genome Science of Korea National Research Institute of Health has conducted the whole genome sequencing project for 1,722 Korean individuals. The project investigated and analyzed 622 samples until 2014 (the first step), and 1,100 samples until 2016 (the second step)" wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                           <padding>
+                              <Insets top="3.0" />
+                           </padding>
+                        </Separator>
+                     </children>
+                     <padding>
+                        <Insets top="3.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="1000.0">
+                     <children>
+                        <HBox prefHeight="34.0" prefWidth="200.0">
+                           <children>
+                              <VBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="130.0">
+                                 <children>
+                                    <Label text="Variantion Dtabase" wrapText="true">
+                                       <styleClass>
+                                          <String fx:value="txt_black" />
+                                          <String fx:value="weight_bold" />
+                                          <String fx:value="font_size_11" />
+                                       </styleClass>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="870.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="1019.0">
+                                       <children>
+                                          <Label prefHeight="34.0" prefWidth="135.0" text="dbSNP">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_656565" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="2534.0" prefWidth="80.0" text="Build 150">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="34.0" prefWidth="70.0" text="Feb, 2017">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="34.0" prefWidth="580.0" text="Database of short genetic variations (typically =&lt;50bp) submitted from many sources. May lack details of the originating study and may contain pathogenic variants." wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                           <padding>
+                              <Insets top="3.0" />
+                           </padding>
+                        </Separator>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="1000.0">
+                     <children>
+                        <HBox prefHeight="25.0" prefWidth="200.0">
+                           <children>
+                              <VBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="130.0">
+                                 <children>
+                                    <Label text="Disease Database" wrapText="true">
+                                       <styleClass>
+                                          <String fx:value="txt_black" />
+                                          <String fx:value="weight_bold" />
+                                          <String fx:value="font_size_11" />
+                                       </styleClass>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="870.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="1019.0">
+                                       <children>
+                                          <Label prefHeight="28.0" prefWidth="135.0" text="Clinvar">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_656565" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="80.0">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="70.0" text="Feb, 2018">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="32.0" prefWidth="580.0" text="Database of assertions about the clinical significance and phenotype relationship of human variations." wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                           <padding>
+                              <Insets top="3.0" />
+                           </padding>
+                        </Separator>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1000.0">
+                     <children>
+                        <HBox prefWidth="200.0">
+                           <children>
+                              <VBox alignment="CENTER_LEFT" prefWidth="130.0">
+                                 <children>
+                                    <Label text="Disease Database (Somatic)" wrapText="true">
+                                       <styleClass>
+                                          <String fx:value="txt_black" />
+                                          <String fx:value="weight_bold" />
+                                          <String fx:value="font_size_11" />
+                                       </styleClass>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="870.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="35.0" prefWidth="1019.0">
+                                       <children>
+                                          <Label prefHeight="28.0" prefWidth="135.0" text="Cosmic">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_656565" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="80.0" text="v83">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="70.0" text="Now, 2017">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="32.0" prefWidth="580.0" text="Database for exploring the impact of somatic mutations in human cancer" wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="880.0">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                       <padding>
+                                          <Insets bottom="3.0" top="3.0" />
+                                       </padding>
+                                    </Separator>
+                                    <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="45.0" prefWidth="1019.0">
+                                       <children>
+                                          <Label prefHeight="28.0" prefWidth="135.0" text="OncoKB">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_656565" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="80.0" text="v1.12">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="70.0" text="Oct, 2017">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="42.0" prefWidth="580.0" text="Precision oncology knowledge base and contains information about the effects and treatment implications of specific cancer gene alterations" wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1000.0">
+                           <padding>
+                              <Insets top="3.0" />
+                           </padding>
+                        </Separator>
+                     </children>
+                     <padding>
+                        <Insets bottom="3.0" top="3.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="45.0" prefWidth="1000.0">
+                     <children>
+                        <HBox prefHeight="50.0" prefWidth="200.0">
+                           <children>
+                              <VBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="130.0">
+                                 <children>
+                                    <Label prefHeight="50.0" prefWidth="130.0" text="Missense prediction/ Nucleotide conservation prediction" wrapText="true">
+                                       <styleClass>
+                                          <String fx:value="txt_black" />
+                                          <String fx:value="weight_bold" />
+                                          <String fx:value="font_size_11" />
+                                       </styleClass>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="50.0" prefWidth="870.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="1019.0">
+                                       <children>
+                                          <Label prefHeight="40.0" prefWidth="135.0" text="dbNSFP">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_656565" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="80.0" text="v2.3">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="40.0" prefWidth="70.0" text="Feb, 2014">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="40.0" prefWidth="580.0" text="dbNSFP is a database developed for functional prediction and annotation of all potential non-synonymous single-nucleotide variants (nsSNVs) in the human genome." wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                           <padding>
+                              <Insets top="3.0" />
+                           </padding>
+                        </Separator>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1000.0">
+                     <children>
+                        <HBox prefWidth="200.0">
+                           <children>
+                              <VBox alignment="CENTER_LEFT" prefWidth="130.0">
+                                 <children>
+                                    <Label text="Human Reference" wrapText="true">
+                                       <styleClass>
+                                          <String fx:value="txt_black" />
+                                          <String fx:value="weight_bold" />
+                                          <String fx:value="font_size_11" />
+                                       </styleClass>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="870.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="1019.0">
+                                       <children>
+                                          <Label prefHeight="32.0" prefWidth="135.0" text="Reference Genome Sequence" wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_656565" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="80.0" text="hg19">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="32.0" prefWidth="70.0">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="32.0" prefWidth="580.0" text="Source of full human genome reference sequences." wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="880.0">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                       <padding>
+                                          <Insets bottom="3.0" top="3.0" />
+                                       </padding>
+                                    </Separator>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="1019.0">
+                                       <children>
+                                          <Label prefHeight="28.0" prefWidth="135.0" text="RefSeqGene">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_656565" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="80.0">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="25.0" prefWidth="70.0">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label prefHeight="32.0" prefWidth="580.0" text="RefSeqGene defines genomic sequences to be used as reference standards for well-characterized genes and is part of the Locus Reference Genomic (LRG) Project." wrapText="true">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="weight_bold" />
+                                                <String fx:value="font_size_11" />
+                                             </styleClass>
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                           <padding>
+                              <Insets top="3.0" />
+                           </padding>
+                        </Separator>
+                     </children>
+                     <padding>
+                        <Insets top="3.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </VBox>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </content>
+</ScrollPane>

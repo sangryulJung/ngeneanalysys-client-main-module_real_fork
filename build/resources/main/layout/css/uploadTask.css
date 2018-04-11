@@ -1,0 +1,127 @@
+taskArea {
+    -fx-background-color : transparent;
+}
+#taskArea .taskTitle {
+	-fx-font-weight:bold;
+	-fx-text-fill:#efefef;
+}
+
+#taskArea #refName {
+	-fx-text-fill:#fff;
+	-fx-font-size:13;
+}
+
+#taskArea Text {
+	-fx-fill:#fff;
+}
+
+#taskArea #completeCount {
+	-fx-font-weight:bold;
+	-fx-fill:#fff;
+}
+
+#taskArea #totalCount {
+	-fx-fill:#fff;
+}
+
+#taskArea #buttonStart {
+	-fx-background-insets:0;
+	-fx-background-color:transparent;
+	-fx-padding:0;
+	-fx-text-fill:#fff;
+	-fx-pref-width:20;
+}
+
+#taskArea #buttonPause {
+	-fx-background-insets:0;
+	-fx-background-color:transparent;
+	-fx-padding:0;
+	-fx-text-fill:#fff;
+	-fx-pref-width:20;
+}
+
+#taskArea #buttonDetail {
+	-fx-background-insets:0;
+	-fx-background-color:#ddd;
+	-fx-background-radius:2;
+	-fx-border-radius:2;
+	-fx-border-color:#ddd;
+	-fx-border-width:1;
+	-fx-text-fill:#656565;
+	-fx-padding:-1 8 0 8;
+	-fx-pref-height:18;
+}
+
+#taskArea #buttonCancel {
+    -fx-background-radius : 0;
+	-fx-background-insets:0;
+	-fx-background-color:#dc4b33;
+	-fx-background-radius:2;
+	-fx-border-radius:0;
+	-fx-border-color:#dc4b33;
+	-fx-border-width:1;
+	-fx-text-fill:#fff;
+	-fx-padding:-1 8 0 8;
+	-fx-pref-height:18;
+}
+
+#confirmDialog {
+	-fx-padding:25;
+}
+
+#confirmDialog #contentBox {
+	-fx-alignment:top-left;
+	-fx-border-color:#ccc;
+	-fx-background-color:#fff;
+}
+
+#confirmDialog #contentBox .label#title {
+	-fx-font-size:14;
+	-fx-font-weight:bold;
+	-fx-text-fill:#000;
+	-fx-padding:10;
+	-fx-alignment:center-left;
+}
+
+#confirmDialog #contentBox .vbox {
+	-fx-alignment:center-left;
+}
+
+#confirmDialog #contentBox .vbox .groupName {
+	-fx-font-size:13;
+	-fx-text-fill:#656565;
+	-fx-alignment:center-left;
+}
+
+/** Dialog 창 관련 */
+.dialogTitle {
+	-fx-font-weight:bold;
+	-fx-text-fill:#000;
+}
+
+.dialogContent {
+	-fx-text-fill:#656565;
+}
+
+.dialogContent#refName {
+	-fx-font-size:13;
+	-fx-font-weight:bold;
+	-fx-text-fill:#333;
+}
+
+#taskArea .progress-bar {
+	-fx-background-radius: 0;
+    -fx-background-color: #FFFFFF;
+    -fx-opacity: 0.5;
+}
+
+#taskArea .progress-bar > .bar {
+	-fx-background-radius: 0;
+	-fx-background-color: linear-gradient(to right, #273d5f, #42c0cb, #273d5f);
+}
+
+#taskArea .progress-bar > .track {
+	-fx-background-insets: 0;
+	-fx-background-color : white;
+    -fx-background-radius: 0;
+}

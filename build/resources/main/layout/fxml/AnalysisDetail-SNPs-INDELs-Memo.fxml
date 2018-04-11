@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<GridPane fx:id="overviewWrapper" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="272.0" prefWidth="1070.0" styleClass="bg_white" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNPsINDELsMemoController">
+   <columnConstraints>
+      <ColumnConstraints hgrow="ALWAYS" minWidth="-Infinity" percentWidth="100.0" prefWidth="1070.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints fillHeight="false" maxHeight="30.0" minHeight="10.0" prefHeight="27.0" />
+      <RowConstraints fillHeight="false" maxHeight="267.5555419921875" minHeight="-Infinity" prefHeight="254.22219848632812" />
+   </rowConstraints>
+   <children>
+      <TableView fx:id="memoListTableView" minHeight="-Infinity" prefHeight="252.0" prefWidth="200.0" styleClass="sub_table" tableMenuButtonVisible="true" GridPane.rowIndex="1">
+        <columns>
+          <TableColumn fx:id="dateColumn" prefWidth="130.0" styleClass="alignment_center" text="date" />
+          <TableColumn fx:id="typeColumn" prefWidth="120.0" styleClass="alignment_center" text="type" />
+            <TableColumn fx:id="userColumn" prefWidth="120.0" styleClass="alignment_center" text="user" />
+            <TableColumn fx:id="preValueColumn" prefWidth="75.0" styleClass="alignment_center" text="value(pre)" />
+            <TableColumn fx:id="nextValueColumn" prefWidth="75.0" styleClass="alignment_center" text="value(next)" />
+            <TableColumn fx:id="commentColumn" prefWidth="520.0" text="comment" />
+        </columns>
+         <GridPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </GridPane.margin>
+      </TableView>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #f3f3f3;" />
+   </children>
+</GridPane>

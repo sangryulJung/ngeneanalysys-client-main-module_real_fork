@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<GridPane fx:id="readDepthWrapper" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="256.0" prefWidth="171.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailReadDepthVariantFractionController">
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="86.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" minWidth="10.0" prefWidth="84.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints maxHeight="85.0" minHeight="0.0" prefHeight="29.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="182.0" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="230.0" minHeight="10.0" prefHeight="130.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="230.0" minHeight="10.0" prefHeight="16.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="230.0" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+   </rowConstraints>
+   <children>
+      <VBox alignment="CENTER_RIGHT" prefHeight="14.0" prefWidth="79.0">
+         <children>
+            <Label alignment="BOTTOM_RIGHT" styleClass="title1" text="READS" />
+            <Label alignment="TOP_RIGHT" styleClass="title1" text="DEPTH">
+               <VBox.margin>
+                  <Insets right="10.0" />
+               </VBox.margin>
+            </Label>
+         </children>
+         <GridPane.margin>
+            <Insets right="10.0" />
+         </GridPane.margin>
+      </VBox>
+      <HBox alignment="CENTER" prefHeight="84.0" prefWidth="75.0" GridPane.rowIndex="1">
+         <children>
+            <Label styleClass="vertical_stick_legend" text="MAX" />
+            <Label fx:id="depthMaxLabel" alignment="CENTER" styleClass="vertical_stick_legend_value" text="0000" />
+         </children>
+      </HBox>
+      <HBox alignment="TOP_RIGHT" prefHeight="120.0" prefWidth="200.0" GridPane.rowIndex="2">
+         <children>
+            <VBox fx:id="depthLegendVBox" alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="60.0">
+               <children>
+                  <VBox fx:id="depthLegendBox">
+                     <children>
+                        <Label fx:id="depthLegendLabel" styleClass="vertical_stick_value_right">
+                           <VBox.margin>
+                              <Insets bottom="-6.0" />
+                           </VBox.margin>
+                        </Label>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="117.0" />
+                     </VBox.margin>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets left="4.0" />
+               </padding>
+            </VBox>
+            <VBox alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="15.0" styleClass="vertical_stick">
+               <children>
+                  <Label fx:id="depthValueLabel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.0" prefWidth="11.0">
+                     <VBox.margin>
+                        <Insets bottom="1.0" top="2.0" />
+                     </VBox.margin>
+                  </Label>
+               </children>
+            </VBox>
+         </children>
+         <padding>
+            <Insets right="5.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
+         <children>
+            <Label styleClass="vertical_stick_legend" text="MIN">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Label>
+            <Label fx:id="depthMinLabel" alignment="CENTER" styleClass="vertical_stick_legend_value" text="0000" />
+         </children>
+      </HBox>
+      <VBox alignment="TOP_RIGHT" prefHeight="30.0" prefWidth="100.0" GridPane.rowIndex="4">
+         <children>
+            <Label styleClass="title3" text="mean">
+               <VBox.margin>
+                  <Insets right="15.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="depthMeanLabel" styleClass="title3" text="7000">
+               <VBox.margin>
+                  <Insets right="15.0" />
+               </VBox.margin>
+            </Label>
+         </children>
+         <GridPane.margin>
+            <Insets top="5.0" />
+         </GridPane.margin>
+      </VBox>
+      <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+         <children>
+            <Label styleClass="title1" text="VARIANT" />
+            <Label styleClass="title1" text="FRACTION">
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+            </Label>
+         </children>
+         <GridPane.margin>
+            <Insets left="10.0" />
+         </GridPane.margin>
+      </VBox>
+      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <children>
+            <Label alignment="CENTER" style="-fx-padding: 0 0 0 20;" styleClass="vertical_stick_legend" text="100 %">
+               <padding>
+                  <Insets top="-5.0" />
+               </padding>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+         <children>
+            <Label style="-fx-padding: 0 0 0 20;" styleClass="vertical_stick_legend" text="0 %">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Label>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </HBox>
+      <HBox prefHeight="120.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <children>
+            <VBox alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="15.0" styleClass="vertical_stick">
+               <children>
+                  <Label fx:id="fractionValueLabel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.0" prefWidth="11.0">
+                     <VBox.margin>
+                        <Insets bottom="1.0" top="2.0" />
+                     </VBox.margin>
+                  </Label>
+               </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </VBox>
+            <VBox fx:id="fractionLegendVBox" alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="61.0">
+               <children>
+                  <VBox fx:id="fractionLegendBox">
+                     <children>
+                        <Label fx:id="fractionLegendLabel" minWidth="23.0" prefWidth="23.0" styleClass="vertical_stick_value_left">
+                           <VBox.margin>
+                              <Insets bottom="-6.0" />
+                           </VBox.margin>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets left="4.0" />
+               </padding>
+            </VBox>
+         </children>
+         <padding>
+            <Insets left="5.0" />
+         </padding>
+      </HBox>
+      <HBox GridPane.columnIndex="1" GridPane.rowIndex="4">
+         <children>
+            <Label fx:id="fractionRef" styleClass="ref" text="G">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <HBox.margin>
+                  <Insets left="15.0" />
+               </HBox.margin>
+            </Label>
+            <Label styleClass="alt" text="/" />
+            <Label fx:id="fractionAlt" styleClass="alt" text="T" />
+         </children>
+         <GridPane.margin>
+            <Insets top="5.0" />
+         </GridPane.margin>
+      </HBox>
+   </children>
+   <stylesheets>
+      <URL value="@../../css/common.css" />
+      <URL value="@../../css/variantDetail.css" />
+   </stylesheets>
+</GridPane>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<ScrollPane hbarPolicy="NEVER" maxHeight="256.0" maxWidth="1030.0" minHeight="256.0" minWidth="870.0" prefHeight="256.0" prefWidth="870.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailInterpretationController">
+   <content>
+      <GridPane fx:id="interpretationGridPane" maxHeight="-Infinity" maxWidth="1020.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="690.0" prefWidth="860.0" style="-fx-background-color: #fff;">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="1040.0" minWidth="10.0" prefWidth="840.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="1040.0" minWidth="10.0" prefWidth="840.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="47.0" minHeight="10.0" prefHeight="47.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="300.0" minHeight="10.0" prefHeight="170.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="47.0" minHeight="10.0" prefHeight="47.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="170.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="47.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="170.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <HBox alignment="CENTER_LEFT" maxWidth="395.0" minWidth="395.0" prefHeight="100.0" prefWidth="395.0">
+               <children>
+                  <Label fx:id="swTierLabel" />
+                  <Label fx:id="arrow" text="〉">
+                     <HBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="userTierLabel" />
+               </children>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </HBox>
+            <VBox alignment="CENTER" maxHeight="-Infinity" minWidth="111.0" prefHeight="24.0" prefWidth="111.0" styleClass="add_to_report_check_box" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+               <children>
+                  <CheckBox fx:id="addToReportCheckBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="27.0" prefWidth="110.0" styleClass="add" text="Add to Report" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </CheckBox>
+               </children>
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin>
+            </VBox>
+            <HBox alignment="CENTER_RIGHT" maxWidth="1000.0" prefHeight="100.0" prefWidth="870.0" spacing="20.0" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+               <children>
+                  <Button mnemonicParsing="false" styleClass="cancelBtn" text="Cancel" />
+                  <Button alignment="TOP_RIGHT" mnemonicParsing="false" onAction="#saveInterpretation" prefWidth="60.0" style="-fx-alignment: center;" styleClass="submitBtn" text="Save" />
+               </children>
+               <padding>
+                  <Insets right="10.0" />
+               </padding>
+            </HBox>
+            <TableView fx:id="interpretationTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="4">
+              <columns>
+                <TableColumn fx:id="interpretationTypeColumn" prefWidth="120.0" style="-fx-text-fill: #000000;" text="Type" />
+                  <TableColumn fx:id="interpretationEvidenceColumn" prefWidth="120.0" style="-fx-text-fill: #000000;" text="Evidence" />
+                  <TableColumn fx:id="interpretationInterpretationColumn" prefWidth="150.0" style="-fx-text-fill: #000000;" text="Interpretation" />
+                  <TableColumn fx:id="interpretationEvidenceCommentColumn" maxWidth="1.7976931348623157E308" prefWidth="190.0" style="-fx-text-fill: #000000;" text="Evidence Comment" />
+                  <TableColumn fx:id="interpretationDateColumn" prefWidth="120.0" style="-fx-text-fill: #000000;" text="Date" />
+              </columns>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </TableView>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="5">
+               <children>
+                  <Label styleClass="font_size_15" text="Past Cases" />
+               </children>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </HBox>
+            <TableView fx:id="pastCasesTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="6">
+              <columns>
+                <TableColumn fx:id="pastCasesSampleColumn" prefWidth="150.0" style="-fx-text-fill: #000000;" text="Sample" />
+                <TableColumn fx:id="pastCasesTypeColumn" prefWidth="120.0" style="-fx-text-fill: #000000;" text="Type" />
+                  <TableColumn fx:id="pastCasesEvidenceColumn" prefWidth="120.0" style="-fx-text-fill: #000000;" text="Evidence" />
+                  <TableColumn fx:id="pastCasesInterpretationColumn" prefWidth="150.0" style="-fx-text-fill: #000000;" text="Interpretation" />
+                  <TableColumn fx:id="pastCasesEvidenceCommentColumn" maxWidth="1.7976931348623157E308" prefWidth="190.0" style="-fx-text-fill: #000000;" text="Evidence Comment" />
+                  <TableColumn fx:id="pastCasesDateColumn" prefWidth="120.0" style="-fx-text-fill: #000000;" text="Date" />
+              </columns>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </TableView>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="3">
+               <children>
+                  <Label styleClass="font_size_15" text="Interpretation History" />
+               </children>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </HBox>
+            <TableView fx:id="evidenceTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+              <columns>
+                <TableColumn fx:id="evidenceTypeColumn" prefWidth="120.0" text="Type" />
+                <TableColumn fx:id="evidenceColumn" prefWidth="120.0" text="Evidence" />
+                  <TableColumn fx:id="evidenceInterpretationColumn" prefWidth="120.0" text="Interpretation" />
+                  <TableColumn fx:id="evidenceCommentColumn" prefWidth="320.0" text="Evidence Comment" />
+                  <TableColumn fx:id="evidencePrimaryColumn" prefWidth="75.0" text="Primary" />
+                  <TableColumn fx:id="evidenceSaveColumn" prefWidth="75.0" text="Save" />
+              </columns>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </TableView>
+         </children>
+      </GridPane>
+   </content>
+   <stylesheets>
+      <URL value="@../../css/common.css" />
+      <URL value="@../../css/variants.css" />
+      <URL value="@../../css/variantDetail.css" />
+   </stylesheets>
+</ScrollPane>
