@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -14,7 +20,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane hbarPolicy="NEVER" maxHeight="256.0" maxWidth="1030.0" minHeight="256.0" minWidth="870.0" prefHeight="256.0" prefWidth="870.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailInterpretationController">
+<ScrollPane hbarPolicy="NEVER" maxHeight="256.0" maxWidth="1030.0" minHeight="256.0" minWidth="870.0" prefHeight="256.0" prefWidth="870.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailInterpretationController">
    <content>
       <GridPane fx:id="interpretationGridPane" maxHeight="-Infinity" maxWidth="1020.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="690.0" prefWidth="860.0" style="-fx-background-color: #fff;">
          <columnConstraints>
@@ -34,7 +40,7 @@
             <HBox alignment="CENTER_LEFT" maxWidth="395.0" minWidth="395.0" prefHeight="100.0" prefWidth="395.0">
                <children>
                   <Label fx:id="swTierLabel" />
-                  <Label fx:id="arrow" text="〉">
+                  <Label fx:id="arrow" text="〉" visible="false">
                      <HBox.margin>
                         <Insets left="10.0" right="10.0" />
                      </HBox.margin>
@@ -45,17 +51,26 @@
                   <Insets left="10.0" />
                </GridPane.margin>
             </HBox>
-            <VBox alignment="CENTER" maxHeight="-Infinity" minWidth="111.0" prefHeight="24.0" prefWidth="111.0" styleClass="add_to_report_check_box" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+            <VBox alignment="CENTER_RIGHT" maxHeight="-Infinity" minWidth="130.0" prefHeight="47.0" prefWidth="130.0" styleClass="add_to_report_check_box" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
                <children>
-                  <CheckBox fx:id="addToReportCheckBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="27.0" prefWidth="110.0" styleClass="add" text="Add to Report" VBox.vgrow="ALWAYS">
+                  <CheckBox fx:id="addToReportCheckBox" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="47.0" prefWidth="110.0" text="Add to Report" VBox.vgrow="ALWAYS">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
+                     <padding>
+                        <Insets right="10.0" />
+                     </padding>
                   </CheckBox>
                </children>
                <GridPane.margin>
-                  <Insets right="10.0" />
+                  <Insets />
                </GridPane.margin>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets right="10.0" />
+               </padding>
             </VBox>
             <HBox alignment="CENTER_RIGHT" maxWidth="1000.0" prefHeight="100.0" prefWidth="870.0" spacing="20.0" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                <children>
@@ -106,11 +121,11 @@
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </HBox>
-            <TableView fx:id="evidenceTableView" editable="true" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+            <TableView fx:id="evidenceTableView" editable="true" prefHeight="137.0" prefWidth="840.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
                <columns>
-                  <TableColumn fx:id="evidenceTypeColumn" prefWidth="120.0" text="Type" />
+                  <TableColumn fx:id="evidenceTypeColumn" prefWidth="140.0" text="Type" />
                   <TableColumn fx:id="evidenceColumn" prefWidth="120.0" text="Evidence" />
-                  <TableColumn fx:id="evidenceCommentColumn" prefWidth="320.0" style="-fx-text-fill: #000000;" styleClass="txt_black" text="Evidence Comment" />
+                  <TableColumn fx:id="evidenceCommentColumn" prefWidth="350.0" style="-fx-text-fill: #000000;" styleClass="txt_black" text="Evidence Comment" />
                   <TableColumn fx:id="evidencePrimaryColumn" prefWidth="75.0" text="Primary" />
                   <TableColumn fx:id="evidenceSaveColumn" prefWidth="75.0" text="Save" />
                   <TableColumn fx:id="evidenceDeleteColumn" prefWidth="75.0" text="Delete" />

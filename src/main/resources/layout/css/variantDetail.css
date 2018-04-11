@@ -478,37 +478,35 @@
 .add_to_report_check_box {
 	/*-fx-spacing:5;*/
 	/*-fx-padding:10;*/
-	-fx-background-color : #a8bbd9;
-	-fx-min-width : 140;
-	-fx-pref-width : 140;
-	-fx-max-width : 140;
+	-fx-background-color : white;
+	-fx-min-width : 150;
+	-fx-pref-width : 150;
+	-fx-max-width : 150;
 	-fx-alignment : center;
+	-fx-font-size:14;
 }
 .add_to_report_check_box > .check-box {
 	-fx-padding:5;
-	-fx-background-radius:5;
+	-fx-background-radius:0;
 	-fx-border-width:0;
-	-fx-text-fill:white;
-	-fx-font-size:12;
+	-fx-text-fill:#223654;
+	-fx-font-size:14;
 	-fx-font-weight:bold;
 }
 .add_to_report_check_box > .check-box .text {
-	-fx-text-fill:white;
-	-fx-font-size:12;
+	-fx-text-fill:#223654;
+	-fx-font-size:14;
 	-fx-font-weight:bold;
 }
 .add_to_report_check_box > .check-box .box {
-	-fx-pref-width:10;
-	-fx-pref-height:10;
+	-fx-pref-width:14;
+	-fx-pref-height:14;
 	-fx-background-color:white;
-	-fx-border-width:2;
-	-fx-border-color:white;
-	-fx-border-radius:2;
+	-fx-border-width:1;
+	-fx-border-color:#223654;
+	-fx-border-radius:1;
 }
 
-#addToReportCheckBox {
-	-fx-background-color: #a8bbd9;
-}
 
 #addToGermlineReportCheckBox {
 	-fx-background-color: #a8bbd9;
@@ -577,4 +575,16 @@
     -fx-graphic: url("../images/renewal/igv-image.png");
     -fx-pref-width : 16;
     -fx-pref-height : 16;
+}
+
+
+#evidenceTableView .table-column {
+  -fx-alignment: CENTER;
+}
+
+#interpretationTableView .table-column {
+  -fx-alignment: CENTER;
+}
+#pastCasesTableView .table-column {
+  -fx-alignment: CENTER;
 }
