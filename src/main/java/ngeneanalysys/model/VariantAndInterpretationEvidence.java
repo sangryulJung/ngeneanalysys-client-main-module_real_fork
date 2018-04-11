@@ -1,26 +1,14 @@
 package ngeneanalysys.model;
 
+import java.util.List;
+
 /**
  * @author Jang
  * @since 2017-12-06
  */
 public class VariantAndInterpretationEvidence {
     private SnpInDel snpInDel;
-    private SnpInDelInterpretation interpretationEvidence;
-
-    /**
-     * @param snpInDel
-     */
-    public void setSnpInDel(SnpInDel snpInDel) {
-        this.snpInDel = snpInDel;
-    }
-
-    /**
-     * @param interpretationEvidence
-     */
-    public void setInterpretationEvidence(SnpInDelInterpretation interpretationEvidence) {
-        this.interpretationEvidence = interpretationEvidence;
-    }
+    private List<SnpInDelEvidence> snpInDelEvidences;
 
     /**
      * @return snpInDel
@@ -30,9 +18,23 @@ public class VariantAndInterpretationEvidence {
     }
 
     /**
-     * @return interpretationEvidence
+     * @param snpInDel
      */
-    public SnpInDelInterpretation getInterpretationEvidence() {
-        return interpretationEvidence;
+    public void setSnpInDel(SnpInDel snpInDel) {
+        this.snpInDel = snpInDel;
+    }
+
+    /**
+     * @return snpInDelEvidences
+     */
+    public List<SnpInDelEvidence> getSnpInDelEvidences() {
+        return snpInDelEvidences;
+    }
+
+    /**
+     * @param snpInDelEvidences
+     */
+    public void setSnpInDelEvidences(List<SnpInDelEvidence> snpInDelEvidences) {
+        this.snpInDelEvidences = snpInDelEvidences;
     }
 }

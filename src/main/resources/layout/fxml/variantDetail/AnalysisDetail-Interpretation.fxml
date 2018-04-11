@@ -41,6 +41,12 @@
                   </Label>
                   <Label fx:id="userTierLabel" />
                </children>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
             </HBox>
             <VBox alignment="CENTER" maxHeight="-Infinity" minWidth="111.0" prefHeight="24.0" prefWidth="111.0" styleClass="add_to_report_check_box" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
                <children>
@@ -104,6 +110,19 @@
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </HBox>
+            <TableView fx:id="evidenceTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+              <columns>
+                <TableColumn fx:id="evidenceTypeColumn" prefWidth="120.0" text="Type" />
+                <TableColumn fx:id="evidenceColumn" prefWidth="120.0" text="Evidence" />
+                  <TableColumn fx:id="evidenceInterpretationColumn" prefWidth="120.0" text="Interpretation" />
+                  <TableColumn fx:id="evidenceCommentColumn" prefWidth="320.0" text="Evidence Comment" />
+                  <TableColumn fx:id="evidencePrimaryColumn" prefWidth="75.0" text="Primary" />
+                  <TableColumn fx:id="evidenceSaveColumn" prefWidth="75.0" text="Save" />
+              </columns>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </TableView>
          </children>
       </GridPane>
    </content>

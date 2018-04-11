@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
@@ -16,7 +23,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="experimentPastResultsWrapper" prefHeight="410.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailOverviewGermlineController">
+<GridPane fx:id="experimentPastResultsWrapper" prefHeight="410.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailOverviewGermlineController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" prefWidth="1140.0" />
    </columnConstraints>
@@ -34,9 +41,6 @@
             <HBox alignment="BOTTOM_LEFT" HBox.hgrow="ALWAYS">
                <children>
                   <Label alignment="TOP_LEFT" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" prefWidth="1240.0" style="-fx-font-family: Noto Sans KR Bold;" text="DETECTED VARIANT SUMMARY">
-                     <font>
-                        <Font name="System Bold" size="24.0" />
-                     </font>
                      <styleClass>
                         <String fx:value="font_size_15" />
                         <String fx:value="font_gray" />
@@ -74,7 +78,11 @@
                      <children>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;">
                            <children>
-                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" text="ROI coverage" textFill="WHITE">
+                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="28.0" prefWidth="102.0" text="ROI coverage" textFill="WHITE" />
+                              <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" styleClass="help_tooltip_white">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
                                  <tooltip>
                                     <Tooltip fx:id="roiCoverageTooltip" text="Empty Tooltip" />
                                  </tooltip>
@@ -83,7 +91,8 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;" GridPane.columnIndex="1">
                            <children>
-                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="150.0" text="Corverage uniformity" textFill="WHITE">
+                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="144.0" text="Corverage uniformity" textFill="WHITE" />
+                              <Label styleClass="help_tooltip_white">
                                  <tooltip>
                                     <Tooltip fx:id="coverageUniformityTooltip" text="Empty Tooltip" />
                                  </tooltip>
@@ -101,7 +110,7 @@
       <Label alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="85.0" style="-fx-pref-height: 30; -fx-font-family: Noto Sans KR Bold;" text="QC MATRIX" GridPane.rowIndex="4">
          <styleClass>
             <String fx:value="font_size_15" />
-            <String fx:value="txt_gray" />
+            <String fx:value="font_gray" />
          </styleClass>
          <GridPane.margin>
             <Insets />
@@ -284,5 +293,6 @@
    <stylesheets>
       <URL value="@../css/common.css" />
       <URL value="@../css/experimenter.css" />
+      <URL value="@../css/request.css" />
    </stylesheets>
 </GridPane>

@@ -515,7 +515,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             VariantAndInterpretationEvidence variantAndInterpretationEvidence = new VariantAndInterpretationEvidence();
 
             variantAndInterpretationEvidence.setSnpInDel(snpInDel);
-            variantAndInterpretationEvidence.setInterpretationEvidence(selectedAnalysisResultVariant.getInterpretationEvidence());
+            variantAndInterpretationEvidence.setSnpInDelEvidences(selectedAnalysisResultVariant.getSnpInDelEvidences());
 
             paramMap.put("variant", analysisResultVariant);
 

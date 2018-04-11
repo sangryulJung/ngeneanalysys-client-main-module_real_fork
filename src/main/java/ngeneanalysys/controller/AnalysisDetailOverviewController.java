@@ -156,7 +156,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         transcriptColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getTranscript()));
         ntChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
         aaChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChange()));
-        therapeuticColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getInterpretationEvidence()));
+        therapeuticColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDelEvidences()));
         therapeuticColumn.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, Object>() {
             @Override
             public void updateItem(Object item, boolean empty) {
@@ -164,40 +164,50 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                 hBox.setSpacing(5);
                 hBox.setAlignment(Pos.CENTER);
                 if(item != null) {
-                    SnpInDelInterpretation interpretation = (SnpInDelInterpretation) item;
-                    if(!StringUtils.isEmpty(interpretation.getTherapeuticEvidence().getLevelA())) {
-                        Label label = new Label("A");
-                        label.getStyleClass().remove("label");
-                        Tooltip tooltip = new Tooltip(interpretation.getTherapeuticEvidence().getLevelA());
-                        label.setTooltip(tooltip);
-                        label.getStyleClass().add("interpretation_A");
-                        hBox.getChildren().add(label);
-                    }
-                    if(!StringUtils.isEmpty(interpretation.getTherapeuticEvidence().getLevelB())) {
-                        Label label = new Label("B");
-                        Tooltip tooltip = new Tooltip(interpretation.getTherapeuticEvidence().getLevelB());
-                        label.setTooltip(tooltip);
-                        label.getStyleClass().remove("label");
-                        label.getStyleClass().add("interpretation_B");
-                        hBox.getChildren().add(label);
-                    }
-                    if(!StringUtils.isEmpty(interpretation.getTherapeuticEvidence().getLevelC())) {
-                        Label label = new Label("C");
-                        Tooltip tooltip = new Tooltip(interpretation.getTherapeuticEvidence().getLevelC());
-                        label.setTooltip(tooltip);
-                        label.getStyleClass().remove("label");
-                        label.getStyleClass().add("interpretation_C");
-                        hBox.getChildren().add(label);
-                    }
-                    if(!StringUtils.isEmpty(interpretation.getTherapeuticEvidence().getLevelD())) {
-                        Label label = new Label("D");
-                        Tooltip tooltip = new Tooltip(interpretation.getTherapeuticEvidence().getLevelD());
-                        label.setTooltip(tooltip);
-                        label.getStyleClass().remove("label");
-                        label.getStyleClass().add("interpretation_D");
-                        hBox.getChildren().add(label);
-                    }
+                    List<SnpInDelEvidence> interpretation = (List<SnpInDelEvidence>) item;
+                    for (SnpInDelEvidence evidence : interpretation) {
+                        if(evidence.getPrimaryEvidence()) {
+                            /*if (!StringUtils.isEmpty(interpretation.getTherapeuticEvidence().getLevelA())) {
+                                Label label = new Label("A");
+                                label.getStyleClass().remove("label");
+                                Tooltip tooltip = new Tooltip(interpretation.getTherapeuticEvidence().getLevelA());
+                                label.setTooltip(tooltip);
+                                label.getStyleClass().add("interpretation_A");
+                                hBox.getChildren().add(label);
+                            }
+                            if (!StringUtils.isEmpty(interpretation.getTherapeuticEvidence().getLevelB())) {
+                                Label label = new Label("B");
+                                Tooltip tooltip = new Tooltip(interpretation.getTherapeuticEvidence().getLevelB());
+                                label.setTooltip(tooltip);
+                                label.getStyleClass().remove("label");
+                                label.getStyleClass().add("interpretation_B");
+                                hBox.getChildren().add(label);
+                            }
+                            if (!StringUtils.isEmpty(interpretation.getTherapeuticEvidence().getLevelC())) {
+                                Label label = new Label("C");
+                                Tooltip tooltip = new Tooltip(interpretation.getTherapeuticEvidence().getLevelC());
+                                label.setTooltip(tooltip);
+                                label.getStyleClass().remove("label");
+                                label.getStyleClass().add("interpretation_C");
+                                hBox.getChildren().add(label);
+                            }
+                            if (!StringUtils.isEmpty(interpretation.getTherapeuticEvidence().getLevelD())) {
+                                Label label = new Label("D");
+                                Tooltip tooltip = new Tooltip(interpretation.getTherapeuticEvidence().getLevelD());
+                                label.setTooltip(tooltip);
+                                label.getStyleClass().remove("label");
+                                label.getStyleClass().add("interpretation_D");
+                                hBox.getChildren().add(label);
+                            }*/
+                            Label label = new Label(evidence.getEvidenceLevel());
+                            Tooltip tooltip = new Tooltip(evidence.getEvidence());
+                            label.setTooltip(tooltip);
+                            label.getStyleClass().remove("label");
+                            label.getStyleClass().add("interpretation_" + evidence.getEvidenceLevel());
+                            hBox.getChildren().add(label);
+                        }
 
+                    }
                 }
                 setGraphic(hBox);
             }
@@ -216,11 +226,8 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         return null;
     }
 
-    private long countTherapeutic (List<SnpInDelInterpretation> snpInDelInterpretations) {
-        return snpInDelInterpretations.stream().filter(item -> (!StringUtils.isEmpty(item.getTherapeuticEvidence().getLevelA()) ||
-                !StringUtils.isEmpty(item.getTherapeuticEvidence().getLevelB()) ||
-                !StringUtils.isEmpty(item.getTherapeuticEvidence().getLevelC()) ||
-                !StringUtils.isEmpty(item.getTherapeuticEvidence().getLevelD()))).count();
+    private long countTherapeutic (List<SnpInDelEvidence> snpInDelInterpretations) {
+        return snpInDelInterpretations.stream().filter(item -> (item.getEvidence().equalsIgnoreCase("therapeutic"))).count();
     }
 
     public void setDisplayItem() {
@@ -254,16 +261,17 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
 
                 tierOneGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
 
-                List<SnpInDelInterpretation> snpInDelInterpretations = new ArrayList<>();
+                List<SnpInDelEvidence> snpInDelInterpretations = new ArrayList<>();
                 tierOne.forEach(item -> {
-                    if (item.getInterpretationEvidence() != null)
-                        snpInDelInterpretations.add(item.getInterpretationEvidence());
+                    SnpInDelEvidence snpInDelEvidence = ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences());
+                    if (snpInDelEvidence != null) {
+                        snpInDelInterpretations.add(snpInDelEvidence);
+                    }
+
                 });
 
-                long count = snpInDelInterpretations.stream().filter(item -> (!StringUtils.isEmpty(item.getTherapeuticEvidence().getLevelA()) ||
-                        !StringUtils.isEmpty(item.getTherapeuticEvidence().getLevelB()) ||
-                        !StringUtils.isEmpty(item.getTherapeuticEvidence().getLevelC()) ||
-                        !StringUtils.isEmpty(item.getTherapeuticEvidence().getLevelD()))).count();
+                //long count = snpInDelInterpretations.size();
+                long count = countTherapeutic(snpInDelInterpretations);
                 tierOneTherapeuticLabel.setText(String.valueOf(count));
             }
 
@@ -279,10 +287,13 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
 
                 tierTwoGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
 
-                List<SnpInDelInterpretation> snpInDelInterpretations = new ArrayList<>();
+                List<SnpInDelEvidence> snpInDelInterpretations = new ArrayList<>();
                 tierTwo.forEach(item -> {
-                    if (item.getInterpretationEvidence() != null)
-                        snpInDelInterpretations.add(item.getInterpretationEvidence());
+                    SnpInDelEvidence snpInDelEvidence = ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences());
+                    if (snpInDelEvidence != null) {
+                        snpInDelInterpretations.add(snpInDelEvidence);
+                    }
+
                 });
 
                 long count = countTherapeutic(snpInDelInterpretations);
@@ -299,12 +310,6 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                 });
 
                 tierThreeGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
-
-                List<SnpInDelInterpretation> snpInDelInterpretations = new ArrayList<>();
-                tierThree.forEach(item -> {
-                    if (item.getInterpretationEvidence() != null)
-                        snpInDelInterpretations.add(item.getInterpretationEvidence());
-                });
             }
 
             if(tierFour != null) {
@@ -317,12 +322,6 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                 });
 
                 tierFourGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
-
-                List<SnpInDelInterpretation> snpInDelInterpretations = new ArrayList<>();
-                tierFour.stream().forEach(item -> {
-                    if (item.getInterpretationEvidence() != null)
-                        snpInDelInterpretations.add(item.getInterpretationEvidence());
-                });
             }
 
         } catch (Exception e) {
