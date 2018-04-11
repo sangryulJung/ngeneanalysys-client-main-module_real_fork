@@ -5,7 +5,7 @@ package ngeneanalysys.model;
  * @since 2018-04-10
  */
 public class SameVariantInterpretation {
-    private Integer runid;
+    private Integer runId;
     private String runName;
     private Integer sampleId;
     private String sampleName;
@@ -18,8 +18,8 @@ public class SameVariantInterpretation {
     /**
      * @return runid
      */
-    public Integer getRunid() {
-        return runid;
+    public Integer getRunId() {
+        return runId;
     }
 
     /**

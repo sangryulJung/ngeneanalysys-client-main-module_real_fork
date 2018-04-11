@@ -87,12 +87,12 @@
                                     <Insets top="5.0" />
                                  </VBox.margin>
                               </GridPane>
-                              <Label style="-fx-font-family: Noto Sans KR Bold;" text="DETECTED VARIANT">
+                              <Label text="DETECTED VARIANT">
                                  <VBox.margin>
                                     <Insets top="5.0" />
                                  </VBox.margin>
                                  <styleClass>
-                                    <String fx:value="font_size_18" />
+                                    <String fx:value="font_size_15" />
                                     <String fx:value="font_gray" />
                                  </styleClass>
                               </Label>
@@ -109,22 +109,22 @@
                                     <TableColumn fx:id="alleleFrequencyColumn" prefWidth="75.0" styleClass="txt_black" text="VAF" />
                                 </columns>
                               </TableView>
-                              <Label fx:id="conclusions" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-font-family: Noto Sans KR Bold;" text="CONCLUSION">
+                              <Label fx:id="conclusions" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="CONCLUSION">
                                  <VBox.margin>
                                     <Insets top="15.0" />
                                  </VBox.margin>
                                  <styleClass>
-                                    <String fx:value="font_size_18" />
+                                    <String fx:value="font_size_15" />
                                     <String fx:value="font_gray" />
                                  </styleClass>
                               </Label>
                               <TextArea fx:id="conclusionsTextArea" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="73.0" styleClass="txt_black" />
-                              <Label fx:id="extraFields" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-font-family: Noto Sans KR Bold;" text="REPORT EXTRA FIELDS" visible="false">
+                              <Label fx:id="extraFields" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="REPORT EXTRA FIELDS" visible="false">
                                  <VBox.margin>
                                     <Insets top="15.0" />
                                  </VBox.margin>
                                  <styleClass>
-                                    <String fx:value="font_size_18" />
+                                    <String fx:value="font_size_15" />
                                     <String fx:value="font_gray" />
                                  </styleClass>
                               </Label>
@@ -140,9 +140,9 @@
                               </GridPane>
                               <HBox prefHeight="28.0" prefWidth="200.0">
                                  <children>
-                                    <Label fx:id="conclusions11" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" style="-fx-font-family: Noto Sans KR Bold;" text="TARGET GENES">
+                                    <Label fx:id="conclusions11" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" text="TARGET GENES">
                                        <styleClass>
-                                          <String fx:value="font_size_18" />
+                                          <String fx:value="font_size_15" />
                                           <String fx:value="font_gray" />
                                        </styleClass>
                                     </Label>

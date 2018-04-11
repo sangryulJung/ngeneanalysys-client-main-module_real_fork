@@ -1,12 +1,16 @@
 @font-face {
 	src: url("../font/NotoSansKR-Light.otf"),
-	url("../font/NotoSansKR-Bold.otf"),
-	url("../font/NotoSansKR-Medium.otf"),
-	url("../font/NotoSansCJKkr-Bold.otf"),
-	 url("../font/NotoSansCJKkr-Regular.otf"),
+	 url("../font/NotoSansKR-Bold.otf"),
+	 url("../font/NotoSansKR-Medium.otf"),
 	 url("../font/NotoSansKR-Regular.otf"),
+	 url("../font/NotoSansKR-DemiLight.otf"),
+	 url("../font/NotoSansCJKkr-Bold.otf"),
+	 url("../font/NotoSansCJKkr-Regular.otf"),
+	 url("../font/NotoSansCJKkr-DemiLight.otf"),	 
 	 url("../font/NanumSquareB.ttf"),
 	 url("../font/NanumSquareR.ttf");
+	 url("../font/NanumSquareR.ttf");
+	 
 }
 
 /** 기본 폰트 설정 */
@@ -361,7 +365,7 @@ Button {
  }
 .pagination>.pagination-control>.control-box>.left-arrow-button {
 	-fx-background-color:none;
-	-fx-background-image:url('../images/arrow_prev_on.png');
+	-fx-background-image:url('../images/renewal/arrow_prev_on.png');
 	-fx-background-repeat: no-repeat;
 	-fx-background-position: center;
 	-fx-min-width: 50;
@@ -374,7 +378,7 @@ Button {
 }
 
 .pagination>.pagination-control>.control-box>.left-arrow-button:disabled {
-	-fx-background-image:url('../images/arrow_prev.png');
+	-fx-background-image:url('../images/renewal/arrow_prev.png');
 }
 
 .pagination>.pagination-control>.control-box>.left-arrow-button:disabled>.left-arrow {
@@ -390,7 +394,7 @@ Button {
 }
 
 .pagination>.pagination-control>.control-box>.number-button>.text {
-	-fx-font-size:13px;
+	-fx-font-size:12px;
 	-fx-text-fill:#656565;
 	-fx-padding:0 10;
 }
@@ -401,15 +405,14 @@ Button {
 }
 
 .pagination>.pagination-control>.control-box>.number-button:selected>.text {
-	-fx-font-size:14px;
+	-fx-font-size:12px;
 	-fx-fill:#0469b0;
-	-fx-font-weight:bold;
 	-fx-padding:0 10;
 }
 
 .pagination>.pagination-control>.control-box>.right-arrow-button {
 	-fx-background-color:none;
-	-fx-background-image:url('../images/arrow_next_on.png');
+	-fx-background-image:url('../images/renewal/arrow_next_on.png');
 	-fx-background-repeat: no-repeat;
 	-fx-background-position: center;
 	-fx-min-width: 50;
@@ -421,7 +424,7 @@ Button {
 }
 
 .pagination>.pagination-control>.control-box>.right-arrow-button:disabled {
-	-fx-background-image:url('../images/arrow_next.png');
+	-fx-background-image:url('../images/renewal/arrow_next.png');
 }
 .pagination>.pagination-control>.control-box>.right-arrow-button:disabled>.right-arrow {
 	-fx-background-color:none;

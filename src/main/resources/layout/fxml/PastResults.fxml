@@ -51,7 +51,7 @@
                </styleClass></Label>
          </children>
       </HBox>
-      <Pagination fx:id="paginationList" focusTraversable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" styleClass="font_size_12" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+      <Pagination fx:id="paginationList" focusTraversable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
          <GridPane.margin>
             <Insets />
          </GridPane.margin></Pagination>
@@ -79,7 +79,7 @@
       </ScrollPane>
       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="4" GridPane.rowIndex="2" GridPane.rowSpan="2">
          <children>
-            <ComboBox fx:id="searchComboBox" maxWidth="250.0" prefWidth="250.0">
+            <ComboBox fx:id="searchComboBox" maxWidth="250.0" prefWidth="250.0" promptText="Enter keyword">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -87,7 +87,7 @@
                   <Insets />
                </VBox.margin>
             </ComboBox>
-            <VBox fx:id="filterSearchArea" maxHeight="-Infinity" minHeight="-Infinity" prefWidth="100.0" spacing="5.0">
+            <VBox fx:id="filterSearchArea" maxHeight="-Infinity" minHeight="-Infinity" prefWidth="100.0" spacing="5.0" >
                <VBox.margin>
                   <Insets bottom="10.0" top="10.0" />
                </VBox.margin>

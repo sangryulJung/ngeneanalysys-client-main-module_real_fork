@@ -42,7 +42,7 @@
 .lv_i_icon {
     -fx-background-radius : 20;
     -fx-pref-width : 25;
-    -fx-pref-height : 16;
+    -fx-pref-height : 18;
     -fx-text-fill : #FFFFFF;
     -fx-alignment : center;
     -fx-background-color : #F6545C;
@@ -51,7 +51,7 @@
 .lv_ii_icon {
     -fx-background-radius : 20;
     -fx-pref-width : 25;
-    -fx-pref-height : 16;
+    -fx-pref-height : 18;
     -fx-text-fill : #FFFFFF;
     -fx-alignment : center;
     -fx-background-color : #FF9482;
@@ -60,7 +60,7 @@
 .lv_iii_icon {
     -fx-background-radius : 20;
     -fx-pref-width : 25;
-    -fx-pref-height : 16;
+    -fx-pref-height : 18;
     -fx-text-fill : #FFFFFF;
     -fx-alignment : center;
     -fx-background-color : #70ACF5;
@@ -69,7 +69,7 @@
 .lv_iv_icon {
     -fx-background-radius : 20;
     -fx-pref-width : 25;
-    -fx-pref-height : 16;
+    -fx-pref-height : 18;
     -fx-text-fill : #FFFFFF;
     -fx-alignment : center;
     -fx-background-color : #1F2D87;
@@ -78,7 +78,7 @@
 .lv_v_icon {
     -fx-background-radius : 20;
     -fx-pref-width : 25;
-    -fx-pref-height : 16;
+    -fx-pref-height : 18;
     -fx-text-fill : #FFFFFF;
     -fx-alignment : center;
     -fx-background-color : #5a64a5;
@@ -87,7 +87,7 @@
 .count_label {
     -fx-pref-width : 35;
     -fx-alignment : center-left;
-    -fx-pref-height : 16;
+    -fx-pref-height : 18;
     /*-fx-font-family: "Noto Sans CJK KR Regular";*/
     -fx-font-weight : 100;
 }
@@ -99,15 +99,15 @@
 }
 
 .remove_btn {
-    -fx-background-color : #666666;
-    -fx-background-radius : 3;
+    -fx-background-color : #FFFFFF;
+    -fx-background-radius : 30;
     -fx-alignment : center;
-    -fx-text-fill : #FFFFFF;
+    -fx-text-fill : #000000;
     -fx-pref-width : 14;
     -fx-pref-height : 14;
     -fx-min-width : 14;
     -fx-min-height : 14;
-    -fx-text-size : 8;
+    -fx-font-size : 8;
     -fx-padding : -1 0 0 0;
 }
 
@@ -118,6 +118,7 @@
 	-fx-font-weight:bold;
 	-fx-text-fill:#fff;
 	-fx-pref-width:20;
+	-fx-pref-height : 20;
 	-fx-text-alignment:center ;
 	-fx-alignment:center;
 }
@@ -129,6 +130,7 @@
 	-fx-font-weight:bold;
 	-fx-text-fill:#fff;
 	-fx-pref-width:20;
+	-fx-pref-height : 20;
 	-fx-text-alignment:center ;
 	-fx-alignment:center;
 }
@@ -140,6 +142,7 @@
 	-fx-font-weight:bold;
 	-fx-text-fill:#fff;
 	-fx-pref-width:20;
+	-fx-pref-height : 20;
 	-fx-text-alignment:center ;
 	-fx-alignment:center;
 }
@@ -151,6 +154,7 @@
 	-fx-font-weight:bold;
 	-fx-text-fill:#fff;
 	-fx-pref-width:20;
+	-fx-pref-height : 20;
 	-fx-text-alignment:center ;
 	-fx-alignment:center;
 }
@@ -180,7 +184,7 @@
     -fx-background-color : #d8a60d;
     -fx-background-radius : 20;
     -fx-pref-width : 25;
-    -fx-pref-height : 16;
+    -fx-pref-height : 18;
     -fx-text-fill : #FFFFFF;
     -fx-alignment : center;
 }
@@ -189,7 +193,7 @@
     -fx-background-color : #229db8;
     -fx-background-radius : 20;
     -fx-pref-width : 25;
-    -fx-pref-height : 16;
+    -fx-pref-height : 18;
     -fx-text-fill : #FFFFFF;
     -fx-alignment : center;
 }
@@ -198,7 +202,7 @@
     -fx-background-radius : 30;
     -fx-background-radius : 20;
     -fx-pref-width : 25;
-    -fx-pref-height : 16;
+    -fx-pref-height : 18;
     -fx-text-fill : #FFFFFF;
     -fx-alignment : center;
 }
@@ -206,7 +210,7 @@
     -fx-background-color : #FF0000;
     -fx-background-radius : 20;
     -fx-pref-width : 25;
-    -fx-pref-height : 16;
+    -fx-pref-height : 18;
     -fx-text-fill : #FFFFFF;
     -fx-alignment : center;
 }

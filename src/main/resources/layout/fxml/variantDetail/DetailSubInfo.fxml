@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="mainVBox" minWidth="350.0" prefHeight="256.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../../css/variantDetail.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.DetailSubInfoController">
+<VBox fx:id="mainVBox" minWidth="350.0" prefHeight="256.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../../css/variantDetail.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.DetailSubInfoController">
    <children>
       <HBox alignment="CENTER" prefHeight="23.0" prefWidth="200.0" spacing="10.0">
          <children>
-            <Label styleClass="title1" text="External Link" />
-            <ComboBox fx:id="externalLinkComboBox" onAction="#showLinkEvent" prefWidth="120.0">
+            <Label styleClass="title1" text="External Links" />
+            <ComboBox fx:id="externalLinkComboBox" onAction="#showLinkEvent" prefWidth="120.0" promptText="Please select...">
                <HBox.margin>
                   <Insets right="10.0" />
                </HBox.margin></ComboBox>

@@ -42,6 +42,7 @@ public class ExportVariantDataTask extends Task<Void> {
 	private String fileType;
 	private File file;
 	private Map<String, Object> params;
+	private int sampleId;
 	/** API Service */
 	private APIService apiService;
 	/** Excel, CSV 헤더 배열 */
@@ -58,11 +59,12 @@ public class ExportVariantDataTask extends Task<Void> {
 			"Be.enigma.patho", "polyphen2", "sift", "mutationtaster",			
 			"Left.seq", "Right.seq" };
 	private WebAPIException wae;
-	public ExportVariantDataTask(MainApp mainApp, String fileType, File file, Map<String, Object> params) {
+	public ExportVariantDataTask(MainApp mainApp, String fileType, File file, Map<String, Object> params, int sampleId) {
 		this.fileType = fileType;
 		this.file = file;
 		this.params = params;
 		this.mainApp = mainApp;
+		this.sampleId = sampleId;
 		// api service init..
 		apiService = APIService.getInstance();
 		apiService.setStage(mainApp.getPrimaryStage());		
@@ -74,7 +76,7 @@ public class ExportVariantDataTask extends Task<Void> {
 		updateMessage("");
 		CloseableHttpClient httpclient = null;
 		CloseableHttpResponse response = null;
-		String downloadUrl = "/analysisResults/exportVariantData";
+		String downloadUrl = "/analysisResults/exportVariantData/" + sampleId;
 
 		OutputStream os = null;
 		InputStream is = null;

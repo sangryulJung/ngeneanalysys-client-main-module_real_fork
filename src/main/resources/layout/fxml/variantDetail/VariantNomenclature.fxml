@@ -128,7 +128,7 @@
                                     </HBox>
                                     <Label fx:id="transcriptAltLabel" styleClass="variant_alt" text="CA">
                                        <VBox.margin>
-                                          <Insets top="12.0" />
+                                          <Insets top="18.0" />
                                        </VBox.margin>
                                     </Label>
                                  </children>

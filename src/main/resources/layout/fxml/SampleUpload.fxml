@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -14,12 +19,12 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="contentWrapper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="555.0" minWidth="1200.0" prefHeight="555.0" prefWidth="1200.0" styleClass="bg_white" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SampleUploadController">
+<VBox fx:id="contentWrapper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="555.0" minWidth="1200.0" prefHeight="555.0" prefWidth="1200.0" styleClass="bg_white" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SampleUploadController">
 	<children>
 		<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="1140.0">
 			<columnConstraints>
-				<ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" percentWidth="0.0" prefWidth="100.0" />
-				<ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" percentWidth="0.0" prefWidth="450.0" />
+				<ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" percentWidth="0.0" prefWidth="80.0" />
+				<ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" percentWidth="0.0" prefWidth="470.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" percentWidth="0.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" percentWidth="0.0" prefWidth="490.0" />
 			</columnConstraints>
@@ -28,14 +33,17 @@
             <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" percentHeight="0.0" prefHeight="10.0" vgrow="SOMETIMES" />
 			</rowConstraints>
 			<children>
-				<Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="font_size_14" text="Run">
+				<Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_14" text="Run">
 					<GridPane.margin>
-						<Insets right="20.0" />
+						<Insets left="10.0" />
 					</GridPane.margin>
 				</Label>
 				<HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.valignment="CENTER">
 					<children>
-						<TextField fx:id="textFieldRunName" focusTraversable="false" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" promptText="Enter the Run Name" styleClass="field_height" HBox.hgrow="ALWAYS" />
+						<TextField fx:id="textFieldRunName" focusTraversable="false" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" promptText="Enter the Run Name" styleClass="field_height" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin></TextField>
 						<Label styleClass="help_tooltip">
 							<HBox.margin>
 								<Insets left="5.0" />
@@ -49,20 +57,29 @@
 						<Insets right="20.0" />
 					</padding>
 				</HBox>
-				<Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="font_size_13" text="Sequencer" GridPane.columnIndex="2">
+				<Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_13" text="Sequencer" GridPane.columnIndex="2">
 					<GridPane.margin>
 						<Insets right="20.0" />
 					</GridPane.margin>
 				</Label>
             <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3">
                <children>
-                  <RadioButton fx:id="sequencerMiSeqDXRadioButton" mnemonicParsing="false" selected="true" style="-fx-font-family: Noto Sans CJK KR Regular;" text="Illumina MiSeqDX">
+                  <RadioButton fx:id="sequencerMiSeqDXRadioButton" mnemonicParsing="false" selected="true" text="Illumina MiSeqDX">
                      <toggleGroup>
                         <ToggleGroup fx:id="sequencerType" />
                      </toggleGroup>
+                     <padding>
+                        <Insets right="13.0" />
+                     </padding>
                   </RadioButton>
-                  <RadioButton fx:id="sequencerMiSeqRadioButton" mnemonicParsing="false" style="-fx-font-family: Noto Sans CJK KR Regular;" text="Illumina MiSeq" toggleGroup="$sequencerType" />
-                  <RadioButton fx:id="nextSeqDxRadioButton" mnemonicParsing="false" style="-fx-font-family: Noto Sans CJK KR Regular;" text="Illumina NextSeq 550Dx" toggleGroup="$sequencerType" />
+                  <RadioButton fx:id="sequencerMiSeqRadioButton" mnemonicParsing="false" text="Illumina MiSeq" toggleGroup="$sequencerType">
+                     <padding>
+                        <Insets right="13.0" />
+                     </padding></RadioButton>
+                  <RadioButton fx:id="nextSeqDxRadioButton" mnemonicParsing="false" text="Illumina NextSeq 550Dx" toggleGroup="$sequencerType">
+                     <padding>
+                        <Insets right="13.0" />
+                     </padding></RadioButton>
                   <Label styleClass="help_tooltip">
                      <tooltip>
                         <Tooltip text="Choose sequencing instrument platform" />

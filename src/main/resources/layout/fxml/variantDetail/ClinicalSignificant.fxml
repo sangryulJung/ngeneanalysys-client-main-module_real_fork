@@ -259,7 +259,7 @@
                   </Label>
                   <HBox fx:id="predictionArea" alignment="TOP_CENTER" maxHeight="20.0" maxWidth="158.0" minHeight="20.0" minWidth="138.0" prefHeight="20.0" prefWidth="138.0">
                      <children>
-                        <Label fx:id="P" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="prediction_none" text="P">
+                        <Label fx:id="P" alignment="CENTER" maxHeight="20.0" maxWidth="-Infinity" minHeight="20.0" minWidth="-Infinity" prefHeight="20.0" styleClass="prediction_none" text="P">
                            <HBox.margin>
                               <Insets left="10.0" />
                            </HBox.margin>

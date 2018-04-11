@@ -375,7 +375,7 @@
     -fx-background-radius : 10 10;
     -fx-background-color : #8F9FB9;
     -fx-pref-width : 65;
-    -fx-pref-height : 15;
+    -fx-pref-height : 20;
 }
 
 #targetGenesFlowPane > .target_gene_variant {
@@ -383,7 +383,7 @@
     -fx-background-radius : 10 10;
     -fx-background-color : #63CBFF;
     -fx-pref-width : 65;
-    -fx-pref-height : 15;
+    -fx-pref-height : 20;
 }
 
 #targetGenesFlowPane > .text_color_white {
