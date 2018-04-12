@@ -24,6 +24,7 @@ import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedSameVariantInterpretation;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
@@ -676,16 +677,20 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     public void save(SnpInDelEvidence snpInDelEvidence) {
         Map<String, Object> params = new HashMap<>();
         params.put("snpInDelId", selectedAnalysisResultVariant.getSnpInDel().getId());
+        params.put("id", snpInDelEvidence.getId() == null ? 0 : snpInDelEvidence.getId());
         params.put("evidence", snpInDelEvidence.getEvidence());
         params.put("evidenceType", snpInDelEvidence.getEvidenceType());
+        params.put("evidenceLevel", snpInDelEvidence.getEvidenceLevel());
         params.put("evidence", snpInDelEvidence.getEvidence());
+        params.put("primaryEvidence", snpInDelEvidence.getPrimaryEvidence() == null ? false : snpInDelEvidence.getPrimaryEvidence());
+        params.put("createdAt", ConvertUtil.convertLocalTimeToUTC("00-00-00 00:00:00", "yyyy-MM-dd HH:mm:ss", null));
 
         try {
             if(snpInDelEvidence.getId() == null) {
-                apiService.post("analysisResults/evidences", params, null, false);
+                apiService.post("analysisResults/evidences", params, null, true);
             } else {
                 params.put("id", snpInDelEvidence.getId());
-                apiService.put("analysisResults/evidences", params, null, false);
+                apiService.put("analysisResults/evidences", params, null, true);
             }
             setInterpretationTable();
             setPastCases();
