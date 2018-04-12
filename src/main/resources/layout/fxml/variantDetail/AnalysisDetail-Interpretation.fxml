@@ -104,9 +104,9 @@
               <columns>
                 <TableColumn fx:id="pastCasesSampleColumn" prefWidth="125.0" style="-fx-text-fill: #000000;" text="Sample" />
                 <TableColumn fx:id="pastCasesTypeColumn" prefWidth="180.0" style="-fx-text-fill: #000000;" text="Type" />
-                  <TableColumn fx:id="pastCasesEvidenceColumn" style="-fx-text-fill: #000000;" text="Evidence" />
-                  <TableColumn fx:id="pastCasesInterpretationColumn" style="-fx-text-fill: #000000;" text="Interpretation" />
-                  <TableColumn fx:id="pastCasesEvidenceCommentColumn" maxWidth="1.7976931348623157E308" prefWidth="180.0" style="-fx-text-fill: #000000;" text="Evidence Comment" />
+                  <TableColumn fx:id="pastCasesEvidenceColumn" prefWidth="60.0" style="-fx-text-fill: #000000;" text="Evidence" />
+                  <TableColumn fx:id="pastCasesInterpretationColumn" prefWidth="60.0" style="-fx-text-fill: #000000;" text="Interpretation" />
+                  <TableColumn fx:id="pastCasesEvidenceCommentColumn" maxWidth="1.7976931348623157E308" prefWidth="200.0" style="-fx-text-fill: #000000;" text="Evidence Comment" />
                   <TableColumn fx:id="pastCasesDateColumn" prefWidth="190.0" style="-fx-text-fill: #000000;" text="Date" />
               </columns>
                <GridPane.margin>

@@ -216,6 +216,7 @@
 #variantListTableView .table-row-cell {
 	-fx-background-insets:0;
 	-fx-font-size:13px;
+	-fx-font-family:Noto Sans KR Regular;
 	-fx-padding:0;
 	-fx-border-width:2 0 2 0;
 	
