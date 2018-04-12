@@ -7,8 +7,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -16,7 +14,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.TextAlignment;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.ACMGFilterCode;
 import ngeneanalysys.code.enums.ExperimentTypeCode;
@@ -145,6 +142,20 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     private Map<String, List<Object>> filterList = new HashMap<>();
 
     /**
+     * @return selectedVariantIndex
+     */
+    public int getSelectedVariantIndex() {
+        return selectedVariantIndex;
+    }
+
+    /**
+     * @return selectedAnalysisResultVariant
+     */
+    public VariantAndInterpretationEvidence getSelectedAnalysisResultVariant() {
+        return selectedAnalysisResultVariant;
+    }
+
+    /**
      * @return currentPageIndex
      */
     public Integer getCurrentPageIndex() {
@@ -244,7 +255,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         setTableViewColumn();
 
-        showVariantList(1, 0);
+        //showVariantList(1, 0);
 
         foldLeft();
         foldRight();
@@ -305,24 +316,24 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         totalLabel.setText("Showing " + sample.getAnalysisResultSummary().getAllVariantCount());
         filterComboBox.getItems().add(new ComboBoxItem("Total", "Total : " + sample.getAnalysisResultSummary().getAllVariantCount()));
         if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
-            filterComboBox.getItems().add(new ComboBoxItem("Tier 1", "Tier I : " + sample.getAnalysisResultSummary().getLevel1VariantCount()));
+            filterComboBox.getItems().add(new ComboBoxItem("Tier 1", "Tier I"));
             setStandardFilter("Tier 1", "tier", "T1");
-            filterComboBox.getItems().add(new ComboBoxItem("Tier 2", "Tier II : " + sample.getAnalysisResultSummary().getLevel2VariantCount()));
+            filterComboBox.getItems().add(new ComboBoxItem("Tier 2", "Tier II"));
             setStandardFilter("Tier 2", "tier", "T2");
-            filterComboBox.getItems().add(new ComboBoxItem("Tier 3", "Tier III : " + sample.getAnalysisResultSummary().getLevel3VariantCount()));
+            filterComboBox.getItems().add(new ComboBoxItem("Tier 3", "Tier III"));
             setStandardFilter("Tier 3", "tier", "T3");
-            filterComboBox.getItems().add(new ComboBoxItem("Tier 4", "Tier IV : " + sample.getAnalysisResultSummary().getLevel4VariantCount()));
+            filterComboBox.getItems().add(new ComboBoxItem("Tier 4", "Tier IV"));
             setStandardFilter("Tier 4", "tier", "T4");
         } else if(panel.getAnalysisType().equalsIgnoreCase("GERMLINE")) {
             filterComboBox.getItems().add(new ComboBoxItem("Pathogenic", "Pathogenic : " + sample.getAnalysisResultSummary().getLevel1VariantCount()));
             setStandardFilter("Pathogenic", "pathogenicity", "P");
-            filterComboBox.getItems().add(new ComboBoxItem("Likely Pathogenic", "Likely Pathogenic : " + sample.getAnalysisResultSummary().getLevel2VariantCount()));
+            filterComboBox.getItems().add(new ComboBoxItem("Likely Pathogenic", "Likely Pathogenic"));
             setStandardFilter("Likely Pathogenic", "pathogenicity", "LP");
-            filterComboBox.getItems().add(new ComboBoxItem("Uncertain Significance", "Uncertain Significance : " + sample.getAnalysisResultSummary().getLevel3VariantCount()));
+            filterComboBox.getItems().add(new ComboBoxItem("Uncertain Significance", "Uncertain Significance"));
             setStandardFilter("Uncertain Significance", "pathogenicity", "US");
-            filterComboBox.getItems().add(new ComboBoxItem("Likely Benign", "Likely Benign : " + sample.getAnalysisResultSummary().getLevel4VariantCount()));
+            filterComboBox.getItems().add(new ComboBoxItem("Likely Benign", "Likely Benign"));
             setStandardFilter("Likely Benign", "pathogenicity", "LB");
-            filterComboBox.getItems().add(new ComboBoxItem("Benign", "Benign : "  + sample.getAnalysisResultSummary().getLevel5VariantCount()));
+            filterComboBox.getItems().add(new ComboBoxItem("Benign", "Benign"));
             setStandardFilter("Benign", "pathogenicity", "B");
         }
         filterComboBox.getSelectionModel().select(0);
@@ -410,6 +421,11 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     private void foldRight(){
+        if(currentPageIndex != -1) {
+            showVariantList(currentPageIndex + 1, 0);
+        } else {
+            showVariantList(1, 0);
+        }
         snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightFoldedWidth);
         if(snvWrapper.getColumnConstraints().get(0).getPrefWidth() == 200) {
             snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerStandardWidth);
@@ -458,7 +474,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     /**
      * Interpretation 탭 화면 출력
      */
-    private void showPredictionAndInterpretation(VariantAndInterpretationEvidence variantAndInterpretationEvidence) {
+    private void showPredictionAndInterpretation() {
         try {
             FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_INTERPRETATION);
             Node node = loader.load();
@@ -539,7 +555,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 showDetailTab();
             }
             if(panel.getAnalysisType().equalsIgnoreCase(ExperimentTypeCode.SOMATIC.getDescription())) {
-                showPredictionAndInterpretation(variantAndInterpretationEvidence);
+                showPredictionAndInterpretation();
                 overviewAccordion.getPanes().remove(clinicalSignificantTitledPane);
             } else {
                 overviewAccordion.getPanes().remove(interpretationTitledPane);
@@ -718,6 +734,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     private void setTableViewColumn() {
+        String centerStyleClass = "alignment_center";
         if(panel != null && ExperimentTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             TableColumn<VariantAndInterpretationEvidence, String> swTier = new TableColumn<>("Prediction");
             createTableHeader(swTier, "Prediction", "swTier" ,70d);
@@ -731,7 +748,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                         if(code != null && !"NONE".equals(code)) {
                             label = new Label(item);
                             label.getStyleClass().clear();
-                            swTier.getStyleClass().add("alignment_center");
+                            swTier.getStyleClass().add(centerStyleClass);
                             label.getStyleClass().add("tier_" + code);
                         }
                     }
@@ -750,7 +767,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                         if(code != null && !"NONE".equals(code)) {
                             label = new Label(item);
                             label.getStyleClass().clear();
-                            expertTier.getStyleClass().add("alignment_center");
+                            expertTier.getStyleClass().add(centerStyleClass);
                             label.getStyleClass().add("tier_" + code);
                         }
                     }
@@ -770,7 +787,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                         if(code != null && !"NONE".equals(code)) {
                             label = new Label(item);
                             label.getStyleClass().clear();
-                            swPathogenicityLevel.getStyleClass().add("alignment_center");
+                            swPathogenicityLevel.getStyleClass().add(centerStyleClass);
                             label.getStyleClass().add("prediction_" + code);
                         }
                     }
@@ -790,7 +807,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                         if(code != null && !"NONE".equals(code)) {
                             label = new Label(item);
                             label.getStyleClass().clear();
-                            expertPathogenicityLevel.getStyleClass().add("alignment_center");
+                            expertPathogenicityLevel.getStyleClass().add(centerStyleClass);
                             label.getStyleClass().add("prediction_" + code);
                         }
                     }
@@ -805,7 +822,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         TableColumn<VariantAndInterpretationEvidence, String> warn = new TableColumn<>("Warn");
         createTableHeader(warn, "Warn", null ,55.);
-        warn.getStyleClass().add("alignment_center");
+        warn.getStyleClass().add(centerStyleClass);
         warn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getHasWarning()));
         warn.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
             @Override
@@ -816,7 +833,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         TableColumn<VariantAndInterpretationEvidence, String> lowConfidence = new TableColumn<>("Low confidence");
         createTableHeader(lowConfidence, "Low confidence", "lowConfidence" ,null);
-        lowConfidence.getStyleClass().add("alignment_center");
+        lowConfidence.getStyleClass().add(centerStyleClass);
         lowConfidence.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getLowConfidence()));
         lowConfidence.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
             @Override
@@ -827,7 +844,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         TableColumn<VariantAndInterpretationEvidence, String> report = new TableColumn<>("Report");
         createTableHeader(report, "Report", null ,55.);
-        report.getStyleClass().add("alignment_center");
+        report.getStyleClass().add(centerStyleClass);
         report.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getIncludedInReport()));
         report.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
             @Override

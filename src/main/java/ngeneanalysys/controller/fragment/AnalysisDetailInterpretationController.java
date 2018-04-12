@@ -22,7 +22,6 @@ import ngeneanalysys.controller.ExcludeReportDialogController;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
-import ngeneanalysys.model.paged.PagedSameVariantInterpretation;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.DialogUtil;
@@ -33,9 +32,7 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Jang
@@ -123,9 +120,9 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
     private AnalysisDetailSNVController analysisDetailSNVController;
 
-    private Sample sample;
-
     private Panel panel;
+
+    private SnpInDelEvidence primaryEvidence;
 
     /**
      * @param analysisDetailSNVController
@@ -137,7 +134,6 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     @Override
     public void show(Parent root) throws IOException {
         apiService = APIService.getInstance();
-        sample = (Sample)getParamMap().get("sample");
         panel = (Panel)getParamMap().get("panel");
         selectedAnalysisResultVariant = (VariantAndInterpretationEvidence)paramMap.get("variant");
 
@@ -202,25 +198,6 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
         public SaveButtonCreate() {
             img.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                /*Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-
-                String alertHeaderText = null;
-                String alertContentText = "Are you sure to restart this run?";
-
-                alert.setTitle("Confirmation Dialog");
-                SnpInDelEvidence run = SaveButtonCreate.this.getTableView().getItems().get(
-                        SaveButtonCreate.this.getIndex());
-                alert.setHeaderText(run.getName());
-                alert.setContentText(alertContentText);
-                logger.info(run.getId() + " : present id");
-                Optional<ButtonType> result = alert.showAndWait();
-                if(result.get() == ButtonType.OK) {
-                    restartRun(run.getId());
-                } else {
-                    logger.info(result.get() + " : button select");
-                    alert.close();
-                }*/
-
                 SnpInDelEvidence snpInDelEvidence = SaveButtonCreate.this.getTableView().getItems().get(
                         SaveButtonCreate.this.getIndex());
 
@@ -346,15 +323,17 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
             if(comboBox.getItems().isEmpty()) {
 
                 if(panel.getAnalysisType().equals("SOMATIC")) {
-                    comboBox.getItems().addAll("therapeutic", "prognosis", "diagnosis");
+                    comboBox.getItems().addAll("therapeutic", "prognosis", "diagnosis", "N/A");
                 }
-                comboBox.getSelectionModel().selectFirst();
+                //comboBox.getSelectionModel().selectFirst();
 
                 SnpInDelEvidence evidence = TypeComboBoxCell.this.getTableView().getItems().get(
                         TypeComboBoxCell.this.getIndex());
 
                 if(evidence != null && !StringUtils.isEmpty(evidence.getEvidenceType())) {
                     comboBox.getSelectionModel().select(evidence.getEvidenceType());
+                } else {
+                    comboBox.getSelectionModel().selectFirst();
                 }
             }
             setGraphic(comboBox);
@@ -374,6 +353,10 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
                 if(!StringUtils.isEmpty(t1)) {
                     snpInDelEvidence.setEvidenceLevel(t1);
+                    if(t1.equalsIgnoreCase("T3") || t1.equalsIgnoreCase("T4")) {
+
+                        snpInDelEvidence.setEvidenceType("N/A");
+                    }
                 }
             });
         }
@@ -389,15 +372,17 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
             if(comboBox.getItems().isEmpty()) {
 
                 if(panel.getAnalysisType().equals("SOMATIC")) {
-                    comboBox.getItems().addAll("A", "B", "C", "D");
+                    comboBox.getItems().addAll("A", "B", "C", "D", "T3", "T4");
                 }
-                comboBox.getSelectionModel().selectFirst();
+                //comboBox.getSelectionModel().selectFirst();
 
                 SnpInDelEvidence evidence = EvidenceLevelComboBoxCell.this.getTableView().getItems().get(
                         EvidenceLevelComboBoxCell.this.getIndex());
 
                 if(evidence != null && !StringUtils.isEmpty(evidence.getEvidenceLevel())) {
                     comboBox.getSelectionModel().select(evidence.getEvidenceLevel());
+                } else {
+                    comboBox.getSelectionModel().selectFirst();
                 }
 
             }
@@ -450,24 +435,6 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
         public DeleteButtonCreate() {
             img.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                /*Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-
-                String alertHeaderText = null;
-                String alertContentText = "Are you sure to delete this run?";
-
-                alert.setTitle("Confirmation Dialog");
-                Run run = DeleteButtonCreate.this.getTableView().getItems().get(
-                        DeleteButtonCreate.this.getIndex());
-                alert.setHeaderText(run.getName());
-                alert.setContentText(alertContentText);
-                logger.info(run.getId() + " : present id");
-                Optional<ButtonType> result = alert.showAndWait();
-                if(result.get() == ButtonType.OK) {
-                    deleteRun(run.getId());
-                } else {
-                    logger.info(result.get() + " : button select");
-                    alert.close();
-                }*/
                 SnpInDelEvidence evidence = DeleteButtonCreate.this.getTableView().getItems().get(
                         DeleteButtonCreate.this.getIndex());
 
@@ -498,7 +465,9 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     }
 
     public void setEvidenceTable() {
-        if(evidenceTableView.getItems() != null) evidenceTableView.getItems().removeAll(evidenceTableView.getItems());
+        if(evidenceTableView.getItems() != null && !evidenceTableView.getItems().isEmpty()) {
+            evidenceTableView.getItems().removeAll(evidenceTableView.getItems());
+        }
         try {
 
             // Memo 데이터 API 요청
@@ -508,7 +477,14 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
             // Flagging Comment 데이터 요청이 정상 요청된 경우 진행.
             List<SnpInDelEvidence> list = (List<SnpInDelEvidence>)response.getMultiObjectBeforeConvertResponseToJSON(SnpInDelEvidence.class, false);
-            if(list != null && !list.isEmpty()) evidenceTableView.getItems().addAll(FXCollections.observableArrayList(list));
+            if(list != null && !list.isEmpty()) {
+                list.sort(Comparator.comparing(SnpInDelEvidence::getId));
+                evidenceTableView.getItems().addAll(FXCollections.observableArrayList(list));
+
+                Optional<SnpInDelEvidence> snpInDelEvidence = list.stream().filter(item -> item.getPrimaryEvidence()).findFirst();
+                if(snpInDelEvidence.isPresent()) primaryEvidence = snpInDelEvidence.get();
+
+            }
 
         } catch (WebAPIException wae) {
             wae.printStackTrace();
@@ -689,16 +665,46 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         params.put("createdAt", ConvertUtil.convertLocalTimeToUTC("00-00-00 00:00:00", "yyyy-MM-dd HH:mm:ss", null));
 
         try {
+
+            if(snpInDelEvidence.getPrimaryEvidence() != null && snpInDelEvidence.getPrimaryEvidence()
+                    && primaryEvidence != null && primaryEvidence != snpInDelEvidence) {
+                Map<String, Object> currentPrimaryParams = new HashMap<>();
+                currentPrimaryParams.put("snpInDelId", selectedAnalysisResultVariant.getSnpInDel().getId());
+                currentPrimaryParams.put("id", primaryEvidence.getId());
+                currentPrimaryParams.put("evidence", primaryEvidence.getEvidence());
+                currentPrimaryParams.put("evidenceType", primaryEvidence.getEvidenceType());
+                currentPrimaryParams.put("evidenceLevel", primaryEvidence.getEvidenceLevel());
+                currentPrimaryParams.put("evidence", primaryEvidence.getEvidence());
+                currentPrimaryParams.put("primaryEvidence", false);
+                currentPrimaryParams.put("createdAt", ConvertUtil.convertLocalTimeToUTC("00-00-00 00:00:00", "yyyy-MM-dd HH:mm:ss", null));
+                apiService.put("analysisResults/evidences", currentPrimaryParams, null, true);
+            }
+
             if(snpInDelEvidence.getId() == null) {
                 apiService.post("analysisResults/evidences", params, null, true);
             } else {
-                params.put("id", snpInDelEvidence.getId());
                 apiService.put("analysisResults/evidences", params, null, true);
             }
+
+            if(snpInDelEvidence.getPrimaryEvidence() != null && snpInDelEvidence.getPrimaryEvidence()) {
+                if(primaryEvidence.getEvidenceLevel().equalsIgnoreCase("A")
+                        || primaryEvidence.getEvidenceLevel().equalsIgnoreCase("B")) {
+                    selectedAnalysisResultVariant.getSnpInDel().setExpertTier("T1");
+                } else if(primaryEvidence.getEvidenceLevel().equalsIgnoreCase("C")
+                        || primaryEvidence.getEvidenceLevel().equalsIgnoreCase("D")) {
+                    selectedAnalysisResultVariant.getSnpInDel().setExpertTier("T2");
+                } else if(primaryEvidence.getEvidenceLevel().equalsIgnoreCase("T3")) {
+                    selectedAnalysisResultVariant.getSnpInDel().setExpertTier("T3");
+                } else if(primaryEvidence.getEvidenceLevel().equalsIgnoreCase("T4")) {
+                    selectedAnalysisResultVariant.getSnpInDel().setExpertTier("T4");
+                }
+                setTier(selectedAnalysisResultVariant.getSnpInDel());
+            }
+
+            //analysisDetailSNVController.showVariantList(analysisDetailSNVController.getCurrentPageIndex() +1 , 0);
             setInterpretationTable();
             setPastCases();
             setEvidenceTable();
-            analysisDetailSNVController.showVariantList(analysisDetailSNVController.getCurrentPageIndex() + 1, 0);
         } catch (WebAPIException wae) {
             wae.printStackTrace();
         } catch (IOException e) {
