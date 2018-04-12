@@ -482,8 +482,13 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                 evidenceTableView.getItems().addAll(FXCollections.observableArrayList(list));
 
                 Optional<SnpInDelEvidence> snpInDelEvidence = list.stream().filter(item -> item.getPrimaryEvidence()).findFirst();
-                if(snpInDelEvidence.isPresent()) primaryEvidence = snpInDelEvidence.get();
-
+                if(snpInDelEvidence.isPresent()) {
+                    primaryEvidence = snpInDelEvidence.get();
+                } else {
+                    primaryEvidence = null;
+                }
+            } else {
+                primaryEvidence = null;
             }
 
         } catch (WebAPIException wae) {
@@ -686,7 +691,12 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                 apiService.put("analysisResults/evidences", params, null, true);
             }
 
-            if(snpInDelEvidence.getPrimaryEvidence() != null && snpInDelEvidence.getPrimaryEvidence()) {
+            //analysisDetailSNVController.showVariantList(analysisDetailSNVController.getCurrentPageIndex() +1 , 0);
+            setInterpretationTable();
+            setPastCases();
+            setEvidenceTable();
+            if(primaryEvidence != null &&
+                    primaryEvidence.getPrimaryEvidence() != null && primaryEvidence.getPrimaryEvidence()) {
                 if(primaryEvidence.getEvidenceLevel().equalsIgnoreCase("A")
                         || primaryEvidence.getEvidenceLevel().equalsIgnoreCase("B")) {
                     selectedAnalysisResultVariant.getSnpInDel().setExpertTier("T1");
@@ -700,11 +710,6 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                 }
                 setTier(selectedAnalysisResultVariant.getSnpInDel());
             }
-
-            //analysisDetailSNVController.showVariantList(analysisDetailSNVController.getCurrentPageIndex() +1 , 0);
-            setInterpretationTable();
-            setPastCases();
-            setEvidenceTable();
         } catch (WebAPIException wae) {
             wae.printStackTrace();
         } catch (IOException e) {
