@@ -67,13 +67,10 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
     @FXML
     private VBox leftVbox;
 
-    private Sample sample;
-
     private VariantAndInterpretationEvidence variant;
 
     @Override
     public void show(Parent root) throws IOException {
-        sample = (Sample)paramMap.get("sample");
         variant = (VariantAndInterpretationEvidence)paramMap.get("variant");
         showVariantIdentification();
     }
@@ -81,7 +78,7 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
      * Variant Nomenclature 값 설정 및 화면 출력
      */
     @SuppressWarnings("unchecked")
-    public void showVariantIdentification() {
+    private void showVariantIdentification() {
         List<SnpInDelTranscript> transcriptDataList = (List<SnpInDelTranscript>) paramMap.get("snpInDelTranscripts");
 
         String ref = variant.getSnpInDel().getGenomicCoordinate().getRefSequence();

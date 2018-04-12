@@ -2,13 +2,10 @@ package ngeneanalysys.controller.fragment;
 
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.GridPane;
 import ngeneanalysys.animaition.VariantStatisticsTimer;
-import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.model.VariantStatistics;
 import ngeneanalysys.util.LoggerUtil;
