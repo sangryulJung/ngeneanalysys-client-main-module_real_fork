@@ -24,6 +24,7 @@ import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedSameVariantInterpretation;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
@@ -182,11 +183,11 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         interpretationDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(DateFormatUtils.format(cellData.getValue().getCreatedAt().toDate(), "yyyy-MM-dd HH:mm:ss")));
 
         pastCasesSampleColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSampleName()));
-        pastCasesTypeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDelEvidence().getEvidenceType()));
-        pastCasesEvidenceColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDelEvidence().getEvidenceLevel()));
+        pastCasesTypeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDelEvidence() != null ? cellData.getValue().getSnpInDelEvidence().getEvidenceType() : ""));
+        pastCasesEvidenceColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDelEvidence() != null ? cellData.getValue().getSnpInDelEvidence().getEvidenceLevel() : ""));
         pastCasesInterpretationColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTier()));
-        pastCasesEvidenceCommentColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDelEvidence().getEvidence()));
-        pastCasesDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(DateFormatUtils.format(cellData.getValue().getSnpInDelEvidence().getCreatedAt().toDate(), "yyyy-MM-dd hh:mm:ss")));
+        pastCasesEvidenceCommentColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDelEvidence() != null ? cellData.getValue().getSnpInDelEvidence().getEvidence() : ""));
+        pastCasesDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDelEvidence() != null ? DateFormatUtils.format(cellData.getValue().getSnpInDelEvidence().getCreatedAt().toDate(), "yyyy-MM-dd hh:mm:ss") : ""));
 
         setEvidenceTable();
         setInterpretationTable();
@@ -372,7 +373,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                         EvidenceLevelComboBoxCell.this.getIndex());
 
                 if(!StringUtils.isEmpty(t1)) {
-                    snpInDelEvidence.setEvidenceType(t1);
+                    snpInDelEvidence.setEvidenceLevel(t1);
                 }
             });
         }
@@ -411,11 +412,13 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         boolean setting = false;
 
         public PrimaryRadioButtonCell() {
-
-            /*SnpInDelEvidence snpInDelEvidence = PrimaryRadioButtonCell.this.getTableView().getItems().get(
-                    PrimaryRadioButtonCell.this.getIndex());
-
-            if(snpInDelEvidence.getPrimaryEvidence()) toggleGroup.selectToggle(radioButton);*/
+            radioButton.selectedProperty().addListener((ob, ov, nv) -> {
+                if(PrimaryRadioButtonCell.this.getIndex() != -1 && PrimaryRadioButtonCell.this.getIndex() < evidenceTableView.getItems().size()) {
+                    SnpInDelEvidence snpInDelEvidence = PrimaryRadioButtonCell.this.getTableView().getItems().get(
+                            PrimaryRadioButtonCell.this.getIndex());
+                    snpInDelEvidence.setPrimaryEvidence(nv);
+                }
+            });
 
             radioButton.setToggleGroup(toggleGroup);
         }
@@ -431,7 +434,8 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
             SnpInDelEvidence evidence = PrimaryRadioButtonCell.this.getTableView().getItems().get(
                     PrimaryRadioButtonCell.this.getIndex());
 
-            if(evidence != null && evidence.getPrimaryEvidence() != null && evidence.getPrimaryEvidence()) {
+            if(evidence != null && evidence.getPrimaryEvidence() != null && evidence.getPrimaryEvidence() &&
+                    !radioButton.isSelected()) {
                 toggleGroup.selectToggle(radioButton);
             }
 
@@ -676,20 +680,25 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     public void save(SnpInDelEvidence snpInDelEvidence) {
         Map<String, Object> params = new HashMap<>();
         params.put("snpInDelId", selectedAnalysisResultVariant.getSnpInDel().getId());
+        params.put("id", snpInDelEvidence.getId() == null ? 0 : snpInDelEvidence.getId());
         params.put("evidence", snpInDelEvidence.getEvidence());
         params.put("evidenceType", snpInDelEvidence.getEvidenceType());
+        params.put("evidenceLevel", snpInDelEvidence.getEvidenceLevel());
         params.put("evidence", snpInDelEvidence.getEvidence());
+        params.put("primaryEvidence", snpInDelEvidence.getPrimaryEvidence() == null ? false : snpInDelEvidence.getPrimaryEvidence());
+        params.put("createdAt", ConvertUtil.convertLocalTimeToUTC("00-00-00 00:00:00", "yyyy-MM-dd HH:mm:ss", null));
 
         try {
             if(snpInDelEvidence.getId() == null) {
-                apiService.post("analysisResults/evidences", params, null, false);
+                apiService.post("analysisResults/evidences", params, null, true);
             } else {
                 params.put("id", snpInDelEvidence.getId());
-                apiService.put("analysisResults/evidences", params, null, false);
+                apiService.put("analysisResults/evidences", params, null, true);
             }
             setInterpretationTable();
             setPastCases();
             setEvidenceTable();
+            analysisDetailSNVController.showVariantList(analysisDetailSNVController.getCurrentPageIndex() + 1, 0);
         } catch (WebAPIException wae) {
             wae.printStackTrace();
         } catch (IOException e) {
@@ -702,6 +711,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         try {
 
             if(snpInDelEvidence.getId() != null) {
+                logger.info("server");
                 apiService.delete("analysisResults/evidences/" + snpInDelEvidence.getId());
                 setInterpretationTable();
                 setPastCases();
