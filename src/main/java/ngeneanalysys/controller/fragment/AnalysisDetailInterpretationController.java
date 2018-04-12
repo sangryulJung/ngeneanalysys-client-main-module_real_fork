@@ -373,7 +373,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                         EvidenceLevelComboBoxCell.this.getIndex());
 
                 if(!StringUtils.isEmpty(t1)) {
-                    snpInDelEvidence.setEvidenceType(t1);
+                    snpInDelEvidence.setEvidenceLevel(t1);
                 }
             });
         }
@@ -412,11 +412,13 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         boolean setting = false;
 
         public PrimaryRadioButtonCell() {
-
-            /*SnpInDelEvidence snpInDelEvidence = PrimaryRadioButtonCell.this.getTableView().getItems().get(
-                    PrimaryRadioButtonCell.this.getIndex());
-
-            if(snpInDelEvidence.getPrimaryEvidence()) toggleGroup.selectToggle(radioButton);*/
+            radioButton.selectedProperty().addListener((ob, ov, nv) -> {
+                if(PrimaryRadioButtonCell.this.getIndex() != -1 && PrimaryRadioButtonCell.this.getIndex() < evidenceTableView.getItems().size()) {
+                    SnpInDelEvidence snpInDelEvidence = PrimaryRadioButtonCell.this.getTableView().getItems().get(
+                            PrimaryRadioButtonCell.this.getIndex());
+                    snpInDelEvidence.setPrimaryEvidence(nv);
+                }
+            });
 
             radioButton.setToggleGroup(toggleGroup);
         }
@@ -432,7 +434,8 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
             SnpInDelEvidence evidence = PrimaryRadioButtonCell.this.getTableView().getItems().get(
                     PrimaryRadioButtonCell.this.getIndex());
 
-            if(evidence != null && evidence.getPrimaryEvidence() != null && evidence.getPrimaryEvidence()) {
+            if(evidence != null && evidence.getPrimaryEvidence() != null && evidence.getPrimaryEvidence() &&
+                    !radioButton.isSelected()) {
                 toggleGroup.selectToggle(radioButton);
             }
 
@@ -695,6 +698,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
             setInterpretationTable();
             setPastCases();
             setEvidenceTable();
+            analysisDetailSNVController.showVariantList(analysisDetailSNVController.getCurrentPageIndex() + 1, 0);
         } catch (WebAPIException wae) {
             wae.printStackTrace();
         } catch (IOException e) {
@@ -707,6 +711,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         try {
 
             if(snpInDelEvidence.getId() != null) {
+                logger.info("server");
                 apiService.delete("analysisResults/evidences/" + snpInDelEvidence.getId());
                 setInterpretationTable();
                 setPastCases();
