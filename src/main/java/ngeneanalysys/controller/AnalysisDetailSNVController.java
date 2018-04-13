@@ -544,7 +544,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             paramMap.put("variantStatistics", variantStatistics);
 
             response = apiService.get(
-                    "/analysisResults/" + analysisResultVariant.getSnpInDel().getId() + "/snpInDelExtraInfos", null, null, false);
+                    "/analysisResults/snpInDels/" + analysisResultVariant.getSnpInDel().getId() + "/snpInDelExtraInfos", null, null, false);
 
             List<SnpInDelExtraInfo> item = (List<SnpInDelExtraInfo>)response.getMultiObjectBeforeConvertResponseToJSON(SnpInDelExtraInfo.class, false);
             paramMap.put("detail", item);
