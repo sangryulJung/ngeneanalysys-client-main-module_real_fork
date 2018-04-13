@@ -299,16 +299,16 @@ public class AnalysisDetailFusionGeneController extends SubPaneController {
         paramMap.put("fusionGene", fusionGene);
 
         try {
-            HttpClientResponse response = apiService.get("/analysisResults/snpInDelTranscripts/" + fusionGene.getId(), null, null, false);
+            HttpClientResponse response = apiService.get("/analysisResults/" + fusionGene.getId() + "/snpInDelTranscripts", null, null, false);
             List<SnpInDelTranscript> snpInDelTranscripts = (List<SnpInDelTranscript>) response.getMultiObjectBeforeConvertResponseToJSON(SnpInDelTranscript.class, false);
             paramMap.put("snpInDelTranscripts", snpInDelTranscripts);
 
-            response = apiService.get("/analysisResults/snpInDelStatistics/" + fusionGene.getId(), null, null, false);
+            response = apiService.get("/analysisResults/snpInDels/" + fusionGene.getId() + "/snpInDelStatistics", null, null, false);
             VariantStatistics variantStatistics = response.getObjectBeforeConvertResponseToJSON(VariantStatistics.class);
             paramMap.put("variantStatistics", variantStatistics);
 
             response = apiService.get(
-                    "/analysisResults/snpInDelExtraInfos/" + fusionGene.getId(), null, null, false);
+                    "/analysisResults/snpInDels/" + fusionGene.getId() + "/snpInDelExtraInfos", null, null, false);
 
             List<SnpInDelExtraInfo> item = (List<SnpInDelExtraInfo>)response.getMultiObjectBeforeConvertResponseToJSON(SnpInDelExtraInfo.class, false);
             paramMap.put("detail", item);
