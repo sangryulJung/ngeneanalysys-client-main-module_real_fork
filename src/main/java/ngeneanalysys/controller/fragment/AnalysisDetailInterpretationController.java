@@ -33,6 +33,7 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Jang
@@ -70,9 +71,6 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     private TableColumn<SnpInDelEvidence, Boolean> evidencePrimaryColumn;
 
     @FXML
-    private TableColumn<SnpInDelEvidence, Boolean> evidenceSaveColumn;
-
-    @FXML
     private TableColumn<SnpInDelEvidence, Boolean> evidenceDeleteColumn;
 
     @FXML
@@ -97,19 +95,19 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     private TableColumn<SameVariantInterpretation, String> pastCasesDateColumn;
 
     @FXML
-    private TableView<SnpInDelPrimaryEvidenceLog> interpretationTableView;
+    private TableView<SnpInDelEvidence> interpretationTableView;
 
     @FXML
-    private TableColumn<SnpInDelPrimaryEvidenceLog, String> interpretationTypeColumn;
+    private TableColumn<SnpInDelEvidence, String> interpretationTypeColumn;
 
     @FXML
-    private TableColumn<SnpInDelPrimaryEvidenceLog, String> interpretationEvidenceColumn;
+    private TableColumn<SnpInDelEvidence, String> interpretationEvidenceColumn;
 
     @FXML
-    private TableColumn<SnpInDelPrimaryEvidenceLog, String> interpretationEvidenceCommentColumn;
+    private TableColumn<SnpInDelEvidence, String> interpretationEvidenceCommentColumn;
 
     @FXML
-    private TableColumn<SnpInDelPrimaryEvidenceLog, String> interpretationDateColumn;
+    private TableColumn<SnpInDelEvidence, String> interpretationDateColumn;
 
     @FXML
     private GridPane interpretationGridPane;
@@ -125,7 +123,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     private SnpInDelEvidence primaryEvidence;
 
     /**
-     * @param analysisDetailSNVController
+     * @param analysisDetailSNVController AnalysisDetailSNVController
      */
     public void setAnalysisDetailSNVController(AnalysisDetailSNVController analysisDetailSNVController) {
         this.analysisDetailSNVController = analysisDetailSNVController;
@@ -162,10 +160,6 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         evidenceCommentColumn.setOnEditCommit((TableColumn.CellEditEvent<SnpInDelEvidence, String> t) ->
             (t.getTableView().getItems().get(t.getTablePosition().getRow())).setEvidence(t.getNewValue()));
 
-        evidenceSaveColumn.setSortable(false);
-        evidenceSaveColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
-        evidenceSaveColumn.setCellFactory(param -> new SaveButtonCreate());
-
         evidenceDeleteColumn.setSortable(false);
         evidenceDeleteColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
         evidenceDeleteColumn.setCellFactory(param -> new DeleteButtonCreate());
@@ -185,40 +179,8 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         pastCasesDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDelEvidence() != null ? DateFormatUtils.format(cellData.getValue().getSnpInDelEvidence().getCreatedAt().toDate(), "yyyy-MM-dd hh:mm:ss") : ""));
 
         setEvidenceTable();
-        setInterpretationTable();
         setPastCases();
         setTier(selectedAnalysisResultVariant.getSnpInDel());
-
-    }
-
-    private class SaveButtonCreate extends TableCell<SnpInDelEvidence, Boolean> {
-        HBox box = null;
-        final ImageView img = new ImageView(resourceUtil.getImage("/layout/images/renewal/save_icon.png", 16, 16));
-
-        public SaveButtonCreate() {
-            img.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                SnpInDelEvidence snpInDelEvidence = SaveButtonCreate.this.getTableView().getItems().get(
-                        SaveButtonCreate.this.getIndex());
-
-                save(snpInDelEvidence);
-            });
-        }
-
-        @Override
-        protected void updateItem(Boolean item, boolean empty) {
-            super.updateItem(item, empty);
-
-            if(item == null) {
-                setGraphic(null);
-                return;
-            }
-            img.setStyle("-fx-cursor:hand;");
-            box = new HBox();
-            box.setAlignment(Pos.CENTER);
-            box.getChildren().add(img);
-
-            setGraphic(box);
-        }
     }
 
     class EditingCell extends TableCell<SnpInDelEvidence, String> {
@@ -291,7 +253,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         }
 
         private String getString() {
-            return getItem() == null ? "" : getItem().toString();
+            return getItem() == null ? "" : getItem();
         }
     }
 
@@ -477,7 +439,14 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
             List<SnpInDelEvidence> list = (List<SnpInDelEvidence>)response.getMultiObjectBeforeConvertResponseToJSON(SnpInDelEvidence.class, false);
             if(list != null && !list.isEmpty()) {
                 list.sort(Comparator.comparing(SnpInDelEvidence::getId));
-                evidenceTableView.getItems().addAll(FXCollections.observableArrayList(list));
+
+                List<SnpInDelEvidence> interpretationList = new ArrayList<>();
+                interpretationList.addAll(list.stream().filter(item -> "Active".equalsIgnoreCase(item.getStatus())).collect(Collectors.toList()));
+
+                if(!interpretationList.isEmpty())
+                    evidenceTableView.getItems().addAll(FXCollections.observableArrayList(interpretationList));
+
+                interpretationTableView.getItems().addAll(FXCollections.observableArrayList(list));
 
                 Optional<SnpInDelEvidence> snpInDelEvidence = list.stream().filter(item -> item.getPrimaryEvidence()).findFirst();
                 if(snpInDelEvidence.isPresent()) {
@@ -488,29 +457,6 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
             } else {
                 primaryEvidence = null;
             }
-
-        } catch (WebAPIException wae) {
-            wae.printStackTrace();
-            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
-                    getMainApp().getPrimaryStage(), true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
-        }
-    }
-
-    public void setInterpretationTable() {
-        if(interpretationTableView.getItems() != null) interpretationTableView.getItems().removeAll(interpretationTableView.getItems());
-        try {
-
-            // Memo 데이터 API 요청
-            //Map<String, Object> commentParamMap = new HashMap<>();
-            HttpClientResponse responseMemo = apiService.get("/analysisResults/evidenceLog/" + selectedAnalysisResultVariant.getSnpInDel().getId()
-                    , null, null, false);
-
-            // Flagging Comment 데이터 요청이 정상 요청된 경우 진행.
-            List<SnpInDelPrimaryEvidenceLog> memoList = (List<SnpInDelPrimaryEvidenceLog>)responseMemo.getMultiObjectBeforeConvertResponseToJSON(SnpInDelPrimaryEvidenceLog.class, false);
-            if(memoList != null && !memoList.isEmpty()) interpretationTableView.getItems().addAll(FXCollections.observableArrayList(memoList));
 
         } catch (WebAPIException wae) {
             wae.printStackTrace();
@@ -621,34 +567,29 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         }
     }
 
-
+    @FXML
+    public void addInterpretation() {
+        SnpInDelEvidence snpInDelEvidence = new SnpInDelEvidence();
+        evidenceTableView.getItems().add(snpInDelEvidence);
+    }
 
     @FXML
     public void saveInterpretation() {
-        SnpInDelEvidence snpInDelEvidence = new SnpInDelEvidence();
-        evidenceTableView.getItems().add(snpInDelEvidence);
-       /*
-        params.put("snpInDelInterpretation", snpInDelInterpretation);
-
-        if(!StringUtils.isEmpty(comment)) {
-            params.put("comment", comment);
+        if(evidenceTableView.getItems() != null) {
             try {
-                params.put("tier", tier);
-
-                params.put("snpInDelId", variantAndInterpretationEvidence.getSnpInDel().getId());
-
-                apiService.put("analysisResults/snpInDels/" + variantAndInterpretationEvidence.getSnpInDel().getId() + "/updateTier", params, null, true);
-                returnTierClass(tier, userTierLabel);
-                analysisDetailSNVController.showVariantList(analysisDetailSNVController.getCurrentPageIndex() + 1, 0);
+                Map<String, Object> params = new HashMap<>();
+                params.put("snpInDelEvidenceCreateRequests", returnEvidenceMap());
+                apiService.post("/analysisResults/evidences", params, null, true);
             } catch (WebAPIException wae) {
+                DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+                        getMainApp().getPrimaryStage(), true);
                 wae.printStackTrace();
-                DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
+            } catch (IOException e) {
+                DialogUtil.error("Unknown Error", e.getMessage(),
+                        getMainApp().getPrimaryStage(), true);
+                e.printStackTrace();
             }
-
-        } else {
-                DialogUtil.warning("The comment field is empty", " ", mainController.getPrimaryStage(), true);
-            commentTextField.requestFocus();
-        }*/
+        }
     }
 
     public void setTier(SnpInDel snpInDel) {
@@ -656,81 +597,25 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         returnTierClass(snpInDel.getExpertTier(), userTierLabel,2);
     }
 
-    public void save(SnpInDelEvidence snpInDelEvidence) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("snpInDelId", selectedAnalysisResultVariant.getSnpInDel().getId());
-        params.put("id", snpInDelEvidence.getId() == null ? 0 : snpInDelEvidence.getId());
-        params.put("evidence", snpInDelEvidence.getEvidence());
-        params.put("evidenceType", snpInDelEvidence.getEvidenceType());
-        params.put("evidenceLevel", snpInDelEvidence.getEvidenceLevel());
-        params.put("evidence", snpInDelEvidence.getEvidence());
-        params.put("primaryEvidence", snpInDelEvidence.getPrimaryEvidence() == null ? false : snpInDelEvidence.getPrimaryEvidence());
-        params.put("createdAt", ConvertUtil.convertLocalTimeToUTC("00-00-00 00:00:00", "yyyy-MM-dd HH:mm:ss", null));
+    public List<Map<String, Object>> returnEvidenceMap() {
+        List<Map<String, Object>> list = new ArrayList<>();
+        for(SnpInDelEvidence snpInDelEvidence : evidenceTableView.getItems()) {
+            Map<String, Object> params = new HashMap<>();
 
-        try {
-
-            if(snpInDelEvidence.getPrimaryEvidence() != null && snpInDelEvidence.getPrimaryEvidence()
-                    && primaryEvidence != null && primaryEvidence != snpInDelEvidence) {
-                Map<String, Object> currentPrimaryParams = new HashMap<>();
-                currentPrimaryParams.put("snpInDelId", selectedAnalysisResultVariant.getSnpInDel().getId());
-                currentPrimaryParams.put("id", primaryEvidence.getId());
-                currentPrimaryParams.put("evidence", primaryEvidence.getEvidence());
-                currentPrimaryParams.put("evidenceType", primaryEvidence.getEvidenceType());
-                currentPrimaryParams.put("evidenceLevel", primaryEvidence.getEvidenceLevel());
-                currentPrimaryParams.put("evidence", primaryEvidence.getEvidence());
-                currentPrimaryParams.put("primaryEvidence", false);
-                currentPrimaryParams.put("createdAt", ConvertUtil.convertLocalTimeToUTC("00-00-00 00:00:00", "yyyy-MM-dd HH:mm:ss", null));
-                apiService.put("analysisResults/evidences", currentPrimaryParams, null, true);
-            }
-
-            if(snpInDelEvidence.getId() == null) {
-                apiService.post("analysisResults/evidences", params, null, true);
-            } else {
-                apiService.put("analysisResults/evidences", params, null, true);
-            }
-
-            //analysisDetailSNVController.showVariantList(analysisDetailSNVController.getCurrentPageIndex() +1 , 0);
-            setInterpretationTable();
-            setPastCases();
-            setEvidenceTable();
-            if(primaryEvidence != null &&
-                    primaryEvidence.getPrimaryEvidence() != null && primaryEvidence.getPrimaryEvidence()) {
-                if(primaryEvidence.getEvidenceLevel().equalsIgnoreCase("A")
-                        || primaryEvidence.getEvidenceLevel().equalsIgnoreCase("B")) {
-                    selectedAnalysisResultVariant.getSnpInDel().setExpertTier("T1");
-                } else if(primaryEvidence.getEvidenceLevel().equalsIgnoreCase("C")
-                        || primaryEvidence.getEvidenceLevel().equalsIgnoreCase("D")) {
-                    selectedAnalysisResultVariant.getSnpInDel().setExpertTier("T2");
-                } else if(primaryEvidence.getEvidenceLevel().equalsIgnoreCase("T3")) {
-                    selectedAnalysisResultVariant.getSnpInDel().setExpertTier("T3");
-                } else if(primaryEvidence.getEvidenceLevel().equalsIgnoreCase("T4")) {
-                    selectedAnalysisResultVariant.getSnpInDel().setExpertTier("T4");
-                }
-                setTier(selectedAnalysisResultVariant.getSnpInDel());
-            }
-        } catch (WebAPIException wae) {
-            wae.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            params.put("id", snpInDelEvidence.getId());
+            params.put("snpInDelId", selectedAnalysisResultVariant.getSnpInDel().getId());
+            params.put("provider", snpInDelEvidence.getProvider());
+            params.put("evidenceType", snpInDelEvidence.getEvidenceType());
+            params.put("evidenceLevel", snpInDelEvidence.getEvidenceLevel());
+            params.put("primaryEvidence", snpInDelEvidence.getPrimaryEvidence());
+            params.put("evidence", snpInDelEvidence.getEvidence());
+            list.add(params);
         }
-
+        return list;
     }
 
     public void delete(SnpInDelEvidence snpInDelEvidence) {
-        try {
-
-            if(snpInDelEvidence.getId() != null) {
-                logger.info("server");
-                apiService.delete("analysisResults/evidences/" + snpInDelEvidence.getId());
-                setInterpretationTable();
-                setPastCases();
-                setEvidenceTable();
-            } else {
-                evidenceTableView.getItems().remove(snpInDelEvidence);
-            }
-        } catch (WebAPIException wae) {
-            wae.printStackTrace();
-        }
+        evidenceTableView.getItems().remove(snpInDelEvidence);
     }
 
 

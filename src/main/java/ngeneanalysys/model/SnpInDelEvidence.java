@@ -9,10 +9,12 @@ import org.joda.time.DateTime;
 public class SnpInDelEvidence {
     private Integer id;
     private Integer snpInDelId;
+    private String provider;
     private Boolean primaryEvidence;
     private String evidenceType;
     private String evidenceLevel;
     private String evidence;
+    private String status;
     private DateTime createdAt;
     private DateTime updatedAt;
 
@@ -42,6 +44,20 @@ public class SnpInDelEvidence {
      */
     public void setSnpInDelId(Integer snpInDelId) {
         this.snpInDelId = snpInDelId;
+    }
+
+    /**
+     * @return provider
+     */
+    public String getProvider() {
+        return provider;
+    }
+
+    /**
+     * @param provider
+     */
+    public void setProvider(String provider) {
+        this.provider = provider;
     }
 
     /**
@@ -98,6 +114,20 @@ public class SnpInDelEvidence {
      */
     public void setEvidence(String evidence) {
         this.evidence = evidence;
+    }
+
+    /**
+     * @return status
+     */
+    public String getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status
+     */
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     /**
