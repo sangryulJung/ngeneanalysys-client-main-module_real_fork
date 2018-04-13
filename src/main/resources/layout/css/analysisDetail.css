@@ -661,7 +661,7 @@
 }
 
 #addToGermlineReportCheckBox {
-	-fx-background-color:#FB4952;
+	/*-fx-background-color:#FB4952;*/
 }
 
 #setToFalseCheckBox {
