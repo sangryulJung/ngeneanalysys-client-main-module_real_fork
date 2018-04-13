@@ -55,7 +55,7 @@ public class HddStatusTimer extends AnimationTimer {
             gc.strokeArc(this.defaultMargin + this.innerOuterCircleGap + i, this.defaultMargin + this.innerOuterCircleGap + i,
                     this.innerCircleSize - (i * 2), this.innerCircleSize - (i * 2), this.gaugeStartAngle, -360, this.arcType);
         }
-        gc.setStroke(Color.web("#a8bbd9"));
+        gc.setStroke(Color.web("#223654"));
 
         //gc.setLineWidth(this.innerLineWidth);
         currAngle += angleStep;
@@ -69,12 +69,15 @@ public class HddStatusTimer extends AnimationTimer {
         }
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setTextBaseline(VPos.CENTER);
-        gc.setFont(Font.font(18));
-        gc.setFill(Color.web("#8D8D8D"));
+        //gc.setFont(Font.font(10));
+        gc.setFont(Font.font("Noto Sans KR Light",14));
+        gc.setFill(Color.web("#585858"));
         gc.fillText(this.labelText1, this.defaultMargin + (this.outerCircleSize / 2.0),
                 this.defaultMargin + (this.outerCircleSize / 2.0) - this.labelMargin);
-        gc.setFill(Color.BLACK);
-        gc.setFont(Font.font(10));
+        //gc.setFill(Color.BLACK);
+        //gc.setFont(Font.font(6));
+        gc.setFont(Font.font("Noto Sans KR Light",10));
+        gc.setFill(Color.web("#585858"));
         gc.fillText(this.labelText2, this.defaultMargin + (this.outerCircleSize / 2.0),
                 this.defaultMargin + (this.outerCircleSize / 2.0) + this.labelMargin);
 //        gc.strokeArc(this.defaultMargin + this.innerOuterCircleGap, this.defaultMargin + this.innerOuterCircleGap,
