@@ -410,7 +410,6 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
                     setContentDisplay(ContentDisplay.TEXT_ONLY);
                 }
             }
-
         }
 
         private void createTextField() {

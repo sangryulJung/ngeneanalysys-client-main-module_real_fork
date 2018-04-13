@@ -23,7 +23,6 @@ import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.service.APIService;
-import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
@@ -57,6 +56,9 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
     @FXML
     private TableView<SnpInDelEvidence> evidenceTableView;
+
+    @FXML
+    private TableColumn<SnpInDelEvidence, String > providerColumn;
 
     @FXML
     private TableColumn<SnpInDelEvidence, String> evidenceTypeColumn;
@@ -147,10 +149,13 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
         ///////////////////////////////////////////////////
         evidenceTypeColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getEvidenceType()));
-        evidenceTypeColumn.setCellFactory(item -> new TypeComboBoxCell());
+        evidenceTypeColumn.setCellFactory(item -> new ProviderComboBoxCell());
 
         evidenceColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getEvidenceLevel()));
         evidenceColumn.setCellFactory(item -> new EvidenceLevelComboBoxCell());
+
+        providerColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getEvidenceLevel()));
+        providerColumn.setCellFactory(item -> new ProviderComboBoxCell());
 
         evidencePrimaryColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getPrimaryEvidence()));
         evidencePrimaryColumn.setCellFactory(item -> new PrimaryRadioButtonCell());
@@ -299,9 +304,50 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
             setGraphic(comboBox);
 
         }
-
     }
 
+    private class ProviderComboBoxCell extends TableCell<SnpInDelEvidence, String> {
+        private ComboBox<String> comboBox = new ComboBox<>();
+        boolean setting = false;
+
+        public ProviderComboBoxCell() {
+            comboBox.getSelectionModel().selectedItemProperty().addListener((ov, t, t1) -> {
+                SnpInDelEvidence snpInDelEvidence = ProviderComboBoxCell.this.getTableView().getItems().get(
+                        ProviderComboBoxCell.this.getIndex());
+
+                if(!StringUtils.isEmpty(t1)) {
+                    snpInDelEvidence.setProvider(t1);
+                }
+            });
+        }
+
+        @Override
+        protected void updateItem(String item, boolean empty) {
+            super.updateItem(item, empty);
+            if(empty) {
+                setGraphic(null);
+                return;
+            }
+
+            if(comboBox.getItems().isEmpty()) {
+
+                comboBox.getItems().addAll("NGeneBio", "Clinician");
+
+                SnpInDelEvidence evidence = ProviderComboBoxCell.this.getTableView().getItems().get(
+                        ProviderComboBoxCell.this.getIndex());
+
+                if(evidence != null && !StringUtils.isEmpty(evidence.getProvider())) {
+                    comboBox.getSelectionModel().select(evidence.getProvider());
+                } else {
+                    comboBox.getSelectionModel().selectFirst();
+                }
+            }
+            setGraphic(comboBox);
+
+        }
+
+    }
+    
     private class EvidenceLevelComboBoxCell extends TableCell<SnpInDelEvidence, String> {
         private ComboBox<String> comboBox = new ComboBox<>();
         boolean setting = false;
@@ -432,8 +478,8 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
             // Memo 데이터 API 요청
             Map<String, Object> paramMap = new HashMap<>();
-            paramMap.put("snpInDelId", selectedAnalysisResultVariant.getSnpInDel().getId());
-            HttpClientResponse response = apiService.get("/analysisResults/evidences", paramMap, null, false);
+            HttpClientResponse response = apiService.get("/analysisResults/snpInDels/"+
+                    selectedAnalysisResultVariant.getSnpInDel().getId() + "/evidences", null, null, false);
 
             // Flagging Comment 데이터 요청이 정상 요청된 경우 진행.
             List<SnpInDelEvidence> list = (List<SnpInDelEvidence>)response.getMultiObjectBeforeConvertResponseToJSON(SnpInDelEvidence.class, false);
@@ -578,8 +624,9 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         if(evidenceTableView.getItems() != null) {
             try {
                 Map<String, Object> params = new HashMap<>();
-                params.put("snpInDelEvidenceCreateRequests", returnEvidenceMap());
-                apiService.post("/analysisResults/evidences", params, null, true);
+                params.put("SnpInDelEvidenceCreateRequests", returnEvidenceMap());
+                apiService.post("/analysisResults/snpInDels/"
+                        + selectedAnalysisResultVariant.getSnpInDel().getId() + "/evidences", params, null, true);
             } catch (WebAPIException wae) {
                 DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                         getMainApp().getPrimaryStage(), true);
@@ -603,7 +650,6 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
             Map<String, Object> params = new HashMap<>();
 
             params.put("id", snpInDelEvidence.getId());
-            params.put("snpInDelId", selectedAnalysisResultVariant.getSnpInDel().getId());
             params.put("provider", snpInDelEvidence.getProvider());
             params.put("evidenceType", snpInDelEvidence.getEvidenceType());
             params.put("evidenceLevel", snpInDelEvidence.getEvidenceLevel());
