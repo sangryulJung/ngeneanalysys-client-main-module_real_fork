@@ -30,7 +30,7 @@ public abstract class SubPaneController extends BaseStageController {
     /**
      * 메인 화면 컨트롤러 객체 세팅
      *
-     * @param mainController
+     * @param mainController mainController
      */
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
@@ -46,7 +46,7 @@ public abstract class SubPaneController extends BaseStageController {
 
     /**
      * 파라미터 정보 삽입
-     * @param param
+     * @param param parameter
      */
     public void setParamMap(Map<String,Object> param) {
         this.paramMap = param;
@@ -61,7 +61,7 @@ public abstract class SubPaneController extends BaseStageController {
 
     /**
      * Dialog close
-     * @param event
+     * @param event actionEvent
      */
     @FXML
     public void closeDialog(ActionEvent event) {

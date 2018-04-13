@@ -4,15 +4,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import ngeneanalysys.code.constants.FXMLConstants;
-import ngeneanalysys.code.enums.ExperimentTypeCode;
 import ngeneanalysys.controller.extend.SubPaneController;
-import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.service.ALAMUTService;
 import ngeneanalysys.service.IGVService;
@@ -20,9 +14,6 @@ import ngeneanalysys.util.*;
 import org.slf4j.Logger;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 /**
  * @author Jang

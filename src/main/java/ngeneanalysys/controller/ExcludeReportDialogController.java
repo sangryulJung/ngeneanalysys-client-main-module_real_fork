@@ -35,16 +35,10 @@ public class ExcludeReportDialogController extends SubPaneController {
 
     private CheckBox checkBox;
 
-    //private AnalysisDetailReportController analysisDetailReportController;
-
     @FXML
     private TextField commentTextField;
 
     private Stage dialogStage;
-
-    /*public void setAnalysisDetailReportController(AnalysisDetailReportController analysisDetailReportController) {
-        this.analysisDetailReportController = analysisDetailReportController;
-    }*/
 
     public void settingItem(String symbol, VariantAndInterpretationEvidence selectedItem, CheckBox checkBox) {
         this.symbol = symbol;

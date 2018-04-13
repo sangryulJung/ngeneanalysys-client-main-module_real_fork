@@ -54,7 +54,7 @@ public class AnalysisDetailExonSkippingController extends SubPaneController {
     private TableColumn<ExonSkip, BigDecimal> skippedRateTableColumn;
 
     /**
-     * @param analysisDetailFusionMainController
+     * @param analysisDetailFusionMainController fusionController
      */
     public void setAnalysisDetailFusionMainController(AnalysisDetailFusionMainController analysisDetailFusionMainController) {
         this.analysisDetailFusionMainController = analysisDetailFusionMainController;

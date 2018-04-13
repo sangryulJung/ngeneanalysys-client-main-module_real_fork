@@ -139,20 +139,17 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
         tierTableColumn.setCellFactory(item -> new TierComboBoxCell());
         versionTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getClinicalVariantVersion()));
         versionTableColumn.setCellFactory(tableColumn -> new EditingCell());
-        versionTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
-            (t.getTableView().getItems().get(t.getTablePosition().getRow())).setClinicalVariantVersion(t.getNewValue());
-        });
+        versionTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) ->
+            (t.getTableView().getItems().get(t.getTablePosition().getRow())).setClinicalVariantVersion(t.getNewValue()));
 
         chrTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getChr()));
         chrTableColumn.setCellFactory(tableColumn -> new EditingCell());
-        chrTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
-            (t.getTableView().getItems().get(t.getTablePosition().getRow())).setChr(t.getNewValue());
-        });
+        chrTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) ->
+            (t.getTableView().getItems().get(t.getTablePosition().getRow())).setChr(t.getNewValue()));
         geneTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getGene()));
         geneTableColumn.setCellFactory(tableColumn -> new EditingCell());
-        geneTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
-            (t.getTableView().getItems().get(t.getTablePosition().getRow())).setGene(t.getNewValue());
-        });
+        geneTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) ->
+            (t.getTableView().getItems().get(t.getTablePosition().getRow())).setGene(t.getNewValue()));
         transcriptTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getTranscript()));
         transcriptTableColumn.setCellFactory(tableColumn -> new EditingCell());
         transcriptTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
@@ -161,26 +158,22 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
         });
         hgvscTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getHgvsc()));
         hgvscTableColumn.setCellFactory(tableColumn -> new EditingCell());
-        hgvscTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
-            (t.getTableView().getItems().get(t.getTablePosition().getRow())).setHgvsc(t.getNewValue());
-        });
+        hgvscTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) ->
+            (t.getTableView().getItems().get(t.getTablePosition().getRow())).setHgvsc(t.getNewValue()));
         hgvspTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getHgvsp()));
         hgvspTableColumn.setCellFactory(tableColumn -> new EditingCell());
-        hgvspTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
-            (t.getTableView().getItems().get(t.getTablePosition().getRow())).setHgvsp(t.getNewValue());
-        });
+        hgvspTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) ->
+            (t.getTableView().getItems().get(t.getTablePosition().getRow())).setHgvsp(t.getNewValue()));
 
         codingConsequenceTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getCodingConsequence()));
         codingConsequenceTableColumn.setCellFactory(tableColumn -> new EditingCell());
-        codingConsequenceTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
-            (t.getTableView().getItems().get(t.getTablePosition().getRow())).setCodingConsequence(t.getNewValue());
-        });
+        codingConsequenceTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) ->
+            (t.getTableView().getItems().get(t.getTablePosition().getRow())).setCodingConsequence(t.getNewValue()));
 
         typeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getClinicalVariantType()));
         typeTableColumn.setCellFactory(tableColumn -> new EditingCell());
-        typeTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) -> {
-            (t.getTableView().getItems().get(t.getTablePosition().getRow())).setClinicalVariantType(t.getNewValue());
-        });
+        typeTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) ->
+            (t.getTableView().getItems().get(t.getTablePosition().getRow())).setClinicalVariantType(t.getNewValue()));
 
         therapeuticEvidenceATableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getTherapeuticEvidence().getLevelA()));
         therapeuticEvidenceATableColumn.setCellFactory(tableColumn -> new PopUpTableCell("therapeuticEvidenceA"));

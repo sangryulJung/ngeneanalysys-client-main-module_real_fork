@@ -11,7 +11,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -21,7 +20,6 @@ import ngeneanalysys.model.paged.PagedRunSampleView;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.model.render.DatepickerConverter;
-import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.StringUtils;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.CustomTextField;
@@ -231,13 +229,13 @@ public class PastResultsController extends SubPaneController {
 
 	private Set<String> getAllData(JSONArray array) {
 		Set<String> data = new HashSet<>();
-		array.stream().forEach(item -> data.add(item.toString()));
+		array.forEach(item -> data.add(item.toString()));
 		return data;
 	}
 
 	private Set<String> getAllPanel(List<Panel> panelList) {
 		Set<String> panels = new HashSet<>();
-		panelList.stream().forEach(panel -> panels.add(panel.getName()));
+		panelList.forEach(panel -> panels.add(panel.getName()));
 		return panels;
 	}
 	
@@ -273,7 +271,7 @@ public class PastResultsController extends SubPaneController {
 		}
 	}
 
-	public void setComboBoxItem() {
+	private void setComboBoxItem() {
 		searchComboBox.setConverter(new ComboBoxConverter());
 		searchComboBox.getItems().add(new ComboBoxItem("String", "RUN"));
 		searchComboBox.getItems().add(new ComboBoxItem("String", "SAMPLE"));
@@ -328,8 +326,8 @@ public class PastResultsController extends SubPaneController {
 	/**
 	 * 분석 진행중인 목록 조회
 	 * 
-	 * @param page
-	 * @return
+	 * @param page int
+	 * @return void
 	 */
 	public void setList(int page) {
 		if(autoRefreshTimeline != null) {
@@ -434,7 +432,7 @@ public class PastResultsController extends SubPaneController {
 			param.put("search", value);
 		}
 
-		/** End 검색 항목 설정 */
+		/* End 검색 항목 설정 */
 		return param;
 	}
 
@@ -449,7 +447,7 @@ public class PastResultsController extends SubPaneController {
 	/**
 	 * 샘플 목록 화면 출력
 	 * 
-	 * @param list
+	 * @param list List<RunSampleView>
 	 */
 	public void renderSampleList(List<RunSampleView> list) {
 
@@ -486,7 +484,7 @@ public class PastResultsController extends SubPaneController {
 		setList(1);
 	}
 
-	public void addSearchItem(final CustomTextField textField) {
+	private void addSearchItem(final CustomTextField textField) {
 		VBox box = new VBox();
 		box.setAlignment(Pos.CENTER_LEFT);
 		box.setPrefWidth(240);
@@ -520,7 +518,7 @@ public class PastResultsController extends SubPaneController {
 		searchListVBox.getChildren().add(box);
 	}
 
-	public void addSearchItem(final String startDate, final String endDate, String id) {
+	private void addSearchItem(final String startDate, final String endDate, String id) {
 		VBox box = new VBox();
 		box.setAlignment(Pos.CENTER_LEFT);
 		box.setPrefWidth(240);
@@ -565,7 +563,7 @@ public class PastResultsController extends SubPaneController {
 		searchListVBox.getChildren().add(box);
 	}
 
-	public void addSearchArea() {
+	private void addSearchArea() {
 		if(searchComboBox.getSelectionModel().getSelectedItem() != null && !oneItem) {
 			if(filterSearchArea.getChildren().get(0) instanceof CustomTextField) {
 				final CustomTextField textField = (CustomTextField)filterSearchArea.getChildren().get(0);
@@ -627,14 +625,11 @@ public class PastResultsController extends SubPaneController {
 				String id = "";
 				if(!StringUtils.isEmpty(minCreateAt)) {
 					// 로컬 타임 표준시로 변환
-					String minCreateAtUTCDate = ConvertUtil.convertLocalTimeToUTC(minCreateAt + " 00:00:00", "yyyy-MM-dd HH:mm:ss", null);
-
 					id = "gt:"+startDate.getValue().atTime(0, 0, 0).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 				}
 				// Submitted [end]
 				if(!StringUtils.isEmpty(maxCreateAt)) {
 					// 로컬 타임 표준시로 변환
-					//String maxCreateAtUTCDate = ConvertUtil.convertLocalTimeToUTC(maxCreateAt + " 23:59:59", "yyyy-MM-dd HH:mm:ss", null);
 					long endMilli= endDate.getValue().atTime(23, 59, 59).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 					if(StringUtils.isEmpty(id)) {
 						id = "lt:"+endMilli;
@@ -760,89 +755,34 @@ public class PastResultsController extends SubPaneController {
 				itemHBox.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
 					//itemHBox.setStyle(itemHBox.getStyle() + "-fx-text-fill: #CD0034; -fx-font-size: 13px; -fx-font-family:  Noto Sans KR Bold; ");
 					//itemHBox.getChildren().clear();
-					Label current_sample = (Label)itemHBox.getChildren().get(0);
-					Label current_panel = (Label)itemHBox.getChildren().get(1);
-					Label current_qc = (Label)itemHBox.getChildren().get(4);
-					
-					HBox current_variants = (HBox)itemHBox.getChildren().get(3);					
-					int variants_size = current_variants.getChildren().size();
-					//System.out.println(variants_size);
-					
-					if (variants_size >= 10) {
-						Label var1 = (Label)current_variants.getChildren().get(1);
-						Label var2 = (Label)current_variants.getChildren().get(3);
-						Label var3 = (Label)current_variants.getChildren().get(5);
-						Label var4 = (Label)current_variants.getChildren().get(7);
-						Label var5 = (Label)current_variants.getChildren().get(9);
-						
-						current_sample.setStyle(itemHBox.getStyle() + "-fx-text-fill: #CD0034;");
-						current_panel.setStyle(itemHBox.getStyle() + "-fx-text-fill: #CD0034;");
-						current_qc.setStyle(itemHBox.getStyle() + "-fx-text-fill: #CD0034;;");
-						var1.setStyle(itemHBox.getStyle() + "-fx-text-fill: #CD0034;");
-						var2.setStyle(itemHBox.getStyle() + "-fx-text-fill: #CD0034;");
-						var3.setStyle(itemHBox.getStyle() + "-fx-text-fill: #CD0034;");
-						var4.setStyle(itemHBox.getStyle() + "-fx-text-fill: #CD0034;");
-						var5.setStyle(itemHBox.getStyle() + "-fx-text-fill: #CD0034;");
-						//current_sample.setText(">> "+current_sample.getText());
-						//logger.info(var1.getText());
-					}else {
-						Label var1 = (Label)current_variants.getChildren().get(1);
-						Label var2 = (Label)current_variants.getChildren().get(3);
-						Label var3 = (Label)current_variants.getChildren().get(5);
-						Label var4 = (Label)current_variants.getChildren().get(7);
-						
-						current_sample.setStyle(itemHBox.getStyle() + "-fx-text-fill: #CD0034;");
-						current_panel.setStyle(itemHBox.getStyle() + "-fx-text-fill: #CD0034;");
-						current_qc.setStyle(itemHBox.getStyle() + "-fx-text-fill: #CD0034;;");
-						var1.setStyle(itemHBox.getStyle() + "-fx-text-fill: #CD0034;");
-						var2.setStyle(itemHBox.getStyle() + "-fx-text-fill: #CD0034;");
-						var3.setStyle(itemHBox.getStyle() + "-fx-text-fill: #CD0034;");
-						var4.setStyle(itemHBox.getStyle() + "-fx-text-fill: #CD0034;");
-						//current_sample.setText(">> "+current_sample.getText());
-						//logger.info(var1.getText());
+
+					HBox currentVariants = (HBox)itemHBox.getChildren().get(3);
+					int variantsSize = currentVariants.getChildren().size();
+					String textFillStyle = "-fx-text-fill: #CD0034;";
+
+					itemHBox.getChildren().get(0).setStyle(itemHBox.getStyle() + textFillStyle);
+					itemHBox.getChildren().get(1).setStyle(itemHBox.getStyle() + textFillStyle);
+					itemHBox.getChildren().get(4).setStyle(itemHBox.getStyle() + textFillStyle);
+
+					for(int i = 1; i < variantsSize ; i+=2) {
+						currentVariants.getChildren().get(i).setStyle(itemHBox.getStyle() + textFillStyle);
 					}
 			
 				});
 				itemHBox.addEventHandler(MouseEvent.MOUSE_EXITED, event -> {
-					//itemHBox.setStyle(itemHBox.getStyle() + "-fx-text-fill: black;-fx-font-size: 13px; -fx-font-family:  Noto Sans KR Light;");
-					Label current_sample = (Label)itemHBox.getChildren().get(0);
-					Label current_panel = (Label)itemHBox.getChildren().get(1);
-					Label current_qc = (Label)itemHBox.getChildren().get(4);
-					
-					HBox current_variants = (HBox)itemHBox.getChildren().get(3);					
-					int variants_size = current_variants.getChildren().size();
-					
-					if (variants_size >= 10) {		
-						Label var1 = (Label)current_variants.getChildren().get(1);
-						Label var2 = (Label)current_variants.getChildren().get(3);
-						Label var3 = (Label)current_variants.getChildren().get(5);
-						Label var4 = (Label)current_variants.getChildren().get(7);
-						Label var5 = (Label)current_variants.getChildren().get(9);
-						//current_sample.setText(current_sample.getText().split(">> ")[1]);
-						current_sample.setStyle(itemHBox.getStyle() + "-fx-text-fill: #323232;");
-						current_panel.setStyle(itemHBox.getStyle() + "-fx-text-fill: #323232;");
-						current_qc.setStyle(itemHBox.getStyle() + "-fx-text-fill: #323232;");
-						var1.setStyle(itemHBox.getStyle() + "-fx-text-fill: #323232;");
-						var2.setStyle(itemHBox.getStyle() + "-fx-text-fill: #323232;");
-						var3.setStyle(itemHBox.getStyle() + "-fx-text-fill: #323232;");
-						var4.setStyle(itemHBox.getStyle() + "-fx-text-fill: #323232;");
-						var5.setStyle(itemHBox.getStyle() + "-fx-text-fill: #323232;");
-						//logger.info(current_sample.getText());
-					}else {
-						Label var1 = (Label)current_variants.getChildren().get(1);
-						Label var2 = (Label)current_variants.getChildren().get(3);
-						Label var3 = (Label)current_variants.getChildren().get(5);
-						Label var4 = (Label)current_variants.getChildren().get(7);
-						//current_sample.setText(current_sample.getText().split(">> ")[1]);
-						current_sample.setStyle(itemHBox.getStyle() + "-fx-text-fill: #323232;");
-						current_panel.setStyle(itemHBox.getStyle() + "-fx-text-fill: #323232;");
-						current_qc.setStyle(itemHBox.getStyle() + "-fx-text-fill: #323232;");
-						var1.setStyle(itemHBox.getStyle() + "-fx-text-fill: #323232;");
-						var2.setStyle(itemHBox.getStyle() + "-fx-text-fill: #323232;");
-						var3.setStyle(itemHBox.getStyle() + "-fx-text-fill: #323232;");
-						var4.setStyle(itemHBox.getStyle() + "-fx-text-fill: #323232;");
-						//logger.info(current_sample.getText());
+
+					HBox currentVariants = (HBox)itemHBox.getChildren().get(3);
+					int variantsSize = currentVariants.getChildren().size();
+					String textFillStyle = "-fx-text-fill: #323232;";
+
+					itemHBox.getChildren().get(0).setStyle(itemHBox.getStyle() + textFillStyle);
+					itemHBox.getChildren().get(1).setStyle(itemHBox.getStyle() + textFillStyle);
+					itemHBox.getChildren().get(4).setStyle(itemHBox.getStyle() + textFillStyle);
+
+					for(int i = 1; i < variantsSize ; i+=2) {
+						currentVariants.getChildren().get(i).setStyle(itemHBox.getStyle() + textFillStyle);
 					}
+
 				});
 				itemHBox.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 					if(event.getClickCount() == 1) {
@@ -1017,12 +957,11 @@ public class PastResultsController extends SubPaneController {
 
 		}
 
-		public void setLabelStyle(Label label) {
+		private void setLabelStyle(Label label) {
 			label.setMaxWidth(Double.MAX_VALUE);
 			label.setMaxHeight(Double.MAX_VALUE);
 			label.setPrefHeight(35);
 			label.setAlignment(Pos.CENTER);
-			//label.setStyle("-fx-font-family: Noto Sans CJK KR Regular;");
 			label.getStyleClass().add("sample_header");
 		}
 

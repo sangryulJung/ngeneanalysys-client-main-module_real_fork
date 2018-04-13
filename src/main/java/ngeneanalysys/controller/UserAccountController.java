@@ -135,15 +135,11 @@ public class UserAccountController extends SubPaneController {
             emailTextField.setText(user.getEmail());
             final Optional<ComboBoxItem> userGroup = selectUserGroup.getItems().stream().filter(
                     item -> item.getText().equals(user.getMemberGroupName())).findFirst();
-            if(userGroup.isPresent()) {
-                selectUserGroup.setValue(userGroup.get());
-            }
+            userGroup.ifPresent(comboBoxItem -> selectUserGroup.setValue(comboBoxItem));
 
             final Optional<ComboBoxItem> userType = selectUserType.getItems().stream().filter(
                     item -> item.getText().equals(user.getRole())).findFirst();
-            if(userType.isPresent()) {
-                selectUserType.setValue(userType.get());
-            }
+            userType.ifPresent(comboBoxItem -> selectUserType.setValue(comboBoxItem));
         }
     }
 
@@ -217,9 +213,9 @@ public class UserAccountController extends SubPaneController {
 
     /**
      * 비밀번호 입력폼 유효성 체크
-     * @return
+     * @return boolean
      */
-    public boolean validPwdInput() {
+    private boolean validPwdInput() {
         if(ValidationUtil.text(passwordField.getText(), "password", 7, -1, "([a-zA-Z0-9].*[!,@,#,$,%,^,&,*,?,_,~])|([!,@,#,$,%,^,&,*,?,_,~].*[a-zA-Z0-9])", null, false, dialogStage) > 0) {
             DialogUtil.warning("Incorrect password combination.", "Please enter at least 8 characters with a combination of English, numbers and special characters.", dialogStage, true);
             // 입력 내용 삭제
@@ -232,7 +228,7 @@ public class UserAccountController extends SubPaneController {
     }
 
     @SuppressWarnings("unchecked")
-    public void groupNameComboBoxCreate() {
+    private void groupNameComboBoxCreate() {
         selectUserGroup.setConverter(new ComboBoxConverter());
         selectUserGroup.getItems().add(new ComboBoxItem());
 

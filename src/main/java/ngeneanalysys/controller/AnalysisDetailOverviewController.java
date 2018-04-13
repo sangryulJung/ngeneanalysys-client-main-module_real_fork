@@ -167,38 +167,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                     List<SnpInDelEvidence> interpretation = (List<SnpInDelEvidence>) item;
                     for (SnpInDelEvidence evidence : interpretation) {
                         if(evidence.getPrimaryEvidence()) {
-                            /*if (!StringUtils.isEmpty(interpretation.getTherapeuticEvidence().getLevelA())) {
-                                Label label = new Label("A");
-                                label.getStyleClass().remove("label");
-                                Tooltip tooltip = new Tooltip(interpretation.getTherapeuticEvidence().getLevelA());
-                                label.setTooltip(tooltip);
-                                label.getStyleClass().add("interpretation_A");
-                                hBox.getChildren().add(label);
-                            }
-                            if (!StringUtils.isEmpty(interpretation.getTherapeuticEvidence().getLevelB())) {
-                                Label label = new Label("B");
-                                Tooltip tooltip = new Tooltip(interpretation.getTherapeuticEvidence().getLevelB());
-                                label.setTooltip(tooltip);
-                                label.getStyleClass().remove("label");
-                                label.getStyleClass().add("interpretation_B");
-                                hBox.getChildren().add(label);
-                            }
-                            if (!StringUtils.isEmpty(interpretation.getTherapeuticEvidence().getLevelC())) {
-                                Label label = new Label("C");
-                                Tooltip tooltip = new Tooltip(interpretation.getTherapeuticEvidence().getLevelC());
-                                label.setTooltip(tooltip);
-                                label.getStyleClass().remove("label");
-                                label.getStyleClass().add("interpretation_C");
-                                hBox.getChildren().add(label);
-                            }
-                            if (!StringUtils.isEmpty(interpretation.getTherapeuticEvidence().getLevelD())) {
-                                Label label = new Label("D");
-                                Tooltip tooltip = new Tooltip(interpretation.getTherapeuticEvidence().getLevelD());
-                                label.setTooltip(tooltip);
-                                label.getStyleClass().remove("label");
-                                label.getStyleClass().add("interpretation_D");
-                                hBox.getChildren().add(label);
-                            }*/
+
                             Label label = new Label(evidence.getEvidenceLevel());
                             Tooltip tooltip = new Tooltip(evidence.getEvidence());
                             label.setTooltip(tooltip);

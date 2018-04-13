@@ -47,9 +47,9 @@ public class SystemMenuSupportController extends SubPaneController {
 
     /**
      * 매뉴얼 문서 화면 출력
-     * @param docFileName
+     * @param docFileName String
      */
-    public void openDoc(String docFileName) {
+    private void openDoc(String docFileName) {
 
         File tempDir = new File(CommonConstants.TEMP_PATH);
         if(!tempDir.exists()) {
@@ -58,7 +58,7 @@ public class SystemMenuSupportController extends SubPaneController {
 
         File docFile = new File(tempDir, docFileName);
         try (InputStream inputStream = resourceUtil.getResourceAsStream("/manual/" + docFileName);
-             OutputStream outStream = new FileOutputStream(docFile);){
+             OutputStream outStream = new FileOutputStream(docFile)){
 
             // 읽어들일 버퍼크기를 메모리에 생성
             byte[] buf = new byte[1024];

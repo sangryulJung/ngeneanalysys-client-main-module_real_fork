@@ -61,14 +61,14 @@ public class VirtualPanelEditController extends SubPaneController {
     private ComboBox<ComboBoxItem> comboBox;
 
     /**
-     * @param comboBox
+     * @param comboBox ComboBox<ComboBoxItem>
      */
     public void setComboBox(ComboBox<ComboBoxItem> comboBox) {
         this.comboBox = comboBox;
     }
 
     /**
-     * @param panelId
+     * @param panelId Integer
      */
     public void setPanelId(Integer panelId) {
         this.panelId = panelId;
@@ -150,9 +150,7 @@ public class VirtualPanelEditController extends SubPaneController {
                 Optional<ComboBoxItem> item = comboBox.getItems().stream().filter(comboBoxItem ->
                     comboBoxItem.getValue().equals(virtualPanel.getId().toString())).findFirst();
 
-                if(item.isPresent()) {
-                    item.get().setText(virtualPanel.getName());
-                }
+                item.ifPresent(comboBoxItem -> comboBoxItem.setText(virtualPanel.getName()));
             } else {
                 comboBox.getItems().add(new ComboBoxItem(virtualPanel.getId().toString(), virtualPanel.getName()));
             }

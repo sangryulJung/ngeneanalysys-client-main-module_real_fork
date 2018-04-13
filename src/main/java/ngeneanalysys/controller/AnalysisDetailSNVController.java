@@ -597,7 +597,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
     }
 
-    public void setSortItem(Map<String, List<Object>> list) {
+    private void setSortItem(Map<String, List<Object>> list) {
         Set<String> keySets = sortMap.keySet();
         List<Object> sortList = new ArrayList<>();
         for(String key : keySets) {
@@ -613,7 +613,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         if(!sortList.isEmpty()) list.put("sort", sortList);
     }
 
-    public void setFilterItem(Map<String, List<Object>> list) {
+    private void setFilterItem(Map<String, List<Object>> list) {
         ComboBoxItem comboBoxItem = filterComboBox.getSelectionModel().getSelectedItem();
         if(filterList.containsKey(comboBoxItem.getValue())) {
             list.put("search", filterList.get(comboBoxItem.getValue()));
@@ -656,7 +656,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
             if (list != null && !list.isEmpty()) {
                 displayList = FXCollections.observableArrayList(list);
-                logger.info(displayList.size() + "");
             }
 
             // 리스트 삽입
@@ -701,7 +700,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     }
 
-    public void sortTable(String column) {
+    private void sortTable(String column) {
         if(sortMap.size() == 1 && sortMap.containsKey(column)) {
             if(sortMap.get(column).equalsIgnoreCase("ASC")) {
                 sortMap.put(column, "DESC");
@@ -722,6 +721,13 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         Map<String, Object> params = new HashMap<>();
         WorksheetUtil worksheetUtil = new WorksheetUtil();
         worksheetUtil.exportVariantData("EXCEL", params, this.getMainApp(), sample.getId());
+    }
+
+    @FXML
+    public void csvDownload() {
+        Map<String, Object> params = new HashMap<>();
+        WorksheetUtil worksheetUtil = new WorksheetUtil();
+        worksheetUtil.exportVariantData("CSV", params, this.getMainApp(), sample.getId());
     }
 
     private void createTableHeader(TableColumn<VariantAndInterpretationEvidence, ?> column, String name, String sortName, Double size) {
@@ -830,17 +836,18 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 setGraphic((!StringUtils.isEmpty(item)) ? SNPsINDELsList.getWarningReasonPopOver(item) : null);
             }
         });
-
-        TableColumn<VariantAndInterpretationEvidence, String> lowConfidence = new TableColumn<>("Low confidence");
-        createTableHeader(lowConfidence, "Low confidence", "lowConfidence" ,null);
-        lowConfidence.getStyleClass().add(centerStyleClass);
-        lowConfidence.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getLowConfidence()));
-        lowConfidence.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
-            @Override
-            public void updateItem(String item, boolean empty) {
-                setGraphic((!StringUtils.isEmpty(item)) ? LowConfidenceList.getLowConfidencePopOver(item) : null);
-            }
-        });
+        if(panel != null && ExperimentTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
+            TableColumn<VariantAndInterpretationEvidence, String> lowConfidence = new TableColumn<>("Low confidence");
+            createTableHeader(lowConfidence, "Low confidence", "lowConfidence", null);
+            lowConfidence.getStyleClass().add(centerStyleClass);
+            lowConfidence.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getLowConfidence()));
+            lowConfidence.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
+                @Override
+                public void updateItem(String item, boolean empty) {
+                    setGraphic((!StringUtils.isEmpty(item)) ? LowConfidenceList.getLowConfidencePopOver(item) : null);
+                }
+            });
+        }
 
         TableColumn<VariantAndInterpretationEvidence, String> report = new TableColumn<>("Report");
         createTableHeader(report, "Report", null ,55.);

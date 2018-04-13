@@ -41,7 +41,7 @@ import java.util.*;
 public class AnalysisDetailInterpretationController extends SubPaneController {
     private static Logger logger = LoggerUtil.getLogger();
 
-    ToggleGroup toggleGroup = new ToggleGroup();
+    private ToggleGroup toggleGroup = new ToggleGroup();
 
     @FXML
     private Label swTierLabel;
@@ -159,9 +159,8 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
         evidenceCommentColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getEvidence()));
         evidenceCommentColumn.setCellFactory(tableColumn -> new EditingCell());
-        evidenceCommentColumn.setOnEditCommit((TableColumn.CellEditEvent<SnpInDelEvidence, String> t) -> {
-            (t.getTableView().getItems().get(t.getTablePosition().getRow())).setEvidence(t.getNewValue());
-        });
+        evidenceCommentColumn.setOnEditCommit((TableColumn.CellEditEvent<SnpInDelEvidence, String> t) ->
+            (t.getTableView().getItems().get(t.getTablePosition().getRow())).setEvidence(t.getNewValue()));
 
         evidenceSaveColumn.setSortable(false);
         evidenceSaveColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
@@ -276,10 +275,10 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
             textField.setOnKeyPressed(t -> {
                 if(t.getCode() == KeyCode.ENTER) {
                     commitEdit(textField.getText());
-                    //addModifiedList(variant);
+
                 } else if (t.getCode() == KeyCode.TAB) {
                     commitEdit(textField.getText());
-                    //addModifiedList(variant);
+
                 } else if(t.getCode() == KeyCode.ESCAPE) {
                     cancelEdit();
                 }
@@ -287,7 +286,6 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
             textField.focusedProperty().addListener((arg0, arg1, arg2) -> {
                 if (!arg2) {
                     commitEdit(textField.getText());
-                    //addModifiedList(variant);
                 }
             });
         }
