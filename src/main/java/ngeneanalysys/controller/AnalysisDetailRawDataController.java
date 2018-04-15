@@ -158,7 +158,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
 
     /**
      * 필터 선택 표시
-     * @param tag
+     * @param tag String
      */
     public void setOnSelectedFilter(String tag) {
         if(filterList.getChildren() != null && filterList.getChildren().size() > 0) {
@@ -176,7 +176,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
 
     /**
      * 목록 화면 출력
-     * @param tag
+     * @param tag String
      */
     public void setList(String tag) {
         ObservableList<AnalysisFile> displayList = null;
@@ -205,7 +205,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
 
     /**
      * 파일 다운로드
-     * @param resultFile
+     * @param resultFile AnalysisFile
      */
     @SuppressWarnings("static-access")
     public void download(AnalysisFile resultFile) {

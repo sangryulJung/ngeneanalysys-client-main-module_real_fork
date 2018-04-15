@@ -128,12 +128,12 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
         groupNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getMemberGroupName()));
         createAt.setCellValueFactory(cellData -> new SimpleStringProperty(DateFormatUtils.format(cellData.getValue().getCreatedAt().toDate(), "yyyy-MM-dd hh:mm:ss")));
 
-        /** 삭제 버튼 */
+        /* 삭제 버튼 */
         delete.setSortable(false);
         delete.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
         delete.setCellFactory(param -> new DeleteButtonCreate());
 
-        /** 재시작 버튼 */
+        /* 재시작 버튼 */
         restart.setSortable(false);
         restart.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
         restart.setCellFactory(param -> new UpdateButtonCreate());
@@ -200,7 +200,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
 
     }
 
-    public Map<String, Object> getSearchParam() {
+    private Map<String, Object> getSearchParam() {
         Map<String, Object> param = new HashMap<>();
         param.put("format", "json");
 
@@ -284,7 +284,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
     }
 
     /** 작업 삭제 */
-    public void deleteRun(Integer id) {
+    private void deleteRun(Integer id) {
         try {
             HttpClientResponse response = apiService.delete("/admin/runs/"+id);
             logger.info("status code : " + response.getStatus());
@@ -300,11 +300,11 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
         }
     }
 
-    public void restartRun(Integer id) {
-        HttpClientResponse response;
+    private void restartRun(Integer id) {
+        /* HttpClientResponse response; */
 
         try {
-            response = apiService.get("admin/restartRun/" + id, null ,null, false);
+            apiService.get("admin/restartRun/" + id, null ,null, false);
             /*response = apiService.get("runs/" + id, null ,null, false);
 
             RunWithSamples runWithSamples = response.getObjectBeforeConvertResponseToJSON(RunWithSamples.class);

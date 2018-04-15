@@ -1,6 +1,3 @@
-/**
- * 
- */
 package ngeneanalysys.controller;
 
 import javafx.fxml.FXML;

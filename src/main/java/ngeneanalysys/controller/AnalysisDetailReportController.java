@@ -134,10 +134,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
     private List<VariantAndInterpretationEvidence> negativeList = null;
 
-    private VariantAndInterpretationEvidence selectedItem = null;
-
     private boolean reportData = false;
 
+    @SuppressWarnings("unchecked")
     @Override
     public void show(Parent root) throws IOException {
         logger.info("show..");
@@ -170,9 +169,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
         List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
         Optional<Panel> panelOptional = panels.stream().filter(panelItem -> panelItem.getId().equals(sample.getPanelId())).findFirst();
-        if(panelOptional.isPresent()) {
-            panel = panelOptional.get();
-        }
+        panelOptional.ifPresent(panel1 -> panel = panel1);
 
         setVirtualPanel();
 
@@ -264,9 +261,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     if(sampleReport.getVirtualPanelId() != null) {
                         Optional<ComboBoxItem> item = virtualPanelComboBox.getItems().stream().filter(
                                 comboBoxItem -> comboBoxItem.getValue().equals(sampleReport.getVirtualPanelId().toString())).findFirst();
-                        if(item.isPresent()) {
-                            virtualPanelComboBox.getSelectionModel().select(item.get());
-                        }
+                        item.ifPresent(comboBoxItem -> virtualPanelComboBox.getSelectionModel().select(comboBoxItem));
                     }
                     settingReportData(sampleReport.getContents());
                 }
@@ -284,7 +279,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
     }
 
-    public void setTargetGenesList() {
+    @SuppressWarnings("unchecked")
+    private void setTargetGenesList() {
         if(!targetGenesFlowPane.getChildren().isEmpty()) {
             mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() - targetGenesFlowPane.getPrefHeight());
             contentVBox.setPrefHeight(contentVBox.getPrefHeight() - targetGenesFlowPane.getPrefHeight());
@@ -462,20 +458,17 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             List<VariantAndInterpretationEvidence> tableList = new ArrayList<>();
 
             if(tierOne != null && !tierOne.isEmpty()) {
-                Collections.sort(tierOne,
-                        (a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
+                tierOne.sort((a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
                 tableList.addAll(tierOne);
             }
 
             if(tierTwo != null && !tierTwo.isEmpty()) {
-                Collections.sort(tierTwo,
-                        (a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
+                tierTwo.sort((a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
                 tableList.addAll(tierTwo);
             }
 
             if(tierThree != null && !tierThree.isEmpty()) {
-                Collections.sort(tierThree,
-                        (a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
+                tierThree.sort((a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
 
                 tableList.addAll(tierThree);
             }
@@ -484,7 +477,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 variantsTable.getItems().removeAll(variantsTable.getItems());
             }
 
-            variantsTable.getItems().addAll(tableList);
+            Objects.requireNonNull(variantsTable.getItems()).addAll(tableList);
 
         } catch (WebAPIException wae) {
             DialogUtil.error(wae.getHeaderText(), wae.getContents(), this.getMainApp().getPrimaryStage(), true);
@@ -492,9 +485,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     }
 
     public boolean discriminationOfMutation(VariantCountByGene gene) {
-        return (gene.getTier3IndelCount() > 0 || gene.getTier3SnpCount() > 00 ||
+        return (gene.getTier3IndelCount() > 0 || gene.getTier3SnpCount() > 0 ||
                 gene.getTier1IndelCount() > 0 || gene.getTier1SnpCount() > 0 ||
-                gene.getTier2IndelCount() > 0 || gene.getTier2SnpCount() > 0) ? true : false;
+                gene.getTier2IndelCount() > 0 || gene.getTier2SnpCount() > 0);
     }
 
     public void setVirtualPanel() {
@@ -525,7 +518,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         }
     }
 
-    public List<VariantAndInterpretationEvidence> settingTierList(List<VariantAndInterpretationEvidence> allTierList, String tier) {
+    private List<VariantAndInterpretationEvidence> settingTierList(List<VariantAndInterpretationEvidence> allTierList, String tier) {
         if(!StringUtils.isEmpty(tier)) {
             return allTierList.stream().filter(item -> ((tier.equalsIgnoreCase(item.getSnpInDel().getExpertTier()) ||
                     (StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && item.getSnpInDel().getSwTier().equalsIgnoreCase(tier)))))
@@ -613,12 +606,11 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             params.put("virtualPanelId", Integer.parseInt(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue()));
         }
 
-        HttpClientResponse response = null;
         try {
             if(reportData) {
-                response = apiService.put("/sampleReport/" + sample.getId(), params, null, true);
+                apiService.put("/sampleReport/" + sample.getId(), params, null, true);
             } else {
-                response = apiService.post("/sampleReport/" + sample.getId(), params, null, true);
+                apiService.post("/sampleReport/" + sample.getId(), params, null, true);
             }
         } catch (WebAPIException wae) {
             wae.printStackTrace();
@@ -673,7 +665,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         null, false);
                 user = response.getObjectBeforeConvertResponseToJSON(User.class);
                 // 소속기관, 연락처 정보 존재 확인
-                if (!StringUtils.isEmpty(user.getOrganization()) && !StringUtils.isEmpty(user.getPhone())) {
+                /*if (!StringUtils.isEmpty(user.getOrganization()) && !StringUtils.isEmpty(user.getPhone())) {
                     boolean dataSave = saveData(user);
                     if (dataSave) {
                         // 최종 보고서 생성이 정상 처리된 경우 분석 샘플의 상태값 완료 처리.
@@ -684,6 +676,13 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 } else {
                     DialogUtil.warning("Empty Reviewer Information",
                             "Please Input a Reviewer Information. [Menu > Edit]", getMainApp().getPrimaryStage(), true);
+                }*/
+                boolean dataSave = saveData(user);
+                if (dataSave) {
+                    // 최종 보고서 생성이 정상 처리된 경우 분석 샘플의 상태값 완료 처리.
+                    if (createPDF(false)) {
+                        setComplete();
+                    }
                 }
 
             }  catch (WebAPIException wae) {
@@ -917,7 +916,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         return contentsMap;
     }
 
-    public boolean createPDF(boolean isDraft) {
+    private boolean createPDF(boolean isDraft) {
         boolean created = true;
         String reportCreationErrorMsg = "An error occurred during the creation of the report document.";
         try {
@@ -1089,13 +1088,11 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         return created;
     }
 
+    @SuppressWarnings("unchecked")
     public void createWordFile(URL[] jarUrls, File file , Map<String, Object> contentsMap, String reportCreationErrorMsg) {
-        //try (URLClassLoader classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader())) {
         URLClassLoader classLoader = null;
         try {
             classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader());
-            //Thread.currentThread().setContextClassLoader(classLoader);
-            @SuppressWarnings("unchecked")
             Class classToLoad = Class.forName("word.create.App", true, classLoader);
             logger.info("application init..");
             Method[] methods = classToLoad.getMethods();
@@ -1168,24 +1165,5 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     /**
      * 보고서 작업 완료 처리
      */
-    public void setComplete() {
-        /*try {
-            // step_report 상태값 완료 처리.
-            int jobStatusId = sample.getJobStatus().getId();
-            Map<String, Object> param = new HashMap<String, Object>();
-            param.put("step_report", AnalysisJobStatusCode.SAMPLE_JOB_STATUS_COMPLETE);
-            param.put("step msg", "Complete Review and Reporting");
-            apiService.patch("/analysis_progress_state/jobstatus_update/" + jobStatusId, param, null, true);
-            // 상태값 변경이 정상 처리된 경우 화면 상태 변경 처리.
-            // 보고서 작업화면 비활성화
-            setActive(false);
-            // 상위 레이아웃 컨트롤러의 완료 처리 메소드 실행
-            getAnalysisDetailLayoutController().setReviewComplete();
-        } catch (WebAPIException wae) {
-            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
-                    getMainApp().getPrimaryStage(), true);
-        } catch (Exception e) {
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
-        }*/
-    }
+    public void setComplete() {}
 }

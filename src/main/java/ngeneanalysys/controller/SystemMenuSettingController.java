@@ -163,11 +163,7 @@ public class SystemMenuSettingController extends SubPaneController {
             alert.setContentText("Do you want to save?");
 
             Optional<ButtonType> result = alert.showAndWait();
-            if (result.isPresent() && result.get() == ButtonType.OK){
-                isContinue = true;
-            } else {
-                isContinue = false;
-            }
+            isContinue = result.isPresent() && result.get() == ButtonType.OK;
         }
 
         if(isContinue) {

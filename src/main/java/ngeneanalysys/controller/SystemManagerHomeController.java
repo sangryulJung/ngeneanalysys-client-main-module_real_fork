@@ -82,14 +82,7 @@ public class SystemManagerHomeController extends SubPaneController {
 
     }
 
-    /**
-     *  첫화면으로 돌아감
-     */
-    public void setFirst() {
-        logger.info("first");
-    }
-
-    public void setTabContent(Tab tab) {
+    private void setTabContent(Tab tab) {
         if(tab.getContent() == null) {
             logger.info(String.format("'%s' contents init..", tab.getId()));
             try {

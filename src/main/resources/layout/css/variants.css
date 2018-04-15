@@ -252,6 +252,16 @@
     -fx-cursor:hand;
 }
 
+#csv_download_image {
+    -fx-cursor:hand;
+    -fx-graphic: url("../images/renewal/csv16_icon.png");
+    -fx-pref-width : 16;
+    -fx-pref-height : 16;
+    -fx-min-width : 16;
+    -fx-min-height : 16;
+    -fx-cursor:hand;
+}
+
 #filterComboBox {
     -fx-background-color : #D9D9D9;
     -fx-border-width : 0;

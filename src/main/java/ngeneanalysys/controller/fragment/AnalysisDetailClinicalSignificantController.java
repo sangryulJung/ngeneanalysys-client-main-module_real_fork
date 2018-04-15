@@ -113,14 +113,14 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
     private AnalysisDetailSNVController controller;
 
     /**
-     * @param controller
+     * @param controller AnalysisDetailSNVController
      */
     public void setController(AnalysisDetailSNVController controller) {
         this.controller = controller;
     }
 
     /**
-     * @param selectedAnalysisResultVariant
+     * @param selectedAnalysisResultVariant VariantAndInterpretationEvidence
      */
     public void setSelectedAnalysisResultVariant(VariantAndInterpretationEvidence selectedAnalysisResultVariant) {
         this.selectedAnalysisResultVariant = selectedAnalysisResultVariant;
@@ -142,22 +142,28 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
         }
     }
 
-    public void setGermlineArea() {
+    private void setGermlineArea() {
         if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicity() != null) {
             for(Node node : predictionArea.getChildren()) {
                 Label label = (Label) node;
                 label.getStyleClass().removeAll(label.getStyleClass());
                 if(label.getId().equals(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicity())) {
-                    if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicity().equals("P")) {
-                        label.getStyleClass().add("prediction_A");
-                    } else if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicity().equals("LP")) {
-                        label.getStyleClass().add("prediction_B");
-                    } else if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicity().equals("US")) {
-                        label.getStyleClass().add("prediction_C");
-                    } else if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicity().equals("LB")) {
-                        label.getStyleClass().add("prediction_D");
-                    } else if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicity().equals("B")) {
-                        label.getStyleClass().add("prediction_E");
+                    switch (selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicity()) {
+                        case "P":
+                            label.getStyleClass().add("prediction_A");
+                            break;
+                        case "LP":
+                            label.getStyleClass().add("prediction_B");
+                            break;
+                        case "US":
+                            label.getStyleClass().add("prediction_C");
+                            break;
+                        case "LB":
+                            label.getStyleClass().add("prediction_D");
+                            break;
+                        case "B":
+                            label.getStyleClass().add("prediction_E");
+                            break;
                     }
                 } else {
                     label.getStyleClass().add("prediction_none");
@@ -179,21 +185,27 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
             button.getStyleClass().add("button");
             if(!StringUtils.isEmpty(pathogenicity)) {
                 if(pathogenicity.equals(button.getText())) {
-                    if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals("P")) {
-                        button.getStyleClass().add("prediction_A_Selected");
-                        button.setCursor(Cursor.DEFAULT);
-                    } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals("LP")) {
-                        button.getStyleClass().add("prediction_B_Selected");
-                        button.setCursor(Cursor.DEFAULT);
-                    } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals("US")) {
-                        button.getStyleClass().add("prediction_C_Selected");
-                        button.setCursor(Cursor.DEFAULT);
-                    } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals("LB")) {
-                        button.getStyleClass().add("prediction_D_Selected");
-                        button.setCursor(Cursor.DEFAULT);
-                    } else if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals("B")) {
-                        button.getStyleClass().add("prediction_E_Selected");
-                        button.setCursor(Cursor.DEFAULT);
+                    switch (selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity()) {
+                        case "P":
+                            button.getStyleClass().add("prediction_A_Selected");
+                            button.setCursor(Cursor.DEFAULT);
+                            break;
+                        case "LP":
+                            button.getStyleClass().add("prediction_B_Selected");
+                            button.setCursor(Cursor.DEFAULT);
+                            break;
+                        case "US":
+                            button.getStyleClass().add("prediction_C_Selected");
+                            button.setCursor(Cursor.DEFAULT);
+                            break;
+                        case "LB":
+                            button.getStyleClass().add("prediction_D_Selected");
+                            button.setCursor(Cursor.DEFAULT);
+                            break;
+                        case "B":
+                            button.getStyleClass().add("prediction_E_Selected");
+                            button.setCursor(Cursor.DEFAULT);
+                            break;
                     }
                 } else {
                     button.getStyleClass().add("no_selected_user_tier");
@@ -567,6 +579,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
         }
         box.getChildren().add(reason);
 
+        assert results != null;
         for(String result : results) {
             Map<String, Object> role = (Map<String, Object>) acmg.get(result);
 
@@ -640,8 +653,6 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                 changePathogenicityController.setClinicalSignificantController(this);
                 changePathogenicityController.settingTier(value, selectedAnalysisResultVariant);
                 changePathogenicityController.show((Parent) root);
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
             }

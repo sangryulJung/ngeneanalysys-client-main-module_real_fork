@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -163,26 +164,26 @@ public class AnalysisDetailLayoutController extends SubPaneController {
         List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
         if(panels != null && !panels.isEmpty()) {
             Optional<Panel> optionalPanel = panels.stream().filter(panel -> panel.getId().equals(sample.getPanelId())).findFirst();
-            if(optionalPanel.isPresent()) {
-                this.panel = optionalPanel.get();
+            optionalPanel.ifPresent(panel1 -> {
+                this.panel = panel1;
                 getParamMap().put("panel", panel);
-                panelLabel.setText(optionalPanel.get().getName());
-                panelNameTooltip.setText(optionalPanel.get().getName());
-            }
+                panelLabel.setText(panel1.getName());
+                panelNameTooltip.setText(panel1.getName());
+            });
         }
 
         sampleNameLabel.setText(sample.getName());
         sampleNameTooltip.setText(sample.getName());
         List<Diseases> diseases = (List<Diseases>) mainController.getBasicInformationMap().get("diseases");
-        Optional<Diseases> diseasesOptional = diseases.stream().filter(disease -> disease.getId() == sample.getDiseaseId()).findFirst();
-        if(diseasesOptional.isPresent()) {
-            String diseaseName = diseasesOptional.get().getName();
+        Optional<Diseases> diseasesOptional = diseases.stream().filter(disease -> Objects.equals(disease.getId(), sample.getDiseaseId())).findFirst();
+        diseasesOptional.ifPresent(diseases1 -> {
+            String diseaseName = diseases1.getName();
             diseaseLabel.setText(diseaseName);
             diseaseTooltip.setText(diseaseName);
-        }
+        });
     }
 
-    public void addTab(AnalysisDetailTabItem item, int idx) {
+    private void addTab(AnalysisDetailTabItem item, int idx) {
         Tab tab = new Tab();
         tab.setId(item.getNodeId());
         tab.setText(item.getTabName());
@@ -195,9 +196,9 @@ public class AnalysisDetailLayoutController extends SubPaneController {
 
     /**
      * 탭 컨텐츠 삽입
-     * @param tab
+     * @param tab Tab
      */
-    public void setTabContent(Tab tab) {
+    private void setTabContent(Tab tab) {
         // 화면 내용이 없는 경우 셋팅.
         if(tab.getContent() == null) {
             logger.info(String.format("'%s' contents init..", tab.getId()));
@@ -274,9 +275,9 @@ public class AnalysisDetailLayoutController extends SubPaneController {
 
     /**
      * 지정탭이 선택시 마다 새로 갱신해야하는 부분이 있는 경우 실행함.
-     * @param tab
+     * @param tab Tab
      */
-    public void executeReloadByTab(Tab tab) {
+    private void executeReloadByTab(Tab tab) {
         // 보고서 탭인 경우 reported variant list 갱신함.
 
         if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_OVERVIEW.name())) {

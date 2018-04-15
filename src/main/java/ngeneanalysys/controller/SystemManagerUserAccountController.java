@@ -183,7 +183,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
 
     }
 
-    public String timeConvertString(DateTime date) {
+    private String timeConvertString(DateTime date) {
         if(date == null)
             return "-";
 
@@ -191,7 +191,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
         return fmt.print(date);
     }
 
-    public String deletedShowString(int deleted) {
+    private String deletedShowString(int deleted) {
         return (deleted == 0) ? "N" : "Y";
     }
 
@@ -223,10 +223,9 @@ public class SystemManagerUserAccountController extends SubPaneController{
         userControllerInit("add", null);
     }
 
-    public void userControllerInit(String type, User user) {
+    private void userControllerInit(String type, User user) {
         try {
-            FXMLLoader loader = null;
-            loader = mainApp.load(FXMLConstants.USER_ACCOUNT);
+            FXMLLoader loader = mainApp.load(FXMLConstants.USER_ACCOUNT);
             Node root = loader.load();
             UserAccountController userAccountController = loader.getController();
             userAccountController.setMainController(this.getMainController());
@@ -273,7 +272,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
                     }
                 }
 
-                userListTable.setItems((FXCollections.observableList(list)));
+                userListTable.setItems(FXCollections.observableList(list));
 
                 logger.info(String.format("total count : %s, page count : %s", totalCount, pageCount));
 
@@ -349,7 +348,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
 
     }
 
-    public Map<String, Object> getUserSearchParam() {
+    private Map<String, Object> getUserSearchParam() {
         Map<String, Object> param = new HashMap<>();
         param.put("format", "json");
         param.put("ordering", "-id");
@@ -371,7 +370,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
         return param;
     }
 
-    public Map<String, Object> getGroupSearchParam() {
+    private Map<String, Object> getGroupSearchParam() {
         Map<String, Object> param = new HashMap<>();
         param.put("format", "json");
         param.put("ordering", "-id");

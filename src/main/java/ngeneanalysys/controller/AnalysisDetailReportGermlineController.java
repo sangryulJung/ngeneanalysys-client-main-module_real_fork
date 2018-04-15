@@ -622,7 +622,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                         null, false);
                 user = response.getObjectBeforeConvertResponseToJSON(User.class);
                 // 소속기관, 연락처 정보 존재 확인
-                if (!StringUtils.isEmpty(user.getOrganization()) && !StringUtils.isEmpty(user.getPhone())) {
+                /*if (!StringUtils.isEmpty(user.getOrganization()) && !StringUtils.isEmpty(user.getPhone())) {
                     boolean dataSave = saveData(user);
                     if (dataSave) {
                         // 최종 보고서 생성이 정상 처리된 경우 분석 샘플의 상태값 완료 처리.
@@ -633,8 +633,14 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 } else {
                     DialogUtil.warning("Empty Reviewer Information",
                             "Please Input a Reviewer Information. [Menu > Edit]", getMainApp().getPrimaryStage(), true);
+                }*/
+                boolean dataSave = saveData(user);
+                if (dataSave) {
+                    // 최종 보고서 생성이 정상 처리된 경우 분석 샘플의 상태값 완료 처리.
+                    if (createPDF(false)) {
+                        //setComplete();
+                    }
                 }
-
             }  catch (WebAPIException wae) {
                 logger.error("web api exception", wae);
                 DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),

@@ -23,7 +23,6 @@ import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.service.APIService;
-import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
@@ -33,6 +32,7 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Jang
@@ -41,7 +41,7 @@ import java.util.*;
 public class AnalysisDetailInterpretationController extends SubPaneController {
     private static Logger logger = LoggerUtil.getLogger();
 
-    ToggleGroup toggleGroup = new ToggleGroup();
+    private ToggleGroup toggleGroup = new ToggleGroup();
 
     @FXML
     private Label swTierLabel;
@@ -58,6 +58,9 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     private TableView<SnpInDelEvidence> evidenceTableView;
 
     @FXML
+    private TableColumn<SnpInDelEvidence, String > providerColumn;
+
+    @FXML
     private TableColumn<SnpInDelEvidence, String> evidenceTypeColumn;
 
     @FXML
@@ -68,9 +71,6 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
     @FXML
     private TableColumn<SnpInDelEvidence, Boolean> evidencePrimaryColumn;
-
-    @FXML
-    private TableColumn<SnpInDelEvidence, Boolean> evidenceSaveColumn;
 
     @FXML
     private TableColumn<SnpInDelEvidence, Boolean> evidenceDeleteColumn;
@@ -97,19 +97,19 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     private TableColumn<SameVariantInterpretation, String> pastCasesDateColumn;
 
     @FXML
-    private TableView<SnpInDelPrimaryEvidenceLog> interpretationTableView;
+    private TableView<SnpInDelEvidence> interpretationTableView;
 
     @FXML
-    private TableColumn<SnpInDelPrimaryEvidenceLog, String> interpretationTypeColumn;
+    private TableColumn<SnpInDelEvidence, String> interpretationTypeColumn;
 
     @FXML
-    private TableColumn<SnpInDelPrimaryEvidenceLog, String> interpretationEvidenceColumn;
+    private TableColumn<SnpInDelEvidence, String> interpretationEvidenceColumn;
 
     @FXML
-    private TableColumn<SnpInDelPrimaryEvidenceLog, String> interpretationEvidenceCommentColumn;
+    private TableColumn<SnpInDelEvidence, String> interpretationEvidenceCommentColumn;
 
     @FXML
-    private TableColumn<SnpInDelPrimaryEvidenceLog, String> interpretationDateColumn;
+    private TableColumn<SnpInDelEvidence, String> interpretationDateColumn;
 
     @FXML
     private GridPane interpretationGridPane;
@@ -125,7 +125,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     private SnpInDelEvidence primaryEvidence;
 
     /**
-     * @param analysisDetailSNVController
+     * @param analysisDetailSNVController AnalysisDetailSNVController
      */
     public void setAnalysisDetailSNVController(AnalysisDetailSNVController analysisDetailSNVController) {
         this.analysisDetailSNVController = analysisDetailSNVController;
@@ -149,23 +149,21 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
         ///////////////////////////////////////////////////
         evidenceTypeColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getEvidenceType()));
-        evidenceTypeColumn.setCellFactory(item -> new TypeComboBoxCell());
+        evidenceTypeColumn.setCellFactory(item -> new ProviderComboBoxCell());
 
         evidenceColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getEvidenceLevel()));
         evidenceColumn.setCellFactory(item -> new EvidenceLevelComboBoxCell());
+
+        providerColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getEvidenceLevel()));
+        providerColumn.setCellFactory(item -> new ProviderComboBoxCell());
 
         evidencePrimaryColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getPrimaryEvidence()));
         evidencePrimaryColumn.setCellFactory(item -> new PrimaryRadioButtonCell());
 
         evidenceCommentColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getEvidence()));
         evidenceCommentColumn.setCellFactory(tableColumn -> new EditingCell());
-        evidenceCommentColumn.setOnEditCommit((TableColumn.CellEditEvent<SnpInDelEvidence, String> t) -> {
-            (t.getTableView().getItems().get(t.getTablePosition().getRow())).setEvidence(t.getNewValue());
-        });
-
-        evidenceSaveColumn.setSortable(false);
-        evidenceSaveColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
-        evidenceSaveColumn.setCellFactory(param -> new SaveButtonCreate());
+        evidenceCommentColumn.setOnEditCommit((TableColumn.CellEditEvent<SnpInDelEvidence, String> t) ->
+            (t.getTableView().getItems().get(t.getTablePosition().getRow())).setEvidence(t.getNewValue()));
 
         evidenceDeleteColumn.setSortable(false);
         evidenceDeleteColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
@@ -186,40 +184,8 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         pastCasesDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDelEvidence() != null ? DateFormatUtils.format(cellData.getValue().getSnpInDelEvidence().getCreatedAt().toDate(), "yyyy-MM-dd hh:mm:ss") : ""));
 
         setEvidenceTable();
-        setInterpretationTable();
         setPastCases();
         setTier(selectedAnalysisResultVariant.getSnpInDel());
-
-    }
-
-    private class SaveButtonCreate extends TableCell<SnpInDelEvidence, Boolean> {
-        HBox box = null;
-        final ImageView img = new ImageView(resourceUtil.getImage("/layout/images/renewal/save_icon.png", 16, 16));
-
-        public SaveButtonCreate() {
-            img.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                SnpInDelEvidence snpInDelEvidence = SaveButtonCreate.this.getTableView().getItems().get(
-                        SaveButtonCreate.this.getIndex());
-
-                save(snpInDelEvidence);
-            });
-        }
-
-        @Override
-        protected void updateItem(Boolean item, boolean empty) {
-            super.updateItem(item, empty);
-
-            if(item == null) {
-                setGraphic(null);
-                return;
-            }
-            img.setStyle("-fx-cursor:hand;");
-            box = new HBox();
-            box.setAlignment(Pos.CENTER);
-            box.getChildren().add(img);
-
-            setGraphic(box);
-        }
     }
 
     class EditingCell extends TableCell<SnpInDelEvidence, String> {
@@ -276,10 +242,10 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
             textField.setOnKeyPressed(t -> {
                 if(t.getCode() == KeyCode.ENTER) {
                     commitEdit(textField.getText());
-                    //addModifiedList(variant);
+
                 } else if (t.getCode() == KeyCode.TAB) {
                     commitEdit(textField.getText());
-                    //addModifiedList(variant);
+
                 } else if(t.getCode() == KeyCode.ESCAPE) {
                     cancelEdit();
                 }
@@ -287,13 +253,12 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
             textField.focusedProperty().addListener((arg0, arg1, arg2) -> {
                 if (!arg2) {
                     commitEdit(textField.getText());
-                    //addModifiedList(variant);
                 }
             });
         }
 
         private String getString() {
-            return getItem() == null ? "" : getItem().toString();
+            return getItem() == null ? "" : getItem();
         }
     }
 
@@ -339,9 +304,50 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
             setGraphic(comboBox);
 
         }
-
     }
 
+    private class ProviderComboBoxCell extends TableCell<SnpInDelEvidence, String> {
+        private ComboBox<String> comboBox = new ComboBox<>();
+        boolean setting = false;
+
+        public ProviderComboBoxCell() {
+            comboBox.getSelectionModel().selectedItemProperty().addListener((ov, t, t1) -> {
+                SnpInDelEvidence snpInDelEvidence = ProviderComboBoxCell.this.getTableView().getItems().get(
+                        ProviderComboBoxCell.this.getIndex());
+
+                if(!StringUtils.isEmpty(t1)) {
+                    snpInDelEvidence.setProvider(t1);
+                }
+            });
+        }
+
+        @Override
+        protected void updateItem(String item, boolean empty) {
+            super.updateItem(item, empty);
+            if(empty) {
+                setGraphic(null);
+                return;
+            }
+
+            if(comboBox.getItems().isEmpty()) {
+
+                comboBox.getItems().addAll("NGeneBio", "Clinician");
+
+                SnpInDelEvidence evidence = ProviderComboBoxCell.this.getTableView().getItems().get(
+                        ProviderComboBoxCell.this.getIndex());
+
+                if(evidence != null && !StringUtils.isEmpty(evidence.getProvider())) {
+                    comboBox.getSelectionModel().select(evidence.getProvider());
+                } else {
+                    comboBox.getSelectionModel().selectFirst();
+                }
+            }
+            setGraphic(comboBox);
+
+        }
+
+    }
+    
     private class EvidenceLevelComboBoxCell extends TableCell<SnpInDelEvidence, String> {
         private ComboBox<String> comboBox = new ComboBox<>();
         boolean setting = false;
@@ -472,14 +478,21 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
             // Memo 데이터 API 요청
             Map<String, Object> paramMap = new HashMap<>();
-            paramMap.put("snpInDelId", selectedAnalysisResultVariant.getSnpInDel().getId());
-            HttpClientResponse response = apiService.get("/analysisResults/evidences", paramMap, null, false);
+            HttpClientResponse response = apiService.get("/analysisResults/snpInDels/"+
+                    selectedAnalysisResultVariant.getSnpInDel().getId() + "/evidences", null, null, false);
 
             // Flagging Comment 데이터 요청이 정상 요청된 경우 진행.
             List<SnpInDelEvidence> list = (List<SnpInDelEvidence>)response.getMultiObjectBeforeConvertResponseToJSON(SnpInDelEvidence.class, false);
             if(list != null && !list.isEmpty()) {
                 list.sort(Comparator.comparing(SnpInDelEvidence::getId));
-                evidenceTableView.getItems().addAll(FXCollections.observableArrayList(list));
+
+                List<SnpInDelEvidence> interpretationList = new ArrayList<>();
+                interpretationList.addAll(list.stream().filter(item -> "Active".equalsIgnoreCase(item.getStatus())).collect(Collectors.toList()));
+
+                if(!interpretationList.isEmpty())
+                    evidenceTableView.getItems().addAll(FXCollections.observableArrayList(interpretationList));
+
+                interpretationTableView.getItems().addAll(FXCollections.observableArrayList(list));
 
                 Optional<SnpInDelEvidence> snpInDelEvidence = list.stream().filter(item -> item.getPrimaryEvidence()).findFirst();
                 if(snpInDelEvidence.isPresent()) {
@@ -490,29 +503,6 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
             } else {
                 primaryEvidence = null;
             }
-
-        } catch (WebAPIException wae) {
-            wae.printStackTrace();
-            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
-                    getMainApp().getPrimaryStage(), true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
-        }
-    }
-
-    public void setInterpretationTable() {
-        if(interpretationTableView.getItems() != null) interpretationTableView.getItems().removeAll(interpretationTableView.getItems());
-        try {
-
-            // Memo 데이터 API 요청
-            //Map<String, Object> commentParamMap = new HashMap<>();
-            HttpClientResponse responseMemo = apiService.get("/analysisResults/evidenceLog/" + selectedAnalysisResultVariant.getSnpInDel().getId()
-                    , null, null, false);
-
-            // Flagging Comment 데이터 요청이 정상 요청된 경우 진행.
-            List<SnpInDelPrimaryEvidenceLog> memoList = (List<SnpInDelPrimaryEvidenceLog>)responseMemo.getMultiObjectBeforeConvertResponseToJSON(SnpInDelPrimaryEvidenceLog.class, false);
-            if(memoList != null && !memoList.isEmpty()) interpretationTableView.getItems().addAll(FXCollections.observableArrayList(memoList));
 
         } catch (WebAPIException wae) {
             wae.printStackTrace();
@@ -623,34 +613,30 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         }
     }
 
-
+    @FXML
+    public void addInterpretation() {
+        SnpInDelEvidence snpInDelEvidence = new SnpInDelEvidence();
+        evidenceTableView.getItems().add(snpInDelEvidence);
+    }
 
     @FXML
     public void saveInterpretation() {
-        SnpInDelEvidence snpInDelEvidence = new SnpInDelEvidence();
-        evidenceTableView.getItems().add(snpInDelEvidence);
-       /*
-        params.put("snpInDelInterpretation", snpInDelInterpretation);
-
-        if(!StringUtils.isEmpty(comment)) {
-            params.put("comment", comment);
+        if(evidenceTableView.getItems() != null) {
             try {
-                params.put("tier", tier);
-
-                params.put("snpInDelId", variantAndInterpretationEvidence.getSnpInDel().getId());
-
-                apiService.put("analysisResults/snpInDels/" + variantAndInterpretationEvidence.getSnpInDel().getId() + "/updateTier", params, null, true);
-                returnTierClass(tier, userTierLabel);
-                analysisDetailSNVController.showVariantList(analysisDetailSNVController.getCurrentPageIndex() + 1, 0);
+                Map<String, Object> params = new HashMap<>();
+                params.put("SnpInDelEvidenceCreateRequests", returnEvidenceMap());
+                apiService.post("/analysisResults/snpInDels/"
+                        + selectedAnalysisResultVariant.getSnpInDel().getId() + "/evidences", params, null, true);
             } catch (WebAPIException wae) {
+                DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+                        getMainApp().getPrimaryStage(), true);
                 wae.printStackTrace();
-                DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
+            } catch (IOException e) {
+                DialogUtil.error("Unknown Error", e.getMessage(),
+                        getMainApp().getPrimaryStage(), true);
+                e.printStackTrace();
             }
-
-        } else {
-                DialogUtil.warning("The comment field is empty", " ", mainController.getPrimaryStage(), true);
-            commentTextField.requestFocus();
-        }*/
+        }
     }
 
     public void setTier(SnpInDel snpInDel) {
@@ -658,81 +644,24 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         returnTierClass(snpInDel.getExpertTier(), userTierLabel,2);
     }
 
-    public void save(SnpInDelEvidence snpInDelEvidence) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("snpInDelId", selectedAnalysisResultVariant.getSnpInDel().getId());
-        params.put("id", snpInDelEvidence.getId() == null ? 0 : snpInDelEvidence.getId());
-        params.put("evidence", snpInDelEvidence.getEvidence());
-        params.put("evidenceType", snpInDelEvidence.getEvidenceType());
-        params.put("evidenceLevel", snpInDelEvidence.getEvidenceLevel());
-        params.put("evidence", snpInDelEvidence.getEvidence());
-        params.put("primaryEvidence", snpInDelEvidence.getPrimaryEvidence() == null ? false : snpInDelEvidence.getPrimaryEvidence());
-        params.put("createdAt", ConvertUtil.convertLocalTimeToUTC("00-00-00 00:00:00", "yyyy-MM-dd HH:mm:ss", null));
+    public List<Map<String, Object>> returnEvidenceMap() {
+        List<Map<String, Object>> list = new ArrayList<>();
+        for(SnpInDelEvidence snpInDelEvidence : evidenceTableView.getItems()) {
+            Map<String, Object> params = new HashMap<>();
 
-        try {
-
-            if(snpInDelEvidence.getPrimaryEvidence() != null && snpInDelEvidence.getPrimaryEvidence()
-                    && primaryEvidence != null && primaryEvidence != snpInDelEvidence) {
-                Map<String, Object> currentPrimaryParams = new HashMap<>();
-                currentPrimaryParams.put("snpInDelId", selectedAnalysisResultVariant.getSnpInDel().getId());
-                currentPrimaryParams.put("id", primaryEvidence.getId());
-                currentPrimaryParams.put("evidence", primaryEvidence.getEvidence());
-                currentPrimaryParams.put("evidenceType", primaryEvidence.getEvidenceType());
-                currentPrimaryParams.put("evidenceLevel", primaryEvidence.getEvidenceLevel());
-                currentPrimaryParams.put("evidence", primaryEvidence.getEvidence());
-                currentPrimaryParams.put("primaryEvidence", false);
-                currentPrimaryParams.put("createdAt", ConvertUtil.convertLocalTimeToUTC("00-00-00 00:00:00", "yyyy-MM-dd HH:mm:ss", null));
-                apiService.put("analysisResults/evidences", currentPrimaryParams, null, true);
-            }
-
-            if(snpInDelEvidence.getId() == null) {
-                apiService.post("analysisResults/evidences", params, null, true);
-            } else {
-                apiService.put("analysisResults/evidences", params, null, true);
-            }
-
-            //analysisDetailSNVController.showVariantList(analysisDetailSNVController.getCurrentPageIndex() +1 , 0);
-            setInterpretationTable();
-            setPastCases();
-            setEvidenceTable();
-            if(primaryEvidence != null &&
-                    primaryEvidence.getPrimaryEvidence() != null && primaryEvidence.getPrimaryEvidence()) {
-                if(primaryEvidence.getEvidenceLevel().equalsIgnoreCase("A")
-                        || primaryEvidence.getEvidenceLevel().equalsIgnoreCase("B")) {
-                    selectedAnalysisResultVariant.getSnpInDel().setExpertTier("T1");
-                } else if(primaryEvidence.getEvidenceLevel().equalsIgnoreCase("C")
-                        || primaryEvidence.getEvidenceLevel().equalsIgnoreCase("D")) {
-                    selectedAnalysisResultVariant.getSnpInDel().setExpertTier("T2");
-                } else if(primaryEvidence.getEvidenceLevel().equalsIgnoreCase("T3")) {
-                    selectedAnalysisResultVariant.getSnpInDel().setExpertTier("T3");
-                } else if(primaryEvidence.getEvidenceLevel().equalsIgnoreCase("T4")) {
-                    selectedAnalysisResultVariant.getSnpInDel().setExpertTier("T4");
-                }
-                setTier(selectedAnalysisResultVariant.getSnpInDel());
-            }
-        } catch (WebAPIException wae) {
-            wae.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            params.put("id", snpInDelEvidence.getId());
+            params.put("provider", snpInDelEvidence.getProvider());
+            params.put("evidenceType", snpInDelEvidence.getEvidenceType());
+            params.put("evidenceLevel", snpInDelEvidence.getEvidenceLevel());
+            params.put("primaryEvidence", snpInDelEvidence.getPrimaryEvidence());
+            params.put("evidence", snpInDelEvidence.getEvidence());
+            list.add(params);
         }
-
+        return list;
     }
 
     public void delete(SnpInDelEvidence snpInDelEvidence) {
-        try {
-
-            if(snpInDelEvidence.getId() != null) {
-                logger.info("server");
-                apiService.delete("analysisResults/evidences/" + snpInDelEvidence.getId());
-                setInterpretationTable();
-                setPastCases();
-                setEvidenceTable();
-            } else {
-                evidenceTableView.getItems().remove(snpInDelEvidence);
-            }
-        } catch (WebAPIException wae) {
-            wae.printStackTrace();
-        }
+        evidenceTableView.getItems().remove(snpInDelEvidence);
     }
 
 

@@ -16,7 +16,6 @@ import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.ServerFile;
 import ngeneanalysys.model.ServerFileInfo;
 import ngeneanalysys.service.APIService;
-import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;

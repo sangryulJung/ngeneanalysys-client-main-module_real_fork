@@ -582,7 +582,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         try {
             // Memo 데이터 API 요청
             //Map<String, Object> commentParamMap = new HashMap<>();
-            HttpClientResponse responseMemo = apiService.get("/analysisResults/snpInDelInterpretationLogs/" + selectedAnalysisResultVariant.getSnpInDel().getId() , null, null, false);
+            HttpClientResponse responseMemo = apiService.get("/analysisResults/snpInDels/" + selectedAnalysisResultVariant.getSnpInDel().getId() + "/snpInDelInterpretationLogs", null, null, false);
 
             // Flagging Comment 데이터 요청이 정상 요청된 경우 진행.
             SnpInDelInterpretationLogsList memoList = responseMemo.getObjectBeforeConvertResponseToJSON(SnpInDelInterpretationLogsList.class);
@@ -655,16 +655,16 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         paramMap.put("variant", analysisResultVariant);
 
         try {
-            HttpClientResponse response = apiService.get("/analysisResults/snpInDelTranscripts/" + analysisResultVariant.getSnpInDel().getId(), null, null, false);
+            HttpClientResponse response = apiService.get("/analysisResults/snpInDels/" + analysisResultVariant.getSnpInDel().getId() + "/snpInDelTranscripts", null, null, false);
             List<SnpInDelTranscript> snpInDelTranscripts = (List<SnpInDelTranscript>) response.getMultiObjectBeforeConvertResponseToJSON(SnpInDelTranscript.class, false);
             paramMap.put("snpInDelTranscripts", snpInDelTranscripts);
 
-            response = apiService.get("/analysisResults/snpInDelStatistics/" + analysisResultVariant.getSnpInDel().getId(), null, null, false);
+            response = apiService.get("/analysisResults/snpInDels/" + analysisResultVariant.getSnpInDel().getId() + "/snpInDelStatistics", null, null, false);
             VariantStatistics variantStatistics = response.getObjectBeforeConvertResponseToJSON(VariantStatistics.class);
             paramMap.put("variantStatistics", variantStatistics);
 
             response = apiService.get(
-                    "/analysisResults/snpInDelExtraInfos/" + analysisResultVariant.getSnpInDel().getId(), null, null, false);
+                    "/analysisResults/snpInDels/" + analysisResultVariant.getSnpInDel().getId() + "/snpInDelExtraInfos", null, null, false);
 
             List<SnpInDelExtraInfo> item = (List<SnpInDelExtraInfo>)response.getMultiObjectBeforeConvertResponseToJSON(SnpInDelExtraInfo.class, false);
             paramMap.put("detail", item);
