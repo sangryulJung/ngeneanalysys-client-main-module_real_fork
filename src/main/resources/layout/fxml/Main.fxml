@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
@@ -16,7 +23,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="mainGridPane" maxHeight="-Infinity" prefHeight="700.0" prefWidth="1280.0" style="-fx-background-color: white;" styleClass="layoutGrid" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.MainController">
+<GridPane fx:id="mainGridPane" maxHeight="-Infinity" prefHeight="700.0" prefWidth="1280.0" style="-fx-background-color: white;" styleClass="layoutGrid" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.MainController">
    <rowConstraints>
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" vgrow="ALWAYS" />
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" vgrow="ALWAYS" />
@@ -53,12 +60,12 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="238.0" styleClass="bg_main_header_right2" HBox.hgrow="NEVER">
                      <children>
-                        <Label id="user_image_icon">
+                        <Label id="user_image_icon" alignment="CENTER_RIGHT">
                            <HBox.margin>
                               <Insets right="6.0" />
                            </HBox.margin>
                         </Label>
-                        <Label fx:id="loginUserName" alignment="TOP_LEFT" prefWidth="129.0" text="Login User Account" textFill="WHITE">
+                        <Label fx:id="loginUserName" alignment="CENTER_RIGHT" text="Login User Account" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
@@ -70,12 +77,12 @@
                               <String fx:value="user_name" />
                            </styleClass>
                         </Label>
-                        <MenuBar fx:id="userMenuBar" maxHeight="20.0" maxWidth="32.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="32.0">
+                        <MenuBar fx:id="userMenuBar" maxHeight="20.0" maxWidth="25.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="25.0">
                           <menus>
                             <Menu fx:id="userSystemMenu" mnemonicParsing="false" />
                           </menus>
                            <HBox.margin>
-                              <Insets bottom="6.0" />
+                              <Insets bottom="10.0" />
                            </HBox.margin>
                            <cursor>
                               <Cursor fx:constant="HAND" />

@@ -11,7 +11,7 @@
 }
 
 #mainHeader #userMenuBar .menu {
-	-fx-background-image:url('../images/btn_user_set.png');
+	-fx-background-image:url('../images/renewal/btn_user_set.png');
 	-fx-background-color:transparent ;
 	-fx-background-repeat: no-repeat;
 	-fx-background-position: center;
