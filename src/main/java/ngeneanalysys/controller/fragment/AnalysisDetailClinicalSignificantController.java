@@ -142,6 +142,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
         }
     }
 
+    
     private void setGermlineArea() {
         if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicity() != null) {
             for(Node node : predictionArea.getChildren()) {
