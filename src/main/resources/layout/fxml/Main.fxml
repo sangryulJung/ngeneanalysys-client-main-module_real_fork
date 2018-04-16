@@ -77,7 +77,7 @@
                               <String fx:value="user_name" />
                            </styleClass>
                         </Label>
-                        <MenuBar fx:id="userMenuBar" maxHeight="20.0" maxWidth="25.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="25.0">
+                        <MenuBar fx:id="userMenuBar" maxHeight="20.0" maxWidth="30.0" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="30.0">
                           <menus>
                             <Menu fx:id="userSystemMenu" mnemonicParsing="false" />
                           </menus>
