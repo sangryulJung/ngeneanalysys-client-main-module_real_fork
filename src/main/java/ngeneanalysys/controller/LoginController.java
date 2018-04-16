@@ -66,6 +66,24 @@ public class LoginController extends BaseStageController {
 	}
 	
 	@FXML
+	public void changeIdIcon(KeyEvent ke) {
+		if(inputLoginID.getText().isEmpty()) {
+			inputLoginID.setStyle("-fx-background-image:url('layout/images/renewal/login_user_icon.png')");
+		}else {
+			inputLoginID.setStyle("-fx-background-image:url('layout/images/renewal/login_user_icon_on.png')");
+		}		
+	}
+	
+	@FXML
+	public void changePwIcon(KeyEvent ke) {
+		if(inputPassword.getText().isEmpty()) {
+			inputPassword.setStyle("-fx-background-image:url('layout/images/renewal/login_password_icon.png')");
+		}else {
+			inputPassword.setStyle("-fx-background-image:url('layout/images/renewal/login_password_icon_on.png')");
+		}		
+	}
+	
+	@FXML
 	public void checkValidatePassword(KeyEvent ke) {
 		boolean valid = validatePassword();
 		if(ke.getCode().equals(KeyCode.ENTER) && valid && validateLoginID()) {
