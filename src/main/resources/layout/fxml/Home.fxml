@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.canvas.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
@@ -22,7 +16,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane fx:id="homeWrapper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="555.0" minWidth="1200.0" prefHeight="555.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.HomeController">
+<GridPane fx:id="homeWrapper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="555.0" minWidth="1200.0" prefHeight="555.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.HomeController">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="387.0" />
@@ -163,12 +157,12 @@
                   </Label>
                </children>
             </HBox>
-            <Label fx:id="dateLabel" styleClass="font_size_12" text="2018. 03. 04" wrapText="true">
+            <Label fx:id="dateLabel" styleClass="font_size_12" wrapText="true">
                <VBox.margin>
                   <Insets bottom="10.0" top="10.0" />
                </VBox.margin>
             </Label>
-            <Label fx:id="noticeContentsLabel" alignment="TOP_LEFT" maxHeight="100.0" maxWidth="330.0" minHeight="100.0" prefHeight="100.0" styleClass="font_size_12" text="Based on the NGS laboratory facility and bioinformatics technology, we are focusing on core technology capacity in the IVD field including MDx, CDx and liquid biopsy, by conducting cooperative research &amp; development with major hospitals and companies in Korea and overseas." wrapText="true">
+            <Label fx:id="noticeContentsLabel" alignment="TOP_LEFT" maxHeight="100.0" maxWidth="330.0" minHeight="100.0" prefHeight="100.0" styleClass="font_size_12" wrapText="true">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -178,12 +172,7 @@
                   <RadioButton mnemonicParsing="false">
                      <toggleGroup>
                         <ToggleGroup fx:id="newsTipGroup" />
-                     </toggleGroup>
-                  </RadioButton>
-                  <RadioButton mnemonicParsing="false" toggleGroup="$newsTipGroup" />
-                  <RadioButton mnemonicParsing="false" toggleGroup="$newsTipGroup" />
-                  <RadioButton mnemonicParsing="false" toggleGroup="$newsTipGroup" />
-                  <RadioButton mnemonicParsing="false" toggleGroup="$newsTipGroup" />
+                     </toggleGroup></RadioButton>
                </children>
             </HBox>
          </children>

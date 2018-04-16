@@ -63,6 +63,9 @@ public class HomeController extends SubPaneController{
     private Label noticeTitleLabel;*/
 
     @FXML
+    private HBox toggleGroupHBox;
+
+    @FXML
     private Label dateLabel;
 
     @FXML
@@ -174,9 +177,21 @@ public class HomeController extends SubPaneController{
 
              noticeList =response.getObjectBeforeConvertResponseToJSON(PagedNotice.class).getResult();
 
+             if(toggleGroupHBox.getChildren() != null && !toggleGroupHBox.getChildren().isEmpty()) {
+                 toggleGroupHBox.getChildren().clear();
+                 newsTipGroup.getToggles().clear();
+             }
+
              if(noticeList != null && !noticeList.isEmpty()) {
-                    noticeLabelSetting(0);
-                    newsTipGroup.selectToggle(newsTipGroup.getToggles().get(0));
+
+                 for(int i = 0 ; i < noticeList.size(); i++) {
+                     RadioButton radioButton = new RadioButton();
+                     radioButton.setToggleGroup(newsTipGroup);
+                     toggleGroupHBox.getChildren().add(radioButton);
+                 }
+
+                noticeLabelSetting(0);
+                newsTipGroup.selectToggle(newsTipGroup.getToggles().get(0));
              }
 
         } catch (WebAPIException wae) {
@@ -207,8 +222,8 @@ public class HomeController extends SubPaneController{
                     textLabel, 1);
             hddStatusTier.start();
 
-            int totalCount = (int)(storageUsage.getTotalSpace() / 10737418240L);
-            double available = (double)storageUsage.getAvailableSampleCount() / totalCount;
+            int totalCount = (int)(storageUsage.getAvailableSampleCount() + storageUsage.getCurrentSampleCount());
+            double available = (double)(totalCount - storageUsage.getAvailableSampleCount()) / totalCount;
             String label = storageUsage.getAvailableSampleCount() + " / " + totalCount + " Samples";
             AnimationTimer availableTier = new HddStatusTimer(availableCanvas.getGraphicsContext2D(), available, "Available",
                     label, 1);

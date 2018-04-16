@@ -126,6 +126,8 @@ public class MainController extends BaseStageController {
 
     private Map<String, Object> basicInformationMap = new HashMap<>();
 
+    private Queue<Map<String, Object>> uploadListQueue = new LinkedList<>();
+
     private MaskerPane contentsMaskerPane = new MaskerPane();
 
     public void setContentsMaskerPaneVisible(boolean flag) {
@@ -790,22 +792,40 @@ public class MainController extends BaseStageController {
      * 분석 요청 업로드 작업 실행
      */
     public void runningAnalysisRequestUpload(List<AnalysisFile> uploadFileData, List<File> fileList, Run run) {
-        try {
-            FXMLLoader loader = mainApp.load(FXMLConstants.ANALYSIS_SAMPLE_UPLOAD_PROGRESS_TASK);
-            HBox box = loader.load();
-            this.analysisSampleUploadProgressTaskController = loader.getController();
-            this.analysisSampleUploadProgressTaskController.setMainController(this);
-            if(uploadFileData != null && !uploadFileData.isEmpty()) {
-                Map<String,Object> param = new HashMap<>();
+        if (uploadFileData != null && !uploadFileData.isEmpty()) {
+            Map<String, Object> param = new HashMap<>();
+            param.put("fileMap", uploadFileData);
+            param.put("fileList", fileList);
+            param.put("run", run);
+            this.analysisSampleUploadProgressTaskController.setParamMap(param);
+            uploadListQueue.add(param);
+            if(this.analysisSampleUploadProgressTaskController == null) {
+                runUpload();
+            }
+        }
+    }
+
+    public void runUpload() {
+        if(!uploadListQueue.isEmpty()) {
+            try {
+                FXMLLoader loader = mainApp.load(FXMLConstants.ANALYSIS_SAMPLE_UPLOAD_PROGRESS_TASK);
+                HBox box = loader.load();
+                this.analysisSampleUploadProgressTaskController = loader.getController();
+                this.analysisSampleUploadProgressTaskController.setMainController(this);
+                Map<String, Object> param = uploadListQueue.poll();
+            /*if (uploadFileData != null && !uploadFileData.isEmpty()) {
+                Map<String, Object> param = new HashMap<>();
                 param.put("fileMap", uploadFileData);
                 param.put("fileList", fileList);
                 param.put("run", run);
                 this.analysisSampleUploadProgressTaskController.setParamMap(param);
+            }*/
+                this.analysisSampleUploadProgressTaskController.setParamMap(param);
+                this.analysisSampleUploadProgressTaskController.show(box);
+            } catch (IOException e) {
+                DialogUtil.error("ERROR", e.getMessage(), getMainApp().getPrimaryStage(),
+                        false);
             }
-            this.analysisSampleUploadProgressTaskController.show(box);
-        } catch (IOException e) {
-            DialogUtil.error("ERROR", e.getMessage(), getMainApp().getPrimaryStage(),
-                    false);
         }
     }
 
@@ -829,6 +849,7 @@ public class MainController extends BaseStageController {
     public void clearProgressTaskArea() {
         this.analysisSampleUploadProgressTaskController = null;
         progressTaskContentArea.getChildren().removeAll(progressTaskContentArea.getChildren());
+        runUpload();
     }
 
     /**
