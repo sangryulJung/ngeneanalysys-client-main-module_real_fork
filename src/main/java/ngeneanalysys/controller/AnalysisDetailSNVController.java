@@ -97,6 +97,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     private Button filterAddBtn;
 
     @FXML
+    private Label viewAppliedFiltersLabel;
+
+    @FXML
     private Label totalLabel;
     @FXML
     private Label searchCountLabel;
@@ -196,6 +199,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         apiService = APIService.getInstance();
 
         filterAddBtn.setDisable(true);
+        viewAppliedFiltersLabel.setDisable(true);
 
         sample = (Sample)paramMap.get("sample");
         panel = (Panel)paramMap.get("panel");
@@ -304,7 +308,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         filterComboBox.setConverter(new ComboBoxConverter());
         filterComboBox.getItems().removeAll(filterComboBox.getItems());
         totalLabel.setText("Showing " + sample.getAnalysisResultSummary().getAllVariantCount());
-        filterComboBox.getItems().add(new ComboBoxItem("Total", "Total : " + sample.getAnalysisResultSummary().getAllVariantCount()));
+        filterComboBox.getItems().add(new ComboBoxItem("Total", "Total"));
         if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
             filterComboBox.getItems().add(new ComboBoxItem("Tier 1", "Tier I"));
             setStandardFilter("Tier 1", "tier", "T1");
@@ -315,7 +319,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             filterComboBox.getItems().add(new ComboBoxItem("Tier 4", "Tier IV"));
             setStandardFilter("Tier 4", "tier", "T4");
         } else if(panel.getAnalysisType().equalsIgnoreCase("GERMLINE")) {
-            filterComboBox.getItems().add(new ComboBoxItem("Pathogenic", "Pathogenic : " + sample.getAnalysisResultSummary().getLevel1VariantCount()));
+            filterComboBox.getItems().add(new ComboBoxItem("Pathogenic", "Pathogenic"));
             setStandardFilter("Pathogenic", "pathogenicity", "P");
             filterComboBox.getItems().add(new ComboBoxItem("Likely Pathogenic", "Likely Pathogenic"));
             setStandardFilter("Likely Pathogenic", "pathogenicity", "LP");
