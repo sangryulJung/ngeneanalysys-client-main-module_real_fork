@@ -410,6 +410,7 @@ public class MainController extends BaseStageController {
      */
     public void initDefaultTopMenu(String role) {
         if(UserTypeBit.ADMIN.name().equalsIgnoreCase(role)) {
+            managerBtn.setVisible(true);
             topMenus = new TopMenu[4];
             topMenuContent = new Node[topMenus.length];
             TopMenu menu = new TopMenu();
@@ -419,6 +420,7 @@ public class MainController extends BaseStageController {
             menu.setStaticMenu(true);
             topMenus[3] = menu;
         } else {
+            managerBtn.setVisible(false);
             topMenus = new TopMenu[3];
             topMenuContent = new Node[topMenus.length];
         }
@@ -797,7 +799,6 @@ public class MainController extends BaseStageController {
             param.put("fileMap", uploadFileData);
             param.put("fileList", fileList);
             param.put("run", run);
-            this.analysisSampleUploadProgressTaskController.setParamMap(param);
             uploadListQueue.add(param);
             if(this.analysisSampleUploadProgressTaskController == null) {
                 runUpload();
@@ -825,6 +826,7 @@ public class MainController extends BaseStageController {
             } catch (IOException e) {
                 DialogUtil.error("ERROR", e.getMessage(), getMainApp().getPrimaryStage(),
                         false);
+                e.printStackTrace();
             }
         }
     }

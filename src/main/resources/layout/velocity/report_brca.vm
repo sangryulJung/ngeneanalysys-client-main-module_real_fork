@@ -213,7 +213,12 @@
 									#foreach($variant in $contents.variantList)
 										#if($variant.snpInDel.includedInReport == 'Y')
 											<fo:block padding="1mm">
-												<![CDATA[$variant.snpInDel.genomicCoordinate.gene]]>,  <![CDATA[$variant.snpInDel.snpInDelExpression.ntChange]]>, <![CDATA[$variant.snpInDel.snpInDelExpression.aaChange]]>, <![CDATA[$variant.snpInDel.snpInDelExpression.zygosity]]>
+												<![CDATA[$variant.snpInDel.genomicCoordinate.gene]]>,  <![CDATA[$variant.snpInDel.snpInDelExpression.ntChange]]>, <![CDATA[$variant.snpInDel.snpInDelExpression.aaChange]]>,
+												#if($contents.sampleSource && $contents.sampleSource == "FFPE")
+												VAF $variant.snpInDel.readInfo.alleleFraction%
+												#else
+												<![CDATA[$variant.snpInDel.snpInDelExpression.zygosity]]>
+												#end
 											</fo:block>
 										#end	
 									#end
