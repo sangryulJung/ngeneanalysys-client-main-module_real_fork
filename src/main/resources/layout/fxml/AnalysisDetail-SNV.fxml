@@ -74,7 +74,7 @@
                   </ComboBox>
                   <VBox alignment="BOTTOM_CENTER" prefHeight="237.0" prefWidth="130.0">
                      <children>
-                        <Button fx:id="filterAddBtn" alignment="BOTTOM_CENTER" mnemonicParsing="false" prefHeight="25.0" styleClass="font_size_13" text="Variant Fiilter">
+                        <Button fx:id="filterAddBtn" alignment="BOTTOM_CENTER" mnemonicParsing="false" onAction="#showFilter" prefHeight="25.0" styleClass="font_size_13" text="Variant Fiilter">
                            <VBox.margin>
                               <Insets top="20.0" />
                            </VBox.margin>
@@ -82,7 +82,7 @@
                               <Insets />
                            </opaqueInsets>
                         </Button>
-                        <Label disable="true" styleClass="font_size_13" text="View applied filters" textFill="WHITE">
+                        <Label style="-fx-cursor: hand;" styleClass="font_size_13" text="View applied filters" textFill="WHITE">
                            <VBox.margin>
                               <Insets top="5.0" />
                            </VBox.margin>

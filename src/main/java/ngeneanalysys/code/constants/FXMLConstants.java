@@ -188,4 +188,6 @@ public class FXMLConstants {
 	public static final String ANALYSIS_DETAIL_DETAIL_SUB_INFO = "/layout/fxml/variantDetail/DetailSubInfo.fxml";
 
 	public static final String ANALYSIS_DETAIL_IN_SILICO_PREDICTIONS = "/layout/fxml/variantDetail/InSilicoPredictions.fxml";
+
+	public static final String ANALYSIS_DETAIL_VARIANT_FILTER = "/layout/fxml/VariantFilter.fxml";
 }
