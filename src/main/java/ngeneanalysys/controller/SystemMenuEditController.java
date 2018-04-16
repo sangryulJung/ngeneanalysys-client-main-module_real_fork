@@ -207,7 +207,7 @@ public class SystemMenuEditController extends SubPaneController {
                 }
 
             } else {
-                DialogUtil.alert("Input Error", "Please current enter the password",
+                DialogUtil.alert("Input Error", "Please enter the current password",
                         dialogStage, true);
                 currentPasswordField.requestFocus();
             }
