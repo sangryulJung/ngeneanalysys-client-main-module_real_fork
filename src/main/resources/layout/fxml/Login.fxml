@@ -40,7 +40,7 @@
    <children>
       <VBox fx:id="mainContent" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="370.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <children>
-            <TextField fx:id="inputLoginID" onKeyPressed="#checkValidateLoginID" pickOnBounds="false" promptText="User Name" />
+            <TextField fx:id="inputLoginID" onKeyPressed="#checkValidateLoginID" onKeyReleased="#changeIdIcon" pickOnBounds="false" promptText="User Name" />
             <Label fx:id="labelLoginID" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" styleClass="title_warning" textFill="WHITE" visible="false">
                <font>
                   <Font size="10.0" />
@@ -49,7 +49,7 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </Label>
-            <PasswordField fx:id="inputPassword" maxHeight="40.0" minHeight="40.0" onKeyPressed="#checkValidatePassword" prefHeight="40.0" promptText="Password" />
+            <PasswordField fx:id="inputPassword" maxHeight="40.0" minHeight="40.0" onKeyPressed="#checkValidatePassword" onKeyReleased="#changePwIcon" prefHeight="40.0" promptText="Password" />
             <Label fx:id="labelPassword" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" styleClass="title_warning" textFill="WHITE" visible="false">
                <font>
                   <Font size="10.0" />
