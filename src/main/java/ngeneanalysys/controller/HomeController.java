@@ -9,11 +9,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Label;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 import ngeneanalysys.animaition.HddStatusTimer;
@@ -43,6 +44,9 @@ import java.util.concurrent.CompletableFuture;
 public class HomeController extends SubPaneController{
     private static Logger logger = LoggerUtil.getLogger();
 
+    @FXML
+	private Button buttonUpload;
+    
     @FXML
     private Canvas hddCanvas;
 
@@ -130,6 +134,17 @@ public class HomeController extends SubPaneController{
             e.printStackTrace();
         }
         getMainController().setMainMaskerPane(false);
+    }
+    
+    
+    @FXML
+    public void newAnalysisMouseEnter() {
+    	buttonUpload.setStyle("-fx-background-image:url('layout/images/renewal/plus-symbol-on.png'); -fx-font-family: \"Noto Sans KR Bold\"");
+    }
+    
+    @FXML
+    public void newAnalysisMouseExit() {
+    	buttonUpload.setStyle("-fx-background-image:url('layout/images/renewal/plus-symbol.png'); -fx-font-family: \"Noto Sans KR Bold\"");
     }
 
     private void initRunListLayout() {

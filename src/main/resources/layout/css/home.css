@@ -78,6 +78,7 @@
     -fx-background-size : 24 24;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center 120;
+    -fx-font-family: "Noto Sans KR Bold"; 
 }
 
 .run_box {
