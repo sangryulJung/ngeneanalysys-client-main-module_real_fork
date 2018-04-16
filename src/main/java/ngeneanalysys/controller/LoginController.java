@@ -81,7 +81,6 @@ public class LoginController extends BaseStageController {
 	@FXML
 	public void changePwIcon(KeyEvent ke) {
 		if (Toolkit.getDefaultToolkit().getLockingKeyState(java.awt.event.KeyEvent.VK_CAPS_LOCK) ) {
-			System.out.println(KeyCode.CAPS);
 			CapsLock.setStyle("-fx-background-image:url('layout/images/renewal/upper_case_icon.png');-fx-background-repeat: no-repeat;-fx-background-position: center;");
 		}else {
 			CapsLock.setStyle("");
