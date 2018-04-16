@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
 <?import java.lang.*?>
 <?import java.net.*?>
 <?import javafx.geometry.*?>
@@ -121,6 +122,20 @@
                   <String fx:value="font_gray" />
                   <String fx:value="font_size_12" />
                </styleClass>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+         <children>
+            <Label alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="72.0" style="-fx-font-family: Noto Sans KR Regular;" text="NGeneBio" textAlignment="RIGHT" textFill="WHITE">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="225.0" text="Innovative &amp; Next Generation Biotechnology" textAlignment="RIGHT" textFill="WHITE">
+               <font>
+                  <Font size="11.0" />
+               </font>
             </Label>
          </children>
       </HBox>      

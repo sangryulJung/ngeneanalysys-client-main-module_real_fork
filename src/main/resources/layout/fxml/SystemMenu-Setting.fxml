@@ -19,13 +19,13 @@
          <children>
             <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1">
                <children>
-                  <Label styleClass="font_size_11" text="URL" />
+                  <Label prefHeight="14.0" prefWidth="42.0" styleClass="font_size_11" text="URL" />
                   <TextField fx:id="serverURLTextField" prefWidth="330.0" promptText="http://www.ngenebio.com">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
                   </TextField>
-                  <Button fx:id="serverURLConfirmButton" mnemonicParsing="false" onAction="#confirmServerURL" prefWidth="65.0" styleClass="btn_setting_save" text="Confirm">
+                  <Button fx:id="serverURLConfirmButton" mnemonicParsing="false" onAction="#confirmServerURL" prefHeight="30.0" prefWidth="91.0" styleClass="btn_setting_save" text="Confirm">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
@@ -54,7 +54,7 @@
                   </ComboBox>
                </children>
             </HBox>
-            <Label text="Sample Search">
+            <Label text="Refresh">
                <styleClass>
                   <String fx:value="txt_black" />
                   <String fx:value="weight_bold" />
