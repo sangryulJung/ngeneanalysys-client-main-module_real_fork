@@ -122,8 +122,6 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
     private Panel panel;
 
-    private SnpInDelEvidence primaryEvidence;
-
     /**
      * @param analysisDetailSNVController AnalysisDetailSNVController
      */
@@ -191,7 +189,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     class EditingCell extends TableCell<SnpInDelEvidence, String> {
         private TextField textField = null;
 
-        public EditingCell() {}
+        private EditingCell() {}
 
         @Override
         public void startEdit() {
@@ -264,9 +262,9 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
     private class TypeComboBoxCell extends TableCell<SnpInDelEvidence, String> {
         private ComboBox<String> comboBox = new ComboBox<>();
-        boolean setting = false;
+        /*boolean setting = false;*/
 
-        public TypeComboBoxCell() {
+        private TypeComboBoxCell() {
             comboBox.getSelectionModel().selectedItemProperty().addListener((ov, t, t1) -> {
                 SnpInDelEvidence snpInDelEvidence = TypeComboBoxCell.this.getTableView().getItems().get(
                         TypeComboBoxCell.this.getIndex());
@@ -310,7 +308,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         private ComboBox<String> comboBox = new ComboBox<>();
         boolean setting = false;
 
-        public ProviderComboBoxCell() {
+        private ProviderComboBoxCell() {
             comboBox.getSelectionModel().selectedItemProperty().addListener((ov, t, t1) -> {
                 SnpInDelEvidence snpInDelEvidence = ProviderComboBoxCell.this.getTableView().getItems().get(
                         ProviderComboBoxCell.this.getIndex());
@@ -352,7 +350,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         private ComboBox<String> comboBox = new ComboBox<>();
         boolean setting = false;
 
-        public EvidenceLevelComboBoxCell() {
+        private EvidenceLevelComboBoxCell() {
             comboBox.getSelectionModel().selectedItemProperty().addListener((ov, t, t1) -> {
                 SnpInDelEvidence snpInDelEvidence = EvidenceLevelComboBoxCell.this.getTableView().getItems().get(
                         EvidenceLevelComboBoxCell.this.getIndex());
@@ -402,7 +400,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         private RadioButton radioButton = new RadioButton();
         boolean setting = false;
 
-        public PrimaryRadioButtonCell() {
+        private PrimaryRadioButtonCell() {
             radioButton.selectedProperty().addListener((ob, ov, nv) -> {
                 if(PrimaryRadioButtonCell.this.getIndex() != -1 && PrimaryRadioButtonCell.this.getIndex() < evidenceTableView.getItems().size()) {
                     SnpInDelEvidence snpInDelEvidence = PrimaryRadioButtonCell.this.getTableView().getItems().get(
@@ -494,14 +492,6 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
                 interpretationTableView.getItems().addAll(FXCollections.observableArrayList(list));
 
-                Optional<SnpInDelEvidence> snpInDelEvidence = list.stream().filter(item -> item.getPrimaryEvidence()).findFirst();
-                if(snpInDelEvidence.isPresent()) {
-                    primaryEvidence = snpInDelEvidence.get();
-                } else {
-                    primaryEvidence = null;
-                }
-            } else {
-                primaryEvidence = null;
             }
 
         } catch (WebAPIException wae) {
@@ -629,6 +619,8 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                 response = apiService.post("/analysisResults/snpInDels/"
                         + selectedAnalysisResultVariant.getSnpInDel().getId() + "/evidences", params, null, true);
                 logger.info(response.getContentString());
+                setEvidenceTable();
+                setPastCases();
             } catch (WebAPIException wae) {
                 DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                         getMainApp().getPrimaryStage(), true);
@@ -651,7 +643,6 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         for(SnpInDelEvidence snpInDelEvidence : evidenceTableView.getItems()) {
             Map<String, Object> params = new HashMap<>();
 
-            //params.put("id", snpInDelEvidence.getId());
             params.put("provider", snpInDelEvidence.getProvider());
             params.put("evidenceType", snpInDelEvidence.getEvidenceType());
             params.put("evidenceLevel", snpInDelEvidence.getEvidenceLevel());

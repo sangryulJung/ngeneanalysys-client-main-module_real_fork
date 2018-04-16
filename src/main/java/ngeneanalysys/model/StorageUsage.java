@@ -8,6 +8,14 @@ public class StorageUsage {
     private Long totalSpace;
     private Long freeSpace;
     private Long availableSampleCount;
+    private Long currentSampleCount;
+
+    /**
+     * @return currentSampleCount
+     */
+    public Long getCurrentSampleCount() {
+        return currentSampleCount;
+    }
 
     /**
      * @return totalSpace

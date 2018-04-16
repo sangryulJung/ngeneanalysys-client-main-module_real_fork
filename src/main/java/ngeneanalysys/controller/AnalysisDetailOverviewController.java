@@ -38,8 +38,8 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
     @FXML
     private Label tierOneGenesCountLabel;
 
-    @FXML
-    private Label tierOneTherapeuticLabel;
+    /*@FXML
+    private Label tierOneTherapeuticLabel;*/
 
     @FXML
     private Label tierTwoVariantsCountLabel;
@@ -47,8 +47,8 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
     @FXML
     private Label tierTwoGenesCountLabel;
 
-    @FXML
-    private Label tierTwoTherapeuticLabel;
+    /*@FXML
+    private Label tierTwoTherapeuticLabel;*/
 
     @FXML
     private Label tierThreeVariantsCountLabel;
@@ -240,8 +240,8 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                 });
 
                 //long count = snpInDelInterpretations.size();
-                long count = countTherapeutic(snpInDelInterpretations);
-                tierOneTherapeuticLabel.setText(String.valueOf(count));
+                //long count = countTherapeutic(snpInDelInterpretations);
+                //tierOneTherapeuticLabel.setText(String.valueOf(count));
             }
 
             if(tierTwo != null) {
@@ -265,8 +265,8 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
 
                 });
 
-                long count = countTherapeutic(snpInDelInterpretations);
-                tierTwoTherapeuticLabel.setText(String.valueOf(count));
+                //long count = countTherapeutic(snpInDelInterpretations);
+                //tierTwoTherapeuticLabel.setText(String.valueOf(count));
             }
 
             if(tierThree != null) {

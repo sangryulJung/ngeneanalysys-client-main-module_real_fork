@@ -9,11 +9,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Label;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 import ngeneanalysys.animaition.HddStatusTimer;
@@ -44,6 +45,9 @@ public class HomeController extends SubPaneController{
     private static Logger logger = LoggerUtil.getLogger();
 
     @FXML
+	private Button buttonUpload;
+    
+    @FXML
     private Canvas hddCanvas;
 
     @FXML
@@ -57,6 +61,9 @@ public class HomeController extends SubPaneController{
 
     /*@FXML
     private Label noticeTitleLabel;*/
+
+    @FXML
+    private HBox toggleGroupHBox;
 
     @FXML
     private Label dateLabel;
@@ -131,6 +138,17 @@ public class HomeController extends SubPaneController{
         }
         getMainController().setMainMaskerPane(false);
     }
+    
+    
+    @FXML
+    public void newAnalysisMouseEnter() {
+    	buttonUpload.setStyle("-fx-background-image:url('layout/images/renewal/plus-symbol-on.png'); -fx-font-family: \"Noto Sans KR Bold\"");
+    }
+    
+    @FXML
+    public void newAnalysisMouseExit() {
+    	buttonUpload.setStyle("-fx-background-image:url('layout/images/renewal/plus-symbol.png'); -fx-font-family: \"Noto Sans KR Bold\"");
+    }
 
     private void initRunListLayout() {
         final int maxRunNumberOfPage = 3;
@@ -159,9 +177,21 @@ public class HomeController extends SubPaneController{
 
              noticeList =response.getObjectBeforeConvertResponseToJSON(PagedNotice.class).getResult();
 
+             if(toggleGroupHBox.getChildren() != null && !toggleGroupHBox.getChildren().isEmpty()) {
+                 toggleGroupHBox.getChildren().clear();
+                 newsTipGroup.getToggles().clear();
+             }
+
              if(noticeList != null && !noticeList.isEmpty()) {
-                    noticeLabelSetting(0);
-                    newsTipGroup.selectToggle(newsTipGroup.getToggles().get(0));
+
+                 for(int i = 0 ; i < noticeList.size(); i++) {
+                     RadioButton radioButton = new RadioButton();
+                     radioButton.setToggleGroup(newsTipGroup);
+                     toggleGroupHBox.getChildren().add(radioButton);
+                 }
+
+                noticeLabelSetting(0);
+                newsTipGroup.selectToggle(newsTipGroup.getToggles().get(0));
              }
 
         } catch (WebAPIException wae) {
@@ -192,8 +222,8 @@ public class HomeController extends SubPaneController{
                     textLabel, 1);
             hddStatusTier.start();
 
-            int totalCount = (int)(storageUsage.getTotalSpace() / 10737418240L);
-            double available = (double)storageUsage.getAvailableSampleCount() / totalCount;
+            int totalCount = (int)(storageUsage.getAvailableSampleCount() + storageUsage.getCurrentSampleCount());
+            double available = (double)(totalCount - storageUsage.getAvailableSampleCount()) / totalCount;
             String label = storageUsage.getAvailableSampleCount() + " / " + totalCount + " Samples";
             AnimationTimer availableTier = new HddStatusTimer(availableCanvas.getGraphicsContext2D(), available, "Available",
                     label, 1);

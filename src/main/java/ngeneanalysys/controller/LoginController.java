@@ -1,6 +1,7 @@
 package ngeneanalysys.controller;
 
 import javafx.fxml.FXML;
+import java.awt.Toolkit;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -33,6 +34,9 @@ import java.util.Map;
 public class LoginController extends BaseStageController {
 	private static final Logger logger = LoggerUtil.getLogger();
 
+	@FXML
+	private Label CapsLock;
+	
 	/** 아이디 input 객체 */
 	@FXML
 	private TextField inputLoginID;
@@ -76,6 +80,12 @@ public class LoginController extends BaseStageController {
 	
 	@FXML
 	public void changePwIcon(KeyEvent ke) {
+		if (Toolkit.getDefaultToolkit().getLockingKeyState(java.awt.event.KeyEvent.VK_CAPS_LOCK) ) {
+			System.out.println(KeyCode.CAPS);
+			CapsLock.setStyle("-fx-background-image:url('layout/images/renewal/upper_case_icon.png');-fx-background-repeat: no-repeat;-fx-background-position: center;");
+		}else {
+			CapsLock.setStyle("");
+		}
 		if(inputPassword.getText().isEmpty()) {
 			inputPassword.setStyle("-fx-background-image:url('layout/images/renewal/login_password_icon.png')");
 		}else {

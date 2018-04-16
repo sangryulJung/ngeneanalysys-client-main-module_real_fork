@@ -49,7 +49,18 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </Label>
-            <PasswordField fx:id="inputPassword" maxHeight="40.0" minHeight="40.0" onKeyPressed="#checkValidatePassword" onKeyReleased="#changePwIcon" prefHeight="40.0" promptText="Password" />
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <PasswordField fx:id="inputPassword" maxHeight="40.0" minHeight="40.0" onKeyPressed="#checkValidatePassword" onKeyReleased="#changePwIcon" prefHeight="40.0" promptText="Password" />
+                  <Label fx:id="CapsLock" prefHeight="32.0" prefWidth="45.0" />
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets left="43.0" />
+               </padding>
+            </HBox>
             <Label fx:id="labelPassword" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" styleClass="title_warning" textFill="WHITE" visible="false">
                <font>
                   <Font size="10.0" />
