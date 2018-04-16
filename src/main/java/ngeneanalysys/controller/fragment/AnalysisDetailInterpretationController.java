@@ -149,7 +149,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
         ///////////////////////////////////////////////////
         evidenceTypeColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getEvidenceType()));
-        evidenceTypeColumn.setCellFactory(item -> new ProviderComboBoxCell());
+        evidenceTypeColumn.setCellFactory(item -> new TypeComboBoxCell());
 
         evidenceColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getEvidenceLevel()));
         evidenceColumn.setCellFactory(item -> new EvidenceLevelComboBoxCell());
@@ -621,12 +621,14 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
     @FXML
     public void saveInterpretation() {
-        if(evidenceTableView.getItems() != null) {
+        if(evidenceTableView.getItems() != null && !evidenceTableView.getItems().isEmpty()) {
+            HttpClientResponse response;
             try {
                 Map<String, Object> params = new HashMap<>();
-                params.put("SnpInDelEvidenceCreateRequests", returnEvidenceMap());
-                apiService.post("/analysisResults/snpInDels/"
+                params.put("snpInDelEvidenceCreateRequests", returnEvidenceMap());
+                response = apiService.post("/analysisResults/snpInDels/"
                         + selectedAnalysisResultVariant.getSnpInDel().getId() + "/evidences", params, null, true);
+                logger.info(response.getContentString());
             } catch (WebAPIException wae) {
                 DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                         getMainApp().getPrimaryStage(), true);
@@ -649,11 +651,11 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         for(SnpInDelEvidence snpInDelEvidence : evidenceTableView.getItems()) {
             Map<String, Object> params = new HashMap<>();
 
-            params.put("id", snpInDelEvidence.getId());
+            //params.put("id", snpInDelEvidence.getId());
             params.put("provider", snpInDelEvidence.getProvider());
             params.put("evidenceType", snpInDelEvidence.getEvidenceType());
             params.put("evidenceLevel", snpInDelEvidence.getEvidenceLevel());
-            params.put("primaryEvidence", snpInDelEvidence.getPrimaryEvidence());
+            params.put("primaryEvidence", snpInDelEvidence.getPrimaryEvidence() != null ? snpInDelEvidence.getPrimaryEvidence() : false);
             params.put("evidence", snpInDelEvidence.getEvidence());
             list.add(params);
         }
