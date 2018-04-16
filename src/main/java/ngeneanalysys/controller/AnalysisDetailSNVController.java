@@ -73,9 +73,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     private VBox filterArea;
 
     @FXML
-    private Label totalVariantCountLabel;
-
-    @FXML
     private TitledPane variantDetailTitledPane;
 
     @FXML
@@ -255,8 +252,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         setTableViewColumn();
 
-        //showVariantList(1, 0);
-
         foldLeft();
         foldRight();
 
@@ -269,11 +264,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             }
             return new VBox();
         });
-
-        /*totalTextLabel.setOnMouseClicked(ev -> {
-            filterMap.clear();
-            showVariantList(currentPageIndex + 1,0);
-        });*/
 
         filterComboBox.valueProperty().addListener((ob, ov, nv) -> {
             showVariantList(1 ,0);
@@ -737,6 +727,26 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         column.setGraphic(label);
         if(size != null) column.setPrefWidth(size);
         variantListTableView.getColumns().add(column);
+    }
+
+    @FXML
+    public void showFilter() {
+        try {
+            FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_VARIANT_FILTER);
+            Node node = loader.load();
+            VariantFilterController variantFilterController = loader.getController();
+            variantFilterController.setMainController(this.getMainController());
+            variantFilterController.setParamMap(paramMap);
+            variantFilterController.setAnalysisDetailSNVController(this);
+            variantFilterController.show((Parent) node);
+            statisticsTitledPane.setContent(node);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveFilter() {
+
     }
 
     private void setTableViewColumn() {
