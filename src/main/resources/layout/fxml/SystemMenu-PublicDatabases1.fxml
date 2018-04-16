@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane prefHeight="500.0" prefWidth="1030.0" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.PublicDatabaseController">
+<ScrollPane prefHeight="495.0" prefWidth="1030.0" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.PublicDatabaseController">
    <content>
       <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefWidth="1015.0" styleClass="bg_gray_f3">
          <children>
@@ -39,7 +39,7 @@
                         <Insets left="10.0" />
                      </padding>
                   </HBox>
-                  <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="140.0">
+                  <HBox alignment="CENTER_LEFT" prefWidth="140.0">
                      <children>
                         <Label prefWidth="130.0" text="Category">
                            <styleClass>
@@ -131,7 +131,7 @@
                                                 <String fx:value="font_size_11" />
                                              </styleClass>
                                           </Label>
-                                          <Label prefHeight="60.0" prefWidth="580.0" text="Database of variants found during low-coverage and high-coverage genomic and targeted sequencing from 26 populations. Provides more diversity compared to the Exome Variant Server but also contains lower-quality data, and some cohorts contain related individuals. " wrapText="true">
+                                          <Label prefHeight="75.0" prefWidth="580.0" text="Database of variants found during low-coverage and high-coverage genomic and targeted sequencing from 26 populations. Provides more diversity compared to the Exome Variant Server but also contains lower-quality data, and some cohorts contain related individuals. " wrapText="true">
                                              <styleClass>
                                                 <String fx:value="txt_black" />
                                                 <String fx:value="weight_bold" />
@@ -159,7 +159,7 @@
                                                 <String fx:value="font_size_11" />
                                              </styleClass>
                                           </Label>
-                                          <Label prefWidth="85.0" text="ESP6500SI-V2">
+                                          <Label prefWidth="85.0" text="SI-V2">
                                              <styleClass>
                                                 <String fx:value="txt_black" />
                                                 <String fx:value="weight_bold" />
@@ -173,7 +173,7 @@
                                                 <String fx:value="font_size_11" />
                                              </styleClass>
                                           </Label>
-                                          <Label prefHeight="60.0" prefWidth="580.0" text="Database of variants found during exome sequencing of several large cohorts of individuals of European and African American ancestry. Includes coverage data to inform the absence of variation. (6,503 samples drawn form multiple ESP cohorts and represents all of the ESP exome variant data)" wrapText="true">
+                                          <Label prefHeight="75.0" prefWidth="580.0" text="Database of variants found during exome sequencing of several large cohorts of individuals of European and African American ancestry. Includes coverage data to inform the absence of variation. (6,503 samples drawn form multiple ESP cohorts and represents all of the ESP exome variant data)" wrapText="true">
                                              <styleClass>
                                                 <String fx:value="txt_black" />
                                                 <String fx:value="weight_bold" />
@@ -212,7 +212,7 @@
                                                 <String fx:value="font_size_11" />
                                              </styleClass>
                                           </Label>
-                                          <Label prefHeight="75.0" prefWidth="580.0" text="The Genome Aggregation Database (gnomAD), is a coalition of investigators seeking to aggregate and harmonize exome and genome sequencing data from a variety of large-scale sequencing projects, and to make summary data available for the wider scientific community. The data set provided on this website spans 123,136 exomes and 15,496 genomes from unrelated individuals sequenced as part of various disease-specific and population genetic studies." wrapText="true">
+                                          <Label prefHeight="90.0" prefWidth="580.0" text="The Genome Aggregation Database (gnomAD), is a coalition of investigators seeking to aggregate and harmonize exome and genome sequencing data from a variety of large-scale sequencing projects, and to make summary data available for the wider scientific community. The data set provided on this website spans 123,136 exomes and 15,496 genomes from unrelated individuals sequenced as part of various disease-specific and population genetic studies." wrapText="true">
                                              <styleClass>
                                                 <String fx:value="txt_black" />
                                                 <String fx:value="weight_bold" />
@@ -251,7 +251,7 @@
                                                 <String fx:value="font_size_11" />
                                              </styleClass>
                                           </Label>
-                                          <Label prefHeight="60.0" prefWidth="580.0" text="Database of variants found during exome sequencing of 61,486 unrelated individuals sequenced as part of various disease-specific and population genetic studies. Pediatric disease subjects as well as related individuals were excluded." wrapText="true">
+                                          <Label prefHeight="75.0" prefWidth="580.0" text="Database of variants found during exome sequencing of 61,486 unrelated individuals sequenced as part of various disease-specific and population genetic studies. Pediatric disease subjects as well as related individuals were excluded." wrapText="true">
                                              <styleClass>
                                                 <String fx:value="txt_black" />
                                                 <String fx:value="weight_bold" />
@@ -319,7 +319,7 @@
                                                 <String fx:value="font_size_11" />
                                              </styleClass>
                                           </Label>
-                                          <Label prefHeight="45.0" prefWidth="580.0" text="Analyzed data obtained by deep sequencing 1,303 Korean whole exomes; the data were generated by three independent whole exome sequencing projects (named the KOEX study)." wrapText="true">
+                                          <Label prefHeight="60.0" prefWidth="580.0" text="Analyzed data obtained by deep sequencing 1,303 Korean whole exomes; the data were generated by three independent whole exome sequencing projects (named the KOEX study)." wrapText="true">
                                              <styleClass>
                                                 <String fx:value="txt_black" />
                                                 <String fx:value="weight_bold" />
@@ -364,7 +364,7 @@
                                                 <String fx:value="font_size_11" />
                                              </styleClass>
                                           </Label>
-                                          <Label prefHeight="60.0" prefWidth="580.0" text="To establish a genetic database of healthy Korean individuals, WES data from normal tissues from cancer patients (675 samples; 472 blood and 203 adjacent normal tissues) and blood samples from healthy individuals with no apparent clinical history (380 samples) were collected. " wrapText="true">
+                                          <Label prefHeight="75.0" prefWidth="580.0" text="To establish a genetic database of healthy Korean individuals, WES data from normal tissues from cancer patients (675 samples; 472 blood and 203 adjacent normal tissues) and blood samples from healthy individuals with no apparent clinical history (380 samples) were collected. " wrapText="true">
                                              <styleClass>
                                                 <String fx:value="txt_black" />
                                                 <String fx:value="weight_bold" />
@@ -403,7 +403,7 @@
                                                 <String fx:value="font_size_11" />
                                              </styleClass>
                                           </Label>
-                                          <Label prefHeight="60.0" prefWidth="580.0" text="Since 2012, Center for Genome Science of Korea National Research Institute of Health has conducted the whole genome sequencing project for 1,722 Korean individuals. The project investigated and analyzed 622 samples until 2014 (the first step), and 1,100 samples until 2016 (the second step)" wrapText="true">
+                                          <Label prefHeight="75.0" prefWidth="580.0" text="Since 2012, Center for Genome Science of Korea National Research Institute of Health has conducted the whole genome sequencing project for 1,722 Korean individuals. The project investigated and analyzed 622 samples until 2014 (the first step), and 1,100 samples until 2016 (the second step)" wrapText="true">
                                              <styleClass>
                                                 <String fx:value="txt_black" />
                                                 <String fx:value="weight_bold" />
@@ -471,7 +471,7 @@
                                                 <String fx:value="font_size_11" />
                                              </styleClass>
                                           </Label>
-                                          <Label prefHeight="45.0" prefWidth="580.0" text="Database of short genetic variations (typically =&lt;50bp) submitted from many sources. May lack details of the originating study and may contain pathogenic variants." wrapText="true">
+                                          <Label prefHeight="60.0" prefWidth="580.0" text="Database of short genetic variations (typically =&lt;50bp) submitted from many sources. May lack details of the originating study and may contain pathogenic variants." wrapText="true">
                                              <styleClass>
                                                 <String fx:value="txt_black" />
                                                 <String fx:value="weight_bold" />
@@ -536,7 +536,7 @@
                                                 <String fx:value="font_size_11" />
                                              </styleClass>
                                           </Label>
-                                          <Label prefWidth="580.0" text="Database of assertions about the clinical significance and phenotype relationship of human variations." wrapText="true">
+                                          <Label prefHeight="45.0" prefWidth="580.0" text="Database of assertions about the clinical significance and phenotype relationship of human variations." wrapText="true">
                                              <styleClass>
                                                 <String fx:value="txt_black" />
                                                 <String fx:value="weight_bold" />
@@ -601,7 +601,7 @@
                                                 <String fx:value="font_size_11" />
                                              </styleClass>
                                           </Label>
-                                          <Label prefWidth="580.0" text="An Open Access On-Line Breast Cancer Mutation Data Base" wrapText="true">
+                                          <Label prefHeight="45.0" prefWidth="580.0" text="An Open Access On-Line Breast Cancer Mutation Data Base" wrapText="true">
                                              <styleClass>
                                                 <String fx:value="txt_black" />
                                                 <String fx:value="weight_bold" />
@@ -643,7 +643,7 @@
                                                 <String fx:value="font_size_11" />
                                              </styleClass>
                                           </Label>
-                                          <Label prefHeight="60.0" prefWidth="580.0" text="Through collaborations with the University of Utah Huntsman Cancer Institute (HCI), and with the WHO International Agency for Research on Cancer (IARC), the University of Utah Department of Pathology and ARUP Laboratories is pleased to host the BRCA mutation database. " wrapText="true">
+                                          <Label prefHeight="75.0" prefWidth="580.0" text="Through collaborations with the University of Utah Huntsman Cancer Institute (HCI), and with the WHO International Agency for Research on Cancer (IARC), the University of Utah Department of Pathology and ARUP Laboratories is pleased to host the BRCA mutation database. " wrapText="true">
                                              <styleClass>
                                                 <String fx:value="txt_black" />
                                                 <String fx:value="weight_bold" />
@@ -682,7 +682,7 @@
                                                 <String fx:value="font_size_11" />
                                              </styleClass>
                                           </Label>
-                                          <Label prefWidth="580.0" text="Evidence-based Network for the Interpretation of Germline Mutant Alleles" wrapText="true">
+                                          <Label prefHeight="45.0" prefWidth="580.0" text="Evidence-based Network for the Interpretation of Germline Mutant Alleles" wrapText="true">
                                              <styleClass>
                                                 <String fx:value="txt_black" />
                                                 <String fx:value="weight_bold" />
@@ -721,7 +721,7 @@
                                                 <String fx:value="font_size_11" />
                                              </styleClass>
                                           </Label>
-                                          <Label prefWidth="580.0" text="Leiden Open Variation Database" wrapText="true">
+                                          <Label prefHeight="45.0" prefWidth="580.0" text="Leiden Open Variation Database" wrapText="true">
                                              <styleClass>
                                                 <String fx:value="txt_black" />
                                                 <String fx:value="weight_bold" />
@@ -760,7 +760,7 @@
                                                 <String fx:value="font_size_11" />
                                              </styleClass>
                                           </Label>
-                                          <Label prefHeight="45.0" prefWidth="580.0" text="In 2007, the Korean Hereditary Breast Cancer (KOHBRA) Study was established to obtain evidence for the accurate risk assessment and management of hereditary breast and ovarian cancer (HBOC) in Korea." wrapText="true">
+                                          <Label prefHeight="60.0" prefWidth="580.0" text="In 2007, the Korean Hereditary Breast Cancer (KOHBRA) Study was established to obtain evidence for the accurate risk assessment and management of hereditary breast and ovarian cancer (HBOC) in Korea." wrapText="true">
                                              <styleClass>
                                                 <String fx:value="txt_black" />
                                                 <String fx:value="weight_bold" />
@@ -799,7 +799,7 @@
                                                 <String fx:value="font_size_11" />
                                              </styleClass>
                                           </Label>
-                                          <Label prefWidth="580.0" text="BRCA Share (formerly UMD-Universal Mutation Database)" wrapText="true">
+                                          <Label prefHeight="45.0" prefWidth="580.0" text="BRCA Share (formerly UMD-Universal Mutation Database)" wrapText="true">
                                              <styleClass>
                                                 <String fx:value="txt_black" />
                                                 <String fx:value="weight_bold" />
@@ -830,11 +830,11 @@
                   </VBox>
                   <VBox prefWidth="1000.0">
                      <children>
-                        <HBox prefWidth="200.0">
+                        <HBox prefHeight="75.0" prefWidth="200.0">
                            <children>
                               <VBox alignment="CENTER_LEFT" prefWidth="130.0">
                                  <children>
-                                    <Label prefHeight="60.0" prefWidth="130.0" text="Missense prediction/ Nucleotide conservation prediction" wrapText="true">
+                                    <Label prefWidth="130.0" text="Missense prediction/ Nucleotide conservation prediction" wrapText="true">
                                        <styleClass>
                                           <String fx:value="txt_black" />
                                           <String fx:value="weight_bold" />
@@ -843,7 +843,7 @@
                                     </Label>
                                  </children>
                               </VBox>
-                              <VBox prefHeight="60.0" prefWidth="870.0">
+                              <VBox prefWidth="870.0">
                                  <children>
                                     <HBox alignment="CENTER_LEFT" prefWidth="1019.0">
                                        <children>
@@ -867,7 +867,7 @@
                                                 <String fx:value="font_size_11" />
                                              </styleClass>
                                           </Label>
-                                          <Label prefHeight="60.0" prefWidth="580.0" text="dbNSFP is a database developed for functional prediction and annotation of all potential non-synonymous single-nucleotide variants (nsSNVs) in the human genome." wrapText="true">
+                                          <Label prefHeight="75.0" prefWidth="580.0" text="dbNSFP is a database developed for functional prediction and annotation of all potential non-synonymous single-nucleotide variants (nsSNVs) in the human genome." wrapText="true">
                                              <styleClass>
                                                 <String fx:value="txt_black" />
                                                 <String fx:value="weight_bold" />
@@ -932,7 +932,7 @@
                                                 <String fx:value="font_size_11" />
                                              </styleClass>
                                           </Label>
-                                          <Label prefHeight="60.0" prefWidth="580.0" text="dbscSNV includes all potential human SNVs within splicing consensus regions (-3 to +8 at the 5' splice site and -12 to +2 at the 3' splice site), i.e. scSNVs, related functional annotations and two ensemble prediction scores for predicting their potential of altering splicing." wrapText="true">
+                                          <Label prefHeight="75.0" prefWidth="580.0" text="dbscSNV includes all potential human SNVs within splicing consensus regions (-3 to +8 at the 5' splice site and -12 to +2 at the 3' splice site), i.e. scSNVs, related functional annotations and two ensemble prediction scores for predicting their potential of altering splicing." wrapText="true">
                                              <styleClass>
                                                 <String fx:value="txt_black" />
                                                 <String fx:value="weight_bold" />
@@ -977,7 +977,7 @@
                                  <children>
                                     <HBox alignment="CENTER_LEFT" prefWidth="1019.0">
                                        <children>
-                                          <Label prefWidth="135.0" text="Reference Genome Sequence" wrapText="true">
+                                          <Label prefHeight="60.0" prefWidth="135.0" text="Reference Genome Sequence" wrapText="true">
                                              <styleClass>
                                                 <String fx:value="txt_gray_656565" />
                                                 <String fx:value="font_size_11" />
@@ -1039,7 +1039,7 @@
                                                 <String fx:value="font_size_11" />
                                              </styleClass>
                                           </Label>
-                                          <Label prefHeight="45.0" prefWidth="580.0" text="RefSeqGene defines genomic sequences to be used as reference standards for well-characterized genes and is part of the Locus Reference Genomic (LRG) Project." wrapText="true">
+                                          <Label prefHeight="60.0" prefWidth="580.0" text="RefSeqGene defines genomic sequences to be used as reference standards for well-characterized genes and is part of the Locus Reference Genomic (LRG) Project." wrapText="true">
                                              <styleClass>
                                                 <String fx:value="txt_black" />
                                                 <String fx:value="weight_bold" />
@@ -1191,7 +1191,7 @@
                                                 <String fx:value="font_size_11" />
                                              </styleClass>
                                           </Label>
-                                          <Label prefHeight="60.0" prefWidth="580.0" text="Database of variants found during low-coverage and high-coverage genomic and targeted sequencing from 26 populations. Provides more diversity compared to the Exome Variant Server but also contains lower-quality data, and some cohorts contain related individuals. " wrapText="true">
+                                          <Label prefHeight="75.0" prefWidth="580.0" text="Database of variants found during low-coverage and high-coverage genomic and targeted sequencing from 26 populations. Provides more diversity compared to the Exome Variant Server but also contains lower-quality data, and some cohorts contain related individuals. " wrapText="true">
                                              <styleClass>
                                                 <String fx:value="txt_black" />
                                                 <String fx:value="weight_bold" />
@@ -1219,7 +1219,7 @@
                                                 <String fx:value="font_size_11" />
                                              </styleClass>
                                           </Label>
-                                          <Label prefWidth="85.0" text="ESP6500SI-V2">
+                                          <Label prefWidth="85.0" text="SI-V2">
                                              <styleClass>
                                                 <String fx:value="txt_black" />
                                                 <String fx:value="weight_bold" />
@@ -1233,7 +1233,7 @@
                                                 <String fx:value="font_size_11" />
                                              </styleClass>
                                           </Label>
-                                          <Label prefHeight="60.0" prefWidth="580.0" text="Database of variants found during exome sequencing of several large cohorts of individuals of European and African American ancestry. Includes coverage data to inform the absence of variation. (6,503 samples drawn form multiple ESP cohorts and represents all of the ESP exome variant data)" wrapText="true">
+                                          <Label prefHeight="75.0" prefWidth="580.0" text="Database of variants found during exome sequencing of several large cohorts of individuals of European and African American ancestry. Includes coverage data to inform the absence of variation. (6,503 samples drawn form multiple ESP cohorts and represents all of the ESP exome variant data)" wrapText="true">
                                              <styleClass>
                                                 <String fx:value="txt_black" />
                                                 <String fx:value="weight_bold" />
@@ -1272,7 +1272,7 @@
                                                 <String fx:value="font_size_11" />
                                              </styleClass>
                                           </Label>
-                                          <Label prefHeight="75.0" prefWidth="580.0" text="The Genome Aggregation Database (gnomAD), is a coalition of investigators seeking to aggregate and harmonize exome and genome sequencing data from a variety of large-scale sequencing projects, and to make summary data available for the wider scientific community. The data set provided on this website spans 123,136 exomes and 15,496 genomes from unrelated individuals sequenced as part of various disease-specific and population genetic studies." wrapText="true">
+                                          <Label prefHeight="90.0" prefWidth="580.0" text="The Genome Aggregation Database (gnomAD), is a coalition of investigators seeking to aggregate and harmonize exome and genome sequencing data from a variety of large-scale sequencing projects, and to make summary data available for the wider scientific community. The data set provided on this website spans 123,136 exomes and 15,496 genomes from unrelated individuals sequenced as part of various disease-specific and population genetic studies." wrapText="true">
                                              <styleClass>
                                                 <String fx:value="txt_black" />
                                                 <String fx:value="weight_bold" />
@@ -1311,7 +1311,7 @@
                                                 <String fx:value="font_size_11" />
                                              </styleClass>
                                           </Label>
-                                          <Label prefHeight="60.0" prefWidth="580.0" text="Database of variants found during exome sequencing of 61,486 unrelated individuals sequenced as part of various disease-specific and population genetic studies. Pediatric disease subjects as well as related individuals were excluded." wrapText="true">
+                                          <Label prefHeight="75.0" prefWidth="580.0" text="Database of variants found during exome sequencing of 61,486 unrelated individuals sequenced as part of various disease-specific and population genetic studies. Pediatric disease subjects as well as related individuals were excluded." wrapText="true">
                                              <styleClass>
                                                 <String fx:value="txt_black" />
                                                 <String fx:value="weight_bold" />
@@ -1379,7 +1379,7 @@
                                                 <String fx:value="font_size_11" />
                                              </styleClass>
                                           </Label>
-                                          <Label prefHeight="45.0" prefWidth="580.0" text="Analyzed data obtained by deep sequencing 1,303 Korean whole exomes; the data were generated by three independent whole exome sequencing projects (named the KOEX study)." wrapText="true">
+                                          <Label prefHeight="60.0" prefWidth="580.0" text="Analyzed data obtained by deep sequencing 1,303 Korean whole exomes; the data were generated by three independent whole exome sequencing projects (named the KOEX study)." wrapText="true">
                                              <styleClass>
                                                 <String fx:value="txt_black" />
                                                 <String fx:value="weight_bold" />
@@ -1424,7 +1424,7 @@
                                                 <String fx:value="font_size_11" />
                                              </styleClass>
                                           </Label>
-                                          <Label prefHeight="60.0" prefWidth="580.0" text="To establish a genetic database of healthy Korean individuals, WES data from normal tissues from cancer patients (675 samples; 472 blood and 203 adjacent normal tissues) and blood samples from healthy individuals with no apparent clinical history (380 samples) were collected. " wrapText="true">
+                                          <Label prefHeight="75.0" prefWidth="580.0" text="To establish a genetic database of healthy Korean individuals, WES data from normal tissues from cancer patients (675 samples; 472 blood and 203 adjacent normal tissues) and blood samples from healthy individuals with no apparent clinical history (380 samples) were collected. " wrapText="true">
                                              <styleClass>
                                                 <String fx:value="txt_black" />
                                                 <String fx:value="weight_bold" />
@@ -1463,7 +1463,7 @@
                                                 <String fx:value="font_size_11" />
                                              </styleClass>
                                           </Label>
-                                          <Label prefHeight="60.0" prefWidth="580.0" text="Since 2012, Center for Genome Science of Korea National Research Institute of Health has conducted the whole genome sequencing project for 1,722 Korean individuals. The project investigated and analyzed 622 samples until 2014 (the first step), and 1,100 samples until 2016 (the second step)" wrapText="true">
+                                          <Label prefHeight="75.0" prefWidth="580.0" text="Since 2012, Center for Genome Science of Korea National Research Institute of Health has conducted the whole genome sequencing project for 1,722 Korean individuals. The project investigated and analyzed 622 samples until 2014 (the first step), and 1,100 samples until 2016 (the second step)" wrapText="true">
                                              <styleClass>
                                                 <String fx:value="txt_black" />
                                                 <String fx:value="weight_bold" />
@@ -1531,7 +1531,7 @@
                                                 <String fx:value="font_size_11" />
                                              </styleClass>
                                           </Label>
-                                          <Label prefHeight="45.0" prefWidth="580.0" text="Database of short genetic variations (typically =&lt;50bp) submitted from many sources. May lack details of the originating study and may contain pathogenic variants." wrapText="true">
+                                          <Label prefHeight="60.0" prefWidth="580.0" text="Database of short genetic variations (typically =&lt;50bp) submitted from many sources. May lack details of the originating study and may contain pathogenic variants." wrapText="true">
                                              <styleClass>
                                                 <String fx:value="txt_black" />
                                                 <String fx:value="weight_bold" />
@@ -1596,7 +1596,7 @@
                                                 <String fx:value="font_size_11" />
                                              </styleClass>
                                           </Label>
-                                          <Label prefWidth="580.0" text="Database of assertions about the clinical significance and phenotype relationship of human variations." wrapText="true">
+                                          <Label prefHeight="45.0" prefWidth="580.0" text="Database of assertions about the clinical significance and phenotype relationship of human variations." wrapText="true">
                                              <styleClass>
                                                 <String fx:value="txt_black" />
                                                 <String fx:value="weight_bold" />
@@ -1661,7 +1661,7 @@
                                                 <String fx:value="font_size_11" />
                                              </styleClass>
                                           </Label>
-                                          <Label prefWidth="580.0" text="Database for exploring the impact of somatic mutations in human cancer" wrapText="true">
+                                          <Label prefHeight="45.0" prefWidth="580.0" text="Database for exploring the impact of somatic mutations in human cancer" wrapText="true">
                                              <styleClass>
                                                 <String fx:value="txt_black" />
                                                 <String fx:value="weight_bold" />
@@ -1703,7 +1703,7 @@
                                                 <String fx:value="font_size_11" />
                                              </styleClass>
                                           </Label>
-                                          <Label prefHeight="45.0" prefWidth="580.0" text="Precision oncology knowledge base and contains information about the effects and treatment implications of specific cancer gene alterations" wrapText="true">
+                                          <Label prefHeight="60.0" prefWidth="580.0" text="Precision oncology knowledge base and contains information about the effects and treatment implications of specific cancer gene alterations" wrapText="true">
                                              <styleClass>
                                                 <String fx:value="txt_black" />
                                                 <String fx:value="weight_bold" />
@@ -1816,7 +1816,7 @@
                                  <children>
                                     <HBox alignment="CENTER_LEFT" prefWidth="1019.0">
                                        <children>
-                                          <Label prefWidth="135.0" text="Reference Genome Sequence" wrapText="true">
+                                          <Label prefHeight="60.0" prefWidth="135.0" text="Reference Genome Sequence" wrapText="true">
                                              <styleClass>
                                                 <String fx:value="txt_gray_656565" />
                                                 <String fx:value="font_size_11" />
@@ -1878,7 +1878,7 @@
                                                 <String fx:value="font_size_11" />
                                              </styleClass>
                                           </Label>
-                                          <Label prefHeight="45.0" prefWidth="580.0" text="RefSeqGene defines genomic sequences to be used as reference standards for well-characterized genes and is part of the Locus Reference Genomic (LRG) Project." wrapText="true">
+                                          <Label prefHeight="60.0" prefWidth="580.0" text="RefSeqGene defines genomic sequences to be used as reference standards for well-characterized genes and is part of the Locus Reference Genomic (LRG) Project." wrapText="true">
                                              <styleClass>
                                                 <String fx:value="txt_black" />
                                                 <String fx:value="weight_bold" />
