@@ -142,6 +142,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
         }
     }
 
+    
     private void setGermlineArea() {
         if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicity() != null) {
             for(Node node : predictionArea.getChildren()) {
@@ -151,18 +152,28 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                     switch (selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicity()) {
                         case "P":
                             label.getStyleClass().add("prediction_A");
+                            label.setCursor(Cursor.HAND);
+                            addClickEvent("PREDICTION", label);
                             break;
                         case "LP":
                             label.getStyleClass().add("prediction_B");
+                            label.setCursor(Cursor.HAND);
+                            addClickEvent("PREDICTION", label);
                             break;
                         case "US":
                             label.getStyleClass().add("prediction_C");
+                            label.setCursor(Cursor.HAND);
+                            addClickEvent("PREDICTION", label);
                             break;
                         case "LB":
                             label.getStyleClass().add("prediction_D");
+                            label.setCursor(Cursor.HAND);
+                            addClickEvent("PREDICTION", label);
                             break;
                         case "B":
                             label.getStyleClass().add("prediction_E");
+                            label.setCursor(Cursor.HAND);
+                            addClickEvent("PREDICTION", label);
                             break;
                     }
                 } else {

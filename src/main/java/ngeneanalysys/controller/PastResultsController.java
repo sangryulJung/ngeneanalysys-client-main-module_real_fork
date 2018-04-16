@@ -742,13 +742,14 @@ public class PastResultsController extends SubPaneController {
 
 		public void setSampleList(List<SampleView> sampleList) {
 			for(SampleView sampleView : sampleList) {
-			    if(!sampleView.getSampleStatus().getStatus().equalsIgnoreCase(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_COMPLETE)) {
-			        this.setDisable(true);
-                } else {
-                    this.setDisable(false);
-                }
 				HBox itemHBox = new HBox();
 				itemHBox.setStyle(itemHBox.getStyle() + "-fx-cursor:hand;");
+				if((sampleView.getSampleStatus().getStep().equalsIgnoreCase(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STEP_PIPELINE) &&
+						sampleView.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_COMPLETE))) {
+					itemHBox.setDisable(false);
+				} else {
+					itemHBox.setDisable(true);
+				}
 				
 				final SampleView sample = sampleView;
 				
