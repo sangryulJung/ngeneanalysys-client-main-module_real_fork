@@ -7,9 +7,9 @@ package ngeneanalysys.code.enums;
  * @since 2016. 5. 24. 오전 10:30:47
  */
 public enum SequencerCode {
-	MISEQ("illumina MiSeq"),
-	MISEQ_DX("illumina MiSeqDx"),
-	NEXTSEQ_DX("illumina NextSeq 550Dx");
+	MISEQ("Illumina MiSeq"),
+	MISEQ_DX("Illumina MiSeqDx"),
+	NEXTSEQ_DX("Illumina NextSeq 550Dx");
 	
 	private String description;
 	
