@@ -1,94 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="380.0" styleClass="bg_gray_f3" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemMenuPublicDatabasesController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="475.0" prefWidth="1030.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.PublicDatabaseController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="10.0" prefHeight="75.0" vgrow="SOMETIMES" />
+    <RowConstraints minHeight="10.0" prefHeight="400.0" vgrow="SOMETIMES" />
+  </rowConstraints>
    <children>
-      <Label layoutX="20.0" layoutY="20.0" text="1000 Genomes">
-         <styleClass>
-            <String fx:value="txt_gray_656565" />
-            <String fx:value="font_size_11" />
-         </styleClass>
-      </Label>
-      <Label layoutX="20.0" layoutY="84.0" text="dbsnp" GridPane.rowIndex="2">
-         <styleClass>
-            <String fx:value="txt_gray_656565" />
-            <String fx:value="font_size_11" />
-         </styleClass>
-      </Label>
-      <Label layoutX="20.0" layoutY="117.0" text="ESP6500" GridPane.rowIndex="3">
-         <styleClass>
-            <String fx:value="txt_gray_656565" />
-            <String fx:value="font_size_11" />
-         </styleClass>
-      </Label>
-      <Label layoutX="148.0" layoutY="180.0" text="20160502" GridPane.columnIndex="1" GridPane.rowIndex="5">
-         <styleClass>
-            <String fx:value="txt_black" />
-            <String fx:value="weight_bold" />
-            <String fx:value="font_size_11" />
-         </styleClass>
-      </Label>
-      <Label layoutX="20.0" layoutY="53.0" text="ExAC" GridPane.rowIndex="1">
-         <styleClass>
-            <String fx:value="txt_gray_656565" />
-            <String fx:value="font_size_11" />
-         </styleClass>
-      </Label>
-      <Label layoutX="20.0" layoutY="181.0" text="clinvar" GridPane.rowIndex="5">
-         <styleClass>
-            <String fx:value="txt_gray_656565" />
-            <String fx:value="font_size_11" />
-         </styleClass>
-      </Label>
-      <Label layoutX="20.0" layoutY="151.0" text="Reference genome" GridPane.rowIndex="4">
-         <styleClass>
-            <String fx:value="txt_gray_656565" />
-            <String fx:value="font_size_11" />
-         </styleClass>
-      </Label>
-      <Label layoutX="148.0" layoutY="52.0" text="0.31" GridPane.columnIndex="1" GridPane.rowIndex="1">
-         <styleClass>
-            <String fx:value="txt_black" />
-            <String fx:value="weight_bold" />
-            <String fx:value="font_size_11" />
-         </styleClass>
-      </Label>
-      <Label layoutX="148.0" layoutY="116.0" text="ESP6500SI-V2-SSA137" GridPane.columnIndex="1" GridPane.rowIndex="3">
-         <styleClass>
-            <String fx:value="txt_black" />
-            <String fx:value="weight_bold" />
-            <String fx:value="font_size_11" />
-         </styleClass>
-      </Label>
-      <Label layoutX="148.0" layoutY="19.0" text="20150218 phase3" GridPane.columnIndex="1">
-         <styleClass>
-            <String fx:value="txt_black" />
-            <String fx:value="weight_bold" />
-            <String fx:value="font_size_11" />
-         </styleClass>
-      </Label>
-      <Label layoutX="148.0" layoutY="83.0" text="dbSNP 147" GridPane.columnIndex="1" GridPane.rowIndex="2">
-         <styleClass>
-            <String fx:value="txt_black" />
-            <String fx:value="weight_bold" />
-            <String fx:value="font_size_11" />
-         </styleClass>
-      </Label>
-      <Label layoutX="148.0" layoutY="150.0" text="GRCh37/hg19" GridPane.columnIndex="1" GridPane.rowIndex="4">
-         <styleClass>
-            <String fx:value="txt_black" />
-            <String fx:value="weight_bold" />
-            <String fx:value="font_size_11" />
-         </styleClass>
-      </Label>
-      <Separator layoutX="15.0" layoutY="44.0" prefWidth="330.0" />
-      <Separator layoutX="15.0" layoutY="76.0" prefWidth="330.0" />
-      <Separator layoutX="15.0" layoutY="109.0" prefWidth="330.0" />
-      <Separator layoutX="15.0" layoutY="143.0" prefWidth="330.0" />
-      <Separator layoutX="15.0" layoutY="175.0" prefWidth="330.0" />
+      <VBox prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <ComboBox fx:id="versionComboBox" prefWidth="150.0" />
+                  <Button mnemonicParsing="false" text="View Annotation Database" />
+                  <Button mnemonicParsing="false" text="View Tools" />
+               </children>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </HBox>
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="130.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="135.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="80.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="70.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="580.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="Category" />
+                  <Label text="Database" GridPane.columnIndex="1" />
+                  <Label text="Version" GridPane.columnIndex="2" />
+                  <Label text="Release" GridPane.columnIndex="3" />
+                  <Label text="Description" GridPane.columnIndex="4" />
+               </children>
+               <VBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </VBox.margin>
+            </GridPane>
+         </children>
+      </VBox>
+      <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" vbarPolicy="ALWAYS" GridPane.rowIndex="1">
+         <content>
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="130.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="135.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="70.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="580.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+         </content>
+      </ScrollPane>
    </children>
-</AnchorPane>
+</GridPane>

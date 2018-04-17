@@ -32,6 +32,7 @@ public class PublicToolsController extends SubPaneController {
             dialogStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
         }
         dialogStage.initOwner(getMainApp().getPrimaryStage());
+        dialogStage.resizableProperty().setValue(false);
 
         // Schen Init
         Scene scene = new Scene(root);

@@ -3,11 +3,7 @@ package ngeneanalysys;
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Properties;
-
-import javafx.scene.Parent;
+import java.util.*;
 import javafx.scene.control.*;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.MainController;
@@ -26,7 +22,6 @@ import javafx.stage.StageStyle;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.LoginController;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
@@ -205,7 +200,6 @@ public class MainApp extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception{
-
 		if(isAlreadyRunning) {
 			logger.warn("Requested applications are currently running and newly requested one will be shut down.");
 			DialogUtil.warning("Requested application is running already.", "Requested applications are currently running and newly requested one will be shut down.", null, true);
@@ -309,9 +303,5 @@ public class MainApp extends Application {
 			controller.setMainApp(this);
 			controller.show(mainPane);
 		}
-	}
-	
-	public static void main(String[] args) {
-		launch(args);
 	}
 }

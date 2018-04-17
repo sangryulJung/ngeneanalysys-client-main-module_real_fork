@@ -209,7 +209,7 @@
 							<fo:table-cell padding="2mm" border-width="0.5pt" border-style="solid" number-columns-spanned="4">
 								<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt">
 								#if($contents.isExistReportedVariant == "Y")
-									<fo:block padding="2mm">Positive-Clinically significant mutation identified.</fo:block>
+									<fo:block padding="2mm">Positive-clinically significant mutation identified.</fo:block>
 									#foreach($variant in $contents.variantList)
 										#if($variant.snpInDel.includedInReport == 'Y')
 											<fo:block padding="1mm">
@@ -559,7 +559,7 @@
 													<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt">Contact</fo:block>
 												</fo:table-cell>
 												<fo:table-cell padding="2mm" border-width="0.5pt" border-style="solid">
-													<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt" >${contents.inspectorContact}</fo:block>
+													<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt" >#if($contents.inspectorContact)$contents.inspectorContact #end</fo:block>
 												</fo:table-cell>
 											</fo:table-row>
 										</fo:table-body>
