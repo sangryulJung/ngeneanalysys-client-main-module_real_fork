@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import ngeneanalysys.code.constants.CommonConstants;
@@ -31,7 +32,16 @@ import java.util.Map;
  * @since 2017. 8. 1.
  *
  */
+
+
 public class LoginController extends BaseStageController {
+	
+	public void initialize(){
+		showCapLock();	
+	}
+	
+	
+	 
 	private static final Logger logger = LoggerUtil.getLogger();
 
 	@FXML
@@ -166,8 +176,26 @@ public class LoginController extends BaseStageController {
 		}
 	}
 
+	public void showCapLock() {
+		//System.out.println("hi");
+		if (Toolkit.getDefaultToolkit().getLockingKeyState(java.awt.event.KeyEvent.VK_CAPS_LOCK) ) {
+			CapsLock.setStyle("-fx-background-image:url('layout/images/renewal/upper_case_icon.png');-fx-background-repeat: no-repeat;-fx-background-position: center;");
+		}else {
+			CapsLock.setStyle("");
+		}
+	}
+	
 	@Override
 	public void show(Parent root) throws IOException {
+		Scene scene = new Scene(root);
+		scene.addEventFilter(KeyEvent.KEY_PRESSED,
+                event -> showCapLock());
+		scene.addEventFilter(MouseEvent.ANY,
+                event -> showCapLock());
+	    
+		scene.getFocusOwner();
+		scene.setFill(Color.TRANSPARENT);
+		
 		Stage primaryStage = this.mainApp.getPrimaryStage();
 
 		inputLoginID.focusedProperty().addListener((ov, t, t1) -> {
@@ -182,9 +210,8 @@ public class LoginController extends BaseStageController {
 
 		settingURLButton.setVisible(true);
 
-		Scene scene = new Scene(root);
-		scene.setFill(Color.TRANSPARENT);
 		primaryStage.setScene(scene);
+		
 		primaryStage.setTitle(CommonConstants.SYSTEM_NAME + " Login");
 
 		if(System.getProperty("os.name").toLowerCase().contains("window")) {

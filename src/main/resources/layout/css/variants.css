@@ -141,20 +141,6 @@
     -fx-text-fill : #fff;
 }
 
-#variantListTableView .btn_warn {
-	-fx-background-image:url('../images/renewal/icon_warn_small.png');
-	-fx-background-size:16;
-	-fx-background-repeat:no-repeat;
-	-fx-background-color:transparent;
-	-fx-background-insets:0;
-	-fx-border-width:0;
-	-fx-pref-width:16;
-	-fx-min-height:16;
-	-fx-pref-height:16;
-	-fx-max-height:16;
-	-fx-padding:1 0 0 0;
-}
-
 .filter_icon {
     -fx-pref-width : 40;
     -fx-pref-height : 40;
@@ -165,81 +151,6 @@
     -fx-text-fill : #FFFFFF;
     -fx-text-alignment : center;
     -fx-cursor : hand;
-}
-
-#variantListTableView .report_check {
-	-fx-background-color:#595959;
-	-fx-background-radius:15;
-	-fx-font-size:12;
-	-fx-font-weight:bold;
-	-fx-text-fill:#fff;
-	-fx-pref-width:20;
-	-fx-text-alignment:center ;
-	-fx-alignment:center;
-}
-
-#variantListTableView .column-header > .label  {
-    -fx-content-display: graphic-only;
-    -fx-font-size:9;
-}
-
-#variantListTableView {
-	-fx-background-color: #fff;
- 	-fx-border-color:#000 #b1b1b1 #b1b1b1 #b1b1b1;
- 	-fx-border-width:0;
- 	-fx-padding:0;
-}
-
-#variantListTableView:focused, .table-view .column-header-background, .table-view .column-header-background .label{
-	-fx-background-color: transparent;
-}
-
-#variantListTableView .column-header-background .nested-column-header .label{
-	-fx-font-size:12px;
-	-fx-font-weight:bold;
-	-fx-text-fill:#fff;
-}
-
-#variantListTableView .column-header-background .filler {
-	-fx-background-color:#75848c;
-	-fx-border-color:#000 #c3c3c3 #c3c3c3 #c3c3c3;
-	-fx-border-width:0 0 0 0;
-}
-
-#variantListTableView .column-header {
-	-fx-pref-height:30;
-	-fx-background-color:#75848c;
- 	-fx-border-color:#000 #c3c3c3 #c3c3c3 #c3c3c3;
- 	-fx-border-width:0 1 0 0;
-}
-
-#variantListTableView .table-row-cell {
-	-fx-background-insets:0;
-	-fx-font-size:13px;
-	-fx-font-family:Noto Sans KR Regular;
-	-fx-padding:0;
-	-fx-border-width:2 0 2 0;
-	
-}
-
-#variantListTableView .table-row-cell:empty {
-}
-
-#variantListTableView .table-row-cell:hover{
-}
-
-#variantListTableView .table-row-cell:selected {
-	-fx-background:#87CEEB;
-}
-
-#variantListTableView .table-cell .label {
-	-fx-text-fill:#656565;
-}
-
-#variantListTableView:row-selection .column-header-background .nested-column-header .sub_column {
-	-fx-background-color:#cbd3d7;
- 	-fx-border-color:#c3c3c3 #c3c3c3 #c3c3c3 #c3c3c3;
- 	-fx-border-width:1 1 0 0;
 }
 
 #excel_download_image {
@@ -266,4 +177,88 @@
     -fx-background-color : #D9D9D9;
     -fx-border-width : 0;
     -fx-background-radius : 0;
+}
+
+#variantListTableView .btn_warn {
+	-fx-background-image:url('../images/renewal/icon_warn_small.png');
+	-fx-background-size:16;
+	-fx-background-repeat:no-repeat;
+	-fx-background-color:transparent;
+	-fx-background-insets:0;
+	-fx-border-width:0;
+	-fx-pref-width:16;
+	-fx-min-height:16;
+	-fx-pref-height:16;
+	-fx-max-height:16;
+	-fx-padding:1 0 0 0;
+}
+
+#variantListTableView .report_check {
+	-fx-background-color:#595959;
+	-fx-background-radius:15;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-pref-width:20;
+	-fx-text-alignment:center ;
+	-fx-alignment:center;
+}
+
+#variantListTableView .column-header > .label  {
+    -fx-content-display: graphic-only;
+}
+
+#variantListTableView {
+	-fx-background-color: #fff;
+ 	-fx-border-color:#000 #b1b1b1 #b1b1b1 #b1b1b1;
+ 	-fx-border-width:0;
+ 	-fx-padding:0;
+}
+
+#variantListTableView:focused, .table-view .column-header-background, .table-view .column-header-background .label{
+	-fx-background-color: transparent;
+}
+
+#variantListTableView .column-header-background .nested-column-header .label{
+	-fx-text-fill:#fff;
+}
+
+#variantListTableView .column-header-background .filler {
+	-fx-background-color:#75848c;
+	-fx-border-color:#000 #c3c3c3 #c3c3c3 #c3c3c3;
+	-fx-border-width:0 0 0 0;
+}
+
+#variantListTableView .column-header {
+	-fx-pref-height:30;
+	-fx-background-color:#8F9FB9;
+ 	-fx-border-color:#000 #F7F7F7 #F7F7F7 #F7F7F7;
+ 	-fx-border-width:0 1 0 0;
+}
+
+#variantListTableView .table-row-cell {
+	-fx-background-insets:0;
+	-fx-padding:0;
+	-fx-border-width:2 0 2 0;
+	
+}
+
+#variantListTableView .table-row-cell:empty {
+}
+
+#variantListTableView .table-row-cell:hover{
+}
+
+#variantListTableView .table-row-cell:selected {
+	-fx-background:#87CEEB;
+}
+
+#variantListTableView .table-cell .label {
+	-fx-text-fill:#656565;
+}
+
+#variantListTableView:row-selection .column-header-background .nested-column-header .sub_column {
+	-fx-background-color:#cbd3d7;
+ 	-fx-border-color:#c3c3c3 #c3c3c3 #c3c3c3 #c3c3c3;
+ 	-fx-border-width:1 1 0 0;
 }

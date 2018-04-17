@@ -16,6 +16,8 @@ public class GenomicCoordinateClinicalVariant {
     private String transcript;
     private String hgvsc;
     private String hgvsp;
+    private Integer startPosition;
+    private Integer endPosition;
     private String codingConsequence;
     private String clinicalVariantType;
     private ClinicalEvidence therapeuticEvidence;
@@ -97,6 +99,14 @@ public class GenomicCoordinateClinicalVariant {
     public void setHgvsp(String hgvsp) {
         this.hgvsp = hgvsp;
     }
+
+    public Integer getStartPosition() { return startPosition; }
+
+    public void setStartPosition(Integer startPosition) { this.startPosition = startPosition; }
+
+    public Integer getEndPosition() { return endPosition; }
+
+    public void setEndPosition(Integer endPosition) { this.endPosition = endPosition; }
 
     public String getCodingConsequence() {
         return codingConsequence;

@@ -1,5 +1,6 @@
 package ngeneanalysys.controller;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -66,6 +67,12 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
 
     @FXML
     private TableColumn<GenomicCoordinateClinicalVariant, String> hgvspTableColumn;
+
+    @FXML
+    private TableColumn<GenomicCoordinateClinicalVariant, Integer> startPositionTableColumn;
+
+    @FXML
+    private TableColumn<GenomicCoordinateClinicalVariant, Integer> endPositionTableColumn;
 
     @FXML
     private TableColumn<GenomicCoordinateClinicalVariant, String> codingConsequenceTableColumn;
@@ -164,6 +171,16 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
         hgvspTableColumn.setCellFactory(tableColumn -> new EditingCell());
         hgvspTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) ->
             (t.getTableView().getItems().get(t.getTablePosition().getRow())).setHgvsp(t.getNewValue()));
+        //Todo 초기값이 0이 되면 안됨
+        startPositionTableColumn.setCellValueFactory(item -> new SimpleIntegerProperty(0).asObject());
+        startPositionTableColumn.setCellFactory(tableColumn -> new EditingIntegerCell());
+        startPositionTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, Integer> t) ->
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setStartPosition(t.getNewValue()));
+        //Todo 초기값이 0이 되면 안됨
+        endPositionTableColumn.setCellValueFactory(item -> new SimpleIntegerProperty(0).asObject());
+        endPositionTableColumn.setCellFactory(tableColumn -> new EditingIntegerCell());
+        endPositionTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, Integer> t) ->
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setEndPosition(t.getNewValue()));
 
         codingConsequenceTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getCodingConsequence()));
         codingConsequenceTableColumn.setCellFactory(tableColumn -> new EditingCell());
@@ -365,6 +382,93 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
     @FXML
     private void cancelInput() {
         setInterpretationList(currentPageIndex + 1);
+    }
+
+    class EditingIntegerCell extends TableCell<GenomicCoordinateClinicalVariant, Integer> {
+        private TextField textField = null;
+
+        public EditingIntegerCell() {}
+
+        @Override
+        public void startEdit() {
+            if(!isEmpty()) {
+                super.startEdit();
+                createTextField();
+                setGraphic(textField);
+                setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+                textField.selectAll();
+            }
+        }
+
+        @Override
+        public void cancelEdit() {
+            super.cancelEdit();
+            Integer value = getItem();
+            String text = value == null ? null : value.toString();
+            setText(text);
+            setContentDisplay(ContentDisplay.TEXT_ONLY);
+        }
+
+        @Override
+        protected void updateItem(Integer item, boolean empty) {
+            super.updateItem(item, empty);
+
+            if(empty) {
+                setText(null);
+                setGraphic(null);
+            } else {
+                if(isEditing()) {
+                    if(textField != null) {
+                        textField.setText(getString());
+                    }
+                    setGraphic(textField);
+                    setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+                } else {
+                    setText(getString());
+                    setContentDisplay(ContentDisplay.TEXT_ONLY);
+                }
+            }
+        }
+
+        private void createTextField() {
+            textField = new TextField(getString());
+            textField.getStyleClass().add("txt_black");
+            textField.setMinWidth(this.getWidth() - this.getGraphicTextGap() * 2);
+            GenomicCoordinateClinicalVariant variant = this.getTableView().getItems().get(this.getTableRow().getIndex());
+            textField.setOnKeyPressed(t -> {
+                Integer value;
+                try {
+                    value = Integer.parseInt(textField.getText());
+                } catch (Exception e) {
+                    value = null;
+                }
+                if(t.getCode() == KeyCode.ENTER) {
+                    commitEdit(value);
+                    addModifiedList(variant);
+                } else if (t.getCode() == KeyCode.TAB) {
+                    commitEdit(value);
+                    addModifiedList(variant);
+                } else if(t.getCode() == KeyCode.ESCAPE) {
+                    cancelEdit();
+                }
+            });
+            textField.focusedProperty().addListener((arg0, arg1, arg2) -> {
+                if (!arg2) {
+                    Integer value;
+                    try {
+                        value = Integer.parseInt(textField.getText());
+                    } catch (Exception e) {
+                        value = null;
+                    }
+                    commitEdit(value);
+                    addModifiedList(variant);
+                }
+            });
+        }
+
+        private String getString() {
+            return getItem() == null ? "" : getItem().toString();
+        }
     }
 
     class EditingCell extends TableCell<GenomicCoordinateClinicalVariant, String> {

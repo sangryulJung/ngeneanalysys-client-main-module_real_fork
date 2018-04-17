@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -17,7 +22,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="500.0" prefWidth="1200.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemManagerInterpretationDatabaseController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="500.0" prefWidth="1200.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemManagerInterpretationDatabaseController">
    <stylesheets>
       <URL value="@../../css/common.css" />
       <URL value="@../../css/experimenter.css" />
@@ -72,9 +77,11 @@
                                     <TableColumn fx:id="versionTableColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" styleClass="txt_black" text="Version" />
                                     <TableColumn fx:id="chrTableColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="50.0" styleClass="txt_black" text="Chr" />
                                     <TableColumn fx:id="geneTableColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="90.0" styleClass="txt_black" text="Gene" />
-                                    <TableColumn fx:id="transcriptTableColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" styleClass="txt_black" text="Transcript" />
-                                    <TableColumn fx:id="hgvscTableColumn" minWidth="-Infinity" prefWidth="90.0" styleClass="txt_black" text="HGVS.c" visible="false" />
-                                    <TableColumn fx:id="hgvspTableColumn" prefWidth="90.0" styleClass="txt_black" text="HGVS.p" visible="false" />
+                                    <TableColumn fx:id="transcriptTableColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" styleClass="txt_black" text="Transcript" visible="false" />
+                                    <TableColumn fx:id="hgvscTableColumn" minWidth="-Infinity" prefWidth="90.0" styleClass="txt_black" text="HGVS.c" />
+                                    <TableColumn fx:id="hgvspTableColumn" prefWidth="90.0" styleClass="txt_black" text="HGVS.p" />
+                                    <TableColumn fx:id="startPositionTableColumn" prefWidth="90.0" styleClass="txt_black" text="Start Pos" />
+                                    <TableColumn fx:id="endPositionTableColumn" prefWidth="90.0" styleClass="txt_black" text="End Pos" />
                                     <TableColumn fx:id="codingConsequenceTableColumn" prefWidth="90.0" styleClass="txt_black" text="Coding Consequence" />
                                     <TableColumn fx:id="typeTableColumn" minWidth="-Infinity" prefWidth="80.0" styleClass="txt_black" text="Type" />
                                     <TableColumn prefWidth="75.0" text="Therapeutic">
