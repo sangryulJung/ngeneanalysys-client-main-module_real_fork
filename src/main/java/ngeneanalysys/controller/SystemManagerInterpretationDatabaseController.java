@@ -171,13 +171,12 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
         hgvspTableColumn.setCellFactory(tableColumn -> new EditingCell());
         hgvspTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) ->
             (t.getTableView().getItems().get(t.getTablePosition().getRow())).setHgvsp(t.getNewValue()));
-        //Todo 초기값이 0이 되면 안됨
-        startPositionTableColumn.setCellValueFactory(item -> new SimpleIntegerProperty(0).asObject());
+
+        startPositionTableColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getStartPosition()));
         startPositionTableColumn.setCellFactory(tableColumn -> new EditingIntegerCell());
         startPositionTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, Integer> t) ->
                 (t.getTableView().getItems().get(t.getTablePosition().getRow())).setStartPosition(t.getNewValue()));
-        //Todo 초기값이 0이 되면 안됨
-        endPositionTableColumn.setCellValueFactory(item -> new SimpleIntegerProperty(0).asObject());
+        endPositionTableColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getEndPosition()));
         endPositionTableColumn.setCellFactory(tableColumn -> new EditingIntegerCell());
         endPositionTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, Integer> t) ->
                 (t.getTableView().getItems().get(t.getTablePosition().getRow())).setEndPosition(t.getNewValue()));
