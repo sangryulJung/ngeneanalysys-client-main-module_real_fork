@@ -39,8 +39,8 @@ public class Sample {
     @JsonProperty("sampleStatus")
     private SampleStatus sampleStatus;
 
-    @JsonProperty("pipelineVersion")
-    private String pipelineVersion;
+    @JsonProperty("pipelineVersionId")
+    private Integer pipelineVersionId;
 
     @JsonProperty("createdAt")
     private DateTime createdAt;
@@ -205,12 +205,12 @@ public class Sample {
         this.sampleStatus = sampleStatus;
     }
 
-    public String getPipelineVersion() {
-        return pipelineVersion;
+    public Integer getPipelineVersionId() {
+        return pipelineVersionId;
     }
 
-    public void setPipelineVersion(String pipelineVersion) {
-        this.pipelineVersion = pipelineVersion;
+    public void setPipelineVersionId(Integer pipelineVersionId) {
+        this.pipelineVersionId = pipelineVersionId;
     }
 
     /**
@@ -282,7 +282,7 @@ public class Sample {
                 ", qcResult='" + qcResult + '\'' +
                 ", inputFType='" + inputFType + '\'' +
                 ", sampleStatus=" + sampleStatus +
-                ", pipelineVersion='" + pipelineVersion + '\'' +
+                ", pipelineVersionId='" + pipelineVersionId + '\'' +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", deletedAt=" + deletedAt +
