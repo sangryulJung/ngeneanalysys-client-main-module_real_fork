@@ -3,6 +3,7 @@ package ngeneanalysys.controller;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -14,6 +15,8 @@ import ngeneanalysys.util.StringUtils;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Jang
@@ -26,6 +29,15 @@ public class VariantFilterController extends SubPaneController {
 
     @FXML
     private TextField geneTextField;
+
+    @FXML
+    private CheckBox snvCheckBox;
+
+    @FXML
+    private CheckBox indelCheckBox;
+
+    @FXML
+    private CheckBox cnvCheckBox;
 
     private AnalysisDetailSNVController analysisDetailSNVController;
 
@@ -60,13 +72,29 @@ public class VariantFilterController extends SubPaneController {
 
     @FXML
     public void filterSave() {
-
+        List<Object> list = new ArrayList<>();
 
         if(!StringUtils.isEmpty(geneTextField.getText())) {
-
+            list.add("gene " + geneTextField.getText());
         }
 
-        analysisDetailSNVController.saveFilter();
+        if(snvCheckBox.isSelected()) {
+            list.add("variantType snv");
+        }
+
+        if(cnvCheckBox.isSelected()) {
+            list.add("variantType cnv");
+        }
+
+        if(indelCheckBox.isSelected()) {
+            list.add("variantType indel");
+        }
+
+
+        if(!list.isEmpty()) {
+            analysisDetailSNVController.saveFilter(list);
+            closeFilter();
+        }
     }
 
     @FXML

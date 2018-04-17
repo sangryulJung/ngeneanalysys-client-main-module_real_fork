@@ -745,7 +745,8 @@ public class PastResultsController extends SubPaneController {
 				HBox itemHBox = new HBox();
 				itemHBox.setStyle(itemHBox.getStyle() + "-fx-cursor:hand;");
 				if((sampleView.getSampleStatus().getStep().equalsIgnoreCase(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STEP_PIPELINE) &&
-						sampleView.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_COMPLETE))) {
+                        (sampleView.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_COMPLETE)
+                        || sampleView.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_FAIL)))) {
 					itemHBox.setDisable(false);
 				} else {
 					itemHBox.setDisable(true);

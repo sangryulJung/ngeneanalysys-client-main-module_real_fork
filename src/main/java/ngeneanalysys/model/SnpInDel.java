@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import ngeneanalysys.util.ConvertUtil;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -42,6 +43,7 @@ public class SnpInDel implements Serializable {
 	private PopulationFrequency populationFrequency;
 
 	//private Integer interpretationEvidenceId;
+	private String ntChangeBRCA;
 
 	/**
 	 * @return genomicCoordinate
@@ -291,16 +293,24 @@ public class SnpInDel implements Serializable {
 	 * @return the cDNAbic
 	 */
 	public String getNtChangeBRCA() {
+		return ConvertUtil.insertTextAtFixedPosition(ntChangeBRCA, 15, "\n");
+	}
+
+	public void setNtChangeBRCA() {
+		this.ntChangeBRCA = createNtChangeBRCA();
+	}
+
+	public String createNtChangeBRCA() {
 		String cDNAbic = this.getSnpInDelExpression().getNtChange();
-		if (cDNAbic != null
-				&& !cDNAbic.isEmpty()
+		String gene = getGenomicCoordinate().getGene().toUpperCase();
+		if (!StringUtils.isEmpty(cDNAbic)
 				&& getGenomicCoordinate() != null && getGenomicCoordinate().getGene() != null
-				&& (getGenomicCoordinate().getGene().toUpperCase().equals("BRCA1") || getGenomicCoordinate().getGene().toUpperCase().equals("BRCA2"))) {
+				&& (gene.equals("BRCA1") || gene.equals("BRCA2"))) {
 			List<String> findCDNANums = new ArrayList<>();
 			Pattern p = Pattern.compile("\\d+");
-			Matcher m = null;
+			Matcher m;
 			if(cDNAbic.contains(":")) {
-				String tempcDNAbic = cDNAbic.substring(cDNAbic.indexOf(":") + 1);
+				String tempcDNAbic = cDNAbic.substring(cDNAbic.indexOf(':') + 1);
 				m = p.matcher(tempcDNAbic);
 			} else {
 				m = p.matcher(cDNAbic);
@@ -308,16 +318,13 @@ public class SnpInDel implements Serializable {
 			while (m.find()) {
 				findCDNANums.add(m.group());
 			}
-			int cdnaNum = 0;
 			for(String cdnaItem : findCDNANums){
 				try {
-					cdnaNum = Integer.parseInt(cdnaItem);
-					if(getGenomicCoordinate().getGene().toUpperCase().equals("BRCA1")){
+					int cdnaNum = Integer.parseInt(cdnaItem);
+					if(gene.equals("BRCA1")){
 						cDNAbic = cDNAbic.replace(cdnaItem, String.valueOf(cdnaNum+119));
-					} else if (getGenomicCoordinate().getGene().toUpperCase().equals("BRCA2")){
+					} else if (gene.equals("BRCA2")){
 						cDNAbic = cDNAbic.replace(cdnaItem, String.valueOf(cdnaNum+228));
-					} else {
-
 					}
 				} catch (NumberFormatException e){
 					return "cDNA parsing error. " + cdnaItem;

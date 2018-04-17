@@ -58,9 +58,6 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     private TableView<SnpInDelEvidence> evidenceTableView;
 
     @FXML
-    private TableColumn<SnpInDelEvidence, String > providerColumn;
-
-    @FXML
     private TableColumn<SnpInDelEvidence, String> evidenceTypeColumn;
 
     @FXML
@@ -101,6 +98,9 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
     @FXML
     private TableColumn<SnpInDelEvidence, String> interpretationTypeColumn;
+
+    @FXML
+    private TableColumn<SnpInDelEvidence, String> interpretationStatusColumn;
 
     @FXML
     private TableColumn<SnpInDelEvidence, String> interpretationEvidenceColumn;
@@ -152,9 +152,6 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         evidenceColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getEvidenceLevel()));
         evidenceColumn.setCellFactory(item -> new EvidenceLevelComboBoxCell());
 
-        providerColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getEvidenceLevel()));
-        providerColumn.setCellFactory(item -> new ProviderComboBoxCell());
-
         evidencePrimaryColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getPrimaryEvidence()));
         evidencePrimaryColumn.setCellFactory(item -> new PrimaryRadioButtonCell());
 
@@ -172,6 +169,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         interpretationTypeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEvidenceType()));
         interpretationEvidenceColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEvidenceLevel()));
         interpretationEvidenceCommentColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEvidence()));
+        interpretationStatusColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
         interpretationDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(DateFormatUtils.format(cellData.getValue().getCreatedAt().toDate(), "yyyy-MM-dd HH:mm:ss")));
 
         pastCasesSampleColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSampleName()));
@@ -304,48 +302,6 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         }
     }
 
-    private class ProviderComboBoxCell extends TableCell<SnpInDelEvidence, String> {
-        private ComboBox<String> comboBox = new ComboBox<>();
-        boolean setting = false;
-
-        private ProviderComboBoxCell() {
-            comboBox.getSelectionModel().selectedItemProperty().addListener((ov, t, t1) -> {
-                SnpInDelEvidence snpInDelEvidence = ProviderComboBoxCell.this.getTableView().getItems().get(
-                        ProviderComboBoxCell.this.getIndex());
-
-                if(!StringUtils.isEmpty(t1)) {
-                    snpInDelEvidence.setProvider(t1);
-                }
-            });
-        }
-
-        @Override
-        protected void updateItem(String item, boolean empty) {
-            super.updateItem(item, empty);
-            if(empty) {
-                setGraphic(null);
-                return;
-            }
-
-            if(comboBox.getItems().isEmpty()) {
-
-                comboBox.getItems().addAll("NGeneBio", "Clinician");
-
-                SnpInDelEvidence evidence = ProviderComboBoxCell.this.getTableView().getItems().get(
-                        ProviderComboBoxCell.this.getIndex());
-
-                if(evidence != null && !StringUtils.isEmpty(evidence.getProvider())) {
-                    comboBox.getSelectionModel().select(evidence.getProvider());
-                } else {
-                    comboBox.getSelectionModel().selectFirst();
-                }
-            }
-            setGraphic(comboBox);
-
-        }
-
-    }
-    
     private class EvidenceLevelComboBoxCell extends TableCell<SnpInDelEvidence, String> {
         private ComboBox<String> comboBox = new ComboBox<>();
         boolean setting = false;

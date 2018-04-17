@@ -9,12 +9,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 import ngeneanalysys.animaition.HddStatusTimer;
@@ -75,7 +74,7 @@ public class HomeController extends SubPaneController{
     private ToggleGroup newsTipGroup;
 
     @FXML
-    private Label annotationDatabaseButton;
+    private VBox databaseVersionVBox;
 
     private List<NoticeView> noticeList = null;
 
@@ -166,6 +165,45 @@ public class HomeController extends SubPaneController{
         }
     }
 
+    private void setToolsAndDatabase() {
+        databaseVersionVBox.getChildren().removeAll(databaseVersionVBox.getChildren());
+        try {
+            HttpClientResponse response = apiService.get("pipelineVersions", null, null, null);
+
+            List<PipelineVersionView> pipelineVersionViewList = (List<PipelineVersionView>)response.getMultiObjectBeforeConvertResponseToJSON(PipelineVersionView.class, false);
+            if(pipelineVersionViewList != null && !pipelineVersionViewList.isEmpty()) {
+                for (PipelineVersionView pipelineVersionView : pipelineVersionViewList) {
+                    createPipelineVersionHBox(pipelineVersionView);
+                }
+            }
+
+        } catch (WebAPIException wae) {
+
+        }
+    }
+
+    private void createPipelineVersionHBox(final PipelineVersionView pipelineVersionView) {
+        HBox hBox = new HBox();
+        hBox.setSpacing(5);
+        Label iconLabel = new Label();
+        iconLabel.getStyleClass().add("tools_icon");
+        Label nameLabel = new Label(pipelineVersionView.getPanelName() + " : " + pipelineVersionView.getVersion());
+        hBox.getChildren().addAll(iconLabel, nameLabel);
+        databaseVersionVBox.getChildren().add(hBox);
+        databaseVersionVBox.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
+            try {
+                FXMLLoader loader = mainApp.load(FXMLConstants.SYSTEM_MENU_PUBLIC_DATABASE);
+                Node root = loader.load();
+                PublicDatabaseController publicDatabasesController = loader.getController();
+                publicDatabasesController.setMainController(this.getMainController());
+                publicDatabasesController.show((Parent) root);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+
     private void setNoticeArea() {
         try {
             Map<String, Object> params = new HashMap<>();
@@ -241,7 +279,12 @@ public class HomeController extends SubPaneController{
 
         Platform.runLater(() -> {
             hddCheck();
+        });
+        Platform.runLater(() -> {
             setNoticeArea();
+        });
+        Platform.runLater(() -> {
+            setToolsAndDatabase();
         });
         final int maxRunNumberOfPage = 3;
         CompletableFuture<PagedRun> getPagedRun = new CompletableFuture<>();
@@ -509,7 +552,7 @@ public class HomeController extends SubPaneController{
         }
     }
 
-    @FXML
+    /*@FXML
     public void databaseView() {
         try {
             FXMLLoader loader = mainApp.load(FXMLConstants.SYSTEM_MENU_PUBLIC_DATABASE);
@@ -533,5 +576,5 @@ public class HomeController extends SubPaneController{
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }

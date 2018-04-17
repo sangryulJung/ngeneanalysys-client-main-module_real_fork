@@ -82,7 +82,7 @@
                               <Insets />
                            </opaqueInsets>
                         </Button>
-                        <Label fx:id="viewAppliedFiltersLabel" style="-fx-cursor: hand;" styleClass="font_size_13" text="View applied filters" textFill="WHITE">
+                        <Label fx:id="viewAppliedFiltersLabel" onMouseClicked="#viewAppliedFilters" style="-fx-cursor: hand;" styleClass="font_size_13" text="View applied filters" textFill="WHITE">
                            <VBox.margin>
                               <Insets top="5.0" />
                            </VBox.margin>

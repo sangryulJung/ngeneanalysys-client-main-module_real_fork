@@ -712,7 +712,15 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                     HttpClientResponse response = apiService.get("/members/" + loginSession.getId(), null, null,
                             false);
                     User user = response.getObjectBeforeConvertResponseToJSON(User.class);
-                    contentsMap.put("inspectorOrganization", user.getOrganization() + "/" + user.getDepartment());
+                    if(!StringUtils.isEmpty(user.getOrganization()) && !StringUtils.isEmpty(user.getDepartment())) {
+                        contentsMap.put("inspectorOrganization", user.getOrganization() + "/" + user.getDepartment());
+                    } else if(!StringUtils.isEmpty(user.getOrganization())) {
+                        contentsMap.put("inspectorOrganization", user.getOrganization());
+                    } else if(!StringUtils.isEmpty(user.getDepartment())) {
+                        contentsMap.put("inspectorOrganization", user.getDepartment());
+                    } else {
+                        contentsMap.put("inspectorOrganization", "");
+                    }
                     contentsMap.put("inspectorName", user.getName());
                     contentsMap.put("inspectorContact", user.getPhone());
                     /*if((sample.getSampleStatus() != null) && sample.getSampleStatus().getReportFinishedAt() != null) {
@@ -743,6 +751,10 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 if(uncertainSignificanceList != null && !uncertainSignificanceList.isEmpty()) list.addAll(uncertainSignificanceList);
                 if(likelyBenignList != null && !likelyBenignList.isEmpty()) list.addAll(likelyBenignList);
                 if(benignList != null && !benignList.isEmpty()) list.addAll(benignList);
+
+                for(VariantAndInterpretationEvidence variantAndInterpretationEvidence : list) {
+                    variantAndInterpretationEvidence.getSnpInDel().setNtChangeBRCA();
+                }
 
                 /*if(!list.isEmpty())
                     list = list.stream().filter(item -> item.getSnpInDel().getIncludedInReport().equalsIgnoreCase("Y")).collect(Collectors.toList());*/

@@ -42,9 +42,9 @@
                         <Label text="Variant Type" />
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1">
                            <children>
-                              <CheckBox mnemonicParsing="false" text="SNV" />
-                              <CheckBox mnemonicParsing="false" text="INDEL" />
-                              <CheckBox mnemonicParsing="false" text="CNV" />
+                              <CheckBox fx:id="snvCheckBox" mnemonicParsing="false" text="SNV" />
+                              <CheckBox fx:id="indelCheckBox" mnemonicParsing="false" text="INDEL" />
+                              <CheckBox fx:id="cnvCheckBox" mnemonicParsing="false" text="CNV" />
                            </children>
                         </HBox>
                         <Label text="Genomic Regions" GridPane.rowIndex="1" />

@@ -163,7 +163,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     /**
-     * @param variantsController
+     * @param variantsController AnalysisDetailVariantsController
      */
     public void setVariantsController(AnalysisDetailVariantsController variantsController) {
         this.variantsController = variantsController;
@@ -198,8 +198,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         apiService = APIService.getInstance();
 
-        filterAddBtn.setDisable(true);
-        viewAppliedFiltersLabel.setDisable(true);
+        //filterAddBtn.setDisable(true);
+        //viewAppliedFiltersLabel.setDisable(true);
 
         sample = (Sample)paramMap.get("sample");
         panel = (Panel)paramMap.get("panel");
@@ -271,6 +271,11 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         filterComboBox.valueProperty().addListener((ob, ov, nv) -> {
             showVariantList(1 ,0);
+            if(!nv.getValue().startsWith("C")) {
+                viewAppliedFiltersLabel.setDisable(true);
+            } else {
+                viewAppliedFiltersLabel.setDisable(false);
+            }
         });
     }
 
@@ -308,7 +313,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         filterComboBox.setConverter(new ComboBoxConverter());
         filterComboBox.getItems().removeAll(filterComboBox.getItems());
         totalLabel.setText("Showing " + sample.getAnalysisResultSummary().getAllVariantCount());
-        filterComboBox.getItems().add(new ComboBoxItem("Total", "Total"));
+        filterComboBox.getItems().add(new ComboBoxItem("All", "All"));
         if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
             filterComboBox.getItems().add(new ComboBoxItem("Tier 1", "Tier I"));
             setStandardFilter("Tier 1", "tier", "T1");
@@ -331,6 +336,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             setStandardFilter("Benign", "pathogenicity", "B");
         }
         filterComboBox.getSelectionModel().select(0);
+        viewAppliedFiltersLabel.setDisable(true);
     }
 
     private int variantCount(String text) {
@@ -614,7 +620,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
     }
 
-
     public void showVariantList(int pageIndex, int selectedIdx) {
         int totalCount = 0;
         int limit = 100;
@@ -749,9 +754,31 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
     }
 
-    public void saveFilter() {
-
+    public void saveFilter(List<Object> list) {
+        ComboBoxItem comboBoxItem = new ComboBoxItem("C" + filterList.size(), "C" + filterList.size());
+        filterComboBox.getItems().add(comboBoxItem);
+        filterList.put("C" + filterList.size(), list);
+        filterComboBox.getSelectionModel().select(comboBoxItem);
     }
+
+    @FXML
+    public void viewAppliedFilters() {
+        if(filterComboBox.getSelectionModel().getSelectedItem().getValue().startsWith("C")) {
+            List<Object> list = filterList.get(filterComboBox.getSelectionModel().getSelectedItem().getValue());
+            List<Map<String, String>> keyValue = new ArrayList<>();
+            String currentKey = "";
+            for(Object obj : list) {
+                String key = obj.toString().substring(0, obj.toString().indexOf(" "));
+                if(!key.equalsIgnoreCase(currentKey)) {
+                    currentKey = key;
+                }
+                String value = obj.toString().substring(obj.toString().indexOf(" ") + 1);
+                logger.info(currentKey + " " + value);
+            }
+
+        }
+    }
+
 
     private void setTableViewColumn() {
         String centerStyleClass = "alignment_center";
@@ -915,7 +942,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         if(panel != null && ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             TableColumn<VariantAndInterpretationEvidence, String> ntChangeBIC = new TableColumn<>("NT change(BIC)");
             createTableHeader(ntChangeBIC, "NT change(BIC)", null ,90.);
-            ntChangeBIC.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getNtChangeBRCA()));
+            ntChangeBIC.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().createNtChangeBRCA()));
         }
 
         TableColumn<VariantAndInterpretationEvidence, String> chr = new TableColumn<>("Chr");
@@ -1154,5 +1181,4 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         if(variantType.contains(":")) return variantType.substring(0, variantType.indexOf(':'));
         return variantType;
     }
-
 }
