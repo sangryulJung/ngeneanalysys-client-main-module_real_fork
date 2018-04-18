@@ -165,25 +165,36 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                 hBox.setAlignment(Pos.CENTER);
                 if(item != null) {
                     List<SnpInDelEvidence> interpretation = (List<SnpInDelEvidence>) item;
-                    for (SnpInDelEvidence evidence : interpretation) {
-                        if(evidence.getPrimaryEvidence()) {
 
-                            Label label = new Label(evidence.getEvidenceLevel());
-                            Tooltip tooltip = new Tooltip(evidence.getEvidence());
-                            label.setTooltip(tooltip);
-                            label.getStyleClass().remove("label");
-                            label.getStyleClass().add("interpretation_" + evidence.getEvidenceLevel());
-                            hBox.getChildren().add(label);
-                        }
+                    Map<String, List<SnpInDelEvidence>> evidenceInterpretation = interpretation.stream().collect(
+                            Collectors.groupingBy(evidence -> evidence.getEvidenceLevel()));
 
-                    }
+                    createEvidenceLabel(evidenceInterpretation.get("A"), hBox, "A");
+                    createEvidenceLabel(evidenceInterpretation.get("B"), hBox, "B");
+                    createEvidenceLabel(evidenceInterpretation.get("C"), hBox, "C");
+                    createEvidenceLabel(evidenceInterpretation.get("D"), hBox, "D");
                 }
                 setGraphic(hBox);
             }
         });
-
         setDisplayItem();
     }
+
+    public void createEvidenceLabel(List<SnpInDelEvidence> interpretation, HBox hBox, String evidenceLevel) {
+        if(interpretation == null || interpretation.isEmpty()) {
+            return;
+        }
+        Label label = new Label(evidenceLevel);
+        label.getStyleClass().remove("label");
+        label.getStyleClass().add("interpretation_" + evidenceLevel);
+        Tooltip tooltip = new Tooltip();
+        label.setTooltip(tooltip);
+        for (SnpInDelEvidence evidence : interpretation) {
+            tooltip.setText(tooltip.getText() +evidence.getEvidenceType() + " : " + evidence.getEvidence() + "\n");
+        }
+        hBox.getChildren().add(label);
+    }
+
 
     private List<VariantAndInterpretationEvidence> settingTierList(List<VariantAndInterpretationEvidence> allTierList, String tier) {
         if(!StringUtils.isEmpty(tier)) {
