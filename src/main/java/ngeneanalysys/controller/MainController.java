@@ -26,6 +26,7 @@ import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.CacheMemoryService;
+import ngeneanalysys.service.PropertiesService;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.LoginSessionUtil;
@@ -47,7 +48,7 @@ import java.util.*;
  */
 public class MainController extends BaseStageController {
     private static final Logger logger = LoggerUtil.getLogger();
-
+    
     /** api server 연동 서비스 */
     private APIService apiService;
     /** cache memory 관리 서비스 */
@@ -121,6 +122,9 @@ public class MainController extends BaseStageController {
 
     @FXML
     private GridPane mainGridPane;
+    
+    @FXML
+    private VBox mainBackground;
 
     private ComboBox<ComboBoxItem> sampleList;
 
@@ -160,7 +164,11 @@ public class MainController extends BaseStageController {
     @Override
     public void show(Parent root) throws IOException {
         logger.info("main controller...");
-
+        
+        PropertiesService propertiesService = PropertiesService.getInstance();	
+        String theme = (String)propertiesService.getConfig().getProperty("window.theme");
+        applyTheme(theme);
+    	
         apiService = APIService.getInstance();
         cacheMemoryService = CacheMemoryService.getInstance();
 
@@ -897,5 +905,24 @@ public class MainController extends BaseStageController {
     public void setMainMaskerPane(boolean status) {
         maskerPane.setVisible(status);
     }
+    
+    public void applyTheme(String theme) {
+    	logger.info("Main theme: " + theme);
+    	
+    	if(theme.equalsIgnoreCase("default")) {
+    		mainBackground.setStyle("-fx-background-image:url('layout/images/renewal/main_background.png');");
+    	}else if(theme.equalsIgnoreCase("dark")) {
+    		mainBackground.setStyle("-fx-background-image:url('layout/images/renewal/main_background01.png');");
+    	}else if(theme.equalsIgnoreCase("red")) {
+    		mainBackground.setStyle("-fx-background-image:url('layout/images/renewal/main_background03.png');");
+    	}else if(theme.equalsIgnoreCase("ice")) {
+    		mainBackground.setStyle("-fx-background-image:url('layout/images/renewal/main_background02.png');");
+    	}else if(theme.equalsIgnoreCase("mountain")) {
+    		mainBackground.setStyle("-fx-background-image:url('layout/images/renewal/main_background10.png');");
+    	}
+
+
+    }
+    
 
 }

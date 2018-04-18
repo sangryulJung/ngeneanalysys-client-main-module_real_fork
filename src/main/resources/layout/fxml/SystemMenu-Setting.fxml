@@ -5,8 +5,10 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.event.ActionEvent?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="600.0" styleClass="bg_gray_f3" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemMenuSettingController">
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="239.0" prefWidth="600.0" styleClass="bg_gray_f3" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemMenuSettingController">
    <children>
       <GridPane layoutX="20.0" layoutY="20.0" prefWidth="560.0">
         <columnConstraints>
@@ -71,7 +73,7 @@
          </rowConstraints>
       </GridPane>
       <Separator layoutX="20.0" layoutY="110.0" prefWidth="560.0" />
-      <HBox alignment="CENTER_RIGHT" layoutX="20.0" layoutY="120.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="560.0">
+      <HBox alignment="CENTER_RIGHT" layoutX="20.0" layoutY="180.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="560.0">
          <children>
             <Button fx:id="saveButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#save" prefHeight="35.0" prefWidth="60.0" styleClass="btn_setting_save" text="Save" />
             <Button fx:id="closeButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#close" prefHeight="35.0" prefWidth="60.0" styleClass="btn_setting_close" text="Close">
@@ -81,5 +83,19 @@
             </Button>
          </children>
       </HBox>
+      <GridPane layoutX="19.0" layoutY="110.0" prefHeight="57.0" prefWidth="560.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="275.0" minWidth="10.0" prefWidth="120.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="454.0" minWidth="10.0" prefWidth="440.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Theme" />
+            <ComboBox fx:id="windowTheme" prefWidth="195.0" GridPane.columnIndex="1" />
+         </children>
+      </GridPane>
+      <Separator layoutX="19.0" layoutY="166.0" prefWidth="560.0" />
    </children>
 </AnchorPane>

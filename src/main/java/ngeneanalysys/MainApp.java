@@ -95,6 +95,8 @@ public class MainApp extends Application {
 		GridPane pane = loader.load();
 		LoginController controller = loader.getController();
 		controller.setMainApp(this);
+		PropertiesService propertiesService = PropertiesService.getInstance();		
+		controller.applyLoginTheme((String)propertiesService.getConfig().getProperty("window.theme"));
 		controller.show(pane);
 		
 	}

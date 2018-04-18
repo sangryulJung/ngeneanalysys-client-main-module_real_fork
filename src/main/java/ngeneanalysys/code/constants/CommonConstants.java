@@ -53,6 +53,9 @@ public class CommonConstants {
 	
 	/** 자동 새로고침 시간 간격 */
 	public static final String[] AUTO_REPRESH_SECOND_PERIOD = new String[]{"10", "20", "30" ,"45", "60"};
+	
+	/** 윈도우테마 */
+	public static final String[] WINDOW_THEME = new String[] {"Default", "Dark","Red","Ice","Mountain"};
 
 	/** 홈페이지 URL */
 	public static final String HOMEPAGE_URL = "http://www.ngenebio.com";
