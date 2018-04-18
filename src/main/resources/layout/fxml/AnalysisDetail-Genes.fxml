@@ -7,7 +7,6 @@
 <?import java.net.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.layout.Pane?>
 
 <BorderPane prefHeight="558.0" prefWidth="1280.0" styleClass="detail_base_bg" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ngenebio.app.controller.AnalysisDetailGenesController">
    <stylesheets>

@@ -599,7 +599,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         for(SnpInDelEvidence snpInDelEvidence : evidenceTableView.getItems()) {
             Map<String, Object> params = new HashMap<>();
 
-            params.put("provider", snpInDelEvidence.getProvider());
+            params.put("provider", StringUtils.isEmpty(snpInDelEvidence.getProvider()) ? "Clinician" : snpInDelEvidence.getProvider());
             params.put("evidenceType", snpInDelEvidence.getEvidenceType());
             params.put("evidenceLevel", snpInDelEvidence.getEvidenceLevel());
             params.put("primaryEvidence", snpInDelEvidence.getPrimaryEvidence() != null ? snpInDelEvidence.getPrimaryEvidence() : false);
