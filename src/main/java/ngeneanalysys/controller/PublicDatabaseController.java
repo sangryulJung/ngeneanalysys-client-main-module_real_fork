@@ -25,10 +25,7 @@ import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
 import java.io.IOException;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Jang
@@ -82,6 +79,12 @@ public class PublicDatabaseController extends SubPaneController {
         setVersionComboBox();
 
         versionComboBox.getSelectionModel().selectedItemProperty().addListener((ob, ov, nv) -> {
+            Optional<PipelineVersionView> optionalPipelineVersionView = list.stream().filter(item -> item.getId().equals(nv.getValue())).findFirst();
+
+            if(optionalPipelineVersionView.isPresent()) {
+                logger.info(optionalPipelineVersionView.get().getReleaseNote());
+            }
+
             setList(nv.getValue());
         });
 
@@ -98,9 +101,7 @@ public class PublicDatabaseController extends SubPaneController {
             databaseContentsGridPane.getRowConstraints().removeAll(databaseContentsGridPane.getRowConstraints());
         Platform.runLater(() -> {
             try {
-                Map<String, Object> params = new HashMap<>();
-                params.put("pipelineVersionId", Integer.valueOf(id));
-                HttpClientResponse response = apiService.get("/pipelineVersions/annotationDatabases", params, null, null);
+                HttpClientResponse response = apiService.get("/pipelineVersions/" + id + "/annotationDatabases", null, null, null);
 
                 List<PipelineAnnotationDatabase> list = (List<PipelineAnnotationDatabase>)response.getMultiObjectBeforeConvertResponseToJSON(PipelineAnnotationDatabase.class, false);
 
@@ -117,9 +118,7 @@ public class PublicDatabaseController extends SubPaneController {
         });
         Platform.runLater(() -> {
             try {
-                Map<String, Object> params = new HashMap<>();
-                params.put("pipelineVersionId", Integer.valueOf(id));
-                HttpClientResponse response = apiService.get("/pipelineVersions/tools", params, null, null);
+                HttpClientResponse response = apiService.get("/pipelineVersions/" + id + "/tools", null, null, null);
 
                 List<PipelineTool> list = (List<PipelineTool>)response.getMultiObjectBeforeConvertResponseToJSON(PipelineTool.class, false);
 
@@ -153,7 +152,7 @@ public class PublicDatabaseController extends SubPaneController {
     private void setVersionComboBox() {
         versionComboBox.setConverter(new ComboBoxConverter());
         try {
-            HttpClientResponse response = apiService.get("/panels/" + this.panelId + "/pipelineVersions", null, null, null);
+            HttpClientResponse response = apiService.get("/pipelineVersions/currentVersionGroupByPanel"/* + this.panelId*/, null, null, null);
 
             List<PipelineVersionView> list = (List<PipelineVersionView>)response.getMultiObjectBeforeConvertResponseToJSON(PipelineVersionView.class, false);
             this.list = list;

@@ -314,7 +314,6 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                 if(!StringUtils.isEmpty(t1)) {
                     snpInDelEvidence.setEvidenceLevel(t1);
                     if(t1.equalsIgnoreCase("T3") || t1.equalsIgnoreCase("T4")) {
-
                         snpInDelEvidence.setEvidenceType("N/A");
                     }
                 }
@@ -429,16 +428,14 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
             evidenceTableView.getItems().removeAll(evidenceTableView.getItems());
         }
         try {
-
-            // Memo 데이터 API 요청
-            Map<String, Object> paramMap = new HashMap<>();
             HttpClientResponse response = apiService.get("/analysisResults/snpInDels/"+
                     selectedAnalysisResultVariant.getSnpInDel().getId() + "/evidences", null, null, false);
 
             // Flagging Comment 데이터 요청이 정상 요청된 경우 진행.
             List<SnpInDelEvidence> list = (List<SnpInDelEvidence>)response.getMultiObjectBeforeConvertResponseToJSON(SnpInDelEvidence.class, false);
             if(list != null && !list.isEmpty()) {
-                list.sort(Comparator.comparing(SnpInDelEvidence::getId));
+                //list.sort(Comparator.comparing(SnpInDelEvidence::getId));
+                Collections.sort(list, Collections.reverseOrder(Comparator.comparing(SnpInDelEvidence::getId)));
 
                 List<SnpInDelEvidence> interpretationList = new ArrayList<>();
                 interpretationList.addAll(list.stream().filter(item -> "Active".equalsIgnoreCase(item.getStatus())).collect(Collectors.toList()));
@@ -565,26 +562,35 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         evidenceTableView.getItems().add(snpInDelEvidence);
     }
 
+    private boolean checkPrimary() {
+        return evidenceTableView.getItems().stream().anyMatch(item -> (item.getPrimaryEvidence() != null) ? item.getPrimaryEvidence() : false);
+    }
+
     @FXML
     public void saveInterpretation() {
         if(evidenceTableView.getItems() != null && !evidenceTableView.getItems().isEmpty()) {
-            HttpClientResponse response;
-            try {
-                Map<String, Object> params = new HashMap<>();
-                params.put("snpInDelEvidenceCreateRequests", returnEvidenceMap());
-                response = apiService.post("/analysisResults/snpInDels/"
-                        + selectedAnalysisResultVariant.getSnpInDel().getId() + "/evidences", params, null, true);
-                logger.info(response.getContentString());
-                setEvidenceTable();
-                setPastCases();
-            } catch (WebAPIException wae) {
-                DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
-                        getMainApp().getPrimaryStage(), true);
-                wae.printStackTrace();
-            } catch (IOException e) {
-                DialogUtil.error("Unknown Error", e.getMessage(),
-                        getMainApp().getPrimaryStage(), true);
-                e.printStackTrace();
+
+            if (checkPrimary()) {
+                HttpClientResponse response;
+                try {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("snpInDelEvidenceCreateRequests", returnEvidenceMap());
+                    response = apiService.post("/analysisResults/snpInDels/"
+                            + selectedAnalysisResultVariant.getSnpInDel().getId() + "/evidences", params, null, true);
+                    logger.info(response.getContentString());
+                    setEvidenceTable();
+                    setPastCases();
+                } catch (WebAPIException wae) {
+                    DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+                            getMainApp().getPrimaryStage(), true);
+                    wae.printStackTrace();
+                } catch (IOException e) {
+                    DialogUtil.error("Unknown Error", e.getMessage(),
+                            getMainApp().getPrimaryStage(), true);
+                    e.printStackTrace();
+                }
+            } else {
+                DialogUtil.warning("Primary check error", "Check primary radio button", getMainApp().getPrimaryStage(), true);
             }
         }
     }

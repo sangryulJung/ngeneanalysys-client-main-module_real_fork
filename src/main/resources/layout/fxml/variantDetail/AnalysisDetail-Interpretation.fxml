@@ -80,7 +80,7 @@
                 <TableColumn fx:id="interpretationTypeColumn" prefWidth="120.0" style="-fx-text-fill: #000000;" text="Type" />
                   <TableColumn fx:id="interpretationEvidenceColumn" prefWidth="70.0" style="-fx-text-fill: #000000;" text="Evidence" />
                   <TableColumn fx:id="interpretationEvidenceCommentColumn" maxWidth="1.7976931348623157E308" prefWidth="420.0" style="-fx-text-fill: #000000;" text="Evidence Comment" />
-                  <TableColumn fx:id="interpretationStatusColumn" prefWidth="75.0" style="fx-text-fill: #000000;" text="Status" />
+                  <TableColumn fx:id="interpretationStatusColumn" prefWidth="75.0" style="-fx-text-fill: #000000;" text="Status" />
                   <TableColumn fx:id="interpretationDateColumn" prefWidth="225.0" style="-fx-text-fill: #000000;" text="Date" />
               </columns>
                <GridPane.margin>
