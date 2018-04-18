@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -175,27 +176,63 @@ public class HomeController extends SubPaneController{
                 for (PipelineVersionView pipelineVersionView : pipelineVersionViewList) {
                     createPipelineVersionHBox(pipelineVersionView);
                 }
+            } else {
+                createDefaultVersionHBox();
             }
 
         } catch (WebAPIException wae) {
-
+            createDefaultVersionHBox();
         }
+    }
+
+    private void createDefaultVersionHBox() {
+        HBox hBox = new HBox();
+        hBox.setSpacing(5);
+        hBox.setPrefHeight(30);
+        hBox.setAlignment(Pos.CENTER_LEFT);
+        hBox.setCursor(Cursor.HAND);
+        Label iconLabel = new Label();
+        iconLabel.getStyleClass().add("tools_icon");
+        Label nameLabel = new Label("Analysis Tools");
+        hBox.getChildren().addAll(iconLabel, nameLabel);
+        databaseVersionVBox.getChildren().add(hBox);
+        hBox.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
+            toolsView();
+        });
+        hBox = new HBox();
+        hBox.setSpacing(5);
+        hBox.setPrefHeight(30);
+        hBox.setCursor(Cursor.HAND);
+        hBox.setAlignment(Pos.CENTER_LEFT);
+        iconLabel = new Label();
+        iconLabel.getStyleClass().add("tools_icon");
+        nameLabel = new Label("Annotation Database");
+        hBox.getChildren().addAll(iconLabel, nameLabel);
+        databaseVersionVBox.getChildren().add(hBox);
+        hBox.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
+            databaseView();
+        });
+
     }
 
     private void createPipelineVersionHBox(final PipelineVersionView pipelineVersionView) {
         HBox hBox = new HBox();
         hBox.setSpacing(5);
+        hBox.setPrefHeight(30);
+        hBox.setCursor(Cursor.HAND);
+        hBox.setAlignment(Pos.CENTER_LEFT);
         Label iconLabel = new Label();
         iconLabel.getStyleClass().add("tools_icon");
         Label nameLabel = new Label(pipelineVersionView.getPanelName() + " : " + pipelineVersionView.getVersion());
         hBox.getChildren().addAll(iconLabel, nameLabel);
         databaseVersionVBox.getChildren().add(hBox);
-        databaseVersionVBox.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
+        hBox.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
             try {
-                FXMLLoader loader = mainApp.load(FXMLConstants.SYSTEM_MENU_PUBLIC_DATABASE);
+                FXMLLoader loader = mainApp.load(FXMLConstants.SYSTEM_MENU_PUBLIC_DATABASES);
                 Node root = loader.load();
                 PublicDatabaseController publicDatabasesController = loader.getController();
                 publicDatabasesController.setMainController(this.getMainController());
+                publicDatabasesController.setPanelId(pipelineVersionView.getPanelId());
                 publicDatabasesController.show((Parent) root);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -552,12 +589,12 @@ public class HomeController extends SubPaneController{
         }
     }
 
-    /*@FXML
+
     public void databaseView() {
         try {
-            FXMLLoader loader = mainApp.load(FXMLConstants.SYSTEM_MENU_PUBLIC_DATABASE);
+            FXMLLoader loader = mainApp.load(FXMLConstants.SYSTEM_MENU_DEFAULT_PUBLIC_DATABASE);
             Node root = loader.load();
-            PublicDatabaseController publicDatabasesController = loader.getController();
+            SystemMenuPublicDatabasesController publicDatabasesController = loader.getController();
             publicDatabasesController.setMainController(this.getMainController());
             publicDatabasesController.show((Parent) root);
         } catch (Exception e) {
@@ -565,7 +602,7 @@ public class HomeController extends SubPaneController{
         }
     }
 
-    @FXML
+
     private void toolsView() {
         try {
             FXMLLoader loader = mainApp.load(FXMLConstants.SYSTEM_MENU_TOOLS);
@@ -576,5 +613,5 @@ public class HomeController extends SubPaneController{
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }*/
+    }
 }

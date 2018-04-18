@@ -9,7 +9,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import ngeneanalysys.controller.extend.SubPaneController;
-import ngeneanalysys.model.Sample;
 import ngeneanalysys.model.SnpInDelTranscript;
 import ngeneanalysys.model.VariantAndInterpretationEvidence;
 import ngeneanalysys.util.LoggerUtil;
