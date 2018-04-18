@@ -291,7 +291,7 @@ public class HomeController extends SubPaneController{
             HttpClientResponse response = apiService.get("/storageUsage", null, null, false);
 
             StorageUsage storageUsage = response.getObjectBeforeConvertResponseToJSON(StorageUsage.class);
-            double value = (double)storageUsage.getFreeSpace() / storageUsage.getTotalSpace();
+            double value = (double)(storageUsage.getTotalSpace() - storageUsage.getFreeSpace()) / storageUsage.getTotalSpace();
             String textLabel = ConvertUtil.convertFileSizeFormat(storageUsage.getFreeSpace()) + " / " + ConvertUtil.convertFileSizeFormat(storageUsage.getTotalSpace());
             AnimationTimer hddStatusTier = new HddStatusTimer(hddCanvas.getGraphicsContext2D(), value, "Free Space",
                     textLabel, 1);
