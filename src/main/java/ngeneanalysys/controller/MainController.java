@@ -919,6 +919,8 @@ public class MainController extends BaseStageController {
     		mainBackground.setStyle("-fx-background-image:url('layout/images/renewal/main_background02.png');");
     	}else if(theme.equalsIgnoreCase("mountain")) {
     		mainBackground.setStyle("-fx-background-image:url('layout/images/renewal/main_background10.png');");
+    	}else if(theme.equalsIgnoreCase("dna")) {
+    		mainBackground.setStyle("-fx-background-image:url('layout/images/renewal/main_background12.png');");
     	}
 
 

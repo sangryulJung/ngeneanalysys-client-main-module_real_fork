@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -14,7 +19,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane hbarPolicy="NEVER" maxHeight="256.0" maxWidth="1030.0" minHeight="256.0" minWidth="870.0" prefHeight="256.0" prefWidth="870.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailInterpretationController">
+<ScrollPane hbarPolicy="NEVER" maxHeight="256.0" maxWidth="1030.0" minHeight="256.0" minWidth="870.0" prefHeight="256.0" prefWidth="870.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailInterpretationController">
    <content>
       <GridPane fx:id="interpretationGridPane" maxHeight="-Infinity" maxWidth="1020.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="690.0" prefWidth="860.0" style="-fx-background-color: #fff;">
          <columnConstraints>
@@ -47,7 +52,7 @@
             </HBox>
             <VBox alignment="CENTER_RIGHT" maxHeight="-Infinity" minWidth="130.0" prefHeight="47.0" prefWidth="130.0" styleClass="add_to_report_check_box" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
                <children>
-                  <CheckBox fx:id="addToReportCheckBox" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="47.0" prefWidth="110.0" text="Add to Report" VBox.vgrow="ALWAYS">
+                  <CheckBox fx:id="addToReportCheckBox" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="47.0" text="Add to Report" VBox.vgrow="ALWAYS">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>

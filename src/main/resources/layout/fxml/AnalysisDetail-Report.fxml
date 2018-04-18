@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.net.*?>
 <?import javafx.geometry.*?>
@@ -106,8 +107,9 @@
                                     <String fx:value="font_gray" />
                                  </styleClass>
                               </Label>
-                              <TextArea fx:id="conclusionsTextArea" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="73.0" styleClass="txt_black" />
-                              <Label fx:id="extraFields" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-font-family: Noto Sans KR Bold;" text="REPORT EXTRA FIELDS" visible="false">
+                              <TextArea fx:id="conclusionsTextArea" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="73.0" style="-fx-font-family: Noto Sans KR Regular;" styleClass="txt_black" />
+                              <Label fx:id="extraFields" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-font-family: Noto Sans KR Regular;" text="REPORT EXTRA FIELDS" visible="false">
+                                 
                                  <VBox.margin>
                                     <Insets top="15.0" />
                                  </VBox.margin>
@@ -115,6 +117,9 @@
                                     <String fx:value="font_size_15" />
                                     <String fx:value="font_gray" />
                                  </styleClass>
+                                 <font>
+                                    <Font name="Noto Sans KR Regular" size="13.0" />
+                                 </font>
                               </Label>
                               <GridPane fx:id="customFieldGridPane" alignment="CENTER">
                                 <columnConstraints>
@@ -133,6 +138,9 @@
                                           <String fx:value="font_size_15" />
                                           <String fx:value="font_gray" />
                                        </styleClass>
+                                       <padding>
+                                          <Insets top="20.0" />
+                                       </padding>
                                     </Label>
                                  </children>
                               </HBox>
