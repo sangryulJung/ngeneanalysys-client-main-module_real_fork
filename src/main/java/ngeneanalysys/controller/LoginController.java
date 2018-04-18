@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import ngeneanalysys.code.constants.CommonConstants;
@@ -40,12 +41,17 @@ public class LoginController extends BaseStageController {
 		showCapLock();	
 	}
 	
-	
 	 
 	private static final Logger logger = LoggerUtil.getLogger();
 
 	@FXML
 	private Label CapsLock;
+	
+	@FXML
+	private GridPane contentswrapper;
+	
+	@FXML
+	private Button loginBtn;
 	
 	/** 아이디 input 객체 */
 	@FXML
@@ -260,4 +266,24 @@ public class LoginController extends BaseStageController {
 		}
 		return true;
 	}
+	
+	//테마 로그인창 
+    public void applyLoginTheme(String theme) {
+    	logger.info("Login theme:" + theme);
+    	
+    	if(theme.equalsIgnoreCase("default")) {
+    		contentswrapper.setStyle("-fx-background-image:url('layout/images/renewal/main_background.png');");
+    	}else if(theme.equalsIgnoreCase("dark")) {
+    		contentswrapper.setStyle("-fx-background-image:url('layout/images/renewal/main_background01.png');");
+    	}else if(theme.equalsIgnoreCase("red")) {
+    		contentswrapper.setStyle("-fx-background-image:url('layout/images/renewal/main_background06.png');");
+    	}else if(theme.equalsIgnoreCase("ice")) {
+    		contentswrapper.setStyle("-fx-background-image:url('layout/images/renewal/main_background02.png');");
+    	}else if(theme.equalsIgnoreCase("mountain")) {
+    		contentswrapper.setStyle("-fx-background-image:url('layout/images/renewal/main_background10.png');");
+    	}
+    	
+    	//System.out.println((String)contentswrapper.getStyle());
+
+    }
 }

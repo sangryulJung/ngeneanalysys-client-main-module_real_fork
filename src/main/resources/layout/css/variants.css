@@ -213,6 +213,7 @@
  	-fx-border-color:#000 #b1b1b1 #b1b1b1 #b1b1b1;
  	-fx-border-width:0;
  	-fx-padding:0;
+ 	-fx-font-size:13;
 }
 
 #variantListTableView:focused, .table-view .column-header-background, .table-view .column-header-background .label{
