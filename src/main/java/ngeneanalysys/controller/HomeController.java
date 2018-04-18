@@ -298,9 +298,9 @@ public class HomeController extends SubPaneController{
             hddStatusTier.start();
 
             int totalCount = (int)(storageUsage.getAvailableSampleCount() + storageUsage.getCurrentSampleCount());
-            double available = (double)(totalCount - storageUsage.getAvailableSampleCount()) / totalCount;
+            double usageSample = (double)(storageUsage.getCurrentSampleCount()) / totalCount;
             String label = storageUsage.getAvailableSampleCount() + " / " + totalCount + " Samples";
-            AnimationTimer availableTier = new HddStatusTimer(availableCanvas.getGraphicsContext2D(), available, "Available",
+            AnimationTimer availableTier = new HddStatusTimer(availableCanvas.getGraphicsContext2D(), usageSample, "Available",
                     label, 1);
             availableTier.start();
 
