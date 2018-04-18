@@ -879,7 +879,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         });
         if(panel != null && ExperimentTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             TableColumn<VariantAndInterpretationEvidence, String> lowConfidence = new TableColumn<>("Low confidence");
-            createTableHeader(lowConfidence, "Low confidence", "lowConfidence", null);
+            createTableHeader(lowConfidence, "Low confidence", "lowConfidence", 70.);
             lowConfidence.getStyleClass().add(centerStyleClass);
             lowConfidence.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getLowConfidence()));
             lowConfidence.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
@@ -910,16 +910,27 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         TableColumn<VariantAndInterpretationEvidence, String> type = new TableColumn<>("Type");
         createTableHeader(type, "Type", null ,null);
         type.getStyleClass().clear();
-        type.setCellValueFactory(cellData -> new SimpleStringProperty(cutVariantTypeString(cellData.getValue().getSnpInDel().getSnpInDelExpression().getVariantType())));
+        type.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getVariantType()));
+        if(panel != null && ExperimentTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
+            TableColumn<VariantAndInterpretationEvidence, String> typeExtension = new TableColumn<>("Type Extension");
+            createTableHeader(typeExtension, "Type Extension", null, 70.);
+            typeExtension.getStyleClass().clear();
+            typeExtension.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getVariantTypeExtension()));
+        }
 
         TableColumn<VariantAndInterpretationEvidence, String> codCons = new TableColumn<>("Cod.Cons");
-        createTableHeader(codCons, "Cod.Cons", null ,null);
+        createTableHeader(codCons, "Cod.Cons", null ,70.);
         codCons.getStyleClass().clear();
         codCons.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getCodingConsequence()));
+
+        TableColumn<VariantAndInterpretationEvidence, Integer> genomicCoordinate = new TableColumn<>("StartPosition");
+        createTableHeader(genomicCoordinate, "StartPosition", null ,null);
+        genomicCoordinate.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getStartPosition()).asObject());
 
         TableColumn<VariantAndInterpretationEvidence, String> strand = new TableColumn<>("Strand");
         createTableHeader(strand, "Strand", null ,55.);
         strand.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getStrand()));
+        strand.setVisible(false);
 
         TableColumn<VariantAndInterpretationEvidence, String> transcript = new TableColumn<>("Transcript");
         createTableHeader(transcript, "Transcript", null ,null);
@@ -929,15 +940,16 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         createTableHeader(ntChange, "NT change", null ,90.);
         ntChange.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> aaChange = new TableColumn<>("AA change");
-        createTableHeader(aaChange, "AA change", null ,90.);
-        aaChange.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChange()));
-
         TableColumn<VariantAndInterpretationEvidence, String> aaChangeConversion = new TableColumn<>("AA change(Single)");
         createTableHeader(aaChangeConversion, "AA change(Single)", null ,90.);
         aaChangeConversion.setCellValueFactory(cellData -> cellData.getValue().getSnpInDel().getSnpInDelExpression().getAachangeSingleLetter() == null ?
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChangeConversion()) :
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAachangeSingleLetter()));
+
+        TableColumn<VariantAndInterpretationEvidence, String> aaChange = new TableColumn<>("AA change");
+        createTableHeader(aaChange, "AA change", null ,90.);
+        aaChange.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChange()));
+        aaChange.setVisible(false);
 
         if(panel != null && ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             TableColumn<VariantAndInterpretationEvidence, String> ntChangeBIC = new TableColumn<>("NT change(BIC)");
@@ -1069,11 +1081,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         createTableHeader(rightSequence, "RightSequence", null ,null);
         rightSequence.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getRightSequence()));
         rightSequence.setVisible(false);
-
-        TableColumn<VariantAndInterpretationEvidence, Integer> genomicCoordinate = new TableColumn<>("StartPosition");
-        createTableHeader(genomicCoordinate, "StartPosition", null ,null);
-        genomicCoordinate.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getStartPosition()).asObject());
-        genomicCoordinate.setVisible(false);
 
         TableColumn<VariantAndInterpretationEvidence, String> dbSnpRsId = new TableColumn<>("SnpRsId");
         createTableHeader(dbSnpRsId, "SnpRsId", null ,null);
