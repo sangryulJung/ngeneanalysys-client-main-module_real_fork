@@ -389,12 +389,10 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
 
                     alert.setHeaderText(run.getName());
                     alert.setContentText(alertContentText);
-                    logger.info(run.getId() + " : present id");
                     Optional<ButtonType> result = alert.showAndWait();
                     if(result.isPresent() && result.get() == ButtonType.OK) {
                         restartRun(run.getId());
                     } else {
-                        result.ifPresent(buttonType -> logger.debug(buttonType + " : button select"));
                         alert.close();
                     }
                 } else {
@@ -404,8 +402,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
 
                     alert.setHeaderText(run.getName());
                     alert.setContentText(alertContentText);
-                    logger.debug(run.getId() + " : present id");
-                    Optional<ButtonType> result = alert.showAndWait();
+                    alert.showAndWait();
                 }
             });
 
