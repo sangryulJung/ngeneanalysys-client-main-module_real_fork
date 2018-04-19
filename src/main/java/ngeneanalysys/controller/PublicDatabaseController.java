@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -59,6 +60,9 @@ public class PublicDatabaseController extends SubPaneController {
 
     @FXML
     private Label releaseNoteLabel;
+    
+    @FXML
+    private ScrollPane releaseNoteScrollPane;
 
     /**
      * @param panelId Integer
@@ -91,7 +95,12 @@ public class PublicDatabaseController extends SubPaneController {
                     list.stream().filter(item -> item.getId().equals(Integer.parseInt(nv.getValue()))).findFirst();
 
             if(optionalPipelineVersionView.isPresent()) {
-                releaseNoteLabel.setText(optionalPipelineVersionView.get().getReleaseNote());
+                if (optionalPipelineVersionView.get().getReleaseNote().isEmpty()) {
+                	releaseNoteLabel.setText("There is no release notes.");
+                	releaseNoteScrollPane.setPrefHeight(30);
+                }else {
+                	releaseNoteLabel.setText(optionalPipelineVersionView.get().getReleaseNote());
+                }
                 releaseDateLabel.setText(optionalPipelineVersionView.get().getReleaseDate());
             }
 
