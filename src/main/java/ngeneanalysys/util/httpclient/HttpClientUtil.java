@@ -98,7 +98,7 @@ public class HttpClientUtil {
 				}
 			}
 
-			logger.info("POST:" + post.getURI());
+			logger.debug("POST:" + post.getURI());
 
 			if(!isJsonRequest) {
 				List<NameValuePair> paramList = convertParam(params);
@@ -205,7 +205,7 @@ public class HttpClientUtil {
 					get.addHeader(key, headers.get(key).toString());
 				}
 			}
-			logger.info("GET:" + get.getURI());
+			logger.debug("GET:" + get.getURI());
 		} catch (Exception e) {
 			logger.error("get setting fail", e);
 		}
@@ -242,7 +242,7 @@ public class HttpClientUtil {
 					get.addHeader(key, headers.get(key).toString());
 				}
 			}
-			logger.info("GET:" + get.getURI());
+			logger.debug("GET:" + get.getURI());
 		} catch (Exception e) {
 			logger.error("get setting fail", e);
 		}
@@ -407,7 +407,7 @@ public class HttpClientUtil {
 	 * @return
 	 */
 	public static HttpPut initPut(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, boolean isJsonRequest) {
-		logger.info("method : [put]");
+		logger.debug("method : [put]");
 		HttpPut httpPut = null;
 		try {
 			httpPut = new HttpPut(url);
@@ -420,7 +420,7 @@ public class HttpClientUtil {
 					httpPut.addHeader(key, headers.get(key).toString());
 				}
 			}
-			logger.info("PUT:" + httpPut.getURI());
+			logger.debug("PUT:" + httpPut.getURI());
 
 			if(!isJsonRequest) {
 				List<NameValuePair> paramList = convertParam(params);
@@ -503,7 +503,7 @@ public class HttpClientUtil {
 	 * @return
 	 */
 	public static HttpPatch initPatch(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, boolean isJsonRequest) {
-		logger.info("method : [patch]");
+		logger.debug("method : [patch]");
 		HttpPatch httpPatch = null;
 		try {
 			httpPatch = new HttpPatch(url);
@@ -516,7 +516,7 @@ public class HttpClientUtil {
 					httpPatch.addHeader(key, headers.get(key).toString());
 				}
 			}
-			logger.info("PATCH:" + httpPatch.getURI());
+			logger.debug("PATCH:" + httpPatch.getURI());
 
 			if(!isJsonRequest) {
 				List<NameValuePair> paramList = convertParam(params);
@@ -602,7 +602,7 @@ public class HttpClientUtil {
 					delete.addHeader(key, headers.get(key).toString());
 				}
 			}
-			logger.info("DELETE:" + delete.getURI());
+			logger.debug("DELETE:" + delete.getURI());
 		} catch (Exception e) {
 			logger.error("delete setting fail", e);
 		}

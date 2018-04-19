@@ -88,7 +88,7 @@ public class HomeController extends SubPaneController{
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("HomeController show..");
+        logger.debug("HomeController show..");
 
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
@@ -99,7 +99,7 @@ public class HomeController extends SubPaneController{
         maskerPane.setVisible(false);
 
         newsTipGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
-            logger.info("init");
+            logger.debug("init");
             if(newValue == null) return;
 
             if(!noticeLabelSetting(newsTipGroup.getToggles().indexOf(newValue))) {
@@ -312,7 +312,7 @@ public class HomeController extends SubPaneController{
     private void showRunList() {
         getMainController().setContentsMaskerPaneVisible(true);
         if(autoRefreshTimeline != null)
-            logger.info("cycle time : " + autoRefreshTimeline.getCycleDuration());
+            logger.debug("cycle time : " + autoRefreshTimeline.getCycleDuration());
 
         Platform.runLater(() -> {
             hddCheck();
@@ -338,7 +338,7 @@ public class HomeController extends SubPaneController{
 
                 PagedRun searchedSamples = response
                         .getObjectBeforeConvertResponseToJSON(PagedRun.class);
-                //logger.info(pagedRun.toString());
+                //logger.debug(pagedRun.toString());
                 getPagedRun.complete(searchedSamples);
             } catch (Exception e) {
                 getPagedRun.completeExceptionally(e);
@@ -525,19 +525,19 @@ public class HomeController extends SubPaneController{
      */
     public void startAutoRefresh() {
         boolean isAutoRefreshOn = "true".equals(config.getProperty("analysis.job.auto.refresh"));
-        logger.info(String.format("auto refresh on : %s", isAutoRefreshOn));
+        logger.debug(String.format("auto refresh on : %s", isAutoRefreshOn));
 
         if(isAutoRefreshOn) {
             // 갱신 시간 간격
             int refreshPeriodSecond = Integer.parseInt(config.getProperty("analysis.job.auto.refresh.period")) * 1000;
-            logger.info(String.format("auto refresh period second : %s millisecond", refreshPeriodSecond));
+            logger.debug(String.format("auto refresh period second : %s millisecond", refreshPeriodSecond));
 
             if(autoRefreshTimeline == null) {
                 autoRefreshTimeline = new Timeline(new KeyFrame(Duration.millis(refreshPeriodSecond),
                         ae -> showRunList()));
                 autoRefreshTimeline.setCycleCount(Animation.INDEFINITE);
             } else {
-                logger.info(String.format("[%s] timeline restart", this.getClass().getName()));
+                logger.debug(String.format("[%s] timeline restart", this.getClass().getName()));
                 autoRefreshTimeline.stop();
                 autoRefreshTimeline.getKeyFrames().removeAll(autoRefreshTimeline.getKeyFrames());
                 autoRefreshTimeline.getKeyFrames().add(new KeyFrame(Duration.millis(refreshPeriodSecond),
@@ -560,12 +560,12 @@ public class HomeController extends SubPaneController{
         boolean isAutoRefreshOn = "true".equals(config.getProperty("analysis.job.auto.refresh"));
         // 기능 실행중인 상태인 경우 실행
         if(autoRefreshTimeline != null && isAutoRefreshOn) {
-            logger.info(String.format("[%s] timeline status : %s", this.getClass().getName(),
+            logger.debug(String.format("[%s] timeline status : %s", this.getClass().getName(),
                     autoRefreshTimeline.getStatus()));
             // 일시정지
             if(autoRefreshTimeline.getStatus() == Animation.Status.RUNNING) {
                 autoRefreshTimeline.pause();
-                logger.info(String.format("[%s] auto refresh pause", this.getClass().getName()));
+                logger.debug(String.format("[%s] auto refresh pause", this.getClass().getName()));
             }
         }
     }
@@ -578,13 +578,13 @@ public class HomeController extends SubPaneController{
         int refreshPeriodSecond = (Integer.parseInt(config.getProperty("analysis.job.auto.refresh.period")) * 1000) - 1;
         // 기능 실행중인 상태인 경우 실행
         if(autoRefreshTimeline != null && isAutoRefreshOn) {
-            logger.info(String.format("[%s] timeline status : %s", this.getClass().getName(),
+            logger.debug(String.format("[%s] timeline status : %s", this.getClass().getName(),
                     autoRefreshTimeline.getStatus()));
             // 시작
             if(autoRefreshTimeline.getStatus() == Animation.Status.PAUSED) {
                 autoRefreshTimeline.playFrom(Duration.millis(refreshPeriodSecond));
                 autoRefreshTimeline.play();
-                logger.info(String.format("[%s] auto refresh resume", this.getClass().getName()));
+                logger.debug(String.format("[%s] auto refresh resume", this.getClass().getName()));
             }
         }
     }

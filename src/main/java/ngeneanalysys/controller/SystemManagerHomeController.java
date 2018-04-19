@@ -51,7 +51,7 @@ public class SystemManagerHomeController extends SubPaneController {
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("System Manager Home");
+        logger.debug("System Manager Home");
 
         apiService = APIService.getInstance();
         apiService.setStage(getMainApp().getPrimaryStage());
@@ -84,7 +84,7 @@ public class SystemManagerHomeController extends SubPaneController {
 
     private void setTabContent(Tab tab) {
         if(tab.getContent() == null) {
-            logger.info(String.format("'%s' contents init..", tab.getId()));
+            logger.debug(String.format("'%s' contents init..", tab.getId()));
             try {
                 SystemManagerTabItem item = SystemManagerTabMenuCode.valueOf(tab.getId()).getItem();
 

@@ -77,7 +77,7 @@ public class AnalysisDetailFusionExpressionController extends SubPaneController 
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("fusion expression init");
+        logger.debug("fusion expression init");
 
         apiService = APIService.getInstance();
 
@@ -109,7 +109,7 @@ public class AnalysisDetailFusionExpressionController extends SubPaneController 
 
             if(list != null && !list.isEmpty()) {
                 displayList = FXCollections.observableArrayList(list);
-                logger.info(displayList.size() + "");
+                logger.debug(displayList.size() + "");
             }
 
             if (GeneExpressionTableView.getItems() != null && !GeneExpressionTableView.getItems().isEmpty()) {

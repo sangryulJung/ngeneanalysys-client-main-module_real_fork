@@ -87,7 +87,7 @@ public class MainApp extends Application {
 	
 	public void showLogin() throws Exception {
 		if(primaryStage.getScene() != null) {
-			logger.info("Pre Scene Close");
+			logger.debug("Pre Scene Close");
 			primaryStage.close();
 		}
 
@@ -189,14 +189,14 @@ public class MainApp extends Application {
 	public void init() throws Exception {
 		Locale.setDefault(Locale.ENGLISH);
 		isAlreadyRunning = isProxyServerRunning();
-		logger.info(String.format("# already running application : %s", isAlreadyRunning));
+		logger.debug(String.format("# already running application : %s", isAlreadyRunning));
 		
 		if(!isAlreadyRunning) {
 			boolean checkDB = checkExistsDatabasePathAndCreate();
-			logger.info("check local db : " + checkDB);
+			logger.debug("check local db : " + checkDB);
 
 			config = PropertiesService.getInstance().getConfig();
-			logger.info(String.format("application name : %s", getProperty("application.name")));
+			logger.debug(String.format("application name : %s", getProperty("application.name")));
 		}
 	}
 	
@@ -215,13 +215,13 @@ public class MainApp extends Application {
 		this.primaryStage.initStyle(StageStyle.DECORATED);
 		
 		boolean isContainsServerURL = containsServerURL();
-		logger.info(String.format("server url is contains : %s", isContainsServerURL));
+		logger.debug(String.format("server url is contains : %s", isContainsServerURL));
 		
 		if(!isContainsServerURL) {
 			showServerURLSetting();
 		} else {
 			addProperty();
-			logger.info("show Login");
+			logger.debug("show Login");
 			showLogin();
 		}
 		
@@ -268,13 +268,13 @@ public class MainApp extends Application {
 
 				// 설정값이 존재하는 경우 추가
 				if(!StringUtils.isEmpty(value)) {
-					logger.info(String.format("add property [%s : %s]", key, value));
+					logger.debug(String.format("add property [%s : %s]", key, value));
 					config.setProperty(key, value);
 				}
 			}
 
 		} catch(Exception e) {
-			logger.info(e.getMessage());
+			logger.debug(e.getMessage());
 		}
 
 	}
@@ -286,7 +286,7 @@ public class MainApp extends Application {
 	public void showMain() throws Exception {
 		//이전 stage (로그인화면) 종료
 		if(primaryStage.getScene() != null) {
-			logger.info("Login Scene Close..");
+			logger.debug("Login Scene Close..");
 			primaryStage.close();
 		}
 
@@ -295,7 +295,7 @@ public class MainApp extends Application {
 		CacheMemoryService cacheMemoryService = CacheMemoryService.getInstance();
 
 		if(cacheMemoryService.isEmpty(CommonConstants.SESSION_CACHE_SET_NAME, CommonConstants.SESSION_CACHE_KEY_NAME)) {
-			logger.info("empty login session!!!");
+			logger.debug("empty login session!!!");
 			DialogUtil.warning("Empty Login Session", "Please Login", this.primaryStage, true);
 			showLogin();
 		} else {

@@ -60,7 +60,7 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("variants controller...");
+        logger.debug("variants controller...");
 
         apiService = APIService.getInstance();
 
@@ -174,7 +174,7 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
 
         try {
             if (!StringUtils.isEmpty(menu.getFxmlPath())) {
-                logger.info("mainFrame display fxmlPath : " + menu.getMenuName());
+                logger.debug("mainFrame display fxmlPath : " + menu.getMenuName());
 
                 if(topMenuContent[menu.getDisplayOrder()] == null) {
                     FXMLLoader loader = mainApp.load(menu.getFxmlPath());

@@ -250,7 +250,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("show..");
+        logger.debug("show..");
 
         tableCellUpdateFix(variantsTable);
 
@@ -581,7 +581,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
             } else {
                 response = apiService.post("/sampleReport/" + sample.getId(), params, null, true);
             }
-            logger.info("sample report status : " + response.getStatus());
+            logger.debug("sample report status : " + response.getStatus());
         } catch (WebAPIException wae) {
             wae.printStackTrace();
         } catch (Exception e) {
@@ -878,7 +878,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                                     + File.separator + image.getName() + "')";
                             path = path.replaceAll("\\\\", "/");
                             String name = image.getName().substring(0, image.getName().lastIndexOf('.'));
-                            logger.info(name + " : " + path);
+                            logger.debug(name + " : " + path);
                             model.put(name, path);
                         }
 
@@ -923,7 +923,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
             Thread.currentThread().setContextClassLoader(classLoader);
             @SuppressWarnings("unchecked")
             Class classToLoad = Class.forName("word.create.App", true, classLoader);
-            logger.info("application init..");
+            logger.debug("application init..");
             Method[] methods = classToLoad.getMethods();
             Method setParams = classToLoad.getMethod("setParams", Map.class);
             Method updateEmbeddedDoc = classToLoad.getMethod("updateEmbeddedDoc");

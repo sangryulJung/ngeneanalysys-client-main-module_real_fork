@@ -85,7 +85,7 @@ public class SystemMenuSettingController extends SubPaneController {
     
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("show..");
+        logger.debug("show..");
         
         windowTheme.valueProperty().addListener(new ChangeListener<Object>() {
 			@Override
@@ -179,7 +179,7 @@ public class SystemMenuSettingController extends SubPaneController {
     @FXML
     public void save() {
 
-        logger.info("settings save start..");
+        logger.debug("settings save start..");
 
         if(mainController.getProgressTaskContentArea().getChildren().size() != 0) {
             return;
@@ -238,7 +238,7 @@ public class SystemMenuSettingController extends SubPaneController {
                 for (Map.Entry<Object, Object> entry : properties.entrySet()) {
                     String key = (String) entry.getKey();
                     String value = (String) entry.getValue();
-                    logger.info(String.format("key : %s, value : %s", key, value));
+                    logger.debug(String.format("key : %s, value : %s", key, value));
 
                     // 설정값이 존재하는 경우 추가
                     if(!StringUtils.isEmpty(value)) {

@@ -231,7 +231,7 @@ public class LoginController extends BaseStageController {
 		primaryStage.setResizable(false);
 		primaryStage.centerOnScreen();
 		primaryStage.show();
-		logger.info(String.format("start %s", primaryStage.getTitle()));
+		logger.debug(String.format("start %s", primaryStage.getTitle()));
 
 		// 창 닫기 이벤트 바인딩
 		primaryStage.setOnCloseRequest(event -> {
@@ -269,7 +269,7 @@ public class LoginController extends BaseStageController {
 	
 	//테마 로그인창 
     public void applyLoginTheme(String theme) {
-    	logger.info("Login theme:" + theme);
+    	logger.debug("Login theme:" + theme);
     	
     	if(theme.equalsIgnoreCase("default")) {
     		contentswrapper.setStyle("-fx-background-image:url('layout/images/renewal/main_background.png');");

@@ -143,7 +143,7 @@ public class AnalysisDetailFusionGeneController extends SubPaneController {
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("show fusion gene tab");
+        logger.debug("show fusion gene tab");
 
         apiService = APIService.getInstance();
 
@@ -212,7 +212,7 @@ public class AnalysisDetailFusionGeneController extends SubPaneController {
 
             if(list != null && !list.isEmpty()) {
                 displayList = FXCollections.observableArrayList(list);
-                logger.info(displayList.size() + "");
+                logger.debug(displayList.size() + "");
             }
 
             if (fusionGeneTableView.getItems() != null && !fusionGeneTableView.getItems().isEmpty()) {
@@ -314,7 +314,7 @@ public class AnalysisDetailFusionGeneController extends SubPaneController {
             paramMap.put("detail", item);
 
         } catch(WebAPIException e) {
-            logger.info(e.getMessage());
+            logger.debug(e.getMessage());
         }
 
         try {

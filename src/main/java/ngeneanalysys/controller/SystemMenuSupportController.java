@@ -22,7 +22,7 @@ public class SystemMenuSupportController extends SubPaneController {
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("show..");
+        logger.debug("show..");
         // Create the dialog Stage
         Stage dialogStage = new Stage();
         dialogStage.initStyle(StageStyle.DECORATED);

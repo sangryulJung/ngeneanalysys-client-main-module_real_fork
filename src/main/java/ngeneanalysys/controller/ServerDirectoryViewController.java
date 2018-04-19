@@ -72,7 +72,7 @@ public class ServerDirectoryViewController extends BaseStageController {
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("init serverDirectory Controller");
+        logger.debug("init serverDirectory Controller");
 
         apiService = APIService.getInstance();
 
@@ -101,9 +101,9 @@ public class ServerDirectoryViewController extends BaseStageController {
 
         try {
             HttpClientResponse response = apiService.get("/runDir", null, null, false);
-            logger.info(response.getContentString());
+            logger.debug(response.getContentString());
             ServerFileInfo serverFileInfo = response.getObjectBeforeConvertResponseToJSON(ServerFileInfo.class);
-            logger.info(serverFileInfo.toString());
+            logger.debug(serverFileInfo.toString());
 
             TreeItem<ServerFile> root = new TreeItem(serverFileInfo.getParent(), new ImageView(folderImage));
 
@@ -116,9 +116,9 @@ public class ServerDirectoryViewController extends BaseStageController {
                         Map<String, Object> params = new HashMap<>();
                         params.put("subPath", getPathRemoveRoot(newValue));
                         HttpClientResponse response2 = apiService.get("/runDir", params, null, false);
-                        logger.info(response2.getContentString());
+                        logger.debug(response2.getContentString());
                         ServerFileInfo serverFileInfo2 = response2.getObjectBeforeConvertResponseToJSON(ServerFileInfo.class);
-                        logger.info(serverFileInfo2.toString());
+                        logger.debug(serverFileInfo2.toString());
 
                         createLeaf(serverFileInfo2.getChild(), newValue);
                     }
@@ -174,7 +174,7 @@ public class ServerDirectoryViewController extends BaseStageController {
 
             closeDialog();
         } else {
-            logger.info("directory item is not selected");
+            logger.debug("directory item is not selected");
         }
     }
 

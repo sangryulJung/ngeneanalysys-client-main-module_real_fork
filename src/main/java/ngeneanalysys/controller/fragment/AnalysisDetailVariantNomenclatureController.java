@@ -117,7 +117,7 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
                         String genomicDNA = (!StringUtils.isEmpty(transcript.getGenomicDna())) ? transcript.getGenomicDna() : "N/A";
 
 
-                        logger.info(String.format("variant identification choose '%s' option idx [%s]", transcriptName, newIdx));
+                        logger.debug(String.format("variant identification choose '%s' option idx [%s]", transcriptName, newIdx));
                         List<Integer> textLength = new ArrayList<>();
                         geneSymbolTextField.setText(geneSymbol); //Gene Symbol
                         if(!StringUtils.isEmpty(geneSymbol)) {
@@ -144,7 +144,7 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
                         if(maxTextLengthOptional.isPresent()) {
                             maxTextLength = maxTextLengthOptional.get();
                         }
-                        logger.info("max Length : " + maxTextLength);
+                        logger.debug("max Length : " + maxTextLength);
 
                         if(maxTextLength > 29) {
                             transcriptDetailGrid.setPrefWidth(maxTextLength * 9);
@@ -210,7 +210,7 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
         right22BpLabel.setText(displayRight22Bp.toUpperCase());
 
         double textLength = (double)(displayLeft22Bp.length() + ref.length() + displayRight22Bp.length());
-        logger.info("text length : " + textLength);
+        logger.debug("text length : " + textLength);
 
         if(textLength > 21) {
             gridBox.setPrefWidth(textLength * 12);

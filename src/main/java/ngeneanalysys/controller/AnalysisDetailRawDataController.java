@@ -94,7 +94,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("show..");
+        logger.debug("show..");
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
 
@@ -209,7 +209,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
      */
     @SuppressWarnings("static-access")
     public void download(AnalysisFile resultFile) {
-        logger.info(resultFile.getName());
+        logger.debug(resultFile.getName());
         String fileExtension = FilenameUtils.getExtension(resultFile.getName());
         String extensionFilterTypeName = String.format("%s (*.%s)", fileExtension.toUpperCase(), fileExtension);
         String extensionFilterName = String.format("*.%s", fileExtension);
@@ -222,7 +222,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
 
         try {
             if(file != null) {
-                logger.info(String.format("start download..[%s]", file.getName()));
+                logger.debug(String.format("start download..[%s]", file.getName()));
 
                 Task<Void> task = new AnalysisResultFileDownloadTask(this, resultFile, file);
                 final Thread downloadThread = new Thread(task);

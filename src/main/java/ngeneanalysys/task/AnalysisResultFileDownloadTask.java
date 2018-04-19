@@ -68,7 +68,7 @@ public class AnalysisResultFileDownloadTask extends Task<Void> {
                 Map<String,Object> headerMap = apiService.getDefaultHeaders(true);
 
                 HttpGet get = new HttpGet(connectURL);
-                logger.info("GET:" + get.getURI());
+                logger.debug("GET:" + get.getURI());
 
                 // 지정된 헤더 삽입 정보가 있는 경우 추가
                 if(headerMap != null && headerMap.size() > 0) {
@@ -144,7 +144,7 @@ public class AnalysisResultFileDownloadTask extends Task<Void> {
      */
     @Override
     protected void succeeded() {
-        //logger.info(String.format("download task complete [original : %s, save : %s]", analysisResultFile.getName(), saveFile.getName()));
+        //logger.debug(String.format("download task complete [original : %s, save : %s]", analysisResultFile.getName(), saveFile.getName()));
         controller.getMainController().removeProgressTaskItemById(progressBoxId);
 
         /*try {

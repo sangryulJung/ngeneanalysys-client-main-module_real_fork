@@ -239,7 +239,7 @@ public class UserAccountController extends SubPaneController {
             param.put("format", "json");
 
             response = apiService.get("/admin/memberGroups", param, null, false);
-            logger.info(response.getContentString());
+            logger.debug(response.getContentString());
             if(response != null) {
                 SystemManagerUserGroupPaging systemManagerUserGroupPaging =
                         response.getObjectBeforeConvertResponseToJSON(SystemManagerUserGroupPaging.class);
@@ -263,7 +263,7 @@ public class UserAccountController extends SubPaneController {
 
     public void modifySetting() {
         titleLabel.setText("User Modify");
-        logger.info("in modify");
+        logger.debug("in modify");
     }
 
     @FXML

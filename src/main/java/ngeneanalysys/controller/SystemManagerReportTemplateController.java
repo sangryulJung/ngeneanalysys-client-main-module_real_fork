@@ -149,7 +149,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("system manager report template init");
+        logger.debug("system manager report template init");
 
         apiService = APIService.getInstance();
 
@@ -266,7 +266,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                 }
             }
 
-            logger.info("total count : " + totalCount + ", page count : " + pageCount);
+            logger.debug("total count : " + totalCount + ", page count : " + pageCount);
 
             if (pageCount > 0) {
                 reportTemplatePagination.setVisible(true);
@@ -325,7 +325,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                 } else {
                     String variableJson = JsonUtil.toJson(variableList);
                     param.put("customFields", variableJson);
-                    logger.info(variableJson);
+                    logger.debug(variableJson);
                 }
                 HttpClientResponse response = null;
                 if(id == 0) {
@@ -451,7 +451,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                     return;
                 }
                 itemList = itemList.substring(0, itemList.length() - 3);
-                logger.info(itemList);
+                logger.debug(itemList);
                 item.put("comboBoxItemList", itemList);
             }
 
@@ -686,12 +686,12 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                         ReportTemplateModifyButton.this.getIndex());
                 alert.setHeaderText(reportTemplate.getName());
                 alert.setContentText(alertContentText);
-                logger.info(reportTemplate.getId() + " : present id");
+                logger.debug(reportTemplate.getId() + " : present id");
                 Optional<ButtonType> result = alert.showAndWait();
                 if(result.get() == ButtonType.OK) {
                     deleteReportTemplate(reportTemplate.getId());
                 } else {
-                    logger.info(result.get() + " : button select");
+                    logger.debug(result.get() + " : button select");
                     alert.close();
                 }
             });

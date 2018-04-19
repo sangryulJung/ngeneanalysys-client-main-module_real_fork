@@ -97,7 +97,7 @@ public class IlluminaMiSeqFileHandler implements FileHandler {
             String fileName = FilenameUtils.getName(file.getAbsolutePath());
             String pairName = getFASTQFilePairName(fileName);
             boolean isValidName = isValidFileName(fileName);
-            logger.info(String.format("absolute path : %s, file name : %s, pair name : %s, file name valid : %s",
+            logger.debug(String.format("absolute path : %s, file name : %s, pair name : %s, file name valid : %s",
                     file.getAbsolutePath(), fileName, pairName, isValidName));
             // 선택된 파일이 파일명 패턴에 일치하는 경우에만 진행함.
             if (fileName.length() > 200) {

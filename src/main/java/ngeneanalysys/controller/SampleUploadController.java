@@ -170,7 +170,7 @@ public class SampleUploadController extends BaseStageController{
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("init upload Controller");
+        logger.debug("init upload Controller");
         // Create the dialog Stage
         currentStage = new Stage();
         currentStage.setResizable(false);

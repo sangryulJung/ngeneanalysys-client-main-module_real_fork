@@ -127,11 +127,11 @@ public class AnalysisSampleUploadProgressDetailController extends BaseStageContr
     @FXML
     public void pause() {
         if(this.taskController.isPause) {
-            logger.info("Resume from detail..");
+            logger.debug("Resume from detail..");
             this.taskController.startUpload();
             buttonPause.setText("Pause");
         } else {
-            logger.info("pause from detail..");
+            logger.debug("pause from detail..");
             this.taskController.pauseUpload();
             buttonPause.setText("Resume");
         }
@@ -152,7 +152,7 @@ public class AnalysisSampleUploadProgressDetailController extends BaseStageContr
      * @param progressPercent
      */
     public void update(int sampleFileId, double progressPercent) {
-        logger.info(String.format("update progress [bedFile id : %s, percent : %s]", sampleFileId, progressPercent));
+        logger.debug(String.format("update progress [bedFile id : %s, percent : %s]", sampleFileId, progressPercent));
         if(listViewSampleFile.getItems() != null && listViewSampleFile.getItems().size() > 0) {
             String selector = "#sampleFile_" + sampleFileId;
             HBox hbox = (HBox) listViewSampleFile.lookup(selector);

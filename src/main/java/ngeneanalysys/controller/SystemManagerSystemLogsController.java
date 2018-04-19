@@ -117,7 +117,7 @@ public class SystemManagerSystemLogsController extends SubPaneController {
 
                 logListTable.setItems((FXCollections.observableList(list)));
 
-                logger.info(String.format("total count : %s, page count : %s", totalCount, pageCount));
+                logger.debug(String.format("total count : %s, page count : %s", totalCount, pageCount));
 
                 if (pageCount > 0) {
                     paginationList.setVisible(true);

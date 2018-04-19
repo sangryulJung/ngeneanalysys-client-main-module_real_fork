@@ -60,7 +60,7 @@ public class ChangePathogenicityController extends SubPaneController {
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("show pathogenicity change");
+        logger.debug("show pathogenicity change");
         // Create the dialog Stage
 
         apiService = APIService.getInstance();

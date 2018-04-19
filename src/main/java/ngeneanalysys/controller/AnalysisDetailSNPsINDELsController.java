@@ -153,7 +153,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("show SNPs-INDELs");
+        logger.debug("show SNPs-INDELs");
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
 
@@ -502,7 +502,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
             if (list != null && !list.isEmpty()) {
                 displayList = FXCollections.observableArrayList(list);
-                logger.info(displayList.size() + "");
+                logger.debug(displayList.size() + "");
             }
 
             // 리스트 삽입
@@ -670,7 +670,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             paramMap.put("detail", item);
 
         } catch(WebAPIException e) {
-            logger.info(e.getMessage());
+            logger.debug(e.getMessage());
         }
 
         try {
@@ -998,7 +998,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             } else {
                 Map<String,Object> variantInformationMap = returnResultsAfterSearch("variant_information");
                 SnpInDel snpInDel = (SnpInDel) paramMap.get("snpInDel");
-                logger.info("init overview link button event binding..");
+                logger.debug("init overview link button event binding..");
                 String urlExAC = (variantInformationMap.containsKey("exac_url")) ? (String) variantInformationMap.get("exac_url") : null;
                 String urlBRCAExchange = (variantInformationMap.containsKey("brca_exchange_url")) ? (String) variantInformationMap.get("brca_exchange_url") : null;
                 String urlClinvar = (variantInformationMap.containsKey("clinvar_url")) ? (String) variantInformationMap.get("clinvar_url") : null;
@@ -1007,13 +1007,13 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                 for(Node node : linkBox.getChildren()) {
                     if (node != null) {
                         String id = node.getId();
-                        logger.info(String.format("button id : %s", id));
+                        logger.debug(String.format("button id : %s", id));
                         // exACButton
                         if("exACButton".equals(id)) {
                             Button exACButton = (Button) node;
                             if(!StringUtils.isEmpty(urlExAC)) {
                                 exACButton.setOnAction(event -> {
-                                    logger.info(String.format("OPEN EXTERNAL LINK [%s][%s]", id, urlExAC));
+                                    logger.debug(String.format("OPEN EXTERNAL LINK [%s][%s]", id, urlExAC));
                                     getMainApp().getHostServices().showDocument(urlExAC);
                                 });
                                 exACButton.setDisable(false);
@@ -1052,7 +1052,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                             Button brcaExchangeButton = (Button) node;
                             if(!StringUtils.isEmpty(urlBRCAExchange)) {
                                 brcaExchangeButton.setOnAction(event -> {
-                                    logger.info(String.format("OPEN EXTERNAL LINK [%s][%s]", id, urlBRCAExchange));
+                                    logger.debug(String.format("OPEN EXTERNAL LINK [%s][%s]", id, urlBRCAExchange));
                                     getMainApp().getHostServices().showDocument(urlBRCAExchange);
                                 });
                                 brcaExchangeButton.setDisable(false);
@@ -1064,7 +1064,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                             Button clinvarButton = (Button) node;
                             if(!StringUtils.isEmpty(urlClinvar)) {
                                 clinvarButton.setOnAction(event -> {
-                                    logger.info(String.format("OPEN EXTERNAL LINK [%s][%s]", id, urlClinvar));
+                                    logger.debug(String.format("OPEN EXTERNAL LINK [%s][%s]", id, urlClinvar));
                                     getMainApp().getHostServices().showDocument(urlClinvar);
                                 });
                                 clinvarButton.setDisable(false);
@@ -1076,7 +1076,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                             Button ncbiButton = (Button) node;
                             if(!StringUtils.isEmpty(urlNCBI)) {
                                 ncbiButton.setOnAction(event -> {
-                                    logger.info(String.format("OPEN EXTERNAL LINK [%s][%s]", id, urlNCBI));
+                                    logger.debug(String.format("OPEN EXTERNAL LINK [%s][%s]", id, urlNCBI));
                                     getMainApp().getHostServices().showDocument(urlNCBI);
                                 });
                                 ncbiButton.setDisable(false);
@@ -1088,7 +1088,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                             Button ucscButton = (Button) node;
                             if(!StringUtils.isEmpty(urlUCSC)) {
                                 ucscButton.setOnAction(event -> {
-                                    logger.info(String.format("OPEN EXTERNAL LINK [%s][%s]", id, urlUCSC));
+                                    logger.debug(String.format("OPEN EXTERNAL LINK [%s][%s]", id, urlUCSC));
                                     getMainApp().getHostServices().showDocument(urlUCSC);
                                 });
                                 ucscButton.setDisable(false);
@@ -1106,7 +1106,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                                 if(!transcriptDataMap.isEmpty() && transcriptDataMap.size() > 0) {
                                     alamutButton.setOnAction(event -> {
                                         int selectedIdx = this.overviewController.getTranscriptComboBoxSelectedIndex();
-                                        logger.info(String.format("selected transcript combobox idx : %s", selectedIdx));
+                                        logger.debug(String.format("selected transcript combobox idx : %s", selectedIdx));
                                         Map<String,String> map = transcriptDataMap.get(String.valueOf(selectedIdx));
                                         if(!map.isEmpty() && map.size() > 0) {
                                             String transcript = map.get("transcript_name");

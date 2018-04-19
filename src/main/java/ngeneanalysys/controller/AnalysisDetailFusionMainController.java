@@ -51,7 +51,7 @@ public class AnalysisDetailFusionMainController extends AnalysisDetailCommonCont
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("fusion main init");
+        logger.debug("fusion main init");
 
         currentStage = new Stage();
         currentStage.setResizable(false);

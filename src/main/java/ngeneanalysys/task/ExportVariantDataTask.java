@@ -93,7 +93,7 @@ public class ExportVariantDataTask extends Task<Void> {
 			Map<String,Object> headerMap = apiService.getDefaultHeaders(true);
 
 			HttpGet get = new HttpGet(builder.build());
-			logger.info("GET:" + get.getURI());
+			logger.debug("GET:" + get.getURI());
 
 			// 지정된 헤더 삽입 정보가 있는 경우 추가
 			if(headerMap != null && headerMap.size() > 0) {
@@ -161,14 +161,14 @@ public class ExportVariantDataTask extends Task<Void> {
 	 */
 	@Override
 	protected void done() {
-		logger.info("done");
+		logger.debug("done");
 	}
 	/* (non-Javadoc)
 	 * @see javafx.concurrent.Task#succeeded()
 	 */
 	@Override
 	protected void succeeded() {
-		logger.info("success");
+		logger.debug("success");
 		super.succeeded();
 		if(this.isCancelled()) {
 			return;
@@ -199,7 +199,7 @@ public class ExportVariantDataTask extends Task<Void> {
 	 */
 	@Override
 	protected void failed() {
-		logger.info("failed");
+		logger.debug("failed");
 		super.failed();
 		DialogUtil.error("Variant Data Export Fail.", getException().getMessage(), this.mainApp.getPrimaryStage(), false);
 	}

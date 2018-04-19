@@ -73,7 +73,7 @@ public class PublicDatabaseController extends SubPaneController {
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("show..");
+        logger.debug("show..");
 
         apiService = APIService.getInstance();
 
@@ -90,7 +90,7 @@ public class PublicDatabaseController extends SubPaneController {
         dialogStage.resizableProperty().setValue(false);
 
         versionComboBox.getSelectionModel().selectedItemProperty().addListener((ob, ov, nv) -> {
-            logger.info("test");
+            logger.debug("test");
             Optional<PipelineVersionView> optionalPipelineVersionView =
                     list.stream().filter(item -> item.getId().equals(Integer.parseInt(nv.getValue()))).findFirst();
 

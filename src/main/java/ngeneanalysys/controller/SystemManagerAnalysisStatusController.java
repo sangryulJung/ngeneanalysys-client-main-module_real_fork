@@ -180,7 +180,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
                 if (list != null) {
                     listTable.setItems((FXCollections.observableList(list)));
                 }
-                logger.info(String.format("total count : %s, page count : %s", totalCount, pageCount));
+                logger.debug(String.format("total count : %s, page count : %s", totalCount, pageCount));
 
                 if (pageCount > 0) {
                     paginationList.setVisible(true);
@@ -289,7 +289,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
     private void deleteRun(Integer id) {
         try {
             HttpClientResponse response = apiService.delete("/admin/runs/"+id);
-            logger.info("status code : " + response.getStatus());
+            logger.debug("status code : " + response.getStatus());
             listTable.getItems().clear();
             search();
         } catch (WebAPIException wae) {
@@ -319,7 +319,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
                                                 (sampleStatus.getStatus().equalsIgnoreCase("FAIL") ||
                                                                 sampleStatus.getStatus().equalsIgnoreCase("COMPLETE"))) {
                     response = apiService.get("admin/restartSampleAnalysis/" + sample.getId(), null, null, false);
-                    logger.info("status code : " + response.getStatus());
+                    logger.debug("status code : " + response.getStatus());
                 }
             }*/
 
@@ -346,12 +346,12 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
                         DeleteButtonCreate.this.getIndex());
                 alert.setHeaderText(run.getName());
                 alert.setContentText(alertContentText);
-                logger.info(run.getId() + " : present id");
+                logger.debug(run.getId() + " : present id");
                 Optional<ButtonType> result = alert.showAndWait();
                 if(result.isPresent() && result.get() == ButtonType.OK) {
                     deleteRun(run.getId());
                 } else {
-                    result.ifPresent(buttonType -> logger.info(buttonType + " : button select"));
+                    result.ifPresent(buttonType -> logger.debug(buttonType + " : button select"));
                     alert.close();
                 }
             });

@@ -70,7 +70,7 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
 
     @Override
     protected Void call() throws Exception {
-        logger.info("start upload task...");
+        logger.debug("start upload task...");
 
         try {
 
@@ -147,7 +147,7 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
                 //completeFile.add(fileData);
             }
         } catch (Exception e) {
-            logger.info(e.getMessage());
+            logger.debug(e.getMessage());
             e.printStackTrace();
         }
 
@@ -177,7 +177,7 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
             this.analysisSampleUploadProgressTaskController.showCancelCompleteDialog();
         } else {
             if(!this.analysisSampleUploadProgressTaskController.isStop) {
-                logger.info("upload task work finished!!");
+                logger.debug("upload task work finished!!");
 
                 if(this.taskStatus) {
                     // 완료 메시지 출력
@@ -187,7 +187,7 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
                     DialogUtil.error("Upload Failed", String.format("[%s] %s", this.msgDialogHeader, this.msgDialogContent), analysisSampleUploadProgressTaskController.getMainController().getPrimaryStage(), false);
                 }
             } else {
-                logger.info("upload task work stop!!");
+                logger.debug("upload task work stop!!");
             }
         }
     }
@@ -196,7 +196,7 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
      * 현재 업로드 진행중인 분석 요청 그룹 정보 전달 [MainController 화면]
      */
     private void updateCurrentUploadGroupInfo() {
-        logger.info("updateCurrentUploadGroupInfo..");
+        logger.debug("updateCurrentUploadGroupInfo..");
         try {
             Thread.sleep(50);
             Platform.runLater(() -> {

@@ -27,7 +27,7 @@ public class VelocityUtil {
 	
 	/** Init VelocityEngine */
 	public void init() {
-		logger.info("Init Velocity Engine");
+		logger.debug("Init Velocity Engine");
 		engine = new VelocityEngine();
 		engine.setProperty(RuntimeConstants.RESOURCE_LOADER, "file,classpath");
 		engine.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
@@ -46,7 +46,7 @@ public class VelocityUtil {
 	 * @throws Exception
 	 */
 	public String getContents(String templatePath, String encoding, Map<String,Object> model) throws Exception {
-		logger.info(String.format("template [%s], encoding [%s]", templatePath, encoding));
+		logger.debug(String.format("template [%s], encoding [%s]", templatePath, encoding));
 
 		if(engine == null) init();
 		if(StringUtils.isEmpty(encoding)) encoding = "UTF-8";

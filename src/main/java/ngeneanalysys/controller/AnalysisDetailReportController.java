@@ -139,7 +139,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     @SuppressWarnings("unchecked")
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("show..");
+        logger.debug("show..");
 
         tableCellUpdateFix(variantsTable);
 
@@ -1068,7 +1068,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                                     + File.separator + image.getName() + "')";
                             path = path.replaceAll("\\\\", "/");
                             String name = image.getName().substring(0, image.getName().lastIndexOf('.'));
-                            logger.info(name + " : " + path);
+                            logger.debug(name + " : " + path);
                             model.put(name, path);
                         }
 
@@ -1113,7 +1113,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         try {
             classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader());
             Class classToLoad = Class.forName("word.create.App", true, classLoader);
-            logger.info("application init..");
+            logger.debug("application init..");
             Method[] methods = classToLoad.getMethods();
             Method setParams = classToLoad.getMethod("setParams", Map.class);
             Method updateEmbeddedDoc = classToLoad.getMethod("updateEmbeddedDoc");

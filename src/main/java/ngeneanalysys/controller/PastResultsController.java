@@ -113,7 +113,7 @@ public class PastResultsController extends SubPaneController {
 	@Override
 	public void show(Parent root) throws IOException {
 		setSearchOption();
-		logger.info("PastResultsController show..");
+		logger.debug("PastResultsController show..");
 		itemCountPerPage = 5;
 		// api service init..
 		apiService = APIService.getInstance();
@@ -164,7 +164,7 @@ public class PastResultsController extends SubPaneController {
 								params.put("keyword", textField.getText());
 								params.put("resultCount", 15);
 								HttpClientResponse response = apiService.get("/filter", params, null, false);
-								logger.info(response.getContentString());
+								logger.debug(response.getContentString());
 								JSONParser jsonParser = new JSONParser();
 								JSONArray jsonArray = (JSONArray) jsonParser.parse(response.getContentString());
 								AutoCompletionBinding<String> binding = TextFields.bindAutoCompletion(textField, getAllData(jsonArray));
@@ -244,19 +244,19 @@ public class PastResultsController extends SubPaneController {
 	 */
 	public void startAutoRefresh() {
 		boolean isAutoRefreshOn = "true".equals(config.getProperty("analysis.job.auto.refresh"));
-		logger.info(String.format("auto refresh on : %s", isAutoRefreshOn));
+		logger.debug(String.format("auto refresh on : %s", isAutoRefreshOn));
 		
 		if(isAutoRefreshOn) {
 			// 갱신 시간 간격
 			int refreshPeriodSecond = Integer.parseInt(config.getProperty("analysis.job.auto.refresh.period")) * 1000;
-			logger.info(String.format("auto refresh period second : %s millisecond", refreshPeriodSecond));
+			logger.debug(String.format("auto refresh period second : %s millisecond", refreshPeriodSecond));
 
 			if(autoRefreshTimeline == null) {
 				autoRefreshTimeline = new Timeline(new KeyFrame(Duration.millis(refreshPeriodSecond),
 						ae -> setList(paginationList.getCurrentPageIndex() + 1)));
 				autoRefreshTimeline.setCycleCount(Animation.INDEFINITE);
 			} else {
-				logger.info(String.format("[%s] timeline restart", this.getClass().getName()));
+				logger.debug(String.format("[%s] timeline restart", this.getClass().getName()));
 				autoRefreshTimeline.stop();
 				autoRefreshTimeline.getKeyFrames().removeAll(autoRefreshTimeline.getKeyFrames());
 				autoRefreshTimeline.getKeyFrames().add(new KeyFrame(Duration.millis(refreshPeriodSecond),
@@ -286,12 +286,12 @@ public class PastResultsController extends SubPaneController {
 		boolean isAutoRefreshOn = "true".equals(config.getProperty("analysis.job.auto.refresh"));
 		// 기능 실행중인 상태인 경우 실행
 		if(autoRefreshTimeline != null && isAutoRefreshOn) {
-			logger.info(String.format("[%s] timeline status : %s", this.getClass().getName(),
+			logger.debug(String.format("[%s] timeline status : %s", this.getClass().getName(),
 					autoRefreshTimeline.getStatus()));
 			// 일시정지
 			if(autoRefreshTimeline.getStatus() == Animation.Status.RUNNING) {
 				autoRefreshTimeline.pause();
-				logger.info(String.format("[%s] auto refresh pause", this.getClass().getName()));
+				logger.debug(String.format("[%s] auto refresh pause", this.getClass().getName()));
 			}
 		}
 	}
@@ -304,13 +304,13 @@ public class PastResultsController extends SubPaneController {
         int refreshPeriodSecond = (Integer.parseInt(config.getProperty("analysis.job.auto.refresh.period")) * 1000) - 1;
 		// 기능 실행중인 상태인 경우 실행
 		if(autoRefreshTimeline != null && isAutoRefreshOn) {
-			logger.info(String.format("[%s] timeline status : %s", this.getClass().getName(),
+			logger.debug(String.format("[%s] timeline status : %s", this.getClass().getName(),
 					autoRefreshTimeline.getStatus()));
 			// 시작
 			if(autoRefreshTimeline.getStatus() == Animation.Status.PAUSED) {
 			    autoRefreshTimeline.playFrom(Duration.millis(refreshPeriodSecond));
 				autoRefreshTimeline.play();
-				logger.info(String.format("[%s] auto refresh resume", this.getClass().getName()));
+				logger.debug(String.format("[%s] auto refresh resume", this.getClass().getName()));
 			}
 		}
 	}
@@ -331,7 +331,7 @@ public class PastResultsController extends SubPaneController {
 	 */
 	public void setList(int page) {
 		if(autoRefreshTimeline != null) {
-			logger.info(String.format("auto refresh timeline status : %s", autoRefreshTimeline.getStatus()));
+			logger.debug(String.format("auto refresh timeline status : %s", autoRefreshTimeline.getStatus()));
 		}
 		maskerPane.setVisible(true);
 		
@@ -370,7 +370,7 @@ public class PastResultsController extends SubPaneController {
 						pageCount++;
 					}
 				}
-				logger.info(String.format("total count : %s, page count : %s", totalCount, pageCount));
+				logger.debug(String.format("total count : %s, page count : %s", totalCount, pageCount));
 
 				renderSampleList(list);
 				if (pageCount > 0) {

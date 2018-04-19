@@ -193,7 +193,7 @@ public class APIService {
 //			reqEntity.setChunked(false);
             post.setEntity(reqEntity);
 
-            logger.info("POST:" + post.getURI());
+            logger.debug("POST:" + post.getURI());
 
             httpclient = HttpClients.custom().setSSLSocketFactory(HttpClientUtil.getSSLSocketFactory()).build();
             try {
@@ -299,7 +299,7 @@ public class APIService {
     }
 
     public Map<String, Object> getDefaultHeaders(boolean tokenContain) {
-        logger.info("call getDefaultHeaders");
+        logger.debug("call getDefaultHeaders");
         Map<String,Object> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         if(tokenContain) {

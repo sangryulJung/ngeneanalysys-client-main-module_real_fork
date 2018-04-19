@@ -58,11 +58,11 @@ public class ServerURLManageService {
                 response = HttpClientUtil.get(url, null, null, false);
                 if(response != null) {
                     int status = response.getStatus();
-                    logger.info("HTTP Status : " + status);
+                    logger.debug("HTTP Status : " + status);
                     return status;
                 }
             } catch (WebAPIException e) {
-                logger.info(e.getMessage());
+                logger.debug(e.getMessage());
             }
         } else {
             return 0;

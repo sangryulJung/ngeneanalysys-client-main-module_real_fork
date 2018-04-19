@@ -112,6 +112,6 @@ public class ServerURLSettingController extends BaseStageController{
 
         if(!StringUtils.isEmpty(serverURL)) inputURL.setText(serverURL);
 
-        logger.info(String.format("start %s", primaryStage.getTitle()));
+        logger.debug(String.format("start %s", primaryStage.getTitle()));
     }
 }

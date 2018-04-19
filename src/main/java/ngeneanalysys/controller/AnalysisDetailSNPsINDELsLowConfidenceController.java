@@ -59,7 +59,7 @@ public class AnalysisDetailSNPsINDELsLowConfidenceController extends SubPaneCont
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("show..");
+        logger.debug("show..");
         String na = "N/A";
 
         if (getParamMap() != null && !getParamMap().isEmpty() && getParamMap().size() > 0) {

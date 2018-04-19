@@ -175,7 +175,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("init snv controller");
+        logger.debug("init snv controller");
 
         apiService = APIService.getInstance();
 
@@ -212,7 +212,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 if(e.getClickCount() == 1) {
                     setSNVTabName();
                 } else if (e.getClickCount() <= 2) {
-                    logger.info(e.getClickCount() + " Click count");
+                    logger.debug(e.getClickCount() + " Click count");
                    if(e.getClickCount() == 2) {
                        expandRight();
                    }
@@ -644,7 +644,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 }
             }
 
-            logger.info("total count : " + totalCount + ", page count : " + pageCount);
+            logger.debug("total count : " + totalCount + ", page count : " + pageCount);
 
             if (pageCount > 0) {
                 variantPagination.setVisible(true);
@@ -737,7 +737,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                     currentKey = key;
                 }
                 String value = obj.toString().substring(obj.toString().indexOf(" ") + 1);
-                logger.info(currentKey + " " + value);
+                logger.debug(currentKey + " " + value);
             }
 
         }

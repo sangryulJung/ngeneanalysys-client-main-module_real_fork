@@ -30,7 +30,7 @@ public class AnalysisDetailFusionController extends AnalysisDetailCommonControll
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("show Fusion");
+        logger.debug("show Fusion");
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
 

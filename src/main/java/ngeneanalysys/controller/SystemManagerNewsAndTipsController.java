@@ -143,7 +143,7 @@ public class SystemManagerNewsAndTipsController extends SubPaneController {
                 }
             }
 
-            logger.info("total count : " + totalCount + ", page count : " + pageCount);
+            logger.debug("total count : " + totalCount + ", page count : " + pageCount);
 
             if (pageCount > 0) {
                 noticePagination.setVisible(true);
@@ -244,12 +244,12 @@ public class SystemManagerNewsAndTipsController extends SubPaneController {
                         NewsAndTipsModifyButton.this.getIndex());
                 alert.setHeaderText(notice.getTitle());
                 alert.setContentText(alertContentText);
-                logger.info(notice.getId() + " : present id");
+                logger.debug(notice.getId() + " : present id");
                 Optional<ButtonType> result = alert.showAndWait();
                 if(result.get() == ButtonType.OK) {
                     deleteNewsAndTips(notice.getId());
                 } else {
-                    logger.info(result.get() + " : button select");
+                    logger.debug(result.get() + " : button select");
                     alert.close();
                 }
             });

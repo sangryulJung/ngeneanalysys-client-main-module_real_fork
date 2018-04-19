@@ -45,7 +45,7 @@ public class SNPsINDELsOverviewRadarGraph {
 	/** 애니메이션 재생 스피드 **/
 	private final int gaugeSpeed = 10;
 	public SNPsINDELsOverviewRadarGraph(VBox box, Polyline polyline, double percent0, double percent1, double percent2, double percent3, double percent4, double percent5) {
-		logger.info(String.format("percent0 : %s, percent1 : %s, percent2 : %s, percent3 : %s, percent4 : %s, percent5 : %s", percent0, percent1, percent2, percent3, percent4, percent5));
+		logger.debug(String.format("percent0 : %s, percent1 : %s, percent2 : %s, percent3 : %s, percent4 : %s, percent5 : %s", percent0, percent1, percent2, percent3, percent4, percent5));
 		this.box = box;
 		this.polyline = polyline;
 		this.percent0 = percent0;
