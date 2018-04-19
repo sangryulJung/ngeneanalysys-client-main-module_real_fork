@@ -77,7 +77,7 @@ public class PublicDatabaseController extends SubPaneController {
         dialogStage = new Stage();
         dialogStage.initStyle(StageStyle.DECORATED);
         dialogStage.initModality(Modality.APPLICATION_MODAL);
-        dialogStage.setTitle(CommonConstants.SYSTEM_NAME + " > Public Databases");
+        dialogStage.setTitle(CommonConstants.SYSTEM_NAME + " > Pipeline information");
         // OS가 Window인 경우 아이콘 출력.
         if(System.getProperty("os.name").toLowerCase().contains("window")) {
             dialogStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
@@ -109,10 +109,12 @@ public class PublicDatabaseController extends SubPaneController {
     private void setList(String id) {
         if(toolsContentsGridPane.getChildren() != null && !toolsContentsGridPane.getChildren().isEmpty()) {
             toolsContentsGridPane.getChildren().removeAll(toolsContentsGridPane.getChildren());
+            toolsContentsGridPane.getRowConstraints().removeAll(toolsContentsGridPane.getRowConstraints());
             toolsContentsGridPane.setPrefHeight(0);
         }
         if(databaseContentsGridPane.getChildren() != null && !databaseContentsGridPane.getChildren().isEmpty()) {
             databaseContentsGridPane.getChildren().removeAll(databaseContentsGridPane.getChildren());
+            databaseContentsGridPane.getRowConstraints().removeAll(databaseContentsGridPane.getRowConstraints());
             databaseContentsGridPane.setPrefHeight(0);
         }
         Platform.runLater(() -> {
@@ -167,10 +169,8 @@ public class PublicDatabaseController extends SubPaneController {
         
         if(isTool) {
             toolsContentsGridPane.addRow(toolsContentsGridPane.getChildren().size() / 5, label1, label2, label3, label4, label5);
-            //toolsContentsGridPane.setPrefHeight(toolsContentsGridPane.getPrefHeight() + 60);
         } else {
             databaseContentsGridPane.addRow(databaseContentsGridPane.getChildren().size() / 5, label1, label2, label3, label4, label5);
-            //databaseContentsGridPane.setPrefHeight(databaseContentsGridPane.getPrefHeight() + 60);
         }
         GridPane.setValignment(label1, VPos.TOP);
         GridPane.setValignment(label2, VPos.TOP);

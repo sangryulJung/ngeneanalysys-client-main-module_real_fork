@@ -345,6 +345,16 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                             datePicker.setConverter(DatepickerConverter.getConverter(dateType));
                             datePicker.setId(key);
                             customFieldGridPane.add(datePicker, colIndex++, rowIndex);
+                        } else if (type.equalsIgnoreCase("ComboBox")) {
+                            ComboBox<String> comboBox = new ComboBox<>();
+                            comboBox.getStyleClass().add("txt_black");
+                            comboBox.setId(key);
+                            String list = item.get("comboBoxItemList");
+                            String[] comboBoxItem = list.split("&\\^\\|");
+                            comboBox.getItems().addAll(comboBoxItem);
+                            comboBox.getSelectionModel().selectFirst();
+
+                            customFieldGridPane.add(comboBox, colIndex++, rowIndex);
                         } else {
                             TextField textField = new TextField();
                             textField.getStyleClass().add("txt_black");
@@ -523,6 +533,9 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                     datePicker.setValue(LocalDate.parse((String)contentsMap.get(datePicker.getId()), formatter));
                 }
+            } else if(gridObject instanceof ComboBox) {
+                ComboBox<String> comboBox = (ComboBox)gridObject;
+                if(contentsMap.containsKey(comboBox.getId())) comboBox.getSelectionModel().select((String)contentsMap.get(comboBox.getId()));
             }
         }
 
@@ -653,11 +666,6 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
             alert.close();
         }
     }
-    /**
-     * 보고서 작업 완료 처리
-     */
-    public void setComplete() {
-    }
 
     @FXML
     public void confirmPDFAsFinal() {
@@ -742,6 +750,9 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                         } else {
                             contentsMap.put(datePicker.getId(), "");
                         }
+                    } else if(gridObject instanceof ComboBox) {
+                        ComboBox<String> comboBox = (ComboBox<String>)gridObject;
+                        contentsMap.put(comboBox.getId(), comboBox.getSelectionModel().getSelectedItem());
                     }
                 }
 
