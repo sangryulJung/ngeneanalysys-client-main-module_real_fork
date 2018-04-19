@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import ngeneanalysys.code.AnalysisJobStatusCode;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
@@ -148,7 +149,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
         int limit = 15;
         int offset = (page - 1)  * limit;
 
-        HttpClientResponse response = null;
+        HttpClientResponse response;
 
         try {
             Map<String, Object> param = getSearchParam();
@@ -176,8 +177,9 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
                         pageCount++;
                     }
                 }
-
-                listTable.setItems((FXCollections.observableList(list)));
+                if (list != null) {
+                    listTable.setItems((FXCollections.observableList(list)));
+                }
                 logger.info(String.format("total count : %s, page count : %s", totalCount, pageCount));
 
                 if (pageCount > 0) {
@@ -333,11 +335,10 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
         HBox box = null;
         final ImageView img = new ImageView(resourceUtil.getImage("/layout/images/delete.png", 18, 18));
 
-        public DeleteButtonCreate() {
+        DeleteButtonCreate() {
             img.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 
-                String alertHeaderText = null;
                 String alertContentText = "Are you sure to delete this run?";
 
                 alert.setTitle("Confirmation Dialog");
@@ -347,10 +348,10 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
                 alert.setContentText(alertContentText);
                 logger.info(run.getId() + " : present id");
                 Optional<ButtonType> result = alert.showAndWait();
-                if(result.get() == ButtonType.OK) {
+                if(result.isPresent() && result.get() == ButtonType.OK) {
                     deleteRun(run.getId());
                 } else {
-                    logger.info(result.get() + " : button select");
+                    result.ifPresent(buttonType -> logger.info(buttonType + " : button select"));
                     alert.close();
                 }
             });
@@ -378,27 +379,36 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
         HBox box = null;
         final ImageView img = new ImageView(resourceUtil.getImage("/layout/images/refresh.png", 18, 18));
 
-        public UpdateButtonCreate() {
+        UpdateButtonCreate() {
             img.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                Run run = UpdateButtonCreate.this.getTableView().getItems().get(UpdateButtonCreate.this.getIndex());
+                if (AnalysisJobStatusCode.JOB_RUN_GROUP_FAIL.equals(run.getRunStatus().getStatus())) {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    String alertContentText = "Are you sure to restart this run?";
+                    alert.setTitle("Confirmation Dialog");
 
-                String alertHeaderText = null;
-                String alertContentText = "Are you sure to restart this run?";
-
-                alert.setTitle("Confirmation Dialog");
-                Run run = UpdateButtonCreate.this.getTableView().getItems().get(
-                        UpdateButtonCreate.this.getIndex());
-                alert.setHeaderText(run.getName());
-                alert.setContentText(alertContentText);
-                logger.info(run.getId() + " : present id");
-                Optional<ButtonType> result = alert.showAndWait();
-                if(result.get() == ButtonType.OK) {
-                    restartRun(run.getId());
+                    alert.setHeaderText(run.getName());
+                    alert.setContentText(alertContentText);
+                    logger.info(run.getId() + " : present id");
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if(result.isPresent() && result.get() == ButtonType.OK) {
+                        restartRun(run.getId());
+                    } else {
+                        result.ifPresent(buttonType -> logger.debug(buttonType + " : button select"));
+                        alert.close();
+                    }
                 } else {
-                    logger.info(result.get() + " : button select");
-                    alert.close();
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    String alertContentText = "Only the failed analysis can be restarted.";
+                    alert.setTitle("Warning Dialog");
+
+                    alert.setHeaderText(run.getName());
+                    alert.setContentText(alertContentText);
+                    logger.debug(run.getId() + " : present id");
+                    Optional<ButtonType> result = alert.showAndWait();
                 }
             });
+
         }
 
         @Override
