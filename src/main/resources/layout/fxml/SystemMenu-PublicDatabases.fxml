@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
@@ -12,7 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="475.0" prefWidth="1030.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.PublicDatabaseController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="475.0" prefWidth="1030.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.PublicDatabaseController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
@@ -26,12 +27,17 @@
             <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
                <children>
                   <ComboBox fx:id="versionComboBox" prefWidth="150.0" />
+                  <Label fx:id="releaseDateLabel" />
                </children>
                <padding>
                   <Insets left="10.0" />
                </padding>
             </HBox>
-            <Label wrapText="true" />
+            <ScrollPane maxWidth="810.0" minWidth="810.0" prefHeight="45.0" prefWidth="810.0">
+               <content>
+                  <Label fx:id="releaseNoteLabel" maxHeight="-Infinity" maxWidth="800.0" minHeight="-Infinity" minWidth="800.0" prefWidth="800.0" wrapText="true" />
+               </content>
+            </ScrollPane>
          </children>
       </VBox>
       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="1">
@@ -64,7 +70,7 @@
                         </GridPane>
                         <ScrollPane prefHeight="350.0" prefWidth="1030.0">
                            <content>
-                              <GridPane fx:id="databaseContentsGridPane">
+                              <GridPane fx:id="databaseContentsGridPane" maxHeight="-Infinity" minHeight="-Infinity">
                                 <columnConstraints>
                                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="130.0" />
                                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="135.0" />
@@ -74,6 +80,9 @@
                                 </columnConstraints>
                               </GridPane>
                            </content>
+                           <VBox.margin>
+                              <Insets left="5.0" />
+                           </VBox.margin>
                         </ScrollPane>
                      </children>
                   </VBox>
@@ -116,6 +125,9 @@
                                  </columnConstraints>
                               </GridPane>
                            </content>
+                           <VBox.margin>
+                              <Insets left="5.0" />
+                           </VBox.margin>
                         </ScrollPane>
                      </children>
                   </VBox>
@@ -124,4 +136,8 @@
         </tabs>
       </TabPane>
    </children>
+   <stylesheets>
+      <URL value="@../css/common.css" />
+      <URL value="@../css/popup.css" />
+   </stylesheets>
 </GridPane>

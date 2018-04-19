@@ -2,6 +2,9 @@ package ngeneanalysys.controller;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
@@ -51,6 +54,12 @@ public class PublicDatabaseController extends SubPaneController {
     @FXML
     private GridPane databaseContentsGridPane;
 
+    @FXML
+    private Label releaseDateLabel;
+
+    @FXML
+    private Label releaseNoteLabel;
+
     /**
      * @param panelId Integer
      */
@@ -76,17 +85,20 @@ public class PublicDatabaseController extends SubPaneController {
         dialogStage.initOwner(getMainApp().getPrimaryStage());
         dialogStage.resizableProperty().setValue(false);
 
-        setVersionComboBox();
-
         versionComboBox.getSelectionModel().selectedItemProperty().addListener((ob, ov, nv) -> {
-            Optional<PipelineVersionView> optionalPipelineVersionView = list.stream().filter(item -> item.getId().equals(nv.getValue())).findFirst();
+            logger.info("test");
+            Optional<PipelineVersionView> optionalPipelineVersionView =
+                    list.stream().filter(item -> item.getId().equals(Integer.parseInt(nv.getValue()))).findFirst();
 
             if(optionalPipelineVersionView.isPresent()) {
-                logger.info(optionalPipelineVersionView.get().getReleaseNote());
+                releaseNoteLabel.setText(optionalPipelineVersionView.get().getReleaseNote());
+                releaseDateLabel.setText(optionalPipelineVersionView.get().getReleaseDate());
             }
 
             setList(nv.getValue());
         });
+
+        setVersionComboBox();
 
         // Schen Init
         Scene scene = new Scene(root);
@@ -95,10 +107,14 @@ public class PublicDatabaseController extends SubPaneController {
     }
 
     private void setList(String id) {
-        if(toolsContentsGridPane.getRowConstraints() != null && !toolsContentsGridPane.getRowConstraints().isEmpty())
-            toolsContentsGridPane.getRowConstraints().removeAll(toolsContentsGridPane.getRowConstraints());
-        if(databaseContentsGridPane.getRowConstraints() != null && !databaseContentsGridPane.getRowConstraints().isEmpty())
-            databaseContentsGridPane.getRowConstraints().removeAll(databaseContentsGridPane.getRowConstraints());
+        if(toolsContentsGridPane.getChildren() != null && !toolsContentsGridPane.getChildren().isEmpty()) {
+            toolsContentsGridPane.getChildren().removeAll(toolsContentsGridPane.getChildren());
+            toolsContentsGridPane.setPrefHeight(0);
+        }
+        if(databaseContentsGridPane.getChildren() != null && !databaseContentsGridPane.getChildren().isEmpty()) {
+            databaseContentsGridPane.getChildren().removeAll(databaseContentsGridPane.getChildren());
+            databaseContentsGridPane.setPrefHeight(0);
+        }
         Platform.runLater(() -> {
             try {
                 HttpClientResponse response = apiService.get("/pipelineVersions/" + id + "/annotationDatabases", null, null, null);
@@ -137,22 +153,40 @@ public class PublicDatabaseController extends SubPaneController {
     }
 
     private void createGridRow(String column1, String column2, String column3, String column4, String column5, boolean isTool) {
-        Label label1 = new Label(column1);
-        Label label2 = new Label(column2);
-        Label label3 = new Label(column3);
-        Label label4 = new Label(column4);
-        Label label5 = new Label(column5);
+        Label label1 = createLabel(column1);
+        Label label2 = createLabel(column2);
+        Label label3 = createLabel(column3);
+        Label label4 = createLabel(column4);
+        Label label5 = createLabel(column5);
         if(isTool) {
-            toolsContentsGridPane.addRow(toolsContentsGridPane.getRowConstraints().size(), label1, label2, label3, label4, label5);
+            toolsContentsGridPane.addRow(toolsContentsGridPane.getChildren().size() / 5, label1, label2, label3, label4, label5);
+            //toolsContentsGridPane.setPrefHeight(toolsContentsGridPane.getPrefHeight() + 60);
         } else {
-            databaseContentsGridPane.addRow(databaseContentsGridPane.getRowConstraints().size(), label1, label2, label3, label4, label5);
+            databaseContentsGridPane.addRow(databaseContentsGridPane.getChildren().size() / 5, label1, label2, label3, label4, label5);
+            //databaseContentsGridPane.setPrefHeight(databaseContentsGridPane.getPrefHeight() + 60);
         }
+        GridPane.setValignment(label1, VPos.TOP);
+        GridPane.setValignment(label2, VPos.TOP);
+        GridPane.setValignment(label3, VPos.TOP);
+        GridPane.setValignment(label4, VPos.TOP);
+        GridPane.setValignment(label5, VPos.TOP);
+    }
+
+    private Label createLabel(String text) {
+        Label label = new Label();
+        label.setWrapText(true);
+        label.setText(text);
+        label.setMaxWidth(Double.MAX_VALUE);
+        label.setStyle(label.getStyle() + "-fx-border-width : 0.5 0 0 0; -fx-border-color : #000000;");
+        label.setAlignment(Pos.TOP_LEFT);
+        label.setPadding(new Insets(0,0,7,0));
+        return label;
     }
 
     private void setVersionComboBox() {
         versionComboBox.setConverter(new ComboBoxConverter());
         try {
-            HttpClientResponse response = apiService.get("/pipelineVersions/currentVersionGroupByPanel"/* + this.panelId*/, null, null, null);
+            HttpClientResponse response = apiService.get("/panels/"+ panelId +"/pipelineVersions"/* + this.panelId*/, null, null, null);
 
             List<PipelineVersionView> list = (List<PipelineVersionView>)response.getMultiObjectBeforeConvertResponseToJSON(PipelineVersionView.class, false);
             this.list = list;
@@ -160,6 +194,7 @@ public class PublicDatabaseController extends SubPaneController {
                 for(PipelineVersionView pipelineVersionView : list) {
                     versionComboBox.getItems().add(new ComboBoxItem(pipelineVersionView.getId().toString(), pipelineVersionView.getVersion()));
                 }
+                versionComboBox.getSelectionModel().selectFirst();
             }
         } catch (WebAPIException wae) {
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(), dialogStage, true);
