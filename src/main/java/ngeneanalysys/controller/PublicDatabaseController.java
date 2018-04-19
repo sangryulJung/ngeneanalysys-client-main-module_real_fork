@@ -158,6 +158,13 @@ public class PublicDatabaseController extends SubPaneController {
         Label label3 = createLabel(column3);
         Label label4 = createLabel(column4);
         Label label5 = createLabel(column5);
+
+        label1.setAlignment(Pos.CENTER);
+        label2.setAlignment(Pos.CENTER);
+        label3.setAlignment(Pos.CENTER);
+        label4.setAlignment(Pos.CENTER);
+        label5.setAlignment(Pos.TOP_LEFT);
+        
         if(isTool) {
             toolsContentsGridPane.addRow(toolsContentsGridPane.getChildren().size() / 5, label1, label2, label3, label4, label5);
             //toolsContentsGridPane.setPrefHeight(toolsContentsGridPane.getPrefHeight() + 60);
@@ -177,9 +184,9 @@ public class PublicDatabaseController extends SubPaneController {
         label.setWrapText(true);
         label.setText(text);
         label.setMaxWidth(Double.MAX_VALUE);
-        label.setStyle(label.getStyle() + "-fx-border-width : 0.5 0 0 0; -fx-border-color : #000000;");
-        label.setAlignment(Pos.TOP_LEFT);
-        label.setPadding(new Insets(0,0,7,0));
+        label.setStyle(label.getStyle() + "-fx-border-width : 0.5 0 0 0; -fx-border-color : #000000; -fx-font-family: \"Noto Sans KR Light\"");
+        label.setAlignment(Pos.CENTER);
+        label.setPadding(new Insets(7,0,7,0));
         return label;
     }
 
