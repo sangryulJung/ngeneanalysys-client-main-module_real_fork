@@ -344,7 +344,7 @@
       </HBox>
       <HBox alignment="CENTER_RIGHT" prefHeight="47.0" prefWidth="193.0" GridPane.columnIndex="2">
          <children>
-            <CheckBox fx:id="addToGermlineReportCheckBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="47.0" prefWidth="116.0" text="Add to Report" />
+            <CheckBox fx:id="addToGermlineReportCheckBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="47.0" text="Add to Report" />
          </children>
       </HBox>
    </children>

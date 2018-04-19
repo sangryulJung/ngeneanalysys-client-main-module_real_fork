@@ -173,7 +173,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
         setVirtualPanel();
 
-        HttpClientResponse response = null;
+        HttpClientResponse response;
 
         try {
             if(panel.getReportTemplateId() != null) {
@@ -195,7 +195,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         if (keyList.contains("conclusions")) {
                             Map<String, String> item = (Map<String, String>) variableList.get("conclusions");
                             conclusions.setText(item.get("displayName"));
+                            System.out.println(conclusions.getStyle());
                             sortedKeyList.remove("conclusions");
+                            conclusions.setStyle("-fx-font-family: \"Noto Sans KR Bold\"");
                         }
 
 
@@ -644,7 +646,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     public void createPDFAsDraft() {
         boolean dataSave = saveData(null);
         if(dataSave){
-            createPDF(true);
+            if(createPDF(true)) {
+                setVariantsList();
+            };
         }
     }
 
@@ -681,6 +685,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 if (dataSave) {
                     // 최종 보고서 생성이 정상 처리된 경우 분석 샘플의 상태값 완료 처리.
                     if (createPDF(false)) {
+                        setVariantsList();
                         setComplete();
                     }
                 }

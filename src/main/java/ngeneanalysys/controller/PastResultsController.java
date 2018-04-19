@@ -801,7 +801,7 @@ public class PastResultsController extends SubPaneController {
 							menu.setStaticMenu(false);
 							mainController.addTopMenu(menu, 2, true);
 						} else if(sample.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_FAIL)) {
-							DialogUtil.alert("Job Status", sample.getSampleStatus().getStatusMsg(), mainController.getPrimaryStage(), true);
+							DialogUtil.alert("Error message", sample.getSampleStatus().getStatusMsg(), mainController.getPrimaryStage(), true);
 						}
 					}
 				});

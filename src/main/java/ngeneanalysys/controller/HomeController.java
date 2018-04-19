@@ -291,16 +291,16 @@ public class HomeController extends SubPaneController{
             HttpClientResponse response = apiService.get("/storageUsage", null, null, false);
 
             StorageUsage storageUsage = response.getObjectBeforeConvertResponseToJSON(StorageUsage.class);
-            double value = (double)storageUsage.getFreeSpace() / storageUsage.getTotalSpace();
+            double value = (double)(storageUsage.getTotalSpace() - storageUsage.getFreeSpace()) / storageUsage.getTotalSpace();
             String textLabel = ConvertUtil.convertFileSizeFormat(storageUsage.getFreeSpace()) + " / " + ConvertUtil.convertFileSizeFormat(storageUsage.getTotalSpace());
             AnimationTimer hddStatusTier = new HddStatusTimer(hddCanvas.getGraphicsContext2D(), value, "Free Space",
                     textLabel, 1);
             hddStatusTier.start();
 
             int totalCount = (int)(storageUsage.getAvailableSampleCount() + storageUsage.getCurrentSampleCount());
-            double available = (double)(totalCount - storageUsage.getAvailableSampleCount()) / totalCount;
+            double usageSample = (double)(storageUsage.getCurrentSampleCount()) / totalCount;
             String label = storageUsage.getAvailableSampleCount() + " / " + totalCount + " Samples";
-            AnimationTimer availableTier = new HddStatusTimer(availableCanvas.getGraphicsContext2D(), available, "Available",
+            AnimationTimer availableTier = new HddStatusTimer(availableCanvas.getGraphicsContext2D(), usageSample, "Available",
                     label, 1);
             availableTier.start();
 

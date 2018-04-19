@@ -223,7 +223,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     }
 
     /**
-     * @param mainController
+     * @param mainController MainController
      */
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
@@ -232,7 +232,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     }
 
     /**
-     * @param sampleUploadController
+     * @param sampleUploadController SampleUploadController
      */
     public void setSampleUploadController(SampleUploadController sampleUploadController) {
         this.sampleUploadController = sampleUploadController;
@@ -926,8 +926,8 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     /**
      * 동일한 샘플을 선택한것이 있는지 확인 있다면 true
-     * @param name
-     * @return
+     * @param name String
+     * @return boolean
      */
     private boolean checkSameSample(String name) {
         return sampleArrayList.stream().anyMatch(item -> name.equals(item.getName()));
@@ -935,14 +935,13 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     /**
      * 동일한 샘플을 검색하여 해당 sample의 id 값을 리턴
-     * @param sampleId
-     * @return
+     * @param sampleId Integer
+     * @return Sample
      */
     private Sample getSameSample(Integer sampleId) {
         Optional<Sample> optionalSample = sampleArrayList.stream().filter(item -> (item.getId() != null
                         && sampleId.equals(item.getId()))).findFirst();
-        if(optionalSample.isPresent()) return optionalSample.get();
-        return null;
+        return optionalSample.orElse(null);
     }
 
     private void addUploadFile(List<File> fileList, String fastqFilePairName, boolean newFileCheck) {

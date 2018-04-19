@@ -281,6 +281,8 @@ public class LoginController extends BaseStageController {
     		contentswrapper.setStyle("-fx-background-image:url('layout/images/renewal/main_background02.png');");
     	}else if(theme.equalsIgnoreCase("mountain")) {
     		contentswrapper.setStyle("-fx-background-image:url('layout/images/renewal/main_background10.png');");
+    	}else if(theme.equalsIgnoreCase("dna")) {
+    		contentswrapper.setStyle("-fx-background-image:url('layout/images/renewal/main_background12.png');");
     	}
     	
     	//System.out.println((String)contentswrapper.getStyle());
