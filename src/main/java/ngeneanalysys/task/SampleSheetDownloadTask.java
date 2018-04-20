@@ -60,7 +60,7 @@ public class SampleSheetDownloadTask extends Task {
 
             //String downloadUrl = "/sampleSheet?runDir=" + runDir;
             String downloadUrl = "runDir/sampleSheet?runDir=" + runDir;
-            String path = CommonConstants.BASE_FULL_PATH  + File.separator + runDir + "_" + "SampleSheet.csv";
+            String path = CommonConstants.BASE_FULL_PATH  + File.separator + "SampleSheet.csv";
             OutputStream os = null;
             try {
                 String connectURL = apiService.getConvertConnectURL(downloadUrl);
@@ -144,7 +144,7 @@ public class SampleSheetDownloadTask extends Task {
      */
     @Override
     protected void succeeded() {
-        String path = CommonConstants.BASE_FULL_PATH  + File.separator + runDir + "_" + "SampleSheet.csv";
+        String path = CommonConstants.BASE_FULL_PATH  + File.separator + "SampleSheet.csv";
         sampleUploadScreenFirstController.setSampleSheet(path);
 
     }

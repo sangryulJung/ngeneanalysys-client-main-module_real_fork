@@ -83,6 +83,69 @@ public class VariantFilterController extends SubPaneController {
     @FXML
     private CheckBox dbSNPidCheckBox;
 
+    @FXML
+    private TextField tgAllTextField;
+
+    @FXML
+    private TextField tgafrTextField;
+
+    @FXML
+    private TextField tgamrTextField;
+
+    @FXML
+    private TextField tgeasTextField;
+
+    @FXML
+    private TextField tgeurTextField;
+
+    @FXML
+    private TextField tgsasTextField;
+
+    @FXML
+    private TextField espallTextField;
+
+    @FXML
+    private TextField espaaTextField;
+
+    @FXML
+    private TextField espeaTextField;
+
+    @FXML
+    private TextField keidTextField;
+
+    @FXML
+    private TextField krgdTextField;
+
+    @FXML
+    private TextField kohbraTextField;
+
+    @FXML
+    private TextField genomADAllTextField;
+
+    @FXML
+    private TextField genomADmaTextField;
+
+    @FXML
+    private TextField genomADaaaTex;
+
+    @FXML
+    private TextField genomADajgenomAD;
+
+    @FXML
+    private TextField genomADeaTextField;
+
+    @FXML
+    private TextField genomADfinTextField;
+
+    @FXML
+    private TextField genomADnfeTextField;
+
+    @FXML
+    private TextField genomADotherTextField;
+
+    @FXML
+    private TextField genomADsaTextField;
+
 
     private List<Object> currentFilter;
 
