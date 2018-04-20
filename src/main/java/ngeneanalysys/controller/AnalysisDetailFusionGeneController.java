@@ -228,6 +228,7 @@ public class AnalysisDetailFusionGeneController extends SubPaneController {
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
+            logger.error("Unknown Error", e);
             fusionGeneTableView.setItems(null);
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
@@ -265,7 +266,7 @@ public class AnalysisDetailFusionGeneController extends SubPaneController {
                     getMainApp().getPrimaryStage(), true);
         }
         catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Unknown Error", e);
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
 
@@ -286,7 +287,7 @@ public class AnalysisDetailFusionGeneController extends SubPaneController {
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Unknown Error", e);
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
 

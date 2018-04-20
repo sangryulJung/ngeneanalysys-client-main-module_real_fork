@@ -452,7 +452,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Unknown Error", e);
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
@@ -480,7 +480,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Unknown Error", e);
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
@@ -585,9 +585,9 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                             getMainApp().getPrimaryStage(), true);
                     wae.printStackTrace();
                 } catch (IOException e) {
+                    logger.error("Unknown Error", e);
                     DialogUtil.error("Unknown Error", e.getMessage(),
                             getMainApp().getPrimaryStage(), true);
-                    e.printStackTrace();
                 }
             } else {
                 DialogUtil.warning("Primary check error", "Check primary radio button", getMainApp().getPrimaryStage(), true);

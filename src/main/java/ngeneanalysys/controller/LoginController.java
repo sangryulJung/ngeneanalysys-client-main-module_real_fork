@@ -161,12 +161,14 @@ public class LoginController extends BaseStageController {
 						DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(), getMainApp().getPrimaryStage(), true);
 					}
 				} catch (Exception e){
+					logger.error("Unknown Error", e);
 					DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
 				} finally {
 					progress.setVisible(false);
 				}
 			}
 		} catch (Exception e) {
+			logger.error("Unknown Error", e);
 			DialogUtil.error(null, "error!!!", mainApp.getPrimaryStage(), true);
 			logger.error(e.getMessage(), e);
 		}
