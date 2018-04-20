@@ -1017,24 +1017,70 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         createTableHeader(clinVarClass, "ClinVar.Class", null ,150d);
         clinVarClass.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarClass()));
 
+        TableColumn<VariantAndInterpretationEvidence, String> clinVarDisease = new TableColumn<>("ClinVar.Disease");
+        createTableHeader(clinVarDisease, "ClinVar.Disease", null ,null);
+        clinVarDisease.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarDisease()));
+        if(panel != null && ExperimentTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
+            TableColumn<VariantAndInterpretationEvidence, String> clinVarTraitOMIM = new TableColumn<>("ClinVar.Trait.OMIM");
+            createTableHeader(clinVarTraitOMIM, "ClinVar.Trait.OMIM", null, null);
+            clinVarTraitOMIM.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarTraitOMIM()));
+        }
         TableColumn<VariantAndInterpretationEvidence, String> cosmicIds = new TableColumn<>("COSMIC");
         createTableHeader(cosmicIds, "COSMIC", null ,null);
         cosmicIds.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getCosmic().getCosmicIds()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> cosmicCount = new TableColumn<>("COSMIC COUNT");
-        createTableHeader(cosmicCount, "COSMIC COUNT", null ,null);
+        TableColumn<VariantAndInterpretationEvidence, String> cosmicCount = new TableColumn<>("COSMIC Count");
+        createTableHeader(cosmicCount, "COSMIC Count", null ,null);
         cosmicCount.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getCosmic().getCosmicCount()));
-        cosmicCount.setVisible(false);
 
-        TableColumn<VariantAndInterpretationEvidence, String> cosmicOccurrence = new TableColumn<>("COSMIC OCCURRENCE");
-        createTableHeader(cosmicOccurrence, "COSMIC OCCURRENCE", null ,null);
+        TableColumn<VariantAndInterpretationEvidence, String> cosmicOccurrence = new TableColumn<>("COSMIC Occurrence");
+        createTableHeader(cosmicOccurrence, "COSMIC Occurrence", null ,null);
         cosmicOccurrence.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getCosmic().getCosmicOccurrence()));
-        cosmicOccurrence.setVisible(false);
+        if(panel != null && ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
+            cosmicCount.setVisible(false);
+            cosmicOccurrence.setVisible(false);
+        }
+        if(panel != null && ExperimentTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
+            TableColumn<VariantAndInterpretationEvidence, String> oncokbActionCancer = new TableColumn<>("OncoKB Action Cancer");
+            createTableHeader(oncokbActionCancer, "OncoKB Action Cancer", null ,null);
+            oncokbActionCancer.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getOncoKB().getOncokbActionCancer()));
 
+            TableColumn<VariantAndInterpretationEvidence, String> oncokbActionDrugs = new TableColumn<>("OncoKB Action Drugs");
+            createTableHeader(oncokbActionDrugs, "OncoKB Action Drugs", null ,null);
+            oncokbActionDrugs.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getOncoKB().getOncokbActionDrugs()));
+
+            TableColumn<VariantAndInterpretationEvidence, String> oncokbActionLevel = new TableColumn<>("OncoKB Action Level");
+            createTableHeader(oncokbActionLevel, "OncoKB Action Level", null ,null);
+            oncokbActionLevel.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getOncoKB().getOncokbActionLevel()));
+
+            TableColumn<VariantAndInterpretationEvidence, String> oncokbAlteration = new TableColumn<>("OncoKB Alteration");
+            createTableHeader(oncokbAlteration, "OncoKB Alteration", null ,null);
+            oncokbAlteration.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getOncoKB().getOncokbAlteration()));
+
+            TableColumn<VariantAndInterpretationEvidence, String> oncokbPmids = new TableColumn<>("OncoKB PMIDs");
+            createTableHeader(oncokbPmids, "OncoKB PMIDs", null ,null);
+            oncokbPmids.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getOncoKB().getOncokbPmids()));
+
+            TableColumn<VariantAndInterpretationEvidence, String> oncokbActionPmid = new TableColumn<>("OncoKB Action PMID");
+            createTableHeader(oncokbActionPmid, "OncoKB Action PMID", null ,null);
+            oncokbActionPmid.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getOncoKB().getOncokbActionPmid()));
+
+            TableColumn<VariantAndInterpretationEvidence, String> oncokbOncogenicity = new TableColumn<>("OncoKB Oncogenicity");
+            createTableHeader(oncokbOncogenicity, "OncoKB Oncogenicity", null ,null);
+            oncokbOncogenicity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getOncoKB().getOncokbOncogenicity()));
+
+            TableColumn<VariantAndInterpretationEvidence, String> oncokbHgvsp = new TableColumn<>("OncoKB HGVS.p");
+            createTableHeader(oncokbHgvsp, "OncoKB HGVS.p", null ,null);
+            oncokbHgvsp.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getOncoKB().getOncokbHgvsp()));
+
+            TableColumn<VariantAndInterpretationEvidence, String> oncokbTx = new TableColumn<>("OncoKB TX");
+            createTableHeader(oncokbTx, "OncoKB TX", null ,null);
+            oncokbTx.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getOncoKB().getOncokbTx()));
+        }
         if(panel != null && ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             TableColumn<VariantAndInterpretationEvidence, String> bicClass = new TableColumn<>("BIC.Class");
             createTableHeader(bicClass, "BIC.Class", null ,null);
-            clinVarClass.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBic().getBicClass()));
+            bicClass.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBic().getBicClass()));
 
             TableColumn<VariantAndInterpretationEvidence, String> bicDesignation = new TableColumn<>("BIC.Designation");
             createTableHeader(bicDesignation, "BIC.Designation", null ,null);
@@ -1043,16 +1089,15 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             TableColumn<VariantAndInterpretationEvidence, String> bicNt = new TableColumn<>("BIC.NT");
             createTableHeader(bicNt, "BIC.NT", null ,null);
             bicNt.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBic().getBicNt()));
+
+            TableColumn<VariantAndInterpretationEvidence, String> kohbraPatient = new TableColumn<>("KOHBRA.patient");
+            createTableHeader(kohbraPatient, "KOHBRA.patient", null, null);
+            kohbraPatient.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getKohbraPatient()));
+
+            TableColumn<VariantAndInterpretationEvidence, BigDecimal> kohbraFrequency = new TableColumn<>("KOHBRA.frequency");
+            createTableHeader(kohbraFrequency, "KOHBRA.frequency", null, null);
+            kohbraFrequency.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getKohbraFreq())));
         }
-
-        TableColumn<VariantAndInterpretationEvidence, String> kohbraPatient = new TableColumn<>("KOHBRA.patient");
-        createTableHeader(kohbraPatient, "KOHBRA.patient", null ,null);
-        kohbraPatient.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getKohbraPatient()));
-
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> kohbraFrequency = new TableColumn<>("KOHBRA.frequency");
-        createTableHeader(kohbraFrequency, "KOHBRA.frequency", null ,null);
-        kohbraFrequency.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getKohbraFreq())));
-
         TableColumn<VariantAndInterpretationEvidence, Integer> variantNum = new TableColumn<>("VariantNum");
         createTableHeader(variantNum, "VariantNum", null ,null);
         variantNum.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getVariantNum()).asObject());
@@ -1077,11 +1122,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         createTableHeader(dbSnpRsId, "SnpRsId", null ,null);
         dbSnpRsId.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getPopulationFrequency().getDbsnpRsId()));
         dbSnpRsId.setVisible(false);
-
-        TableColumn<VariantAndInterpretationEvidence, String> clinVarDisease = new TableColumn<>("ClinVar.Disease");
-        createTableHeader(clinVarDisease, "ClinVar.Disease", null ,null);
-        clinVarDisease.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarDisease()));
-        clinVarDisease.setVisible(false);
 
         if(panel != null && ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             TableColumn<VariantAndInterpretationEvidence, String> bicCategory = new TableColumn<>("BIC.Category");
