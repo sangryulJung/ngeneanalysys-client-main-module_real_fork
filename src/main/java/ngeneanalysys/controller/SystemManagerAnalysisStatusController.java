@@ -304,26 +304,8 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
     }
 
     private void restartRun(Integer id) {
-        /* HttpClientResponse response; */
-
         try {
             apiService.get("admin/restartRun/" + id, null ,null, false);
-            /*response = apiService.get("runs/" + id, null ,null, false);
-
-            RunWithSamples runWithSamples = response.getObjectBeforeConvertResponseToJSON(RunWithSamples.class);
-
-            List<Sample> samples = runWithSamples.getSamples();
-
-            for(Sample sample : samples) {
-                SampleStatus sampleStatus = sample.getSampleStatus();
-                if(!sampleStatus.getStep().equalsIgnoreCase("UPLOAD") &&
-                                                (sampleStatus.getStatus().equalsIgnoreCase("FAIL") ||
-                                                                sampleStatus.getStatus().equalsIgnoreCase("COMPLETE"))) {
-                    response = apiService.get("admin/restartSampleAnalysis/" + sample.getId(), null, null, false);
-                    logger.debug("status code : " + response.getStatus());
-                }
-            }*/
-
         } catch(WebAPIException wae) {
             DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
         }
