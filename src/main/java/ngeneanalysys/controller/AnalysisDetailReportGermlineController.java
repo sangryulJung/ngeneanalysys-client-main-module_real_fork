@@ -250,7 +250,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("show..");
+        logger.debug("show..");
 
         tableCellUpdateFix(variantsTable);
 
@@ -345,6 +345,16 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                             datePicker.setConverter(DatepickerConverter.getConverter(dateType));
                             datePicker.setId(key);
                             customFieldGridPane.add(datePicker, colIndex++, rowIndex);
+                        } else if (type.equalsIgnoreCase("ComboBox")) {
+                            ComboBox<String> comboBox = new ComboBox<>();
+                            comboBox.getStyleClass().add("txt_black");
+                            comboBox.setId(key);
+                            String list = item.get("comboBoxItemList");
+                            String[] comboBoxItem = list.split("&\\^\\|");
+                            comboBox.getItems().addAll(comboBoxItem);
+                            comboBox.getSelectionModel().selectFirst();
+
+                            customFieldGridPane.add(comboBox, colIndex++, rowIndex);
                         } else {
                             TextField textField = new TextField();
                             textField.getStyleClass().add("txt_black");
@@ -523,6 +533,9 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                     datePicker.setValue(LocalDate.parse((String)contentsMap.get(datePicker.getId()), formatter));
                 }
+            } else if(gridObject instanceof ComboBox) {
+                ComboBox<String> comboBox = (ComboBox)gridObject;
+                if(contentsMap.containsKey(comboBox.getId())) comboBox.getSelectionModel().select((String)contentsMap.get(comboBox.getId()));
             }
         }
 
@@ -568,7 +581,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
             } else {
                 response = apiService.post("/sampleReport/" + sample.getId(), params, null, true);
             }
-            logger.info("sample report status : " + response.getStatus());
+            logger.debug("sample report status : " + response.getStatus());
         } catch (WebAPIException wae) {
             wae.printStackTrace();
         } catch (Exception e) {
@@ -652,11 +665,6 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         } else {
             alert.close();
         }
-    }
-    /**
-     * 보고서 작업 완료 처리
-     */
-    public void setComplete() {
     }
 
     @FXML
@@ -742,6 +750,9 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                         } else {
                             contentsMap.put(datePicker.getId(), "");
                         }
+                    } else if(gridObject instanceof ComboBox) {
+                        ComboBox<String> comboBox = (ComboBox<String>)gridObject;
+                        contentsMap.put(comboBox.getId(), comboBox.getSelectionModel().getSelectedItem());
                     }
                 }
 
@@ -867,7 +878,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                                     + File.separator + image.getName() + "')";
                             path = path.replaceAll("\\\\", "/");
                             String name = image.getName().substring(0, image.getName().lastIndexOf('.'));
-                            logger.info(name + " : " + path);
+                            logger.debug(name + " : " + path);
                             model.put(name, path);
                         }
 
@@ -912,7 +923,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
             Thread.currentThread().setContextClassLoader(classLoader);
             @SuppressWarnings("unchecked")
             Class classToLoad = Class.forName("word.create.App", true, classLoader);
-            logger.info("application init..");
+            logger.debug("application init..");
             Method[] methods = classToLoad.getMethods();
             Method setParams = classToLoad.getMethod("setParams", Map.class);
             Method updateEmbeddedDoc = classToLoad.getMethod("updateEmbeddedDoc");

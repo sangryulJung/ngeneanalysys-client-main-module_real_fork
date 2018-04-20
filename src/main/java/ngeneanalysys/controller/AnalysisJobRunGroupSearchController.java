@@ -110,18 +110,18 @@ public class AnalysisJobRunGroupSearchController extends BaseStageController {
      */
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("AnalysisJobRunGroupSearchController show..");
+        logger.debug("AnalysisJobRunGroupSearchController show..");
 
         // api service init..
         apiService = APIService.getInstance();
         apiService.setStage(pastResultsController.getMainController().getPrimaryStage());
 
-        logger.info("datePickerRequestDate init..");
+        logger.debug("datePickerRequestDate init..");
         String dateFormat = "yyyy-MM-dd";
         datePickerRequestDate.setConverter(DatepickerConverter.getConverter(dateFormat));
         datePickerRequestDate.setPromptText(dateFormat);
 
-        logger.info("choosePlatform init..");
+        logger.debug("choosePlatform init..");
         choosePlatform.setConverter(new ComboBoxConverter());
         choosePlatform.getItems().add(new ComboBoxItem());
         for (SequencerCode code : SequencerCode.values()) {
@@ -228,7 +228,7 @@ public class AnalysisJobRunGroupSearchController extends BaseStageController {
         try {
             HttpClientResponse response = apiService.get("/runs", param, null, false);
 
-            logger.info(response.toString());
+            logger.debug(response.toString());
             if (response != null) {
                 RunGroupForPaging runGroup = response.getObjectBeforeConvertResponseToJSON(RunGroupForPaging.class);
                 if (runGroup != null) {

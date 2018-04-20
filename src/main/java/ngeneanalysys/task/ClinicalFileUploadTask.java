@@ -67,7 +67,7 @@ public class ClinicalFileUploadTask extends Task {
      */
     @Override
     protected void succeeded() {
-        logger.info("bed bedFile upload task complete");
+        logger.debug("bed bedFile upload task complete");
     }
 
 }

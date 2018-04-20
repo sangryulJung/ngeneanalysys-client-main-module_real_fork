@@ -94,7 +94,7 @@ public class AnalysisDetailLayoutController extends SubPaneController {
     @Override
     public void show(Parent root) throws IOException {
         mainController.setContentsMaskerPaneVisible(true);
-        logger.info("show..");
+        logger.debug("show..");
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
 
@@ -201,7 +201,7 @@ public class AnalysisDetailLayoutController extends SubPaneController {
     private void setTabContent(Tab tab) {
         // 화면 내용이 없는 경우 셋팅.
         if(tab.getContent() == null) {
-            logger.info(String.format("'%s' contents init..", tab.getId()));
+            logger.debug(String.format("'%s' contents init..", tab.getId()));
             try {
                 AnalysisDetailTabItem item = AnalysisDetailTabMenuCode.valueOf(tab.getId()).getItem();
 
@@ -285,10 +285,10 @@ public class AnalysisDetailLayoutController extends SubPaneController {
         } else if (tab.getId().equals(AnalysisDetailTabMenuCode.TAB_OVERVIEW_GERMLINE.name())) {
             analysisDetailOverviewGermlineController.setDisplayItem();
         } else if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_REPORT.name())) {
-            logger.info("report tab reported variant list reload...");
+            logger.debug("report tab reported variant list reload...");
             analysisDetailReportController.setVariantsList();
         } else if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_REPORT_GERMLINE.name())) {
-            logger.info("germline report tab reported variant list reload...");
+            logger.debug("germline report tab reported variant list reload...");
             analysisDetailReportGermlineController.setVariantsList();
         }
     }

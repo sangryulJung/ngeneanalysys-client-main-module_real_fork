@@ -33,10 +33,10 @@ public class ReportImageFileUploadTask extends Task {
 
     @Override
     protected Object call() throws Exception {
-        logger.info("image upload...");
+        logger.debug("image upload...");
 
         for(File imageFile : list) {
-            logger.info(imageFile.getName());
+            logger.debug(imageFile.getName());
 
             imageUploadService.uploadImage(templateId, imageFile, mainController);
 

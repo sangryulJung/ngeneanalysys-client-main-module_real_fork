@@ -80,7 +80,7 @@ public class PanelDetection {
             Double matchPercentage = 100.0 * matchCount / totalReadCount;
             Double coverage = 100.0 * matchCountPerPrimerPerPanel.get(panelCode).size()
                     / primerCountPerPanelMap.get(panelCode);
-            logger.info(String.format("Panel = %s, match count = %s, matchPercentage = %s, coverage = %s",
+            logger.debug(String.format("Panel = %s, match count = %s, matchPercentage = %s, coverage = %s",
                     panelCode, matchCount, matchPercentage, coverage));
             if (matchPercentage < 50.0 || coverage < 50.0) {
                 continue;

@@ -126,7 +126,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     public void setServerRun(String path) {
         isServerItem = true;
         isServerFastq = false;
-        logger.info(path);
+        logger.debug(path);
         if(sampleArrayList.isEmpty()) sampleArrayList.removeAll(sampleArrayList);
         try {
             Map<String, Object> params = new HashMap<>();
@@ -189,7 +189,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             while((s = csvReader.readNext()) != null) {
                 if (tableData && sampleArrayList.size() < 23) {
                     final String sampleName = s[0];
-                    logger.info(s[0]);
+                    logger.debug(s[0]);
                     Sample sample = new Sample();
                     sample.setName(sampleName);
                     if(s[8] != null && s[8].contains("DNA")) {
@@ -515,7 +515,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             if(panelComboBoxList.contains(obj)) {
                 int index  = panelComboBoxList.indexOf(obj);
                 ComboBoxItem item = obj.getSelectionModel().getSelectedItem();
-                logger.info(item.getText());
+                logger.debug(item.getText());
                 if(!StringUtils.isEmpty(item.getValue())) {
 
                     if (index == 0 && sampleArrayList.size() > 1) {
@@ -674,7 +674,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                     (uploadFileList != null && !uploadFileList.isEmpty()))
                 this.mainController.runningAnalysisRequestUpload(uploadFileData, uploadFileList, sampleUploadController.getRun());
 
-            logger.info("submit");
+            logger.debug("submit");
             closeDialog();
             return;
         }
@@ -710,7 +710,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                     response = apiService.post("/runs", params, null, true);
                     run = response.getObjectBeforeConvertResponseToJSON(RunWithSamples.class);
                     mainController.getBasicInformationMap().put("runId", run.getRun().getId());
-                    logger.info(run.toString());
+                    logger.debug(run.toString());
 
                     List<Sample> samples = run.getSamples();
 
@@ -729,7 +729,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 if((uploadFileData != null && !uploadFileData.isEmpty()) &&
                         (uploadFileList != null && !uploadFileList.isEmpty()))
                     this.mainController.runningAnalysisRequestUpload(uploadFileData, uploadFileList, run.getRun());
-                logger.info("submit");
+                logger.debug("submit");
                 closeDialog();
             }
         } catch (Exception e) {
@@ -814,7 +814,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 try {
                     fileResponse = apiService.post("/analysisFiles", fileInfo, null, true);
                     AnalysisFile fileData = fileResponse.getObjectBeforeConvertResponseToJSON(AnalysisFile.class);
-                    logger.info(fileData.getName());
+                    logger.debug(fileData.getName());
                     uploadFileData.add(fileData);
                 } catch (WebAPIException e) {
                     DialogUtil.error(e.getHeaderText(), e.getMessage(), getMainApp().getPrimaryStage(), true);
@@ -995,7 +995,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             String fastqFilePairName = FileUtil.getFASTQFilePairName(file.getName());
 
             String chooseDirectoryPath = FilenameUtils.getFullPath(file.getAbsolutePath());
-            logger.info(String.format("directory path of choose bedFile : %s", chooseDirectoryPath));
+            logger.debug(String.format("directory path of choose bedFile : %s", chooseDirectoryPath));
             File directory = new File(chooseDirectoryPath);
             //선택한 파일의 폴더 내 모든 FASTQ 파일 검색
             List<File> fastqFilesInFolder = (List<File>) FileUtils.listFiles(directory, new String[]{"fastq.gz"}, false);

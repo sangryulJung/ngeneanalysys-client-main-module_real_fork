@@ -71,7 +71,7 @@ public class AnalysisDetailExonSkippingController extends SubPaneController {
 
             if(!exonSkipList.isEmpty()) {
                 displayList = FXCollections.observableArrayList(exonSkipList);
-                logger.info(displayList.size() + "");
+                logger.debug(displayList.size() + "");
             }
 
             if (exonSkipTableView.getItems() != null && !exonSkipTableView.getItems().isEmpty()) {
@@ -86,7 +86,7 @@ public class AnalysisDetailExonSkippingController extends SubPaneController {
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("show Fusion");
+        logger.debug("show Fusion");
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
 

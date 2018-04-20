@@ -139,7 +139,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     @SuppressWarnings("unchecked")
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("show..");
+        logger.debug("show..");
 
         tableCellUpdateFix(variantsTable);
 
@@ -237,6 +237,16 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                                 datePicker.setConverter(DatepickerConverter.getConverter(dateType));
                                 datePicker.setId(key);
                                 customFieldGridPane.add(datePicker, colIndex++, rowIndex);
+                            } else if (type.equalsIgnoreCase("ComboBox")) {
+                                ComboBox<String> comboBox = new ComboBox<>();
+                                comboBox.getStyleClass().add("txt_black");
+                                comboBox.setId(key);
+                                String list = item.get("comboBoxItemList");
+                                String[] comboBoxItem = list.split("&\\^\\|");
+                                comboBox.getItems().addAll(comboBoxItem);
+                                comboBox.getSelectionModel().selectFirst();
+
+                                customFieldGridPane.add(comboBox, colIndex++, rowIndex);
                             } else {
                                 TextField textField = new TextField();
                                 textField.getStyleClass().add("txt_black");
@@ -353,7 +363,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         }
     }
 
-    public void tableCellUpdateFix(TableView<VariantAndInterpretationEvidence> tableView) {
+    private void tableCellUpdateFix(TableView<VariantAndInterpretationEvidence> tableView) {
         tableView.addEventFilter(ScrollEvent.ANY, scrollEvent -> {
             tableView.refresh();
             // close text box
@@ -567,6 +577,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                     datePicker.setValue(LocalDate.parse((String)contentsMap.get(datePicker.getId()), formatter));
                 }
+            } else if(gridObject instanceof ComboBox) {
+                ComboBox<String> comboBox = (ComboBox)gridObject;
+                if(contentsMap.containsKey(comboBox.getId())) comboBox.getSelectionModel().select((String)contentsMap.get(comboBox.getId()));
             }
         }
 
@@ -574,8 +587,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
     /**
      * 입력 정보 저장
-     * @param user
-     * @return
+     * @param user User
+     * @return boolean
      */
     public boolean saveData(User user) {
 
@@ -686,7 +699,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     // 최종 보고서 생성이 정상 처리된 경우 분석 샘플의 상태값 완료 처리.
                     if (createPDF(false)) {
                         setVariantsList();
-                        setComplete();
                     }
                 }
 
@@ -991,6 +1003,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                             } else {
                                 contentsMap.put(datePicker.getId(), "");
                             }
+                        } else if(gridObject instanceof ComboBox) {
+                            ComboBox<String> comboBox = (ComboBox<String>)gridObject;
+                            contentsMap.put(comboBox.getId(), comboBox.getSelectionModel().getSelectedItem());
                         }
                     }
 
@@ -1053,7 +1068,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                                     + File.separator + image.getName() + "')";
                             path = path.replaceAll("\\\\", "/");
                             String name = image.getName().substring(0, image.getName().lastIndexOf('.'));
-                            logger.info(name + " : " + path);
+                            logger.debug(name + " : " + path);
                             model.put(name, path);
                         }
 
@@ -1086,7 +1101,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
             DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);
-            e.printStackTrace();
             created = false;
         }
 
@@ -1094,12 +1108,12 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     }
 
     @SuppressWarnings("unchecked")
-    public void createWordFile(URL[] jarUrls, File file , Map<String, Object> contentsMap, String reportCreationErrorMsg) {
+    private void createWordFile(URL[] jarUrls, File file , Map<String, Object> contentsMap, String reportCreationErrorMsg) {
         URLClassLoader classLoader = null;
         try {
             classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader());
             Class classToLoad = Class.forName("word.create.App", true, classLoader);
-            logger.info("application init..");
+            logger.debug("application init..");
             Method[] methods = classToLoad.getMethods();
             Method setParams = classToLoad.getMethod("setParams", Map.class);
             Method updateEmbeddedDoc = classToLoad.getMethod("updateEmbeddedDoc");
@@ -1113,18 +1127,16 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             createdCheck(true, file);
         } catch (Exception e) {
             DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);
-            e.printStackTrace();
         } finally {
             try {
                 if(classLoader != null) classLoader.close();
             } catch (IOException e) {
                 DialogUtil.error("close error", e.getMessage(), getMainApp().getPrimaryStage(), false);
             }
-
         }
     }
 
-    public void createdCheck(boolean created, File file) {
+    private void createdCheck(boolean created, File file) {
         try {
             if (created) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -1144,7 +1156,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         getMainApp().getPrimaryStage(), false);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            DialogUtil.error("Save Fail.", "An error occurred during the creation of the report document.",
+                    getMainApp().getPrimaryStage(), false);
         }
     }
 
@@ -1166,9 +1179,4 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         }
         return null;
     }
-
-    /**
-     * 보고서 작업 완료 처리
-     */
-    public void setComplete() {}
 }

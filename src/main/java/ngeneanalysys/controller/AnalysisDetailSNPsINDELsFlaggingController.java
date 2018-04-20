@@ -77,7 +77,7 @@ public class AnalysisDetailSNPsINDELsFlaggingController extends SubPaneControlle
      */
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("show..");
+        logger.debug("show..");
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
 

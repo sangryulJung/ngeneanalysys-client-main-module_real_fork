@@ -93,7 +93,7 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("show..");
+        logger.debug("show..");
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
 
@@ -213,7 +213,7 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
         if(event.getClickCount() == 2) {
             String obj = geneTable.getSelectionModel().getSelectedCells().get(0).getTableColumn().getText();
             VariantCountByGene gene = geneTable.getSelectionModel().getSelectedItem();
-            logger.info(obj + " gene : " + gene.getGeneSymbol());
+            logger.debug(obj + " gene : " + gene.getGeneSymbol());
         }
     }
 

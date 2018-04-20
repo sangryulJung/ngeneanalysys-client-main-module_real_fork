@@ -74,7 +74,7 @@ public class WorkProgressController<T> extends BaseStageController {
 		this.task.setOnSucceeded( e -> this.close());
 		workProgressStage.show();
 		
-		logger.info(String.format("start %s", workProgressStage.getTitle()));
+		logger.debug(String.format("start %s", workProgressStage.getTitle()));
 	}
 
 	/**

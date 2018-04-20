@@ -301,7 +301,7 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
                 }
             }
 
-            logger.info("total count : " + totalCount + ", page count : " + pageCount);
+            logger.debug("total count : " + totalCount + ", page count : " + pageCount);
 
             if (pageCount > 0) {
                 interpretationPagination.setVisible(true);

@@ -97,7 +97,7 @@ public class VirtualPanelEditController extends SubPaneController {
     @Override
     public void show(Parent root) throws IOException {
 
-        logger.info("show virtual Panel Edit");
+        logger.debug("show virtual Panel Edit");
         // Create the dialog Stage
 
         apiService = APIService.getInstance();

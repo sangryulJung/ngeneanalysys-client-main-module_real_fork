@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -59,6 +60,9 @@ public class PublicDatabaseController extends SubPaneController {
 
     @FXML
     private Label releaseNoteLabel;
+    
+    @FXML
+    private ScrollPane releaseNoteScrollPane;
 
     /**
      * @param panelId Integer
@@ -69,7 +73,7 @@ public class PublicDatabaseController extends SubPaneController {
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("show..");
+        logger.debug("show..");
 
         apiService = APIService.getInstance();
 
@@ -77,7 +81,7 @@ public class PublicDatabaseController extends SubPaneController {
         dialogStage = new Stage();
         dialogStage.initStyle(StageStyle.DECORATED);
         dialogStage.initModality(Modality.APPLICATION_MODAL);
-        dialogStage.setTitle(CommonConstants.SYSTEM_NAME + " > Public Databases");
+        dialogStage.setTitle(CommonConstants.SYSTEM_NAME + " > Pipeline information");
         // OS가 Window인 경우 아이콘 출력.
         if(System.getProperty("os.name").toLowerCase().contains("window")) {
             dialogStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
@@ -86,12 +90,17 @@ public class PublicDatabaseController extends SubPaneController {
         dialogStage.resizableProperty().setValue(false);
 
         versionComboBox.getSelectionModel().selectedItemProperty().addListener((ob, ov, nv) -> {
-            logger.info("test");
+            logger.debug("test");
             Optional<PipelineVersionView> optionalPipelineVersionView =
                     list.stream().filter(item -> item.getId().equals(Integer.parseInt(nv.getValue()))).findFirst();
 
             if(optionalPipelineVersionView.isPresent()) {
-                releaseNoteLabel.setText(optionalPipelineVersionView.get().getReleaseNote());
+                if (optionalPipelineVersionView.get().getReleaseNote().isEmpty()) {
+                	releaseNoteLabel.setText("There is no release notes.");
+                	releaseNoteScrollPane.setPrefHeight(30);
+                }else {
+                	releaseNoteLabel.setText(optionalPipelineVersionView.get().getReleaseNote());
+                }
                 releaseDateLabel.setText(optionalPipelineVersionView.get().getReleaseDate());
             }
 
@@ -109,10 +118,12 @@ public class PublicDatabaseController extends SubPaneController {
     private void setList(String id) {
         if(toolsContentsGridPane.getChildren() != null && !toolsContentsGridPane.getChildren().isEmpty()) {
             toolsContentsGridPane.getChildren().removeAll(toolsContentsGridPane.getChildren());
+            toolsContentsGridPane.getRowConstraints().removeAll(toolsContentsGridPane.getRowConstraints());
             toolsContentsGridPane.setPrefHeight(0);
         }
         if(databaseContentsGridPane.getChildren() != null && !databaseContentsGridPane.getChildren().isEmpty()) {
             databaseContentsGridPane.getChildren().removeAll(databaseContentsGridPane.getChildren());
+            databaseContentsGridPane.getRowConstraints().removeAll(databaseContentsGridPane.getRowConstraints());
             databaseContentsGridPane.setPrefHeight(0);
         }
         Platform.runLater(() -> {
@@ -158,12 +169,17 @@ public class PublicDatabaseController extends SubPaneController {
         Label label3 = createLabel(column3);
         Label label4 = createLabel(column4);
         Label label5 = createLabel(column5);
+
+        label1.setAlignment(Pos.CENTER);
+        label2.setAlignment(Pos.CENTER);
+        label3.setAlignment(Pos.CENTER);
+        label4.setAlignment(Pos.CENTER);
+        label5.setAlignment(Pos.TOP_LEFT);
+        
         if(isTool) {
             toolsContentsGridPane.addRow(toolsContentsGridPane.getChildren().size() / 5, label1, label2, label3, label4, label5);
-            //toolsContentsGridPane.setPrefHeight(toolsContentsGridPane.getPrefHeight() + 60);
         } else {
             databaseContentsGridPane.addRow(databaseContentsGridPane.getChildren().size() / 5, label1, label2, label3, label4, label5);
-            //databaseContentsGridPane.setPrefHeight(databaseContentsGridPane.getPrefHeight() + 60);
         }
         GridPane.setValignment(label1, VPos.TOP);
         GridPane.setValignment(label2, VPos.TOP);
@@ -177,9 +193,9 @@ public class PublicDatabaseController extends SubPaneController {
         label.setWrapText(true);
         label.setText(text);
         label.setMaxWidth(Double.MAX_VALUE);
-        label.setStyle(label.getStyle() + "-fx-border-width : 0.5 0 0 0; -fx-border-color : #000000;");
-        label.setAlignment(Pos.TOP_LEFT);
-        label.setPadding(new Insets(0,0,7,0));
+        label.setStyle(label.getStyle() + "-fx-border-width : 0.5 0 0 0; -fx-border-color : #000000; -fx-font-family: \"Noto Sans KR Light\"");
+        label.setAlignment(Pos.CENTER);
+        label.setPadding(new Insets(7,0,7,0));
         return label;
     }
 

@@ -108,7 +108,7 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("show..");
+        logger.debug("show..");
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
 
@@ -265,9 +265,11 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
             List<SampleQC> qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
 
             roiCoverageLabel.setText(findQCResult(qcList, "roi_coverage").toUpperCase());
+            roiCoverageLabel.setTooltip(new Tooltip(findQCResultString(qcList, "roi_coverage")));
             roiCoverageTooltip.setText(findQCTooltipString(qcList, "roi_coverage"));
 
             coverageUniformityLabel.setText(findQCResult(qcList, "coverage_uniformity").toUpperCase());
+            coverageUniformityLabel.setTooltip(new Tooltip(findQCResultString(qcList, "coverage_uniformity")));
             coverageUniformityTooltip.setText(findQCTooltipString(qcList, "coverage_uniformity"));
 
         } catch(WebAPIException e) {
@@ -297,6 +299,19 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
             Optional<SampleQC> findQC = qcList.stream().filter(sampleQC -> sampleQC.getQcType().equalsIgnoreCase(qc)).findFirst();
             if(findQC.isPresent()) {
                 result = findQC.get().getQcDescription() + " " + findQC.get().getQcThreshold();
+            }
+        }
+
+        return result;
+    }
+
+    private String findQCResultString(List<SampleQC> qcList, String qc) {
+        String result = "";
+
+        if(qcList != null && !qcList.isEmpty()) {
+            Optional<SampleQC> findQC = qcList.stream().filter(sampleQC -> sampleQC.getQcType().equalsIgnoreCase(qc)).findFirst();
+            if(findQC.isPresent()) {
+                result = findQC.get().getQcValue() + findQC.get().getQcUnit();
             }
         }
 

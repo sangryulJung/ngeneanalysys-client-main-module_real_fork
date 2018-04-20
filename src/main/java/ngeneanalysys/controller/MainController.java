@@ -163,7 +163,7 @@ public class MainController extends BaseStageController {
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("main controller...");
+        logger.debug("main controller...");
         
         PropertiesService propertiesService = PropertiesService.getInstance();	
         String theme = (String)propertiesService.getConfig().getProperty("window.theme");
@@ -175,7 +175,7 @@ public class MainController extends BaseStageController {
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         int usersMonitorWidth = gd.getDisplayMode().getWidth();
         int usersMonitorHeight = gd.getDisplayMode().getHeight();
-        logger.info(String.format("user's monitor size [width : %s, height : %s]", usersMonitorWidth, usersMonitorHeight));
+        logger.debug(String.format("user's monitor size [width : %s, height : %s]", usersMonitorWidth, usersMonitorHeight));
 
         int setWindowHeight = CommonConstants.DEFAULT_MAIN_SCENE_HEIGHT;
         if (usersMonitorHeight < CommonConstants.DEFAULT_MAIN_SCENE_HEIGHT) {
@@ -197,7 +197,7 @@ public class MainController extends BaseStageController {
         primaryStage.setWidth(1280);
         primaryStage.centerOnScreen();
         primaryStage.show();
-        logger.info(String.format("start %s", primaryStage.getTitle()));
+        logger.debug(String.format("start %s", primaryStage.getTitle()));
 
         mainGridPane.add(maskerPane,0 ,0, 4, 4);
         maskerPane.setPrefWidth(primaryStage.getWidth());
@@ -254,7 +254,7 @@ public class MainController extends BaseStageController {
         String buildVersion = config.getProperty("application.version");
         String buildDate = config.getProperty("application.build.date");
         labelSystemBuild.setText(String.format("v %s (Build Date %s)", buildVersion, buildDate));
-        logger.info(String.format("v %s (Build Date %s)", buildVersion, buildDate));
+        logger.debug(String.format("v %s (Build Date %s)", buildVersion, buildDate));
 
         // 중단된 분석 요청 작업이 있는지 체크
 
@@ -472,7 +472,7 @@ public class MainController extends BaseStageController {
             }
             addedMenuIdx++;
         }
-        logger.info(String.format("top menu added : %s, menu index : %s", isAdded, addedMenuIdx));
+        logger.debug(String.format("top menu added : %s, menu index : %s", isAdded, addedMenuIdx));
 
         // 추가되어 있지 않은 경우 추가
         if(!isAdded) {
@@ -623,7 +623,7 @@ public class MainController extends BaseStageController {
         boolean isFirstShow = false;
         try {
             if (!StringUtils.isEmpty(menu.getFxmlPath())) {
-                logger.info("mainFrame display fxmlPath : " + menu.getMenuName());
+                logger.debug("mainFrame display fxmlPath : " + menu.getMenuName());
 
                 if(topMenuContent[menu.getDisplayOrder()] == null) {
                     FXMLLoader loader = mainApp.load(menu.getFxmlPath());
@@ -907,7 +907,7 @@ public class MainController extends BaseStageController {
     }
     
     public void applyTheme(String theme) {
-    	logger.info("Main theme: " + theme);
+    	logger.debug("Main theme: " + theme);
     	
     	if(theme.equalsIgnoreCase("default")) {
     		mainBackground.setStyle("-fx-background-image:url('layout/images/renewal/main_background.png');");

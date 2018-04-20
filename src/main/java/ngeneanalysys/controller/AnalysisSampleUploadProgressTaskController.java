@@ -138,7 +138,7 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 
 	@FXML
 	public void startUpload() {
-		logger.info("resume from task controller..");
+		logger.debug("resume from task controller..");
 		try {
 			Thread.sleep(100);
 			isPause = false;
@@ -155,7 +155,7 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 	 */
 	@FXML
 	public void pauseUpload() {
-		logger.info("pause from task controller..");
+		logger.debug("pause from task controller..");
 		try {
 			Thread.sleep(100);
 			isPause = true;

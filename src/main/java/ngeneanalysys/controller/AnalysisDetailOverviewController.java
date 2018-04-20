@@ -140,7 +140,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("show..");
+        logger.debug("show..");
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
 
@@ -323,18 +323,31 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
             qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
 
             totalBaseLabel.setText(findQCResult(qcList, "total_base"));
+            totalBaseLabel.setTooltip(new Tooltip(findQCResultString(qcList, "total_base")));
             totalBaseTooltip.setText(findQCTooltipString(qcList, "total_base"));
+
             q30Label.setText(findQCResult(qcList, "q30_trimmed_base"));
+            q30Label.setTooltip(new Tooltip(findQCResultString(qcList, "q30_trimmed_base")));
             q30Tooltip.setText(findQCTooltipString(qcList, "q30_trimmed_base"));
+
             mappedLabel.setText(findQCResult(qcList, "mapped_base"));
+            mappedLabel.setTooltip(new Tooltip(findQCResultString(qcList, "mapped_base")));
             mappedBaseTooltip.setText(findQCTooltipString(qcList, "mapped_base"));
+
             onTargetLabel.setText(findQCResult(qcList, "on_target"));
+            onTargetLabel.setTooltip(new Tooltip(findQCResultString(qcList, "on_target")));
             onTargetTooltip.setText(findQCTooltipString(qcList, "on_target"));
+
             onTargetCoverageLabel.setText(findQCResult(qcList, "on_target_coverage"));
+            onTargetCoverageLabel.setTooltip(new Tooltip(findQCResultString(qcList, "on_target_coverage")));
             onTargetCoverageTooltip.setText(findQCTooltipString(qcList, "on_target_coverage"));
+
             duplicatedReadsLabel.setText(findQCResult(qcList, "duplicated_reads"));
+            duplicatedReadsLabel.setTooltip(new Tooltip(findQCResultString(qcList, "duplicated_reads")));
             duplicatedReadsTooltip.setText(findQCTooltipString(qcList, "duplicated_reads"));
+
             roiCoverageLabel.setText(findQCResult(qcList, "roi_coverage"));
+            roiCoverageLabel.setTooltip(new Tooltip(findQCResultString(qcList, "roi_coverage")));
             roiCoverageTooltip.setText(findQCTooltipString(qcList, "roi_coverage"));
 
         } catch(WebAPIException e) {
@@ -364,6 +377,19 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
             Optional<SampleQC> findQC = qcList.stream().filter(sampleQC -> sampleQC.getQcType().equalsIgnoreCase(qc)).findFirst();
             if(findQC.isPresent()) {
                 result = findQC.get().getQcDescription() + " " + findQC.get().getQcThreshold();
+            }
+        }
+
+        return result;
+    }
+
+    private String findQCResultString(List<SampleQC> qcList, String qc) {
+        String result = "";
+
+        if(qcList != null && !qcList.isEmpty()) {
+            Optional<SampleQC> findQC = qcList.stream().filter(sampleQC -> sampleQC.getQcType().equalsIgnoreCase(qc)).findFirst();
+            if(findQC.isPresent()) {
+                result = findQC.get().getQcValue() + findQC.get().getQcUnit();
             }
         }
 

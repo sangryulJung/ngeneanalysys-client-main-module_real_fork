@@ -295,7 +295,7 @@ public class DetailSubInfoController extends SubPaneController {
                 Map<String, Map<String, String>> transcriptDataMap = (Map<String, Map<String, String>>) geneMap.get("transcript");
                 if (!transcriptDataMap.isEmpty() && transcriptDataMap.size() > 0) {
                     int selectedIdx = this.analysisDetailVariantNomenclatureController.getTranscriptComboBoxSelectedIndex();
-                    logger.info(String.format("selected transcript combobox idx : %s", selectedIdx));
+                    logger.debug(String.format("selected transcript combobox idx : %s", selectedIdx));
                     Map<String, String> map = transcriptDataMap.get(String.valueOf(selectedIdx));
                     if (!map.isEmpty() && map.size() > 0) {
                         String transcript = map.get("transcript_name");

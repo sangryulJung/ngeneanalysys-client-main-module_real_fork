@@ -58,6 +58,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
@@ -65,12 +66,12 @@
                         <Label text="report name" />
                         <Label text="variable name" GridPane.rowIndex="2" />
                         <Label text="display name" GridPane.rowIndex="3" />
-                        <Label text="variable type" GridPane.rowIndex="4" />
-                        <Label text="variable list" GridPane.rowIndex="5" />
-                        <Label text="image list" GridPane.rowIndex="6" />
+                        <Label text="variable type" GridPane.rowIndex="5" />
+                        <Label text="variable list" GridPane.rowIndex="6" />
+                        <Label text="image list" GridPane.rowIndex="7" />
                         <TextField fx:id="variableNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <TextField fx:id="displayNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                            <children>
                               <ComboBox fx:id="variableTypeComboBox" prefWidth="119.0" />
                               <Button fx:id="modifyVariableButton" mnemonicParsing="false" onAction="#modifyVariable" prefWidth="24.0" styleClass="submitBtn" text="*">
@@ -85,7 +86,7 @@
                               </Button>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
                            <children>
                               <ComboBox fx:id="variableListComboBox" prefWidth="153.0" />
                               <Button fx:id="removeVariableButton" mnemonicParsing="false" onAction="#removeVariable" prefWidth="24.0" styleClass="cancelBtn" text="-">
@@ -95,7 +96,7 @@
                               </Button>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
                            <children>
                               <ComboBox fx:id="imageListComboBox" prefWidth="153.0" />
                               <Button fx:id="removeImageButton" mnemonicParsing="false" onAction="#removeImage" prefWidth="24.0" styleClass="cancelBtn" text="-">
@@ -105,10 +106,26 @@
                               </Button>
                            </children>
                         </HBox>
-                        <Label text="custom field" GridPane.rowIndex="7" />
-                        <TextArea fx:id="customFieldsTextArea" prefHeight="200.0" prefWidth="189.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                        <Label text="custom field" GridPane.rowIndex="8" />
+                        <TextArea fx:id="customFieldsTextArea" prefHeight="200.0" prefWidth="189.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                         <Label text="output type" GridPane.rowIndex="1" />
                         <ComboBox fx:id="outputTypeComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label text="combo box item" GridPane.rowIndex="4" />
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                           <children>
+                              <ComboBox fx:id="comboBoxItemComboBox" prefWidth="119.0" />
+                              <Button fx:id="comboBoxItemAddBtn" mnemonicParsing="false" onAction="#addComboBoxItem" prefWidth="24.0" styleClass="submitBtn" text="+">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button fx:id="comboBoxItemDeleteBtn" mnemonicParsing="false" onAction="#deleteComboBoxItem" styleClass="cancelBtn" text="-">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
                      </children>
                   </GridPane>
                   <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="300.0">

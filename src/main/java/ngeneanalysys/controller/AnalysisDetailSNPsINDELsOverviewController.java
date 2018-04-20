@@ -285,7 +285,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
 
         analysisDetailSNPsINDELsController.subTabOverview.setContent(root);
 
-        logger.info("SNP/Indels subTab Overview");
+        logger.debug("SNP/Indels subTab Overview");
     }
 
     private void showVariantInterpretation() {
@@ -543,7 +543,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
                         String genomicDNA = (!StringUtils.isEmpty(transcript.getGenomicDna())) ? transcript.getGenomicDna() : "N/A";
 
 
-                        logger.info(String.format("variant identification choose '%s' option idx [%s]", transcriptName, newIdx));
+                        logger.debug(String.format("variant identification choose '%s' option idx [%s]", transcriptName, newIdx));
                         List<Integer> textLength = new ArrayList<>();
                         geneSymbolTextField.setText(geneSymbol); //Gene Symbol
                         if(!StringUtils.isEmpty(geneSymbol)) {
@@ -570,7 +570,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
                         if(maxTextLengthOptional.isPresent()) {
                             maxTextLength = maxTextLengthOptional.get();
                         }
-                        logger.info("max Length : " + maxTextLength);
+                        logger.debug("max Length : " + maxTextLength);
 
                         if(maxTextLength > 29) {
                             transcriptDetailGrid.setPrefWidth(maxTextLength * 9);
@@ -636,7 +636,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
         right22BpLabel.setText(displayRight22Bp.toUpperCase());
 
         double textLength = (double)(displayLeft22Bp.length() + ref.length() + displayRight22Bp.length());
-        logger.info("text length : " + textLength);
+        logger.debug("text length : " + textLength);
 
         if(textLength > 21) {
             gridBox.setPrefWidth(textLength * 12);
@@ -747,10 +747,10 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
             double variantFrequencyPanel = (double) variantFrequencyPanelCount / (double) variantFrequencyPanelTotalCount;
             double variantFrequencyAccount = (double) variantFrequencyAccountCount / (double) variantFrequencyAccountTotalCount;
 
-//		logger.info(String.format("run count : %s, total : %s", variantFrequencyRunCount, variantFrequencyRunTotalCount));
-//		logger.info(String.format("panel count : %s, total : %s", variantFrequencyPanelCount, variantFrequencyPanelTotalCount));
-//		logger.info(String.format("account count : %s, total : %s", variantFrequencyAccountCount, variantFrequencyAccountTotalCount));
-//		logger.info(String.format("run : %s, panel : %s, account : %s", variantFrequencyRun, variantFrequencyPanel, variantFrequencyAccount));
+//		logger.debug(String.format("run count : %s, total : %s", variantFrequencyRunCount, variantFrequencyRunTotalCount));
+//		logger.debug(String.format("panel count : %s, total : %s", variantFrequencyPanelCount, variantFrequencyPanelTotalCount));
+//		logger.debug(String.format("account count : %s, total : %s", variantFrequencyAccountCount, variantFrequencyAccountTotalCount));
+//		logger.debug(String.format("run : %s, panel : %s, account : %s", variantFrequencyRun, variantFrequencyPanel, variantFrequencyAccount));
 
             AnimationTimer variantStatisticsRunTimer = new VariantStatisticsTimer(
                     canvasVariantStatisticsRun.getGraphicsContext2D(), variantFrequencyRun, "RUN",

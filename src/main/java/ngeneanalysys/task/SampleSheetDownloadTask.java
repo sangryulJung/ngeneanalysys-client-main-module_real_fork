@@ -69,7 +69,7 @@ public class SampleSheetDownloadTask extends Task {
                 Map<String, Object> headerMap = apiService.getDefaultHeaders(true);
 
                 HttpGet get = new HttpGet(connectURL);
-                logger.info("GET:" + get.getURI());
+                logger.debug("GET:" + get.getURI());
                 // 지정된 헤더 삽입 정보가 있는 경우 추가
                 if (headerMap != null && headerMap.size() > 0) {
                     Iterator<String> keys = headerMap.keySet().iterator();
@@ -113,7 +113,7 @@ public class SampleSheetDownloadTask extends Task {
                     if (httpclient != null) httpclient.close();
                     if (response != null) response.close();
                 } else {
-                    logger.info(response.getStatusLine().toString());
+                    logger.debug(response.getStatusLine().toString());
                 }
             } catch (IOException e) {
                 e.printStackTrace();

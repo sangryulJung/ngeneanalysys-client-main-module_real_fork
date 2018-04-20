@@ -31,13 +31,43 @@ public class VariantFilterController extends SubPaneController {
     private TextField geneTextField;
 
     @FXML
+    private TextField chromosomeTextField;
+
+    @FXML
     private CheckBox snvCheckBox;
 
     @FXML
     private CheckBox indelCheckBox;
 
     @FXML
-    private CheckBox cnvCheckBox;
+    private CheckBox fivePrimeUTRCheckBox;
+
+    @FXML
+    private CheckBox cidCheckBox;
+
+    @FXML
+    private CheckBox didCheckBox;
+
+    @FXML
+    private CheckBox frameshiftCheckBox;
+
+    @FXML
+    private CheckBox intronCheckBox;
+
+    @FXML
+    private CheckBox missenseCheckBox;
+
+    @FXML
+    private CheckBox spliceRegionCheckbox;
+
+    @FXML
+    private CheckBox synonymousCheckBox;
+
+    @FXML
+    private CheckBox spliceAcceptorCheckBox;
+
+    @FXML
+    private CheckBox stopGainedCheckBox;
 
     private AnalysisDetailSNVController analysisDetailSNVController;
 
@@ -50,7 +80,7 @@ public class VariantFilterController extends SubPaneController {
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("show..");
+        logger.debug("show..");
         // Create the dialog Stage
         Stage dialogStage = new Stage();
         dialogStage.initStyle(StageStyle.DECORATED);
@@ -74,26 +104,64 @@ public class VariantFilterController extends SubPaneController {
     public void filterSave() {
         List<Object> list = new ArrayList<>();
 
+        variantTabSave(list);
+
+        consequenceSave(list);
+
+        if(!list.isEmpty()) {
+            analysisDetailSNVController.saveFilter(list);
+            closeFilter();
+        }
+    }
+
+    private void consequenceSave(List<Object> list) {
+        if(fivePrimeUTRCheckBox.isSelected()) {
+            list.add("consequence 5_prime_UTR_variant");
+        }
+        if(cidCheckBox.isSelected()) {
+            list.add("consequence conservative_inframe_deletion");
+        }
+        if(didCheckBox.isSelected()) {
+            list.add("consequence disruptive_inframe_deletion");
+        }
+        if(frameshiftCheckBox.isSelected()) {
+            list.add("consequence frameshift_variant");
+        }
+        if(intronCheckBox.isSelected()) {
+            list.add("consequence intron_variant");
+        }
+        if(missenseCheckBox.isSelected()) {
+            list.add("consequence missense_variant");
+        }
+        if(spliceRegionCheckbox.isSelected()) {
+            list.add("consequence splice_region_variant");
+        }
+        if(spliceAcceptorCheckBox.isSelected()) {
+            list.add("consequence splice_acceptor_variant");
+        }
+        if(synonymousCheckBox.isSelected()) {
+            list.add("consequence synonymous_variant");
+        }
+        if(stopGainedCheckBox.isSelected()) {
+            list.add("consequence stop_gained");
+        }
+    }
+
+    private void variantTabSave(List<Object> list) {
         if(!StringUtils.isEmpty(geneTextField.getText())) {
             list.add("gene " + geneTextField.getText());
+        }
+
+        if(!StringUtils.isEmpty(chromosomeTextField.getText())) {
+            list.add("chromosome " + chromosomeTextField.getText());
         }
 
         if(snvCheckBox.isSelected()) {
             list.add("variantType snv");
         }
 
-        if(cnvCheckBox.isSelected()) {
-            list.add("variantType cnv");
-        }
-
         if(indelCheckBox.isSelected()) {
             list.add("variantType indel");
-        }
-
-
-        if(!list.isEmpty()) {
-            analysisDetailSNVController.saveFilter(list);
-            closeFilter();
         }
     }
 

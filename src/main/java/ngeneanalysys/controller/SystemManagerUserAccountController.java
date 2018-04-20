@@ -274,7 +274,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
 
                 userListTable.setItems(FXCollections.observableList(list));
 
-                logger.info(String.format("total count : %s, page count : %s", totalCount, pageCount));
+                logger.debug(String.format("total count : %s, page count : %s", totalCount, pageCount));
 
                 if (pageCount > 0) {
                     paginationList.setVisible(true);
@@ -329,7 +329,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
 
                 groupListTable.setItems((FXCollections.observableList(list)));
 
-                logger.info(String.format("total count : %s, page count : %s", totalCount, pageCount));
+                logger.debug(String.format("total count : %s, page count : %s", totalCount, pageCount));
 
                 if (pageCount > 0) {
                     groupPaginationList.setVisible(true);
@@ -420,7 +420,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
 
         try {
             response = apiService.get("/admin/memberGroups", null, null, false);
-            logger.info(response.getContentString());
+            logger.debug(response.getContentString());
             if(response != null) {
                 SystemManagerUserGroupPaging systemManagerUserGroupPaging =
                         response.getObjectBeforeConvertResponseToJSON(SystemManagerUserGroupPaging.class);
@@ -473,12 +473,12 @@ public class SystemManagerUserAccountController extends SubPaneController{
                         UserGroupButton.this.getIndex());
                 alert.setHeaderText(group.getName());
                 alert.setContentText(alertContentText);
-                logger.info(group.getId() + " : present id");
+                logger.debug(group.getId() + " : present id");
                 Optional<ButtonType> result = alert.showAndWait();
                 if(result.get() == ButtonType.OK) {
                     deleteGroup(group.getId());
                 } else {
-                    logger.info(result.get() + " : button select");
+                    logger.debug(result.get() + " : button select");
                     alert.close();
                 }
             });
@@ -537,12 +537,12 @@ public class SystemManagerUserAccountController extends SubPaneController{
                         UserEditAndDeleteButton.this.getIndex());
                 alert.setHeaderText(user.getName());
                 alert.setContentText(alertContentText);
-                logger.info(user.getId() + " : present id");
+                logger.debug(user.getId() + " : present id");
                 Optional<ButtonType> result = alert.showAndWait();
                 if(result.get() == ButtonType.OK) {
                     deleteUser(user.getId());
                 } else {
-                    logger.info(result.get() + " : button select");
+                    logger.debug(result.get() + " : button select");
                     alert.close();
                 }
             });

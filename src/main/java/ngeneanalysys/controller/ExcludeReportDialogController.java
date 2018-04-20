@@ -48,7 +48,7 @@ public class ExcludeReportDialogController extends SubPaneController {
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("show..");
+        logger.debug("show..");
         // Create the dialog Stage
 
         apiService = APIService.getInstance();

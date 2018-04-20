@@ -427,7 +427,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
                 panelListTable.setItems((FXCollections.observableList(list)));
 
-                logger.info(String.format("total count : %s, page count : %s", totalCount, pageCount));
+                logger.debug(String.format("total count : %s, page count : %s", totalCount, pageCount));
 
                 if (pageCount > 0) {
                     panelPagination.setVisible(true);
@@ -876,12 +876,12 @@ public class SystemManagerPanelController extends SubPaneController {
                         PanelModifyButton.this.getIndex());
                 alert.setHeaderText(panel.getName());
                 alert.setContentText(alertContentText);
-                logger.info(panel.getId() + " : present id");
+                logger.debug(panel.getId() + " : present id");
                 Optional<ButtonType> result = alert.showAndWait();
                 if(result.get() == ButtonType.OK) {
                     deletePanel(panel.getId());
                 } else {
-                    logger.info(result.get() + " : button select");
+                    logger.debug(result.get() + " : button select");
                     alert.close();
                 }
             });
@@ -931,7 +931,7 @@ public class SystemManagerPanelController extends SubPaneController {
                     VirtualPanelEditController controller;
                     FXMLLoader loader = mainApp.load(FXMLConstants.VIRTUAL_PANEL_EDIT);
                     Node pane = loader.load();
-                    logger.info("try virtual Panel edit..A");
+                    logger.debug("try virtual Panel edit..A");
                     controller = loader.getController();
                     controller.setComboBox(this.comboBox);
                     controller.setPanelId(panel.getId());
@@ -966,7 +966,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
                     if (result.isPresent()) {
                         if(result.get() == buttonTypeEdit) {
-                            logger.info("try virtual Panel edit..");
+                            logger.debug("try virtual Panel edit..");
                             try {
                                 VirtualPanelEditController controller;
                                 FXMLLoader loader = FXMLLoadUtil.load(FXMLConstants.VIRTUAL_PANEL_EDIT);

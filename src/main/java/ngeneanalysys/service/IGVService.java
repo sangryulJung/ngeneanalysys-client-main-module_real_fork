@@ -96,7 +96,7 @@ public class IGVService {
      */
     @SuppressWarnings("static-access")
     public void intall(boolean jreInstall, boolean igvInstall) {
-        logger.info(String.format("JRE Install : %s, IGV Install : %s", jreInstall, igvInstall));
+        logger.debug(String.format("JRE Install : %s, IGV Install : %s", jreInstall, igvInstall));
 
         String progressBoxId = "DOWN_" + System.currentTimeMillis();
 
@@ -188,7 +188,7 @@ public class IGVService {
     public void launchIGV() throws Exception {
         boolean isRunningIGV = isRunningIGVApp();
         if(!isRunningIGV) {
-            logger.info("launch igv application start.");
+            logger.debug("launch igv application start.");
             if(igvProcessExecuteThread == null) {
                 // 초기화
                 this.currentPath.set(null);
@@ -232,7 +232,7 @@ public class IGVService {
                 DialogUtil.alert("The application is currently running.", "The current application is running. Please wait.", getMainController().getPrimaryStage(), true);
             }
         } else {
-            logger.info("aleady running to igv application.");
+            logger.debug("aleady running to igv application.");
             request();
         }
     }
@@ -256,7 +256,7 @@ public class IGVService {
     public void request() throws Exception {
         HttpClientResponse response = null;
         try {
-            logger.info(String.format("request igv [sample id : %s, bam file : %s, genome : %s, locus : %s, gene : %s]", this.sampleId, this.bamFileName, this.genome, this.locus, this.gene));
+            logger.debug(String.format("request igv [sample id : %s, bam file : %s, genome : %s, locus : %s, gene : %s]", this.sampleId, this.bamFileName, this.genome, this.locus, this.gene));
 
             String name = String.format("[%s:%s:%s]", this.sampleId, this.sampleName, this.variantId);
             String file = String.format("http://127.0.0.1:%s/analysisFiles/%s/%s", CommonConstants.HTTP_PROXY_SERVER_PORT, this.sampleId, this.bamFileName);
@@ -307,7 +307,7 @@ public class IGVService {
         // 현재 IGV 연동중이지 않은 경우 연동 시작함.
         if(!isStartOfIGV) {
             isStartOfIGV = true;
-            logger.info(String.format("jre binary path : %s", jreBinPath.getAbsolutePath()));
+            logger.debug(String.format("jre binary path : %s", jreBinPath.getAbsolutePath()));
             this.sampleId = sampleId;
             this.sampleName = sampleName;
             this.variantId = variantId;
@@ -322,7 +322,7 @@ public class IGVService {
             boolean isExistIGV = this.igvPath.exists();
 
             // JRE와 IGV가 모두 설치되지 않은 경우 설치 실행.
-            logger.info(String.format("JRE Installed : %s, IGV Installed : %s", isExistJRE, isExistIGV));
+            logger.debug(String.format("JRE Installed : %s, IGV Installed : %s", isExistJRE, isExistIGV));
             if(!isExistJRE || !isExistIGV) {
                 // JRE 설치실행여부 true시 설치 실행
                 boolean isJREInstall = !isExistJRE;

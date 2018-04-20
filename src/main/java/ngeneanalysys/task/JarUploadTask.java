@@ -32,7 +32,7 @@ public class JarUploadTask extends Task {
 
     @Override
     protected Object call() throws Exception {
-        logger.info("jar upload...");
+        logger.debug("jar upload...");
 
         jarUploadService.uploadJar(templateId, jar, mainController);
 

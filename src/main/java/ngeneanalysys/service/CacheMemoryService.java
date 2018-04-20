@@ -60,10 +60,10 @@ public class CacheMemoryService {
             if(cache.get(cacheKeyName) != null) {
                 return false;
             } else {
-                logger.info("cache [" + cacheSetName + "]'s data [" + cacheKeyName + "] is null");
+                logger.debug("cache [" + cacheSetName + "]'s data [" + cacheKeyName + "] is null");
             }
         } else {
-            logger.info("cache [" + cacheSetName + "] is null");
+            logger.debug("cache [" + cacheSetName + "] is null");
         }
         return true;
     }
@@ -76,7 +76,7 @@ public class CacheMemoryService {
      */
     public void setCacheObject(String cacheSetName, String cacheKeyName, Object obj) {
         try {
-            logger.info(String.format("Set Cache [set : %s, key : %s]", cacheSetName, cacheKeyName));
+            logger.debug(String.format("Set Cache [set : %s, key : %s]", cacheSetName, cacheKeyName));
             Cache cache = getCache(cacheSetName);
             cache.put(new Element(cacheKeyName, obj));
         } catch (Exception e) {
@@ -99,17 +99,17 @@ public class CacheMemoryService {
             if(value != null) {
                 obj = value.getObjectValue();
             } else {
-                logger.info("[getCacheObject] cache [" + cacheSetName + "]'s data [" + cacheKeyName + "] is null");
+                logger.debug("[getCacheObject] cache [" + cacheSetName + "]'s data [" + cacheKeyName + "] is null");
             }
         } else {
-            logger.info("[getCacheObject] cache [" + cacheSetName + "] is null");
+            logger.debug("[getCacheObject] cache [" + cacheSetName + "] is null");
         }
         return obj;
     }
 
     public void removeCacheKey(String cacheSetName, String cacheKeyName) {
         try {
-            logger.info(String.format("Remove Cache [set : %s, key : %s]", cacheSetName, cacheKeyName));
+            logger.debug(String.format("Remove Cache [set : %s, key : %s]", cacheSetName, cacheKeyName));
             Cache cache = getCache(cacheSetName);
             cache.remove(cacheKeyName);
         } catch (Exception e) {

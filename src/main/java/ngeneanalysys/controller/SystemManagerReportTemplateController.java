@@ -118,6 +118,15 @@ public class SystemManagerReportTemplateController extends SubPaneController{
     @FXML
     private Pagination reportTemplatePagination;
 
+    @FXML
+    private ComboBox<String> comboBoxItemComboBox;
+
+    @FXML
+    private Button comboBoxItemAddBtn;
+
+    @FXML
+    private Button comboBoxItemDeleteBtn;
+
     //vm 파일 내용
     private String contents = null;
 
@@ -140,7 +149,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("system manager report template init");
+        logger.debug("system manager report template init");
 
         apiService = APIService.getInstance();
 
@@ -196,8 +205,32 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                     displayNameTextField.setText(item.get("displayName"));
                     variableNameTextField.setText(variableListComboBox.getSelectionModel().getSelectedItem());
                     variableTypeComboBox.getSelectionModel().select(item.get("variableType"));
+                    if(item.get("variableType").equalsIgnoreCase("ComboBox")) {
+                        String list = item.get("comboBoxItemList");
+                        String[] comboBoxItem = list.split("&\\^\\|");
+                        comboBoxItemComboBox.setDisable(false);
+                        comboBoxItemAddBtn.setDisable(false);
+                        comboBoxItemDeleteBtn.setDisable(false);
+                        comboBoxItemComboBox.getItems().addAll(comboBoxItem);
+                        comboBoxItemComboBox.getSelectionModel().selectFirst();
+                    }
                 }
             }
+        });
+
+        variableTypeComboBox.getSelectionModel().selectedItemProperty().addListener((ov, oldIdx, newIdx) -> {
+          if(!StringUtils.isEmpty(newIdx) && newIdx.equalsIgnoreCase("ComboBox")) {
+              comboBoxItemComboBox.setDisable(false);
+              comboBoxItemAddBtn.setDisable(false);
+              comboBoxItemDeleteBtn.setDisable(false);
+          } else {
+              if(!StringUtils.isEmpty(oldIdx) && oldIdx.equalsIgnoreCase("ComboBox")) {
+                  comboBoxItemComboBox.getItems().removeAll(comboBoxItemComboBox.getItems());
+              }
+              comboBoxItemComboBox.setDisable(true);
+              comboBoxItemAddBtn.setDisable(true);
+              comboBoxItemDeleteBtn.setDisable(true);
+          }
         });
     }
 
@@ -233,7 +266,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                 }
             }
 
-            logger.info("total count : " + totalCount + ", page count : " + pageCount);
+            logger.debug("total count : " + totalCount + ", page count : " + pageCount);
 
             if (pageCount > 0) {
                 reportTemplatePagination.setVisible(true);
@@ -265,11 +298,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
         if(file != null && (file.getName().toLowerCase().endsWith(".vm"))) {
             try (BufferedReader in = new BufferedReader(new FileReader(file))){
                 final StringBuilder sb = new StringBuilder();
-                //String s;
                 in.lines().forEach(s -> sb.append(s + "\n"));
-                /*while((s = in.readLine()) != null) {
-                    sb = sb.append(s + "\n");
-                }*/
                 if(sb.length() > 0) contents = sb.toString();
 
             } catch (Exception e) {
@@ -296,7 +325,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                 } else {
                     String variableJson = JsonUtil.toJson(variableList);
                     param.put("customFields", variableJson);
-                    logger.info(variableJson);
+                    logger.debug(variableJson);
                 }
                 HttpClientResponse response = null;
                 if(id == 0) {
@@ -396,7 +425,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
         editVariable();
     }
 
-    public void editVariable() {
+    private void editVariable() {
         String variableName = variableNameTextField.getText();
         String displayName = displayNameTextField.getText();
         String variableType = variableTypeComboBox.getSelectionModel().getSelectedItem();
@@ -411,6 +440,20 @@ public class SystemManagerReportTemplateController extends SubPaneController{
             Map<String , String> item = new HashMap<>();
             item.put("displayName", displayName);
             item.put("variableType", variableType);
+            if(variableTypeComboBox.getSelectionModel().getSelectedItem().equalsIgnoreCase("ComboBox")) {
+                String itemList = "";
+                for(String comboBoxItem : comboBoxItemComboBox.getItems()) {
+                    itemList += comboBoxItem + "&^|";
+                }
+
+                if(StringUtils.isEmpty(itemList)) {
+                    DialogUtil.alert("empty comboBox", "empty comboBox", getMainApp().getPrimaryStage(), true);
+                    return;
+                }
+                itemList = itemList.substring(0, itemList.length() - 3);
+                logger.debug(itemList);
+                item.put("comboBoxItemList", itemList);
+            }
 
             variableList.put(variableName, item);
 
@@ -418,6 +461,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
 
             variableNameTextField.setText("");
             displayNameTextField.setText("");
+
             variableTypeComboBox.getSelectionModel().clearSelection();
             selectedVariableName = null;
         }
@@ -427,6 +471,14 @@ public class SystemManagerReportTemplateController extends SubPaneController{
     public void removeVariable() {
         variableNameTextField.setText("");
         displayNameTextField.setText("");
+
+        if(variableTypeComboBox.getSelectionModel().getSelectedItem().equalsIgnoreCase("ComboBox")) {
+            comboBoxItemComboBox.getItems().removeAll(comboBoxItemComboBox.getItems());
+            comboBoxItemComboBox.setDisable(true);
+            comboBoxItemDeleteBtn.setDisable(true);
+            comboBoxItemAddBtn.setDisable(true);
+        }
+
         variableTypeComboBox.getSelectionModel().clearSelection();
 
         String item = variableListComboBox.getSelectionModel().getSelectedItem();
@@ -465,19 +517,20 @@ public class SystemManagerReportTemplateController extends SubPaneController{
         settingReportType();
     }
 
-    public void settingVariableTypeComboBox() {
+    private void settingVariableTypeComboBox() {
         variableTypeComboBox.getItems().add("String");
         variableTypeComboBox.getItems().add("Date");
         variableTypeComboBox.getItems().add("Integer");
         variableTypeComboBox.getItems().add("Image");
+        variableTypeComboBox.getItems().add("ComboBox");
     }
 
-    public void settingReportType() {
+    private void settingReportType() {
         outputTypeComboBox.getItems().add("PDF");
         outputTypeComboBox.getItems().add("MS_WORD");
     }
 
-    public void settingImageListComboBox() {
+    private void settingImageListComboBox() {
         imageListComboBox.getItems().removeAll(imageListComboBox.getItems());
         //새로 추가하는 이미지 리스트
         if(imageList != null && !imageList.isEmpty()) {
@@ -493,7 +546,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
         }
     }
 
-    public void settingVariableListComboBox() {
+    private void settingVariableListComboBox() {
         variableListComboBox.getItems().removeAll(variableListComboBox.getItems());
         if(variableList.size() > 0) {
             Set<String> keySet = variableList.keySet();
@@ -504,7 +557,31 @@ public class SystemManagerReportTemplateController extends SubPaneController{
         }
     }
 
-    public void resetItem() {
+    @FXML
+    public void deleteComboBoxItem() {
+        if(comboBoxItemComboBox.getItems() != null && !comboBoxItemComboBox.getItems().isEmpty()) {
+            comboBoxItemComboBox.getItems().remove(comboBoxItemComboBox.getSelectionModel().getSelectedItem());
+            if(!comboBoxItemComboBox.getItems().isEmpty()) comboBoxItemComboBox.getSelectionModel().selectFirst();
+        }
+    }
+
+    @FXML
+    public void addComboBoxItem() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Text Input Dialog");
+        dialog.setHeaderText("Look, a Text Input Dialog");
+        dialog.setContentText("Please enter comboBoxItem");
+        Optional<String> result = dialog.showAndWait();
+
+        result.ifPresent(name -> {
+            comboBoxItemComboBox.getItems().add(name);
+            comboBoxItemComboBox.getSelectionModel().selectLast();
+        });
+
+
+    }
+
+    private void resetItem() {
         customFieldsTextArea.setText("");
         reportNameTextField.setText("");
         contents = "";
@@ -516,12 +593,13 @@ public class SystemManagerReportTemplateController extends SubPaneController{
         outputTypeComboBox.getSelectionModel().selectFirst();
         deleteImageList.clear();
         currentImageList.clear();
+        comboBoxItemComboBox.getItems().removeAll(comboBoxItemComboBox.getItems());
         imageListComboBox.getItems().removeAll(imageListComboBox.getItems());
         imageList.clear();
         variableList.clear();
     }
 
-    public void setDisabledItem(boolean condition) {
+    private void setDisabledItem(boolean condition) {
         resetItem();
         customFieldsTextArea.setDisable(condition);
         reportNameTextField.setDisable(condition);
@@ -538,9 +616,12 @@ public class SystemManagerReportTemplateController extends SubPaneController{
         addVariableButton.setDisable(condition);
         removeVariableButton.setDisable(condition);
         removeImageButton.setDisable(condition);
+        comboBoxItemComboBox.setDisable(true);
+        comboBoxItemAddBtn.setDisable(true);
+        comboBoxItemDeleteBtn.setDisable(true);
     }
 
-    public void deleteReportTemplate(int reportTemplateId) {
+    private void deleteReportTemplate(int reportTemplateId) {
         try {
             apiService.delete("admin/reportTemplate/" + reportTemplateId);
         } catch (WebAPIException wae) {
@@ -554,7 +635,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
         final ImageView img1 = new ImageView(resourceUtil.getImage("/layout/images/modify.png", 18, 18));
         final ImageView img2 = new ImageView(resourceUtil.getImage("/layout/images/delete.png", 18, 18));
 
-        public ReportTemplateModifyButton() {
+        private ReportTemplateModifyButton() {
 
             img1.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 ReportTemplate reportTemplate = ReportTemplateModifyButton.this.getTableView().getItems().get(
@@ -605,12 +686,12 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                         ReportTemplateModifyButton.this.getIndex());
                 alert.setHeaderText(reportTemplate.getName());
                 alert.setContentText(alertContentText);
-                logger.info(reportTemplate.getId() + " : present id");
+                logger.debug(reportTemplate.getId() + " : present id");
                 Optional<ButtonType> result = alert.showAndWait();
                 if(result.get() == ButtonType.OK) {
                     deleteReportTemplate(reportTemplate.getId());
                 } else {
-                    logger.info(result.get() + " : button select");
+                    logger.debug(result.get() + " : button select");
                     alert.close();
                 }
             });

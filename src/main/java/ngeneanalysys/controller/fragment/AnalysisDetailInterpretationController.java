@@ -528,8 +528,8 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
     public void returnTierClass(String tier, Label label, Integer usertier) {
         label.setAlignment(Pos.CENTER);
-        logger.info("+++++++++++++++");
-        logger.info(userTierLabel.getText()+" "+tier+" "+usertier);
+        logger.debug("+++++++++++++++");
+        logger.debug(userTierLabel.getText()+" "+tier+" "+usertier);
         if(usertier == 2 && tier != null) {arrow.setVisible(true);}
         //else {arrow.setVisible(true);}
         //if(label == userTierLabel) arrow.setVisible(true);
@@ -577,7 +577,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                     params.put("snpInDelEvidenceCreateRequests", returnEvidenceMap());
                     response = apiService.post("/analysisResults/snpInDels/"
                             + selectedAnalysisResultVariant.getSnpInDel().getId() + "/evidences", params, null, true);
-                    logger.info(response.getContentString());
+                    logger.debug(response.getContentString());
                     setEvidenceTable();
                     setPastCases();
                 } catch (WebAPIException wae) {
