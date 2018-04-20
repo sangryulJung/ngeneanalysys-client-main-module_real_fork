@@ -100,3 +100,12 @@
 	-fx-border-color : #223654;
 	-fx-border-radius : 1;
 }
+
+#populationFrequencyGridPane > .text-field {
+    -fx-min-height : 23;
+    -fx-pref-height : 23;
+    -fx-max-height : 23;
+    -fx-min-width : 80;
+    -fx-pref-width : 80;
+    -fx-max-width : 80;
+}
