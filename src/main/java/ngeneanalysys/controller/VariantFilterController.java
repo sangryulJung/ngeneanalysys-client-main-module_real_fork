@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.stage.Modality;
@@ -183,6 +184,8 @@ public class VariantFilterController extends SubPaneController {
 
     @FXML
     private CheckBox haltCheckBox;
+    @FXML
+    private Label caseLabel;
 
     private List<Object> currentFilter;
 
@@ -282,6 +285,7 @@ public class VariantFilterController extends SubPaneController {
 
     private void setPathogenicity() {
         if("SOMATIC".equalsIgnoreCase(analysisType)) {
+            caseLabel.setText("Tier");
             caseECheckBox.setVisible(false);
             clinVarECheckBox.setVisible(false);
             caseACheckBox.setText("T1");
@@ -294,6 +298,7 @@ public class VariantFilterController extends SubPaneController {
             clinVarCCheckBox.setText("T3");
             clinVarDCheckBox.setText("T4");
         } else {
+            caseLabel.setText("Pathogenicity");
             caseACheckBox.setText("P");
             caseBCheckBox.setText("LP");
             caseCCheckBox.setText("US");
