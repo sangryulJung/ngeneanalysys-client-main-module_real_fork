@@ -74,10 +74,9 @@ public class SystemManagerSystemLogsController extends SubPaneController {
     }
 
     public Map<String, Object> getLogSearchParam() {
-        Map<String, Object> params = new HashMap<>();
 
 
-        return params;
+        return new HashMap<>();
     }
 
     public void setLogList(int page) {
@@ -131,6 +130,7 @@ public class SystemManagerSystemLogsController extends SubPaneController {
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
+            logger.error("Unknown Error", e);
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }

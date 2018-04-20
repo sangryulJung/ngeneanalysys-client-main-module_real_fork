@@ -98,7 +98,7 @@ public class AnalysisDetailFusionExpressionController extends SubPaneController 
         showFusionExpressionList();
     }
 
-    public void showFusionExpressionList() {
+    private void showFusionExpressionList() {
         HttpClientResponse response = null;
         try {
             response = apiService.get("analysisResults/sampleGeneExpression/" + sample.getId(), null, null, false);
@@ -122,6 +122,7 @@ public class AnalysisDetailFusionExpressionController extends SubPaneController 
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
+            logger.error("Unknown Error", e);
             GeneExpressionTableView.setItems(null);
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }

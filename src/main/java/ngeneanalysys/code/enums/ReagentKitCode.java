@@ -26,7 +26,6 @@ public enum ReagentKitCode {
 	 * MiSeqReagentKitCode Constructor
 	 * 
 	 * @param sequencerCode
-	 * @param name
 	 * @param numberOfReads
 	 * @param kitSize
 	 * @param outputMax

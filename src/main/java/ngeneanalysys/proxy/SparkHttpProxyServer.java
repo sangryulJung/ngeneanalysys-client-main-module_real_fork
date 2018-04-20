@@ -78,13 +78,13 @@ public class SparkHttpProxyServer {
                         }
                     } };
 
-                    SSLContext sc = SSLContext.getDefault().getInstance("SSL");
+                    SSLContext sc = SSLContext.getInstance("SSL");
                     sc.init(null, trustAllCerts, new SecureRandom());
                     HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
 
                     URL obj = new URL(url);
                     conn = (HttpsURLConnection) obj.openConnection();
-                    conn.setDefaultSSLSocketFactory(sc.getSocketFactory());
+                    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
                     conn.setHostnameVerifier(new HostnameVerifier() {
                         @Override
                         public boolean verify(String s, SSLSession sslSession) {
@@ -194,8 +194,7 @@ public class SparkHttpProxyServer {
             return Long.valueOf(0L);
         } else {
             String[] bits = string.replace("bytes=", "").split("-");
-            Long bytes = Long.valueOf(Long.parseLong(bits[1]) - Long.parseLong(bits[0]));
-            return bytes;
+            return Long.parseLong(bits[1]) - Long.parseLong(bits[0]);
         }
     }
 }

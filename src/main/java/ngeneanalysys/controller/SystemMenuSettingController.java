@@ -208,7 +208,7 @@ public class SystemMenuSettingController extends SubPaneController {
             alert.initOwner(this.dialogStage);
             alert.setTitle("Save Settings");
 			alert.setHeaderText("Save Settings");
-			alert.setContentText("Do you want to save your changes?");;
+			alert.setContentText("Do you want to save your changes?");
 
             Optional<ButtonType> result = alert.showAndWait();
             isContinue = result.isPresent() && result.get() == ButtonType.OK;

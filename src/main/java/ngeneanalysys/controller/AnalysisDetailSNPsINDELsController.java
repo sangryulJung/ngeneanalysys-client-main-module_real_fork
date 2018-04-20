@@ -196,7 +196,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         if(StringUtils.isEmpty(fastQC) || !"PASS".endsWith(fastQC.toUpperCase())) {
             ImageView imgView = new ImageView(resourceUtil.getImage("/layout/images/icon_warn_big.png"));
             iconAreaHBox.getChildren().add(imgView);
-            iconAreaHBox.setMargin(imgView, new Insets(0, 5, 0, 0));
+            HBox.setMargin(imgView, new Insets(0, 5, 0, 0));
         }
 
         ImageView ruoImgView = new ImageView(resourceUtil.getImage("/layout/images/icon_ruo.png"));
@@ -223,7 +223,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                             if(idx > 0) {
                                 ImageView image = new ImageView(resourceUtil.getImage("/layout/images/icon-arrow_margin.png"));
                                 sortListBox.getChildren().add(image);
-                                sortListBox.setMargin(image, new Insets(0, 1, 0, 2));
+                                HBox.setMargin(image, new Insets(0, 1, 0, 2));
                             }
                             Label label = new Label(column.getText());
                             label.setStyle("-fx-font-size : 16; -fx-text-fill : #C30D23;");
@@ -288,32 +288,32 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
     public void setTierFilterBox() {
         VBox totalVariantBox = getFilterBox(ACMGFilterCode.TOTAL_VARIANT, list.size());
         filterList.getChildren().add(totalVariantBox);
-        filterList.setMargin(totalVariantBox, new Insets(0, 0, 0, 5));
+        HBox.setMargin(totalVariantBox, new Insets(0, 0, 0, 5));
 
         // Tier I
         //VBox predictionABox = getFilterBox(ACMGFilterCode.TIER_ONE, (count.get("T1") != null ? count.get("T1").intValue() : 0));
         VBox predictionABox = getFilterBox(ACMGFilterCode.TIER_ONE, returnTierVariantCount("T1"));
         filterList.getChildren().add(predictionABox);
-        filterList.setMargin(predictionABox, new Insets(0, 0, 0, 5));
+        HBox.setMargin(predictionABox, new Insets(0, 0, 0, 5));
 
         // Tier II
         VBox predictionBBox = getFilterBox(ACMGFilterCode.TIER_TWO, returnTierVariantCount("T2"));
         filterList.getChildren().add(predictionBBox);
-        filterList.setMargin(predictionBBox, new Insets(0, 0, 0, 5));
+        HBox.setMargin(predictionBBox, new Insets(0, 0, 0, 5));
 
         // Tier III
         VBox predictionCBox = getFilterBox(ACMGFilterCode.TIER_THREE, returnTierVariantCount("T3"));
         filterList.getChildren().add(predictionCBox);
-        filterList.setMargin(predictionCBox, new Insets(0, 0, 0, 5));
+        HBox.setMargin(predictionCBox, new Insets(0, 0, 0, 5));
 
         // Tier IV
         VBox predictionDBox = getFilterBox(ACMGFilterCode.TIER_FOUR, returnTierVariantCount("T4"));
         filterList.getChildren().add(predictionDBox);
-        filterList.setMargin(predictionDBox, new Insets(0, 0, 0, 5));
+        HBox.setMargin(predictionDBox, new Insets(0, 0, 0, 5));
 
     }
 
-    public int returnTierVariantCount(String tier) {
+    private int returnTierVariantCount(String tier) {
         return (int)list.stream().filter(item -> ((tier.equalsIgnoreCase(item.getSnpInDel().getExpertTier()) ||
                 (StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && item.getSnpInDel().getSwTier().equalsIgnoreCase(tier)))))
                 .count();
@@ -534,6 +534,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
+            logger.error("Unknown Error", e);
             variantListTableView.setItems(null);
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
@@ -575,7 +576,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                     getMainApp().getPrimaryStage(), true);
         }
         catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Unknown Error", e);
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
 
@@ -604,7 +605,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Unknown Error", e);
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
 

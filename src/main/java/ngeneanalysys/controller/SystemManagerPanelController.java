@@ -441,6 +441,7 @@ public class SystemManagerPanelController extends SubPaneController {
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
+            logger.error("Unknown Error", e);
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
@@ -805,30 +806,27 @@ public class SystemManagerPanelController extends SubPaneController {
 
                 Optional<ComboBoxItem> analysisTypeItem =
                         analysisTypeComboBox.getItems().stream().filter(item -> item.getValue().equalsIgnoreCase(panel.getAnalysisType())).findFirst();
-                if(analysisTypeItem.isPresent()) analysisTypeComboBox.getSelectionModel().select(analysisTypeItem.get());
+                analysisTypeItem.ifPresent(comboBoxItem -> analysisTypeComboBox.getSelectionModel().select(comboBoxItem));
 
                 Optional<ComboBoxItem> targetItem = targetComboBox.getItems().stream().filter(item -> item.getValue().equalsIgnoreCase(panel.getTarget())).findFirst();
-                if(targetItem.isPresent()) targetComboBox.getSelectionModel().select(targetItem.get());
+                targetItem.ifPresent(comboBoxItem -> targetComboBox.getSelectionModel().select(comboBoxItem));
 
                 Optional<ComboBoxItem> libraryTypeItem = libraryTypeComboBox.getItems().stream().filter(item -> item.getValue().equalsIgnoreCase(panel.getLibraryType())).findFirst();
-                if(libraryTypeItem.isPresent()) libraryTypeComboBox.getSelectionModel().select(libraryTypeItem.get());
+                libraryTypeItem.ifPresent(comboBoxItem -> libraryTypeComboBox.getSelectionModel().select(comboBoxItem));
 
                 Optional<ComboBoxItem> defaultSampleSourceItem = defaultSampleSourceComboBox.getItems().stream().filter(item -> item.getValue().equalsIgnoreCase(panel.getDefaultSampleSource())).findFirst();
-                if(defaultSampleSourceItem.isPresent()) defaultSampleSourceComboBox.getSelectionModel().select(defaultSampleSourceItem.get());
+                defaultSampleSourceItem.ifPresent(comboBoxItem -> defaultSampleSourceComboBox.getSelectionModel().select(comboBoxItem));
 
                 if(panel.getReportTemplateId() != null) {
                     Optional<ComboBoxItem> reportTemplate = reportTemplateComboBox.getItems().stream().filter(item -> item.getValue().equalsIgnoreCase(panel.getReportTemplateId().toString())).findFirst();
-                    if (reportTemplate.isPresent())
-                        reportTemplateComboBox.getSelectionModel().select(reportTemplate.get());
+                    reportTemplate.ifPresent(comboBoxItem -> reportTemplateComboBox.getSelectionModel().select(comboBoxItem));
                 }
 
                 if(StringUtils.isEmpty(panel.getDefaultSampleSource())) {
                     Optional<ComboBoxItem> sampleSource =
                                 defaultSampleSourceComboBox.getItems().stream().filter(item -> item.getValue().equalsIgnoreCase(panel.getDefaultSampleSource()))
                                 .findFirst();
-                    if(sampleSource.isPresent()) {
-                        defaultSampleSourceComboBox.getSelectionModel().select(sampleSource.get());
-                    }
+                    sampleSource.ifPresent(comboBoxItem -> defaultSampleSourceComboBox.getSelectionModel().select(comboBoxItem));
                 }
 
                 if(panelDetail != null) {

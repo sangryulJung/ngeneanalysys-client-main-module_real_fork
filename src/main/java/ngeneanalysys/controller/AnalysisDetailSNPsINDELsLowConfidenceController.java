@@ -26,23 +26,6 @@ public class AnalysisDetailSNPsINDELsLowConfidenceController extends SubPaneCont
     @FXML
     private VBox vbox;
 
-    /** low Variant Coverage Depth *//*
-    @FXML
-    private Label lowVariantCoverageDepthLabel;
-    *//** low Variant Fraction *//*
-    @FXML
-    private Label lowVariantFractionLabel;
-    *//** homopolymer Region *//*
-    @FXML
-    private Label homopolymerRegionLabel;
-    *//** soft Clipped Amplicon *//*
-    @FXML
-    private Label softClippedAmpliconLabel;
-    *//** primer Region Deletion *//*
-    @FXML
-    private Label primerRegionDeletionLabel;*/
-
-
     /**
      * @return the analysisDetailSNPsINDELsController
      */

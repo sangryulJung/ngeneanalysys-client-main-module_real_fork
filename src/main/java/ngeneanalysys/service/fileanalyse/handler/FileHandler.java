@@ -28,5 +28,5 @@ public interface FileHandler {
      */
     List<Sample> getSampleList(SequencerCode sequencer, List<File> fileList) throws FastQFileParsingException;
 
-    public String getFASTQFilePairName(String fileName);
+    String getFASTQFilePairName(String fileName);
 }

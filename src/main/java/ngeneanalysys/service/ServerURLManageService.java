@@ -51,11 +51,9 @@ public class ServerURLManageService {
         String regex = "^(http|https?):\\/\\/([^:\\/\\s]+)(:([^\\/]*))?((\\/[^\\s/\\/]+)*)?\\/?([^#\\s\\?]*)(\\?([^#\\s]*))?(#(\\w*))?$";
         Pattern pattern = Pattern.compile(regex);
         if(pattern.matcher(inputURL).matches()) {
-            String url = inputURL;
-            //String url = inputURL + "/client_upgrade/client_version";
             HttpClientResponse response = null;
             try {
-                response = HttpClientUtil.get(url, null, null, false);
+                response = HttpClientUtil.get(inputURL, null, null, false);
                 if(response != null) {
                     int status = response.getStatus();
                     logger.debug("HTTP Status : " + status);

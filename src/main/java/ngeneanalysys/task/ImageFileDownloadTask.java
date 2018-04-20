@@ -102,13 +102,12 @@ public class ImageFileDownloadTask extends Task {
                         InputStream content = entity.getContent();
                         long fileLength = entity.getContentLength();
 
-                        InputStream is = content;
                         os = Files.newOutputStream(Paths.get(file.toURI()));
 
                         long nread = 0L;
                         byte[] buf = new byte[8192];
                         int n;
-                        while ((n = is.read(buf)) > 0) {
+                        while ((n = content.read(buf)) > 0) {
                             if (isCancelled()) {
                                 break;
                             }
@@ -117,7 +116,7 @@ public class ImageFileDownloadTask extends Task {
                             updateProgress(nread, fileLength);
                             updateMessage(String.valueOf(Math.round(((double) nread / (double) fileLength) * 100)) + "%");
                         }
-                        is.close();
+                        content.close();
                         os.flush();
                         if (httpclient != null) httpclient.close();
                         if (response != null) response.close();

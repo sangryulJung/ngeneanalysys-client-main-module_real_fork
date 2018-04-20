@@ -134,7 +134,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
         addToGermlineReportCheckBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> addToReportBtn(addToGermlineReportCheckBox));
     }
 
-    public void checkBoxSetting(CheckBox checkBox, String Symbol) {
+    private void checkBoxSetting(CheckBox checkBox, String Symbol) {
         if("Y".equals(Symbol)) {
             checkBox.setSelected(true);
         } else {
@@ -229,7 +229,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
         }
     }
 
-    public void addToReportBtn(CheckBox checkBox) {
+    private void addToReportBtn(CheckBox checkBox) {
         if(selectedAnalysisResultVariant != null) {
             String oldSymbol = selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport();
             if (checkBox.isSelected()) {
@@ -266,7 +266,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
      * SIGNIFICANT 레이더 차트 화면 출력
      */
     @SuppressWarnings("unchecked")
-    public void showClinicalSignificantGraph() {
+    private void showClinicalSignificantGraph() {
         Map<String,Object> inSilicoPredictionMap = returnResultsAfterSearch("in_silico_prediction");
         Map<String,Object> variantClassifierMap = returnResultsAfterSearch("variant_classifier");
         Map<String,Object> clinicalMap = returnResultsAfterSearch("clinical");
@@ -442,7 +442,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
      * @return
      */
     @SuppressWarnings("unchecked")
-    public double getPopulationFrequencyByParam(String orgKey, String location) {
+    private double getPopulationFrequencyByParam(String orgKey, String location) {
         double percentage = -1d;
         Map<String,Object> populationFrequencyMap = returnResultsAfterSearch("population_frequency");
         if(!populationFrequencyMap.isEmpty() && populationFrequencyMap.containsKey(orgKey)) {
@@ -464,7 +464,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
      * @param level
      * @return
      */
-    public double convertRadarItemPercentageByLevelForPathogenic(String level) {
+    private double convertRadarItemPercentageByLevelForPathogenic(String level) {
         if(StringUtils.isEmpty(level)) {
             return -1d;
         } else if("1".equals(level)) {
@@ -481,17 +481,14 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
         return 4d;
     }
 
-    public Map<String, Object> returnResultsAfterSearch(String key) {
+    private Map<String, Object> returnResultsAfterSearch(String key) {
         List<SnpInDelExtraInfo> detail = (List<SnpInDelExtraInfo>)paramMap.get("detail");
 
         Optional<SnpInDelExtraInfo> populationFrequency = detail.stream().filter(item
                 -> key.equalsIgnoreCase(item.key)).findFirst();
 
-        if(populationFrequency.isPresent()) {
-            return JsonUtil.fromJsonToMap(populationFrequency.get().value);
-        }
+        return populationFrequency.map(snpInDelExtraInfo -> JsonUtil.fromJsonToMap(snpInDelExtraInfo.value)).orElse(null);
 
-        return null;
     }
 
 
@@ -534,7 +531,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
     }
 
     @SuppressWarnings("unchecked")
-    public void addClickEvent(String text, Node node) {
+    private void addClickEvent(String text, Node node) {
         if("PREDICTION".equals(text)) {
             Map<String, Object> acmg = returnResultsAfterSearch("acmg");
             if(acmg == null) return;
@@ -544,7 +541,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
     }
 
     @SuppressWarnings("unchecked")
-    public void openPopOver(Label label, Map<String, Object> acmg) {
+    private void openPopOver(Label label, Map<String, Object> acmg) {
 
         PopOver popOver = new PopOver();
         popOver.setArrowLocation(PopOver.ArrowLocation.BOTTOM_CENTER);

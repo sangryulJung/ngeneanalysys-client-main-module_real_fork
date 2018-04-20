@@ -49,7 +49,7 @@ public class ALAMUTService {
      * 어플리케이션 연결가능한지 체크 여부
      * @return
      */
-    public boolean isConnect() {
+    private boolean isConnect() {
         try (Socket socket = new Socket()){
             socket.connect(new InetSocketAddress("localhost", alamutPort), 500);
             logger.debug("alamut connect socket : " + socket);
@@ -90,7 +90,7 @@ public class ALAMUTService {
      * @param bamFileName
      * @throws InterruptedException
      */
-    public void requestAlamutURL(String transcript, String cDNA, String sampleId, String bamFileName) {
+    private void requestAlamutURL(String transcript, String cDNA, String sampleId, String bamFileName) {
         String host = String.format("http://localhost:%s/show", alamutPort);
 
         Thread thread = new Thread(new Runnable() {

@@ -197,6 +197,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
+            logger.error("Unknown Error", e);
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
 
@@ -297,8 +298,8 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
                     getMainApp().getPrimaryStage(), true);
             wae.printStackTrace();
         } catch (Exception e) {
+            logger.error("Unknown Error", e);
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
-            e.printStackTrace();
         }
     }
 

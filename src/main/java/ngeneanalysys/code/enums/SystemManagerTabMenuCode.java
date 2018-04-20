@@ -16,7 +16,7 @@ public enum SystemManagerTabMenuCode {
 	
 	private SystemManagerTabItem item;
 
-	private SystemManagerTabMenuCode(SystemManagerTabItem item) {
+	SystemManagerTabMenuCode(SystemManagerTabItem item) {
 		this.item = item;
 	}
 

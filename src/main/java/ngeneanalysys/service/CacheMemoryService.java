@@ -50,8 +50,7 @@ public class CacheMemoryService {
      * @return
      */
     public Cache getCache(String cacheSetName) {
-        Cache cache = cacheManager.getCache(cacheSetName);
-        return cache;
+        return cacheManager.getCache(cacheSetName);
     }
 
     public boolean isEmpty(String cacheSetName, String cacheKeyName) {

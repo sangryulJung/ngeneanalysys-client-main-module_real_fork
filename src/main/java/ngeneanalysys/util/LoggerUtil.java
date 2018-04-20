@@ -6,9 +6,9 @@ import org.slf4j.LoggerFactory;
 /**
  * Helper class for common Log4J interactions
  * 
- * {@link http://spiffyframework.svn.sourceforge.net/viewvc/spiffyframework/tags/v0.05/src/spiffy/log4j/LoggerHelper.java?view=markup} 
- * {@link http://firstclassthoughts.co.uk/java/getting_log4j_loggers.html}
- * {@link http://www.mularien.com/blog/2009/06/01/5-common-log4j-mistakes/}
+ * {@link "http://spiffyframework.svn.sourceforge.net/viewvc/spiffyframework/tags/v0.05/src/spiffy/log4j/LoggerHelper.java?view=markup"}
+ * {@link "http://firstclassthoughts.co.uk/java/getting_log4j_loggers.html"}
+ * {@link "http://www.mularien.com/blog/2009/06/01/5-common-log4j-mistakes/"}
  */
 public class LoggerUtil {
 	

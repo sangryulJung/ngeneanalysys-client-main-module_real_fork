@@ -45,11 +45,8 @@ public class InSilicoPredictionsController extends SubPaneController {
         Optional<SnpInDelExtraInfo> populationFrequency = detail.stream().filter(item
                 -> key.equalsIgnoreCase(item.key)).findFirst();
 
-        if(populationFrequency.isPresent()) {
-            return JsonUtil.fromJsonToMap(populationFrequency.get().value);
-        }
+        return populationFrequency.map(snpInDelExtraInfo -> JsonUtil.fromJsonToMap(snpInDelExtraInfo.value)).orElse(null);
 
-        return null;
     }
 
     /**

@@ -389,6 +389,7 @@ public class PastResultsController extends SubPaneController {
 			DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
 					getMainApp().getPrimaryStage(), false);
 		} catch (Exception e) {
+			logger.error("Unknown Error", e);
 			DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(),
 					false);
 			e.printStackTrace();

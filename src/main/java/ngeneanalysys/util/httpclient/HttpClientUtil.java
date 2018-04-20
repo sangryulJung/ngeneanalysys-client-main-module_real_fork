@@ -51,15 +51,14 @@ public class HttpClientUtil {
 	public static SSLConnectionSocketFactory getSSLSocketFactory() {
 		SSLConnectionSocketFactory factory = null;
 		try {
-			SSLContext sslcontext = SSLContexts.custom().loadTrustMaterial(null, new TrustSelfSignedStrategy()).build();
 			TrustManager[] trustAllCerts = new TrustManager[] {
 					new X509TrustManager() {
                         @Override
-                        public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+                        public void checkClientTrusted(X509Certificate[] x509Certificates, String s) {
                         }
 
                         @Override
-                        public void checkServerTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+                        public void checkServerTrusted(X509Certificate[] x509Certificates, String s) {
                         }
 
                         @Override
@@ -68,7 +67,7 @@ public class HttpClientUtil {
                         }
                     } };
 
-                    SSLContext sc = SSLContext.getDefault().getInstance("SSL");
+                    SSLContext sc = SSLContext.getInstance("SSL");
                     sc.init(null, trustAllCerts, new SecureRandom());
 			factory = new SSLConnectionSocketFactory(sc, NoopHostnameVerifier.INSTANCE);
 		} catch (Exception e) {
@@ -123,10 +122,9 @@ public class HttpClientUtil {
 	 * @param headers
 	 * @param encoding
 	 * @return
-	 * @throws IOException
 	 * @throws WebAPIException
 	 */
-	public static HttpClientResponse post(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, boolean isJsonRequest) throws IOException, WebAPIException {
+	public static HttpClientResponse post(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, boolean isJsonRequest) throws WebAPIException {
 		CloseableHttpClient httpclient = null;
 		CloseableHttpResponse response = null;
 		HttpClientResponse result = null;
@@ -167,10 +165,9 @@ public class HttpClientUtil {
 	 * @param params
 	 * @param headers
 	 * @return
-	 * @throws IOException
 	 * @throws WebAPIException
 	 */
-	public static HttpClientResponse post(String url, Map<String, Object> params, Map<String, Object> headers, boolean isJsonRequest) throws IOException, WebAPIException {
+	public static HttpClientResponse post(String url, Map<String, Object> params, Map<String, Object> headers, boolean isJsonRequest) throws WebAPIException {
 		return post(url, params, headers, HttpClientUtil.DEFAULT_ENCODING, isJsonRequest);
 	}
 
