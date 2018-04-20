@@ -246,6 +246,7 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
+            logger.error("Unknown Error", e);
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(),
                     true);
         }

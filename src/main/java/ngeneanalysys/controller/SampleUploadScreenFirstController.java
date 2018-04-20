@@ -590,6 +590,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         } catch (WebAPIException wae) {
             DialogUtil.error(wae.getHeaderText(), wae.getMessage(), getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
+            logger.error("Unknown Error", e);
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
@@ -733,6 +734,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 closeDialog();
             }
         } catch (Exception e) {
+            logger.error("Unknown Error", e);
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
@@ -819,6 +821,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 } catch (WebAPIException e) {
                     DialogUtil.error(e.getHeaderText(), e.getMessage(), getMainApp().getPrimaryStage(), true);
                 } catch (IOException e) {
+                    logger.error("Unknown Error", e);
                     DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
                 }
 

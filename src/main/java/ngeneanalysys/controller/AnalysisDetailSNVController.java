@@ -168,7 +168,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Unknown Error", e);
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
@@ -533,7 +533,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                     getMainApp().getPrimaryStage(), true);
         }
         catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Unknown Error", e);
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
 
@@ -659,8 +659,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                     getMainApp().getPrimaryStage(), true);
             wae.printStackTrace();
         } catch (Exception e) {
+            logger.error("Unknown Error", e);
             variantListTableView.setItems(null);
-            e.printStackTrace();
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
 
