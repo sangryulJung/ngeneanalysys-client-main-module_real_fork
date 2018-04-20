@@ -8,6 +8,8 @@ public class OncoKB {
     private String oncokbActionCancer;
     private String oncokbActionDrugs;
     private String oncokbActionLevel;
+    private String oncokbAlteration;
+    private String oncokbPmids;
     private String oncokbActionPmid;
     private String oncokbOncogenicity;
     private String oncokbHgvsp;
@@ -60,5 +62,13 @@ public class OncoKB {
      */
     public String getOncokbTx() {
         return oncokbTx;
+    }
+
+    public String getOncokbAlteration() {
+        return oncokbAlteration;
+    }
+
+    public String getOncokbPmids() {
+        return oncokbPmids;
     }
 }
