@@ -660,6 +660,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             wae.printStackTrace();
         } catch (Exception e) {
             variantListTableView.setItems(null);
+            e.printStackTrace();
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
 
