@@ -471,7 +471,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     /**
      * 선택된 변이 상세 정보 출력
-     * @param analysisResultVariant
+     * @param analysisResultVariant VariantAndInterpretationEvidence
      */
     @SuppressWarnings("unchecked")
     private void showVariantDetail(VariantAndInterpretationEvidence analysisResultVariant) {
@@ -657,6 +657,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             variantListTableView.setItems(null);
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
+            wae.printStackTrace();
         } catch (Exception e) {
             variantListTableView.setItems(null);
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
@@ -710,6 +711,10 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             Node node = loader.load();
             VariantFilterController variantFilterController = loader.getController();
             variantFilterController.setMainController(this.getMainController());
+            if(filterComboBox.getSelectionModel().getSelectedItem().getValue().startsWith("C")) {
+                variantFilterController.setCurrentFilerName(filterComboBox.getSelectionModel().getSelectedItem().getValue());
+                variantFilterController.setCurrentFilter(filterList.get(filterComboBox.getSelectionModel().getSelectedItem().getValue()));
+            }
             variantFilterController.setParamMap(paramMap);
             variantFilterController.setAnalysisDetailSNVController(this);
             variantFilterController.show((Parent) node);
@@ -719,11 +724,17 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
     }
 
-    void saveFilter(List<Object> list) {
-        ComboBoxItem comboBoxItem = new ComboBoxItem("C" + filterList.size(), "C" + filterList.size());
-        filterComboBox.getItems().add(comboBoxItem);
-        filterList.put("C" + filterList.size(), list);
-        filterComboBox.getSelectionModel().select(comboBoxItem);
+    void saveFilter(List<Object> list, String filterName) {
+        if(StringUtils.isEmpty(filterName)) {
+            ComboBoxItem comboBoxItem = new ComboBoxItem("C" + filterList.size(), "C" + filterList.size());
+            filterComboBox.getItems().add(comboBoxItem);
+            filterList.put("C" + filterList.size(), list);
+            filterComboBox.getSelectionModel().select(comboBoxItem);
+        } else {
+            filterList.remove(filterName);
+            filterList.put(filterName, list);
+        }
+
     }
 
     @FXML
@@ -732,12 +743,14 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             List<Object> list = filterList.get(filterComboBox.getSelectionModel().getSelectedItem().getValue());
             String currentKey = "";
             for(Object obj : list) {
-                String key = obj.toString().substring(0, obj.toString().indexOf(" "));
-                if(!key.equalsIgnoreCase(currentKey)) {
-                    currentKey = key;
+                if(obj.toString().contains(" ")) {
+                    String key = obj.toString().substring(0, obj.toString().indexOf(" "));
+                    if (!key.equalsIgnoreCase(currentKey)) {
+                        currentKey = key;
+                    }
+                    String value = obj.toString().substring(obj.toString().indexOf(" ") + 1);
+                    logger.debug(currentKey + " " + value);
                 }
-                String value = obj.toString().substring(obj.toString().indexOf(" ") + 1);
-                logger.debug(currentKey + " " + value);
             }
 
         }

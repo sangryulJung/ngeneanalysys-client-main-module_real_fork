@@ -48,7 +48,7 @@ public class MainApp extends Application {
 
 	/**
 	 *
-	 * @return
+	 * @return SparkHttpProxyServer
 	 */
 	public SparkHttpProxyServer getProxyServer() {
 		return proxyServer;
@@ -56,7 +56,7 @@ public class MainApp extends Application {
 
 	/**
 	 *
-	 * @param proxyServer
+	 * @param proxyServer SparkHttpProxyServer
 	 */
 	public void setProxyServer(SparkHttpProxyServer proxyServer) {
 		this.proxyServer = proxyServer;
@@ -96,7 +96,7 @@ public class MainApp extends Application {
 		LoginController controller = loader.getController();
 		controller.setMainApp(this);
 		PropertiesService propertiesService = PropertiesService.getInstance();		
-		controller.applyLoginTheme((String)propertiesService.getConfig().getProperty("window.theme"));
+		controller.applyLoginTheme(propertiesService.getConfig().getProperty("window.theme"));
 		controller.show(pane);
 		
 	}
@@ -111,19 +111,19 @@ public class MainApp extends Application {
 	
 	/**
 	 * 
-	 * @param fxmlPath
-	 * @return
+	 * @param fxmlPath String
+	 * @return FXMLLoader
 	 */
 	public FXMLLoader load(String fxmlPath) {
 		return FXMLLoadUtil.load(fxmlPath);
 	}
 
 	
-	public boolean checkExistsDatabasePathAndCreate() {
+	private boolean checkExistsDatabasePathAndCreate() {
 		return false;
 	}
 	
-	public boolean isProxyServerRunning() {
+	private boolean isProxyServerRunning() {
 		try (Socket socket = new Socket()){
 			socket.connect(new InetSocketAddress("localhost", CommonConstants.HTTP_PROXY_SERVER_PORT), 500);
 		} catch (Exception e) {
@@ -134,8 +134,8 @@ public class MainApp extends Application {
 	
 	/**
 	 * 예외상황 메시지 출력
-	 * @param t
-	 * @param e
+	 * @param t Thread
+	 * @param e Throwable
 	 */
 	@SuppressWarnings("unused")
 	private static void showError(Thread t, Throwable e) {
@@ -149,7 +149,7 @@ public class MainApp extends Application {
 	
 	/**
 	 * 예외상황 메시지 Dialog 출력
-	 * @param e
+	 * @param e Throwable
 	 */
 	private static void showErrorDialog(Throwable e) {
 		StringWriter errorMsg = new StringWriter();
@@ -229,7 +229,7 @@ public class MainApp extends Application {
 
 	/**
 	 * 서버 URL 설정 여부
-	 * @return
+	 * @return boolean
 	 */
 	public boolean containsServerURL() {
 		File configFile = new File(CommonConstants.BASE_FULL_PATH, CommonConstants.CONFIG_PROPERTIES);
@@ -279,10 +279,6 @@ public class MainApp extends Application {
 
 	}
 
-	/**
-	 * 메인 화면 출력
-	 * @throws Exception
-	 */
 	public void showMain() throws Exception {
 		//이전 stage (로그인화면) 종료
 		if(primaryStage.getScene() != null) {

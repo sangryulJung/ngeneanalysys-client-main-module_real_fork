@@ -138,8 +138,7 @@ public class HomeController extends SubPaneController{
         }
         getMainController().setMainMaskerPane(false);
     }
-    
-    
+
     @FXML
     public void newAnalysisMouseEnter() {
     	buttonUpload.setStyle("-fx-background-image:url('layout/images/renewal/plus-symbol-on.png'); -fx-font-family: \"Noto Sans KR Bold\"");
@@ -196,9 +195,7 @@ public class HomeController extends SubPaneController{
         Label nameLabel = new Label("Analysis Tools");
         hBox.getChildren().addAll(iconLabel, nameLabel);
         databaseVersionVBox.getChildren().add(hBox);
-        hBox.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
-            toolsView();
-        });
+        hBox.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> toolsView());
         hBox = new HBox();
         hBox.setSpacing(5);
         hBox.setPrefHeight(30);
@@ -209,9 +206,7 @@ public class HomeController extends SubPaneController{
         nameLabel = new Label("Annotation Database");
         hBox.getChildren().addAll(iconLabel, nameLabel);
         databaseVersionVBox.getChildren().add(hBox);
-        hBox.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
-            databaseView();
-        });
+        hBox.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> databaseView());
 
     }
 
@@ -282,7 +277,7 @@ public class HomeController extends SubPaneController{
 
         dateLabel.setText(DateFormatUtils.format(
                 noticeView.getCreatedAt().toDate(), "yyyy-MM-dd"));
-        noticeContentsLabel.setText(noticeView.getContents());
+        noticeContentsLabel.setText(noticeView.getTitle() + "\n" + noticeView.getContents());
         return true;
     }
 
@@ -314,15 +309,9 @@ public class HomeController extends SubPaneController{
         if(autoRefreshTimeline != null)
             logger.debug("cycle time : " + autoRefreshTimeline.getCycleDuration());
 
-        Platform.runLater(() -> {
-            hddCheck();
-        });
-        Platform.runLater(() -> {
-            setNoticeArea();
-        });
-        Platform.runLater(() -> {
-            setToolsAndDatabase();
-        });
+        Platform.runLater(() -> hddCheck());
+        Platform.runLater(() -> setNoticeArea());
+        Platform.runLater(() -> setToolsAndDatabase());
         final int maxRunNumberOfPage = 3;
         CompletableFuture<PagedRun> getPagedRun = new CompletableFuture<>();
         CompletableFuture.supplyAsync(() -> {
@@ -373,8 +362,8 @@ public class HomeController extends SubPaneController{
         private Label statusLabel;
         private Label startDateLabel;
         private HBox startDateHBox;
-        private Label FinishDateLabel;
-        private HBox FinishDateHBox;
+        private Label finishDateLabel;
+        private HBox finishDateHBox;
         private Label completeLabel;
         private HBox completeHBox;
         private Label queuedLabel;
@@ -386,7 +375,7 @@ public class HomeController extends SubPaneController{
 
         private VBox itemVBox;
 
-        public RunStatusVBox() {
+        private RunStatusVBox() {
             this.setPrefSize(220, 220);
             this.setMinSize(220, 220);
             this.getStyleClass().add("run_box");
@@ -424,8 +413,8 @@ public class HomeController extends SubPaneController{
             totalHBox = createHBox(totalLabel, "Samples : ");
             startDateLabel = new Label();
             startDateHBox = createHBox(startDateLabel, "Start : ");
-            FinishDateLabel = new Label();
-            FinishDateHBox = createHBox(FinishDateLabel, "Finished : ");
+            finishDateLabel = new Label();
+            finishDateHBox = createHBox(finishDateLabel, "Finished : ");
             completeLabel = new Label();
             completeHBox = createHBox(completeLabel, "Complete : ");
             queuedLabel = new Label();
@@ -440,7 +429,7 @@ public class HomeController extends SubPaneController{
             this.getChildren().add(backgroundVBox);
         }
 
-        public HBox createHBox(Label label, String titleLabelString) {
+        private HBox createHBox(Label label, String titleLabelString) {
             HBox box = new HBox();
             box.setPrefHeight(20);
             Label titleLabel = new Label(titleLabelString);
@@ -453,30 +442,35 @@ public class HomeController extends SubPaneController{
             return box;
         }
 
-        public void setRunStatus(Run run) {
+        private void setRunStatus(Run run) {
             runName.setText(run.getName());
             /////////////run status 설정
             statusLabel.setText("");
             statusLabel.getStyleClass().removeAll(statusLabel.getStyleClass());
-            if(run.getRunStatus().getStatus().toUpperCase().equals("QUEUED")) {
-                statusLabel.getStyleClass().addAll("label", "queued_icon");
-                statusLabel.setText("Q");
-            } else if(run.getRunStatus().getStatus().toUpperCase().equals("RUNNING")) {
-                statusLabel.getStyleClass().addAll("label","run_icon");
-                statusLabel.setText("R");
-            } else if(run.getRunStatus().getStatus().toUpperCase().equals("COMPLETE")) {
-                statusLabel.getStyleClass().addAll("label","complete_icon");
-                statusLabel.setText("C");
-            } else {
-                statusLabel.getStyleClass().addAll("label", "failed_icon");
-                statusLabel.setText("F");
+            switch (run.getRunStatus().getStatus().toUpperCase()) {
+                case "QUEUED":
+                    statusLabel.getStyleClass().addAll("label", "queued_icon");
+                    statusLabel.setText("Q");
+                    break;
+                case "RUNNING":
+                    statusLabel.getStyleClass().addAll("label", "run_icon");
+                    statusLabel.setText("R");
+                    break;
+                case "COMPLETE":
+                    statusLabel.getStyleClass().addAll("label", "complete_icon");
+                    statusLabel.setText("C");
+                    break;
+                default:
+                    statusLabel.getStyleClass().addAll("label", "failed_icon");
+                    statusLabel.setText("F");
+                    break;
             }
             ///////////////////////
             SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
             if(run.getCreatedAt() != null)
                 startDateLabel.setText(format.format(run.getCreatedAt().toDate()));
             if(run.getCompletedAt() != null)
-                FinishDateLabel.setText(format.format(run.getCompletedAt().toDate()));
+                finishDateLabel.setText(format.format(run.getCompletedAt().toDate()));
             RunStatus runStatus = run.getRunStatus();
 
             panelLabel.setText(run.getPanelName());
@@ -492,8 +486,8 @@ public class HomeController extends SubPaneController{
                 itemVBox.getChildren().add(totalHBox);
             if(!itemVBox.getChildren().contains(startDateHBox))
                 itemVBox.getChildren().add(startDateHBox);
-            if(!itemVBox.getChildren().contains(FinishDateHBox))
-                itemVBox.getChildren().add(FinishDateHBox);
+            if(!itemVBox.getChildren().contains(finishDateHBox))
+                itemVBox.getChildren().add(finishDateHBox);
             if(!itemVBox.getChildren().contains(completeHBox))
                 itemVBox.getChildren().add(completeHBox);
             if(!itemVBox.getChildren().contains(runningHBox))
@@ -509,8 +503,8 @@ public class HomeController extends SubPaneController{
             runName.setText("");
             statusLabel.getStyleClass().removeAll(startDateHBox.getStyleClass());
             startDateLabel.setText("");
-            FinishDateLabel.setText("");
-            FinishDateLabel.setText("");
+            finishDateLabel.setText("");
+            finishDateLabel.setText("");
             completeLabel.setText("");
             queuedLabel.setText("");
             runningLabel.setText("");

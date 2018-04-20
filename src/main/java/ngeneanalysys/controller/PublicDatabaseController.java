@@ -118,13 +118,15 @@ public class PublicDatabaseController extends SubPaneController {
     private void setList(String id) {
         if(toolsContentsGridPane.getChildren() != null && !toolsContentsGridPane.getChildren().isEmpty()) {
             toolsContentsGridPane.getChildren().removeAll(toolsContentsGridPane.getChildren());
-            toolsContentsGridPane.getRowConstraints().removeAll(toolsContentsGridPane.getRowConstraints());
-            toolsContentsGridPane.setPrefHeight(0);
+            while(toolsContentsGridPane.getRowConstraints().size() > 0) {
+                toolsContentsGridPane.getRowConstraints().remove(0);
+            }
         }
         if(databaseContentsGridPane.getChildren() != null && !databaseContentsGridPane.getChildren().isEmpty()) {
             databaseContentsGridPane.getChildren().removeAll(databaseContentsGridPane.getChildren());
-            databaseContentsGridPane.getRowConstraints().removeAll(databaseContentsGridPane.getRowConstraints());
-            databaseContentsGridPane.setPrefHeight(0);
+            while(databaseContentsGridPane.getRowConstraints().size() > 0) {
+                databaseContentsGridPane.getRowConstraints().remove(0);
+            }
         }
         Platform.runLater(() -> {
             try {
