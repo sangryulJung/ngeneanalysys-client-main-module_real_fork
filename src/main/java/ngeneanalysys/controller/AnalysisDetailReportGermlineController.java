@@ -194,10 +194,10 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         }
     }
 
-    public boolean discriminationOfMutation(VariantCountByGeneForGermlineDNA gene) {
-        return (gene.getUncertainSignificanceInDelCount() > 0 || gene.getUncertainSignificanceSnpCount() > 0 ||
+    private boolean discriminationOfMutation(VariantCountByGeneForGermlineDNA gene) {
+        return gene.getUncertainSignificanceInDelCount() > 0 || gene.getUncertainSignificanceSnpCount() > 0 ||
                 gene.getPathogenicInDelCount() > 0 || gene.getPathogenicSnpCount() > 0 ||
-                gene.getLikelyPathogenicInDelCount() > 0 || gene.getLikelyPathogenicSnpCount() > 0) ? true : false;
+                gene.getLikelyPathogenicInDelCount() > 0 || gene.getLikelyPathogenicSnpCount() > 0;
     }
 
     public Set<String> returnGeneList(String essentialGenes, String optionalGenes) {
@@ -281,9 +281,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
         List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
         Optional<Panel> panelOptional = panels.stream().filter(panelItem -> panelItem.getId().equals(sample.getPanelId())).findFirst();
-        if(panelOptional.isPresent()) {
-            panel = panelOptional.get();
-        }
+        panelOptional.ifPresent(panel1 -> panel = panel1);
 
         HttpClientResponse response = null;
         try {

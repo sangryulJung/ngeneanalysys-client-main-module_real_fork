@@ -167,7 +167,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                     file.getName().startsWith(fastqFilePairName)).collect(Collectors.toList());
 
             //fastq 파일이 짝을 이루고 올리는데 실패한 파일인 경우
-           if (pairFileList.size() == 2 && !checkSameSample(fastqFilePairName)) {
+           if (pairFileList.size() == 2 && checkSameSample(fastqFilePairName)) {
                 Sample sample = new Sample();
                 sample.setName(fastqFilePairName);
                 sampleArrayList.add(sample);
@@ -328,7 +328,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                     if(!failedFileList.isEmpty()) addUploadFile(failedFileList, fastqFilePairName, false);
 
                     if(!selectedAnalysisFileList.isEmpty()) uploadFileData.addAll(selectedAnalysisFileList);
-                } else if (pairFileList.size() == 2 && !checkSameSample(fastqFilePairName)) {
+                } else if (pairFileList.size() == 2 && checkSameSample(fastqFilePairName)) {
                     addUploadFile(pairFileList, fastqFilePairName, true);
                 }
 
@@ -841,7 +841,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         }
         panelBox.getSelectionModel().selectFirst();
         panelBox.valueProperty().addListener((ov, oldValue, newValue) -> {
-            ComboBoxItem item = newValue;
         });
     }
 
@@ -911,7 +910,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                     if(!failedFileList.isEmpty()) addUploadFile(failedFileList, fastqFilePairName, false);
 
                     if(!selectedAnalysisFileList.isEmpty()) uploadFileData.addAll(selectedAnalysisFileList);
-                } else if (pairFileList.size() == 2 && !checkSameSample(fastqFilePairName)) {
+                } else if (pairFileList.size() == 2 && checkSameSample(fastqFilePairName)) {
                     addUploadFile(pairFileList, fastqFilePairName, true);
                 }
 
@@ -930,7 +929,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
      * @return boolean
      */
     private boolean checkSameSample(String name) {
-        return sampleArrayList.stream().anyMatch(item -> name.equals(item.getName()));
+        return sampleArrayList.stream().noneMatch(item -> name.equals(item.getName()));
     }
 
     /**
@@ -1004,7 +1003,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                     item.getName().startsWith(fastqFilePairName)).collect(Collectors.toList());
 
             //fastq 파일은 짝을 이루어야 함
-            if(pairFileList.size() == 2 && !checkSameSample(fastqFilePairName)) {
+            if(pairFileList.size() == 2 && checkSameSample(fastqFilePairName)) {
                 addUploadFile(pairFileList, fastqFilePairName, true);
             }
             mainController.getBasicInformationMap().put("path", chooseDirectoryPath);

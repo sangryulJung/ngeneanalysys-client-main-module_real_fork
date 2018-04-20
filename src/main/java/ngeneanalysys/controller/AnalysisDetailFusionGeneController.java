@@ -201,7 +201,7 @@ public class AnalysisDetailFusionGeneController extends SubPaneController {
         analysisDetailFusionMainController.subTabFusionGene.setContent(root);
     }
 
-    public void showVariantList(int index) {
+    private void showVariantList(int index) {
         HttpClientResponse response = null;
         try {
             response = apiService.get("analysisResults/sampleFusionGene/" + sample.getId(), null, null, false);
@@ -238,7 +238,7 @@ public class AnalysisDetailFusionGeneController extends SubPaneController {
      * @param fusionGene
      */
     @SuppressWarnings("unchecked")
-    public void showVariantDetail(FusionGeneView fusionGene) {
+    private void showVariantDetail(FusionGeneView fusionGene) {
         //expandOverview();
         // 선택된 변이의 목록에서의 인덱스 정보 설정.
         selectedVariantIndex = fusionGeneTableView.getItems().indexOf(fusionGene);
@@ -295,7 +295,7 @@ public class AnalysisDetailFusionGeneController extends SubPaneController {
         setDetailTabActivationToggle(true);
     }
 
-    public void showOverviewTab(FusionGene fusionGene) {
+    private void showOverviewTab(FusionGene fusionGene) {
         paramMap.put("fusionGene", fusionGene);
 
         try {
@@ -332,7 +332,7 @@ public class AnalysisDetailFusionGeneController extends SubPaneController {
     /**
      * Memo 탭 화면 출력
      */
-    public void showMemoTab(ObservableList<FusionGeneInterpretationLogView> memoList) {
+    private void showMemoTab(ObservableList<FusionGeneInterpretationLogView> memoList) {
         try {
             FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_SNPS_INDELS_MEMO);
             Node node = loader.load();
@@ -350,7 +350,7 @@ public class AnalysisDetailFusionGeneController extends SubPaneController {
      * 하단 탭 활성봐/비활성화 토글
      * @param flag
      */
-    public void setDetailTabActivationToggle(boolean flag) {
+    private void setDetailTabActivationToggle(boolean flag) {
         for(Tab tab : tabArea.getTabs()) {
             if(!flag) tab.setContent(null);
             tab.setDisable(!flag);

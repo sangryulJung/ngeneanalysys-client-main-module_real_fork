@@ -27,7 +27,7 @@ public class JarUploadTask extends Task {
         this.jar = jar;
         this.templateId = templateId;
         this.mainController = mainController;
-        jarUploadService = jarUploadService.getInstance();
+        jarUploadService = JarUploadService.getInstance();
     }
 
     @Override

@@ -500,9 +500,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                     currentImageList.remove(currentImageOptional.get());
                 } else {
                     Optional<File> deleteFile = imageList.stream().filter(item -> imageName.equals(item.getName())).findFirst();
-                    if (deleteFile.isPresent()) {
-                        imageList.remove(deleteFile.get());
-                    }
+                    deleteFile.ifPresent(file -> imageList.remove(file));
                 }
 
                 imageListComboBox.getItems().remove(imageName);

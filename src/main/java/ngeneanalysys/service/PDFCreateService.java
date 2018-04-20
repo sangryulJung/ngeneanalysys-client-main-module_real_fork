@@ -67,7 +67,8 @@ public class PDFCreateService {
 
     /**
      * 설정 파일을 .ngenebio_analysys_gui 경로 하위에 복사
-     * @see FOP Library를 사용하여 PDF 생성 시 설정파일과 폰트파일들이 jar파일 내에 존재하는 경우 파일을 정상적으로 불러올수 없어 특정 경로에 복사하여 사용함.
+     * @see
+     * 'FOP Library를 사용하여 PDF 생성 시 설정파일과 폰트파일들이 jar파일 내에 존재하는 경우 파일을 정상적으로 불러올수 없어 특정 경로에 복사하여 사용함.
      */
     public void copyFopConfig() throws Exception {
         logger.debug("copy fop config files..");
@@ -131,8 +132,7 @@ public class PDFCreateService {
             Transformer transformer = factory.newTransformer(); // identity transformer
 
             // Setup input stream
-            String foContents = contents;
-            Source src = new StreamSource(new StringReader(foContents));
+            Source src = new StreamSource(new StringReader(contents));
 
             // Resulting SAX events (the generated FO) must be piped through to FOP
             Result res = new SAXResult(fop.getDefaultHandler());

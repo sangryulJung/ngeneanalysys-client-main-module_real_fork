@@ -56,7 +56,7 @@ public class AnalysisDetailExonSkippingController extends SubPaneController {
     /**
      * @param analysisDetailFusionMainController fusionController
      */
-    public void setAnalysisDetailFusionMainController(AnalysisDetailFusionMainController analysisDetailFusionMainController) {
+    void setAnalysisDetailFusionMainController(AnalysisDetailFusionMainController analysisDetailFusionMainController) {
         this.analysisDetailFusionMainController = analysisDetailFusionMainController;
     }
 

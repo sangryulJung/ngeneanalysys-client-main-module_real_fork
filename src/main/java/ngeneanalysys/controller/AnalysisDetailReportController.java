@@ -578,7 +578,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     datePicker.setValue(LocalDate.parse((String)contentsMap.get(datePicker.getId()), formatter));
                 }
             } else if(gridObject instanceof ComboBox) {
-                ComboBox<String> comboBox = (ComboBox)gridObject;
+                ComboBox comboBox = (ComboBox)gridObject;
                 if(contentsMap.containsKey(comboBox.getId())) comboBox.getSelectionModel().select((String)contentsMap.get(comboBox.getId()));
             }
         }
@@ -661,7 +661,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         if(dataSave){
             if(createPDF(true)) {
                 setVariantsList();
-            };
+            }
         }
     }
 

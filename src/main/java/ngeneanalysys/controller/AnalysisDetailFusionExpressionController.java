@@ -98,7 +98,7 @@ public class AnalysisDetailFusionExpressionController extends SubPaneController 
         showFusionExpressionList();
     }
 
-    public void showFusionExpressionList() {
+    private void showFusionExpressionList() {
         HttpClientResponse response = null;
         try {
             response = apiService.get("analysisResults/sampleGeneExpression/" + sample.getId(), null, null, false);

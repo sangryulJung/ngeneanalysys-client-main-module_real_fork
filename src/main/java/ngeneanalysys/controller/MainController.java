@@ -305,9 +305,7 @@ public class MainController extends BaseStageController {
                         if(itemProperty() == null) return;
                         Optional<TopMenu> optionalTopMenu = Arrays.stream(sampleMenu).filter(menu ->
                                 menu.getId().equalsIgnoreCase(itemProperty().getValue().getValue())).findFirst();
-                        if (optionalTopMenu.isPresent()) {
-                            showSampleDetail(optionalTopMenu.get());
-                        }
+                        optionalTopMenu.ifPresent(topMenu -> showSampleDetail(topMenu));
                         clearComboBox();
                         sampleList.hide();
                     });
@@ -329,7 +327,7 @@ public class MainController extends BaseStageController {
                     graphic = new HBox(label, btn);
                     graphic.setPrefWidth(170);
                     graphic.setAlignment(Pos.CENTER);
-                    graphic.setHgrow(label, Priority.ALWAYS);
+                    HBox.setHgrow(label, Priority.ALWAYS);
                     setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
                 }
 
@@ -485,14 +483,13 @@ public class MainController extends BaseStageController {
             item.setValue(menu.getId());
             sampleList.getItems().add(item);
             TopMenu[] newMenus = new TopMenu[this.sampleMenu.length + 1];
-            TopMenu addMenu = menu;
-            addMenu.setDisplayOrder(newMenus.length - 1);
+            menu.setDisplayOrder(newMenus.length - 1);
             Node[] newSubScenes = new Node[this.sampleMenu.length + 1];
             Node addNode = null;
             System.arraycopy(this.sampleMenu, 0, newMenus, 0, sampleMenu.length);
             System.arraycopy(this.sampleContent, 0, newSubScenes, 0, sampleContent.length);
 
-            newMenus[newMenus.length - 1] = addMenu;
+            newMenus[newMenus.length - 1] = menu;
             newSubScenes[newSubScenes.length - 1] = addNode;
 
             sampleMenu = newMenus;

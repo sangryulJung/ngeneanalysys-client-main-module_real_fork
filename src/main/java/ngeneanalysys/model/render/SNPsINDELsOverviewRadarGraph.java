@@ -87,8 +87,7 @@ public class SNPsINDELsOverviewRadarGraph {
 		// [100% = x : 50, y : 0], [0% = x : 50, y : 58]
 		double boxHeight = 58;
 		double pointY = Math.round(boxHeight - (boxHeight*(percent/100)));
-		Double[] point = new Double[]{50d, pointY};
-		return point;
+		return new Double[]{50d, pointY};
 	}
 	
 	/**
@@ -103,8 +102,7 @@ public class SNPsINDELsOverviewRadarGraph {
 		double boxHeight = 29;
 		double pointX = Math.round(boxWidth + (boxWidth*(percent/100)));
 		double pointY = Math.round(boxHeight - (boxHeight*(percent/100))) + addedY;
-		Double[] point = new Double[]{pointX, pointY};
-		return point;
+		return new Double[]{pointX, pointY};
 	}
 	
 	/**
@@ -119,8 +117,7 @@ public class SNPsINDELsOverviewRadarGraph {
 		double boxHeight = 29;
 		double pointX = Math.round(boxWidth + (boxWidth*(percent/100)));
 		double pointY = Math.round(boxHeight*(percent/100)) + addedY;
-		Double[] point = new Double[]{pointX, pointY};
-		return point;
+		return new Double[]{pointX, pointY};
 	}
 	
 	/**
@@ -132,8 +129,7 @@ public class SNPsINDELsOverviewRadarGraph {
 		// [100% = x : 50, y : 116], [0% = x : 50, y : 58]
 		double boxHeight = 58;
 		double pointY = Math.round(boxHeight + (boxHeight*(percent/100)));
-		Double[] point = new Double[]{50d, pointY};
-		return point;
+		return new Double[]{50d, pointY};
 	}
 	
 	/**
@@ -148,8 +144,7 @@ public class SNPsINDELsOverviewRadarGraph {
 		double boxHeight = 29;
 		double pointX = Math.round(boxWidth - (boxWidth*(percent/100)));
 		double pointY = Math.round(boxHeight*(percent/100)) + addedY;
-		Double[] point = new Double[]{pointX, pointY};
-		return point;
+		return new Double[]{pointX, pointY};
 	}
 	
 	/**
@@ -164,8 +159,7 @@ public class SNPsINDELsOverviewRadarGraph {
 		double boxHeight = 29;
 		double pointX = Math.round(boxWidth - (boxWidth*(percent/100)));
 		double pointY = Math.round(boxHeight - (boxHeight*(percent/100))) + addedY;
-		Double[] point = new Double[]{pointX, pointY};
-		return point;
+		return new Double[]{pointX, pointY};
 	}
 	
 	/**
