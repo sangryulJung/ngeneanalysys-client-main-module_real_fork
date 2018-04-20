@@ -12,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -196,6 +197,10 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         });
 
         setDefaultFilter();
+        viewAppliedFiltersLabel.addEventFilter(MouseEvent.MOUSE_CLICKED, ev -> {
+            ComboBoxItem comboBoxItem = filterComboBox.getSelectionModel().getSelectedItem();
+            PopOverUtil.openFilterPopOver(viewAppliedFiltersLabel, filterList.get(comboBoxItem.getValue()));
+        });
 
         rightSizeButton.setOnMouseClicked(event -> {
             if(rightSizeButton.getStyleClass().contains("right_btn_fold")){
@@ -723,6 +728,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 variantFilterController.setCurrentFilter(filterList.get(filterComboBox.getSelectionModel().getSelectedItem().getValue()));
             }
             variantFilterController.setParamMap(paramMap);
+            variantFilterController.setAnalysisType(panel.getAnalysisType());
             variantFilterController.setAnalysisDetailSNVController(this);
             variantFilterController.show((Parent) node);
             statisticsTitledPane.setContent(node);
@@ -740,6 +746,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         } else {
             filterList.remove(filterName);
             filterList.put(filterName, list);
+            showVariantList(currentPageIndex + 1, 0);
         }
 
     }
