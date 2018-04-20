@@ -92,12 +92,12 @@
           </Tab>
             <Tab text="Population Frequency">
                <content>
-                  <GridPane>
+                  <GridPane fx:id="populationFrequencyGridPane">
                     <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="220.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="220.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -108,7 +108,62 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
+                     <children>
+                        <Label styleClass="font_size_15" text="1000G" />
+                        <Label text="All" GridPane.rowIndex="1" />
+                        <Label text="AFR(African)" GridPane.rowIndex="2" />
+                        <Label fx:id="tgamrTextField" text="AMR(Ad Mixed American)" GridPane.rowIndex="3" />
+                        <Label fx:id="tgeasTextField" text="EAS(East Asian)" GridPane.rowIndex="4" />
+                        <Label fx:id="tgeurTextField" text="EUR(European)" GridPane.rowIndex="5" />
+                        <Label fx:id="tgsasTextField" text="SAS(South Asian)" GridPane.rowIndex="6" />
+                        <TextField fx:id="tgAllTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="tgafrTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField fx:id="tgamrTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <TextField fx:id="tgeasTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <TextField fx:id="tgeurTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <TextField fx:id="tgsasTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <Label styleClass="font_size_15" text="GenomAD" GridPane.columnIndex="2" />
+                        <Label text="All" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Label text="mixed American" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <Label text="African African American" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                        <Label text="Ashkenazi Jewish" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                        <Label text="East Asian" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                        <Label text="Finnish" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                        <Label text="Non Finnish European" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                        <Label text="Others" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+                        <Label text="South Asian" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+                        <Label text="ESP 6500" GridPane.rowIndex="8" />
+                        <Label fx:id="espallTextField" text="all" GridPane.rowIndex="9" />
+                        <Label text="aa" GridPane.rowIndex="10" />
+                        <Label text="ea" GridPane.rowIndex="11" />
+                        <Label text="ETC" GridPane.columnIndex="2" GridPane.rowIndex="11" />
+                        <Label text="koreanExomInformationDatabase" GridPane.columnIndex="2" GridPane.rowIndex="12" />
+                        <Label text="koreanReferenceGenomeDatabase" GridPane.columnIndex="2" GridPane.rowIndex="13" />
+                        <Label text="kohbraFreq" GridPane.columnIndex="2" GridPane.rowIndex="14" />
+                        <TextField fx:id="espallTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                        <TextField fx:id="espaaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                        <TextField fx:id="espeaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                        <TextField fx:id="genomADAllTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <TextField fx:id="genomADmaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                        <TextField fx:id="genomADaaaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                        <TextField fx:id="genomADajgenomAD" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                        <TextField fx:id="genomADeaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                        <TextField fx:id="genomADfinTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+                        <TextField fx:id="genomADnfeTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+                        <TextField fx:id="genomADotherTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" GridPane.columnIndex="3" GridPane.rowIndex="8" />
+                        <TextField fx:id="genomADsaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" GridPane.columnIndex="3" GridPane.rowIndex="9" />
+                        <TextField fx:id="keidTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" GridPane.columnIndex="3" GridPane.rowIndex="12" />
+                        <TextField fx:id="krgdTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" GridPane.columnIndex="3" GridPane.rowIndex="13" />
+                        <TextField fx:id="kohbraTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" GridPane.columnIndex="3" GridPane.rowIndex="14" />
+                     </children>
                   </GridPane>
                </content>
             </Tab>

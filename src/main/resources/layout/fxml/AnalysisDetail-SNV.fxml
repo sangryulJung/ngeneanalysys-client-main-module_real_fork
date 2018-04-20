@@ -111,8 +111,8 @@
             <Accordion fx:id="overviewAccordion" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="870.0">
               <panes>
                 <TitledPane fx:id="interpretationTitledPane" animated="false" maxWidth="-Infinity" minWidth="-Infinity" style="-fx-font-family: Noto Sans KR Bold;" text="Interpretation" />
-                <TitledPane fx:id="variantDetailTitledPane" animated="false" maxWidth="-Infinity" minWidth="-Infinity" style="-fx-font-family: Noto Sans KR;" text="Variant Detail" />
                 <TitledPane fx:id="clinicalSignificantTitledPane" animated="false" maxWidth="-Infinity" minWidth="-Infinity" style="-fx-font-family: Noto Sans KR;" text="Clinical Significant" />
+                <TitledPane fx:id="variantDetailTitledPane" animated="false" maxWidth="-Infinity" minWidth="-Infinity" style="-fx-font-family: Noto Sans KR;" text="Variant Detail" />
                   <TitledPane fx:id="statisticsTitledPane" animated="false" maxWidth="-Infinity" minWidth="-Infinity" style="-fx-font-family: Noto Sans KR;" text="Statistics" />
                   <TitledPane fx:id="interpretationLogsTitledPane" animated="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="890.0" style="-fx-font-family: Noto Sans KR;" text="Interpretation Log" />
               </panes>

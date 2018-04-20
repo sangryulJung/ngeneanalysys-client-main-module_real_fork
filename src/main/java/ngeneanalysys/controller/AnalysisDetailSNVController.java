@@ -268,11 +268,13 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                         + variant.getSnpInDel().getSnpInDelExpression().getNtChange() + " "
                         + variant.getSnpInDel().getSnpInDelExpression().getAaChangeConversion();
             } else {
+                String[] ntChange = variant.getSnpInDel().getSnpInDelExpression().getNtChange().split(":");
+                String[] aaChangeConversion = variant.getSnpInDel().getSnpInDelExpression().getAaChangeConversion().split(":");
                 title = variant.getSnpInDel().getGenomicCoordinate().getGene() + " "
                         + variant.getSnpInDel().getSnpInDelExpression().getCodingConsequence().split(";")[0] + " "
                         + variant.getSnpInDel().getSnpInDelExpression().getTranscript() + " "
-                        + variant.getSnpInDel().getSnpInDelExpression().getNtChange().split(":")[1] + " "
-                        + variant.getSnpInDel().getSnpInDelExpression().getAaChangeConversion().split(":")[1];
+                        + ntChange[ntChange.length - 1] + " "
+                        + aaChangeConversion[aaChangeConversion.length - 1];
             }
             variantsController.setSNVTabName(title);
         } else {
@@ -361,23 +363,27 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     private void expandRight() {
-        showVariantDetail(variantListTableView.getSelectionModel().getSelectedItem());
-        double centerFoldedWidth = 0;
-        snvWrapper.getColumnConstraints().get(1).setPrefWidth(centerFoldedWidth);
-        if(snvWrapper.getColumnConstraints().get(0).getPrefWidth() == 200) {
-            snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightStandardWidth);
-            overviewAccordion.setPrefWidth(this.standardAccordionSize);
-            if(interpretationController !=null) interpretationController.setGridPaneWidth(this.standardAccordionSize - 10);
-        } else {
-            snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightFullWidth);
-            overviewAccordion.setPrefWidth(this.maxAccordionSize);
-            if(interpretationController !=null) interpretationController.setGridPaneWidth(this.maxAccordionSize - 10);
+        if(variantListTableView.getItems() != null && !variantListTableView.getItems().isEmpty()) {
+            showVariantDetail(variantListTableView.getSelectionModel().getSelectedItem());
+            double centerFoldedWidth = 0;
+            snvWrapper.getColumnConstraints().get(1).setPrefWidth(centerFoldedWidth);
+            if (snvWrapper.getColumnConstraints().get(0).getPrefWidth() == 200) {
+                snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightStandardWidth);
+                overviewAccordion.setPrefWidth(this.standardAccordionSize);
+                if (interpretationController != null)
+                    interpretationController.setGridPaneWidth(this.standardAccordionSize - 10);
+            } else {
+                snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightFullWidth);
+                overviewAccordion.setPrefWidth(this.maxAccordionSize);
+                if (interpretationController != null)
+                    interpretationController.setGridPaneWidth(this.maxAccordionSize - 10);
+            }
+            overviewAccordion.setVisible(true);
+            tableVBox.setPrefWidth(this.minSize);
+            tableVBox.setVisible(false);
+            rightSizeButton.getStyleClass().clear();
+            rightSizeButton.getStyleClass().add("right_btn_fold");
         }
-        overviewAccordion.setVisible(true);
-        tableVBox.setPrefWidth(this.minSize);
-        tableVBox.setVisible(false);
-        rightSizeButton.getStyleClass().clear();
-        rightSizeButton.getStyleClass().add("right_btn_fold");
     }
 
     private void foldRight(){
@@ -541,7 +547,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         if(panel.getAnalysisType().equals("SOMATIC")) {
             overviewAccordion.setExpandedPane(interpretationTitledPane);
         } else {
-            overviewAccordion.setExpandedPane(variantDetailTitledPane);
+            overviewAccordion.setExpandedPane(clinicalSignificantTitledPane);
         }
         //setDetailTabActivationToggle(true);
     }
