@@ -288,28 +288,29 @@ public class VariantFilterController extends SubPaneController {
             caseLabel.setText("Tier");
             caseECheckBox.setVisible(false);
             clinVarECheckBox.setVisible(false);
-            caseACheckBox.setText("T1");
-            caseBCheckBox.setText("T2");
-            caseCCheckBox.setText("T3");
-            caseDCheckBox.setText("T4");
+            caseACheckBox.setText("Tier1");
+            caseBCheckBox.setText("Tier2");
+            caseCCheckBox.setText("Tier3");
+            caseDCheckBox.setText("Tier4");
 
-            clinVarACheckBox.setText("T1");
-            clinVarBCheckBox.setText("T2");
-            clinVarCCheckBox.setText("T3");
-            clinVarDCheckBox.setText("T4");
+            clinVarACheckBox.setText("P(Pathogentic)");
+            clinVarBCheckBox.setText("LP(Likely Pathogenic)");
+            clinVarCCheckBox.setText("US(Uncertatin Significance)");
+            clinVarDCheckBox.setText("LB(Likely Benign)");
+            clinVarECheckBox.setText("B(Benign)");
         } else {
             caseLabel.setText("Pathogenicity");
-            caseACheckBox.setText("P");
-            caseBCheckBox.setText("LP");
-            caseCCheckBox.setText("US");
-            caseDCheckBox.setText("LB");
-            caseECheckBox.setText("B");
+            caseACheckBox.setText("P(Pathogentic)");
+            caseBCheckBox.setText("LP(Likely Pathogenic)");
+            caseCCheckBox.setText("US(Uncertatin Significance)");
+            caseDCheckBox.setText("LB(Likely Benign)");
+            caseECheckBox.setText("B(Benign)");
 
-            clinVarACheckBox.setText("P");
-            clinVarBCheckBox.setText("LP");
-            clinVarCCheckBox.setText("US");
-            clinVarDCheckBox.setText("LB");
-            clinVarECheckBox.setText("B");
+            clinVarACheckBox.setText("P(Pathogentic)");
+            clinVarBCheckBox.setText("LP(Likely Pathogenic)");
+            clinVarCCheckBox.setText("US(Uncertatin Significance)");
+            clinVarDCheckBox.setText("LB(Likely Benign)");
+            clinVarECheckBox.setText("B(Benign)");
         }
     }
 
