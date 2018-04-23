@@ -16,4 +16,40 @@ public class GenomeAD {
     private BigDecimal nonFinnishEuropean;
     private BigDecimal others;
     private BigDecimal southAsian;
+
+    public BigDecimal getAll() {
+        return all;
+    }
+
+    public BigDecimal getAdmixedAmerican() {
+        return admixedAmerican;
+    }
+
+    public BigDecimal getAfricanAfricanAmerican() {
+        return africanAfricanAmerican;
+    }
+
+    public BigDecimal getAshkenaziJewish() {
+        return ashkenaziJewish;
+    }
+
+    public BigDecimal getEastAsian() {
+        return eastAsian;
+    }
+
+    public BigDecimal getFinnish() {
+        return finnish;
+    }
+
+    public BigDecimal getNonFinnishEuropean() {
+        return nonFinnishEuropean;
+    }
+
+    public BigDecimal getOthers() {
+        return others;
+    }
+
+    public BigDecimal getSouthAsian() {
+        return southAsian;
+    }
 }
