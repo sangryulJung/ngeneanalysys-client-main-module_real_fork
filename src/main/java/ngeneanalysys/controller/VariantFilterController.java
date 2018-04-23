@@ -369,7 +369,7 @@ public class VariantFilterController extends SubPaneController {
     private void setKeyValue(String key, String value) {
         if(key.equalsIgnoreCase("tier") || key.equalsIgnoreCase("pathogenicity")) {
             setCase(value);
-        } else if(key.equalsIgnoreCase("clinVarClasss")) {
+        } else if(key.equalsIgnoreCase("clinVarClass")) {
             setClinVar(value);
         } else if(key.equalsIgnoreCase("codingConsequence")) {
             codingConsequenceCheck(value);

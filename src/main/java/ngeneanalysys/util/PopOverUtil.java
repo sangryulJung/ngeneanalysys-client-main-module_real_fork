@@ -194,7 +194,7 @@ public class PopOverUtil {
     private static void setKeyValue(String key, String value, VBox box) {
         if(key.equalsIgnoreCase("tier") || key.equalsIgnoreCase("pathogenicity")) {
             createHBox(key, value, box);
-        } else if(key.equalsIgnoreCase("clinVarClasss")) {
+        } else if(key.equalsIgnoreCase("clinVarClass")) {
             createHBox("ClinVar", value, box);
         } else if(key.equalsIgnoreCase("codingConsequence")) {
             createHBox("Consequence", value.replaceAll("_", " "), box);
