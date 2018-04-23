@@ -166,7 +166,7 @@ public class MainController extends BaseStageController {
         logger.debug("main controller...");
         
         PropertiesService propertiesService = PropertiesService.getInstance();	
-        String theme = (String)propertiesService.getConfig().getProperty("window.theme");
+        String theme = propertiesService.getConfig().getProperty("window.theme");
         applyTheme(theme);
     	
         apiService = APIService.getInstance();
@@ -211,13 +211,11 @@ public class MainController extends BaseStageController {
 
         primaryStage.setOnCloseRequest(event -> {
             boolean isClose = false;
-            String alertHeaderText = null;
             String alertContentText = "Do you want to exit the application?";
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.initOwner(this.primaryStage);
             alert.setTitle("Confirmation Dialog");
-            alert.setHeaderText(alertHeaderText);
             alert.setContentText(alertContentText);
 
             Optional<ButtonType> result = alert.showAndWait();
@@ -347,8 +345,8 @@ public class MainController extends BaseStageController {
         //primaryStage.setResizable(false);
     }
 
-    public void clearComboBox() {
-        Platform.runLater(() -> sampleList.getSelectionModel().clearSelection());//sampleList.setValue(null);
+    private void clearComboBox() {
+        Platform.runLater(() -> sampleList.getSelectionModel().clearSelection());
     }
 
     public void settingPanelAndDiseases() {
@@ -381,9 +379,9 @@ public class MainController extends BaseStageController {
 
     /**
      * 상단 사용자 메뉴 설정 : 사용자 권한에 따른 메뉴 출력
-     * @param role
+     * @param role String
      */
-    public void initTopUserMenu(String role) {
+    private void initTopUserMenu(String role) {
         int userAccessBit = UserTypeBit.valueOf(role).getAuth();
 
         int idx = 0;
@@ -412,7 +410,7 @@ public class MainController extends BaseStageController {
 
     /**
      * 상단메뉴 초기 설정
-     * @param role
+     * @param role String
      */
     public void initDefaultTopMenu(String role) {
         if(UserTypeBit.ADMIN.name().equalsIgnoreCase(role)) {
@@ -454,9 +452,9 @@ public class MainController extends BaseStageController {
 
     /**
      * 상단 메뉴 추가
-     * @param menu
-     * @param addPositionIdx
-     * @param isDisplay
+     * @param menu TopMenu
+     * @param addPositionIdx int
+     * @param isDisplay boolean
      */
     public void addTopMenu(TopMenu menu, int addPositionIdx, boolean isDisplay) {
         // 중복 체크
@@ -472,43 +470,49 @@ public class MainController extends BaseStageController {
         }
         logger.debug(String.format("top menu added : %s, menu index : %s", isAdded, addedMenuIdx));
 
-        // 추가되어 있지 않은 경우 추가
-        if(!isAdded) {
-            if(sampleList.isDisabled()) {
-                sampleList.setDisable(false);
-                sampleListLabel.setDisable(false);
-            }
-            ComboBoxItem item = new ComboBoxItem();
-            item.setText(menu.getMenuName());
-            item.setValue(menu.getId());
-            sampleList.getItems().add(item);
-            TopMenu[] newMenus = new TopMenu[this.sampleMenu.length + 1];
-            menu.setDisplayOrder(newMenus.length - 1);
-            Node[] newSubScenes = new Node[this.sampleMenu.length + 1];
-            Node addNode = null;
-            System.arraycopy(this.sampleMenu, 0, newMenus, 0, sampleMenu.length);
-            System.arraycopy(this.sampleContent, 0, newSubScenes, 0, sampleContent.length);
-
-            newMenus[newMenus.length - 1] = menu;
-            newSubScenes[newSubScenes.length - 1] = addNode;
-
-            sampleMenu = newMenus;
-            sampleContent = newSubScenes;
-
-            // 추가 대상 메뉴 컨텐츠 출력 설정인 경우
-            if(isDisplay) {
-                showSampleDetail(menu);
-            }
-        } else {
+        if(isAdded) {
             // 이미 추가 되어있는 경우 해당 메뉴 화면으로 전환함.
             showSampleDetail(menu);
+            return;
         }
 
+        if(sampleMenu.length == 8) {
+            DialogUtil.warning("", "The maximum number of tabs is eight.", this.getPrimaryStage(), true);
+            return;
+        }
+
+        // 추가되어 있지 않은 경우 추가
+
+        if(sampleList.isDisabled()) {
+            sampleList.setDisable(false);
+            sampleListLabel.setDisable(false);
+        }
+        ComboBoxItem item = new ComboBoxItem();
+        item.setText(menu.getMenuName());
+        item.setValue(menu.getId());
+        sampleList.getItems().add(item);
+        TopMenu[] newMenus = new TopMenu[this.sampleMenu.length + 1];
+        menu.setDisplayOrder(newMenus.length - 1);
+        Node[] newSubScenes = new Node[this.sampleMenu.length + 1];
+        Node addNode = null;
+        System.arraycopy(this.sampleMenu, 0, newMenus, 0, sampleMenu.length);
+        System.arraycopy(this.sampleContent, 0, newSubScenes, 0, sampleContent.length);
+
+        newMenus[newMenus.length - 1] = menu;
+        newSubScenes[newSubScenes.length - 1] = addNode;
+
+        sampleMenu = newMenus;
+        sampleContent = newSubScenes;
+
+        // 추가 대상 메뉴 컨텐츠 출력 설정인 경우
+        if(isDisplay) {
+            showSampleDetail(menu);
+        }
     }
 
     /**
      * 지정 배열의 상단 메뉴 엘레멘트 삭제
-     * @param id
+     * @param id String
      */
     private void removeTopMenu(String id) {
         if(sampleMenu != null && sampleMenu.length > 0) {
@@ -550,7 +554,7 @@ public class MainController extends BaseStageController {
         }
     }
 
-    public void showSampleDetail(final TopMenu menu) {
+    private void showSampleDetail(final TopMenu menu) {
         boolean isFirstShow = false;
         if(selectedTopMenuIdx != 2) {
 
@@ -591,7 +595,7 @@ public class MainController extends BaseStageController {
 
     /**
      * 선택 상단 메뉴 컨텐츠 출력
-     * @param showIdx
+     * @param showIdx int
      */
     public void showTopMenuContents(int showIdx) {
         if(showIdx == 2) return;
@@ -662,7 +666,7 @@ public class MainController extends BaseStageController {
         }
     }
 
-    public void setAuto(boolean isFirstShow) {
+    private void setAuto(boolean isFirstShow) {
         if("homeWrapper".equals(currentShowFrameId)) {	// 이전 화면이 분석자 HOME인 경우 자동 새로고침 토글
             homeController.pauseAutoRefresh();
         } else if("experimentPastResultsWrapper".equals(currentShowFrameId)) {	// 이전 화면이 분석자 Past Results인 경우 자동 새로고침 토글
@@ -686,9 +690,9 @@ public class MainController extends BaseStageController {
 
     /**
      * 선택 시스템 메뉴 Dialog창 출력
-     * @param actionEvent
+     * @param actionEvent ActionEvent
      */
-    public void openSystemMenu(ActionEvent actionEvent) {
+    private void openSystemMenu(ActionEvent actionEvent) {
         MenuItem menuItem = (MenuItem) actionEvent.getSource();
 
         try {
@@ -861,7 +865,7 @@ public class MainController extends BaseStageController {
 
     /**
      * 지정 아이디에 해당하는 객체 삭제
-     * @param id
+     * @param id String
      */
     public void removeProgressTaskItemById(String id) {
         if(this.progressTaskContentArea.getChildren() != null && this.progressTaskContentArea.getChildren().size() > 0) {
