@@ -12,7 +12,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import ngeneanalysys.code.constants.FXMLConstants;
@@ -22,7 +21,6 @@ import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.model.render.DatepickerConverter;
 import ngeneanalysys.util.StringUtils;
-import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.CustomTextField;
 import org.controlsfx.control.textfield.TextFields;
 import org.json.simple.JSONArray;
@@ -339,7 +337,6 @@ public class PastResultsController extends SubPaneController {
 	 * 분석 진행중인 목록 조회
 	 * 
 	 * @param page int
-	 * @return void
 	 */
 	public void setList(int page) {
 		if(autoRefreshTimeline != null) {

@@ -45,6 +45,9 @@ public class VariantFilterController extends SubPaneController {
     private CheckBox indelCheckBox;
 
     @FXML
+    private CheckBox delCheckBox;
+
+    @FXML
     private CheckBox fivePrimeUTRCheckBox;
 
     @FXML
@@ -293,11 +296,6 @@ public class VariantFilterController extends SubPaneController {
             caseCCheckBox.setText("Tier3");
             caseDCheckBox.setText("Tier4");
 
-            clinVarACheckBox.setText("P(Pathogentic)");
-            clinVarBCheckBox.setText("LP(Likely Pathogenic)");
-            clinVarCCheckBox.setText("US(Uncertatin Significance)");
-            clinVarDCheckBox.setText("LB(Likely Benign)");
-            clinVarECheckBox.setText("B(Benign)");
         } else {
             caseLabel.setText("Pathogenicity");
             caseACheckBox.setText("P(Pathogentic)");
@@ -305,13 +303,13 @@ public class VariantFilterController extends SubPaneController {
             caseCCheckBox.setText("US(Uncertatin Significance)");
             caseDCheckBox.setText("LB(Likely Benign)");
             caseECheckBox.setText("B(Benign)");
-
-            clinVarACheckBox.setText("P(Pathogentic)");
-            clinVarBCheckBox.setText("LP(Likely Pathogenic)");
-            clinVarCCheckBox.setText("US(Uncertatin Significance)");
-            clinVarDCheckBox.setText("LB(Likely Benign)");
-            clinVarECheckBox.setText("B(Benign)");
         }
+
+        clinVarACheckBox.setText("P(Pathogentic)");
+        clinVarBCheckBox.setText("LP(Likely Pathogenic)");
+        clinVarCCheckBox.setText("US(Uncertatin Significance)");
+        clinVarDCheckBox.setText("LB(Likely Benign)");
+        clinVarECheckBox.setText("B(Benign)");
     }
 
     private void setFormat() {
@@ -385,6 +383,8 @@ public class VariantFilterController extends SubPaneController {
                 snvCheckBox.setSelected(true);
             } else if(value.equalsIgnoreCase("ins")) {
                 indelCheckBox.setSelected(true);
+            } else if(value.equalsIgnoreCase("del")) {
+                delCheckBox.setSelected(true);
             }
         } else if(key.equalsIgnoreCase("g1000All")) {
             setFeqTextField(value, tgAllTextField);
@@ -651,36 +651,23 @@ public class VariantFilterController extends SubPaneController {
                 list.add("pathogenicity B");
             }
         }
-        if("SOMATIC".equalsIgnoreCase(analysisType)) {
-            if (clinVarACheckBox.isSelected()) {
-                list.add("clinVarClasss T1");
-            }
-            if (clinVarBCheckBox.isSelected()) {
-                list.add("clinVarClasss T2");
-            }
-            if (clinVarBCheckBox.isSelected()) {
-                list.add("clinVarClasss T3");
-            }
-            if (clinVarBCheckBox.isSelected()) {
-                list.add("clinVarClasss T4");
-            }
-        } else {
-            if (clinVarACheckBox.isSelected()) {
-                list.add("clinVarClasss Pathogenic");
-            }
-            if (clinVarBCheckBox.isSelected()) {
-                list.add("clinVarClasss Likely Pathogenic");
-            }
-            if (clinVarBCheckBox.isSelected()) {
-                list.add("clinVarClasss Uncertain Significance");
-            }
-            if (clinVarBCheckBox.isSelected()) {
-                list.add("clinVarClasss Likely Benign");
-            }
-            if (clinVarBCheckBox.isSelected()) {
-                list.add("clinVarClasss Benign");
-            }
+
+        if (clinVarACheckBox.isSelected()) {
+            list.add("clinVarClass Pathogenic");
         }
+        if (clinVarBCheckBox.isSelected()) {
+            list.add("clinVarClass Likely Pathogenic");
+        }
+        if (clinVarBCheckBox.isSelected()) {
+            list.add("clinVarClass Uncertain Significance");
+        }
+        if (clinVarBCheckBox.isSelected()) {
+            list.add("clinVarClass Likely Benign");
+        }
+        if (clinVarBCheckBox.isSelected()) {
+            list.add("clinVarClass Benign");
+        }
+
 
         if(!StringUtils.isEmpty(geneTextField.getText())) {
 
@@ -718,6 +705,8 @@ public class VariantFilterController extends SubPaneController {
 
         if(indelCheckBox.isSelected()) {
             list.add("variantType ins");
+        }
+        if(delCheckBox.isSelected()) {
             list.add("variantType del");
         }
 

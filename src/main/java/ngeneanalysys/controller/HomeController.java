@@ -447,6 +447,7 @@ public class HomeController extends SubPaneController{
             /////////////run status 설정
             statusLabel.setText("");
             statusLabel.getStyleClass().removeAll(statusLabel.getStyleClass());
+            statusLabel.setTooltip(new Tooltip(run.getRunStatus().getProgressPercentage() + "%"));
             switch (run.getRunStatus().getStatus().toUpperCase()) {
                 case "QUEUED":
                     statusLabel.getStyleClass().addAll("label", "queued_icon");
