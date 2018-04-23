@@ -197,7 +197,7 @@ public class PopOverUtil {
         } else if(key.equalsIgnoreCase("clinVarClasss")) {
             createHBox("ClinVar", value, box);
         } else if(key.equalsIgnoreCase("codingConsequence")) {
-            createHBox("Consequence", value, box);
+            createHBox("Consequence", value.replaceAll("_", " "), box);
         } else if(key.equalsIgnoreCase("gene")) {
             createHBox(key, value, box);
         } else if(key.equalsIgnoreCase("chromosome")) {
@@ -253,7 +253,7 @@ public class PopOverUtil {
         }else if(key.equalsIgnoreCase("genomADsouthAsian")) {
             createHBox("genomADsouthAsian",setFeqTextField(value), box);
         } else if(key.equalsIgnoreCase("cosmicOccurence")) {
-            createHBox("cosmicOccurence", "Haematopoietic And Lymphoid Tissue", box);
+            createHBox("cosmicOccurence", "haematopoietic and lymphoid tissue", box);
         }
     }
 

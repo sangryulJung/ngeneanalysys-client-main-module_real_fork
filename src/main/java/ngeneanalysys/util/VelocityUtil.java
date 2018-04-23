@@ -39,13 +39,12 @@ public class VelocityUtil {
 	
 	/**
 	 * 지정 argument 템플릿에 적용 후 내용 반환
-	 * @param templatePath
-	 * @param encoding
-	 * @param model
-	 * @return
-	 * @throws Exception
+	 * @param templatePath String
+	 * @param encoding String
+	 * @param model Map<String,Object>
+	 * @return String
 	 */
-	public String getContents(String templatePath, String encoding, Map<String,Object> model) throws Exception {
+	public String getContents(String templatePath, String encoding, Map<String,Object> model) {
 		logger.debug(String.format("template [%s], encoding [%s]", templatePath, encoding));
 
 		if(engine == null) init();
