@@ -26,7 +26,7 @@ public class SnpInDelEvidence {
     }
 
     /**
-     * @param id
+     * @param id Integer
      */
     public void setId(Integer id) {
         this.id = id;
@@ -40,7 +40,7 @@ public class SnpInDelEvidence {
     }
 
     /**
-     * @param snpInDelId
+     * @param snpInDelId Integer
      */
     public void setSnpInDelId(Integer snpInDelId) {
         this.snpInDelId = snpInDelId;
@@ -54,7 +54,7 @@ public class SnpInDelEvidence {
     }
 
     /**
-     * @param provider
+     * @param provider String
      */
     public void setProvider(String provider) {
         this.provider = provider;
@@ -68,7 +68,7 @@ public class SnpInDelEvidence {
     }
 
     /**
-     * @param primaryEvidence
+     * @param primaryEvidence Boolean
      */
     public void setPrimaryEvidence(Boolean primaryEvidence) {
         this.primaryEvidence = primaryEvidence;
@@ -82,7 +82,7 @@ public class SnpInDelEvidence {
     }
 
     /**
-     * @param evidenceType
+     * @param evidenceType String
      */
     public void setEvidenceType(String evidenceType) {
         this.evidenceType = evidenceType;
@@ -96,7 +96,7 @@ public class SnpInDelEvidence {
     }
 
     /**
-     * @param evidenceLevel
+     * @param evidenceLevel String
      */
     public void setEvidenceLevel(String evidenceLevel) {
         this.evidenceLevel = evidenceLevel;
@@ -110,7 +110,7 @@ public class SnpInDelEvidence {
     }
 
     /**
-     * @param evidence
+     * @param evidence String
      */
     public void setEvidence(String evidence) {
         this.evidence = evidence;
@@ -124,7 +124,7 @@ public class SnpInDelEvidence {
     }
 
     /**
-     * @param status
+     * @param status String
      */
     public void setStatus(String status) {
         this.status = status;
@@ -138,7 +138,7 @@ public class SnpInDelEvidence {
     }
 
     /**
-     * @param createdAt
+     * @param createdAt DateTime
      */
     public void setCreatedAt(DateTime createdAt) {
         this.createdAt = createdAt;
@@ -152,7 +152,7 @@ public class SnpInDelEvidence {
     }
 
     /**
-     * @param updatedAt
+     * @param updatedAt DateTime
      */
     public void setUpdatedAt(DateTime updatedAt) {
         this.updatedAt = updatedAt;
