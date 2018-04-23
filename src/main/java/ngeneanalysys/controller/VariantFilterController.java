@@ -652,32 +652,32 @@ public class VariantFilterController extends SubPaneController {
         }
         if("SOMATIC".equalsIgnoreCase(analysisType)) {
             if (clinVarACheckBox.isSelected()) {
-                list.add("clinVarClasss T1");
+                list.add("clinVarClass T1");
             }
             if (clinVarBCheckBox.isSelected()) {
-                list.add("clinVarClasss T2");
+                list.add("clinVarClass T2");
             }
             if (clinVarBCheckBox.isSelected()) {
-                list.add("clinVarClasss T3");
+                list.add("clinVarClass T3");
             }
             if (clinVarBCheckBox.isSelected()) {
-                list.add("clinVarClasss T4");
+                list.add("clinVarClass T4");
             }
         } else {
             if (clinVarACheckBox.isSelected()) {
-                list.add("clinVarClasss Pathogenic");
+                list.add("clinVarClass Pathogenic");
             }
             if (clinVarBCheckBox.isSelected()) {
-                list.add("clinVarClasss Likely Pathogenic");
+                list.add("clinVarClass Likely Pathogenic");
             }
             if (clinVarBCheckBox.isSelected()) {
-                list.add("clinVarClasss Uncertain Significance");
+                list.add("clinVarClass Uncertain Significance");
             }
             if (clinVarBCheckBox.isSelected()) {
-                list.add("clinVarClasss Likely Benign");
+                list.add("clinVarClass Likely Benign");
             }
             if (clinVarBCheckBox.isSelected()) {
-                list.add("clinVarClasss Benign");
+                list.add("clinVarClass Benign");
             }
         }
 
