@@ -6,6 +6,7 @@ import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import impl.org.controlsfx.autocompletion.SuggestionProvider;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -99,6 +100,8 @@ public class PastResultsController extends SubPaneController {
 
 	private Map<String, String> searchOption = new HashMap<>();
 
+	SuggestionProvider<String> provider = null;
+
 	public void setSearchOption() {
 		searchOption.put("SAMPLE","sampleName");
 		searchOption.put("RUN","runName");
@@ -155,37 +158,25 @@ public class PastResultsController extends SubPaneController {
 					search();
 				});
 				textField.setRight(imageView);*/
-				textField.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
-						if (searchComboBox.getSelectionModel().getSelectedItem().getText().equalsIgnoreCase("RUN") ||
-								searchComboBox.getSelectionModel().getSelectedItem().getText().equalsIgnoreCase("SAMPLE")) {
-							try {
-								Map<String, Object> params = new HashMap<>();
-								params.put("target", searchComboBox.getSelectionModel().getSelectedItem().getText().toLowerCase());
-								params.put("keyword", textField.getText());
-								params.put("resultCount", 15);
-								HttpClientResponse response = apiService.get("/filter", params, null, false);
-								logger.debug(response.getContentString());
-								JSONParser jsonParser = new JSONParser();
-								JSONArray jsonArray = (JSONArray) jsonParser.parse(response.getContentString());
-								AutoCompletionBinding<String> binding = TextFields.bindAutoCompletion(textField, getAllData(jsonArray));
-								binding.setVisibleRowCount(10);
+				if(provider != null) provider = null;
 
-							} catch (WebAPIException wae) {
-								wae.printStackTrace();
-							} catch (ParseException pe) {
-								pe.printStackTrace();
-							}
-						} else if (searchComboBox.getSelectionModel().getSelectedItem().getText().equalsIgnoreCase("PANEL")) {
-							List<Panel> panels = (List<Panel>) getMainController().getBasicInformationMap().get("panels");
-							List<Panel> filterPanel = null;
-							if (StringUtils.isEmpty(textField.getText())) {
-								filterPanel = panels.stream().filter(panel -> panel.getName().contains(textField.getText())).collect(Collectors.toList());
-							} else {
-								filterPanel = panels;
-							}
-							TextFields.bindAutoCompletion(textField, getAllPanel(filterPanel)).setVisibleRowCount(10);
-						}
-					});
+				if (searchComboBox.getSelectionModel().getSelectedItem().getText().equalsIgnoreCase("PANEL")) {
+					List<Panel> panels = (List<Panel>) getMainController().getBasicInformationMap().get("panels");
+					List<Panel> filterPanel = null;
+					if (StringUtils.isEmpty(textField.getText())) {
+						filterPanel = panels.stream().filter(panel -> panel.getName().contains(textField.getText())).collect(Collectors.toList());
+					} else {
+						filterPanel = panels;
+					}
+					TextFields.bindAutoCompletion(textField, getAllPanel(filterPanel)).setVisibleRowCount(10);
+				} else if (searchComboBox.getSelectionModel().getSelectedItem().getText().equalsIgnoreCase("RUN") ||
+						searchComboBox.getSelectionModel().getSelectedItem().getText().equalsIgnoreCase("SAMPLE")) {
+					provider = SuggestionProvider.create(new HashSet<>());
+					TextFields.bindAutoCompletion(textField, provider).setVisibleRowCount(10);
+					textField.textProperty().addListener((ob, oValue, nValue) -> updateAutoCompletion(nValue, textField));
+
+				}
+
 				textField.setPrefWidth(Double.MAX_VALUE);
 				filterSearchArea.getChildren().add(textField);
 			} else if(newV.getValue().equalsIgnoreCase("DATE")) {
@@ -225,6 +216,27 @@ public class PastResultsController extends SubPaneController {
 		});
 
 		searchComboBox.getSelectionModel().select(0);
+	}
+
+	private void updateAutoCompletion(final String value, final CustomTextField textField) {
+		if(!StringUtils.isEmpty(value)) {
+			try {
+				Map<String, Object> params = new HashMap<>();
+				params.put("target", searchComboBox.getSelectionModel().getSelectedItem().getText().toLowerCase());
+				params.put("keyword", textField.getText());
+				params.put("resultCount", 15);
+				HttpClientResponse response = apiService.get("/filter", params, null, false);
+				logger.debug(response.getContentString());
+				JSONParser jsonParser = new JSONParser();
+				JSONArray jsonArray = (JSONArray) jsonParser.parse(response.getContentString());
+				provider.clearSuggestions();
+				provider.addPossibleSuggestions(getAllData(jsonArray));
+			} catch (WebAPIException wae) {
+				wae.printStackTrace();
+			} catch (ParseException pe) {
+				pe.printStackTrace();
+			}
+		}
 	}
 
 	private Set<String> getAllData(JSONArray array) {
@@ -462,13 +474,13 @@ public class PastResultsController extends SubPaneController {
 				gridPane.setLabel(runSampleView.getRun());
 				setVBoxPrefSize(gridPane);
 
-				SampleInfoVBox vbox = new SampleInfoVBox();
-				vbox.setSampleList(runSampleView.getSampleViews());
-				resultVBox.getChildren().add(vbox);
-				setVBoxPrefSize(vbox);
+				SampleInfoVBox vBox = new SampleInfoVBox();
+				vBox.setSampleList(runSampleView.getSampleViews());
+				resultVBox.getChildren().add(vBox);
+				setVBoxPrefSize(vBox);
 				if(list.indexOf(runSampleView) < list.size() - 1) {
                     Insets insets = new Insets(0, 0, 30, 0);
-                    VBox.setMargin(vbox, insets);
+                    VBox.setMargin(vBox, insets);
                     resultVBox.setPrefHeight(resultVBox.getPrefHeight() + 30);
                 }
 			}

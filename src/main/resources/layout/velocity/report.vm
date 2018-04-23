@@ -419,10 +419,10 @@
 			<fo:block text-align="center" margin-top="10mm" margin-bottom="4mm">
                 <fo:external-graphic content-width="18.4cm" content-height="1.5cm" src="${variantDetailText}" />
             </fo:block>
-			#if($contents.variantList && $contents.variantList.size() > 0)
+			#if($contents.clinicalVariantList && $contents.clinicalVariantList.size() > 0)
 			<fo:block margin-bottom="10mm" font-size="10pt">
 				<fo:block margin-bottom="5mm">
-					#foreach($variant in $contents.variantList)
+					#foreach($variant in $contents.clinicalVariantList)
                         #if(($variant.snpInDel.expertTier && $variant.snpInDel.expertTier == "T1") ||
                     (!$variant.snpInDel.expertTier || $variant.variant.expertTier == "") && $variant.snpInDel.swTier == "T1")
                             #set($color = "#e93429")
