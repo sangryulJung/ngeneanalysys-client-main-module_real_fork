@@ -165,17 +165,17 @@
                         <Label text="Non Finnish European" GridPane.columnIndex="2" GridPane.rowIndex="7" />
                         <Label text="Others" GridPane.columnIndex="2" GridPane.rowIndex="8" />
                         <Label text="South Asian" GridPane.columnIndex="2" GridPane.rowIndex="9" />
-                        <Label styleClass="font_size_15" text="ESP 6500" GridPane.rowIndex="8" GridPane.valignment="BOTTOM" />
-                        <Label text="all" GridPane.rowIndex="9" />
-                        <Label text="aa" GridPane.rowIndex="10" />
-                        <Label text="ea" GridPane.rowIndex="11" />
+                        <Label styleClass="font_size_15" text="ESP 6500" GridPane.rowIndex="10" GridPane.valignment="BOTTOM" />
+                        <Label text="all" GridPane.rowIndex="11" />
+                        <Label text="aa" GridPane.rowIndex="12" />
+                        <Label text="ea" GridPane.rowIndex="13" />
                         <Label styleClass="font_size_15" text="ETC" GridPane.columnIndex="2" GridPane.rowIndex="10" />
                         <Label text="koreanExomInformationDatabase" GridPane.columnIndex="2" GridPane.rowIndex="12" />
                         <Label text="koreanReferenceGenomeDatabase" GridPane.columnIndex="2" GridPane.rowIndex="13" />
                         <Label text="kohbraFreq" GridPane.columnIndex="2" GridPane.rowIndex="14" />
-                        <TextField fx:id="espallTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-                        <TextField fx:id="espaaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-                        <TextField fx:id="espeaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                        <TextField fx:id="espallTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                        <TextField fx:id="espaaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+                        <TextField fx:id="espeaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="1" GridPane.rowIndex="13" />
                         <TextField fx:id="genomADAllTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                         <TextField fx:id="genomADmaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                         <TextField fx:id="genomADaaaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="3" GridPane.rowIndex="3" />
