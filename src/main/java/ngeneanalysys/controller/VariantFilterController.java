@@ -658,13 +658,13 @@ public class VariantFilterController extends SubPaneController {
         if (clinVarBCheckBox.isSelected()) {
             list.add("clinVarClass Likely Pathogenic");
         }
-        if (clinVarBCheckBox.isSelected()) {
+        if (clinVarCCheckBox.isSelected()) {
             list.add("clinVarClass Uncertain Significance");
         }
-        if (clinVarBCheckBox.isSelected()) {
+        if (clinVarDCheckBox.isSelected()) {
             list.add("clinVarClass Likely Benign");
         }
-        if (clinVarBCheckBox.isSelected()) {
+        if (clinVarECheckBox.isSelected()) {
             list.add("clinVarClass Benign");
         }
 
