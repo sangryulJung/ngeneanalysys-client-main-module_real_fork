@@ -1081,9 +1081,16 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             genomadOthers.setVisible(false);
 
         }
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> korean = new TableColumn<>("Korean");
-        createTableHeader(korean, "Korean", null ,null);
-        korean.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getKoreanExomInformationDatabase())));
+
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> koreanReferenceDatabase = new TableColumn<>("Korean Reference Genome Database");
+        createTableHeader(koreanReferenceDatabase, "Korean Reference Genome Database", null ,null);
+        koreanReferenceDatabase.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getKoreanReferenceGenomeDatabase())));
+
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> koreanExomInformationDatabase = new TableColumn<>("Korean Exom Information Database");
+        createTableHeader(koreanExomInformationDatabase, "Korean Exom Information Database", null ,null);
+        koreanExomInformationDatabase.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getKoreanExomInformationDatabase())));
+
+
 
         TableColumn<VariantAndInterpretationEvidence, String> clinVarAcc = new TableColumn<>("ClinVar.Acc");
         createTableHeader(clinVarAcc, "ClinVar.Acc", null ,150d);
