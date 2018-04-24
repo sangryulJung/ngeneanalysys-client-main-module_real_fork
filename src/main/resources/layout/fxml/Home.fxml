@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
@@ -16,13 +22,13 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane fx:id="homeWrapper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="555.0" minWidth="1200.0" prefHeight="555.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.HomeController">
+<GridPane fx:id="homeWrapper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="555.0" minWidth="1200.0" prefHeight="555.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.HomeController">
   <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="387.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="380.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="233.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="46.0" minWidth="-Infinity" prefWidth="34.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="461.0" minWidth="-Infinity" prefWidth="433.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="467.0" minWidth="-Infinity" prefWidth="424.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="329.0" minWidth="-Infinity" prefWidth="284.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="25.0" />
   </columnConstraints>
   <rowConstraints>
     <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
@@ -35,9 +41,9 @@
    <children>
       <HBox alignment="CENTER_LEFT" prefHeight="377.0" prefWidth="1140.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
-            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="360.0">
+            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="434.0">
                <children>
-                  <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="26.0" prefWidth="200.0">
+                  <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="26.0" prefWidth="379.0">
                      <children>
                         <Label id="system_image_icon">
                            <HBox.margin>
@@ -52,9 +58,10 @@
                         </Label>
                      </children>
                   </HBox>
-                  <HBox alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="190.0" prefWidth="360.0">
+                  <HBox alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="190.0" prefWidth="426.0">
                      <children>
                         <Canvas fx:id="hddCanvas" height="175.0" width="175.0" />
+                        <Pane prefHeight="190.0" prefWidth="42.0" />
                         <Canvas fx:id="availableCanvas" height="175.0" width="175.0" />
                      </children>
                   </HBox>
@@ -64,11 +71,11 @@
       </HBox>
       <ScrollPane prefHeight="200.0" prefWidth="200.0" vbarPolicy="NEVER" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="4">
          <content>
-            <HBox fx:id="runListHBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="230.0">
+            <HBox fx:id="runListHBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="200.0">
                <children>
-                  <Button fx:id="buttonUpload" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showUploadFASTQ" onMouseEntered="#newAnalysisMouseEnter" onMouseExited="#newAnalysisMouseExit" prefHeight="220.0" prefWidth="220.0" style="-fx-font-family: Noto Sans KR Bold;" styleClass="new_analysis_button" text="New Analysis">
+                  <Button fx:id="buttonUpload" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showUploadFASTQ" onMouseEntered="#newAnalysisMouseEnter" onMouseExited="#newAnalysisMouseExit" prefHeight="220.0" prefWidth="200.0" style="-fx-font-family: Noto Sans KR Bold;" styleClass="new_analysis_button" text="New Analysis">
                      <HBox.margin>
-                        <Insets right="5.0" />
+                        <Insets />
                      </HBox.margin>
                   </Button>
                </children>
@@ -136,17 +143,20 @@
                </HBox.margin>
             </Label>
          </children>
+         <padding>
+            <Insets right="20.0" />
+         </padding>
       </HBox>
       <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="360.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
          <children>
-            <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="26.0" prefWidth="200.0">
+            <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="26.0" prefWidth="451.0">
                <children>
                   <Label id="news_image_icon">
                      <HBox.margin>
                         <Insets right="5.0" />
                      </HBox.margin>
                   </Label>
-                  <Label style="-fx-font-family: Noto Sans KR Bold;" text="NEWS &amp; TIPS">
+                  <Label prefHeight="23.0" prefWidth="441.0" style="-fx-font-family: Noto Sans KR Bold;" text="NEWS &amp; TIPS">
                      <padding>
                         <Insets right="10.0" />
                      </padding>
@@ -156,26 +166,35 @@
                      </styleClass>
                   </Label>
                </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
             </HBox>
             <Label fx:id="dateLabel" styleClass="font_size_12" wrapText="true">
                <VBox.margin>
                   <Insets bottom="10.0" top="10.0" />
                </VBox.margin>
             </Label>
-            <Label fx:id="noticeContentsLabel" alignment="TOP_LEFT" maxHeight="100.0" maxWidth="330.0" minHeight="100.0" prefHeight="100.0" styleClass="font_size_12" wrapText="true">
+            <Label fx:id="noticeContentsLabel" alignment="TOP_LEFT" maxHeight="129.0" maxWidth="460.0" minHeight="100.0" prefHeight="129.0" prefWidth="460.0" styleClass="font_size_12" wrapText="true">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
             </Label>
-            <HBox fx:id="toggleGroupHBox" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="330.0" prefHeight="20.0" prefWidth="330.0" spacing="10.0">
+            <HBox fx:id="toggleGroupHBox" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="481.0" prefHeight="30.0" prefWidth="481.0">
                <children>
                   <RadioButton mnemonicParsing="false">
                      <toggleGroup>
                         <ToggleGroup fx:id="newsTipGroup" />
                      </toggleGroup></RadioButton>
                </children>
+               <VBox.margin>
+                  <Insets right="10.0" />
+               </VBox.margin>
             </HBox>
          </children>
+         <GridPane.margin>
+            <Insets right="10.0" />
+         </GridPane.margin>
       </VBox>
       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
          <children>
@@ -200,7 +219,7 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
                            <VBox.margin>
-                              <Insets />
+                              <Insets left="5.0" />
                            </VBox.margin>
                            <children>
                               <Label style="-fx-font-size: 10;" styleClass="tools_icon" text="〉">
@@ -220,6 +239,9 @@
                               </Label>
                               <Label style="-fx-cursor: hand;" text="Annotation Database" />
                            </children>
+                           <VBox.margin>
+                              <Insets left="5.0" />
+                           </VBox.margin>
                         </HBox>
                      </children>
                   </VBox>
