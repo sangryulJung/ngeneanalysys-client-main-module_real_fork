@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -12,6 +7,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
@@ -22,7 +18,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.VariantFilterController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.VariantFilterController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
@@ -297,26 +293,26 @@
                                              <children>
                                                 <CheckBox fx:id="spliceDonorVariantCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="168.0" text="splice_donor_variant" />
                                                 <CheckBox fx:id="spliceAcceptorVariantCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="176.0" text="splice_acceptor_variant" />
-                                                <CheckBox fx:id="spliceRegionVariantCheckBox2" mnemonicParsing="false" prefHeight="35.0" prefWidth="167.0" text="splice_region_variant" />
+                                                <CheckBox fx:id="spliceRegionVariantCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="167.0" text="splice_region_variant" />
                                              </children>
                                           </HBox>
                                           <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                              <children>
                                                 <CheckBox fx:id="frameshiftVariantCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="138.0" text="frameshift_variant" />
-                                                <CheckBox fx:id="inframeDeletionCheckBox1" mnemonicParsing="false" prefHeight="35.0" prefWidth="138.0" text="inframe_deletion" />
-                                                <CheckBox fx:id="inframeInsertionCheckBox11" mnemonicParsing="false" prefHeight="35.0" prefWidth="138.0" text="inframe_insertion" />
+                                                <CheckBox fx:id="inframeDeletionCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="138.0" text="inframe_deletion" />
+                                                <CheckBox fx:id="inframeInsertionCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="138.0" text="inframe_insertion" />
                                              </children>
                                           </HBox>
                                           <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                              <children>
-                                                <CheckBox fx:id="cidCheckBox1" mnemonicParsing="false" prefHeight="40.0" prefWidth="199.0" text="conservative_inframe_deletion" />
-                                                <CheckBox fx:id="cidCheckBox11" mnemonicParsing="false" prefHeight="35.0" prefWidth="225.0" text="conservative_inframe_insertion" />
+                                                <CheckBox fx:id="cidCheckBox" mnemonicParsing="false" prefHeight="40.0" prefWidth="199.0" text="conservative_inframe_deletion" />
+                                                <CheckBox fx:id="ciiCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="225.0" text="conservative_inframe_insertion" />
                                              </children>
                                           </HBox>
                                           <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
                                              <children>
                                                 <CheckBox fx:id="didCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="212.0" text="disruptive_inframe_deletion" />
-                                                <CheckBox fx:id="didCheckBox1" mnemonicParsing="false" prefHeight="35.0" prefWidth="212.0" text="disruptive_inframe_insertion" />
+                                                <CheckBox fx:id="diiCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="212.0" text="disruptive_inframe_insertion" />
                                              </children>
                                           </HBox>
                                           <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
@@ -327,29 +323,29 @@
                                           </HBox>
                                           <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
                                              <children>
-                                                <CheckBox fx:id="fivePrimeUTRCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="160.0" text="3_prime_UTR_variant" />
-                                                <CheckBox fx:id="fivePrimeUTRCheckBox1" mnemonicParsing="false" prefHeight="35.0" prefWidth="206.0" text="3_prime_UTR_truncation" />
+                                                <CheckBox fx:id="threePrimeUTRVCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="160.0" text="3_prime_UTR_variant" />
+                                                <CheckBox fx:id="threePrimeUTRTCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="206.0" text="3_prime_UTR_truncation" />
                                              </children>
                                           </HBox>
                                           <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="11">
                                              <children>
-                                                <CheckBox fx:id="fivePrimeUTRCheckBox2" mnemonicParsing="false" prefHeight="35.0" prefWidth="160.0" text="5_prime_UTR_variant" />
-                                                <CheckBox fx:id="fivePrimeUTRCheckBox11" mnemonicParsing="false" prefHeight="35.0" prefWidth="206.0" text="5_prime_UTR_truncation" />
+                                                <CheckBox fx:id="fivePrimeUTRVCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="160.0" text="5_prime_UTR_variant" />
+                                                <CheckBox fx:id="fivePrimeUTRTCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="206.0" text="5_prime_UTR_truncation" />
                                              </children>
                                           </HBox>
                                           <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="12">
                                              <children>
-                                                <CheckBox fx:id="cidCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="224.0" text="conserved_intergenic_variant" />
-                                                <CheckBox fx:id="cidCheckBox2" mnemonicParsing="false" prefHeight="35.0" prefWidth="224.0" text="downstream_gene_variant" />
-                                                <CheckBox fx:id="cidCheckBox21" mnemonicParsing="false" prefHeight="35.0" prefWidth="224.0" text="intergenic_region" />
+                                                <CheckBox fx:id="civCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="224.0" text="conserved_intergenic_variant" />
+                                                <CheckBox fx:id="dgvCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="224.0" text="downstream_gene_variant" />
+                                                <CheckBox fx:id="irCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="224.0" text="intergenic_region" />
                                              </children>
                                           </HBox>
                                           <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="13">
                                              <children>
                                                 <CheckBox fx:id="intronCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="119.0" text="intron_variant" />
-                                                <CheckBox fx:id="spliceRegionCheckbox" mnemonicParsing="false" prefHeight="35.0" prefWidth="169.0" text="stop_retained_variant" />
+                                                <CheckBox fx:id="srvCheckbox" mnemonicParsing="false" prefHeight="35.0" prefWidth="169.0" text="stop_retained_variant" />
                                                 <CheckBox fx:id="synonymousCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="169.0" text="synonymous_variant" />
-                                                <CheckBox fx:id="synonymousCheckBox1" mnemonicParsing="false" prefHeight="35.0" prefWidth="179.0" text="upstream_gene_variant" />
+                                                <CheckBox fx:id="ugvCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="179.0" text="upstream_gene_variant" />
                                              </children>
                                           </HBox>
                                           <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1">

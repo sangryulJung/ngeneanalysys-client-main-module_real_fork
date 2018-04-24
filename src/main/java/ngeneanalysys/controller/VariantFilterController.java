@@ -67,7 +67,7 @@ public class VariantFilterController extends SubPaneController {
     ///////////////////////////////////////////////
 
     @FXML
-    private CheckBox fivePrimeUTRCheckBox;
+    private CheckBox fivePrimeUTRVCheckBox;
 
     @FXML
     private CheckBox cidCheckBox;
@@ -85,7 +85,7 @@ public class VariantFilterController extends SubPaneController {
     private CheckBox missenseCheckBox;
 
     @FXML
-    private CheckBox spliceRegionCheckbox;
+    private CheckBox spliceRegionVariantCheckBox;
 
     @FXML
     private CheckBox synonymousCheckBox;
@@ -97,48 +97,49 @@ public class VariantFilterController extends SubPaneController {
     private CheckBox stopGainedCheckBox;
 
     @FXML
-    private CheckBox stoplostCheckBox;
-
-    @FXML
     private CheckBox spliceDonorVariantCheckBox;
 
     @FXML
-    private CheckBox spliceRegionVariantCheckBox2;
+    private CheckBox stoplostCheckBox;
 
     @FXML
-    private CheckBox inframeDeletionCheckBox1;
+    private CheckBox inframeDeletionCheckBox;
 
     @FXML
-    private CheckBox inframeInsertionCheckBox11;
+    private CheckBox inframeInsertionCheckBox;
 
     @FXML
-    private CheckBox cidCheckBox11;
+    private CheckBox ciiCheckBox;
 
     @FXML
-    private CheckBox didCheckBox1;
+    private CheckBox diiCheckBox;
 
     @FXML
     private CheckBox startLostCheckBox;
 
     @FXML
-    private CheckBox fivePrimeUTRCheckBox1;
+    private CheckBox threePrimeUTRVCheckBox;
 
     @FXML
-    private CheckBox fivePrimeUTRCheckBox2;
+    private CheckBox threePrimeUTRTCheckBox;
 
     @FXML
-    private CheckBox fivePrimeUTRCheckBox11;
+    private CheckBox fivePrimeUTRTCheckBox;
 
     @FXML
-    private CheckBox cidCheckBox2;
+    private CheckBox civCheckBox;
 
     @FXML
-    private CheckBox cidCheckBox21;
+    private CheckBox dgvCheckBox;
 
     @FXML
-    private CheckBox synonymousCheckBox1;
+    private CheckBox irCheckBox;
 
+    @FXML
+    private CheckBox srvCheckbox;
 
+    @FXML
+    private CheckBox ugvCheckBox;
 
     ///////////////////////////////////////////////////////////////////
 
@@ -615,7 +616,7 @@ public class VariantFilterController extends SubPaneController {
 
     private void codingConsequenceCheck(String option) {
         if(option.equalsIgnoreCase("5_prime_UTR_variant")) {
-            fivePrimeUTRCheckBox.setSelected(true);
+            fivePrimeUTRVCheckBox.setSelected(true);
         } else if(option.equalsIgnoreCase("conservative_inframe_deletion")) {
             cidCheckBox.setSelected(true);
         } else if(option.equalsIgnoreCase("conservative_inframe_deletion")) {
@@ -629,7 +630,7 @@ public class VariantFilterController extends SubPaneController {
         } else if(option.equalsIgnoreCase("missense_variant")) {
             missenseCheckBox.setSelected(true);
         } else if(option.equalsIgnoreCase("splice_region_variant")) {
-            spliceRegionCheckbox.setSelected(true);
+            spliceRegionVariantCheckBox.setSelected(true);
         } else if(option.equalsIgnoreCase("splice_acceptor_variant")) {
             spliceAcceptorVariantCheckBox.setSelected(true);
         } else if(option.equalsIgnoreCase("synonymous_variant")) {
@@ -768,7 +769,7 @@ public class VariantFilterController extends SubPaneController {
     }
 
     private void consequenceSave(List<Object> list) {
-        if(fivePrimeUTRCheckBox.isSelected()) {
+        if(fivePrimeUTRVCheckBox.isSelected()) {
             list.add("codingConsequence 5_prime_UTR_variant");
         }
         if(cidCheckBox.isSelected()) {
@@ -786,7 +787,7 @@ public class VariantFilterController extends SubPaneController {
         if(missenseCheckBox.isSelected()) {
             list.add("codingConsequence missense_variant");
         }
-        if(spliceRegionCheckbox.isSelected()) {
+        if(spliceRegionVariantCheckBox.isSelected()) {
             list.add("codingConsequence splice_region_variant");
         }
         if(spliceAcceptorVariantCheckBox.isSelected()) {
@@ -917,13 +918,13 @@ public class VariantFilterController extends SubPaneController {
         snvCheckBox.setSelected(false);
         indelCheckBox.setSelected(false);
         delCheckBox.setSelected(false);
-        fivePrimeUTRCheckBox.setSelected(false);
+        fivePrimeUTRVCheckBox.setSelected(false);
         cidCheckBox.setSelected(false);
         didCheckBox.setSelected(false);
         frameshiftVariantCheckBox.setSelected(false);
         intronCheckBox.setSelected(false);
         missenseCheckBox.setSelected(false);
-        spliceRegionCheckbox.setSelected(false);
+        spliceRegionVariantCheckBox.setSelected(false);
         synonymousCheckBox.setSelected(false);
         spliceAcceptorVariantCheckBox.setSelected(false);
         stopGainedCheckBox.setSelected(false);
