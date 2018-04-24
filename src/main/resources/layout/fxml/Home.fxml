@@ -244,6 +244,9 @@
                            </VBox.margin>
                         </HBox>
                      </children>
+                     <padding>
+                        <Insets top="10.0" />
+                     </padding>
                   </VBox>
                </content>
             </ScrollPane>
