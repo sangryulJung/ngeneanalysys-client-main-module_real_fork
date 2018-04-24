@@ -11,6 +11,8 @@ public class PipelineAnnotationDatabase {
     private String version;
     private String releaseDate;
     private String description;
+    private String source;
+    private String sampleCount;
 
     /**
      * @return pipelineVersionId
@@ -53,4 +55,8 @@ public class PipelineAnnotationDatabase {
     public String getDescription() {
         return description;
     }
+
+    public String getSource() { return source; }
+
+    public String getSampleCount() { return sampleCount; }
 }

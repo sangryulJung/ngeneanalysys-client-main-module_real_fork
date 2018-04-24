@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" style="-fx-backgorund-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.VariantFilterController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" style="-fx-backgorund-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.VariantFilterController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
@@ -45,22 +45,40 @@
                         <RowConstraints minHeight="10.0" prefHeight="140.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label text="Variant Type" GridPane.rowIndex="2" />
+                        <Label text="Variant Type" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin></Label>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <children>
                               <CheckBox fx:id="snvCheckBox" mnemonicParsing="false" text="SNV" />
                               <CheckBox fx:id="indelCheckBox" mnemonicParsing="false" text="INDEL" />
                            </children>
                         </HBox>
-                        <Label text="Chromosome" GridPane.rowIndex="3" />
-                        <Label text="Gene" GridPane.rowIndex="4" />
+                        <Label text="Chromosome" GridPane.rowIndex="3">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin></Label>
+                        <Label text="Gene" GridPane.rowIndex="4">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin></Label>
                         <TextField fx:id="geneTextField" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" promptText="FLT3,CEBPA" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <Label text="dbSNP" GridPane.rowIndex="5" />
+                        <Label text="dbSNP" GridPane.rowIndex="5">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin></Label>
                         <CheckBox fx:id="dbSNPidCheckBox" mnemonicParsing="false" text="Has dbSNP ID" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <Label text="COSMIC" GridPane.rowIndex="6" />
+                        <Label text="COSMIC" GridPane.rowIndex="6">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin></Label>
                         <CheckBox fx:id="cosmicidCheckBox" mnemonicParsing="false" text="Has COSMIC ID" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                         <TextField fx:id="chromosomeTextField" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" promptText="chr7, chr9" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Label text="Allele Fraction" GridPane.rowIndex="7" />
+                        <Label text="Allele Fraction" GridPane.rowIndex="7">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin></Label>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
                            <children>
                               <TextField fx:id="startFractionTextField" prefWidth="100.0" promptText="30" />
@@ -68,8 +86,14 @@
                               <TextField fx:id="endFractionTextField" maxWidth="100.0" promptText="50" />
                            </children>
                         </HBox>
-                        <Label fx:id="caseLabel" text="Pathogenicity" />
-                        <Label text="ClinVar" GridPane.rowIndex="1" />
+                        <Label fx:id="caseLabel" text="Pathogenicity">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin></Label>
+                        <Label text="ClinVar" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin></Label>
                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                            <children>
                               <CheckBox fx:id="caseACheckBox" mnemonicParsing="false" text="CheckBox" />
@@ -88,7 +112,10 @@
                               <CheckBox fx:id="clinVarECheckBox" mnemonicParsing="false" text="CheckBox" />
                            </children>
                         </HBox>
-                        <Label text="cosmicOccurence" GridPane.rowIndex="8" />
+                        <Label text="cosmicOccurence" GridPane.rowIndex="8">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin></Label>
                         <CheckBox fx:id="haltCheckBox" mnemonicParsing="false" text="Haematopoietic And Lymphoid Tissue" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                      </children>
                   </GridPane>
@@ -142,13 +169,34 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label styleClass="font_size_15" text="1000G" />
-                        <Label text="All" GridPane.rowIndex="1" />
-                        <Label text="AFR(African)" GridPane.rowIndex="2" />
-                        <Label text="AMR(Ad Mixed American)" GridPane.rowIndex="3" />
-                        <Label text="EAS(East Asian)" GridPane.rowIndex="4" />
-                        <Label text="EUR(European)" GridPane.rowIndex="5" />
-                        <Label text="SAS(South Asian)" GridPane.rowIndex="6" />
+                        <Label styleClass="font_size_15" text="1000G">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin></Label>
+                        <Label text="All" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin></Label>
+                        <Label text="AFR(African)" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin></Label>
+                        <Label text="AMR(Ad Mixed American)" GridPane.rowIndex="3">
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding></Label>
+                        <Label text="EAS(East Asian)" GridPane.rowIndex="4">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin></Label>
+                        <Label text="EUR(European)" GridPane.rowIndex="5">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin></Label>
+                        <Label text="SAS(South Asian)" GridPane.rowIndex="6">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin></Label>
                         <TextField fx:id="tgAllTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <TextField fx:id="tgafrTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <TextField fx:id="tgamrTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="1" GridPane.rowIndex="3" />
@@ -165,10 +213,22 @@
                         <Label text="Non Finnish European" GridPane.columnIndex="2" GridPane.rowIndex="7" />
                         <Label text="Others" GridPane.columnIndex="2" GridPane.rowIndex="8" />
                         <Label text="South Asian" GridPane.columnIndex="2" GridPane.rowIndex="9" />
-                        <Label styleClass="font_size_15" text="ESP 6500" GridPane.rowIndex="10" GridPane.valignment="BOTTOM" />
-                        <Label text="all" GridPane.rowIndex="11" />
-                        <Label text="aa" GridPane.rowIndex="12" />
-                        <Label text="ea" GridPane.rowIndex="13" />
+                        <Label styleClass="font_size_15" text="ESP 6500" GridPane.rowIndex="10" GridPane.valignment="BOTTOM">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin></Label>
+                        <Label text="all" GridPane.rowIndex="11">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin></Label>
+                        <Label text="aa" GridPane.rowIndex="12">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin></Label>
+                        <Label text="ea" GridPane.rowIndex="13">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin></Label>
                         <Label styleClass="font_size_15" text="ETC" GridPane.columnIndex="2" GridPane.rowIndex="10" />
                         <Label text="koreanExomInformationDatabase" GridPane.columnIndex="2" GridPane.rowIndex="12" />
                         <Label text="koreanReferenceGenomeDatabase" GridPane.columnIndex="2" GridPane.rowIndex="13" />

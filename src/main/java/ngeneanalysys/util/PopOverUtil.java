@@ -149,7 +149,7 @@ public class PopOverUtil {
                     createHBox("dbSNP", "has dbSNP ID", box);
                 }
                 if(option.equalsIgnoreCase("cosmicIds")) {
-                    createHBox("COSMIC", "has dbSNP ID", box);
+                    createHBox("COSMIC", "has COSMIC ID", box);
                 }
             }
         }
@@ -188,13 +188,13 @@ public class PopOverUtil {
     }
 
     private static String setFeqTextField(String option) {
-        return " =>" + option.substring(option.indexOf(":") + 1);
+        return "≥" + option.substring(option.indexOf(":") + 1);
     }
 
     private static void setKeyValue(String key, String value, VBox box) {
         if(key.equalsIgnoreCase("tier") || key.equalsIgnoreCase("pathogenicity")) {
             createHBox(key, value, box);
-        } else if(key.equalsIgnoreCase("clinVarClasss")) {
+        } else if(key.equalsIgnoreCase("clinVarClass")) {
             createHBox("ClinVar", value, box);
         } else if(key.equalsIgnoreCase("codingConsequence")) {
             createHBox("Consequence", value.replaceAll("_", " "), box);
@@ -226,6 +226,8 @@ public class PopOverUtil {
             createHBox("esp6500All",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("esp6500aa")) {
             createHBox("esp6500aa",setFeqTextField(value), box);
+        }else if(key.equalsIgnoreCase("esp6500ea")) {
+            createHBox("esp6500ea",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("koreanExomInformationDatabase")) {
             createHBox("koreanExomInformationDatabase",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("koreanReferenceGenomeDatabase")) {
