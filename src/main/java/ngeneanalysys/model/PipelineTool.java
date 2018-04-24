@@ -11,6 +11,8 @@ public class PipelineTool {
     private String releaseDate;
     private String license;
     private String description;
+    private String source;
+    private String sampleCount;
 
     /**
      * @return pipelineVersionId
@@ -53,4 +55,8 @@ public class PipelineTool {
     public String getDescription() {
         return description;
     }
+
+    public String getSource() { return source; }
+
+    public String getSampleCount() { return sampleCount; }
 }
