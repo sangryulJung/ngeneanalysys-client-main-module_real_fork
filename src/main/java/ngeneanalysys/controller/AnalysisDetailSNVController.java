@@ -909,8 +909,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             typeExtension.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getVariantTypeExtension()));
         }
 
-        TableColumn<VariantAndInterpretationEvidence, String> codCons = new TableColumn<>("Coding Consequence");
-        createTableHeader(codCons, "Coding Consequence", null ,70.);
+        TableColumn<VariantAndInterpretationEvidence, String> codCons = new TableColumn<>("Consequence");
+        createTableHeader(codCons, "Consequence", null ,70.);
         codCons.getStyleClass().clear();
         codCons.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getCodingConsequence()));
 
@@ -1108,8 +1108,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             createTableHeader(clinVarTraitOMIM, "ClinVar Trait OMIM", null, null);
             clinVarTraitOMIM.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarTraitOMIM()));
         }
-        TableColumn<VariantAndInterpretationEvidence, String> cosmicIds = new TableColumn<>("COSMIC");
-        createTableHeader(cosmicIds, "COSMIC", null ,null);
+        TableColumn<VariantAndInterpretationEvidence, String> cosmicIds = new TableColumn<>("COSMIC ID");
+        createTableHeader(cosmicIds, "COSMIC ID", null ,null);
         cosmicIds.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getCosmic().getCosmicIds()));
 
         TableColumn<VariantAndInterpretationEvidence, String> cosmicCount = new TableColumn<>("COSMIC Count");
