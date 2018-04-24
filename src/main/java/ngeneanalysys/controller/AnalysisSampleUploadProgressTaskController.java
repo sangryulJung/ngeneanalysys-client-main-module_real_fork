@@ -100,7 +100,7 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 
 	/**
 	 * 현재 그룹의 총 샘플 수 화면 출력
-	 * @param totalCount
+	 * @param totalCount String
 	 */
 	public void updateTotalCount(String totalCount) {
 		this.totalCount.setText(totalCount);

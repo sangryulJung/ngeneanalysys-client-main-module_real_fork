@@ -1289,10 +1289,10 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             enigma.setVisible(false);
         }
 
-        /*TableColumn<VariantAndInterpretationEvidence, Integer> variantNum = new TableColumn<>("VariantNum");
+        TableColumn<VariantAndInterpretationEvidence, Integer> variantNum = new TableColumn<>("VariantNum");
         createTableHeader(variantNum, "VariantNum", null ,null);
         variantNum.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getVariantNum()).asObject());
-        variantNum.setVisible(false);*/
+        variantNum.setVisible(false);
 
         variantListTableView.getStyleClass().clear();
         variantListTableView.getStyleClass().add("table-view");

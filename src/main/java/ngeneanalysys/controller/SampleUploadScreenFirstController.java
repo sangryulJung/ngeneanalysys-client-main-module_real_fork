@@ -277,7 +277,13 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         if(folder != null) {
             File[] fileArray = folder.listFiles();
             List<File> fileList = new ArrayList<>(Arrays.asList(fileArray));
-            fileList = fileList.stream().filter(file -> file.getName().endsWith(".fastq.gz")).collect(Collectors.toList());
+            if (System.getProperty("os.name").toLowerCase().contains("window")) {
+                fileList = fileList.stream().filter(file -> file.getName().endsWith(".fastq.gz")).collect(Collectors.toList());
+            } else {
+                fileList = fileList.stream().filter(file -> file.getName().endsWith(".fastq") ||
+                        file.getName().endsWith(".fastq.gz")).collect(Collectors.toList());
+            }
+
             if(fileList.isEmpty()) DialogUtil.alert("not found", "not found fastq file", sampleUploadController.getCurrentStage(), true);
             List<File> undeterminedFile = new ArrayList<>();
             fileList.stream().forEach(file -> {
@@ -294,10 +300,10 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 String fastqFilePairName = FileUtil.getFASTQFilePairName(fastqFile.getName());
 
                 List<File> pairFileList = fileList.stream().filter(file ->
-                        file.getName().startsWith(fastqFilePairName)).collect(Collectors.toList());
+                        file.getName().startsWith(fastqFilePairName + "_")).collect(Collectors.toList());
 
                 Optional<AnalysisFile> optionalFile = uploadFileData.stream().filter(item ->
-                        item.getName().contains(fastqFilePairName)).findFirst();
+                        item.getName().contains(fastqFilePairName + "_")).findFirst();
                 Sample sample = null;
                 if(optionalFile.isPresent()) sample = getSameSample(optionalFile.get().getSampleId());
                 //fastq 파일이 짝을 이루고 올리는데 실패한 파일인 경우

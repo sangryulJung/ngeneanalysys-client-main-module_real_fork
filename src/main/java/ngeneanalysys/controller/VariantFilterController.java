@@ -242,11 +242,10 @@ public class VariantFilterController extends SubPaneController {
 
         this.dialogStage = dialogStage;
 
-        startFractionTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("[0-9]*")) startFractionTextField.setText(oldValue);
-        });
+        setFormat(startFractionTextField);
+        setFormat(endFractionTextField);
 
-        setFormat();
+        setFrequencyFormatter();
 
         setPathogenicity();
 
@@ -259,10 +258,6 @@ public class VariantFilterController extends SubPaneController {
                     }
                 }
             }
-        });
-
-        endFractionTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("[0-9]*")) endFractionTextField.setText(oldValue);
         });
 
         endFractionTextField.focusedProperty().addListener((ol, ov, nv) -> {
@@ -312,11 +307,40 @@ public class VariantFilterController extends SubPaneController {
         clinVarECheckBox.setText("B(Benign)");
     }
 
-    private void setFormat() {
+    private void setFormat(TextField textField) {
         Pattern pattern = Pattern.compile("\\d*|\\d+\\.\\d*");
         TextFormatter formatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change ->
             pattern.matcher(change.getControlNewText()).matches() ? change : null);
-        genomADAllTextField.setTextFormatter(formatter);
+        textField.setTextFormatter(formatter);
+
+    }
+
+    private void setFrequencyFormatter() {
+        setFormat(tgAllTextField);
+        setFormat(tgafrTextField);
+        setFormat(tgamrTextField);
+        setFormat(tgeasTextField);
+        setFormat(tgeurTextField);
+        setFormat(tgsasTextField);
+
+        setFormat(espallTextField);
+        setFormat(espaaTextField);
+        setFormat(espeaTextField);
+
+        setFormat(genomADAllTextField);
+        setFormat(genomADmaTextField);
+        setFormat(genomADaaaTextField);
+        setFormat(genomADajgenomAD);
+        setFormat(genomADeaTextField);
+        setFormat(genomADfinTextField);
+        setFormat(genomADnfeTextField);
+        setFormat(genomADotherTextField);
+        setFormat(genomADsaTextField);
+
+        setFormat(exacTextField);
+        setFormat(keidTextField);
+        setFormat(krgdTextField);
+        setFormat(kohbraTextField);
     }
 
     private void setCurrentOption() {
@@ -352,15 +376,15 @@ public class VariantFilterController extends SubPaneController {
     }
 
     private void setClinVar(String value) {
-        if(value.equalsIgnoreCase("T1") || value.equalsIgnoreCase("Pathogenic")) {
+        if(value.equalsIgnoreCase("Pathogenic")) {
             clinVarACheckBox.setSelected(true);
-        } else if(value.equalsIgnoreCase("T2") || value.equalsIgnoreCase("Likely Pathogenic")) {
+        } else if(value.equalsIgnoreCase("Likely_pathogenic")) {
             clinVarBCheckBox.setSelected(true);
-        } else if(value.equalsIgnoreCase("T3") || value.equalsIgnoreCase("Uncertain Significance")) {
+        } else if(value.equalsIgnoreCase("Uncertain_significance")) {
             clinVarCCheckBox.setSelected(true);
-        } else if(value.equalsIgnoreCase("T4") || value.equalsIgnoreCase("Likely Benign")) {
+        } else if(value.equalsIgnoreCase("Likely_benign")) {
             clinVarDCheckBox.setSelected(true);
-        } else {
+        } else if(value.equalsIgnoreCase("Benign")) {
             clinVarECheckBox.setSelected(true);
         }
     }
@@ -368,7 +392,7 @@ public class VariantFilterController extends SubPaneController {
     private void setKeyValue(String key, String value) {
         if(key.equalsIgnoreCase("tier") || key.equalsIgnoreCase("pathogenicity")) {
             setCase(value);
-        } else if(key.equalsIgnoreCase("clinVarClasss")) {
+        } else if(key.equalsIgnoreCase("clinVarClass")) {
             setClinVar(value);
         } else if(key.equalsIgnoreCase("codingConsequence")) {
             codingConsequenceCheck(value);
@@ -402,12 +426,14 @@ public class VariantFilterController extends SubPaneController {
             setFeqTextField(value, espallTextField);
         }else if(key.equalsIgnoreCase("esp6500aa")) {
             setFeqTextField(value, espaaTextField);
+        }else if(key.equalsIgnoreCase("esp6500ea")) {
+            setFeqTextField(value, espeaTextField);
         }else if(key.equalsIgnoreCase("koreanExomInformationDatabase")) {
             setFeqTextField(value, keidTextField);
         }else if(key.equalsIgnoreCase("koreanReferenceGenomeDatabase")) {
             setFeqTextField(value, krgdTextField);
         }else if(key.equalsIgnoreCase("kohbraFreq")) {
-            setFeqTextField(value, espeaTextField);
+            setFeqTextField(value, kohbraTextField);
         }else if(key.equalsIgnoreCase("exac")) {
             setFeqTextField(value, exacTextField);
         }else if(key.equalsIgnoreCase("genomADall")) {
@@ -546,8 +572,8 @@ public class VariantFilterController extends SubPaneController {
         if(!StringUtils.isEmpty(krgdTextField.getText())) {
             setFrequency(list, krgdTextField.getText(), "koreanReferenceGenomeDatabase");
         }
-        if(!StringUtils.isEmpty(espeaTextField.getText())) {
-            setFrequency(list, espeaTextField.getText(), "kohbraFreq");
+        if(!StringUtils.isEmpty(kohbraTextField.getText())) {
+            setFrequency(list, kohbraTextField.getText(), "kohbraFreq");
         }
         if(!StringUtils.isEmpty(exacTextField.getText())) {
             setFrequency(list, exacTextField.getText(), "exac");
@@ -668,7 +694,6 @@ public class VariantFilterController extends SubPaneController {
             list.add("clinVarClass Benign");
         }
 
-
         if(!StringUtils.isEmpty(geneTextField.getText())) {
 
             String[] geneList = geneTextField.getText().replaceAll(" ", "").split(",");
@@ -700,7 +725,7 @@ public class VariantFilterController extends SubPaneController {
         }
 
         if(haltCheckBox.isSelected()) {
-            list.add("cosmicOccurence haematopoietic_and_lymphoid_tissue");
+            list.add("cosmicOccurrence haematopoietic_and_lymphoid_tissue");
         }
 
         if(indelCheckBox.isSelected()) {
