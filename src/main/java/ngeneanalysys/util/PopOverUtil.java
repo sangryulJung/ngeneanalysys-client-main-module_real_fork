@@ -206,28 +206,30 @@ public class PopOverUtil {
             createHBox(key, alleSet(value), box);
         } else if(key.equalsIgnoreCase("variantType")) {
             if(value.equalsIgnoreCase("snp")) {
-                createHBox("Variant Type", "SNV", box);
+                createHBox("Variant Type", "snv", box);
             } else if(value.equalsIgnoreCase("ins")) {
-                createHBox("Variant Type", "INDEL", box);
+                createHBox("Variant Type", "ins", box);
+            } else if(value.equalsIgnoreCase("del")) {
+                createHBox("Variant Type", "del", box);
             }
         } else if(key.equalsIgnoreCase("g1000All")) {
-            createHBox("g1000All",setFeqTextField(value), box);
+            createHBox("1KGP All",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("g1000African")) {
-            createHBox("g1000African",setFeqTextField(value), box);
+            createHBox("1KGP AFR",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("g1000American")) {
-            createHBox("g1000American",setFeqTextField(value), box);
+            createHBox("1KGP AMR",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("g1000EastAsian")) {
-            createHBox("g1000EastAsian",setFeqTextField(value), box);
+            createHBox("1KGP EAS",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("g1000European")) {
-            createHBox("g1000European",setFeqTextField(value), box);
+            createHBox("1KGP UER",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("g1000SouthAsian")) {
-            createHBox("g1000SouthAsian",setFeqTextField(value), box);
+            createHBox("1KGP SAS",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("esp6500All")) {
-            createHBox("esp6500All",setFeqTextField(value), box);
+            createHBox("esp6500 All",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("esp6500aa")) {
-            createHBox("esp6500aa",setFeqTextField(value), box);
+            createHBox("esp6500 AA",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("esp6500ea")) {
-            createHBox("esp6500ea",setFeqTextField(value), box);
+            createHBox("esp6500 EA",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("koreanExomInformationDatabase")) {
             createHBox("koreanExomInformationDatabase",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("koreanReferenceGenomeDatabase")) {
@@ -237,25 +239,25 @@ public class PopOverUtil {
         }else if(key.equalsIgnoreCase("exac")) {
             createHBox("exac",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("genomADall")) {
-            createHBox("genomADall",setFeqTextField(value), box);
+            createHBox("genomAD All",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("genomADadmixedAmerican")) {
-            createHBox("genomADadmixedAmerican",setFeqTextField(value), box);
+            createHBox("genomAD Admixed American",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("genomADafricanAfricanAmerican")) {
-            createHBox("genomADafricanAfricanAmerican",setFeqTextField(value), box);
+            createHBox("genomAD African African American",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("genomADashkenaziJewish")) {
-            createHBox("genomADashkenaziJewish",setFeqTextField(value), box);
+            createHBox("genomAD Ashkenazi Jewish",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("genomADeastAsian")) {
-            createHBox("genomADeastAsian",setFeqTextField(value), box);
+            createHBox("genomAD East Asian",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("genomADfinnish")) {
-            createHBox("genomADfinnish",setFeqTextField(value), box);
+            createHBox("genomAD Finnish",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("genomADnonFinnishEuropean")) {
-            createHBox("genomADnonFinnishEuropean",setFeqTextField(value), box);
+            createHBox("genomAD Non Finnish European",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("genomADothers")) {
-            createHBox("genomADothers",setFeqTextField(value), box);
+            createHBox("genomAD Others",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("genomADsouthAsian")) {
-            createHBox("genomADsouthAsian",setFeqTextField(value), box);
+            createHBox("genomAD SouthAsian",setFeqTextField(value), box);
         } else if(key.equalsIgnoreCase("cosmicOccurrence")) {
-            createHBox("cosmicOccurrence", "haematopoietic and lymphoid tissue", box);
+            createHBox("cosmic Occurrence", value.replaceAll("_", " "), box);
         }
     }
 

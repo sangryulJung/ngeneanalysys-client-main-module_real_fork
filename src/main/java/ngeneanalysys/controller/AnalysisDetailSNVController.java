@@ -195,8 +195,13 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 expandLeft();
             }
         });
-
         setDefaultFilter();
+
+        filterComboBox.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
+            setFilterList();
+        });
+
+        //setFilterList();
         viewAppliedFiltersLabel.addEventFilter(MouseEvent.MOUSE_CLICKED, ev -> {
             ComboBoxItem comboBoxItem = filterComboBox.getSelectionModel().getSelectedItem();
             PopOverUtil.openFilterPopOver(viewAppliedFiltersLabel, filterList.get(comboBoxItem.getValue()));
@@ -253,11 +258,10 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         filterComboBox.valueProperty().addListener((ob, ov, nv) -> {
             showVariantList(1 ,0);
-            if(!nv.getValue().startsWith("C")) {
-                viewAppliedFiltersLabel.setDisable(true);
-            } else {
-                viewAppliedFiltersLabel.setDisable(false);
-            }
+            String[] defaultFilterName = {"Tier I", "Tier II", "Tier III", "Tier IV", "Pathogenic", "Likely Pathogenic",
+                    "Uncertain Significance", "Likely Benign", "Benign", "Tier 1", "Tier 2", "Tier 3", "Tier 4", "All"};
+            viewAppliedFiltersLabel.setDisable(Arrays.stream(defaultFilterName).anyMatch(item -> item.equals(nv.getValue())));
+
         });
     }
 
@@ -287,40 +291,62 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
     }
 
-    private void setStandardFilter(String sortName, String key, String value) {
-        List<Object> list = new ArrayList<>();
-        list.add(key + " " + value);
-        filterList.put(sortName, list);
-    }
-
     private void setDefaultFilter() {
+        totalLabel.setText("Showing " + sample.getAnalysisResultSummary().getAllVariantCount());
         filterComboBox.setConverter(new ComboBoxConverter());
         filterComboBox.getItems().removeAll(filterComboBox.getItems());
-        totalLabel.setText("Showing " + sample.getAnalysisResultSummary().getAllVariantCount());
         filterComboBox.getItems().add(new ComboBoxItem("All", "All"));
         if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
             filterComboBox.getItems().add(new ComboBoxItem("Tier 1", "Tier I"));
-            setStandardFilter("Tier 1", "tier", "T1");
             filterComboBox.getItems().add(new ComboBoxItem("Tier 2", "Tier II"));
-            setStandardFilter("Tier 2", "tier", "T2");
             filterComboBox.getItems().add(new ComboBoxItem("Tier 3", "Tier III"));
-            setStandardFilter("Tier 3", "tier", "T3");
             filterComboBox.getItems().add(new ComboBoxItem("Tier 4", "Tier IV"));
-            setStandardFilter("Tier 4", "tier", "T4");
         } else if(panel.getAnalysisType().equalsIgnoreCase("GERMLINE")) {
             filterComboBox.getItems().add(new ComboBoxItem("Pathogenic", "Pathogenic"));
-            setStandardFilter("Pathogenic", "pathogenicity", "P");
             filterComboBox.getItems().add(new ComboBoxItem("Likely Pathogenic", "Likely Pathogenic"));
-            setStandardFilter("Likely Pathogenic", "pathogenicity", "LP");
             filterComboBox.getItems().add(new ComboBoxItem("Uncertain Significance", "Uncertain Significance"));
-            setStandardFilter("Uncertain Significance", "pathogenicity", "US");
             filterComboBox.getItems().add(new ComboBoxItem("Likely Benign", "Likely Benign"));
-            setStandardFilter("Likely Benign", "pathogenicity", "LB");
             filterComboBox.getItems().add(new ComboBoxItem("Benign", "Benign"));
-            setStandardFilter("Benign", "pathogenicity", "B");
         }
         filterComboBox.getSelectionModel().select(0);
         viewAppliedFiltersLabel.setDisable(true);
+    }
+
+    public void setFilterList() {
+        if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
+
+            Map<String, List<Object>> filter = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("somaticFilter");
+            Set<String> keySet = filter.keySet();
+
+            if(filterComboBox.getItems().size() > 5) {
+                while(filterComboBox.getItems().size() > 5) {
+                    filterComboBox.getItems().remove(filterComboBox.getItems().size() - 1);
+                }
+            }
+
+            for(String key : keySet) {
+                if(!(key.equals("Tier 1") || key.equals("Tier 2") ||key.equals("Tier 3") ||key.equals("Tier 4"))) {
+                    filterComboBox.getItems().add(new ComboBoxItem(key, key));
+                }
+            }
+            filterList = filter;
+        } else if(panel.getAnalysisType().equalsIgnoreCase("GERMLINE")) {
+
+            Map<String, List<Object>> filter = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("germlineFilter");
+            Set<String> keySet = filter.keySet();
+
+            while(filterComboBox.getItems().size() > 6) {
+                filterComboBox.getItems().remove(filterComboBox.getItems().size() - 1);
+            }
+
+            for(String key : keySet) {
+                if(!(key.equals("Pathogenic") || key.equals("Likely Pathogenic") ||key.equals("Uncertain Significance")
+                        || key.equals("Likely Benign") || key.equals("Benign"))) {
+                    filterComboBox.getItems().add(new ComboBoxItem(key, key));
+                }
+                filterList = filter;
+            }
+        }
     }
 
     private void expandLeft() {
@@ -591,7 +617,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     private void setFilterItem(Map<String, List<Object>> list) {
         ComboBoxItem comboBoxItem = filterComboBox.getSelectionModel().getSelectedItem();
-        if(filterList.containsKey(comboBoxItem.getValue())) {
+        if(comboBoxItem != null && filterList.containsKey(comboBoxItem.getValue())) {
             list.put("search", filterList.get(comboBoxItem.getValue()));
         }
     }
@@ -723,10 +749,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             Node node = loader.load();
             VariantFilterController variantFilterController = loader.getController();
             variantFilterController.setMainController(this.getMainController());
-            if(filterComboBox.getSelectionModel().getSelectedItem().getValue().startsWith("C")) {
-                variantFilterController.setCurrentFilerName(filterComboBox.getSelectionModel().getSelectedItem().getValue());
-                variantFilterController.setCurrentFilter(filterList.get(filterComboBox.getSelectionModel().getSelectedItem().getValue()));
-            }
+            variantFilterController.setFilter(filterList);
             variantFilterController.setParamMap(paramMap);
             variantFilterController.setAnalysisType(panel.getAnalysisType());
             variantFilterController.setAnalysisDetailSNVController(this);
@@ -735,20 +758,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    void saveFilter(List<Object> list, String filterName) {
-        if(StringUtils.isEmpty(filterName)) {
-            ComboBoxItem comboBoxItem = new ComboBoxItem("C" + filterList.size(), "C" + filterList.size());
-            filterComboBox.getItems().add(comboBoxItem);
-            filterList.put("C" + filterList.size(), list);
-            filterComboBox.getSelectionModel().select(comboBoxItem);
-        } else {
-            filterList.remove(filterName);
-            filterList.put(filterName, list);
-            showVariantList(currentPageIndex + 1, 0);
-        }
-
     }
 
     @FXML

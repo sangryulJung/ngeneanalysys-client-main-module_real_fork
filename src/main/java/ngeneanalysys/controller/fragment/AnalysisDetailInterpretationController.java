@@ -158,7 +158,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         evidenceCommentColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getEvidence()));
         evidenceCommentColumn.setCellFactory(tableColumn -> new EditingCell());
         evidenceCommentColumn.setOnEditCommit((TableColumn.CellEditEvent<SnpInDelEvidence, String> t) ->
-            (t.getTableView().getItems().get(t.getTablePosition().getRow())).setEvidence(t.getNewValue()));
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setEvidence(t.getNewValue()));
 
         evidenceDeleteColumn.setSortable(false);
         evidenceDeleteColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
@@ -418,7 +418,6 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         }
     }
 
-
     public void setGridPaneWidth(double size) {
         interpretationGridPane.setPrefWidth(size);
     }
@@ -426,6 +425,13 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     public void setEvidenceTable() {
         if(evidenceTableView.getItems() != null && !evidenceTableView.getItems().isEmpty()) {
             evidenceTableView.getItems().removeAll(evidenceTableView.getItems());
+            evidenceTableView.refresh();
+            //evidenceTableView.setItems(null);
+        }
+        if(interpretationTableView.getItems() != null && !interpretationTableView.getItems().isEmpty()) {
+            interpretationTableView.getItems().removeAll(interpretationTableView.getItems());
+            interpretationTableView.refresh();
+            //interpretationTableView.setItems(null);
         }
         try {
             HttpClientResponse response = apiService.get("/analysisResults/snpInDels/"+
@@ -458,7 +464,9 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     }
 
     public void setPastCases() {
-        if(pastCasesTableView.getItems() != null) pastCasesTableView.getItems().removeAll(pastCasesTableView.getItems());
+        if(pastCasesTableView.getItems() != null && !pastCasesTableView.getItems().isEmpty()) {
+            pastCasesTableView.getItems().removeAll(pastCasesTableView.getItems());
+        }
         try {
             Map<String, Object> params = new HashMap<>();
 
