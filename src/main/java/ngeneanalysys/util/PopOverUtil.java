@@ -149,7 +149,7 @@ public class PopOverUtil {
                     createHBox("dbSNP", "has dbSNP ID", box);
                 }
                 if(option.equalsIgnoreCase("cosmicIds")) {
-                    createHBox("COSMIC", "has dbSNP ID", box);
+                    createHBox("COSMIC", "has COSMIC ID", box);
                 }
             }
         }
