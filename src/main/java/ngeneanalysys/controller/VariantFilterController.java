@@ -713,7 +713,7 @@ public class VariantFilterController extends SubPaneController {
         }
 
         if(dbSNPidCheckBox.isSelected()) {
-            list.add("dbsnpRsId");
+            list.add("dbSnpRsId");
         }
 
         if(cosmicidCheckBox.isSelected()) {

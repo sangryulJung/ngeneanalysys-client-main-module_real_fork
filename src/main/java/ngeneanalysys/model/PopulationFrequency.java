@@ -7,7 +7,6 @@ import java.math.BigDecimal;
  * @since 2017-09-08
  */
 public class PopulationFrequency {
-    private String dbsnpRsId;
     private G1000 g1000;
     private BigDecimal exac;
     private ESP6500 esp6500;
@@ -15,13 +14,6 @@ public class PopulationFrequency {
     private BigDecimal koreanExomInformationDatabase;
     private BigDecimal kohbraFreq;
     private BigDecimal koreanReferenceGenomeDatabase;
-
-    /**
-     * @return dbsnpRsId
-     */
-    public String getDbsnpRsId() {
-        return dbsnpRsId;
-    }
 
     /**
      * @return g1000

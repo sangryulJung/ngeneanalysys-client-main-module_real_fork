@@ -33,7 +33,7 @@ public class SnpInDel implements Serializable {
 	private String comment;
 
 	private SnpInDelExpression snpInDelExpression;
-
+	private DBSNP dbSNP;
 	private ClinicalDB clinicalDB;
 
 	private GenomicCoordinate genomicCoordinate;
@@ -71,6 +71,10 @@ public class SnpInDel implements Serializable {
 	 */
 	public void setReadInfo(ReadInfo readInfo) {
 		this.readInfo = readInfo;
+	}
+
+	public DBSNP getDbSNP() {
+		return dbSNP;
 	}
 
 	/**
