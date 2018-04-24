@@ -254,8 +254,8 @@ public class PopOverUtil {
             createHBox("genomADothers",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("genomADsouthAsian")) {
             createHBox("genomADsouthAsian",setFeqTextField(value), box);
-        } else if(key.equalsIgnoreCase("cosmicOccurence")) {
-            createHBox("cosmicOccurence", "haematopoietic and lymphoid tissue", box);
+        } else if(key.equalsIgnoreCase("cosmicOccurrence")) {
+            createHBox("cosmicOccurrence", "haematopoietic and lymphoid tissue", box);
         }
     }
 

@@ -242,18 +242,26 @@ public class VariantFilterController extends SubPaneController {
 
         this.dialogStage = dialogStage;
 
-        setFormat(startFractionTextField);
-        setFormat(endFractionTextField);
+        //setFormat(startFractionTextField);
+        //setFormat(endFractionTextField);
 
         setFrequencyFormatter();
 
         setPathogenicity();
 
+        startFractionTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("[0-9]*")) startFractionTextField.setText(oldValue);
+        });
+
+        endFractionTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("[0-9]*")) endFractionTextField.setText(oldValue);
+        });
+
         startFractionTextField.focusedProperty().addListener((ol, ov, nv) -> {
             if(!nv) {
                 if(!StringUtils.isEmpty(startFractionTextField.getText())
                         && !StringUtils.isEmpty(endFractionTextField.getText())) {
-                    if(Integer.parseInt(startFractionTextField.getText()) > Integer.parseInt(endFractionTextField.getText())) {
+                    if(Double.parseDouble(startFractionTextField.getText()) > Double.parseDouble(endFractionTextField.getText())) {
                         startFractionTextField.setText("");
                     }
                 }
@@ -264,7 +272,7 @@ public class VariantFilterController extends SubPaneController {
             if(!nv) {
                 if(!StringUtils.isEmpty(endFractionTextField.getText())
                         && !StringUtils.isEmpty(startFractionTextField.getText())) {
-                    if(Integer.parseInt(startFractionTextField.getText()) > Integer.parseInt(endFractionTextField.getText())) {
+                    if(Double.parseDouble(startFractionTextField.getText()) > Double.parseDouble(endFractionTextField.getText())) {
                         endFractionTextField.setText("");
                     }
                 }
@@ -460,7 +468,8 @@ public class VariantFilterController extends SubPaneController {
     }
 
     private void alleSet(String value) {
-        Pattern p = Pattern.compile("\\d+");
+        //Pattern p = Pattern.compile("\\d*|\\d+\\.\\d*");
+        Pattern p = Pattern.compile("\\d*");
         Matcher m;
         List<String> values = new ArrayList<>();
         m = p.matcher(value);
@@ -682,13 +691,13 @@ public class VariantFilterController extends SubPaneController {
             list.add("clinVarClass Pathogenic");
         }
         if (clinVarBCheckBox.isSelected()) {
-            list.add("clinVarClass Likely Pathogenic");
+            list.add("clinVarClass Likely_pathogenic");
         }
         if (clinVarCCheckBox.isSelected()) {
-            list.add("clinVarClass Uncertain Significance");
+            list.add("clinVarClass Uncertain_significance");
         }
         if (clinVarDCheckBox.isSelected()) {
-            list.add("clinVarClass Likely Benign");
+            list.add("clinVarClass Likely_benign");
         }
         if (clinVarECheckBox.isSelected()) {
             list.add("clinVarClass Benign");
