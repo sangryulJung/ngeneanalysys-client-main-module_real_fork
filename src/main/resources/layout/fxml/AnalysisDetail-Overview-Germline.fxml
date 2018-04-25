@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 
-<GridPane fx:id="experimentPastResultsWrapper" prefHeight="410.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailOverviewGermlineController">
+<GridPane fx:id="experimentPastResultsWrapper" prefHeight="410.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailOverviewGermlineController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" prefWidth="1140.0" />
    </columnConstraints>
@@ -62,7 +70,7 @@
                      <children>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;">
                            <children>
-                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="28.0" prefWidth="102.0" text="ROI coverage" textFill="WHITE" />
+                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="28.0" prefWidth="102.0" text="ROI Coverage" textFill="WHITE" />
                               <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" styleClass="help_tooltip_white">
                                  <opaqueInsets>
                                     <Insets />
@@ -75,7 +83,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;" GridPane.columnIndex="1">
                            <children>
-                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="144.0" text="Corverage uniformity" textFill="WHITE" />
+                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="144.0" text="Corverage Uniformity" textFill="WHITE" />
                               <Label styleClass="help_tooltip_white">
                                  <tooltip>
                                     <Tooltip fx:id="coverageUniformityTooltip" text="Empty Tooltip" />
