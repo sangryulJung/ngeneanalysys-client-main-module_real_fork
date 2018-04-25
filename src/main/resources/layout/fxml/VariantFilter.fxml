@@ -108,8 +108,8 @@
                         <Label style="-fx-font-family: Noto Sans KR Bold;" text="COSMIC Occurrence" GridPane.rowIndex="19" />
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
                            <children>
-                              <CheckBox fx:id="indelCheckBox11" mnemonicParsing="false" text="MNP(Multiple-nucleotide polymorphism)" />
-                              <CheckBox fx:id="indelCheckBox1111" mnemonicParsing="false" text="Complex(Multiple-nucloetied and an InDel)" />
+                              <CheckBox fx:id="mnpCheckBox" mnemonicParsing="false" text="MNP(Multiple-nucleotide polymorphism)" />
+                              <CheckBox fx:id="complexCheckBox" mnemonicParsing="false" text="Complex(Multiple-nucloetied and an InDel)" />
                            </children>
                         </HBox>
                         <Label fx:id="caseLabel" style="-fx-font-family: Noto Sans KR Bold;" text="Pathogenicity" GridPane.rowIndex="2" />
@@ -620,8 +620,8 @@
          <children>
             <Label style="-fx-font-family: Noto Sans KR Bold;" text="Load Saved Filter" />
             <ComboBox fx:id="filterNameComboBox" prefWidth="150.0" />
-            <Button fx:id="removeFilter" mnemonicParsing="false" prefHeight="23.0" prefWidth="99.0" text="Remove Filter" />
-            <Button fx:id="addFilter" mnemonicParsing="false" text="New Filter" />
+            <Button mnemonicParsing="false" onAction="#removeFilter" prefHeight="23.0" prefWidth="99.0" styleClass="cancelBtn" text="Remove Filter" />
+            <Button mnemonicParsing="false" onAction="#addFilter" styleClass="submitBtn" text="New Filter" />
             <TextField fx:id="filterNameTextField" maxHeight="31.0" prefHeight="31.0" prefWidth="136.0" promptText="Filter Name" />
          </children>
          <GridPane.margin>

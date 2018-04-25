@@ -312,7 +312,7 @@ public class HomeController extends SubPaneController{
         Platform.runLater(() -> hddCheck());
         Platform.runLater(() -> setNoticeArea());
         Platform.runLater(() -> setToolsAndDatabase());
-        final int maxRunNumberOfPage = 3;
+        final int maxRunNumberOfPage = 4;
         CompletableFuture<PagedRun> getPagedRun = new CompletableFuture<>();
         CompletableFuture.supplyAsync(() -> {
             HttpClientResponse response;

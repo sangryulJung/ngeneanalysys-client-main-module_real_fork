@@ -192,12 +192,16 @@ public class PopOverUtil {
     }
 
     private static void setKeyValue(String key, String value, VBox box) {
-        if(key.equalsIgnoreCase("tier") || key.equalsIgnoreCase("pathogenicity")) {
-            createHBox(key, value, box);
+        if(key.equalsIgnoreCase("swTier") || key.equalsIgnoreCase("swPathogenicity")) {
+            createHBox("Prediction", value, box);
+        } else if(key.equalsIgnoreCase("expertTier")) {
+            createHBox("Tier", value, box);
+        } else if(key.equalsIgnoreCase("expertPathogenicity")) {
+            createHBox("Pathogenicity", value, box);
         } else if(key.equalsIgnoreCase("clinVarClass")) {
             createHBox("ClinVar", value, box);
         } else if(key.equalsIgnoreCase("codingConsequence")) {
-            createHBox("Consequence", value.replaceAll("_", " "), box);
+            createHBox("Consequence", value, box);
         } else if(key.equalsIgnoreCase("gene")) {
             createHBox(key, value, box);
         } else if(key.equalsIgnoreCase("chromosome")) {
@@ -205,13 +209,15 @@ public class PopOverUtil {
         } else if(key.equalsIgnoreCase("alleleFraction")) {
             createHBox(key, alleSet(value), box);
         } else if(key.equalsIgnoreCase("variantType")) {
-            if(value.equalsIgnoreCase("snp")) {
-                createHBox("Variant Type", "snv", box);
+            String keyValue = "Variant Type";
+            createHBox(keyValue, value, box);
+            /*if(value.equalsIgnoreCase("snp")) {
+                createHBox(keyValue, "snv", box);
             } else if(value.equalsIgnoreCase("ins")) {
-                createHBox("Variant Type", "ins", box);
+                createHBox(keyValue, "ins", box);
             } else if(value.equalsIgnoreCase("del")) {
-                createHBox("Variant Type", "del", box);
-            }
+                createHBox(keyValue, "del", box);
+            }*/
         } else if(key.equalsIgnoreCase("g1000All")) {
             createHBox("1KGP All",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("g1000African")) {
