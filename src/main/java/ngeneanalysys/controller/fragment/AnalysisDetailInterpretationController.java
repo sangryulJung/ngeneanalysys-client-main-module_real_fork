@@ -446,6 +446,26 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                 List<SnpInDelEvidence> interpretationList = new ArrayList<>();
                 interpretationList.addAll(list.stream().filter(item -> "Active".equalsIgnoreCase(item.getStatus())).collect(Collectors.toList()));
 
+                Optional<SnpInDelEvidence> snpInDelEvidenceOptional
+                        = interpretationList.stream().filter(item -> item.getPrimaryEvidence()).findFirst();
+
+                snpInDelEvidenceOptional.ifPresent(snpInDelEvidence -> {
+                    String tier = "";
+                    if(snpInDelEvidence.getEvidenceLevel().equalsIgnoreCase("A")
+                            || snpInDelEvidence.getEvidenceLevel().equalsIgnoreCase("B")) {
+                        tier = "T1";
+                    } else if(snpInDelEvidence.getEvidenceLevel().equalsIgnoreCase("C")
+                            || snpInDelEvidence.getEvidenceLevel().equalsIgnoreCase("D")) {
+                        tier = "T2";
+                    } else if(snpInDelEvidence.getEvidenceLevel().equalsIgnoreCase("T3")) {
+                        tier = "T3";
+                    } else if(snpInDelEvidence.getEvidenceLevel().equalsIgnoreCase("T4")) {
+                        tier = "T4";
+                    }
+
+                    returnTierClass(tier, userTierLabel ,2);
+                });
+
                 if(!interpretationList.isEmpty())
                     evidenceTableView.getItems().addAll(FXCollections.observableArrayList(interpretationList));
 
@@ -597,6 +617,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                     DialogUtil.error("Unknown Error", e.getMessage(),
                             getMainApp().getPrimaryStage(), true);
                 }
+
             } else {
                 DialogUtil.warning("Primary check error", "Check primary radio button", getMainApp().getPrimaryStage(), true);
             }
@@ -605,7 +626,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
     public void setTier(SnpInDel snpInDel) {
         returnTierClass(snpInDel.getSwTier(), swTierLabel,1);
-        returnTierClass(snpInDel.getExpertTier(), userTierLabel,2);
+        //returnTierClass(snpInDel.getExpertTier(), userTierLabel,2);
     }
 
     public List<Map<String, Object>> returnEvidenceMap() {

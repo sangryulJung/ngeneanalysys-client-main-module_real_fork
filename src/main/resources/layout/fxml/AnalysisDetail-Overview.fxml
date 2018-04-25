@@ -57,12 +57,15 @@
             <TableColumn fx:id="ntChangeColumn" prefWidth="120.0" text="NT Change" />
             <TableColumn fx:id="aaChangeColumn" prefWidth="120.0" text="AA Change" />
             <TableColumn fx:id="alleleFrequencyColumn" prefWidth="120.0" text="VAF(Depth)" />
-            <TableColumn fx:id="therapeuticColumn" editable="false" prefWidth="130.0" sortable="false" text="Evidence" />
+            <TableColumn fx:id="therapeuticColumn" editable="false" prefWidth="128.0" sortable="false" text="Evidence" />
          </columns>
+         <GridPane.margin>
+            <Insets right="2.0" />
+         </GridPane.margin>
       </TableView>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5">
          <children>
-            <VBox prefHeight="75.0" prefWidth="1140.0">
+            <VBox alignment="CENTER_LEFT" prefHeight="75.0" prefWidth="1140.0">
                <children>
                   <GridPane fx:id="dataQCResultGridPane" prefWidth="1140.0">
                      <columnConstraints>
@@ -162,7 +165,7 @@
             </VBox>
          </children>
       </HBox>
-      <Label alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="85.0" style="-fx-pref-height: 30; -fx-font-family: Noto Sans KR Bold;" text="QC MATRIX" GridPane.rowIndex="4">
+      <Label alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="85.0" style="-fx-pref-height: 30; -fx-font-family: Noto Sans KR Bold;" text="QC MATRIX" GridPane.rowIndex="4">
          <styleClass>
             <String fx:value="font_size_15" />
             <String fx:value="font_gray" />
