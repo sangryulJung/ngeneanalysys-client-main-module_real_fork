@@ -318,6 +318,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     public void setFilterList() {
+        String currentFilterName = filterComboBox.getSelectionModel().getSelectedItem().getText();
+        filterComboBox.hide();
         if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
 
             Map<String, List<Object>> filter = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("somaticFilter");
@@ -352,6 +354,10 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 filterList = filter;
             }
         }
+        filterComboBox.show();
+        Optional<ComboBoxItem> optionalComboBoxItem = filterComboBox.getItems().stream().filter(item
+                -> item.getText().equalsIgnoreCase(currentFilterName)).findFirst();
+        optionalComboBoxItem.ifPresent(comboBoxItem -> filterComboBox.getSelectionModel().select(comboBoxItem));
     }
 
     private void expandLeft() {

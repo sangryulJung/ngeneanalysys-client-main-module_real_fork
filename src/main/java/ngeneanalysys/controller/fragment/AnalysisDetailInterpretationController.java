@@ -315,6 +315,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                     snpInDelEvidence.setEvidenceLevel(t1);
                     if(t1.equalsIgnoreCase("T3") || t1.equalsIgnoreCase("T4")) {
                         snpInDelEvidence.setEvidenceType("N/A");
+                        evidenceTableView.refresh();
                     }
                 }
             });

@@ -27,10 +27,7 @@ import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.CacheMemoryService;
 import ngeneanalysys.service.PropertiesService;
-import ngeneanalysys.util.DialogUtil;
-import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.LoginSessionUtil;
-import ngeneanalysys.util.StringUtils;
+import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.apache.commons.lang3.ArrayUtils;
 import org.controlsfx.control.MaskerPane;
@@ -380,19 +377,42 @@ public class MainController extends BaseStageController {
     }
 
     private void createFilter() {
-        Map<String, List<Object>> somaticFilter = new HashMap<>();
-        somaticFilter.put("Tier 1", setStandardFilter("tier", "T1"));
-        somaticFilter.put("Tier 2", setStandardFilter("tier", "T2"));
-        somaticFilter.put("Tier 3", setStandardFilter("tier", "T3"));
-        somaticFilter.put("Tier 4", setStandardFilter("tier", "T4"));
-        basicInformationMap.put("somaticFilter", somaticFilter);
-        Map<String, List<Object>> germlineFilter = new HashMap<>();
-        germlineFilter.put("Pathogenic", setStandardFilter("pathogenicity", "P"));
-        germlineFilter.put("Likely Pathogenic", setStandardFilter("pathogenicity", "LP"));
-        germlineFilter.put("Uncertain Significance", setStandardFilter("pathogenicity", "US"));
-        germlineFilter.put("Likely Benign", setStandardFilter("pathogenicity", "LB"));
-        germlineFilter.put("Benign", setStandardFilter("pathogenicity", "B"));
-        basicInformationMap.put("germlineFilter", germlineFilter);
+        HttpClientResponse response;
+        try {
+            response = apiService.get("member/memberOption/somaticFilter", null, null, null);
+            Map<String, String> filter = JsonUtil.fromJsonToMap(response.getContentString());
+
+            //Map<String, List<Object>> somaticFilter = JsonUtil.fromJsonToMap(filter.get("value"));
+
+            basicInformationMap.put("somaticFilter", filter);
+
+        } catch (WebAPIException wae) {
+            Map<String, List<Object>> somaticFilter = new HashMap<>();
+            somaticFilter.put("Tier 1", setStandardFilter("tier", "T1"));
+            somaticFilter.put("Tier 2", setStandardFilter("tier", "T2"));
+            somaticFilter.put("Tier 3", setStandardFilter("tier", "T3"));
+            somaticFilter.put("Tier 4", setStandardFilter("tier", "T4"));
+            basicInformationMap.put("somaticFilter", somaticFilter);
+
+        }
+
+        try {
+            response = apiService
+                    .get("member/memberOption/germlineFilter", null, null, null);
+            Map<String, String> filter = JsonUtil.fromJsonToMap(response.getContentString());
+
+            //Map<String, List<Object>> germlineFilter = JsonUtil.fromJsonToMap(filter.get("value"));
+
+            basicInformationMap.put("germlineFilter", filter);
+        } catch (WebAPIException wae) {
+            Map<String, List<Object>> germlineFilter = new HashMap<>();
+            germlineFilter.put("Pathogenic", setStandardFilter("pathogenicity", "P"));
+            germlineFilter.put("Likely Pathogenic", setStandardFilter("pathogenicity", "LP"));
+            germlineFilter.put("Uncertain Significance", setStandardFilter("pathogenicity", "US"));
+            germlineFilter.put("Likely Benign", setStandardFilter("pathogenicity", "LB"));
+            germlineFilter.put("Benign", setStandardFilter("pathogenicity", "B"));
+            basicInformationMap.put("germlineFilter", germlineFilter);
+        }
     }
 
     private List<Object> setStandardFilter(String key, String value) {

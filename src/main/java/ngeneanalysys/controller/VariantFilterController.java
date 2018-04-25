@@ -9,8 +9,11 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
+import ngeneanalysys.exceptions.WebAPIException;
+import ngeneanalysys.model.LoginSession;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
+import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.*;
 import org.slf4j.Logger;
 
@@ -26,6 +29,8 @@ import java.util.regex.Pattern;
  */
 public class VariantFilterController extends SubPaneController {
     private static Logger logger = LoggerUtil.getLogger();
+
+    private APIService apiService;
 
     private Stage dialogStage;
 
@@ -297,6 +302,9 @@ public class VariantFilterController extends SubPaneController {
     @Override
     public void show(Parent root) throws IOException {
         logger.debug("show..");
+
+        apiService = APIService.getInstance();
+
         // Create the dialog Stage
         Stage dialogStage = new Stage();
         dialogStage.initStyle(StageStyle.DECORATED);
@@ -685,7 +693,7 @@ public class VariantFilterController extends SubPaneController {
             inframeDeletionCheckBox.setSelected(true);
         } else if(option.equalsIgnoreCase("inframe_insertion")) {
             inframeInsertionCheckBox.setSelected(true);
-        } else if(option.equalsIgnoreCase("ciiCheckBox")) {
+        } else if(option.equalsIgnoreCase("conservative_inframe_deletion")) {
             cidCheckBox.setSelected(true);
         } else if(option.equalsIgnoreCase("conservative_inframe_insertion")) {
             ciiCheckBox.setSelected(true);
@@ -734,6 +742,19 @@ public class VariantFilterController extends SubPaneController {
             changeFilter();
 
             filterNameTextField.setVisible(true);
+
+            String gg = JsonUtil.toJson(filter);
+            Map<String, Object> map = new HashMap<>();
+            map.put("value", gg);
+            try {
+                if ("somatic".equalsIgnoreCase(analysisType)) {
+                    apiService.put("/member/memberOption/somaticFilter", map, null, true);
+                } else if ("germline".equalsIgnoreCase(analysisType)) {
+                    apiService.put("/member/memberOption/germlineFilter", map, null, true);
+                }
+            } catch (WebAPIException wae) {
+                DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainApp.getPrimaryStage(), true);
+            }
         }
     }
 
@@ -783,7 +804,17 @@ public class VariantFilterController extends SubPaneController {
         changeFilter();
 
         String gg = JsonUtil.toJson(filter);
-        Map<String, Object> map = JsonUtil.fromJsonToMap(gg);
+        Map<String, Object> map = new HashMap<>();
+        map.put("value", gg);
+        try {
+            if ("somatic".equalsIgnoreCase(analysisType)) {
+                apiService.put("/member/memberOption/somaticFilter", map, null, true);
+            } else if ("germline".equalsIgnoreCase(analysisType)) {
+                apiService.put("/member/memberOption/germlineFilter", map, null, true);
+            }
+        } catch (WebAPIException wae) {
+            DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainApp.getPrimaryStage(), true);
+        }
 
         snvController.comboBoxSetAll();
         closeFilter();
