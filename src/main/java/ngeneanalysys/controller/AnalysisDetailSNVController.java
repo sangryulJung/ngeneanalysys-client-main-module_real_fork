@@ -899,7 +899,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         });
 
         TableColumn<VariantAndInterpretationEvidence, String> type = new TableColumn<>("Type");
-        createTableHeader(type, "Type", null ,null);
+        createTableHeader(type, "Type", "variantType" ,null);
         type.getStyleClass().clear();
         type.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getVariantType()));
         if(panel != null && ExperimentTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
@@ -915,7 +915,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         codCons.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getCodingConsequence()));
 
         TableColumn<VariantAndInterpretationEvidence, Integer> genomicCoordinate = new TableColumn<>("StartPosition");
-        createTableHeader(genomicCoordinate, "StartPosition", null ,null);
+        createTableHeader(genomicCoordinate, "StartPosition", "startPosition" ,null);
         genomicCoordinate.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getStartPosition()).asObject());
 
         TableColumn<VariantAndInterpretationEvidence, String> strand = new TableColumn<>("Strand");
