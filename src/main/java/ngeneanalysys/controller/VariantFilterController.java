@@ -11,9 +11,7 @@ import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
-import ngeneanalysys.util.DialogUtil;
-import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.StringUtils;
+import ngeneanalysys.util.*;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -272,6 +270,15 @@ public class VariantFilterController extends SubPaneController {
 
     private String[] defaultFilterName = {"Tier I", "Tier II", "Tier III", "Tier IV", "Pathogenic", "Likely Pathogenic",
     "Uncertain Significance", "Likely Benign", "Benign", "Tier 1", "Tier 2", "Tier 3", "Tier 4"};
+
+    private AnalysisDetailSNVController snvController;
+
+    /**
+     * @param snvController AnalysisDetailSNVController
+     */
+    public void setSnvController(AnalysisDetailSNVController snvController) {
+        this.snvController = snvController;
+    }
 
     /**
      * @param analysisType String
@@ -775,6 +782,12 @@ public class VariantFilterController extends SubPaneController {
 
         changeFilter();
 
+        String gg = JsonUtil.toJson(filter);
+        Map<String, Object> map = JsonUtil.fromJsonToMap(gg);
+        logger.info(map.size() + "");
+        logger.info(gg);
+
+        snvController.comboBoxSetAll();
         closeFilter();
     }
 

@@ -3,20 +3,14 @@ package ngeneanalysys.controller;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ngeneanalysys.code.constants.CommonConstants;
-import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
-import ngeneanalysys.controller.fragment.InSilicoPredictionsController;
 import ngeneanalysys.service.PropertiesService;
 import ngeneanalysys.service.ServerURLManageService;
 import ngeneanalysys.util.DialogUtil;
@@ -25,7 +19,6 @@ import ngeneanalysys.util.PropertiesUtil;
 import ngeneanalysys.util.StringUtils;
 import org.slf4j.Logger;
 
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -230,8 +223,7 @@ public class SystemMenuSettingController extends SubPaneController {
            
 
             // 현재 설정된 프로퍼티 설정 갱신
-            try {
-                FileReader reader = new FileReader(configFile);
+            try (FileReader reader = new FileReader(configFile)){
                 Properties properties = new Properties();
                 properties.load(reader);
                 reader.close();

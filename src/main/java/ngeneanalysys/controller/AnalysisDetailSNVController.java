@@ -185,6 +185,11 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         sample = (Sample)paramMap.get("sample");
         panel = (Panel)paramMap.get("panel");
+        if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
+            this.filterList = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("somaticFilter");
+        } else if(panel.getAnalysisType().equalsIgnoreCase("GERMLINE")) {
+            this.filterList = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("germlineFilter");
+        }
 
         interpretationLogsTitledPane.setOnMouseClicked(ev -> setAccordionContents());
 
@@ -703,6 +708,10 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     }
 
+    public void comboBoxSetAll() {
+        filterComboBox.getSelectionModel().selectFirst();
+    }
+
     private void sortTable(String column) {
         if(sortMap.size() == 1 && sortMap.containsKey(column)) {
             if(sortMap.get(column).equalsIgnoreCase("ASC")) {
@@ -733,15 +742,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         worksheetUtil.exportVariantData("CSV", params, this.getMainApp(), sample.getId());
     }
 
-    private void createTableHeader(TableColumn<VariantAndInterpretationEvidence, ?> column, String name, String sortName, Double size) {
-        Label label = new Label(name);
-        column.setSortable(false);
-        if(!StringUtils.isEmpty(sortName)) label.setOnMouseClicked(e -> sortTable(sortName));
-        column.setGraphic(label);
-        if(size != null) column.setPrefWidth(size);
-        variantListTableView.getColumns().add(column);
-    }
-
     @FXML
     public void showFilter() {
         try {
@@ -751,6 +751,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             variantFilterController.setMainController(this.getMainController());
             variantFilterController.setFilter(filterList);
             variantFilterController.setParamMap(paramMap);
+            variantFilterController.setSnvController(this);
             variantFilterController.setAnalysisType(panel.getAnalysisType());
             variantFilterController.show((Parent) node);
             statisticsTitledPane.setContent(node);
@@ -778,6 +779,14 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
     }
 
+    private void createTableHeader(TableColumn<VariantAndInterpretationEvidence, ?> column, String name, String sortName, Double size) {
+        Label label = new Label(name);
+        column.setSortable(false);
+        if(!StringUtils.isEmpty(sortName)) label.setOnMouseClicked(e -> sortTable(sortName));
+        column.setGraphic(label);
+        if(size != null) column.setPrefWidth(size);
+        variantListTableView.getColumns().add(column);
+    }
 
     private void setTableViewColumn() {
         String centerStyleClass = "alignment_center";
