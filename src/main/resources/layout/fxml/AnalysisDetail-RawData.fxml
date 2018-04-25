@@ -43,11 +43,11 @@
    <center>
       <TableView fx:id="rawListTableView" prefHeight="465.0" prefWidth="968.0" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn fx:id="typeColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="170.0" resizable="false" text="TYPE" />
-          <TableColumn fx:id="filenameColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="490.0" text="FILE" />
-            <TableColumn fx:id="sizeColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="120.0" resizable="false" text="SIZE" />
-            <TableColumn fx:id="createdColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="170.0" resizable="false" text="DATE" />
-            <TableColumn fx:id="downloadColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="110.0" resizable="false" text="DOWNLOAD" />
+          <TableColumn fx:id="typeColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="170.0" resizable="false" text="Type" />
+          <TableColumn fx:id="filenameColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="490.0" text="File" />
+            <TableColumn fx:id="sizeColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="120.0" resizable="false" text="Size" />
+            <TableColumn fx:id="createdColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="170.0" resizable="false" text="Date" />
+            <TableColumn fx:id="downloadColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="110.0" resizable="false" text="Download" />
         </columns>
          <BorderPane.margin>
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />

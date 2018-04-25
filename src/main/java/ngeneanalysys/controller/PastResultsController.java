@@ -727,13 +727,13 @@ public class PastResultsController extends SubPaneController {
 			this.setMaxWidth(Double.MAX_VALUE);
 			HBox titleBox = new HBox();
 			String styleClass = "sample_list_label";
-			Label name = new Label("SAMPLE");
+			Label name = new Label("Sample");
 			labelSize(name, 180., styleClass);
-			Label status = new Label("STATUS");
+			Label status = new Label("Status");
 			labelSize(status, 80., styleClass);
-			Label panel = new Label("PANEL");
+			Label panel = new Label("Panel");
 			labelSize(panel, 170., styleClass);
-			Label variants = new Label("VARIANTS");
+			Label variants = new Label("Variant");
 			labelSize(variants, 340., styleClass);
 			Label qc = new Label("QC");
 			labelSize(qc, 88., styleClass);
