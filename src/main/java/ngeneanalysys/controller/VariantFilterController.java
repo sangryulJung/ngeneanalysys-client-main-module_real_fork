@@ -784,9 +784,7 @@ public class VariantFilterController extends SubPaneController {
 
         String gg = JsonUtil.toJson(filter);
         Map<String, Object> map = JsonUtil.fromJsonToMap(gg);
-        logger.info(map.size() + "");
-        logger.info(gg);
-
+        
         snvController.comboBoxSetAll();
         closeFilter();
     }
