@@ -3,22 +3,19 @@ package ngeneanalysys.controller;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
+import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
-import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.StringUtils;
+import ngeneanalysys.model.render.ComboBoxConverter;
+import ngeneanalysys.model.render.ComboBoxItem;
+import ngeneanalysys.util.*;
 import org.slf4j.Logger;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.function.UnaryOperator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,6 +30,12 @@ public class VariantFilterController extends SubPaneController {
     private Stage dialogStage;
 
     @FXML
+    private ComboBox<String> filterNameComboBox;
+
+    @FXML
+    private TextField filterNameTextField;
+
+    @FXML
     private TextField geneTextField;
 
     @FXML
@@ -45,7 +48,30 @@ public class VariantFilterController extends SubPaneController {
     private CheckBox indelCheckBox;
 
     @FXML
-    private CheckBox fivePrimeUTRCheckBox;
+    private CheckBox delCheckBox;
+
+    @FXML
+    private CheckBox mnpCheckBox;
+
+    @FXML
+    private CheckBox complexCheckBox;
+
+    @FXML
+    private CheckBox cosmicidCheckBox;
+
+    @FXML
+    private CheckBox dbSNPidCheckBox;
+
+    @FXML
+    private TextField endFractionTextField;
+
+    @FXML
+    private TextField startFractionTextField;
+
+    ///////////////////////////////////////////////
+
+    @FXML
+    private CheckBox fivePrimeUTRVCheckBox;
 
     @FXML
     private CheckBox cidCheckBox;
@@ -54,7 +80,7 @@ public class VariantFilterController extends SubPaneController {
     private CheckBox didCheckBox;
 
     @FXML
-    private CheckBox frameshiftCheckBox;
+    private CheckBox frameshiftVariantCheckBox;
 
     @FXML
     private CheckBox intronCheckBox;
@@ -63,28 +89,63 @@ public class VariantFilterController extends SubPaneController {
     private CheckBox missenseCheckBox;
 
     @FXML
-    private CheckBox spliceRegionCheckbox;
+    private CheckBox spliceRegionVariantCheckBox;
 
     @FXML
     private CheckBox synonymousCheckBox;
 
     @FXML
-    private CheckBox spliceAcceptorCheckBox;
+    private CheckBox spliceAcceptorVariantCheckBox;
 
     @FXML
     private CheckBox stopGainedCheckBox;
 
     @FXML
-    private TextField endFractionTextField;
+    private CheckBox spliceDonorVariantCheckBox;
 
     @FXML
-    private TextField startFractionTextField;
+    private CheckBox stoplostCheckBox;
 
     @FXML
-    private CheckBox cosmicidCheckBox;
+    private CheckBox inframeDeletionCheckBox;
 
     @FXML
-    private CheckBox dbSNPidCheckBox;
+    private CheckBox inframeInsertionCheckBox;
+
+    @FXML
+    private CheckBox ciiCheckBox;
+
+    @FXML
+    private CheckBox diiCheckBox;
+
+    @FXML
+    private CheckBox startLostCheckBox;
+
+    @FXML
+    private CheckBox threePrimeUTRVCheckBox;
+
+    @FXML
+    private CheckBox threePrimeUTRTCheckBox;
+
+    @FXML
+    private CheckBox fivePrimeUTRTCheckBox;
+
+    @FXML
+    private CheckBox civCheckBox;
+
+    @FXML
+    private CheckBox dgvCheckBox;
+
+    @FXML
+    private CheckBox irCheckBox;
+
+    @FXML
+    private CheckBox srvCheckbox;
+
+    @FXML
+    private CheckBox ugvCheckBox;
+
+    ///////////////////////////////////////////////////////////////////
 
     @FXML
     private TextField tgAllTextField;
@@ -168,6 +229,21 @@ public class VariantFilterController extends SubPaneController {
     private CheckBox caseECheckBox;
 
     @FXML
+    private CheckBox predictionACheckBox;
+
+    @FXML
+    private CheckBox predictionBCheckBox;
+
+    @FXML
+    private CheckBox predictionCCheckBox;
+
+    @FXML
+    private CheckBox predictionDCheckBox;
+
+    @FXML
+    private CheckBox predictionECheckBox;
+
+    @FXML
     private CheckBox clinVarACheckBox;
 
     @FXML
@@ -183,15 +259,26 @@ public class VariantFilterController extends SubPaneController {
     private CheckBox clinVarECheckBox;
 
     @FXML
-    private CheckBox haltCheckBox;
-    @FXML
     private Label caseLabel;
 
-    private List<Object> currentFilter;
+    @FXML
+    private ComboBox<ComboBoxItem> cosmicOccurrenceComboBox;
 
-    private String currentFilerName;
+    private Map<String, List<Object>> filter;
 
     private String analysisType;
+
+    private String[] defaultFilterName = {"Tier I", "Tier II", "Tier III", "Tier IV", "Pathogenic", "Likely Pathogenic",
+    "Uncertain Significance", "Likely Benign", "Benign", "Tier 1", "Tier 2", "Tier 3", "Tier 4"};
+
+    private AnalysisDetailSNVController snvController;
+
+    /**
+     * @param snvController AnalysisDetailSNVController
+     */
+    public void setSnvController(AnalysisDetailSNVController snvController) {
+        this.snvController = snvController;
+    }
 
     /**
      * @param analysisType String
@@ -201,26 +288,10 @@ public class VariantFilterController extends SubPaneController {
     }
 
     /**
-     * @param currentFilter List<Object>
+     * @param filter Map<String, List<Object>>
      */
-    public void setCurrentFilter(List<Object> currentFilter) {
-        this.currentFilter = currentFilter;
-    }
-
-    /**
-     * @param currentFilerName String
-     */
-    public void setCurrentFilerName(String currentFilerName) {
-        this.currentFilerName = currentFilerName;
-    }
-
-    private AnalysisDetailSNVController analysisDetailSNVController;
-
-    /**
-     * @param analysisDetailSNVController AnalysisDetailSNVController
-     */
-    public void setAnalysisDetailSNVController(AnalysisDetailSNVController analysisDetailSNVController) {
-        this.analysisDetailSNVController = analysisDetailSNVController;
+    public void setFilter(Map<String, List<Object>> filter) {
+        this.filter = filter;
     }
 
     @Override
@@ -239,18 +310,28 @@ public class VariantFilterController extends SubPaneController {
 
         this.dialogStage = dialogStage;
 
-        setFormat(startFractionTextField);
-        setFormat(endFractionTextField);
+        //setFormat(startFractionTextField);
+        //setFormat(endFractionTextField);
+
+        setCosmicOccurrenceComboBoxItem();
 
         setFrequencyFormatter();
 
         setPathogenicity();
 
+        startFractionTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("[0-9]*")) startFractionTextField.setText(oldValue);
+        });
+
+        endFractionTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("[0-9]*")) endFractionTextField.setText(oldValue);
+        });
+
         startFractionTextField.focusedProperty().addListener((ol, ov, nv) -> {
             if(!nv) {
                 if(!StringUtils.isEmpty(startFractionTextField.getText())
                         && !StringUtils.isEmpty(endFractionTextField.getText())) {
-                    if(Integer.parseInt(startFractionTextField.getText()) > Integer.parseInt(endFractionTextField.getText())) {
+                    if(Double.parseDouble(startFractionTextField.getText()) > Double.parseDouble(endFractionTextField.getText())) {
                         startFractionTextField.setText("");
                     }
                 }
@@ -261,16 +342,20 @@ public class VariantFilterController extends SubPaneController {
             if(!nv) {
                 if(!StringUtils.isEmpty(endFractionTextField.getText())
                         && !StringUtils.isEmpty(startFractionTextField.getText())) {
-                    if(Integer.parseInt(startFractionTextField.getText()) > Integer.parseInt(endFractionTextField.getText())) {
+                    if(Double.parseDouble(startFractionTextField.getText()) > Double.parseDouble(endFractionTextField.getText())) {
                         endFractionTextField.setText("");
                     }
                 }
             }
         });
 
-        if(currentFilter != null) {
-            setCurrentOption();
-        }
+        setComboBox();
+
+        filterNameComboBox.valueProperty().addListener((ob, oValue, nValue) -> {
+            if(!StringUtils.isEmpty(nValue)) {
+                setCurrentOption(filter.get(nValue));
+            }
+        });
 
         // Schen Init
         Scene scene = new Scene(root);
@@ -278,30 +363,105 @@ public class VariantFilterController extends SubPaneController {
         dialogStage.showAndWait();
     }
 
+    private void setCosmicOccurrenceComboBoxItem() {
+        cosmicOccurrenceComboBox.setConverter(new ComboBoxConverter());
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("adrenal_gland", "Adrenal gland"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("autonomic_ganglia", "Autonomic ganglia"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("biliary_tract", "Biliary tract"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("bone", "Bone"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("breast", "Breast"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("central_nervous_system", "Central nervous system"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("cervix", "Cervix"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("endometrium", "Endometrium"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("eye", "Eye"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("fallopian_tube", "Fallopian tube"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("site_indeterminate", "site indeterminate"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("haematopoietic_and_lymphoid_tissue", "Haematopoietic and lymphoid tissue"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("kidney", "Kidney"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("large_intestine", "Large intestine"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("liver", "Liver"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("lung", "Lung"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("Meninges", "meninges"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("ns", "NS"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("oesophagus", "Oesophagus"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("ovary", "Ovary"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("pancreas", "Pancreas"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("paratesticular_tissues", "Paratesticular tissues"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("parathyroid", "Parathyroid"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("penis", "Penis"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("pericardium", "Pericardium"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("peritoneum", "Peritoneum"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("pituitary", "Pituitary"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("placenta", "Placenta"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("pleura", "Pleura"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("prostate", "Prostate"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("retroperitoneum", "Retroperitoneum"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("salivary_gland", "Salivary gland"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("skin", "Skin"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("small_intestine", "Small intestine"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("soft_tissue", "Soft tissue"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("stomach", "Stomach"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("testis", "Testis"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("thymus", "Thymus"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("thyroid", "Thyroid"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("upper_aerodigestive_tract", "Upper aerodigestive tract"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("urinary_tract", "Urinary tract"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("vagina", "Vagina"));
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("vulva", "Vulva"));
+    }
+
+    private void setComboBox() {
+        Set<String> keySet = filter.keySet();
+
+        for(String key : keySet) {
+            if(!Arrays.stream(defaultFilterName).anyMatch(item -> item.equals(key))) {
+                filterNameComboBox.getItems().add(key);
+            }
+        }
+    }
+
     private void setPathogenicity() {
         if("SOMATIC".equalsIgnoreCase(analysisType)) {
             caseLabel.setText("Tier");
             caseECheckBox.setVisible(false);
-            caseACheckBox.setText("T1");
-            caseBCheckBox.setText("T2");
-            caseCCheckBox.setText("T3");
-            caseDCheckBox.setText("T4");
+            predictionECheckBox.setVisible(false);
+            caseACheckBox.setText("Tier1");
+            caseBCheckBox.setText("Tier2");
+            caseCCheckBox.setText("Tier3");
+            caseDCheckBox.setText("Tier4");
+
+            predictionACheckBox.setText("Tier1");
+            predictionBCheckBox.setText("Tier2");
+            predictionCCheckBox.setText("Tier3");
+            predictionDCheckBox.setText("Tier4");
 
         } else {
             caseLabel.setText("Pathogenicity");
-            caseACheckBox.setText("P");
-            caseBCheckBox.setText("LP");
-            caseCCheckBox.setText("US");
-            caseDCheckBox.setText("LB");
-            caseECheckBox.setText("B");
+            caseACheckBox.setText("P(Pathogentic)");
+            caseBCheckBox.setText("LP(Likely Pathogenic)");
+            caseCCheckBox.setText("US(Uncertatin Significance)");
+            caseDCheckBox.setText("LB(Likely Benign)");
+            caseECheckBox.setText("B(Benign)");
 
+            predictionACheckBox.setText("P(Pathogentic)");
+            predictionBCheckBox.setText("LP(Likely Pathogenic)");
+            predictionCCheckBox.setText("US(Uncertatin Significance)");
+            predictionDCheckBox.setText("LB(Likely Benign)");
+            predictionECheckBox.setText("B(Benign)");
         }
 
-        clinVarACheckBox.setText("P");
-        clinVarBCheckBox.setText("LP");
-        clinVarCCheckBox.setText("US");
-        clinVarDCheckBox.setText("LB");
-        clinVarECheckBox.setText("B");
+        clinVarACheckBox.setText("P(Pathogentic)");
+        clinVarBCheckBox.setText("LP(Likely Pathogenic)");
+        clinVarCCheckBox.setText("US(Uncertatin Significance)");
+        clinVarDCheckBox.setText("LB(Likely Benign)");
+        clinVarECheckBox.setText("B(Benign)");
+    }
+
+    private void setFormat(TextField textField) {
+        Pattern pattern = Pattern.compile("\\d*|\\d+\\.\\d*");
+        TextFormatter formatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change ->
+            pattern.matcher(change.getControlNewText()).matches() ? change : null);
+        textField.setTextFormatter(formatter);
     }
 
     private void setFrequencyFormatter() {
@@ -332,15 +492,9 @@ public class VariantFilterController extends SubPaneController {
         setFormat(kohbraTextField);
     }
 
-    private void setFormat(TextField textField) {
-        Pattern pattern = Pattern.compile("\\d*|\\d+\\.\\d*");
-        TextFormatter formatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change ->
-            pattern.matcher(change.getControlNewText()).matches() ? change : null);
-        textField.setTextFormatter(formatter);
-
-    }
-
-    private void setCurrentOption() {
+    private void setCurrentOption(List<Object> currentFilter) {
+        filterNameTextField.setVisible(false);
+        resetFilterList();
         for(Object obj : currentFilter) {
             String option = obj.toString();
             if(obj.toString().contains(" ")) {
@@ -372,6 +526,20 @@ public class VariantFilterController extends SubPaneController {
         }
     }
 
+    private void setPrediction(String value) {
+        if(value.equalsIgnoreCase("T1") || value.equalsIgnoreCase("P")) {
+            predictionACheckBox.setSelected(true);
+        } else if(value.equalsIgnoreCase("T2") || value.equalsIgnoreCase("LP")) {
+            predictionBCheckBox.setSelected(true);
+        } else if(value.equalsIgnoreCase("T3") || value.equalsIgnoreCase("US")) {
+            predictionCCheckBox.setSelected(true);
+        } else if(value.equalsIgnoreCase("T4") || value.equalsIgnoreCase("LB")) {
+            predictionDCheckBox.setSelected(true);
+        } else {
+            predictionECheckBox.setSelected(true);
+        }
+    }
+
     private void setClinVar(String value) {
         if(value.equalsIgnoreCase("Pathogenic")) {
             clinVarACheckBox.setSelected(true);
@@ -387,8 +555,10 @@ public class VariantFilterController extends SubPaneController {
     }
 
     private void setKeyValue(String key, String value) {
-        if(key.equalsIgnoreCase("tier") || key.equalsIgnoreCase("pathogenicity")) {
+        if(key.equalsIgnoreCase("expertTier") || key.equalsIgnoreCase("expertPathogenicity")) {
             setCase(value);
+        } else if(key.equalsIgnoreCase("swTier") || key.equalsIgnoreCase("swPathogenicity")) {
+            setPrediction(value);
         } else if(key.equalsIgnoreCase("clinVarClass")) {
             setClinVar(value);
         } else if(key.equalsIgnoreCase("codingConsequence")) {
@@ -404,6 +574,12 @@ public class VariantFilterController extends SubPaneController {
                 snvCheckBox.setSelected(true);
             } else if(value.equalsIgnoreCase("ins")) {
                 indelCheckBox.setSelected(true);
+            } else if(value.equalsIgnoreCase("del")) {
+                delCheckBox.setSelected(true);
+            } else if(value.equalsIgnoreCase("mnp")) {
+                mnpCheckBox.setSelected(true);
+            } else if(value.equalsIgnoreCase("complex")) {
+                complexCheckBox.setSelected(true);
             }
         } else if(key.equalsIgnoreCase("g1000All")) {
             setFeqTextField(value, tgAllTextField);
@@ -449,13 +625,16 @@ public class VariantFilterController extends SubPaneController {
             setFeqTextField(value, genomADotherTextField);
         }else if(key.equalsIgnoreCase("genomADsouthAsian")) {
             setFeqTextField(value, genomADsaTextField);
-        }else if(key.equalsIgnoreCase("cosmicOccurence")) {
-            haltCheckBox.setSelected(true);
+        }else if(key.equalsIgnoreCase("cosmicOccurrence")) {
+            Optional<ComboBoxItem> comboBoxItem
+                    = cosmicOccurrenceComboBox.getItems().stream().filter(item -> item.getValue().equals(value)).findFirst();
+            comboBoxItem.ifPresent(comboBoxItem1 -> cosmicOccurrenceComboBox.getSelectionModel().select(comboBoxItem1));
         }
     }
 
     private void alleSet(String value) {
-        Pattern p = Pattern.compile("\\d+");
+        //Pattern p = Pattern.compile("\\d*|\\d+\\.\\d*");
+        Pattern p = Pattern.compile("\\d*");
         Matcher m;
         List<String> values = new ArrayList<>();
         m = p.matcher(value);
@@ -490,29 +669,84 @@ public class VariantFilterController extends SubPaneController {
     }
 
     private void codingConsequenceCheck(String option) {
-        if(option.equalsIgnoreCase("5_prime_UTR_variant")) {
-            fivePrimeUTRCheckBox.setSelected(true);
-        } else if(option.equalsIgnoreCase("conservative_inframe_deletion")) {
+        if(option.equalsIgnoreCase("stop_gained")) {
+            stopGainedCheckBox.setSelected(true);
+        } else if(option.equalsIgnoreCase("stop_lost")) {
+            stoplostCheckBox.setSelected(true);
+        } else if(option.equalsIgnoreCase("splice_donor_variant")) {
+            spliceDonorVariantCheckBox.setSelected(true);
+        } else if(option.equalsIgnoreCase("splice_acceptor_variant")) {
+            spliceAcceptorVariantCheckBox.setSelected(true);
+        } else if(option.equalsIgnoreCase("splice_region_variant")) {
+            spliceRegionVariantCheckBox.setSelected(true);
+        } else if(option.equalsIgnoreCase("frameshift_variant")) {
+            frameshiftVariantCheckBox.setSelected(true);
+        } else if(option.equalsIgnoreCase("inframe_deletion")) {
+            inframeDeletionCheckBox.setSelected(true);
+        } else if(option.equalsIgnoreCase("inframe_insertion")) {
+            inframeInsertionCheckBox.setSelected(true);
+        } else if(option.equalsIgnoreCase("ciiCheckBox")) {
             cidCheckBox.setSelected(true);
-        } else if(option.equalsIgnoreCase("conservative_inframe_deletion")) {
-            cidCheckBox.setSelected(true);
+        } else if(option.equalsIgnoreCase("conservative_inframe_insertion")) {
+            ciiCheckBox.setSelected(true);
         } else if(option.equalsIgnoreCase("disruptive_inframe_deletion")) {
             didCheckBox.setSelected(true);
-        } else if(option.equalsIgnoreCase("frameshift_variant")) {
-            frameshiftCheckBox.setSelected(true);
-        } else if(option.equalsIgnoreCase("intron_variant")) {
-            intronCheckBox.setSelected(true);
+        } else if(option.equalsIgnoreCase("disruptive_inframe_insertion")) {
+            diiCheckBox.setSelected(true);
         } else if(option.equalsIgnoreCase("missense_variant")) {
             missenseCheckBox.setSelected(true);
-        } else if(option.equalsIgnoreCase("splice_region_variant")) {
-            spliceRegionCheckbox.setSelected(true);
-        } else if(option.equalsIgnoreCase("splice_acceptor_variant")) {
-            spliceAcceptorCheckBox.setSelected(true);
+        } else if(option.equalsIgnoreCase("start_lost")) {
+            startLostCheckBox.setSelected(true);
+        } else if(option.equalsIgnoreCase("3_prime_UTR_variant")) {
+            threePrimeUTRVCheckBox.setSelected(true);
+        } else if(option.equalsIgnoreCase("3_prime_UTR_truncation")) {
+            threePrimeUTRTCheckBox.setSelected(true);
+        } else if(option.equalsIgnoreCase("5_prime_UTR_variant")) {
+            fivePrimeUTRVCheckBox.setSelected(true);
+        } else if(option.equalsIgnoreCase("5_prime_UTR_truncation")) {
+            fivePrimeUTRTCheckBox.setSelected(true);
+        } else if(option.equalsIgnoreCase("conserved_intergenic_variant")) {
+            civCheckBox.setSelected(true);
+        } else if(option.equalsIgnoreCase("downstream_gene_variant")) {
+            dgvCheckBox.setSelected(true);
+        } else if(option.equalsIgnoreCase("intergenic_region")) {
+            irCheckBox.setSelected(true);
+        } else if(option.equalsIgnoreCase("intron_variant")) {
+            intronCheckBox.setSelected(true);
+        } else if(option.equalsIgnoreCase("stop_retained_variant")) {
+            srvCheckbox.setSelected(true);
         } else if(option.equalsIgnoreCase("synonymous_variant")) {
             synonymousCheckBox.setSelected(true);
-        } else if(option.equalsIgnoreCase("stop_gained")) {
-            stopGainedCheckBox.setSelected(true);
+        } else if(option.equalsIgnoreCase("upstream_gene_variant")) {
+            ugvCheckBox.setSelected(true);
         }
+    }
+
+    @FXML
+    private void removeFilter() {
+        if(!filterNameTextField.isVisible()
+                && !StringUtils.isEmpty(filterNameComboBox.getSelectionModel().getSelectedItem())) {
+            filter.remove(filterNameComboBox.getSelectionModel().getSelectedItem());
+            String name = filterNameComboBox.getSelectionModel().getSelectedItem();
+            filterNameComboBox.getSelectionModel().clearSelection();
+            filterNameComboBox.getItems().remove(name);
+            resetFilterList();
+            changeFilter();
+
+            filterNameTextField.setVisible(true);
+        }
+    }
+
+    @FXML
+    public void closeFilter() {
+        dialogStage.close();
+    }
+
+    @FXML
+    public void addFilter() {
+        filterNameComboBox.getSelectionModel().clearSelection();
+        filterNameTextField.setVisible(true);
+        resetFilterList();
     }
 
     @FXML
@@ -525,9 +759,43 @@ public class VariantFilterController extends SubPaneController {
 
         populationFrequencySave(list);
 
-        if(!list.isEmpty()) {
-            analysisDetailSNVController.saveFilter(list, currentFilerName);
-            closeFilter();
+        String filterName = "";
+
+        if(list.isEmpty()) return;
+
+        if(filterNameTextField.isVisible()) {
+            if(StringUtils.isEmpty(filterNameTextField.getText())) {
+                DialogUtil.alert("No filter name found", "Please enter a filter name", mainApp.getPrimaryStage(), true);
+                filterNameTextField.requestFocus();
+                return;
+            } else if(Arrays.stream(defaultFilterName).anyMatch(item -> item.equals(filterNameTextField.getText()))) {
+                DialogUtil.alert("Unavailable name", "Please edit the filter name", mainApp.getPrimaryStage(), true);
+                filterNameTextField.requestFocus();
+                return;
+            }
+            filterName = filterNameTextField.getText();
+        } else {
+            filterName = filterNameComboBox.getSelectionModel().getSelectedItem();
+        }
+
+        filter.put(filterName, list);
+
+        changeFilter();
+
+        String gg = JsonUtil.toJson(filter);
+        Map<String, Object> map = JsonUtil.fromJsonToMap(gg);
+
+        snvController.comboBoxSetAll();
+        closeFilter();
+    }
+
+    private void changeFilter() {
+        if("somatic".equalsIgnoreCase(analysisType)) {
+            mainController.getBasicInformationMap().remove("somaticFilter");
+            mainController.getBasicInformationMap().put("somaticFilter", filter);
+        } else if("germline".equalsIgnoreCase(analysisType)) {
+            mainController.getBasicInformationMap().remove("germlineFilter");
+            mainController.getBasicInformationMap().put("germlineFilter", filter);
         }
     }
 
@@ -608,68 +876,150 @@ public class VariantFilterController extends SubPaneController {
     }
 
     private void consequenceSave(List<Object> list) {
-        if(fivePrimeUTRCheckBox.isSelected()) {
-            list.add("codingConsequence 5_prime_UTR_variant");
+
+        if(stopGainedCheckBox.isSelected()) {
+            list.add("codingConsequence stop_gained");
+        }
+        if(stoplostCheckBox.isSelected()) {
+            list.add("codingConsequence stop_lost");
+        }
+
+        if(spliceRegionVariantCheckBox.isSelected()) {
+            list.add("codingConsequence splice_region_variant");
+        }
+        if(spliceAcceptorVariantCheckBox.isSelected()) {
+            list.add("codingConsequence splice_acceptor_variant");
+        }
+        if(spliceDonorVariantCheckBox.isSelected()) {
+            list.add("codingConsequence splice_donor_variant");
+        }
+
+        if(frameshiftVariantCheckBox.isSelected()) {
+            list.add("codingConsequence frameshift_variant");
+        }
+        if(inframeDeletionCheckBox.isSelected()) {
+            list.add("codingConsequence inframe_deletion");
+        }
+        if(inframeInsertionCheckBox.isSelected()) {
+            list.add("codingConsequence inframe_insertion");
         }
         if(cidCheckBox.isSelected()) {
             list.add("codingConsequence conservative_inframe_deletion");
         }
+        if(ciiCheckBox.isSelected()) {
+            list.add("codingConsequence conservative_inframe_insertion");
+        }
         if(didCheckBox.isSelected()) {
             list.add("codingConsequence disruptive_inframe_deletion");
         }
-        if(frameshiftCheckBox.isSelected()) {
-            list.add("codingConsequence frameshift_variant");
+        if(diiCheckBox.isSelected()) {
+            list.add("codingConsequence disruptive_inframe_insertion");
+        }
+
+        if(missenseCheckBox.isSelected()) {
+            list.add("codingConsequence missense_variant");
+        }
+        if(startLostCheckBox.isSelected()) {
+            list.add("codingConsequence start_lost");
+        }
+
+
+        if(threePrimeUTRVCheckBox.isSelected()) {
+            list.add("codingConsequence 3_prime_UTR_variant");
+        }
+        if(threePrimeUTRTCheckBox.isSelected()) {
+            list.add("codingConsequence 3_prime_UTR_truncation");
+        }
+        if(fivePrimeUTRVCheckBox.isSelected()) {
+            list.add("codingConsequence 5_prime_UTR_variant");
+        }
+        if(fivePrimeUTRTCheckBox.isSelected()) {
+            list.add("codingConsequence 5_prime_UTR_truncation");
+        }
+        if(civCheckBox.isSelected()) {
+            list.add("codingConsequence conserved_intergenic_variant");
+        }
+        if(dgvCheckBox.isSelected()) {
+            list.add("codingConsequence downstream_gene_variant");
+        }
+        if(irCheckBox.isSelected()) {
+            list.add("codingConsequence intergenic_region");
         }
         if(intronCheckBox.isSelected()) {
             list.add("codingConsequence intron_variant");
         }
-        if(missenseCheckBox.isSelected()) {
-            list.add("codingConsequence missense_variant");
-        }
-        if(spliceRegionCheckbox.isSelected()) {
-            list.add("codingConsequence splice_region_variant");
-        }
-        if(spliceAcceptorCheckBox.isSelected()) {
-            list.add("codingConsequence splice_acceptor_variant");
+        if(srvCheckbox.isSelected()) {
+            list.add("codingConsequence stop_retained_variant");
         }
         if(synonymousCheckBox.isSelected()) {
             list.add("codingConsequence synonymous_variant");
         }
-        if(stopGainedCheckBox.isSelected()) {
-            list.add("codingConsequence stop_gained");
+        if(ugvCheckBox.isSelected()) {
+            list.add("codingConsequence upstream_gene_variant");
         }
+
+
     }
 
     private void variantTabSave(List<Object> list) {
 
         if("SOMATIC".equalsIgnoreCase(analysisType)) {
             if(caseACheckBox.isSelected()) {
-                list.add("tier T1");
+                list.add("expertTier T1");
             }
             if(caseBCheckBox.isSelected()) {
-                list.add("tier T2");
+                list.add("expertTier T2");
             }
             if(caseCCheckBox.isSelected()) {
-                list.add("tier T3");
+                list.add("expertTier T3");
             }
             if(caseDCheckBox.isSelected()) {
-                list.add("tier T4");
+                list.add("expertTier T4");
+            }
+
+            if(predictionACheckBox.isSelected()) {
+                list.add("swTier T1");
+            }
+            if(predictionBCheckBox.isSelected()) {
+                list.add("swTier T2");
+            }
+            if(predictionCCheckBox.isSelected()) {
+                list.add("swTier T3");
+            }
+            if(predictionDCheckBox.isSelected()) {
+                list.add("swTier T4");
             }
         } else {
             if(caseACheckBox.isSelected()) {
-                list.add("pathogenicity P");
+                list.add("expertPathogenicity P");
             }
             if(caseBCheckBox.isSelected()) {
-                list.add("pathogenicity LP");
+                list.add("expertPathogenicity LP");
             }
             if(caseCCheckBox.isSelected()) {
-                list.add("pathogenicity US");
+                list.add("expertPathogenicity US");
             }
             if(caseDCheckBox.isSelected()) {
-                list.add("pathogenicity LB");
+                list.add("expertPathogenicity LB");
             }
             if(caseECheckBox.isSelected()) {
-                list.add("pathogenicity B");
+                list.add("expertPathogenicity B");
+            }
+
+            if(predictionACheckBox.isSelected()) {
+                list.add("swPathogenicity P");
+            }
+            if(predictionBCheckBox.isSelected()) {
+                list.add("swPathogenicity LP");
+            }
+            if(predictionCCheckBox.isSelected()) {
+                list.add("swPathogenicity US");
+            }
+            if(predictionDCheckBox.isSelected()) {
+                list.add("swPathogenicity LB");
+            }
+            if(predictionECheckBox.isSelected()) {
+                list.add("swPathogenicity B");
             }
         }
 
@@ -688,7 +1038,6 @@ public class VariantFilterController extends SubPaneController {
         if (clinVarECheckBox.isSelected()) {
             list.add("clinVarClass Benign");
         }
-
 
         if(!StringUtils.isEmpty(geneTextField.getText())) {
 
@@ -712,21 +1061,30 @@ public class VariantFilterController extends SubPaneController {
             list.add("variantType snp");
         }
 
+        if(indelCheckBox.isSelected()) {
+            list.add("variantType ins");
+        }
+        if(delCheckBox.isSelected()) {
+            list.add("variantType del");
+        }
+
+        if(mnpCheckBox.isSelected()) {
+            list.add("variantType mnp");
+        }
+        if(complexCheckBox.isSelected()) {
+            list.add("variantType complex");
+        }
+
         if(dbSNPidCheckBox.isSelected()) {
-            list.add("dbSnpRsId");
+            list.add("dbsnpRsId");
         }
 
         if(cosmicidCheckBox.isSelected()) {
             list.add("cosmicIds");
         }
 
-        if(haltCheckBox.isSelected()) {
-            list.add("cosmicOccurrence haematopoietic_and_lymphoid_tissue");
-        }
-
-        if(indelCheckBox.isSelected()) {
-            list.add("variantType ins");
-            list.add("variantType del");
+        if(cosmicOccurrenceComboBox.getSelectionModel().getSelectedItem() != null) {
+            list.add("cosmicOccurrence " + cosmicOccurrenceComboBox.getSelectionModel().getSelectedItem().getValue());
         }
 
         if(StringUtils.isEmpty(endFractionTextField.getText()) && !StringUtils.isEmpty(startFractionTextField.getText())) {
@@ -738,8 +1096,81 @@ public class VariantFilterController extends SubPaneController {
         }
     }
 
-    @FXML
-    public void closeFilter() {
-        dialogStage.close();
+    private void resetFilterList() {
+        filterNameTextField.setText("");
+        geneTextField.setText("");
+        chromosomeTextField.setText("");
+        //snvCheckBox.setSelected(false);
+        snvCheckBox.selectedProperty().setValue(false);
+        indelCheckBox.setSelected(false);
+        delCheckBox.setSelected(false);
+        fivePrimeUTRVCheckBox.setSelected(false);
+        cidCheckBox.setSelected(false);
+        didCheckBox.setSelected(false);
+        frameshiftVariantCheckBox.setSelected(false);
+        intronCheckBox.setSelected(false);
+        missenseCheckBox.setSelected(false);
+        spliceRegionVariantCheckBox.setSelected(false);
+        synonymousCheckBox.setSelected(false);
+        spliceAcceptorVariantCheckBox.setSelected(false);
+        stopGainedCheckBox.setSelected(false);
+        ugvCheckBox.setSelected(false);
+        srvCheckbox.setSelected(false);
+        irCheckBox.setSelected(false);
+        dgvCheckBox.setSelected(false);
+        civCheckBox.setSelected(false);
+        fivePrimeUTRTCheckBox.setSelected(false);
+        threePrimeUTRTCheckBox.setSelected(false);
+        threePrimeUTRVCheckBox.setSelected(false);
+        startLostCheckBox.setSelected(false);
+        diiCheckBox.setSelected(false);
+        ciiCheckBox.setSelected(false);
+        inframeInsertionCheckBox.setSelected(false);
+        inframeDeletionCheckBox.setSelected(false);
+        stoplostCheckBox.setSelected(false);
+        spliceDonorVariantCheckBox.setSelected(false);
+        endFractionTextField.setText("");
+        startFractionTextField.setText("");
+        cosmicidCheckBox.setSelected(false);
+        dbSNPidCheckBox.setSelected(false);
+        tgAllTextField.setText("");
+        tgafrTextField.setText("");
+        tgamrTextField.setText("");
+        tgeasTextField.setText("");
+        tgeurTextField.setText("");
+        tgsasTextField.setText("");
+        espallTextField.setText("");
+        espaaTextField.setText("");
+        espeaTextField.setText("");
+        keidTextField.setText("");
+        krgdTextField.setText("");
+        kohbraTextField.setText("");
+        genomADAllTextField.setText("");
+        genomADmaTextField.setText("");
+        genomADaaaTextField.setText("");
+        genomADajgenomAD.setText("");
+        genomADeaTextField.setText("");
+        genomADfinTextField.setText("");
+        genomADnfeTextField.setText("");
+        genomADotherTextField.setText("");
+        genomADsaTextField.setText("");
+        exacTextField.setText("");
+        caseACheckBox.setSelected(false);
+        caseBCheckBox.setSelected(false);
+        caseCCheckBox.setSelected(false);
+        caseDCheckBox.setSelected(false);
+        caseECheckBox.setSelected(false);
+        predictionACheckBox.setSelected(false);
+        predictionBCheckBox.setSelected(false);
+        predictionCCheckBox.setSelected(false);
+        predictionDCheckBox.setSelected(false);
+        predictionECheckBox.setSelected(false);
+        clinVarACheckBox.setSelected(false);
+        clinVarBCheckBox.setSelected(false);
+        clinVarCCheckBox.setSelected(false);
+        clinVarDCheckBox.setSelected(false);
+        clinVarECheckBox.setSelected(false);
+        cosmicOccurrenceComboBox.getSelectionModel().clearSelection();
+
     }
 }

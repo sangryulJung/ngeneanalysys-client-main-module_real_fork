@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Accordion?>
@@ -15,7 +20,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane fx:id="snvWrapper" prefHeight="380.0" prefWidth="1140.0" style="-fx-background-color: #f2f5fa;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNVController">
+<GridPane fx:id="snvWrapper" prefHeight="380.0" prefWidth="1140.0" style="-fx-background-color: #f2f5fa;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNVController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="200.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="0.0" prefWidth="0.0" />
@@ -62,19 +67,24 @@
                   <Insets />
                </HBox.margin>
                <children>
-                  <Label fx:id="totalLabel" styleClass="font_size_15" text="Showing 1794" textFill="#223654">
+                  <Label fx:id="totalLabel" style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_15" text="Showing 1794" textFill="#223654">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin></Label>
-                  <Label fx:id="searchCountLabel" styleClass="font_size_15" text="of 1794 variants" textFill="#223654" />
+                  <Label fx:id="searchCountLabel" style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_15" text="of 1794 variants" textFill="#223654" />
+                  <Label text="Select Filter">
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
+                  </Label>
                   <ComboBox fx:id="filterComboBox" prefWidth="150.0">
                      <VBox.margin>
-                        <Insets top="20.0" />
+                        <Insets top="10.0" />
                      </VBox.margin>
                   </ComboBox>
-                  <VBox alignment="BOTTOM_CENTER" prefHeight="237.0" prefWidth="130.0">
+                  <VBox alignment="TOP_CENTER" prefHeight="237.0" prefWidth="130.0">
                      <children>
-                        <Button fx:id="filterAddBtn" alignment="BOTTOM_CENTER" mnemonicParsing="false" onAction="#showFilter" prefHeight="25.0" styleClass="font_size_13" text="Variant Fiilter">
+                        <Button fx:id="filterAddBtn" alignment="BOTTOM_CENTER" mnemonicParsing="false" onAction="#showFilter" prefHeight="25.0" styleClass="font_size_13" text="Edit Filter">
                            <VBox.margin>
                               <Insets top="20.0" />
                            </VBox.margin>
@@ -97,7 +107,7 @@
                   </VBox>
                </children>
                <padding>
-                  <Insets left="20.0" top="25.0" />
+                  <Insets left="15.0" top="35.0" />
                </padding></VBox>
             <Button fx:id="leftSizeButton" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="50.0" styleClass="btn_fold">
                <HBox.margin>

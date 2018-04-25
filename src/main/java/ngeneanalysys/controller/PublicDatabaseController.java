@@ -25,6 +25,7 @@ import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
+import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
@@ -130,15 +131,21 @@ public class PublicDatabaseController extends SubPaneController {
         }
         Platform.runLater(() -> {
             try {
-                HttpClientResponse response = apiService.get("/pipelineVersions/" + id + "/annotationDatabases", null, null, null);
+                HttpClientResponse response = apiService
+                        .get("/pipelineVersions/" + id + "/annotationDatabases", null, null, null);
 
-                List<PipelineAnnotationDatabase> list = (List<PipelineAnnotationDatabase>)response.getMultiObjectBeforeConvertResponseToJSON(PipelineAnnotationDatabase.class, false);
+                List<PipelineAnnotationDatabase> dbList = (List<PipelineAnnotationDatabase>)response
+                        .getMultiObjectBeforeConvertResponseToJSON(PipelineAnnotationDatabase.class, false);
 
-                if(list != null && !list.isEmpty()) {
-                    list.sort(Comparator.comparing(PipelineAnnotationDatabase::getCategory));
-                    for(PipelineAnnotationDatabase pipelineAnnotationDatabase : list) {
+                if(dbList != null && !dbList.isEmpty()) {
+                    dbList.sort(Comparator.comparing(PipelineAnnotationDatabase::getCategory));
+                    createGridRow("Category", "Database", "Version",
+                            "Release", "Description", "Source" ,"Sample Count", false, true);
+                    for(PipelineAnnotationDatabase pipelineAnnotationDatabase : dbList) {
                         createGridRow(pipelineAnnotationDatabase.getCategory(), pipelineAnnotationDatabase.getName(),
-                                pipelineAnnotationDatabase.getVersion(), pipelineAnnotationDatabase.getReleaseDate(), pipelineAnnotationDatabase.getDescription(), false);
+                                pipelineAnnotationDatabase.getVersion(), pipelineAnnotationDatabase.getReleaseDate(),
+                                pipelineAnnotationDatabase.getDescription(), pipelineAnnotationDatabase.getSource(),
+                                pipelineAnnotationDatabase.getSampleCount(), false, false);
                     }
                 }
             } catch (WebAPIException wae) {
@@ -149,13 +156,16 @@ public class PublicDatabaseController extends SubPaneController {
             try {
                 HttpClientResponse response = apiService.get("/pipelineVersions/" + id + "/tools", null, null, null);
 
-                List<PipelineTool> list = (List<PipelineTool>)response.getMultiObjectBeforeConvertResponseToJSON(PipelineTool.class, false);
+                List<PipelineTool> toolList = (List<PipelineTool>)response.getMultiObjectBeforeConvertResponseToJSON(PipelineTool.class, false);
 
-                if(list != null && !list.isEmpty()) {
-                    list.sort(Comparator.comparing(PipelineTool::getName));
-                    for(PipelineTool pipelineTool : list) {
+                if(toolList != null && !toolList.isEmpty()) {
+                    toolList.sort(Comparator.comparing(PipelineTool::getName));
+                    createGridRow("Software", "License", "Version", "Release",
+                            "Description", "Source", null, true, true);
+                    for(PipelineTool pipelineTool : toolList) {
                         createGridRow(pipelineTool.getName(), pipelineTool.getLicense(),
-                                pipelineTool.getVersion(), pipelineTool.getReleaseDate(), pipelineTool.getDescription(), true);
+                                pipelineTool.getVersion(), pipelineTool.getReleaseDate(), pipelineTool.getDescription(),
+                                pipelineTool.getSource(), null, true, false);
                     }
                 }
             } catch (WebAPIException wae) {
@@ -165,37 +175,70 @@ public class PublicDatabaseController extends SubPaneController {
 
     }
 
-    private void createGridRow(String column1, String column2, String column3, String column4, String column5, boolean isTool) {
-        Label label1 = createLabel(column1);
-        Label label2 = createLabel(column2);
-        Label label3 = createLabel(column3);
-        Label label4 = createLabel(column4);
-        Label label5 = createLabel(column5);
+    private void createGridRow(final String column1, final String column2, final String column3, final String column4,
+                               final String column5, final String column6, final String column7,
+                               final boolean isTool, final boolean isTitle) {
+        Label label1 = createLabel(column1, isTitle);
+        Label label2 = createLabel(column2, isTitle);
+        Label label3 = createLabel(column3, isTitle);
+        Label label4 = createLabel(column4, isTitle);
+        Label label5 = createLabel(column5, isTitle);
+        Label label6 = createLabel(column6, isTitle);
+        label6.setPadding(new Insets(0, 0, 5, 10));
+        Label label7 = createLabel(column7, isTitle);
 
         label1.setAlignment(Pos.CENTER);
         label2.setAlignment(Pos.CENTER);
         label3.setAlignment(Pos.CENTER);
         label4.setAlignment(Pos.CENTER);
-        label5.setAlignment(Pos.TOP_LEFT);
-        
-        if(isTool) {
-            toolsContentsGridPane.addRow(toolsContentsGridPane.getChildren().size() / 5, label1, label2, label3, label4, label5);
+        if(isTitle) {
+            label5.setAlignment(Pos.CENTER);
+            label6.setAlignment(Pos.CENTER);
         } else {
-            databaseContentsGridPane.addRow(databaseContentsGridPane.getChildren().size() / 5, label1, label2, label3, label4, label5);
+            label5.setAlignment(Pos.TOP_LEFT);
+            label6.setAlignment(Pos.TOP_LEFT);
         }
-        GridPane.setValignment(label1, VPos.TOP);
-        GridPane.setValignment(label2, VPos.TOP);
-        GridPane.setValignment(label3, VPos.TOP);
-        GridPane.setValignment(label4, VPos.TOP);
-        GridPane.setValignment(label5, VPos.TOP);
+        label7.setAlignment(Pos.CENTER);
+
+        if(isTool) {
+            toolsContentsGridPane.addRow(toolsContentsGridPane.getChildren().size() / 6,
+                    label1, label2, label3, label4, label5, label6);
+        } else {
+            databaseContentsGridPane.addRow(databaseContentsGridPane.getChildren().size() / 7,
+                    label1, label2, label3, label4, label5, label6, label7);
+        }
+
+        if(isTitle) {
+            GridPane.setValignment(label1, VPos.CENTER);
+            GridPane.setValignment(label2, VPos.CENTER);
+            GridPane.setValignment(label3, VPos.CENTER);
+            GridPane.setValignment(label4, VPos.CENTER);
+            GridPane.setValignment(label5, VPos.CENTER);
+            GridPane.setValignment(label6, VPos.CENTER);
+            if(!isTool) GridPane.setValignment(label7, VPos.CENTER);
+        } else {
+            GridPane.setValignment(label1, VPos.TOP);
+            GridPane.setValignment(label2, VPos.TOP);
+            GridPane.setValignment(label3, VPos.TOP);
+            GridPane.setValignment(label4, VPos.TOP);
+            GridPane.setValignment(label5, VPos.TOP);
+            GridPane.setValignment(label6, VPos.TOP);
+            if(!isTool) GridPane.setValignment(label7, VPos.TOP);
+        }
     }
 
-    private Label createLabel(String text) {
+    private Label createLabel(String text, boolean isTitle) {
         Label label = new Label();
         label.setWrapText(true);
-        label.setText(text);
+        if(!StringUtils.isEmpty(text)) label.setText(text);
         label.setMaxWidth(Double.MAX_VALUE);
-        label.setStyle(label.getStyle() + "-fx-border-width : 0.5 0 0 0; -fx-border-color : #000000; -fx-font-family: \"Noto Sans KR Light\"");
+        if(isTitle) {
+            label.setStyle(label.getStyle() + "-fx-font-size : 13; -fx-font-family: \"Noto Sans KR Light\"");
+        } else {
+            label.setStyle(label.getStyle()
+                    + "-fx-border-width : 0.5 0 0 0; -fx-border-color : #000000; -fx-font-family: \"Noto Sans KR Light\"");
+        }
+
         label.setAlignment(Pos.CENTER);
         label.setPadding(new Insets(7,0,7,0));
         return label;
@@ -206,10 +249,10 @@ public class PublicDatabaseController extends SubPaneController {
         try {
             HttpClientResponse response = apiService.get("/panels/"+ panelId +"/pipelineVersions"/* + this.panelId*/, null, null, null);
 
-            List<PipelineVersionView> list = (List<PipelineVersionView>)response.getMultiObjectBeforeConvertResponseToJSON(PipelineVersionView.class, false);
-            this.list = list;
-            if(list != null && !list.isEmpty()) {
-                for(PipelineVersionView pipelineVersionView : list) {
+            List<PipelineVersionView> viewList = (List<PipelineVersionView>)response.getMultiObjectBeforeConvertResponseToJSON(PipelineVersionView.class, false);
+            this.list = viewList;
+            if(viewList != null && !viewList.isEmpty()) {
+                for(PipelineVersionView pipelineVersionView : viewList) {
                     versionComboBox.getItems().add(new ComboBoxItem(pipelineVersionView.getId().toString(), pipelineVersionView.getVersion()));
                 }
                 versionComboBox.getSelectionModel().selectFirst();

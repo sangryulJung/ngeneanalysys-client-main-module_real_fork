@@ -1,109 +1,107 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" style="-fx-backgorund-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.VariantFilterController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.VariantFilterController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints minHeight="10.0" prefHeight="440.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="95.0" minHeight="10.0" prefHeight="55.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="547.0" minHeight="10.0" prefHeight="501.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="95.0" minHeight="10.0" prefHeight="65.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <TabPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #FFFFFF;" tabClosingPolicy="UNAVAILABLE">
+      <TabPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #FFFFFF;" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="1">
         <tabs>
-          <Tab text="Varianit">
+          <Tab text="Variant">
                <content>
-                  <GridPane style="-fx-background-color: #FFFFFF;">
+                  <GridPane alignment="CENTER_LEFT" style="-fx-background-color: #FFFFFF;">
                     <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="450.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="251.0" minWidth="10.0" prefWidth="185.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="822.0" minWidth="10.0" prefWidth="675.0" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="140.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label text="Variant Type" GridPane.rowIndex="2">
-                           <GridPane.margin>
-                              <Insets left="10.0" />
-                           </GridPane.margin></Label>
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="Variant Type" GridPane.rowIndex="6" />
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
                            <children>
-                              <CheckBox fx:id="snvCheckBox" mnemonicParsing="false" text="SNV" />
-                              <CheckBox fx:id="indelCheckBox" mnemonicParsing="false" text="INDEL" />
+                              <CheckBox fx:id="snvCheckBox" mnemonicParsing="false" text="SNP" />
+                              <CheckBox fx:id="indelCheckBox" mnemonicParsing="false" text="Ins(Insertion)" />
+                              <CheckBox fx:id="delCheckBox" mnemonicParsing="false" text="Del(Deletion)" />
                            </children>
                         </HBox>
-                        <Label text="Chromosome" GridPane.rowIndex="3">
-                           <GridPane.margin>
-                              <Insets left="10.0" />
-                           </GridPane.margin></Label>
-                        <Label text="Gene" GridPane.rowIndex="4">
-                           <GridPane.margin>
-                              <Insets left="10.0" />
-                           </GridPane.margin></Label>
-                        <TextField fx:id="geneTextField" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" promptText="FLT3,CEBPA" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <Label text="dbSNP" GridPane.rowIndex="5">
-                           <GridPane.margin>
-                              <Insets left="10.0" />
-                           </GridPane.margin></Label>
-                        <CheckBox fx:id="dbSNPidCheckBox" mnemonicParsing="false" text="Has dbSNP ID" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <Label text="COSMIC" GridPane.rowIndex="6">
-                           <GridPane.margin>
-                              <Insets left="10.0" />
-                           </GridPane.margin></Label>
-                        <CheckBox fx:id="cosmicidCheckBox" mnemonicParsing="false" text="Has COSMIC ID" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                        <TextField fx:id="chromosomeTextField" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" promptText="chr7, chr9" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Label text="Allele Fraction" GridPane.rowIndex="7">
-                           <GridPane.margin>
-                              <Insets left="10.0" />
-                           </GridPane.margin></Label>
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="Chromosome" GridPane.rowIndex="9" />
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="Gene" GridPane.rowIndex="11" />
+                        <TextField fx:id="geneTextField" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" promptText="FLT3,CEBPA" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="dbSNP" GridPane.rowIndex="13" />
+                        <CheckBox fx:id="dbSNPidCheckBox" mnemonicParsing="false" text="Has dbSNP ID" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="COSMIC" GridPane.rowIndex="15" />
+                        <CheckBox fx:id="cosmicidCheckBox" mnemonicParsing="false" text="Has COSMIC ID" GridPane.columnIndex="1" GridPane.rowIndex="15" />
+                        <TextField fx:id="chromosomeTextField" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" promptText="chr7, chr9" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="Allele Fraction" GridPane.rowIndex="17" />
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0" GridPane.columnIndex="1" GridPane.rowIndex="17">
                            <children>
-                              <TextField fx:id="startFractionTextField" prefWidth="100.0" promptText="30" />
+                              <TextField fx:id="startFractionTextField" prefWidth="60.0" promptText="30" />
                               <Label text="~" />
-                              <TextField fx:id="endFractionTextField" maxWidth="100.0" promptText="50" />
+                              <TextField fx:id="endFractionTextField" maxWidth="100.0" prefWidth="60.0" promptText="50" />
                            </children>
                         </HBox>
-                        <Label fx:id="caseLabel" text="Pathogenicity">
-                           <GridPane.margin>
-                              <Insets left="10.0" />
-                           </GridPane.margin></Label>
-                        <Label text="ClinVar" GridPane.rowIndex="1">
-                           <GridPane.margin>
-                              <Insets left="10.0" />
-                           </GridPane.margin></Label>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="Prediction" />
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="ClinVar" GridPane.rowIndex="4" />
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                            <children>
-                              <CheckBox fx:id="caseACheckBox" mnemonicParsing="false" text="CheckBox" />
-                              <CheckBox fx:id="caseBCheckBox" mnemonicParsing="false" text="CheckBox" />
-                              <CheckBox fx:id="caseCCheckBox" mnemonicParsing="false" text="CheckBox" />
-                              <CheckBox fx:id="caseDCheckBox" mnemonicParsing="false" text="CheckBox" />
-                              <CheckBox fx:id="caseECheckBox" mnemonicParsing="false" text="CheckBox" />
+                              <CheckBox fx:id="predictionACheckBox" mnemonicParsing="false" text="CheckBox" />
+                              <CheckBox fx:id="predictionBCheckBox" mnemonicParsing="false" text="CheckBox" />
+                              <CheckBox fx:id="predictionCCheckBox" mnemonicParsing="false" text="CheckBox" />
+                              <CheckBox fx:id="predictionDCheckBox" mnemonicParsing="false" text="CheckBox" />
+                              <CheckBox fx:id="predictionECheckBox" mnemonicParsing="false" text="CheckBox" />
                            </children>
                         </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                            <children>
                               <CheckBox fx:id="clinVarACheckBox" mnemonicParsing="false" text="CheckBox" />
                               <CheckBox fx:id="clinVarBCheckBox" mnemonicParsing="false" text="CheckBox" />
@@ -112,33 +110,300 @@
                               <CheckBox fx:id="clinVarECheckBox" mnemonicParsing="false" text="CheckBox" />
                            </children>
                         </HBox>
-                        <Label text="cosmicOccurence" GridPane.rowIndex="8">
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="COSMIC Occurrence" GridPane.rowIndex="19" />
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                           <children>
+                              <CheckBox fx:id="mnpCheckBox" mnemonicParsing="false" text="MNP(Multiple-nucleotide polymorphism)" />
+                              <CheckBox fx:id="complexCheckBox" mnemonicParsing="false" text="Complex(Multiple-nucloetied and an InDel)" />
+                           </children>
+                        </HBox>
+                        <Label fx:id="caseLabel" style="-fx-font-family: Noto Sans KR Bold;" text="Pathogenicity" GridPane.rowIndex="2" />
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <children>
+                              <CheckBox fx:id="caseACheckBox" mnemonicParsing="false" text="CheckBox" />
+                              <CheckBox fx:id="caseBCheckBox" mnemonicParsing="false" text="CheckBox" />
+                              <CheckBox fx:id="caseCCheckBox" mnemonicParsing="false" text="CheckBox" />
+                              <CheckBox fx:id="caseDCheckBox" mnemonicParsing="false" text="CheckBox" />
+                              <CheckBox fx:id="caseECheckBox" mnemonicParsing="false" text="CheckBox" />
+                           </children>
+                        </HBox>
+                        <ComboBox fx:id="cosmicOccurrenceComboBox" prefWidth="150.0" promptText="Tissue selection" GridPane.columnIndex="1" GridPane.rowIndex="19" />
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                           <children>
+                              <Separator prefWidth="890.0">
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
+                              </Separator>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="3">
+                           <children>
+                              <Separator prefWidth="890.0">
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
+                              </Separator>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="5">
+                           <children>
+                              <Separator prefWidth="890.0">
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
+                              </Separator>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="8">
+                           <children>
+                              <Separator prefWidth="890.0">
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
+                              </Separator>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="10">
+                           <children>
+                              <Separator prefWidth="890.0">
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
+                              </Separator>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="12">
+                           <children>
+                              <Separator prefWidth="890.0">
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
+                              </Separator>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="14">
                            <GridPane.margin>
-                              <Insets left="10.0" />
-                           </GridPane.margin></Label>
-                        <CheckBox fx:id="haltCheckBox" mnemonicParsing="false" text="Haematopoietic And Lymphoid Tissue" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                              <Insets />
+                           </GridPane.margin>
+                           <children>
+                              <Separator prefWidth="890.0">
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
+                              </Separator>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="16">
+                           <children>
+                              <Separator prefWidth="890.0">
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
+                              </Separator>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="18">
+                           <children>
+                              <Separator prefWidth="890.0">
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
+                              </Separator>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="20">
+                           <children>
+                              <Separator prefWidth="890.0">
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
+                              </Separator>
+                           </children>
+                        </HBox>
                      </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
                   </GridPane>
                </content>
           </Tab>
           <Tab text="Consequence">
                <content>
-                  <VBox prefHeight="200.0" prefWidth="100.0">
+                  <VBox prefHeight="177.0" prefWidth="880.0">
                      <children>
-                        <CheckBox fx:id="fivePrimeUTRCheckBox" mnemonicParsing="false" text="5 prime UTR" />
-                        <CheckBox fx:id="cidCheckBox" mnemonicParsing="false" text="conservative inframe deletion" />
-                        <CheckBox fx:id="didCheckBox" mnemonicParsing="false" text="disruptive inframe deletion" />
-                        <CheckBox fx:id="frameshiftCheckBox" mnemonicParsing="false" text="frameshift" />
-                        <CheckBox fx:id="intronCheckBox" mnemonicParsing="false" text="intron" />
-                        <CheckBox fx:id="missenseCheckBox" mnemonicParsing="false" text="missense" />
-                        <CheckBox fx:id="spliceRegionCheckbox" mnemonicParsing="false" text="splice region" />
-                        <CheckBox fx:id="spliceAcceptorCheckBox" mnemonicParsing="false" text="splice acceptor" />
-                        <CheckBox fx:id="synonymousCheckBox" mnemonicParsing="false" text="synonymous" />
-                        <CheckBox fx:id="stopGainedCheckBox" mnemonicParsing="false" text="stop gained" />
+                        <ScrollPane prefHeight="400.0" prefWidth="880.0">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="376.0" prefWidth="880.0">
+                                 <children>
+                                    <GridPane prefHeight="290.0" prefWidth="857.0">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="425.0" minWidth="10.0" prefWidth="147.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="696.0" minWidth="10.0" prefWidth="690.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <HBox prefHeight="100.0" prefWidth="200.0">
+                                             <children>
+                                                <Label prefHeight="35.0" prefWidth="233.0" style="-fx-font-family: Noto Sans KR Bold;" text="Stop gain or loss" />
+                                             </children></HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+                                             <children>
+                                                <Label prefHeight="35.0" prefWidth="238.0" style="-fx-font-family: Noto Sans KR Bold;" text="Splice site" />
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4">
+                                             <children>
+                                                <Label prefHeight="35.0" prefWidth="233.0" style="-fx-font-family: Noto Sans KR Bold;" text="Indels" />
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5" />
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="6" />
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="8">
+                                             <children>
+                                                <Label prefHeight="35.0" prefWidth="248.0" style="-fx-font-family: Noto Sans KR Bold;" text="Missense" />
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="10">
+                                             <children>
+                                                <Label prefHeight="35.0" prefWidth="239.0" style="-fx-font-family: Noto Sans KR Bold;" text="Silent" />
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="11" />
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="12" />
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="13" />
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+                                             <children>
+                                                <CheckBox fx:id="stopGainedCheckBox" mnemonicParsing="false" prefHeight="39.0" prefWidth="98.0" text="stop_gained" />
+                                                <CheckBox fx:id="stoplostCheckBox" mnemonicParsing="false" prefHeight="38.0" prefWidth="81.0" text="stop_lost" />
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                             <children>
+                                                <CheckBox fx:id="spliceDonorVariantCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="168.0" text="splice_donor_variant" />
+                                                <CheckBox fx:id="spliceAcceptorVariantCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="176.0" text="splice_acceptor_variant" />
+                                                <CheckBox fx:id="spliceRegionVariantCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="167.0" text="splice_region_variant" />
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                             <children>
+                                                <CheckBox fx:id="frameshiftVariantCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="138.0" text="frameshift_variant" />
+                                                <CheckBox fx:id="inframeDeletionCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="138.0" text="inframe_deletion" />
+                                                <CheckBox fx:id="inframeInsertionCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="138.0" text="inframe_insertion" />
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                             <children>
+                                                <CheckBox fx:id="cidCheckBox" mnemonicParsing="false" prefHeight="40.0" prefWidth="199.0" text="conservative_inframe_deletion" />
+                                                <CheckBox fx:id="ciiCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="225.0" text="conservative_inframe_insertion" />
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                             <children>
+                                                <CheckBox fx:id="didCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="212.0" text="disruptive_inframe_deletion" />
+                                                <CheckBox fx:id="diiCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="212.0" text="disruptive_inframe_insertion" />
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                                             <children>
+                                                <CheckBox fx:id="missenseCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="144.0" text="missense_variant" />
+                                                <CheckBox fx:id="startLostCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="144.0" text="start_lost" />
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                                             <children>
+                                                <CheckBox fx:id="threePrimeUTRVCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="160.0" text="3_prime_UTR_variant" />
+                                                <CheckBox fx:id="threePrimeUTRTCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="206.0" text="3_prime_UTR_truncation" />
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="11">
+                                             <children>
+                                                <CheckBox fx:id="fivePrimeUTRVCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="160.0" text="5_prime_UTR_variant" />
+                                                <CheckBox fx:id="fivePrimeUTRTCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="206.0" text="5_prime_UTR_truncation" />
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="12">
+                                             <children>
+                                                <CheckBox fx:id="civCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="224.0" text="conserved_intergenic_variant" />
+                                                <CheckBox fx:id="dgvCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="224.0" text="downstream_gene_variant" />
+                                                <CheckBox fx:id="irCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="224.0" text="intergenic_region" />
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="13">
+                                             <children>
+                                                <CheckBox fx:id="intronCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="119.0" text="intron_variant" />
+                                                <CheckBox fx:id="srvCheckbox" mnemonicParsing="false" prefHeight="35.0" prefWidth="169.0" text="stop_retained_variant" />
+                                                <CheckBox fx:id="synonymousCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="169.0" text="synonymous_variant" />
+                                                <CheckBox fx:id="ugvCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="179.0" text="upstream_gene_variant" />
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                                             <children>
+                                                <Separator prefWidth="890.0">
+                                                   <padding>
+                                                      <Insets right="10.0" />
+                                                   </padding>
+                                                </Separator>
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="3">
+                                             <children>
+                                                <Separator prefWidth="890.0">
+                                                   <padding>
+                                                      <Insets right="10.0" />
+                                                   </padding>
+                                                </Separator>
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="7">
+                                             <children>
+                                                <Separator prefWidth="890.0">
+                                                   <padding>
+                                                      <Insets right="10.0" />
+                                                   </padding>
+                                                </Separator>
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="9">
+                                             <children>
+                                                <Separator prefWidth="890.0">
+                                                   <padding>
+                                                      <Insets right="10.0" />
+                                                   </padding>
+                                                </Separator>
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="14">
+                                             <children>
+                                                <Separator prefWidth="890.0" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </GridPane>
+                                 </children>
+                              </AnchorPane>
+                          </content>
+                        </ScrollPane>
                      </children>
-                     <padding>
-                        <Insets left="15.0" />
-                     </padding>
                   </VBox>
                </content>
           </Tab>
@@ -147,8 +412,8 @@
                   <GridPane fx:id="populationFrequencyGridPane">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" minWidth="10.0" prefWidth="180.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="298.0" minWidth="10.0" prefWidth="260.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
                     </columnConstraints>
                     <rowConstraints>
@@ -167,45 +432,26 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label styleClass="font_size_15" text="1000G">
-                           <GridPane.margin>
-                              <Insets left="10.0" />
-                           </GridPane.margin></Label>
-                        <Label text="All" GridPane.rowIndex="1">
-                           <GridPane.margin>
-                              <Insets left="10.0" />
-                           </GridPane.margin></Label>
-                        <Label text="AFR(African)" GridPane.rowIndex="2">
-                           <GridPane.margin>
-                              <Insets left="10.0" />
-                           </GridPane.margin></Label>
-                        <Label text="AMR(Ad Mixed American)" GridPane.rowIndex="3">
-                           <padding>
-                              <Insets left="10.0" />
-                           </padding></Label>
-                        <Label text="EAS(East Asian)" GridPane.rowIndex="4">
-                           <GridPane.margin>
-                              <Insets left="10.0" />
-                           </GridPane.margin></Label>
-                        <Label text="EUR(European)" GridPane.rowIndex="5">
-                           <GridPane.margin>
-                              <Insets left="10.0" />
-                           </GridPane.margin></Label>
-                        <Label text="SAS(South Asian)" GridPane.rowIndex="6">
-                           <GridPane.margin>
-                              <Insets left="10.0" />
-                           </GridPane.margin></Label>
-                        <TextField fx:id="tgAllTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <TextField fx:id="tgafrTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <TextField fx:id="tgamrTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <TextField fx:id="tgeasTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <TextField fx:id="tgeurTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <TextField fx:id="tgsasTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                        <Label styleClass="font_size_15" text="GenomAD" GridPane.columnIndex="2" />
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="6">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
+                              <TextField fx:id="genomADfinTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_13" text="1KGP" />
+                        <Label text="All" GridPane.rowIndex="1" />
+                        <Label text="AFR(African)" GridPane.rowIndex="2" />
+                        <Label text="AMR(Ad Mixed American)" GridPane.rowIndex="3" />
+                        <Label text="EAS(East Asian)" GridPane.rowIndex="4" />
+                        <Label text="EUR(European)" GridPane.rowIndex="5" />
+                        <Label text="SAS(South Asian)" GridPane.rowIndex="6" />
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_13" text="genomAD" GridPane.columnIndex="2" />
                         <Label text="All" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <Label text="mixed American" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <Label text="Mixed American" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                         <Label text="African African American" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                         <Label text="Ashkenazi Jewish" GridPane.columnIndex="2" GridPane.rowIndex="4" />
                         <Label text="East Asian" GridPane.columnIndex="2" GridPane.rowIndex="5" />
@@ -213,57 +459,180 @@
                         <Label text="Non Finnish European" GridPane.columnIndex="2" GridPane.rowIndex="7" />
                         <Label text="Others" GridPane.columnIndex="2" GridPane.rowIndex="8" />
                         <Label text="South Asian" GridPane.columnIndex="2" GridPane.rowIndex="9" />
-                        <Label styleClass="font_size_15" text="ESP 6500" GridPane.rowIndex="10" GridPane.valignment="BOTTOM">
-                           <GridPane.margin>
-                              <Insets left="10.0" />
-                           </GridPane.margin></Label>
-                        <Label text="all" GridPane.rowIndex="11">
-                           <GridPane.margin>
-                              <Insets left="10.0" />
-                           </GridPane.margin></Label>
-                        <Label text="aa" GridPane.rowIndex="12">
-                           <GridPane.margin>
-                              <Insets left="10.0" />
-                           </GridPane.margin></Label>
-                        <Label text="ea" GridPane.rowIndex="13">
-                           <GridPane.margin>
-                              <Insets left="10.0" />
-                           </GridPane.margin></Label>
-                        <Label styleClass="font_size_15" text="ETC" GridPane.columnIndex="2" GridPane.rowIndex="10" />
-                        <Label text="koreanExomInformationDatabase" GridPane.columnIndex="2" GridPane.rowIndex="12" />
-                        <Label text="koreanReferenceGenomeDatabase" GridPane.columnIndex="2" GridPane.rowIndex="13" />
-                        <Label text="kohbraFreq" GridPane.columnIndex="2" GridPane.rowIndex="14" />
-                        <TextField fx:id="espallTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="1" GridPane.rowIndex="11" />
-                        <TextField fx:id="espaaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="1" GridPane.rowIndex="12" />
-                        <TextField fx:id="espeaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="1" GridPane.rowIndex="13" />
-                        <TextField fx:id="genomADAllTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                        <TextField fx:id="genomADmaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                        <TextField fx:id="genomADaaaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                        <TextField fx:id="genomADajgenomAD" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-                        <TextField fx:id="genomADeaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="3" GridPane.rowIndex="5" />
-                        <TextField fx:id="genomADfinTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="3" GridPane.rowIndex="6" />
-                        <TextField fx:id="genomADnfeTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="3" GridPane.rowIndex="7" />
-                        <TextField fx:id="genomADotherTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="3" GridPane.rowIndex="8" />
-                        <TextField fx:id="genomADsaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="3" GridPane.rowIndex="9" />
-                        <TextField fx:id="keidTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="3" GridPane.rowIndex="12" />
-                        <TextField fx:id="krgdTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="3" GridPane.rowIndex="13" />
-                        <TextField fx:id="kohbraTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="3" GridPane.rowIndex="14" />
-                        <Label text="exac" GridPane.columnIndex="2" GridPane.rowIndex="11" />
-                        <TextField fx:id="exacTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" GridPane.columnIndex="3" GridPane.rowIndex="11" />
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_13" text="ESP 6500" GridPane.rowIndex="8" GridPane.valignment="BOTTOM" />
+                        <Label text="All" GridPane.rowIndex="9" />
+                        <Label text="AA (African American)" GridPane.rowIndex="10" />
+                        <Label text="EA(European American)" GridPane.rowIndex="11" />
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_13" text="ETC" GridPane.columnIndex="2" GridPane.rowIndex="11" />
+                        <Label text="KoEXID(Korean Exome Information Database)" GridPane.columnIndex="2" GridPane.rowIndex="13" />
+                        <Label text="KRGDB(Korean Reference Genome Database)" GridPane.columnIndex="2" GridPane.rowIndex="14" />
+                        <Label text="KOHBRA(Korean Hereditary Breast Cancer)" GridPane.columnIndex="2" GridPane.rowIndex="15" />
+                        <Label text="ExAC(Exome Aggregation Consortium)" GridPane.columnIndex="2" GridPane.rowIndex="12" />
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" />
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
+                              <TextField fx:id="tgAllTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
+                              <TextField fx:id="tgafrTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
+                              <TextField fx:id="tgamrTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
+                              <TextField fx:id="tgeasTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
+                              <TextField fx:id="tgeurTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
+                              <TextField fx:id="tgsasTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
+                              <TextField fx:id="espallTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
+                              <TextField fx:id="espaaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="11">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
+                              <TextField fx:id="espeaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
+                              <TextField fx:id="genomADAllTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
+                              <TextField fx:id="genomADmaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
+                              <TextField fx:id="genomADaaaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
+                              <TextField fx:id="genomADajgenomAD" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="5">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
+                              <TextField fx:id="genomADeaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="7">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
+                              <TextField fx:id="genomADnfeTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="8">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
+                              <TextField fx:id="genomADotherTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="9">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
+                              <TextField fx:id="genomADsaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="10" />
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="11" />
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="12">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
+                              <TextField fx:id="exacTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="13">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
+                              <TextField fx:id="keidTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="14">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
+                              <TextField fx:id="krgdTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="15">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
+                              <TextField fx:id="kohbraTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                           </children>
+                        </HBox>
                      </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
                   </GridPane>
                </content>
             </Tab>
         </tabs>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <GridPane.margin>
+            <Insets left="10.0" right="10.0" top="10.0" />
+         </GridPane.margin>
       </TabPane>
-      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" style="-fx-background-color: #FFFFFF;" GridPane.rowIndex="1">
+      <HBox alignment="CENTER_RIGHT" prefHeight="75.0" prefWidth="900.0" spacing="10.0" style="-fx-background-color: #FFFFFF;" GridPane.rowIndex="2">
          <children>
             <Button fx:id="cancelBtn" mnemonicParsing="false" onAction="#closeFilter" styleClass="cancelBtn" text="Cancel" />
-            <Button fx:id="saveBtn" mnemonicParsing="false" onAction="#filterSave" styleClass="submitBtn" text="Apply" />
+            <Button fx:id="saveBtn" mnemonicParsing="false" onAction="#filterSave" styleClass="submitBtn" text="Save Filter" />
          </children>
          <padding>
             <Insets right="10.0" />
          </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+         <children>
+            <Label style="-fx-font-family: Noto Sans KR Bold;" text="Create New Filter" />
+            <Button mnemonicParsing="false" onAction="#addFilter" styleClass="submitBtn" text="New Filter" />
+            <TextField fx:id="filterNameTextField" maxHeight="31.0" prefHeight="31.0" prefWidth="136.0" promptText="Filter Name" />
+            <Label style="-fx-font-family: Noto Sans KR Bold;" text="Load Saved Filter" />
+            <ComboBox fx:id="filterNameComboBox" prefWidth="150.0" />
+            <Button mnemonicParsing="false" onAction="#removeFilter" prefHeight="23.0" prefWidth="99.0" styleClass="cancelBtn" text="Remove Filter" />
+         </children>
+         <GridPane.margin>
+            <Insets left="10.0" top="10.0" />
+         </GridPane.margin>
       </HBox>
    </children>
    <stylesheets>
