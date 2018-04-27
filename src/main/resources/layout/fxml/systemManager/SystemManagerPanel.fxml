@@ -20,13 +20,13 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="470.0" prefWidth="1200.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemManagerPanelController">
+<AnchorPane prefHeight="470.0" prefWidth="1200.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemManagerPanelController">
    <stylesheets>
       <URL value="@../../css/common.css" />
       <URL value="@../../css/experimenter.css" />
    </stylesheets>
    <children>
-      <HBox prefHeight="470.0" prefWidth="1200.0">
+      <HBox prefHeight="502.0" prefWidth="1200.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
          <children>
             <ScrollPane hbarPolicy="NEVER" maxHeight="470.0" maxWidth="385.0" prefHeight="470.0" prefWidth="385.0" vbarPolicy="ALWAYS">
                <HBox.margin>
@@ -250,10 +250,13 @@
                               </Button>
                               <Button fx:id="panelSaveButton" mnemonicParsing="false" onAction="#savePanel" styleClass="submitBtn" text="Save" />
                            </children>
+                           <padding>
+                              <Insets right="10.0" />
+                           </padding>
                         </HBox>
                      </children>
                      <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
                   </VBox>
                </content>
@@ -269,52 +272,22 @@
             </HBox>
             <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="558.0" prefWidth="861.0">
                <children>
-                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="74.0" prefWidth="800.0">
+                  <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="162.0">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" />
+                     </padding>
                      <children>
-                        <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="900.0" VBox.vgrow="NEVER">
-                           <children>
-                              <Label text="Panel" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="1.0">
-                           <children>
-                              <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="162.0" spacing="5.0">
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                                 <children>
-                                    <Button mnemonicParsing="false" onAction="#panelAdd" styleClass="submitBtn" text="+" />
-                                 </children>
-                              </HBox>
-                              <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="180.0" spacing="5.0">
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                              </HBox>
-                              <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="33.0" prefWidth="170.0" spacing="5.0">
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                              </HBox>
-                              <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="33.0" prefWidth="192.0" spacing="5.0">
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                              </HBox>
-                              <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="162.0" spacing="5.0">
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                              </HBox>
-                           </children>
-                        </HBox>
+                        <Button mnemonicParsing="false" onAction="#panelAdd" styleClass="submitBtn" text="+" />
                      </children>
-                  </VBox>
-                  <TableView fx:id="panelListTable" maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="835.0" tableMenuButtonVisible="true">
+                     <VBox.margin>
+                        <Insets right="10.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <TableView fx:id="panelListTable" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="415.0" prefWidth="820.0" tableMenuButtonVisible="true">
                     <columns>
                         <TableColumn fx:id="defaultPanelTableColumn" prefWidth="75.0" text="Default" />
                         <TableColumn fx:id="panelIdTableColumn" prefWidth="60.0" text="Panel Id" visible="false" />
-                        <TableColumn fx:id="panelNameTableColumn" prefWidth="335.0" text="Panel Name" />
+                        <TableColumn fx:id="panelNameTableColumn" prefWidth="300.0" text="Panel" />
                         <TableColumn fx:id="editPanelTableColumn" prefWidth="80.0" />
                         <TableColumn fx:id="virtualPanelColumn" prefWidth="195.0" style="-fx-alignment: center;" text="Virtual Panel" />
                         <TableColumn fx:id="panelCodeTableColumn" prefWidth="60.79998779296875" text="Code" />
@@ -333,6 +306,7 @@
                     </columns>
                   </TableView>
                   <Pagination fx:id="panelPagination" prefHeight="48.0" prefWidth="800.0" />
+                  <HBox alignment="CENTER_RIGHT" prefHeight="41.0" prefWidth="800.0" spacing="1.0" />
                </children>
             </VBox>
          </children>

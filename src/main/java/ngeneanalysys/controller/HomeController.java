@@ -150,15 +150,15 @@ public class HomeController extends SubPaneController{
     }
 
     private void initRunListLayout() {
-        final int maxRunNumberOfPage = 3;
+        final int maxRunNumberOfPage = 4;
         try {
             runList = new ArrayList<>();
             for (int i = 0; i < maxRunNumberOfPage; i++) {
                 RunStatusVBox box = new RunStatusVBox();
                 runList.add(box);
-                runListHBox.setPrefWidth(runListHBox.getPrefWidth() + 247);
+                runListHBox.setPrefWidth(runListHBox.getPrefWidth() + 235);
                 runListHBox.getChildren().add(box);
-                runListHBox.setSpacing(37);
+                runListHBox.setSpacing(10);
             }
         } catch (Exception e) {
             logger.error("HOME -> initRunListLayout", e);
@@ -312,7 +312,7 @@ public class HomeController extends SubPaneController{
         Platform.runLater(() -> hddCheck());
         Platform.runLater(() -> setNoticeArea());
         Platform.runLater(() -> setToolsAndDatabase());
-        final int maxRunNumberOfPage = 3;
+        final int maxRunNumberOfPage = 4;
         CompletableFuture<PagedRun> getPagedRun = new CompletableFuture<>();
         CompletableFuture.supplyAsync(() -> {
             HttpClientResponse response;
@@ -470,8 +470,12 @@ public class HomeController extends SubPaneController{
             SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
             if(run.getCreatedAt() != null)
                 startDateLabel.setText(format.format(run.getCreatedAt().toDate()));
+            else
+                startDateLabel.setText("");
             if(run.getCompletedAt() != null)
                 finishDateLabel.setText(format.format(run.getCompletedAt().toDate()));
+            else
+                finishDateLabel.setText("");
             RunStatus runStatus = run.getRunStatus();
 
             panelLabel.setText(run.getPanelName());

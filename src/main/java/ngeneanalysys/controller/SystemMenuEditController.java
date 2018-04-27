@@ -103,7 +103,7 @@ public class SystemMenuEditController extends SubPaneController {
                 }
         });
         try {
-            HttpClientResponse response = apiService.get("/members/" + loginSession.getId(), getParamMap(), null,
+            HttpClientResponse response = apiService.get("/member", getParamMap(), null,
                     false);
 
             user = response.getObjectBeforeConvertResponseToJSON(User.class);
@@ -129,7 +129,7 @@ public class SystemMenuEditController extends SubPaneController {
     }
     /**
      * 새 비밀번호 입력폼 유효성 체크
-     * @return
+     * @return boolean
      */
     public boolean validNewPwdInput() {
         if(ValidationUtil.text(newPasswordField.getText(), "password", 7, -1, "([a-zA-Z0-9].*[!,@,#,$,%,^,&,*,?,_,~])|([!,@,#,$,%,^,&,*,?,_,~].*[a-zA-Z0-9])", null, false, dialogStage) > 0) {
@@ -193,7 +193,7 @@ public class SystemMenuEditController extends SubPaneController {
                 }
 
                 try {
-                    apiService.put("/members/" + loginSession.getId(), params, null, true);
+                    apiService.put("/member", params, null, true);
 
                     DialogUtil.alert("Update User Information Success", "Your Information has been updated.",
                             dialogStage, true);

@@ -723,7 +723,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
     @FXML
     public void panelAdd() {
-        titleLabel.setText("panel add");
+        titleLabel.setText("Panel Add");
         panelId = 0;
         setDisabledItem(false);
         resetItem();
@@ -764,7 +764,7 @@ public class SystemManagerPanelController extends SubPaneController {
                     e.printStackTrace();
                 }
 
-                titleLabel.setText("panel modify");
+                titleLabel.setText("Panel Update");
 
                 setDisabledItem(false);
                 resetItem();

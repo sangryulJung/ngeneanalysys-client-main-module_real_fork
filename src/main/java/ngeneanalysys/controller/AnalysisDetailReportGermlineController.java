@@ -629,7 +629,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         Optional<ButtonType> result = alert.showAndWait();
         if(result.isPresent() && result.get() == ButtonType.OK) {
             try {
-                HttpClientResponse response = apiService.get("/members", null,
+                HttpClientResponse response = apiService.get("/member", null,
                         null, false);
                 user = response.getObjectBeforeConvertResponseToJSON(User.class);
                 // 소속기관, 연락처 정보 존재 확인
@@ -715,7 +715,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 contentsMap.put("inspectorContact", "");
                 contentsMap.put("reportingDate", "");
                 if(!isDraft) {
-                    HttpClientResponse response = apiService.get("/members/" + loginSession.getId(), null, null,
+                    HttpClientResponse response = apiService.get("/member", null, null,
                             false);
                     User user = response.getObjectBeforeConvertResponseToJSON(User.class);
                     if(!StringUtils.isEmpty(user.getOrganization()) && !StringUtils.isEmpty(user.getDepartment())) {

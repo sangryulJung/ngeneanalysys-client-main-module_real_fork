@@ -163,7 +163,7 @@ public class FXMLConstants {
 
 	public static final String VIRTUAL_PANEL_EDIT = "/layout/fxml/VirtualPanelEdit.fxml";
 
-	public static final String SERVER_DIRECTORY_VIEW = "/layout/fxml/serverDirectoryView.fxml";
+	public static final String SERVER_DIRECTORY_VIEW = "/layout/fxml/ServerDirectoryView.fxml";
 
 	public static final String ANALYSIS_DETAIL_VARIANTS = "/layout/fxml/AnalysisDetail-Variants.fxml";
 

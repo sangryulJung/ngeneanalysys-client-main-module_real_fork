@@ -115,7 +115,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             List<ServerFile> serverFiles = serverFileInfo.getChild().stream()
                     .filter(serverFile -> serverFile.getName().toLowerCase().endsWith("fastq.gz"))
                     .collect(Collectors.toList());
-            if(serverFiles.isEmpty()) DialogUtil.alert("not found", "not found fastq file", sampleUploadController.getCurrentStage(), true);
+            if(serverFiles.isEmpty()) DialogUtil.alert("Empty Fastq File Directory", "Can not find fastq files in the directory.", sampleUploadController.getCurrentStage(), true);
             setServerFastqList(serverFiles);
 
         } catch (WebAPIException e) {

@@ -17,12 +17,12 @@
    <children>
       <TableView fx:id="memoListTableView" maxHeight="-Infinity" maxWidth="1040.0" minHeight="-Infinity" prefHeight="231.0" prefWidth="870.0" style="-fx-background-color: #fff;" styleClass="sub_table" tableMenuButtonVisible="true">
         <columns>
-          <TableColumn fx:id="dateColumn" prefWidth="160.0" styleClass="alignment_center" text="DATE" />
-          <TableColumn fx:id="typeColumn" prefWidth="110.0" styleClass="alignment_center" text="TYPE" />
-            <TableColumn fx:id="userColumn" prefWidth="120.0" styleClass="alignment_center" text="USER" />
-            <TableColumn fx:id="preValueColumn" prefWidth="75.0" styleClass="alignment_center" text="PREVIOUS" />
-            <TableColumn fx:id="nextValueColumn" prefWidth="75.0" styleClass="alignment_center" text="CURRENT" />
-            <TableColumn fx:id="commentColumn" prefWidth="320.0" text="COMMENT" />
+          <TableColumn fx:id="dateColumn" prefWidth="160.0" styleClass="alignment_center" text="Date" />
+          <TableColumn fx:id="typeColumn" prefWidth="110.0" styleClass="alignment_center" text="Type" />
+            <TableColumn fx:id="userColumn" prefWidth="120.0" styleClass="alignment_center" text="User" />
+            <TableColumn fx:id="preValueColumn" prefWidth="75.0" styleClass="alignment_center" text="Previous" />
+            <TableColumn fx:id="nextValueColumn" prefWidth="75.0" styleClass="alignment_center" text="Current" />
+            <TableColumn fx:id="commentColumn" prefWidth="320.0" text="Comment" />
         </columns>
          <GridPane.margin>
             <Insets left="10.0" right="10.0" />

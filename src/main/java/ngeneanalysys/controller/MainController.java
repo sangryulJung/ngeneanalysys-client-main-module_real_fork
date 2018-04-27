@@ -27,10 +27,7 @@ import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.CacheMemoryService;
 import ngeneanalysys.service.PropertiesService;
-import ngeneanalysys.util.DialogUtil;
-import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.LoginSessionUtil;
-import ngeneanalysys.util.StringUtils;
+import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.apache.commons.lang3.ArrayUtils;
 import org.controlsfx.control.MaskerPane;
@@ -185,7 +182,7 @@ public class MainController extends BaseStageController {
         primaryStage = this.mainApp.getPrimaryStage();
         primaryStage.setScene(new Scene(root));
         //primaryStage.setTitle(CommonConstants.SYSTEM_NAME);
-        primaryStage.setTitle("");
+        primaryStage.setTitle("NGeneAnalySys");
         // OS가 Window인 경우 아이콘 출력.
         if (System.getProperty("os.name").toLowerCase().contains("window")) {
             primaryStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
@@ -371,10 +368,57 @@ public class MainController extends BaseStageController {
             List<Diseases> diseases = (List<Diseases>)response.getMultiObjectBeforeConvertResponseToJSON(Diseases.class, false);
             basicInformationMap.put("diseases", diseases);
 
+            createFilter();
+
         } catch (WebAPIException e) {
             DialogUtil.error(e.getHeaderText(), e.getMessage(), getMainApp().getPrimaryStage(),
                     false);
         }
+    }
+
+    private void createFilter() {
+        HttpClientResponse response;
+        try {
+            response = apiService.get("member/memberOption/somaticFilter", null, null, null);
+            Map<String, String> filter = JsonUtil.fromJsonToMap(response.getContentString());
+
+            //Map<String, List<Object>> somaticFilter = JsonUtil.fromJsonToMap(filter.get("value"));
+
+            basicInformationMap.put("somaticFilter", filter);
+
+        } catch (WebAPIException wae) {
+            Map<String, List<Object>> somaticFilter = new HashMap<>();
+            somaticFilter.put("Tier 1", setStandardFilter("tier", "T1"));
+            somaticFilter.put("Tier 2", setStandardFilter("tier", "T2"));
+            somaticFilter.put("Tier 3", setStandardFilter("tier", "T3"));
+            somaticFilter.put("Tier 4", setStandardFilter("tier", "T4"));
+            basicInformationMap.put("somaticFilter", somaticFilter);
+
+        }
+
+        try {
+            response = apiService
+                    .get("member/memberOption/germlineFilter", null, null, null);
+            Map<String, String> filter = JsonUtil.fromJsonToMap(response.getContentString());
+
+            //Map<String, List<Object>> germlineFilter = JsonUtil.fromJsonToMap(filter.get("value"));
+
+            basicInformationMap.put("germlineFilter", filter);
+        } catch (WebAPIException wae) {
+            Map<String, List<Object>> germlineFilter = new HashMap<>();
+            germlineFilter.put("Pathogenic", setStandardFilter("pathogenicity", "P"));
+            germlineFilter.put("Likely Pathogenic", setStandardFilter("pathogenicity", "LP"));
+            germlineFilter.put("Uncertain Significance", setStandardFilter("pathogenicity", "US"));
+            germlineFilter.put("Likely Benign", setStandardFilter("pathogenicity", "LB"));
+            germlineFilter.put("Benign", setStandardFilter("pathogenicity", "B"));
+            basicInformationMap.put("germlineFilter", germlineFilter);
+        }
+    }
+
+    private List<Object> setStandardFilter(String key, String value) {
+        List<Object> list = new ArrayList<>();
+        list.add(key + " " + value);
+        return list;
     }
 
     /**
@@ -797,7 +841,6 @@ public class MainController extends BaseStageController {
         }
 
     }
-
 
     /**
      * 분석 요청 업로드 작업 실행

@@ -678,7 +678,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         Optional<ButtonType> result = alert.showAndWait();
         if(result.isPresent() && result.get() == ButtonType.OK) {
             try {
-                HttpClientResponse response = apiService.get("/members", null,
+                HttpClientResponse response = apiService.get("/member", null,
                         null, false);
                 user = response.getObjectBeforeConvertResponseToJSON(User.class);
                 // 소속기관, 연락처 정보 존재 확인

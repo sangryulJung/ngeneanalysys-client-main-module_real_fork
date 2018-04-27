@@ -57,12 +57,15 @@
             <TableColumn fx:id="ntChangeColumn" prefWidth="120.0" text="NT Change" />
             <TableColumn fx:id="aaChangeColumn" prefWidth="120.0" text="AA Change" />
             <TableColumn fx:id="alleleFrequencyColumn" prefWidth="120.0" text="VAF(Depth)" />
-            <TableColumn fx:id="therapeuticColumn" editable="false" prefWidth="130.0" sortable="false" text="Evidence" />
+            <TableColumn fx:id="therapeuticColumn" editable="false" prefWidth="128.0" sortable="false" text="Evidence" />
          </columns>
+         <GridPane.margin>
+            <Insets right="2.0" />
+         </GridPane.margin>
       </TableView>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5">
          <children>
-            <VBox prefHeight="75.0" prefWidth="1140.0">
+            <VBox alignment="CENTER_LEFT" prefHeight="75.0" prefWidth="1140.0">
                <children>
                   <GridPane fx:id="dataQCResultGridPane" prefWidth="1140.0">
                      <columnConstraints>
@@ -81,7 +84,7 @@
                      <children>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;">
                            <children>
-                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="80.0" text="Total base" textFill="WHITE" />
+                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="80.0" text="Total Base" textFill="WHITE" />
                               <Label styleClass="help_tooltip_white">
                                  <tooltip>
                                     <Tooltip fx:id="totalBaseTooltip" text="Empty Tooltip" />
@@ -92,7 +95,7 @@
                         <Label fx:id="totalBaseLabel" text="pass" GridPane.rowIndex="1" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;" GridPane.columnIndex="1">
                            <children>
-                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="120.0" text="Q30 trimmed base" textFill="WHITE" />
+                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="120.0" text="Q30 Trimmed Base" textFill="WHITE" />
                               <Label styleClass="help_tooltip_white">
                                  <tooltip>
                                     <Tooltip fx:id="q30Tooltip" text="Empty Tooltip" />
@@ -103,7 +106,7 @@
                         <Label fx:id="q30Label" text="pass" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;" GridPane.columnIndex="2">
                            <children>
-                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="90.0" text="Mapped base" textFill="WHITE" />
+                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="90.0" text="Mapped Base" textFill="WHITE" />
                               <Label styleClass="help_tooltip_white">
                                  <tooltip>
                                     <Tooltip fx:id="mappedBaseTooltip" text="Empty Tooltip" />
@@ -114,7 +117,7 @@
                         <Label fx:id="mappedLabel" text="pass" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;" GridPane.columnIndex="3">
                            <children>
-                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="80.0" text="On target" textFill="WHITE" />
+                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="80.0" text="On Target" textFill="WHITE" />
                               <Label styleClass="help_tooltip_white">
                                  <tooltip>
                                     <Tooltip fx:id="onTargetTooltip" text="Empty Tooltip" />
@@ -125,7 +128,7 @@
                         <Label fx:id="onTargetLabel" text="pass" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;" GridPane.columnIndex="4">
                            <children>
-                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="120.0" text="On target coverage" textFill="WHITE" />
+                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="120.0" text="On Target Coverage" textFill="WHITE" />
                               <Label styleClass="help_tooltip_white">
                                  <tooltip>
                                     <Tooltip fx:id="onTargetCoverageTooltip" text="Empty Tooltip" />
@@ -135,7 +138,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;" GridPane.columnIndex="5">
                            <children>
-                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="110.0" text="Duplicated reads" textFill="WHITE" />
+                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="110.0" text="Duplicated Reads" textFill="WHITE" />
                               <Label styleClass="help_tooltip_white">
                                  <tooltip>
                                     <Tooltip fx:id="duplicatedReadsTooltip" text="Empty Tooltip" />
@@ -145,7 +148,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;" GridPane.columnIndex="6">
                            <children>
-                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="90.0" text="ROI coverage" textFill="WHITE" />
+                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="90.0" text="ROI Coverage" textFill="WHITE" />
                               <Label styleClass="help_tooltip_white">
                                  <tooltip>
                                     <Tooltip fx:id="roiCoverageTooltip" text="Empty Tooltip" />
@@ -162,7 +165,7 @@
             </VBox>
          </children>
       </HBox>
-      <Label alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="85.0" style="-fx-pref-height: 30; -fx-font-family: Noto Sans KR Bold;" text="QC MATRIX" GridPane.rowIndex="4">
+      <Label alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="85.0" style="-fx-pref-height: 30; -fx-font-family: Noto Sans KR Bold;" text="QC MATRIX" GridPane.rowIndex="4">
          <styleClass>
             <String fx:value="font_size_15" />
             <String fx:value="font_gray" />

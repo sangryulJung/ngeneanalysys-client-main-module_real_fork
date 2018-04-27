@@ -127,7 +127,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
         loginIdColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLoginId()));
         memberNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getMemberName()));
         groupNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getMemberGroupName()));
-        createAt.setCellValueFactory(cellData -> new SimpleStringProperty(DateFormatUtils.format(cellData.getValue().getCreatedAt().toDate(), "yyyy-MM-dd hh:mm:ss")));
+        createAt.setCellValueFactory(cellData -> new SimpleStringProperty(DateFormatUtils.format(cellData.getValue().getCreatedAt().toDate(), "yyyy-MM-dd HH:mm:ss")));
 
         /* 삭제 버튼 */
         delete.setSortable(false);
