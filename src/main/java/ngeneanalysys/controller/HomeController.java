@@ -470,8 +470,12 @@ public class HomeController extends SubPaneController{
             SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
             if(run.getCreatedAt() != null)
                 startDateLabel.setText(format.format(run.getCreatedAt().toDate()));
+            else
+                startDateLabel.setText("");
             if(run.getCompletedAt() != null)
                 finishDateLabel.setText(format.format(run.getCompletedAt().toDate()));
+            else
+                finishDateLabel.setText("");
             RunStatus runStatus = run.getRunStatus();
 
             panelLabel.setText(run.getPanelName());
