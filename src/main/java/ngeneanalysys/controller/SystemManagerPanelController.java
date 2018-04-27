@@ -856,6 +856,16 @@ public class SystemManagerPanelController extends SubPaneController {
                                 diseaseIds.stream().filter(id -> id.equals(Integer.parseInt(item.getValue()))).findFirst().isPresent())
                             diseaseCheckComboBox.getCheckModel().check(item);
                     }
+
+                    if(panelDetail.getDefaultDiseaseId() != null && defaultDiseaseComboBox.getItems() != null &&
+                            !defaultDiseaseComboBox.getItems().isEmpty()) {
+                        final String id = String.valueOf(panelDetail.getDefaultDiseaseId());
+                        Optional<ComboBoxItem> optionalComboBoxItem = defaultDiseaseComboBox.getItems().stream()
+                                .filter(comboBoxItem -> comboBoxItem.getValue()
+                                        .equals(id)).findFirst();
+                        optionalComboBoxItem.ifPresent(comboBoxItem ->
+                                defaultDiseaseComboBox.getSelectionModel().select(comboBoxItem));
+                    }
                 }
 
                 roiFileSelectionButton.setDisable(false);
