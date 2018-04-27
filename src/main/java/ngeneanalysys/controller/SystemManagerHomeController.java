@@ -140,6 +140,37 @@ public class SystemManagerHomeController extends SubPaneController {
                 logger.error("tab contents loading fail." + e.getMessage());
                 e.printStackTrace();
             }
+        } else {
+            refreshItem(tab.getId());
+        }
+    }
+
+    public void refreshItem(String currentTabId) {
+        if(currentTabId.equals(SystemManagerTabMenuCode.TAB_SYSTEM_MANAGER_REPORT_TEMPLATE
+                .getItem().getNodeId())) {
+            systemManagerReportTemplateController.setReportTableList(1);
+            systemManagerReportTemplateController.setDisabledItem(true);
+        } else if(currentTabId.equals(SystemManagerTabMenuCode.TAB_SYSTEM_MANAGER_INTERPRETATION_DATABASE
+                .getItem().getNodeId())) {
+            systemManagerInterpretationDatabaseController.setInterpretationList(1);
+        } else if(currentTabId.equals(SystemManagerTabMenuCode.TAB_SYSTEM_MANAGER_NEWS_AND_TIPS
+                .getItem().getNodeId())) {
+            systemManagerNewsAndTipsController.setNewsAndTipsListTableList(1);
+            systemManagerNewsAndTipsController.setDisabledItem(true);
+        } else if(currentTabId.equals(SystemManagerTabMenuCode.TAB_SYSTEM_MANAGER_PANEL
+                .getItem().getNodeId())) {
+            systemManagerPanelController.setPanelList(1);
+            systemManagerPanelController.setDisabledItem(true);
+        } else if(currentTabId.equals(SystemManagerTabMenuCode.TAB_SYSTEM_MANAGER_ANALYSIS_STATUS
+                .getItem().getNodeId())) {
+            systemManagerAnalysisStatusController.setList(1);
+        } else if(currentTabId.equals(SystemManagerTabMenuCode.TAB_SYSTEM_MANAGER_USER_ACCOUNT
+                .getItem().getNodeId())) {
+            systemManagerUserAccountController.setGroupList(1);
+            systemManagerUserAccountController.setList(1);
+        } else if(currentTabId.equals(SystemManagerTabMenuCode.TAB_SYSTEM_MANAGER_SYSTEM_LOGS
+                .getItem().getNodeId())) {
+            systemManagerSystemLogsController.setLogList(1);
         }
     }
 }

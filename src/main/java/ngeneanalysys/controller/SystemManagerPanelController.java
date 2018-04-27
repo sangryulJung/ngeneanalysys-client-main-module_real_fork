@@ -289,97 +289,12 @@ public class SystemManagerPanelController extends SubPaneController {
         virtualPanelColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
         virtualPanelColumn.setCellFactory(param -> new VirtualPanelButton());
 
-        HttpClientResponse response;
-
-        try {
-            response = apiService.get("/admin/memberGroups", null, null, false);
-
-                if(response != null) {
-                    SystemManagerUserGroupPaging systemManagerUserGroupPaging =
-                            response.getObjectBeforeConvertResponseToJSON(SystemManagerUserGroupPaging.class);
-                    List<UserGroup> groupList = systemManagerUserGroupPaging.getList();
-
-                    List<ComboBoxItem> items = new ArrayList<>();
-
-                    for(UserGroup userGroup :groupList) {
-                        items.add(new ComboBoxItem(userGroup.getId().toString(), userGroup.getName()));
-                    }
-
-                    final CheckComboBox<ComboBoxItem> groupCheckComboBox = new CheckComboBox<>();
-                    groupCheckComboBox.setConverter(new ComboBoxConverter());
-
-                    groupCheckComboBox.getItems().addAll(items);
-
-                    panelEditGridPane.add(groupCheckComboBox, 1, 5);
-
-                    this.groupCheckComboBox = groupCheckComboBox;
-
-                    groupCheckComboBox.setPrefWidth(150);
-                    groupCheckComboBox.setMaxWidth(Double.MAX_VALUE);
-
-                }
-
-                List<Diseases> diseasesList = (List<Diseases>)mainController.getBasicInformationMap().get("diseases");
-
-                if(diseasesList != null) {
-                    List<ComboBoxItem> items = new ArrayList<>();
-
-                    for(Diseases disease : diseasesList) {
-                        items.add(new ComboBoxItem(disease.getId().toString(), disease.getName()));
-                    }
-
-                    final CheckComboBox<ComboBoxItem> diseaseCheckComboBox = new CheckComboBox<>();
-                    diseaseCheckComboBox.setConverter(new ComboBoxConverter());
-
-                    diseaseCheckComboBox.getItems().addAll(items);
-
-                    panelEditGridPane.add(diseaseCheckComboBox, 1, 6);
-
-                    diseaseCheckComboBox.setPrefWidth(150);
-                    diseaseCheckComboBox.setMaxWidth(Double.MAX_VALUE);
-
-                    this.diseaseCheckComboBox = diseaseCheckComboBox;
-
-                    diseaseCheckComboBox.getCheckModel().getCheckedItems().addListener(new ListChangeListener<ComboBoxItem>() {
-                        @Override
-                        public void onChanged(Change<? extends ComboBoxItem> c) {
-                            List<ComboBoxItem> selectedItem = diseaseCheckComboBox.getCheckModel().getCheckedItems().stream().collect(Collectors.toList());
-                            if(defaultDiseaseComboBox.getItems().isEmpty()) {
-                                defaultDiseaseComboBox.getItems().addAll(selectedItem);
-                            } else {
-                                for(ComboBoxItem comboBoxItem : selectedItem) {
-                                    Optional<ComboBoxItem> combo  = defaultDiseaseComboBox.getItems().stream()
-                                                .filter(item -> item.getValue().equalsIgnoreCase(comboBoxItem.getValue()))
-                                                .findFirst();
-                                    if(!combo.isPresent()) {
-                                        defaultDiseaseComboBox.getItems().add(comboBoxItem);
-                                    }
-                                }
-                                List<ComboBoxItem> removeList = new ArrayList<>();
-
-                                for(ComboBoxItem comboBoxItem : defaultDiseaseComboBox.getItems()) {
-                                    Optional<ComboBoxItem> combo  = selectedItem.stream()
-                                            .filter(item -> item.getValue().equalsIgnoreCase(comboBoxItem.getValue()))
-                                            .findFirst();
-                                    if(!combo.isPresent()) {
-                                        removeList.add(comboBoxItem);
-                                    }
-                                }
-                                defaultDiseaseComboBox.getItems().removeAll(removeList);
-                            }
-                        }
-                    });
-
-                }
-
-            } catch (WebAPIException wae) {
-            wae.printStackTrace();
-        }
-
         panelPagination.setPageFactory(pageIndex -> {
             setPanelList(pageIndex + 1);
             return new VBox();
         });
+
+        createComboBox();
 
         setDisabledItem(true);
     }
@@ -444,6 +359,100 @@ public class SystemManagerPanelController extends SubPaneController {
             logger.error("Unknown Error", e);
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
+    }
+
+    public void createComboBox() {
+        final CheckComboBox<ComboBoxItem> groupCheckComboBox = new CheckComboBox<>();
+        groupCheckComboBox.setConverter(new ComboBoxConverter());
+
+        groupCheckComboBox.setPrefWidth(150);
+        groupCheckComboBox.setMaxWidth(Double.MAX_VALUE);
+
+        this.groupCheckComboBox = groupCheckComboBox;
+
+        panelEditGridPane.add(groupCheckComboBox, 1, 5);
+
+        final CheckComboBox<ComboBoxItem> diseaseCheckComboBox = new CheckComboBox<>();
+        diseaseCheckComboBox.setConverter(new ComboBoxConverter());
+
+        diseaseCheckComboBox.setPrefWidth(150);
+        diseaseCheckComboBox.setMaxWidth(Double.MAX_VALUE);
+
+        this.diseaseCheckComboBox = diseaseCheckComboBox;
+
+        panelEditGridPane.add(diseaseCheckComboBox, 1, 6);
+    }
+
+    public void setPanelAndDisease() {
+        HttpClientResponse response;
+
+        groupCheckComboBox.getItems().removeAll(groupCheckComboBox.getItems());
+        diseaseCheckComboBox.getItems().removeAll(diseaseCheckComboBox.getItems());
+
+        try {
+            response = apiService.get("/admin/memberGroups", null, null, false);
+
+            if(response != null) {
+                SystemManagerUserGroupPaging systemManagerUserGroupPaging =
+                        response.getObjectBeforeConvertResponseToJSON(SystemManagerUserGroupPaging.class);
+                List<UserGroup> groupList = systemManagerUserGroupPaging.getList();
+
+                List<ComboBoxItem> items = new ArrayList<>();
+
+                for(UserGroup userGroup :groupList) {
+                    items.add(new ComboBoxItem(userGroup.getId().toString(), userGroup.getName()));
+                }
+
+                groupCheckComboBox.getItems().addAll(items);
+            }
+
+            List<Diseases> diseasesList = (List<Diseases>)mainController.getBasicInformationMap().get("diseases");
+
+            if(diseasesList != null) {
+                List<ComboBoxItem> items = new ArrayList<>();
+
+                for(Diseases disease : diseasesList) {
+                    items.add(new ComboBoxItem(disease.getId().toString(), disease.getName()));
+                }
+
+                diseaseCheckComboBox.getItems().addAll(items);
+
+                diseaseCheckComboBox.getCheckModel().getCheckedItems().addListener(new ListChangeListener<ComboBoxItem>() {
+                    @Override
+                    public void onChanged(Change<? extends ComboBoxItem> c) {
+                        List<ComboBoxItem> selectedItem = diseaseCheckComboBox.getCheckModel().getCheckedItems().stream().collect(Collectors.toList());
+                        if(defaultDiseaseComboBox.getItems().isEmpty()) {
+                            defaultDiseaseComboBox.getItems().addAll(selectedItem);
+                        } else {
+                            for(ComboBoxItem comboBoxItem : selectedItem) {
+                                Optional<ComboBoxItem> combo  = defaultDiseaseComboBox.getItems().stream()
+                                        .filter(item -> item.getValue().equalsIgnoreCase(comboBoxItem.getValue()))
+                                        .findFirst();
+                                if(!combo.isPresent()) {
+                                    defaultDiseaseComboBox.getItems().add(comboBoxItem);
+                                }
+                            }
+                            List<ComboBoxItem> removeList = new ArrayList<>();
+
+                            for(ComboBoxItem comboBoxItem : defaultDiseaseComboBox.getItems()) {
+                                Optional<ComboBoxItem> combo  = selectedItem.stream()
+                                        .filter(item -> item.getValue().equalsIgnoreCase(comboBoxItem.getValue()))
+                                        .findFirst();
+                                if(!combo.isPresent()) {
+                                    removeList.add(comboBoxItem);
+                                }
+                            }
+                            defaultDiseaseComboBox.getItems().removeAll(removeList);
+                        }
+                    }
+                });
+
+            }
+
+        } catch (WebAPIException wae) {
+            wae.printStackTrace();
+        }
+
     }
 
     public void reportTemplateComboBoxSetting() {
@@ -558,6 +567,9 @@ public class SystemManagerPanelController extends SubPaneController {
             params.put("target", targetComboBox.getSelectionModel().getSelectedItem().getValue());
             params.put("analysisType", analysisTypeComboBox.getSelectionModel().getSelectedItem().getValue());
             params.put("libraryType", libraryTypeComboBox.getSelectionModel().getSelectedItem().getValue());
+            if(defaultDiseaseComboBox.getSelectionModel().getSelectedItem() != null) {
+                params.put("defaultDiseaseId", Integer.parseInt(defaultDiseaseComboBox.getSelectionModel().getSelectedItem().getValue()));
+            }
             params.put("defaultSampleSource", defaultSampleSourceComboBox.getSelectionModel().getSelectedItem().getValue());
             params.put("variantConfig", variantConfig);
 
@@ -618,7 +630,6 @@ public class SystemManagerPanelController extends SubPaneController {
                         mainController.settingPanelAndDiseases();
 
                         setPanelList(1);
-                        resetItem();
                         setDisabledItem(true);
                         panelSaveButton.setDisable(true);
                     } catch (Exception e) {
@@ -628,6 +639,7 @@ public class SystemManagerPanelController extends SubPaneController {
                 });
 
             } catch (WebAPIException wae) {
+                wae.printStackTrace();
                 DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
             } catch (IOException ioe) {
                 DialogUtil.error(ioe.getMessage(), ioe.getMessage(), mainController.getPrimaryStage(), true);
@@ -637,6 +649,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
     private void resetItem() {
         reportTemplateComboBoxSetting();
+        setPanelAndDisease();
         panelNameTextField.setText("");
         panelCodeTextField.setText("");
         warningMAFTextField.setText("");
@@ -670,7 +683,8 @@ public class SystemManagerPanelController extends SubPaneController {
         roiCoveragePercentageTextField.setText("");
     }
 
-    private void setDisabledItem(boolean condition) {
+    public void setDisabledItem(boolean condition) {
+        resetItem();
         warningReadDepthTextField.setDisable(condition);
         warningMAFTextField.setDisable(condition);
         warningReadDepthCheckBox.setDisable(condition);
@@ -700,7 +714,6 @@ public class SystemManagerPanelController extends SubPaneController {
         roiCoveragePercentageTextField.setDisable(condition);
         defaultDiseaseComboBox.setDisable(condition);
         defaultSampleSourceComboBox.setDisable(condition);
-
     }
 
     public void deletePanel(Integer panelId) {
@@ -726,7 +739,6 @@ public class SystemManagerPanelController extends SubPaneController {
         titleLabel.setText("Panel Add");
         panelId = 0;
         setDisabledItem(false);
-        resetItem();
     }
 
     @FXML
@@ -767,7 +779,6 @@ public class SystemManagerPanelController extends SubPaneController {
                 titleLabel.setText("Panel Update");
 
                 setDisabledItem(false);
-                resetItem();
 
                 panelId = panel.getId();
 
