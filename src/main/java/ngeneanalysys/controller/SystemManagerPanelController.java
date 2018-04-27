@@ -871,16 +871,34 @@ public class SystemManagerPanelController extends SubPaneController {
                 roiFileSelectionButton.setDisable(false);
                 panelSaveButton.setDisable(false);
 
-                if(panelDetail.getIsDefault()) {
+                /*if(panelDetail.getIsDefault()) {
                     setDisabledItem(true);
                     diseaseCheckComboBox.setDisable(false);
                     groupCheckComboBox.setDisable(false);
-                }
+                }*/
 
                 if(panelDetail.getName().contains("BRCA")) {
                     diseaseCheckComboBox.setDisable(true);
+                    warningReadDepthTextField.setDisable(true);
+                    essentialGenesTextField.setDisable(true);
+                    canonicalTranscriptTextArea.setDisable(true);
                     warningMAFCheckBox.setDisable(true);
+                    warningMAFTextField.setDisable(true);
                     warningReadDepthCheckBox.setDisable(true);
+                    minAlleleFrequencyTextField.setDisable(true);
+                    minReadDepthTextField.setDisable(true);
+                    minAlternateCountTextField.setDisable(true);
+                    populationFrequencyDBsTextField.setDisable(true);
+                    populationFrequencyTextField.setDisable(true);
+                    essentialGenesTextField.setDisable(true);
+                    canonicalTranscriptTextArea.setDisable(true);
+                    totalBasePairTextField.setDisable(true);
+                    q30TrimmedBasePercentageTextField.setDisable(true);
+                    mappedBasePercentageTextField.setDisable(true);
+                    onTargetPercentageTextField.setDisable(true);
+                    onTargetCoverageTextField.setDisable(true);
+                    duplicatedReadsPercentageTextField.setDisable(true);
+                    roiCoveragePercentageTextField.setDisable(true);
                 }
             });
 
