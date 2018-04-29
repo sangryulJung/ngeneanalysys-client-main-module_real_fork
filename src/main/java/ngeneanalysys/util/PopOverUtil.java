@@ -237,13 +237,13 @@ public class PopOverUtil {
         }else if(key.equalsIgnoreCase("esp6500ea")) {
             createHBox("esp6500 EA",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("koreanExomInformationDatabase")) {
-            createHBox("koreanExomInformationDatabase",setFeqTextField(value), box);
+            createHBox("koEXID",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("koreanReferenceGenomeDatabase")) {
-            createHBox("koreanReferenceGenomeDatabase",setFeqTextField(value), box);
+            createHBox("kRGDB",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("kohbraFreq")) {
-            createHBox("kohbraFreq",setFeqTextField(value), box);
+            createHBox("kOHBRA",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("exac")) {
-            createHBox("exac",setFeqTextField(value), box);
+            createHBox("ExAC",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("genomADall")) {
             createHBox("genomAD All",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("genomADadmixedAmerican")) {

@@ -15,6 +15,7 @@ import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.render.AnalysisDetailTabItem;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.FXMLLoadUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
@@ -127,21 +128,25 @@ public class AnalysisDetailLayoutController extends SubPaneController {
         topTabPane.getTabs().clear();
         // 권한별 탭메뉴 추가
         int idx = 0;
-        for (AnalysisDetailTabMenuCode code : AnalysisDetailTabMenuCode.values()) {
-            AnalysisDetailTabItem item = code.getItem();
+        if(panel != null) {
+            for (AnalysisDetailTabMenuCode code : AnalysisDetailTabMenuCode.values()) {
+                AnalysisDetailTabItem item = code.getItem();
 
-            if(item.getNodeId().contains(ExperimentTypeCode.GERMLINE.getDescription()) &&
-                    (panel.getAnalysisType() != null && ExperimentTypeCode.GERMLINE.getDescription().equals(panel.getAnalysisType()))) {
-                addTab(item, idx);
-                idx++;
-            } else if(!item.getNodeId().contains(ExperimentTypeCode.GERMLINE.getDescription()) &&
-                    (panel.getAnalysisType() != null && ExperimentTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType()))){
-                addTab(item, idx);
-                idx++;
-            } else if(item.getNodeId().equalsIgnoreCase("TAB_VARIANTS")) {
-                addTab(item, idx);
-                idx++;
+                if (item.getNodeId().contains(ExperimentTypeCode.GERMLINE.getDescription()) &&
+                        (panel.getAnalysisType() != null && ExperimentTypeCode.GERMLINE.getDescription().equals(panel.getAnalysisType()))) {
+                    addTab(item, idx);
+                    idx++;
+                } else if (!item.getNodeId().contains(ExperimentTypeCode.GERMLINE.getDescription()) &&
+                        (panel.getAnalysisType() != null && ExperimentTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType()))) {
+                    addTab(item, idx);
+                    idx++;
+                } else if (item.getNodeId().equalsIgnoreCase("TAB_VARIANTS")) {
+                    addTab(item, idx);
+                    idx++;
+                }
             }
+        } else {
+            DialogUtil.warning("Panel error", "Panel not found.", mainApp.getPrimaryStage(), true);
         }
 
         // 탭메뉴 변경 리스너 설정 : 해당 탭 최초 선택 시 내용 삽입 처리.

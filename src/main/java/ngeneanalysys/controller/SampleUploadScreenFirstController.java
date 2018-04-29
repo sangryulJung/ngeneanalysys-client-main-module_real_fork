@@ -104,7 +104,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     public void setServerFASTQ(String path) {
         isServerItem = true;
         isServerFastq = true;
-        if(sampleArrayList.isEmpty()) sampleArrayList.removeAll(sampleArrayList);
+        if(!sampleArrayList.isEmpty()) sampleArrayList.removeAll(sampleArrayList);
         try {
             Map<String, Object> params = new HashMap<>();
             params.put("subPath", path);
@@ -606,8 +606,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         int rowCount = standardDataGridPane.getChildren().size() / 4;
 
         for (int i = 0; i < rowCount; i++) {
-            Sample sample = null;
-            sample = sampleArrayList.get(i);
+            Sample sample = sampleArrayList.get(i);
             if(sample.getId() != null) continue;
             if(sample.getRunId() == null) sample.setRunId(-1);
 
@@ -692,50 +691,48 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 Map<String, Object> params = new HashMap<>();
                 HttpClientResponse response = null;
                 RunWithSamples run = null;
-                try {
-                    if(sampleUploadController.getRunName() == null || "".equals(sampleUploadController.getRunName())) {
-                        Date date = new Date();
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd.HH:mm:ss");
-                        params.put("name", sdf.format(date));
-                    } else {
-                        params.put("name", sampleUploadController.getRunName());
-                    }
-                    params.put("sequencingPlatform", sampleUploadController.getSequencerType().getUserData());
 
-                    if(isServerItem) {
-                        params.put("serverRunDir", runPath);
-                    }
+                if(sampleUploadController.getRunName() == null || "".equals(sampleUploadController.getRunName())) {
+                    Date date = new Date();
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd.HH:mm:ss");
+                    params.put("name", sdf.format(date));
+                } else {
+                    params.put("name", sampleUploadController.getRunName());
+                }
+                params.put("sequencingPlatform", sampleUploadController.getSequencerType().getUserData());
 
-                    if(!saveSampleData()) {
-                        DialogUtil.alert("check item", "check item", sampleUploadController.getCurrentStage(), true);
-                        return;
-                    }
-                    List<Map<String, Object>> list = returnSampleMap();
-
-                    params.put("sampleCreateRequests", list);
-
-                    response = apiService.post("/runs", params, null, true);
-                    run = response.getObjectBeforeConvertResponseToJSON(RunWithSamples.class);
-                    mainController.getBasicInformationMap().put("runId", run.getRun().getId());
-                    logger.debug(run.toString());
-
-                    List<Sample> samples = run.getSamples();
-
-                    for(Sample sample : samples) {
-                        postAnalysisFilesData(sample);
-                    }
-                    /*for (Sample sample : sampleArrayList) {
-                        sample.setRunId(run.getId());
-                        sampleUpload(sample);
-                    }*/
-
-                } catch (Exception e) {
-                    DialogUtil.error("Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+                if(isServerItem) {
+                    params.put("serverRunDir", runPath);
                 }
 
+                if(!saveSampleData()) {
+                    DialogUtil.alert("check item", "check item", sampleUploadController.getCurrentStage(), true);
+                    return;
+                }
+                List<Map<String, Object>> list = returnSampleMap();
+
+                params.put("sampleCreateRequests", list);
+
+                response = apiService.post("/runs", params, null, true);
+                run = response.getObjectBeforeConvertResponseToJSON(RunWithSamples.class);
+                mainController.getBasicInformationMap().put("runId", run.getRun().getId());
+                logger.debug(run.toString());
+
+                List<Sample> samples = run.getSamples();
+
+                for(Sample sample : samples) {
+                    postAnalysisFilesData(sample);
+                }
+                /*for (Sample sample : sampleArrayList) {
+                    sample.setRunId(run.getId());
+                    sampleUpload(sample);
+                }*/
+
                 if((uploadFileData != null && !uploadFileData.isEmpty()) &&
-                        (uploadFileList != null && !uploadFileList.isEmpty()))
+                        (uploadFileList != null && !uploadFileList.isEmpty())) {
+                    assert run != null;
                     this.mainController.runningAnalysisRequestUpload(uploadFileData, uploadFileList, run.getRun());
+                }
                 logger.debug("submit");
                 closeDialog();
             }
@@ -777,7 +774,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         }
     }
 
-    public List<Map<String, Object>> returnSampleMap() {
+    private List<Map<String, Object>> returnSampleMap() {
         List<Map<String, Object>> list = new ArrayList<>();
         for(Sample sample : sampleArrayList) {
             Map<String, Object> params = new HashMap<>();
@@ -793,7 +790,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         return list;
     }
 
-    public void sampleUpload(Sample sample) throws  Exception {
+    private void sampleUpload(Sample sample) throws Exception {
 
         Map<String, Object> params = new HashMap<>();
         HttpClientResponse response = null;
@@ -808,10 +805,10 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         postAnalysisFilesData(sampleData);
     }
 
-    public void postAnalysisFilesData(Sample sample) {
+    private void postAnalysisFilesData(Sample sample) {
         Set<String> fileName = fileMap.keySet();
 
-        fileName.stream().forEach(file -> {
+        fileName.forEach(file -> {
             Map<String, Object> fileInfo = fileMap.get(file);
 
             if(fileInfo.get("sampleName") != null && fileInfo.get("sampleName").toString().equals(sample.getName())) {
@@ -835,7 +832,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         });
     }
 
-    public void panelSetting(ComboBox<ComboBoxItem> panelBox) {
+    private void panelSetting(ComboBox<ComboBoxItem> panelBox) {
         if(panelBox.getItems().isEmpty()) panelBox.getItems().removeAll(panelBox.getItems());
         List<Panel> panelList = new ArrayList<>();
         if(isServerItem && !isServerFastq) {
@@ -876,6 +873,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
         if(folder != null) {
             File[] fileArray = folder.listFiles();
+            assert fileArray != null;
             List<File> fileList = new ArrayList<>(Arrays.asList(fileArray));
             fileList = fileList.stream().filter(file -> file.getName().endsWith(".fastq.gz")).collect(Collectors.toList());
             if(fileList.isEmpty()) DialogUtil.alert("not found", "not found fastq file", sampleUploadController.getCurrentStage(), true);

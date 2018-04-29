@@ -467,7 +467,7 @@ public class HomeController extends SubPaneController{
                     break;
             }
             ///////////////////////
-            SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+            SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm");
             if(run.getCreatedAt() != null)
                 startDateLabel.setText(format.format(run.getCreatedAt().toDate()));
             else
