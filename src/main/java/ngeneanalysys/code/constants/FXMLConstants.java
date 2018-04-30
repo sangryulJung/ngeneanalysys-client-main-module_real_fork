@@ -114,6 +114,15 @@ public class FXMLConstants {
 	/** 분석 상세 > Variants 화면 */
 	public static final String ANALYSIS_DETAIL_TARGET = "/layout/fxml/AnalysisDetail-Target.fxml";
 
+	/** 분석 상세 > Variants 화면 */
+	public static final String ANALYSIS_DETAIL_CNV = "/layout/fxml/AnalysisDetail-CNV.fxml";
+
+	/** 분석 상세 > Variants 화면 */
+	public static final String ANALYSIS_DETAIL_TST_FUSION = "/layout/fxml/AnalysisDetail-TST170Fusion.fxml";
+
+	/** 분석 상세 > Variants 화면 */
+	public static final String ANALYSIS_DETAIL_TST_SPLICE_VARIANT = "/layout/fxml/AnalysisDetail-TSTSpliceVariant.fxml";
+
 	/** 분석 상세 > Variants 화면 Germline */
 	public static final String ANALYSIS_DETAIL_TARGET_GERMLINE = "/layout/fxml/AnalysisDetail-Target-Germline.fxml";
 

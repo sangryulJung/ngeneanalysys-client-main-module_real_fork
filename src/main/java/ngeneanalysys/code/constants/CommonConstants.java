@@ -96,4 +96,7 @@ public class CommonConstants {
 
 	public static final String EHCACHE_PATH =  "/config/ehcache.xml";
 
+	public static final String TST_170_DNA = "TruSight Tumor 170 DNA";
+
+	public static final String TST_170_RNA = "TruSight Tumor 170 RNA";
 }

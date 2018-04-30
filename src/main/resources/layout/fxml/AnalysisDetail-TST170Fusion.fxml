@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane fx:id="tstFusionGridPane" prefHeight="380.0" prefWidth="1140.0" style="-fx-background-color: #ffffff;" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailTSTFusionController">
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+   </rowConstraints>
+   <children>
+      <TableView fx:id="fusionTableView" prefHeight="200.0" prefWidth="200.0">
+         <columns>
+            <TableColumn fx:id="callerTableColumn" prefWidth="75.0" text="caller" />
+            <TableColumn fx:id="geneATableColumn" prefWidth="109.0" text="geneA" />
+            <TableColumn fx:id="geneBTableColumn" prefWidth="109.0" text="geneB" />
+            <TableColumn fx:id="geneABreakpointTableColumn" prefWidth="109.0" text="geneABreakpoint" />
+            <TableColumn fx:id="geneBBreakpointTableColumn" prefWidth="109.0" text="geneBBreakpoint" />
+            <TableColumn fx:id="scoreTableColumn" prefWidth="109.0" text="score" />
+            <TableColumn fx:id="filterTableColumn" prefWidth="109.0" text="filter" />
+            <TableColumn fx:id="preciseImpreciseTableColumn" prefWidth="109.0" text="preciseImprecise" />
+            <TableColumn fx:id="intragenicCallTableColumn" prefWidth="109.0" text="intragenicCall" />
+            <TableColumn fx:id="refASplitTableColumn" prefWidth="109.0" text="refASplit" />
+            <TableColumn fx:id="refAPairTableColumn" prefWidth="109.0" text="refAPair" />
+            <TableColumn fx:id="refBSplitTableColumn" prefWidth="109.0" text="refBSplit" />
+            <TableColumn fx:id="refBPairTableColumn" prefWidth="109.0" text="refBPair" />
+            <TableColumn fx:id="altSplitTableColumn" prefWidth="109.0" text="altSplit" />
+            <TableColumn fx:id="altPairTableColumn" prefWidth="109.0" text="altPair" />
+            <TableColumn fx:id="candidateAltTableColumn" prefWidth="109.0" text="candidateAlt" />
+            <TableColumn fx:id="contigTableColumn" prefWidth="109.0" text="contig" />
+            <TableColumn fx:id="contigAlign1TableColumn" prefWidth="109.0" text="contigAlign1" />
+            <TableColumn fx:id="contigAlign2TableColumn" prefWidth="109.0" text="contigAlign2" />
+            <TableColumn fx:id="keepFusionTableColumn" prefWidth="109.0" text="keepFusion" />
+         </columns>
+         <GridPane.margin>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </GridPane.margin>
+      </TableView>
+   </children>
+</GridPane>
