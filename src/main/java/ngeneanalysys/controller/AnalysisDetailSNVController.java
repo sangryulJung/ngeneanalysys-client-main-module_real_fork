@@ -616,13 +616,13 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         for(String key : keySets) {
             sortList.add(key + " " + sortMap.get(key));
         }
-        if(sortList.isEmpty()) {
-            if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
-                sortList.add("swTier ASC");
-            } else {
-                sortList.add("swPathogenicity DESC");
-            }
-        }
+//        if(sortList.isEmpty()) {
+//            if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
+//                sortList.add("swTier ASC");
+//            } else {
+//                sortList.add("swPathogenicity DESC");
+//            }
+//        }
         if(!sortList.isEmpty()) list.put("sort", sortList);
     }
 
@@ -878,7 +878,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
 
         TableColumn<VariantAndInterpretationEvidence, String> warn = new TableColumn<>("Warning");
-        createTableHeader(warn, "Warning", null ,55.);
+        createTableHeader(warn, "Warning", "hasWarning" ,55.);
         warn.getStyleClass().add(centerStyleClass);
         warn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getHasWarning()));
         warn.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
@@ -937,7 +937,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         if(panel != null && ExperimentTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             TableColumn<VariantAndInterpretationEvidence, String> typeExtension = new TableColumn<>("Type Extension");
-            createTableHeader(typeExtension, "Type Extension", null, 70.);
+            createTableHeader(typeExtension, "Type Extension", "variantTypeExtension", 70.);
             typeExtension.getStyleClass().clear();
             typeExtension.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getVariantTypeExtension()));
         }
@@ -973,7 +973,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         chr.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getChromosome()));
 
         TableColumn<VariantAndInterpretationEvidence, Integer> genomicCoordinate = new TableColumn<>("Start Position");
-        createTableHeader(genomicCoordinate, "Start Position", "StartPosition" ,null);
+        createTableHeader(genomicCoordinate, "Start Position", "startPosition" ,null);
         genomicCoordinate.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getStartPosition()).asObject());
 
         TableColumn<VariantAndInterpretationEvidence, String> ref = new TableColumn<>("Ref");
