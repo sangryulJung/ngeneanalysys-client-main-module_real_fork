@@ -108,6 +108,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         try {
             Map<String, Object> params = new HashMap<>();
             params.put("subPath", path);
+
             runPath = path;
             HttpClientResponse response = apiService.get("/runDir", params, null, false);
             ServerFileInfo serverFileInfo = response.getObjectBeforeConvertResponseToJSON(ServerFileInfo.class);
@@ -117,6 +118,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                     .collect(Collectors.toList());
             if(serverFiles.isEmpty()) DialogUtil.alert("Empty Fastq File Directory", "Can not find fastq files in the directory.", sampleUploadController.getCurrentStage(), true);
             setServerFastqList(serverFiles);
+            sampleUploadController.setTextFieldRunName(path);
 
         } catch (WebAPIException e) {
                 DialogUtil.error(e.getHeaderText(), e.getMessage(), getMainApp().getPrimaryStage(), true);
@@ -137,6 +139,8 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
             downloadThread.setDaemon(true);
             downloadThread.start();
+
+            sampleUploadController.setTextFieldRunName(path);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -292,6 +296,8 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             });
 
             if(!undeterminedFile.isEmpty()) fileList.removeAll(undeterminedFile);
+
+            if(!fileList.isEmpty()) sampleUploadController.setTextFieldRunName(folder.getName());
 
             while (!fileList.isEmpty()) {
 

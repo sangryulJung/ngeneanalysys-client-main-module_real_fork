@@ -6,7 +6,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -85,75 +84,47 @@
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;">
                            <children>
                               <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="80.0" text="Total Base" textFill="WHITE" />
-                              <Label styleClass="help_tooltip_white">
-                                 <tooltip>
-                                    <Tooltip fx:id="totalBaseTooltip" text="Empty Tooltip" />
-                                 </tooltip>
-                              </Label>
+                              <Label fx:id="totalBaseQCLabel" style="-fx-cursor: hand;" styleClass="help_tooltip_white" />
                            </children>
                         </HBox>
                         <Label fx:id="totalBaseLabel" text="pass" GridPane.rowIndex="1" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;" GridPane.columnIndex="1">
                            <children>
                               <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="120.0" text="Q30 Trimmed Base" textFill="WHITE" />
-                              <Label styleClass="help_tooltip_white">
-                                 <tooltip>
-                                    <Tooltip fx:id="q30Tooltip" text="Empty Tooltip" />
-                                 </tooltip>
-                              </Label>
+                              <Label fx:id="q30QCLabel" style="-fx-cursor: hand;" styleClass="help_tooltip_white" />
                            </children>
                         </HBox>
                         <Label fx:id="q30Label" text="pass" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;" GridPane.columnIndex="2">
                            <children>
                               <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="90.0" text="Mapped Base" textFill="WHITE" />
-                              <Label styleClass="help_tooltip_white">
-                                 <tooltip>
-                                    <Tooltip fx:id="mappedBaseTooltip" text="Empty Tooltip" />
-                                 </tooltip>
-                              </Label>
+                              <Label fx:id="mappedBaseQCLabel" style="-fx-cursor: hand;" styleClass="help_tooltip_white" />
                            </children>
                         </HBox>
                         <Label fx:id="mappedLabel" text="pass" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;" GridPane.columnIndex="3">
                            <children>
                               <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="80.0" text="On Target" textFill="WHITE" />
-                              <Label styleClass="help_tooltip_white">
-                                 <tooltip>
-                                    <Tooltip fx:id="onTargetTooltip" text="Empty Tooltip" />
-                                 </tooltip>
-                              </Label>
+                              <Label fx:id="onTargetQCLabel" style="-fx-cursor: hand;" styleClass="help_tooltip_white" />
                            </children>
                         </HBox>
                         <Label fx:id="onTargetLabel" text="pass" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;" GridPane.columnIndex="4">
                            <children>
                               <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="120.0" text="On Target Coverage" textFill="WHITE" />
-                              <Label styleClass="help_tooltip_white">
-                                 <tooltip>
-                                    <Tooltip fx:id="onTargetCoverageTooltip" text="Empty Tooltip" />
-                                 </tooltip>
-                              </Label>
+                              <Label fx:id="onTargetCoverageQCLabel" style="-fx-cursor: hand;" styleClass="help_tooltip_white" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;" GridPane.columnIndex="5">
                            <children>
                               <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="110.0" text="Duplicated Reads" textFill="WHITE" />
-                              <Label styleClass="help_tooltip_white">
-                                 <tooltip>
-                                    <Tooltip fx:id="duplicatedReadsTooltip" text="Empty Tooltip" />
-                                 </tooltip>
-                              </Label>
+                              <Label fx:id="dupicatedReadsQCLabel" style="-fx-cursor: hand;" styleClass="help_tooltip_white" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;" GridPane.columnIndex="6">
                            <children>
                               <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="90.0" text="ROI Coverage" textFill="WHITE" />
-                              <Label styleClass="help_tooltip_white">
-                                 <tooltip>
-                                    <Tooltip fx:id="roiCoverageTooltip" text="Empty Tooltip" />
-                                 </tooltip>
-                              </Label>
+                              <Label fx:id="roiCoverageQCLabel" style="-fx-cursor: hand;" styleClass="help_tooltip_white" />
                            </children>
                         </HBox>
                         <Label fx:id="onTargetCoverageLabel" text="pass" GridPane.columnIndex="4" GridPane.rowIndex="1" />

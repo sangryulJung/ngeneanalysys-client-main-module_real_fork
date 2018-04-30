@@ -135,6 +135,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     private AnalysisDetailInterpretationController interpretationController;
 
+    AnalysisDetailSNPsINDELsMemoController memoController;
+
     private Map<String, List<Object>> filterList = new HashMap<>();
 
     /**
@@ -162,8 +164,11 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             SnpInDelInterpretationLogsList memoList = responseMemo.getObjectBeforeConvertResponseToJSON(SnpInDelInterpretationLogsList.class);
 
             // comment tab 화면 출력
-            if (interpretationLogsTitledPane.getContent() == null)
+            if (interpretationLogsTitledPane.getContent() == null) {
                 showMemoTab(FXCollections.observableList(memoList.getResult()));
+            } else {
+                memoController.updateList(selectedAnalysisResultVariant.getSnpInDel().getId());
+            }
         } catch (WebAPIException wae) {
             wae.printStackTrace();
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
@@ -506,11 +511,11 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         try {
             FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_INTERPRETATION_LOGS);
             Node node = loader.load();
-            AnalysisDetailSNPsINDELsMemoController controller = loader.getController();
-            controller.setMainController(this.getMainController());
-            controller.setAnalysisDetailSNVController(this);
-            controller.show((Parent) node);
-            controller.displayList(memoList);
+            memoController = loader.getController();
+            memoController.setMainController(this.getMainController());
+            memoController.setAnalysisDetailSNVController(this);
+            memoController.show((Parent) node);
+            memoController.displayList(memoList);
             interpretationLogsTitledPane.setContent(node);
         } catch (Exception e) {
             e.printStackTrace();

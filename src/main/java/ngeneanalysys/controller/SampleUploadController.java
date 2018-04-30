@@ -24,7 +24,9 @@ import ngeneanalysys.model.Sample;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.FXMLLoadUtil;
 import ngeneanalysys.util.LoggerUtil;
+import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
+import org.apache.fop.area.Page;
 import org.slf4j.Logger;
 
 import java.io.File;
@@ -165,6 +167,14 @@ public class SampleUploadController extends BaseStageController{
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
         setMainApp(this.mainController.getMainApp());
+    }
+
+    public void setTextFieldRunName(String value) {
+        if(value.contains("/")) {
+            textFieldRunName.setText(value.substring(value.lastIndexOf("/") + 1));
+        } else {
+            textFieldRunName.setText(value);
+        }
     }
 
 

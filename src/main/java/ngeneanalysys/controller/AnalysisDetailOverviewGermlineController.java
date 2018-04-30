@@ -14,10 +14,7 @@ import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedVariantAndInterpretationEvidence;
 import ngeneanalysys.service.APIService;
-import ngeneanalysys.util.ConvertUtil;
-import ngeneanalysys.util.DialogUtil;
-import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.StringUtils;
+import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
@@ -88,19 +85,23 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
     @FXML
     private TableColumn<VariantAndInterpretationEvidence, String> aaChangeColumn;
 
+    /*@FXML
+    private Tooltip roiCoverageTooltip;
 
     @FXML
-    private Tooltip roiCoverageTooltip;
+    private Tooltip coverageUniformityTooltip;*/
 
     @FXML
     private Label roiCoverageLabel;
 
     @FXML
-    private Tooltip coverageUniformityTooltip;
-
-    @FXML
     private Label coverageUniformityLabel;
 
+    @FXML
+    private Label roiCoverageQCLabel;
+
+    @FXML
+    private Label coverageUniQCLabel;
 
 
     /** API 서버 통신 서비스 */
@@ -256,6 +257,16 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
                 .collect(Collectors.toList());
     }
 
+    public void setQCItem(final Label valueLabel, final Label QCLabel
+            , final List<SampleQC> qcList, final String qcString) {
+        valueLabel.setText(findQCResult(qcList, "total_base"));
+        valueLabel.setTooltip(new Tooltip(findQCResultString(qcList, qcString)));
+        //totalBaseTooltip.setText(findQCTooltipString(qcList, "total_base"));
+        final String value = findQCTooltipString(qcList, qcString);
+        QCLabel.setOnMouseClicked(ev ->
+                PopOverUtil.openQCPopOver(QCLabel, value));
+    }
+
     private void settingOverallQC(int sampleId) {
 
         try {
@@ -264,13 +275,8 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
 
             List<SampleQC> qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
 
-            roiCoverageLabel.setText(findQCResult(qcList, "roi_coverage").toUpperCase());
-            roiCoverageLabel.setTooltip(new Tooltip(findQCResultString(qcList, "roi_coverage")));
-            roiCoverageTooltip.setText(findQCTooltipString(qcList, "roi_coverage"));
-
-            coverageUniformityLabel.setText(findQCResult(qcList, "coverage_uniformity").toUpperCase());
-            coverageUniformityLabel.setTooltip(new Tooltip(findQCResultString(qcList, "coverage_uniformity")));
-            coverageUniformityTooltip.setText(findQCTooltipString(qcList, "coverage_uniformity"));
+            setQCItem(roiCoverageLabel, roiCoverageQCLabel, qcList, "roi_coverage");
+            setQCItem(coverageUniformityLabel, coverageUniQCLabel, qcList, "coverage_uniformity");
 
         } catch(WebAPIException e) {
             DialogUtil.alert("QC ERROR", e.getMessage(), this.getMainApp().getPrimaryStage(), true);

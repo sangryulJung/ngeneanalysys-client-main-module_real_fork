@@ -487,6 +487,9 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 variantsTable.getItems().removeAll(variantsTable.getItems());
             }
 
+            tableList = tableList.stream().filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y"))
+                    .collect(Collectors.toList());
+
             variantsTable.getItems().addAll(tableList);
         } catch (WebAPIException wae) {
             DialogUtil.error(wae.getHeaderText(), wae.getContents(), this.getMainApp().getPrimaryStage(), true);

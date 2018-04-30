@@ -372,6 +372,7 @@ public class HomeController extends SubPaneController{
         private HBox runningHBox;
         private Label failedLabel;
         private HBox failedHBox;
+        private ProgressBar progressBar;
 
         private VBox itemVBox;
 
@@ -415,14 +416,23 @@ public class HomeController extends SubPaneController{
             startDateHBox = createHBox(startDateLabel, "Start : ");
             finishDateLabel = new Label();
             finishDateHBox = createHBox(finishDateLabel, "Finished : ");
-            completeLabel = new Label();
+            /*completeLabel = new Label();
             completeHBox = createHBox(completeLabel, "Complete : ");
             queuedLabel = new Label();
             queuedHBox = createHBox(queuedLabel, "Queued : ");
             runningLabel = new Label();
             runningHBox = createHBox(runningLabel, "Running : ");
             failedLabel = new Label();
-            failedHBox = createHBox(failedLabel, "Failed : ");
+            failedHBox = createHBox(failedLabel, "Failed : ");*/
+            completeLabel = new Label();
+            failedLabel = new Label();
+            completeHBox = createHBox(completeLabel, "Complete : ", failedLabel, "Failed : ");
+            runningLabel = new Label();
+            queuedLabel = new Label();
+            queuedHBox = createHBox(runningLabel, "Running : ", queuedLabel, "Queued : ");
+
+            progressBar = new ProgressBar();
+            progressBar.setPrefWidth(180);
 
             backgroundVBox.getChildren().add(itemVBox);
 
@@ -442,12 +452,32 @@ public class HomeController extends SubPaneController{
             return box;
         }
 
+        private HBox createHBox(Label label1, String titleLabelString1
+                ,Label label2, String titleLabelString2) {
+            HBox box = new HBox();
+            box.setPrefHeight(20);
+            Label titleLabel = new Label(titleLabelString1);
+            titleLabel.setPrefWidth(75);
+            titleLabel.getStyleClass().add("font_gray");
+            box.getChildren().addAll(titleLabel, label1);
+            label1.setStyle("-fx-text-fill : gray;");
+            label1.setPrefWidth(20);
+
+            titleLabel = new Label(titleLabelString2);
+            titleLabel.setPrefWidth(75);
+            titleLabel.getStyleClass().add("font_gray");
+            box.getChildren().addAll(titleLabel, label2);
+            label2.setStyle("-fx-text-fill : gray;");
+            label2.setPrefWidth(25);
+            return box;
+        }
+
         private void setRunStatus(Run run) {
             runName.setText(run.getName());
             /////////////run status 설정
             statusLabel.setText("");
             statusLabel.getStyleClass().removeAll(statusLabel.getStyleClass());
-            statusLabel.setTooltip(new Tooltip(run.getRunStatus().getProgressPercentage() + "%"));
+            //statusLabel.setTooltip(new Tooltip(run.getRunStatus().getProgressPercentage() + "%"));
             switch (run.getRunStatus().getStatus().toUpperCase()) {
                 case "QUEUED":
                     statusLabel.getStyleClass().addAll("label", "queued_icon");
@@ -495,16 +525,22 @@ public class HomeController extends SubPaneController{
                 itemVBox.getChildren().add(finishDateHBox);
             if(!itemVBox.getChildren().contains(completeHBox))
                 itemVBox.getChildren().add(completeHBox);
-            if(!itemVBox.getChildren().contains(runningHBox))
-                itemVBox.getChildren().add(runningHBox);
+            /*if(!itemVBox.getChildren().contains(runningHBox))
+                itemVBox.getChildren().add(runningHBox);*/
             if(!itemVBox.getChildren().contains(queuedHBox))
                 itemVBox.getChildren().add(queuedHBox);
-            if(!itemVBox.getChildren().contains(failedHBox))
-                itemVBox.getChildren().add(failedHBox);
+            /*if(!itemVBox.getChildren().contains(failedHBox))
+                itemVBox.getChildren().add(failedHBox);*/
+            if(!itemVBox.getChildren().contains(progressBar)) {
+                itemVBox.getChildren().add(progressBar);
+                VBox.setMargin(progressBar, new Insets(20, 0, 0, 0));
+            }
+            progressBar.setProgress(run.getRunStatus().getProgressPercentage() / 100.);
 
         }
 
         public void reset() {
+            progressBar.setProgress(0);
             runName.setText("");
             statusLabel.getStyleClass().removeAll(startDateHBox.getStyleClass());
             startDateLabel.setText("");

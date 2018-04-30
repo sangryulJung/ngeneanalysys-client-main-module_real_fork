@@ -1,6 +1,7 @@
 package ngeneanalysys.util;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
@@ -112,6 +113,39 @@ public class PopOverUtil {
 
         popOver.setContentNode(scrollPane);
         popOver.show(label, 10);
+    }
+
+    public static void openQCPopOver(Label label, String value) {
+        if(StringUtils.isEmpty(value)) return;
+        PopOver popOver = new PopOver();
+        popOver.setArrowLocation(PopOver.ArrowLocation.BOTTOM_CENTER);
+        popOver.setHeaderAlwaysVisible(true);
+        popOver.setAutoHide(true);
+        popOver.setAutoFix(true);
+        popOver.setDetachable(true);
+        popOver.setArrowSize(15);
+        popOver.setMaxSize(20, 50);
+        popOver.setPrefSize(200, 50);
+        popOver.setMinSize(200, 50);
+
+        VBox box = new VBox();
+        box.setMinWidth(200);
+        box.setPrefWidth(200);
+        box.setMaxWidth(200);
+
+        Label contents = new Label();
+        contents.setPadding(new Insets(0, 0, 0, 10));
+        contents.setAlignment(Pos.TOP_LEFT);
+        contents.setPrefHeight(50);
+        contents.setPrefWidth(200);
+        contents.setWrapText(true);
+
+        contents.setText(value);
+
+        box.getChildren().add(contents);
+
+        popOver.setContentNode(box);
+        popOver.show(label, 0);
     }
 
     public static void openFilterPopOver(Label label, List<Object> list) {

@@ -15,7 +15,7 @@
 <?import javafx.scene.shape.Polyline?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="1040.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="256.0" prefWidth="750.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailClinicalSignificantController">
+<GridPane alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="1040.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="256.0" prefWidth="750.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.131" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailClinicalSignificantController">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="320.0" minWidth="-Infinity" prefWidth="254.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="390.0" minWidth="-Infinity" prefWidth="260.0" />
