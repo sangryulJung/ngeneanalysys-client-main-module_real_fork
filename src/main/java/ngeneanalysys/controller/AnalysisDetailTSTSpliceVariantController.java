@@ -1,6 +1,5 @@
 package ngeneanalysys.controller;
 
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -72,7 +71,6 @@ public class AnalysisDetailTSTSpliceVariantController extends AnalysisDetailComm
     @FXML
     private TableColumn<SpliceVariant, String> antTableColumn;
 
-
     private APIService apiService;
 
     private Sample sample;
@@ -88,6 +86,7 @@ public class AnalysisDetailTSTSpliceVariantController extends AnalysisDetailComm
 
     @Override
     public void show(Parent root) throws IOException {
+        logger.debug("tst splice variant view");
 
         chrTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getChromosome()));
         startPositionTableColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getStartPosition()));
@@ -106,6 +105,7 @@ public class AnalysisDetailTSTSpliceVariantController extends AnalysisDetailComm
 
         apiService = APIService.getInstance();
         this.sample = (Sample)paramMap.get("sample");
+
         try {
             HttpClientResponse response = apiService
                     .get("TST170RnaResults/samples/" + sample.getId() + "/spliceVariants", null, null, null);
