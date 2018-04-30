@@ -84,7 +84,7 @@
                </children>
             </HBox>
          </children></VBox>
-      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="179.0" prefWidth="250.0" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="179.0" prefWidth="250.0" visible="false" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="1">
          <children>
             <VBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="200.0">
                <children>
@@ -155,7 +155,7 @@
                   </VBox>
                   <VBox fx:id="frequenciesRadarGraphArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="116.0" prefWidth="100.0">
                      <children>
-                        <Polyline fx:id="frequenciesGraphPolyline" fill="#ff9482" opacity="0.3" stroke="#ae200b" strokeType="INSIDE" strokeWidth="2.0" VBox.vgrow="NEVER">
+                        <Polyline fx:id="frequenciesGraphPolyline" fill="#ff9482" opacity="0.3" stroke="#ae200b" strokeType="INSIDE" strokeWidth="2.0" visible="false" VBox.vgrow="NEVER">
                            <points>
                               <Double fx:value="-50.0" />
                               <Double fx:value="-40.0" />
