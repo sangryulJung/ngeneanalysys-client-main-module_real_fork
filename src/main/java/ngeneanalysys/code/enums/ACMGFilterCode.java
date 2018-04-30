@@ -18,7 +18,8 @@ public enum ACMGFilterCode {
 	TIER_ONE("Tier I", "Tier I", "1", "T1"),
 	TIER_TWO("Tier II", "Tier II", "2", "T2"),
 	TIER_THREE("Tier III", "Tier III", "3", "T3"),
-	TIER_FOUR("Tier IV", "Tier IV", "4", "T4");
+	TIER_FOUR("Tier IV", "Tier IV", "4", "T4"),
+	TIER_NEGATIVE("Tier N", "Tier N", "N", "TN");
 
 	private String description;
 	private String detail;
@@ -108,5 +109,21 @@ public enum ACMGFilterCode {
 			aliasValue = PREDICTION_E.getAlias();
 		}
 		return aliasValue;
+	}
+
+	public static String getCodeFromAlias(String alias) {
+		String codeValue = null;
+		if (alias == null) {
+			codeValue = "NONE";
+		} else if (alias.equals(TIER_ONE.getAlias())) {
+			codeValue = TIER_ONE.getCode();
+		} else if (alias.equals(TIER_TWO.getAlias())) {
+			codeValue = TIER_TWO.getCode();
+		} else if (alias.equals(TIER_THREE.getAlias())) {
+			codeValue = TIER_THREE.getCode();
+		} else if (alias.equals(TIER_FOUR.getAlias())) {
+			codeValue = TIER_FOUR.getCode();
+		}
+		return codeValue;
 	}
 }

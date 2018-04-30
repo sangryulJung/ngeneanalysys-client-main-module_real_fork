@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane prefHeight="558.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailRawDataController">
+<BorderPane prefHeight="380.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailRawDataController">
    <stylesheets>
       <URL value="@../css/common.css" />
       <URL value="@../css/raw_data.css" />
@@ -41,13 +41,13 @@
       </HBox>
    </top>
    <center>
-      <TableView fx:id="rawListTableView" prefHeight="200.0" prefWidth="1250.0" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
+      <TableView fx:id="rawListTableView" prefHeight="465.0" prefWidth="968.0" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn fx:id="typeColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="200.0" resizable="false" text="Type" />
-          <TableColumn fx:id="filenameColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="688.0" text="File Name" />
-            <TableColumn fx:id="sizeColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="100.0" resizable="false" text="Size" />
-            <TableColumn fx:id="createdColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="150.0" resizable="false" text="Created" />
-            <TableColumn fx:id="downloadColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="90.0" resizable="false" text="Download" />
+          <TableColumn fx:id="typeColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="170.0" resizable="false" text="Type" />
+          <TableColumn fx:id="filenameColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="490.0" text="File" />
+            <TableColumn fx:id="sizeColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="120.0" resizable="false" text="Size" />
+            <TableColumn fx:id="createdColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="170.0" resizable="false" text="Date" />
+            <TableColumn fx:id="downloadColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="110.0" resizable="false" text="Download" />
         </columns>
          <BorderPane.margin>
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />

@@ -75,7 +75,7 @@ public class IGVProcessExecuteTask extends Task<Void> {
             cmdArray.add("org.broad.igv.ui.Main");
 
             try {
-                logger.info(String.format("CMD %s", cmdArray.toString()));
+                logger.debug(String.format("CMD %s", cmdArray.toString()));
                 ProcessBuilder processBuilder = new ProcessBuilder(cmdArray);
                 processBuilder.redirectErrorStream(true);
                 processBuilder.redirectOutput(new File(igvPath, "igv-launch.log"));
@@ -83,7 +83,7 @@ public class IGVProcessExecuteTask extends Task<Void> {
                 Thread.sleep(100L);
             } catch (Exception e) {
                 isExecute = false;
-                logger.info("igv launch fail.." + e.getMessage());
+                logger.debug("igv launch fail.." + e.getMessage());
                 e.printStackTrace();
             }
 
@@ -96,7 +96,7 @@ public class IGVProcessExecuteTask extends Task<Void> {
                     if(isRunning) {
                         break;
                     } else {
-                        logger.info(String.format("waiting for igv application to running..[%s]", i));
+                        logger.debug(String.format("waiting for igv application to running..[%s]", i));
                         try {
                             Thread.sleep(1000L);
                         } catch (Exception e) {
@@ -126,7 +126,7 @@ public class IGVProcessExecuteTask extends Task<Void> {
      */
     @Override
     protected void succeeded() {
-        logger.info("igv process execute task complete");
+        logger.debug("igv process execute task complete");
         // 정상실행된 경우.
         if(isExecute) {
             // IGV 어플리케이션 연동 요청

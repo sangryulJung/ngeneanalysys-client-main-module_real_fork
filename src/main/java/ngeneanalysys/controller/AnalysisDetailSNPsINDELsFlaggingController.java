@@ -77,7 +77,7 @@ public class AnalysisDetailSNPsINDELsFlaggingController extends SubPaneControlle
      */
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("show..");
+        logger.debug("show..");
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
 
@@ -136,6 +136,7 @@ public class AnalysisDetailSNPsINDELsFlaggingController extends SubPaneControlle
                 DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                         getMainApp().getPrimaryStage(), true);
             } catch (Exception e) {
+                logger.error("Unknown Error", e);
                 DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
             }
         }

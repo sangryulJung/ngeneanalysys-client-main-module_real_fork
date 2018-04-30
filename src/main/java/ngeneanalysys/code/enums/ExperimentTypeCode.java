@@ -8,7 +8,8 @@ package ngeneanalysys.code.enums;
  */
 public enum ExperimentTypeCode {
 	GERMLINE("GERMLINE"),
-	SOMATIC("SOMATIC");
+	SOMATIC("SOMATIC"),
+	SOMATIC_AND_GERMLINE("SOMATIC_AND_GERMLINE");
 	
 	private String description;
 	

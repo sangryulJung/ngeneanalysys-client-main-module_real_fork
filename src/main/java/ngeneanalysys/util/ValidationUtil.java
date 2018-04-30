@@ -59,7 +59,7 @@ public class ValidationUtil {
 	 * @return
 	 */
 	public static int text(String value, String name, int minLength, int maxLength, String pattern, boolean checkEmpty, String guideMessage, boolean alertValid, Stage ownerStage) {
-		boolean waitAfterShow = (ownerStage == null) ? false : true;
+		boolean waitAfterShow = ownerStage != null;
 		if(StringUtils.isEmpty(guideMessage)){
 			guideMessage = "";
 		}

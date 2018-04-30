@@ -51,15 +51,14 @@ public class HttpClientUtil {
 	public static SSLConnectionSocketFactory getSSLSocketFactory() {
 		SSLConnectionSocketFactory factory = null;
 		try {
-			SSLContext sslcontext = SSLContexts.custom().loadTrustMaterial(null, new TrustSelfSignedStrategy()).build();
 			TrustManager[] trustAllCerts = new TrustManager[] {
 					new X509TrustManager() {
                         @Override
-                        public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+                        public void checkClientTrusted(X509Certificate[] x509Certificates, String s) {
                         }
 
                         @Override
-                        public void checkServerTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+                        public void checkServerTrusted(X509Certificate[] x509Certificates, String s) {
                         }
 
                         @Override
@@ -68,7 +67,7 @@ public class HttpClientUtil {
                         }
                     } };
 
-                    SSLContext sc = SSLContext.getDefault().getInstance("SSL");
+                    SSLContext sc = SSLContext.getInstance("SSL");
                     sc.init(null, trustAllCerts, new SecureRandom());
 			factory = new SSLConnectionSocketFactory(sc, NoopHostnameVerifier.INSTANCE);
 		} catch (Exception e) {
@@ -98,7 +97,7 @@ public class HttpClientUtil {
 				}
 			}
 
-			logger.info("POST:" + post.getURI());
+			logger.debug("POST:" + post.getURI());
 
 			if(!isJsonRequest) {
 				List<NameValuePair> paramList = convertParam(params);
@@ -123,10 +122,9 @@ public class HttpClientUtil {
 	 * @param headers
 	 * @param encoding
 	 * @return
-	 * @throws IOException
 	 * @throws WebAPIException
 	 */
-	public static HttpClientResponse post(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, boolean isJsonRequest) throws IOException, WebAPIException {
+	public static HttpClientResponse post(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, boolean isJsonRequest) throws WebAPIException {
 		CloseableHttpClient httpclient = null;
 		CloseableHttpResponse response = null;
 		HttpClientResponse result = null;
@@ -167,10 +165,9 @@ public class HttpClientUtil {
 	 * @param params
 	 * @param headers
 	 * @return
-	 * @throws IOException
 	 * @throws WebAPIException
 	 */
-	public static HttpClientResponse post(String url, Map<String, Object> params, Map<String, Object> headers, boolean isJsonRequest) throws IOException, WebAPIException {
+	public static HttpClientResponse post(String url, Map<String, Object> params, Map<String, Object> headers, boolean isJsonRequest) throws WebAPIException {
 		return post(url, params, headers, HttpClientUtil.DEFAULT_ENCODING, isJsonRequest);
 	}
 
@@ -205,7 +202,44 @@ public class HttpClientUtil {
 					get.addHeader(key, headers.get(key).toString());
 				}
 			}
-			logger.info("GET:" + get.getURI());
+			logger.debug("GET:" + get.getURI());
+		} catch (Exception e) {
+			logger.error("get setting fail", e);
+		}
+		return get;
+	}
+
+	/**
+	 * get 설정 반환
+	 * @param url
+	 * @param params
+	 * @param headers
+	 * @param encoding
+	 * @return
+	 */
+	public static HttpGet initGet(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, Map<String, List<Object>> searchParam) {
+		HttpGet get = null;
+		try {
+			String requstURL = null;
+			// 파라미터 List 객체로 변환
+			List<NameValuePair> paramList = convertParam(params);
+			requstURL = url + "?" + URLEncodedUtils.format(paramList, encoding);
+
+			if(searchParam != null && !searchParam.isEmpty()) {
+				List<NameValuePair> paramSearchList = convertSearchParam(searchParam);
+				requstURL = requstURL + "&" + URLEncodedUtils.format(paramSearchList, encoding);
+			}
+
+			get = new HttpGet(requstURL);
+			// 지정된 헤더 삽입 정보가 있는 경우 추가
+			if(headers != null && headers.size() > 0) {
+				Iterator<String> keys = headers.keySet().iterator();
+				while (keys.hasNext()) {
+					String key = keys.next();
+					get.addHeader(key, headers.get(key).toString());
+				}
+			}
+			logger.debug("GET:" + get.getURI());
 		} catch (Exception e) {
 			logger.error("get setting fail", e);
 		}
@@ -256,6 +290,50 @@ public class HttpClientUtil {
 		}
 	}
 
+	/**
+	 * HTTPS GET
+	 * @param url
+	 * @param params
+	 * @param headers
+	 * @param encoding
+	 * @return
+	 * @throws WebAPIException
+	 */
+	public static HttpClientResponse get(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, Map<String, List<Object>> searchParam) throws WebAPIException {
+		CloseableHttpClient httpclient = null;
+		CloseableHttpResponse response = null;
+		HttpClientResponse result = null;
+
+		try {
+			HttpGet get = initGet(url, params, headers, encoding, searchParam);
+			httpclient = HttpClients.custom().setSSLSocketFactory(getSSLSocketFactory()).build();
+			try {
+				response = httpclient.execute(get);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			result = getHttpClientResponse(response);
+			return result;
+		} catch (WebAPIException wae) {
+			throw wae;
+		} finally {
+			if(httpclient != null) {
+				try {
+					httpclient.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			if(response != null) {
+				try {
+					response.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
 	public static HttpClientResponse getHttpClientResponse(CloseableHttpResponse response) throws WebAPIException {
 		HttpClientResponse result = null;
 		String errorHeader = "Server Communication Error";
@@ -269,7 +347,7 @@ public class HttpClientUtil {
 			if (response.getEntity() != null) {
 				result.setEntity(response.getEntity());
 				try {
-					result.setContentString(convertReponseContent(response.getEntity().getContent()));
+					result.setContentString(convertResponseContent(response.getEntity().getContent()));
 				} catch (UnsupportedOperationException | IOException e) {
 					e.printStackTrace();
 					errorMessage = String.format("Server API ERROR(%s)\n\nContents is none.", status);
@@ -305,6 +383,19 @@ public class HttpClientUtil {
 	}
 
 	/**
+	 * HTTPS GET
+	 * @param url
+	 * @param params
+	 * @param headers
+	 * @param searchParam
+	 * @return
+	 * @throws WebAPIException
+	 */
+	public static HttpClientResponse get(String url, Map<String, Object> params, Map<String, Object> headers, Map<String, List<Object>> searchParam) throws WebAPIException {
+		return get(url, params, headers, HttpClientUtil.DEFAULT_ENCODING, searchParam);
+	}
+
+	/**
 	 * PUT 설정 반환
 	 * @param url
 	 * @param params
@@ -313,7 +404,7 @@ public class HttpClientUtil {
 	 * @return
 	 */
 	public static HttpPut initPut(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, boolean isJsonRequest) {
-		logger.info("method : [put]");
+		logger.debug("method : [put]");
 		HttpPut httpPut = null;
 		try {
 			httpPut = new HttpPut(url);
@@ -326,7 +417,7 @@ public class HttpClientUtil {
 					httpPut.addHeader(key, headers.get(key).toString());
 				}
 			}
-			logger.info("PUT:" + httpPut.getURI());
+			logger.debug("PUT:" + httpPut.getURI());
 
 			if(!isJsonRequest) {
 				List<NameValuePair> paramList = convertParam(params);
@@ -409,7 +500,7 @@ public class HttpClientUtil {
 	 * @return
 	 */
 	public static HttpPatch initPatch(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, boolean isJsonRequest) {
-		logger.info("method : [patch]");
+		logger.debug("method : [patch]");
 		HttpPatch httpPatch = null;
 		try {
 			httpPatch = new HttpPatch(url);
@@ -422,7 +513,7 @@ public class HttpClientUtil {
 					httpPatch.addHeader(key, headers.get(key).toString());
 				}
 			}
-			logger.info("PATCH:" + httpPatch.getURI());
+			logger.debug("PATCH:" + httpPatch.getURI());
 
 			if(!isJsonRequest) {
 				List<NameValuePair> paramList = convertParam(params);
@@ -508,7 +599,7 @@ public class HttpClientUtil {
 					delete.addHeader(key, headers.get(key).toString());
 				}
 			}
-			logger.info("DELETE:" + delete.getURI());
+			logger.debug("DELETE:" + delete.getURI());
 		} catch (Exception e) {
 			logger.error("delete setting fail", e);
 		}
@@ -555,12 +646,31 @@ public class HttpClientUtil {
 	 * @return
 	 */
 	public static List<NameValuePair> convertParam(Map<String, Object> params) {
-		List<NameValuePair> paramList = new ArrayList<NameValuePair>();
+		List<NameValuePair> paramList = new ArrayList<>();
 		if (params != null && params.size() > 0) {
 			Iterator<String> keys = params.keySet().iterator();
 			while (keys.hasNext()) {
 				String key = keys.next();
 				paramList.add(new BasicNameValuePair(key, params.get(key).toString()));
+			}
+		}
+		return paramList;
+	}
+	/**
+	 * Convert Parameter Map to List
+	 * @param params
+	 * @return
+	 */
+	public static List<NameValuePair> convertSearchParam(Map<String, List<Object>> params) {
+		List<NameValuePair> paramList = new ArrayList<>();
+		if (params != null && params.size() > 0) {
+			Iterator<String> keys = params.keySet().iterator();
+			while (keys.hasNext()) {
+				String key = keys.next();
+				List<Object> value = params.get(key);
+				for(Object obj : value) {
+					paramList.add(new BasicNameValuePair(key, obj.toString()));
+				}
 			}
 		}
 		return paramList;
@@ -571,12 +681,12 @@ public class HttpClientUtil {
 	 * @param content
 	 * @return
 	 */
-	public static String convertReponseContent(InputStream content) {
+	public static String convertResponseContent(InputStream content) {
 		if (content == null) return null;
 		try {
 			BufferedReader rd = new BufferedReader(new InputStreamReader(content));
 			String line;
-			StringBuffer sb = new StringBuffer();
+			StringBuilder sb = new StringBuilder();
 			while ((line = rd.readLine()) != null) {
 				sb.append(line);
 			}

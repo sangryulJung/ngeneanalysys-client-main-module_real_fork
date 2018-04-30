@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="150.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.GroupAddController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="150.0" prefWidth="300.0" stylesheets="@../../css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.GroupAddController">
    <children>
       <VBox prefHeight="190.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -41,12 +41,12 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="cancelBtn" mnemonicParsing="false" onAction="#closeDialog" text="Cancel" />
+                        <Button fx:id="cancelBtn" mnemonicParsing="false" onAction="#closeDialog" styleClass="cancelBtn" text="Cancel" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="saveBtn" mnemonicParsing="false" onAction="#save" prefHeight="23.0" prefWidth="57.0" text="Save" />
+                        <Button fx:id="saveBtn" mnemonicParsing="false" onAction="#save" prefHeight="23.0" prefWidth="57.0" styleClass="submitBtn" text="Save" />
                      </children>
                   </HBox>
                </children>

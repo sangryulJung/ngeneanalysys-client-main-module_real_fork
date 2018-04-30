@@ -43,19 +43,19 @@ public class CommonConstants {
 	public static final String SYSTEM_NAME = "NGeneAnalySys";
 	
 	/** 시스템 Favicon Image 경로 */
-	public static final String SYSTEM_FAVICON_PATH = "/layout/images/icon_bi.png";
+	public static final String SYSTEM_FAVICON_PATH = "/layout/images/renewal/ngeneanalysis_48.png";
 	
 	/** 임시 디렉토리 경로 반환 */
 	public static final String TEMP_PATH = System.getProperty("java.io.tmpdir") + File.separator + "ngenebio_analysis" + File.separator;
-	
-	/** File Chunk Size [10MB] */
-	public static final int FILE_UPLOAD_CHUNK_SIZE = 10*1024*1024;
 
 	/** 파일업로드 재시도 횟수 */
 	public static final int FILE_UPLOAD_RETRY_COUNT = 3;
 	
 	/** 자동 새로고침 시간 간격 */
 	public static final String[] AUTO_REPRESH_SECOND_PERIOD = new String[]{"10", "20", "30" ,"45", "60"};
+	
+	/** 윈도우테마 */
+	public static final String[] WINDOW_THEME = new String[] {"Default", "Dark","Red","Ice","Mountain","DNA"};
 
 	/** 홈페이지 URL */
 	public static final String HOMEPAGE_URL = "http://www.ngenebio.com";

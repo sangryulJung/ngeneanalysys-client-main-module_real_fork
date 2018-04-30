@@ -33,6 +33,10 @@ public class ResourceUtil {
 		if(getResourceURL(path) == null) return null;
 		return new Image(getResourceAsStream(path));
 	}
-	
+
+	public Image getImage(String path, int x, int y) {
+		if(getResourceURL(path) == null) return null;
+		return new Image(getResourceAsStream(path), x , y ,true, true);
+	}
 
 }

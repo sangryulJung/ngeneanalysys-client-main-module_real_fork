@@ -73,7 +73,7 @@ public class JsonUtil {
 	@SuppressWarnings("unchecked")
 	public static <T> Map<String, T> fromJsonToMap(String jsonString) {
 		
-		Map<String, T> map = new HashMap<String, T>();
+		Map<String, T> map = new HashMap<>();
 		
 		try {
 			map = objectMapper.readValue(jsonString, map.getClass());

@@ -1,13 +1,10 @@
 package ngeneanalysys.controller;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.Optional;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.Pane;
-import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.service.AnalysisRequestService;
 import ngeneanalysys.task.AnalysisSampleUploadTask;
@@ -26,7 +23,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.text.Text;
-import javafx.stage.Window;
 
 /**
  * 분석 요청 샘플 업로드 Progress Task 화면 [메인화면하단출력]
@@ -35,7 +31,7 @@ import javafx.stage.Window;
  * @since 2016. 5. 26. 오후 8:46:26
  */
 public class AnalysisSampleUploadProgressTaskController extends SubPaneController {
-	private static Logger logger = LoggerUtil.getLogger();
+	private static final Logger logger = LoggerUtil.getLogger();
 	
 	/** 현재 진행중인 그룹명 출력 라벨 */
 	@FXML
@@ -77,9 +73,6 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 	private Integer currentUploadGroupId;
 	/** 현재 업로드중인 분석 요청 그룹명 */
 	private String currentUploadGroupRefName;
-
-	/** 분석 요청 작업 상세 진행 창 컨트롤러 클래스 객체 */
-	private AnalysisSampleUploadProgressDetailController detailDialogController;
 	
 	/** 작업 일시정지 여부 */
 	public boolean isPause = false;
@@ -107,7 +100,7 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 
 	/**
 	 * 현재 그룹의 총 샘플 수 화면 출력
-	 * @param totalCount
+	 * @param totalCount String
 	 */
 	public void updateTotalCount(String totalCount) {
 		this.totalCount.setText(totalCount);
@@ -124,7 +117,9 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 		boolean isWorkStart = false;
 		this.progressIndicator.setProgress(new ProgressBar().getProgress());
 
-		this.task = new AnalysisSampleUploadTask(this);
+		List<File> fileList = (List<File>) paramMap.get("fileList");
+
+		this.task = new AnalysisSampleUploadTask(this, fileList.size());
 
 		progressBar.progressProperty().bind(this.task.progressProperty());
 		completeCount.textProperty().bind(this.task.messageProperty());
@@ -143,7 +138,7 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 
 	@FXML
 	public void startUpload() {
-		logger.info("resume from task controller..");
+		logger.debug("resume from task controller..");
 		try {
 			Thread.sleep(100);
 			isPause = false;
@@ -160,7 +155,7 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 	 */
 	@FXML
 	public void pauseUpload() {
-		logger.info("pause from task controller..");
+		logger.debug("pause from task controller..");
 		try {
 			Thread.sleep(100);
 			isPause = true;
@@ -186,43 +181,6 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 			e.printStackTrace();
 		}
 	}
-
-	/**
-	 * 업로드 상세 정보창 출력
-	 */
-	@FXML
-	public void openDetailDialog() {
-		try {
-			Thread.sleep(100);
-			logger.info("openDetailDialog..");
-
-			//if(currentUploadGroupId > 0 && !StringUtils.isEmpty(this.currentUploadGroupRefName)) {
-				// parameter setting
-				Map<String,Object> paramMap = new HashMap<>();
-				paramMap.put("currentUploadGroupId", this.currentUploadGroupId);
-				paramMap.put("currentUploadGroupRefName", this.currentUploadGroupRefName);
-
-				// Load the fxml file and create a new stage for the popup dialog
-				FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.ANALYSIS_SAMPLE_UPLOAD_PROGRESS_DETAIL);
-				Pane page = loader.load();
-				this.detailDialogController = loader.getController();
-				this.detailDialogController.setTaskController(this);
-				this.detailDialogController.setParam(paramMap);
-				this.detailDialogController.show(page);
-			//}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * 업로드 진행 상세 정보 Dialog 창 종료 시 처리
-	 */
-	public void setDetailDialogCloseInfo() {
-		this.detailDialogController = null;
-	}
 	
 	/**
 	 * 업로드 취소 처리
@@ -230,13 +188,13 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 	@FXML
 	public void cancelUpload() {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.initOwner((Window) getMainController().getPrimaryStage());
+		alert.initOwner(getMainController().getPrimaryStage());
 		alert.setTitle("Confirmation Dialog");
 		alert.setHeaderText("Analysis Cancel Request");
 		alert.setContentText("Do you want to cancel analysis request?");
 
 		Optional<ButtonType> result = alert.showAndWait();
-		if (result.get() == ButtonType.OK){
+		if (result.isPresent() && result.get() == ButtonType.OK){
 			// 작업 일시 정지 처리.
 			isPause = true;
 			// 작업 정지 처리
@@ -254,27 +212,12 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 	public void showCancelCompleteDialog() {
 		DialogUtil.alert("Cancel incomplete analysis request", "It has been canceled.", getMainController().getPrimaryStage(), true);
 	}
-	
-	/**
-	 * 진행 상세 정보창 진행률 정보 갱신
-	 * @param sampleFileId
-	 * @param progressPercent
-	 */
-	public void updateProgressInfoTargetDetailDialog(int sampleFileId, double progressPercent) {
-		if(this.detailDialogController != null) {
-			this.detailDialogController.update(sampleFileId, progressPercent);
-		}
-	}
-	
+
 	/**
 	 * 업로드 작업 관련 화면 출력 정리
 	 */
 	public void clearWhenUploadTaskSucceeded() {
-		if(this.detailDialogController != null) {
-			this.detailDialogController.windowDialogClose();
-		}
 		this.mainController.clearProgressTaskArea();
-
 	}
 
 	/**

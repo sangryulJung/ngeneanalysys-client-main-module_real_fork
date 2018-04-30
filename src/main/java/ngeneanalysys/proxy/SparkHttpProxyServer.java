@@ -52,7 +52,7 @@ public class SparkHttpProxyServer {
         port(proxyServerPort);
 
         get("/ping", (req, res) -> {
-            logger.info(String.format("api host : %s / token : %s", getApiServerHost(), getAuthToken()));
+            logger.debug(String.format("api host : %s / token : %s", getApiServerHost(), getAuthToken()));
             return "Hello..";
         });
 
@@ -60,7 +60,7 @@ public class SparkHttpProxyServer {
                 String sample = request.params(":sample");
                 String name = request.params(":name");
                 String url = String.format("%s/analysisFiles/%s/%s", getApiServerHost(), sample, name);
-                logger.info(String.format("URL = %s", url));
+                logger.debug(String.format("URL = %s", url));
                 HttpsURLConnection conn = null;
                 try {
                     TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
@@ -78,13 +78,13 @@ public class SparkHttpProxyServer {
                         }
                     } };
 
-                    SSLContext sc = SSLContext.getDefault().getInstance("SSL");
+                    SSLContext sc = SSLContext.getInstance("SSL");
                     sc.init(null, trustAllCerts, new SecureRandom());
                     HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
 
                     URL obj = new URL(url);
                     conn = (HttpsURLConnection) obj.openConnection();
-                    conn.setDefaultSSLSocketFactory(sc.getSocketFactory());
+                    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
                     conn.setHostnameVerifier(new HostnameVerifier() {
                         @Override
                         public boolean verify(String s, SSLSession sslSession) {
@@ -129,7 +129,7 @@ public class SparkHttpProxyServer {
                     conn.setDoOutput(true);
                     conn.setDoInput(true);
                     response.header("Transfer-Encoding", "chunked");
-                    logger.info(String.format("request bam data [%s][%s][range:%s][total:%s]", conn.getResponseCode(), url, request.headers("Range"), bytes));
+                    logger.debug(String.format("request bam data [%s][%s][range:%s][total:%s]", conn.getResponseCode(), url, request.headers("Range"), bytes));
 
                     if(conn.getResponseCode() >= 400) {
                         response.status(206);
@@ -180,7 +180,7 @@ public class SparkHttpProxyServer {
      *  서버 실행 중지
      */
     public void stopServer() {
-        logger.info("spark server stop...");
+        logger.debug("spark server stop...");
         stop();
     }
 
@@ -194,8 +194,7 @@ public class SparkHttpProxyServer {
             return Long.valueOf(0L);
         } else {
             String[] bits = string.replace("bytes=", "").split("-");
-            Long bytes = Long.valueOf(Long.parseLong(bits[1]) - Long.parseLong(bits[0]));
-            return bytes;
+            return Long.parseLong(bits[1]) - Long.parseLong(bits[0]);
         }
     }
 }

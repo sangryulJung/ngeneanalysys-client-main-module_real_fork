@@ -61,7 +61,7 @@ public class PropertiesUtil {
 			properties.load(reader);
 				
 			for(String key : map.keySet()) {
-				properties.setProperty(key, (String) map.get(key));
+				properties.setProperty(key, map.get(key));
 			}
 				
 			FileWriter writer = new FileWriter(propertiesFile);

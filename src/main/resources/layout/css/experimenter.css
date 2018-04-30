@@ -1,301 +1,216 @@
-TextFlow#information Text {
-	-fx-fill:#656565;
-	-fx-font-size:14;
-	-fx-font-weight:bold;
+.combo-box {
+    -fx-background-radius : 0;
+    -fx-border-radius : 0;
 }
 
-TextFlow#information Text.panelTxt {
-	-fx-fill:#F5525A;
-	-fx-font-size:14;
-	-fx-font-weight:bold;
-}
-
-Button#buttonUpload {
-	-fx-background-image:url('../images/btn_run.png');
-	-fx-background-color:none;
-	-fx-background-repeat: no-repeat;
-	-fx-background-position: center;
-	-fx-border-width:0;
-	-fx-cursor:hand;
-}
-
-
-Button#buttonUpload:hover {
-	-fx-background-image:url('../images/btn_run_on.png');
+.text-field {
+    -fx-background-radius : 0;
+    -fx-border-radius : 0;
 }
 
 #runListHeaderGridPane, #sampleListHeaderGridPane {
-	-fx-border-color:#000;
-	-fx-border-width:2 0 0 0;
-	-fx-background-color:#75848c;
+	-fx-border-width:0;
+	-fx-background-color:#f2f5fa;
+	-fx-border-width : 1 0 1 0;
+	-fx-border-color : #cbccce;
 }
 
 #runListHeaderGridPane .header, #sampleListHeaderGridPane .header {
 	-fx-font-size:12;
-	-fx-text-fill:#fff;
+	-fx-text-fill:#000;
 	-fx-font-weight:bold;
-	-fx-min-height:30;
-	-fx-pref-height:30;
-	-fx-max-height:30;
+	-fx-min-height:25;
+	-fx-pref-height:25;
+	-fx-max-height:25;
 	-fx-padding:0 0 0 0;
 }
 
-#listGrid {
-	-fx-background-color:#fff;
+.background_white {
+    -fx-background-color : #fff;
 }
 
-#listGrid .colunmn {
-	-fx-padding:0;
-	-fx-border-color:#d2d2d2;
-	-fx-border-width:0 0 1 0;
+.sample_header {
+    -fx-background-color : #8f9fb9;
+    -fx-text-fill : #fff;
 }
 
-#listGrid #jobArea {
-	-fx-alignment:CENTER_LEFT;
+.sample_list_label {
+    -fx-background-color : #f7f7f7;
+    -fx-text-fill : #000000;
 }
 
-#listGrid #jobArea #job {
-	-fx-font-size:10;
+.lv_i_icon {
+    -fx-background-radius : 20;
+    -fx-pref-width : 25;
+    -fx-pref-height : 18;
+    -fx-text-fill : #FFFFFF;
+    -fx-alignment : center;
+    -fx-background-color : #F6545C;
+}
+
+.lv_ii_icon {
+    -fx-background-radius : 20;
+    -fx-pref-width : 25;
+    -fx-pref-height : 18;
+    -fx-text-fill : #FFFFFF;
+    -fx-alignment : center;
+    -fx-background-color : #FF9482;
+}
+
+.lv_iii_icon {
+    -fx-background-radius : 20;
+    -fx-pref-width : 25;
+    -fx-pref-height : 18;
+    -fx-text-fill : #FFFFFF;
+    -fx-alignment : center;
+    -fx-background-color : #70ACF5;
+}
+
+.lv_iv_icon {
+    -fx-background-radius : 20;
+    -fx-pref-width : 25;
+    -fx-pref-height : 18;
+    -fx-text-fill : #FFFFFF;
+    -fx-alignment : center;
+    -fx-background-color : #1F2D87;
+}
+
+.lv_v_icon {
+    -fx-background-radius : 20;
+    -fx-pref-width : 25;
+    -fx-pref-height : 18;
+    -fx-text-fill : #FFFFFF;
+    -fx-alignment : center;
+    -fx-background-color : #5a64a5;
+}
+
+.count_label {
+    -fx-pref-width : 35;
+    -fx-alignment : center-left;
+    -fx-pref-height : 18;
+    /*-fx-font-family: "Noto Sans CJK KR Regular";*/
+    -fx-font-weight : 100;
+}
+
+.variant_hbox {
+    -fx-background-color : #FFFFFF;
+    -fx-alignment : center;
+    -fx-pref-height : 30;
+}
+
+.remove_btn {
+    -fx-background-color : #FFFFFF;
+    -fx-background-radius : 30;
+    -fx-alignment : center;
+    -fx-text-fill : #000000;
+    -fx-pref-width : 14;
+    -fx-pref-height : 14;
+    -fx-min-width : 14;
+    -fx-min-height : 14;
+    -fx-font-size : 8;
+    -fx-padding : -1 0 0 0;
+}
+
+#tierTable .interpretation_A {
+	-fx-background-color:#66A4F0;
+	-fx-background-radius:15;
+	-fx-font-size:12;
 	-fx-font-weight:bold;
-	-fx-text-fill:#000;
-	-fx-border-width:0;
-	-fx-min-height:20;
-    -fx-pref-height:20;
-    -fx-max-height:20;
-}
-
-#listGrid #jobArea #submitted {
-	-fx-font-size:8;
-	-fx-text-fill:#848484;
-	-fx-border-width:0;
-	-fx-min-height:15;
-    -fx-pref-height:15;
-    -fx-max-height:15;
-}
-
-#listGrid #jobArea #started {
-	-fx-font-size:8;
-	-fx-text-fill:#848484;
-	-fx-border-width:0;
-	-fx-min-height:15;
-    -fx-pref-height:15;
-    -fx-max-height:15;
-}
-
-#listGrid #groupArea {
-	-fx-alignment:CENTER_LEFT;
-}
-
-#listGrid #groupArea #refName {
-	-fx-font-size:10;
-	-fx-font-weight:bold;
-	-fx-text-fill:#000;
-	-fx-border-width:0;
-	-fx-min-height:20;
-    -fx-pref-height:20;
-    -fx-max-height:20;
-}
-#listGrid #groupArea .label {
-	-fx-font-size:8;
-}
-
-#listGrid #groupArea #sampleSource {
-	-fx-alignment:center-left;
-}
-
-#listGrid #groupArea #sampleSource .label {
-	-fx-font-size:8;
-	-fx-text-fill:#656565;
-}
-
-#listGrid #groupArea #sampleSource .BLOOD {
-	-fx-font-weight:bold;
-	-fx-text-fill:#000;
-	-fx-font-size:8;
-}
-
-#listGrid #groupArea #sampleSource .FFPE {
-	-fx-font-weight:bold;
-	-fx-text-fill:#000;
-	-fx-font-size:8;
-}
-
-#listGrid #jobStatusArea {
-	-fx-alignment:CENTER_LEFT;
-}
-
-#listGrid #jobStatusArea #statusIcon {
-	-fx-alignment:CENTER_LEFT;
-}
-
-#listGrid #jobStatusArea .label#message {
-	-fx-text-fill:#656565;
-	-fx-padding:5 0 0 0;
-}
-
-#listGrid #assayTargetPlatformArea {
-	-fx-alignment:CENTER_LEFT;
-}
-
-#listGrid #assayTargetPlatformArea #assayTarget {
-	-fx-text-fill:#000;
-	-fx-font-weight:bold;
-}
-
-#listGrid #assayTargetPlatformArea #platform {
-	-fx-text-fill:#656565;
-}
-
-#listGrid #result_overview {
-	-fx-alignment:CENTER;
-}
-
-#listGrid #result_overview .bullet_green {
-	-fx-background-color:#5fa5fa;
-	-fx-background-insets:0;
-	-fx-background-radius:6;
-	-fx-border-radius:6;
-	-fx-border-color:#5fa5fa;
-	-fx-border-width:1;
-	-fx-padding:0;
-	-fx-min-width:12;
-	-fx-pref-width:12;
-	-fx-max-width:12;
-	-fx-min-height:12;
-	-fx-pref-height:12;
-	-fx-max-height:12;
-}
-#listGrid #result_overview .bullet_green:hover {
-	-fx-background-color:#4b91e1;
-	-fx-border-color:#4b91e1;
-}
-
-#listGrid #result_overview .bullet_red {
-	-fx-background-color: #eb6464;
-	-fx-background-insets:0;
-	-fx-background-radius:6;
-	-fx-border-radius:6;
-	-fx-border-color: #eb6464;
-	-fx-border-width:1;
-	-fx-padding:0;
-	-fx-min-width:12;
-	-fx-pref-width:12;
-	-fx-max-width:12;
-	-fx-min-height:12;
-	-fx-pref-height:12;
-	-fx-max-height:12;
-}
-#listGrid #result_overview .bullet_red:hover {
-	-fx-background-color:#f59191;
-	-fx-border-color:#f59191;
-}
-
-#listGrid #qcArea {
-	-fx-alignment:CENTER;
-}
-
-#listGrid #qcArea .label#pass {
-	-fx-text-fill:#68c051;
-}
-#listGrid #qcArea .label#return {
-	-fx-text-fill:#f69242;
-}
-#listGrid #qcArea .label#warning {
-	-fx-text-fill:#f35353;
-}
-#listGrid #qcArea .label#fail {
-	-fx-text-fill:#1F2D87;
-}
-
-#listGrid #detailArea {
-	-fx-alignment:CENTER;
-}
-
-#listGrid #detailArea .button {
-	-fx-pref-width:55;
-}
-
-#searchArea {
-	-fx-background-color:#d6dde0;
-	-fx-border-color:#75848c;
-	-fx-border-width:2 0 0 0;
-}
-
-#searchArea .label {-fx-text-fill:#5a6971;}
-
-.btn_search {
-	-fx-background-insets:0;
-	-fx-background-color: #FB4952;
-	-fx-background-radius :3;
-	-fx-border-width:0;
 	-fx-text-fill:#fff;
-	-fx-font-weight:bold;
-	-fx-padding:0;
-	-fx-graphic-text-gap:0;
-	-fx-font-size:16;
-}
-.btn_search:hover {
-	-fx-background-color:#CF2730;
-}
-.btn_choice_run {
-	-fx-background-insets:0;
-	-fx-background-color: #1F2D87;
-	-fx-background-radius :3;
-	-fx-border-width:0;
-	-fx-text-fill:#fff;
-	-fx-font-weight:bold;
-	-fx-padding:0;
-	-fx-graphic-text-gap:0;
-	-fx-min-height:25;
-	-fx-font-size:11;
-}
-.btn_choice_run:hover {
-	-fx-background-color:#262FCF;
-}
-.txt_sample_count {
-	-fx-text-fill:#FE6583;
+	-fx-pref-width:20;
+	-fx-pref-height : 20;
+	-fx-text-alignment:center ;
+	-fx-alignment:center;
 }
 
-.btn_search_small {
-	-fx-background-insets:0;
-	-fx-background-color: #FB4952;
-	-fx-background-radius :3;
-	-fx-border-width:0;
-	-fx-text-fill:#fff;
+#tierTable .interpretation_B {
+	-fx-background-color:#8C89CD;
+	-fx-background-radius:15;
+	-fx-font-size:12;
 	-fx-font-weight:bold;
-	-fx-padding:0;
-	-fx-graphic-text-gap:0;
-	-fx-font-size:11;
-}
-.btn_search_small:hover {
-	-fx-background-color:#CF2730;
+	-fx-text-fill:#fff;
+	-fx-pref-width:20;
+	-fx-pref-height : 20;
+	-fx-text-alignment:center ;
+	-fx-alignment:center;
 }
 
-.btn_snp_indel {
-	-fx-font-size:11px;
-	-fx-background-insets:0;
-	-fx-background-color: #5DA4FB;
-	-fx-background-radius :3;
-	-fx-border-radius :3;
-	-fx-border-color:#5DA4FB;
-	-fx-border-width:1;
-	-fx-text-fill:#fff;
+#tierTable .interpretation_C {
+	-fx-background-color:#3AC6AF;
+	-fx-background-radius:15;
+	-fx-font-size:12;
 	-fx-font-weight:bold;
-	-fx-padding:0;
-	-fx-graphic-text-gap:0;
-}
-.btn_snp_indel:hover {
-	-fx-background-color: #3C81D4;
+	-fx-text-fill:#fff;
+	-fx-pref-width:20;
+	-fx-pref-height : 20;
+	-fx-text-alignment:center ;
+	-fx-alignment:center;
 }
 
-.help_tooltip {
-	-fx-background-image:url('../images/icon_help.png');
-	-fx-background-color:transparent;
-	-fx-background-repeat:no-repeat;
-	-fx-min-width:15;
-	-fx-pref-width:15;
-	-fx-max-width:15;
-	-fx-min-height:15;
-	-fx-pref-height:15;
-	-fx-max-height:15;
+#tierTable .interpretation_D {
+	-fx-background-color:#A2BF6F;
+	-fx-background-radius:15;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-pref-width:20;
+	-fx-pref-height : 20;
+	-fx-text-alignment:center ;
+	-fx-alignment:center;
+}
+
+#pathogenicityTable .table-cell {
+    -fx-alignment : center;
+}
+
+#tierTable .table-cell {
+    -fx-alignment : center;
+}
+
+#results_image_icon {
+    -fx-graphic: url("../images/renewal/result_icon.png");
+    -fx-pref-width : 24;
+    -fx-pref-height : 24;
+}
+
+#search_image_icon {
+    -fx-graphic: url("../images/renewal/search_icon.png");
+    -fx-pref-width : 24;
+    -fx-pref-height : 24;
+}
+
+
+.run_queued_icon {
+    -fx-background-color : #d8a60d;
+    -fx-background-radius : 20;
+    -fx-pref-width : 25;
+    -fx-pref-height : 18;
+    -fx-text-fill : #FFFFFF;
+    -fx-alignment : center;
+}
+
+.run_complete_icon {
+    -fx-background-color : #229db8;
+    -fx-background-radius : 20;
+    -fx-pref-width : 25;
+    -fx-pref-height : 18;
+    -fx-text-fill : #FFFFFF;
+    -fx-alignment : center;
+}
+.run_run_icon {
+    -fx-background-color : #69b415;
+    -fx-background-radius : 30;
+    -fx-background-radius : 20;
+    -fx-pref-width : 25;
+    -fx-pref-height : 18;
+    -fx-text-fill : #FFFFFF;
+    -fx-alignment : center;
+}
+.run_failed_icon {
+    -fx-background-color : #FF0000;
+    -fx-background-radius : 20;
+    -fx-pref-width : 25;
+    -fx-pref-height : 18;
+    -fx-text-fill : #FFFFFF;
+    -fx-alignment : center;
 }

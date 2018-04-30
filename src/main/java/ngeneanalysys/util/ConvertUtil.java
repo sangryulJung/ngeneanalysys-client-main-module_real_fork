@@ -1,10 +1,12 @@
 package ngeneanalysys.util;
 
+import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
+import java.util.*;
 
+import ngeneanalysys.model.SnpInDelEvidence;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -63,7 +65,7 @@ public class ConvertUtil {
 			return "0";
 		final String[] units = new String[] { "B", "kB", "MB", "GB", "TB" };
 		int digitGroups = (int) (Math.log10(size) / Math.log10(1024));
-		return new DecimalFormat("#,##0.#").format(size / Math.pow(1024, digitGroups)) + " " + units[digitGroups];
+		return new DecimalFormat("#,##0.#").format(size / Math.pow(1024, digitGroups)) + "" + units[digitGroups];
 	}
 	
 	/**
@@ -97,7 +99,7 @@ public class ConvertUtil {
 		if(text == null) {
 			return "";
 		} else if( text.length() > splitLength) {
-			StringBuffer buf = new StringBuffer();
+			StringBuilder buf = new StringBuilder();
 			for(int i = 0; i < text.length(); i += splitLength){
 				if(i + splitLength > text.length()) {
 					buf.append(text.substring(i, text.length()));
@@ -120,9 +122,60 @@ public class ConvertUtil {
 			else if (tier.equalsIgnoreCase("T2")) convertTier = "Tier II";
 			else if (tier.equalsIgnoreCase("T3")) convertTier = "Tier III";
 			else if (tier.equalsIgnoreCase("T4")) convertTier = "Tier IV";
+			else if (tier.equalsIgnoreCase("TN")) convertTier = "Negative";
 		}
 
 		return convertTier;
 	}
 
+	public static String convertButtonId(String tier) {
+		String convertTier = "";
+		if(tier != null) {
+			if (tier.equalsIgnoreCase("T1")) convertTier = "tierOne";
+			else if (tier.equalsIgnoreCase("T2")) convertTier = "tierTwo";
+			else if (tier.equalsIgnoreCase("T3")) convertTier = "tierThree";
+			else if (tier.equalsIgnoreCase("T4")) convertTier = "tierFour";
+		}
+
+		return convertTier;
+	}
+
+	public static <T> Map<String, Object> getMapToModel(T item) {
+		Field[] fields = item.getClass().getDeclaredFields();
+		Map<String, Object> params = new HashMap<>();
+		for(Field field : fields) {
+			field.setAccessible(true);
+			try {
+				params.put(field.getName(), field.get(item));
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return params;
+	}
+
+	public static BigDecimal removeZero(BigDecimal bigDecimal) {
+		return (bigDecimal != null) ? bigDecimal.stripTrailingZeros() : null;
+	}
+
+	public static SnpInDelEvidence findPrimaryEvidence(List<SnpInDelEvidence> snpInDelEvidenceList) {
+		if (snpInDelEvidenceList == null || snpInDelEvidenceList.isEmpty()) return null;
+		for(SnpInDelEvidence snpInDelEvidence : snpInDelEvidenceList) {
+			if(snpInDelEvidence.getPrimaryEvidence()) return snpInDelEvidence;
+		}
+		return null;
+	}
+
+	public static String getAminoAcid(String aminoAcid) {
+		if(ngeneanalysys.util.StringUtils.isEmpty(aminoAcid)) return null;
+
+		String[] pattern1 = {"Ala", "Arg", "Asn", "Asp", "Cys", "Glu", "Gln", "Gly", "His",
+				"Ile", "Leu", "Lys", "Met","Phe", "Pro", "Ser", "Thr", "Trp", "Tyr", "Val"};
+		String[] pattern2 = {"A","R","N","D","C","E","Q","G","H","I","L","K","M","F","P","S","T","W","Y","V"};
+
+		/*if(aminoAcid.startsWith("p."))
+			aminoAcid = aminoAcid.replaceFirst("p.", "");*/
+		return StringUtils.replaceEach(aminoAcid, pattern1, pattern2);
+	}
 }

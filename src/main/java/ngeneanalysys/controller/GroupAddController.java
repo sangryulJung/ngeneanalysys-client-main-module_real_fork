@@ -28,7 +28,7 @@ import java.util.Map;
  * @since 2017-09-06
  */
 public class GroupAddController extends SubPaneController{
-    private static Logger logger = LoggerUtil.getLogger();
+    private static final Logger logger = LoggerUtil.getLogger();
 
     private Stage dialogStage;
 
@@ -100,21 +100,20 @@ public class GroupAddController extends SubPaneController{
 
             try {
                 if("add".equalsIgnoreCase(type)) {
-                    apiService.post("/admin/member_groups", params, null, true);
+                    apiService.post("/admin/memberGroups", params, null, true);
                     DialogUtil.alert("Create User Group Success", "A user group has been created.",
                             dialogStage, true);
                 } else {
-                    /*if(group != null) {
-                        apiService.patch("/users/group/" + group.getId(), params, null, true);
-                        DialogUtil.alert("Modify User Group Success", "A user group has been modified.",
-                                dialogStage, true);
-                    }*/
+                    apiService.put("/admin/memberGroups/" + group.id, params, null, true);
+                    DialogUtil.alert("Update User Group Success", "A user group has been updated.",
+                            dialogStage, true);
                 }
                 dialogStage.close();
             } catch (WebAPIException wae) {
                 DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                         getMainApp().getPrimaryStage(), true);
             } catch (Exception e) {
+                logger.error("Unknown Error", e);
                 DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
             }
         }

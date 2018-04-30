@@ -1,3 +1,6 @@
+taskArea {
+    -fx-background-color : transparent;
+}
 #taskArea .taskTitle {
 	-fx-font-weight:bold;
 	-fx-text-fill:#efefef;
@@ -50,10 +53,11 @@
 }
 
 #taskArea #buttonCancel {
+    -fx-background-radius : 0;
 	-fx-background-insets:0;
 	-fx-background-color:#dc4b33;
 	-fx-background-radius:2;
-	-fx-border-radius:2;
+	-fx-border-radius:0;
 	-fx-border-color:#dc4b33;
 	-fx-border-width:1;
 	-fx-text-fill:#fff;
@@ -103,4 +107,21 @@
 	-fx-font-size:13;
 	-fx-font-weight:bold;
 	-fx-text-fill:#333;
+}
+
+#taskArea .progress-bar {
+	-fx-background-radius: 0;
+    -fx-background-color: #FFFFFF;
+    -fx-opacity: 0.5;
+}
+
+#taskArea .progress-bar > .bar {
+	-fx-background-radius: 0;
+	-fx-background-color: linear-gradient(to right, #273d5f, #42c0cb, #273d5f);
+}
+
+#taskArea .progress-bar > .track {
+	-fx-background-insets: 0;
+	-fx-background-color : white;
+    -fx-background-radius: 0;
 }

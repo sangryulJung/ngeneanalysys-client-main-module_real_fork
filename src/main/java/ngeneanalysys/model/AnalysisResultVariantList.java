@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class AnalysisResultVariantList {
     private Integer count;
-    private List<AnalysisResultVariant> result;
+    private List<SnpInDel> result;
 
     /**
      * @return count
@@ -27,14 +27,14 @@ public class AnalysisResultVariantList {
     /**
      * @return result
      */
-    public List<AnalysisResultVariant> getResult() {
+    public List<SnpInDel> getResult() {
         return result;
     }
 
     /**
      * @param result
      */
-    public void setResult(List<AnalysisResultVariant> result) {
+    public void setResult(List<SnpInDel> result) {
         this.result = result;
     }
 }

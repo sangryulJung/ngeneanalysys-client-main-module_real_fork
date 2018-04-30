@@ -1,31 +1,42 @@
 package ngeneanalysys.controller;
 
+import com.opencsv.CSVReader;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import ngeneanalysys.code.AnalysisJobStatusCode;
+import ngeneanalysys.code.constants.FXMLConstants;
+import ngeneanalysys.code.enums.LibraryTypeCode;
 import ngeneanalysys.controller.extend.BaseStageController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
+import ngeneanalysys.model.paged.PagedAnalysisFile;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.task.SampleSheetDownloadTask;
+import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.FileUtil;
 import ngeneanalysys.util.LoggerUtil;
+import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -44,35 +55,175 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     private List<Sample> sampleArrayList = null;
 
+    private List<AnalysisFile> failedAnalysisFileList = new ArrayList<>();
+
     @FXML
     private GridPane standardDataGridPane;
 
+    @FXML
+    private ToggleGroup selectFile;
+
+    @FXML
+    protected RadioButton localFastqFilesRadioButton;
+
+    @FXML
+    protected RadioButton serverFastqFilesRadioButton;
+
+    @FXML
+    protected RadioButton serverRunFolderRadioButton;
+
     private APIService apiService;
 
-    List<Panel> panels = null;
+    private List<Panel> panels = null;
 
-    List<Diseases> diseases = null;
+    private List<Diseases> diseases = null;
 
-    Map<String, Map<String, Object>> fileMap = null;
+    private Map<String, Map<String, Object>> fileMap = null;
 
-    List<File> uploadFileList = null;
+    private List<File> uploadFileList = null;
 
-    List<AnalysisFile> uploadFileData = null;
+    private List<AnalysisFile> uploadFileData = null;
 
-    List<TextField> sampleNameTextFieldList = new ArrayList<>();
+    private List<TextField> sampleNameTextFieldList = new ArrayList<>();
 
-    List<Button> fileSelectButtonList = new ArrayList<>();
+    private List<ComboBox<ComboBoxItem>> diseaseComboBoxList = new ArrayList<>();
 
-    List<TextField> patientIdTextFieldList = new ArrayList<>();
+    private List<ComboBox<ComboBoxItem>> panelComboBoxList = new ArrayList<>();
 
-    List<ComboBox<ComboBoxItem>> diseaseComboBoxList = new ArrayList<>();
+    private List<ComboBox<String>> sampleSourceComboBoxList = new ArrayList<>();
 
-    List<ComboBox<ComboBoxItem>> panelComboBoxList = new ArrayList<>();
+    private boolean isServerItem = false;
 
-    List<TextField> sampleSourceTextFieldList = new ArrayList<>();
+    private boolean isServerFastq = false;
+
+    private String runPath = "";
+
+    //화면에 표시될 row 수
+    private int totalRow = 0;
+
+    public void setServerFASTQ(String path) {
+        isServerItem = true;
+        isServerFastq = true;
+        if(!sampleArrayList.isEmpty()) sampleArrayList.removeAll(sampleArrayList);
+        try {
+            Map<String, Object> params = new HashMap<>();
+            params.put("subPath", path);
+            runPath = path;
+            HttpClientResponse response = apiService.get("/runDir", params, null, false);
+            ServerFileInfo serverFileInfo = response.getObjectBeforeConvertResponseToJSON(ServerFileInfo.class);
+
+            List<ServerFile> serverFiles = serverFileInfo.getChild().stream()
+                    .filter(serverFile -> serverFile.getName().toLowerCase().endsWith("fastq.gz"))
+                    .collect(Collectors.toList());
+            if(serverFiles.isEmpty()) DialogUtil.alert("Empty Fastq File Directory", "Can not find fastq files in the directory.", sampleUploadController.getCurrentStage(), true);
+            setServerFastqList(serverFiles);
+
+        } catch (WebAPIException e) {
+                DialogUtil.error(e.getHeaderText(), e.getMessage(), getMainApp().getPrimaryStage(), true);
+        }
+    }
+
+    public void setServerRun(String path) {
+        isServerItem = true;
+        isServerFastq = false;
+        logger.debug(path);
+        if(sampleArrayList.isEmpty()) sampleArrayList.removeAll(sampleArrayList);
+        try {
+            Map<String, Object> params = new HashMap<>();
+            params.put("runDir", path);
+            runPath = path;
+            Task<Void> task = new SampleSheetDownloadTask(this.sampleUploadController, this, path);
+            final Thread downloadThread = new Thread(task);
+
+            downloadThread.setDaemon(true);
+            downloadThread.start();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean searchSameSample(String fairName) {
+        if(sampleArrayList == null || sampleArrayList.isEmpty()) return false;
+
+        return sampleArrayList.stream().anyMatch(item -> item.getName().equalsIgnoreCase(fairName));
+    }
+
+
+    public void setServerFastqList(List<ServerFile> serverFiles) {
+        List<ServerFile> undeterminedFile = new ArrayList<>();
+        serverFiles.stream().forEach(file -> {
+            if(file.getName().toUpperCase().startsWith("UNDETERMINED_"))
+                undeterminedFile.add(file);
+        });
+
+        if(!undeterminedFile.isEmpty()) serverFiles.removeAll(undeterminedFile);
+
+        while (!serverFiles.isEmpty()) {
+            ServerFile serverFile = serverFiles.get(0);
+            String fastqFilePairName = FileUtil.getFASTQFilePairName(serverFile.getName());
+
+            List<ServerFile> pairFileList = serverFiles.stream().filter(file ->
+                    file.getName().startsWith(fastqFilePairName)).collect(Collectors.toList());
+
+            //fastq 파일이 짝을 이루고 올리는데 실패한 파일인 경우
+           if (pairFileList.size() == 2 && checkSameSample(fastqFilePairName)) {
+                Sample sample = new Sample();
+                sample.setName(fastqFilePairName);
+                sampleArrayList.add(sample);
+            }
+
+            if(sampleArrayList.size() == 23) break;
+
+            serverFiles.removeAll(pairFileList);
+        }
+
+        tableEdit();
+    }
+
+    public void setSampleSheet(String path) {
+        if(!sampleArrayList.isEmpty()) sampleArrayList.removeAll(sampleArrayList);
+        try(CSVReader csvReader = new CSVReader(new InputStreamReader(new FileInputStream(path)))) {
+            String[] s;
+            boolean tableData = false;
+            while((s = csvReader.readNext()) != null) {
+                if (tableData && sampleArrayList.size() < 23) {
+                    final String sampleName = s[0];
+                    logger.debug(s[0]);
+                    Sample sample = new Sample();
+                    sample.setName(sampleName);
+                    if(s[8] != null && s[8].contains("DNA")) {
+                        Optional<Panel> panel = panels.stream().filter(item -> item.getName().contains("Tumor 170 DNA")).findFirst();
+                        if(panel.isPresent()) {
+                            sample.setPanelId(panel.get().getId());
+                            sample.setSampleSource(panel.get().getDefaultSampleSource());
+                            if(panel.get().getDefaultDiseaseId() != null)
+                                sample.setDiseaseId(panel.get().getDefaultDiseaseId());
+                        }
+                    } else if(s[8] != null && s[8].contains("RNA")) {
+                        Optional<Panel> panel = panels.stream().filter(item -> item.getName().contains("Tumor 170 RNA")).findFirst();
+                        if(panel.isPresent()) {
+                            sample.setPanelId(panel.get().getId());
+                            sample.setSampleSource(panel.get().getDefaultSampleSource());
+                            if(panel.get().getDefaultDiseaseId() != null)
+                                sample.setDiseaseId(panel.get().getDefaultDiseaseId());
+                        }
+                    }
+                    sampleArrayList.add(sample);
+                } else if(s[0].equalsIgnoreCase("Sample_ID")) {
+                    tableData = true;
+                }
+            }
+            tableEdit();
+
+        } catch (IOException e) {
+            DialogUtil.alert("not found", "file not found", this.getMainApp().getPrimaryStage(), true);
+        }
+
+    }
 
     /**
-     * @param mainController
+     * @param mainController MainController
      */
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
@@ -81,7 +232,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     }
 
     /**
-     * @param sampleUploadController
+     * @param sampleUploadController SampleUploadController
      */
     public void setSampleUploadController(SampleUploadController sampleUploadController) {
         this.sampleUploadController = sampleUploadController;
@@ -98,113 +249,147 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         panels = (List<Panel>)mainController.getBasicInformationMap().get("panels");
         diseases = (List<Diseases>)mainController.getBasicInformationMap().get("diseases");
 
-        for(int row  = 0 ; row < 23 ; row++) {
-            standardDataGridPane.setPrefHeight(standardDataGridPane.getPrefHeight() + 27);
-            TextField sampleName = new TextField();
-            sampleName.setStyle("-fx-text-inner-color: black;");
-            sampleName.setMaxWidth(Double.MAX_VALUE);
-            sampleNameTextFieldList.add(sampleName);
-            sampleName.textProperty().addListener((observable, oldValue, newValue) -> {
-                Set<String> fileName = fileMap.keySet();
-                fileName.stream().forEach(file -> {
-                    Map<String, Object> fileInfo = fileMap.get(file);
-
-                    if (fileInfo.get("sampleName") != null && fileInfo.get("sampleName").toString().equals(oldValue)) {
-                        fileInfo.put("sampleName", newValue);
-                    }
-                });
-            });
-
-//            Button select = new Button();
-//            fileSelectButtonList.add(select);
-//            select.setText("+");
-//            select.setStyle("-fx-font-size:9;");
-//            GridPane.setValignment(select, VPos.CENTER);
-//            GridPane.setHalignment(select, HPos.CENTER);
-//            select.setOnAction(e -> {
-//                FileChooser fileChooser = new FileChooser();
-//                fileChooser.setTitle("Choose FASTQ File");
-//                fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-//                fileChooser.getExtensionFilters()
-//                        .addAll(new FileChooser.ExtensionFilter("fastq", "*.fastq", "*.fastq.gz"));
-//                File file = fileChooser.showOpenDialog(sampleUploadController.getCurrentStage());
-//
-//                if(file != null) {
-//                    String fastqFilePairName = FileUtil.getFASTQFilePairName(file.getName());
-//                    String chooseDirectoryPath = FilenameUtils.getFullPath(file.getAbsolutePath());
-//                    logger.info(String.format("directory path of choose file : %s", chooseDirectoryPath));
-//                    File directory = new File(chooseDirectoryPath);
-//                    //선택한 파일의 폴더 내 모든 파일
-//                    List<File> fastqFilesInFolder = (List<File>) FileUtils.listFiles(directory, new String[]{"fastq.gz"}, false);
-//                    //선택한 파일과 동일한 샘플명을 가지는 파일만 리스트로 남김
-//                    fastqFilesInFolder = fastqFilesInFolder.stream().filter(fileItem -> fastqFilePairName.equals(FileUtil.getFASTQFilePairName(fileItem.getName()))).collect(Collectors.toList());
-//
-//                    //파일은 반드시 짝을 이루어야만 함
-//                    if(fastqFilesInFolder.size() == 2 && !checkSameSample(fastqFilePairName)) {
-//                        addUploadFile(fastqFilesInFolder, fastqFilePairName);
-//                    }
-//
-//                    tableEdit();
-//                }
-//            });
-
-            TextField paitentId = new TextField();
-            paitentId.setStyle("-fx-text-inner-color: black;");
-            paitentId.setMaxWidth(Double.MAX_VALUE);
-            patientIdTextFieldList.add(paitentId);
-
-            ComboBox<ComboBoxItem> disease  = new ComboBox<>();
-            disease.setMaxWidth(Double.MAX_VALUE);
-            diseaseComboBoxList.add(disease);
-            diseasesSetting(disease);
-
-            ComboBox<ComboBoxItem> panel  = new ComboBox<>();
-            panel.setMaxWidth(Double.MAX_VALUE);
-            panelComboBoxList.add(panel);
-            panelSetting(panel);
-            panel.setOnAction(event -> {
-                ComboBox<ComboBoxItem> obj = (ComboBox<ComboBoxItem>) event.getSource();
-                if(panelComboBoxList.contains(obj)) {
-                    int index  = panelComboBoxList.indexOf(obj);
-                    ComboBoxItem item = obj.getSelectionModel().getSelectedItem();
-                    logger.info(item.getText());
-                    panels.stream().forEach(panelItem -> {
-                        if(panelItem.getId() == Integer.parseInt(item.getValue())) {
-                            sampleSourceTextFieldList.get(index).setText(panelItem.getSampleSource());
-                        }
-                    });
-                }
-            });
-
-            TextField source = new TextField();
-            source.setMaxWidth(Double.MAX_VALUE);
-            sampleSourceTextFieldList.add(source);
-            source.setEditable(false);
-            source.setStyle("-fx-text-inner-color: black;");
-            source.setText(panels.get(0).getSampleSource());
-
-            //standardDataGridPane.addRow(row, sampleName, select, panel, source, disease, paitentId);
-            standardDataGridPane.addRow(row, sampleName, panel, source, disease, paitentId);
-        }
-
         if(sampleUploadController.getSamples() != null) {
             sampleArrayList = sampleUploadController.getSamples();
             tableEdit();
         }
     }
 
+    @FXML
+    private void localFastqFilesAction() {
+        maskerPane.setVisible(true);
+
+        if(isServerItem && !sampleArrayList.isEmpty()) {
+            isServerItem = false;
+            isServerFastq = false;
+            sampleArrayList.removeAll(sampleArrayList);
+        }
+
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Choose Directory");
+        if(mainController.getBasicInformationMap().containsKey("path")) {
+            directoryChooser.setInitialDirectory(new File((String) mainController.getBasicInformationMap().get("path")));
+        } else {
+            directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        }
+        File folder = directoryChooser.showDialog(this.sampleUploadController.getCurrentStage());
+
+        if(folder != null) {
+            File[] fileArray = folder.listFiles();
+            List<File> fileList = new ArrayList<>(Arrays.asList(fileArray));
+            if (System.getProperty("os.name").toLowerCase().contains("window")) {
+                fileList = fileList.stream().filter(file -> file.getName().endsWith(".fastq.gz")).collect(Collectors.toList());
+            } else {
+                fileList = fileList.stream().filter(file -> file.getName().endsWith(".fastq") ||
+                        file.getName().endsWith(".fastq.gz")).collect(Collectors.toList());
+            }
+
+            if(fileList.isEmpty()) DialogUtil.alert("not found", "not found fastq file", sampleUploadController.getCurrentStage(), true);
+            List<File> undeterminedFile = new ArrayList<>();
+            fileList.stream().forEach(file -> {
+                if(file.getName().toUpperCase().startsWith("UNDETERMINED_"))
+                    undeterminedFile.add(file);
+            });
+
+            if(!undeterminedFile.isEmpty()) fileList.removeAll(undeterminedFile);
+
+            while (!fileList.isEmpty()) {
+
+                mainController.getBasicInformationMap().put("path", folder.getAbsolutePath());
+                File fastqFile = fileList.get(0);
+                String fastqFilePairName = FileUtil.getFASTQFilePairName(fastqFile.getName());
+
+                List<File> pairFileList = fileList.stream().filter(file ->
+                        file.getName().startsWith(fastqFilePairName + "_")).collect(Collectors.toList());
+
+                Optional<AnalysisFile> optionalFile = uploadFileData.stream().filter(item ->
+                        item.getName().contains(fastqFilePairName + "_")).findFirst();
+                Sample sample = null;
+                if(optionalFile.isPresent()) sample = getSameSample(optionalFile.get().getSampleId());
+                //fastq 파일이 짝을 이루고 올리는데 실패한 파일인 경우
+                if(pairFileList.size() == 2 && sample != null) {
+                    List<File> failedFileList = new ArrayList<>();
+                    List<AnalysisFile> selectedAnalysisFileList = new ArrayList<>();
+                    for (File selectedFile : pairFileList) {
+                        Optional<AnalysisFile> fileOptional = failedAnalysisFileList.stream().filter(item ->
+                                selectedFile.getName().equals(item.getName())).findFirst();
+                        if (fileOptional.isPresent()) {
+                            failedFileList.add(selectedFile);
+
+                            //meta data 정보가 하나만 입력이 되어있는 경우
+                            if("NOT_FOUND".equals(fileOptional.get().getStatus())) {
+                                failedAnalysisFileList.remove(fileOptional.get());
+                                addUploadFile(selectedFile,fastqFilePairName);
+                            } else {
+                                //메타 데이터 정보가 온전히 존재하고 파일 업로드에 실패한 경우
+                                selectedAnalysisFileList.add(fileOptional.get());
+                            }
+
+                            //meta data 정보가 없는 경우
+                        } else if(sample.getSampleStatus() != null && sample.getSampleStatus().getStep().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STEP_UPLOAD)
+                                && sample.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_QUEUED)) {
+                            failedFileList.add(selectedFile);
+                        }
+                    }
+                    if(!failedFileList.isEmpty()) addUploadFile(failedFileList, fastqFilePairName, false);
+
+                    if(!selectedAnalysisFileList.isEmpty()) uploadFileData.addAll(selectedAnalysisFileList);
+                } else if (pairFileList.size() == 2 && checkSameSample(fastqFilePairName)) {
+                    addUploadFile(pairFileList, fastqFilePairName, true);
+                }
+
+                fileList.removeAll(pairFileList);
+            }
+
+        }
+        tableEdit();
+        maskerPane.setVisible(false);
+    }
+
+    @FXML
+    private void serverFastqFilesAction() {
+        try {
+            // Load the fxml file and create a new stage for the popup dialog
+            FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.SERVER_DIRECTORY_VIEW);
+            Pane page = loader.load();
+            ServerDirectoryViewController controller = loader.getController();
+            controller.setSampleUploadController(this.sampleUploadController);
+            controller.setSampleUploadScreenFirstController(this);
+            controller.show(page);
+        } catch (IOException e) {
+            DialogUtil.error("FXML Load Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+        }
+    }
+
+    @FXML
+    private void serverRunFolderAction() {
+        try {
+            // Load the fxml file and create a new stage for the popup dialog
+            FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.SERVER_DIRECTORY_VIEW);
+            Pane page = loader.load();
+            ServerDirectoryViewController controller = loader.getController();
+            controller.setSampleUploadController(this.sampleUploadController);
+            controller.setSampleUploadScreenFirstController(this);
+            controller.setRun(true);
+            controller.show(page);
+        } catch (IOException e) {
+            DialogUtil.error("FXML Load Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+        }
+    }
+
     public void tableEdit() {
         int row = 0;
+        standardDataGridPane.getChildren().removeAll(standardDataGridPane.getChildren());
+        standardDataGridPane.setPrefHeight(0);
+        //sample 수만큼 row를 생성
+        for(int i = 0; i < sampleArrayList.size() ; i++) {
+            createRow(i);
+        }
 
         for(Sample sample : sampleArrayList) {
-            //샘플의
             if(row > 22) break;
 
-            //SampleSheet item = sample.getSampleSheet();
-
-            //sampleNameTextFieldList.get(row).setText(!StringUtils.isEmpty(item.getSampleName()) ? item.getSampleName() : item.getSampleId());
             sampleNameTextFieldList.get(row).setText(sample.getName());
-            patientIdTextFieldList.get(row).setText((sample.getPaitentId() != null) ? sample.getPaitentId().toString() : "");
 
             if(sample.getDiseaseId() != null) {
                 ComboBox<ComboBoxItem> disease = diseaseComboBoxList.get(row);
@@ -214,63 +399,264 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                         return;
                     }
                 });
+            } else {
+                ComboBox<ComboBoxItem> disease = diseaseComboBoxList.get(row);
+                disease.getSelectionModel().clearSelection();
             }
 
-            if(sample.getPanelId() != null) {
-                ComboBox<ComboBoxItem> panel = panelComboBoxList.get(row);
-                TextField sampleSource = sampleSourceTextFieldList.get(row);
-                panel.getItems().forEach(panelItem ->{
-                    if(panelItem.getValue().equals(sample.getPanelId().toString())) {
-                        panel.getSelectionModel().select(panelItem);
-                        if(panels != null && !panels.isEmpty()) {
-                            final Optional<Panel> selectPanel = panels.stream().filter(item -> item.getId().equals(sample.getPanelId())).findFirst();
-                            if(selectPanel.isPresent())
-                                sampleSource.setText(selectPanel.get().getSampleSource());
+            ComboBox<ComboBoxItem> panel = panelComboBoxList.get(row);
+            ComboBox<String> sampleSource = sampleSourceComboBoxList.get(row);
+
+            if(sample.getPanelId() == null && panel.getSelectionModel().getSelectedItem() == null) {
+                panel.getSelectionModel().select(0);
+            } else if (sample.getPanelId() != null) {
+                Optional<ComboBoxItem> optionalPanel = panel.getItems().stream()
+                        .filter(item -> item.getValue().equalsIgnoreCase(sample.getPanelId().toString())).findFirst();
+                if(optionalPanel.isPresent()) {
+                    panel.getSelectionModel().select(optionalPanel.get());
+                    settingDiseaseComboBox(sample.getPanelId(), row);
+                }
+            }
+
+            if(StringUtils.isEmpty(sample.getSampleSource()) && sampleSource.getSelectionModel().getSelectedItem() != null) {
+                sampleSource.getSelectionModel().select(0);
+            } else {
+                sampleSource.getSelectionModel().select(sample.getSampleSource());
+            }
+
+
+            //sample Status 가 존재한다면 그에 따른 추가기능의 설정
+            if(sample.getSampleStatus() != null) {
+                if(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STEP_UPLOAD.equalsIgnoreCase(sample.getSampleStatus().getStep())
+                        && !AnalysisJobStatusCode.SAMPLE_FILE_META_ACTIVE.equalsIgnoreCase(sample.getSampleStatus().getStatus())) {
+                    try {
+                        Map<String, Object> params = new HashMap<>();
+                        params.put("sampleId", sample.getId());
+
+                        HttpClientResponse response = apiService.get("analysisFiles", params, null, false);
+
+                        PagedAnalysisFile pagedAnalysisFile = response.getObjectBeforeConvertResponseToJSON(PagedAnalysisFile.class);
+
+                        List<AnalysisFile> allFile = pagedAnalysisFile.getResult();
+
+                        List<AnalysisFile> activeFile = new ArrayList<>();
+
+                        if(allFile.size() == 1) {
+                            AnalysisFile analysisFile = allFile.get(0);
+                            Map<String, Object> file = new HashMap<>();
+                            AnalysisFile failedAnalysisFile = new AnalysisFile();
+
+                            if(analysisFile.getName().contains("_R1_0"))
+                                failedAnalysisFile.setName(analysisFile.getName().replaceAll("_R1_0", "_R2_0"));
+                            if(analysisFile.getName().contains("_R2_0"))
+                                failedAnalysisFile.setName(analysisFile.getName().replaceAll("_R2_0", "_R1_0"));
+                            failedAnalysisFile.setStatus("NOT_FOUND");
+                            failedAnalysisFileList.add(failedAnalysisFile);
                         }
-                        return;
+                        for(AnalysisFile analysisFile : allFile) {
+                            if(analysisFile.getStatus().equals(AnalysisJobStatusCode.SAMPLE_FILE_META_ACTIVE)) activeFile.add(analysisFile);
+                        }
+                        if(!activeFile.isEmpty()) allFile.removeAll(activeFile);
+                        failedAnalysisFileList.addAll(allFile);
+                    } catch (WebAPIException wae) {
+                        DialogUtil.error(wae.getHeaderText(), wae.getContents(), getMainApp().getPrimaryStage(), true);
                     }
-                });
-            }
+                }
 
-            //sampleSourceTextFieldList.get(row).setText((sample.getSampleSource() != null) ? sample.getSampleSource() : "FFPE" );
+                sampleNameTextFieldList.get(row).setDisable(true);
+                panelComboBoxList.get(row).setDisable(true);
+                diseaseComboBoxList.get(row).setDisable(true);
+                sampleSourceComboBoxList.get(row).setDisable(true);
+
+            }
 
             row++;
         }
+
     }
 
-    public void saveSampleData() {
-        for (int i = 0; i < standardDataGridPane.getChildren().size(); i += 5) {
-            int rowNum = i / 6;
-            Sample sample = null;
-            if(sampleArrayList.size() > rowNum) {
-                sample = sampleArrayList.get(rowNum);
-            } else {
-                sample = new Sample();
-                sample.setQcData(new QcData());
-                sample.setSampleSheet(new SampleSheet());
+    public void createRow(int row) {
+        standardDataGridPane.setPrefHeight(standardDataGridPane.getPrefHeight() + 28);
+        if(!sampleNameTextFieldList.isEmpty() && sampleNameTextFieldList.size() > row) {
+            panelSetting(panelComboBoxList.get(row));
+            standardDataGridPane.addRow(row, sampleNameTextFieldList.get(row), panelComboBoxList.get(row)
+                    , sampleSourceComboBoxList.get(row), diseaseComboBoxList.get(row));
+            return;
+        }
+        TextField sampleName = new TextField();
+        sampleName.setStyle("-fx-text-inner-color: black; -fx-border-width: 0;");
+        sampleName.setMaxWidth(Double.MAX_VALUE);
+        sampleName.setEditable(false);
+        sampleName.setAlignment(Pos.CENTER);
+        sampleName.setCursor(Cursor.DEFAULT);
+        sampleNameTextFieldList.add(sampleName);
+        sampleName.textProperty().addListener((observable, oldValue, newValue) -> {
+            Set<String> fileName = fileMap.keySet();
+            fileName.stream().forEach(file -> {
+                Map<String, Object> fileInfo = fileMap.get(file);
+
+                if (fileInfo.get("sampleName") != null && fileInfo.get("sampleName").toString().equals(oldValue)) {
+                    fileInfo.put("sampleName", newValue);
+                }
+            });
+        });
+
+        ComboBox<ComboBoxItem> disease  = new ComboBox<>();
+        disease.setConverter(new ComboBoxConverter());
+        disease.setMaxWidth(200);
+        disease.setStyle("-fx-border-width: 0;");
+        disease.setCursor(Cursor.HAND);
+        diseaseComboBoxList.add(disease);
+        //settingDiseaseComboBox(panels.get(0).getId(), row);
+        //diseasesSetting(disease);
+
+        ComboBox<ComboBoxItem> panel  = new ComboBox<>();
+        panel.setMaxWidth(200);
+        panelComboBoxList.add(panel);
+        panelSetting(panel);
+        panel.setCursor(Cursor.HAND);
+        panel.setStyle("-fx-text-inner-color: black; -fx-border-width: 0;");
+        panel.setOnAction(event -> {
+            ComboBox<ComboBoxItem> obj = (ComboBox<ComboBoxItem>) event.getSource();
+            if(panelComboBoxList.contains(obj)) {
+                int index  = panelComboBoxList.indexOf(obj);
+                ComboBoxItem item = obj.getSelectionModel().getSelectedItem();
+                logger.debug(item.getText());
+                if(!StringUtils.isEmpty(item.getValue())) {
+
+                    if (index == 0 && sampleArrayList.size() > 1) {
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Panel Setting");
+                        alert.setHeaderText("Panel Setting");
+                        alert.setContentText("Do you want to apply them all at once?");
+                        Optional<ButtonType> result = alert.showAndWait();
+
+                        if (result.isPresent() && result.get() == ButtonType.OK) {
+                            panelBatchApplication(item);
+                        }
+                    }
+
+                    settingDiseaseComboBox(Integer.parseInt(item.getValue()), index);
+                }
             }
-            TextField sampleName = (TextField) standardDataGridPane.getChildren().get(i);
+        });
+
+        ComboBox<String> source = new ComboBox<>();
+        source.getItems().addAll("BLOOD", "FFPE");
+        source.setMaxWidth(200);
+        sampleSourceComboBoxList.add(source);
+        source.setStyle("-fx-text-inner-color: black; -fx-border-width: 0;");
+
+        standardDataGridPane.addRow(row, sampleName, panel, source, disease);
+        GridPane.setHalignment(sampleName, HPos.CENTER);
+        GridPane.setHalignment(panel, HPos.CENTER);
+        GridPane.setHalignment(source, HPos.CENTER);
+        GridPane.setHalignment(disease, HPos.CENTER);
+        panel.getSelectionModel().select(0);
+    }
+
+    public void panelBatchApplication(ComboBoxItem item) {
+        for(int index = 1 ; index < panelComboBoxList.size(); index++) {
+            ComboBox<ComboBoxItem> panel = panelComboBoxList.get(index);
+            panel.getSelectionModel().select(item);
+            settingDiseaseComboBox(Integer.parseInt(item.getValue()), index);
+        }
+    }
+
+    public void settingDiseaseComboBox(int panelId, int index) {
+        //질병명 추가
+        HttpClientResponse response = null;
+        try {
+            response = apiService.get("panels/" + panelId, null, null, false);
+            PanelView panelDetail = response.getObjectBeforeConvertResponseToJSON(PanelView.class);
+
+            ComboBox<ComboBoxItem> diseaseComboBox = diseaseComboBoxList.get(index);
+
+            diseaseComboBox.getItems().clear();
+
+            for(Diseases diseases : diseases) {
+                List<Integer> diseaseIds = panelDetail.getDiseaseIds();
+                if(diseaseIds != null && !diseaseIds.isEmpty() &&
+                        //diseaseIds.stream().filter(diseaseId -> diseaseId.equals(diseases.getId())).findFirst().isPresent())
+                        diseaseIds.stream().anyMatch(diseaseId -> diseaseId.equals(diseases.getId())))
+                    diseaseComboBox.getItems().add(new ComboBoxItem(diseases.getId().toString(), diseases.getName()));
+            }
+            // 질병명이 없는 패널일 경우 샘플의 질병을 N/A로 설정되도록 함.
+            if (diseaseComboBox.getItems().size() == 0) {
+                diseaseComboBox.getItems().add(new ComboBoxItem("0", "N/A"));
+            }
+            diseaseComboBox.getSelectionModel().selectFirst();
+
+            if(panelDetail.getDefaultSampleSource() != null) {
+                sampleSourceComboBoxList.get(index).getSelectionModel().select(panelDetail.getDefaultSampleSource());
+            } else {
+                sampleSourceComboBoxList.get(index).getSelectionModel().clearSelection();
+            }
+
+        } catch (WebAPIException wae) {
+            DialogUtil.error(wae.getHeaderText(), wae.getMessage(), getMainApp().getPrimaryStage(), true);
+        } catch (Exception e) {
+            logger.error("Unknown Error", e);
+            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+        }
+    }
+
+    public boolean saveSampleData() {
+        boolean ok = true;
+        int rowCount = standardDataGridPane.getChildren().size() / 4;
+
+        for (int i = 0; i < rowCount; i++) {
+            Sample sample = sampleArrayList.get(i);
+            if(sample.getId() != null) continue;
+            if(sample.getRunId() == null) sample.setRunId(-1);
+
+            TextField sampleName = sampleNameTextFieldList.get(i);
             if(sampleName.getText().isEmpty()) continue;
             sample.setName(sampleName.getText());
 
-            ComboBox<ComboBoxItem> panelIdComboBox = (ComboBox<ComboBoxItem>) standardDataGridPane.getChildren().get(i + 1);
+            ComboBox<ComboBoxItem> panelIdComboBox = panelComboBoxList.get(i);
+            if(panelIdComboBox.getSelectionModel().getSelectedItem().getValue() == null) {
+                ok = false;
+                break;
+
+            }
             Integer panelId = Integer.parseInt(panelIdComboBox.getSelectionModel().getSelectedItem().getValue());
             sample.setPanelId(panelId);
 
-            ComboBox<ComboBoxItem> diseaseId = (ComboBox<ComboBoxItem>) standardDataGridPane.getChildren().get(i + 3);
+            ComboBox<ComboBoxItem> diseaseId = diseaseComboBoxList.get(i);
+            if(diseaseId.getSelectionModel().getSelectedItem().getValue() == null) {
+                ok = false;
+                break;
+            }
             sample.setDiseaseId(Integer.parseInt(diseaseId.getSelectionModel().getSelectedItem().getValue()));
 
-            TextField patientId = (TextField) standardDataGridPane.getChildren().get(i + 4);
-            sample.setPaitentId(patientId.getText());
+            ComboBox<String> sampleSource  = sampleSourceComboBoxList.get(i);
+            if(sampleSource.getSelectionModel().getSelectedItem() == null) {
+                ok = false;
+                break;
+            }
+            sample.setSampleSource(sampleSource.getSelectionModel().getSelectedItem());
+        }
 
-            Optional<Panel> panel = panels.stream().filter(item -> item.getId().equals(panelId)).findFirst();
-            if(panel.isPresent()) {
-                Panel p = panel.get();
-                //sample.setAnalysisType(p.getAnalysisType());
-                TextField sampleSource = (TextField) standardDataGridPane.getChildren().get(i + 5);
-                //sample.setSampleSource((sampleSource.getText() == null || sampleSource.getText().equals(""))
-                //        ? "FFPE" : sampleSource.getText());
-                //sample.setSampleSource(p.getSampleSource());
+        return ok;
+    }
+
+    public void checkAmplicon() {
+        for(ComboBox<ComboBoxItem> panelComboBox : panelComboBoxList) {
+            if(panelComboBox.isDisabled()) continue;
+
+            Integer panelId = Integer.parseInt(panelComboBox.getSelectionModel().getSelectedItem().getValue());
+            HttpClientResponse response;
+            try {
+                response = apiService.get("panels/" + panelId, null, null, false);
+                Panel panelDetail = response.getObjectBeforeConvertResponseToJSON(Panel.class);
+
+                if(LibraryTypeCode.AMPLICON_BASED.getDescription().equals(panelDetail.getLibraryType())) {
+
+                }
+
+            } catch (WebAPIException wae) {
+                DialogUtil.error(wae.getHeaderText(), wae.getContents(), sampleUploadController.getCurrentStage(), true);
             }
         }
     }
@@ -278,7 +664,24 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     @FXML
     public void submit() {
 
-        if(sampleUploadController.getRunId() != -1) {
+        for(ComboBox<ComboBoxItem> panelComboBox : panelComboBoxList) {
+            ComboBoxItem comboBoxItem = panelComboBox.getSelectionModel().getSelectedItem();
+
+            if("".equals(comboBoxItem.getValue())) {
+                DialogUtil.alert("warning", "Panel not selected. please select a panel.",
+                        this.sampleUploadController.getCurrentStage(), true);
+                return;
+            }
+        }
+
+        if(sampleUploadController.getRun() != null) {
+            newSampleAdded();
+            if((uploadFileData != null && !uploadFileData.isEmpty()) &&
+                    (uploadFileList != null && !uploadFileList.isEmpty()))
+                this.mainController.runningAnalysisRequestUpload(uploadFileData, uploadFileList, sampleUploadController.getRun());
+
+            logger.debug("submit");
+            closeDialog();
             return;
         }
 
@@ -287,124 +690,163 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
                 Map<String, Object> params = new HashMap<>();
                 HttpClientResponse response = null;
-                Run run = null;
-                try {
-                    if(sampleUploadController.getRunName() == null || "".equals(sampleUploadController.getRunName())) {
-                        Date date = new Date();
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd.hh:mm:ss");
-                        params.put("name", "RUN NAME_" + sdf.format(date));
-                    } else {
-                        params.put("name", sampleUploadController.getRunName());
-                    }
-                    params.put("sequencingPlatform", sampleUploadController.getSequencerType().getUserData());
-                    response = apiService.post("/runs", params, null, true);
-                    run = response.getObjectBeforeConvertResponseToJSON(Run.class);
-                    logger.info(run.toString());
+                RunWithSamples run = null;
 
-                    saveSampleData();
+                if(sampleUploadController.getRunName() == null || "".equals(sampleUploadController.getRunName())) {
+                    Date date = new Date();
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd.HH:mm:ss");
+                    params.put("name", sdf.format(date));
+                } else {
+                    params.put("name", sampleUploadController.getRunName());
+                }
+                params.put("sequencingPlatform", sampleUploadController.getSequencerType().getUserData());
 
-                    for (Sample sample : sampleArrayList) {
-                        sample.setRunId(run.getId());
-                        sampleUpload(sample);
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if(isServerItem) {
+                    params.put("serverRunDir", runPath);
                 }
 
+                if(!saveSampleData()) {
+                    DialogUtil.alert("check item", "check item", sampleUploadController.getCurrentStage(), true);
+                    return;
+                }
+                List<Map<String, Object>> list = returnSampleMap();
+
+                params.put("sampleCreateRequests", list);
+
+                response = apiService.post("/runs", params, null, true);
+                run = response.getObjectBeforeConvertResponseToJSON(RunWithSamples.class);
+                mainController.getBasicInformationMap().put("runId", run.getRun().getId());
+                logger.debug(run.toString());
+
+                List<Sample> samples = run.getSamples();
+
+                for(Sample sample : samples) {
+                    postAnalysisFilesData(sample);
+                }
+                /*for (Sample sample : sampleArrayList) {
+                    sample.setRunId(run.getId());
+                    sampleUpload(sample);
+                }*/
+
                 if((uploadFileData != null && !uploadFileData.isEmpty()) &&
-                        (uploadFileList != null && !uploadFileList.isEmpty()))
-                    this.mainController.runningAnalysisRequestUpload(uploadFileData, uploadFileList, run);
-                logger.info("submit");
+                        (uploadFileList != null && !uploadFileList.isEmpty())) {
+                    assert run != null;
+                    this.mainController.runningAnalysisRequestUpload(uploadFileData, uploadFileList, run.getRun());
+                }
+                logger.debug("submit");
                 closeDialog();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Unknown Error", e);
+            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
 
-    public void sampleUpload(Sample sample) throws  Exception {
+    private void newSampleAdded() {
+        for(Sample sample : sampleArrayList) {
+            if(sample.getId() == null) {
+
+                Optional<TextField> optionalTextField = sampleNameTextFieldList.stream().filter(item ->
+                        (!StringUtils.isEmpty(item.getText()) && sample.getName().equals(item.getText()))).findFirst();
+
+                if(optionalTextField.isPresent()) {
+                    int row = sampleNameTextFieldList.indexOf(optionalTextField.get());
+
+                    ComboBox<ComboBoxItem> panelIdComboBox = panelComboBoxList.get(row);
+                    Integer panelId = Integer.parseInt(panelIdComboBox.getSelectionModel().getSelectedItem().getValue());
+                    sample.setPanelId(panelId);
+
+                    ComboBox<ComboBoxItem> diseaseId = diseaseComboBoxList.get(row);
+                    sample.setDiseaseId(Integer.parseInt(diseaseId.getSelectionModel().getSelectedItem().getValue()));
+                }
+
+                try {
+                    sample.setRunId(sampleUploadController.getRun().getId());
+                    sampleUpload(sample);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if ((sample.getSampleStatus() != null &&
+                    sample.getSampleStatus().getStep().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STEP_UPLOAD)
+                    && sample.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_QUEUED))) {
+                postAnalysisFilesData(sample);
+            }
+        }
+    }
+
+    private List<Map<String, Object>> returnSampleMap() {
+        List<Map<String, Object>> list = new ArrayList<>();
+        for(Sample sample : sampleArrayList) {
+            Map<String, Object> params = new HashMap<>();
+
+            params.put("runId", sample.getRunId());
+            params.put("name", sample.getName());
+            params.put("panelId", sample.getPanelId());
+            params.put("diseaseId", sample.getDiseaseId());
+            params.put("sampleSource", sample.getSampleSource());
+            params.put("inputFType", "FASTQ.GZ");
+            list.add(params);
+        }
+        return list;
+    }
+
+    private void sampleUpload(Sample sample) throws Exception {
+
         Map<String, Object> params = new HashMap<>();
         HttpClientResponse response = null;
 
         params.put("runId", sample.getRunId());
         params.put("name", sample.getName());
-        params.put("patientId", sample.getPaitentId());
-        params.put("panelId", sample.getPanelId());
         params.put("diseaseId", sample.getDiseaseId());
-//        params.put("analysisType", sample.getAnalysisType());
-//        params.put("sampleSource", sample.getSampleSource());
         params.put("inputFType", "FASTQ.GZ");
-        Map<String, String> sampleSheet = new HashMap<>();
-        SampleSheet sampleSheet1 = sample.getSampleSheet();
-        sampleSheet.put("sampleId", sampleSheet1.getSampleId());
-        sampleSheet.put("sampleName", sampleSheet1.getSampleName());
-        sampleSheet.put("samplePlate", sampleSheet1.getSamplePlate());
-        sampleSheet.put("sampleWell", sampleSheet1.getSampleWell());
-        sampleSheet.put("i7IndexId", sampleSheet1.getI7IndexId());
-        sampleSheet.put("sampleIndex", sampleSheet1.getSampleIndex());
-        sampleSheet.put("sampleProject", sampleSheet1.getSampleProject());
-        sampleSheet.put("description", sampleSheet1.getDescription());
-        params.put("sampleSheet", sampleSheet);
-        Map<String, String> qcData = new HashMap<>();
-        QcData qcData1 = sample.getQcData();
-        qcData.put("dnaQC", qcData1.getDnaQC());
-        qcData.put("libraryQC", qcData1.getLibraryQC());
-        qcData.put("seqClusterDensity", qcData1.getSeqClusterDensity());
-        qcData.put("seqQ30", qcData1.getSeqQ30());
-        qcData.put("seqClusterPF", qcData1.getSeqClusterPF());
-        qcData.put("seqIndexingPFCV", qcData1.getSeqIndexingPFCV());
-        params.put("qcData", qcData);
         response = apiService.post("/samples", params, null, true);
         Sample sampleData = response.getObjectBeforeConvertResponseToJSON(Sample.class);
-        logger.info(sampleData.toString());
 
-        /*String name = (!StringUtils.isEmpty(sample.getSampleSheet().getSampleName()))
-                ? sample.getSampleSheet().getSampleName() : sample.getSampleSheet().getSampleId();*/
-        String name = sample.getName();
+        postAnalysisFilesData(sampleData);
+    }
 
+    private void postAnalysisFilesData(Sample sample) {
         Set<String> fileName = fileMap.keySet();
 
-        fileName.stream().forEach(file -> {
+        fileName.forEach(file -> {
             Map<String, Object> fileInfo = fileMap.get(file);
 
             if(fileInfo.get("sampleName") != null && fileInfo.get("sampleName").toString().equals(sample.getName())) {
-                fileInfo.put("sampleId", sampleData.getId());
+                fileInfo.put("sampleId", sample.getId());
                 fileInfo.put("sampleName", null);
                 fileInfo.remove("sampleName");
                 HttpClientResponse fileResponse = null;
                 try {
                     fileResponse = apiService.post("/analysisFiles", fileInfo, null, true);
                     AnalysisFile fileData = fileResponse.getObjectBeforeConvertResponseToJSON(AnalysisFile.class);
-                    logger.info(fileData.getName());
+                    logger.debug(fileData.getName());
                     uploadFileData.add(fileData);
                 } catch (WebAPIException e) {
-                    e.printStackTrace();
+                    DialogUtil.error(e.getHeaderText(), e.getMessage(), getMainApp().getPrimaryStage(), true);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    logger.error("Unknown Error", e);
+                    DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
                 }
 
             }
         });
-
     }
 
-    public void diseasesSetting(ComboBox<ComboBoxItem> diseaseBox) {
-        diseaseBox.setConverter(new ComboBoxConverter());
-        for(Diseases disease :  diseases) {
-            diseaseBox.getItems().add(new ComboBoxItem(disease.getId().toString(), disease.getName()));
+    private void panelSetting(ComboBox<ComboBoxItem> panelBox) {
+        if(panelBox.getItems().isEmpty()) panelBox.getItems().removeAll(panelBox.getItems());
+        List<Panel> panelList = new ArrayList<>();
+        if(isServerItem && !isServerFastq) {
+            panelList.addAll(panels.stream().filter(panel -> panel.getName().startsWith("TruSight Tumor 170")).collect(Collectors.toList()));
+        } else {
+            panelList.addAll(panels);
         }
-        diseaseBox.getSelectionModel().selectFirst();
-    }
-
-    public void panelSetting(ComboBox<ComboBoxItem> panelBox) {
         panelBox.setConverter(new ComboBoxConverter());
-        for(Panel panel :  panels) {
+        panelBox.getItems().add(new ComboBoxItem());
+        for(Panel panel :  panelList) {
             panelBox.getItems().add(new ComboBoxItem(panel.getId().toString(), panel.getName()));
         }
         panelBox.getSelectionModel().selectFirst();
         panelBox.valueProperty().addListener((ov, oldValue, newValue) -> {
-            ComboBoxItem item = newValue;
         });
     }
 
@@ -422,27 +864,66 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Choose Directory");
-        directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        if(mainController.getBasicInformationMap().containsKey("path")) {
+            directoryChooser.setInitialDirectory(new File((String) mainController.getBasicInformationMap().get("path")));
+        } else {
+            directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        }
         File folder = directoryChooser.showDialog(this.sampleUploadController.getCurrentStage());
 
         if(folder != null) {
             File[] fileArray = folder.listFiles();
+            assert fileArray != null;
             List<File> fileList = new ArrayList<>(Arrays.asList(fileArray));
             fileList = fileList.stream().filter(file -> file.getName().endsWith(".fastq.gz")).collect(Collectors.toList());
-
-            while(!fileList.isEmpty()) {
+            if(fileList.isEmpty()) DialogUtil.alert("not found", "not found fastq file", sampleUploadController.getCurrentStage(), true);
+            while (!fileList.isEmpty()) {
+                mainController.getBasicInformationMap().put("path", folder.getAbsolutePath());
                 File fastqFile = fileList.get(0);
                 String fastqFilePairName = FileUtil.getFASTQFilePairName(fastqFile.getName());
 
                 List<File> pairFileList = fileList.stream().filter(file ->
-                    file.getName().startsWith(fastqFilePairName)).collect(Collectors.toList());
+                        file.getName().startsWith(fastqFilePairName)).collect(Collectors.toList());
 
-                if(pairFileList.size() == 2 && !checkSameSample(fastqFilePairName)) {
-                    addUploadFile(pairFileList, fastqFilePairName);
-                } else {
-                    fileList.removeAll(pairFileList);
+                Optional<AnalysisFile> optionalFile = uploadFileData.stream().filter(item ->
+                        item.getName().contains(fastqFilePairName)).findFirst();
+                Sample sample = null;
+                if(optionalFile.isPresent()) sample = getSameSample(optionalFile.get().getSampleId());
+                //fastq 파일이 짝을 이루고 올리는데 실패한 파일인 경우
+                if(pairFileList.size() == 2 && sample != null) {
+                    List<File> failedFileList = new ArrayList<>();
+                    List<AnalysisFile> selectedAnalysisFileList = new ArrayList<>();
+                    for (File selectedFile : pairFileList) {
+                        Optional<AnalysisFile> fileOptional = failedAnalysisFileList.stream().filter(item ->
+                                selectedFile.getName().equals(item.getName())).findFirst();
+                        if (fileOptional.isPresent()) {
+                            failedFileList.add(selectedFile);
+
+                            //meta data 정보가 하나만 입력이 되어있는 경우
+                            if("NOT_FOUND".equals(fileOptional.get().getStatus())) {
+                                failedAnalysisFileList.remove(fileOptional.get());
+                                addUploadFile(selectedFile,fastqFilePairName);
+                            } else {
+                                //메타 데이터 정보가 온전히 존재하고 파일 업로드에 실패한 경우
+                                selectedAnalysisFileList.add(fileOptional.get());
+                            }
+
+                            //meta data 정보가 없는 경우
+                        } else if(sample.getSampleStatus() != null && sample.getSampleStatus().getStep().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STEP_UPLOAD)
+                                && sample.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_QUEUED)) {
+                            failedFileList.add(selectedFile);
+                        }
+                    }
+                    if(!failedFileList.isEmpty()) addUploadFile(failedFileList, fastqFilePairName, false);
+
+                    if(!selectedAnalysisFileList.isEmpty()) uploadFileData.addAll(selectedAnalysisFileList);
+                } else if (pairFileList.size() == 2 && checkSameSample(fastqFilePairName)) {
+                    addUploadFile(pairFileList, fastqFilePairName, true);
                 }
+
+                fileList.removeAll(pairFileList);
             }
+
         }
         tableEdit();
 
@@ -451,21 +932,25 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     /**
      * 동일한 샘플을 선택한것이 있는지 확인 있다면 true
-     * @param name
-     * @return
+     * @param name String
+     * @return boolean
      */
     private boolean checkSameSample(String name) {
-        boolean overlapCheck = false;
-        for(Sample sample : sampleArrayList) {
-            if(sample.getName().equals(name)) {
-                overlapCheck = true;
-                break;
-            }
-        }
-        return overlapCheck;
+        return sampleArrayList.stream().noneMatch(item -> name.equals(item.getName()));
     }
 
-    private void addUploadFile(List<File> fileList, String fastqFilePairName) {
+    /**
+     * 동일한 샘플을 검색하여 해당 sample의 id 값을 리턴
+     * @param sampleId Integer
+     * @return Sample
+     */
+    private Sample getSameSample(Integer sampleId) {
+        Optional<Sample> optionalSample = sampleArrayList.stream().filter(item -> (item.getId() != null
+                        && sampleId.equals(item.getId()))).findFirst();
+        return optionalSample.orElse(null);
+    }
+
+    private void addUploadFile(List<File> fileList, String fastqFilePairName, boolean newFileCheck) {
         for (File fastqFile : fileList) {
             Map<String, Object> file = new HashMap<>();
             file.put("sampleName", fastqFilePairName);
@@ -476,10 +961,62 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             this.fileMap.put(fastqFile.getName(), file);
         }
         uploadFileList.addAll(fileList);
-        Sample sample = new Sample();
-        sample.setName(fastqFilePairName);
-        sample.setSampleSheet(new SampleSheet());
-        sample.setQcData(new QcData());
-        sampleArrayList.add(sample);
+        if(newFileCheck) {
+            Sample sample = new Sample();
+            sample.setName(fastqFilePairName);
+            sampleArrayList.add(sample);
+        }
+    }
+
+    private void addUploadFile(File selectedFile, String fastqFilePairName) {
+        Map<String, Object> file = new HashMap<>();
+        file.put("sampleName", fastqFilePairName);
+        file.put("name", selectedFile.getName());
+        file.put("fileSize", selectedFile.length());
+        file.put("isInput", true);
+        file.put("fileType", "FASTQ.GZ");
+        this.fileMap.put(selectedFile.getName(), file);
+
+        uploadFileList.add(selectedFile);
+    }
+
+    @FXML
+    private void fastqAdd() {
+        maskerPane.setVisible(true);
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose File");
+        if(mainController.getBasicInformationMap().containsKey("path")) {
+            fileChooser.setInitialDirectory(new File((String)mainController.getBasicInformationMap().get("path")));
+        } else {
+            fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        }
+        FileChooser.ExtensionFilter fileExtensions =
+                new FileChooser.ExtensionFilter(
+                        "fastq", "*.fastq", "*.fastq.gz");
+        fileChooser.getExtensionFilters().add(fileExtensions);
+        File file = fileChooser.showOpenDialog(this.sampleUploadController.getCurrentStage());
+
+        if(file != null) {
+            String fastqFilePairName = FileUtil.getFASTQFilePairName(file.getName());
+
+            String chooseDirectoryPath = FilenameUtils.getFullPath(file.getAbsolutePath());
+            logger.debug(String.format("directory path of choose bedFile : %s", chooseDirectoryPath));
+            File directory = new File(chooseDirectoryPath);
+            //선택한 파일의 폴더 내 모든 FASTQ 파일 검색
+            List<File> fastqFilesInFolder = (List<File>) FileUtils.listFiles(directory, new String[]{"fastq.gz"}, false);
+
+            List<File> pairFileList = fastqFilesInFolder.stream().filter(item ->
+                    item.getName().startsWith(fastqFilePairName)).collect(Collectors.toList());
+
+            //fastq 파일은 짝을 이루어야 함
+            if(pairFileList.size() == 2 && checkSameSample(fastqFilePairName)) {
+                addUploadFile(pairFileList, fastqFilePairName, true);
+            }
+            mainController.getBasicInformationMap().put("path", chooseDirectoryPath);
+        }
+        tableEdit();
+
+        maskerPane.setVisible(false);
     }
 }

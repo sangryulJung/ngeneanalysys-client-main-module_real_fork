@@ -13,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.Polyline;
@@ -21,12 +22,16 @@ import ngeneanalysys.animaition.VariantStatisticsTimer;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.render.SNPsINDELsOverviewRadarGraph;
+import ngeneanalysys.util.ConvertUtil;
+import ngeneanalysys.util.JsonUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
+import org.controlsfx.control.PopOver;
 import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -41,8 +46,6 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
     /** 수직 막대 그래프 Height */
     private double verticalGraphHeight = 116;
 
-    private boolean graphAnimationIconDisplay = true;
-
     private final int gaugeSpeed = 10;
 
     @FXML
@@ -54,8 +57,6 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
     @FXML
     private VBox depthLegendBox;						/** DEPTH > Legend Box */
     @FXML
-    private ImageView depthLegendImageView;				/** DEPTH > Legend Animation Image */
-    @FXML
     private Label depthLegendLabel;						/** DEPTH > Legend 실제값 표시 라벨 */
     @FXML
     private VBox depthLegendVBox;						/** DEPTH > Legend Box 실제값 표시 라벨 부모 박스 */
@@ -66,8 +67,6 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
     private Label fractionValueLabel;					/** FRACTION > Value 실제값 */
     @FXML
     private VBox fractionLegendBox;						/** FRACTION > Legend Box */
-    @FXML
-    private ImageView fractionLegendImageView;				/** FRACTION > Legend Animation Image */
     @FXML
     private Label fractionLegendLabel;					/** FRACTION > Legend 실제값 표시 라벨 */
     @FXML
@@ -200,8 +199,31 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
     private VBox variantInterpretation;
     @FXML
     private VBox clinicalSignificant;
+    @FXML
+    private HBox evidenceHBox;
+    @FXML
+    private Label swTierLabel;
+    @FXML
+    private Label userTierLabel;
+    @FXML
+    private TextArea resultTextArea;
+    @FXML
+    private Pane nodePane;
+    @FXML
+    private Pane tierPane;
+    @FXML
+    private Pane clinicalPane;
 
     @FXML private VBox significantArea;
+
+    @FXML
+    private ScrollPane transcriptDetailScrollBox;
+
+    @FXML
+    private VBox leftVbox;
+
+    @FXML
+    private GridPane transcriptDetailGrid;
 
     private AnalysisDetailSNPsINDELsController analysisDetailSNPsINDELsController;
 
@@ -209,7 +231,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
 
     private Panel panel;
 
-    private AnalysisResultVariant variant;
+    private VariantAndInterpretationEvidence variant;
 
     /**
      * @return the analysisDetailSNPsINDELsController
@@ -229,10 +251,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
     public void show(Parent root) throws IOException {
         sample = (Sample) paramMap.get("sample");
         panel = (Panel) paramMap.get("panel");
-        variant = (AnalysisResultVariant) paramMap.get("variant");
-
-        // 그래프 애니메이션 아이콘 출력여부 체크
-        this.graphAnimationIconDisplay = "true".equals(config.getProperty("graph.animation.icon.display"));
+        variant = (VariantAndInterpretationEvidence) paramMap.get("variant");
 
         // Depth 그래프 값 입력 및 화면 출력
         showDepth();
@@ -251,24 +270,109 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
         // 변이 발견 빈도수(Variant Frequency) 게이지 그래프 화면 출력
         showVariantStatistics();
 
-        // 링크 목록 화면 출력
-        //showLink();
-
-
-
         if(panel != null && "SOMATIC".equals(panel.getAnalysisType())) {
             variantInterpretation.setVisible(true);
-            clinicalSignificant.setVisible(false);
+            //clinicalSignificant.setVisible(false);
+            nodePane.getChildren().remove(clinicalPane);
+            showVariantInterpretation();
         } else {
-            variantInterpretation.setVisible(false);
+            //variantInterpretation.setVisible(false);
+            nodePane.getChildren().remove(tierPane);
             clinicalSignificant.setVisible(true);
             // SIGNIFICANT 레이더 차트 화면 출력
-            //showClinicalSignificantGraph();
+            showClinicalSignificantGraph();
         }
 
         analysisDetailSNPsINDELsController.subTabOverview.setContent(root);
 
-        logger.info("SNP/Indels subTab Overview");
+        logger.debug("SNP/Indels subTab Overview");
+    }
+
+    private void showVariantInterpretation() {
+
+        renderTier(swTierLabel, variant.getSnpInDelEvidences(), variant.getSnpInDel().getSwTier());
+        renderTier(userTierLabel, variant.getSnpInDelEvidences(), variant.getSnpInDel().getExpertTier());
+        renderEvidence(evidenceHBox, variant.getSnpInDelEvidences());
+    }
+
+    //evidence 정보 표시
+    private void renderEvidence(HBox node, List<SnpInDelEvidence> snpInDelInterpretation) {
+        if (node == null || snpInDelInterpretation == null) return;
+
+        ObservableList<Node> childs = node.getChildren();
+        resultTextArea.setText("");
+        if (childs != null) {
+            for (Node child : childs) {
+                child.getStyleClass().removeAll(child.getStyleClass());
+                boolean flag = false;
+                SnpInDelEvidence evidence = ConvertUtil.findPrimaryEvidence(snpInDelInterpretation);
+                /*if(((Label)child).getText().equals("A") && !StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelA())) {
+                    child.getStyleClass().add("prediction_E");
+                    //resultTextArea.setText(snpInDelInterpretation.getInterpretationEvidenceA());
+                    child.setStyle("-fx-cursor:hand;");
+                    child.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> resultTextArea.setText(snpInDelInterpretation.getTherapeuticEvidence().getLevelA()));
+                    flag = true;
+                }
+                if(((Label)child).getText().equals("B") && !StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelB())) {
+                    child.getStyleClass().add("prediction_E");
+                    //resultTextArea.setText(snpInDelInterpretation.getInterpretationEvidenceB());
+                    child.setStyle("-fx-cursor:hand;");
+                    child.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> resultTextArea.setText(snpInDelInterpretation.getTherapeuticEvidence().getLevelB()));
+                    flag = true;
+                }
+                if(((Label)child).getText().equals("C") && !StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelC())) {
+                    child.getStyleClass().add("prediction_E");
+                    //resultTextArea.setText(snpInDelInterpretation.getInterpretationEvidenceC());
+                    child.setStyle("-fx-cursor:hand;");
+                    child.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> resultTextArea.setText(snpInDelInterpretation.getTherapeuticEvidence().getLevelC()));
+                    flag = true;
+                }
+                if(((Label)child).getText().equals("D") && !StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelD())) {
+                    child.getStyleClass().add("prediction_E");
+                    //resultTextArea.setText(snpInDelInterpretation.getInterpretationEvidenceD());
+                    child.setStyle("-fx-cursor:hand;");
+                    child.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> resultTextArea.setText(snpInDelInterpretation.getTherapeuticEvidence().getLevelD()));
+                    flag = true;
+                }*/
+                if(((Label)child).getText().equals("EVIDENCE")) {
+                    child.getStyleClass().add("clinical_significant_pathogenicity_label");
+                    flag = true;
+                }
+                if(!flag) {
+                    child.getStyleClass().add("prediction_none");
+                    if(resultTextArea.getText().equalsIgnoreCase("")) {
+                        resultTextArea.setText("");
+                    }
+                }
+            }
+        }
+    }
+
+    //tier 정보 표시
+    private void renderTier(Label node, List<SnpInDelEvidence> snpInDelInterpretation, String tier) {
+        node.getStyleClass().removeAll(node.getStyleClass());
+        if(tier == null) {
+            node.getStyleClass().add("prediction_none");
+            return;
+        }
+        String text = "";
+        if(tier.equalsIgnoreCase("T1")) {
+            text = "I";
+        } else if(tier.equalsIgnoreCase("T2")) {
+            text = "II";
+        } else if(tier.equalsIgnoreCase("T3")) {
+            text = "III";
+        } else if(tier.equalsIgnoreCase("T4")) {
+            text = "IV";
+        }
+
+        boolean flag = false;
+        if(!text.equalsIgnoreCase("")) {
+            node.setText(text);
+            node.getStyleClass().add("prediction_C");
+        } else {
+            node.getStyleClass().add("prediction_none");
+        }
     }
 
     /**
@@ -277,7 +381,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
     @SuppressWarnings("unchecked")
     public void showDepth() {
         AnalysisResultSummary summary =  sample.getAnalysisResultSummary();
-        Map<String,Object> alleleMap = (Map<String,Object>) paramMap.get("allele");
+//        Map<String,Object> alleleMap = returnResultsAfterSearch("allele");
 
         double depthMin = summary.getDepthMin();
         double depthMax = summary.getDepthMax();
@@ -287,8 +391,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
             depth = (alleleMap.containsKey("total_read_depth")) ? (int) alleleMap.get("total_read_depth") : 0;
 
         }*/
-        depth = variant.getReadInfo().getReadDepth();
-        depthLegendImageView.setVisible(this.graphAnimationIconDisplay);
+        depth = variant.getSnpInDel().getReadInfo().getReadDepth();
         depthMinLabel.setText(String.valueOf(Math.round(depthMin)));
         depthMaxLabel.setText(String.valueOf(Math.round(depthMax)));
         depthLegendLabel.setText(String.valueOf(Math.round(depth)));
@@ -309,7 +412,6 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
             @Override
             public void handle(long l) {
                 if(idx >= depthValueHeight) {
-                    depthLegendImageView.setImage(resourceUtil.getImage("/layout/images/animation_stop.png"));
                     stop();
                 }
                 // 막대 높이 사이즈 1pixel씩 증가
@@ -321,7 +423,6 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
                 double lableBottomMargin = idx - 2;
                 double imageLeftMargin = Math.round(idx*(maxLeftMarginForImage/depthValueHeight));
                 if(lableBottomMargin < -6) lableBottomMargin = -8;
-                depthLegendBox.setMargin(depthLegendImageView, new Insets(0, 0, 0, imageLeftMargin));
                 depthLegendVBox.setMargin(depthLegendBox, new Insets(0, 0, lableBottomMargin, 0));
                 idx += step;
                 if (idx > depthValueHeight) {
@@ -342,17 +443,16 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
 
         String ref = (String) variantInformationMap.get("ref");
         String alt = (String) variantInformationMap.get("alt");*/
-        String ref = variant.getSequenceInfo().getRefSequence();
-        String alt = variant.getSequenceInfo().getAltSequence();
+        String ref = variant.getSnpInDel().getGenomicCoordinate().getRefSequence();
+        String alt = variant.getSnpInDel().getGenomicCoordinate().getAltSequence();
         double alleleFraction = 0;
 
         /*if(alleleMap != null && !alleleMap.isEmpty() && alleleMap.size() > 0) {
             alleleFraction = (alleleMap.containsKey("allele_fraction")) ? (double) alleleMap.get("allele_fraction") : 0;
         }*/
-        BigDecimal allele = variant.getReadInfo().getAlleleFraction();
+        BigDecimal allele = variant.getSnpInDel().getReadInfo().getAlleleFraction();
         alleleFraction = (allele != null) ? allele.doubleValue() : 0;
 
-        fractionLegendImageView.setVisible(this.graphAnimationIconDisplay);
         fractionRef.setText(ref);
         fractionRef.setTooltip(new Tooltip(ref));
         fractionAlt.setText(alt);
@@ -378,7 +478,6 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
             @Override
             public void handle(long l) {
                 if(idx >= fractionValueHeight) {
-                    fractionLegendImageView.setImage(resourceUtil.getImage("/layout/images/animation_stop.png"));
                     stop();
                 }
                 // 막대 높이 사이즈 1pixel씩 증가
@@ -390,7 +489,6 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
                 double lableBottomMargin = idx - 2;
                 double imageLeftMargin = Math.round(idx*(maxLeftMarginForImage/fractionValueHeight));
                 if(lableBottomMargin < -6) lableBottomMargin = -8;
-                fractionLegendBox.setMargin(fractionLegendImageView, new Insets(0, 0, 0, imageLeftMargin));
                 fractionLegendVBox.setMargin(fractionLegendBox, new Insets(0, 0, lableBottomMargin, 0));
                 idx += step;
                 if (idx > fractionValueHeight) {
@@ -406,25 +504,25 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
      */
     @SuppressWarnings("unchecked")
     public void showVariantIdentification() {
-        List<VariantTranscript> transcriptDataList = (List<VariantTranscript>) paramMap.get("variantTranscripts");
+        List<SnpInDelTranscript> transcriptDataList = (List<SnpInDelTranscript>) paramMap.get("snpInDelTranscripts");
 
-        String ref = variant.getSequenceInfo().getRefSequence();
-        String alt = variant.getSequenceInfo().getAltSequence();
-        String left22Bp = variant.getSequenceInfo().getLeftSequence();
-        String right22Bp = variant.getSequenceInfo().getRightSequence();
-        String genePositionStart = String.valueOf(variant.getSequenceInfo().getGenomicCoordinate());
-        String transcriptAltType = variant.getVariantExpression().getVariantType();
+        String ref = variant.getSnpInDel().getGenomicCoordinate().getRefSequence();
+        String alt = variant.getSnpInDel().getGenomicCoordinate().getAltSequence();
+        String left22Bp = variant.getSnpInDel().getGenomicCoordinate().getLeftSequence();
+        String right22Bp = variant.getSnpInDel().getGenomicCoordinate().getRightSequence();
+        String genePositionStart = String.valueOf(variant.getSnpInDel().getGenomicCoordinate().getStartPosition());
+        String transcriptAltType = variant.getSnpInDel().getSnpInDelExpression().getVariantType();
         String defaultTranscript = null;
         // transcript 콤보박스 설정
             // variant identification transcript data map
 
-        if(!transcriptDataList.isEmpty() && transcriptDataList.size() > 0) {
+        if(transcriptDataList != null && !transcriptDataList.isEmpty()) {
             ObservableList<String> comboItemList = FXCollections.observableArrayList();
             // 콤보박스 아이템 목록 생성
-            for(VariantTranscript variantTranscript : transcriptDataList) {
-                comboItemList.add(variantTranscript.getTranscriptId());
-                if(variantTranscript.getIsDefault()) {
-                    defaultTranscript = variantTranscript.getTranscriptId();
+            for(SnpInDelTranscript snpInDelTranscript : transcriptDataList) {
+                comboItemList.add(snpInDelTranscript.getTranscriptId());
+                if(snpInDelTranscript.getIsDefault()) {
+                    defaultTranscript = snpInDelTranscript.getTranscriptId();
                 }
             }
 
@@ -434,10 +532,10 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
             // 콤보박스 Onchange 이벤트 바인딩
             transcriptComboBox.getSelectionModel().selectedIndexProperty().addListener((ov, oldIdx, newIdx) -> {
                 if(oldIdx != newIdx) {
-                    Optional<VariantTranscript> transcriptOptional = transcriptDataList.stream().filter(item ->
+                    Optional<SnpInDelTranscript> transcriptOptional = transcriptDataList.stream().filter(item ->
                             item.getTranscriptId().equals(transcriptComboBox.getItems().get((int)newIdx))).findFirst();
                     if(transcriptOptional.isPresent()) {
-                        VariantTranscript transcript = transcriptOptional.get();
+                        SnpInDelTranscript transcript = transcriptOptional.get();
                         String geneSymbol = (!StringUtils.isEmpty(transcript.getGeneSymbol())) ? transcript.getGeneSymbol() : "N/A";
                         String transcriptName = (!StringUtils.isEmpty(transcript.getTranscriptId())) ? transcript.getTranscriptId() : "N/A";
                         String codingDNA = (!StringUtils.isEmpty(transcript.getCodingDna())) ? transcript.getCodingDna() : "N/A";
@@ -445,16 +543,44 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
                         String genomicDNA = (!StringUtils.isEmpty(transcript.getGenomicDna())) ? transcript.getGenomicDna() : "N/A";
 
 
-                        logger.info(String.format("variant identification choose '%s' option idx [%s]", transcriptName, newIdx));
-
+                        logger.debug(String.format("variant identification choose '%s' option idx [%s]", transcriptName, newIdx));
+                        List<Integer> textLength = new ArrayList<>();
                         geneSymbolTextField.setText(geneSymbol); //Gene Symbol
-                        if(!StringUtils.isEmpty(geneSymbol)) geneSymbolTextField.setTooltip(new Tooltip(geneSymbol));
+                        if(!StringUtils.isEmpty(geneSymbol)) {
+                            geneSymbolTextField.setTooltip(new Tooltip(geneSymbol));
+                            textLength.add(geneSymbol.length());
+                        }
                         hgvspTextField.setText(protein); //Protein
-                        if(!StringUtils.isEmpty(protein)) hgvspTextField.setTooltip(new Tooltip(protein));
+                        if(!StringUtils.isEmpty(protein)) {
+                            hgvspTextField.setTooltip(new Tooltip(protein));
+                            textLength.add(protein.length());
+                        }
                         hgvscTextField.setText(codingDNA); //Coding DNA
-                        if(!StringUtils.isEmpty(codingDNA)) hgvscTextField.setTooltip(new Tooltip(codingDNA));
+                        if(!StringUtils.isEmpty(codingDNA)) {
+                            hgvscTextField.setTooltip(new Tooltip(codingDNA));
+                            textLength.add(codingDNA.length());
+                        }
                         grch37TextField.setText(genomicDNA); //Genomic DNA
-                        if(!StringUtils.isEmpty(genomicDNA)) grch37TextField.setTooltip(new Tooltip(genomicDNA));
+                        if(!StringUtils.isEmpty(genomicDNA)) {
+                            grch37TextField.setTooltip(new Tooltip(genomicDNA));
+                            textLength.add(genomicDNA.length());
+                        }
+                        int maxTextLength = 0;
+                        Optional<Integer> maxTextLengthOptional = textLength.stream().max(Integer::compare);
+                        if(maxTextLengthOptional.isPresent()) {
+                            maxTextLength = maxTextLengthOptional.get();
+                        }
+                        logger.debug("max Length : " + maxTextLength);
+
+                        if(maxTextLength > 29) {
+                            transcriptDetailGrid.setPrefWidth(maxTextLength * 9);
+                            geneSymbolTextField.setMinWidth(maxTextLength * 9);
+                            hgvspTextField.setMinWidth(maxTextLength * 9);
+                            hgvscTextField.setMinWidth(maxTextLength * 9);
+                            grch37TextField.setMinWidth(maxTextLength * 9);
+                            transcriptDetailScrollBox.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+                            transcriptDetailScrollBox.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+                        }
                     }
                 }
             });
@@ -465,26 +591,26 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
 
         // 레퍼런스 앞문자열 끝에서부터 9글자만 출력함.
         int displayLeft22Bplength = 9;
-        String displayLeft22Bp = "";
-        if(!StringUtils.isEmpty(left22Bp) && left22Bp.length() > displayLeft22Bplength) {
+        String displayLeft22Bp = left22Bp;
+        /*if(!StringUtils.isEmpty(left22Bp) && left22Bp.length() > displayLeft22Bplength) {
             for(int i = 0; i < left22Bp.length(); i++) {
                 if( i >= (left22Bp.length() - displayLeft22Bplength)) {
                     displayLeft22Bp += left22Bp.substring(i, i + 1);
                 }
             }
-        }
+        }*/
 
         // 레퍼런스 뒷문자열 9글자만 출력 : 레퍼런스 문자열이 1보다 큰 경우 1보다 늘어난 숫자만큼 출력 문자열 수 가감함.
         int displayRight22BpLength = 9;
-        String displayRight22Bp = "";
+        String displayRight22Bp = right22Bp;
         // 처음부터 지정글자수까지 출력
-        if(!StringUtils.isEmpty(right22Bp) && right22Bp.length() > displayRight22BpLength) {
+        /*if(!StringUtils.isEmpty(right22Bp) && right22Bp.length() > displayRight22BpLength) {
             for(int i = 0; i < right22Bp.length(); i++) {
                 if( i <= (displayRight22BpLength - 1)) {
                     displayRight22Bp += right22Bp.substring(i, i + 1);
                 }
             }
-        }
+        }*/
 
         // 변이 유형이 "deletion"인 경우 삭제된 염기서열 문자열 분리
         String notDeletionRef = "";
@@ -498,6 +624,10 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
             notDeletionRef = ref;
         }
 
+        if(!StringUtils.isEmpty(displayLeft22Bp)) {
+            leftVbox.setPrefWidth(170);
+        }
+
         // 값 화면 출력
         genePositionStartLabel.setText(genePositionStart);
         left22BpLabel.setText(displayLeft22Bp.toUpperCase());
@@ -505,8 +635,8 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
         deletionRefLabel.setText(deletionRef);
         right22BpLabel.setText(displayRight22Bp.toUpperCase());
 
-        double textLength = displayLeft22Bp.length() + ref.length() + displayRight22Bp.length();
-        logger.info("text length : " + textLength);
+        double textLength = (double)(displayLeft22Bp.length() + ref.length() + displayRight22Bp.length());
+        logger.debug("text length : " + textLength);
 
         if(textLength > 21) {
             gridBox.setPrefWidth(textLength * 12);
@@ -523,19 +653,22 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
      */
     public void showPopulationFrequency() {
         //double populationFrequencyESP6500 = getPopulationFrequencyByParam("ESP6500", "ALL");
-        double populationFrequencyESP6500 = (variant.getPopulationFrequency().getEsp6500() != null) ? variant.getPopulationFrequency().getEsp6500().doubleValue() : -1d;
+        double populationFrequencyESP6500 = (variant.getSnpInDel().getPopulationFrequency().getEsp6500() != null &&
+                variant.getSnpInDel().getPopulationFrequency().getEsp6500().getAll() != null) ? variant.getSnpInDel().getPopulationFrequency().getEsp6500().getAll().doubleValue() : -1d;
         addPopulationFrequencyGraph(0, 0, "ESP6500 ", populationFrequencyESP6500);
 
         //double populationFrequency1000Genomes = getPopulationFrequencyByParam("1000_genomes", "ALL");
-        double populationFrequency1000Genomes = (variant.getPopulationFrequency().getG1000() != null) ?variant.getPopulationFrequency().getG1000().doubleValue() : -1d;
+        double populationFrequency1000Genomes = (variant.getSnpInDel().getPopulationFrequency().getG1000() != null &&
+                variant.getSnpInDel().getPopulationFrequency().getG1000().getAll() != null) ? variant.getSnpInDel().getPopulationFrequency().getG1000().getAll().doubleValue() : -1d;
         addPopulationFrequencyGraph(0, 1, "1KG ", populationFrequency1000Genomes);
 
         //double populationFrequencyExAC = getPopulationFrequencyByParam("ExAC", "ALL");
-        double populationFrequencyExAC = (variant.getPopulationFrequency().getExac() != null) ? variant.getPopulationFrequency().getExac().doubleValue() : -1d;
+        double populationFrequencyExAC = (variant.getSnpInDel().getPopulationFrequency().getExac() != null) ? variant.getSnpInDel().getPopulationFrequency().getExac().doubleValue() : -1d;
         addPopulationFrequencyGraph(1, 0, "ExAC ", populationFrequencyExAC);
 
         //double populationFrequencyKorean = getPopulationFrequencyByParam("Korean_exome", "ALL");
-        double populationFrequencyKorean = (variant.getPopulationFrequency().getKorean() != null) ? variant.getPopulationFrequency().getKorean().doubleValue() : -1d;
+        double populationFrequencyKorean = (variant.getSnpInDel().getPopulationFrequency().getKoreanExomInformationDatabase() != null)
+                ? variant.getSnpInDel().getPopulationFrequency().getKoreanExomInformationDatabase().doubleValue() : -1d;
         addPopulationFrequencyGraph(1, 1, "Korean ", populationFrequencyKorean);
     }
 
@@ -607,17 +740,17 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
             int variantFrequencyRunTotalCount = variantStatistics.getTotalSampleCountInRun();
             int variantFrequencyPanelCount = variantStatistics.getSamePanelSameVariantSampleCountInMemberGroup();
             int variantFrequencyPanelTotalCount = variantStatistics.getTotalSamePanelSampleCountInMemberGroup();
-            int variantFrequencyAccountCount = variantStatistics.getTotalSampleCountInMemberGroup();
+            int variantFrequencyAccountCount = variantStatistics.getSameVariantSampleCountInMemberGroup();
             int variantFrequencyAccountTotalCount = variantStatistics.getTotalSampleCountInMemberGroup();
 
             double variantFrequencyRun = (double) variantFrequencyRunCount / (double) variantFrequencyRunTotalCount;
             double variantFrequencyPanel = (double) variantFrequencyPanelCount / (double) variantFrequencyPanelTotalCount;
             double variantFrequencyAccount = (double) variantFrequencyAccountCount / (double) variantFrequencyAccountTotalCount;
 
-//		logger.info(String.format("run count : %s, total : %s", variantFrequencyRunCount, variantFrequencyRunTotalCount));
-//		logger.info(String.format("panel count : %s, total : %s", variantFrequencyPanelCount, variantFrequencyPanelTotalCount));
-//		logger.info(String.format("account count : %s, total : %s", variantFrequencyAccountCount, variantFrequencyAccountTotalCount));
-//		logger.info(String.format("run : %s, panel : %s, account : %s", variantFrequencyRun, variantFrequencyPanel, variantFrequencyAccount));
+//		logger.debug(String.format("run count : %s, total : %s", variantFrequencyRunCount, variantFrequencyRunTotalCount));
+//		logger.debug(String.format("panel count : %s, total : %s", variantFrequencyPanelCount, variantFrequencyPanelTotalCount));
+//		logger.debug(String.format("account count : %s, total : %s", variantFrequencyAccountCount, variantFrequencyAccountTotalCount));
+//		logger.debug(String.format("run : %s, panel : %s, account : %s", variantFrequencyRun, variantFrequencyPanel, variantFrequencyAccount));
 
             AnimationTimer variantStatisticsRunTimer = new VariantStatisticsTimer(
                     canvasVariantStatisticsRun.getGraphicsContext2D(), variantFrequencyRun, "RUN",
@@ -633,13 +766,13 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
             variantStatisticsGroupTimer.start();
             AnimationTimer variantStatisticsRunTimer1 = new VariantStatisticsTimer(
                     canvasVariantStatisticsRun.getGraphicsContext2D(), variantFrequencyRun, "RUN",
-                    (int) variantFrequencyRunCount + "/" + (int) variantFrequencyRunTotalCount, gaugeSpeed);
+                    variantFrequencyRunCount + "/" + variantFrequencyRunTotalCount, gaugeSpeed);
             AnimationTimer variantStatisticsPanelTimer1 = new VariantStatisticsTimer(
                     canvasVariantStatisticsPanel.getGraphicsContext2D(), variantFrequencyPanel, "PANEL",
-                    (int) variantFrequencyPanelCount + "/" + (int) variantFrequencyPanelTotalCount, gaugeSpeed);
+                    variantFrequencyPanelCount + "/" + variantFrequencyPanelTotalCount, gaugeSpeed);
             AnimationTimer variantStatisticsGroupTimer1 = new VariantStatisticsTimer(
                     canvasVariantStatisticsGroup.getGraphicsContext2D(), variantFrequencyAccount, "GROUP",
-                    (int) variantFrequencyAccountCount + "/" + (int) variantFrequencyAccountTotalCount, gaugeSpeed);
+                    variantFrequencyAccountCount + "/" + variantFrequencyAccountTotalCount, gaugeSpeed);
             canvasVariantStatisticsRun.setOnMouseEntered(event ->
                     variantStatisticsRunTimer1.start());
             canvasVariantStatisticsRun.setOnMouseExited(event ->
@@ -693,16 +826,26 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
         if("variantFrequencyRunVBox".equals(box.getId())) {
             count = (paramMap.containsKey("sameVariantSampleCountInRun")) ? (int) paramMap.get("sameVariantSampleCountInRun") : 0;
             totalCount = (paramMap.containsKey("totalSampleCountInRun")) ? (int) paramMap.get("totalSampleCountInRun") : 0;
-            variantFrequencyRunPercentLabel.setText((int) count + "/" + (int) totalCount);;
+            variantFrequencyRunPercentLabel.setText(count + "/" + totalCount);
         } else if("variantFrequencyPanelVBox".equals(box.getId())) {
             count = (paramMap.containsKey("samePanelSameVariantSampleCountInUsergroup")) ? (int) paramMap.get("samePanelSameVariantSampleCountInUsergroup") : 0;
             totalCount = (paramMap.containsKey("totalSamePanelSampleCountInUsergroup")) ? (int) paramMap.get("totalSamePanelSampleCountInUsergroup") : 0;
-            variantFrequencyPanelPercentLabel.setText((int) count + "/" + (int) totalCount);;
+            variantFrequencyPanelPercentLabel.setText(count + "/" + totalCount);
         } else if("variantFrequencyAccountVBox".equals(box.getId())) {
             count = (paramMap.containsKey("sameVariantSampleCountInUsergroup")) ? (int) paramMap.get("sameVariantSampleCountInUsergroup") : 0;
             totalCount = (paramMap.containsKey("totalSampleCountInUsergroup")) ? (int) paramMap.get("totalSampleCountInUsergroup") : 0;
-            variantFrequencyAccountPercentLabel.setText((int) count + "/" + (int) totalCount);;
+            variantFrequencyAccountPercentLabel.setText(count + "/" + totalCount);
         }
+    }
+
+    public Map<String, Object> returnResultsAfterSearch(String key) {
+        List<SnpInDelExtraInfo> detail = (List<SnpInDelExtraInfo>)paramMap.get("detail");
+
+        Optional<SnpInDelExtraInfo> populationFrequency = detail.stream().filter(item
+                -> key.equalsIgnoreCase(item.key)).findFirst();
+
+        return populationFrequency.map(snpInDelExtraInfo -> JsonUtil.fromJsonToMap(snpInDelExtraInfo.value)).orElse(null);
+
     }
 
     /**
@@ -710,14 +853,14 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
      */
     @SuppressWarnings("unchecked")
     public void showClinicalSignificantGraph() {
-        Map<String,Object> inSilicoPredictionMap = (Map<String,Object>) paramMap.get("inSilicoPrediction");
-        Map<String,Object> variantClassifierMap = (Map<String,Object>) paramMap.get("variantClassifier");
-        Map<String,Object> clinicalMap = (Map<String,Object>) paramMap.get("clinical");
-        Map<String,Object> breastCancerInformationCoreMap = (Map<String,Object>) paramMap.get("breastCancerInformationCore");
+        Map<String,Object> inSilicoPredictionMap = returnResultsAfterSearch("in_silico_prediction");
+        Map<String,Object> variantClassifierMap = returnResultsAfterSearch("variant_classifier");
+        Map<String,Object> clinicalMap = returnResultsAfterSearch("clinical");
+        Map<String,Object> breastCancerInformationCoreMap = returnResultsAfterSearch("breast_cancer_information_core");
         Map<String,Object> siftMap = (inSilicoPredictionMap != null && inSilicoPredictionMap.containsKey("SIFT")) ? (Map<String,Object>) inSilicoPredictionMap.get("SIFT") : null;
         Map<String,Object> polyphenMap = (inSilicoPredictionMap != null && inSilicoPredictionMap.containsKey("PolyPhen2")) ? (Map<String,Object>) inSilicoPredictionMap.get("PolyPhen2") : null;
         Map<String,Object> mtMap = (inSilicoPredictionMap != null && inSilicoPredictionMap.containsKey("mt")) ? (Map<String,Object>) inSilicoPredictionMap.get("mt") : null;
-        Map<String,Object> enigmaMap = (Map<String,Object>) paramMap.get("enigma");
+        Map<String,Object> enigmaMap = returnResultsAfterSearch("ENIGMA");
 
         // SIFT
         double siftValue = -1;
@@ -771,7 +914,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
                     siftValue = -1.0;
                 }
             } else if (siftMap.containsKey("radar")) {
-                siftValue = convertRadarItemPercentageByLevelForPathogenic((String) siftMap.get("radar")) / 100.0;
+                siftValue = convertRadarItemPercentageByLevelForPathogenic(checkType(siftMap.get("radar"))) / 100.0;
                 // clinicalSignificantPathogenicitySiftLabel.setTooltip(new
                 // Tooltip((String) siftMap.get("radar")));
             } else {
@@ -799,7 +942,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
                     polyphenValue = -1.0;
                 }
             } else if (polyphenMap.containsKey("radar")) {
-                polyphenValue = convertRadarItemPercentageByLevelForPathogenic((String) polyphenMap.get("radar")) / 100.0;
+                polyphenValue = convertRadarItemPercentageByLevelForPathogenic(checkType(polyphenMap.get("radar"))) / 100.0;
                 // clinicalSignificantPathogenicitySiftLabel.setTooltip(new
                 // Tooltip((String) siftMap.get("radar")));
             } else {
@@ -813,7 +956,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
         // POLYPHEN2
         if (mtMap != null && !mtMap.isEmpty()) {
             if (mtMap.containsKey("radar")) {
-                mtValue = convertRadarItemPercentageByLevelForPathogenic((String) mtMap.get("radar")) / 100.0;
+                mtValue = convertRadarItemPercentageByLevelForPathogenic(checkType(mtMap.get("radar"))) / 100.0;
                 // clinicalSignificantPathogenicitySiftLabel.setTooltip(new
                 // Tooltip((String) siftMap.get("radar")));
             } else {
@@ -827,7 +970,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
         AnimationTimer siftTimer = new ClinicalSignificantTimer(
                 siftCanvas.getGraphicsContext2D(), siftValue, "SIFT", siftText, this.gaugeSpeed);
         AnimationTimer polyphenTimer = new ClinicalSignificantTimer(
-                polyphenCanvas.getGraphicsContext2D(), polyphenValue, "POLYPHEN2", polyphenText, this.gaugeSpeed);
+                polyphenCanvas.getGraphicsContext2D(), polyphenValue, "MetaSVM", polyphenText, this.gaugeSpeed);
         AnimationTimer mtTimer = new ClinicalSignificantTimer(
                 mtCanvas.getGraphicsContext2D(), mtValue, "MUTATIONTASTER", mtText, this.gaugeSpeed);
         siftTimer.start();
@@ -836,7 +979,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
         AnimationTimer siftTimer1 = new ClinicalSignificantTimer(
                 siftCanvas.getGraphicsContext2D(), siftValue, "SIFT", String.format("%7s", siftScore), this.gaugeSpeed);
         AnimationTimer polyphenTimer1 = new ClinicalSignificantTimer(
-                polyphenCanvas.getGraphicsContext2D(), polyphenValue, "POLYPHEN2", String.format("%7s", polyphenScore), this.gaugeSpeed);
+                polyphenCanvas.getGraphicsContext2D(), polyphenValue, "MetaSVM", String.format("%7s", polyphenScore), this.gaugeSpeed);
         AnimationTimer mtTimer1 = new ClinicalSignificantTimer(
                 mtCanvas.getGraphicsContext2D(), mtValue, "MUTATIONTASTER", mtText, this.gaugeSpeed);
         siftCanvas.setOnMouseEntered(event -> siftTimer1.start());
@@ -895,9 +1038,16 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
         frequenciesRadarGraph.display();
     }
 
+    private String checkType(Object obj) {
+        if(obj instanceof Integer) {
+            return String.valueOf(obj);
+        }
+        return (String) obj;
+    }
+
     private void renderClinicalPathogenicityData(HBox node, String text, String value) {
         int level = 0;
-        if (value != null) {
+        if (!StringUtils.isEmpty(value)) {
             try {
                 level = Integer.valueOf(value);
             } catch(NumberFormatException nfe){
@@ -911,14 +1061,19 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
                 child.getStyleClass().removeAll(child.getStyleClass());
                 if (((Label)child).getText().equals("P") && level  == 5) {
                     child.getStyleClass().add("prediction_A");
+                    addClickEvent(text, child);
                 } else if(((Label)child).getText().equals("LP") && level == 4) {
                     child.getStyleClass().add("prediction_B");
+                    addClickEvent(text, child);
                 } else if(((Label)child).getText().equals("US") && level == 3) {
                     child.getStyleClass().add("prediction_C");
+                    addClickEvent(text, child);
                 } else if(((Label)child).getText().equals("LB") && level == 2) {
                     child.getStyleClass().add("prediction_D");
+                    addClickEvent(text, child);
                 } else if(((Label)child).getText().equals("B") && level == 1) {
                     child.getStyleClass().add("prediction_E");
+                    addClickEvent(text, child);
                 } else if(((Label)child).getText().equals(text)) {
                     child.getStyleClass().add("clinical_significant_pathogenicity_label");
                 } else {
@@ -937,7 +1092,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
     @SuppressWarnings("unchecked")
     public double getPopulationFrequencyByParam(String orgKey, String location) {
         double percentage = -1d;
-        Map<String,Object> populationFrequencyMap = (Map<String,Object>) paramMap.get("populationFrequency");
+        Map<String,Object> populationFrequencyMap = returnResultsAfterSearch("population_frequency");
         if(!populationFrequencyMap.isEmpty() && populationFrequencyMap.containsKey(orgKey)) {
             Map<String,Object> orgMap = (Map<String,Object>) populationFrequencyMap.get(orgKey);
             if(!orgMap.isEmpty() && orgMap.containsKey(location)) {
@@ -976,5 +1131,109 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
 
     public int getTranscriptComboBoxSelectedIndex() {
         return transcriptComboBox.getSelectionModel().getSelectedIndex();
+    }
+
+    @SuppressWarnings("unchecked")
+    public void addClickEvent(String text, Node node) {
+        if("PREDICTION".equals(text)) {
+            Map<String, Object> acmg = returnResultsAfterSearch("acmg");
+            if(acmg == null) return;
+            node.setStyle("-fx-cursor:hand;");
+            node.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openPopOver((Label) node, acmg));
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public void openPopOver(Label label, Map<String, Object> acmg) {
+
+        PopOver popOver = new PopOver();
+        popOver.setArrowLocation(PopOver.ArrowLocation.BOTTOM_CENTER);
+        popOver.setHeaderAlwaysVisible(true);
+        popOver.setAutoHide(true);
+        popOver.setAutoFix(true);
+        popOver.setDetachable(true);
+        popOver.setArrowSize(15);
+        popOver.setMaxSize(460, 150);
+        popOver.setPrefWidth(460);
+        popOver.setMinSize(460, 150);
+        //popOver.setMinWidth(500);
+        popOver.setTitle("List of evidence in 28 criteria");
+
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setMaxSize(460, 200);
+
+        VBox box = new VBox();
+        //box.setMaxSize(400, 200);
+        box.setMaxWidth(445);
+        box.getStyleClass().add("acmg_content_box");
+
+        scrollPane.setContent(box);
+
+        String[] results = acmg.containsKey("rules") ? ((String)acmg.get("rules")).split(",") : null;
+        String rulesText = acmg.containsKey("rules") ? "(" + acmg.get("rules") + ")" : null;
+
+        Label reason = new Label();
+        String pathogenicity = acmg.containsKey("pathogenicity") ? (String)acmg.get("pathogenicity") : null;
+        reason.setText(pathogenicity + rulesText);
+        if("benign".equalsIgnoreCase(pathogenicity)) {
+            reason.getStyleClass().add("benign");
+        } else if("likely benign".equalsIgnoreCase(pathogenicity)) {
+            reason.getStyleClass().add("likely_benign");
+        } else if("uncertain significance".equalsIgnoreCase(pathogenicity)) {
+            reason.getStyleClass().add("uncertain_significance");
+        } else if("likely pathogenic".equalsIgnoreCase(pathogenicity)) {
+            reason.getStyleClass().add("likely_pathogenic");
+        } else if("pathogenic".equalsIgnoreCase(pathogenicity)) {
+            reason.getStyleClass().add("pathogenic");
+        }
+        box.getChildren().add(reason);
+
+        for(String result : results) {
+            Map<String, Object> role = (Map<String, Object>) acmg.get(result);
+
+            Label roleLabel = new Label(result);
+            roleLabel.setMaxWidth(50);
+            roleLabel.setWrapText(true);
+            roleLabel.getStyleClass().add("acmg_content_role_label");
+            if(result.startsWith("PVS")) {
+                roleLabel.getStyleClass().add("acmg_PVS");
+            } else if(result.startsWith("PS")) {
+                roleLabel.getStyleClass().add("acmg_PS");
+            } else if(result.startsWith("PM")) {
+                roleLabel.getStyleClass().add("acmg_PM");
+            } else if(result.startsWith("PP")) {
+                roleLabel.getStyleClass().add("acmg_PP");
+            } else if(result.startsWith("BP")) {
+                roleLabel.getStyleClass().add("acmg_BP");
+            } else if(result.startsWith("BS")) {
+                roleLabel.getStyleClass().add("acmg_BS");
+            } else if(result.startsWith("BA")) {
+                roleLabel.getStyleClass().add("acmg_BA");
+            }
+            box.getChildren().add(roleLabel);
+
+            Label descLabel = new Label();
+            String desc = role.containsKey("desc") ? (String)role.get("desc") : null;
+            descLabel.setWrapText(true);
+            descLabel.setText(desc);
+            descLabel.getStyleClass().add("acmg_content_desc_label");
+            descLabel.setMaxWidth(460);
+            box.getChildren().add(descLabel);
+
+            String massage = role.containsKey("message") ? (String)role.get("message") : null;
+            if(!StringUtils.isEmpty(massage)) {
+                Label msgLabel = new Label();
+                msgLabel.setWrapText(true);
+                msgLabel.setText("("+massage+")");
+                msgLabel.getStyleClass().add("acmg_content_msg_label");
+                msgLabel.setMaxWidth(460);
+                box.getChildren().add(msgLabel);
+            }
+        }
+
+        popOver.setContentNode(scrollPane);
+        popOver.show(label, 10);
     }
 }

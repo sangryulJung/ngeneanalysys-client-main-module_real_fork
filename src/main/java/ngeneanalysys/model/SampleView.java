@@ -2,6 +2,8 @@ package ngeneanalysys.model;
 
 import org.joda.time.DateTime;
 
+import java.util.List;
+
 public class SampleView {
     private Integer id;
     private String name;
@@ -17,13 +19,20 @@ public class SampleView {
     private String qcResult;
     private String inputFType;
     private SampleStatus sampleStatus;
-    private SampleSheet sampleSheet;
-    private QcData qcData;
+    private String pipelineVersion;
     private AnalysisResultSummary analysisResultSummary;
     private DateTime createdAt;
     private DateTime updatedAt;
     private DateTime deletedAt;
     private Integer deleted;
+    private List<SampleQC> sampleQCs;
+
+    /**
+     * @return sampleQCs
+     */
+    public List<SampleQC> getSampleQCs() {
+        return sampleQCs;
+    }
 
     public Integer getId() {
         return id;
@@ -81,13 +90,7 @@ public class SampleView {
         return sampleStatus;
     }
 
-    public SampleSheet getSampleSheet() {
-        return sampleSheet;
-    }
-
-    public QcData getQcData() {
-        return qcData;
-    }
+    public String getPipelineVersion() { return pipelineVersion; }
 
     public AnalysisResultSummary getAnalysisResultSummary() {
         return analysisResultSummary;
@@ -126,13 +129,13 @@ public class SampleView {
                 ", qcResult='" + qcResult + '\'' +
                 ", inputFType='" + inputFType + '\'' +
                 ", sampleStatus=" + sampleStatus +
-                ", sampleSheet=" + sampleSheet +
-                ", qcData=" + qcData +
+                ", pipelineVersion='" + pipelineVersion + '\'' +
                 ", analysisResultSummary=" + analysisResultSummary +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", deletedAt=" + deletedAt +
                 ", deleted=" + deleted +
+                ", sampleQCs=" + sampleQCs +
                 '}';
     }
 }

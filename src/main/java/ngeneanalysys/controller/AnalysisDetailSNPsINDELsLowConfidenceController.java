@@ -3,12 +3,16 @@ package ngeneanalysys.controller;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.util.Set;
 
 /**
  * @author Jang
@@ -19,23 +23,8 @@ public class AnalysisDetailSNPsINDELsLowConfidenceController extends SubPaneCont
 
     private AnalysisDetailSNPsINDELsController analysisDetailSNPsINDELsController;
 
-
-    /** low Variant Coverage Depth */
     @FXML
-    private Label lowVariantCoverageDepthLabel;
-    /** low Variant Fraction */
-    @FXML
-    private Label lowVariantFractionLabel;
-    /** homopolymer Region */
-    @FXML
-    private Label homopolymerRegionLabel;
-    /** soft Clipped Amplicon */
-    @FXML
-    private Label softClippedAmpliconLabel;
-    /** primer Region Deletion */
-    @FXML
-    private Label primerRegionDeletionLabel;
-
+    private VBox vbox;
 
     /**
      * @return the analysisDetailSNPsINDELsController
@@ -53,9 +42,56 @@ public class AnalysisDetailSNPsINDELsLowConfidenceController extends SubPaneCont
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("show..");
+        logger.debug("show..");
         String na = "N/A";
-        if(getParamMap() != null && !getParamMap().isEmpty() && getParamMap().size() > 0) {
+
+        if (getParamMap() != null && !getParamMap().isEmpty() && getParamMap().size() > 0) {
+            Set<String> keySet = getParamMap().keySet();
+
+            for(String key : keySet) {
+
+                //if(key.equalsIgnoreCase("WARNING")) continue;
+
+                if (key.equalsIgnoreCase("low_variant_coverage_depth") ||
+                        key.equalsIgnoreCase("low_variant_fraction") ||
+                        key.equalsIgnoreCase("homopolymer_region") ||
+                        key.equalsIgnoreCase("soft_clipped_amplicon") ||
+                        key.equalsIgnoreCase("primer_deletion") ||
+                        key.equalsIgnoreCase("low_read_depth") ||
+                        key.equalsIgnoreCase("low_allele_fraction") ||
+                        key.equalsIgnoreCase("low_confidence")) {
+
+                    HBox box = new HBox();
+
+                    Label titleLabel = new Label();
+
+                    titleLabel.setText(WordUtils.capitalize(key.replaceAll("_", " ")) + " : ");
+                    titleLabel.getStyleClass().add("font_size_12");
+
+                    String warningString = (String) getParamMap().get(key);
+                    Label warningLabel = new Label();
+                    warningLabel.getStyleClass().add("font_size_12");
+                    warningLabel.setText(warningString.toUpperCase());
+
+                    if (!StringUtils.isEmpty(warningString)) {
+                        if (warningString.equalsIgnoreCase("YES")) {
+                            warningLabel.getStyleClass().add("txt_green");
+                        } else {
+                            warningLabel.getStyleClass().add("txt_red");
+                        }
+                    } else {
+                        warningLabel.setText(na);
+                    }
+
+                    box.getChildren().add(titleLabel);
+                    box.getChildren().add(warningLabel);
+
+                    vbox.getChildren().add(box);
+                }
+            }
+        }
+
+        /*if(getParamMap() != null && !getParamMap().isEmpty() && getParamMap().size() > 0) {
             String lowVariantCoverageDepth = (String) getParamMap().get("low_variant_coverage_depth");
             String lowVariantFraction = (String) getParamMap().get("low_variant_fraction");
             String softClippedAmplicon = (String) getParamMap().get("soft_clipped_amplicon");
@@ -116,7 +152,7 @@ public class AnalysisDetailSNPsINDELsLowConfidenceController extends SubPaneCont
             } else {
                 primerRegionDeletionLabel.setText(na);
             }
-        }
+        }*/
 
         analysisDetailSNPsINDELsController.subTabLowConfidence.setContent(root);
     }

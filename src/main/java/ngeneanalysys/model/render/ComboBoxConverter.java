@@ -13,13 +13,14 @@ import javafx.util.StringConverter;
  */
 public class ComboBoxConverter extends StringConverter<ComboBoxItem> {
 	
-	private Map<String,ComboBoxItem> mapItems = new HashMap<String,ComboBoxItem>();
+	private Map<String,ComboBoxItem> mapItems = new HashMap<>();
 
 	/**
 	 * 콤보 아이템 텍스트 반환
 	 */
 	@Override
 	public String toString(ComboBoxItem object) {
+		if(object == null) return "";
 		mapItems.put(object.getValue(), object);
 		return object.getText();
 	}

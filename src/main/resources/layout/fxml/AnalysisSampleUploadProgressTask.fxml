@@ -12,17 +12,17 @@
 
 <HBox fx:id="taskArea" alignment="CENTER_LEFT" maxHeight="25.0" maxWidth="1.7976931348623157E308" minHeight="25.0" minWidth="-Infinity" prefHeight="25.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisSampleUploadProgressTaskController">
    <children>
+      <ProgressBar fx:id="progressBar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="200.0" progress="0.0">
+         <HBox.margin>
+            <Insets bottom="1.0" left="10.0" />
+         </HBox.margin>
+      </ProgressBar>
       <Label alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="19.0" prefWidth="70.0" styleClass="taskTitle" text="Run Name" HBox.hgrow="NEVER" />
       <Label fx:id="refName" text="ref name print..">
          <HBox.margin>
             <Insets left="10.0" />
          </HBox.margin>
       </Label>
-      <ProgressBar fx:id="progressBar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="84.0" progress="0.0">
-         <HBox.margin>
-            <Insets bottom="1.0" left="10.0" />
-         </HBox.margin>
-      </ProgressBar>
       <TextFlow maxHeight="25.0" minHeight="25.0" minWidth="-Infinity" prefHeight="25.0" prefWidth="40.0">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="(" />
@@ -43,11 +43,6 @@
       <Button fx:id="buttonPause" layoutX="387.0" layoutY="13.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#pauseUpload" prefHeight="20.0" prefWidth="20.0" text="■">
          <HBox.margin>
             <Insets left="5.0" />
-         </HBox.margin>
-      </Button>
-      <Button fx:id="buttonDetail" alignment="TOP_CENTER" layoutX="297.0" layoutY="13.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#openDetailDialog" prefHeight="20.0" prefWidth="70.0" text="DETAIL">
-         <HBox.margin>
-            <Insets bottom="1.0" left="5.0" />
          </HBox.margin>
       </Button>
       <Button fx:id="buttonCancel" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#cancelUpload" prefHeight="20.0" prefWidth="70.0" text="CANCEL">

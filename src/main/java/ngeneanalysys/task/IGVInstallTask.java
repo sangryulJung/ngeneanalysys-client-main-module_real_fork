@@ -94,7 +94,7 @@ public class IGVInstallTask extends Task<Void> {
                 jreFile.delete();
                 // windows가 아닌 경우 읽기권한 퍼미션 부여함.
                 if(!CommonConstants.IS_WINDOWS) {
-                    logger.info("JRE directory set permission [775]");
+                    logger.debug("JRE directory set permission [775]");
                     updateTitle("Set Permission to JRE Application Directory");
                     List<String> cmdArray = new ArrayList<>();
                     cmdArray.add("chmod");
@@ -129,7 +129,7 @@ public class IGVInstallTask extends Task<Void> {
                 Map<String,Object> headerMap = apiService.getDefaultHeaders(true);
 
                 HttpGet get = new HttpGet(connectURL);
-                logger.info("GET:" + get.getURI());
+                logger.debug("GET:" + get.getURI());
 
                 // 지정된 헤더 삽입 정보가 있는 경우 추가
                 if(headerMap != null && headerMap.size() > 0) {
@@ -155,7 +155,7 @@ public class IGVInstallTask extends Task<Void> {
                     HttpEntity entity = response.getEntity();
                     InputStream content = entity.getContent();
                     long fileLength = entity.getContentLength();
-                    logger.info("파일 크기 = " + fileLength);
+                    logger.debug("파일 크기 = " + fileLength);
                     try (InputStream is = content; OutputStream os = Files.newOutputStream(Paths.get(saveFile.toURI()))) {
                         long nread = 0L;
                         byte[] buf = new byte[8192];
@@ -200,7 +200,7 @@ public class IGVInstallTask extends Task<Void> {
      */
     @Override
     protected void succeeded() {
-        logger.info("igv install task complete");
+        logger.debug("igv install task complete");
         controller.removeProgressTaskItemById(progressBoxId);
         // igv 실행
         try {

@@ -8,7 +8,7 @@ import ngeneanalysys.controller.AnalysisDetailLayoutController;
  */
 public abstract class AnalysisDetailCommonController extends SubPaneController{
     /** 분석 상세 결과 레이아웃 컨트롤러 */
-    protected AnalysisDetailLayoutController analysisDetailLayoutController;
+    private AnalysisDetailLayoutController analysisDetailLayoutController;
 
     /**
      * 분석 상세 결과 레이아웃 컨트롤러 객체 반환

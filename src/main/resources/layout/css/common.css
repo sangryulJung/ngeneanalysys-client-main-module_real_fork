@@ -1,10 +1,24 @@
 @font-face {
-	src: url("../font/NotoSansKR-Regular.otf");
+	src: url("../font/NotoSansKR-Light.otf"),
+	 url("../font/NotoSansKR-Bold.otf"),
+	 url("../font/NotoSansKR-Medium.otf"),
+	 url("../font/NotoSansKR-Regular.otf"),
+	 url("../font/NotoSansKR-DemiLight.otf"),
+	 url("../font/NotoSansCJKkr-Bold.otf"),
+	 url("../font/NotoSansCJKkr-Regular.otf"),
+	 url("../font/NotoSansCJKkr-DemiLight.otf"),	 
+	 url("../font/NanumSquareB.ttf"),
+	 url("../font/NanumSquareR.ttf"),
+	 url("../font/NanumSquareR.ttf");	 
 }
 
 /** 기본 폰트 설정 */
 * {
-	-fx-font-family: "Noto Sans KR Regular";
+	-fx-font-family: "Noto Sans KR Light";
+	/*-fx-font-family: "Noto Sans CJK KR Regular";*/
+	/*-fx-font-family: "Noto Sans KR Regular";*/
+    /*-fx-font-family: "나눔스퀘어 Bold";*/
+    /*-fx-font-family: "나눔스퀘어";*/
 	/*-fx-focus-traversable: false;*/
 }
 
@@ -17,6 +31,7 @@ Button {
 	-fx-control-inner-background: transparent;
 	-fx-background-insets: 0.0;
 	-fx-padding: 0.0;
+	-fx-background-radius : 5em;
 }
 
 .scroll-pane:focused {
@@ -52,8 +67,8 @@ Button {
 .text-area {
 	-fx-background-color:#fff;
 	-fx-background-insets:0;
-	-fx-background-radius:3;
-	-fx-border-radius :3;
+	-fx-background-radius:0;
+	-fx-border-radius : 0;
 	-fx-border-color:#c4c4c4;
 	-fx-border-width:1;
 	-fx-font-size:12px;
@@ -349,7 +364,7 @@ Button {
  }
 .pagination>.pagination-control>.control-box>.left-arrow-button {
 	-fx-background-color:none;
-	-fx-background-image:url('../images/arrow_prev_on.png');
+	-fx-background-image:url('../images/renewal/arrow_prev_on.png');
 	-fx-background-repeat: no-repeat;
 	-fx-background-position: center;
 	-fx-min-width: 50;
@@ -362,7 +377,7 @@ Button {
 }
 
 .pagination>.pagination-control>.control-box>.left-arrow-button:disabled {
-	-fx-background-image:url('../images/arrow_prev.png');
+	-fx-background-image:url('../images/renewal/arrow_prev.png');
 }
 
 .pagination>.pagination-control>.control-box>.left-arrow-button:disabled>.left-arrow {
@@ -373,11 +388,12 @@ Button {
 .pagination>.pagination-control>.control-box>.number-button {
 	-fx-background-color:none;
 	-fx-padding:0;
+	-fx-text-fill : black;
 	-fx-cursor: hand;
 }
 
 .pagination>.pagination-control>.control-box>.number-button>.text {
-	-fx-font-size:13px;
+	-fx-font-size:12px;
 	-fx-text-fill:#656565;
 	-fx-padding:0 10;
 }
@@ -388,15 +404,14 @@ Button {
 }
 
 .pagination>.pagination-control>.control-box>.number-button:selected>.text {
-	-fx-font-size:14px;
+	-fx-font-size:12px;
 	-fx-fill:#0469b0;
-	-fx-font-weight:bold;
 	-fx-padding:0 10;
 }
 
 .pagination>.pagination-control>.control-box>.right-arrow-button {
 	-fx-background-color:none;
-	-fx-background-image:url('../images/arrow_next_on.png');
+	-fx-background-image:url('../images/renewal/arrow_next_on.png');
 	-fx-background-repeat: no-repeat;
 	-fx-background-position: center;
 	-fx-min-width: 50;
@@ -408,7 +423,7 @@ Button {
 }
 
 .pagination>.pagination-control>.control-box>.right-arrow-button:disabled {
-	-fx-background-image:url('../images/arrow_next.png');
+	-fx-background-image:url('../images/renewal/arrow_next.png');
 }
 .pagination>.pagination-control>.control-box>.right-arrow-button:disabled>.right-arrow {
 	-fx-background-color:none;
@@ -418,65 +433,60 @@ Button {
 /**
  * End Pagination CSS
  */
- 
+
 /** Base Table View CSS */
 .table-view {
-	-fx-background-color: #fff;
- 	-fx-border-color:#000 #b1b1b1 #b1b1b1 #b1b1b1;
- 	-fx-border-width:1;
+	-fx-background-color: #FFFFFF;
+ 	-fx-border-color:#FFFFFF;
+ 	-fx-border-width:0;
  	-fx-padding:0;
-}
-
-.table-view:focused, .table-view .column-header-background, .table-view .column-header-background .label{
-	-fx-background-color: transparent;
+ 	-fx-table-cell-border-color: transparent;
 }
 
 .table-view .column-header-background .nested-column-header .label{
 	-fx-font-size:12px;
 	-fx-font-weight:bold;
-	-fx-text-fill:#fff;
 }
 
 .table-view .column-header-background .filler {
-	-fx-background-color:#75848c;
-	-fx-border-color:#000 #c3c3c3 #c3c3c3 #c3c3c3;
-	-fx-border-width:1 0 0 0;
+ 	-fx-background-color:#FFFFFF;
+	-fx-border-color:#000000;
+	-fx-border-width:0 0 0.5 0;
 }
 
 .table-view .column-header {
-	-fx-pref-height:30;
-	-fx-background-color:#75848c;
- 	-fx-border-color:#000 #c3c3c3 #c3c3c3 #c3c3c3;
- 	-fx-border-width:1 1 0 0;
+	-fx-pref-height:35;
+	-fx-background-color: #ffffff;
+	-fx-border-width : 0 0 0.5 0;
+	-fx-border-color:#000000;
+	-fx-font-family:"Noto Sans KR Bold";
 }
 
 .table-row-cell {
 	-fx-background-insets:0;
-	-fx-font-size:12px;
+	-fx-background-color: -fx-table-cell-border-color, #FFFFFF;
+    -fx-border-width : 0;
+    -fx-font-size : 13;
 }
 
 .table-row-cell:empty {
+    -fx-background-color : white;
 }
- 
+
 .table-row-cell:hover{
+    -fx-table-cell-border-color: transparent;
 }
 
 .table-row-cell:selected {
-	-fx-background:#87CEEB;
+    -fx-table-cell-border-color: transparent;
+	-fx-background-color : #F2F5FA;
+	-fx-text-background-color:#656565;
 }
 
 .table-view .table-cell .label {
 	-fx-text-fill:#656565;
-}
-
-.table-view:row-selection .column-header-background .nested-column-header .sub_column {
-	-fx-background-color:#cbd3d7;
- 	-fx-border-color:#c3c3c3 #c3c3c3 #c3c3c3 #c3c3c3;
- 	-fx-border-width:1 1 0 0;
-}
-
-.sub_table .column-header, .sub_table .column-header-background .filler {
-	-fx-background-color:#acb5ba;
+	-fx-background-color : #FFFFFF;
+	-fx-pref-height : 25;
 }
 
 .listHeader {
@@ -492,9 +502,9 @@ Button {
 	-fx-min-width: 80;
 	-fx-alignment:center;
 	-fx-background-color:#fff;
-	-fx-background-radius:10;
+	-fx-background-radius:2;
 	-fx-border-color:#c1c1c1;
-	-fx-border-radius:10;
+	-fx-border-radius:2;
 	-fx-text-fill:#656565;
 	-fx-font-size:9;
 	-fx-padding:0 10;
@@ -508,9 +518,9 @@ Button {
 	-fx-background-repeat: no-repeat;
 	-fx-background-position:6px 3px;
 	-fx-background-color:#f4c73c;
-	-fx-background-radius:10;
+	-fx-background-radius:2;
 	-fx-border-color:#f4c73c;
-	-fx-border-radius:10;
+	-fx-border-radius:2;
 	-fx-text-fill:#fff;
 	-fx-font-size:9;
 	-fx-font-weight:bold;
@@ -525,9 +535,9 @@ Button {
 	-fx-background-repeat: no-repeat;
 	-fx-background-position:6px 3px;
 	-fx-background-color:#68BC4B;
-	-fx-background-radius:10;
+	-fx-background-radius:2;
 	-fx-border-color:#68BC4B;
-	-fx-border-radius:10;
+	-fx-border-radius:2;
 	-fx-text-fill:#fff;
 	-fx-font-size:9;
 	-fx-font-weight:bold;
@@ -538,10 +548,10 @@ Button {
 	-fx-min-height: 20;
 	-fx-min-width: 80;
     -fx-alignment:center;
-	-fx-background-color:#426579;
-	-fx-background-radius:10;
-	-fx-border-color:#426579;
-	-fx-border-radius:10;
+	-fx-background-color:#4b8dca;
+	-fx-background-radius:2;
+	-fx-border-color:#4b8dca;
+	-fx-border-radius:2;
 	-fx-text-fill:#fff;
 	-fx-font-size:9;
 	-fx-font-weight:bold;
@@ -553,14 +563,134 @@ Button {
 	-fx-min-width: 80;
     -fx-alignment:center;
 	-fx-background-color:#ff7e79;
-	-fx-background-radius:10;
+	-fx-background-radius:2;
 	-fx-border-color:#ff7e79;
-	-fx-border-radius:10;
+	-fx-border-radius:2;
 	-fx-text-fill:#fff;
 	-fx-font-size:9;
 	-fx-font-weight:bold;
 	-fx-padding:0 10;
 }
+
+/** Detail Job Status Icon Label */
+#detail_jobStatus_NONE {
+	-fx-min-height: 20;
+	-fx-min-width: 80;
+	-fx-alignment:center;
+	-fx-background-color:#fff;
+	-fx-background-radius:0 10 10 0;
+	-fx-border-color:#c1c1c1;
+	-fx-border-radius:0 10 10 0;
+	-fx-text-fill:#656565;
+	-fx-font-size:9;
+	-fx-padding:0 10;
+}
+
+#detail_jobStatus_QUEUED {
+	-fx-min-height: 20;
+	-fx-min-width: 80;
+    -fx-alignment:center;
+	-fx-background-image: url('../images/job_status_queued_animation.gif');
+	-fx-background-repeat: no-repeat;
+	-fx-background-position:6px 3px;
+	-fx-background-color:#f4c73c;
+	-fx-background-radius:0 10 10 0;
+	-fx-border-color:#f4c73c;
+	-fx-border-radius:0 10 10 0;
+	-fx-text-fill:#fff;
+	-fx-font-size:9;
+	-fx-font-weight:bold;
+	-fx-padding:0 10 0 21;
+}
+
+#detail_jobStatus_RUNNING {
+	-fx-min-height: 20;
+	-fx-min-width: 80;
+    -fx-alignment:center;
+	-fx-background-image: url('../images/job_status_running_animation.gif');
+	-fx-background-repeat: no-repeat;
+	-fx-background-position:6px 3px;
+	-fx-background-color:#68BC4B;
+	-fx-background-radius:0 10 10 0;
+	-fx-border-color:#68BC4B;
+	-fx-border-radius:0 10 10 0;
+	-fx-text-fill:#fff;
+	-fx-font-size:9;
+	-fx-font-weight:bold;
+	-fx-padding:0 10 0 21;
+}
+
+#detail_jobStatus_COMPLETE {
+	-fx-min-height: 20;
+	-fx-min-width: 80;
+    -fx-alignment:center;
+	-fx-background-color:#4b8dca;
+	-fx-background-radius:0 10 10 0;
+	-fx-border-color:#4b8dca;
+	-fx-border-radius:0 10 10 0;
+	-fx-text-fill:#fff;
+	-fx-font-size:9;
+	-fx-font-weight:bold;
+	-fx-padding:0 10;
+}
+
+#detail_jobStatus_FAIL {
+	-fx-min-height: 20;
+	-fx-min-width: 80;
+    -fx-alignment:center;
+	-fx-background-color:#ff7e79;
+	-fx-background-radius:0 10 10 0;
+	-fx-border-color:#ff7e79;
+	-fx-border-radius:0 10 10 0;
+	-fx-text-fill:#fff;
+	-fx-font-size:9;
+	-fx-font-weight:bold;
+	-fx-padding:0 10;
+}
+
+#detail_complete_jobStatus_COMPLETE {
+	-fx-min-height: 20;
+	-fx-min-width: 80;
+    -fx-alignment:center;
+	-fx-background-color:#4b8dca;
+	-fx-background-radius: 0;
+	-fx-border-color:#4b8dca;
+	-fx-border-radius: 0;
+	-fx-text-fill:#fff;
+	-fx-font-size:9;
+	-fx-font-weight:bold;
+	-fx-padding:0 10;
+}
+
+#detail_complete_jobStatus_NONE {
+	-fx-min-height: 20;
+	-fx-min-width: 80;
+    -fx-alignment:center;
+	-fx-background-color:transparent;
+	-fx-background-radius:0;
+	-fx-border-color:#4b8dca;
+	-fx-border-radius:0;
+	-fx-text-fill:#4b8dca;
+	-fx-font-size:9;
+	-fx-font-weight:bold;
+	-fx-padding:0 10;
+}
+
+#detail_complete_jobStatus_FAIL {
+	-fx-min-height: 20;
+	-fx-min-width: 80;
+    -fx-alignment:center;
+	-fx-background-color:#ff7e79;
+	-fx-background-radius:0;
+	-fx-border-color:#ff7e79;
+	-fx-border-radius:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:9;
+	-fx-font-weight:bold;
+	-fx-padding:0 10;
+}
+
+/* ------------------------------------------------------ */
 
 #jobStatus_sm_NONE {
 	-fx-pref-height: 14;
@@ -568,7 +698,7 @@ Button {
 	-fx-background-color:#fff;
 	-fx-background-radius:2;
 	-fx-background-insets:0;
-	-fx-border-color:#c1c1c1;
+	-fx-border-color:#ff7e79;
 	-fx-border-radius:2;
 	-fx-text-fill:#656565;
 	-fx-font-size:10;
@@ -706,6 +836,19 @@ Button {
 	-fx-text-alignment:center ;
 	-fx-alignment:center;
 }
+
+
+.reported {
+	-fx-background-color:#c30d23;
+	-fx-background-radius:2;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-pref-width:20;
+	-fx-text-alignment:center ;
+	-fx-alignment:center;
+}
+
 
 .bullet_black {
 	-fx-background-color:#000;
@@ -867,6 +1010,83 @@ Button {
 	-fx-max-height:20;
 }
 
+
+.tier_4 {
+	-fx-background-color:#1F2D87;
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-background-insets:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-padding:0;
+	-fx-min-width:20;
+	-fx-pref-width:20;
+	-fx-max-width:20;
+	-fx-min-height:20;
+	-fx-pref-height:20;
+	-fx-max-height:20;
+	-fx-alignment : center;
+}
+
+.tier_3 {
+	-fx-background-color:#70ACF5;
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-background-insets:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-padding:0;
+	-fx-min-width:20;
+	-fx-pref-width:20;
+	-fx-max-width:20;
+	-fx-min-height:20;
+	-fx-pref-height:20;
+	-fx-max-height:20;
+	-fx-alignment : center;
+}
+
+.tier_2 {
+	-fx-background-color:#FF9482;
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-background-insets:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-padding:0;
+	-fx-min-width:20;
+	-fx-pref-width:20;
+	-fx-max-width:20;
+	-fx-min-height:20;
+	-fx-pref-height:20;
+	-fx-max-height:20;
+	-fx-alignment : center;
+}
+
+.tier_1 {
+	-fx-background-color:#F6545C;
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-background-insets:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-padding:0;
+	-fx-min-width:20;
+	-fx-pref-width:20;
+	-fx-max-width:20;
+	-fx-min-height:20;
+	-fx-pref-height:20;
+	-fx-max-height:20;
+	-fx-alignment : center;
+}
+
 .h1 {
 	-fx-font-size:24;
 	-fx-pref-height:30;
@@ -877,29 +1097,29 @@ Button {
 	-fx-pref-height:24;
 }
 .btn_cancel {
-	-fx-font-size:16;
+	-fx-font-size:14;
 	-fx-background-color:#AAAAAA;
 	-fx-text-fill:#ffffff;
 	-fx-font-weight:bold;
 	-fx-min-width:85;
 	-fx-pref-width:85;
 	-fx-max-width:85;
-	-fx-min-height:35;
-	-fx-pref-height:35;
-	-fx-max-height:35;
+	-fx-min-height:30;
+	-fx-pref-height:30;
+	-fx-max-height:30;
 }
 
 .btn_next {
-	-fx-font-size:16;
+	-fx-font-size:14;
 	-fx-background-color:#FB4952;
 	-fx-text-fill:#ffffff;
 	-fx-font-weight:bold;
 	-fx-min-width:85;
 	-fx-pref-width:85;
 	-fx-max-width:85;
-	-fx-min-height:35;
-	-fx-pref-height:35;
-	-fx-max-height:35;
+	-fx-min-height:30;
+	-fx-pref-height:30;
+	-fx-max-height:30;
 }
 .btn_next:hover {
 	-fx-background-color:#CF2730;
@@ -920,8 +1140,8 @@ Button {
 	-fx-background-color:#CF2730;
 }
 .btn_detail {
-	-fx-font-size:13px;
-	-fx-pref-height:26px;
+	-fx-font-size:11px;
+	-fx-pref-height:25px;
 	-fx-background-insets:0;
 	-fx-background-color: #5DA4FB;
 	-fx-background-radius :3;
@@ -984,16 +1204,17 @@ Button {
 	-fx-background-color:#6C9DBB;
 }
 .btn_setting_save {
-	-fx-background-color:#FB4952;
-	-fx-font-size:11;
+	-fx-background-color: #0D5E97;
+	-fx-background-radius: 0;
 	-fx-pref-height:35;
 	-fx-text-fill:#ffffff;
 }
 .btn_setting_save:hover {
-	-fx-background-color:#FB3741;
+	//-fx-background-color:#0D5E97;
 }
 .btn_setting_close {
 	-fx-background-color:#959595;
+	-fx-background-radius : 0;
 	-fx-pref-height:35;
 	-fx-text-fill:#ffffff;
 	-fx-font-size:11;
@@ -1003,7 +1224,7 @@ Button {
 }
 .txt_support_label {
 	-fx-font-size:13;
-	-fx-text-fill:#FB4C55;
+	-fx-text-fill:#263d5f;
 }
 .btn_choose {
 	-fx-font-size:9;
@@ -1011,13 +1232,31 @@ Button {
 	-fx-text-fill:#ffffff;
 }
 .btn_choose:hover {
-	-fx-background-color:#CFACA5;	
+	-fx-background-color:#CFACA5;
 }
-.progress-bar { 
+.progress-bar {
 	-fx-accent: #73739B;
 	-fx-background-insets:0;
 	-fx-padding:0;
 }
+
+.progress-bar {
+	-fx-background-radius: 0;
+    -fx-background-color: #FFFFFF;
+    -fx-opacity: 0.5;
+}
+
+.progress-bar > .bar {
+	-fx-background-radius: 0;
+	-fx-background-color: linear-gradient(to right, #273d5f, #42c0cb, #273d5f);
+}
+
+.progress-bar > .track {
+	-fx-background-insets: 0;
+	-fx-background-color : white;
+    -fx-background-radius: 0;
+}
+
 .btn_workProgressCancel {
 	-fx-font-size:12;
 	-fx-background-color:#AAAAAA;
@@ -1043,4 +1282,412 @@ Button {
 }
 .btn_refresh:hover {
 	-fx-background-color:#7C878B;
+}
+
+.red_line {
+    -fx-border-color:#C20D22;
+    -fx-border-width: 0 0 7 0;
+}
+
+.red_line_both {
+    -fx-border-color:#C20D22;
+    -fx-border-width: 7 0 7 0;
+}
+
+.font_color_white_bg_color_red {
+    -fx-alignment : center;
+    -fx-text-fill : white;
+    -fx-background-color : #C20D22;
+}
+
+.right_white_border {
+    -fx-border-width : 0 1 0 0;
+    -fx-border-color : #FFFFFF;
+}
+
+.file_add_btn {
+    -fx-background-color : white;
+    -fx-background-radius : 5;
+    -fx-border-color:#9e9e9e;
+    -fx-border-radius: 5;
+    -fx-border-width: 1 1 1 1;
+    -fx-text-fill : black;
+    -fx-min-height:25;
+    -fx-pref-height:25;
+    -fx-max-height:25;
+}
+
+
+.tier_four {
+	-fx-background-color:#1F2D87;
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-background-insets:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-padding:0;
+	-fx-min-width:20;
+	-fx-pref-width:20;
+	-fx-max-width:20;
+	-fx-min-height:20;
+	-fx-pref-height:20;
+	-fx-max-height:20;
+}
+
+.tier_three {
+	-fx-background-color:#70ACF5;
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-background-insets:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-padding:0;
+	-fx-min-width:20;
+	-fx-pref-width:20;
+	-fx-max-width:20;
+	-fx-min-height:20;
+	-fx-pref-height:20;
+	-fx-max-height:20;
+}
+
+.tier_two {
+	-fx-background-color:#FF9482;
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-background-insets:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-padding:0;
+	-fx-min-width:20;
+	-fx-pref-width:20;
+	-fx-max-width:20;
+	-fx-min-height:20;
+	-fx-pref-height:20;
+	-fx-max-height:20;
+}
+
+.tier_one {
+	-fx-background-color:#F6545C;
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-background-insets:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-padding:0;
+	-fx-min-width:20;
+	-fx-pref-width:20;
+	-fx-max-width:20;
+	-fx-min-height:20;
+	-fx-pref-height:20;
+	-fx-max-height:20;
+}
+
+.tier_full{
+	-fx-text-fill:#223654;
+	-fx-font-size:18; 
+	-fx-font-weight:bold;
+	-fx-font-family: Noto Sans KR Bold;
+}
+
+.no_selected_sw_tier {
+	-fx-border-color:#a6a6a6;
+	-fx-background-color:#fff;
+	-fx-border-width:1;
+	-fx-border-radius:2;
+	-fx-background-radius:2;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#656565;
+	-fx-pref-width:20;
+	-fx-text-alignment:center ;
+	-fx-alignment:center;
+}
+
+.no_selected_user_tier {
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-background-color:#a6a6a6;
+	-fx-background-insets:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-padding:0;
+	-fx-min-width:20;
+	-fx-pref-width:20;
+	-fx-max-width:20;
+	-fx-min-height:20;
+	-fx-pref-height:20;
+	-fx-max-height:20;
+}
+
+.prediction_E_Selected {
+	-fx-background-color:#5a64a5;
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-background-insets:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-padding:0;
+	-fx-min-width:20;
+	-fx-pref-width:20;
+	-fx-max-width:20;
+	-fx-min-height:20;
+	-fx-pref-height:20;
+	-fx-max-height:20;
+}
+
+.prediction_D_Selected {
+	-fx-background-color:#1F2D87;
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-background-insets:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-padding:0;
+	-fx-min-width:20;
+	-fx-pref-width:20;
+	-fx-max-width:20;
+	-fx-min-height:20;
+	-fx-pref-height:20;
+	-fx-max-height:20;
+}
+
+.prediction_C_Selected {
+	-fx-background-color:#70ACF5;
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-background-insets:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-padding:0;
+	-fx-min-width:20;
+	-fx-pref-width:20;
+	-fx-max-width:20;
+	-fx-min-height:20;
+	-fx-pref-height:20;
+	-fx-max-height:20;
+}
+
+.prediction_B_Selected {
+	-fx-background-color:#FF9482;
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-background-insets:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-padding:0;
+	-fx-min-width:20;
+	-fx-pref-width:20;
+	-fx-max-width:20;
+	-fx-min-height:20;
+	-fx-pref-height:20;
+	-fx-max-height:20;
+}
+
+.prediction_A_Selected {
+	-fx-background-color:#F6545C;
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-background-insets:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-padding:0;
+	-fx-min-width:20;
+	-fx-pref-width:20;
+	-fx-max-width:20;
+	-fx-min-height:20;
+	-fx-pref-height:20;
+	-fx-max-height:20;
+}
+
+.font_Sans_Regular {
+    -fx-font-family : "Noto Sans CJK KR Regular";
+}
+
+.submitBtn {
+    -fx-background-color : #263d5f;
+    -fx-text-fill : #fff;
+    -fx-background-radius : 0;
+    -fx-alignment : center;
+}
+
+.cancelBtn {
+    -fx-background-color : #999999;
+    -fx-text-fill : #fff;
+    -fx-background-radius : 0;
+    -fx-alignment : center;
+}
+
+
+.queued_icon {
+    -fx-background-color : #d8a60d;
+    -fx-background-radius : 30;
+    -fx-padding : -2 0 0 0;
+    -fx-alignment : center;
+    -fx-text-fill : white;
+    -fx-pref-width : 17;
+    -fx-pref-height : 17;
+    -fx-min-width : 17;
+    -fx-min-height : 17;
+    -fx-font-size : 11;
+}
+
+.complete_icon {
+    -fx-background-color : #229db8;
+    -fx-background-radius : 30;
+    -fx-padding : -1 0 0 -1;
+    -fx-alignment : center;
+    -fx-text-fill : white;
+    -fx-pref-width : 17;
+    -fx-pref-height : 17;
+    -fx-min-width : 17;
+    -fx-min-height : 17;
+    -fx-text-size : 10;
+}
+.run_icon {
+    -fx-background-color : #69b415;
+    -fx-background-radius : 30;
+    -fx-padding : -1 0 0 0;
+    -fx-alignment : center;
+    -fx-text-fill : white;
+    -fx-pref-width : 17;
+    -fx-pref-height : 17;
+    -fx-min-width : 17;
+    -fx-min-height : 17;
+    -fx-text-size : 10;
+}
+.failed_icon {
+    -fx-background-color : #FF0000;
+    -fx-background-radius : 30;
+    -fx-alignment : center;
+    -fx-text-fill : white;
+    -fx-pref-width : 17;
+    -fx-pref-height : 17;
+    -fx-min-width : 17;
+    -fx-min-height : 17;
+    -fx-text-size : 10;
+}
+
+.tools_icon {
+    -fx-cursor:hand;
+    -fx-graphic: url("../images/renewal/check_icon.png");
+    -fx-pref-width : 16;
+    -fx-pref-height : 16;
+    -fx-min-width : 16;
+    -fx-min-height : 16;
+    /*-fx-background-color : #999999;
+    -fx-background-radius : 30;
+    -fx-padding : -1 -6 0 0;
+    -fx-alignment : center;
+    -fx-text-fill : white;
+    -fx-pref-width : 17;
+    -fx-pref-height : 17;
+    -fx-min-width : 17;
+    -fx-min-height : 17;
+    -fx-text-size : 8;
+    -fx-cursor:hand;*/
+}
+
+.total_icon {
+    -fx-background-color : #adadad;
+    -fx-background-radius : 30;
+    -fx-alignment : center;
+    -fx-text-fill : white;
+    -fx-pref-width : 17;
+    -fx-pref-height : 17;
+    -fx-min-width : 17;
+    -fx-min-height : 17;
+    -fx-text-size : 10;
+}
+.scroll-bar:horizontal .track,
+.scroll-bar:vertical .track{
+	-fx-background-color:white;
+	-fx-border-color: derive(black,90%);
+	-fx-background-radius: 5em;
+	-fx-border-radius:5em;
+}
+
+/* The increment and decrement button CSS class of scrollbar */
+.scroll-bar:horizontal .increment-button ,
+.scroll-bar:horizontal .decrement-button {
+    -fx-background-color: white;
+	-fx-background-radius: 0em;
+	-fx-padding:0 0 10 0;
+
+}
+
+/* The increment and decrement button CSS class of scrollbar */
+.scroll-bar:vertical .increment-button ,
+.scroll-bar:vertical .decrement-button {
+
+    -fx-background-color: white;
+	-fx-background-radius: 0em;
+	-fx-padding:0 10 0 0;
+
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+	-fx-shape: " ";
+	-fx-padding:0;
+}
+
+/* The main scrollbar **thumb** CSS class which we drag every time (movable) */
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-color:derive(black,90%);
+	-fx-background-insets: 2, 0, 0;
+	-fx-background-radius: 5em;
+
+}
+
+.font_gray {
+    -fx-text-fill : #595959;
+}
+
+.radio-button .radio {
+    -fx-border-width: 1px;
+    -fx-border-color: #000;
+    -fx-background-color: white;
+    -fx-background-image: null;
+    -fx-border-radius: 15px;
+    -fx-padding: 2px;
+}
+.radio-button .radio:selected {
+    -fx-background-color: white;
+    -fx-background-image: null;
+}
+.radio-button -radio:armed {
+    -fx-background-color: white;
+    -fx-background-image: null;
+}
+.radio-button -radio:determinate {
+    -fx-background-color: white;
+    -fx-background-image: null;
+}
+.radio-button -radio:indeterminate {
+    -fx-background-color: white;
+    -fx-background-image: null;
+}
+
+.general_progress > .label {
+    -fx-text-fill : #FFFFFF;
 }

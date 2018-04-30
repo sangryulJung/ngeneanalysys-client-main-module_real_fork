@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -44,9 +45,6 @@ import java.util.Optional;
  */
 public class SystemManagerUserAccountController extends SubPaneController{
     private static Logger logger = LoggerUtil.getLogger();
-
-    /** Resource Util */
-    //protected ResourceUtil resourceUtil = new ResourceUtil();
 
     @FXML
     private TableView<User> userListTable;
@@ -151,7 +149,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
         name.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
         role.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRole()));
         groupId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getMemberGroupId()).asObject());
-        //groupName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUserGroupName()));
+        groupName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getMemberGroupName()));
         createdAt.setCellValueFactory(cellData -> new SimpleStringProperty(timeConvertString(cellData.getValue().getCreatedAt())));
         updatedAt.setCellValueFactory(cellData -> new SimpleStringProperty(timeConvertString(cellData.getValue().getUpdatedAt())));
         deletedAt.setCellValueFactory(cellData -> new SimpleStringProperty(timeConvertString(cellData.getValue().getDeletedAt())));
@@ -159,7 +157,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
                 deletedShowString(cellData.getValue().getDeleted())));
         userModify.setSortable(false);
         userModify.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
-        userModify.setCellFactory(param -> new UserButton());
+        userModify.setCellFactory(param -> new UserEditAndDeleteButton());
 
         /**
          * UserGroup TableView
@@ -185,7 +183,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
 
     }
 
-    public String timeConvertString(DateTime date) {
+    private String timeConvertString(DateTime date) {
         if(date == null)
             return "-";
 
@@ -193,7 +191,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
         return fmt.print(date);
     }
 
-    public String deletedShowString(int deleted) {
+    private String deletedShowString(int deleted) {
         return (deleted == 0) ? "N" : "Y";
     }
 
@@ -225,10 +223,9 @@ public class SystemManagerUserAccountController extends SubPaneController{
         userControllerInit("add", null);
     }
 
-    public void userControllerInit(String type, User user) {
+    private void userControllerInit(String type, User user) {
         try {
-            FXMLLoader loader = null;
-            loader = mainApp.load(FXMLConstants.USER_ACCOUNT);
+            FXMLLoader loader = mainApp.load(FXMLConstants.USER_ACCOUNT);
             Node root = loader.load();
             UserAccountController userAccountController = loader.getController();
             userAccountController.setMainController(this.getMainController());
@@ -254,7 +251,6 @@ public class SystemManagerUserAccountController extends SubPaneController{
             param.put("offset", offset);
 
             response = apiService.get("/admin/members", param, null, false);
-            logger.info(response.getContentString());
 
             if(response != null) {
                 SystemManagerUserInfoPaging systemManagerUserInfoPaging =
@@ -276,9 +272,9 @@ public class SystemManagerUserAccountController extends SubPaneController{
                     }
                 }
 
-                userListTable.setItems((FXCollections.observableList(list)));
+                userListTable.setItems(FXCollections.observableList(list));
 
-                logger.info(String.format("total count : %s, page count : %s", totalCount, pageCount));
+                logger.debug(String.format("total count : %s, page count : %s", totalCount, pageCount));
 
                 if (pageCount > 0) {
                     paginationList.setVisible(true);
@@ -292,6 +288,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
+            logger.error("Unknown Error", e);
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
@@ -309,8 +306,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
             param.put("limit", limit);
             param.put("offset", offset);
 
-            response = apiService.get("/admin/member_groups", param, null, false);
-            logger.info(response.getContentString());
+            response = apiService.get("/admin/memberGroups", param, null, false);
 
             if(response != null) {
                 SystemManagerUserGroupPaging systemManagerUserGroupPaging =
@@ -326,7 +322,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
 
                 if(totalCount > 0) {
                     pageCount = totalCount / limit;
-                    paginationList.setCurrentPageIndex(page - 1);
+                    groupPaginationList.setCurrentPageIndex(page - 1);
                     if(totalCount % limit > 0) {
                         pageCount++;
                     }
@@ -334,7 +330,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
 
                 groupListTable.setItems((FXCollections.observableList(list)));
 
-                logger.info(String.format("total count : %s, page count : %s", totalCount, pageCount));
+                logger.debug(String.format("total count : %s, page count : %s", totalCount, pageCount));
 
                 if (pageCount > 0) {
                     groupPaginationList.setVisible(true);
@@ -348,12 +344,13 @@ public class SystemManagerUserAccountController extends SubPaneController{
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
+            logger.error("Unknown Error", e);
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
 
     }
 
-    public Map<String, Object> getUserSearchParam() {
+    private Map<String, Object> getUserSearchParam() {
         Map<String, Object> param = new HashMap<>();
         param.put("format", "json");
         param.put("ordering", "-id");
@@ -375,7 +372,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
         return param;
     }
 
-    public Map<String, Object> getGroupSearchParam() {
+    private Map<String, Object> getGroupSearchParam() {
         Map<String, Object> param = new HashMap<>();
         param.put("format", "json");
         param.put("ordering", "-id");
@@ -390,13 +387,14 @@ public class SystemManagerUserAccountController extends SubPaneController{
     /** 그룹 삭제 */
     public void deleteGroup(Integer id) {
         try {
-            apiService.delete("/users/group/"+id);
+            apiService.delete("/admin/memberGroups/"+id);
             groupListTable.getItems().clear();
             groupSearch();
         } catch (WebAPIException wae) {
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
+            logger.error("Unknown Error", e);
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
@@ -424,15 +422,13 @@ public class SystemManagerUserAccountController extends SubPaneController{
         HttpClientResponse response = null;
 
         try {
-            Map<String, Object> param = new HashMap<>();
-            param.put("format", "json");
-
-            response = apiService.get("/users/name", param, null, false);
-            logger.info(response.getContentString());
+            response = apiService.get("/admin/memberGroups", null, null, false);
+            logger.debug(response.getContentString());
             if(response != null) {
-                List<UserGroup> list = (List<UserGroup>) response.getMultiObjectBeforeConvertResponseToJSON(UserGroup.class, false);
+                SystemManagerUserGroupPaging systemManagerUserGroupPaging =
+                        response.getObjectBeforeConvertResponseToJSON(SystemManagerUserGroupPaging.class);
 
-                for(UserGroup group : list) {
+                for(UserGroup group : systemManagerUserGroupPaging.getList()) {
                     searchGroupName.getItems().add(new ComboBoxItem(
                             group.getName(), group.getName()));
                 }
@@ -444,6 +440,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
+            logger.error("Unknown Error", e);
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
@@ -451,8 +448,8 @@ public class SystemManagerUserAccountController extends SubPaneController{
 
     private class UserGroupButton extends TableCell<UserGroup, Boolean> {
         HBox box = null;
-        final ImageView img1 = new ImageView(resourceUtil.getImage("/layout/images/icon_pathogenicity_1.png"));
-        final ImageView img2 = new ImageView(resourceUtil.getImage("/layout/images/icon_pathogenicity_2.png"));
+        final ImageView img1 = new ImageView(resourceUtil.getImage("/layout/images/modify.png", 18, 18));
+        final ImageView img2 = new ImageView(resourceUtil.getImage("/layout/images/delete.png", 18, 18));
 
         public UserGroupButton() {
 
@@ -472,20 +469,20 @@ public class SystemManagerUserAccountController extends SubPaneController{
             img2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 
-                String alertHeaderText = null;
+                String alertHeaderText = "Confirmation Dialog";
                 String alertContentText = "Are you sure to delete this group?";
 
-                alert.setTitle("Confirmation Dialog");
+                alert.setTitle(alertHeaderText);
                 UserGroup group = UserGroupButton.this.getTableView().getItems().get(
                         UserGroupButton.this.getIndex());
                 alert.setHeaderText(group.getName());
                 alert.setContentText(alertContentText);
-                logger.info(group.getId() + " : present id");
+                logger.debug(group.getId() + " : present id");
                 Optional<ButtonType> result = alert.showAndWait();
                 if(result.get() == ButtonType.OK) {
                     deleteGroup(group.getId());
                 } else {
-                    logger.info(result.get() + " : button select");
+                    logger.debug(result.get() + " : button select");
                     alert.close();
                 }
             });
@@ -501,8 +498,10 @@ public class SystemManagerUserAccountController extends SubPaneController{
 
             box = new HBox();
 
+            box.setAlignment(Pos.CENTER);
             box.setSpacing(10);
-
+            img1.setStyle("-fx-cursor:hand;");
+            img2.setStyle("-fx-cursor:hand;");
             box.getChildren().add(img1);
             box.getChildren().add(img2);
 
@@ -511,16 +510,16 @@ public class SystemManagerUserAccountController extends SubPaneController{
         }
     }
 
-    private class UserButton extends TableCell<User, Boolean> {
+    private class UserEditAndDeleteButton extends TableCell<User, Boolean> {
         HBox box = null;
-        final ImageView img1 = new ImageView(resourceUtil.getImage("/layout/images/icon_pathogenicity_1.png"));
-        final ImageView img2 = new ImageView(resourceUtil.getImage("/layout/images/icon_pathogenicity_2.png"));
+        final ImageView img1 = new ImageView(resourceUtil.getImage("/layout/images/modify.png", 18, 18));
+        final ImageView img2 = new ImageView(resourceUtil.getImage("/layout/images/delete.png", 18, 18));
 
-        public UserButton() {
+        public UserEditAndDeleteButton() {
 
             img1.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                User user = UserButton.this.getTableView().getItems().get(
-                        UserButton.this.getIndex());
+                User user = UserEditAndDeleteButton.this.getTableView().getItems().get(
+                        UserEditAndDeleteButton.this.getIndex());
 
                 userControllerInit("modify", user);
 
@@ -538,21 +537,34 @@ public class SystemManagerUserAccountController extends SubPaneController{
                 String alertContentText = "Are you sure to delete this user?";
 
                 alert.setTitle("Confirmation Dialog");
-                User user = UserButton.this.getTableView().getItems().get(
-                        UserButton.this.getIndex());
+                User user = UserEditAndDeleteButton.this.getTableView().getItems().get(
+                        UserEditAndDeleteButton.this.getIndex());
                 alert.setHeaderText(user.getName());
                 alert.setContentText(alertContentText);
-                logger.info(user.getId() + " : present id");
+                logger.debug(user.getId() + " : present id");
                 Optional<ButtonType> result = alert.showAndWait();
                 if(result.get() == ButtonType.OK) {
-                    //deleteUser(user.getId());
+                    deleteUser(user.getId());
                 } else {
-                    logger.info(result.get() + " : button select");
+                    logger.debug(result.get() + " : button select");
                     alert.close();
                 }
             });
         }
-
+        /** 사용자 삭제 */
+        private void deleteUser(Integer userId) {
+            try {
+                apiService.delete("/admin/members/" + userId);
+                userListTable.getItems().clear();
+                userSearch();
+            } catch (WebAPIException wae) {
+                DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+                        getMainApp().getPrimaryStage(), true);
+            } catch (Exception e) {
+                logger.error("Unknown Error", e);
+                DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+            }
+        }
         @Override
         protected void updateItem(Boolean item, boolean empty) {
             super.updateItem(item, empty);
@@ -563,8 +575,10 @@ public class SystemManagerUserAccountController extends SubPaneController{
 
             box = new HBox();
 
+            box.setAlignment(Pos.CENTER);
             box.setSpacing(10);
-
+            img1.setStyle("-fx-cursor:hand;");
+            img2.setStyle("-fx-cursor:hand;");
             box.getChildren().add(img1);
             box.getChildren().add(img2);
 

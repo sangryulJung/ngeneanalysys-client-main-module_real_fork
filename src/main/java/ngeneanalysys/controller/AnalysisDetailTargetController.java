@@ -10,25 +10,23 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import ngeneanalysys.code.AnalysisJobStatusCode;
+import javafx.scene.layout.GridPane;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
-import ngeneanalysys.model.RunGroupForPaging;
+import ngeneanalysys.model.Panel;
 import ngeneanalysys.model.Sample;
 import ngeneanalysys.model.VariantCountByGene;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -90,11 +88,22 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
     @FXML
     private Button fusionButton;
 
+    @FXML
+    private Button popUpBtn;
+
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("show..");
+        logger.debug("show..");
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
+
+        Panel panel = (Panel)getParamMap().get("panel");
+
+        if(panel.getTarget() != null && "DNA".equals(panel.getTarget())) {
+            popUpBtn.setText("SNP/INDELs");
+        } else {
+            popUpBtn.setText("Fusion");
+        }
 
         fusionButton.setDisable(true);
         fusionButton.setVisible(false);
@@ -120,17 +129,31 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
      */
     @FXML
     public void showSnpIndels() {
-        try {
-            // Load the fxml file and create a new stage for the popup dialog
-            FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_SNPS_INDELS_LAYOUT);
-            BorderPane page = loader.load();
-            AnalysisDetailSNPsINDELsController controller = loader.getController();
-            controller.setParamMap(getParamMap());
-            controller.setMainController(this.mainController);
+        Panel panel = (Panel)getParamMap().get("panel");
+        if(panel.getTarget() != null && "DNA".equals(panel.getTarget())) {
+            try {
+                // Load the fxml file and create a new stage for the popup dialog
+                FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_SNPS_INDELS_LAYOUT);
+                BorderPane page = loader.load();
+                AnalysisDetailSNPsINDELsController controller = loader.getController();
+                controller.setParamMap(getParamMap());
+                controller.setMainController(this.mainController);
+                controller.show(page);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_FUSION_MAIN);
+                GridPane page = loader.load();
+                AnalysisDetailFusionMainController controller = loader.getController();
+                controller.setParamMap(getParamMap());
+                controller.setMainController(this.mainController);
 
-            controller.show(page);
-        } catch (IOException e) {
-            e.printStackTrace();
+                controller.show(page);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -141,9 +164,15 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
     public void showFusion() {
         try {
             // Load the fxml file and create a new stage for the popup dialog
-            FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_FUSION);
+            /*FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_FUSION);
             BorderPane page = loader.load();
             AnalysisDetailFusionController controller = loader.getController();
+            controller.setParamMap(getParamMap());
+            controller.setMainController(this.mainController);*/
+
+            FXMLLoader loader = this.mainController.getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_FUSION_MAIN);
+            GridPane page = loader.load();
+            AnalysisDetailFusionMainController controller = loader.getController();
             controller.setParamMap(getParamMap());
             controller.setMainController(this.mainController);
 
@@ -184,7 +213,7 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
         if(event.getClickCount() == 2) {
             String obj = geneTable.getSelectionModel().getSelectedCells().get(0).getTableColumn().getText();
             VariantCountByGene gene = geneTable.getSelectionModel().getSelectedItem();
-            logger.info(obj.toString() + " gene : " + gene.getGeneSymbol());
+            logger.debug(obj + " gene : " + gene.getGeneSymbol());
         }
     }
 
@@ -202,18 +231,22 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
             param.put("geneSymbols", geneList);
         }
         try {
-            HttpClientResponse response = apiService.get("/analysisResults/variantCountByGene/" + sampleId,
+            HttpClientResponse response = null;
+
+            response = apiService.get("/analysisResults/variantCountByGeneForSomaticDNA/" + sampleId,
                     param, null, false);
-            logger.info(response.toString());
+
             if (response != null) {
                 variantCountByGenes = (ObservableList<VariantCountByGene>) response
                         .getMultiObjectBeforeConvertResponseToJSON(VariantCountByGene.class,
                                 true);
             }
+            if(variantCountByGenes == null) return null;
         } catch (WebAPIException wae) {
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
+            logger.error("Unknown Error", e);
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(),
                     true);
         }

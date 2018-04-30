@@ -3,11 +3,7 @@ package ngeneanalysys;
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Properties;
-
-import javafx.scene.Parent;
+import java.util.*;
 import javafx.scene.control.*;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.MainController;
@@ -26,7 +22,6 @@ import javafx.stage.StageStyle;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.LoginController;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
@@ -53,7 +48,7 @@ public class MainApp extends Application {
 
 	/**
 	 *
-	 * @return
+	 * @return SparkHttpProxyServer
 	 */
 	public SparkHttpProxyServer getProxyServer() {
 		return proxyServer;
@@ -61,7 +56,7 @@ public class MainApp extends Application {
 
 	/**
 	 *
-	 * @param proxyServer
+	 * @param proxyServer SparkHttpProxyServer
 	 */
 	public void setProxyServer(SparkHttpProxyServer proxyServer) {
 		this.proxyServer = proxyServer;
@@ -92,15 +87,17 @@ public class MainApp extends Application {
 	
 	public void showLogin() throws Exception {
 		if(primaryStage.getScene() != null) {
-			logger.info("Pre Scene Close");
+			logger.debug("Pre Scene Close");
 			primaryStage.close();
 		}
 
 		FXMLLoader loader = load(FXMLConstants.LOGIN);
-		AnchorPane pane = loader.load();
+		GridPane pane = loader.load();
 		LoginController controller = loader.getController();
 		controller.setMainApp(this);
-		controller.show((Parent) pane);
+		PropertiesService propertiesService = PropertiesService.getInstance();		
+		controller.applyLoginTheme(propertiesService.getConfig().getProperty("window.theme"));
+		controller.show(pane);
 		
 	}
 
@@ -109,24 +106,24 @@ public class MainApp extends Application {
 		GridPane pane = loader.load();
 		ServerURLSettingController controller = loader.getController();
 		controller.setMainApp(this);
-		controller.show((Parent) pane);
+		controller.show(pane);
 	}
 	
 	/**
 	 * 
-	 * @param fxmlPath
-	 * @return
+	 * @param fxmlPath String
+	 * @return FXMLLoader
 	 */
 	public FXMLLoader load(String fxmlPath) {
 		return FXMLLoadUtil.load(fxmlPath);
 	}
 
 	
-	public boolean checkExistsDatabasePathAndCreate() {
+	private boolean checkExistsDatabasePathAndCreate() {
 		return false;
 	}
 	
-	public boolean isProxyServerRunning() {
+	private boolean isProxyServerRunning() {
 		try (Socket socket = new Socket()){
 			socket.connect(new InetSocketAddress("localhost", CommonConstants.HTTP_PROXY_SERVER_PORT), 500);
 		} catch (Exception e) {
@@ -137,8 +134,8 @@ public class MainApp extends Application {
 	
 	/**
 	 * 예외상황 메시지 출력
-	 * @param t
-	 * @param e
+	 * @param t Thread
+	 * @param e Throwable
 	 */
 	@SuppressWarnings("unused")
 	private static void showError(Thread t, Throwable e) {
@@ -152,7 +149,7 @@ public class MainApp extends Application {
 	
 	/**
 	 * 예외상황 메시지 Dialog 출력
-	 * @param e
+	 * @param e Throwable
 	 */
 	private static void showErrorDialog(Throwable e) {
 		StringWriter errorMsg = new StringWriter();
@@ -192,20 +189,19 @@ public class MainApp extends Application {
 	public void init() throws Exception {
 		Locale.setDefault(Locale.ENGLISH);
 		isAlreadyRunning = isProxyServerRunning();
-		logger.info(String.format("# already running application : %s", isAlreadyRunning));
+		logger.debug(String.format("# already running application : %s", isAlreadyRunning));
 		
 		if(!isAlreadyRunning) {
 			boolean checkDB = checkExistsDatabasePathAndCreate();
-			logger.info("check local db : " + checkDB);
+			logger.debug("check local db : " + checkDB);
 
 			config = PropertiesService.getInstance().getConfig();
-			logger.info(String.format("application name : %s", getProperty("application.name")));
+			logger.debug(String.format("application name : %s", getProperty("application.name")));
 		}
 	}
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception{
-
 		if(isAlreadyRunning) {
 			logger.warn("Requested applications are currently running and newly requested one will be shut down.");
 			DialogUtil.warning("Requested application is running already.", "Requested applications are currently running and newly requested one will be shut down.", null, true);
@@ -219,13 +215,13 @@ public class MainApp extends Application {
 		this.primaryStage.initStyle(StageStyle.DECORATED);
 		
 		boolean isContainsServerURL = containsServerURL();
-		logger.info(String.format("server url is contains : %s", isContainsServerURL));
+		logger.debug(String.format("server url is contains : %s", isContainsServerURL));
 		
 		if(!isContainsServerURL) {
 			showServerURLSetting();
 		} else {
 			addProperty();
-			logger.info("show Login");
+			logger.debug("show Login");
 			showLogin();
 		}
 		
@@ -233,7 +229,7 @@ public class MainApp extends Application {
 
 	/**
 	 * 서버 URL 설정 여부
-	 * @return
+	 * @return boolean
 	 */
 	public boolean containsServerURL() {
 		File configFile = new File(CommonConstants.BASE_FULL_PATH, CommonConstants.CONFIG_PROPERTIES);
@@ -272,25 +268,21 @@ public class MainApp extends Application {
 
 				// 설정값이 존재하는 경우 추가
 				if(!StringUtils.isEmpty(value)) {
-					logger.info(String.format("add property [%s : %s]", key, value));
+					logger.debug(String.format("add property [%s : %s]", key, value));
 					config.setProperty(key, value);
 				}
 			}
 
 		} catch(Exception e) {
-			logger.info(e.getMessage());
+			logger.debug(e.getMessage());
 		}
 
 	}
 
-	/**
-	 * 메인 화면 출력
-	 * @throws Exception
-	 */
 	public void showMain() throws Exception {
 		//이전 stage (로그인화면) 종료
 		if(primaryStage.getScene() != null) {
-			logger.info("Login Scene Close..");
+			logger.debug("Login Scene Close..");
 			primaryStage.close();
 		}
 
@@ -299,7 +291,7 @@ public class MainApp extends Application {
 		CacheMemoryService cacheMemoryService = CacheMemoryService.getInstance();
 
 		if(cacheMemoryService.isEmpty(CommonConstants.SESSION_CACHE_SET_NAME, CommonConstants.SESSION_CACHE_KEY_NAME)) {
-			logger.info("empty login session!!!");
+			logger.debug("empty login session!!!");
 			DialogUtil.warning("Empty Login Session", "Please Login", this.primaryStage, true);
 			showLogin();
 		} else {
@@ -307,11 +299,7 @@ public class MainApp extends Application {
 			GridPane mainPane = loader.load();
 			MainController controller = loader.getController();
 			controller.setMainApp(this);
-			controller.show((Parent) mainPane);
+			controller.show(mainPane);
 		}
-	}
-	
-	public static void main(String[] args) {
-		launch(args);
 	}
 }

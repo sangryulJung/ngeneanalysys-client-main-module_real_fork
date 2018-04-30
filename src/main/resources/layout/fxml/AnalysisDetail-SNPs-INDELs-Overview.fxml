@@ -1,28 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.Double?>
-<?import java.lang.String?>
-<?import java.net.URL?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.canvas.Canvas?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Polyline?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 
-<GridPane fx:id="overviewWrapper" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="272.0" prefWidth="1105.0" styleClass="bg_white" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNPsINDELsOverviewController">
+<GridPane fx:id="overviewWrapper" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="272.0" prefWidth="1105.0" styleClass="bg_white" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNPsINDELsOverviewController">
 	<columnConstraints>
 		<ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="271.0" minWidth="-Infinity" prefWidth="171.0" />
 		<ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="388.0" minWidth="-Infinity" prefWidth="288.0" />
@@ -30,10 +16,11 @@
 		<ColumnConstraints halignment="CENTER" maxWidth="365.0" minWidth="-Infinity" prefWidth="265.0" />
 	</columnConstraints>
 	<rowConstraints>
-		<RowConstraints fillHeight="false" minHeight="-Infinity" prefHeight="272.0" vgrow="NEVER" />
+      <RowConstraints fillHeight="false" maxHeight="210.4444580078125" minHeight="10.0" prefHeight="27.333343505859375" vgrow="NEVER" />
+		<RowConstraints fillHeight="false" maxHeight="267.1111145019531" minHeight="-Infinity" prefHeight="254.66665649414062" vgrow="NEVER" />
 	</rowConstraints>
 	<children>
-		<GridPane alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="272.0" prefWidth="171.0" GridPane.vgrow="NEVER">
+		<GridPane alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="272.0" prefWidth="171.0" GridPane.rowIndex="1" GridPane.vgrow="NEVER">
 			<columnConstraints>
 				<ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="86.0" />
 				<ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" minWidth="10.0" prefWidth="84.0" />
@@ -71,14 +58,6 @@
 							<children>
 								<VBox fx:id="depthLegendBox">
 									<children>
-										<ImageView fx:id="depthLegendImageView" fitHeight="21.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-											<image>
-												<Image url="@../images/animation.gif" />
-											</image>
-											<VBox.margin>
-												<Insets />
-											</VBox.margin>
-										</ImageView>
 										<Label fx:id="depthLegendLabel" styleClass="vertical_stick_value_right">
 											<VBox.margin>
 												<Insets bottom="-6.0" />
@@ -184,11 +163,6 @@
 							<children>
 								<VBox fx:id="fractionLegendBox">
 									<children>
-										<ImageView fx:id="fractionLegendImageView" fitHeight="21.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-											<image>
-												<Image url="@../images/animation.gif" />
-											</image>
-										</ImageView>
 										<Label fx:id="fractionLegendLabel" minWidth="23.0" prefWidth="23.0" styleClass="vertical_stick_value_left">
 											<VBox.margin>
 												<Insets bottom="-6.0" />
@@ -224,7 +198,7 @@
 				</HBox>
 			</children>
 		</GridPane>
-		<VBox fx:id="identificationArea" alignment="TOP_CENTER" fillWidth="false" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="272.0" prefWidth="288.0" styleClass="border_left" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" GridPane.vgrow="NEVER">
+		<VBox fx:id="identificationArea" alignment="TOP_CENTER" fillWidth="false" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="272.0" prefWidth="288.0" styleClass="border_left" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" GridPane.vgrow="NEVER">
 			<children>
 				<HBox alignment="TOP_CENTER">
 					<children>
@@ -261,9 +235,9 @@
 						<ComboBox fx:id="transcriptComboBox" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS" />
 					</children>
 				</HBox>
-				<VBox fx:id="positionBox" alignment="TOP_RIGHT" layoutX="15.0" layoutY="12.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="240.0" VBox.vgrow="NEVER">
+				<VBox fx:id="positionBox" alignment="TOP_RIGHT" layoutX="15.0" layoutY="12.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="260.0" VBox.vgrow="NEVER">
 					<children>
-						<ScrollPane fx:id="scrollBox" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="87.0" prefWidth="236.0" vbarPolicy="NEVER" VBox.vgrow="NEVER">
+						<ScrollPane fx:id="scrollBox" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="87.0" prefWidth="260.0" vbarPolicy="NEVER" VBox.vgrow="NEVER">
 							<content>
 								<GridPane fx:id="gridBox" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="88.0">
 									<columnConstraints>
@@ -275,7 +249,7 @@
 									<children>
 										<HBox fx:id="sequenceCharsBox" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="85.0" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="NEVER">
 											<children>
-												<VBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="75.0" prefWidth="100.0">
+												<VBox fx:id="leftVbox" alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="75.0" prefWidth="110.0">
 													<children>
 														<Label fx:id="genePositionStartLabel" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="15.0" text="32,950,937">
 															<styleClass>
@@ -287,11 +261,11 @@
 																<Insets top="5.0" />
 															</VBox.margin>
 														</Label>
-														<Label fx:id="left22BpLabel" text="GTATGCTAA" HBox.hgrow="ALWAYS">
+														<Label fx:id="left22BpLabel" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" minWidth="-Infinity" text="GTATGCTAA" textOverrun="LEADING_WORD_ELLIPSIS" HBox.hgrow="ALWAYS">
 															<styleClass>
 																<String fx:value="txt_gray_b1b1b1" />
 																<String fx:value="font_size_12" />
-																<String fx:value="weight_bold" />
+                                                <String fx:value="weight_bold" />
 															</styleClass>
 															<HBox.margin>
 																<Insets />
@@ -349,7 +323,7 @@
 												</VBox>
 											</children>
 											<padding>
-												<Insets left="15.0" top="5.0" />
+												<Insets top="5.0" />
 											</padding>
 										</HBox>
 									</children>
@@ -361,81 +335,82 @@
 						<Insets top="6.0" />
 					</VBox.margin>
 				</VBox>
-				<GridPane fx:id="transcriptDetailGrid" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="240.0" VBox.vgrow="NEVER">
-					<columnConstraints>
-						<ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="113.0" minWidth="-Infinity" prefWidth="86.4000244140625" />
-						<ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="158.20001220703125" minWidth="-Infinity" prefWidth="154.5999755859375" />
-					</columnConstraints>
-					<rowConstraints>
-						<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" valignment="CENTER" vgrow="SOMETIMES" />
-						<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" valignment="CENTER" vgrow="SOMETIMES" />
-						<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" valignment="CENTER" vgrow="SOMETIMES" />
-						<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" valignment="CENTER" vgrow="SOMETIMES" />
-					</rowConstraints>
-					<VBox.margin>
-						<Insets top="6.0" />
-					</VBox.margin>
-					<children>
-						<Label maxWidth="1.7976931348623157E308" text="Gene Symbol">
-							<styleClass>
-								<String fx:value="txt_gray_656565" />
-								<String fx:value="font_size_10" />
-							</styleClass>
-						</Label>
-						<TextField fx:id="geneSymbolTextField" editable="false" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1">
-							<styleClass>
-								<String fx:value="font_size_10" />
-								<String fx:value="txt_black" />
-							</styleClass>
-						</TextField>
-						<Label maxWidth="1.7976931348623157E308" text="Coding DNA" GridPane.rowIndex="1">
-							<styleClass>
-								<String fx:value="txt_gray_656565" />
-								<String fx:value="font_size_10" />
-                        <String fx:value="bg_efefef" />
-							</styleClass>
-						</Label>
-						<TextField fx:id="hgvscTextField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
-							<styleClass>
-								<String fx:value="bg_efefef" />
-								<String fx:value="font_size_10" />
-                        <String fx:value="txt_black" />
-							</styleClass>
-						</TextField>
-						<Label maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="15.0" text="Protein" GridPane.rowIndex="2">
-							<styleClass>
-								<String fx:value="txt_gray_656565" />
-								<String fx:value="font_size_10" />
-							</styleClass>
-						</Label>
-						<TextField fx:id="hgvspTextField" GridPane.columnIndex="1" GridPane.rowIndex="2">
-							<styleClass>
-								<String fx:value="font_size_10" />
-								<String fx:value="txt_black" />
-							</styleClass>
-						</TextField>
-						<Label maxWidth="1.7976931348623157E308" prefWidth="87.0" text="Genomic DNA" GridPane.rowIndex="3">
-							<styleClass>
-								<String fx:value="txt_gray_656565" />
-								<String fx:value="font_size_10" />
-                        <String fx:value="bg_efefef" />
-							</styleClass>
-						</Label>
-						<TextField fx:id="grch37TextField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
-							<styleClass>
-								<String fx:value="bg_efefef" />
-								<String fx:value="font_size_10" />
-                        <String fx:value="txt_black" />
-							</styleClass>
-						</TextField>
-					</children>
-				</GridPane>
+            <ScrollPane fx:id="transcriptDetailScrollBox" focusTraversable="false" prefHeight="90.0" prefWidth="260.0">
+               <content>
+      				<GridPane fx:id="transcriptDetailGrid" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="260.0">
+      					<columnConstraints>
+      						<ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="113.0" minWidth="-Infinity" prefWidth="86.4000244140625" />
+      						<ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="-Infinity" />
+      					</columnConstraints>
+      					<rowConstraints>
+      						<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" valignment="CENTER" vgrow="SOMETIMES" />
+      						<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" valignment="CENTER" vgrow="SOMETIMES" />
+      						<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" valignment="CENTER" vgrow="SOMETIMES" />
+      						<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" valignment="CENTER" vgrow="SOMETIMES" />
+      					</rowConstraints>
+      					<children>
+      						<Label maxWidth="1.7976931348623157E308" text="Gene Symbol">
+      							<styleClass>
+      								<String fx:value="txt_gray_656565" />
+      								<String fx:value="font_size_10" />
+      							</styleClass>
+      						</Label>
+      						<TextField fx:id="geneSymbolTextField" editable="false" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1">
+      							<styleClass>
+      								<String fx:value="font_size_10" />
+      								<String fx:value="txt_black" />
+      							</styleClass>
+      						</TextField>
+      						<Label maxWidth="1.7976931348623157E308" text="Coding DNA" GridPane.rowIndex="1">
+      							<styleClass>
+      								<String fx:value="txt_gray_656565" />
+      								<String fx:value="font_size_10" />
+                              <String fx:value="bg_efefef" />
+      							</styleClass>
+      						</Label>
+      						<TextField fx:id="hgvscTextField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      							<styleClass>
+      								<String fx:value="bg_efefef" />
+      								<String fx:value="font_size_10" />
+                              <String fx:value="txt_black" />
+      							</styleClass>
+      						</TextField>
+      						<Label maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="15.0" text="Protein" GridPane.rowIndex="2">
+      							<styleClass>
+      								<String fx:value="txt_gray_656565" />
+      								<String fx:value="font_size_10" />
+      							</styleClass>
+      						</Label>
+      						<TextField fx:id="hgvspTextField" GridPane.columnIndex="1" GridPane.rowIndex="2">
+      							<styleClass>
+      								<String fx:value="font_size_10" />
+      								<String fx:value="txt_black" />
+      							</styleClass>
+      						</TextField>
+      						<Label maxWidth="1.7976931348623157E308" prefWidth="87.0" text="Genomic DNA" GridPane.rowIndex="3">
+      							<styleClass>
+      								<String fx:value="txt_gray_656565" />
+      								<String fx:value="font_size_10" />
+                              <String fx:value="bg_efefef" />
+      							</styleClass>
+      						</Label>
+      						<TextField fx:id="grch37TextField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
+      							<styleClass>
+      								<String fx:value="bg_efefef" />
+      								<String fx:value="font_size_10" />
+                              <String fx:value="txt_black" />
+      							</styleClass>
+      						</TextField>
+      					</children>
+      				</GridPane>
+               </content>
+            </ScrollPane>
 			</children>
 			<padding>
 				<Insets top="14.0" />
 			</padding>
 		</VBox>
-		<VBox fx:id="frequenciesArea" alignment="TOP_CENTER" layoutX="306.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="272.0" prefWidth="380.0" styleClass="border_left" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="TOP" GridPane.vgrow="NEVER">
+		<VBox fx:id="frequenciesArea" alignment="TOP_CENTER" layoutX="306.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="272.0" prefWidth="380.0" styleClass="border_left" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" GridPane.vgrow="NEVER">
 			<children>
 				<VBox alignment="TOP_CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="81.0" prefWidth="363.0">
 					<children>
@@ -521,11 +496,11 @@
 				<Insets top="14.0" />
 			</padding>
 		</VBox>
-		<VBox fx:id="significantArea" alignment="TOP_CENTER" layoutX="572.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="272.0" prefWidth="265.0" styleClass="border_left" GridPane.columnIndex="3">
+		<VBox fx:id="significantArea" alignment="TOP_CENTER" layoutX="572.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="272.0" prefWidth="265.0" styleClass="border_left" GridPane.columnIndex="3" GridPane.rowIndex="1">
 			<children>
-            <Pane prefHeight="270.0" prefWidth="264.0">
+            <Pane fx:id="nodePane" prefHeight="270.0" prefWidth="264.0">
                <children>
-                  <Pane prefHeight="200.0" prefWidth="264.0">
+                  <Pane fx:id="tierPane" prefHeight="200.0" prefWidth="264.0">
                      <children>
                         <VBox fx:id="variantInterpretation" prefHeight="200.0" prefWidth="264.0" styleClass="clinical_significant_pathogenicity_vbox">
                            <children>
@@ -534,44 +509,41 @@
                                     <Label styleClass="title1" text="VARIANT INTERPRETATION" />
                                  </children>
                               </HBox>
-                              <HBox fx:id="pathogenicityPredictionHBox1" prefHeight="33.0" styleClass="clinical_significant_pathogenicity_hbox">
+                              <HBox fx:id="tierHBox" prefHeight="33.0" styleClass="clinical_significant_pathogenicity_hbox">
                                  <children>
-                                    <Label fx:id="clinicalSignificantPathogenicityPredictionLabel1" styleClass="clinical_significant_pathogenicity_label" text="SW TIER" />
-                                    <Label styleClass="prediction_none" text="I" />
-                                    <Label fx:id="clinicalSignificantPathogenicityPredictionLabel11" styleClass="clinical_significant_pathogenicity_label" text="USER TIER" />
-                                    <Label styleClass="prediction_none" text="I" />
+                                    <Label fx:id="swTierTextLabel" styleClass="clinical_significant_pathogenicity_label" text="SW TIER" />
+                                    <Label fx:id="swTierLabel" styleClass="prediction_none" text="I" />
+                                    <Label fx:id="userTierTextLabel" styleClass="clinical_significant_pathogenicity_label" text="USER TIER" />
+                                    <Label fx:id="userTierLabel" styleClass="prediction_none" text="I" />
                                  </children>
                               </HBox>
-                              <HBox fx:id="pathogenicityPredictionHBox12" prefHeight="33.0" styleClass="clinical_significant_pathogenicity_hbox">
+                              <HBox fx:id="evidenceHBox" prefHeight="33.0" styleClass="clinical_significant_pathogenicity_hbox">
                                  <children>
-                                    <Label fx:id="clinicalSignificantPathogenicityPredictionLabel12" styleClass="clinical_significant_pathogenicity_label" text="EVIDENCE" />
+                                    <Label fx:id="evidenceTextLabel" styleClass="clinical_significant_pathogenicity_label" text="EVIDENCE" />
                                     <Label styleClass="prediction_none" text="A" />
                                     <Label styleClass="prediction_none" text="B" />
                                     <Label styleClass="prediction_none" text="C" />
                                     <Label styleClass="prediction_none" text="D" />
                                  </children>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
                               </HBox>
-                              <HBox fx:id="pathogenicityPredictionHBox121" prefHeight="33.0" styleClass="clinical_significant_pathogenicity_hbox">
-                                 <children>
-                                    <Label fx:id="clinicalSignificantPathogenicityPredictionLabel121" styleClass="clinical_significant_pathogenicity_label" text="NEGATIVE" />
-                                    <Label styleClass="prediction_none" text="N" />
-                                 </children>
-                              </HBox>
-                              <TextArea prefHeight="200.0" prefWidth="200.0" />
+                              <TextArea fx:id="resultTextArea" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true" />
                            </children>
                         </VBox>
                      </children>
                   </Pane>
-                  <Pane prefHeight="258.0" prefWidth="264.0">
+                  <Pane fx:id="clinicalPane" prefHeight="258.0" prefWidth="264.0">
                      <children>
-            				<VBox fx:id="clinicalSignificant" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="258.0" prefWidth="270.0" visible="false">
+            				<VBox fx:id="clinicalSignificant" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="258.0" prefWidth="265.0" visible="false">
             					<children>
             						<Label styleClass="title1" text="CLINICAL SIGNIFICANT">
             							<padding>
             								<Insets top="-5.0" />
             							</padding>
             						</Label>
-            						<TabPane fx:id="clinicalTabPane" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pickOnBounds="false" prefHeight="243.0" prefWidth="260.0" tabClosingPolicy="UNAVAILABLE">
+            						<TabPane fx:id="clinicalTabPane" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pickOnBounds="false" prefHeight="243.0" prefWidth="270.0" tabClosingPolicy="UNAVAILABLE">
             							<tabs>
             								<Tab closable="false" text="PATHOGENICITY">
             									<content>
@@ -830,6 +802,11 @@
 				<Insets top="14.0" />
 			</padding>
 		</VBox>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #f3f3f3;" GridPane.columnSpan="4">
+         <children>
+            <VBox prefHeight="8.0" prefWidth="100.0" style="-fx-background-color: #c30d23;" />
+         </children>
+      </VBox>
 	</children>
 	<stylesheets>
 		<URL value="@../css/common.css" />

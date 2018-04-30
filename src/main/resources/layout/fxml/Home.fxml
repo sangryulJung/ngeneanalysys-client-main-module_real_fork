@@ -1,260 +1,243 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
-<?import java.net.URL?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Pagination?>
-<?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.text.Font?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<GridPane fx:id="homeWrapper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="625.0" minWidth="600.0" prefHeight="625.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.HomeController">
+<GridPane fx:id="homeWrapper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="555.0" minWidth="1200.0" prefHeight="555.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.HomeController">
   <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="20.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="350.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="70.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="700.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="30.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="46.0" minWidth="-Infinity" prefWidth="34.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="461.0" minWidth="-Infinity" prefWidth="433.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="467.0" minWidth="-Infinity" prefWidth="424.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="329.0" minWidth="-Infinity" prefWidth="284.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="25.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints maxHeight="203.4000244140625" minHeight="0.0" prefHeight="33.59999084472656" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="417.0" minHeight="10.0" prefHeight="92.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="388.3999786376953" minHeight="9.4000244140625" prefHeight="42.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="419.5999755859375" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="430.79998779296875" minHeight="10.0" prefHeight="430.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="220.0" minHeight="10.0" prefHeight="220.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="15.0" minHeight="15.0" prefHeight="15.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="240.0" minHeight="10.0" prefHeight="240.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <HBox alignment="CENTER_LEFT" prefHeight="87.0" prefWidth="1140.0" GridPane.columnIndex="1" GridPane.columnSpan="3">
+      <HBox alignment="CENTER_LEFT" prefHeight="377.0" prefWidth="1140.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
-            <ImageView fitHeight="16.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
-               <image>
-                  <Image url="@../images/icon_01.png" />
-               </image>
-               <HBox.margin>
+            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="434.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="26.0" prefWidth="379.0">
+                     <children>
+                        <Label id="system_image_icon">
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="SYSTEM USAGE">
+                           <styleClass>
+                              <String fx:value="font_size_18" />
+                              <String fx:value="font_gray" />
+                           </styleClass>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="190.0" prefWidth="426.0">
+                     <children>
+                        <Canvas fx:id="hddCanvas" height="175.0" width="175.0" />
+                        <Pane prefHeight="190.0" prefWidth="42.0" />
+                        <Canvas fx:id="availableCanvas" height="175.0" width="175.0" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <ScrollPane prefHeight="200.0" prefWidth="200.0" vbarPolicy="NEVER" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="4">
+         <content>
+            <HBox fx:id="runListHBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="200.0">
+               <children>
+                  <Button fx:id="buttonUpload" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showUploadFASTQ" onMouseEntered="#newAnalysisMouseEnter" onMouseExited="#newAnalysisMouseExit" prefHeight="220.0" prefWidth="200.0" style="-fx-font-family: Noto Sans KR Bold;" styleClass="new_analysis_button" text="New Analysis">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Button>
+               </children>
+               <padding>
                   <Insets top="5.0" />
-               </HBox.margin>
-            </ImageView>
-            <Label alignment="TOP_LEFT" layoutX="60.0" layoutY="31.0" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" text="Request">
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
+               </padding>
+            </HBox>
+         </content>
+      </ScrollPane>
+      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+         <children>
+            <Label id="latest_image_icon">
                <HBox.margin>
-                  <Insets left="8.0" top="4.0" />
+                  <Insets right="5.0" />
                </HBox.margin>
+            </Label>
+            <Label style="-fx-font-family: Noto Sans KR Bold;" text="LATEST ANALYSIS">
                <styleClass>
-                  <String fx:value="h2" />
-                  <String fx:value="weight_bold" />
-                  <String fx:value="txt_black" />
+                  <String fx:value="font_size_18" />
+                  <String fx:value="font_gray" />
                </styleClass>
             </Label>
          </children>
       </HBox>
-      <HBox prefHeight="377.0" prefWidth="1140.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3">
          <children>
-            <Button fx:id="buttonUpload" focusTraversable="false" layoutX="978.0" layoutY="70.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showUploadFASTQ" prefHeight="89.0" prefWidth="286.0" HBox.hgrow="NEVER">
+            <Label styleClass="queued_icon" text="Q">
+               <padding>
+                  <Insets left="-1.0" top="-2.0" />
+               </padding>
+            </Label>
+            <Label style="-fx-font-family: Noto Sans CJK KR Regular;" styleClass="font_size_11" text="Queued">
                <HBox.margin>
-                  <Insets left="10.0" />
+                  <Insets left="3.0" right="5.0" />
                </HBox.margin>
-               <effect>
-                  <DropShadow />
-               </effect>
-            </Button>
+            </Label>
+            <Label styleClass="run_icon" text="R">
+               <padding>
+                  <Insets top="-1.0" />
+               </padding>
+            </Label>
+            <Label style="-fx-font-family: Noto Sans CJK KR Regular;" styleClass="font_size_11" text="Running">
+               <HBox.margin>
+                  <Insets left="3.0" right="5.0" />
+               </HBox.margin>
+            </Label>
+            <Label styleClass="complete_icon" text="C">
+               <padding>
+                  <Insets left="-1.0" top="-1.0" />
+               </padding>
+            </Label>
+            <Label style="-fx-font-family: Noto Sans CJK KR Regular;" styleClass="font_size_11" text="Complete">
+               <HBox.margin>
+                  <Insets left="3.0" right="5.0" />
+               </HBox.margin>
+            </Label>
+            <Label styleClass="failed_icon" text="F">
+               <padding>
+                  <Insets top="-1.0" />
+               </padding>
+            </Label>
+            <Label style="-fx-font-family: Noto Sans CJK KR Regular;" styleClass="font_size_11" text="Failed">
+               <HBox.margin>
+                  <Insets left="3.0" right="5.0" />
+               </HBox.margin>
+            </Label>
          </children>
+         <padding>
+            <Insets right="20.0" />
+         </padding>
       </HBox>
-      <GridPane fx:id="runListHeaderGridPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="350.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="NEVER" />
-         </rowConstraints>
+      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="360.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
          <children>
-            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="RUN" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
-            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="STATUS" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
-            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="DATE" GridPane.columnIndex="2" />
+            <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="26.0" prefWidth="451.0">
+               <children>
+                  <Label id="news_image_icon">
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label prefHeight="23.0" prefWidth="441.0" style="-fx-font-family: Noto Sans KR Bold;" text="NEWS &amp; TIPS">
+                     <padding>
+                        <Insets right="10.0" />
+                     </padding>
+                     <styleClass>
+                        <String fx:value="font_size_18" />
+                        <String fx:value="font_gray" />
+                     </styleClass>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+            <Label fx:id="dateLabel" styleClass="font_size_12" wrapText="true">
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="noticeContentsLabel" alignment="TOP_LEFT" maxHeight="129.0" maxWidth="460.0" minHeight="100.0" prefHeight="129.0" prefWidth="460.0" styleClass="font_size_12" wrapText="true">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Label>
+            <HBox fx:id="toggleGroupHBox" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="481.0" prefHeight="30.0" prefWidth="481.0">
+               <children>
+                  <RadioButton mnemonicParsing="false">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="newsTipGroup" />
+                     </toggleGroup></RadioButton>
+               </children>
+               <VBox.margin>
+                  <Insets right="10.0" />
+               </VBox.margin>
+            </HBox>
          </children>
-      </GridPane>
-      <GridPane fx:id="sampleListHeaderGridPane" maxWidth="500.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
-         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="200.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="450.0" />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="NEVER" />
-         </rowConstraints>
+         <GridPane.margin>
+            <Insets right="10.0" />
+         </GridPane.margin>
+      </VBox>
+      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
          <children>
-            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="SAMPLE" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
-            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="STATUS" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
-            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header" text="PANEL" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" />
+            <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="26.0" prefWidth="200.0">
+               <children>
+                  <Label id="tools_image_icon">
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label style="-fx-font-family: Noto Sans KR Bold;" text="TOOLS &amp; DATABASES">
+                     <styleClass>
+                        <String fx:value="font_size_18" />
+                        <String fx:value="font_gray" />
+                     </styleClass>
+                  </Label>
+               </children>
+            </HBox>
+            <ScrollPane>
+               <content>
+                  <VBox fx:id="databaseVersionVBox" prefWidth="220.0">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
+                           <VBox.margin>
+                              <Insets left="5.0" />
+                           </VBox.margin>
+                           <children>
+                              <Label style="-fx-font-size: 10;" styleClass="tools_icon" text="〉">
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Label style="-fx-cursor: hand;" text="Analysis Tools" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="annotationDatabaseButton" style="-fx-font-size: 10;" styleClass="tools_icon" text="〉">
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Label style="-fx-cursor: hand;" text="Annotation Database" />
+                           </children>
+                           <VBox.margin>
+                              <Insets left="5.0" />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets top="10.0" />
+                     </padding>
+                  </VBox>
+               </content>
+            </ScrollPane>
          </children>
-      </GridPane>
-      <GridPane fx:id="runListGridPane" GridPane.columnIndex="1" GridPane.rowIndex="4">
-        <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-      </GridPane>
-      <GridPane fx:id="sampleListGridPane" GridPane.columnIndex="3" GridPane.rowIndex="4">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="200.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="450.0" />
-        </columnConstraints>
-        <rowConstraints>
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <Pagination fx:id="sampleListPagination" maxHeight="-Infinity" maxPageIndicatorCount="3" minHeight="-Infinity" pageCount="10" prefHeight="30.0" prefWidth="700.0" styleClass="font_size_9" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="10" GridPane.valignment="CENTER" />
-         </children>
-      </GridPane>
-      <HBox alignment="CENTER_LEFT" prefHeight="38.0" prefWidth="900.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
-         <children>
-            <ImageView fitHeight="20.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/icon_02.png" />
-               </image>
-               <HBox.margin>
-                  <Insets top="2.0" />
-               </HBox.margin>
-            </ImageView>
-            <Label alignment="TOP_LEFT" layoutX="60.0" layoutY="186.0" text="Samples">
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
-               <styleClass>
-                  <String fx:value="h2" />
-                  <String fx:value="weight_bold" />
-                  <String fx:value="txt_blue" />
-               </styleClass>
-               <HBox.margin>
-                  <Insets left="8.0" top="4.0" />
-               </HBox.margin>
-            </Label>
-            <Label styleClass="font_size_10" text="(running : ">
-               <HBox.margin>
-                  <Insets left="5.0" top="7.0" />
-               </HBox.margin>
-            </Label>
-            <Label fx:id="runningSampleAnalysisJobCount" layoutX="388.0" layoutY="10.0" text="0">
-               <styleClass>
-                  <String fx:value="txt_sample_count" />
-                  <String fx:value="weight_bold" />
-                  <String fx:value="font_size_10" />
-               </styleClass>
-               <HBox.margin>
-                  <Insets top="7.0" />
-               </HBox.margin>
-            </Label>
-            <Label styleClass="font_size_10" text=" / Completed : ">
-               <HBox.margin>
-                  <Insets left="5.0" top="7.0" />
-               </HBox.margin>
-            </Label>
-            <Label fx:id="completedSampleAnalysisJobCount" text="0">
-               <styleClass>
-                  <String fx:value="font_size_10" />
-                  <String fx:value="txt_sample_count" />
-                  <String fx:value="weight_bold" />
-               </styleClass>
-               <HBox.margin>
-                  <Insets left="5.0" top="7.0" />
-               </HBox.margin>
-            </Label>
-            <Label styleClass="font_size_10" text="/ Queued : ">
-               <HBox.margin>
-                  <Insets top="7.0" />
-               </HBox.margin>
-            </Label>
-            <Label fx:id="queuedSampleAnalysisJobCount" text="0">
-               <styleClass>
-                  <String fx:value="txt_sample_count" />
-                  <String fx:value="weight_bold" />
-                  <String fx:value="font_size_10" />
-               </styleClass>
-               <HBox.margin>
-                  <Insets top="7.0" />
-               </HBox.margin>
-            </Label>
-            <Label layoutX="407.0" layoutY="10.0" styleClass="font_size_10" text=" / Failed : ">
-               <HBox.margin>
-                  <Insets top="7.0" />
-               </HBox.margin>
-            </Label>
-            <Label fx:id="failedSampleAnalysisJobCount" layoutX="482.0" layoutY="22.0" text="0">
-               <styleClass>
-                  <String fx:value="font_size_10" />
-                  <String fx:value="txt_sample_count" />
-                  <String fx:value="weight_bold" />
-               </styleClass>
-               <HBox.margin>
-                  <Insets top="7.0" />
-               </HBox.margin>
-            </Label>
-            <Label layoutX="493.0" layoutY="18.0" styleClass="font_size_10" text=" )">
-               <HBox.margin>
-                  <Insets top="7.0" />
-               </HBox.margin>
-            </Label>
-         </children>
-      </HBox>
-      <HBox alignment="CENTER_LEFT" prefHeight="38.0" prefWidth="900.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-         <children>
-            <ImageView fitHeight="20.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/icon_02.png" />
-               </image>
-               <HBox.margin>
-                  <Insets top="2.0" />
-               </HBox.margin>
-            </ImageView>
-            <Label alignment="TOP_LEFT" layoutX="60.0" layoutY="186.0" text="Run">
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
-               <HBox.margin>
-                  <Insets left="8.0" top="4.0" />
-               </HBox.margin>
-               <styleClass>
-                  <String fx:value="h2" />
-                  <String fx:value="weight_bold" />
-                  <String fx:value="txt_blue" />
-               </styleClass>
-            </Label>
-         </children>
-      </HBox>
+      </VBox>
+      <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2" />
    </children>
    <stylesheets>
       <URL value="@../css/experimenter.css" />

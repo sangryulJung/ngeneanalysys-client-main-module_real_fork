@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane fx:id="snvWrapper" prefHeight="380.0" prefWidth="1140.0" style="-fx-background-color: #f2f5fa;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNVController">
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="200.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="0.0" prefWidth="0.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="940.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+   </rowConstraints>
+   <children>
+      <VBox fx:id="tableVBox" alignment="BOTTOM_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="0.0" GridPane.columnIndex="1">
+         <children>
+            <HBox alignment="BOTTOM_RIGHT" maxWidth="1040.0" minWidth="870.0" prefWidth="870.0">
+               <children>
+                  <Label id="csv_download_image" onMouseClicked="#csvDownload" />
+                  <Label id="excel_download_image" onMouseClicked="#excelDownload">
+                     <HBox.margin>
+                        <Insets left="10.0" right="20.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label maxWidth="10.0" minWidth="10.0" prefWidth="10.0" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </HBox>
+            <TableView fx:id="variantListTableView" maxHeight="305.0" maxWidth="-Infinity" minHeight="305.0" minWidth="-Infinity" prefHeight="305.0" tableMenuButtonVisible="true">
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets left="20.0" right="20.0" />
+               </VBox.margin>
+            </TableView>
+            <Pagination fx:id="variantPagination" maxHeight="40.0" maxWidth="-Infinity" minHeight="40.0" minWidth="-Infinity" prefHeight="40.0" styleClass="font_size_12" />
+         </children>
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+      </VBox>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <VBox fx:id="filterArea" alignment="TOP_CENTER" minWidth="-Infinity" prefHeight="200.0" prefWidth="150.0" style="-fx-background-color: #a8bbd9;">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+               <children>
+                  <Label fx:id="totalLabel" style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_15" text="Showing 1794" textFill="#223654">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin></Label>
+                  <Label fx:id="searchCountLabel" style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_15" text="of 1794 variants" textFill="#223654" />
+                  <Label text="Select Filter">
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
+                  </Label>
+                  <ComboBox fx:id="filterComboBox" prefWidth="150.0">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </ComboBox>
+                  <VBox alignment="TOP_CENTER" prefHeight="237.0" prefWidth="130.0">
+                     <children>
+                        <Button fx:id="filterAddBtn" alignment="BOTTOM_CENTER" mnemonicParsing="false" onAction="#showFilter" prefHeight="25.0" styleClass="font_size_13" text="Edit Filter">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </Button>
+                        <Label fx:id="viewAppliedFiltersLabel" onMouseClicked="#viewAppliedFilters" style="-fx-cursor: hand;" styleClass="font_size_13" text="View applied filters" textFill="WHITE">
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </Label>
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets left="15.0" top="35.0" />
+               </padding></VBox>
+            <Button fx:id="leftSizeButton" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="50.0" styleClass="btn_fold">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin></Button>
+         </children>
+      </HBox>
+      <HBox fx:id="rightContentsHBox" style="-fx-background-color: #f2f5fa;" GridPane.columnIndex="2">
+         <children>
+            <Button fx:id="rightSizeButton" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="50.0" styleClass="right_btn_fold" />
+            <Accordion fx:id="overviewAccordion" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="870.0">
+              <panes>
+                <TitledPane fx:id="interpretationTitledPane" animated="false" maxWidth="-Infinity" minWidth="-Infinity" style="-fx-font-family: Noto Sans KR Bold;" text="Interpretation" />
+                <TitledPane fx:id="clinicalSignificantTitledPane" animated="false" maxWidth="-Infinity" minWidth="-Infinity" style="-fx-font-family: Noto Sans KR;" text="Clinical Significant" />
+                <TitledPane fx:id="variantDetailTitledPane" animated="false" maxWidth="-Infinity" minWidth="-Infinity" style="-fx-font-family: Noto Sans KR;" text="Variant Detail" />
+                  <TitledPane fx:id="statisticsTitledPane" animated="false" maxWidth="-Infinity" minWidth="-Infinity" style="-fx-font-family: Noto Sans KR;" text="Statistics" />
+                  <TitledPane fx:id="interpretationLogsTitledPane" animated="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="890.0" style="-fx-font-family: Noto Sans KR;" text="Interpretation Log" />
+              </panes>
+               <HBox.margin>
+                  <Insets top="20.0" />
+               </HBox.margin>
+            </Accordion>
+         </children>
+      </HBox>
+   </children>
+   <stylesheets>
+      <URL value="@../css/common.css" />
+      <URL value="@../css/variants.css" />
+   </stylesheets>
+</GridPane>

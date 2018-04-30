@@ -7,6 +7,9 @@ package ngeneanalysys.code;
  * @since 2016. 5. 31. 오후 2:11:18
  */
 public class AnalysisJobStatusCode {
+	private AnalysisJobStatusCode() {
+		throw new IllegalStateException("Utility class");
+	}
 
 	/** job run group status : QUEUED */
 	public static final String JOB_RUN_GROUP_QUEUED = "QUEUED";

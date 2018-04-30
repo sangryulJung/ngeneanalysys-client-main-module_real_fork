@@ -5,6 +5,9 @@ package ngeneanalysys.code;
  * @since 2017-09-06
  */
 public class UserTypeCode {
+    private UserTypeCode() {
+        throw new IllegalStateException("Utility class");
+    }
     public static final String USER_TYPE_ADMIN = "ADMIN";
     public static final String USER_TYPE_EXPERIMENTER = "EXPERIMENTER";
     public static final String USER_TYPE_DOCTOR = "DOCTOR";

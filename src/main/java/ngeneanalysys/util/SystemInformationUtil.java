@@ -28,18 +28,18 @@ public class SystemInformationUtil {
 	 * 시스템 정보 로그 출력
 	 */
 	public void printSystemInformationLog() {
-		logger.info("### SYSTEM INFORMATION ###");
-		logger.info(String.format("- OS [name : %s, version : %s, architecher : %s]", getOSName(), getOSVersion(), getOSArchitecher()));
-		logger.info(String.format("- MEMORY [physical : %s, swap : %s, graphic : %s]", getTotalPhysicalMemorySizeToConvertFormat(), getTotalSwapSpaceSizeToConvertFormat(), getGraphicMemorySizeToConvertFormat()));
-		logger.info(String.format("- CPU [processor(thread) : %s]", getCPUThreadCount()));
-		logger.info("### SYSTEM INFORMATION ###");
+		logger.debug("### SYSTEM INFORMATION ###");
+		logger.debug(String.format("- OS [name : %s, version : %s, architecher : %s]", getOSName(), getOSVersion(), getOSArchitecher()));
+		logger.debug(String.format("- MEMORY [physical : %s, swap : %s, graphic : %s]", getTotalPhysicalMemorySizeToConvertFormat(), getTotalSwapSpaceSizeToConvertFormat(), getGraphicMemorySizeToConvertFormat()));
+		logger.debug(String.format("- CPU [processor(thread) : %s]", getCPUThreadCount()));
+		logger.debug("### SYSTEM INFORMATION ###");
 	}
 	
 	/**
 	 * CPU 사용현황 로그 출력
 	 */
 	public void printSystemCPUUsageLog() {
-		logger.info(String.format("### CPU Usage [load avg : %s, processors : %s, systme usage : %s]", String.format("%.2f(%%)", getCPULoadAvg()), String.format("%.2f(%%)", getCPUProcessLoad()), String.format("%.2f(%%)", getCPUSystemLoad())));
+		logger.debug(String.format("### CPU Usage [load avg : %s, processors : %s, systme usage : %s]", String.format("%.2f(%%)", getCPULoadAvg()), String.format("%.2f(%%)", getCPUProcessLoad()), String.format("%.2f(%%)", getCPUSystemLoad())));
 	}
 
 	/**

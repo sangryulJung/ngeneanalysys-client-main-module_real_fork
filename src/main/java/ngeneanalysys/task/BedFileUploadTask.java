@@ -27,22 +27,24 @@ public class BedFileUploadTask extends Task {
 
     private int panelId;
 
-    private File file;
+    private File bedFile;
 
     /** 진행상태 박스 id */
     private String progressBoxId;
 
-    public BedFileUploadTask(int panelId, File file) {
+    public BedFileUploadTask(int panelId, File bedFile) {
         bedFileService = BedFileService.getInstance();
         this.panelId = panelId;
-        this.file = file;
+        this.bedFile = bedFile;
     }
 
     @Override
     protected Void call() {
 
         try {
-            bedFileService.uploadFile(panelId, file);
+            if(bedFile != null) {
+                bedFileService.uploadFile(panelId, bedFile);
+            }
         } catch (WebAPIException e) {
             e.printStackTrace();
         }
@@ -55,8 +57,8 @@ public class BedFileUploadTask extends Task {
      */
     @Override
     protected void failed() {
-        logger.error(String.format("bed file upload task fail!!"));
-        DialogUtil.error("bed file upload fail", "bed file upload fail.", controller.getMainApp().getPrimaryStage(), true);
+        logger.error(String.format("bed bedFile upload task fail!!"));
+        DialogUtil.error("bed bedFile upload fail", "bed bedFile upload fail.", controller.getMainApp().getPrimaryStage(), true);
         controller.removeProgressTaskItemById(progressBoxId);
     }
 
@@ -65,10 +67,6 @@ public class BedFileUploadTask extends Task {
      */
     @Override
     protected void succeeded() {
-        logger.info("bed file upload task complete");
-
-        //controller.removeProgressTaskItemById(progressBoxId);
+        logger.debug("bed bedFile upload task complete");
     }
-
-
 }

@@ -1,0 +1,111 @@
+.tab-pane:top>.tab-header-area {
+	-fx-padding:0 5 0 -2;
+	-fx-background-color : transparent;
+}
+
+/** 탭 상단 배경 */
+.tab-pane:top>.tab-header-area>.tab-header-background {
+	-fx-background-color: transparent;
+	-fx-border-width:0;
+	-fx-background-insets: 0;
+	-fx-min-height: 45px;
+    -fx-pref-height: 45px;
+    -fx-max-height: 45px;
+}
+
+/** 탭메뉴 : 미선택 */
+.tab-pane:top>.tab-header-area>.headers-region {
+	-fx-alignment: bottom-center;
+	-fx-min-height: 45px;
+	-fx-pref-height: 45px;
+	-fx-max-height: 45px;
+}
+
+.tab-pane:top>.tab-header-area>.headers-region>.tab:top {
+	-fx-background-color: transparent;
+	-fx-background-insets: 0;
+	-fx-border-width:0;
+	-fx-padding:0 0 0 4;
+	-fx-min-height: 45px;
+    -fx-pref-height: 45px;
+    -fx-max-height: 45px;
+	-fx-focus-traversable: false;
+}
+
+/** 탭메뉴 컨테이너 : 미선택 */
+.tab-pane:top>.tab-header-area>.headers-region>.tab:top>.tab-container {
+	-fx-background-color: transparent;
+	-fx-cursor:hand;
+}
+
+/** 탭메뉴 라벨 : 미선택 */
+.tab-pane:top>.tab-header-area>.headers-region>.tab:top>.tab-container>.tab-label{
+	-fx-alignment: CENTER;
+	-fx-text-fill: #595757;
+	-fx-font-size:13px;
+	-fx-padding:0 30;
+	-fx-background-color : white;
+	-fx-border : 0.5;
+	-fx-border-color : black;
+}
+
+/** 탭메뉴 : 선택 */
+.tab-pane:top>.tab-header-area>.headers-region>.tab:selected:top {
+	-fx-background-color: transparent;
+	-fx-background-insets: 0;
+	-fx-border-width:0;
+	-fx-padding:0 0 0 4;
+	-fx-min-height: 45px;
+    -fx-pref-height: 45px;
+    -fx-max-height: 45px;
+	-fx-focus-traversable: false;
+}
+
+/** 탭메뉴 컨테이너 : 선택 */
+.tab-pane:top>.tab-header-area>.headers-region>.tab:selected>.tab-container {
+	-fx-background-color: transparent;
+	-fx-cursor:hand;
+}
+
+/** 탭메뉴 라벨 : 선택 */
+.tab-pane:top>.tab-header-area>.headers-region>.tab:selected>.tab-container>.tab-label {
+	-fx-alignment: CENTER;
+	-fx-text-fill: #ffffff;
+	-fx-font-size:13px;
+	-fx-padding:0 30;
+    -fx-background-color : #8f9fb9;
+    -fx-border : 0.5;
+    -fx-border-color : #8f9fb9;
+}
+
+/** 탭메뉴 닫기 버튼 : 선택 */
+.tab-pane:top>.tab-header-area>.headers-region>.tab>.tab-container>.focus-indicator {
+	-fx-border-width:0;
+}
+
+
+.check-box {
+	-fx-padding:5;
+    -fx-background-radius:0;
+    -fx-border-width:0;
+    -fx-text-fill:#223654;
+    -fx-cursor : hand;
+}
+
+.check-box > .box {
+	-fx-pref-width : 14;
+	-fx-pref-height : 14;
+	-fx-background-color : white;
+	-fx-border-width : 0.5;
+	-fx-border-color : #223654;
+	-fx-border-radius : 1;
+}
+
+#populationFrequencyGridPane > .text-field {
+    -fx-min-height : 23;
+    -fx-pref-height : 23;
+    -fx-max-height : 23;
+    -fx-min-width : 80;
+    -fx-pref-width : 80;
+    -fx-max-width : 80;
+}

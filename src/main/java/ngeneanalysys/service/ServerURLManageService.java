@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
  * @since 2017-08-07
  */
 public class ServerURLManageService {
-    private final static Logger logger = LoggerUtil.getLogger();
+    private static final Logger logger = LoggerUtil.getLogger();
 
     /**
      * 인스턴스 생성 제한
@@ -51,18 +51,16 @@ public class ServerURLManageService {
         String regex = "^(http|https?):\\/\\/([^:\\/\\s]+)(:([^\\/]*))?((\\/[^\\s/\\/]+)*)?\\/?([^#\\s\\?]*)(\\?([^#\\s]*))?(#(\\w*))?$";
         Pattern pattern = Pattern.compile(regex);
         if(pattern.matcher(inputURL).matches()) {
-            String url = inputURL;
-            //String url = inputURL + "/client_upgrade/client_version";
             HttpClientResponse response = null;
             try {
-                response = HttpClientUtil.get(url, null, null, false);
+                response = HttpClientUtil.get(inputURL, null, null, false);
                 if(response != null) {
                     int status = response.getStatus();
-                    logger.info("HTTP Status : " + status);
+                    logger.debug("HTTP Status : " + status);
                     return status;
                 }
             } catch (WebAPIException e) {
-                logger.info(e.getMessage());
+                logger.debug(e.getMessage());
             }
         } else {
             return 0;

@@ -67,15 +67,16 @@ public class PDFCreateService {
 
     /**
      * 설정 파일을 .ngenebio_analysys_gui 경로 하위에 복사
-     * @see FOP Library를 사용하여 PDF 생성 시 설정파일과 폰트파일들이 jar파일 내에 존재하는 경우 파일을 정상적으로 불러올수 없어 특정 경로에 복사하여 사용함.
+     * @see
+     * 'FOP Library를 사용하여 PDF 생성 시 설정파일과 폰트파일들이 jar파일 내에 존재하는 경우 파일을 정상적으로 불러올수 없어 특정 경로에 복사하여 사용함.
      */
     public void copyFopConfig() throws Exception {
-        logger.info("copy fop config files..");
+        logger.debug("copy fop config files..");
         ResourceUtil resourceUtil = new ResourceUtil();
 
         // ${user.home}/.ngenebio_analysys_gui/fop/font 디렉토리 존재 체크
         if(!fontDir.exists()) {
-            logger.info("create directory : " + fontDir.getAbsolutePath());
+            logger.debug("create directory : " + fontDir.getAbsolutePath());
             fontDir.mkdirs();
         }
 
@@ -83,11 +84,11 @@ public class PDFCreateService {
         InputStream fopConfigStream = resourceUtil.getResourceAsStream("/fop.conf.xml");
         File tempConfig = new File(fopConfDir, "fop.conf.xml");
         FileUtils.copyInputStreamToFile(fopConfigStream, tempConfig);
-        logger.info("copy config xml..");
+        logger.debug("copy config xml..");
 
         // 폰트 파일 복사
         for (String font : fontList) {
-            logger.info(String.format("copy font [%s]", font));
+            logger.debug(String.format("copy font [%s]", font));
 
             // ttf 파일 복사
             InputStream ttfStream = resourceUtil.getResourceAsStream("/layout/font/" + font);
@@ -113,7 +114,7 @@ public class PDFCreateService {
             copyFopConfig();
 //			}
 
-            logger.info(String.format("create pdf [%s]", saveFile.getAbsolutePath()));
+            logger.debug(String.format("create pdf [%s]", saveFile.getAbsolutePath()));
 
             FopFactory fopFactory = FopFactory.newInstance(fopConfXML);
             FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
@@ -131,8 +132,7 @@ public class PDFCreateService {
             Transformer transformer = factory.newTransformer(); // identity transformer
 
             // Setup input stream
-            String foContents = contents;
-            Source src = new StreamSource(new StringReader(foContents));
+            Source src = new StreamSource(new StringReader(contents));
 
             // Resulting SAX events (the generated FO) must be piped through to FOP
             Result res = new SAXResult(fop.getDefaultHandler());

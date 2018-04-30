@@ -48,14 +48,14 @@ public final class ClinicalSignificantTimer extends AnimationTimer {
 		currAngle += angleStep;
 		if (currAngle > angle) {
 			currAngle = angle;
-		}			
+		}
 		gc.setFill(Color.web("#FF9482"));
 		if (value >= 0.0) {
 			gc.fillArc(this.defaultMarginX + this.innerOuterCircleGap, this.defaultMarginY + this.innerOuterCircleGap, this.innerCircleSize, this.innerCircleSize, this.gaugeStartAngle, -this.currAngle, ArcType.ROUND);
 		}
 		gc.setTextAlign(TextAlignment.CENTER);
 		gc.setTextBaseline(VPos.CENTER);
-		gc.setFont(Font.font(8));				
+		gc.setFont(Font.font(8));
 		//gc2.strokeText("Hello", defaultMargin, defaultMargin);
 		gc.setFill(Color.BLACK);
 		gc.fillText(labelText1, this.defaultMarginX + (this.outerCircleSize / 2.0), this.defaultMarginY + this.outerCircleSize + 10);

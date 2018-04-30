@@ -13,21 +13,16 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="558.0" styleClass="bg_gray_f3" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemManagerSystemLogsController">
+<AnchorPane prefHeight="500.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemManagerSystemLogsController">
    <children>
-      <VBox layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="592.0" prefWidth="1180.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="592.0" prefWidth="1180.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
          <children>
-            <VBox prefHeight="74.0" prefWidth="900.0">
+            <VBox prefHeight="39.0" prefWidth="1180.0">
                <children>
-                  <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="900.0" VBox.vgrow="NEVER">
+                  <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="1180.0" spacing="1.0">
                      <children>
-                        <Label text="System Log " />
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="1.0">
-                     <children>
-                        <Button fx:id="resetBtn" mnemonicParsing="false" onAction="#reset" styleClass="btn_refresh" text="Reset" />
-                        <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="33.0" prefWidth="170.0" spacing="5.0">
+                        <Button fx:id="resetBtn" minWidth="70.0" mnemonicParsing="false" onAction="#reset" styleClass="cancelBtn" text="Reset" visible="false" />
+                        <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="33.0" prefWidth="170.0" spacing="5.0" visible="false">
                            <children>
                               <Label text="Log Type" />
                               <ComboBox fx:id="searchLogType" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="100.0" />
@@ -36,7 +31,7 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="33.0" prefWidth="150.0" spacing="5.0">
+                        <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="33.0" prefWidth="150.0" spacing="5.0" visible="false">
                            <children>
                               <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Log Msg" HBox.hgrow="NEVER" />
                               <TextField fx:id="logMsgText" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="23.0" prefWidth="78.0" HBox.hgrow="NEVER" />
@@ -45,7 +40,7 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="162.0" spacing="5.0">
+                        <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="162.0" spacing="5.0" visible="false">
                            <children>
                               <Label text="User ID" />
                               <TextField fx:id="userIdText" prefHeight="23.0" prefWidth="100.0" />
@@ -54,7 +49,7 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="220.0" spacing="5.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="220.0" spacing="5.0" visible="false">
                            <children>
                               <Label text="User Login ID" />
                               <TextField fx:id="userLoginIdText" prefHeight="23.0" prefWidth="127.0" />
@@ -63,7 +58,7 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="33.0" prefWidth="175.0" spacing="5.0">
+                        <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="33.0" prefWidth="175.0" spacing="5.0" visible="false">
                            <children>
                               <Label text="User Type" />
                               <ComboBox fx:id="searchUserType" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="100.0" />
@@ -72,7 +67,7 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="180.0" spacing="5.0">
+                        <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="180.0" spacing="5.0" visible="false">
                            <children>
                               <Label text="User Name" />
                               <TextField fx:id="userNameText" prefHeight="23.0" prefWidth="100.0" />
@@ -81,33 +76,35 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
                         </HBox>
-                        <Button fx:id="searchBtn" mnemonicParsing="false" onAction="#search" styleClass="btn_patient_search1" text="Search" />
+                        <Button fx:id="searchBtn" mnemonicParsing="false" onAction="#search" prefWidth="80.0" styleClass="submitBtn" text="Refresh" />
                      </children>
                   </HBox>
                </children>
+               <padding>
+                  <Insets right="10.0" />
+               </padding>
             </VBox>
-            <TableView fx:id="logListTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+            <TableView fx:id="logListTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
                <columns>
-                  <TableColumn fx:id="logId" prefWidth="100.0" text="Log ID" />
-                  <TableColumn fx:id="logType" prefWidth="100.0" text="Log Type" />
-                  <TableColumn fx:id="logMsg" prefWidth="150.0" text="Log Msg" />
-                  <TableColumn fx:id="userId" prefWidth="75.0" text="User ID" />
-                  <TableColumn fx:id="userLoginId" prefWidth="150.0" text="User Login ID" />
-                  <TableColumn fx:id="role" prefWidth="150.0" text="User Type" />
-                  <TableColumn fx:id="name" prefWidth="100.0" text="Name" />
-                  <TableColumn fx:id="createdAt" prefWidth="150.0" text="Created At" />
+                  <TableColumn fx:id="createdAtTableColumn" editable="false" prefWidth="150.0" sortable="false" text="Date" />
+                  <TableColumn fx:id="logTypeTableColumn" editable="false" prefWidth="125.0" sortable="false" text="Log Type" />
+                  <TableColumn fx:id="logMsgTableColumn" editable="false" minWidth="600.0" prefWidth="-1.0" sortable="false" text="Log Msg" />
+                  <TableColumn fx:id="loginIdTableColumn" editable="false" prefWidth="150.0" sortable="false" text="Login ID" visible="false" />
+                  <TableColumn fx:id="roleTableColumn" editable="false" prefWidth="150.0" sortable="false" text="User Role" visible="false" />
+                  <TableColumn fx:id="userNameTableColumn" editable="false" prefWidth="176.0" sortable="false" text="User" />
+                  <TableColumn fx:id="userGroupNameTableColumn" editable="false" prefWidth="187.0" sortable="false" text="Group" />
                </columns>
             </TableView>
             <HBox alignment="CENTER" prefHeight="48.0" prefWidth="900.0" spacing="5.0" VBox.vgrow="NEVER">
                <children>
-                  <Button fx:id="prevBtn" mnemonicParsing="false" onAction="#prevMove" text="&lt;&lt;" />
+                  <Button fx:id="prevBtn" mnemonicParsing="false" onAction="#prevMove" styleClass="submitBtn" text="&lt;&lt;" />
                   <Pagination fx:id="paginationList" pageCount="100" />
-                  <Button fx:id="nextBtn" mnemonicParsing="false" onAction="#nextMove" text="&gt;&gt;" />
+                  <Button fx:id="nextBtn" mnemonicParsing="false" onAction="#nextMove" styleClass="submitBtn" text="&gt;&gt;" />
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
                      <children>
-                        <Label text="page" />
+                        <Label text="Page" />
                         <TextField fx:id="pageText" prefHeight="23.0" prefWidth="74.0" />
-                        <Button fx:id="pageBtn" mnemonicParsing="false" onAction="#pageMove" prefHeight="23.0" prefWidth="41.0" text="go" />
+                        <Button fx:id="pageBtn" mnemonicParsing="false" onAction="#pageMove" prefHeight="23.0" prefWidth="41.0" styleClass="submitBtn" text="GO" />
                      </children>
                   </HBox>
                </children>

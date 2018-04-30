@@ -1,16 +1,27 @@
 #contentswrapper {
 	-fx-background-color:transparent ;
-	-fx-background-image:url('../images/bg_login.png');
+	-fx-background-image:url('../images/renewal/main_background.png');
+	/*-fx-background-size: no-repeat;*/
 }
+
+/*#mainContent {
+	-fx-background-color:transparent ;
+	-fx-background-image:url('../images/p3_4.png');
+	-fx-background-size:cover;
+}*/
 
 .text-field, .password-field {
 	-fx-background-color:#fff;
-	-fx-background-radius:3;
+	-fx-background-radius:0;
 	-fx-border-color:#fff;
-	-fx-border-radius:3;
-	-fx-padding:0 30;
+	-fx-border-radius:0;
+	-fx-padding:0 0 0 30;
 	-fx-text-fill:#656565;
 	-fx-font-size:14;
+	-fx-min-height : 32;
+	-fx-min-width : 250;
+	-fx-pref-width : 250;
+	-fx-max-width : 250;
 }
 
 #btnWindowClose {
@@ -27,37 +38,46 @@
 }
 
 .title {
-	-fx-text-fill: #4D4D4D;
+	-fx-text-fill: #fff;
 	-fx-font-size: 13;	
 }
 
 #inputLoginID {
-	-fx-background-image:url('../images/icon_user1.png');
+	-fx-background-image:url('../images/renewal/login_user_icon.png');
 	-fx-background-repeat: no-repeat;
+	-fx-background-size : 16 16;
 	-fx-background-position: left 10 center;
 }
 
 #inputPassword {
-	-fx-background-image:url('../images/icon_lock.png');
+	-fx-background-image:url('../images/renewal/login_password_icon.png');
 	-fx-background-repeat: no-repeat;
+	-fx-background-size : 16 16;
 	-fx-background-position: left 10 center;
 }
 
 #btnLogin {
-	-fx-background-color: #646464;
+	-fx-background-color: #20CC7B;
 	-fx-text-fill: #FFFFFF;
-	-fx-font-size: 18;
-	-fx-font-weight:bold;
+	-fx-font-size: 15;
 	-fx-border-radius: 0;
+	-fx-border-width : 0 0 0 0;
+	-fx-border-color : #50B3FF;
 	-fx-background-radius: 0;
-	-fx-border-width:0 0 1 0;
-	-fx-border-color:#525252;
+	-fx-alignment : center;
+	-fx-min-width : 100;
+	-fx-pref-width : 100;
+	-fx-max-width : 100;
+	-fx-min-height : 36;
+    -fx-pref-height : 36;
+    -fx-max-height : 36;
 }
 
 #settingURLButton {
-	-fx-background-image:url('../images/icon_settings.png');
+    -fx-graphic: url("../images/renewal/preference_icon.png");
+	/*-fx-background-image:url('../images/renewal/preference.png');
 	-fx-background-size: 24 24;
-	-fx-background-repeat: no-repeat;
+	-fx-background-repeat: no-repeat;*/
 	-fx-background-color:transparent;
 	-fx-background-insets:0;
 	-fx-border-width:0;
@@ -66,6 +86,6 @@
 	-fx-pref-height:24;
 }
 .title_warning {
-	-fx-text-fill:#969595;
+	-fx-text-fill:#FFFFFF;
 	-fx-font-size:12;
 }

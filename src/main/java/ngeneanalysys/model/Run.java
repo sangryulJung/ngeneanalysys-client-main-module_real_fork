@@ -14,20 +14,14 @@ public class Run implements Serializable {
     @JsonProperty("memberId")
     private Integer memberId;
 
-    @JsonProperty(value = "memberGroupId")
-    private Integer memberGroupId;
-
     @JsonProperty(value = "name")
     private String name;
 
     @JsonProperty(value = "sequencingPlatform")
     private String sequencingPlatform;
 
-    @JsonProperty(value = "status")
-    private String status;
-
-    @JsonProperty(value = "statusMsg")
-   private String statusMsg;
+    @JsonProperty(value = "serverRunDir")
+    private String serverRunDir;
 
     @JsonProperty(value = "createdAt")
     private DateTime createdAt;
@@ -47,16 +41,62 @@ public class Run implements Serializable {
     @JsonProperty(value = "deleted")
     private Integer deleted;
 
+    @JsonProperty(value = "memberName")
+    private String memberName;
+
+    private String loginId;
+
+    private String memberGroupName;
+
+    private RunStatus runStatus;
+
+    private String panelName;
+
+    /**
+     * @return panelName
+     */
+    public String getPanelName() {
+        return panelName;
+    }
+
+    /**
+     * @return runStatus
+     */
+    public RunStatus getRunStatus() {
+        return runStatus;
+    }
+
+    /**
+     * @return memberGroupName
+     */
+    public String getMemberGroupName() {
+        return memberGroupName;
+    }
+
+    /**
+     * @return loginId
+     */
+    public String getLoginId() {
+        return loginId;
+    }
+
+    /**
+     * @return memberName
+     */
+    public String getMemberName() {
+        return memberName;
+    }
+
     public Integer getId() {
         return id;
     }
 
-    public Integer getMemberGroupId() {
-        return memberGroupId;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public Integer getMemberId() {
+        return memberId;
     }
 
     public void setName(String name) {
@@ -71,13 +111,7 @@ public class Run implements Serializable {
         this.sequencingPlatform = sequencingPlatform;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public String getStatusMsg() {
-        return statusMsg;
-    }
+    public String getServerRunDir() { return serverRunDir; }
 
     public DateTime getCreatedAt() {
         return createdAt;
@@ -108,17 +142,18 @@ public class Run implements Serializable {
         return "Run{" +
                 "id=" + id +
                 ", memberId=" + memberId +
-                ", memberGroupId=" + memberGroupId +
                 ", name='" + name + '\'' +
                 ", sequencingPlatform='" + sequencingPlatform + '\'' +
-                ", status='" + status + '\'' +
-                ", statusMsg='" + statusMsg + '\'' +
+                ", serverRunDir='" + serverRunDir + '\'' +
                 ", createdAt=" + createdAt +
                 ", startedAt=" + startedAt +
                 ", completedAt=" + completedAt +
                 ", updatedAt=" + updatedAt +
                 ", deletedAt=" + deletedAt +
                 ", deleted=" + deleted +
+                ", memberName='" + memberName + '\'' +
+                ", loginId='" + loginId + '\'' +
+                ", memberGroupName='" + memberGroupName + '\'' +
                 '}';
     }
 }

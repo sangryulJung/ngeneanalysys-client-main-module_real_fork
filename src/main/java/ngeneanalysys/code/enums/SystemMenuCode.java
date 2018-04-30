@@ -8,11 +8,11 @@ package ngeneanalysys.code.enums;
  */
 public enum SystemMenuCode {
 
-	EDIT("Edit", 15),
+	EDIT("User Profile", 15),
 	SETTINGS("Settings", 15),
 	SUPPORT("Support", 15),
 	LICENSE("License", 0),
-	PUBLIC_DATABASES("Public Databases", 15),
+	/*PUBLIC_DATABASES("Public Databases", 15),*/
 	LOGOUT("Logout", 15);
 	
 	private String menuName;

@@ -8,25 +8,22 @@ import ngeneanalysys.model.AnalysisFile;
 import ngeneanalysys.model.Run;
 import ngeneanalysys.service.AnalysisRequestService;
 import ngeneanalysys.util.DialogUtil;
-import ngeneanalysys.util.FileUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.LoginSessionUtil;
 import org.slf4j.Logger;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 /**
  * @author Jang
  * @since 2017-08-23
  */
-public class AnalysisSampleUploadTask extends Task<Void>{
+public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
     Logger logger = LoggerUtil.getLogger();
 
     /** Main Controller Application Object */
     private AnalysisSampleUploadProgressTaskController analysisSampleUploadProgressTaskController;
-
 
     /** 분석 샘플 요청 관리 서비스 */
     private AnalysisRequestService analysisRequestService;
@@ -48,56 +45,32 @@ public class AnalysisSampleUploadTask extends Task<Void>{
 
     private boolean taskStatus = true;
 
-    public AnalysisSampleUploadTask(AnalysisSampleUploadProgressTaskController analysisSampleUploadProgressTaskController) {
+    public AnalysisSampleUploadTask(AnalysisSampleUploadProgressTaskController analysisSampleUploadProgressTaskController, int totalCount) {
+        super(totalCount);
         if(analysisSampleUploadProgressTaskController != null) {
             this.analysisSampleUploadProgressTaskController = analysisSampleUploadProgressTaskController;
             this.analysisRequestService = AnalysisRequestService.getInstance();
         }
     }
 
-    /**
-     * 메인 화면 상태 출력 영역 표시 메시지 update 처리
-     * @param completeSampleFileSize
-     * @param totalSampleFileSize
-     * @param completeSampleCount
-     * @param totalSampleCount
-     */
-    public void updateProgressInfoForMain(double completeSampleFileSize, double totalSampleFileSize, int completeSampleCount, int totalSampleCount) {
-        logger.info("updateProgressInfoForMain.. ");
-        // 전체 진행율 정보 update..
-        updateProgress(completeSampleFileSize, totalSampleFileSize);
-        // 전체 진행정보 text update..
-        updateMessage(String.valueOf(completeSampleCount));
-        // 현재 진행중인 그룹의 총 샘플 수 출력
+    @Override
+    public void updateProgress(long workDone, long max) {
+        long total = getNumberOfWork() * 100;
+        long complete = (long)(((double)getCompleteWorkCount() + (workDone / (double)max)) * 100);
+        updateMessage(String.valueOf(getCompleteWorkCount()));
         try {
-            Thread.sleep(100);
             Platform.runLater(() -> {
-                this.analysisSampleUploadProgressTaskController.updateTotalCount(String.valueOf(totalSampleCount));
+                this.analysisSampleUploadProgressTaskController.updateTotalCount(String.valueOf(getNumberOfWork()));
             });
         } catch (Exception e) {
             e.printStackTrace();
         }
+        super.updateProgress(complete, total);
     }
-
-    /**
-     * 상세 진행정보 Dialog 업데이트..
-     */
-    public void updateProgressInfoForDetail() {
-        try {
-            Thread.sleep(100);
-            Platform.runLater(() -> {
-                this.analysisSampleUploadProgressTaskController.updateProgressInfoTargetDetailDialog(
-                        this.currentUploadSampleFileId, this.currentUploadSampleFileProgress);
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
 
     @Override
     protected Void call() throws Exception {
-        logger.info("start upload task...");
+        logger.debug("start upload task...");
 
         try {
 
@@ -112,19 +85,23 @@ public class AnalysisSampleUploadTask extends Task<Void>{
             currentUploadGroupId = run.getId();
             currentUploadGroupRefName = run.getName();
 
-            for (AnalysisFile fileData : fileDataList) {
+            List<AnalysisFile> completeFile = new ArrayList<>();
 
+            updateCurrentUploadGroupInfo();
+
+            for (AnalysisFile fileData : fileDataList) {
                 fileList.stream().forEach(file -> {
 
                     if (this.analysisSampleUploadProgressTaskController.isStop) {
                        return;
                     }
 
-                    updateCurrentUploadGroupInfo();
-
                     if (fileData.getName().equals(file.getName())) {
                         try {
-                            analysisRequestService.uploadFile(fileData.getId(), file);
+                            analysisRequestService.uploadFile(fileData.getId(), file, this);
+                            completeFile.add(fileData);
+                            setCompleteWorkCount(completeFile.size());
+
                         } catch (WebAPIException e) {
                             e.printStackTrace();
                         }
@@ -163,11 +140,14 @@ public class AnalysisSampleUploadTask extends Task<Void>{
                     if (currentUploadGroupId > 0) {
                         // 현재 업로드중인 분석 요청 그룹 데이터 삭제
                         //analysisRequestService.removeRequestedJob(currentUploadGroupId);
+                        this.analysisSampleUploadProgressTaskController.getMainController().clearProgressTaskArea();
                     }
                 }
+
+                //completeFile.add(fileData);
             }
         } catch (Exception e) {
-            logger.info(e.getMessage());
+            logger.debug(e.getMessage());
             e.printStackTrace();
         }
 
@@ -185,6 +165,7 @@ public class AnalysisSampleUploadTask extends Task<Void>{
 
     @Override
     protected void succeeded() {
+        // 메인 화면 Progress Task 영역 삭제
         Platform.runLater(() -> {
             this.analysisSampleUploadProgressTaskController.clearWhenUploadTaskSucceeded();
         });
@@ -196,7 +177,7 @@ public class AnalysisSampleUploadTask extends Task<Void>{
             this.analysisSampleUploadProgressTaskController.showCancelCompleteDialog();
         } else {
             if(!this.analysisSampleUploadProgressTaskController.isStop) {
-                logger.info("upload task work finished!!");
+                logger.debug("upload task work finished!!");
 
                 if(this.taskStatus) {
                     // 완료 메시지 출력
@@ -206,7 +187,7 @@ public class AnalysisSampleUploadTask extends Task<Void>{
                     DialogUtil.error("Upload Failed", String.format("[%s] %s", this.msgDialogHeader, this.msgDialogContent), analysisSampleUploadProgressTaskController.getMainController().getPrimaryStage(), false);
                 }
             } else {
-                logger.info("upload task work stop!!");
+                logger.debug("upload task work stop!!");
             }
         }
     }
@@ -215,9 +196,9 @@ public class AnalysisSampleUploadTask extends Task<Void>{
      * 현재 업로드 진행중인 분석 요청 그룹 정보 전달 [MainController 화면]
      */
     private void updateCurrentUploadGroupInfo() {
-        logger.info("updateCurrentUploadGroupInfo..");
+        logger.debug("updateCurrentUploadGroupInfo..");
         try {
-            Thread.sleep(100);
+            Thread.sleep(50);
             Platform.runLater(() -> {
                 this.analysisSampleUploadProgressTaskController.setCurrentUploadGroupId(currentUploadGroupId);
                 this.analysisSampleUploadProgressTaskController.setCurrentUploadGroupRefName(currentUploadGroupRefName);
