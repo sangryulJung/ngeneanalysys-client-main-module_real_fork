@@ -277,6 +277,9 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
 
             setQCItem(roiCoverageLabel, roiCoverageQCLabel, qcList, "roi_coverage");
             setQCItem(coverageUniformityLabel, coverageUniQCLabel, qcList, "coverage_uniformity");
+            roiCoverageLabel.setText(findQCResult(qcList, "roi_coverage").toUpperCase());
+            coverageUniformityLabel.setText(findQCResult(qcList, "coverage_uniformity").toUpperCase());
+
 
         } catch(WebAPIException e) {
             DialogUtil.alert("QC ERROR", e.getMessage(), this.getMainApp().getPrimaryStage(), true);
