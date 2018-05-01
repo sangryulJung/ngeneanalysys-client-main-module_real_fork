@@ -27,8 +27,10 @@ import ngeneanalysys.model.paged.PagedRun;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.LoggerUtil;
+import ngeneanalysys.util.PopOverUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.controlsfx.control.PopOver;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -441,7 +443,7 @@ public class HomeController extends SubPaneController{
 
         private HBox createHBox(Label label, String titleLabelString) {
             HBox box = new HBox();
-            box.setPrefHeight(20);
+            box.setPrefHeight(24);
             Label titleLabel = new Label(titleLabelString);
             titleLabel.setPrefWidth(75);
             titleLabel.getStyleClass().add("font_gray");
@@ -455,7 +457,7 @@ public class HomeController extends SubPaneController{
         private HBox createHBox(Label label1, String titleLabelString1
                 ,Label label2, String titleLabelString2) {
             HBox box = new HBox();
-            box.setPrefHeight(20);
+            box.setPrefHeight(24);
             Label titleLabel = new Label(titleLabelString1);
             titleLabel.setPrefWidth(75);
             titleLabel.getStyleClass().add("font_gray");
@@ -482,18 +484,22 @@ public class HomeController extends SubPaneController{
                 case "QUEUED":
                     statusLabel.getStyleClass().addAll("label", "queued_icon");
                     statusLabel.setText("Q");
+                    progressBar.setVisible(false);
                     break;
                 case "RUNNING":
                     statusLabel.getStyleClass().addAll("label", "run_icon");
                     statusLabel.setText("R");
+                    progressBar.setVisible(true);
                     break;
                 case "COMPLETE":
                     statusLabel.getStyleClass().addAll("label", "complete_icon");
                     statusLabel.setText("C");
+                    progressBar.setVisible(false);
                     break;
                 default:
                     statusLabel.getStyleClass().addAll("label", "failed_icon");
                     statusLabel.setText("F");
+                    progressBar.setVisible(true);
                     break;
             }
             ///////////////////////
@@ -533,10 +539,17 @@ public class HomeController extends SubPaneController{
                 itemVBox.getChildren().add(failedHBox);*/
             if(!itemVBox.getChildren().contains(progressBar)) {
                 itemVBox.getChildren().add(progressBar);
-                VBox.setMargin(progressBar, new Insets(20, 0, 0, 0));
+                VBox.setMargin(progressBar, new Insets(0, 0, 0, 0));
             }
             progressBar.setProgress(run.getRunStatus().getProgressPercentage() / 100.);
-
+            progressBar.setOnMouseClicked(e -> {
+                PopOver popOver = new PopOver();
+                popOver.setCornerRadius(20);
+                Label percentageLabel = new Label(run.getRunStatus().getProgressPercentage().toString() + "%");
+                percentageLabel.setPrefHeight(30);
+                popOver.setContentNode(percentageLabel);
+                popOver.show(progressBar);
+            });
         }
 
         public void reset() {
