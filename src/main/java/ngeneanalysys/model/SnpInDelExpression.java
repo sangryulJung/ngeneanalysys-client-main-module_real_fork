@@ -1,5 +1,7 @@
 package ngeneanalysys.model;
 
+import com.sun.media.jfxmedia.logging.Logger;
+
 import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.StringUtils;
 
@@ -37,7 +39,20 @@ public class SnpInDelExpression {
      * @return variantType
      */
     public String getVariantType() {
-        return variantType;
+    	//System.out.println(variantType);
+    	if (variantType.equals("snp")) {
+    		return "SNP";
+    	}else if(variantType.equals("ins")) {
+    		return "Ins";
+    	}else if(variantType.equals("del")) {
+    		return "Del";
+    	}else if(variantType.equals("complex")) {
+    		return "Complex";
+    	}else if(variantType.equals("mnp")) {
+    		return "MNP";
+    	}else {
+    		return variantType;
+    	}
     }
 
     /**

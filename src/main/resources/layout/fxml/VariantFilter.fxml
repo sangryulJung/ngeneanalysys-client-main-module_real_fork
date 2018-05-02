@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -70,6 +71,7 @@
                               <TextField fx:id="startFractionTextField" prefWidth="60.0" promptText="30" />
                               <Label text="~" />
                               <TextField fx:id="endFractionTextField" maxWidth="100.0" prefWidth="60.0" promptText="50" />
+                              <Label prefHeight="20.0" prefWidth="31.0" text="\%" />
                            </children>
                         </HBox>
                         <Label style="-fx-font-family: Noto Sans KR Bold;" text="Prediction" />
