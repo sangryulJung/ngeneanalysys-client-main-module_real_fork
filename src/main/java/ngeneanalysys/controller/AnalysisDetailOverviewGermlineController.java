@@ -259,7 +259,7 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
 
     public void setQCItem(final Label valueLabel, final Label QCLabel
             , final List<SampleQC> qcList, final String qcString) {
-        valueLabel.setText(findQCResult(qcList, "total_base"));
+        valueLabel.setText(findQCResult(qcList, qcString).toUpperCase());
         valueLabel.setTooltip(new Tooltip(findQCResultString(qcList, qcString)));
         //totalBaseTooltip.setText(findQCTooltipString(qcList, "total_base"));
         final String value = findQCTooltipString(qcList, qcString);
@@ -277,9 +277,6 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
 
             setQCItem(roiCoverageLabel, roiCoverageQCLabel, qcList, "roi_coverage");
             setQCItem(coverageUniformityLabel, coverageUniQCLabel, qcList, "coverage_uniformity");
-            roiCoverageLabel.setText(findQCResult(qcList, "roi_coverage").toUpperCase());
-            coverageUniformityLabel.setText(findQCResult(qcList, "coverage_uniformity").toUpperCase());
-
 
         } catch(WebAPIException e) {
             DialogUtil.alert("QC ERROR", e.getMessage(), this.getMainApp().getPrimaryStage(), true);
