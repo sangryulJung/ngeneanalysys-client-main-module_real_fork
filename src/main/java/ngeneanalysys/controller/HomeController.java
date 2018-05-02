@@ -495,22 +495,18 @@ public class HomeController extends SubPaneController{
                 case "QUEUED":
                     statusLabel.getStyleClass().addAll("label", "queued_icon");
                     statusLabel.setText("Q");
-                    progressBar.setVisible(false);
                     break;
                 case "RUNNING":
                     statusLabel.getStyleClass().addAll("label", "run_icon");
                     statusLabel.setText("R");
-                    progressBar.setVisible(true);
                     break;
                 case "COMPLETE":
                     statusLabel.getStyleClass().addAll("label", "complete_icon");
                     statusLabel.setText("C");
-                    progressBar.setVisible(false);
                     break;
                 default:
                     statusLabel.getStyleClass().addAll("label", "failed_icon");
                     statusLabel.setText("F");
-                    progressBar.setVisible(true);
                     break;
             }
             ///////////////////////
@@ -557,10 +553,7 @@ public class HomeController extends SubPaneController{
                 itemVBox.getChildren().add(failedHBox);*/
             if(!itemVBox.getChildren().contains(progressHBox)) {
                 itemVBox.getChildren().add(progressHBox);
-                VBox.setMargin(progressHBox, new Insets(0, 0, 0, 0));
             }
-            progressBar.setProgress(run.getRunStatus().getProgressPercentage() / 100.);
-
         }
 
         public void reset() {
