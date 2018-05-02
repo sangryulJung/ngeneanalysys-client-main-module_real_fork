@@ -111,3 +111,22 @@
     -fx-pref-width : 24;
     -fx-pref-height : 24;
 }
+
+.status_progress {
+	-fx-background-radius: 0;
+    -fx-background-color: #FFFFFF;
+    -fx-accent: #73739B;
+    -fx-background-insets:0;
+    -fx-padding:0;
+}
+
+.status_progress > .bar {
+	-fx-background-radius: 0;
+	-fx-background-color : #263d5f;
+}
+
+.status_progress > .track {
+	-fx-background-insets: 0;
+	-fx-background-color : white;
+    -fx-background-radius: 0;
+}

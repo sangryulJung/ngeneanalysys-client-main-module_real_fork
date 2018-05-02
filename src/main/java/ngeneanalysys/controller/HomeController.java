@@ -373,6 +373,8 @@ public class HomeController extends SubPaneController{
         private Label failedLabel;
         private HBox failedHBox;
         private ProgressBar progressBar;
+        private Label progressLabel;
+        private HBox progressHBox;
 
         private VBox itemVBox;
 
@@ -432,7 +434,16 @@ public class HomeController extends SubPaneController{
             queuedHBox = createHBox(runningLabel, "Running : ", queuedLabel, "Queued : ");
 
             progressBar = new ProgressBar();
-            progressBar.setPrefWidth(180);
+            progressBar.getStyleClass().add("status_progress");
+            progressBar.setPrefWidth(150);
+            progressLabel = new Label();
+            progressLabel.getStyleClass().add("font_gray");
+            progressLabel.setPrefWidth(35);
+            progressHBox = new HBox();
+            progressHBox.setSpacing(5);
+            progressHBox.setAlignment(Pos.CENTER_LEFT);
+            progressHBox.setPrefHeight(20);
+            progressHBox.getChildren().addAll(progressBar, progressLabel);
 
             backgroundVBox.getChildren().add(itemVBox);
 
@@ -514,6 +525,13 @@ public class HomeController extends SubPaneController{
             runningLabel.setText(String.valueOf(runStatus.getRunningCount()));
             queuedLabel.setText(String.valueOf(runStatus.getQueuedCount()));
             failedLabel.setText(String.valueOf(runStatus.getFailedCount()));
+            if(runStatus.getStatus().equals("FAIL")) {
+                progressBar.setProgress(1);
+                progressLabel.setText("100%");
+            } else {
+                progressBar.setProgress(run.getRunStatus().getProgressPercentage() / 100d);
+                progressLabel.setText(run.getRunStatus().getProgressPercentage() + "%");
+            }
 
             if(!itemVBox.getChildren().contains(panelHBox))
                 itemVBox.getChildren().add(panelHBox);
@@ -531,11 +549,11 @@ public class HomeController extends SubPaneController{
                 itemVBox.getChildren().add(queuedHBox);
             /*if(!itemVBox.getChildren().contains(failedHBox))
                 itemVBox.getChildren().add(failedHBox);*/
-            if(!itemVBox.getChildren().contains(progressBar)) {
-                itemVBox.getChildren().add(progressBar);
-                VBox.setMargin(progressBar, new Insets(20, 0, 0, 0));
+            if(!itemVBox.getChildren().contains(progressHBox)) {
+                itemVBox.getChildren().add(progressHBox);
+                VBox.setMargin(progressHBox, new Insets(20, 0, 0, 0));
             }
-            progressBar.setProgress(run.getRunStatus().getProgressPercentage() / 100.);
+
 
         }
 
