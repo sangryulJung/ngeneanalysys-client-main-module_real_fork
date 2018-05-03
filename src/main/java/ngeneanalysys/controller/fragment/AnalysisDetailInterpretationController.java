@@ -234,7 +234,6 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
             textField = new TextField(getString());
             textField.getStyleClass().add("txt_black");
             textField.setMinWidth(this.getWidth() - this.getGraphicTextGap() * 2);
-            SnpInDelEvidence variant = this.getTableView().getItems().get(this.getTableRow().getIndex());
             textField.setOnKeyPressed(t -> {
                 if(t.getCode() == KeyCode.ENTER) {
                     commitEdit(textField.getText());
@@ -260,7 +259,6 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
     private class TypeComboBoxCell extends TableCell<SnpInDelEvidence, String> {
         private ComboBox<String> comboBox = new ComboBox<>();
-        /*boolean setting = false;*/
 
         private TypeComboBoxCell() {
             comboBox.getSelectionModel().selectedItemProperty().addListener((ov, t, t1) -> {
@@ -286,7 +284,6 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                 if(panel.getAnalysisType().equals("SOMATIC")) {
                     comboBox.getItems().addAll("therapeutic", "prognosis", "diagnosis", "N/A");
                 }
-                //comboBox.getSelectionModel().selectFirst();
 
                 SnpInDelEvidence evidence = TypeComboBoxCell.this.getTableView().getItems().get(
                         TypeComboBoxCell.this.getIndex());
@@ -304,7 +301,6 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
     private class EvidenceLevelComboBoxCell extends TableCell<SnpInDelEvidence, String> {
         private ComboBox<String> comboBox = new ComboBox<>();
-        boolean setting = false;
 
         private EvidenceLevelComboBoxCell() {
             comboBox.getSelectionModel().selectedItemProperty().addListener((ov, t, t1) -> {
@@ -315,8 +311,10 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                     snpInDelEvidence.setEvidenceLevel(t1);
                     if(t1.equalsIgnoreCase("T3") || t1.equalsIgnoreCase("T4")) {
                         snpInDelEvidence.setEvidenceType("N/A");
-                        evidenceTableView.refresh();
+                    } else if(snpInDelEvidence.getEvidenceType().equals("N/A")){
+                        snpInDelEvidence.setEvidenceType("therapeutic");
                     }
+                    //evidenceTableView.refresh();
                 }
             });
         }
@@ -334,7 +332,6 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                 if(panel.getAnalysisType().equals("SOMATIC")) {
                     comboBox.getItems().addAll("A", "B", "C", "D", "T3", "T4");
                 }
-                //comboBox.getSelectionModel().selectFirst();
 
                 SnpInDelEvidence evidence = EvidenceLevelComboBoxCell.this.getTableView().getItems().get(
                         EvidenceLevelComboBoxCell.this.getIndex());
@@ -354,7 +351,6 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
     private class PrimaryRadioButtonCell extends TableCell<SnpInDelEvidence, Boolean> {
         private RadioButton radioButton = new RadioButton();
-        boolean setting = false;
 
         private PrimaryRadioButtonCell() {
             radioButton.selectedProperty().addListener((ob, ov, nv) -> {
@@ -423,16 +419,15 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         interpretationGridPane.setPrefWidth(size);
     }
 
-    public void setEvidenceTable() {
+    @SuppressWarnings("unchecked")
+    private void setEvidenceTable() {
         if(evidenceTableView.getItems() != null && !evidenceTableView.getItems().isEmpty()) {
             evidenceTableView.getItems().removeAll(evidenceTableView.getItems());
             evidenceTableView.refresh();
-            //evidenceTableView.setItems(null);
         }
         if(interpretationTableView.getItems() != null && !interpretationTableView.getItems().isEmpty()) {
             interpretationTableView.getItems().removeAll(interpretationTableView.getItems());
             interpretationTableView.refresh();
-            //interpretationTableView.setItems(null);
         }
         try {
             HttpClientResponse response = apiService.get("/analysisResults/snpInDels/"+
@@ -484,7 +479,8 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         }
     }
 
-    public void setPastCases() {
+    @SuppressWarnings("unchecked")
+    private void setPastCases() {
         if(pastCasesTableView.getItems() != null && !pastCasesTableView.getItems().isEmpty()) {
             pastCasesTableView.getItems().removeAll(pastCasesTableView.getItems());
         }
@@ -514,34 +510,25 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         }
     }
 
-    public void addToReportBtn(CheckBox checkBox) {
+    private void addToReportBtn(CheckBox checkBox) {
         if(selectedAnalysisResultVariant != null) {
             String oldSymbol = selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport();
+            String symbol = "N";
             if (checkBox.isSelected()) {
-                try {
-                    FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
-                    Node node = loader.load();
-                    ExcludeReportDialogController excludeReportDialogController = loader.getController();
-                    excludeReportDialogController.setMainController(mainController);
-                    excludeReportDialogController.settingItem("Y", selectedAnalysisResultVariant, checkBox);
-                    excludeReportDialogController.show((Parent) node);
-                } catch (IOException ioe) {
-                    ioe.printStackTrace();
-                }
-                if(!oldSymbol.equals(selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport()))
-                    analysisDetailSNVController.showVariantList(analysisDetailSNVController.getCurrentPageIndex() + 1, 0);
-            } else {
-                try {
-                    FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
-                    Node node = loader.load();
-                    ExcludeReportDialogController excludeReportDialogController = loader.getController();
-                    excludeReportDialogController.setMainController(mainController);
-                    excludeReportDialogController.settingItem("N", selectedAnalysisResultVariant, checkBox);
-                    excludeReportDialogController.show((Parent) node);
-                } catch (IOException ioe) {
-                    ioe.printStackTrace();
-                }
+                symbol = "Y";
             }
+
+            try {
+                FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
+                Node node = loader.load();
+                ExcludeReportDialogController excludeReportDialogController = loader.getController();
+                excludeReportDialogController.setMainController(mainController);
+                excludeReportDialogController.settingItem(symbol, selectedAnalysisResultVariant, checkBox);
+                excludeReportDialogController.show((Parent) node);
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+
             if(!oldSymbol.equals(selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport()))
                 analysisDetailSNVController.showVariantList(analysisDetailSNVController.getCurrentPageIndex() + 1, 0);
         }

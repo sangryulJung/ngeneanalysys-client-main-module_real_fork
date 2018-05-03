@@ -237,6 +237,7 @@ public class PastResultsController extends SubPaneController {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private Set<String> getAllData(JSONArray array) {
 		Set<String> data = new HashSet<>();
 		array.forEach(item -> data.add(item.toString()));
@@ -504,6 +505,7 @@ public class PastResultsController extends SubPaneController {
 		box.setSpacing(10);
 		box.getChildren().add(title);
 		FlowPane flowPane = new FlowPane();
+		flowPane.setVgap(10);
 		HBox hBox = new HBox();
 		hBox.setStyle(hBox.getStyle() + "-fx-background-color : #273e5e; -fx-background-radius : 20; -fx-padding : 2 5 2 5");
 		hBox.setAlignment(Pos.CENTER);
@@ -538,6 +540,7 @@ public class PastResultsController extends SubPaneController {
 		box.setSpacing(10);
 		box.getChildren().add(title);
 		FlowPane flowPane = new FlowPane();
+		flowPane.setVgap(10);
 		HBox hBox = new HBox();
 		hBox.setStyle(hBox.getStyle() + "-fx-background-color : #273e5e; -fx-background-radius : 20; -fx-padding : 2 5 2 5");
 		hBox.setAlignment(Pos.CENTER);

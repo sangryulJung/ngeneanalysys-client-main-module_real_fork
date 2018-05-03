@@ -13,10 +13,7 @@ import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedVariantAndInterpretationEvidence;
 import ngeneanalysys.service.APIService;
-import ngeneanalysys.util.ConvertUtil;
-import ngeneanalysys.util.DialogUtil;
-import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.StringUtils;
+import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
@@ -114,7 +111,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
     @FXML
     private Label roiCoverageLabel;
 
-    @FXML
+    /*@FXML
     private Tooltip totalBaseTooltip;
 
     @FXML
@@ -133,7 +130,28 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
     private Tooltip duplicatedReadsTooltip;
 
     @FXML
-    private Tooltip roiCoverageTooltip;
+    private Tooltip roiCoverageTooltip;*/
+
+    @FXML
+    private Label totalBaseQCLabel;
+
+    @FXML
+    private Label q30QCLabel;
+
+    @FXML
+    private Label mappedBaseQCLabel;
+
+    @FXML
+    private Label onTargetQCLabel;
+
+    @FXML
+    private Label onTargetCoverageQCLabel;
+
+    @FXML
+    private Label dupicatedReadsQCLabel;
+
+    @FXML
+    private Label roiCoverageQCLabel;
 
     /** API 서버 통신 서비스 */
     private APIService apiService;
@@ -312,6 +330,16 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         settingOverallQC(sample.getId());
     }
 
+    public void setQCItem(final Label valueLabel, final Label QCLabel
+            , final List<SampleQC> qcList, final String qcString) {
+        valueLabel.setText(findQCResult(qcList, qcString).toUpperCase());
+        valueLabel.setTooltip(new Tooltip(findQCResultString(qcList, qcString)));
+        //totalBaseTooltip.setText(findQCTooltipString(qcList, "total_base"));
+        final String value = findQCTooltipString(qcList, qcString);
+        QCLabel.setOnMouseClicked(ev ->
+                PopOverUtil.openQCPopOver(QCLabel, value));
+    }
+
     public void settingOverallQC(int sampleId) {
 
         List<SampleQC> qcList = null;
@@ -322,33 +350,13 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
 
             qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
 
-            totalBaseLabel.setText(findQCResult(qcList, "total_base"));
-            totalBaseLabel.setTooltip(new Tooltip(findQCResultString(qcList, "total_base")));
-            totalBaseTooltip.setText(findQCTooltipString(qcList, "total_base"));
-
-            q30Label.setText(findQCResult(qcList, "q30_trimmed_base"));
-            q30Label.setTooltip(new Tooltip(findQCResultString(qcList, "q30_trimmed_base")));
-            q30Tooltip.setText(findQCTooltipString(qcList, "q30_trimmed_base"));
-
-            mappedLabel.setText(findQCResult(qcList, "mapped_base"));
-            mappedLabel.setTooltip(new Tooltip(findQCResultString(qcList, "mapped_base")));
-            mappedBaseTooltip.setText(findQCTooltipString(qcList, "mapped_base"));
-
-            onTargetLabel.setText(findQCResult(qcList, "on_target"));
-            onTargetLabel.setTooltip(new Tooltip(findQCResultString(qcList, "on_target")));
-            onTargetTooltip.setText(findQCTooltipString(qcList, "on_target"));
-
-            onTargetCoverageLabel.setText(findQCResult(qcList, "on_target_coverage"));
-            onTargetCoverageLabel.setTooltip(new Tooltip(findQCResultString(qcList, "on_target_coverage")));
-            onTargetCoverageTooltip.setText(findQCTooltipString(qcList, "on_target_coverage"));
-
-            duplicatedReadsLabel.setText(findQCResult(qcList, "duplicated_reads"));
-            duplicatedReadsLabel.setTooltip(new Tooltip(findQCResultString(qcList, "duplicated_reads")));
-            duplicatedReadsTooltip.setText(findQCTooltipString(qcList, "duplicated_reads"));
-
-            roiCoverageLabel.setText(findQCResult(qcList, "roi_coverage"));
-            roiCoverageLabel.setTooltip(new Tooltip(findQCResultString(qcList, "roi_coverage")));
-            roiCoverageTooltip.setText(findQCTooltipString(qcList, "roi_coverage"));
+            setQCItem(totalBaseLabel, totalBaseQCLabel, qcList, "total_base");
+            setQCItem(q30Label, q30QCLabel, qcList, "q30_trimmed_base");
+            setQCItem(mappedLabel, mappedBaseQCLabel, qcList, "mapped_base");
+            setQCItem(onTargetLabel, onTargetQCLabel, qcList, "on_target");
+            setQCItem(onTargetCoverageLabel, onTargetCoverageQCLabel, qcList, "on_target_coverage");
+            setQCItem(duplicatedReadsLabel, dupicatedReadsQCLabel, qcList, "duplicated_reads");
+            setQCItem(roiCoverageLabel, roiCoverageQCLabel, qcList, "roi_coverage");
 
         } catch(WebAPIException e) {
             DialogUtil.alert("QC ERROR", e.getMessage(), this.getMainApp().getPrimaryStage(), true);

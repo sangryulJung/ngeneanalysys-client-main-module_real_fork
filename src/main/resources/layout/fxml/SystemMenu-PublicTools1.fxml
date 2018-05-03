@@ -10,15 +10,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane prefHeight="475.0" prefWidth="1030.0" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.PublicToolsController">
+<ScrollPane prefHeight="500.0" prefWidth="1030.0" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.PublicToolsController">
    <content>
-      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1085.0" prefWidth="1015.0" styleClass="bg_gray_f3">
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="1015.0" styleClass="bg_gray_f3">
          <children>
-            <VBox layoutX="264.0" layoutY="110.0" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1050.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <VBox layoutX="264.0" layoutY="110.0" prefWidth="1050.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="140.0">
                      <children>
-                        <Label prefHeight="50.0" prefWidth="500.0" text="BRCAaccuTest, BRCAaccuTest PLUS">
+                        <Label prefWidth="500.0" text="BRCAaccuTest, BRCAaccuTest PLUS">
                            <styleClass>
                               <String fx:value="txt_black" />
                               <String fx:value="weight_bold" />
@@ -87,63 +87,51 @@
                         <Insets left="10.0" />
                      </padding>
                   </HBox>
-                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="1000.0">
+                  <VBox prefWidth="1000.0">
                      <children>
                         <Separator prefWidth="200.0" />
-                        <HBox prefHeight="34.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefWidth="1019.0">
                            <children>
-                              <VBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="135.0">
-                                 <children>
-                                    <Label prefWidth="135.0" text="BWA" wrapText="true">
-                                       <styleClass>
-                                          <String fx:value="txt_black" />
-                                          <String fx:value="weight_bold" />
-                                          <String fx:value="font_size_11" />
-                                       </styleClass>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="870.0">
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="1019.0">
-                                       <children>
-                                          <Label prefHeight="34.0" prefWidth="80.0" text="v0.7.10">
-                                             <styleClass>
-                                                <String fx:value="txt_gray_656565" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="2534.0" prefWidth="70.0" text="Jul, 2014">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" prefWidth="580.0" text="mapping low-divergent sequences against a large reference genome">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" text="GPLv3, MIT" wrapText="true">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                             <font>
-                                                <Font size="9.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
+                              <Label prefWidth="135.0" text="BWA" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="80.0" text="v0.7.10">
+                                 <styleClass>
+                                    <String fx:value="txt_gray_656565" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="70.0" text="Jul, 2014">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefHeight="35.0" prefWidth="580.0" text="mapping low-divergent sequences against a large reference genome">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label text="GPLv3, MIT" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </HBox>
-                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                        <Separator prefWidth="1010.0">
                            <padding>
                               <Insets top="3.0" />
                            </padding>
@@ -153,62 +141,50 @@
                         <Insets left="10.0" />
                      </VBox.margin>
                   </VBox>
-                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="1000.0">
+                  <VBox prefWidth="1000.0">
                      <children>
-                        <HBox prefHeight="34.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefWidth="1019.0">
                            <children>
-                              <VBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="135.0">
-                                 <children>
-                                    <Label prefWidth="135.0" text="FastQC" wrapText="true">
-                                       <styleClass>
-                                          <String fx:value="txt_black" />
-                                          <String fx:value="weight_bold" />
-                                          <String fx:value="font_size_11" />
-                                       </styleClass>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="870.0">
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="1019.0">
-                                       <children>
-                                          <Label prefHeight="34.0" prefWidth="80.0" text="v0.11.3">
-                                             <styleClass>
-                                                <String fx:value="txt_gray_656565" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="2534.0" prefWidth="70.0" text="May, 2015">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" prefWidth="580.0" text="quality control tool for high throughput sequence data">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" text="GPLv3" wrapText="true">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                             <font>
-                                                <Font size="9.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
+                              <Label prefWidth="135.0" text="FastQC" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="80.0" text="v0.11.3">
+                                 <styleClass>
+                                    <String fx:value="txt_gray_656565" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="70.0" text="May, 2015">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefHeight="35.0" prefWidth="580.0" text="quality control tool for high throughput sequence data">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label text="GPLv3" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </HBox>
-                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                        <Separator prefWidth="1010.0">
                            <padding>
                               <Insets top="3.0" />
                            </padding>
@@ -218,62 +194,50 @@
                         <Insets left="9.0" />
                      </VBox.margin>
                   </VBox>
-                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="1000.0">
+                  <VBox prefWidth="1000.0">
                      <children>
-                        <HBox prefHeight="34.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefWidth="1019.0">
                            <children>
-                              <VBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="135.0">
-                                 <children>
-                                    <Label prefWidth="135.0" text="fastq-tools" wrapText="true">
-                                       <styleClass>
-                                          <String fx:value="txt_black" />
-                                          <String fx:value="weight_bold" />
-                                          <String fx:value="font_size_11" />
-                                       </styleClass>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="870.0">
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="1019.0">
-                                       <children>
-                                          <Label prefHeight="34.0" prefWidth="80.0" text="v0.8">
-                                             <styleClass>
-                                                <String fx:value="txt_gray_656565" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="2534.0" prefWidth="70.0" text="Jul, 2015">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" prefWidth="580.0" text="handling FASTQ file">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" text="MIT" wrapText="true">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                             <font>
-                                                <Font size="9.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
+                              <Label prefWidth="135.0" text="fastq-tools" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="80.0" text="v0.8">
+                                 <styleClass>
+                                    <String fx:value="txt_gray_656565" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="70.0" text="Jul, 2015">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefHeight="35.0" prefWidth="580.0" text="handling FASTQ file">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label text="MIT" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </HBox>
-                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                        <Separator prefWidth="1010.0">
                            <padding>
                               <Insets top="3.0" />
                            </padding>
@@ -283,62 +247,50 @@
                         <Insets left="10.0" />
                      </VBox.margin>
                   </VBox>
-                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="1000.0">
+                  <VBox prefWidth="1000.0">
                      <children>
-                        <HBox prefHeight="34.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefWidth="1019.0">
                            <children>
-                              <VBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="135.0">
-                                 <children>
-                                    <Label prefWidth="135.0" text="FastQValidator" wrapText="true">
-                                       <styleClass>
-                                          <String fx:value="txt_black" />
-                                          <String fx:value="weight_bold" />
-                                          <String fx:value="font_size_11" />
-                                       </styleClass>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="870.0">
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="1019.0">
-                                       <children>
-                                          <Label prefHeight="34.0" prefWidth="80.0" text="v0.1.1">
-                                             <styleClass>
-                                                <String fx:value="txt_gray_656565" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="2534.0" prefWidth="70.0" text="Oct, 2012">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" prefWidth="580.0" text="validation the format of FASTQ file">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" text="the Univerity of Micihigan" wrapText="true">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                             <font>
-                                                <Font size="9.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
+                              <Label prefWidth="135.0" text="FastQValidator" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="80.0" text="v0.1.1">
+                                 <styleClass>
+                                    <String fx:value="txt_gray_656565" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="70.0" text="Oct, 2012">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefHeight="35.0" prefWidth="580.0" text="validation the format of FASTQ file">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label text="the Univerity of Micihigan" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </HBox>
-                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                        <Separator prefWidth="1010.0">
                            <padding>
                               <Insets top="3.0" />
                            </padding>
@@ -348,62 +300,50 @@
                         <Insets left="10.0" />
                      </VBox.margin>
                   </VBox>
-                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="1000.0">
+                  <VBox prefWidth="1000.0">
                      <children>
-                        <HBox prefHeight="34.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefWidth="1019.0">
                            <children>
-                              <VBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="135.0">
-                                 <children>
-                                    <Label prefWidth="135.0" text="FLASH" wrapText="true">
-                                       <styleClass>
-                                          <String fx:value="txt_black" />
-                                          <String fx:value="weight_bold" />
-                                          <String fx:value="font_size_11" />
-                                       </styleClass>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="870.0">
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="1019.0">
-                                       <children>
-                                          <Label prefHeight="34.0" prefWidth="80.0" text="v1.2.11">
-                                             <styleClass>
-                                                <String fx:value="txt_gray_656565" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="2534.0" prefWidth="70.0" text="Aug, 2014">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" prefWidth="580.0" text="merge paired-end reads">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" text="GPLv3" wrapText="true">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                             <font>
-                                                <Font size="9.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
+                              <Label prefWidth="135.0" text="FLASH" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="80.0" text="v1.2.11">
+                                 <styleClass>
+                                    <String fx:value="txt_gray_656565" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="70.0" text="Aug, 2014">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefHeight="35.0" prefWidth="580.0" text="merge paired-end reads">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label text="GPLv3" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </HBox>
-                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                        <Separator prefWidth="1010.0">
                            <padding>
                               <Insets top="3.0" />
                            </padding>
@@ -413,62 +353,50 @@
                         <Insets left="10.0" />
                      </VBox.margin>
                   </VBox>
-                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="1000.0">
+                  <VBox prefWidth="1000.0">
                      <children>
-                        <HBox prefHeight="34.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefWidth="1019.0">
                            <children>
-                              <VBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="135.0">
-                                 <children>
-                                    <Label prefWidth="135.0" text="freebayes" wrapText="true">
-                                       <styleClass>
-                                          <String fx:value="txt_black" />
-                                          <String fx:value="weight_bold" />
-                                          <String fx:value="font_size_11" />
-                                       </styleClass>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="870.0">
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="1019.0">
-                                       <children>
-                                          <Label prefHeight="34.0" prefWidth="80.0" text="v1.1.0">
-                                             <styleClass>
-                                                <String fx:value="txt_gray_656565" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="2534.0" prefWidth="70.0" text="Nov, 2016">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" prefWidth="580.0" text="Bayesian genetic variant detector designed to find small polymorphisms">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" text="MIT" wrapText="true">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                             <font>
-                                                <Font size="9.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
+                              <Label prefWidth="135.0" text="freebayes" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="80.0" text="v1.1.0">
+                                 <styleClass>
+                                    <String fx:value="txt_gray_656565" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="70.0" text="Nov, 2016">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefHeight="35.0" prefWidth="580.0" text="Bayesian genetic variant detector designed to find small polymorphisms">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label text="MIT" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </HBox>
-                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                        <Separator prefWidth="1010.0">
                            <padding>
                               <Insets top="3.0" />
                            </padding>
@@ -478,62 +406,50 @@
                         <Insets left="10.0" />
                      </VBox.margin>
                   </VBox>
-                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="1000.0">
+                  <VBox prefWidth="1000.0">
                      <children>
-                        <HBox prefHeight="34.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefWidth="1019.0">
                            <children>
-                              <VBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="135.0">
-                                 <children>
-                                    <Label prefWidth="135.0" text="GATK" wrapText="true">
-                                       <styleClass>
-                                          <String fx:value="txt_black" />
-                                          <String fx:value="weight_bold" />
-                                          <String fx:value="font_size_11" />
-                                       </styleClass>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="870.0">
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="1019.0">
-                                       <children>
-                                          <Label prefHeight="34.0" prefWidth="80.0" text="v2.3 Lite">
-                                             <styleClass>
-                                                <String fx:value="txt_gray_656565" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="2534.0" prefWidth="70.0" text="Dec, 2012">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" prefWidth="580.0" text="wide variety of tools with a primary focus on variant discovery and genotyping">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" text="MIT" wrapText="true">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                             <font>
-                                                <Font size="9.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
+                              <Label prefWidth="135.0" text="GATK" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="80.0" text="v2.3 Lite">
+                                 <styleClass>
+                                    <String fx:value="txt_gray_656565" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="70.0" text="Dec, 2012">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefHeight="35.0" prefWidth="580.0" text="wide variety of tools with a primary focus on variant discovery and genotyping">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label text="MIT" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </HBox>
-                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                        <Separator prefWidth="1010.0">
                            <padding>
                               <Insets top="3.0" />
                            </padding>
@@ -543,62 +459,50 @@
                         <Insets left="10.0" />
                      </VBox.margin>
                   </VBox>
-                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="1000.0">
+                  <VBox prefWidth="1000.0">
                      <children>
-                        <HBox prefHeight="34.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefWidth="1019.0">
                            <children>
-                              <VBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="135.0">
-                                 <children>
-                                    <Label prefWidth="135.0" text="Picard" wrapText="true">
-                                       <styleClass>
-                                          <String fx:value="txt_black" />
-                                          <String fx:value="weight_bold" />
-                                          <String fx:value="font_size_11" />
-                                       </styleClass>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="870.0">
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="1019.0">
-                                       <children>
-                                          <Label prefHeight="34.0" prefWidth="80.0" text="v1.81">
-                                             <styleClass>
-                                                <String fx:value="txt_gray_656565" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="2534.0" prefWidth="70.0" text="Dec, 2012">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" prefWidth="580.0" text="manipulating high-throughput sequencing (HTS) data and formats such as SAM/BAM/CRAM and VCF">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" text="MIT" wrapText="true">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                             <font>
-                                                <Font size="9.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
+                              <Label prefWidth="135.0" text="Picard" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="80.0" text="v1.81">
+                                 <styleClass>
+                                    <String fx:value="txt_gray_656565" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="70.0" text="Dec, 2012">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefHeight="35.0" prefWidth="580.0" text="manipulating high-throughput sequencing (HTS) data and formats such as SAM/BAM/CRAM and VCF">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label text="MIT" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </HBox>
-                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                        <Separator prefWidth="1010.0">
                            <padding>
                               <Insets top="3.0" />
                            </padding>
@@ -608,62 +512,50 @@
                         <Insets left="10.0" />
                      </VBox.margin>
                   </VBox>
-                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="1000.0">
+                  <VBox prefWidth="1000.0">
                      <children>
-                        <HBox prefHeight="34.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefWidth="1019.0">
                            <children>
-                              <VBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="135.0">
-                                 <children>
-                                    <Label prefWidth="135.0" text="SAMtools" wrapText="true">
-                                       <styleClass>
-                                          <String fx:value="txt_black" />
-                                          <String fx:value="weight_bold" />
-                                          <String fx:value="font_size_11" />
-                                       </styleClass>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="870.0">
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="1019.0">
-                                       <children>
-                                          <Label prefHeight="34.0" prefWidth="80.0" text="v1.2">
-                                             <styleClass>
-                                                <String fx:value="txt_gray_656565" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="2534.0" prefWidth="70.0" text="Feb, 2012">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" prefWidth="580.0" text="various utilities for manipulating alignments in the SAM format">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" text="BSD, MIT" wrapText="true">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                             <font>
-                                                <Font size="9.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
+                              <Label prefWidth="135.0" text="SAMtools" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="80.0" text="v1.2">
+                                 <styleClass>
+                                    <String fx:value="txt_gray_656565" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="70.0" text="Feb, 2012">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefHeight="35.0" prefWidth="580.0" text="various utilities for manipulating alignments in the SAM format">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label text="BSD, MIT" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </HBox>
-                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                        <Separator prefWidth="1010.0">
                            <padding>
                               <Insets top="3.0" />
                            </padding>
@@ -673,62 +565,50 @@
                         <Insets left="10.0" />
                      </VBox.margin>
                   </VBox>
-                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="1000.0">
+                  <VBox prefWidth="1000.0">
                      <children>
-                        <HBox prefHeight="34.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefWidth="1019.0">
                            <children>
-                              <VBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="135.0">
-                                 <children>
-                                    <Label prefWidth="135.0" text="Sickle" wrapText="true">
-                                       <styleClass>
-                                          <String fx:value="txt_black" />
-                                          <String fx:value="weight_bold" />
-                                          <String fx:value="font_size_11" />
-                                       </styleClass>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="870.0">
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="1019.0">
-                                       <children>
-                                          <Label prefHeight="34.0" prefWidth="80.0" text="v1.33">
-                                             <styleClass>
-                                                <String fx:value="txt_gray_656565" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="2534.0" prefWidth="70.0" text="Jul, 2014">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" prefWidth="580.0" text="Allows windowed adaptive trimmer">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" text="MIT" wrapText="true">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                             <font>
-                                                <Font size="9.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
+                              <Label prefWidth="135.0" text="Sickle" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="80.0" text="v1.33">
+                                 <styleClass>
+                                    <String fx:value="txt_gray_656565" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="70.0" text="Jul, 2014">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefHeight="35.0" prefWidth="580.0" text="Allows windowed adaptive trimmer">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label text="MIT" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </HBox>
-                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                        <Separator prefWidth="1010.0">
                            <padding>
                               <Insets top="3.0" />
                            </padding>
@@ -738,62 +618,50 @@
                         <Insets left="10.0" />
                      </VBox.margin>
                   </VBox>
-                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="1000.0">
+                  <VBox prefWidth="1000.0">
                      <children>
-                        <HBox prefHeight="34.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefWidth="1019.0">
                            <children>
-                              <VBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="135.0">
-                                 <children>
-                                    <Label prefWidth="135.0" text="SnpEff" wrapText="true">
-                                       <styleClass>
-                                          <String fx:value="txt_black" />
-                                          <String fx:value="weight_bold" />
-                                          <String fx:value="font_size_11" />
-                                       </styleClass>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="870.0">
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="1019.0">
-                                       <children>
-                                          <Label prefHeight="34.0" prefWidth="80.0" text="v4.2">
-                                             <styleClass>
-                                                <String fx:value="txt_gray_656565" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="2534.0" prefWidth="70.0" text="Mar, 2016">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" prefWidth="580.0" text="Genomic variant annotations and functional effect prediction toolbox">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" text="LGPLv3" wrapText="true">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                             <font>
-                                                <Font size="9.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
+                              <Label prefWidth="135.0" text="SnpEff" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="80.0" text="v4.2">
+                                 <styleClass>
+                                    <String fx:value="txt_gray_656565" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="70.0" text="Mar, 2016">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefHeight="35.0" prefWidth="580.0" text="Genomic variant annotations and functional effect prediction toolbox">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label text="LGPLv3" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </HBox>
-                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                        <Separator prefWidth="1010.0">
                            <padding>
                               <Insets top="3.0" />
                            </padding>
@@ -803,62 +671,50 @@
                         <Insets left="10.0" />
                      </VBox.margin>
                   </VBox>
-                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="1000.0">
+                  <VBox prefWidth="1000.0">
                      <children>
-                        <HBox prefHeight="34.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefWidth="1019.0">
                            <children>
-                              <VBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="135.0">
-                                 <children>
-                                    <Label prefWidth="135.0" text="SnpShift" wrapText="true">
-                                       <styleClass>
-                                          <String fx:value="txt_black" />
-                                          <String fx:value="weight_bold" />
-                                          <String fx:value="font_size_11" />
-                                       </styleClass>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="870.0">
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="1019.0">
-                                       <children>
-                                          <Label prefHeight="34.0" prefWidth="80.0" text="v4.2">
-                                             <styleClass>
-                                                <String fx:value="txt_gray_656565" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="2534.0" prefWidth="70.0" text="Mar, 2016">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" prefWidth="580.0" text="Genomic variant annotations and functional effect prediction toolbox">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" text="LGPLv3" wrapText="true">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                             <font>
-                                                <Font size="9.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
+                              <Label prefWidth="135.0" text="SnpShift" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="80.0" text="v4.2">
+                                 <styleClass>
+                                    <String fx:value="txt_gray_656565" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="70.0" text="Mar, 2016">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefHeight="35.0" prefWidth="580.0" text="Genomic variant annotations and functional effect prediction toolbox">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label text="LGPLv3" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </HBox>
-                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                        <Separator prefWidth="1010.0">
                            <padding>
                               <Insets top="3.0" />
                            </padding>
@@ -868,62 +724,50 @@
                         <Insets left="10.0" />
                      </VBox.margin>
                   </VBox>
-                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="1000.0">
+                  <VBox prefWidth="1000.0">
                      <children>
-                        <HBox prefHeight="34.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefWidth="1019.0">
                            <children>
-                              <VBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="135.0">
-                                 <children>
-                                    <Label prefWidth="135.0" text="vt" wrapText="true">
-                                       <styleClass>
-                                          <String fx:value="txt_black" />
-                                          <String fx:value="weight_bold" />
-                                          <String fx:value="font_size_11" />
-                                       </styleClass>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="870.0">
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="1019.0">
-                                       <children>
-                                          <Label prefHeight="34.0" prefWidth="80.0" text="v0.5772">
-                                             <styleClass>
-                                                <String fx:value="txt_gray_656565" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="2534.0" prefWidth="70.0" text="Aug, 2016">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" prefWidth="580.0" text="variant calling and manipulating VCFs and BCFs">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" text="MIT" wrapText="true">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                             <font>
-                                                <Font size="9.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
+                              <Label prefWidth="135.0" text="vt" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="80.0" text="v0.5772">
+                                 <styleClass>
+                                    <String fx:value="txt_gray_656565" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="70.0" text="Aug, 2016">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefHeight="35.0" prefWidth="580.0" text="variant calling and manipulating VCFs and BCFs">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label text="MIT" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </HBox>
-                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                        <Separator prefWidth="1010.0">
                            <padding>
                               <Insets top="3.0" />
                            </padding>
@@ -967,7 +811,7 @@
                         <Insets />
                      </VBox.margin>
                   </HBox>
-                  <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="140.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="140.0">
                      <children>
                         <Label prefWidth="135.0" text="Software">
                            <styleClass>
@@ -999,7 +843,7 @@
                               <Insets />
                            </HBox.margin>
                         </Label>
-                        <Label prefWidth="580.0" text="Description" />
+                        <Label prefHeight="25.0" prefWidth="580.0" text="Description" />
                         <Label text="License">
                            <styleClass>
                               <String fx:value="txt_black" />
@@ -1018,12 +862,12 @@
                         <Insets />
                      </VBox.margin>
                   </HBox>
-                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="1000.0">
+                  <VBox prefHeight="35.0" prefWidth="1000.0">
                      <children>
                         <Separator prefWidth="200.0" />
-                        <HBox prefHeight="34.0" prefWidth="200.0">
+                        <VBox prefWidth="870.0">
                            <children>
-                              <VBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="135.0">
+                              <HBox alignment="CENTER_LEFT" prefWidth="1019.0">
                                  <children>
                                     <Label prefWidth="135.0" text="BCFtools" wrapText="true">
                                        <styleClass>
@@ -1032,55 +876,41 @@
                                           <String fx:value="font_size_11" />
                                        </styleClass>
                                     </Label>
+                                    <Label prefWidth="80.0" text="v1.3.1">
+                                       <styleClass>
+                                          <String fx:value="txt_gray_656565" />
+                                          <String fx:value="font_size_11" />
+                                       </styleClass>
+                                    </Label>
+                                    <Label prefWidth="70.0" text="Apr, 2016">
+                                       <styleClass>
+                                          <String fx:value="txt_black" />
+                                          <String fx:value="weight_bold" />
+                                          <String fx:value="font_size_11" />
+                                       </styleClass>
+                                    </Label>
+                                    <Label prefHeight="35.0" prefWidth="580.0" text="discovers short variants from Next Generation Sequencing data">
+                                       <styleClass>
+                                          <String fx:value="txt_black" />
+                                          <String fx:value="weight_bold" />
+                                          <String fx:value="font_size_11" />
+                                       </styleClass>
+                                    </Label>
+                                    <Label text="MIT" wrapText="true">
+                                       <styleClass>
+                                          <String fx:value="txt_black" />
+                                          <String fx:value="weight_bold" />
+                                          <String fx:value="font_size_11" />
+                                       </styleClass>
+                                       <font>
+                                          <Font size="9.0" />
+                                       </font>
+                                    </Label>
                                  </children>
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
-                              </VBox>
-                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="870.0">
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="1019.0">
-                                       <children>
-                                          <Label prefHeight="34.0" prefWidth="80.0" text="v1.3.1">
-                                             <styleClass>
-                                                <String fx:value="txt_gray_656565" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="2534.0" prefWidth="70.0" text="Apr, 2016">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" prefWidth="580.0" text="discovers short variants from Next Generation Sequencing data">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" text="MIT" wrapText="true">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                             <font>
-                                                <Font size="9.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
+                              </HBox>
                            </children>
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                        </HBox>
-                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                        </VBox>
+                        <Separator prefWidth="1010.0">
                            <padding>
                               <Insets top="3.0" />
                            </padding>
@@ -1090,62 +920,50 @@
                         <Insets left="10.0" />
                      </VBox.margin>
                   </VBox>
-                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="1000.0">
+                  <VBox prefWidth="1000.0">
                      <children>
-                        <HBox prefHeight="34.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefWidth="1019.0">
                            <children>
-                              <VBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="135.0">
-                                 <children>
-                                    <Label prefWidth="135.0" text="BWA" wrapText="true">
-                                       <styleClass>
-                                          <String fx:value="txt_black" />
-                                          <String fx:value="weight_bold" />
-                                          <String fx:value="font_size_11" />
-                                       </styleClass>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="870.0">
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="1019.0">
-                                       <children>
-                                          <Label prefHeight="34.0" prefWidth="80.0" text="v0.7.10">
-                                             <styleClass>
-                                                <String fx:value="txt_gray_656565" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="2534.0" prefWidth="70.0" text="Jul, 2014">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" prefWidth="580.0" text="mapping low-divergent sequences against a large reference genome">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" text="GPLv3, MIT" wrapText="true">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                             <font>
-                                                <Font size="9.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
+                              <Label prefWidth="135.0" text="BWA" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="80.0" text="v0.7.10">
+                                 <styleClass>
+                                    <String fx:value="txt_gray_656565" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="70.0" text="Jul, 2014">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefHeight="35.0" prefWidth="580.0" text="mapping low-divergent sequences against a large reference genome">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label text="GPLv3, MIT" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </HBox>
-                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                        <Separator prefWidth="1010.0">
                            <padding>
                               <Insets top="3.0" />
                            </padding>
@@ -1155,62 +973,50 @@
                         <Insets left="10.0" />
                      </VBox.margin>
                   </VBox>
-                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="1000.0">
+                  <VBox prefWidth="1000.0">
                      <children>
-                        <HBox prefHeight="34.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefWidth="1019.0">
                            <children>
-                              <VBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="135.0">
-                                 <children>
-                                    <Label prefWidth="135.0" text="FastQC" wrapText="true">
-                                       <styleClass>
-                                          <String fx:value="txt_black" />
-                                          <String fx:value="weight_bold" />
-                                          <String fx:value="font_size_11" />
-                                       </styleClass>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="870.0">
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="1019.0">
-                                       <children>
-                                          <Label prefHeight="34.0" prefWidth="80.0" text="v0.11.3">
-                                             <styleClass>
-                                                <String fx:value="txt_gray_656565" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="2534.0" prefWidth="70.0" text="May, 2015">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" prefWidth="580.0" text="quality control tool for high throughput sequence data">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" text="GPLv3" wrapText="true">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                             <font>
-                                                <Font size="9.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
+                              <Label prefWidth="135.0" text="FastQC" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="80.0" text="v0.11.3">
+                                 <styleClass>
+                                    <String fx:value="txt_gray_656565" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="70.0" text="May, 2015">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefHeight="35.0" prefWidth="580.0" text="quality control tool for high throughput sequence data">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label text="GPLv3" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </HBox>
-                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                        <Separator prefWidth="1010.0">
                            <padding>
                               <Insets top="3.0" />
                            </padding>
@@ -1220,62 +1026,50 @@
                         <Insets left="10.0" />
                      </VBox.margin>
                   </VBox>
-                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="1000.0">
+                  <VBox prefWidth="1000.0">
                      <children>
-                        <HBox prefHeight="34.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefWidth="1019.0">
                            <children>
-                              <VBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="135.0">
-                                 <children>
-                                    <Label prefWidth="135.0" text="FastQValidator" wrapText="true">
-                                       <styleClass>
-                                          <String fx:value="txt_black" />
-                                          <String fx:value="weight_bold" />
-                                          <String fx:value="font_size_11" />
-                                       </styleClass>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="870.0">
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="1019.0">
-                                       <children>
-                                          <Label prefHeight="34.0" prefWidth="80.0" text="v0.1.1">
-                                             <styleClass>
-                                                <String fx:value="txt_gray_656565" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="2534.0" prefWidth="70.0" text="Oct, 2012">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" prefWidth="580.0" text="validation the format of FASTQ file">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" text="the Univerity of Micihigan" wrapText="true">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                             <font>
-                                                <Font size="9.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
+                              <Label prefWidth="135.0" text="FastQValidator" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="80.0" text="v0.1.1">
+                                 <styleClass>
+                                    <String fx:value="txt_gray_656565" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="70.0" text="Oct, 2012">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefHeight="35.0" prefWidth="580.0" text="validation the format of FASTQ file">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label text="the Univerity of Micihigan" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </HBox>
-                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                        <Separator prefWidth="1010.0">
                            <padding>
                               <Insets top="3.0" />
                            </padding>
@@ -1285,62 +1079,50 @@
                         <Insets left="10.0" />
                      </VBox.margin>
                   </VBox>
-                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="1000.0">
+                  <VBox prefWidth="1000.0">
                      <children>
-                        <HBox prefHeight="34.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefWidth="1019.0">
                            <children>
-                              <VBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="135.0">
-                                 <children>
-                                    <Label prefWidth="135.0" text="FLASH" wrapText="true">
-                                       <styleClass>
-                                          <String fx:value="txt_black" />
-                                          <String fx:value="weight_bold" />
-                                          <String fx:value="font_size_11" />
-                                       </styleClass>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="870.0">
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="1019.0">
-                                       <children>
-                                          <Label prefHeight="34.0" prefWidth="80.0" text="v1.2.11">
-                                             <styleClass>
-                                                <String fx:value="txt_gray_656565" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="2534.0" prefWidth="70.0" text="Aug, 2014">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" prefWidth="580.0" text="merge paired-end reads">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" text="GPLv3" wrapText="true">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                             <font>
-                                                <Font size="9.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
+                              <Label prefWidth="135.0" text="FLASH" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="80.0" text="v1.2.11">
+                                 <styleClass>
+                                    <String fx:value="txt_gray_656565" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="70.0" text="Aug, 2014">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefHeight="35.0" prefWidth="580.0" text="merge paired-end reads">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label text="GPLv3" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </HBox>
-                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                        <Separator prefWidth="1010.0">
                            <padding>
                               <Insets top="3.0" />
                            </padding>
@@ -1350,62 +1132,50 @@
                         <Insets left="10.0" />
                      </VBox.margin>
                   </VBox>
-                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="1000.0">
+                  <VBox prefWidth="1000.0">
                      <children>
-                        <HBox prefHeight="34.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefWidth="1019.0">
                            <children>
-                              <VBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="135.0">
-                                 <children>
-                                    <Label prefWidth="135.0" text="freebayes" wrapText="true">
-                                       <styleClass>
-                                          <String fx:value="txt_black" />
-                                          <String fx:value="weight_bold" />
-                                          <String fx:value="font_size_11" />
-                                       </styleClass>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="870.0">
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="1019.0">
-                                       <children>
-                                          <Label prefHeight="34.0" prefWidth="80.0" text="v1.0.2">
-                                             <styleClass>
-                                                <String fx:value="txt_gray_656565" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="2534.0" prefWidth="70.0" text="Jan, 2016">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" prefWidth="580.0" text="Bayesian genetic variant detector designed to find small polymorphisms">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" text="MIT" wrapText="true">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                             <font>
-                                                <Font size="9.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
+                              <Label prefWidth="135.0" text="freebayes" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="80.0" text="v1.0.2">
+                                 <styleClass>
+                                    <String fx:value="txt_gray_656565" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="70.0" text="Jan, 2016">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefHeight="35.0" prefWidth="580.0" text="Bayesian genetic variant detector designed to find small polymorphisms">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label text="MIT" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </HBox>
-                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                        <Separator prefWidth="1010.0">
                            <padding>
                               <Insets top="3.0" />
                            </padding>
@@ -1415,62 +1185,50 @@
                         <Insets left="10.0" />
                      </VBox.margin>
                   </VBox>
-                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="1000.0">
+                  <VBox prefWidth="1000.0">
                      <children>
-                        <HBox prefHeight="34.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefWidth="1019.0">
                            <children>
-                              <VBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="135.0">
-                                 <children>
-                                    <Label prefWidth="135.0" text="GATK" wrapText="true">
-                                       <styleClass>
-                                          <String fx:value="txt_black" />
-                                          <String fx:value="weight_bold" />
-                                          <String fx:value="font_size_11" />
-                                       </styleClass>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="870.0">
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="1019.0">
-                                       <children>
-                                          <Label prefHeight="34.0" prefWidth="80.0" text="v2.3 Lite">
-                                             <styleClass>
-                                                <String fx:value="txt_gray_656565" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="2534.0" prefWidth="70.0" text="Dec, 2012">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" prefWidth="580.0" text="wide variety of tools with a primary focus on variant discovery and genotyping">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" text="MIT" wrapText="true">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                             <font>
-                                                <Font size="9.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
+                              <Label prefWidth="135.0" text="GATK" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="80.0" text="v2.3 Lite">
+                                 <styleClass>
+                                    <String fx:value="txt_gray_656565" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="70.0" text="Dec, 2012">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefHeight="35.0" prefWidth="580.0" text="wide variety of tools with a primary focus on variant discovery and genotyping">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label text="MIT" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </HBox>
-                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                        <Separator prefWidth="1010.0">
                            <padding>
                               <Insets top="3.0" />
                            </padding>
@@ -1480,62 +1238,50 @@
                         <Insets left="10.0" />
                      </VBox.margin>
                   </VBox>
-                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="1000.0">
+                  <VBox prefWidth="1000.0">
                      <children>
-                        <HBox prefHeight="34.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefWidth="1019.0">
                            <children>
-                              <VBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="135.0">
-                                 <children>
-                                    <Label prefWidth="135.0" text="Picard" wrapText="true">
-                                       <styleClass>
-                                          <String fx:value="txt_black" />
-                                          <String fx:value="weight_bold" />
-                                          <String fx:value="font_size_11" />
-                                       </styleClass>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="870.0">
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="1019.0">
-                                       <children>
-                                          <Label prefHeight="34.0" prefWidth="80.0" text="v1.81">
-                                             <styleClass>
-                                                <String fx:value="txt_gray_656565" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="2534.0" prefWidth="70.0" text="Dec, 2012">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" prefWidth="580.0" text="manipulating high-throughput sequencing (HTS) data and formats such as SAM/BAM/CRAM and VCF">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" text="MIT" wrapText="true">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                             <font>
-                                                <Font size="9.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
+                              <Label prefWidth="135.0" text="Picard" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="80.0" text="v1.81">
+                                 <styleClass>
+                                    <String fx:value="txt_gray_656565" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="70.0" text="Dec, 2012">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefHeight="35.0" prefWidth="580.0" text="manipulating high-throughput sequencing (HTS) data and formats such as SAM/BAM/CRAM and VCF">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label text="MIT" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </HBox>
-                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                        <Separator prefWidth="1010.0">
                            <padding>
                               <Insets top="3.0" />
                            </padding>
@@ -1545,62 +1291,50 @@
                         <Insets left="10.0" />
                      </VBox.margin>
                   </VBox>
-                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="1000.0">
+                  <VBox prefWidth="1000.0">
                      <children>
-                        <HBox prefHeight="34.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefWidth="1019.0">
                            <children>
-                              <VBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="135.0">
-                                 <children>
-                                    <Label prefWidth="135.0" text="SAMtools" wrapText="true">
-                                       <styleClass>
-                                          <String fx:value="txt_black" />
-                                          <String fx:value="weight_bold" />
-                                          <String fx:value="font_size_11" />
-                                       </styleClass>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="870.0">
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="1019.0">
-                                       <children>
-                                          <Label prefHeight="34.0" prefWidth="80.0" text="v1.3.1">
-                                             <styleClass>
-                                                <String fx:value="txt_gray_656565" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="2534.0" prefWidth="70.0" text="Apr, 2016">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" prefWidth="580.0" text="various utilities for manipulating alignments in the SAM format">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" text="BSD, MIT" wrapText="true">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                             <font>
-                                                <Font size="9.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
+                              <Label prefWidth="135.0" text="SAMtools" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="80.0" text="v1.3.1">
+                                 <styleClass>
+                                    <String fx:value="txt_gray_656565" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="70.0" text="Apr, 2016">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefHeight="35.0" prefWidth="580.0" text="various utilities for manipulating alignments in the SAM format">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label text="BSD, MIT" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </HBox>
-                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                        <Separator prefWidth="1010.0">
                            <padding>
                               <Insets top="3.0" />
                            </padding>
@@ -1610,62 +1344,50 @@
                         <Insets left="10.0" />
                      </VBox.margin>
                   </VBox>
-                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="1000.0">
+                  <VBox prefWidth="1000.0">
                      <children>
-                        <HBox prefHeight="34.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefWidth="1019.0">
                            <children>
-                              <VBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="135.0">
-                                 <children>
-                                    <Label prefWidth="135.0" text="Sickle" wrapText="true">
-                                       <styleClass>
-                                          <String fx:value="txt_black" />
-                                          <String fx:value="weight_bold" />
-                                          <String fx:value="font_size_11" />
-                                       </styleClass>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="870.0">
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="1019.0">
-                                       <children>
-                                          <Label prefHeight="34.0" prefWidth="80.0" text="v1.33">
-                                             <styleClass>
-                                                <String fx:value="txt_gray_656565" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="2534.0" prefWidth="70.0" text="Jul, 2014">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" prefWidth="580.0" text="Allows windowed adaptive trimmer">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" text="MIT" wrapText="true">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                             <font>
-                                                <Font size="9.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
+                              <Label prefWidth="135.0" text="Sickle" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="80.0" text="v1.33">
+                                 <styleClass>
+                                    <String fx:value="txt_gray_656565" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="70.0" text="Jul, 2014">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefHeight="35.0" prefWidth="580.0" text="Allows windowed adaptive trimmer">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label text="MIT" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </HBox>
-                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                        <Separator prefWidth="1010.0">
                            <padding>
                               <Insets top="3.0" />
                            </padding>
@@ -1675,62 +1397,50 @@
                         <Insets left="10.0" />
                      </VBox.margin>
                   </VBox>
-                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="1000.0">
+                  <VBox prefWidth="1000.0">
                      <children>
-                        <HBox prefHeight="34.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefWidth="1019.0">
                            <children>
-                              <VBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="135.0">
-                                 <children>
-                                    <Label prefWidth="135.0" text="SnpEff" wrapText="true">
-                                       <styleClass>
-                                          <String fx:value="txt_black" />
-                                          <String fx:value="weight_bold" />
-                                          <String fx:value="font_size_11" />
-                                       </styleClass>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="870.0">
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="1019.0">
-                                       <children>
-                                          <Label prefHeight="34.0" prefWidth="80.0" text="v4.2">
-                                             <styleClass>
-                                                <String fx:value="txt_gray_656565" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="2534.0" prefWidth="70.0" text="Mar, 2016">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" prefWidth="580.0" text="Genomic variant annotations and functional effect prediction toolbox">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" text="LGPLv3" wrapText="true">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                             <font>
-                                                <Font size="9.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
+                              <Label prefWidth="135.0" text="SnpEff" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="80.0" text="v4.2">
+                                 <styleClass>
+                                    <String fx:value="txt_gray_656565" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="70.0" text="Mar, 2016">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefHeight="35.0" prefWidth="580.0" text="Genomic variant annotations and functional effect prediction toolbox">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label text="LGPLv3" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </HBox>
-                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                        <Separator prefWidth="1010.0">
                            <padding>
                               <Insets top="3.0" />
                            </padding>
@@ -1740,62 +1450,50 @@
                         <Insets left="10.0" />
                      </VBox.margin>
                   </VBox>
-                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="1000.0">
+                  <VBox prefWidth="1000.0">
                      <children>
-                        <HBox prefHeight="34.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefWidth="1019.0">
                            <children>
-                              <VBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="135.0">
-                                 <children>
-                                    <Label prefWidth="135.0" text="SnpShift" wrapText="true">
-                                       <styleClass>
-                                          <String fx:value="txt_black" />
-                                          <String fx:value="weight_bold" />
-                                          <String fx:value="font_size_11" />
-                                       </styleClass>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="870.0">
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="1019.0">
-                                       <children>
-                                          <Label prefHeight="34.0" prefWidth="80.0" text="v4.2">
-                                             <styleClass>
-                                                <String fx:value="txt_gray_656565" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="2534.0" prefWidth="70.0" text="Mar, 2016">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" prefWidth="580.0" text="Genomic variant annotations and functional effect prediction toolbox">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" text="LGPLv3" wrapText="true">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                             <font>
-                                                <Font size="9.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
+                              <Label prefWidth="135.0" text="SnpShift" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="80.0" text="v4.2">
+                                 <styleClass>
+                                    <String fx:value="txt_gray_656565" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="70.0" text="Mar, 2016">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefHeight="35.0" prefWidth="580.0" text="Genomic variant annotations and functional effect prediction toolbox">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label text="LGPLv3" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </HBox>
-                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                        <Separator prefWidth="1010.0">
                            <padding>
                               <Insets top="3.0" />
                            </padding>
@@ -1805,62 +1503,50 @@
                         <Insets left="10.0" />
                      </VBox.margin>
                   </VBox>
-                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="1000.0">
+                  <VBox prefWidth="1000.0">
                      <children>
-                        <HBox prefHeight="34.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefWidth="1019.0">
                            <children>
-                              <VBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="135.0">
-                                 <children>
-                                    <Label prefWidth="135.0" text="vt" wrapText="true">
-                                       <styleClass>
-                                          <String fx:value="txt_black" />
-                                          <String fx:value="weight_bold" />
-                                          <String fx:value="font_size_11" />
-                                       </styleClass>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="870.0">
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="1019.0">
-                                       <children>
-                                          <Label prefHeight="34.0" prefWidth="80.0" text="v0.5772">
-                                             <styleClass>
-                                                <String fx:value="txt_gray_656565" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="2534.0" prefWidth="70.0" text="Aug, 2016">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" prefWidth="580.0" text="variant calling and manipulating VCFs and BCFs">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                          </Label>
-                                          <Label prefHeight="34.0" text="MIT" wrapText="true">
-                                             <styleClass>
-                                                <String fx:value="txt_black" />
-                                                <String fx:value="weight_bold" />
-                                                <String fx:value="font_size_11" />
-                                             </styleClass>
-                                             <font>
-                                                <Font size="9.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
+                              <Label prefWidth="135.0" text="vt" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="80.0" text="v0.5772">
+                                 <styleClass>
+                                    <String fx:value="txt_gray_656565" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefWidth="70.0" text="Aug, 2016">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label prefHeight="35.0" prefWidth="580.0" text="variant calling and manipulating VCFs and BCFs">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                              </Label>
+                              <Label text="MIT" wrapText="true">
+                                 <styleClass>
+                                    <String fx:value="txt_black" />
+                                    <String fx:value="weight_bold" />
+                                    <String fx:value="font_size_11" />
+                                 </styleClass>
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </HBox>
-                        <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1010.0">
+                        <Separator prefWidth="1010.0">
                            <padding>
                               <Insets top="3.0" />
                            </padding>

@@ -1,10 +1,8 @@
 package ngeneanalysys.util;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.*;
 
 import javafx.concurrent.Task;
@@ -14,7 +12,6 @@ import javafx.scene.Parent;
 import javafx.stage.FileChooser;
 import ngeneanalysys.MainApp;
 import ngeneanalysys.controller.WorkProgressController;
-import ngeneanalysys.exceptions.ExcelParseException;
 import ngeneanalysys.task.ExportVariantDataTask;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.util.HSSFColor;
@@ -24,8 +21,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import com.opencsv.CSVWriter;

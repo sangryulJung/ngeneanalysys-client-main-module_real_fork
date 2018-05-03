@@ -6,7 +6,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -74,24 +73,17 @@
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;">
                            <children>
                               <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="28.0" prefWidth="102.0" text="ROI Coverage" textFill="WHITE" />
-                              <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" styleClass="help_tooltip_white">
+                              <Label fx:id="roiCoverageQCLabel" alignment="CENTER_RIGHT" contentDisplay="RIGHT" style="-fx-cursor: hand;" styleClass="help_tooltip_white">
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>
-                                 <tooltip>
-                                    <Tooltip fx:id="roiCoverageTooltip" text="Empty Tooltip" />
-                                 </tooltip>
                               </Label>
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;" GridPane.columnIndex="1">
                            <children>
                               <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="144.0" text="Corverage Uniformity" textFill="WHITE" />
-                              <Label styleClass="help_tooltip_white">
-                                 <tooltip>
-                                    <Tooltip fx:id="coverageUniformityTooltip" text="Empty Tooltip" />
-                                 </tooltip>
-                              </Label>
+                              <Label fx:id="coverageUniQCLabel" style="-fx-cursor: hand;" styleClass="help_tooltip_white" />
                            </children>
                         </HBox>
                         <Label fx:id="coverageUniformityLabel" text="pass" GridPane.columnIndex="1" GridPane.rowIndex="1" />

@@ -1,7 +1,6 @@
 package ngeneanalysys.task;
 
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import ngeneanalysys.controller.AnalysisSampleUploadProgressTaskController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.AnalysisFile;

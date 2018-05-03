@@ -24,8 +24,8 @@ public class PropertiesUtil {
 	
 	/**
 	 * 프로퍼티 반환
-	 * @param path
-	 * @return
+	 * @param path String
+	 * @return Properties
 	 */
 	public static Properties getPropertiesByPath(String path) {
 		try {
@@ -45,8 +45,8 @@ public class PropertiesUtil {
 	
 	/**
 	 * 지정 프로퍼티 파일에 프로퍼티 저장
-	 * @param propertiesFile
-	 * @param map
+	 * @param propertiesFile File
+	 * @param map Map<String,String>
 	 */
 	public static void saveProperties(File propertiesFile, Map<String,String> map) {
 		
@@ -75,7 +75,7 @@ public class PropertiesUtil {
 	
 	/**
 	 * 시스템 기본 프로퍼티객체 반환 : 사용자 디렉토리 설정 정보 포함하여 반환함.
-	 * @return
+	 * @return Properties
 	 */
 	public static Properties getSystemDefaultProperties() {
 		Properties config = getPropertiesByPath(CommonConstants.BASE_PROPERTIES_PATH);

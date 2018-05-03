@@ -485,6 +485,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 tableList.addAll(tierThree);
             }
 
+            tableList = tableList.stream().filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y"))
+                    .collect(Collectors.toList());
+
             if(variantsTable.getItems() != null && !variantsTable.getItems().isEmpty()) {
                 variantsTable.getItems().removeAll(variantsTable.getItems());
             }

@@ -261,6 +261,8 @@ public class SystemManagerPanelController extends SubPaneController {
         defaultSampleSourceComboBox.setConverter(new ComboBoxConverter());
         defaultSampleSourceComboBox.getItems().add(new ComboBoxItem(SampleSourceCode.FFPE.getDescription(),
                 SampleSourceCode.FFPE.getDescription()));
+        defaultSampleSourceComboBox.getItems().add(new ComboBoxItem(SampleSourceCode.BONEMARROW.getDescription(),
+                SampleSourceCode.BONEMARROW.getDescription()));
         defaultSampleSourceComboBox.getItems().add(new ComboBoxItem(SampleSourceCode.BLOOD.getDescription(),
                 SampleSourceCode.BLOOD.getDescription()));
         defaultSampleSourceComboBox.getSelectionModel().selectFirst();

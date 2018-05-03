@@ -14,8 +14,8 @@ public class LoginSessionUtil {
 	
 	/**
 	 * 현재 로그인된 세션 반환
-	 * @param cacheMemoryService
-	 * @return
+	 * @param cacheMemoryService CacheMemoryService
+	 * @return LoginSession
 	 */
 	public static LoginSession getCurrentLoginSession(CacheMemoryService cacheMemoryService) {
 		return (LoginSession) cacheMemoryService.getCacheObject(CommonConstants.SESSION_CACHE_SET_NAME, CommonConstants.SESSION_CACHE_KEY_NAME);
@@ -23,7 +23,7 @@ public class LoginSessionUtil {
 
 	/**
 	 * 현재 로그인된 세션 반환
-	 * @return
+	 * @return LoginSession
 	 */
 	public static LoginSession getCurrentLoginSession() {
 		CacheMemoryService cacheMemoryService = CacheMemoryService.getInstance();
@@ -32,7 +32,7 @@ public class LoginSessionUtil {
 	
 	/**
 	 * 현재 로그인한 사용자 아이디 반환
-	 * @return
+	 * @return String
 	 */
 	public static String getAccessLoginId() {
 		String loginId = null;

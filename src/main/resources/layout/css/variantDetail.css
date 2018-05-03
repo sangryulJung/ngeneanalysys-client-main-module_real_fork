@@ -590,3 +590,25 @@
 #pastCasesTableView .table-column {
   -fx-alignment: CENTER;
 }
+
+HBox > .check-box {
+	-fx-padding:5;
+	-fx-background-radius:0;
+	-fx-border-width:0;
+	-fx-text-fill:#223654;
+	-fx-font-size:14;
+	-fx-font-weight:bold;
+}
+HBox > .check-box .text {
+	-fx-text-fill:#223654;
+	-fx-font-size:14;
+	-fx-font-weight:bold;
+}
+HBox > .check-box .box {
+	-fx-pref-width:14;
+	-fx-pref-height:14;
+	-fx-background-color:white;
+	-fx-border-width:1;
+	-fx-border-color:#223654;
+	-fx-border-radius:1;
+}

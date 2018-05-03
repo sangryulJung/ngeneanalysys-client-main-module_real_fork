@@ -16,7 +16,6 @@ import com.fasterxml.jackson.datatype.joda.JodaModule;
  * @since 2016. 4. 28. 오후 3:18:22
  */
 public class JsonUtil {
-
 	private static Logger logger = LoggerUtil.getLogger();
 	
 	private static ObjectMapper objectMapper = new ObjectMapper();
@@ -30,8 +29,8 @@ public class JsonUtil {
 	
 	/**
 	 * 지정 객체를 Json String으로 변환하여 반환
-	 * @param jsonElement
-	 * @return
+	 * @param jsonElement T
+	 * @return String
 	 */
 	public static <T> String toJson(T jsonElement) {
 		
@@ -48,9 +47,9 @@ public class JsonUtil {
 	
 	/**
 	 * Json String을 지정 Object Class로 변환하여 반환
-	 * @param jsonString
-	 * @param cls
-	 * @return
+	 * @param jsonString String
+	 * @param cls Class<T>
+	 * @return T
 	 */
 	public static <T> T fromJson(String jsonString, Class<T> cls) {
 		
@@ -67,8 +66,8 @@ public class JsonUtil {
 	
 	/**
 	 * Json String을 Map 객체로 변환하여 반환
-	 * @param jsonString
-	 * @return
+	 * @param jsonString String
+	 * @return Map<String, T>
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> Map<String, T> fromJsonToMap(String jsonString) {

@@ -1243,7 +1243,7 @@ Button {
 .progress-bar {
 	-fx-background-radius: 0;
     -fx-background-color: #FFFFFF;
-    -fx-opacity: 0.5;
+    /*-fx-opacity: 0.5;*/
 }
 
 .progress-bar > .bar {

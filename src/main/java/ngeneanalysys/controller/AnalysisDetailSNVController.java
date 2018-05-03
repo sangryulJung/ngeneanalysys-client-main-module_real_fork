@@ -135,6 +135,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     private AnalysisDetailInterpretationController interpretationController;
 
+    AnalysisDetailSNPsINDELsMemoController memoController;
+
     private Map<String, List<Object>> filterList = new HashMap<>();
 
     /**
@@ -162,8 +164,11 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             SnpInDelInterpretationLogsList memoList = responseMemo.getObjectBeforeConvertResponseToJSON(SnpInDelInterpretationLogsList.class);
 
             // comment tab 화면 출력
-            if (interpretationLogsTitledPane.getContent() == null)
+            if (interpretationLogsTitledPane.getContent() == null) {
                 showMemoTab(FXCollections.observableList(memoList.getResult()));
+            } else {
+                memoController.updateList(selectedAnalysisResultVariant.getSnpInDel().getId());
+            }
         } catch (WebAPIException wae) {
             wae.printStackTrace();
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
@@ -506,11 +511,11 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         try {
             FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_INTERPRETATION_LOGS);
             Node node = loader.load();
-            AnalysisDetailSNPsINDELsMemoController controller = loader.getController();
-            controller.setMainController(this.getMainController());
-            controller.setAnalysisDetailSNVController(this);
-            controller.show((Parent) node);
-            controller.displayList(memoList);
+            memoController = loader.getController();
+            memoController.setMainController(this.getMainController());
+            memoController.setAnalysisDetailSNVController(this);
+            memoController.show((Parent) node);
+            memoController.displayList(memoList);
             interpretationLogsTitledPane.setContent(node);
         } catch (Exception e) {
             e.printStackTrace();
@@ -616,13 +621,13 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         for(String key : keySets) {
             sortList.add(key + " " + sortMap.get(key));
         }
-        if(sortList.isEmpty()) {
-            if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
-                sortList.add("swTier ASC");
-            } else {
-                sortList.add("swPathogenicity DESC");
-            }
-        }
+//        if(sortList.isEmpty()) {
+//            if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
+//                sortList.add("swTier ASC");
+//            } else {
+//                sortList.add("swPathogenicity DESC");
+//            }
+//        }
         if(!sortList.isEmpty()) list.put("sort", sortList);
     }
 
@@ -878,7 +883,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
 
         TableColumn<VariantAndInterpretationEvidence, String> warn = new TableColumn<>("Warning");
-        createTableHeader(warn, "Warning", null ,55.);
+        createTableHeader(warn, "Warning", "hasWarning" ,55.);
         warn.getStyleClass().add(centerStyleClass);
         warn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getHasWarning()));
         warn.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
@@ -937,7 +942,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         if(panel != null && ExperimentTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             TableColumn<VariantAndInterpretationEvidence, String> typeExtension = new TableColumn<>("Type Extension");
-            createTableHeader(typeExtension, "Type Extension", null, 70.);
+            createTableHeader(typeExtension, "Type Extension", "variantTypeExtension", 70.);
             typeExtension.getStyleClass().clear();
             typeExtension.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getVariantTypeExtension()));
         }
@@ -973,7 +978,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         chr.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getChromosome()));
 
         TableColumn<VariantAndInterpretationEvidence, Integer> genomicCoordinate = new TableColumn<>("Start Position");
-        createTableHeader(genomicCoordinate, "Start Position", "StartPosition" ,null);
+        createTableHeader(genomicCoordinate, "Start Position", "startPosition" ,null);
         genomicCoordinate.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getStartPosition()).asObject());
 
         TableColumn<VariantAndInterpretationEvidence, String> ref = new TableColumn<>("Ref");
@@ -1010,15 +1015,15 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         fraction.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()));
 
         TableColumn<VariantAndInterpretationEvidence, Integer> depth = new TableColumn<>("Depth");
-        createTableHeader(depth, "Depth", null ,null);
+        createTableHeader(depth, "Depth", "readDepth" ,null);
         depth.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getReadInfo().getReadDepth()).asObject());
 
         TableColumn<VariantAndInterpretationEvidence, Integer> refNum = new TableColumn<>("Ref Count");
-        createTableHeader(refNum, "Ref Count", null ,null);
+        createTableHeader(refNum, "Ref Count", "refReadNum" ,null);
         refNum.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getReadInfo().getRefReadNum()).asObject());
 
         TableColumn<VariantAndInterpretationEvidence, Integer> altNum = new TableColumn<>("Alt Count");
-        createTableHeader(altNum, "Alt Count", null ,null);
+        createTableHeader(altNum, "Alt Count", "altReadNum" ,null);
         altNum.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getReadInfo().getAltReadNum()).asObject());
 
         TableColumn<VariantAndInterpretationEvidence, String> clinVarAcc = new TableColumn<>("ClinVar Accession\n");
