@@ -79,6 +79,13 @@
                                     <TableColumn fx:id="endPositionTableColumn" prefWidth="90.0" styleClass="txt_black" text="End Pos" />
                                     <TableColumn fx:id="codingConsequenceTableColumn" prefWidth="90.0" styleClass="txt_black" text="Coding Consequence" />
                                     <TableColumn fx:id="typeTableColumn" minWidth="-Infinity" prefWidth="80.0" styleClass="txt_black" text="Type" />
+                                    <TableColumn minWidth="-Infinity" prefWidth="80.0" styleClass="txt_black" text="Clinical Database Existence(allele fraction &lt; 2.0%)">
+                                       <columns>
+                                          <TableColumn fx:id="cosmicExistenceTableColumn" minWidth="-Infinity" prefWidth="80.0" styleClass="txt_black" text="COSMIC" />
+                                          <TableColumn fx:id="oncoKBExistenceTableColumn" minWidth="-Infinity" prefWidth="80.0" styleClass="txt_black" text="OncoKB" />
+                                          <TableColumn fx:id="clinVarExistenceTableColumn" minWidth="-Infinity" prefWidth="80.0" styleClass="txt_black" text="ClinVar" />
+                                       </columns>
+                                    </TableColumn>
                                     <TableColumn prefWidth="75.0" text="Therapeutic">
                                        <columns>
                                           <TableColumn fx:id="Tier1ATableColumn" minWidth="-Infinity" prefWidth="90.0" text="Tier I">
@@ -138,17 +145,17 @@
                                           <Pagination fx:id="interpretationPagination" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="740.0" />
                                        </children>
                                     </HBox>
-                                    <Button mnemonicParsing="false" onAction="#interpretationAdd" styleClass="submitBtn" text="New">
+                                    <Button mnemonicParsing="false" onAction="#interpretationAdd" styleClass="submitBtn" text="New" visible="false">
                                        <HBox.margin>
                                           <Insets right="10.0" />
                                        </HBox.margin>
                                     </Button>
-                                    <Button mnemonicParsing="false" onAction="#cancelInput" styleClass="cancelBtn" text="Cancel">
+                                    <Button mnemonicParsing="false" onAction="#cancelInput" styleClass="cancelBtn" text="Cancel" visible="false">
                                        <HBox.margin>
                                           <Insets right="10.0" />
                                        </HBox.margin>
                                     </Button>
-                                    <Button fx:id="interpretationSaveButton" mnemonicParsing="false" onAction="#saveInterpretationDatabase" styleClass="submitBtn" text="Save" />
+                                    <Button fx:id="interpretationSaveButton" mnemonicParsing="false" onAction="#saveInterpretationDatabase" styleClass="submitBtn" text="Save" visible="false" />
                                  </children>
                               </HBox>
                            </children>
