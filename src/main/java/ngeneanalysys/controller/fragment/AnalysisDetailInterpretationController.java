@@ -314,6 +314,9 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                     } else if(snpInDelEvidence.getEvidenceType().equals("N/A")){
                         snpInDelEvidence.setEvidenceType("therapeutic");
                     }
+                    if(!StringUtils.isEmpty(t) && !t.equals(t1)) {
+                        evidenceTableView.refresh();
+                    }
                     //evidenceTableView.refresh();
                 }
             });
