@@ -152,7 +152,11 @@ public class JarDownloadTask extends Task {
      */
     @Override
     protected void failed() {
-        controller.getMainController().removeProgressTaskItemById(progressBoxId);
+        if(controller != null) {
+            controller.getMainController().removeProgressTaskItemById(progressBoxId);
+        } else {
+            analysisDetailReportGermlineController.getMainController().removeProgressTaskItemById(progressBoxId);
+        }
     }
 
     /**
@@ -160,7 +164,10 @@ public class JarDownloadTask extends Task {
      */
     @Override
     protected void succeeded() {
-        controller.getMainController().removeProgressTaskItemById(progressBoxId);
-
+        if(controller != null) {
+            controller.getMainController().removeProgressTaskItemById(progressBoxId);
+        } else {
+            analysisDetailReportGermlineController.getMainController().removeProgressTaskItemById(progressBoxId);
+        }
     }
 }
