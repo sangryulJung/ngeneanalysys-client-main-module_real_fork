@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.AnalysisDetailTabMenuCode;
 import ngeneanalysys.code.enums.ExperimentTypeCode;
@@ -86,6 +87,8 @@ public class AnalysisDetailLayoutController extends SubPaneController {
 
     private AnalysisDetailVariantsController analysisDetailVariantsController;
 
+    private AnalysisDetailTSTRNAReportController tstrnaReportController;
+
     /** API 서버 통신 서비스 */
     private APIService apiService;
 
@@ -138,8 +141,20 @@ public class AnalysisDetailLayoutController extends SubPaneController {
                     idx++;
                 } else if (!item.getNodeId().contains(ExperimentTypeCode.GERMLINE.getDescription()) &&
                         (panel.getAnalysisType() != null && ExperimentTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType()))) {
-                    addTab(item, idx);
-                    idx++;
+                    if(!item.getTabName().equals("REPORT")) {
+                        addTab(item, idx);
+                        idx++;
+                    } else {
+                        if (panel.getName().equals(CommonConstants.TST_170_RNA) &&
+                                item.getFxmlPath().equals(FXMLConstants.ANALYSIS_DETAIL_TST_RNA_REPORT)) {
+                            addTab(item, idx);
+                            idx++;
+                        } else if(!panel.getName().equals(CommonConstants.TST_170_RNA) &&
+                                item.getFxmlPath().equals(FXMLConstants.ANALYSIS_DETAIL_REPORT)){
+                            addTab(item, idx);
+                            idx++;
+                        }
+                    }
                 } else if (item.getNodeId().equalsIgnoreCase("TAB_VARIANTS")) {
                     addTab(item, idx);
                     idx++;
@@ -262,6 +277,12 @@ public class AnalysisDetailLayoutController extends SubPaneController {
                             analysisDetailVariantsController.setParamMap(getParamMap());
                             analysisDetailVariantsController.setMainController(this.mainController);
                             analysisDetailVariantsController.show((Parent) node);
+                            break;
+                        case FXMLConstants.ANALYSIS_DETAIL_TST_RNA_REPORT:
+                            tstrnaReportController = loader.getController();
+                            tstrnaReportController.setParamMap(getParamMap());
+                            tstrnaReportController.setMainController(this.mainController);
+                            tstrnaReportController.show((Parent) node);
                             break;
                         default:
                             break;

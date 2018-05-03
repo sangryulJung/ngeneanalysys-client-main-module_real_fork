@@ -101,6 +101,9 @@ public class FXMLConstants {
 
 	/** 분석 상세 > Report 화면 */
 	public static final String ANALYSIS_DETAIL_REPORT_GERMLINE = "/layout/fxml/AnalysisDetail-Report-Germline.fxml";
+
+	/** 분석 상세 > Report 화면 */
+	public static final String ANALYSIS_DETAIL_TST_RNA_REPORT = "/layout/fxml/AnalysisDetail-TSTRNAReport.fxml";
 	
 	/** 분석 요청 그룹 검색 Dialog 화면 */
 	public static final String ANALYSIS_JOB_RUN_GROUP_SEARCH_DIALOG = "/layout/fxml/AnalysisJobRunGroupSearch.fxml";

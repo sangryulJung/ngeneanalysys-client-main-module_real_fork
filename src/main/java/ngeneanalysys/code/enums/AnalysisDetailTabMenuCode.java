@@ -16,7 +16,8 @@ public enum AnalysisDetailTabMenuCode {
 	//TAB_SNPS_INDELS(new AnalysisDetailTabItem("TAB_SNPS_INDELS", "SNPs-INDELs", FXMLConstants.ANALYSIS_DETAIL_SNPS_INDELS_LAYOUT, 13)),
 	TAB_REPORT_GERMLINE(new AnalysisDetailTabItem("TAB_REPORT_GERMLINE", "REPORT", FXMLConstants.ANALYSIS_DETAIL_REPORT_GERMLINE, 13)),
 	//TAB_TARGET_GERMLINE(new AnalysisDetailTabItem("TAB_TARGET_GERMLINE", "TARGET GENES", FXMLConstants.ANALYSIS_DETAIL_TARGET_GERMLINE, 13)),
-	TAB_REPORT(new AnalysisDetailTabItem("TAB_REPORT", "REPORT", FXMLConstants.ANALYSIS_DETAIL_REPORT, 13));
+	TAB_REPORT(new AnalysisDetailTabItem("TAB_REPORT", "REPORT", FXMLConstants.ANALYSIS_DETAIL_REPORT, 13)),
+	TAB_REPORT_RNA(new AnalysisDetailTabItem("TAB_REPORT_RNA", "REPORT", FXMLConstants.ANALYSIS_DETAIL_TST_RNA_REPORT, 13));
 	//TAB_TARGET(new AnalysisDetailTabItem("TAB_TARGET", "TARGET GENES", FXMLConstants.ANALYSIS_DETAIL_TARGET, 13));
 	//TAB_RAW_DATA(new AnalysisDetailTabItem("TAB_RAW_DATA", "RAW Data", FXMLConstants.ANALYSIS_DETAIL_RAW_DATA, 13));
 	
@@ -24,7 +25,7 @@ public enum AnalysisDetailTabMenuCode {
 
 	/**
 	 *
- 	 * @param item
+ 	 * @param item item
 	 */
 	AnalysisDetailTabMenuCode(AnalysisDetailTabItem item) {
 		this.item = item;
@@ -32,7 +33,7 @@ public enum AnalysisDetailTabMenuCode {
 
 	/**
 	 *
-	 * @return
+	 * @return AnalysisDetailTabItem
 	 */
 	public AnalysisDetailTabItem getItem() {
 		return item;
@@ -40,7 +41,7 @@ public enum AnalysisDetailTabMenuCode {
 
 	/**
 	 *
-	 * @param item
+	 * @param item item
 	 */
 	public void setItem(AnalysisDetailTabItem item) {
 		this.item = item;

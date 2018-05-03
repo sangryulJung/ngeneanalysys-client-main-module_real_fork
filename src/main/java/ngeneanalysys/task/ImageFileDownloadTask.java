@@ -4,6 +4,7 @@ import javafx.concurrent.Task;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.AnalysisDetailReportController;
 import ngeneanalysys.controller.AnalysisDetailReportGermlineController;
+import ngeneanalysys.controller.AnalysisDetailTSTRNAReportController;
 import ngeneanalysys.model.ReportImage;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
@@ -35,6 +36,8 @@ public class ImageFileDownloadTask extends Task {
     /** 컨트롤러 클래스 */
     private AnalysisDetailReportController controller;
 
+    private AnalysisDetailTSTRNAReportController tstrnaReportController;
+
     private AnalysisDetailReportGermlineController analysisDetailReportGermlineController;
 
     private List<ReportImage> images;
@@ -50,6 +53,12 @@ public class ImageFileDownloadTask extends Task {
 
     public ImageFileDownloadTask(AnalysisDetailReportGermlineController controller, List<ReportImage> images) {
         this.analysisDetailReportGermlineController = controller;
+        this.images = images;
+        progressBoxId = "DOWNLOAD IMAGE";
+    }
+
+    public ImageFileDownloadTask(AnalysisDetailTSTRNAReportController controller, List<ReportImage> images) {
+        this.tstrnaReportController = controller;
         this.images = images;
         progressBoxId = "DOWNLOAD IMAGE";
     }
