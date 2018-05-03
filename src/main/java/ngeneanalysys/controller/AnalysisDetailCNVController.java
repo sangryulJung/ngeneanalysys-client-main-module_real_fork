@@ -69,6 +69,7 @@ public class AnalysisDetailCNVController extends AnalysisDetailCommonController 
 
     @Override
     public void show(Parent root) throws IOException {
+        logger.info("show cnv");
 
         chrTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getChromosome()));
         startPositionTableColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getStartPosition()));
@@ -81,6 +82,18 @@ public class AnalysisDetailCNVController extends AnalysisDetailCommonController 
 
         apiService = APIService.getInstance();
         this.sample = (Sample)paramMap.get("sample");
+
+        showCnv();
+
+        variantsController.getDetailContents().setCenter(root);
+    }
+
+    public void showCnv() {
+        if(cnvTableView.getItems() != null && !cnvTableView.getItems().isEmpty()) {
+            cnvTableView.getItems().removeAll(cnvTableView.getItems());
+            cnvTableView.refresh();
+        }
+
         try {
             HttpClientResponse response = apiService
                     .get("TST170DnaResults/samples/" + sample.getId() + "/cnvs", null, null, null);
@@ -89,7 +102,6 @@ public class AnalysisDetailCNVController extends AnalysisDetailCommonController 
 
             cnvTableView.setItems(FXCollections.observableArrayList(pagedCNV.getResult()));
 
-            variantsController.getDetailContents().setCenter(root);
         } catch (WebAPIException wae) {
             wae.printStackTrace();
         }
