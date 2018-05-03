@@ -32,7 +32,7 @@ public abstract class BaseStageController {
     /**
      * 메인 어플 객체 세팅
      *
-     * @param mainApp
+     * @param mainApp MainApp
      */
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;

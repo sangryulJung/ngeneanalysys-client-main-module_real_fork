@@ -27,10 +27,8 @@ import ngeneanalysys.model.paged.PagedRun;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.PopOverUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.controlsfx.control.PopOver;
 import org.slf4j.Logger;
 
 import java.io.IOException;

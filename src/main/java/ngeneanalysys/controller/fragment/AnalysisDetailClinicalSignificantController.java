@@ -1,6 +1,5 @@
 package ngeneanalysys.controller.fragment;
 
-import javafx.animation.AnimationTimer;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,16 +7,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Polyline;
-import ngeneanalysys.animaition.ClinicalSignificantTimer;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.AnalysisDetailSNVController;
 import ngeneanalysys.controller.ChangePathogenicityController;
@@ -30,7 +26,6 @@ import ngeneanalysys.util.JsonUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.PopOverUtil;
 import ngeneanalysys.util.StringUtils;
-import org.controlsfx.control.PopOver;
 import org.slf4j.Logger;
 
 import java.io.IOException;

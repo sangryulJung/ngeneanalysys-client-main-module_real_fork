@@ -64,8 +64,8 @@ public class MainApp extends Application {
 
 	/**
 	 * return property value
-	 * @param name
-	 * @return
+	 * @param name String
+	 * @return String
 	 */
 	public String getProperty(String name) {
 		return config.getProperty(name);

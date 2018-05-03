@@ -16,12 +16,12 @@ public class DialogUtil {
 	
 	/**
 	 * 일반 Dialog 출력
-	 * @param alterType
-	 * @param headerText
-	 * @param contentText
-	 * @param ownerStage
-	 * @param waitAfterShow
-	 * @return
+	 * @param alterType AlertType
+	 * @param headerText String
+	 * @param contentText String
+	 * @param ownerStage Stage
+	 * @param waitAfterShow boolean
+	 * @return Alert
 	 */
 	public static Alert generalShow(AlertType alterType, String headerText, String contentText, Stage ownerStage, boolean waitAfterShow) {
 		Alert alert = new Alert(alterType);
@@ -67,11 +67,11 @@ public class DialogUtil {
 
 	/**
 	 * INFORMATION 알림창 출력
-	 * @param headerText
-	 * @param contentText
-	 * @param ownerStage
-	 * @param waitAfterShow
-	 * @return
+	 * @param headerText String
+	 * @param contentText String
+	 * @param ownerStage Stage
+	 * @param waitAfterShow boolean
+	 * @return Alert
 	 */
 	public static Alert alert(String headerText, String contentText, Stage ownerStage, boolean waitAfterShow) {
 		return generalShow(AlertType.INFORMATION, headerText, contentText, ownerStage, waitAfterShow);
@@ -79,11 +79,11 @@ public class DialogUtil {
 	
 	/**
 	 * 경고 알림창 출력
-	 * @param headerText
-	 * @param contentText
-	 * @param ownerStage
-	 * @param waitAfterShow
-	 * @return
+	 * @param headerText String
+	 * @param contentText String
+	 * @param ownerStage Stage
+	 * @param waitAfterShow boolean
+	 * @return Alert
 	 */
 	public static Alert warning(String headerText, String contentText, Stage ownerStage, boolean waitAfterShow) {
 		return generalShow(AlertType.WARNING, headerText, contentText, ownerStage, waitAfterShow);
@@ -91,11 +91,11 @@ public class DialogUtil {
 	
 	/**
 	 * 오류 알림창 출력
-	 * @param headerText
-	 * @param contentText
-	 * @param ownerStage
-	 * @param waitAfterShow
-	 * @return
+	 * @param headerText String
+	 * @param contentText String
+	 * @param ownerStage Stage
+	 * @param waitAfterShow boolean
+	 * @return Alert
 	 */
 	public static Alert error(String headerText, String contentText, Stage ownerStage, boolean waitAfterShow) {
 		return generalShow(AlertType.ERROR, headerText, contentText, ownerStage, waitAfterShow);

@@ -2,8 +2,6 @@ package ngeneanalysys.util;
 
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.model.ReportTemplate;
-import ngeneanalysys.service.APIService;
-import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.apache.commons.io.FileUtils;
 
 import java.io.BufferedWriter;
@@ -21,8 +19,8 @@ public class FileUtil {
     /**
      * FASTQ 파일 Pair명 추출
      *
-     * @param fileName
-     * @return
+     * @param fileName String
+     * @return String
      */
     public static String getFASTQFilePairName(String fileName) {
         String pairName = "";

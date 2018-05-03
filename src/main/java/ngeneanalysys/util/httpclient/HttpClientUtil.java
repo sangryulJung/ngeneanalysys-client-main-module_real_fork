@@ -2,7 +2,6 @@ package ngeneanalysys.util.httpclient;
 
 import java.io.*;
 import java.security.SecureRandom;
-import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -21,12 +20,10 @@ import org.apache.http.client.methods.*;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.ssl.SSLContexts;
 import org.slf4j.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -40,13 +37,13 @@ import ngeneanalysys.util.LoggerUtil;
  *
  */
 public class HttpClientUtil {
-	private final static Logger logger = LoggerUtil.getLogger();
+	private static final Logger logger = LoggerUtil.getLogger();
 
 	private static final String DEFAULT_ENCODING = "UTF-8";
 
 	/**
 	 * SSL 연결 커넥션 설정 반환
-	 * @return
+	 * @return SSLConnectionSocketFactory
 	 */
 	public static SSLConnectionSocketFactory getSSLSocketFactory() {
 		SSLConnectionSocketFactory factory = null;
@@ -642,8 +639,8 @@ public class HttpClientUtil {
 	}
 	/**
 	 * Convert Parameter Map to List
-	 * @param params
-	 * @return
+	 * @param params Map<String, Object>
+	 * @return List<NameValuePair>
 	 */
 	public static List<NameValuePair> convertParam(Map<String, Object> params) {
 		List<NameValuePair> paramList = new ArrayList<>();
@@ -658,8 +655,8 @@ public class HttpClientUtil {
 	}
 	/**
 	 * Convert Parameter Map to List
-	 * @param params
-	 * @return
+	 * @param params Map<String, List<Object>>
+	 * @return List<NameValuePair>
 	 */
 	public static List<NameValuePair> convertSearchParam(Map<String, List<Object>> params) {
 		List<NameValuePair> paramList = new ArrayList<>();
@@ -678,8 +675,8 @@ public class HttpClientUtil {
 
 	/**
 	 * 응답 결과 문자열로 변환
-	 * @param content
-	 * @return
+	 * @param content InputStream
+	 * @return String
 	 */
 	public static String convertResponseContent(InputStream content) {
 		if (content == null) return null;

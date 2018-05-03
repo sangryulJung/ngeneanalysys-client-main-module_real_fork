@@ -1,7 +1,6 @@
 package ngeneanalysys.cache;
 
 import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Ehcache;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.util.ResourceUtil;
 

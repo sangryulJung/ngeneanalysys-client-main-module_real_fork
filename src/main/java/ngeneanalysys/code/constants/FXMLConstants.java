@@ -1,6 +1,3 @@
-/**
- * 
- */
 package ngeneanalysys.code.constants;
 
 /**
@@ -77,10 +74,7 @@ public class FXMLConstants {
 	
 	/** 분석 상세 > SNPs-INDELs > Comment TAB 화면 */
 	public static final String ANALYSIS_DETAIL_SNPS_INDELS_MEMO = "/layout/fxml/AnalysisDetail-SNPs-INDELs-Memo.fxml";
-	
-	/** 분석 상세 > SNPs-INDELs > VIEWER TAB 화면 */
-	public static final String ANALYSIS_DETAIL_SNPS_INDELS_VIEWER = "/layout/fxml/AnalysisDetail-SNPs-INDELs-Viewer.fxml";
-	
+
 	/** 분석 상세 > SNPs-INDELs > WARNINGS TAB 화면 */
 	public static final String ANALYSIS_DETAIL_SNPS_INDELS_LOW_CONFIDENCE = "/layout/fxml/AnalysisDetail-SNPs-INDELs-LowConfidence.fxml";
 
@@ -89,9 +83,6 @@ public class FXMLConstants {
 	
 	/** 분석 상세 > Genes 화면 */
 	public static final String ANALYSIS_DETAIL_GENES = "/layout/fxml/AnalysisDetail-Genes.fxml";
-	
-	/** 분석 상세 > Warnings 화면 */
-	public static final String ANALYSIS_DETAIL_WARNINGS = "/layout/fxml/AnalysisDetail-Warnings.fxml";
 	
 	/** 분석 상세 > Raw data 화면 */
 	public static final String ANALYSIS_DETAIL_RAW_DATA = "/layout/fxml/AnalysisDetail-RawData.fxml";

@@ -19,14 +19,15 @@ public class ValidationUtil {
 	
 	/**
 	 * 문자열 유효성 체크 [존재 여부 기본 체크]
-	 * @param value
-	 * @param name
-	 * @param minByte
-	 * @param maxByte
-	 * @param pattern
-	 * @param alertValid
-	 * @param ownerStage
-	 * @return
+	 * @param value String
+	 * @param name String
+	 * @param minByte int
+	 * @param maxByte int
+	 * @param pattern String
+	 * @param guideMessage String
+	 * @param alertValid String
+	 * @param ownerStage stage
+	 * @return int
 	 */
 	public static int text(String value, String name, int minByte, int maxByte, String pattern, String guideMessage, boolean alertValid, Stage ownerStage) {
 		return text(value, name, minByte, maxByte, pattern, true, guideMessage, alertValid, ownerStage);
@@ -34,14 +35,15 @@ public class ValidationUtil {
 	
 	/**
 	 * 문자열 유효성 체크 [존재 여부 미체크]
-	 * @param value
-	 * @param name
-	 * @param minByte
-	 * @param maxByte
-	 * @param pattern
-	 * @param alertValid
-	 * @param ownerStage
-	 * @return
+	 * @param value String
+	 * @param name String
+	 * @param minByte int
+	 * @param maxByte int
+	 * @param pattern String
+	 * @param guideMessage String
+	 * @param alertValid boolean
+	 * @param ownerStage stage
+	 * @return int
 	 */
 	public static int textDoNotEmptyCheck(String value, String name, int minByte, int maxByte, String pattern, String guideMessage, boolean alertValid, Stage ownerStage) {
 		return text(value, name, minByte, maxByte, pattern, false, guideMessage, alertValid, ownerStage);
@@ -49,14 +51,15 @@ public class ValidationUtil {
 
 	/**
 	 * 문자열 유효성 체크
-	 * @param value
-	 * @param name
-	 * @param minLength
-	 * @param maxLength
-	 * @param pattern
-	 * @param alertValid
-	 * @param ownerStage
-	 * @return
+	 * @param value String
+	 * @param name String
+	 * @param minLength int
+	 * @param maxLength int
+	 * @param pattern String
+	 * @param checkEmpty boolean
+	 * @param alertValid boolean
+	 * @param ownerStage stage
+	 * @return int
 	 */
 	public static int text(String value, String name, int minLength, int maxLength, String pattern, boolean checkEmpty, String guideMessage, boolean alertValid, Stage ownerStage) {
 		boolean waitAfterShow = ownerStage != null;

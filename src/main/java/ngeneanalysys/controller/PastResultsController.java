@@ -237,6 +237,7 @@ public class PastResultsController extends SubPaneController {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private Set<String> getAllData(JSONArray array) {
 		Set<String> data = new HashSet<>();
 		array.forEach(item -> data.add(item.toString()));

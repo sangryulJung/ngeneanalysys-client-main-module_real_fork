@@ -60,10 +60,12 @@ public class AnalysisDetailPopulationFrequenciesController extends SubPaneContro
 
     /**
      * 주요 기관 발현 빈도수(Population Frequencies) 그래프 화면 추가
-     * @param title
-     * @param percentage
+     * @param row int
+     * @param col int
+     * @param title String
+     * @param percentage double
      */
-    public void addPopulationFrequencyGraph(int row, int col, String title, double percentage) {
+    private void addPopulationFrequencyGraph(int row, int col, String title, double percentage) {
         double graphPercentage = percentage * 100;
         VBox vbox = new VBox();
         vbox.setAlignment(Pos.CENTER);
