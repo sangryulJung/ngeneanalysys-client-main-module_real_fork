@@ -89,6 +89,8 @@ public class AnalysisDetailLayoutController extends SubPaneController {
 
     private AnalysisDetailTSTRNAReportController tstrnaReportController;
 
+    private AnalysisDetailTSTRNAOverviewController tstrnaOverviewController;
+
     /** API 서버 통신 서비스 */
     private APIService apiService;
 
@@ -135,29 +137,23 @@ public class AnalysisDetailLayoutController extends SubPaneController {
             for (AnalysisDetailTabMenuCode code : AnalysisDetailTabMenuCode.values()) {
                 AnalysisDetailTabItem item = code.getItem();
 
-                if (item.getNodeId().contains(ExperimentTypeCode.GERMLINE.getDescription()) &&
-                        (panel.getAnalysisType() != null && ExperimentTypeCode.GERMLINE.getDescription().equals(panel.getAnalysisType()))) {
+                if(item.getNodeId().equals("TAB_VARIANTS")) {
                     addTab(item, idx);
                     idx++;
-                } else if (!item.getNodeId().contains(ExperimentTypeCode.GERMLINE.getDescription()) &&
-                        (panel.getAnalysisType() != null && ExperimentTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType()))) {
-                    if(!item.getTabName().equals("REPORT")) {
+                } else if (item.getNodeId().contains("TST_RNA") &&
+                        (panel.getName().equals(CommonConstants.TST_170_RNA))) {
+                    addTab(item, idx);
+                    idx++;
+                } else if(!(panel.getName().equals(CommonConstants.TST_170_RNA))) {
+                    if (item.getNodeId().contains(ExperimentTypeCode.GERMLINE.getDescription()) &&
+                            (panel.getAnalysisType() != null && ExperimentTypeCode.GERMLINE.getDescription().equals(panel.getAnalysisType()))) {
                         addTab(item, idx);
                         idx++;
-                    } else {
-                        if (panel.getName().equals(CommonConstants.TST_170_RNA) &&
-                                item.getFxmlPath().equals(FXMLConstants.ANALYSIS_DETAIL_TST_RNA_REPORT)) {
-                            addTab(item, idx);
-                            idx++;
-                        } else if(!panel.getName().equals(CommonConstants.TST_170_RNA) &&
-                                item.getFxmlPath().equals(FXMLConstants.ANALYSIS_DETAIL_REPORT)){
-                            addTab(item, idx);
-                            idx++;
-                        }
+                    } else if (item.getNodeId().contains(ExperimentTypeCode.SOMATIC.getDescription()) &&
+                            (panel.getAnalysisType() != null && ExperimentTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType()))) {
+                        addTab(item, idx);
+                        idx++;
                     }
-                } else if (item.getNodeId().equalsIgnoreCase("TAB_VARIANTS")) {
-                    addTab(item, idx);
-                    idx++;
                 }
             }
         } else {
@@ -284,6 +280,12 @@ public class AnalysisDetailLayoutController extends SubPaneController {
                             tstrnaReportController.setMainController(this.mainController);
                             tstrnaReportController.show((Parent) node);
                             break;
+                        case FXMLConstants.ANALYSIS_DETAIL_OVERVIEW_TST_RNA:
+                            tstrnaOverviewController = loader.getController();
+                            tstrnaOverviewController.setAnalysisDetailLayoutController(this);
+                            tstrnaOverviewController.setParamMap(getParamMap());
+                            tstrnaOverviewController.show((Parent) node);
+                            break;
                         default:
                             break;
                     }
@@ -306,16 +308,20 @@ public class AnalysisDetailLayoutController extends SubPaneController {
     private void executeReloadByTab(Tab tab) {
         // 보고서 탭인 경우 reported variant list 갱신함.
 
-        if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_OVERVIEW.name())) {
+        if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_OVERVIEW_SOMATIC.name())) {
             analysisDetailOverviewController.setDisplayItem();
         } else if (tab.getId().equals(AnalysisDetailTabMenuCode.TAB_OVERVIEW_GERMLINE.name())) {
             analysisDetailOverviewGermlineController.setDisplayItem();
-        } else if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_REPORT.name())) {
+        } else if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_REPORT_SOMATIC.name())) {
             logger.debug("report tab reported variant list reload...");
             analysisDetailReportController.setVariantsList();
         } else if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_REPORT_GERMLINE.name())) {
             logger.debug("germline report tab reported variant list reload...");
             analysisDetailReportGermlineController.setVariantsList();
+        } else if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_REPORT_TST_RNA.name())) {
+            tstrnaReportController.setVariantsList();
+        } else if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_OVERVIEW_TST_RNA.name())) {
+            tstrnaOverviewController.setDisplayItem();
         }
     }
 

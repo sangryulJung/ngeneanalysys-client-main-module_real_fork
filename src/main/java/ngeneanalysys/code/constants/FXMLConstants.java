@@ -105,6 +105,9 @@ public class FXMLConstants {
 	/** 분석 상세 > OverView 화면 */
 	public static final String ANALYSIS_DETAIL_OVERVIEW_GERMLINE = "/layout/fxml/AnalysisDetail-Overview-Germline.fxml";
 
+	/** 분석 상세 > OverView 화면 */
+	public static final String ANALYSIS_DETAIL_OVERVIEW_TST_RNA = "/layout/fxml/AnalysisDetail-Overview-TST-RNA.fxml";
+
 	/** 분석 상세 > Variants 화면 */
 	public static final String ANALYSIS_DETAIL_TARGET = "/layout/fxml/AnalysisDetail-Target.fxml";
 
