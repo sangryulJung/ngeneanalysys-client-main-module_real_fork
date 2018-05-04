@@ -69,7 +69,7 @@ public class AnalysisDetailCNVController extends AnalysisDetailCommonController 
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("show cnv");
+        logger.debug("show cnv");
 
         chrTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getChromosome()));
         startPositionTableColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getStartPosition()));

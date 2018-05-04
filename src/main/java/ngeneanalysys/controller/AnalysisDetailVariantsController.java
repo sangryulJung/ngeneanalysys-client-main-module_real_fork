@@ -60,6 +60,8 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
 
     private Panel panel;
 
+    private Label snvLabel;
+
     /**
      * @return detailContents
      */
@@ -82,12 +84,14 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
     }
 
     public void setSNVTabName(String text) {
-        if(!StringUtils.isEmpty(text)) {
-            topMenus[0].setMenuName("SNV/Indel : " + text);
-        } else {
-            topMenus[0].setMenuName("SNV/Indel");
+
+        if(snvLabel != null) {
+            if (!StringUtils.isEmpty(text)) {
+                snvLabel.setText("SNV/Indel : " + text);
+            } else {
+                snvLabel.setText("SNV/Indel");
+            }
         }
-        refreshShowTopMenu(0);
 
     }
 
@@ -158,34 +162,26 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
             Group[] topMenuGroups = new Group[topMenus.length];
             for (TopMenu topMenu : topMenus) {
                 Group menu = new Group();
-                menu.getStyleClass().add("group");
                 if (selectIdx >= 0 && idx == selectIdx) {
                     menu.setId("selectedMenu");
                 }
 
                 Region region = new Region();
-
                 Label menuName = new Label(topMenu.getMenuName());
                 menuName.setLayoutX(0);
 
-
+                region.getStyleClass().removeAll(region.getStyleClass());
+                menuName.getStyleClass().removeAll(menuName.getStyleClass());
                 if(topMenu.getMenuName().equals("SNV")) {
-                    /*menu.getStyleClass().add("snv-group");
-                    region.getStyleClass().add("snv");
-                    menuName.setId("snv");*/
-                    region.setStyle(region.getStyle() + "-fx-min-width : 550; -fx-max-width : 550; ");
-                    menuName.setStyle(region.getStyle() + "-fx-min-width : 550; -fx-max-width : 550; ");
-                    region.setMinWidth(550);
-                    region.setMaxWidth(550);
-                    menuName.setMinWidth(550);
-                    menuName.setMaxWidth(550);
+                    snvLabel = menuName;
+                    menu.getStyleClass().add("group-big");
+                    region.getStyleClass().add("region-big");
+                    menuName.getStyleClass().add("label-big");
                 } else {
-                    region.setMinWidth(130);
-                    region.setMaxWidth(130);
-                    menuName.setMinWidth(130);
-                    menuName.setMaxWidth(130);
+                    menu.getStyleClass().add("group-small");
+                    region.getStyleClass().add("region-small");
+                    menuName.getStyleClass().add("label-small");
                 }
-
                 menu.getChildren().setAll(region, menuName);
 
                 // 마우스 커서 타입 설정
