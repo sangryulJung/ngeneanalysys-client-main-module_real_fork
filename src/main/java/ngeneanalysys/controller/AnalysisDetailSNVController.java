@@ -112,7 +112,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     private AnalysisDetailVariantsController variantsController;
     //VariantList
-    List<VariantAndInterpretationEvidence> list = null;
+    private List<VariantAndInterpretationEvidence> list = null;
 
     /** 현재 선택된 변이 정보 객체 */
     private VariantAndInterpretationEvidence selectedAnalysisResultVariant;
@@ -135,7 +135,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     private AnalysisDetailInterpretationController interpretationController;
 
-    AnalysisDetailSNPsINDELsMemoController memoController;
+    private AnalysisDetailSNPsINDELsMemoController memoController;
 
     private Map<String, List<Object>> filterList = new HashMap<>();
 
@@ -322,6 +322,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         viewAppliedFiltersLabel.setDisable(true);
     }
 
+    @SuppressWarnings("unchecked")
     public void setFilterList() {
         String currentFilterName = filterComboBox.getSelectionModel().getSelectedItem().getText();
         filterComboBox.hide();
@@ -792,10 +793,20 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     private void createTableHeader(TableColumn<VariantAndInterpretationEvidence, ?> column, String name, String sortName, Double size) {
         Label label = new Label(name);
+        label.setPrefHeight(Double.MAX_VALUE);
         column.setSortable(false);
-        if(!StringUtils.isEmpty(sortName)) label.setOnMouseClicked(e -> sortTable(sortName));
+        if(!StringUtils.isEmpty(sortName)) {
+            column.getStyleClass().add("sort_icon");
+            label.setOnMouseClicked(e -> sortTable(sortName));
+        }
         column.setGraphic(label);
+
+        column.widthProperty().addListener((ob, ov, nv) -> {
+            label.setMinWidth(column.getWidth());
+        });
+
         if(size != null) column.setPrefWidth(size);
+
         variantListTableView.getColumns().add(column);
     }
 

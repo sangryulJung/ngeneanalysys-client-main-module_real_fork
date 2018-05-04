@@ -303,3 +303,10 @@
 	-fx-alignment: center-left;
 	-fx-label-padding : 0 0 0 0;
 }
+
+.column-header.sort_icon {
+    -fx-background-image:url('../images/renewal/sort.png');
+    -fx-background-size : 12;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: right 3 center;
+}
