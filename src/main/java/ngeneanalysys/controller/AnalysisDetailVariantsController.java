@@ -51,6 +51,8 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
 
     private Panel panel;
 
+    private Label snvLabel;
+
     /**
      * @return detailContents
      */
@@ -73,12 +75,13 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
     }
 
     public void setSNVTabName(String text) {
-        if(!StringUtils.isEmpty(text)) {
-            topMenus[0].setMenuName("SNV/Indel : " + text);
-        } else {
-            topMenus[0].setMenuName("SNV/Indel");
+        if(snvLabel != null) {
+            if (!StringUtils.isEmpty(text)) {
+                snvLabel.setText("SNV/Indel : " + text);
+            } else {
+                snvLabel.setText("SNV/Indel");
+            }
         }
-        refreshShowTopMenu(0);
 
     }
 
@@ -136,6 +139,10 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
 
                 Label menuName = new Label(topMenu.getMenuName());
                 menuName.setLayoutX(0);
+
+                if(topMenu.getMenuName().equals("SNV")) {
+                    snvLabel = menuName;
+                }
 
                 menu.getChildren().setAll(region, menuName);
 
