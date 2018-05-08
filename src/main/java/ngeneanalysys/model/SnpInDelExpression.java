@@ -18,21 +18,25 @@ public class SnpInDelExpression {
     private String ntChangeBic;
     private String aaChange;
     private String aaChangeSingleLetter;
+    private String refSequence;
+    private String altSequence;
+    private String leftSequence;
+    private String rightSequence;
     private String zygosity;
-    private String aachangeSingleLetter;
+
 
     /**
-     * @return aachangeSingleLetter
+     * @return aaChangeSingleLetter
      */
-    public String getAachangeSingleLetter() {
-        return aachangeSingleLetter;
+    public String getAaChangeSingleLetter() {
+        return aaChangeSingleLetter;
     }
 
     /**
-     * @param aachangeSingleLetter
+     * @param aaChangeSingleLetter
      */
-    public void setAachangeSingleLetter(String aachangeSingleLetter) {
-        this.aachangeSingleLetter = aachangeSingleLetter;
+    public void setAachangeSingleLetter(String aaChangeSingleLetter) {
+        this.aaChangeSingleLetter = aaChangeSingleLetter;
     }
 
     /**
@@ -152,16 +156,63 @@ public class SnpInDelExpression {
         this.zygosity = zygosity;
     }
 
-    public String getAaChangeSingleLetter() {
-        return aaChangeSingleLetter;
-    }
-
-    public void setAaChangeSingleLetter(String aaChangeSingleLetter) {
-        this.aaChangeSingleLetter = aaChangeSingleLetter;
-    }
-
     public String getAaChangeConversion() {
         return ConvertUtil.getAminoAcid(aaChange);
+    }
+    /**
+     * @return refSequence
+     */
+    public String getRefSequence() {
+        return refSequence;
+    }
+
+    /**
+     * @param refSequence
+     */
+    public void setRefSequence(String refSequence) {
+        this.refSequence = refSequence;
+    }
+
+    /**
+     * @return altSequence
+     */
+    public String getAltSequence() {
+        return altSequence;
+    }
+
+    /**
+     * @param altSequence
+     */
+    public void setAltSequence(String altSequence) {
+        this.altSequence = altSequence;
+    }
+
+    /**
+     * @return leftSequence
+     */
+    public String getLeftSequence() {
+        return leftSequence;
+    }
+
+    /**
+     * @param leftSequence
+     */
+    public void setLeftSequence(String leftSequence) {
+        this.leftSequence = leftSequence;
+    }
+
+    /**
+     * @return rightSequence
+     */
+    public String getRightSequence() {
+        return rightSequence;
+    }
+
+    /**
+     * @param rightSequence
+     */
+    public void setRightSequence(String rightSequence) {
+        this.rightSequence = rightSequence;
     }
 
     @Override
@@ -176,7 +227,7 @@ public class SnpInDelExpression {
                 ", aaChange='" + aaChange + '\'' +
                 ", aaChangeSingleLetter='" + aaChangeSingleLetter + '\'' +
                 ", zygosity='" + zygosity + '\'' +
-                ", aachangeSingleLetter='" + aachangeSingleLetter + '\'' +
+                ", aaChangeSingleLetter='" + aaChangeSingleLetter + '\'' +
                 '}';
     }
 }
