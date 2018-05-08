@@ -168,7 +168,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             String fastqFilePairName = FileUtil.getFASTQFilePairName(serverFile.getName());
 
             List<ServerFile> pairFileList = serverFiles.stream().filter(file ->
-                    file.getName().startsWith(fastqFilePairName)).collect(Collectors.toList());
+                    file.getName().startsWith(fastqFilePairName + "_")).collect(Collectors.toList());
 
             //fastq 파일이 짝을 이루고 올리는데 실패한 파일인 경우
            if (pairFileList.size() == 2 && checkSameSample(fastqFilePairName)) {

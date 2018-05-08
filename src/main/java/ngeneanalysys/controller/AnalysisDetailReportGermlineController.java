@@ -464,7 +464,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
             List<VariantAndInterpretationEvidence> tableList = new ArrayList<>();
 
-            if(pathogenicList != null && !pathogenicList.isEmpty()) {
+            /*if(pathogenicList != null && !pathogenicList.isEmpty()) {
                 Collections.sort(pathogenicList,
                         (a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
                 tableList.addAll(pathogenicList);
@@ -481,13 +481,16 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                         (a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
 
                 tableList.addAll(uncertainSignificanceList);
-            }
+            }*/
+
+            Collections.sort(list,
+                    (a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
 
             if(variantsTable.getItems() != null && !variantsTable.getItems().isEmpty()) {
                 variantsTable.getItems().removeAll(variantsTable.getItems());
             }
 
-            tableList = tableList.stream().filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y"))
+            tableList = list.stream().filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y"))
                     .collect(Collectors.toList());
 
             variantsTable.getItems().addAll(tableList);

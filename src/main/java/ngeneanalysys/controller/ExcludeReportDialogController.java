@@ -78,7 +78,6 @@ public class ExcludeReportDialogController extends SubPaneController {
                 Map<String, Object> params = new HashMap<>();
                 params.put("comment", comment);
                 params.put("includeInReport", symbol);
-                selectedItem.getSnpInDel().setIncludedInReport(symbol);
                 apiService.put("analysisResults/snpInDels/" + selectedItem.getSnpInDel().getId() + "/updateIncludeInReport", params, null, true);
             } catch (WebAPIException wae) {
                 wae.printStackTrace();
@@ -87,14 +86,8 @@ public class ExcludeReportDialogController extends SubPaneController {
             selectedItem.getSnpInDel().setComment(comment);
             dialogStage.close();
         } else {
-            if(checkBox.isSelected()) {
-                checkBox.setSelected(false);
-            } else {
-                checkBox.setSelected(true);
-            }
+            commentTextField.requestFocus();
         }
-
-        selectedItem = null;
     }
 
     @FXML
