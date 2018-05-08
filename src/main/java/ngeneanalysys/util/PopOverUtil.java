@@ -288,24 +288,24 @@ public class PopOverUtil {
             createHBox("kOHBRA",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("exac")) {
             createHBox("ExAC",setFeqTextField(value), box);
-        }else if(key.equalsIgnoreCase("genomADall")) {
-            createHBox("genomAD All",setFeqTextField(value), box);
-        }else if(key.equalsIgnoreCase("genomADadmixedAmerican")) {
-            createHBox("genomAD Admixed American",setFeqTextField(value), box);
-        }else if(key.equalsIgnoreCase("genomADafricanAfricanAmerican")) {
-            createHBox("genomAD African African American",setFeqTextField(value), box);
-        }else if(key.equalsIgnoreCase("genomADashkenaziJewish")) {
-            createHBox("genomAD Ashkenazi Jewish",setFeqTextField(value), box);
-        }else if(key.equalsIgnoreCase("genomADeastAsian")) {
-            createHBox("genomAD East Asian",setFeqTextField(value), box);
-        }else if(key.equalsIgnoreCase("genomADfinnish")) {
-            createHBox("genomAD Finnish",setFeqTextField(value), box);
-        }else if(key.equalsIgnoreCase("genomADnonFinnishEuropean")) {
-            createHBox("genomAD Non Finnish European",setFeqTextField(value), box);
-        }else if(key.equalsIgnoreCase("genomADothers")) {
-            createHBox("genomAD Others",setFeqTextField(value), box);
-        }else if(key.equalsIgnoreCase("genomADsouthAsian")) {
-            createHBox("genomAD SouthAsian",setFeqTextField(value), box);
+        }else if(key.equalsIgnoreCase("gnomADall")) {
+            createHBox("gnomAD All",setFeqTextField(value), box);
+        }else if(key.equalsIgnoreCase("gnomADadmixedAmerican")) {
+            createHBox("gnomAD Admixed American",setFeqTextField(value), box);
+        }else if(key.equalsIgnoreCase("gnomADafricanAfricanAmerican")) {
+            createHBox("gnomAD African African American",setFeqTextField(value), box);
+        }else if(key.equalsIgnoreCase("gnomADashkenaziJewish")) {
+            createHBox("gnomAD Ashkenazi Jewish",setFeqTextField(value), box);
+        }else if(key.equalsIgnoreCase("gnomADeastAsian")) {
+            createHBox("gnomAD East Asian",setFeqTextField(value), box);
+        }else if(key.equalsIgnoreCase("gnomADfinnish")) {
+            createHBox("gnomAD Finnish",setFeqTextField(value), box);
+        }else if(key.equalsIgnoreCase("gnomADnonFinnishEuropean")) {
+            createHBox("gnomAD Non Finnish European",setFeqTextField(value), box);
+        }else if(key.equalsIgnoreCase("gnomADothers")) {
+            createHBox("gnomAD Others",setFeqTextField(value), box);
+        }else if(key.equalsIgnoreCase("gnomADsouthAsian")) {
+            createHBox("gnomAD SouthAsian",setFeqTextField(value), box);
         } else if(key.equalsIgnoreCase("cosmicOccurrence")) {
             createHBox("cosmic Occurrence", value.replaceAll("_", " "), box);
         }

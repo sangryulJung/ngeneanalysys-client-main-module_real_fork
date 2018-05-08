@@ -10,7 +10,6 @@ import javafx.stage.StageStyle;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
-import ngeneanalysys.model.LoginSession;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
@@ -189,31 +188,31 @@ public class VariantFilterController extends SubPaneController {
     private TextField kohbraTextField;
 
     @FXML
-    private TextField genomADAllTextField;
+    private TextField gnomADAllTextField;
 
     @FXML
-    private TextField genomADmaTextField;
+    private TextField gnomADmaTextField;
 
     @FXML
-    private TextField genomADaaaTextField;
+    private TextField gnomADaaaTextField;
 
     @FXML
-    private TextField genomADajgenomAD;
+    private TextField gnomADajgnomAD;
 
     @FXML
-    private TextField genomADeaTextField;
+    private TextField gnomADeaTextField;
 
     @FXML
-    private TextField genomADfinTextField;
+    private TextField gnomADfinTextField;
 
     @FXML
-    private TextField genomADnfeTextField;
+    private TextField gnomADnfeTextField;
 
     @FXML
-    private TextField genomADotherTextField;
+    private TextField gnomADotherTextField;
 
     @FXML
-    private TextField genomADsaTextField;
+    private TextField gnomADsaTextField;
 
     @FXML
     private TextField exacTextField;
@@ -255,31 +254,31 @@ public class VariantFilterController extends SubPaneController {
     private ComboBox<ComboBoxItem> kohbraComboBox;
 
     @FXML
-    private ComboBox<ComboBoxItem> genomADAllComboBox;
+    private ComboBox<ComboBoxItem> gnomADAllComboBox;
 
     @FXML
-    private ComboBox<ComboBoxItem> genomADmaComboBox;
+    private ComboBox<ComboBoxItem> gnomADmaComboBox;
 
     @FXML
-    private ComboBox<ComboBoxItem> genomADaaaComboBox;
+    private ComboBox<ComboBoxItem> gnomADaaaComboBox;
 
     @FXML
-    private ComboBox<ComboBoxItem> genomADajgenomADComboBox;
+    private ComboBox<ComboBoxItem> gnomADajgnomADComboBox;
 
     @FXML
-    private ComboBox<ComboBoxItem> genomADeaComboBox;
+    private ComboBox<ComboBoxItem> gnomADeaComboBox;
 
     @FXML
-    private ComboBox<ComboBoxItem> genomADfinComboBox;
+    private ComboBox<ComboBoxItem> gnomADfinComboBox;
 
     @FXML
-    private ComboBox<ComboBoxItem> genomADnfeComboBox;
+    private ComboBox<ComboBoxItem> gnomADnfeComboBox;
 
     @FXML
-    private ComboBox<ComboBoxItem> genomADotherComboBox;
+    private ComboBox<ComboBoxItem> gnomADotherComboBox;
 
     @FXML
-    private ComboBox<ComboBoxItem> genomADsaComboBox;
+    private ComboBox<ComboBoxItem> gnomADsaComboBox;
 
     @FXML
     private ComboBox<ComboBoxItem> exacComboBox;
@@ -458,15 +457,15 @@ public class VariantFilterController extends SubPaneController {
         createOperatorComboBox(krgdComboBox);
         createOperatorComboBox(kohbraComboBox);
 
-        createOperatorComboBox(genomADAllComboBox);
-        createOperatorComboBox(genomADmaComboBox);
-        createOperatorComboBox(genomADaaaComboBox);
-        createOperatorComboBox(genomADajgenomADComboBox);
-        createOperatorComboBox(genomADeaComboBox);
-        createOperatorComboBox(genomADfinComboBox);
-        createOperatorComboBox(genomADnfeComboBox);
-        createOperatorComboBox(genomADotherComboBox);
-        createOperatorComboBox(genomADsaComboBox);
+        createOperatorComboBox(gnomADAllComboBox);
+        createOperatorComboBox(gnomADmaComboBox);
+        createOperatorComboBox(gnomADaaaComboBox);
+        createOperatorComboBox(gnomADajgnomADComboBox);
+        createOperatorComboBox(gnomADeaComboBox);
+        createOperatorComboBox(gnomADfinComboBox);
+        createOperatorComboBox(gnomADnfeComboBox);
+        createOperatorComboBox(gnomADotherComboBox);
+        createOperatorComboBox(gnomADsaComboBox);
     }
 
     private void createOperatorComboBox(ComboBox<ComboBoxItem> comboBox) {
@@ -603,15 +602,15 @@ public class VariantFilterController extends SubPaneController {
         setFormat(espaaTextField);
         setFormat(espeaTextField);
 
-        setFormat(genomADAllTextField);
-        setFormat(genomADmaTextField);
-        setFormat(genomADaaaTextField);
-        setFormat(genomADajgenomAD);
-        setFormat(genomADeaTextField);
-        setFormat(genomADfinTextField);
-        setFormat(genomADnfeTextField);
-        setFormat(genomADotherTextField);
-        setFormat(genomADsaTextField);
+        setFormat(gnomADAllTextField);
+        setFormat(gnomADmaTextField);
+        setFormat(gnomADaaaTextField);
+        setFormat(gnomADajgnomAD);
+        setFormat(gnomADeaTextField);
+        setFormat(gnomADfinTextField);
+        setFormat(gnomADnfeTextField);
+        setFormat(gnomADotherTextField);
+        setFormat(gnomADsaTextField);
 
         setFormat(exacTextField);
         setFormat(keidTextField);
@@ -747,33 +746,33 @@ public class VariantFilterController extends SubPaneController {
         }else if(key.equalsIgnoreCase("exac")) {
             setFeqTextField(value, exacTextField);
             setOperator(value, exacComboBox);
-        }else if(key.equalsIgnoreCase("genomADall")) {
-            setFeqTextField(value, genomADAllTextField);
-            setOperator(value, genomADAllComboBox);
-        }else if(key.equalsIgnoreCase("genomADadmixedAmerican")) {
-            setFeqTextField(value, genomADmaTextField);
-            setOperator(value, genomADmaComboBox);
-        }else if(key.equalsIgnoreCase("genomADafricanAfricanAmerican")) {
-            setFeqTextField(value, genomADaaaTextField);
-            setOperator(value, genomADaaaComboBox);
-        }else if(key.equalsIgnoreCase("genomADashkenaziJewish")) {
-            setFeqTextField(value, genomADajgenomAD);
-            setOperator(value, genomADajgenomADComboBox);
-        }else if(key.equalsIgnoreCase("genomADeastAsian")) {
-            setFeqTextField(value, genomADeaTextField);
-            setOperator(value, genomADeaComboBox);
-        }else if(key.equalsIgnoreCase("genomADfinnish")) {
-            setFeqTextField(value, genomADfinTextField);
-            setOperator(value, genomADfinComboBox);
-        }else if(key.equalsIgnoreCase("genomADnonFinnishEuropean")) {
-            setFeqTextField(value, genomADnfeTextField);
-            setOperator(value, genomADnfeComboBox);
-        }else if(key.equalsIgnoreCase("genomADothers")) {
-            setFeqTextField(value, genomADotherTextField);
-            setOperator(value, genomADotherComboBox);
-        }else if(key.equalsIgnoreCase("genomADsouthAsian")) {
-            setFeqTextField(value, genomADsaTextField);
-            setOperator(value, genomADsaComboBox);
+        }else if(key.equalsIgnoreCase("gnomADall")) {
+            setFeqTextField(value, gnomADAllTextField);
+            setOperator(value, gnomADAllComboBox);
+        }else if(key.equalsIgnoreCase("gnomADadmixedAmerican")) {
+            setFeqTextField(value, gnomADmaTextField);
+            setOperator(value, gnomADmaComboBox);
+        }else if(key.equalsIgnoreCase("gnomADafricanAfricanAmerican")) {
+            setFeqTextField(value, gnomADaaaTextField);
+            setOperator(value, gnomADaaaComboBox);
+        }else if(key.equalsIgnoreCase("gnomADashkenaziJewish")) {
+            setFeqTextField(value, gnomADajgnomAD);
+            setOperator(value, gnomADajgnomADComboBox);
+        }else if(key.equalsIgnoreCase("gnomADeastAsian")) {
+            setFeqTextField(value, gnomADeaTextField);
+            setOperator(value, gnomADeaComboBox);
+        }else if(key.equalsIgnoreCase("gnomADfinnish")) {
+            setFeqTextField(value, gnomADfinTextField);
+            setOperator(value, gnomADfinComboBox);
+        }else if(key.equalsIgnoreCase("gnomADnonFinnishEuropean")) {
+            setFeqTextField(value, gnomADnfeTextField);
+            setOperator(value, gnomADnfeComboBox);
+        }else if(key.equalsIgnoreCase("gnomADothers")) {
+            setFeqTextField(value, gnomADotherTextField);
+            setOperator(value, gnomADotherComboBox);
+        }else if(key.equalsIgnoreCase("gnomADsouthAsian")) {
+            setFeqTextField(value, gnomADsaTextField);
+            setOperator(value, gnomADsaComboBox);
         }else if(key.equalsIgnoreCase("cosmicOccurrence")) {
             Optional<ComboBoxItem> comboBoxItem
                     = cosmicOccurrenceComboBox.getItems().stream().filter(item -> item.getValue().equals(value)).findFirst();
@@ -1014,32 +1013,32 @@ public class VariantFilterController extends SubPaneController {
             setFrequency(list, exacTextField.getText(), exacComboBox.getSelectionModel().getSelectedItem().getValue(), "exac");
         }
 
-        if(!StringUtils.isEmpty(genomADAllTextField.getText())) {
-            setFrequency(list, genomADAllTextField.getText(), genomADAllComboBox.getSelectionModel().getSelectedItem().getValue(), "genomADall");
+        if(!StringUtils.isEmpty(gnomADAllTextField.getText())) {
+            setFrequency(list, gnomADAllTextField.getText(), gnomADAllComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADall");
         }
-        if(!StringUtils.isEmpty(genomADmaTextField.getText())) {
-            setFrequency(list, genomADmaTextField.getText(), genomADmaComboBox.getSelectionModel().getSelectedItem().getValue(), "genomADadmixedAmerican");
+        if(!StringUtils.isEmpty(gnomADmaTextField.getText())) {
+            setFrequency(list, gnomADmaTextField.getText(), gnomADmaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADadmixedAmerican");
         }
-        if(!StringUtils.isEmpty(genomADaaaTextField.getText())) {
-            setFrequency(list, genomADaaaTextField.getText(), genomADaaaComboBox.getSelectionModel().getSelectedItem().getValue(), "genomADafricanAfricanAmerican");
+        if(!StringUtils.isEmpty(gnomADaaaTextField.getText())) {
+            setFrequency(list, gnomADaaaTextField.getText(), gnomADaaaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADafricanAfricanAmerican");
         }
-        if(!StringUtils.isEmpty(genomADajgenomAD.getText())) {
-            setFrequency(list, genomADajgenomAD.getText(), genomADajgenomADComboBox.getSelectionModel().getSelectedItem().getValue(), "genomADashkenaziJewish");
+        if(!StringUtils.isEmpty(gnomADajgnomAD.getText())) {
+            setFrequency(list, gnomADajgnomAD.getText(), gnomADajgnomADComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADashkenaziJewish");
         }
-        if(!StringUtils.isEmpty(genomADeaTextField.getText())) {
-            setFrequency(list, genomADeaTextField.getText(), genomADeaComboBox.getSelectionModel().getSelectedItem().getValue(), "genomADeastAsian");
+        if(!StringUtils.isEmpty(gnomADeaTextField.getText())) {
+            setFrequency(list, gnomADeaTextField.getText(), gnomADeaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADeastAsian");
         }
-        if(!StringUtils.isEmpty(genomADfinTextField.getText())) {
-            setFrequency(list, genomADfinTextField.getText(), genomADfinComboBox.getSelectionModel().getSelectedItem().getValue(), "genomADfinnish");
+        if(!StringUtils.isEmpty(gnomADfinTextField.getText())) {
+            setFrequency(list, gnomADfinTextField.getText(), gnomADfinComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADfinnish");
         }
-        if(!StringUtils.isEmpty(genomADnfeTextField.getText())) {
-            setFrequency(list, genomADnfeTextField.getText(), genomADnfeComboBox.getSelectionModel().getSelectedItem().getValue(), "genomADnonFinnishEuropean");
+        if(!StringUtils.isEmpty(gnomADnfeTextField.getText())) {
+            setFrequency(list, gnomADnfeTextField.getText(), gnomADnfeComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADnonFinnishEuropean");
         }
-        if(!StringUtils.isEmpty(genomADotherTextField.getText())) {
-            setFrequency(list, genomADotherTextField.getText(), genomADotherComboBox.getSelectionModel().getSelectedItem().getValue(), "genomADothers");
+        if(!StringUtils.isEmpty(gnomADotherTextField.getText())) {
+            setFrequency(list, gnomADotherTextField.getText(), gnomADotherComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADothers");
         }
-        if(!StringUtils.isEmpty(genomADsaTextField.getText())) {
-            setFrequency(list, genomADsaTextField.getText(), genomADsaComboBox.getSelectionModel().getSelectedItem().getValue(), "genomADsouthAsian");
+        if(!StringUtils.isEmpty(gnomADsaTextField.getText())) {
+            setFrequency(list, gnomADsaTextField.getText(), gnomADsaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADsouthAsian");
         }
     }
 
@@ -1317,15 +1316,15 @@ public class VariantFilterController extends SubPaneController {
         keidTextField.setText("");
         krgdTextField.setText("");
         kohbraTextField.setText("");
-        genomADAllTextField.setText("");
-        genomADmaTextField.setText("");
-        genomADaaaTextField.setText("");
-        genomADajgenomAD.setText("");
-        genomADeaTextField.setText("");
-        genomADfinTextField.setText("");
-        genomADnfeTextField.setText("");
-        genomADotherTextField.setText("");
-        genomADsaTextField.setText("");
+        gnomADAllTextField.setText("");
+        gnomADmaTextField.setText("");
+        gnomADaaaTextField.setText("");
+        gnomADajgnomAD.setText("");
+        gnomADeaTextField.setText("");
+        gnomADfinTextField.setText("");
+        gnomADnfeTextField.setText("");
+        gnomADotherTextField.setText("");
+        gnomADsaTextField.setText("");
         exacTextField.setText("");
         caseACheckBox.setSelected(false);
         caseBCheckBox.setSelected(false);

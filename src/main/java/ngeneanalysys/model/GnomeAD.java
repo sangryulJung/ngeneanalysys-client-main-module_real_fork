@@ -6,7 +6,7 @@ import java.math.BigDecimal;
  * @author Jang
  * @since 2018-01-17
  */
-public class GenomeAD {
+public class GnomeAD {
     private BigDecimal all;
     private BigDecimal admixedAmerican;
     private BigDecimal africanAfricanAmerican;

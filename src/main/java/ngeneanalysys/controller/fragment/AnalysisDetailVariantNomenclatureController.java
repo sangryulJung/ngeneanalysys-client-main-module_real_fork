@@ -80,10 +80,10 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
     private void showVariantIdentification() {
         List<SnpInDelTranscript> transcriptDataList = (List<SnpInDelTranscript>) paramMap.get("snpInDelTranscripts");
 
-        String ref = variant.getSnpInDel().getGenomicCoordinate().getRefSequence();
-        String alt = variant.getSnpInDel().getGenomicCoordinate().getAltSequence();
-        String left22Bp = variant.getSnpInDel().getGenomicCoordinate().getLeftSequence();
-        String right22Bp = variant.getSnpInDel().getGenomicCoordinate().getRightSequence();
+        String ref = variant.getSnpInDel().getSnpInDelExpression().getRefSequence();
+        String alt = variant.getSnpInDel().getSnpInDelExpression().getAltSequence();
+        String left22Bp = variant.getSnpInDel().getSnpInDelExpression().getLeftSequence();
+        String right22Bp = variant.getSnpInDel().getSnpInDelExpression().getRightSequence();
         String genePositionStart = String.valueOf(variant.getSnpInDel().getGenomicCoordinate().getStartPosition());
         String transcriptAltType = variant.getSnpInDel().getSnpInDelExpression().getVariantType();
         String defaultTranscript = null;
