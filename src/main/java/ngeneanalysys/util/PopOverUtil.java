@@ -222,7 +222,17 @@ public class PopOverUtil {
     }
 
     private static String setFeqTextField(String option) {
-        return "≥ " + option.substring(option.indexOf(":") + 1);
+        String operator = "";
+        if(option.contains("gte:")) {
+            operator = "≥ ";
+        } else if(option.contains("lte:")) {
+            operator = "≤ ";
+        } else if(option.contains("gt:")) {
+            operator = "> ";
+        } else if(option.contains("lt:")) {
+            operator = "< ";
+        }
+        return operator + option.substring(option.indexOf(":") + 1);
     }
 
     private static void setKeyValue(String key, String value, VBox box) {

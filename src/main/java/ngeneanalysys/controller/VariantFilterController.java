@@ -219,6 +219,74 @@ public class VariantFilterController extends SubPaneController {
     private TextField exacTextField;
 
     @FXML
+    private ComboBox<ComboBoxItem> tgAllComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> tgafrComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> tgamrComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> tgeasComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> tgeurComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> tgsasComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> espallComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> espaaComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> espeaComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> keidComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> krgdComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> kohbraComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> genomADAllComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> genomADmaComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> genomADaaaComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> genomADajgenomADComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> genomADeaComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> genomADfinComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> genomADnfeComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> genomADotherComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> genomADsaComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> exacComboBox;
+
+    /////
+
+    @FXML
     private CheckBox caseACheckBox;
 
     @FXML
@@ -319,7 +387,9 @@ public class VariantFilterController extends SubPaneController {
         this.dialogStage = dialogStage;
 
         //setFormat(startFractionTextField);
-        //setFormat(endFractionTextField);
+        //setFormat(endFractionTextField);\
+
+        createFrequency();
 
         setCosmicOccurrenceComboBoxItem();
 
@@ -369,6 +439,55 @@ public class VariantFilterController extends SubPaneController {
         Scene scene = new Scene(root);
         dialogStage.setScene(scene);
         dialogStage.showAndWait();
+    }
+
+    private void createFrequency() {
+        createOperatorComboBox(tgAllComboBox);
+        createOperatorComboBox(tgafrComboBox);
+        createOperatorComboBox(tgamrComboBox);
+        createOperatorComboBox(tgeasComboBox);
+        createOperatorComboBox(tgeurComboBox);
+        createOperatorComboBox(tgsasComboBox);
+
+        createOperatorComboBox(espallComboBox);
+        createOperatorComboBox(espaaComboBox);
+        createOperatorComboBox(espeaComboBox);
+
+        createOperatorComboBox(exacComboBox);
+        createOperatorComboBox(keidComboBox);
+        createOperatorComboBox(krgdComboBox);
+        createOperatorComboBox(kohbraComboBox);
+
+        createOperatorComboBox(genomADAllComboBox);
+        createOperatorComboBox(genomADmaComboBox);
+        createOperatorComboBox(genomADaaaComboBox);
+        createOperatorComboBox(genomADajgenomADComboBox);
+        createOperatorComboBox(genomADeaComboBox);
+        createOperatorComboBox(genomADfinComboBox);
+        createOperatorComboBox(genomADnfeComboBox);
+        createOperatorComboBox(genomADotherComboBox);
+        createOperatorComboBox(genomADsaComboBox);
+    }
+
+    private void createOperatorComboBox(ComboBox<ComboBoxItem> comboBox) {
+        comboBox.setConverter(new ComboBoxConverter());
+        comboBox.getItems().add(new ComboBoxItem("gt:", ">"));
+        comboBox.getItems().add(new ComboBoxItem("lt:", "<"));
+        comboBox.getItems().add(new ComboBoxItem("gte:", "≥"));
+        comboBox.getItems().add(new ComboBoxItem("lte:", "≤"));
+        comboBox.getSelectionModel().selectFirst();
+    }
+
+    private void setOperator(String value, ComboBox<ComboBoxItem> comboBox) {
+        if(value.contains("gte:")) {
+            comboBox.getSelectionModel().select(2);
+        } else if(value.contains("lte:")) {
+            comboBox.getSelectionModel().select(3);
+        } else if(value.contains("gt:")) {
+            comboBox.getSelectionModel().select(0);
+        } else if(value.contains("lt:")) {
+            comboBox.getSelectionModel().select(1);
+        }
     }
 
     private void setCosmicOccurrenceComboBoxItem() {
@@ -591,48 +710,70 @@ public class VariantFilterController extends SubPaneController {
             }
         } else if(key.equalsIgnoreCase("g1000All")) {
             setFeqTextField(value, tgAllTextField);
+            setOperator(value, tgAllComboBox);
         }else if(key.equalsIgnoreCase("g1000African")) {
             setFeqTextField(value, tgafrTextField);
+            setOperator(value, tgafrComboBox);
         }else if(key.equalsIgnoreCase("g1000American")) {
             setFeqTextField(value, tgamrTextField);
+            setOperator(value, tgamrComboBox);
         }else if(key.equalsIgnoreCase("g1000EastAsian")) {
             setFeqTextField(value, tgeasTextField);
+            setOperator(value, tgeasComboBox);
         }else if(key.equalsIgnoreCase("g1000European")) {
             setFeqTextField(value, tgeurTextField);
+            setOperator(value, tgeurComboBox);
         }else if(key.equalsIgnoreCase("g1000SouthAsian")) {
             setFeqTextField(value, tgsasTextField);
+            setOperator(value, tgsasComboBox);
         }else if(key.equalsIgnoreCase("esp6500All")) {
             setFeqTextField(value, espallTextField);
+            setOperator(value, espallComboBox);
         }else if(key.equalsIgnoreCase("esp6500aa")) {
             setFeqTextField(value, espaaTextField);
+            setOperator(value, espaaComboBox);
         }else if(key.equalsIgnoreCase("esp6500ea")) {
             setFeqTextField(value, espeaTextField);
+            setOperator(value, espeaComboBox);
         }else if(key.equalsIgnoreCase("koreanExomInformationDatabase")) {
             setFeqTextField(value, keidTextField);
+            setOperator(value, keidComboBox);
         }else if(key.equalsIgnoreCase("koreanReferenceGenomeDatabase")) {
             setFeqTextField(value, krgdTextField);
+            setOperator(value, krgdComboBox);
         }else if(key.equalsIgnoreCase("kohbraFreq")) {
             setFeqTextField(value, kohbraTextField);
+            setOperator(value, kohbraComboBox);
         }else if(key.equalsIgnoreCase("exac")) {
             setFeqTextField(value, exacTextField);
+            setOperator(value, exacComboBox);
         }else if(key.equalsIgnoreCase("genomADall")) {
             setFeqTextField(value, genomADAllTextField);
+            setOperator(value, genomADAllComboBox);
         }else if(key.equalsIgnoreCase("genomADadmixedAmerican")) {
             setFeqTextField(value, genomADmaTextField);
+            setOperator(value, genomADmaComboBox);
         }else if(key.equalsIgnoreCase("genomADafricanAfricanAmerican")) {
             setFeqTextField(value, genomADaaaTextField);
+            setOperator(value, genomADaaaComboBox);
         }else if(key.equalsIgnoreCase("genomADashkenaziJewish")) {
             setFeqTextField(value, genomADajgenomAD);
+            setOperator(value, genomADajgenomADComboBox);
         }else if(key.equalsIgnoreCase("genomADeastAsian")) {
             setFeqTextField(value, genomADeaTextField);
+            setOperator(value, genomADeaComboBox);
         }else if(key.equalsIgnoreCase("genomADfinnish")) {
             setFeqTextField(value, genomADfinTextField);
+            setOperator(value, genomADfinComboBox);
         }else if(key.equalsIgnoreCase("genomADnonFinnishEuropean")) {
             setFeqTextField(value, genomADnfeTextField);
+            setOperator(value, genomADnfeComboBox);
         }else if(key.equalsIgnoreCase("genomADothers")) {
             setFeqTextField(value, genomADotherTextField);
+            setOperator(value, genomADotherComboBox);
         }else if(key.equalsIgnoreCase("genomADsouthAsian")) {
             setFeqTextField(value, genomADsaTextField);
+            setOperator(value, genomADsaComboBox);
         }else if(key.equalsIgnoreCase("cosmicOccurrence")) {
             Optional<ComboBoxItem> comboBoxItem
                     = cosmicOccurrenceComboBox.getItems().stream().filter(item -> item.getValue().equals(value)).findFirst();
@@ -832,78 +973,78 @@ public class VariantFilterController extends SubPaneController {
 
     private void populationFrequencySave(List<Object> list) {
         if(!StringUtils.isEmpty(tgAllTextField.getText())) {
-            setFrequency(list, tgAllTextField.getText(), "g1000All");
+            setFrequency(list, tgAllTextField.getText(), tgAllComboBox.getSelectionModel().getSelectedItem().getValue(), "g1000All");
         }
         if(!StringUtils.isEmpty(tgafrTextField.getText())) {
-            setFrequency(list, tgafrTextField.getText(), "g1000African");
+            setFrequency(list, tgafrTextField.getText(), tgafrComboBox.getSelectionModel().getSelectedItem().getValue(), "g1000African");
         }
         if(!StringUtils.isEmpty(tgamrTextField.getText())) {
-            setFrequency(list, tgamrTextField.getText(), "g1000American");
+            setFrequency(list, tgamrTextField.getText(), tgamrComboBox.getSelectionModel().getSelectedItem().getValue(), "g1000American");
         }
         if(!StringUtils.isEmpty(tgeasTextField.getText())) {
-            setFrequency(list, tgeasTextField.getText(), "g1000EastAsian");
+            setFrequency(list, tgeasTextField.getText(), tgeasComboBox.getSelectionModel().getSelectedItem().getValue(), "g1000EastAsian");
         }
         if(!StringUtils.isEmpty(tgeurTextField.getText())) {
-            setFrequency(list, tgeurTextField.getText(), "g1000European");
+            setFrequency(list, tgeurTextField.getText(), tgeurComboBox.getSelectionModel().getSelectedItem().getValue(), "g1000European");
         }
         if(!StringUtils.isEmpty(tgsasTextField.getText())) {
-            setFrequency(list, tgsasTextField.getText(), "g1000SouthAsian");
+            setFrequency(list, tgsasTextField.getText(), tgsasComboBox.getSelectionModel().getSelectedItem().getValue(), "g1000SouthAsian");
         }
 
         if(!StringUtils.isEmpty(espallTextField.getText())) {
-            setFrequency(list, espallTextField.getText(), "esp6500All");
+            setFrequency(list, espallTextField.getText(), espallComboBox.getSelectionModel().getSelectedItem().getValue(), "esp6500All");
         }
         if(!StringUtils.isEmpty(espaaTextField.getText())) {
-            setFrequency(list, espaaTextField.getText(), "esp6500aa");
+            setFrequency(list, espaaTextField.getText(), espaaComboBox.getSelectionModel().getSelectedItem().getValue(), "esp6500aa");
         }
         if(!StringUtils.isEmpty(espeaTextField.getText())) {
-            setFrequency(list, espeaTextField.getText(), "esp6500ea");
+            setFrequency(list, espeaTextField.getText(), espeaComboBox.getSelectionModel().getSelectedItem().getValue(), "esp6500ea");
         }
 
         if(!StringUtils.isEmpty(keidTextField.getText())) {
-            setFrequency(list, keidTextField.getText(), "koreanExomInformationDatabase");
+            setFrequency(list, keidTextField.getText(), keidComboBox.getSelectionModel().getSelectedItem().getValue(), "koreanExomInformationDatabase");
         }
         if(!StringUtils.isEmpty(krgdTextField.getText())) {
-            setFrequency(list, krgdTextField.getText(), "koreanReferenceGenomeDatabase");
+            setFrequency(list, krgdTextField.getText(), krgdComboBox.getSelectionModel().getSelectedItem().getValue(), "koreanReferenceGenomeDatabase");
         }
         if(!StringUtils.isEmpty(kohbraTextField.getText())) {
-            setFrequency(list, kohbraTextField.getText(), "kohbraFreq");
+            setFrequency(list, kohbraTextField.getText(), kohbraComboBox.getSelectionModel().getSelectedItem().getValue(), "kohbraFreq");
         }
         if(!StringUtils.isEmpty(exacTextField.getText())) {
-            setFrequency(list, exacTextField.getText(), "exac");
+            setFrequency(list, exacTextField.getText(), exacComboBox.getSelectionModel().getSelectedItem().getValue(), "exac");
         }
 
         if(!StringUtils.isEmpty(genomADAllTextField.getText())) {
-            setFrequency(list, genomADAllTextField.getText(), "genomADall");
+            setFrequency(list, genomADAllTextField.getText(), genomADAllComboBox.getSelectionModel().getSelectedItem().getValue(), "genomADall");
         }
         if(!StringUtils.isEmpty(genomADmaTextField.getText())) {
-            setFrequency(list, genomADmaTextField.getText(), "genomADadmixedAmerican");
+            setFrequency(list, genomADmaTextField.getText(), genomADmaComboBox.getSelectionModel().getSelectedItem().getValue(), "genomADadmixedAmerican");
         }
         if(!StringUtils.isEmpty(genomADaaaTextField.getText())) {
-            setFrequency(list, genomADaaaTextField.getText(), "genomADafricanAfricanAmerican");
+            setFrequency(list, genomADaaaTextField.getText(), genomADaaaComboBox.getSelectionModel().getSelectedItem().getValue(), "genomADafricanAfricanAmerican");
         }
         if(!StringUtils.isEmpty(genomADajgenomAD.getText())) {
-            setFrequency(list, genomADajgenomAD.getText(), "genomADashkenaziJewish");
+            setFrequency(list, genomADajgenomAD.getText(), genomADajgenomADComboBox.getSelectionModel().getSelectedItem().getValue(), "genomADashkenaziJewish");
         }
         if(!StringUtils.isEmpty(genomADeaTextField.getText())) {
-            setFrequency(list, genomADeaTextField.getText(), "genomADeastAsian");
+            setFrequency(list, genomADeaTextField.getText(), genomADeaComboBox.getSelectionModel().getSelectedItem().getValue(), "genomADeastAsian");
         }
         if(!StringUtils.isEmpty(genomADfinTextField.getText())) {
-            setFrequency(list, genomADfinTextField.getText(), "genomADfinnish");
+            setFrequency(list, genomADfinTextField.getText(), genomADfinComboBox.getSelectionModel().getSelectedItem().getValue(), "genomADfinnish");
         }
         if(!StringUtils.isEmpty(genomADnfeTextField.getText())) {
-            setFrequency(list, genomADnfeTextField.getText(), "genomADnonFinnishEuropean");
+            setFrequency(list, genomADnfeTextField.getText(), genomADnfeComboBox.getSelectionModel().getSelectedItem().getValue(), "genomADnonFinnishEuropean");
         }
         if(!StringUtils.isEmpty(genomADotherTextField.getText())) {
-            setFrequency(list, genomADotherTextField.getText(), "genomADothers");
+            setFrequency(list, genomADotherTextField.getText(), genomADotherComboBox.getSelectionModel().getSelectedItem().getValue(), "genomADothers");
         }
         if(!StringUtils.isEmpty(genomADsaTextField.getText())) {
-            setFrequency(list, genomADsaTextField.getText(), "genomADsouthAsian");
+            setFrequency(list, genomADsaTextField.getText(), genomADsaComboBox.getSelectionModel().getSelectedItem().getValue(), "genomADsouthAsian");
         }
     }
 
-    private void setFrequency(List<Object> list, String text, String key) {
-        list.add(key + " gte:" + text);
+    private void setFrequency(List<Object> list, String text,String operator , String key) {
+        list.add(key + " " + operator + text);
     }
 
     private void consequenceSave(List<Object> list) {
