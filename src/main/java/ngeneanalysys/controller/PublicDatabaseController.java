@@ -10,7 +10,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -65,6 +67,9 @@ public class PublicDatabaseController extends SubPaneController {
     @FXML
     private ScrollPane releaseNoteScrollPane;
 
+    @FXML
+    private TabPane itemTabPane;
+
     /**
      * @param panelId Integer
      */
@@ -88,7 +93,8 @@ public class PublicDatabaseController extends SubPaneController {
             dialogStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
         }
         dialogStage.initOwner(getMainApp().getPrimaryStage());
-        dialogStage.resizableProperty().setValue(false);
+        dialogStage.setMinWidth(1030);
+        dialogStage.setMinHeight(566);
 
         versionComboBox.getSelectionModel().selectedItemProperty().addListener((ob, ov, nv) -> {
             logger.debug("test");

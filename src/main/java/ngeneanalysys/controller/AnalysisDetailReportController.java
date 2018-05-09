@@ -195,7 +195,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         if (keyList.contains("conclusions")) {
                             Map<String, String> item = (Map<String, String>) variableList.get("conclusions");
                             conclusions.setText(item.get("displayName"));
-                            System.out.println(conclusions.getStyle());
                             sortedKeyList.remove("conclusions");
                             conclusions.setStyle("-fx-font-family: \"Noto Sans KR Bold\"");
                         }
@@ -1130,6 +1129,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             createdCheck(true, file);
         } catch (Exception e) {
             DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);
+            e.printStackTrace();
         } finally {
             try {
                 if(classLoader != null) classLoader.close();
