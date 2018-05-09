@@ -41,7 +41,7 @@
                   <Insets bottom="5.0" />
                </VBox.margin>
             </HBox>
-            <TableView fx:id="variantListTableView" maxHeight="305.0" maxWidth="-Infinity" minHeight="305.0" minWidth="-Infinity" prefHeight="305.0" styleClass="custom-table" tableMenuButtonVisible="true">
+            <TableView fx:id="variantListTableView" maxHeight="305.0" maxWidth="-Infinity" minHeight="305.0" minWidth="-Infinity" prefHeight="305.0" tableMenuButtonVisible="true">
                <padding>
                   <Insets bottom="10.0" />
                </padding>
