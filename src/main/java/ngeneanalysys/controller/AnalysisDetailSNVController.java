@@ -949,34 +949,63 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             createTableHeader(typeExtension, "Type Extension", "variantTypeExtension", 70.);
             typeExtension.getStyleClass().clear();
             typeExtension.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getVariantTypeExtension()));
+            typeExtension.setVisible(false);
         }
+        
 
         TableColumn<VariantAndInterpretationEvidence, String> codCons = new TableColumn<>("Consequence");
-        createTableHeader(codCons, "Consequence", null ,70.);
+        createTableHeader(codCons, "Consequence", null ,140.);
         codCons.getStyleClass().clear();
         codCons.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getCodingConsequence()));
 
         TableColumn<VariantAndInterpretationEvidence, String> ntChange = new TableColumn<>("NT Change");
-        createTableHeader(ntChange, "NT Change", null ,90.);
+        createTableHeader(ntChange, "NT Change", null ,160.);
         ntChange.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
 
         if(panel != null && ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             TableColumn<VariantAndInterpretationEvidence, String> ntChangeBIC = new TableColumn<>("NT Change (BIC)");
-            createTableHeader(ntChangeBIC, "NT Change (BIC)", null ,90.);
+            createTableHeader(ntChangeBIC, "NT Change (BIC)", null ,140.);
             ntChangeBIC.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().createNtChangeBRCA()));
         }
 
         TableColumn<VariantAndInterpretationEvidence, String> aaChange = new TableColumn<>("AA Change");
-        createTableHeader(aaChange, "AA Change", null ,90.);
+        createTableHeader(aaChange, "AA Change", null ,140.);
         aaChange.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChange()));
         aaChange.setVisible(false);
 
         TableColumn<VariantAndInterpretationEvidence, String> aaChangeConversion = new TableColumn<>("AA Change (Single)");
-        createTableHeader(aaChangeConversion, "AA Change (Single)", null ,90.);
+        createTableHeader(aaChangeConversion, "AA Change (Single)", null ,140.);
         aaChangeConversion.setCellValueFactory(cellData -> cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChangeSingleLetter() == null ?
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChangeConversion()) :
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChangeSingleLetter()));
 
+        if(panel != null && ExperimentTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
+          TableColumn<VariantAndInterpretationEvidence, String> cosmicIds = new TableColumn<>("COSMIC ID");
+          createTableHeader(cosmicIds, "COSMIC ID", null ,null);
+          cosmicIds.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getCosmic().getCosmicIds()));
+          cosmicIds.setVisible(true);
+        }
+        TableColumn<VariantAndInterpretationEvidence, String> dbSnpRsId = new TableColumn<>("dbSNP ID");
+        createTableHeader(dbSnpRsId, "dbSNP ID", null ,null);
+        dbSnpRsId.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getDbSNP().getDbSnpRsId()));
+        dbSnpRsId.setVisible(true);
+
+        TableColumn<VariantAndInterpretationEvidence, String> dbSnpCommonId = new TableColumn<>("dbSNP Common ID");
+        createTableHeader(dbSnpCommonId, "dbSNP Common ID", null ,null);
+        dbSnpCommonId.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getDbSNP().getDbSnpCommonId()));
+        dbSnpCommonId.setVisible(false);
+
+        TableColumn<VariantAndInterpretationEvidence, String> exon = new TableColumn<>("Exon");
+        createTableHeader(exon, "Exon", null ,null);
+        exon.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getExonNum()));
+        exon.setVisible(true);
+
+        if(panel != null && ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
+            TableColumn<VariantAndInterpretationEvidence, String> exonBic = new TableColumn<>("Exon (BIC)");
+            createTableHeader(exonBic, "Exon (BIC)", null ,null);
+            exonBic.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getExonNumBic()));
+        }
+        
         TableColumn<VariantAndInterpretationEvidence, String> chr = new TableColumn<>("Chr");
         createTableHeader(chr, "Chr", "chromosome" ,null);
         chr.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getChromosome()));
@@ -993,26 +1022,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         createTableHeader(alt, "Alt", null ,null);
         alt.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAltSequence()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> dbSnpRsId = new TableColumn<>("dbSNP ID");
-        createTableHeader(dbSnpRsId, "dbSNP ID", null ,null);
-        dbSnpRsId.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getDbSNP().getDbSnpRsId()));
-        dbSnpRsId.setVisible(false);
-
-        TableColumn<VariantAndInterpretationEvidence, String> dbSnpCommonId = new TableColumn<>("dbSNP Common ID");
-        createTableHeader(dbSnpCommonId, "dbSNP Common ID", null ,null);
-        dbSnpCommonId.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getDbSNP().getDbSnpCommonId()));
-        dbSnpCommonId.setVisible(false);
-
-        TableColumn<VariantAndInterpretationEvidence, String> exon = new TableColumn<>("Exon");
-        createTableHeader(exon, "Exon", null ,null);
-        exon.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getExonNum()));
-        exon.setVisible(false);
-
-        if(panel != null && ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
-            TableColumn<VariantAndInterpretationEvidence, String> exonBic = new TableColumn<>("Exon (BIC)");
-            createTableHeader(exonBic, "Exon (BIC)", null ,null);
-            exonBic.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getExonNumBic()));
-        }
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> fraction = new TableColumn<>("Fraction");
         createTableHeader(fraction, "Fraction", "alleleFraction" ,null);
@@ -1145,10 +1154,10 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         koreanExomInformationDatabase.setVisible(false);
 
         if(panel != null && ExperimentTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
-            TableColumn<VariantAndInterpretationEvidence, String> cosmicIds = new TableColumn<>("COSMIC ID");
-            createTableHeader(cosmicIds, "COSMIC ID", null ,null);
-            cosmicIds.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getCosmic().getCosmicIds()));
-            cosmicIds.setVisible(false);
+//            TableColumn<VariantAndInterpretationEvidence, String> cosmicIds = new TableColumn<>("COSMIC ID");
+//            createTableHeader(cosmicIds, "COSMIC ID", null ,null);
+//            cosmicIds.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getCosmic().getCosmicIds()));
+//            cosmicIds.setVisible(false);
 
             TableColumn<VariantAndInterpretationEvidence, String> cosmicOccurrence = new TableColumn<>("COSMIC Occurrence");
             createTableHeader(cosmicOccurrence, "COSMIC Occurrence", null ,null);
