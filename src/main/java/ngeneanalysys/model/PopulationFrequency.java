@@ -10,7 +10,7 @@ public class PopulationFrequency {
     private G1000 g1000;
     private BigDecimal exac;
     private ESP6500 esp6500;
-    private GenomeAD genomAD;
+    private GnomeAD gnomAD;
     private BigDecimal koreanExomInformationDatabase;
     private BigDecimal kohbraFreq;
     private BigDecimal koreanReferenceGenomeDatabase;
@@ -37,10 +37,10 @@ public class PopulationFrequency {
     }
 
     /**
-     * @return genomAD
+     * @return gnomAD
      */
-    public GenomeAD getGenomAD() {
-        return genomAD;
+    public GnomeAD getGnomAD() {
+        return gnomAD;
     }
 
     /**

@@ -433,8 +433,8 @@
                      <children>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="6">
                            <children>
-                              <ComboBox fx:id="genomADfinComboBox" prefWidth="30.0" />
-                              <TextField fx:id="genomADfinTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                              <ComboBox fx:id="gnomADfinComboBox" prefWidth="30.0" />
+                              <TextField fx:id="gnomADfinTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
@@ -445,7 +445,7 @@
                         <Label text="EAS(East Asian)" GridPane.rowIndex="4" />
                         <Label text="EUR(European)" GridPane.rowIndex="5" />
                         <Label text="SAS(South Asian)" GridPane.rowIndex="6" />
-                        <Label style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_13" text="genomAD" GridPane.columnIndex="2" />
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_13" text="gnomAD" GridPane.columnIndex="2" />
                         <Label text="All" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                         <Label text="Mixed American" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                         <Label text="African African American" GridPane.columnIndex="2" GridPane.rowIndex="3" />
@@ -521,50 +521,50 @@
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
                            <children>
-                              <ComboBox fx:id="genomADAllComboBox" prefWidth="30.0" />
-                              <TextField fx:id="genomADAllTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                              <ComboBox fx:id="gnomADAllComboBox" prefWidth="30.0" />
+                              <TextField fx:id="gnomADAllTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
                            <children>
-                              <ComboBox fx:id="genomADmaComboBox" prefWidth="30.0" />
-                              <TextField fx:id="genomADmaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                              <ComboBox fx:id="gnomADmaComboBox" prefWidth="30.0" />
+                              <TextField fx:id="gnomADmaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
                            <children>
-                              <ComboBox fx:id="genomADaaaComboBox" prefWidth="30.0" />
-                              <TextField fx:id="genomADaaaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                              <ComboBox fx:id="gnomADaaaComboBox" prefWidth="30.0" />
+                              <TextField fx:id="gnomADaaaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
                            <children>
-                              <ComboBox fx:id="genomADajgenomADComboBox" prefWidth="30.0" />
-                              <TextField fx:id="genomADajgenomAD" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                              <ComboBox fx:id="gnomADajgnomADComboBox" prefWidth="30.0" />
+                              <TextField fx:id="gnomADajgnomAD" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="5">
                            <children>
-                              <ComboBox fx:id="genomADeaComboBox" prefWidth="30.0" />
-                              <TextField fx:id="genomADeaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                              <ComboBox fx:id="gnomADeaComboBox" prefWidth="30.0" />
+                              <TextField fx:id="gnomADeaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="7">
                            <children>
-                              <ComboBox fx:id="genomADnfeComboBox" prefWidth="30.0" />
-                              <TextField fx:id="genomADnfeTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                              <ComboBox fx:id="gnomADnfeComboBox" prefWidth="30.0" />
+                              <TextField fx:id="gnomADnfeTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="8">
                            <children>
-                              <ComboBox fx:id="genomADotherComboBox" prefWidth="30.0" />
-                              <TextField fx:id="genomADotherTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                              <ComboBox fx:id="gnomADotherComboBox" prefWidth="30.0" />
+                              <TextField fx:id="gnomADotherTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="9">
                            <children>
-                              <ComboBox fx:id="genomADsaComboBox" prefWidth="30.0" />
-                              <TextField fx:id="genomADsaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                              <ComboBox fx:id="gnomADsaComboBox" prefWidth="30.0" />
+                              <TextField fx:id="gnomADsaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="10" />

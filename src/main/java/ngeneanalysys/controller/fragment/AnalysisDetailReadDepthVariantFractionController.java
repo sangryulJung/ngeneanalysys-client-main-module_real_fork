@@ -120,8 +120,8 @@ public class AnalysisDetailReadDepthVariantFractionController extends SubPaneCon
      */
     @SuppressWarnings("unchecked")
     public void showFraction() {
-        String ref = variant.getSnpInDel().getGenomicCoordinate().getRefSequence();
-        String alt = variant.getSnpInDel().getGenomicCoordinate().getAltSequence();
+        String ref = variant.getSnpInDel().getSnpInDelExpression().getRefSequence();
+        String alt = variant.getSnpInDel().getSnpInDelExpression().getAltSequence();
         double alleleFraction = 0;
 
         BigDecimal allele = variant.getSnpInDel().getReadInfo().getAlleleFraction();
