@@ -31,10 +31,7 @@ import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -296,7 +293,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
         File file = fileChooser.showOpenDialog(mainController.getPrimaryStage());
 
         if(file != null && (file.getName().toLowerCase().endsWith(".vm"))) {
-            try (BufferedReader in = new BufferedReader(new FileReader(file))){
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"))){
                 final StringBuilder sb = new StringBuilder();
                 in.lines().forEach(s -> sb.append(s + "\n"));
                 if(sb.length() > 0) contents = sb.toString();

@@ -1035,9 +1035,12 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
                         }
 
                         if(!jarFile.exists()) {
-
                             File folder = new File(filePath);
-                            if (!folder.exists()) folder.mkdirs();
+                            if (!folder.exists()){
+                                if(!folder.mkdirs()) {
+                                    throw new Exception("Fail to make jarFile directory");
+                                }
+                            }
 
                             Task task = new JarDownloadTask(this, component);
 

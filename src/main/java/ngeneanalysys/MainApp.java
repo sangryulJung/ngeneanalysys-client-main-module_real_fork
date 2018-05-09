@@ -231,22 +231,20 @@ public class MainApp extends Application {
 	 * 서버 URL 설정 여부
 	 * @return boolean
 	 */
-	public boolean containsServerURL() {
+	private boolean containsServerURL() {
 		File configFile = new File(CommonConstants.BASE_FULL_PATH, CommonConstants.CONFIG_PROPERTIES);
 
 		if(!configFile.exists()) {
 			return false;
 		}
 
-		try (FileReader reader = new FileReader(configFile)){
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), "UTF-8"))){
 			Properties props = new Properties();
 			props.load(reader);
 
 			return (props.containsKey("default.server.host")
 						&& !StringUtils.isEmpty(props.getProperty("default.server.host")));
 
-		} catch (FileNotFoundException ex) {
-			return false;
 		} catch (IOException e) {
 			return false;
 		}
@@ -258,7 +256,7 @@ public class MainApp extends Application {
 	public void addProperty() {
 		File configFile = new File(CommonConstants.BASE_FULL_PATH, CommonConstants.CONFIG_PROPERTIES);
 
-		try (FileReader reader = new FileReader(configFile)) {
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), "UTF-8"))) {
 			Properties props = new Properties();
 			props.load(reader);
 

@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
+import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import org.slf4j.Logger;
 
@@ -42,22 +43,28 @@ public class SystemMenuSupportController extends SubPaneController {
 
     @FXML
     public void openOperationManual() {
-        openDoc(CommonConstants.MANUAL_DOC_PATH_OPERATION);
+        try {
+            openUserManualDoc();
+        } catch (Exception e) {
+            e.printStackTrace();
+            DialogUtil.error("Operation Manual Open Error", e.getMessage(), getMainApp().getPrimaryStage(), false);
+        }
     }
 
     /**
      * 매뉴얼 문서 화면 출력
-     * @param docFileName String
      */
-    private void openDoc(String docFileName) {
+    private void openUserManualDoc() throws Exception {
 
         File tempDir = new File(CommonConstants.TEMP_PATH);
-        if(!tempDir.exists()) {
-            tempDir.mkdirs();
+        if(!tempDir.exists()){
+            if(!tempDir.mkdirs()) {
+                throw new Exception("Fail to make temp directory");
+            }
         }
 
-        File docFile = new File(tempDir, docFileName);
-        try (InputStream inputStream = resourceUtil.getResourceAsStream("/manual/" + docFileName);
+        File docFile = new File(tempDir, CommonConstants.MANUAL_DOC_PATH_OPERATION);
+        try (InputStream inputStream = resourceUtil.getResourceAsStream("/manual/" + CommonConstants.MANUAL_DOC_PATH_OPERATION);
              OutputStream outStream = new FileOutputStream(docFile)){
 
             // 읽어들일 버퍼크기를 메모리에 생성
@@ -70,8 +77,6 @@ public class SystemMenuSupportController extends SubPaneController {
             }
 
             getMainApp().getHostServices().showDocument(docFile.toURI().toURL().toExternalForm());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

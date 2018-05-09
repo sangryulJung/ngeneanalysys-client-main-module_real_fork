@@ -19,9 +19,7 @@ import ngeneanalysys.util.PropertiesUtil;
 import ngeneanalysys.util.StringUtils;
 import org.slf4j.Logger;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -223,7 +221,7 @@ public class SystemMenuSettingController extends SubPaneController {
            
 
             // 현재 설정된 프로퍼티 설정 갱신
-            try (FileReader reader = new FileReader(configFile)){
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), "UTF-8"))){
                 Properties properties = new Properties();
                 properties.load(reader);
                 reader.close();

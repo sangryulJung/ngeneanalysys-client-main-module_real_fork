@@ -186,8 +186,8 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     }
 
     public void setSampleSheet(String path) {
-        if(!sampleArrayList.isEmpty()) sampleArrayList.removeAll(sampleArrayList);
-        try(CSVReader csvReader = new CSVReader(new InputStreamReader(new FileInputStream(path)))) {
+        if(!sampleArrayList.isEmpty()) sampleArrayList.clear();
+        try(CSVReader csvReader = new CSVReader(new InputStreamReader(new FileInputStream(path), "UTF-8"))) {
             String[] s;
             boolean tableData = false;
             while((s = csvReader.readNext()) != null) {

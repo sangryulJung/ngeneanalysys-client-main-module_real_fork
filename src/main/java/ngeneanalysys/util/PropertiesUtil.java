@@ -1,9 +1,6 @@
 package ngeneanalysys.util;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Map;
 import java.util.Properties;
 
@@ -50,7 +47,7 @@ public class PropertiesUtil {
 	 */
 	public static void saveProperties(File propertiesFile, Map<String,String> map) {
 		
-		try (FileReader reader = new FileReader(propertiesFile)){
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(propertiesFile), "UTF-8"))){
 			// 기존 설정 파일 내용
 			String fileContent = FileUtils.readFileToString(propertiesFile);
 			
@@ -64,10 +61,15 @@ public class PropertiesUtil {
 				properties.setProperty(entry.getValue(), entry.getValue());
 			}
 				
-			FileWriter writer = new FileWriter(propertiesFile);
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(propertiesFile, false), "UTF-8"));
 			properties.store(writer, "Update Settings");
 			writer.close();
-					
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -80,9 +82,8 @@ public class PropertiesUtil {
 	public static Properties getSystemDefaultProperties() {
 		Properties config = getPropertiesByPath(CommonConstants.BASE_PROPERTIES_PATH);
 		File configFile = new File(CommonConstants.BASE_FULL_PATH, CommonConstants.CONFIG_PROPERTIES);
-		try (FileReader reader = new FileReader(configFile)){
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), "UTF-8"))){
 			// 서버 정보 설정 파일에 입력 받은 내용을 기록
-			
 			Properties properties = new Properties();
 			properties.load(reader);
 
@@ -91,7 +92,9 @@ public class PropertiesUtil {
 				String value = (String) entry.getValue();
 				// 설정값이 존재하는 경우 추가
 				if(!StringUtils.isEmpty(value)) {
-					config.setProperty(key, value);
+					if (config != null) {
+						config.setProperty(key, value);
+					}
 				}
 			}
 		} catch (Exception e) {

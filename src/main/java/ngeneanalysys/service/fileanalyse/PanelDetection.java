@@ -117,9 +117,8 @@ public class PanelDetection {
 
     private Map<String, Map<String, String>> getPrimerPerPanelMap(List<String> availablePanels) throws Exception {
         final Map<String, Map<String, String>> primerPerPanelMap = new HashMap<String, Map<String, String>>();
-        final BufferedReader br = new BufferedReader(
-                new InputStreamReader(PanelDetection.class.getResourceAsStream("/primers/list.txt")));
-        try {
+        try (BufferedReader br = new BufferedReader(
+                new InputStreamReader(PanelDetection.class.getResourceAsStream("/primers/list.txt"), "UTF-8"))) {
             String panelPrimerLine;
             while ((panelPrimerLine = br.readLine()) != null) {
                 final String[] panelPrimerItems = panelPrimerLine.split("\t");
@@ -129,7 +128,7 @@ public class PanelDetection {
                     final Map<String, String> primerMap = new HashMap<String, String>();
                     try {
                         BufferedReader primerDetailBuf = new BufferedReader(new InputStreamReader(
-                                PanelDetection.class.getResourceAsStream("/primers/" + primerInfoFileName)));
+                                PanelDetection.class.getResourceAsStream("/primers/" + primerInfoFileName), "UTF-8"));
                         String primerDetailLine = null;
                         while ((primerDetailLine = primerDetailBuf.readLine()) != null) {
                             String[] primerDetailItems = primerDetailLine.split("\t");
@@ -166,7 +165,7 @@ public class PanelDetection {
             br = new BufferedInputStream(new FileInputStream(file));
         }
         br.mark(0);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(br));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(br, "UTF-8"));
         int readCount = 0;
         int lineNumber = 0;
         String seqHeader;

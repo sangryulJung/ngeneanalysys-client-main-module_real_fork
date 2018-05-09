@@ -4,10 +4,7 @@ import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.model.ReportTemplate;
 import org.apache.commons.io.FileUtils;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * @author Jang
@@ -23,20 +20,20 @@ public class FileUtil {
      * @return String
      */
     public static String getFASTQFilePairName(String fileName) {
-        String pairName = "";
+        StringBuffer pairName = new StringBuffer("");
         if (fileName.contains("_")) {
             String[] arr = fileName.split("_");
             int idx = 0;
             for (String name : arr) {
                 if (idx < arr.length - 4) {
                     if (idx > 0)
-                        pairName += "_";
-                    pairName += name;
+                        pairName.append("_");
+                    pairName.append(name);
                 }
                 idx++;
             }
         }
-        return pairName;
+        return pairName.toString();
     }
 
     public static String saveVMFile(ReportTemplate reportTemplate) {
@@ -46,18 +43,20 @@ public class FileUtil {
         File folder = new File(folderPath);
         try {
             if (!folder.exists()) {
-                folder.mkdirs();
+                if(!folder.mkdirs()) {
+                    return "";
+                }
             } else {
                 FileUtils.cleanDirectory(folder);
             }
         } catch(IOException ioe) {
             ioe.printStackTrace();
+            return "";
         }
 
         File file = new File(path);
 
-        try(BufferedWriter fw = new BufferedWriter(new FileWriter(file, false))) {
-
+        try(BufferedWriter fw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, false), "UTF-8"))) {
             fw.write(reportTemplate.getContents());
             fw.flush();
         } catch (IOException ioe) {
