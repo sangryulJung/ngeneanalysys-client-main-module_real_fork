@@ -320,7 +320,7 @@ public class AnalysisDetailFusionGeneController extends SubPaneController {
 
         try {
             FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_SNPS_INDELS_OVERVIEW);
-            Node node = loader.load();
+            loader.load();
             overviewController = loader.getController();
             overviewController.setMainController(this.getMainController());
             overviewController.setParamMap(paramMap);

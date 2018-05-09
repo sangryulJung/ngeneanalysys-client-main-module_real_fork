@@ -462,7 +462,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
             benignList = settingPathogenicityList(list, "B");
 
-            List<VariantAndInterpretationEvidence> tableList = new ArrayList<>();
+            List<VariantAndInterpretationEvidence> tableList;
 
             /*if(pathogenicList != null && !pathogenicList.isEmpty()) {
                 Collections.sort(pathogenicList,
@@ -928,7 +928,6 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
             @SuppressWarnings("unchecked")
             Class classToLoad = Class.forName("word.create.App", true, classLoader);
             logger.debug("application init..");
-            Method[] methods = classToLoad.getMethods();
             Method setParams = classToLoad.getMethod("setParams", Map.class);
             Method updateEmbeddedDoc = classToLoad.getMethod("updateEmbeddedDoc");
             Method updateWordFile = classToLoad.getDeclaredMethod("updateWordFile");

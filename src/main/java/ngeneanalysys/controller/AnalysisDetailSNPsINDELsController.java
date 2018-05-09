@@ -998,7 +998,6 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                 }
             } else {
                 Map<String,Object> variantInformationMap = returnResultsAfterSearch("variant_information");
-                SnpInDel snpInDel = (SnpInDel) paramMap.get("snpInDel");
                 logger.debug("init overview link button event binding..");
                 String urlExAC = (variantInformationMap.containsKey("exac_url")) ? (String) variantInformationMap.get("exac_url") : null;
                 String urlBRCAExchange = (variantInformationMap.containsKey("brca_exchange_url")) ? (String) variantInformationMap.get("brca_exchange_url") : null;

@@ -13,8 +13,8 @@ public enum LibrarySizeCode {
 	private SequencerCode sequencerCode;
 	
 	LibrarySizeCode(SequencerCode sequencerCode, String description) {
-		this.setDescription(description);
-		this.setSequencerCode(sequencerCode);
+		this.description = description;
+		this.sequencerCode = sequencerCode;
 	}
 
 	/**
@@ -25,25 +25,9 @@ public enum LibrarySizeCode {
 	}
 
 	/**
-	 * @param sequencerCode the sequencerCode to set
-	 */
-	public void setSequencerCode(SequencerCode sequencerCode) {
-		this.sequencerCode = sequencerCode;
-	}
-
-	/**
 	 * @return the description
 	 */
 	public String getDescription() {
 		return description;
 	}
-
-	/**
-	 * @param description the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	
 }

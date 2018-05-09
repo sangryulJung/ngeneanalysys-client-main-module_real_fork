@@ -1116,7 +1116,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader());
             Class classToLoad = Class.forName("word.create.App", true, classLoader);
             logger.debug("application init..");
-            Method[] methods = classToLoad.getMethods();
             Method setParams = classToLoad.getMethod("setParams", Map.class);
             Method updateEmbeddedDoc = classToLoad.getMethod("updateEmbeddedDoc");
             Method updateWordFile = classToLoad.getDeclaredMethod("updateWordFile");

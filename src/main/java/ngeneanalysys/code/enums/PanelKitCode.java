@@ -26,13 +26,6 @@ public enum PanelKitCode {
 		return available;
 	}
 
-	/**
-	 * @param available the available to set
-	 */
-	public void setAvailable(boolean available) {
-		this.available = available;
-	}
-
 	PanelKitCode(String name, String primer, boolean available) {
 		this.description = name;
 		this.primer = primer;
@@ -47,23 +40,9 @@ public enum PanelKitCode {
 	}
 
 	/**
-	 * @param description the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	/**
 	 * @return the primer
 	 */
 	public String getPrimer() {
 		return primer;
-	}
-
-	/**
-	 * @param primer the primer to set
-	 */
-	public void setPrimer(String primer) {
-		this.primer = primer;
 	}
 }

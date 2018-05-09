@@ -449,7 +449,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
                         if(allFile.size() == 1) {
                             AnalysisFile analysisFile = allFile.get(0);
-                            Map<String, Object> file = new HashMap<>();
+                            // Map<String, Object> file = new HashMap<>();
                             AnalysisFile failedAnalysisFile = new AnalysisFile();
 
                             if(analysisFile.getName().contains("_R1_0"))

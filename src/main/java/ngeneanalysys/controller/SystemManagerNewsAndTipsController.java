@@ -179,11 +179,10 @@ public class SystemManagerNewsAndTipsController extends SubPaneController {
                 Map<String, Object> param = new HashMap<>();
                 param.put("title", title);
                 param.put("contents", contents);
-                HttpClientResponse response = null;
                 if(id == 0) {
-                    response = apiService.post("admin/notices", param, null, true);
+                    apiService.post("admin/notices", param, null, true);
                 } else {
-                    response = apiService.put("admin/notices/" + id, param, null, true);
+                    apiService.put("admin/notices/" + id, param, null, true);
                     id = 0;
                 }
                 setDisabledItem(true);

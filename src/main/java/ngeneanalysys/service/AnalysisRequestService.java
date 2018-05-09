@@ -77,7 +77,7 @@ public class AnalysisRequestService {
                 }
             }
 
-            FileBody fileParam = new FileBody(file);
+            // FileBody fileParam = new FileBody(file);
 
             HttpEntity reqEntity = EntityBuilder.create()
                     .setFile(file).build();

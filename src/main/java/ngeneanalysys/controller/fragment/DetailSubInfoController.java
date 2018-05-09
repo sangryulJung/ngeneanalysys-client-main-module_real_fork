@@ -126,8 +126,8 @@ public class DetailSubInfoController extends SubPaneController {
         if(externalLinkComboBox.getItems() != null &&
                 !externalLinkComboBox.getItems().isEmpty()) externalLinkComboBox.getItems().removeAll(externalLinkComboBox.getItems());
 
-        String[] germlineLink = {"exAC", "brcaExchange", "ncbi", "ucsc", "alamut"};
-        String[] somaticLink = {"dbSNP", "clinvar", "cosmic", "ncbi", "gnomes", "exAC", "gnomAD", "koEXID", "oncoKB", "ucsc"};
+        // String[] germlineLink = {"exAC", "brcaExchange", "ncbi", "ucsc", "alamut"};
+        // String[] somaticLink = {"dbSNP", "clinvar", "cosmic", "ncbi", "gnomes", "exAC", "gnomAD", "koEXID", "oncoKB", "ucsc"};
         Map<String, Object> variantInformationMap = returnResultsAfterSearch("variant_information");
         if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
             String rsId = (variantInformationMap.containsKey("rs_id")) ? (String) variantInformationMap.get("rs_id") : null;

@@ -15,7 +15,7 @@ import org.apache.commons.lang3.StringUtils;
  * @author gjyoo
  * @since 2016. 6. 15. 오후 7:37:59
  */
-public class SnpInDel implements Serializable {
+public class SnpInDel {
 	private static final long serialVersionUID = -5728637480602616382L;
 
 	private Integer id;

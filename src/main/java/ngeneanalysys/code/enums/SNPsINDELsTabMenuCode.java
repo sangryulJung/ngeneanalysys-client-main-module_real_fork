@@ -31,35 +31,15 @@ public enum SNPsINDELsTabMenuCode {
 		return menuName;
 	}
 	/**
-	 * @param menuName the menuName to set
-	 */
-	public void setMenuName(String menuName) {
-		this.menuName = menuName;
-	}
-	/**
 	 * @return the authBit
 	 */
 	public Integer getAuthBit() {
 		return authBit;
 	}
 	/**
-	 * @param authBit the authBit to set
-	 */
-	public void setAuthBit(Integer authBit) {
-		this.authBit = authBit;
-	}
-
-	/**
 	 * @return the fxmlPath
 	 */
 	public String getFxmlPath() {
 		return fxmlPath;
-	}
-
-	/**
-	 * @param fxmlPath the fxmlPath to set
-	 */
-	public void setFxmlPath(String fxmlPath) {
-		this.fxmlPath = fxmlPath;
 	}
 }

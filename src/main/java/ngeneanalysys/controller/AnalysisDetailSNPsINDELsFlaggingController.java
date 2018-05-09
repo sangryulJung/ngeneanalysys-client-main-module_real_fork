@@ -144,8 +144,6 @@ public class AnalysisDetailSNPsINDELsFlaggingController extends SubPaneControlle
 
     @FXML
     public void closeFlaggingDialog() {
-        PathogenicReviewFlagTypeCode flagType = (PathogenicReviewFlagTypeCode) getParamMap().get("commentType");
-        String value = (String) getParamMap().get("value");
         dialogStage.close();
     }
 

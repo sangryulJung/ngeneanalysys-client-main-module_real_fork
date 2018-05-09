@@ -30,21 +30,9 @@ public enum SystemMenuCode {
 		return menuName;
 	}
 	/**
-	 * @param menuName the menuName to set
-	 */
-	public void setMenuName(String menuName) {
-		this.menuName = menuName;
-	}
-	/**
 	 * @return the authBit
 	 */
 	public Integer getAuthBit() {
 		return authBit;
-	}
-	/**
-	 * @param authBit the authBit to set
-	 */
-	public void setAuthBit(Integer authBit) {
-		this.authBit = authBit;
 	}
 }

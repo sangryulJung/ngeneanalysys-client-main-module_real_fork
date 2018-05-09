@@ -541,10 +541,10 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             // 상세 데이터 요청이 정상 요청된 경우 진행.
             SnpInDel snpInDel
                     = responseDetail.getObjectBeforeConvertResponseToJSON(SnpInDel.class);
-            VariantAndInterpretationEvidence variantAndInterpretationEvidence = new VariantAndInterpretationEvidence();
+            // VariantAndInterpretationEvidence variantAndInterpretationEvidence = new VariantAndInterpretationEvidence();
 
-            variantAndInterpretationEvidence.setSnpInDel(snpInDel);
-            variantAndInterpretationEvidence.setSnpInDelEvidences(selectedAnalysisResultVariant.getSnpInDelEvidences());
+            // variantAndInterpretationEvidence.setSnpInDel(snpInDel);
+            // variantAndInterpretationEvidence.setSnpInDelEvidences(selectedAnalysisResultVariant.getSnpInDelEvidences());
 
             paramMap.put("variant", analysisResultVariant);
 
@@ -617,18 +617,11 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     private void setSortItem(Map<String, List<Object>> list) {
-        Set<String> keySets = sortMap.keySet();
+        Set<Map.Entry<String, String>> entrySet = sortMap.entrySet();
         List<Object> sortList = new ArrayList<>();
-        for(String key : keySets) {
-            sortList.add(key + " " + sortMap.get(key));
+        for(Map.Entry<String, String> entry : entrySet) {
+            sortList.add(entry.getKey() + " " + entry.getValue());
         }
-//        if(sortList.isEmpty()) {
-//            if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
-//                sortList.add("swTier ASC");
-//            } else {
-//                sortList.add("swPathogenicity DESC");
-//            }
-//        }
         if(!sortList.isEmpty()) list.put("sort", sortList);
     }
 

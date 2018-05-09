@@ -35,12 +35,4 @@ public enum AnalysisDetailTabMenuCode {
 	public AnalysisDetailTabItem getItem() {
 		return item;
 	}
-
-	/**
-	 *
-	 * @param item item
-	 */
-	public void setItem(AnalysisDetailTabItem item) {
-		this.item = item;
-	}
 }

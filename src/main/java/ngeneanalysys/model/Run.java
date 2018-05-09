@@ -7,7 +7,7 @@ import org.joda.time.DateTime;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class Run implements Serializable {
+public class Run{
     @JsonProperty("id")
     private Integer id;
 

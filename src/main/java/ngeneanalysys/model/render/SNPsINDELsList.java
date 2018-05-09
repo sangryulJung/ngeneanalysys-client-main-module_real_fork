@@ -44,23 +44,23 @@ public class SNPsINDELsList {
 			box.setAlignment(Pos.BOTTOM_LEFT);
 			Map<String,String> map = JsonUtil.fromJsonToMap(jsonStr.replace("'", "\""));
 
-			Set<String> mapKey = map.keySet();
+			Set<Map.Entry<String, String>> mapKey = map.entrySet();
 			int currentIndex = 1;
-			for(String key : mapKey) {
+			for(Map.Entry<String, String> entry : mapKey) {
 				//if(key.toUpperCase().equals("WARNING")) continue;
 
-				if (key.equalsIgnoreCase("low_variant_coverage_depth") ||
-						key.equalsIgnoreCase("low_variant_fraction") ||
-						key.equalsIgnoreCase("homopolymer_region") ||
-						key.equalsIgnoreCase("soft_clipped_amplicon") ||
-						key.equalsIgnoreCase("primer_deletion") ||
-						key.equalsIgnoreCase("low_read_depth") ||
-						key.equalsIgnoreCase("low_allele_fraction") ||
-						key.equalsIgnoreCase("low_confidence")) {
+				if (entry.getKey().equalsIgnoreCase("low_variant_coverage_depth") ||
+						entry.getKey().equalsIgnoreCase("low_variant_fraction") ||
+						entry.getKey().equalsIgnoreCase("homopolymer_region") ||
+						entry.getKey().equalsIgnoreCase("soft_clipped_amplicon") ||
+						entry.getKey().equalsIgnoreCase("primer_deletion") ||
+						entry.getKey().equalsIgnoreCase("low_read_depth") ||
+						entry.getKey().equalsIgnoreCase("low_allele_fraction") ||
+						entry.getKey().equalsIgnoreCase("low_confidence")) {
 
-					String warningString = map.get(key);
-					String titleString = "* " + WordUtils.capitalize(key.replaceAll("_", " ")) + " : ";
-					HBox hbox = getWarningReasonItemBox(titleString, warningString == null ? "N/A" : warningString);
+					String warningString = map.getOrDefault(entry.getKey(), "N/A");
+					String titleString = "* " + WordUtils.capitalize(entry.getKey().replaceAll("_", " ")) + " : ";
+					HBox hbox = getWarningReasonItemBox(titleString, warningString);
 					box.getChildren().add(hbox);
 					if (mapKey.size() > currentIndex) box.setMargin(hbox, new Insets(5, 0, 0, 0));
 					currentIndex++;

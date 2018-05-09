@@ -42,8 +42,12 @@ public class HddStatusTimer extends AnimationTimer {
         this.angle = 360.0 * this.value;
         this.gaugeSpeed =  gaugeSpeed;
         this.angleStep = this.angle / this.gaugeSpeed;
-        this.labelText1 = labelText1 != null ? labelText1.trim() : labelText1;
-        this.labelText2 = labelText2 != null ? labelText2.trim() : labelText2;
+        if (labelText1 != null) {
+            this.labelText1 = labelText1.trim();
+        }
+        if (labelText2 != null) {
+            this.labelText2 = labelText2.trim();
+        }
     }
 
     @Override

@@ -90,13 +90,6 @@ public enum PipelineCode {
 	}
 
 	/**
-	 * @param panelKit the panelKit to set
-	 */
-	public void setPanelKit(PanelKitCode panelKit) {
-		this.panelKit = panelKit;
-	}
-
-	/**
 	 * @return the sequencer
 	 */
 	public SequencerCode getSequencer() {
@@ -104,23 +97,9 @@ public enum PipelineCode {
 	}
 
 	/**
-	 * @param sequencer the sequencer to set
-	 */
-	public void setSequencer(SequencerCode sequencer) {
-		this.sequencer = sequencer;
-	}
-
-	/**
 	 * @return the experimentType
 	 */
 	public ExperimentTypeCode getExperimentType() {
 		return experimentType;
-	}
-
-	/**
-	 * @param experimentType the experimentType to set
-	 */
-	public void setExperimentType(ExperimentTypeCode experimentType) {
-		this.experimentType = experimentType;
 	}
 }

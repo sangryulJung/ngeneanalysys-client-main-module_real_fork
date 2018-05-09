@@ -103,7 +103,7 @@ public class AnalysisDetailReadDepthVariantFractionController extends SubPaneCon
 
                 // 설명 라벨 위치 1pixel씩 증가
                 double lableBottomMargin = idx - 2;
-                double imageLeftMargin = Math.round(idx*(maxLeftMarginForImage/depthValueHeight));
+                // double imageLeftMargin = Math.round(idx*(maxLeftMarginForImage/depthValueHeight));
                 if(lableBottomMargin < -6) lableBottomMargin = -8;
                 depthLegendVBox.setMargin(depthLegendBox, new Insets(0, 0, lableBottomMargin, 0));
                 idx += step;
@@ -161,7 +161,7 @@ public class AnalysisDetailReadDepthVariantFractionController extends SubPaneCon
 
                 // 설명 라벨 위치 1pixel씩 증가
                 double lableBottomMargin = idx - 2;
-                double imageLeftMargin = Math.round(idx*(maxLeftMarginForImage/fractionValueHeight));
+                // double imageLeftMargin = Math.round(idx*(maxLeftMarginForImage/fractionValueHeight));
                 if(lableBottomMargin < -6) lableBottomMargin = -8;
                 fractionLegendVBox.setMargin(fractionLegendBox, new Insets(0, 0, lableBottomMargin, 0));
                 idx += step;

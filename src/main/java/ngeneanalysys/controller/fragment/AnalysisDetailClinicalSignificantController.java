@@ -332,7 +332,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                 siftValue = -1.0;
             }
             if (siftMap.containsKey("text") && siftMap.get("text") != null) {
-                siftText = (String)siftMap.get("text");
+                // siftText = (String)siftMap.get("text");
             }
         }
         // POLYPHEN2
@@ -360,21 +360,21 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                 polyphenValue = -1.0;
             }
             if (polyphenMap.containsKey("text") && polyphenMap.get("text") != null) {
-                polyphenText = (String)polyphenMap.get("text");
+                // polyphenText = (String)polyphenMap.get("text");
             }
         }
         // POLYPHEN2
         if (mtMap != null && !mtMap.isEmpty()) {
             if (mtMap.containsKey("radar")) {
-                mtValue = convertRadarItemPercentageByLevelForPathogenic(checkType(mtMap.get("radar"))) / 100.0;
+                // mtValue = convertRadarItemPercentageByLevelForPathogenic(checkType(mtMap.get("radar"))) / 100.0;
                 // clinicalSignificantPathogenicitySiftLabel.setTooltip(new
                 // Tooltip((String) siftMap.get("radar")));
             } else {
                 logger.warn("mt score or radar value was not found.");
-                mtValue = -1.0;
+                // mtValue = -1.0;
             }
             if (mtMap.containsKey("text") && mtMap.get("text") != null) {
-                mtText = (String)mtMap.get("text");
+                // mtText = (String)mtMap.get("text");
             }
         }
 

@@ -23,9 +23,4 @@ public enum SystemManagerTabMenuCode {
 	public SystemManagerTabItem getItem() {
 		return item;
 	}
-
-	public void setItem(SystemManagerTabItem item) {
-		this.item = item;
-	}
-
 }

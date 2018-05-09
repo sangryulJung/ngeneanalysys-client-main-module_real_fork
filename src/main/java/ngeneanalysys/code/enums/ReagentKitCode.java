@@ -35,8 +35,8 @@ public enum ReagentKitCode {
 	 */
 	ReagentKitCode(String description, SequencerCode sequencerCode, String numberOfReads, String kitSize,
 			String outputMax, String _2x75bpOutput, String _2x150bpOutput, String _2x250bpOutput) {
-		this.setSequencerCode(sequencerCode);
-		this.setDescription(description);
+		this.sequencerCode = sequencerCode;
+		this.description = description;
 		this.numberOfReads = numberOfReads;
 		this.kitSize = kitSize;
 		this.outputMax = outputMax;
@@ -53,26 +53,10 @@ public enum ReagentKitCode {
 	}
 
 	/**
-	 * @param numberOfReads
-	 *            the numberOfReads to set
-	 */
-	public void setNumberOfReads(String numberOfReads) {
-		this.numberOfReads = numberOfReads;
-	}
-
-	/**
 	 * @return the kitSize
 	 */
 	public String getKitSize() {
 		return kitSize;
-	}
-
-	/**
-	 * @param kitSize
-	 *            the kitSize to set
-	 */
-	public void setKitSize(String kitSize) {
-		this.kitSize = kitSize;
 	}
 
 	/**
@@ -83,26 +67,10 @@ public enum ReagentKitCode {
 	}
 
 	/**
-	 * @param outputMax
-	 *            the outputMax to set
-	 */
-	public void setOutputMax(String outputMax) {
-		this.outputMax = outputMax;
-	}
-
-	/**
 	 * @return the _2x75bpOutput
 	 */
 	public String get_2x75bpOutput() {
 		return _2x75bpOutput;
-	}
-
-	/**
-	 * @param _2x75bpOutput
-	 *            the _2x75bpOutput to set
-	 */
-	public void set_2x75bpOutput(String _2x75bpOutput) {
-		this._2x75bpOutput = _2x75bpOutput;
 	}
 
 	/**
@@ -113,26 +81,10 @@ public enum ReagentKitCode {
 	}
 
 	/**
-	 * @param _2x150bpOutput
-	 *            the _2x150bpOutput to set
-	 */
-	public void set_2x150bpOutput(String _2x150bpOutput) {
-		this._2x150bpOutput = _2x150bpOutput;
-	}
-
-	/**
 	 * @return the _2x250bpOutput
 	 */
 	public String get_2x250bpOutput() {
 		return _2x250bpOutput;
-	}
-
-	/**
-	 * @param _2x250bpOutput
-	 *            the _2x250bpOutput to set
-	 */
-	public void set_2x250bpOutput(String _2x250bpOutput) {
-		this._2x250bpOutput = _2x250bpOutput;
 	}
 
 	/**
@@ -169,25 +121,9 @@ public enum ReagentKitCode {
 	}
 
 	/**
-	 * @param sequencerCode
-	 *            the sequencerCode to set
-	 */
-	public void setSequencerCode(SequencerCode sequencerCode) {
-		this.sequencerCode = sequencerCode;
-	}
-
-	/**
 	 * @return the description
 	 */
 	public String getDescription() {
 		return description;
-	}
-
-	/**
-	 * @param description
-	 *            the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
 	}
 }

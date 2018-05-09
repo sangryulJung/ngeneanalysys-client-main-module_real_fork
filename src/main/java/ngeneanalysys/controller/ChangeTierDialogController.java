@@ -89,8 +89,6 @@ public class ChangeTierDialogController extends SubPaneController {
 
     private TableRow<VariantAndInterpretationEvidence> rowItem;
 
-    private boolean typeSomatic = true;
-
     public void settingItem(TableView<VariantAndInterpretationEvidence> table, String tier, VariantAndInterpretationEvidence selectedItem
             , TableRow<VariantAndInterpretationEvidence> rowItem) {
         this.table =table;
@@ -239,11 +237,7 @@ public class ChangeTierDialogController extends SubPaneController {
         if(!StringUtils.isEmpty(comment)) {
             params.put("comment", comment);
             try {
-                if(typeSomatic) {
-                    params.put("tier", tier);
-                } else {
-                    params.put("tier", tier);
-                }
+                params.put("tier", tier);
                 //params.put("snpInDelId", selectedItem.getSnpInDel().getId());
 
                 apiService.put("analysisResults/snpInDels/" + selectedItem.getSnpInDel().getId() + "/updateTier", params, null, true);
