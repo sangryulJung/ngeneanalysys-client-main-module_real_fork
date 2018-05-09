@@ -193,7 +193,7 @@
                                  <GridPane.margin>
                                     <Insets right="5.0" />
                                  </GridPane.margin></TextArea>
-                              <Label text="Total Base Pair( x, &gt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="19" />
+                              <Label text="Total Base Pair( bp, &gt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="19" />
                               <TextField fx:id="totalBasePairTextField" GridPane.columnIndex="1" GridPane.rowIndex="19">
                                  <GridPane.margin>
                                     <Insets right="5.0" />
