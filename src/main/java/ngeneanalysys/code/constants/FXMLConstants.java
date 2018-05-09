@@ -92,6 +92,9 @@ public class FXMLConstants {
 
 	/** 분석 상세 > Report 화면 */
 	public static final String ANALYSIS_DETAIL_REPORT_GERMLINE = "/layout/fxml/AnalysisDetail-Report-Germline.fxml";
+
+	/** 분석 상세 > Report 화면 */
+	public static final String ANALYSIS_DETAIL_TST_RNA_REPORT = "/layout/fxml/AnalysisDetail-TSTRNAReport.fxml";
 	
 	/** 분석 요청 그룹 검색 Dialog 화면 */
 	public static final String ANALYSIS_JOB_RUN_GROUP_SEARCH_DIALOG = "/layout/fxml/AnalysisJobRunGroupSearch.fxml";
@@ -102,8 +105,23 @@ public class FXMLConstants {
 	/** 분석 상세 > OverView 화면 */
 	public static final String ANALYSIS_DETAIL_OVERVIEW_GERMLINE = "/layout/fxml/AnalysisDetail-Overview-Germline.fxml";
 
+	/** 분석 상세 > OverView 화면 */
+	public static final String ANALYSIS_DETAIL_OVERVIEW_TST_RNA = "/layout/fxml/AnalysisDetail-Overview-TST-RNA.fxml";
+
 	/** 분석 상세 > Variants 화면 */
 	public static final String ANALYSIS_DETAIL_TARGET = "/layout/fxml/AnalysisDetail-Target.fxml";
+
+	/** 분석 상세 > Variants 화면 */
+	public static final String ANALYSIS_DETAIL_CNV = "/layout/fxml/AnalysisDetail-CNV.fxml";
+
+	/** 분석 상세 > Variants 화면 */
+	public static final String ANALYSIS_DETAIL_TST_FUSION = "/layout/fxml/AnalysisDetail-TST170Fusion.fxml";
+
+	/** 분석 상세 > Variants 화면 */
+	public static final String ANALYSIS_DETAIL_TST_SPLICE_VARIANT = "/layout/fxml/AnalysisDetail-TSTSpliceVariant.fxml";
+
+	/** 분석 상세 > Variants 화면 */
+	public static final String ANALYSIS_DETAIL_TST_PUBLISHED_FUSION = "/layout/fxml/AnalysisDetail-TSTPublishedFusion.fxml";
 
 	/** 분석 상세 > Variants 화면 Germline */
 	public static final String ANALYSIS_DETAIL_TARGET_GERMLINE = "/layout/fxml/AnalysisDetail-Target-Germline.fxml";

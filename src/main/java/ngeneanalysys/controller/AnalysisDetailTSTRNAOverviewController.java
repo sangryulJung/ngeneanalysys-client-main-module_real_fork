@@ -19,14 +19,17 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
  * @author Jang
  * @since 2017-08-25
  */
-public class AnalysisDetailOverviewController extends AnalysisDetailCommonController {
+public class AnalysisDetailTSTRNAOverviewController extends AnalysisDetailCommonController {
     private static Logger logger = LoggerUtil.getLogger();
 
     @FXML
@@ -35,17 +38,11 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
     @FXML
     private Label tierOneGenesCountLabel;
 
-    /*@FXML
-    private Label tierOneTherapeuticLabel;*/
-
     @FXML
     private Label tierTwoVariantsCountLabel;
 
     @FXML
     private Label tierTwoGenesCountLabel;
-
-    /*@FXML
-    private Label tierTwoTherapeuticLabel;*/
 
     @FXML
     private Label tierThreeVariantsCountLabel;
@@ -83,7 +80,6 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
     @FXML
     private TableColumn<VariantAndInterpretationEvidence, String> aaChangeColumn;
 
-
     @FXML
     private TableColumn<VariantAndInterpretationEvidence, Object> therapeuticColumn;
 
@@ -94,61 +90,46 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
     private Label totalBaseLabel;
 
     @FXML
-    private Label q30Label;
+    private Label q30scoreRead1Label;
 
     @FXML
-    private Label mappedLabel;
+    private Label q30scoreRead2Label;
 
     @FXML
-    private Label onTargetLabel;
+    private Label averageCoverageLabel;
+
+    @FXML
+    private Label minimumCoverageLabel;
+
+    @FXML
+    private Label maximumCoverageLabel;
 
     @FXML
     private Label onTargetCoverageLabel;
 
     @FXML
-    private Label duplicatedReadsLabel;
-
-    @FXML
     private Label roiCoverageLabel;
-
-    /*@FXML
-    private Tooltip totalBaseTooltip;
-
-    @FXML
-    private Tooltip q30Tooltip;
-
-    @FXML
-    private Tooltip mappedBaseTooltip;
-
-    @FXML
-    private Tooltip onTargetTooltip;
-
-    @FXML
-    private Tooltip onTargetCoverageTooltip;
-
-    @FXML
-    private Tooltip duplicatedReadsTooltip;
-
-    @FXML
-    private Tooltip roiCoverageTooltip;*/
 
     @FXML
     private Label totalBaseQCLabel;
 
     @FXML
-    private Label q30QCLabel;
+    private Label q30read1QCLabel;
 
     @FXML
-    private Label mappedBaseQCLabel;
+    private Label q30read2QCLabel;
 
     @FXML
-    private Label onTargetQCLabel;
+    private Label averageCoverageQCLabel;
+
+    @FXML
+    private Label minimumCoverageQCLabel;
+
+    @FXML
+    private Label maximumCoverageQCLabel;
 
     @FXML
     private Label onTargetCoverageQCLabel;
-
-    @FXML
-    private Label dupicatedReadsQCLabel;
 
     @FXML
     private Label roiCoverageQCLabel;
@@ -351,11 +332,12 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
             qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
 
             setQCItem(totalBaseLabel, totalBaseQCLabel, qcList, "total_base");
-            setQCItem(q30Label, q30QCLabel, qcList, "q30_trimmed_base");
-            setQCItem(mappedLabel, mappedBaseQCLabel, qcList, "mapped_base");
-            setQCItem(onTargetLabel, onTargetQCLabel, qcList, "on_target");
+            setQCItem(q30scoreRead1Label, q30read1QCLabel, qcList, "Q30_score_read1");
+            setQCItem(q30scoreRead2Label, q30read2QCLabel, qcList, "Q30_score_read2");
+            setQCItem(averageCoverageLabel, averageCoverageQCLabel, qcList, "average_coverage");
+            setQCItem(minimumCoverageLabel, minimumCoverageQCLabel, qcList, "minimum_coverage");
+            setQCItem(maximumCoverageLabel, maximumCoverageQCLabel, qcList, "maximum_coverage");
             setQCItem(onTargetCoverageLabel, onTargetCoverageQCLabel, qcList, "on_target_coverage");
-            setQCItem(duplicatedReadsLabel, dupicatedReadsQCLabel, qcList, "duplicated_reads");
             setQCItem(roiCoverageLabel, roiCoverageQCLabel, qcList, "roi_coverage");
 
         } catch(WebAPIException e) {

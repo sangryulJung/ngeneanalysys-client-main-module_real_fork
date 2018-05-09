@@ -4,6 +4,7 @@ import javafx.concurrent.Task;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.AnalysisDetailReportController;
 import ngeneanalysys.controller.AnalysisDetailReportGermlineController;
+import ngeneanalysys.controller.AnalysisDetailTSTRNAReportController;
 import ngeneanalysys.model.ReportComponent;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
@@ -34,6 +35,8 @@ public class JarDownloadTask extends Task {
     /** 컨트롤러 클래스 */
     private AnalysisDetailReportController controller;
 
+    private AnalysisDetailTSTRNAReportController tstrnaReportController;
+
     private AnalysisDetailReportGermlineController analysisDetailReportGermlineController;
 
     private ReportComponent component;
@@ -49,6 +52,12 @@ public class JarDownloadTask extends Task {
 
     public JarDownloadTask(AnalysisDetailReportGermlineController controller, ReportComponent component) {
         this.analysisDetailReportGermlineController = controller;
+        this.component = component;
+        progressBoxId = "DOWNLOAD JAR";
+    }
+
+    public JarDownloadTask(AnalysisDetailTSTRNAReportController controller, ReportComponent component) {
+        this.tstrnaReportController = controller;
         this.component = component;
         progressBoxId = "DOWNLOAD JAR";
     }

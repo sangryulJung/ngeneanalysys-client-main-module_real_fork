@@ -795,14 +795,18 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         Label label = new Label(name);
         label.setPrefHeight(Double.MAX_VALUE);
         column.setSortable(false);
-        if(!StringUtils.isEmpty(sortName)) label.setOnMouseClicked(e -> sortTable(sortName));
+        if(!StringUtils.isEmpty(sortName)) {
+            column.getStyleClass().add("sort_icon");
+            label.setOnMouseClicked(e -> sortTable(sortName));
+        }
         column.setGraphic(label);
 
         column.widthProperty().addListener((ob, ov, nv) -> {
-            label.setPrefWidth(column.getWidth());
+            label.setMinWidth(column.getWidth());
         });
 
         if(size != null) column.setPrefWidth(size);
+
         variantListTableView.getColumns().add(column);
     }
 
