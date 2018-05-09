@@ -796,7 +796,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         label.setPrefHeight(Double.MAX_VALUE);
         column.setSortable(false);
         if(!StringUtils.isEmpty(sortName)) {
-            column.getStyleClass().add("sort_icon");
+            //column.getStyleClass().add("sort_icon");
             label.setOnMouseClicked(e -> sortTable(sortName));
         }
         column.setGraphic(label);
