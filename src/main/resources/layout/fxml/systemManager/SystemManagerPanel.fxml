@@ -193,37 +193,37 @@
                                  <GridPane.margin>
                                     <Insets right="5.0" />
                                  </GridPane.margin></TextArea>
-                              <Label text="Total Base Pair" GridPane.halignment="RIGHT" GridPane.rowIndex="19" />
+                              <Label text="Total Base Pair( x, &gt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="19" />
                               <TextField fx:id="totalBasePairTextField" GridPane.columnIndex="1" GridPane.rowIndex="19">
                                  <GridPane.margin>
                                     <Insets right="5.0" />
                                  </GridPane.margin></TextField>
-                              <Label text="Q30 Trimmed Base(%)" GridPane.halignment="RIGHT" GridPane.rowIndex="20" />
+                              <Label text="Q30 Trimmed Base( %, &gt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="20" />
                               <TextField fx:id="q30TrimmedBasePercentageTextField" GridPane.columnIndex="1" GridPane.rowIndex="20">
                                  <GridPane.margin>
                                     <Insets right="5.0" />
                                  </GridPane.margin></TextField>
-                              <Label text="Mapped Base(%)" GridPane.halignment="RIGHT" GridPane.rowIndex="21" />
+                              <Label text="Mapped Base( %, &gt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="21" />
                               <TextField fx:id="mappedBasePercentageTextField" GridPane.columnIndex="1" GridPane.rowIndex="21">
                                  <GridPane.margin>
                                     <Insets right="5.0" />
                                  </GridPane.margin></TextField>
-                              <Label text="On Target(%)" GridPane.halignment="RIGHT" GridPane.rowIndex="22" />
+                              <Label text="On Target( %, &gt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="22" />
                               <TextField fx:id="onTargetPercentageTextField" GridPane.columnIndex="1" GridPane.rowIndex="22">
                                  <GridPane.margin>
                                     <Insets right="5.0" />
                                  </GridPane.margin></TextField>
-                              <Label text="On Target Coverage(%)" GridPane.halignment="RIGHT" GridPane.rowIndex="23" />
+                              <Label text="On Target Coverage( x, &gt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="23" />
                               <TextField fx:id="onTargetCoverageTextField" GridPane.columnIndex="1" GridPane.rowIndex="23">
                                  <GridPane.margin>
                                     <Insets right="5.0" />
                                  </GridPane.margin></TextField>
-                              <Label text="Duplicated Reads(%)" GridPane.halignment="RIGHT" GridPane.rowIndex="24" />
+                              <Label text="Duplicated Reads( %, &lt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="24" />
                               <TextField fx:id="duplicatedReadsPercentageTextField" GridPane.columnIndex="1" GridPane.rowIndex="24">
                                  <GridPane.margin>
                                     <Insets right="5.0" />
                                  </GridPane.margin></TextField>
-                              <Label text="ROI Coverage(%)" GridPane.halignment="RIGHT" GridPane.rowIndex="25" />
+                              <Label text="ROI Coverage( %, &gt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="25" />
                               <TextField fx:id="roiCoveragePercentageTextField" GridPane.columnIndex="1" GridPane.rowIndex="25">
                                  <GridPane.margin>
                                     <Insets right="5.0" />
