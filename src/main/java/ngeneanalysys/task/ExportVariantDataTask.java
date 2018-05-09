@@ -82,10 +82,9 @@ public class ExportVariantDataTask extends Task<Void> {
 		try {
 			String connectURL = apiService.getConvertConnectURL(downloadUrl);
 			URIBuilder builder = new URIBuilder(connectURL);
-			Set<String> keySet = params.keySet();
-			for(String key : keySet) {
-				Object object = params.get(key);
-				builder.setParameter(key, object.toString());
+			Set<Map.Entry<String, Object>> entrySet = params.entrySet();
+			for(Map.Entry<String, Object> entry : entrySet) {
+				builder.setParameter(entry.getKey(), entry.getValue().toString());
 			}
 
 			// 헤더 삽입 정보 설정
@@ -96,10 +95,8 @@ public class ExportVariantDataTask extends Task<Void> {
 
 			// 지정된 헤더 삽입 정보가 있는 경우 추가
 			if(headerMap != null && headerMap.size() > 0) {
-				Iterator<String> keys = headerMap.keySet().iterator();
-				while (keys.hasNext()) {
-					String key = keys.next();
-					get.setHeader(key, headerMap.get(key).toString());
+				for (Map.Entry<String, Object> entry : headerMap.entrySet()) {
+					get.setHeader(entry.getKey(), entry.getValue().toString());
 				}
 			}
 

@@ -60,8 +60,8 @@ public class PropertiesUtil {
 			Properties properties = new Properties();
 			properties.load(reader);
 				
-			for(String key : map.keySet()) {
-				properties.setProperty(key, map.get(key));
+			for(Map.Entry<String, String> entry : map.entrySet()) {
+				properties.setProperty(entry.getValue(), entry.getValue());
 			}
 				
 			FileWriter writer = new FileWriter(propertiesFile);

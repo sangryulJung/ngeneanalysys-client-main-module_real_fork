@@ -38,8 +38,8 @@ public class PanelDetection {
             // System.out.println(key);
             Trie.TrieBuilder trieBuiler = Trie.builder();
             int primerCount = 0;
-            for (String primerKey : primerPerPanelMap.get(panelCode).keySet()) {
-                trieBuiler.addKeyword(primerKey);
+            for (Map.Entry<String, String> primerEntry : primerPerPanelMap.get(panelCode).entrySet()) {
+                trieBuiler.addKeyword(primerEntry.getKey());
                 primerCount++;
             }
             triePerPanelMap.put(panelCode, trieBuiler.build());
@@ -210,18 +210,18 @@ public class PanelDetection {
                     throw new IOException(errorMsg);
                 }
                 readCount++;
-                for (String panelCode : triePerPanelMap.keySet()) {
-                    Collection<Emit> emits = triePerPanelMap.get(panelCode).parseText(seqData);
+                for (Map.Entry<String, Trie> panelCode : triePerPanelMap.entrySet()) {
+                    Collection<Emit> emits = triePerPanelMap.get(panelCode.getKey()).parseText(seqData);
                     if (!emits.isEmpty()) {
-                        if (!resultMap.containsKey(panelCode)) {
-                            resultMap.put(panelCode, new HashMap<String, Integer>());
+                        if (!resultMap.containsKey(panelCode.getKey())) {
+                            resultMap.put(panelCode.getKey(), new HashMap<String, Integer>());
                         }
                         for (Emit emit : emits) {
-                            if (!resultMap.get(panelCode).containsKey(emit.getKeyword())) {
-                                resultMap.get(panelCode).put(emit.getKeyword(), 1);
+                            if (!resultMap.get(panelCode.getKey()).containsKey(emit.getKeyword())) {
+                                resultMap.get(panelCode.getKey()).put(emit.getKeyword(), 1);
                             } else {
-                                int currentVal = resultMap.get(panelCode).get(emit.getKeyword());
-                                resultMap.get(panelCode).put(emit.getKeyword(), currentVal + 1);
+                                int currentVal = resultMap.get(panelCode.getKey()).get(emit.getKeyword());
+                                resultMap.get(panelCode.getKey()).put(emit.getKeyword(), currentVal + 1);
                             }
                         }
                     }
@@ -237,9 +237,7 @@ public class PanelDetection {
         } catch (Exception e) {
             throw e;
         } finally {
-            if (reader != null) {
-                reader.close();
-            }
+            reader.close();
         }
     }
 

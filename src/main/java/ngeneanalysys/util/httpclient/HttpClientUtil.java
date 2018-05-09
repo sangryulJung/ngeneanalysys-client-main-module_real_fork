@@ -81,16 +81,14 @@ public class HttpClientUtil {
 	 * @param encoding
 	 * @return
 	 */
-	public static HttpPost initPost(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, boolean isJsonRequest) {
+	private static HttpPost initPost(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, boolean isJsonRequest) {
 		HttpPost post = null;
 		try {
 			post = new HttpPost(url);
 			// 지정된 헤더 삽입 정보가 있는 경우 추가
 			if(headers != null && headers.size() > 0) {
-				Iterator<String> keys = headers.keySet().iterator();
-				while (keys.hasNext()) {
-					String key = keys.next();
-					post.addHeader(key, headers.get(key).toString());
+				for (Map.Entry<String, Object> entry : headers.entrySet()) {
+					post.addHeader(entry.getKey(), entry.getValue().toString());
 				}
 			}
 
@@ -193,10 +191,8 @@ public class HttpClientUtil {
 			get = new HttpGet(requstURL);
 			// 지정된 헤더 삽입 정보가 있는 경우 추가
 			if(headers != null && headers.size() > 0) {
-				Iterator<String> keys = headers.keySet().iterator();
-				while (keys.hasNext()) {
-					String key = keys.next();
-					get.addHeader(key, headers.get(key).toString());
+				for (Map.Entry<String, Object> entry : headers.entrySet()) {
+					get.addHeader(entry.getKey(), entry.getValue().toString());
 				}
 			}
 			logger.debug("GET:" + get.getURI());
@@ -230,10 +226,8 @@ public class HttpClientUtil {
 			get = new HttpGet(requstURL);
 			// 지정된 헤더 삽입 정보가 있는 경우 추가
 			if(headers != null && headers.size() > 0) {
-				Iterator<String> keys = headers.keySet().iterator();
-				while (keys.hasNext()) {
-					String key = keys.next();
-					get.addHeader(key, headers.get(key).toString());
+				for (Map.Entry<String, Object> entry : headers.entrySet()) {
+					get.addHeader(entry.getKey(), entry.getValue().toString());
 				}
 			}
 			logger.debug("GET:" + get.getURI());
@@ -400,7 +394,7 @@ public class HttpClientUtil {
 	 * @param encoding
 	 * @return
 	 */
-	public static HttpPut initPut(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, boolean isJsonRequest) {
+	private static HttpPut initPut(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, boolean isJsonRequest) {
 		logger.debug("method : [put]");
 		HttpPut httpPut = null;
 		try {
@@ -408,10 +402,8 @@ public class HttpClientUtil {
 
 			// 지정된 헤더 삽입 정보가 있는 경우 추가
 			if(headers != null && headers.size() > 0) {
-				Iterator<String> keys = headers.keySet().iterator();
-				while (keys.hasNext()) {
-					String key = keys.next();
-					httpPut.addHeader(key, headers.get(key).toString());
+				for (Map.Entry<String, Object> entry : headers.entrySet()) {
+					httpPut.addHeader(entry.getKey(), entry.getValue().toString());
 				}
 			}
 			logger.debug("PUT:" + httpPut.getURI());
@@ -504,10 +496,8 @@ public class HttpClientUtil {
 
 			// 지정된 헤더 삽입 정보가 있는 경우 추가
 			if(headers != null && headers.size() > 0) {
-				Iterator<String> keys = headers.keySet().iterator();
-				while (keys.hasNext()) {
-					String key = keys.next();
-					httpPatch.addHeader(key, headers.get(key).toString());
+				for (Map.Entry<String, Object> entry : headers.entrySet()) {
+					httpPatch.addHeader(entry.getKey(), entry.getValue().toString());
 				}
 			}
 			logger.debug("PATCH:" + httpPatch.getURI());
@@ -590,10 +580,8 @@ public class HttpClientUtil {
 			delete = new HttpDelete(url);
 			// 지정된 헤더 삽입 정보가 있는 경우 추가
 			if(headers != null && headers.size() > 0) {
-				Iterator<String> keys = headers.keySet().iterator();
-				while (keys.hasNext()) {
-					String key = keys.next();
-					delete.addHeader(key, headers.get(key).toString());
+				for (Map.Entry<String, Object> entry : headers.entrySet()) {
+					delete.addHeader(entry.getKey(), entry.getValue().toString());
 				}
 			}
 			logger.debug("DELETE:" + delete.getURI());
@@ -661,12 +649,10 @@ public class HttpClientUtil {
 	public static List<NameValuePair> convertSearchParam(Map<String, List<Object>> params) {
 		List<NameValuePair> paramList = new ArrayList<>();
 		if (params != null && params.size() > 0) {
-			Iterator<String> keys = params.keySet().iterator();
-			while (keys.hasNext()) {
-				String key = keys.next();
-				List<Object> value = params.get(key);
-				for(Object obj : value) {
-					paramList.add(new BasicNameValuePair(key, obj.toString()));
+			for (Map.Entry<String, List<Object>> entry : params.entrySet()) {
+				List<Object> value = entry.getValue();
+				for (Object obj : value) {
+					paramList.add(new BasicNameValuePair(entry.getKey(), obj.toString()));
 				}
 			}
 		}
@@ -678,7 +664,7 @@ public class HttpClientUtil {
 	 * @param content InputStream
 	 * @return String
 	 */
-	public static String convertResponseContent(InputStream content) {
+	private static String convertResponseContent(InputStream content) {
 		if (content == null) return null;
 		try {
 			BufferedReader rd = new BufferedReader(new InputStreamReader(content));

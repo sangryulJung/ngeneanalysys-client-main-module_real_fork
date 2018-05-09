@@ -180,10 +180,8 @@ public class APIService {
 
             // 지정된 헤더 삽입 정보가 있는 경우 추가
             if(headerMap != null && headerMap.size() > 0) {
-                Iterator<Map.Entry<String, Object>> entryIterator = headerMap.entrySet().iterator();
-                while (entryIterator.hasNext()) {
-                    String key = entryIterator.next().getKey();
-                    post.setHeader(key, headerMap.get(key).toString());
+                for (Map.Entry<String, Object> entry : headerMap.entrySet()) {
+                    post.setHeader(entry.getKey(), entry.getValue().toString());
                 }
             }
 

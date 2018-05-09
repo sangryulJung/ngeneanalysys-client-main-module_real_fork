@@ -141,11 +141,11 @@ public class IlluminaMiSeqFileHandler implements FileHandler {
         }
 
         // 선택한 파일들이 쌍으로 존재하는지 체크
-        for (String pairName : chooseFilePairMap.keySet()) {
-            Integer pairCount = (Integer) chooseFilePairMap.get(pairName).get("pairCount");
+        for (Map.Entry<String, Map<String, Object>> pairName : chooseFilePairMap.entrySet()) {
+            Integer pairCount = (Integer) chooseFilePairMap.get(pairName.getKey()).get("pairCount");
             if (pairCount < 2) {
                 throw new FastQFileParsingException(Alert.AlertType.WARNING, "Selected FASTQ File is Not Pair",
-                        "Unpaired FASTQ files are selected.\nPair name is " + pairName, false);
+                        "Unpaired FASTQ files are selected.\nPair name is " + pairName.getKey(), false);
             }
         }
         if (chooseFilePairMap.size() > 0) {
