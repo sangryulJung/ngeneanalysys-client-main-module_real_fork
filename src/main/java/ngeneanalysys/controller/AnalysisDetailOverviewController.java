@@ -340,7 +340,11 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                 PopOverUtil.openQCPopOver(QCLabel, value));
     }
 
-    public void settingOverallQC(int sampleId) {
+    public void addQCGrid() {
+
+    }
+
+   public void settingOverallQC(int sampleId) {
 
         List<SampleQC> qcList = null;
 
