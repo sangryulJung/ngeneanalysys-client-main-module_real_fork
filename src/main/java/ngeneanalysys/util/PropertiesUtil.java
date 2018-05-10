@@ -58,7 +58,7 @@ public class PropertiesUtil {
 			properties.load(reader);
 				
 			for(Map.Entry<String, String> entry : map.entrySet()) {
-				properties.setProperty(entry.getValue(), entry.getValue());
+				properties.setProperty(entry.getKey(), entry.getValue());
 			}
 				
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(propertiesFile, false), "UTF-8"));
