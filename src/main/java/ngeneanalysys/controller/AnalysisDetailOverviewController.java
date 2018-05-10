@@ -302,6 +302,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         hBox.setAlignment(Pos.CENTER);
         String title = returnQCTitle(sampleQC.getQcType());
         Label titleLabel = new Label(title);
+        titleLabel.setStyle(titleLabel.getStyle() + "-fx-text-fill : #FFF;");
         Label descriptionLabel = new Label();
 
         descriptionLabel.getStyleClass().add("help_tooltip_white");
