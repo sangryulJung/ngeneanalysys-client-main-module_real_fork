@@ -101,10 +101,10 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     //화면에 표시될 row 수
     private int totalRow = 0;
 
-    public void setServerFASTQ(String path) {
+    void setServerFASTQ(String path) {
         isServerItem = true;
         isServerFastq = true;
-        if(!sampleArrayList.isEmpty()) sampleArrayList.removeAll(sampleArrayList);
+        if(!sampleArrayList.isEmpty()) sampleArrayList.clear();
         try {
             Map<String, Object> params = new HashMap<>();
             params.put("subPath", path);
@@ -125,16 +125,16 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         }
     }
 
-    public void setServerRun(String path) {
+    void setServerRun(String path) {
         isServerItem = true;
         isServerFastq = false;
         logger.debug(path);
-        if(sampleArrayList.isEmpty()) sampleArrayList.removeAll(sampleArrayList);
+        if(sampleArrayList.isEmpty()) sampleArrayList.clear();
         try {
             Map<String, Object> params = new HashMap<>();
             params.put("runDir", path);
             runPath = path;
-            Task<Void> task = new SampleSheetDownloadTask(this.sampleUploadController, this, path);
+            SampleSheetDownloadTask task = new SampleSheetDownloadTask(this.sampleUploadController, this, path);
             final Thread downloadThread = new Thread(task);
 
             downloadThread.setDaemon(true);
@@ -154,9 +154,9 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     }
 
 
-    public void setServerFastqList(List<ServerFile> serverFiles) {
+    private void setServerFastqList(List<ServerFile> serverFiles) {
         List<ServerFile> undeterminedFile = new ArrayList<>();
-        serverFiles.stream().forEach(file -> {
+        serverFiles.forEach(file -> {
             if(file.getName().toUpperCase().startsWith("UNDETERMINED_"))
                 undeterminedFile.add(file);
         });
@@ -201,6 +201,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                         if(panel.isPresent()) {
                             sample.setPanelId(panel.get().getId());
                             sample.setSampleSource(panel.get().getDefaultSampleSource());
+                            sample.setDiseaseId(panel.get().getDefaultDiseaseId());
                             if(panel.get().getDefaultDiseaseId() != null)
                                 sample.setDiseaseId(panel.get().getDefaultDiseaseId());
                         }
@@ -209,6 +210,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                         if(panel.isPresent()) {
                             sample.setPanelId(panel.get().getId());
                             sample.setSampleSource(panel.get().getDefaultSampleSource());
+                            sample.setDiseaseId(panel.get().getDefaultDiseaseId());
                             if(panel.get().getDefaultDiseaseId() != null)
                                 sample.setDiseaseId(panel.get().getDefaultDiseaseId());
                         }
@@ -238,7 +240,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     /**
      * @param sampleUploadController SampleUploadController
      */
-    public void setSampleUploadController(SampleUploadController sampleUploadController) {
+    void setSampleUploadController(SampleUploadController sampleUploadController) {
         this.sampleUploadController = sampleUploadController;
     }
 
@@ -249,7 +251,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         fileMap = sampleUploadController.getFileMap();
         uploadFileList = sampleUploadController.getUploadFileList();
         uploadFileData= sampleUploadController.getUploadFileData();
-
         panels = (List<Panel>)mainController.getBasicInformationMap().get("panels");
         diseases = (List<Diseases>)mainController.getBasicInformationMap().get("diseases");
 
@@ -266,7 +267,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         if(isServerItem && !sampleArrayList.isEmpty()) {
             isServerItem = false;
             isServerFastq = false;
-            sampleArrayList.removeAll(sampleArrayList);
+            sampleArrayList.clear();
         }
 
         DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -280,26 +281,37 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
         if(folder != null) {
             File[] fileArray = folder.listFiles();
-            List<File> fileList = new ArrayList<>(Arrays.asList(fileArray));
+            List<File> fileList = null;
+            if (fileArray != null) {
+                fileList = new ArrayList<>(Arrays.asList(fileArray));
+            }
             if (System.getProperty("os.name").toLowerCase().contains("window")) {
-                fileList = fileList.stream().filter(file -> file.getName().endsWith(".fastq.gz")).collect(Collectors.toList());
+                if (fileList != null) {
+                    fileList = fileList.stream().filter(file -> file.getName().endsWith(".fastq.gz")).collect(Collectors.toList());
+                }
             } else {
-                fileList = fileList.stream().filter(file -> file.getName().endsWith(".fastq") ||
-                        file.getName().endsWith(".fastq.gz")).collect(Collectors.toList());
+                if (fileList != null) {
+                    fileList = fileList.stream().filter(file -> file.getName().endsWith(".fastq") ||
+                            file.getName().endsWith(".fastq.gz")).collect(Collectors.toList());
+                }
             }
 
-            if(fileList.isEmpty()) DialogUtil.alert("not found", "not found fastq file", sampleUploadController.getCurrentStage(), true);
+            if(fileList == null || fileList.isEmpty()) DialogUtil.alert("not found", "not found fastq file", sampleUploadController.getCurrentStage(), true);
             List<File> undeterminedFile = new ArrayList<>();
-            fileList.stream().forEach(file -> {
-                if(file.getName().toUpperCase().startsWith("UNDETERMINED_"))
-                    undeterminedFile.add(file);
-            });
+            if (fileList != null) {
+                fileList.forEach(file -> {
+                    if(file.getName().toUpperCase().startsWith("UNDETERMINED_"))
+                        undeterminedFile.add(file);
+                });
+            }
 
-            if(!undeterminedFile.isEmpty()) fileList.removeAll(undeterminedFile);
+            if(!undeterminedFile.isEmpty() && fileList != null) {
+                fileList.removeAll(undeterminedFile);
+            }
 
-            if(!fileList.isEmpty()) sampleUploadController.setTextFieldRunName(folder.getName());
+            if(fileList != null && !fileList.isEmpty()) sampleUploadController.setTextFieldRunName(folder.getName());
 
-            while (!fileList.isEmpty()) {
+            while (fileList != null && !fileList.isEmpty()) {
 
                 mainController.getBasicInformationMap().put("path", folder.getAbsolutePath());
                 File fastqFile = fileList.get(0);
@@ -383,7 +395,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         }
     }
 
-    public void tableEdit() {
+    private void tableEdit() {
         int row = 0;
         standardDataGridPane.getChildren().removeAll(standardDataGridPane.getChildren());
         standardDataGridPane.setPrefHeight(0);
@@ -402,7 +414,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 disease.getItems().forEach(diseaseItem ->{
                     if(diseaseItem.getValue().equals(sample.getDiseaseId().toString())) {
                         disease.getSelectionModel().select(diseaseItem);
-                        return;
                     }
                 });
             } else {
@@ -481,7 +492,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     }
 
-    public void createRow(int row) {
+    private void createRow(int row) {
         standardDataGridPane.setPrefHeight(standardDataGridPane.getPrefHeight() + 28);
         if(!sampleNameTextFieldList.isEmpty() && sampleNameTextFieldList.size() > row) {
             panelSetting(panelComboBoxList.get(row));
@@ -498,7 +509,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         sampleNameTextFieldList.add(sampleName);
         sampleName.textProperty().addListener((observable, oldValue, newValue) -> {
             Set<String> fileName = fileMap.keySet();
-            fileName.stream().forEach(file -> {
+            fileName.forEach(file -> {
                 Map<String, Object> fileInfo = fileMap.get(file);
 
                 if (fileInfo.get("sampleName") != null && fileInfo.get("sampleName").toString().equals(oldValue)) {
@@ -561,7 +572,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         panel.getSelectionModel().select(0);
     }
 
-    public void panelBatchApplication(ComboBoxItem item) {
+    private void panelBatchApplication(ComboBoxItem item) {
         for(int index = 1 ; index < panelComboBoxList.size(); index++) {
             ComboBox<ComboBoxItem> panel = panelComboBoxList.get(index);
             panel.getSelectionModel().select(item);
@@ -569,9 +580,9 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         }
     }
 
-    public void settingDiseaseComboBox(int panelId, int index) {
+    private void settingDiseaseComboBox(int panelId, int index) {
         //질병명 추가
-        HttpClientResponse response = null;
+        HttpClientResponse response;
         try {
             response = apiService.get("panels/" + panelId, null, null, false);
             PanelView panelDetail = response.getObjectBeforeConvertResponseToJSON(PanelView.class);
@@ -591,12 +602,22 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             if (diseaseComboBox.getItems().size() == 0) {
                 diseaseComboBox.getItems().add(new ComboBoxItem("0", "N/A"));
             }
-            diseaseComboBox.getSelectionModel().selectFirst();
 
             if(panelDetail.getDefaultSampleSource() != null) {
                 sampleSourceComboBoxList.get(index).getSelectionModel().select(panelDetail.getDefaultSampleSource());
             } else {
                 sampleSourceComboBoxList.get(index).getSelectionModel().clearSelection();
+            }
+            if(panelDetail.getDefaultDiseaseId() != null) {
+                Optional<ComboBoxItem> defaultDiseaseItem = diseaseComboBox.getItems().stream().filter(
+                        item -> item.getValue().equals(panelDetail.getDefaultDiseaseId().toString())).findFirst();
+                if (defaultDiseaseItem.isPresent()) {
+                    diseaseComboBox.getSelectionModel().select(defaultDiseaseItem.get());
+                } else {
+                    diseaseComboBox.getSelectionModel().selectFirst();
+                }
+            } else {
+                diseaseComboBox.getSelectionModel().selectFirst();
             }
 
         } catch (WebAPIException wae) {
@@ -607,7 +628,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         }
     }
 
-    public boolean saveSampleData() {
+    private boolean saveSampleData() {
         boolean ok = true;
         int rowCount = standardDataGridPane.getChildren().size() / 4;
 
@@ -657,9 +678,9 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 response = apiService.get("panels/" + panelId, null, null, false);
                 Panel panelDetail = response.getObjectBeforeConvertResponseToJSON(Panel.class);
 
-                if(LibraryTypeCode.AMPLICON_BASED.getDescription().equals(panelDetail.getLibraryType())) {
-
-                }
+//                if(LibraryTypeCode.AMPLICON_BASED.getDescription().equals(panelDetail.getLibraryType())) {
+//
+//                }
 
             } catch (WebAPIException wae) {
                 DialogUtil.error(wae.getHeaderText(), wae.getContents(), sampleUploadController.getCurrentStage(), true);
@@ -695,8 +716,8 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             if (sampleArrayList != null && !sampleArrayList.isEmpty()) {
 
                 Map<String, Object> params = new HashMap<>();
-                HttpClientResponse response = null;
-                RunWithSamples run = null;
+                HttpClientResponse response;
+                RunWithSamples run;
 
                 if(sampleUploadController.getRunName() == null || "".equals(sampleUploadController.getRunName())) {
                     Date date = new Date();
@@ -721,25 +742,25 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
                 response = apiService.post("/runs", params, null, true);
                 run = response.getObjectBeforeConvertResponseToJSON(RunWithSamples.class);
-                mainController.getBasicInformationMap().put("runId", run.getRun().getId());
-                logger.debug(run.toString());
+                if (run != null) {
+                    mainController.getBasicInformationMap().put("runId", run.getRun().getId());
+                    logger.debug(run.toString());
+                    List<Sample> samples = run.getSamples();
 
-                List<Sample> samples = run.getSamples();
-
-                for(Sample sample : samples) {
-                    postAnalysisFilesData(sample);
-                }
+                    for(Sample sample : samples) {
+                        postAnalysisFilesData(sample);
+                    }
                 /*for (Sample sample : sampleArrayList) {
                     sample.setRunId(run.getId());
                     sampleUpload(sample);
                 }*/
 
-                if((uploadFileData != null && !uploadFileData.isEmpty()) &&
-                        (uploadFileList != null && !uploadFileList.isEmpty())) {
-                    assert run != null;
-                    this.mainController.runningAnalysisRequestUpload(uploadFileData, uploadFileList, run.getRun());
+                    if((uploadFileData != null && !uploadFileData.isEmpty()) &&
+                            (uploadFileList != null && !uploadFileList.isEmpty())) {
+                        this.mainController.runningAnalysisRequestUpload(uploadFileData, uploadFileList, run.getRun());
+                    }
+                    logger.debug("submit");
                 }
-                logger.debug("submit");
                 closeDialog();
             }
         } catch (Exception e) {
@@ -799,7 +820,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     private void sampleUpload(Sample sample) throws Exception {
 
         Map<String, Object> params = new HashMap<>();
-        HttpClientResponse response = null;
+        HttpClientResponse response;
 
         params.put("runId", sample.getRunId());
         params.put("name", sample.getName());
@@ -821,7 +842,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 fileInfo.put("sampleId", sample.getId());
                 fileInfo.put("sampleName", null);
                 fileInfo.remove("sampleName");
-                HttpClientResponse fileResponse = null;
+                HttpClientResponse fileResponse;
                 try {
                     fileResponse = apiService.post("/analysisFiles", fileInfo, null, true);
                     AnalysisFile fileData = fileResponse.getObjectBeforeConvertResponseToJSON(AnalysisFile.class);
