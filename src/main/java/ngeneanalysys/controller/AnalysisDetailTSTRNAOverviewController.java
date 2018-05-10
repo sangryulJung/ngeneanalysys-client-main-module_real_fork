@@ -92,54 +92,6 @@ public class AnalysisDetailTSTRNAOverviewController extends AnalysisDetailCommon
     @FXML
     private TableColumn<VariantAndInterpretationEvidence, BigDecimal> alleleFrequencyColumn;
 
-    @FXML
-    private Label totalBaseLabel;
-
-    @FXML
-    private Label q30scoreRead1Label;
-
-    @FXML
-    private Label q30scoreRead2Label;
-
-    @FXML
-    private Label averageCoverageLabel;
-
-    @FXML
-    private Label minimumCoverageLabel;
-
-    @FXML
-    private Label maximumCoverageLabel;
-
-    @FXML
-    private Label onTargetCoverageLabel;
-
-    @FXML
-    private Label roiCoverageLabel;
-
-    @FXML
-    private Label totalBaseQCLabel;
-
-    @FXML
-    private Label q30read1QCLabel;
-
-    @FXML
-    private Label q30read2QCLabel;
-
-    @FXML
-    private Label averageCoverageQCLabel;
-
-    @FXML
-    private Label minimumCoverageQCLabel;
-
-    @FXML
-    private Label maximumCoverageQCLabel;
-
-    @FXML
-    private Label onTargetCoverageQCLabel;
-
-    @FXML
-    private Label roiCoverageQCLabel;
-
     /** API 서버 통신 서비스 */
     private APIService apiService;
 
