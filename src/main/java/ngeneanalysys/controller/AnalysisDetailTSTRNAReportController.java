@@ -844,7 +844,7 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
 
         //Genes in panel
 
-        HttpClientResponse response = apiService.get("/analysisResults/variantCountByGeneForSomaticRNA/" + sample.getId(),
+        /*HttpClientResponse response = apiService.get("/analysisResults/variantCountByGeneForSomaticRNA/" + sample.getId(),
                 null, null, false);
         if (response != null) {
             List<VariantCountByGene> variantCountByGenes = (List<VariantCountByGene>) response
@@ -868,8 +868,8 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
             //Gene List를 3등분함
             contentsMap.put("genesInPanelTableOne", Arrays.copyOfRange(genesInPanelTableOne, 0, tableOneSize));
             contentsMap.put("genesInPanelTableTwo", Arrays.copyOfRange(genesInPanelTableOne, tableOneSize, tableOneSize + tableTwoSize));
-            contentsMap.put("genesInPanelTableThree", Arrays.copyOfRange(genesInPanelTableOne, tableOneSize + tableTwoSize, variantCountByGenes.size()));
-
+            contentsMap.put("genesInPanelTableThree", Arrays.copyOfRange(genesInPanelTableOne, tableOneSize + tableTwoSize, variantCountByGenes.size()));*/
+            HttpClientResponse response;
             if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
                 response = apiService.get("virtualPanels/" + virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue(),
                         null, null, false);
@@ -907,12 +907,13 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
             List<SampleQC> qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
 
             contentsMap.put("totalBase",findQCResult(qcList, "total_base"));
-            contentsMap.put("q30",findQCResult(qcList, "q30_trimmed_base"));
-            contentsMap.put("mappedBase",findQCResult(qcList, "mapped_base"));
-            contentsMap.put("onTarget",findQCResult(qcList, "on_target"));
-            contentsMap.put("onTargetCoverage",findQCResult(qcList, "on_target_coverage"));
-            contentsMap.put("duplicatedReads",findQCResult(qcList, "duplicated_reads"));
             contentsMap.put("roiCoverage",findQCResult(qcList, "roi_coverage"));
+            contentsMap.put("onTargetCoverage",findQCResult(qcList, "on_target_coverage"));
+            contentsMap.put("averageCoverage",findQCResult(qcList, "average_coverage"));
+            contentsMap.put("minimumCoverage",findQCResult(qcList, "minimum_coverage"));
+            contentsMap.put("maximumCoverage",findQCResult(qcList, "maximum_coverage"));
+            contentsMap.put("q30ScoreRead1",findQCResult(qcList, "Q30_score_read1"));
+            contentsMap.put("q30ScoreRead2",findQCResult(qcList, "Q30_score_read2"));
 
             List<String> conclusionLineList = null;
             if(!StringUtils.isEmpty(conclusionsTextArea.getText())) {
@@ -928,7 +929,7 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
             }
             contentsMap.put("conclusions", conclusionLineList);
 
-        }
+        //}
 
         return contentsMap;
     }
@@ -985,7 +986,7 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
 
                 String contents = "";
                 if(panel.getReportTemplateId() == null) {
-                    contents = velocityUtil.getContents("/layout/velocity/report.vm", "UTF-8", model);
+                    contents = velocityUtil.getContents("/layout/velocity/report_tst_rna.vm", "UTF-8", model);
                     created = pdfCreateService.createPDF(file, contents);
                     createdCheck(created, file);
                     //convertPDFtoImage(file, sample.getName());

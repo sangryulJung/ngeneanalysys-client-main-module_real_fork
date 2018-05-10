@@ -908,13 +908,23 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
             List<SampleQC> qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
 
-            contentsMap.put("totalBase",findQCResult(qcList, "total_base"));
-            contentsMap.put("q30",findQCResult(qcList, "q30_trimmed_base"));
-            contentsMap.put("mappedBase",findQCResult(qcList, "mapped_base"));
-            contentsMap.put("onTarget",findQCResult(qcList, "on_target"));
-            contentsMap.put("onTargetCoverage",findQCResult(qcList, "on_target_coverage"));
-            contentsMap.put("duplicatedReads",findQCResult(qcList, "duplicated_reads"));
-            contentsMap.put("roiCoverage",findQCResult(qcList, "roi_coverage"));
+            if(panel.getName().equals(CommonConstants.TST_170_DNA)) {
+                contentsMap.put("Q30ScoreRead1", findQCResult(qcList, "Q30_score_read1"));
+                contentsMap.put("Q30ScoreRead2", findQCResult(qcList, "Q30_score_read2"));
+                contentsMap.put("roiCoverage", findQCResult(qcList, "roi_coverage"));
+                contentsMap.put("totalBase", findQCResult(qcList, "total_base"));
+                contentsMap.put("onTargetCoverage", findQCResult(qcList, "on_target_coverage"));
+            } else {
+                contentsMap.put("totalBase", findQCResult(qcList, "total_base"));
+                contentsMap.put("q30", findQCResult(qcList, "q30_trimmed_base"));
+                contentsMap.put("mappedBase", findQCResult(qcList, "mapped_base"));
+                contentsMap.put("onTarget", findQCResult(qcList, "on_target"));
+                contentsMap.put("onTargetCoverage", findQCResult(qcList, "on_target_coverage"));
+                contentsMap.put("duplicatedReads", findQCResult(qcList, "duplicated_reads"));
+                contentsMap.put("roiCoverage", findQCResult(qcList, "roi_coverage"));
+            }
+
+            contentsMap.put("pipelineVersion", sample.getPipelineVersionId());
 
             List<String> conclusionLineList = null;
             if(!StringUtils.isEmpty(conclusionsTextArea.getText())) {
@@ -987,7 +997,11 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
                 String contents = "";
                 if(panel.getReportTemplateId() == null) {
-                    contents = velocityUtil.getContents("/layout/velocity/report.vm", "UTF-8", model);
+                    if(panel.getName().equals(CommonConstants.TST_170_DNA)) {
+                        contents = velocityUtil.getContents("/layout/velocity/report_tst.vm", "UTF-8", model);
+                    } else {
+                        contents = velocityUtil.getContents("/layout/velocity/report.vm", "UTF-8", model);
+                    }
                     created = pdfCreateService.createPDF(file, contents);
                     createdCheck(created, file);
                     //convertPDFtoImage(file, sample.getName());
