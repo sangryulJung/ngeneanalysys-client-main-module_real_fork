@@ -906,12 +906,9 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
 
             List<SampleQC> qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
 
-            contentsMap.put("totalBase",findQCResult(qcList, "total_base"));
-            contentsMap.put("roiCoverage",findQCResult(qcList, "roi_coverage"));
-            contentsMap.put("onTargetCoverage",findQCResult(qcList, "on_target_coverage"));
-            contentsMap.put("averageCoverage",findQCResult(qcList, "average_coverage"));
-            contentsMap.put("minimumCoverage",findQCResult(qcList, "minimum_coverage"));
-            contentsMap.put("maximumCoverage",findQCResult(qcList, "maximum_coverage"));
+            contentsMap.put("readsPF",findQCResult(qcList, "Reads_PF"));
+            contentsMap.put("medianInsertSize",findQCResult(qcList, "Median_Insert_Size"));
+            contentsMap.put("medianCVCoverage",findQCResult(qcList, "Median_CV_Coverage_1000x"));
             contentsMap.put("q30ScoreRead1",findQCResult(qcList, "Q30_score_read1"));
             contentsMap.put("q30ScoreRead2",findQCResult(qcList, "Q30_score_read2"));
 

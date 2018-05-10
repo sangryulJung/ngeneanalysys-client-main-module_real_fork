@@ -124,9 +124,9 @@ public class PopOverUtil {
         popOver.setAutoFix(true);
         popOver.setDetachable(true);
         popOver.setArrowSize(15);
-        popOver.setMaxSize(20, 50);
-        popOver.setPrefSize(200, 50);
-        popOver.setMinSize(200, 50);
+        popOver.setMaxSize(200, 80);
+        popOver.setPrefSize(200, 80);
+        popOver.setMinSize(200, 80);
 
         VBox box = new VBox();
         box.setMinWidth(200);
@@ -136,7 +136,7 @@ public class PopOverUtil {
         Label contents = new Label();
         contents.setPadding(new Insets(0, 0, 0, 10));
         contents.setAlignment(Pos.TOP_LEFT);
-        contents.setPrefHeight(50);
+        contents.setPrefHeight(80);
         contents.setPrefWidth(200);
         contents.setWrapText(true);
 

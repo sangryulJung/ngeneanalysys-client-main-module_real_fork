@@ -909,11 +909,13 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             List<SampleQC> qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
 
             if(panel.getName().equals(CommonConstants.TST_170_DNA)) {
-                contentsMap.put("Q30ScoreRead1", findQCResult(qcList, "Q30_score_read1"));
-                contentsMap.put("Q30ScoreRead2", findQCResult(qcList, "Q30_score_read2"));
-                contentsMap.put("roiCoverage", findQCResult(qcList, "roi_coverage"));
-                contentsMap.put("totalBase", findQCResult(qcList, "total_base"));
-                contentsMap.put("onTargetCoverage", findQCResult(qcList, "on_target_coverage"));
+                contentsMap.put("q30ScoreRead1", findQCResult(qcList, "Q30_score_read1"));
+                contentsMap.put("q30ScoreRead2", findQCResult(qcList, "Q30_score_read2"));
+                contentsMap.put("coverageMAD", findQCResult(qcList, "Coverage_MAD"));
+                contentsMap.put("medianBinCountCNVTargets", findQCResult(qcList, "Median_BinCount_CNV_Targets"));
+                contentsMap.put("medianInsertSize", findQCResult(qcList, "Median_Insert_Size"));
+                contentsMap.put("pctExonBases100X", findQCResult(qcList, "PCT_ExonBases_100X"));
+                contentsMap.put("readsPF", findQCResult(qcList, "Reads_PF"));
             } else {
                 contentsMap.put("totalBase", findQCResult(qcList, "total_base"));
                 contentsMap.put("q30", findQCResult(qcList, "q30_trimmed_base"));

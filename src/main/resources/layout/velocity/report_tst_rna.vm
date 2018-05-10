@@ -47,7 +47,7 @@
                             </fo:table-cell>
                             <fo:table-cell>
                                 <fo:block font-size="5.5pt" font-family="Noto Sans CJK KR Regular">
-                                    Head-Office:220-626, 1, Gwanak-ro, Gwanak-gu, Seoul, Korea | Branch-Office : 1104, Hanhwa Bizmetro, 242, Digital-ro, Guro-gu, Seoul, Korea
+                                    Head-Office: 1104, Hanhwa Bizmetro, 242, Digital-ro, Guro-gu, Seoul, Korea
                                 </fo:block>
                                 <fo:block font-size="5.5pt" font-family="Noto Sans CJK KR Regular">
                                     Tel : +82 2 867 9798 | FAX : +82 2 883 9784 | Email : business@ngenebio.com
@@ -331,23 +331,22 @@
 			</fo:block>
 			</fo:block>
 
+            <fo:block color="#000000" font-weight="bold" font-family="Noto Sans CJK KR Bold" font-size="14pt">
+                Conclusions
+            </fo:block>
+
+            #if($contents.conclusions != $null)
+                #foreach($line in $contents.conclusions)
+                <fo:block margin-top="1mm" font-family="Noto Sans CJK KR Regular" font-size="12pt"><![CDATA[$line]]></fo:block>
+                #end
+            #end
+            <fo:block page-break-before="always"> </fo:block>
+
             <!-- Pertinent Negatives -->
-            <fo:block margin-bottom="10mm" font-size="10pt" margin-top="5mm">
+            <!--<fo:block margin-bottom="10mm" font-size="10pt" margin-top="5mm">
                 <fo:block font-size="24pt" font-weight="bold" margin-bottom="1mm" font-family="Noto Sans CJK KR Regular">
                     <fo:external-graphic content-width="18.4cm" content-height="1.5cm" src="${pertinetNegativeText}" padding-bottom="-3mm" />
                 </fo:block>
-                <!--<fo:block background-color="#e6e6e7" font-size="13pt" padding-top="3mm" padding-bottom="3mm">
-                    <fo:table font-family="Noto Sans CJK KR Regular">
-                        <fo:table-body>
-                            <fo:table-row>
-                                <fo:table-cell>
-                                    <fo:block font-weight="bold" font-family="Noto Sans CJK KR Bold">Tier III : <fo:inline font-weight="normal" font-family="Noto Sans CJK KR Regular"> </fo:inline></fo:block>
-                                    <fo:block font-weight="bold" font-family="Noto Sans CJK KR Bold">Tier VOUS : <fo:inline font-weight="normal" font-family="Noto Sans CJK KR Regular"> </fo:inline></fo:block>
-                                </fo:table-cell>
-                            </fo:table-row>
-                        </fo:table-body>
-                    </fo:table>
-                </fo:block>-->
                 <fo:block margin-bottom="5mm"></fo:block>
                 <fo:block font-size="11pt">
                     <fo:table table-layout="fixed" width="100%" margin-bottom="4mm" border-bottom="solid 0.1mm black">
@@ -413,7 +412,7 @@
                     </fo:table>
                 </fo:block>
                 <fo:block page-break-before="always"> </fo:block>
-            </fo:block>
+            </fo:block>-->
 
 			<!-- Variant Details -->
 			<fo:block text-align="center" margin-top="10mm" margin-bottom="4mm">
@@ -575,7 +574,6 @@
                 <fo:external-graphic content-width="18.4cm" content-height="1.5cm" src="${dataQcText}" />
             </fo:block>
             <fo:block padding-bottom="15mm">
-                <fo:block font-size="16pt" margin-bottom="5mm" font-family="Noto Sans CJK KR Bold" font-weight="bold">1) Data QC</fo:block>
                 <fo:table table-layout="fixed" width="100%" margin-bottom="4mm" border-top="solid 0.1mm black" text-align="center" display-align="center" font-family="Noto Sans CJK KR Regular">
                     <fo:table-column column-width="proportional-column-width(0.35)" />
                     <fo:table-column column-width="proportional-column-width(0.2)" />
@@ -598,7 +596,21 @@
                         </fo:table-row>
                         <fo:table-row>
                             <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">Q30 Score Read 1</fo:block>
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">Reads PF</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.readsPF) $contents.readsPF.qcUnit #end</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.readsPF) $contents.readsPF.qcValue #end</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.readsPF)<![CDATA[$contents.readsPF.qcThreshold]]> #end</fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                        <fo:table-row>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">Q30+ Read1</fo:block>
                             </fo:table-cell>
                             <fo:table-cell background-color="#e7e7e8">
                                 <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.q30ScoreRead1) $contents.q30ScoreRead1.qcUnit #end</fo:block>
@@ -612,7 +624,7 @@
                         </fo:table-row>
                         <fo:table-row>
                             <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">Q30 Score Read 2</fo:block>
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">Q30+ Read2</fo:block>
                             </fo:table-cell>
                             <fo:table-cell background-color="#e7e7e8">
                                 <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.q30ScoreRead2)$contents.q30ScoreRead2.qcUnit #end</fo:block>
@@ -626,86 +638,30 @@
                         </fo:table-row>
                         <fo:table-row>
                             <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">on-target coverage</fo:block>
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">Median Insert Size</fo:block>
                             </fo:table-cell>
                             <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">$contents.onTargetCoverage.qcUnit</fo:block>
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.medianInsertSize)$contents.medianInsertSize.qcUnit #end</fo:block>
                             </fo:table-cell>
                             <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">$contents.onTargetCoverage.qcValue</fo:block>
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.medianInsertSize)$contents.medianInsertSize.qcValue #end</fo:block>
                             </fo:table-cell>
                             <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm"><![CDATA[$contents.onTargetCoverage.qcThreshold]]></fo:block>
-                            </fo:table-cell>
-                        </fo:table-row>
-                        <fo:table-row>
-                            <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">Total Base</fo:block>
-                            </fo:table-cell>
-                            <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.totalBase)$contents.totalBase.qcUnit #end</fo:block>
-                            </fo:table-cell>
-                            <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.totalBase)$contents.totalBase.qcValue #end</fo:block>
-                            </fo:table-cell>
-                            <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.totalBase)<![CDATA[$contents.totalBase.qcThreshold]]> #end</fo:block>
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.medianInsertSize)<![CDATA[$contents.medianInsertSize.qcThreshold]]> #end</fo:block>
                             </fo:table-cell>
                         </fo:table-row>
                         <fo:table-row>
                             <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">ROI Coverage</fo:block>
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">Median CV Coverage</fo:block>
                             </fo:table-cell>
                             <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.roiCoverage)$contents.roiCoverage.qcUnit #end</fo:block>
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.medianCVCoverage)$contents.medianCVCoverage.qcUnit #end</fo:block>
                             </fo:table-cell>
                             <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.roiCoverage)$contents.roiCoverage.qcValue #end</fo:block>
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.medianCVCoverage)$contents.medianCVCoverage.qcValue #end</fo:block>
                             </fo:table-cell>
                             <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.roiCoverage)<![CDATA[$contents.roiCoverage.qcThreshold]]> #end</fo:block>
-                            </fo:table-cell>
-                        </fo:table-row>
-                        <fo:table-row>
-                            <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">Minimum Coverage</fo:block>
-                            </fo:table-cell>
-                            <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.minimumCoverage)$contents.minimumCoverage.qcUnit #end</fo:block>
-                            </fo:table-cell>
-                            <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.minimumCoverage)$contents.minimumCoverage.qcValue #end</fo:block>
-                            </fo:table-cell>
-                            <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.minimumCoverage)<![CDATA[$contents.minimumCoverage.qcThreshold]]> #end</fo:block>
-                            </fo:table-cell>
-                        </fo:table-row>
-                        <fo:table-row>
-                            <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">Maximum Coverage</fo:block>
-                            </fo:table-cell>
-                            <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.maximumCoverage)$contents.maximumCoverage.qcUnit #end</fo:block>
-                            </fo:table-cell>
-                            <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.maximumCoverage)$contents.maximumCoverage.qcValue #end</fo:block>
-                            </fo:table-cell>
-                            <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.maximumCoverage)<![CDATA[$contents.maximumCoverage.qcThreshold]]> #end</fo:block>
-                            </fo:table-cell>
-                        </fo:table-row>
-                        <fo:table-row>
-                            <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">Average Coverage</fo:block>
-                            </fo:table-cell>
-                            <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.averageCoverage)$contents.averageCoverage.qcUnit #end</fo:block>
-                            </fo:table-cell>
-                            <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.averageCoverage)$contents.averageCoverage.qcValue #end</fo:block>
-                            </fo:table-cell>
-                            <fo:table-cell background-color="#e7e7e8">
-                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.averageCoverage)<![CDATA[$contents.averageCoverage.qcThreshold]]> #end</fo:block>
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.medianCVCoverage)<![CDATA[$contents.medianCVCoverage.qcThreshold]]> #end</fo:block>
                             </fo:table-cell>
                         </fo:table-row>
                     </fo:table-body>

@@ -1,13 +1,19 @@
 package ngeneanalysys.controller;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
@@ -19,10 +25,7 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -31,6 +34,9 @@ import java.util.stream.Collectors;
  */
 public class AnalysisDetailTSTRNAOverviewController extends AnalysisDetailCommonController {
     private static Logger logger = LoggerUtil.getLogger();
+
+    @FXML
+    private GridPane dataQCResultGridPane;
 
     @FXML
     private Label tierOneVariantsCountLabel;
@@ -211,6 +217,10 @@ public class AnalysisDetailTSTRNAOverviewController extends AnalysisDetailCommon
 
     public void setDisplayItem() {
         Sample sample = (Sample) getParamMap().get("sample");
+
+        //기본 초기화
+        Platform.runLater(() -> settingOverallQC(sample.getId()));
+
         try {
             HttpClientResponse response = apiService.get("/analysisResults/sampleSnpInDels/" + sample.getId(), null,
                     null, false);
@@ -307,22 +317,60 @@ public class AnalysisDetailTSTRNAOverviewController extends AnalysisDetailCommon
             e.printStackTrace();
         }
 
-        //기본 초기화
-        settingOverallQC(sample.getId());
     }
 
-    public void setQCItem(final Label valueLabel, final Label QCLabel
-            , final List<SampleQC> qcList, final String qcString) {
-        valueLabel.setText(findQCResult(qcList, qcString).toUpperCase());
-        valueLabel.setTooltip(new Tooltip(findQCResultString(qcList, qcString)));
-        //totalBaseTooltip.setText(findQCTooltipString(qcList, "total_base"));
-        final String value = findQCTooltipString(qcList, qcString);
-        QCLabel.setOnMouseClicked(ev ->
-                PopOverUtil.openQCPopOver(QCLabel, value));
+    public String returnQCTitle(String value) {
+        if(value.equals("Median_BinCount_CNV_Targets")) {
+            return "Median BinCount";
+        } else if(value.equals("PCT_ExonBases_100X")) {
+            return "PCT ExonBases";
+        } else if(value.equals("Q30_score_read1")) {
+            return "Q30+ Read2";
+        } else if(value.equals("Q30_score_read2")) {
+            return "Q30+ Read1";
+        } else if(value.equals("Median_CV_Coverage_1000x")) {
+            return "Median CV Coverage";
+        }
+
+        return value.replaceAll("_", " ");
+    }
+
+    public void addQCGrid(SampleQC sampleQC, int col) {
+        ColumnConstraints columnConstraints = new ColumnConstraints();
+        columnConstraints.setHgrow(Priority.ALWAYS);
+        dataQCResultGridPane.getColumnConstraints().add(columnConstraints);
+        HBox hBox = new HBox();
+        hBox.setSpacing(10);
+        hBox.setStyle(hBox.getStyle() + "-fx-background-color : #8f9fb9;");
+        hBox.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        hBox.setAlignment(Pos.CENTER);
+        String title = returnQCTitle(sampleQC.getQcType());
+        Label titleLabel = new Label(title);
+        Label descriptionLabel = new Label();
+
+        descriptionLabel.getStyleClass().add("help_tooltip_white");
+        descriptionLabel.setStyle(descriptionLabel.getStyle() + "-fx-cursor : hand;");
+        descriptionLabel.setOnMouseClicked(ev ->
+                PopOverUtil.openQCPopOver(descriptionLabel, sampleQC.getQcDescription() + " " + sampleQC.getQcThreshold()));
+
+        hBox.getChildren().addAll(titleLabel, descriptionLabel);
+
+        dataQCResultGridPane.add(hBox, col, 0);
+
+        Label qcResultLabel = new Label(sampleQC.getQcResult().toUpperCase());
+        qcResultLabel.setTooltip(new Tooltip(sampleQC.getQcValue() + sampleQC.getQcUnit()));
+
+        dataQCResultGridPane.add(qcResultLabel, col, 1);
+        GridPane.setValignment(qcResultLabel, VPos.CENTER);
+        GridPane.setHalignment(qcResultLabel, HPos.CENTER);
+
     }
 
     public void settingOverallQC(int sampleId) {
-
+        if(dataQCResultGridPane.getChildren() != null && !dataQCResultGridPane.getChildren().isEmpty()) {
+            dataQCResultGridPane.getChildren().removeAll(dataQCResultGridPane.getChildren());
+            dataQCResultGridPane.getColumnConstraints().removeAll(dataQCResultGridPane.getColumnConstraints());
+        }
         List<SampleQC> qcList = null;
 
         try {
@@ -331,59 +379,16 @@ public class AnalysisDetailTSTRNAOverviewController extends AnalysisDetailCommon
 
             qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
 
-            setQCItem(totalBaseLabel, totalBaseQCLabel, qcList, "total_base");
-            setQCItem(q30scoreRead1Label, q30read1QCLabel, qcList, "Q30_score_read1");
-            setQCItem(q30scoreRead2Label, q30read2QCLabel, qcList, "Q30_score_read2");
-            setQCItem(averageCoverageLabel, averageCoverageQCLabel, qcList, "average_coverage");
-            setQCItem(minimumCoverageLabel, minimumCoverageQCLabel, qcList, "minimum_coverage");
-            setQCItem(maximumCoverageLabel, maximumCoverageQCLabel, qcList, "maximum_coverage");
-            setQCItem(onTargetCoverageLabel, onTargetCoverageQCLabel, qcList, "on_target_coverage");
-            setQCItem(roiCoverageLabel, roiCoverageQCLabel, qcList, "roi_coverage");
+            qcList.sort(Comparator.comparing(SampleQC::getQcType));
+            int i = 0;
+            for(SampleQC sampleQC : qcList) {
+                if(!sampleQC.getQcThreshold().equals("N/A")) {
+                    addQCGrid(sampleQC, i++);
+                }
+            }
 
         } catch(WebAPIException e) {
             DialogUtil.alert("QC ERROR", e.getMessage(), this.getMainApp().getPrimaryStage(), true);
         }
     }
-
-    //qcList에서 해당 qc 결과를 반환
-    private String findQCResult(List<SampleQC> qcList, String qc) {
-        String result = "none";
-
-        if(qcList != null && !qcList.isEmpty()) {
-            Optional<SampleQC> findQC = qcList.stream().filter(sampleQC -> sampleQC.getQcType().equalsIgnoreCase(qc)).findFirst();
-            if(findQC.isPresent()) {
-                result = findQC.get().getQcResult();
-            }
-        }
-
-        return result;
-    }
-
-    //qcList에서 해당 qc 결과를 반환
-    private String findQCTooltipString(List<SampleQC> qcList, String qc) {
-        String result = "";
-
-        if(qcList != null && !qcList.isEmpty()) {
-            Optional<SampleQC> findQC = qcList.stream().filter(sampleQC -> sampleQC.getQcType().equalsIgnoreCase(qc)).findFirst();
-            if(findQC.isPresent()) {
-                result = findQC.get().getQcDescription() + " " + findQC.get().getQcThreshold();
-            }
-        }
-
-        return result;
-    }
-
-    private String findQCResultString(List<SampleQC> qcList, String qc) {
-        String result = "";
-
-        if(qcList != null && !qcList.isEmpty()) {
-            Optional<SampleQC> findQC = qcList.stream().filter(sampleQC -> sampleQC.getQcType().equalsIgnoreCase(qc)).findFirst();
-            if(findQC.isPresent()) {
-                result = findQC.get().getQcValue() + findQC.get().getQcUnit();
-            }
-        }
-
-        return result;
-    }
-
 }
