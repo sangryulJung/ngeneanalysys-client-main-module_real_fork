@@ -19,7 +19,7 @@ public class SampleView {
     private String qcResult;
     private String inputFType;
     private SampleStatus sampleStatus;
-    private String pipelineVersion;
+    private Integer pipelineVersionId;
     private AnalysisResultSummary analysisResultSummary;
     private DateTime createdAt;
     private DateTime updatedAt;
@@ -90,7 +90,7 @@ public class SampleView {
         return sampleStatus;
     }
 
-    public String getPipelineVersion() { return pipelineVersion; }
+    public Integer getPipelineVersionId() { return pipelineVersionId; }
 
     public AnalysisResultSummary getAnalysisResultSummary() {
         return analysisResultSummary;
@@ -129,7 +129,7 @@ public class SampleView {
                 ", qcResult='" + qcResult + '\'' +
                 ", inputFType='" + inputFType + '\'' +
                 ", sampleStatus=" + sampleStatus +
-                ", pipelineVersion='" + pipelineVersion + '\'' +
+                ", pipelineVersionId='" + pipelineVersionId + '\'' +
                 ", analysisResultSummary=" + analysisResultSummary +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
