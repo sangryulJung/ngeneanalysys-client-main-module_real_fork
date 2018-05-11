@@ -1,5 +1,6 @@
 package ngeneanalysys.controller;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
@@ -615,6 +616,10 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 if(datePicker.getValue() != null) {
                     contentsMap.put(datePicker.getId(), datePicker.getValue().toString());
                 }
+            } else if(gridObject instanceof ComboBox) {
+                ComboBox<String> comboBox = (ComboBox<String>) gridObject;
+                String value = comboBox.getSelectionModel().getSelectedItem();
+                if(!StringUtils.isEmpty(value)) contentsMap.put(comboBox.getId(), value);
             }
         }
         String contents = JsonUtil.toJson(contentsMap);
@@ -892,15 +897,15 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             }
 
             response = apiService.get("/runs/" + sample.getRunId(), null,
-                    null, false);
+                            null, false);
 
             RunWithSamples runWithSamples = response.getObjectBeforeConvertResponseToJSON(RunWithSamples.class);
             String runSequencer = runWithSamples.getRun().getSequencingPlatform();
 
-            if(runSequencer.equalsIgnoreCase("MISEQ")) {
-                contentsMap.put("sequencer",SequencerCode.MISEQ.getDescription());
+            if (runSequencer.equalsIgnoreCase("MISEQ")) {
+                contentsMap.put("sequencer", SequencerCode.MISEQ.getDescription());
             } else {
-                contentsMap.put("sequencer",SequencerCode.MISEQ_DX.getDescription());
+                contentsMap.put("sequencer", SequencerCode.MISEQ_DX.getDescription());
             }
 
             response = apiService.get("/analysisResults/sampleQCs/" + sample.getId(), null,
@@ -926,7 +931,12 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 contentsMap.put("roiCoverage", findQCResult(qcList, "roi_coverage"));
             }
 
-            contentsMap.put("pipelineVersion", sample.getPipelineVersionId());
+            if(sample.getPipelineVersionId() != null) {
+                response = apiService.get("/pipelineVersions/" + sample.getPipelineVersionId(), null, null, false);
+                PipelineVersionView pipelineVersionView = response.getObjectBeforeConvertResponseToJSON(PipelineVersionView.class);
+
+                contentsMap.put("pipelineVersion", pipelineVersionView.getVersion());
+            }
 
             List<String> conclusionLineList = null;
             if(!StringUtils.isEmpty(conclusionsTextArea.getText())) {
