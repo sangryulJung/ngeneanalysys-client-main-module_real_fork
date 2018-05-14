@@ -5,6 +5,8 @@ import ngeneanalysys.model.ReportTemplate;
 import org.apache.commons.io.FileUtils;
 
 import java.io.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Jang
@@ -20,7 +22,7 @@ public class FileUtil {
      * @return String
      */
     public static String getFASTQFilePairName(String fileName) {
-        StringBuffer pairName = new StringBuffer("");
+        StringBuilder pairName = new StringBuilder();
         if (fileName.contains("_")) {
             String[] arr = fileName.split("_");
             int idx = 0;
@@ -64,5 +66,25 @@ public class FileUtil {
         }
 
         return file.getParentFile().getAbsolutePath();
+    }
+
+    public static Boolean isValidPairedFastqFiles(List<String> fileNames) {
+        if(fileNames.size() < 2 || fileNames.size() % 2 != 0){
+            return false;
+        }
+        List<String> sortedFileNames = fileNames.stream().sorted().collect(Collectors.toList());
+        for(int i = 0; i< sortedFileNames.size(); i += 2) {
+            int indexR1 = sortedFileNames.get(i).lastIndexOf("R1");
+            int indexR2 = sortedFileNames.get(i + 1).lastIndexOf("R2");
+            if(indexR1 == -1 || indexR2 == -1) {
+                return false;
+            }
+            String r1SampleName = getFASTQFilePairName(sortedFileNames.get(i));
+            String r2SampleName = getFASTQFilePairName(sortedFileNames.get(i + 1));
+            if(!r1SampleName.equals(r2SampleName)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

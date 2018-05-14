@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.Window;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.SequencerCode;
@@ -77,6 +78,8 @@ public class SampleUploadController extends BaseStageController{
     @FXML
     private VBox contentWrapper;
 
+    private Window window;
+
     private SampleUploadScreenFirstController sampleUploadScreenFirstController;
 
     private Map<String, Map<String, Object>> fileMap = new HashMap<>();
@@ -85,7 +88,7 @@ public class SampleUploadController extends BaseStageController{
 
     private List<AnalysisFile> uploadFileData = new ArrayList<>();
 
-    public ToggleGroup getSequencerType() {
+    ToggleGroup getSequencerType() {
         return sequencerType;
     }
 
@@ -104,24 +107,28 @@ public class SampleUploadController extends BaseStageController{
         sampleLoad();
     }
 
+    public Window getWindow() {
+        return window;
+    }
+
     /**
      * @return fileMap
      */
-    public Map<String, Map<String, Object>> getFileMap() {
+    Map<String, Map<String, Object>> getFileMap() {
         return fileMap;
     }
 
     /**
      * @return uploadFileList
      */
-    public List<File> getUploadFileList() {
+    List<File> getUploadFileList() {
         return uploadFileList;
     }
 
     /**
      * @return uploadFileData
      */
-    public List<AnalysisFile> getUploadFileData() {
+    List<AnalysisFile> getUploadFileData() {
         return uploadFileData;
     }
 
@@ -135,14 +142,14 @@ public class SampleUploadController extends BaseStageController{
     /**
      * @param homeController
      */
-    public void setHomeController(HomeController homeController) {
+    void setHomeController(HomeController homeController) {
         this.homeController = homeController;
     }
 
     /**
      * @return currentStage
      */
-    public Stage getCurrentStage() {
+    Stage getCurrentStage() {
         return currentStage;
     }
 
@@ -169,7 +176,7 @@ public class SampleUploadController extends BaseStageController{
         setMainApp(this.mainController.getMainApp());
     }
 
-    public void setTextFieldRunName(String value) {
+    void setTextFieldRunName(String value) {
         if(value.contains("/")) {
             textFieldRunName.setText(value.substring(value.lastIndexOf("/") + 1));
         } else {
@@ -181,6 +188,9 @@ public class SampleUploadController extends BaseStageController{
     @Override
     public void show(Parent root) throws IOException {
         logger.debug("init upload Controller");
+        if(root != null && root.getScene() != null && root.getScene().getWindow() != null) {
+            this.window = root.getScene().getWindow();
+        }
         // Create the dialog Stage
         currentStage = new Stage();
         currentStage.setResizable(false);
@@ -192,10 +202,6 @@ public class SampleUploadController extends BaseStageController{
             currentStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
         }
         currentStage.initOwner(getMainApp().getPrimaryStage());
-        /*currentStage.setMinHeight(510);
-        currentStage.setMinWidth(900);
-        currentStage.setMaxHeight(510);
-        currentStage.setMaxWidth(900);*/
         pageSetting(1);
 
         textFieldRunName.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -239,16 +245,18 @@ public class SampleUploadController extends BaseStageController{
         maskerPane.setVisible(false);
 
         // Scene Init
-        Scene scene = new Scene(root);
+        Scene scene = null;
+        if (root != null) {
+            scene = new Scene(root);
+        }
         currentStage.setScene(scene);
         currentStage.showAndWait();
-
     }
 
-    public void pageSetting(int scene) throws IOException {
+    void pageSetting(int scene) throws IOException {
         tableRegion.getChildren().clear();
-        FXMLLoader loader = null;
-        VBox box = null;
+        FXMLLoader loader;
+        VBox box;
         sequencerType.setUserData(SequencerCode.MISEQ_DX.getDescription());
         sequencerMiSeqDXRadioButton.setOnAction(ev -> sequencerType.setUserData(SequencerCode.MISEQ_DX.getDescription()));
 
@@ -272,13 +280,13 @@ public class SampleUploadController extends BaseStageController{
     }
 
 
-    public String getRunName() {
+    String getRunName() {
         return textFieldRunName.getText();
     }
 
     public void closeDialog() { currentStage.close(); }
 
-    public void sampleLoad() {
+    private void sampleLoad() {
         Map<String, Object> params = new HashMap<>();
         try {
             APIService apiService = APIService.getInstance();
