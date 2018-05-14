@@ -285,10 +285,10 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                         + variant.getSnpInDel().getSnpInDelExpression().getCodingConsequence().split(";")[0] + " "
                         + variant.getSnpInDel().getSnpInDelExpression().getTranscript() + " "
                         + variant.getSnpInDel().getSnpInDelExpression().getNtChange() + " "
-                        + variant.getSnpInDel().getSnpInDelExpression().getAaChangeConversion();
+                        + variant.getSnpInDel().getSnpInDelExpression().getAaChangeSingleLetter();
             } else {
                 String[] ntChange = variant.getSnpInDel().getSnpInDelExpression().getNtChange().split(":");
-                String[] aaChangeConversion = variant.getSnpInDel().getSnpInDelExpression().getAaChangeConversion().split(":");
+                String[] aaChangeConversion = variant.getSnpInDel().getSnpInDelExpression().getAaChangeSingleLetter().split(":");
                 title = variant.getSnpInDel().getGenomicCoordinate().getGene() + " "
                         + variant.getSnpInDel().getSnpInDelExpression().getCodingConsequence().split(";")[0] + " "
                         + variant.getSnpInDel().getSnpInDelExpression().getTranscript() + " "

@@ -70,9 +70,6 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
     private TableColumn<VariantAndInterpretationEvidence, String> pathogenicityColumn;
 
     @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> reportedTableColumn;
-
-    @FXML
     private TableColumn<VariantAndInterpretationEvidence, String> chrColumn;
 
     @FXML
@@ -270,7 +267,6 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
         predictionColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSwPathogenicity()));
         pathogenicityColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getExpertPathogenicity()));
-        reportedTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getIncludedInReport()));
         chrColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getChromosome()));
         geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
         positionColumn.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getSnpInDel().getGenomicCoordinate().getStartPosition()));
