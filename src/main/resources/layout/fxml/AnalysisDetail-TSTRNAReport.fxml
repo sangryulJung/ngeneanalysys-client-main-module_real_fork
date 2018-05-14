@@ -76,7 +76,7 @@
                                     <Insets top="5.0" />
                                  </VBox.margin>
                               </GridPane>
-                              <Label style="-fx-font-family: Noto Sans KR Bold;" text="DETECTED VARIANT">
+                              <Label style="-fx-font-family: Noto Sans KR Bold;" text="REPORTED VARIANT">
                                  <VBox.margin>
                                     <Insets top="5.0" />
                                  </VBox.margin>

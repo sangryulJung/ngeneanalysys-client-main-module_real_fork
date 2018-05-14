@@ -89,7 +89,7 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" prefWidth="1270.0" style="-fx-border-color: black; -fx-border-width: 0 0 1 0;">
                            <children>
-                              <Label style="-fx-font-size: 14;" text="Detected Variants" />
+                              <Label style="-fx-font-size: 14;" text="Reported Variants" />
                            </children>
                         </HBox>
                         <VBox maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="1267.0" spacing="2.0">
