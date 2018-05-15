@@ -254,6 +254,17 @@ public class PopOverUtil {
             createHBox(key, alleSet(value), box);
         } else if(key.equalsIgnoreCase("variantType")) {
             String keyValue = "Variant Type";
+            if (value.equals("snp")) {
+                value = "SNP";
+            }else if(value.equals("ins")) {
+                value = "Ins";
+            }else if(value.equals("del")) {
+                value = "Del";
+            }else if(value.equals("complex")) {
+                value = "Complex";
+            }else if(value.equals("mnp")) {
+                value = "MNP";
+            }
             createHBox(keyValue, value, box);
             /*if(value.equalsIgnoreCase("snp")) {
                 createHBox(keyValue, "snv", box);
