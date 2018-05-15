@@ -14,14 +14,6 @@ public class ClinicalDB {
     private String enigma;
     private BrcaExchange be;
     private OncoKB oncoKB;
-    private DBNSFP dbNSFP;
-
-    /**
-     * @return dbNSFP
-     */
-    public DBNSFP getDbNSFP() {
-        return dbNSFP;
-    }
 
     /**
      * @return oncoKB
