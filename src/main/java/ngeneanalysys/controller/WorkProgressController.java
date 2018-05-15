@@ -55,7 +55,7 @@ public class WorkProgressController<T> extends BaseStageController {
 		workProgressStage.initModality(Modality.APPLICATION_MODAL);
 		workProgressStage.setScene(new Scene(root));
 		workProgressStage.setTitle(this.title);
-		workTitleLabel.setText(this.title);
+		workTitleLabel.setText("Downloading...");
 		// OS가 Window인 경우 아이콘 출력.
 		if(System.getProperty("os.name").toLowerCase().contains("window")) {
 			workProgressStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
@@ -67,8 +67,6 @@ public class WorkProgressController<T> extends BaseStageController {
 		workProgressStage.centerOnScreen();
 		workProgressStage.initOwner(getMainApp().getPrimaryStage());
 		
-		workProgressBar.progressProperty().unbind();
-		workProgressBar.progressProperty().bind(this.task.progressProperty());
 		workProgressStatusLabel.textProperty().unbind();
 		workProgressStatusLabel.textProperty().bind(this.task.messageProperty());
 		this.task.setOnSucceeded( e -> this.close());
