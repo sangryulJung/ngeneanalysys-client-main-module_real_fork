@@ -880,7 +880,7 @@ public class SystemManagerPanelController extends SubPaneController {
                 }*/
 
                 if(panelDetail.getName().contains("BRCA")) {
-                    diseaseCheckComboBox.setDisable(true);
+                    //diseaseCheckComboBox.setDisable(true);
                     warningReadDepthTextField.setDisable(true);
                     essentialGenesTextField.setDisable(true);
                     canonicalTranscriptTextArea.setDisable(true);
