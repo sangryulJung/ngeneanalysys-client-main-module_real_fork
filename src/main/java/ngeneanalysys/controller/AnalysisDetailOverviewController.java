@@ -21,6 +21,7 @@ import ngeneanalysys.model.paged.PagedVariantAndInterpretationEvidence;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
+import org.apache.commons.lang.WordUtils;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -286,9 +287,11 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
             return "Q30+ Read2";
         } else if(value.equals("Q30_score_read2")) {
             return "Q30+ Read1";
+        } else if(value.equals("roi_coverage")) {
+            return "ROI Coverage";
         }
 
-        return value.replaceAll("_", " ");
+        return WordUtils.capitalize(value.replaceAll("_", " "));
     }
 
     public void addQCGrid(SampleQC sampleQC, int col) {
