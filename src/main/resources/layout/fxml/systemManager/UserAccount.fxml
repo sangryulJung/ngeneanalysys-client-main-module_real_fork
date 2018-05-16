@@ -28,7 +28,7 @@
                <children>
                   <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="150.0">
                      <children>
-                        <Label text="Login ID" />
+                        <Label text="Login ID( * )" />
                      </children>
                      <padding>
                         <Insets right="10.0" />
@@ -45,7 +45,7 @@
                <children>
                   <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="150.0">
                      <children>
-                        <Label text="Name" />
+                        <Label text="Name ( * )" />
                      </children>
                      <padding>
                         <Insets right="10.0" />
@@ -62,7 +62,7 @@
                <children>
                   <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="150.0">
                      <children>
-                        <Label text="New Passsword" />
+                        <Label text="Passsword ( * )" />
                      </children>
                      <padding>
                         <Insets right="10.0" />
@@ -79,7 +79,7 @@
                <children>
                   <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="150.0">
                      <children>
-                        <Label text="Confirmation Passsword" />
+                        <Label text="Confirm Passsword( * )" />
                      </children>
                      <padding>
                         <Insets right="10.0" />
@@ -96,7 +96,7 @@
                <children>
                   <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="150.0">
                      <children>
-                        <Label text="User Type" />
+                        <Label text="User Type( * )" />
                      </children>
                      <padding>
                         <Insets right="10.0" />
@@ -113,7 +113,7 @@
                <children>
                   <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="150.0">
                      <children>
-                        <Label text="User Group" />
+                        <Label text="User Group( * )" />
                      </children>
                      <padding>
                         <Insets right="10.0" />

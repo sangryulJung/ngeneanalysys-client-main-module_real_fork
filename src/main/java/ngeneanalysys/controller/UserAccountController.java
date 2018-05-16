@@ -225,7 +225,7 @@ public class UserAccountController extends SubPaneController {
      */
     private boolean validPwdInput() {
         if(ValidationUtil.text(passwordField1.getText(), "password", 7, -1, "([a-zA-Z0-9].*[!,@,#,$,%,^,&,*,?,_,~])|([!,@,#,$,%,^,&,*,?,_,~].*[a-zA-Z0-9])", null, false, dialogStage) > 0) {
-            DialogUtil.warning("Incorrect password combination.", "Please enter at least 8 characters with a combination of English, numbers and special characters.", dialogStage, true);
+            DialogUtil.warning("Incorrect password combination", "Please enter at least 8 characters with a combination of English, numbers and special characters.", dialogStage, true);
             // 입력 내용 삭제
             passwordField1.setText(null);
             // 포커스 이동
@@ -233,7 +233,7 @@ public class UserAccountController extends SubPaneController {
             return false;
         }
         if(ValidationUtil.text(passwordField2.getText(), "password", 7, -1, "([a-zA-Z0-9].*[!,@,#,$,%,^,&,*,?,_,~])|([!,@,#,$,%,^,&,*,?,_,~].*[a-zA-Z0-9])", null, false, dialogStage) > 0) {
-            DialogUtil.warning("Incorrect password combination.", "Please enter at least 8 characters with a combination of English, numbers and special characters.", dialogStage, true);
+            DialogUtil.warning("Incorrect password combination", "Please enter at least 8 characters with a combination of English, numbers and special characters.", dialogStage, true);
             // 입력 내용 삭제
             passwordField2.setText(null);
             // 포커스 이동
@@ -241,7 +241,7 @@ public class UserAccountController extends SubPaneController {
             return false;
         }
         if(!passwordField1.getText().equals(passwordField2.getText())) {
-            DialogUtil.warning("password combination.", "The new password does not match the confirmation password.", dialogStage, true);
+            DialogUtil.warning("Password confirm", "The password does not match the confirm password.", dialogStage, true);
             // 포커스 이동
             passwordField2.requestFocus();
             return false;
