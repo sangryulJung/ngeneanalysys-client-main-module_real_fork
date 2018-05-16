@@ -94,7 +94,7 @@
             </VBox>
          </children>
       </HBox>
-      <Label alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="85.0" style="-fx-pref-height: 30; -fx-font-family: Noto Sans KR Bold;" text="QC MATRIX" GridPane.rowIndex="4">
+      <Label alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="85.0" style="-fx-pref-height: 30; -fx-font-family: Noto Sans KR Bold;" text="QC METRICS" GridPane.rowIndex="4">
          <styleClass>
             <String fx:value="font_size_15" />
             <String fx:value="font_gray" />
