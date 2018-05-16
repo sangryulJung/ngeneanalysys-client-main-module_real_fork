@@ -1,9 +1,6 @@
 package ngeneanalysys.model;
 
-import com.sun.media.jfxmedia.logging.Logger;
-
 import ngeneanalysys.util.ConvertUtil;
-import ngeneanalysys.util.StringUtils;
 
 /**
  * @author Jang
