@@ -893,7 +893,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         warn.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
             @Override
             public void updateItem(String item, boolean empty) {
-                setGraphic((!StringUtils.isEmpty(item)) ? SNPsINDELsList.getWarningReasonPopOver(item) : null);
+                setGraphic((!StringUtils.isEmpty(item)) ? SNPsINDELsList.getWarningReasonPopOver(item, panel) : null);
             }
         });
         if(panel != null && ExperimentTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {

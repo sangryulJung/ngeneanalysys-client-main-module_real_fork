@@ -1187,7 +1187,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         warn.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
                     @Override
                     public void updateItem(String item, boolean empty) {
-                        setGraphic((!StringUtils.isEmpty(item)) ? SNPsINDELsList.getWarningReasonPopOver(item) : null);
+                        setGraphic((!StringUtils.isEmpty(item)) ? SNPsINDELsList.getWarningReasonPopOver(item, panel) : null);
                     }
                 });
 

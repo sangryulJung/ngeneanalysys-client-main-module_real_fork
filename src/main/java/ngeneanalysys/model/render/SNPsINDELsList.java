@@ -3,6 +3,8 @@ package ngeneanalysys.model.render;
 import java.util.Map;
 import java.util.Set;
 
+import ngeneanalysys.code.constants.CommonConstants;
+import ngeneanalysys.model.Panel;
 import ngeneanalysys.util.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
@@ -30,7 +32,7 @@ public class SNPsINDELsList {
 	 * @return
 	 */
 	@SuppressWarnings("static-access")
-	public static Button getWarningReasonPopOver(String jsonStr) {
+	public static Button getWarningReasonPopOver(String jsonStr, Panel panel) {
 		Button button = new Button();
 		button.getStyleClass().add("btn_warn");
 		
@@ -43,13 +45,13 @@ public class SNPsINDELsList {
 		} else {
 			box.setAlignment(Pos.BOTTOM_LEFT);
 			Map<String,String> map = JsonUtil.fromJsonToMap(jsonStr.replace("'", "\""));
-
 			Set<Map.Entry<String, String>> mapKey = map.entrySet();
 			int currentIndex = 1;
 			for(Map.Entry<String, String> entry : mapKey) {
 				//if(key.toUpperCase().equals("WARNING")) continue;
 
-				if (entry.getKey().equalsIgnoreCase("low_variant_coverage_depth") ||
+				if (panel.getName().equals(CommonConstants.TST_170_DNA) ||
+						entry.getKey().equalsIgnoreCase("low_variant_coverage_depth") ||
 						entry.getKey().equalsIgnoreCase("low_variant_fraction") ||
 						entry.getKey().equalsIgnoreCase("homopolymer_region") ||
 						entry.getKey().equalsIgnoreCase("soft_clipped_amplicon") ||
@@ -60,7 +62,7 @@ public class SNPsINDELsList {
 
 					String warningString = map.getOrDefault(entry.getKey(), "N/A");
 					String titleString = "* " + WordUtils.capitalize(entry.getKey().replaceAll("_", " ")) + " : ";
-					HBox hbox = getWarningReasonItemBox(titleString, warningString);
+					HBox hbox = getWarningReasonItemBox(titleString, warningString, panel);
 					box.getChildren().add(hbox);
 					if (mapKey.size() > currentIndex) box.setMargin(hbox, new Insets(5, 0, 0, 0));
 					currentIndex++;
@@ -110,13 +112,18 @@ public class SNPsINDELsList {
 	
 	/**
 	 * Warning 상세 이유 개별 항목 HBOX 객체 반환
-	 * @param title
-	 * @param flag
-	 * @return
+	 * @param title String
+	 * @param flag String
+	 * @return HBox
 	 */
-	public static HBox getWarningReasonItemBox(String title, String flag) {
+	public static HBox getWarningReasonItemBox(String title, String flag, Panel panel) {
 		HBox hBox = new HBox();
-		Label flagLabel = new Label(flag.toUpperCase());
+		Label flagLabel = new Label();
+		if(panel.getName().equals(CommonConstants.TST_170_DNA)) {
+			flagLabel.setText(flag);
+		} else {
+			flagLabel.setText(flag.toUpperCase());
+		}
 		if(!StringUtils.isEmpty(flag) && "YES".equals(flag.toUpperCase())) {
 			flagLabel.getStyleClass().add("txt_green");
 		} else {
