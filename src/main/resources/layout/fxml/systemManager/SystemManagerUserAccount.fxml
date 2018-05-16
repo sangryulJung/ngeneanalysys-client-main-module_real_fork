@@ -130,11 +130,11 @@
                   <TableView fx:id="userListTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
                      <columns>
                         <TableColumn fx:id="userCheckBox" prefWidth="33.0" />
-                        <TableColumn fx:id="id" minWidth="0.0" prefWidth="27.0" text="Id" visible="false" />
+                        <TableColumn fx:id="id" minWidth="0.0" prefWidth="27.0" text="User ID" visible="false" />
                         <TableColumn fx:id="loginId" prefWidth="150.0" text="Login ID" />
                         <TableColumn fx:id="name" prefWidth="71.0" text="Name" />
                         <TableColumn fx:id="role" prefWidth="82.0" text="User Type" />
-                        <TableColumn fx:id="groupId" prefWidth="75.0" text="Group Id" visible="false" />
+                        <TableColumn fx:id="groupId" prefWidth="75.0" text="Group ID" visible="false" />
                         <TableColumn fx:id="groupName" prefWidth="150.0" text="Group" />
                         <TableColumn fx:id="createdAt" prefWidth="120.0" text="Created At" />
                         <TableColumn fx:id="updatedAt" prefWidth="120.0" text="Updated At" />
