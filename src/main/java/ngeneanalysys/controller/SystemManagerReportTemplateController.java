@@ -154,9 +154,9 @@ public class SystemManagerReportTemplateController extends SubPaneController{
 
         outputTypeComboBox.valueProperty().addListener((ov, t, t1) -> {
             if(t1 == null || t1.equalsIgnoreCase("pdf")) {
-                reportTemplateSelectionButton.setText("Select vm file");
+                reportTemplateSelectionButton.setText("Choose Template(*.vm) File");
             } else {
-                reportTemplateSelectionButton.setText("Select jar file");
+                reportTemplateSelectionButton.setText("Choose Template(*.jar) File");
             }
         });
 
@@ -295,7 +295,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
         if(file != null && (file.getName().toLowerCase().endsWith(".vm"))) {
             try (BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"))){
                 final StringBuilder sb = new StringBuilder();
-                in.lines().forEach(s -> sb.append(s + "\n"));
+                in.lines().forEach(s -> sb.append(s).append("\n"));
                 if(sb.length() > 0) contents = sb.toString();
 
             } catch (Exception e) {
@@ -341,7 +341,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                 ReportTemplate reportTemplate = response.getObjectBeforeConvertResponseToJSON(ReportTemplate.class);
 
                 if(outputTypeComboBox.getSelectionModel().getSelectedItem().equalsIgnoreCase("MS_WORD")) {
-                    Task<Void> task = new JarUploadTask(wordCreatorJar, reportTemplate.getId(), getMainController());
+                    JarUploadTask task = new JarUploadTask(wordCreatorJar, reportTemplate.getId(), getMainController());
                     final Thread downloadThread = new Thread(task);
 
                     // Thread 실행
@@ -355,7 +355,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                     });
                 } else {
                     if (!this.imageList.isEmpty()) {
-                        Task<Void> task = new ReportImageFileUploadTask(imageList, reportTemplate.getId(), getMainController());
+                        ReportImageFileUploadTask task = new ReportImageFileUploadTask(imageList, reportTemplate.getId(), getMainController());
                         final Thread downloadThread = new Thread(task);
 
                         // Thread 실행
