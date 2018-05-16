@@ -24,7 +24,7 @@
                      <children>
                         <HBox alignment="CENTER" prefHeight="29.0" prefWidth="200.0">
                            <children>
-                              <Label text="User Group" />
+                              <Label text="Group" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="200.0">
@@ -58,7 +58,7 @@
                   <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="300.0">
                      <children>
                         <Pagination fx:id="groupPaginationList" maxPageIndicatorCount="5" pageCount="100" prefHeight="24.0" prefWidth="200.0" />
-                        <Button fx:id="groupAddBtn" mnemonicParsing="false" onAction="#groupAdd" styleClass="submitBtn" text="Add" />
+                        <Button fx:id="groupAddBtn" mnemonicParsing="false" onAction="#groupAdd" styleClass="submitBtn" text="+" />
                      </children>
                   </HBox>
                </children>
@@ -157,7 +157,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="48.0" prefWidth="168.0">
                            <children>
-                              <Button fx:id="userAddBtn" mnemonicParsing="false" onAction="#userAdd" styleClass="submitBtn" text="Add" />
+                              <Button fx:id="userAddBtn" mnemonicParsing="false" onAction="#userAdd" styleClass="submitBtn" text="+" />
                            </children>
                         </HBox>
                      </children>
