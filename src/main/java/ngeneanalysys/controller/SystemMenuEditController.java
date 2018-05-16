@@ -150,7 +150,7 @@ public class SystemMenuEditController extends SubPaneController {
      */
     public boolean validConfirmPwdInput() {
         if(!newPasswordField.getText().equals(confirmPasswordField.getText())) {
-            DialogUtil.warning("New Password Mismatch.", "The password entered does not match the newly input password.", dialogStage, true);
+            DialogUtil.warning("Mismatch Confirm Password", "The new password does not match the new confirm password.", dialogStage, true);
             // 입력 내용 삭제
             confirmPasswordField.setText(null);
             // 포커스 이동

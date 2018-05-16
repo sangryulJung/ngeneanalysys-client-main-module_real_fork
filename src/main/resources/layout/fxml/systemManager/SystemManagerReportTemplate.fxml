@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Pagination?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -26,172 +27,186 @@
    <children>
       <HBox layoutX="10.0" layoutY="10.0" prefHeight="592.0" prefWidth="1220.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
          <children>
-            <VBox prefHeight="592.0" prefWidth="300.0">
-               <children>
-                  <VBox prefHeight="19.0" prefWidth="290.0">
+            <ScrollPane prefHeight="200.0" prefWidth="320.0">
+               <content>
+                  <VBox prefHeight="592.0" prefWidth="300.0">
                      <children>
-                        <HBox alignment="CENTER" prefHeight="29.0" prefWidth="200.0">
+                        <VBox prefHeight="19.0" prefWidth="290.0">
                            <children>
-                              <Label fx:id="titleLabel" />
+                              <HBox alignment="CENTER" prefHeight="29.0" prefWidth="200.0">
+                                 <children>
+                                    <Label fx:id="titleLabel" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="BOTTOM_LEFT" prefHeight="29.0" prefWidth="200.0">
+                                 <children>
+                                    <VBox prefHeight="170.0" prefWidth="150.0" spacing="10.0" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="20.0" />
+                                 </VBox.margin>
+                              </HBox>
                            </children>
-                        </HBox>
-                        <HBox alignment="BOTTOM_LEFT" prefHeight="29.0" prefWidth="200.0">
+                        </VBox>
+                        <GridPane fx:id="panelEditGridPane" prefWidth="300.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="144.0" minWidth="10.0" prefWidth="130.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="189.0" minWidth="10.0" prefWidth="189.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
                            <children>
-                              <VBox prefHeight="170.0" prefWidth="150.0" spacing="10.0" />
-                           </children>
-                           <VBox.margin>
-                              <Insets top="20.0" />
-                           </VBox.margin>
-                        </HBox>
-                     </children>
-                  </VBox>
-                  <GridPane fx:id="panelEditGridPane" prefWidth="300.0">
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="144.0" minWidth="10.0" prefWidth="130.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="189.0" minWidth="10.0" prefWidth="189.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                     <children>
-                        <TextField fx:id="reportNameTextField" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" />
-                        <Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Report Name">
-                           <padding>
-                              <Insets right="10.0" />
-                           </padding></Label>
-                        <Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Name" GridPane.rowIndex="3">
-                           <padding>
-                              <Insets right="10.0" />
-                           </padding></Label>
-                        <Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Display Name" GridPane.rowIndex="4">
-                           <padding>
-                              <Insets right="10.0" />
-                           </padding></Label>
-                        <Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Type" GridPane.rowIndex="5">
-                           <padding>
-                              <Insets right="10.0" />
-                           </padding></Label>
-                        <Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Parameters" GridPane.rowIndex="9">
-                           <padding>
-                              <Insets right="10.0" />
-                           </padding></Label>
-                        <Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Images" GridPane.rowIndex="10">
-                           <padding>
-                              <Insets right="10.0" />
-                           </padding></Label>
-                        <TextField fx:id="variableNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <TextField fx:id="displayNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                           <children>
-                              <ComboBox fx:id="variableTypeComboBox" prefWidth="105.0" />
-                              <Button fx:id="addVariableButton" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addVariable" prefWidth="25.0" styleClass="submitBtn" text="+">
-                                 <HBox.margin>
-                                    <Insets left="10.0" />
-                                 </HBox.margin>
-                              </Button>
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
-                           <children>
-                              <ComboBox fx:id="variableListComboBox" prefWidth="153.0" />
-                              <Button fx:id="removeVariableButton" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#removeVariable" prefWidth="25.0" styleClass="cancelBtn" text="-">
-                                 <HBox.margin>
-                                    <Insets left="10.0" />
-                                 </HBox.margin>
-                              </Button>
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
-                           <children>
-                              <ComboBox fx:id="imageListComboBox" prefWidth="153.0" />
-                              <Button fx:id="removeImageButton" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#removeImage" prefWidth="25.0" styleClass="cancelBtn" text="-">
-                                 <HBox.margin>
-                                    <Insets left="10.0" />
-                                 </HBox.margin>
-                              </Button>
-                           </children>
-                        </HBox>
-                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Custom Fields JSON" GridPane.columnSpan="2" GridPane.rowIndex="12">
-                           <padding>
-                              <Insets right="10.0" />
-                           </padding></Label>
-                        <TextArea fx:id="customFieldsTextArea" prefHeight="200.0" prefWidth="189.0" GridPane.columnSpan="2" GridPane.rowIndex="13" />
-                        <Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Output Type" GridPane.rowIndex="1">
-                           <padding>
-                              <Insets right="10.0" />
-                           </padding></Label>
-                        <ComboBox fx:id="outputTypeComboBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Combobox Item" GridPane.rowIndex="6">
-                           <padding>
-                              <Insets right="10.0" />
-                           </padding></Label>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
-                           <children>
-                              <ComboBox fx:id="comboBoxItemComboBox" prefWidth="119.0" />
-                              <Button fx:id="comboBoxItemAddBtn" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addComboBoxItem" prefWidth="25.0" styleClass="submitBtn" text="+">
-                                 <HBox.margin>
-                                    <Insets left="10.0" />
-                                 </HBox.margin>
-                              </Button>
-                              <Button fx:id="comboBoxItemDeleteBtn" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#deleteComboBoxItem" prefWidth="25.0" styleClass="cancelBtn" text="-">
-                                 <HBox.margin>
-                                    <Insets left="10.0" />
-                                 </HBox.margin>
-                              </Button>
-                           </children>
-                        </HBox>
-                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Parameter Setting" GridPane.columnSpan="2" GridPane.rowIndex="2">
-                           <padding>
-                              <Insets right="10.0" />
-                           </padding></Label>
-                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Parameters &amp; Images " GridPane.columnSpan="2" GridPane.rowIndex="8">
-                           <padding>
-                              <Insets right="10.0" />
-                           </padding>
-                        </Label>
-                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
-                           <children>
-                              <Button fx:id="modifyVariableButton" minWidth="-Infinity" mnemonicParsing="false" onAction="#modifyVariable" styleClass="submitBtn" text="Save Parameter" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnSpan="2" GridPane.rowIndex="11">
-                           <children>
-                              <Button fx:id="selectImageButton" mnemonicParsing="false" onAction="#selectImage" styleClass="submitBtn" text="Choose Image File" />
-                              <Button fx:id="reportTemplateSelectionButton" mnemonicParsing="false" onAction="#selectReportTemplate" styleClass="submitBtn" text="Choose Template File">
-                                 <HBox.margin>
+                              <TextField fx:id="reportNameTextField" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" />
+                              <Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Report Name">
+                                 <padding>
                                     <Insets right="10.0" />
-                                 </HBox.margin>
-                              </Button>
+                                 </padding>
+                              </Label>
+                              <Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Name" GridPane.rowIndex="3">
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
+                              </Label>
+                              <Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Display Name" GridPane.rowIndex="4">
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
+                              </Label>
+                              <Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Type" GridPane.rowIndex="5">
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
+                              </Label>
+                              <Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Parameters" GridPane.rowIndex="9">
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
+                              </Label>
+                              <Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Images" GridPane.rowIndex="10">
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
+                              </Label>
+                              <TextField fx:id="variableNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <TextField fx:id="displayNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                 <children>
+                                    <ComboBox fx:id="variableTypeComboBox" prefWidth="105.0" />
+                                    <Button fx:id="addVariableButton" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addVariable" prefWidth="25.0" styleClass="submitBtn" text="+">
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                                 <children>
+                                    <ComboBox fx:id="variableListComboBox" prefWidth="153.0" />
+                                    <Button fx:id="removeVariableButton" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#removeVariable" prefWidth="25.0" styleClass="cancelBtn" text="-">
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                                 <children>
+                                    <ComboBox fx:id="imageListComboBox" prefWidth="153.0" />
+                                    <Button fx:id="removeImageButton" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#removeImage" prefWidth="25.0" styleClass="cancelBtn" text="-">
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Custom Fields JSON" GridPane.columnSpan="2" GridPane.rowIndex="12">
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
+                              </Label>
+                              <TextArea fx:id="customFieldsTextArea" prefHeight="200.0" prefWidth="189.0" GridPane.columnSpan="2" GridPane.rowIndex="13" />
+                              <Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Output Type" GridPane.rowIndex="1">
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
+                              </Label>
+                              <ComboBox fx:id="outputTypeComboBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Combobox Item" GridPane.rowIndex="6">
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
+                              </Label>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                 <children>
+                                    <ComboBox fx:id="comboBoxItemComboBox" prefWidth="119.0" />
+                                    <Button fx:id="comboBoxItemAddBtn" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addComboBoxItem" prefWidth="25.0" styleClass="submitBtn" text="+">
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button fx:id="comboBoxItemDeleteBtn" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#deleteComboBoxItem" prefWidth="25.0" styleClass="cancelBtn" text="-">
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Parameter Setting" GridPane.columnSpan="2" GridPane.rowIndex="2">
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
+                              </Label>
+                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Parameters &amp; Images " GridPane.columnSpan="2" GridPane.rowIndex="8">
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
+                              </Label>
+                              <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                 <children>
+                                    <Button fx:id="modifyVariableButton" minWidth="-Infinity" mnemonicParsing="false" onAction="#modifyVariable" styleClass="submitBtn" text="Save Parameter" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnSpan="2" GridPane.rowIndex="11">
+                                 <children>
+                                    <Button fx:id="selectImageButton" mnemonicParsing="false" onAction="#selectImage" styleClass="submitBtn" text="Choose Image File" />
+                                    <Button fx:id="reportTemplateSelectionButton" mnemonicParsing="false" onAction="#selectReportTemplate" styleClass="submitBtn" text="Choose Template File">
+                                       <HBox.margin>
+                                          <Insets right="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                              </HBox>
                            </children>
+                        </GridPane>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="300.0">
+                           <children>
+                              <Button fx:id="reportSaveButton" mnemonicParsing="false" onAction="#saveReportTemplate" styleClass="submitBtn" text="Save" />
+                           </children>
+                           <padding>
+                              <Insets top="5.0" />
+                           </padding>
                         </HBox>
-                     </children>
-                  </GridPane>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="300.0">
-                     <children>
-                        <Button fx:id="reportSaveButton" mnemonicParsing="false" onAction="#saveReportTemplate" styleClass="submitBtn" text="Save" />
                      </children>
                      <padding>
-                        <Insets top="5.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
-                  </HBox>
-               </children>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </VBox>
+                  </VBox>
+               </content>
+            </ScrollPane>
             <HBox alignment="CENTER" prefHeight="592.0" prefWidth="20.0">
                <children>
                   <Separator orientation="VERTICAL" prefHeight="200.0">
