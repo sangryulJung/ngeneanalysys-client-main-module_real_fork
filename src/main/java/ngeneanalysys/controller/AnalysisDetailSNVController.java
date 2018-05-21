@@ -1022,11 +1022,11 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         createTableHeader(alt, "Alt", null ,null);
         alt.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAltSequence()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> zigosity = new TableColumn<>("Zigosity");
-        createTableHeader(zigosity, "Zigosity", null, null);
-        zigosity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getZygosity()));
-        if (panel.getCode().equalsIgnoreCase("447") && sample.getSampleSource().equalsIgnoreCase("FFPE")) {
-            zigosity.setVisible(false);
+        if ((panel.getCode().equalsIgnoreCase("447") || panel.getCode().equalsIgnoreCase("445"))
+                && sample.getSampleSource().equalsIgnoreCase("BLOOD")) {
+            TableColumn<VariantAndInterpretationEvidence, String> zigosity = new TableColumn<>("Zigosity");
+            createTableHeader(zigosity, "Zigosity", null, null);
+            zigosity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getZygosity()));
         }
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> fraction = new TableColumn<>("Fraction");
