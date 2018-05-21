@@ -81,9 +81,6 @@ public class FXMLConstants {
 	/** 분석 상세 > SNPs-INDELs > WARNINGS TAB 화면 */
 	public static final String ANALYSIS_DETAIL_FUSION = "/layout/fxml/AnalysisDetail-Fusion.fxml";
 	
-	/** 분석 상세 > Genes 화면 */
-	public static final String ANALYSIS_DETAIL_GENES = "/layout/fxml/AnalysisDetail-Genes.fxml";
-	
 	/** 분석 상세 > Raw data 화면 */
 	public static final String ANALYSIS_DETAIL_RAW_DATA = "/layout/fxml/AnalysisDetail-RawData.fxml";
 	
@@ -96,9 +93,6 @@ public class FXMLConstants {
 	/** 분석 상세 > Report 화면 */
 	public static final String ANALYSIS_DETAIL_TST_RNA_REPORT = "/layout/fxml/AnalysisDetail-TSTRNAReport.fxml";
 	
-	/** 분석 요청 그룹 검색 Dialog 화면 */
-	public static final String ANALYSIS_JOB_RUN_GROUP_SEARCH_DIALOG = "/layout/fxml/AnalysisJobRunGroupSearch.fxml";
-
 	/** 분석 상세 > OverView 화면 */
 	public static final String ANALYSIS_DETAIL_OVERVIEW = "/layout/fxml/AnalysisDetail-Overview.fxml";
 
