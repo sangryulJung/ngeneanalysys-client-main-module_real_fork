@@ -68,7 +68,7 @@ public class LowConfidenceList {
      */
     public static HBox getLowConfidenceItemBox(String title) {
         HBox hBox = new HBox();
-        hBox.getChildren().add(new Label(title));
+        hBox.getChildren().add(new Label(title.toUpperCase().replaceAll("\\|", ", ")));
         return hBox;
     }
 }
