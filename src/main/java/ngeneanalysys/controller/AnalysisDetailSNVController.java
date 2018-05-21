@@ -1022,6 +1022,12 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         createTableHeader(alt, "Alt", null ,null);
         alt.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAltSequence()));
 
+        TableColumn<VariantAndInterpretationEvidence, String> zigosity = new TableColumn<>("Zigosity");
+        createTableHeader(zigosity, "Zigosity", null, null);
+        zigosity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getZygosity()));
+        if (panel.getCode().equalsIgnoreCase("447") && sample.getSampleSource().equalsIgnoreCase("FFPE")) {
+            zigosity.setVisible(false);
+        }
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> fraction = new TableColumn<>("Fraction");
         createTableHeader(fraction, "Fraction", "alleleFraction" ,null);
@@ -1321,13 +1327,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             createTableHeader(enigma, "ENIGMA", null ,null);
             enigma.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeEnigmaPathogenicity()));
             enigma.setVisible(false);
-
-            TableColumn<VariantAndInterpretationEvidence, String> zigosity = new TableColumn<>("Zigosity");
-            createTableHeader(zigosity, "Zigosity", null, null);
-            zigosity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getZygosity()));
-            if (panel.getCode().equalsIgnoreCase("447") && sample.getSampleSource().equalsIgnoreCase("FFPE")) {
-                zigosity.setVisible(false);
-            }
 
         }
 
