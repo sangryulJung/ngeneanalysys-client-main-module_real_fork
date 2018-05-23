@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="558.0" prefWidth="1280.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemManagerReportTemplateController">
+<AnchorPane prefHeight="558.0" prefWidth="1280.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemManagerReportTemplateController">
    <stylesheets>
       <URL value="@../../css/common.css" />
       <URL value="@../../css/experimenter.css" />
@@ -70,7 +70,7 @@
                               <RowConstraints minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <TextField fx:id="reportNameTextField" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" />
+                              <TextField fx:id="reportNameTextField" maxWidth="1.7976931348623157E308" prefWidth="150.0" style="-fx-text-fill: #000;" GridPane.columnIndex="1" />
                               <Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Report Name">
                                  <padding>
                                     <Insets right="10.0" />
@@ -101,8 +101,8 @@
                                     <Insets right="10.0" />
                                  </padding>
                               </Label>
-                              <TextField fx:id="variableNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                              <TextField fx:id="displayNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <TextField fx:id="variableNameTextField" style="-fx-text-fill: #000;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <TextField fx:id="displayNameTextField" style="-fx-text-fill: #000;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                               <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                  <children>
                                     <ComboBox fx:id="variableTypeComboBox" prefWidth="105.0" />
@@ -138,7 +138,7 @@
                                     <Insets right="10.0" />
                                  </padding>
                               </Label>
-                              <TextArea fx:id="customFieldsTextArea" prefHeight="200.0" prefWidth="189.0" GridPane.columnSpan="2" GridPane.rowIndex="13" />
+                              <TextArea fx:id="customFieldsTextArea" prefHeight="200.0" prefWidth="189.0" style="-fx-text-fill: #000;" GridPane.columnSpan="2" GridPane.rowIndex="13" />
                               <Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Output Type" GridPane.rowIndex="1">
                                  <padding>
                                     <Insets right="10.0" />

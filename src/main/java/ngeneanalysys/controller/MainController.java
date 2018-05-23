@@ -4,6 +4,7 @@ import com.sun.javafx.scene.control.skin.ComboBoxListViewSkin;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -207,28 +208,25 @@ public class MainController extends BaseStageController {
         contentsMaskerPane.setVisible(false);
 
         primaryStage.setOnCloseRequest(event -> {
-            boolean isClose = false;
-            String alertContentText = "Do you want to exit the application?";
+            /*if(!progressTaskContentArea.getChildren().isEmpty()) {
+                String alertContentText = "The job is running. Are you sure you want to quit?";
 
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.initOwner(this.primaryStage);
-            alert.setTitle("Confirmation Dialog");
-            alert.setContentText(alertContentText);
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.initOwner(this.primaryStage);
+                alert.setTitle("Warning Dialog");
+                alert.setContentText(alertContentText);
 
-            Optional<ButtonType> result = alert.showAndWait();
+                Optional<ButtonType> result = alert.showAndWait();
 
-            if(result.get() == ButtonType.OK) {
-                isClose = true;
-            }
-
-            if(isClose) {
-                if (mainApp.getProxyServer() != null) {
-                    mainApp.getProxyServer().stopServer();
+                if(result.get() == ButtonType.CANCEL) {
+                    event.consume();
+                } else {
+                    closeEvent(event);
                 }
-                primaryStage.close();
             } else {
-                event.consume();
-            }
+                closeEvent(event);
+            }*/
+            closeEvent(event);
         });
 
         //로그인 사용자 세션
@@ -340,6 +338,31 @@ public class MainController extends BaseStageController {
 
         settingPanelAndDiseases();
         //primaryStage.setResizable(false);
+    }
+
+    private void closeEvent(Event event) {
+        boolean isClose = false;
+        String alertContentText = "Do you want to exit the application?";
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initOwner(this.primaryStage);
+        alert.setTitle("Confirmation Dialog");
+        alert.setContentText(alertContentText);
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if(result.get() == ButtonType.OK) {
+            isClose = true;
+        }
+
+        if(isClose) {
+            if (mainApp.getProxyServer() != null) {
+                mainApp.getProxyServer().stopServer();
+            }
+            primaryStage.close();
+        } else {
+            event.consume();
+        }
     }
 
     private void clearComboBox() {
