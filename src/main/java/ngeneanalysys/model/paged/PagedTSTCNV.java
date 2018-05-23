@@ -1,16 +1,17 @@
 package ngeneanalysys.model.paged;
 
-import ngeneanalysys.model.CNV;
+import ngeneanalysys.model.TSTCNV;
 
 import java.util.List;
 
 /**
  * @author Jang
- * @since 2018-05-23
+ * @since 2018-04-27
  */
-public class PagedCNV {
+public class PagedTSTCNV {
+
     private Integer count;
-    private List<CNV> result;
+    private List<TSTCNV> result;
 
     /**
      * @return count
@@ -22,7 +23,7 @@ public class PagedCNV {
     /**
      * @return result
      */
-    public List<CNV> getResult() {
+    public List<TSTCNV> getResult() {
         return result;
     }
 }

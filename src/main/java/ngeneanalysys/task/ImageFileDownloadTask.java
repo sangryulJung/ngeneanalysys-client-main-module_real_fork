@@ -73,7 +73,7 @@ public class ImageFileDownloadTask extends Task {
             CloseableHttpResponse response = null;
 
             for (ReportImage reportImage : images) {
-                String downloadUrl = "/admin/reportImage/" + reportImage.getId();
+                String downloadUrl = "/reportImage/" + reportImage.getId();
                 String path = CommonConstants.BASE_FULL_PATH  + File.separator + "fop" + File.separator + reportImage.getReportTemplateId() + File.separator + reportImage.getName();
 
                 File file = new File(path);
@@ -151,8 +151,10 @@ public class ImageFileDownloadTask extends Task {
     protected void failed() {
         if(controller != null) {
             controller.getMainController().removeProgressTaskItemById(progressBoxId);
-        } else {
+        } else if(analysisDetailReportGermlineController != null) {
             analysisDetailReportGermlineController.getMainController().removeProgressTaskItemById(progressBoxId);
+        } else {
+            tstrnaReportController.getMainController().removeProgressTaskItemById(progressBoxId);
         }
     }
 
@@ -163,8 +165,10 @@ public class ImageFileDownloadTask extends Task {
     protected void succeeded() {
         if(controller != null) {
             controller.getMainController().removeProgressTaskItemById(progressBoxId);
-        } else {
+        } else if(analysisDetailReportGermlineController != null){
             analysisDetailReportGermlineController.getMainController().removeProgressTaskItemById(progressBoxId);
+        } else {
+            tstrnaReportController.getMainController().removeProgressTaskItemById(progressBoxId);
         }
     }
 }

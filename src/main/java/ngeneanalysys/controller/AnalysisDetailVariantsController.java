@@ -45,7 +45,7 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
 
     private AnalysisDetailSNVController snvController;
 
-    private AnalysisDetailCNVController cnvController;
+    private AnalysisDetailTSTCNVController cnvController;
 
     private AnalysisDetailTSTFusionController tstFusionController;
 

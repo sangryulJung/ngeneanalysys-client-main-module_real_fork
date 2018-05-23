@@ -2,66 +2,18 @@ package ngeneanalysys.model;
 
 /**
  * @author Jang
- * @since 2018-04-27
+ * @since 2018-05-23
  */
 public class CNV {
     private Integer sampleId;
-    private String chromosome;
-    private Integer startPosition;
-    private Integer endPosition;
-    private String ref;
-    private String alt;
-    private String svType;
     private String gene;
-    private Double foldChange;
+    private String cnvValue;
 
     /**
      * @return sampleId
      */
     public Integer getSampleId() {
         return sampleId;
-    }
-
-    /**
-     * @return chromosome
-     */
-    public String getChromosome() {
-        return chromosome;
-    }
-
-    /**
-     * @return startPosition
-     */
-    public Integer getStartPosition() {
-        return startPosition;
-    }
-
-    /**
-     * @return endPosition
-     */
-    public Integer getEndPosition() {
-        return endPosition;
-    }
-
-    /**
-     * @return ref
-     */
-    public String getRef() {
-        return ref;
-    }
-
-    /**
-     * @return alt
-     */
-    public String getAlt() {
-        return alt;
-    }
-
-    /**
-     * @return svType
-     */
-    public String getSvType() {
-        return svType;
     }
 
     /**
@@ -72,9 +24,9 @@ public class CNV {
     }
 
     /**
-     * @return foldChange
+     * @return cnvValue
      */
-    public Double getFoldChange() {
-        return foldChange;
+    public String getCnvValue() {
+        return cnvValue;
     }
 }

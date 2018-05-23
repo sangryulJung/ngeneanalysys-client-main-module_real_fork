@@ -9,9 +9,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
-import ngeneanalysys.model.CNV;
+import ngeneanalysys.model.TSTCNV;
 import ngeneanalysys.model.Sample;
-import ngeneanalysys.model.paged.PagedCNV;
+import ngeneanalysys.model.paged.PagedTSTCNV;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
@@ -23,35 +23,35 @@ import java.io.IOException;
  * @author Jang
  * @since 2018-04-27
  */
-public class AnalysisDetailCNVController extends AnalysisDetailCommonController {
+public class AnalysisDetailTSTCNVController extends AnalysisDetailCommonController {
     private static Logger logger = LoggerUtil.getLogger();
 
     @FXML
-    private TableView<CNV> cnvTableView;
+    private TableView<TSTCNV> cnvTableView;
 
     @FXML
-    private TableColumn<CNV, String> chrTableColumn;
+    private TableColumn<TSTCNV, String> chrTableColumn;
 
     @FXML
-    private TableColumn<CNV, Integer> startPositionTableColumn;
+    private TableColumn<TSTCNV, Integer> startPositionTableColumn;
 
     @FXML
-    private TableColumn<CNV, Integer> endPositionTableColumn;
+    private TableColumn<TSTCNV, Integer> endPositionTableColumn;
 
     @FXML
-    private TableColumn<CNV, String> refTableColumn;
+    private TableColumn<TSTCNV, String> refTableColumn;
 
     @FXML
-    private TableColumn<CNV, String> altTableColumn;
+    private TableColumn<TSTCNV, String> altTableColumn;
 
     @FXML
-    private TableColumn<CNV, String> svTypeTableColumn;
+    private TableColumn<TSTCNV, String> svTypeTableColumn;
 
     @FXML
-    private TableColumn<CNV, String> geneTableColumn;
+    private TableColumn<TSTCNV, String> geneTableColumn;
 
     @FXML
-    private TableColumn<CNV, Double> foldChangeTableColumn;
+    private TableColumn<TSTCNV, Double> foldChangeTableColumn;
 
 
     private APIService apiService;
@@ -98,9 +98,9 @@ public class AnalysisDetailCNVController extends AnalysisDetailCommonController 
             HttpClientResponse response = apiService
                     .get("TST170DnaResults/samples/" + sample.getId() + "/cnvs", null, null, null);
 
-            PagedCNV pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedCNV.class);
+            PagedTSTCNV pagedTSTCNV = response.getObjectBeforeConvertResponseToJSON(PagedTSTCNV.class);
 
-            cnvTableView.setItems(FXCollections.observableArrayList(pagedCNV.getResult()));
+            cnvTableView.setItems(FXCollections.observableArrayList(pagedTSTCNV.getResult()));
 
         } catch (WebAPIException wae) {
             wae.printStackTrace();
