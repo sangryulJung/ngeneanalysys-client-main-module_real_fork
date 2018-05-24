@@ -495,7 +495,7 @@ public class PastResultsController extends SubPaneController {
 		setList(1);
 	}
 
-	private void addSearchItem(final CustomTextField textField) {
+	private VBox createFilterVBox() {
 		VBox box = new VBox();
 		box.setAlignment(Pos.CENTER_LEFT);
 		box.setPrefWidth(240);
@@ -504,14 +504,20 @@ public class PastResultsController extends SubPaneController {
 		title.getStyleClass().add("font_size_13");
 		box.setSpacing(10);
 		box.getChildren().add(title);
-		FlowPane flowPane = new FlowPane();
-		flowPane.setVgap(10);
+
+		return box;
+	}
+
+	private HBox createItemHBox(String id) {
 		HBox hBox = new HBox();
 		hBox.setStyle(hBox.getStyle() + "-fx-background-color : #273e5e; -fx-background-radius : 20; -fx-padding : 2 5 2 5");
 		hBox.setAlignment(Pos.CENTER);
-		hBox.setId(textField.getText());
-		Label label = new Label(textField.getText());
-		label.setStyle(label.getStyle() + "-fx-text-fill : #FFFFFF;");
+		hBox.setId(id);
+
+		return hBox;
+	}
+
+	private Label createRemoveBtn(final FlowPane flowPane, final HBox hBox, final VBox box) {
 		Label xLabel = new Label("X");
 		xLabel.setCursor(Cursor.HAND);
 		xLabel.setOnMouseClicked(ev -> {
@@ -523,57 +529,81 @@ public class PastResultsController extends SubPaneController {
 			setList(1);
 		});
 		xLabel.getStyleClass().add("remove_btn");
-		hBox.getChildren().addAll(label, xLabel);
-		hBox.setSpacing(5);
-		flowPane.getChildren().add(hBox);
-		box.getChildren().add(flowPane);
-		searchListVBox.getChildren().add(box);
+
+		return xLabel;
 	}
 
-	private void addSearchItem(final String startDate, final String endDate, String id) {
-		VBox box = new VBox();
-		box.setAlignment(Pos.CENTER_LEFT);
-		box.setPrefWidth(240);
-		box.setId(searchComboBox.getSelectionModel().getSelectedItem().getText());
-		Label title = new Label(searchComboBox.getSelectionModel().getSelectedItem().getText());
-		title.getStyleClass().add("font_size_13");
-		box.setSpacing(10);
-		box.getChildren().add(title);
-		FlowPane flowPane = new FlowPane();
-		flowPane.setVgap(10);
-		HBox hBox = new HBox();
-		hBox.setStyle(hBox.getStyle() + "-fx-background-color : #273e5e; -fx-background-radius : 20; -fx-padding : 2 5 2 5");
-		hBox.setAlignment(Pos.CENTER);
-		hBox.setId(id);
+	private void addDateLabel(final String startDate, final String endDate, final HBox hBox) {
 		Label startLabel = new Label(startDate);
 		startLabel.setStyle(startLabel.getStyle() + "-fx-text-fill : #FFFFFF;");
 		Label label = new Label(" ~ ");
 		label.setStyle(label.getStyle() + "-fx-text-fill : #FFFFFF;");
 		Label endLabel = new Label(endDate);
 		endLabel.setStyle(endLabel.getStyle() + "-fx-text-fill : #FFFFFF;");
-		Label xLabel = new Label("X");
-		xLabel.setCursor(Cursor.HAND);
-		xLabel.setOnMouseClicked(ev -> {
-			if(flowPane.getChildren().size() == 1) {
-				searchListVBox.getChildren().remove(box);
-			} else {
-				flowPane.getChildren().remove(hBox);
-			}
-			setList(1);
-		});
-		xLabel.getStyleClass().add("remove_btn");
 		if(startDate != null && endDate != null) {
 			hBox.getChildren().addAll(startLabel, label, endLabel);
 		} else if(startDate != null) {
-			hBox.getChildren().add(startLabel);
+			hBox.getChildren().addAll(startLabel, label);
 		} else if(endDate != null) {
-			hBox.getChildren().add(endLabel);
+			hBox.getChildren().addAll(label, endLabel);
 		}
-		hBox.getChildren().add(xLabel);
+	}
+
+	private void addItemSearchArea(HBox hBox, VBox box, FlowPane flowPane) {
 		hBox.setSpacing(5);
 		flowPane.getChildren().add(hBox);
-		box.getChildren().add(flowPane);
-		searchListVBox.getChildren().add(box);
+		if(!box.getChildren().contains(flowPane)) {
+			box.getChildren().add(flowPane);
+		}
+		FlowPane.setMargin(hBox, new Insets(0, 10, 0, 0));
+		if(!searchListVBox.getChildren().contains(box)) {
+			searchListVBox.getChildren().add(box);
+		}
+	}
+
+	private void addSearchItem(VBox box, FlowPane flowPane, final CustomTextField textField) {
+		if(box == null) box = createFilterVBox();
+		if(flowPane == null) flowPane = new FlowPane();
+		flowPane.setVgap(10);
+		HBox hBox = createItemHBox(textField.getText());
+		Label label = new Label(textField.getText());
+		label.setStyle(label.getStyle() + "-fx-text-fill : #FFFFFF;");
+		Label xLabel = createRemoveBtn(flowPane, hBox, box);
+		hBox.getChildren().addAll(label, xLabel);
+		addItemSearchArea(hBox, box, flowPane);
+	}
+
+	private void addSearchItem(VBox box, FlowPane flowPane, final String startDate, final String endDate, final String id) {
+		if(box == null) box = createFilterVBox();
+		if(flowPane == null) flowPane = new FlowPane();
+		flowPane.setVgap(10);
+		HBox hBox = createItemHBox(id);
+		Label xLabel = createRemoveBtn(flowPane, hBox, box);
+		addDateLabel(startDate, endDate, hBox);
+		hBox.getChildren().add(xLabel);
+		addItemSearchArea(hBox, box, flowPane);
+	}
+
+	private Node searchNode() {
+		Node containNode = null;
+		for(Node node : searchListVBox.getChildren()) {
+			if(node.getId().equalsIgnoreCase(searchComboBox.getSelectionModel().getSelectedItem().getText())) {
+				containNode = node;
+				break;
+			}
+		}
+		return containNode;
+	}
+
+	private boolean containCheck(FlowPane child, String id) {
+		boolean isContain = false;
+		for(Node node : child.getChildren()) {
+			if(node.getId().equalsIgnoreCase(id)) {
+				isContain = true;
+				break;
+			}
+		}
+		return isContain;
 	}
 
 	private void addSearchArea() {
@@ -582,50 +612,20 @@ public class PastResultsController extends SubPaneController {
 				final CustomTextField textField = (CustomTextField)filterSearchArea.getChildren().get(0);
 				if(!StringUtils.isEmpty(textField.getText())) {
 					if(searchListVBox.getChildren().isEmpty()) {
-						addSearchItem(textField);
+						addSearchItem(null, null, textField);
 					} else {
-						Node containNode = null;
-						for(Node node : searchListVBox.getChildren()) {
-							if(node.getId().equalsIgnoreCase(searchComboBox.getSelectionModel().getSelectedItem().getText())) {
-								containNode = node;
-								break;
-							}
-						}
+						Node containNode = searchNode();
 						if(containNode != null) {
 							VBox box = (VBox) containNode;
 							FlowPane child = (FlowPane) box.getChildren().get(1);
-							boolean isContain = false;
 							String text = textField.getText();
-							for(Node node : child.getChildren()) {
-                                if(node.getId().equalsIgnoreCase(text)) {
-                                    isContain = true;
-                                    break;
-                                }
-                            }
+							boolean isContain = containCheck(child, text);
+
                             if(!isContain) {
-								HBox hBox = new HBox();
-								hBox.setStyle(hBox.getStyle() + "-fx-background-color : #273e5e; -fx-background-radius : 20; -fx-padding : 2 5 2 5");
-								hBox.setAlignment(Pos.CENTER);
-								hBox.setId(text);
-							    Label label = new Label(text);
-							    label.setStyle(label.getStyle() + "-fx-text-fill : #FFFFFF;");
-							    Label xLabel = new Label("X");
-							    xLabel.getStyleClass().add("remove_btn");
-								xLabel.setCursor(Cursor.HAND);
-								xLabel.setOnMouseClicked(ev -> {
-									if(child.getChildren().size() == 1) {
-										searchListVBox.getChildren().remove(box);
-									} else {
-										child.getChildren().remove(hBox);
-									}
-								});
-								hBox.getChildren().addAll(label, xLabel);
-                                child.getChildren().add(hBox);
-								hBox.setSpacing(5);
-                                FlowPane.setMargin(hBox, new Insets(0, 10, 0, 0));
+								addSearchItem(box, child, textField);
                             }
 						} else {
-							addSearchItem(textField);
+							addSearchItem(null,null, textField);
 						}
 					}
                     textField.setText("");
@@ -652,60 +652,18 @@ public class PastResultsController extends SubPaneController {
 				}
 				if(!StringUtils.isEmpty(minCreateAt) || !StringUtils.isEmpty(maxCreateAt)) {
 					if(searchListVBox.getChildren().isEmpty()) {
-						addSearchItem(minCreateAt, maxCreateAt, id);
+						addSearchItem(null, null, minCreateAt, maxCreateAt, id);
 					} else {
-						Node containNode = null;
-						for(Node node : searchListVBox.getChildren()) {
-							if(node.getId().equalsIgnoreCase(searchComboBox.getSelectionModel().getSelectedItem().getText())) {
-								containNode = node;
-								break;
-							}
-						}
-
+						Node containNode = searchNode();
 						if(containNode != null) {
 							VBox box = (VBox) containNode;
 							FlowPane child = (FlowPane) box.getChildren().get(1);
-							boolean isContain = false;
-							for(Node node : child.getChildren()) {
-								if(node.getId().equalsIgnoreCase(id)) {
-									isContain = true;
-									break;
-								}
-							}
+							boolean isContain = containCheck(child, id);
 							if(!isContain) {
-								HBox hBox = new HBox();
-								hBox.setId(id);
-								hBox.setStyle(hBox.getStyle() + "-fx-background-color : #273e5e; -fx-background-radius : 20; -fx-padding : 2 5 2 5");
-								hBox.setAlignment(Pos.CENTER);
-								Label startLabel = new Label(minCreateAt);
-								startLabel.setStyle(startLabel.getStyle() + "-fx-text-fill : #FFFFFF;");
-								Label label = new Label(" ~ ");
-								label.setStyle(label.getStyle() + "-fx-text-fill : #FFFFFF;");
-								Label endLabel = new Label(maxCreateAt);
-								endLabel.setStyle(endLabel.getStyle() + "-fx-text-fill : #FFFFFF;");
-								Label xLabel = new Label("X");
-								xLabel.getStyleClass().add("remove_btn");
-								xLabel.setCursor(Cursor.HAND);
-								xLabel.setOnMouseClicked(ev -> {
-									if(child.getChildren().size() == 1) {
-										searchListVBox.getChildren().remove(box);
-									} else {
-										child.getChildren().remove(hBox);
-									}
-								});
-								if(startDate != null && endDate != null) {
-									hBox.getChildren().addAll(startLabel, label, endLabel);
-								} else if(startDate != null) {
-									hBox.getChildren().add(startLabel);
-								} else if(endDate != null) {
-									hBox.getChildren().add(endLabel);
-								}
-								hBox.getChildren().add(xLabel);
-								child.getChildren().add(hBox);
-								hBox.setSpacing(5);
+								addSearchItem(box, child, minCreateAt, maxCreateAt, id);
 							}
 						} else {
-							addSearchItem(minCreateAt, maxCreateAt, id);
+							addSearchItem(null, null, minCreateAt, maxCreateAt, id);
 						}
 					}
 				}
@@ -866,35 +824,25 @@ public class PastResultsController extends SubPaneController {
 			final String countLabelStyleClass = "count_label";
 			final String countLabelStyle = "-fx-text-fill : gray;";
 			if(sample.getAnalysisType().equalsIgnoreCase("GERMLINE")) {
-				Label lv1Icon = new Label("P");
-				lv1Icon.getStyleClass().add("lv_i_icon");
-				Label lv1Value = new Label(summary.getLevel1VariantCount().toString());
-				lv1Value.getStyleClass().add(countLabelStyleClass);
-				lv1Value.setStyle(countLabelStyle);
+				Label lv1Icon = createIconLabel("P", "lv_i_icon");
+				Label lv1Value = createValueLabel(summary.getLevel1VariantCount().toString(), countLabelStyleClass,
+						countLabelStyle);
 
-				Label lv2Icon = new Label("LP");
-				lv2Icon.getStyleClass().add("lv_ii_icon");
-				Label lv2Value = new Label(summary.getLevel2VariantCount().toString());
-				lv2Value.getStyleClass().add(countLabelStyleClass);
-				lv2Value.setStyle(countLabelStyle);
+				Label lv2Icon = createIconLabel("LP", "lv_ii_icon");
+				Label lv2Value = createValueLabel(summary.getLevel2VariantCount().toString(), countLabelStyleClass,
+						countLabelStyle);
 
-				Label lv3Icon = new Label("US");
-				lv3Icon.getStyleClass().add("lv_iii_icon");
-				Label lv3Value = new Label(summary.getLevel3VariantCount().toString());
-				lv3Value.getStyleClass().add(countLabelStyleClass);
-				lv3Value.setStyle(countLabelStyle);
+				Label lv3Icon = createIconLabel("US", "lv_iii_icon");
+				Label lv3Value = createValueLabel(summary.getLevel3VariantCount().toString(), countLabelStyleClass,
+						countLabelStyle);
 
-				Label lv4Icon = new Label("LB");
-				lv4Icon.getStyleClass().add("lv_iv_icon");
-				Label lv4Value = new Label(summary.getLevel4VariantCount().toString());
-				lv4Value.getStyleClass().add(countLabelStyleClass);
-				lv4Value.setStyle(countLabelStyle);
+				Label lv4Icon = createIconLabel("LB", "lv_iv_icon");
+				Label lv4Value = createValueLabel(summary.getLevel4VariantCount().toString(), countLabelStyleClass,
+						countLabelStyle);
 
-				Label lv5Icon = new Label("B");
-				lv5Icon.getStyleClass().add("lv_v_icon");
-				Label lv5Value = new Label(summary.getLevel5VariantCount().toString());
-				lv5Value.getStyleClass().add(countLabelStyleClass);
-				lv5Value.setStyle(countLabelStyle);
+				Label lv5Icon = createIconLabel("B", "lv_v_icon");
+				Label lv5Value = createValueLabel(summary.getLevel5VariantCount().toString(), countLabelStyleClass,
+						countLabelStyle);
 
 				variantHBox.getChildren()
 						.addAll(lv1Icon, lv1Value,
@@ -904,29 +852,21 @@ public class PastResultsController extends SubPaneController {
 								lv5Icon, lv5Value);
 
 			} else if (sample.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
-				Label lv1Icon = new Label("T1");
-				lv1Icon.getStyleClass().add("lv_i_icon");
-				Label lv1Value = new Label(summary.getLevel1VariantCount().toString());
-				lv1Value.getStyleClass().add(countLabelStyleClass);
-				lv1Value.setStyle(countLabelStyle);
+				Label lv1Icon = createIconLabel("T1", "lv_i_icon");
+				Label lv1Value = createValueLabel(summary.getLevel1VariantCount().toString(), countLabelStyleClass,
+						countLabelStyle);
 
-				Label lv2Icon = new Label("T2");
-				lv2Icon.getStyleClass().add("lv_ii_icon");
-				Label lv2Value = new Label(summary.getLevel2VariantCount().toString());
-				lv2Value.getStyleClass().add(countLabelStyleClass);
-				lv2Value.setStyle(countLabelStyle);
+				Label lv2Icon = createIconLabel("T2", "lv_ii_icon");
+				Label lv2Value = createValueLabel(summary.getLevel2VariantCount().toString(), countLabelStyleClass,
+						countLabelStyle);
 
-				Label lv3Icon = new Label("T3");
-				lv3Icon.getStyleClass().add("lv_iii_icon");
-				Label lv3Value = new Label(summary.getLevel3VariantCount().toString());
-				lv3Value.getStyleClass().add(countLabelStyleClass);
-				lv3Value.setStyle(countLabelStyle);
+				Label lv3Icon = createIconLabel("T3", "lv_iii_icon");
+				Label lv3Value = createValueLabel(summary.getLevel3VariantCount().toString(), countLabelStyleClass,
+						countLabelStyle);
 
-				Label lv4Icon = new Label("T4");
-				lv4Icon.getStyleClass().add("lv_iv_icon");
-				Label lv4Value = new Label(summary.getLevel4VariantCount().toString());
-				lv4Value.getStyleClass().add(countLabelStyleClass);
-				lv4Value.setStyle(countLabelStyle);
+				Label lv4Icon = createIconLabel("T4", "lv_iv_icon");
+				Label lv4Value = createValueLabel(summary.getLevel4VariantCount().toString(), countLabelStyleClass,
+						countLabelStyle);
 
 				variantHBox.getChildren()
 						.addAll(lv1Icon, lv1Value,
@@ -935,6 +875,19 @@ public class PastResultsController extends SubPaneController {
 								lv4Icon, lv4Value);
 
 			}
+		}
+
+		private Label createIconLabel(String text, String styleClass) {
+			Label label = new Label(text);
+			label.getStyleClass().add(styleClass);
+			return label;
+		}
+
+		private Label createValueLabel(String text, String styleClass, String style) {
+			Label label = new Label(text);
+			label.getStyleClass().add(styleClass);
+			label.setStyle(style);
+			return label;
 		}
 
 	}

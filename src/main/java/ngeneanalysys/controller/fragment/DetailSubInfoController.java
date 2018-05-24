@@ -54,7 +54,7 @@ public class DetailSubInfoController extends SubPaneController {
     private AnalysisDetailVariantNomenclatureController analysisDetailVariantNomenclatureController;
 
     /**
-     * @param analysisDetailVariantNomenclatureController
+     * @param analysisDetailVariantNomenclatureController AnalysisDetailVariantNomenclatureController
      */
     public void setAnalysisDetailVariantNomenclatureController(AnalysisDetailVariantNomenclatureController analysisDetailVariantNomenclatureController) {
         this.analysisDetailVariantNomenclatureController = analysisDetailVariantNomenclatureController;
@@ -94,7 +94,7 @@ public class DetailSubInfoController extends SubPaneController {
             controller.show((Parent) node);
             mainVBox.getChildren().add(0, node);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.debug(e.getMessage());
         }
     }
 
@@ -117,7 +117,7 @@ public class DetailSubInfoController extends SubPaneController {
             controller.show((Parent) node);
             mainVBox.getChildren().add(0, node);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.debug(e.getMessage());
         }
     }
 
@@ -352,12 +352,12 @@ public class DetailSubInfoController extends SubPaneController {
 
     /**
      * IGV 실행 및 데이터 로드
-     * @param sampleId
-     * @param sampleName
-     * @param variantId
-     * @param gene
-     * @param locus
-     * @param genome
+     * @param sampleId String
+     * @param sampleName String
+     * @param variantId String
+     * @param gene String
+     * @param locus String
+     * @param genome String
      */
     public void loadIGV(String sampleId, String sampleName, String variantId, String gene, String locus, String genome) throws Exception {
         igvService.load(sampleId, sampleName, variantId, gene, locus, genome);
@@ -365,10 +365,10 @@ public class DetailSubInfoController extends SubPaneController {
 
     /**
      * Alamut 연동
-     * @param transcript
-     * @param cDNA
-     * @param sampleId
-     * @param bamFileName
+     * @param transcript String
+     * @param cDNA String
+     * @param sampleId String
+     * @param bamFileName String
      */
     public void loadAlamut(String transcript, String cDNA, String sampleId, String bamFileName) {
         alamutService.call(transcript, cDNA, sampleId, bamFileName);

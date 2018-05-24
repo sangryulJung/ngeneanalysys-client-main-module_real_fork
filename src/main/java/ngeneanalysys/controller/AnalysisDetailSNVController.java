@@ -212,10 +212,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         });
 
         //setFilterList();
-        viewAppliedFiltersLabel.addEventFilter(MouseEvent.MOUSE_CLICKED, ev -> {
-            ComboBoxItem comboBoxItem = filterComboBox.getSelectionModel().getSelectedItem();
-            PopOverUtil.openFilterPopOver(viewAppliedFiltersLabel, filterList.get(comboBoxItem.getValue()));
-        });
 
         rightSizeButton.setOnMouseClicked(event -> {
             if(rightSizeButton.getStyleClass().contains("right_btn_fold")){
@@ -767,21 +763,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     @FXML
     public void viewAppliedFilters() {
-        if(filterComboBox.getSelectionModel().getSelectedItem().getValue().startsWith("C")) {
-            List<Object> list = filterList.get(filterComboBox.getSelectionModel().getSelectedItem().getValue());
-            String currentKey = "";
-            for(Object obj : list) {
-                if(obj.toString().contains(" ")) {
-                    String key = obj.toString().substring(0, obj.toString().indexOf(" "));
-                    if (!key.equalsIgnoreCase(currentKey)) {
-                        currentKey = key;
-                    }
-                    String value = obj.toString().substring(obj.toString().indexOf(" ") + 1);
-                    logger.debug(currentKey + " " + value);
-                }
-            }
-
-        }
+        ComboBoxItem comboBoxItem = filterComboBox.getSelectionModel().getSelectedItem();
+        PopOverUtil.openFilterPopOver(viewAppliedFiltersLabel, filterList.get(comboBoxItem.getValue()));
     }
 
     private void createTableHeader(TableColumn<VariantAndInterpretationEvidence, ?> column, String name, String sortName, Double size) {
@@ -898,7 +881,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         });
         if(panel != null && ExperimentTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             TableColumn<VariantAndInterpretationEvidence, String> lowConfidence = new TableColumn<>("Low Confidence");
-            createTableHeader(lowConfidence, "Low Confidence", "lowConfidence", 70.);
+            createTableHeader(lowConfidence, "Low Confidence", null, 70.);
             lowConfidence.getStyleClass().add(centerStyleClass);
             lowConfidence.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getLowConfidence()));
             lowConfidence.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
