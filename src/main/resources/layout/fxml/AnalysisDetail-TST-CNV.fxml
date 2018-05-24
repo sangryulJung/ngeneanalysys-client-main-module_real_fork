@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane fx:id="tstCNVGridPane" prefHeight="380.0" prefWidth="1140.0" style="-fx-background-color: #f2f5fa;" styleClass="custom-table" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailTSTCNVController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <TableView fx:id="cnvTableView" prefHeight="340.0" prefWidth="1100.0">
+        <columns>
+          <TableColumn fx:id="chrTableColumn" prefWidth="75.0" style="-fx-alignment: center;" text="Chr" />
+          <TableColumn fx:id="startPositionTableColumn" prefWidth="140.0" style="-fx-alignment: center;" text="Start Position" />
+            <TableColumn fx:id="endPositionTableColumn" prefWidth="140.0" style="-fx-alignment: center;" text="End Position" />
+            <TableColumn fx:id="refTableColumn" prefWidth="130.0" style="-fx-alignment: center;" text="Ref" />
+            <TableColumn fx:id="altTableColumn" prefWidth="130.0" style="-fx-alignment: center;" text="Alt" />
+            <TableColumn fx:id="svTypeTableColumn" prefWidth="140.0" style="-fx-alignment: center;" text="Sv Type" />
+            <TableColumn fx:id="geneTableColumn" prefWidth="140.0" style="-fx-alignment: center;" text="Gene" />
+            <TableColumn fx:id="foldChangeTableColumn" prefWidth="205.0" text="Fold Change" />
+        </columns>
+         <GridPane.margin>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </GridPane.margin>
+      </TableView>
+   </children>
+   <stylesheets>
+      <URL value="@../css/common.css" />
+      <URL value="@../css/variants.css" />
+   </stylesheets>
+</GridPane>

@@ -45,7 +45,9 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
 
     private AnalysisDetailSNVController snvController;
 
-    private AnalysisDetailTSTCNVController cnvController;
+    private AnalysisDetailCNVController cnvController;
+
+    private AnalysisDetailTSTCNVController tstCNVController;
 
     private AnalysisDetailTSTFusionController tstFusionController;
 
@@ -102,13 +104,20 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
                 menu = new TopMenu();
                 menu.setMenuName("CNV");
                 menu.setParamMap(getParamMap());
-                menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_CNV);
+                menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_TST_CNV);
                 menu.setDisplayOrder(1);
                 menu.setStaticMenu(true);
                 topMenus[1] = menu;
             } else {
-                topMenus = new TopMenu[1];
+                topMenus = new TopMenu[2];
                 topMenuContent = new Node[topMenus.length];
+                menu = new TopMenu();
+                menu.setMenuName("CNV");
+                menu.setParamMap(getParamMap());
+                menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_CNV);
+                menu.setDisplayOrder(1);
+                menu.setStaticMenu(true);
+                topMenus[1] = menu;
             }
             menu = new TopMenu();
             menu.setMenuName("SNV");
@@ -224,12 +233,12 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
                     Node node = loader.load();
 
                     switch (menu.getFxmlPath()) {
-                        case FXMLConstants.ANALYSIS_DETAIL_CNV:
-                            cnvController = loader.getController();
-                            cnvController.setMainController(this.getMainController());
-                            cnvController.setVariantsController(this);
-                            cnvController.setParamMap(menu.getParamMap());
-                            cnvController.show((Parent) node);
+                        case FXMLConstants.ANALYSIS_DETAIL_TST_CNV:
+                            tstCNVController = loader.getController();
+                            tstCNVController.setMainController(this.getMainController());
+                            tstCNVController.setVariantsController(this);
+                            tstCNVController.setParamMap(menu.getParamMap());
+                            tstCNVController.show((Parent) node);
                             break;
                         case FXMLConstants.ANALYSIS_DETAIL_VARIANTS_SNV:
                             snvController = loader.getController();
@@ -258,6 +267,13 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
                             publishedFusionController.setVariantsController(this);
                             publishedFusionController.setParamMap(menu.getParamMap());
                             publishedFusionController.show((Parent) node);
+                            break;
+                        case FXMLConstants.ANALYSIS_DETAIL_CNV:
+                            cnvController = loader.getController();
+                            cnvController.setMainController(this.getMainController());
+                            cnvController.setVariantsController(this);
+                            cnvController.setParamMap(menu.getParamMap());
+                            cnvController.show((Parent) node);
                             break;
                         default:
                             break;

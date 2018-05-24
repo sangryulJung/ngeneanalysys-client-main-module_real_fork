@@ -7,7 +7,7 @@ package ngeneanalysys.model;
 public class CNV {
     private Integer sampleId;
     private String gene;
-    private String cnvValue;
+    private Double cnvValue;
 
     /**
      * @return sampleId
@@ -26,7 +26,7 @@ public class CNV {
     /**
      * @return cnvValue
      */
-    public String getCnvValue() {
+    public Double getCnvValue() {
         return cnvValue;
     }
 }
