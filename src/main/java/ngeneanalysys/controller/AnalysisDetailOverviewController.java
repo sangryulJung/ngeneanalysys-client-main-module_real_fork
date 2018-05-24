@@ -98,7 +98,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
     private TableColumn<VariantAndInterpretationEvidence, Object> therapeuticColumn;
 
     @FXML
-    private TableColumn<VariantAndInterpretationEvidence, BigDecimal> alleleFrequencyColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> alleleFrequencyColumn;
 
     /** API 서버 통신 서비스 */
     private APIService apiService;
@@ -116,7 +116,9 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                 ConvertUtil.tierConvert(cellData.getValue().getSnpInDel().getSwTier())));
         geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
         variantColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
-        alleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()));
+        //alleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()));
+        alleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()
+            .toString() + "(" + cellData.getValue().getSnpInDel().getReadInfo().getAltReadNum() + "/" + cellData.getValue().getSnpInDel().getReadInfo().getReadDepth() + ")"));
         positionColumn.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getSnpInDel().getGenomicCoordinate().getStartPosition()));
         transcriptColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getTranscript()));
         ntChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));

@@ -88,7 +88,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
     private TableColumn<VariantAndInterpretationEvidence, String> aaChangeColumn;
 
     @FXML
-    private TableColumn<VariantAndInterpretationEvidence, BigDecimal> alleleFrequencyColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> alleleFrequencyColumn;
 
     @FXML
     private GridPane customFieldGridPane;
@@ -273,7 +273,8 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         transcriptColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getTranscript()));
         ntChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
         aaChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChange()));
-        alleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()));
+        alleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()
+                .toString() + "(" + cellData.getValue().getSnpInDel().getReadInfo().getAltReadNum() + "/" + cellData.getValue().getSnpInDel().getReadInfo().getReadDepth() + ")"));
 
         List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
         Optional<Panel> panelOptional = panels.stream().filter(panelItem -> panelItem.getId().equals(sample.getPanelId())).findFirst();
