@@ -349,8 +349,6 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
                         label.getStyleClass().add("target_gene_variant");
                     }
 
-
-
                     targetGenesFlowPane.getChildren().add(label);
                     if(targetGenesFlowPane.getChildren().size() % 15 == 1) {
                         targetGenesFlowPane.setPrefHeight(targetGenesFlowPane.getPrefHeight() + 29);

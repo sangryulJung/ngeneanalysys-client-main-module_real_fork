@@ -27,7 +27,13 @@ import ngeneanalysys.task.ImageFileDownloadTask;
 import ngeneanalysys.task.JarDownloadTask;
 import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
+import ngeneanalysys.util.httpclient.HttpClientUtil;
 import org.apache.commons.io.FileUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
@@ -35,14 +41,14 @@ import org.slf4j.Logger;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -957,9 +963,97 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             PagedCNV pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedCNV.class);
             contentsMap.put("cnvList", pagedCNV.getResult());
 
+            Map<String, Object> analysisFileMap = new HashMap<>();
+            analysisFileMap.put("sampleId", sample.getId());
+            response = apiService.get("/analysisFiles", analysisFileMap, null, false);
+            AnalysisFileList analysisFileList = response.getObjectBeforeConvertResponseToJSON(AnalysisFileList.class);
+
+            List<AnalysisFile> analysisFiles = analysisFileList.getResult();
+
+            Optional<AnalysisFile> optionalAnalysisFile = analysisFiles.stream()
+                    .filter(item -> item.getName().contains("cnv_plot.png")).findFirst();
+
+            if(optionalAnalysisFile.isPresent()) {
+                String path = downloadCNVImage(optionalAnalysisFile.get());
+                contentsMap.put("cnvImagePath", optionalAnalysisFile.get().getName());
+            }
         }
 
         return contentsMap;
+    }
+
+    private String downloadCNVImage(AnalysisFile analysisFile) {
+        CloseableHttpClient httpclient = null;
+        CloseableHttpResponse response = null;
+
+        String tempPath = CommonConstants.BASE_FULL_PATH  + File.separator + "temp";
+        File tempFile = new File(tempPath);
+
+        if(!tempFile.exists()) {
+            tempFile.mkdirs();
+        }
+
+        String downloadUrl = "/analysisFiles/" + analysisFile.getSampleId() + "/" + analysisFile.getName();
+        String path = CommonConstants.BASE_FULL_PATH  + File.separator + "temp" +
+                File.separator + analysisFile.getName();
+
+        File file = new File(path);
+
+        OutputStream os = null;
+        try {
+            String connectURL = apiService.getConvertConnectURL(downloadUrl);
+
+            // 헤더 삽입 정보 설정
+            Map<String,Object> headerMap = apiService.getDefaultHeaders(true);
+
+            HttpGet get = new HttpGet(connectURL);
+            logger.debug("GET:" + get.getURI());
+
+            // 지정된 헤더 삽입 정보가 있는 경우 추가
+            if(headerMap != null && headerMap.size() > 0) {
+                for (Map.Entry<String, Object> entry : headerMap.entrySet()) {
+                    get.setHeader(entry.getKey(), entry.getValue().toString());
+                }
+            }
+
+            httpclient = HttpClients.custom().setSSLSocketFactory(HttpClientUtil.getSSLSocketFactory()).build();
+            if (httpclient != null)
+                response = httpclient.execute(get);
+            if (response == null){
+                logger.error("httpclient response is null");
+                throw new NullPointerException();
+            }
+            int status = response.getStatusLine().getStatusCode();
+
+            if(status >= 200 && status < 300) {
+                HttpEntity entity = response.getEntity();
+                InputStream content = entity.getContent();
+
+                os = Files.newOutputStream(Paths.get(file.toURI()));
+
+                byte[] buf = new byte[8192];
+                int n;
+                while ((n = content.read(buf)) > 0) {
+                    os.write(buf, 0, n);
+                }
+                content.close();
+                os.flush();
+                if (httpclient != null) httpclient.close();
+                if (response != null) response.close();
+            }
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+        } finally {
+            if(os != null) {
+                try {
+                    os.close();
+                } catch (Exception e) {
+                    logger.error(e.getMessage());
+                }
+            }
+        }
+
+        return path;
     }
 
     private boolean createPDF(boolean isDraft) {

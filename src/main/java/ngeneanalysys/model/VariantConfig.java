@@ -13,6 +13,21 @@ public class VariantConfig {
     private ReportCutOffParams reportCutOffParams;
     private String essentialGenes;
     private String canonicalTranscripts;
+    private String lowConfidenceFilter;
+
+    /**
+     * @return lowConfidenceFilter
+     */
+    public String getLowConfidenceFilter() {
+        return lowConfidenceFilter;
+    }
+
+    /**
+     * @param lowConfidenceFilter
+     */
+    public void setLowConfidenceFilter(String lowConfidenceFilter) {
+        this.lowConfidenceFilter = lowConfidenceFilter;
+    }
 
     /**
      * @param warningReadDepth
