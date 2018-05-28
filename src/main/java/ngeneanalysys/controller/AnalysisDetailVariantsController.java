@@ -13,11 +13,15 @@ import javafx.scene.layout.Region;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
+import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.Panel;
+import ngeneanalysys.model.Sample;
 import ngeneanalysys.model.TopMenu;
+import ngeneanalysys.model.paged.PagedCNV;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
+import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -95,6 +99,21 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
         }
     }
 
+    private boolean checkCNV() {
+        Sample sample = (Sample)paramMap.get("sample");
+
+        try {
+            HttpClientResponse response = apiService.get("/analysisResults/cnv/" + sample.getId(), null, null, null);
+            PagedCNV pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedCNV.class);
+            if(pagedCNV.getCount() > 0) {
+                return true;
+            }
+        } catch (WebAPIException wae) {
+            return false;
+        }
+        return false;
+    }
+
     public void setDefaultTab() {
         if(panel.getTarget().equalsIgnoreCase("DNA")) {
             TopMenu menu;
@@ -109,15 +128,20 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
                 menu.setStaticMenu(true);
                 topMenus[1] = menu;
             } else {
-                topMenus = new TopMenu[2];
-                topMenuContent = new Node[topMenus.length];
-                menu = new TopMenu();
-                menu.setMenuName("CNV");
-                menu.setParamMap(getParamMap());
-                menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_CNV);
-                menu.setDisplayOrder(1);
-                menu.setStaticMenu(true);
-                topMenus[1] = menu;
+                if(checkCNV()) {
+                    topMenus = new TopMenu[2];
+                    topMenuContent = new Node[topMenus.length];
+                    menu = new TopMenu();
+                    menu.setMenuName("CNV");
+                    menu.setParamMap(getParamMap());
+                    menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_CNV);
+                    menu.setDisplayOrder(1);
+                    menu.setStaticMenu(true);
+                    topMenus[1] = menu;
+                } else {
+                    topMenus = new TopMenu[1];
+                    topMenuContent = new Node[topMenus.length];
+                }
             }
             menu = new TopMenu();
             menu.setMenuName("SNV");
