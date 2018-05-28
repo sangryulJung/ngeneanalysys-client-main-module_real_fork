@@ -1,5 +1,7 @@
 package ngeneanalysys.model;
 
+import java.math.BigDecimal;
+
 /**
  * @author Jang
  * @since 2018-05-23
@@ -7,7 +9,7 @@ package ngeneanalysys.model;
 public class CNV {
     private Integer sampleId;
     private String gene;
-    private Double cnvValue;
+    private BigDecimal cnvValue;
 
     /**
      * @return sampleId
@@ -26,7 +28,7 @@ public class CNV {
     /**
      * @return cnvValue
      */
-    public Double getCnvValue() {
+    public BigDecimal getCnvValue() {
         return cnvValue;
     }
 }

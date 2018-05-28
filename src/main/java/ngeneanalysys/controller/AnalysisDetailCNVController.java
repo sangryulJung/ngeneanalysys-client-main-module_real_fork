@@ -17,6 +17,7 @@ import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class AnalysisDetailCNVController extends AnalysisDetailCommonController 
     private TableColumn<CNV, String> geneTableColumn;
 
     @FXML
-    private TableColumn<CNV, Double> valueTableColumn;
+    private TableColumn<CNV, BigDecimal> valueTableColumn;
 
     private AnalysisDetailVariantsController variantsController;
 
