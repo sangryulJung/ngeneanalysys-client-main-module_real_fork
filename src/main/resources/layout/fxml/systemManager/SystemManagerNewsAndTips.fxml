@@ -44,14 +44,14 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <GridPane fx:id="panelEditGridPane" prefHeight="473.0" prefWidth="290.0">
+                  <GridPane fx:id="panelEditGridPane" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="470.0" prefWidth="290.0">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="144.0" minWidth="10.0" prefWidth="72.0" />
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="218.0" minWidth="10.0" prefWidth="218.0" />
                      </columnConstraints>
                      <rowConstraints>
                         <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="457.0" minHeight="10.0" prefHeight="437.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="440.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
                         <TextField fx:id="titleTextField" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" />
