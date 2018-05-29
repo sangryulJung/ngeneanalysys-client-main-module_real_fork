@@ -371,8 +371,11 @@ public class SystemManagerPanelController extends SubPaneController {
                 "gnomAD.ashkenaziJewish", "gnomAD.eastAsian", "gnomAD.finnish", "gnomAD.nonFinnishEuropean",
                 "gnomAD.others", "gnomAD.southAsian", "koreanExomInformationDatabase", "koreanReferenceGenomeDatabase",
                 "kohbraFreq", "exac");
-        lowConfidenceCheckComboBox.getItems().addAll("homopolymer", "mapping_error", "repeat_sequence",
-                "sequencing_error", "snp_candidate", "strand_biased");
+        lowConfidenceCheckComboBox.getItems().addAll("artifact_in_normal", "base_quality", "clustered_events",
+                "contamination", "duplicate_evidence", "fragment_length", "germline_risk", "mapping_quality",
+                "multiallelic", "orientation_bias", "panel_of_normals", "read_position", "str_contraction",
+                "strand_artifact", "t_lod", "homopolymer", "repeat_sequence", "sequencing_error", "mapping_error",
+                "snp_candidate", "strand_biased");
     }
 
     public void createComboBox() {
