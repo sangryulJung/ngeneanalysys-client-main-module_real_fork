@@ -1104,11 +1104,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             gnomadAfricanAfricanAmerican.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getAfricanAfricanAmerican())));
             gnomadAfricanAfricanAmerican.setVisible(false);
 
-            TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadAshkenaziJewish = new TableColumn<>("gnomAD Ashkenazi Jewish");
-            createTableHeader(gnomadAshkenaziJewish, "gnomAD Ashkenazi Jewish", null, null);
-            gnomadAshkenaziJewish.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getAshkenaziJewish())));
-            gnomadAshkenaziJewish.setVisible(false);
-
             TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadEastAsian = new TableColumn<>("gnomAD East Asian");
             createTableHeader(gnomadEastAsian, "gnomAD EastAsian", null, null);
             gnomadEastAsian.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getAdmixedAmerican())));

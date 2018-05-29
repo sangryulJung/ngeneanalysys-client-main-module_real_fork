@@ -10,7 +10,6 @@ public class GnomeAD {
     private BigDecimal all;
     private BigDecimal admixedAmerican;
     private BigDecimal africanAfricanAmerican;
-    private BigDecimal ashkenaziJewish;
     private BigDecimal eastAsian;
     private BigDecimal finnish;
     private BigDecimal nonFinnishEuropean;
@@ -27,10 +26,6 @@ public class GnomeAD {
 
     public BigDecimal getAfricanAfricanAmerican() {
         return africanAfricanAmerican;
-    }
-
-    public BigDecimal getAshkenaziJewish() {
-        return ashkenaziJewish;
     }
 
     public BigDecimal getEastAsian() {

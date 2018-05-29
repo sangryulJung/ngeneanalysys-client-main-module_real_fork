@@ -197,9 +197,6 @@ public class VariantFilterController extends SubPaneController {
     private TextField gnomADaaaTextField;
 
     @FXML
-    private TextField gnomADajgnomAD;
-
-    @FXML
     private TextField gnomADeaTextField;
 
     @FXML
@@ -605,7 +602,6 @@ public class VariantFilterController extends SubPaneController {
         setFormat(gnomADAllTextField);
         setFormat(gnomADmaTextField);
         setFormat(gnomADaaaTextField);
-        setFormat(gnomADajgnomAD);
         setFormat(gnomADeaTextField);
         setFormat(gnomADfinTextField);
         setFormat(gnomADnfeTextField);
@@ -755,9 +751,6 @@ public class VariantFilterController extends SubPaneController {
         }else if(key.equalsIgnoreCase("gnomADafricanAfricanAmerican")) {
             setFeqTextField(value, gnomADaaaTextField);
             setOperator(value, gnomADaaaComboBox);
-        }else if(key.equalsIgnoreCase("gnomADashkenaziJewish")) {
-            setFeqTextField(value, gnomADajgnomAD);
-            setOperator(value, gnomADajgnomADComboBox);
         }else if(key.equalsIgnoreCase("gnomADeastAsian")) {
             setFeqTextField(value, gnomADeaTextField);
             setOperator(value, gnomADeaComboBox);
@@ -1021,9 +1014,6 @@ public class VariantFilterController extends SubPaneController {
         }
         if(!StringUtils.isEmpty(gnomADaaaTextField.getText())) {
             setFrequency(list, gnomADaaaTextField.getText(), gnomADaaaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADafricanAfricanAmerican");
-        }
-        if(!StringUtils.isEmpty(gnomADajgnomAD.getText())) {
-            setFrequency(list, gnomADajgnomAD.getText(), gnomADajgnomADComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADashkenaziJewish");
         }
         if(!StringUtils.isEmpty(gnomADeaTextField.getText())) {
             setFrequency(list, gnomADeaTextField.getText(), gnomADeaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADeastAsian");
@@ -1319,7 +1309,6 @@ public class VariantFilterController extends SubPaneController {
         gnomADAllTextField.setText("");
         gnomADmaTextField.setText("");
         gnomADaaaTextField.setText("");
-        gnomADajgnomAD.setText("");
         gnomADeaTextField.setText("");
         gnomADfinTextField.setText("");
         gnomADnfeTextField.setText("");

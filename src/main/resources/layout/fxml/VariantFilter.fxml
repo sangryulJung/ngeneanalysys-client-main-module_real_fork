@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.131" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.VariantFilterController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.VariantFilterController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
@@ -428,13 +428,12 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="6">
                            <children>
-                              <ComboBox fx:id="gnomADfinComboBox" prefWidth="30.0" />
-                              <TextField fx:id="gnomADfinTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                              <ComboBox fx:id="gnomADnfeComboBox" prefWidth="30.0" />
+                              <TextField fx:id="gnomADnfeTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
@@ -449,21 +448,20 @@
                         <Label text="All" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                         <Label text="Mixed American" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                         <Label text="African African American" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                        <Label text="Ashkenazi Jewish" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                        <Label text="East Asian" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-                        <Label text="Finnish" GridPane.columnIndex="2" GridPane.rowIndex="6" />
-                        <Label text="Non Finnish European" GridPane.columnIndex="2" GridPane.rowIndex="7" />
-                        <Label text="Others" GridPane.columnIndex="2" GridPane.rowIndex="8" />
-                        <Label text="South Asian" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+                        <Label text="East Asian" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                        <Label text="Finnish" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                        <Label text="Non Finnish European" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                        <Label text="Others" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                        <Label text="South Asian" GridPane.columnIndex="2" GridPane.rowIndex="8" />
                         <Label style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_13" text="ESP 6500" GridPane.rowIndex="8" GridPane.valignment="BOTTOM" />
                         <Label text="All" GridPane.rowIndex="9" />
                         <Label text="AA (African American)" GridPane.rowIndex="10" />
                         <Label text="EA(European American)" GridPane.rowIndex="11" />
-                        <Label style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_13" text="ETC" GridPane.columnIndex="2" GridPane.rowIndex="11" />
-                        <Label text="KoEXID(Korean Exome Information Database)" GridPane.columnIndex="2" GridPane.rowIndex="13" />
-                        <Label text="KRGDB(Korean Reference Genome Database)" GridPane.columnIndex="2" GridPane.rowIndex="14" />
-                        <Label text="KOHBRA(Korean Hereditary Breast Cancer)" GridPane.columnIndex="2" GridPane.rowIndex="15" />
-                        <Label text="ExAC(Exome Aggregation Consortium)" GridPane.columnIndex="2" GridPane.rowIndex="12" />
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_13" text="ETC" GridPane.columnIndex="2" GridPane.rowIndex="10" />
+                        <Label text="KoEXID(Korean Exome Information Database)" GridPane.columnIndex="2" GridPane.rowIndex="12" />
+                        <Label text="KRGDB(Korean Reference Genome Database)" GridPane.columnIndex="2" GridPane.rowIndex="13" />
+                        <Label text="KOHBRA(Korean Hereditary Breast Cancer)" GridPane.columnIndex="2" GridPane.rowIndex="14" />
+                        <Label text="ExAC(Exome Aggregation Consortium)" GridPane.columnIndex="2" GridPane.rowIndex="11" />
                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" />
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <children>
@@ -539,55 +537,47 @@
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
                            <children>
-                              <ComboBox fx:id="gnomADajgnomADComboBox" prefWidth="30.0" />
-                              <TextField fx:id="gnomADajgnomAD" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="5">
-                           <children>
                               <ComboBox fx:id="gnomADeaComboBox" prefWidth="30.0" />
                               <TextField fx:id="gnomADeaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
                            </children>
                         </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="7">
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="5">
                            <children>
-                              <ComboBox fx:id="gnomADnfeComboBox" prefWidth="30.0" />
-                              <TextField fx:id="gnomADnfeTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                              <ComboBox fx:id="gnomADfinComboBox" prefWidth="30.0" />
+                              <TextField fx:id="gnomADfinTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
                            </children>
                         </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="8">
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="7">
                            <children>
                               <ComboBox fx:id="gnomADotherComboBox" prefWidth="30.0" />
                               <TextField fx:id="gnomADotherTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
                            </children>
                         </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="9">
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="8">
                            <children>
                               <ComboBox fx:id="gnomADsaComboBox" prefWidth="30.0" />
                               <TextField fx:id="gnomADsaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="10" />
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="11" />
-                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="12">
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="11">
                            <children>
                               <ComboBox fx:id="exacComboBox" prefWidth="30.0" />
                               <TextField fx:id="exacTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="13">
+                           </children></HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="12">
                            <children>
                               <ComboBox fx:id="keidComboBox" prefWidth="30.0" />
                               <TextField fx:id="keidTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
                            </children>
                         </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="14">
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="13">
                            <children>
                               <ComboBox fx:id="krgdComboBox" prefWidth="30.0" />
                               <TextField fx:id="krgdTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
                            </children>
                         </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="15">
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="14">
                            <children>
                               <ComboBox fx:id="kohbraComboBox" prefWidth="30.0" />
                               <TextField fx:id="kohbraTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
