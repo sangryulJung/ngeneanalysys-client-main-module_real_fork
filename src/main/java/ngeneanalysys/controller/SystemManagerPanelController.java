@@ -369,8 +369,7 @@ public class SystemManagerPanelController extends SubPaneController {
                 "g1000.eastAsian", "g1000.european", "g1000.southAsian", "esp6500.all", "esp6500.aa",
                 "esp6500.ea", "gnomAD.all", "gnomAD.admixedAmerican", "gnomAD.africanAfricanAmerican",
                 "gnomAD.eastAsian", "gnomAD.finnish", "gnomAD.nonFinnishEuropean", "gnomAD.others", "gnomAD.southAsian",
-                "koreanExomInformationDatabase", "koreanReferenceGenomeDatabase",
-                "kohbraFreq", "exac");
+                "koreanExomInformationDatabase", "koreanReferenceGenomeDatabase", "exac");
         lowConfidenceCheckComboBox.getItems().addAll("artifact_in_normal", "base_quality", "clustered_events",
                 "contamination", "duplicate_evidence", "fragment_length", "germline_risk", "mapping_quality",
                 "multiallelic", "orientation_bias", "panel_of_normals", "read_position", "str_contraction",
