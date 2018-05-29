@@ -260,9 +260,6 @@ public class VariantFilterController extends SubPaneController {
     private ComboBox<ComboBoxItem> gnomADaaaComboBox;
 
     @FXML
-    private ComboBox<ComboBoxItem> gnomADajgnomADComboBox;
-
-    @FXML
     private ComboBox<ComboBoxItem> gnomADeaComboBox;
 
     @FXML
@@ -457,7 +454,6 @@ public class VariantFilterController extends SubPaneController {
         createOperatorComboBox(gnomADAllComboBox);
         createOperatorComboBox(gnomADmaComboBox);
         createOperatorComboBox(gnomADaaaComboBox);
-        createOperatorComboBox(gnomADajgnomADComboBox);
         createOperatorComboBox(gnomADeaComboBox);
         createOperatorComboBox(gnomADfinComboBox);
         createOperatorComboBox(gnomADnfeComboBox);

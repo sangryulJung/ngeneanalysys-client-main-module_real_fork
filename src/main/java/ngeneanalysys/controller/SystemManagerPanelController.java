@@ -368,8 +368,8 @@ public class SystemManagerPanelController extends SubPaneController {
         frequencyDBCheckComboBox.getItems().addAll("g1000.all", "g1000.african", "g1000.american",
                 "g1000.eastAsian", "g1000.european", "g1000.southAsian", "esp6500.all", "esp6500.aa",
                 "esp6500.ea", "gnomAD.all", "gnomAD.admixedAmerican", "gnomAD.africanAfricanAmerican",
-                "gnomAD.ashkenaziJewish", "gnomAD.eastAsian", "gnomAD.finnish", "gnomAD.nonFinnishEuropean",
-                "gnomAD.others", "gnomAD.southAsian", "koreanExomInformationDatabase", "koreanReferenceGenomeDatabase",
+                "gnomAD.eastAsian", "gnomAD.finnish", "gnomAD.nonFinnishEuropean", "gnomAD.others", "gnomAD.southAsian",
+                "koreanExomInformationDatabase", "koreanReferenceGenomeDatabase",
                 "kohbraFreq", "exac");
         lowConfidenceCheckComboBox.getItems().addAll("artifact_in_normal", "base_quality", "clustered_events",
                 "contamination", "duplicate_evidence", "fragment_length", "germline_risk", "mapping_quality",
