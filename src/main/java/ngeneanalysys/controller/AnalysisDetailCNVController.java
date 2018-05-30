@@ -54,10 +54,11 @@ public class AnalysisDetailCNVController extends AnalysisDetailCommonController 
         apiService = APIService.getInstance();
 
         geneTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getGene()));
+
         valueTableColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getCnvValue()));
-
+        valueTableColumn.setSortType(TableColumn.SortType.DESCENDING);
         setList();
-
+        cnvTableView.getSortOrder().add(valueTableColumn);
         variantsController.getDetailContents().setCenter(root);
     }
 
@@ -72,7 +73,7 @@ public class AnalysisDetailCNVController extends AnalysisDetailCommonController 
 
             if(pagedCNV.getResult() != null && !pagedCNV.getResult().isEmpty()) {
                 List<CNV> result = pagedCNV.getResult();
-                result.sort(Comparator.comparing(CNV::getGene));
+                //result.sort(Comparator.comparing(CNV::getCnvValue));
                 cnvTableView.getItems().addAll(result);
             }
 
