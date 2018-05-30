@@ -484,6 +484,7 @@ public class VariantFilterController extends SubPaneController {
 
     private void setCosmicOccurrenceComboBoxItem() {
         cosmicOccurrenceComboBox.setConverter(new ComboBoxConverter());
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("", "No selection"));
         cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("adrenal_gland", "Adrenal gland"));
         cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("autonomic_ganglia", "Autonomic ganglia"));
         cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("biliary_tract", "Biliary tract"));
@@ -1240,7 +1241,8 @@ public class VariantFilterController extends SubPaneController {
             list.add("cosmicIds");
         }
 
-        if(cosmicOccurrenceComboBox.getSelectionModel().getSelectedItem() != null) {
+        if(cosmicOccurrenceComboBox.getSelectionModel().getSelectedItem() != null &&
+                !StringUtils.isEmpty(cosmicOccurrenceComboBox.getSelectionModel().getSelectedItem().getValue())) {
             list.add("cosmicOccurrence " + cosmicOccurrenceComboBox.getSelectionModel().getSelectedItem().getValue());
         }
 
