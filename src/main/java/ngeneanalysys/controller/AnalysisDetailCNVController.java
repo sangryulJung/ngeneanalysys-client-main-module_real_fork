@@ -73,7 +73,6 @@ public class AnalysisDetailCNVController extends AnalysisDetailCommonController 
 
             if(pagedCNV.getResult() != null && !pagedCNV.getResult().isEmpty()) {
                 List<CNV> result = pagedCNV.getResult();
-                //result.sort(Comparator.comparing(CNV::getCnvValue));
                 cnvTableView.getItems().addAll(result);
             }
 
