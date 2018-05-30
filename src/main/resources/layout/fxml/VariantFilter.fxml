@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.VariantFilterController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.VariantFilterController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
@@ -613,7 +613,7 @@
             <ComboBox fx:id="filterNameComboBox" prefWidth="150.0" />
             <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addFilter" prefHeight="26.0" prefWidth="26.0" styleClass="submitBtn" text="+" />
             <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#removeFilter" prefHeight="26.0" prefWidth="26.0" styleClass="cancelBtn" text="-" />
-            <Label fx:id="newFilterNameLable" style="-fx-font-family: Noto Sans KR Bold;" text="New Filter Name">
+            <Label fx:id="newFilterNameLabel" style="-fx-font-family: Noto Sans KR Bold;" text="New Filter Name">
                <HBox.margin>
                   <Insets left="20.0" />
                </HBox.margin>

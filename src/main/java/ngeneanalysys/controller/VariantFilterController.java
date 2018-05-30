@@ -34,6 +34,12 @@ public class VariantFilterController extends SubPaneController {
     private Stage dialogStage;
 
     @FXML
+    private Button saveBtn;
+
+    @FXML
+    private Label newFilterNameLabel;
+
+    @FXML
     private ComboBox<String> filterNameComboBox;
 
     @FXML
@@ -428,6 +434,18 @@ public class VariantFilterController extends SubPaneController {
             }
         });
 
+        newFilterNameLabel.setVisible(false);
+        filterNameTextField.setVisible(false);
+        saveBtn.setDisable(true);
+
+        filterNameTextField.textProperty().addListener((ev, oldV, newV) -> {
+            if(filterNameTextField.isVisible() && !StringUtils.isEmpty(newV)) {
+                saveBtn.setDisable(false);
+            } else {
+                saveBtn.setDisable(true);
+            }
+        });
+
         // Schen Init
         Scene scene = new Scene(root);
         dialogStage.setScene(scene);
@@ -613,6 +631,8 @@ public class VariantFilterController extends SubPaneController {
 
     private void setCurrentOption(List<Object> currentFilter) {
         filterNameTextField.setVisible(false);
+        newFilterNameLabel.setVisible(false);
+        saveBtn.setDisable(false);
         resetFilterList();
         for(Object obj : currentFilter) {
             String option = obj.toString();
@@ -871,8 +891,6 @@ public class VariantFilterController extends SubPaneController {
             resetFilterList();
             changeFilter();
 
-            filterNameTextField.setVisible(true);
-
             String gg = JsonUtil.toJson(filter);
             Map<String, Object> map = new HashMap<>();
             map.put("value", gg);
@@ -886,6 +904,7 @@ public class VariantFilterController extends SubPaneController {
                 DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainApp.getPrimaryStage(), true);
             }
         }
+        saveBtn.setDisable(true);
     }
 
     @FXML
@@ -897,6 +916,8 @@ public class VariantFilterController extends SubPaneController {
     public void addFilter() {
         filterNameComboBox.getSelectionModel().clearSelection();
         filterNameTextField.setVisible(true);
+        newFilterNameLabel.setVisible(true);
+        saveBtn.setDisable(true);
         resetFilterList();
     }
 
@@ -1263,6 +1284,8 @@ public class VariantFilterController extends SubPaneController {
         snvCheckBox.selectedProperty().setValue(false);
         indelCheckBox.setSelected(false);
         delCheckBox.setSelected(false);
+        mnpCheckBox.setSelected(false);
+        complexCheckBox.setSelected(false);
         fivePrimeUTRVCheckBox.setSelected(false);
         cidCheckBox.setSelected(false);
         didCheckBox.setSelected(false);
