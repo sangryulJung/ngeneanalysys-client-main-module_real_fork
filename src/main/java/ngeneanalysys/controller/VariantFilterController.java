@@ -886,11 +886,11 @@ public class VariantFilterController extends SubPaneController {
                 && !StringUtils.isEmpty(filterNameComboBox.getSelectionModel().getSelectedItem())) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 
-            String alertHeaderText = "Confirmation Dialog";
+            String alertHeaderText = filterNameComboBox.getSelectionModel().getSelectedItem();
             String alertContentText = "Are you sure to delete this filter?";
 
-            alert.setTitle(alertHeaderText);
-            alert.setHeaderText("Confirmation Dialog");
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText(alertHeaderText);
             alert.setContentText(alertContentText);
             Optional<ButtonType> result = alert.showAndWait();
             if(result.get() == ButtonType.OK) {
