@@ -884,27 +884,40 @@ public class VariantFilterController extends SubPaneController {
     private void removeFilter() {
         if(!filterNameTextField.isVisible()
                 && !StringUtils.isEmpty(filterNameComboBox.getSelectionModel().getSelectedItem())) {
-            filter.remove(filterNameComboBox.getSelectionModel().getSelectedItem());
-            String name = filterNameComboBox.getSelectionModel().getSelectedItem();
-            filterNameComboBox.getSelectionModel().clearSelection();
-            filterNameComboBox.getItems().remove(name);
-            resetFilterList();
-            changeFilter();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 
-            String gg = JsonUtil.toJson(filter);
-            Map<String, Object> map = new HashMap<>();
-            map.put("value", gg);
-            try {
-                if ("somatic".equalsIgnoreCase(analysisType)) {
-                    apiService.put("/member/memberOption/somaticFilter", map, null, true);
-                } else if ("germline".equalsIgnoreCase(analysisType)) {
-                    apiService.put("/member/memberOption/germlineFilter", map, null, true);
+            String alertHeaderText = "Confirmation Dialog";
+            String alertContentText = "Are you sure to delete this filter?";
+
+            alert.setTitle(alertHeaderText);
+            alert.setHeaderText("Confirmation Dialog");
+            alert.setContentText(alertContentText);
+            Optional<ButtonType> result = alert.showAndWait();
+            if(result.get() == ButtonType.OK) {
+                filter.remove(filterNameComboBox.getSelectionModel().getSelectedItem());
+                String name = filterNameComboBox.getSelectionModel().getSelectedItem();
+                filterNameComboBox.getSelectionModel().clearSelection();
+                filterNameComboBox.getItems().remove(name);
+                resetFilterList();
+                changeFilter();
+
+                String gg = JsonUtil.toJson(filter);
+                Map<String, Object> map = new HashMap<>();
+                map.put("value", gg);
+                try {
+                    if ("somatic".equalsIgnoreCase(analysisType)) {
+                        apiService.put("/member/memberOption/somaticFilter", map, null, true);
+                    } else if ("germline".equalsIgnoreCase(analysisType)) {
+                        apiService.put("/member/memberOption/germlineFilter", map, null, true);
+                    }
+                } catch (WebAPIException wae) {
+                    DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainApp.getPrimaryStage(), true);
                 }
-            } catch (WebAPIException wae) {
-                DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainApp.getPrimaryStage(), true);
+                saveBtn.setDisable(true);
+            } else {
+                alert.close();
             }
         }
-        saveBtn.setDisable(true);
     }
 
     @FXML
@@ -933,7 +946,10 @@ public class VariantFilterController extends SubPaneController {
 
         String filterName = "";
 
-        if(list.isEmpty()) return;
+        if(list.isEmpty()) {
+            DialogUtil.alert("Warning", "No filtering elements found.", this.dialogStage, true);
+            return;
+        }
 
         if(filterNameTextField.isVisible()) {
             if(StringUtils.isEmpty(filterNameTextField.getText())) {
