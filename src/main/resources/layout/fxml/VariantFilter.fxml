@@ -609,12 +609,16 @@
       </HBox>
       <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
          <children>
-            <Label style="-fx-font-family: Noto Sans KR Bold;" text="Create New Filter" />
-            <Button mnemonicParsing="false" onAction="#addFilter" styleClass="submitBtn" text="New Filter" />
-            <TextField fx:id="filterNameTextField" maxHeight="31.0" prefHeight="31.0" prefWidth="136.0" promptText="Filter Name" />
-            <Label style="-fx-font-family: Noto Sans KR Bold;" text="Load Saved Filter" />
+            <Label style="-fx-font-family: Noto Sans KR Bold;" text="Filter" />
             <ComboBox fx:id="filterNameComboBox" prefWidth="150.0" />
-            <Button mnemonicParsing="false" onAction="#removeFilter" prefHeight="23.0" prefWidth="99.0" styleClass="cancelBtn" text="Remove Filter" />
+            <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addFilter" prefHeight="26.0" prefWidth="26.0" styleClass="submitBtn" text="+" />
+            <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#removeFilter" prefHeight="26.0" prefWidth="26.0" styleClass="cancelBtn" text="-" />
+            <Label fx:id="newFilterNameLable" style="-fx-font-family: Noto Sans KR Bold;" text="New Filter Name">
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="filterNameTextField" maxHeight="31.0" prefHeight="31.0" prefWidth="136.0" promptText="Filter Name" />
          </children>
          <GridPane.margin>
             <Insets left="10.0" top="10.0" />
