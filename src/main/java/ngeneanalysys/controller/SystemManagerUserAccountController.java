@@ -391,7 +391,13 @@ public class SystemManagerUserAccountController extends SubPaneController{
             groupListTable.getItems().clear();
             groupSearch();
         } catch (WebAPIException wae) {
-            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+            String msg = "";
+            if(wae.getResponse().getStatus() == 400) {
+                msg = "There is at least one user in the group.";
+            } else {
+                msg = wae.getHeaderText();
+            }
+            DialogUtil.generalShow(wae.getAlertType(), msg, wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
             logger.error("Unknown Error", e);
@@ -468,7 +474,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
 
             img2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-
+                DialogUtil.setIcon(alert);
                 String alertHeaderText = "Confirmation Dialog";
                 String alertContentText = "Are you sure to delete this group?";
 
