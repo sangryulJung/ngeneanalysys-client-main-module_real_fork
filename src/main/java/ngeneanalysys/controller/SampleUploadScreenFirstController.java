@@ -539,6 +539,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
                     if (index == 0 && sampleArrayList.size() > 1) {
                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        DialogUtil.setIcon(alert);
                         alert.setTitle("Panel Setting");
                         alert.setHeaderText("Panel Setting");
                         alert.setContentText("Do you want to apply them all at once?");

@@ -885,7 +885,7 @@ public class VariantFilterController extends SubPaneController {
         if(!filterNameTextField.isVisible()
                 && !StringUtils.isEmpty(filterNameComboBox.getSelectionModel().getSelectedItem())) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-
+            DialogUtil.setIcon(alert);
             String alertHeaderText = filterNameComboBox.getSelectionModel().getSelectedItem();
             String alertContentText = "Are you sure to delete this filter?";
 

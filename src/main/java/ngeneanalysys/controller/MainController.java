@@ -347,6 +347,7 @@ public class MainController extends BaseStageController {
         String alertContentText = "Do you want to exit the application?";
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        DialogUtil.setIcon(alert);
         alert.initOwner(this.primaryStage);
         alert.setTitle("Confirmation Dialog");
         alert.setContentText(alertContentText);
@@ -815,6 +816,7 @@ public class MainController extends BaseStageController {
         }
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        DialogUtil.setIcon(alert);
         alert.initOwner(this.primaryStage);
         alert.setTitle("Log out");
         alert.setHeaderText(alertHeaderText);

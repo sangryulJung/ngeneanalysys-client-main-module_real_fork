@@ -196,6 +196,7 @@ public class SystemMenuSettingController extends SubPaneController {
 
         if(isContinue) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            DialogUtil.setIcon(alert);
             alert.initOwner(this.dialogStage);
             alert.setTitle("Save Settings");
 			alert.setHeaderText("Save Settings");

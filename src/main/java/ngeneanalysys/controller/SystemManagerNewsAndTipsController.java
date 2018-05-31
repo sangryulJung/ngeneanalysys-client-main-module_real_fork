@@ -234,8 +234,8 @@ public class SystemManagerNewsAndTipsController extends SubPaneController {
 
             img2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-
-                String alertHeaderText = null;
+                DialogUtil.setIcon(alert);
+                String alertHeaderText = "";
                 String alertContentText = "Are you sure to delete this notice?";
 
                 alert.setTitle("Confirmation Dialog");

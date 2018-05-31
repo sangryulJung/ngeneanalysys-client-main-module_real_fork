@@ -653,6 +653,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     @FXML
     public void save() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        DialogUtil.setIcon(alert);
         alert.initOwner(getMainController().getPrimaryStage());
         alert.setTitle(CONFIRMATION_DIALOG);
         alert.setHeaderText("Save Report Information");
@@ -684,6 +685,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         User user;
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        DialogUtil.setIcon(alert);
         alert.initOwner(getMainController().getPrimaryStage());
         alert.setTitle(CONFIRMATION_DIALOG);
         alert.setHeaderText("Test conducting organization information");
@@ -1270,6 +1272,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         try {
             if (created) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                DialogUtil.setIcon(alert);
                 alert.initOwner(getMainController().getPrimaryStage());
                 alert.setTitle(CONFIRMATION_DIALOG);
                 alert.setHeaderText("Creating the report document was completed.");

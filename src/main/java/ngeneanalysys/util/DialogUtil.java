@@ -3,6 +3,7 @@ package ngeneanalysys.util;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
+import ngeneanalysys.code.constants.CommonConstants;
 
 /**
  * Dialog 출력 Util Class
@@ -41,6 +42,7 @@ public class DialogUtil {
 		} else {
 			title = "INFORMATION";
 		}
+		setIcon(alert);
 
 		alert.setResizable(true);
 		alert.setTitle(title);
@@ -99,5 +101,13 @@ public class DialogUtil {
 	 */
 	public static Alert error(String headerText, String contentText, Stage ownerStage, boolean waitAfterShow) {
 		return generalShow(AlertType.ERROR, headerText, contentText, ownerStage, waitAfterShow);
+	}
+
+	public static void setIcon(Alert alert) {
+		if (System.getProperty("os.name").toLowerCase().contains("window")) {
+			ResourceUtil resourceUtil = new ResourceUtil();
+			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+			stage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
+		}
 	}
 }

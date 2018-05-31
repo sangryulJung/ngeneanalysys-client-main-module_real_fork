@@ -321,7 +321,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
         DeleteButtonCreate() {
             img.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-
+                DialogUtil.setIcon(alert);
                 String alertContentText = "Are you sure to delete this run?";
 
                 alert.setTitle("Confirmation Dialog");
@@ -367,6 +367,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
                 Run run = UpdateButtonCreate.this.getTableView().getItems().get(UpdateButtonCreate.this.getIndex());
                 if (AnalysisJobStatusCode.JOB_RUN_GROUP_FAIL.equals(run.getRunStatus().getStatus())) {
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    DialogUtil.setIcon(alert);
                     String alertContentText = "Are you sure to restart this run?";
                     alert.setTitle("Confirmation Dialog");
 
@@ -380,6 +381,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
                     }
                 } else {
                     Alert alert = new Alert(Alert.AlertType.WARNING);
+                    DialogUtil.setIcon(alert);
                     String alertContentText = "Only the failed analysis can be restarted.";
                     alert.setTitle("Warning Dialog");
 

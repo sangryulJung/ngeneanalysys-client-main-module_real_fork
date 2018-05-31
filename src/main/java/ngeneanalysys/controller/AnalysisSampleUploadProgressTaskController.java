@@ -188,6 +188,7 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 	@FXML
 	public void cancelUpload() {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
+		DialogUtil.setIcon(alert);
 		alert.initOwner(getMainController().getPrimaryStage());
 		alert.setTitle("Confirmation Dialog");
 		alert.setHeaderText("Analysis Cancel Request");

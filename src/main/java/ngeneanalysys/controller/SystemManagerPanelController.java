@@ -966,8 +966,8 @@ public class SystemManagerPanelController extends SubPaneController {
 
             img2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-
-                String alertHeaderText = null;
+                DialogUtil.setIcon(alert);
+                String alertHeaderText = "";
                 String alertContentText = "Are you sure to delete this panel?";
 
                 alert.setTitle("Confirmation Dialog");
@@ -1137,6 +1137,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
         public void showRemoveDialog(ComboBoxItem item) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            DialogUtil.setIcon(alert);
             alert.setTitle("Confirmation Dialog");
             alert.setHeaderText("Look, a Confirmation Dialog");
             alert.setContentText("Are you ok with this?");

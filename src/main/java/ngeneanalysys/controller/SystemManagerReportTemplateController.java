@@ -564,7 +564,6 @@ public class SystemManagerReportTemplateController extends SubPaneController{
     public void addComboBoxItem() {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Text Input Dialog");
-        dialog.setHeaderText("Look, a Text Input Dialog");
         dialog.setContentText("Please enter comboBoxItem");
         Optional<String> result = dialog.showAndWait();
 
@@ -672,8 +671,8 @@ public class SystemManagerReportTemplateController extends SubPaneController{
 
             img2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-
-                String alertHeaderText = null;
+                DialogUtil.setIcon(alert);
+                String alertHeaderText = "";
                 String alertContentText = "Are you sure to delete this panel?";
 
                 alert.setTitle("Confirmation Dialog");
