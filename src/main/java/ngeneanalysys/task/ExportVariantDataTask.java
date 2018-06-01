@@ -171,6 +171,7 @@ public class ExportVariantDataTask extends Task<Void> {
 		}
 		try {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
+			DialogUtil.setIcon(alert);
 			alert.initOwner(this.mainApp.getPrimaryStage());
 			alert.setTitle("Confirmation Dialog");
 			alert.setHeaderText("Creating the " + fileType + " document was completed.");
