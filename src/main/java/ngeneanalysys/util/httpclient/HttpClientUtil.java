@@ -14,6 +14,7 @@ import javax.net.ssl.X509TrustManager;
 
 import javafx.scene.control.Alert;
 import ngeneanalysys.exceptions.WebAPIException;
+import ngeneanalysys.model.ErrorMessage;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.*;
@@ -351,12 +352,26 @@ public class HttpClientUtil {
 				return result;
 			} else {
 				logger.error(String.format("Web API RESULT STATUS = %s, CONTENTS = %s", status ,result.getContentString()));
-				errorMessage = String.format("Server API ERROR(%s)\n\n%s", status, result.getContentString());
-				throw new WebAPIException(result, Alert.AlertType.ERROR, errorHeader, errorMessage, false);
+				if (result.getContentString().startsWith("{")) {
+					ErrorMessage serverErrorMessage = result.getObjectBeforeConvertResponseToJSON(ErrorMessage.class);
+					if (serverErrorMessage == null) {
+						errorMessage = result.getContentString();
+					} else {
+						errorMessage = serverErrorMessage.getMessage();
+					}
+				} else {
+					errorMessage = result.getContentString();
+				}
+				if (status >= 400 && status < 500) {
+					errorHeader = "Invalid Server API Request";
+					throw new WebAPIException(result, Alert.AlertType.WARNING, errorHeader, errorMessage, false);
+				} else {
+					throw new WebAPIException(result, Alert.AlertType.ERROR, errorHeader, errorMessage, false);
+				}
 			}
 		} else {
-			errorMessage = "Server API ERROR\n\nAPI Server Connection Fail.";
-			throw new WebAPIException(result, Alert.AlertType.ERROR, errorHeader, errorMessage, false);
+			errorMessage = "Server Connection Fail.";
+			throw new WebAPIException(null, Alert.AlertType.ERROR, errorHeader, errorMessage, false);
 		}
 	}
 

@@ -391,13 +391,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
             groupListTable.getItems().clear();
             groupSearch();
         } catch (WebAPIException wae) {
-            String msg = "";
-            if(wae.getResponse().getStatus() == 400) {
-                msg = "There is at least one user in the group.";
-            } else {
-                msg = wae.getHeaderText();
-            }
-            DialogUtil.generalShow(wae.getAlertType(), msg, wae.getContents(),
+            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
             logger.error("Unknown Error", e);

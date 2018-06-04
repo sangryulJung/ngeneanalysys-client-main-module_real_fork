@@ -29,21 +29,20 @@ import javafx.scene.layout.Priority;
 public class MainApp extends Application {
 	private static Logger logger = LoggerUtil.getLogger();
 	
-	/** 어플리케이션 중복 구동 여부 */
+	// 어플리케이션 중복 구동 여부
 	private boolean isAlreadyRunning = false;
 
-	/** IGV 연동을 위한 proxy 서버 모듈 */
-	//public Spark
+	// IGV 연동을 위한 proxy 서버 모듈
 	private SparkHttpProxyServer proxyServer;
 	
-	/** Properties Config */
+	// Properties Config
 	protected Properties config;
 	
-	/** Resource Util */
-	protected ResourceUtil resourceUtil = new ResourceUtil();
+	// Resource Util
+	//protected ResourceUtil resourceUtil = new ResourceUtil();
 	
-	/** 메인 Stage */
-	protected Stage primaryStage;
+	// 메인 Stage
+	private Stage primaryStage;
 
 
 	/**
@@ -52,14 +51,6 @@ public class MainApp extends Application {
 	 */
 	public SparkHttpProxyServer getProxyServer() {
 		return proxyServer;
-	}
-
-	/**
-	 *
-	 * @param proxyServer SparkHttpProxyServer
-	 */
-	public void setProxyServer(SparkHttpProxyServer proxyServer) {
-		this.proxyServer = proxyServer;
 	}
 
 	/**
@@ -126,7 +117,7 @@ public class MainApp extends Application {
 	private boolean isProxyServerRunning() {
 		try (Socket socket = new Socket()){
 			socket.connect(new InetSocketAddress("localhost", CommonConstants.HTTP_PROXY_SERVER_PORT), 500);
-		} catch (Exception e) {
+		} catch (IOException e) {
 			return false;
 		}
 		return true;
@@ -156,6 +147,7 @@ public class MainApp extends Application {
 		e.printStackTrace(new PrintWriter(errorMsg));
 		
 		Alert alert = new Alert(AlertType.ERROR);
+		DialogUtil.setIcon(alert);
 		alert.setTitle("Exception Dialog");
 		alert.setHeaderText("Look, an Exception Dialog");
 		
@@ -186,7 +178,7 @@ public class MainApp extends Application {
 	 * @see javafx.application.Application#init()
 	 */
 	@Override
-	public void init() throws Exception {
+	public void init() {
 		Locale.setDefault(Locale.ENGLISH);
 		isAlreadyRunning = isProxyServerRunning();
 		logger.debug(String.format("# already running application : %s", isAlreadyRunning));
@@ -205,7 +197,7 @@ public class MainApp extends Application {
 		if(isAlreadyRunning) {
 			logger.warn("Requested applications are currently running and newly requested one will be shut down.");
 			DialogUtil.warning("Requested application is running already.", "Requested applications are currently running and newly requested one will be shut down.", null, true);
-			System.exit(0);
+			throw new RuntimeException();
 		} else {
 			// proxy 서버 기동
 			startProxyServer();
