@@ -330,13 +330,14 @@
 				</fo:table>
 			</fo:block>
 			</fo:block>
+            <fo:block page-break-before="always"> </fo:block>
 
             <!-- Pertinent Negatives -->
-            <fo:block margin-bottom="10mm" font-size="10pt" margin-top="5mm">
+            <!--<fo:block margin-bottom="10mm" font-size="10pt" margin-top="5mm">
                 <fo:block font-size="24pt" font-weight="bold" margin-bottom="1mm" font-family="Noto Sans CJK KR Regular">
                     <fo:external-graphic content-width="18.4cm" content-height="1.5cm" src="${pertinetNegativeText}" padding-bottom="-3mm" />
                 </fo:block>
-                <!--<fo:block background-color="#e6e6e7" font-size="13pt" padding-top="3mm" padding-bottom="3mm">
+                <fo:block background-color="#e6e6e7" font-size="13pt" padding-top="3mm" padding-bottom="3mm">
                     <fo:table font-family="Noto Sans CJK KR Regular">
                         <fo:table-body>
                             <fo:table-row>
@@ -347,7 +348,7 @@
                             </fo:table-row>
                         </fo:table-body>
                     </fo:table>
-                </fo:block>-->
+                </fo:block>
                 <fo:block margin-bottom="5mm"></fo:block>
                 <fo:block font-size="11pt">
                     <fo:table table-layout="fixed" width="100%" margin-bottom="4mm" border-bottom="solid 0.1mm black">
@@ -413,7 +414,7 @@
                     </fo:table>
                 </fo:block>
                 <fo:block page-break-before="always"> </fo:block>
-            </fo:block>
+            </fo:block>-->
 
 			<!-- Variant Details -->
 			<fo:block text-align="center" margin-top="10mm" margin-bottom="4mm">

@@ -961,10 +961,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             }
             contentsMap.put("conclusions", conclusionLineList);
 
-            response = apiService.get("/analysisResults/cnv/" + sample.getId(), null, null, null);
-            PagedCNV pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedCNV.class);
-            contentsMap.put("cnvList", pagedCNV.getResult());
-
             Map<String, Object> analysisFileMap = new HashMap<>();
             analysisFileMap.put("sampleId", sample.getId());
             response = apiService.get("/analysisFiles", analysisFileMap, null, false);
@@ -976,8 +972,14 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     .filter(item -> item.getName().contains("cnv_plot.png")).findFirst();
 
             if(optionalAnalysisFile.isPresent()) {
-                String path = downloadCNVImage(optionalAnalysisFile.get());
                 contentsMap.put("cnvImagePath", optionalAnalysisFile.get().getName());
+                try {
+                    response = apiService.get("/analysisResults/cnv/" + sample.getId(), null, null, null);
+                    PagedCNV pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedCNV.class);
+                    contentsMap.put("cnvList", pagedCNV.getResult());
+                } catch (WebAPIException wae) {
+                    logger.debug(wae.getMessage());
+                }
             }
         }
 
@@ -1241,9 +1243,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
     @SuppressWarnings("unchecked")
     private void createWordFile(URL[] jarUrls, File file , Map<String, Object> contentsMap, String reportCreationErrorMsg) {
-        URLClassLoader classLoader = null;
-        try {
-            classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader());
+
+        try (URLClassLoader classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader());) {
             Class classToLoad = Class.forName("word.create.App", true, classLoader);
             logger.debug("application init..");
             Method setParams = classToLoad.getMethod("setParams", Map.class);
@@ -1259,12 +1260,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         } catch (Exception e) {
             DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);
             e.printStackTrace();
-        } finally {
-            try {
-                if(classLoader != null) classLoader.close();
-            } catch (IOException e) {
-                DialogUtil.error("close error", e.getMessage(), getMainApp().getPrimaryStage(), false);
-            }
         }
     }
 

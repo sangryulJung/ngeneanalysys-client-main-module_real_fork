@@ -25,7 +25,7 @@ public class DialogUtil {
 	 * @return Alert
 	 */
 	public static Alert generalShow(AlertType alterType, String headerText, String contentText, Stage ownerStage, boolean waitAfterShow) {
-		Alert alert = new Alert(alterType);
+ 		Alert alert = new Alert(alterType);
 		if(ownerStage != null) {
 			alert.initOwner(ownerStage);
 		}
