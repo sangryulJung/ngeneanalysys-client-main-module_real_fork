@@ -534,9 +534,9 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             if(panelComboBoxList.contains(obj)) {
                 int index  = panelComboBoxList.indexOf(obj);
                 ComboBoxItem item = obj.getSelectionModel().getSelectedItem();
-                logger.debug(item.getText());
-                if(!StringUtils.isEmpty(item.getValue())) {
 
+                if(item != null && !StringUtils.isEmpty(item.getValue())) {
+                    logger.debug(item.getText());
                     if (index == 0 && sampleArrayList.size() > 1) {
                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                         DialogUtil.setIcon(alert);
@@ -857,7 +857,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     }
 
     private void panelSetting(ComboBox<ComboBoxItem> panelBox) {
-        if(panelBox.getItems().isEmpty()) panelBox.getItems().removeAll(panelBox.getItems());
+        if(!panelBox.getItems().isEmpty()) panelBox.getItems().removeAll(panelBox.getItems());
         List<Panel> panelList = new ArrayList<>();
         if(isServerItem && !isServerFastq) {
             panelList.addAll(panels.stream().filter(panel -> panel.getName().startsWith("TruSight Tumor 170")).collect(Collectors.toList()));
@@ -869,9 +869,8 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         for(Panel panel :  panelList) {
             panelBox.getItems().add(new ComboBoxItem(panel.getId().toString(), panel.getName()));
         }
+
         panelBox.getSelectionModel().selectFirst();
-        panelBox.valueProperty().addListener((ov, oldValue, newValue) -> {
-        });
     }
 
     @FXML

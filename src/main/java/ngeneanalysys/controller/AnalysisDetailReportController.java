@@ -973,13 +973,15 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
             if(optionalAnalysisFile.isPresent()) {
                 contentsMap.put("cnvImagePath", optionalAnalysisFile.get().getName());
-                try {
-                    response = apiService.get("/analysisResults/cnv/" + sample.getId(), null, null, null);
-                    PagedCNV pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedCNV.class);
-                    contentsMap.put("cnvList", pagedCNV.getResult());
-                } catch (WebAPIException wae) {
-                    logger.debug(wae.getMessage());
-                }
+            }
+
+            try {
+                response = apiService.get("/analysisResults/cnv/" + sample.getId(), null, null, null);
+                PagedCNV pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedCNV.class);
+                contentsMap.put("cnvList", pagedCNV.getResult());
+
+            } catch (WebAPIException wae) {
+                logger.debug(wae.getMessage());
             }
         }
 

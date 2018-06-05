@@ -2,6 +2,7 @@ package ngeneanalysys.util;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
 import ngeneanalysys.code.constants.CommonConstants;
 
@@ -110,4 +111,12 @@ public class DialogUtil {
 			stage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
 		}
 	}
+
+    public static void setIcon(TextInputDialog alert) {
+        if (System.getProperty("os.name").toLowerCase().contains("window")) {
+            ResourceUtil resourceUtil = new ResourceUtil();
+            Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+            stage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
+        }
+    }
 }

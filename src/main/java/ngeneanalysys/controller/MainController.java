@@ -393,7 +393,6 @@ public class MainController extends BaseStageController {
             response = apiService.get("/diseases", null, null, false);
             List<Diseases> diseases = (List<Diseases>)response.getMultiObjectBeforeConvertResponseToJSON(Diseases.class, false);
             basicInformationMap.put("diseases", diseases);
-
             createFilter();
 
         } catch (WebAPIException e) {

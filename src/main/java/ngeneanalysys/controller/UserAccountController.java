@@ -172,7 +172,7 @@ public class UserAccountController extends SubPaneController {
             phoneTextField.requestFocus();
         } else if(!StringUtils.isEmpty(emailTextField.getText()) && ValidationUtil.text(emailTextField.getText(), "Email", -1, 50, null, null, true, dialogStage) > 0) {
             emailTextField.requestFocus();
-        } else if(validPwdInput()) {
+        } else if("modify".equalsIgnoreCase(type) || validPwdInput()) {
             params = new HashMap<>();
             params.put("role", selectUserType.getSelectionModel().getSelectedItem().getValue());
             params.put("memberGroupId", Integer.parseInt(selectUserGroup.getSelectionModel().getSelectedItem().getValue()));
@@ -202,7 +202,9 @@ public class UserAccountController extends SubPaneController {
                     DialogUtil.alert("Create User Account Success", "A user account has been created.",
                             dialogStage, true);
                 } else {
-                    params.put("newLoginPassword", passwordField1.getText());
+                    if(!StringUtils.isEmpty(passwordField1.getText())) {
+                        params.put("newLoginPassword", passwordField1.getText());
+                    }
                     apiService.put("/admin/members/" + user.getId(), params, null, true);
                     DialogUtil.alert("Modify User Account Success", "A user account has been modified.",
                             dialogStage, true);

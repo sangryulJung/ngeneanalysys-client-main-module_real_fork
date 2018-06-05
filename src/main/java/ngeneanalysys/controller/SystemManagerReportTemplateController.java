@@ -562,6 +562,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
     @FXML
     public void addComboBoxItem() {
         TextInputDialog dialog = new TextInputDialog();
+        DialogUtil.setIcon(dialog);
         dialog.setTitle("Text Input Dialog");
         dialog.setContentText("Please enter comboBoxItem");
         Optional<String> result = dialog.showAndWait();

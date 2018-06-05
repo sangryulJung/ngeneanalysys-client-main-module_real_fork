@@ -116,7 +116,6 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
                         String protein = (!StringUtils.isEmpty(transcript.getProtein())) ? transcript.getProtein() : "N/A";
                         String genomicDNA = (!StringUtils.isEmpty(transcript.getGenomicDna())) ? transcript.getGenomicDna() : "N/A";
 
-
                         logger.debug(String.format("variant identification choose '%s' option idx [%s]", transcriptName, newIdx));
                         List<Integer> textLength = new ArrayList<>();
                         geneSymbolTextField.setText(geneSymbol); //Gene Symbol
