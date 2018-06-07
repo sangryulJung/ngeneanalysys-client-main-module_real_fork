@@ -5,6 +5,7 @@ import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -123,6 +124,10 @@ public class HomeController extends SubPaneController{
      */
     @FXML
     public void showUploadFASTQ() {
+        runUploadFASTQ(null);
+    }
+
+    public void runUploadFASTQ(Run run) {
         getMainController().setMainMaskerPane(true);
         try {
             // Load the fxml file and create a new stage for the popup dialog
@@ -131,6 +136,9 @@ public class HomeController extends SubPaneController{
             SampleUploadController controller = loader.getController();
             controller.setMainController(this.mainController);
             controller.setHomeController(this);
+            if(run != null) {
+                controller.setRun(run);
+            }
             controller.show(page);
             showRunList();
         } catch (IOException e) {
@@ -154,7 +162,7 @@ public class HomeController extends SubPaneController{
         try {
             runList = new ArrayList<>();
             for (int i = 0; i < maxRunNumberOfPage; i++) {
-                RunStatusVBox box = new RunStatusVBox();
+                RunStatusVBox box = new RunStatusVBox(this);
                 runList.add(box);
                 runListHBox.setPrefWidth(runListHBox.getPrefWidth() + 235);
                 runListHBox.getChildren().add(box);
@@ -378,7 +386,19 @@ public class HomeController extends SubPaneController{
 
         private VBox itemVBox;
 
-        private RunStatusVBox() {
+        private Run run;
+
+        private HomeController homeController;
+
+        private EventHandler mouseEventEventHandler = new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                homeController.runUploadFASTQ(run);
+            }
+        };
+
+        private RunStatusVBox(HomeController homeController) {
+            this.homeController = homeController;
             this.setPrefSize(220, 220);
             this.setMinSize(220, 220);
             this.getStyleClass().add("run_box");
@@ -552,6 +572,9 @@ public class HomeController extends SubPaneController{
             if(!itemVBox.getChildren().contains(progressHBox)) {
                 itemVBox.getChildren().add(progressHBox);
             }
+            this.run = run;
+            this.setCursor(Cursor.HAND);
+            this.setEventHandler(MouseEvent.MOUSE_CLICKED, mouseEventEventHandler);
         }
 
         public void reset() {
@@ -565,6 +588,9 @@ public class HomeController extends SubPaneController{
             queuedLabel.setText("");
             runningLabel.setText("");
             failedLabel.setText("");
+            run = null;
+            this.setCursor(Cursor.DEFAULT);
+            this.removeEventHandler(MouseEvent.MOUSE_CLICKED, mouseEventEventHandler);
             //itemVBox.getChildren().removeAll(itemVBox.getChildren());
         }
 

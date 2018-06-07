@@ -312,7 +312,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                     List<File> pairFileList = fileList.stream().filter(file ->
                             file.getName().startsWith(fastqFilePairName + "_")).collect(Collectors.toList());
 
-                    Optional<AnalysisFile> optionalFile = uploadFileData.stream().filter(item ->
+                    Optional<AnalysisFile> optionalFile = failedAnalysisFileList.stream().filter(item ->
                             item.getName().contains(fastqFilePairName + "_")).findFirst();
                     Sample sample = null;
                     if(optionalFile.isPresent()) sample = getSameSample(optionalFile.get().getSampleId());

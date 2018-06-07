@@ -21,7 +21,6 @@ public class SnpInDelExpression {
     private String rightSequence;
     private String zygosity;
 
-
     /**
      * @return aaChangeSingleLetter
      */

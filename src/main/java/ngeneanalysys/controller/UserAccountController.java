@@ -172,7 +172,7 @@ public class UserAccountController extends SubPaneController {
             phoneTextField.requestFocus();
         } else if(!StringUtils.isEmpty(emailTextField.getText()) && ValidationUtil.text(emailTextField.getText(), "Email", -1, 50, null, null, true, dialogStage) > 0) {
             emailTextField.requestFocus();
-        } else if("modify".equalsIgnoreCase(type) || validPwdInput()) {
+        } else if(("modify".equalsIgnoreCase(type) && validPwdInput()) || ("add".equalsIgnoreCase(type) && validPwdInput())) {
             params = new HashMap<>();
             params.put("role", selectUserType.getSelectionModel().getSelectedItem().getValue());
             params.put("memberGroupId", Integer.parseInt(selectUserGroup.getSelectionModel().getSelectedItem().getValue()));
