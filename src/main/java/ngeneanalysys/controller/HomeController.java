@@ -83,7 +83,7 @@ public class HomeController extends SubPaneController{
     /** API Service */
     private APIService apiService;
     /** Timer */
-    public Timeline autoRefreshTimeline;
+    Timeline autoRefreshTimeline;
 
     private List<RunStatusVBox> runList;
 
@@ -127,7 +127,7 @@ public class HomeController extends SubPaneController{
         runUploadFASTQ(null);
     }
 
-    public void runUploadFASTQ(Run run) {
+    private void runUploadFASTQ(Run run) {
         getMainController().setMainMaskerPane(true);
         try {
             // Load the fxml file and create a new stage for the popup dialog
@@ -176,7 +176,7 @@ public class HomeController extends SubPaneController{
     private void setToolsAndDatabase() {
         databaseVersionVBox.getChildren().removeAll(databaseVersionVBox.getChildren());
         try {
-            HttpClientResponse response = apiService.get("pipelineVersions", null, null, null);
+            HttpClientResponse response = apiService.get("pipelineVersions/currentVersionGroupByPanel", null, null, null);
 
             List<PipelineVersionView> pipelineVersionViewList = (List<PipelineVersionView>)response.getMultiObjectBeforeConvertResponseToJSON(PipelineVersionView.class, false);
             if(pipelineVersionViewList != null && !pipelineVersionViewList.isEmpty()) {
@@ -273,12 +273,12 @@ public class HomeController extends SubPaneController{
              }
 
         } catch (WebAPIException wae) {
-
+            wae.printStackTrace();
         }
 
     }
 
-    public boolean noticeLabelSetting(int index) {
+    private boolean noticeLabelSetting(int index) {
         if(noticeList == null || index > noticeList.size() -1) return false;
         NoticeView noticeView = noticeList.get(index);
         //noticeTitleLabel.setText(noticeView.getTitle());
@@ -308,7 +308,7 @@ public class HomeController extends SubPaneController{
             availableTier.start();
 
         } catch (WebAPIException wae) {
-
+            wae.printStackTrace();
         }
     }
 
@@ -317,9 +317,9 @@ public class HomeController extends SubPaneController{
         if(autoRefreshTimeline != null)
             logger.debug("cycle time : " + autoRefreshTimeline.getCycleDuration());
 
-        Platform.runLater(() -> hddCheck());
-        Platform.runLater(() -> setNoticeArea());
-        Platform.runLater(() -> setToolsAndDatabase());
+        Platform.runLater(this::hddCheck);
+        Platform.runLater(this::setNoticeArea);
+        Platform.runLater(this::setToolsAndDatabase);
         final int maxRunNumberOfPage = 4;
         CompletableFuture<PagedRun> getPagedRun = new CompletableFuture<>();
         CompletableFuture.supplyAsync(() -> {
@@ -361,7 +361,7 @@ public class HomeController extends SubPaneController{
         getMainController().setContentsMaskerPaneVisible(false);
     }
 
-    class RunStatusVBox extends VBox {
+    static class RunStatusVBox extends VBox {
         private Label runName;
         private Label panelLabel;
         private HBox panelHBox;
@@ -377,9 +377,7 @@ public class HomeController extends SubPaneController{
         private Label queuedLabel;
         private HBox queuedHBox;
         private Label runningLabel;
-        private HBox runningHBox;
         private Label failedLabel;
-        private HBox failedHBox;
         private ProgressBar progressBar;
         private Label progressLabel;
         private HBox progressHBox;
@@ -599,7 +597,7 @@ public class HomeController extends SubPaneController{
     /**
      * 자동 새로고침 시작 처리
      */
-    public void startAutoRefresh() {
+    void startAutoRefresh() {
         boolean isAutoRefreshOn = "true".equals(config.getProperty("analysis.job.auto.refresh"));
         logger.debug(String.format("auto refresh on : %s", isAutoRefreshOn));
 
@@ -632,7 +630,7 @@ public class HomeController extends SubPaneController{
     /**
      * 자동 새로고침 일시정지
      */
-    public void pauseAutoRefresh() {
+    void pauseAutoRefresh() {
         boolean isAutoRefreshOn = "true".equals(config.getProperty("analysis.job.auto.refresh"));
         // 기능 실행중인 상태인 경우 실행
         if(autoRefreshTimeline != null && isAutoRefreshOn) {
@@ -649,7 +647,7 @@ public class HomeController extends SubPaneController{
     /**
      * 자동 새로고침 시작
      */
-    public void resumeAutoRefresh() {
+    void resumeAutoRefresh() {
         boolean isAutoRefreshOn = "true".equals(config.getProperty("analysis.job.auto.refresh"));
         int refreshPeriodSecond = (Integer.parseInt(config.getProperty("analysis.job.auto.refresh.period")) * 1000) - 1;
         // 기능 실행중인 상태인 경우 실행
@@ -666,7 +664,7 @@ public class HomeController extends SubPaneController{
     }
 
 
-    public void databaseView() {
+    private void databaseView() {
         try {
             FXMLLoader loader = mainApp.load(FXMLConstants.SYSTEM_MENU_DEFAULT_PUBLIC_DATABASE);
             Node root = loader.load();
