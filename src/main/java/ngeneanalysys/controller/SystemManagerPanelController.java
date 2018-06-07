@@ -374,7 +374,7 @@ public class SystemManagerPanelController extends SubPaneController {
                 "contamination", "duplicate_evidence", "fragment_length", "germline_risk", "mapping_quality",
                 "multiallelic", "orientation_bias", "panel_of_normals", "read_position", "str_contraction",
                 "strand_artifact", "t_lod", "homopolymer", "repeat_sequence", "sequencing_error", "mapping_error",
-                "snp_candidate", "strand_biased");
+                "snp_candidate");
     }
 
     public void createComboBox() {
