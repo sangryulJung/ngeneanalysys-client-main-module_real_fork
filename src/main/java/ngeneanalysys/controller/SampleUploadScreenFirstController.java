@@ -432,7 +432,8 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             }
 
             if(StringUtils.isEmpty(sample.getSampleSource()) && sampleSource.getSelectionModel().getSelectedItem() != null) {
-                sampleSource.getSelectionModel().select(0);
+                //sampleSource.getSelectionModel().select(0);
+                sampleSource.getSelectionModel().clearSelection();
             } else {
                 sampleSource.getSelectionModel().select(sample.getSampleSource());
             }
