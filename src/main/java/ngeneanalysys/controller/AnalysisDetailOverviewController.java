@@ -312,15 +312,17 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
 
         descriptionLabel.getStyleClass().add("help_tooltip_white");
         descriptionLabel.setStyle(descriptionLabel.getStyle() + "-fx-cursor : hand;");
+        String value = sampleQC.getQcDescription() + " " + sampleQC.getQcThreshold() + System.lineSeparator()
+                + "Value : " + sampleQC.getQcValue().stripTrailingZeros().toPlainString() + sampleQC.getQcUnit();
         descriptionLabel.setOnMouseClicked(ev ->
-            PopOverUtil.openQCPopOver(descriptionLabel, sampleQC.getQcDescription() + " " + sampleQC.getQcThreshold()));
+            PopOverUtil.openQCPopOver(descriptionLabel, value));
 
         hBox.getChildren().addAll(titleLabel, descriptionLabel);
 
         dataQCResultGridPane.add(hBox, col, 0);
 
         Label qcResultLabel = new Label(sampleQC.getQcResult().toUpperCase());
-        qcResultLabel.setTooltip(new Tooltip(sampleQC.getQcValue() + sampleQC.getQcUnit()));
+        //qcResultLabel.setTooltip(new Tooltip(sampleQC.getQcValue() + sampleQC.getQcUnit()));
 
         dataQCResultGridPane.add(qcResultLabel, col, 1);
         GridPane.setValignment(qcResultLabel, VPos.CENTER);

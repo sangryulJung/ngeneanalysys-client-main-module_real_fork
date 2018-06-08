@@ -260,7 +260,7 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
     public void setQCItem(final Label valueLabel, final Label QCLabel
             , final List<SampleQC> qcList, final String qcString) {
         valueLabel.setText(findQCResult(qcList, qcString).toUpperCase());
-        valueLabel.setTooltip(new Tooltip(findQCResultString(qcList, qcString)));
+        //valueLabel.setTooltip(new Tooltip(findQCResultString(qcList, qcString)));
         //totalBaseTooltip.setText(findQCTooltipString(qcList, "total_base"));
         final String value = findQCTooltipString(qcList, qcString);
         QCLabel.setOnMouseClicked(ev ->
@@ -304,7 +304,8 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
         if(qcList != null && !qcList.isEmpty()) {
             Optional<SampleQC> findQC = qcList.stream().filter(sampleQC -> sampleQC.getQcType().equalsIgnoreCase(qc)).findFirst();
             if(findQC.isPresent()) {
-                result = findQC.get().getQcDescription() + " " + findQC.get().getQcThreshold();
+                result = findQC.get().getQcDescription() + " " + findQC.get().getQcThreshold() + System.lineSeparator()
+                        + "Value : " + findQC.get().getQcValue().stripTrailingZeros().toPlainString() + findQC.get().getQcUnit();
             }
         }
 
