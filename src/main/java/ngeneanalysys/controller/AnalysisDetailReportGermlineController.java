@@ -30,7 +30,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -382,6 +381,11 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
             e.printStackTrace();
         }
 
+        virtualPanelComboBox.getSelectionModel().selectedItemProperty().addListener((ov, t, t1) -> {
+            if(!t1.equals(t)) setVariantsList();
+            if(!t1.equals(t)) setTargetGenesList();
+        });
+
         setTargetGenesList();
     }
 
@@ -616,7 +620,9 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
     public void createPDFAsDraft() {
         boolean dataSave = saveData(null);
         if(dataSave){
-            createPDF(true);
+            if(createPDF(true)) {
+                setVariantsList();
+            }
         }
     }
 
@@ -655,6 +661,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                     // 최종 보고서 생성이 정상 처리된 경우 분석 샘플의 상태값 완료 처리.
                     if (createPDF(false)) {
                         //setComplete();
+                        setVariantsList();
                     }
                 }
             }  catch (WebAPIException wae) {

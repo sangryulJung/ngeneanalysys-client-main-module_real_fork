@@ -66,7 +66,13 @@ public class JarDownloadTask extends Task {
     protected Void call() throws Exception {
         if(component != null) {
             APIService apiService = APIService.getInstance();
-            apiService.setStage(controller.getMainController().getPrimaryStage());
+            if(controller != null) {
+                apiService.setStage(controller.getMainController().getPrimaryStage());
+            } else if(analysisDetailReportGermlineController != null) {
+                apiService.setStage(analysisDetailReportGermlineController.getMainController().getPrimaryStage());
+            } else {
+                apiService.setStage(tstrnaReportController.getMainController().getPrimaryStage());
+            }
 
             CloseableHttpClient httpclient = null;
             CloseableHttpResponse response = null;

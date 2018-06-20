@@ -22,6 +22,7 @@ import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.model.render.DatepickerConverter;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.service.ImageService;
 import ngeneanalysys.service.PDFCreateService;
 import ngeneanalysys.task.ImageFileDownloadTask;
 import ngeneanalysys.task.JarDownloadTask;
@@ -34,13 +35,8 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.rendering.ImageType;
-import org.apache.pdfbox.rendering.PDFRenderer;
 import org.slf4j.Logger;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
@@ -736,22 +732,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         createPDF(false);
     }
 
-    public void convertPDFtoImage(File file, String baseFileName) {
-        String path = file.getParentFile().getAbsolutePath();
-        try {
-        PDDocument document = PDDocument.load(file);
-            PDFRenderer d = new PDFRenderer(document);
-            int index = document.getNumberOfPages();
-
-            for(int i = 0; i < index ;i++) {
-                BufferedImage im  = d.renderImage(i, 2, ImageType.RGB);
-                ImageIO.write(im, "jpg",  new File(path + "\\\\" + baseFileName + "_" + i+".jpg"));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public Map<String, Object> contents() throws WebAPIException {
         Map<String,Object> contentsMap = new HashMap<>();
         contentsMap.put("panelName", panel.getName());
@@ -973,6 +953,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
             if(optionalAnalysisFile.isPresent()) {
                 contentsMap.put("cnvImagePath", optionalAnalysisFile.get().getName());
+                downloadCNVImage(optionalAnalysisFile.get());
             }
 
             try {
@@ -1083,8 +1064,10 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             FileChooser fileChooser = new FileChooser();
             if(outputType != null && outputType.equalsIgnoreCase("MS_WORD")) {
                 fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF (*.docx)", "*.docx"));
-            } else {
+            } else if(outputType != null && outputType.equalsIgnoreCase("PDF")){
                 fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf"));
+            } else if(outputType != null && outputType.equalsIgnoreCase("IMG")){
+                fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("JPG (*.jpg)", "*.jpg"));
             }
             fileChooser.setInitialFileName(baseSaveName);
             File file = fileChooser.showSaveDialog(this.getMainApp().getPrimaryStage());
@@ -1219,8 +1202,17 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         final String contents1 = velocityUtil.getContents(reportContents.getReportTemplate().getId() + "/" + reportContents.getReportTemplate().getName() + ".vm", "UTF-8", model);
                         task.setOnSucceeded(ev -> {
                             try {
-                                final boolean created1 = pdfCreateService.createPDF(file, contents1);
-                                createdCheck(created1, file);
+                                if(reportContents.getReportTemplate().getOutputType() != null
+                                        && reportContents.getReportTemplate().getOutputType().equalsIgnoreCase("PDF")) {
+                                    final boolean created1 = pdfCreateService.createPDF(file, contents1);
+                                    createdCheck(created1, file);
+                                } else {
+                                    String path = CommonConstants.BASE_FULL_PATH + File.separator + "temp" + File.separator + "tempPDF.pdf";
+                                    File tempPDFFile = new File(path);
+                                    final boolean created1 = pdfCreateService.createPDF(tempPDFFile, contents1);
+                                    createdCheck(created1, tempPDFFile);
+                                    ImageService.convertPDFtoImage(tempPDFFile, sample.getName(), file);
+                                }
 
                             } catch (Exception e) {
                                 DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);

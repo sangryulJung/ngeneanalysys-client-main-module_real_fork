@@ -1153,7 +1153,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             cosmicCount.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getCosmic().getCosmicCount()));
             cosmicCount.setVisible(false);
 
-            TableColumn<VariantAndInterpretationEvidence, String> oncokbActionCancer = new TableColumn<>("OncoKB Action Cancer");
+            /*TableColumn<VariantAndInterpretationEvidence, String> oncokbActionCancer = new TableColumn<>("OncoKB Action Cancer");
             createTableHeader(oncokbActionCancer, "OncoKB Action Cancer", null ,null);
             oncokbActionCancer.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getOncoKB().getOncokbActionCancer()));
             oncokbActionCancer.setVisible(false);
@@ -1196,7 +1196,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             TableColumn<VariantAndInterpretationEvidence, String> oncokbTx = new TableColumn<>("OncoKB TX");
             createTableHeader(oncokbTx, "OncoKB TX", null ,null);
             oncokbTx.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getOncoKB().getOncokbTx()));
-            oncokbTx.setVisible(false);
+            oncokbTx.setVisible(false);*/
         }
 
         if(panel != null && ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {

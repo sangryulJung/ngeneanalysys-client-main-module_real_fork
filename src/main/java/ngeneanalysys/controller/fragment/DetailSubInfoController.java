@@ -145,10 +145,10 @@ public class DetailSubInfoController extends SubPaneController {
             if (!StringUtils.isEmpty(exacFormat)) {
                 externalLinkComboBox.getItems().addAll("ExAC", "gnomAD");
             }
-            if (selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getOncoKB() != null &&
+            /*if (selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getOncoKB() != null &&
                     !StringUtils.isEmpty(selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getOncoKB().getOncokbHgvsp())) {
                 externalLinkComboBox.getItems().addAll("OncoKB");
-            }
+            }*/
             if (!StringUtils.isEmpty(selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getCosmic().getCosmicIds())) {
                 externalLinkComboBox.getItems().addAll("COSMIC");
             }
@@ -224,13 +224,13 @@ public class DetailSubInfoController extends SubPaneController {
                 String fullUrlExAC = "http://gnomad.broadinstitute.org/variant/"
                         + exacFormat;
                 openBrowser(fullUrlExAC);
-            } else if("OncoKB".equalsIgnoreCase(item)) {
+            } /*else if("OncoKB".equalsIgnoreCase(item)) {
                 String fullUrlOncoKB = "http://oncokb.org/#/gene/"
                         + selectedAnalysisResultVariant.getSnpInDel().getGenomicCoordinate().getGene()
                         + "/variant/"
                         + selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getOncoKB().getOncokbHgvsp();
                 openBrowser(fullUrlOncoKB);
-            } else if("COSMIC".equalsIgnoreCase(item)) {
+            }*/ else if("COSMIC".equalsIgnoreCase(item)) {
                 String cosmicId = selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getCosmic().getCosmicIds().replaceAll("COSM", "");
                 if (cosmicId.contains("|")) {
                     String[] ids = cosmicId.split("\\|");
