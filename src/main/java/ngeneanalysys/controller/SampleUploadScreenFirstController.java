@@ -399,7 +399,10 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
         for(Sample sample : sampleArrayList) {
             if(row > 22) break;
-
+            if(sampleNameTextFieldList.get(row).isDisable()) {
+                row++;
+                continue;
+            }
             sampleNameTextFieldList.get(row).setText(sample.getName());
 
             if(sample.getDiseaseId() != null) {
@@ -489,7 +492,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     private void createRow(int row) {
         standardDataGridPane.setPrefHeight(standardDataGridPane.getPrefHeight() + 28);
         if(!sampleNameTextFieldList.isEmpty() && sampleNameTextFieldList.size() > row) {
-            panelSetting(panelComboBoxList.get(row));
+            if(!panelComboBoxList.get(row).isDisable()) panelSetting(panelComboBoxList.get(row));
             standardDataGridPane.addRow(row, sampleNameTextFieldList.get(row), panelComboBoxList.get(row)
                     , sampleSourceComboBoxList.get(row), diseaseComboBoxList.get(row));
             return;
