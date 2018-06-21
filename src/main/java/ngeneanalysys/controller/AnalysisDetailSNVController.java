@@ -1006,7 +1006,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         alt.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAltSequence()));
 
         if ((panel.getCode().equalsIgnoreCase("447") || panel.getCode().equalsIgnoreCase("445"))
-                && sample.getSampleSource().equalsIgnoreCase("BLOOD")) {
+                && !sample.getSampleSource().equalsIgnoreCase("FFPE")) {
             TableColumn<VariantAndInterpretationEvidence, String> zigosity = new TableColumn<>("Zigosity");
             createTableHeader(zigosity, "Zigosity", null, null);
             zigosity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getZygosity()));

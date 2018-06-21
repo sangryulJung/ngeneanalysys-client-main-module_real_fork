@@ -554,7 +554,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         });
 
         ComboBox<String> source = new ComboBox<>();
-        source.getItems().addAll("Blood","Bone marrow", "FFPE","DNA");
+        source.getItems().addAll("Peripheral Blood", "Peripheral Blood (Cryo)", "Bone marrow", "Bone marrow (Cryo)", "FFPE","DNA", "ETC");
         source.setMaxWidth(200);
         sampleSourceComboBoxList.add(source);
         source.setStyle("-fx-text-inner-color: black; -fx-border-width: 0;");

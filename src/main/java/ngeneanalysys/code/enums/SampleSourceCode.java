@@ -7,10 +7,13 @@ package ngeneanalysys.code.enums;
  * @since 2016. 5. 24. 오전 10:31:15
  */
 public enum SampleSourceCode {
-	BLOOD("Blood"),
+	BLOOD("Peripheral Blood"),
+	BLOODCRYO("Peripheral Blood (Cryo)"),
 	BONEMARROW("Bone marrow"),
+	BONEMARROWCRYO("Bone marrow (Cryo)"),
 	FFPE("FFPE"),
-	DNA("DNA");
+	DNA("DNA"),
+	ETC("ETC");
 	
 	private String description;
 	

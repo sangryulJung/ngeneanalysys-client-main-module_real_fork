@@ -111,10 +111,6 @@
 				<fo:block>
 					<fo:block font-size="14pt" margin-bottom="1mm" font-family="Noto Sans CJK KR Bold" font-weight="bold">Panel : $contents.panelName</fo:block>
 
-                    #if($contents.sampleSource && $contents.sampleSource == "BLOOD")
-                    <fo:block margin-bottom="10mm"> </fo:block>
-                    #end
-
                     #if($contents.sampleSource && $contents.sampleSource == "FFPE")
 					<fo:table table-layout="fixed" width="100%" margin-bottom="4mm" border-bottom="solid 0.1mm black" border-top="solid 0.1mm black">
 						<fo:table-body>
@@ -135,6 +131,8 @@
 							#end
 						</fo:table-body>
 					</fo:table>
+                    #else
+                    <fo:block margin-bottom="10mm"> </fo:block>
                     #end
                     <fo:table>
                         <fo:table-body>
@@ -874,11 +872,11 @@
             </fo:block>
             #if($contents.sampleSource && $contents.sampleSource == "FFPE")
 			<fo:block id="lastPage"> </fo:block>
-            #elseif($contents.sampleSource && $contents.sampleSource == "BLOOD")
+            #else
             <fo:block page-break-before="always"> </fo:block>
             #end
 
-            #if($contents.sampleSource && $contents.sampleSource == "BLOOD")
+            #if($contents.sampleSource && $contents.sampleSource != "FFPE")
             <fo:block>
                 <fo:block font-size="16pt" margin-bottom="4mm" margin-top="10mm" font-family="Noto Sans CJK KR Bold" font-weight="bold">Target Gene List</fo:block>
                 <fo:table table-layout="fixed" width="100%" margin-bottom="4mm" border-bottom="solid 0.1mm black" border-top="solid 0.1mm black">

@@ -260,12 +260,20 @@ public class SystemManagerPanelController extends SubPaneController {
                 LibraryTypeCode.AMPLICON_BASED.getDescription()));
         libraryTypeComboBox.getSelectionModel().selectFirst();
         defaultSampleSourceComboBox.setConverter(new ComboBoxConverter());
+        defaultSampleSourceComboBox.getItems().add(new ComboBoxItem(SampleSourceCode.ETC.getDescription(),
+                SampleSourceCode.ETC.getDescription()));
+        defaultSampleSourceComboBox.getItems().add(new ComboBoxItem(SampleSourceCode.DNA.getDescription(),
+                SampleSourceCode.DNA.getDescription()));
         defaultSampleSourceComboBox.getItems().add(new ComboBoxItem(SampleSourceCode.FFPE.getDescription(),
                 SampleSourceCode.FFPE.getDescription()));
         defaultSampleSourceComboBox.getItems().add(new ComboBoxItem(SampleSourceCode.BONEMARROW.getDescription(),
                 SampleSourceCode.BONEMARROW.getDescription()));
+        defaultSampleSourceComboBox.getItems().add(new ComboBoxItem(SampleSourceCode.BONEMARROW.getDescription(),
+                SampleSourceCode.BONEMARROWCRYO.getDescription()));
         defaultSampleSourceComboBox.getItems().add(new ComboBoxItem(SampleSourceCode.BLOOD.getDescription(),
                 SampleSourceCode.BLOOD.getDescription()));
+        defaultSampleSourceComboBox.getItems().add(new ComboBoxItem(SampleSourceCode.BLOOD.getDescription(),
+                SampleSourceCode.BLOODCRYO.getDescription()));
         defaultSampleSourceComboBox.getSelectionModel().selectFirst();
         createdAtTableColumn.setCellValueFactory(item -> new SimpleStringProperty(DateFormatUtils.format(
                 item.getValue().getCreatedAt().toDate(), DATE_FORMAT)));
