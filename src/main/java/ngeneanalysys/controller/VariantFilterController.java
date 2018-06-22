@@ -1057,29 +1057,31 @@ public class VariantFilterController extends SubPaneController {
             setFrequency(list, exacTextField.getText(), exacComboBox.getSelectionModel().getSelectedItem().getValue(), "exac");
         }
 
-        if(!StringUtils.isEmpty(gnomADAllTextField.getText())) {
-            setFrequency(list, gnomADAllTextField.getText(), gnomADAllComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADall");
-        }
-        if(!StringUtils.isEmpty(gnomADmaTextField.getText())) {
-            setFrequency(list, gnomADmaTextField.getText(), gnomADmaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADadmixedAmerican");
-        }
-        if(!StringUtils.isEmpty(gnomADaaaTextField.getText())) {
-            setFrequency(list, gnomADaaaTextField.getText(), gnomADaaaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADafricanAfricanAmerican");
-        }
-        if(!StringUtils.isEmpty(gnomADeaTextField.getText())) {
-            setFrequency(list, gnomADeaTextField.getText(), gnomADeaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADeastAsian");
-        }
-        if(!StringUtils.isEmpty(gnomADfinTextField.getText())) {
-            setFrequency(list, gnomADfinTextField.getText(), gnomADfinComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADfinnish");
-        }
-        if(!StringUtils.isEmpty(gnomADnfeTextField.getText())) {
-            setFrequency(list, gnomADnfeTextField.getText(), gnomADnfeComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADnonFinnishEuropean");
-        }
-        if(!StringUtils.isEmpty(gnomADotherTextField.getText())) {
-            setFrequency(list, gnomADotherTextField.getText(), gnomADotherComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADothers");
-        }
-        if(!StringUtils.isEmpty(gnomADsaTextField.getText())) {
-            setFrequency(list, gnomADsaTextField.getText(), gnomADsaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADsouthAsian");
+        if("somatic".equalsIgnoreCase(analysisType)) {
+            if (!StringUtils.isEmpty(gnomADAllTextField.getText())) {
+                setFrequency(list, gnomADAllTextField.getText(), gnomADAllComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADall");
+            }
+            if (!StringUtils.isEmpty(gnomADmaTextField.getText())) {
+                setFrequency(list, gnomADmaTextField.getText(), gnomADmaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADadmixedAmerican");
+            }
+            if (!StringUtils.isEmpty(gnomADaaaTextField.getText())) {
+                setFrequency(list, gnomADaaaTextField.getText(), gnomADaaaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADafricanAfricanAmerican");
+            }
+            if (!StringUtils.isEmpty(gnomADeaTextField.getText())) {
+                setFrequency(list, gnomADeaTextField.getText(), gnomADeaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADeastAsian");
+            }
+            if (!StringUtils.isEmpty(gnomADfinTextField.getText())) {
+                setFrequency(list, gnomADfinTextField.getText(), gnomADfinComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADfinnish");
+            }
+            if (!StringUtils.isEmpty(gnomADnfeTextField.getText())) {
+                setFrequency(list, gnomADnfeTextField.getText(), gnomADnfeComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADnonFinnishEuropean");
+            }
+            if (!StringUtils.isEmpty(gnomADotherTextField.getText())) {
+                setFrequency(list, gnomADotherTextField.getText(), gnomADotherComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADothers");
+            }
+            if (!StringUtils.isEmpty(gnomADsaTextField.getText())) {
+                setFrequency(list, gnomADsaTextField.getText(), gnomADsaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADsouthAsian");
+            }
         }
     }
 

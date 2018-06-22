@@ -204,6 +204,8 @@ public class SampleUploadController extends BaseStageController{
         currentStage.initOwner(getMainApp().getPrimaryStage());
         pageSetting(1);
 
+        if(run != null) runInfoEdit();
+
         textFieldRunName.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")) {
                 textFieldRunName.setText(oldValue);
@@ -251,6 +253,24 @@ public class SampleUploadController extends BaseStageController{
         }
         currentStage.setScene(scene);
         currentStage.showAndWait();
+    }
+
+    void runInfoEdit() {
+        textFieldRunName.setText(run.getName());
+        textFieldRunName.setDisable(true);
+
+        if(run.getSequencingPlatform().equals(SequencerCode.MISEQ.getDescription())) {
+            sequencerMiSeqRadioButton.selectedProperty().setValue(true);
+        } else if(run.getSequencingPlatform().equals(SequencerCode.MISEQ_DX.getDescription())) {
+            sequencerMiSeqDXRadioButton.selectedProperty().setValue(true);
+        } else if(run.getSequencingPlatform().equals(SequencerCode.NEXTSEQ_DX.getDescription())) {
+            nextSeqDxRadioButton.selectedProperty().setValue(true);
+        }
+
+        sequencerMiSeqDXRadioButton.setDisable(true);
+        sequencerMiSeqRadioButton.setDisable(true);
+        nextSeqDxRadioButton.setDisable(true);
+
     }
 
     void pageSetting(int scene) throws IOException {

@@ -56,6 +56,9 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     private List<AnalysisFile> failedAnalysisFileList = new ArrayList<>();
 
     @FXML
+    private Button buttonSubmit;
+
+    @FXML
     private GridPane standardDataGridPane;
 
     @FXML
@@ -244,6 +247,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     @Override
     public void show(Parent root) throws IOException {
+        runInfoEdit();
         standardDataGridPane.getChildren().clear();
         standardDataGridPane.setPrefHeight(0);
         fileMap = sampleUploadController.getFileMap();
@@ -255,6 +259,18 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         if(sampleUploadController.getSamples() != null) {
             sampleArrayList = sampleUploadController.getSamples();
             tableEdit();
+        }
+    }
+
+    public void runInfoEdit() {
+        Run run = sampleUploadController.getRun();
+        if(run != null) {
+            serverFastqFilesRadioButton.setDisable(true);
+            serverRunFolderRadioButton.setDisable(true);
+            if(!StringUtils.isEmpty(run.getServerRunDir())) {
+                localFastqFilesRadioButton.setDisable(true);
+                buttonSubmit.setDisable(true);
+            }
         }
     }
 
@@ -404,6 +420,14 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 continue;
             }
             sampleNameTextFieldList.get(row).setText(sample.getName());
+            if(mainController.getProgressTaskContentArea() == null || mainController.getProgressTaskContentArea().getChildren().isEmpty()) {
+                if(sample.getSampleStatus() != null && sample.getSampleStatus().getStep()
+                        .equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STEP_UPLOAD) &&
+                        sample.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_RUNNING)) {
+                    sampleNameTextFieldList.get(row).setStyle(sampleNameTextFieldList.get(row).getStyle() +
+                            "-fx-text-fill : #FF0000;");
+                }
+            }
 
             if(sample.getDiseaseId() != null) {
                 ComboBox<ComboBoxItem> disease = diseaseComboBoxList.get(row);
@@ -700,6 +724,11 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             }
         }
 
+        if(!saveSampleData()) {
+            DialogUtil.alert("check item", "check item", sampleUploadController.getCurrentStage(), true);
+            return;
+        }
+
         if(sampleUploadController.getRun() != null) {
             newSampleAdded();
             if((uploadFileData != null && !uploadFileData.isEmpty()) &&
@@ -731,10 +760,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                     params.put("serverRunDir", runPath);
                 }
 
-                if(!saveSampleData()) {
-                    DialogUtil.alert("check item", "check item", sampleUploadController.getCurrentStage(), true);
-                    return;
-                }
                 List<Map<String, Object>> list = returnSampleMap();
 
                 params.put("sampleCreateRequests", list);
