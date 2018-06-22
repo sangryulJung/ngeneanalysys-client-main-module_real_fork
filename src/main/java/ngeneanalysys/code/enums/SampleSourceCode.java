@@ -13,7 +13,7 @@ public enum SampleSourceCode {
 	BONEMARROWCRYO("Bone marrow (Cryo)"),
 	FFPE("FFPE"),
 	DNA("DNA"),
-	ETC("ETC");
+	ETC("Etc");
 	
 	private String description;
 	

@@ -69,7 +69,7 @@
             <HBox alignment="CENTER_RIGHT" maxWidth="1000.0" prefHeight="100.0" prefWidth="870.0" spacing="20.0" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                <children>
                   <Button alignment="TOP_RIGHT" mnemonicParsing="false" onAction="#addInterpretation" prefWidth="60.0" style="-fx-alignment: center;" styleClass="cancelBtn" text="Add" />
-                  <Button mnemonicParsing="false" onAction="#saveInterpretation" prefWidth="60.0" styleClass="submitBtn" text="Save" />
+                  <Button fx:id="saveBtn" mnemonicParsing="false" onAction="#saveInterpretation" prefWidth="60.0" styleClass="submitBtn" text="Save" />
                </children>
                <padding>
                   <Insets right="10.0" />

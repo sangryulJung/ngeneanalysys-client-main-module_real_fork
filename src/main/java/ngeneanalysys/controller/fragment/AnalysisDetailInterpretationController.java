@@ -47,9 +47,11 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     private Label swTierLabel;
     @FXML
     private Label userTierLabel;
-
     @FXML
     private Label arrow;
+
+    @FXML
+    private Button saveBtn;
 
     @FXML
     private CheckBox addToReportCheckBox;
@@ -584,6 +586,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     public void addInterpretation() {
         SnpInDelEvidence snpInDelEvidence = new SnpInDelEvidence();
         evidenceTableView.getItems().add(snpInDelEvidence);
+        saveBtn.setDisable(false);
     }
 
     private boolean checkPrimary() {
@@ -642,6 +645,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
     public void delete(SnpInDelEvidence snpInDelEvidence) {
         evidenceTableView.getItems().remove(snpInDelEvidence);
+        if(evidenceTableView.getItems().isEmpty()) saveBtn.setDisable(true);
     }
 
 

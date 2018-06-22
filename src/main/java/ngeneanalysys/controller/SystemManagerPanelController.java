@@ -268,11 +268,11 @@ public class SystemManagerPanelController extends SubPaneController {
                 SampleSourceCode.FFPE.getDescription()));
         defaultSampleSourceComboBox.getItems().add(new ComboBoxItem(SampleSourceCode.BONEMARROW.getDescription(),
                 SampleSourceCode.BONEMARROW.getDescription()));
-        defaultSampleSourceComboBox.getItems().add(new ComboBoxItem(SampleSourceCode.BONEMARROW.getDescription(),
+        defaultSampleSourceComboBox.getItems().add(new ComboBoxItem(SampleSourceCode.BONEMARROWCRYO.getDescription(),
                 SampleSourceCode.BONEMARROWCRYO.getDescription()));
         defaultSampleSourceComboBox.getItems().add(new ComboBoxItem(SampleSourceCode.BLOOD.getDescription(),
                 SampleSourceCode.BLOOD.getDescription()));
-        defaultSampleSourceComboBox.getItems().add(new ComboBoxItem(SampleSourceCode.BLOOD.getDescription(),
+        defaultSampleSourceComboBox.getItems().add(new ComboBoxItem(SampleSourceCode.BLOODCRYO.getDescription(),
                 SampleSourceCode.BLOODCRYO.getDescription()));
         defaultSampleSourceComboBox.getSelectionModel().selectFirst();
         createdAtTableColumn.setCellValueFactory(item -> new SimpleStringProperty(DateFormatUtils.format(

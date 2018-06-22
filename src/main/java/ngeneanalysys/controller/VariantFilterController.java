@@ -586,6 +586,23 @@ public class VariantFilterController extends SubPaneController {
             predictionCCheckBox.setText("US(Uncertatin Significance)");
             predictionDCheckBox.setText("LB(Likely Benign)");
             predictionECheckBox.setText("B(Benign)");
+
+            gnomADaaaComboBox.setDisable(true);
+            gnomADaaaTextField.setDisable(true);
+            gnomADAllComboBox.setDisable(true);
+            gnomADAllTextField.setDisable(true);
+            gnomADeaComboBox.setDisable(true);
+            gnomADeaTextField.setDisable(true);
+            gnomADfinComboBox.setDisable(true);
+            gnomADfinTextField.setDisable(true);
+            gnomADmaComboBox.setDisable(true);
+            gnomADmaTextField.setDisable(true);
+            gnomADnfeComboBox.setDisable(true);
+            gnomADnfeTextField.setDisable(true);
+            gnomADotherComboBox.setDisable(true);
+            gnomADotherTextField.setDisable(true);
+            gnomADsaComboBox.setDisable(true);
+            gnomADsaTextField.setDisable(true);
         }
 
         clinVarACheckBox.setText("P(Pathogentic)");

@@ -557,7 +557,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         });
 
         ComboBox<String> source = new ComboBox<>();
-        source.getItems().addAll("Peripheral Blood", "Peripheral Blood (Cryo)", "Bone marrow", "Bone marrow (Cryo)", "FFPE","DNA", "ETC");
+        source.getItems().addAll("Peripheral Blood", "Peripheral Blood (Cryo)", "Bone marrow", "Bone marrow (Cryo)", "FFPE","DNA", "Etc");
         source.setMaxWidth(200);
         sampleSourceComboBoxList.add(source);
         source.setStyle("-fx-text-inner-color: black; -fx-border-width: 0;");
@@ -602,7 +602,8 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             }
 
             if(panelDetail.getDefaultSampleSource() != null) {
-                sampleSourceComboBoxList.get(index).getSelectionModel().select(panelDetail.getDefaultSampleSource());
+                if(sampleSourceComboBoxList.get(index).getItems().contains(panelDetail.getDefaultSampleSource()))
+                    sampleSourceComboBoxList.get(index).getSelectionModel().select(panelDetail.getDefaultSampleSource());
             } else {
                 sampleSourceComboBoxList.get(index).getSelectionModel().clearSelection();
             }
