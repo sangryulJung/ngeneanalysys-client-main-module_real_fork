@@ -84,9 +84,6 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
     private TableColumn<GenomicCoordinateClinicalVariant, String> cosmicExistenceTableColumn;
 
     @FXML
-    private TableColumn<GenomicCoordinateClinicalVariant, String> oncoKBExistenceTableColumn;
-
-    @FXML
     private TableColumn<GenomicCoordinateClinicalVariant, String> clinVarExistenceTableColumn;
 
     @FXML
@@ -204,11 +201,6 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
         cosmicExistenceTableColumn.setCellFactory(tableColumn -> new EditingCell());
         cosmicExistenceTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) ->
                 (t.getTableView().getItems().get(t.getTablePosition().getRow())).getClinicalDatabaseExistence().setCosmicExistence(t.getNewValue()));
-
-        oncoKBExistenceTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getClinicalDatabaseExistence().getOncoKBExistence()));
-        oncoKBExistenceTableColumn.setCellFactory(tableColumn -> new EditingCell());
-        oncoKBExistenceTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) ->
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).getClinicalDatabaseExistence().setOncoKBExistence(t.getNewValue()));
 
         clinVarExistenceTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getClinicalDatabaseExistence().getClinVarExistence()));
         clinVarExistenceTableColumn.setCellFactory(tableColumn -> new EditingCell());

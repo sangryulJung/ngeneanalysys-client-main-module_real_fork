@@ -713,6 +713,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     @FXML
     public void submit() {
+        if (sampleArrayList == null || sampleArrayList.isEmpty()) return;
 
         for(ComboBox<ComboBoxItem> panelComboBox : panelComboBoxList) {
             ComboBoxItem comboBoxItem = panelComboBox.getSelectionModel().getSelectedItem();
@@ -741,52 +742,50 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         }
 
         try {
-            if (sampleArrayList != null && !sampleArrayList.isEmpty()) {
+            Map<String, Object> params = new HashMap<>();
+            HttpClientResponse response;
+            RunWithSamples run;
 
-                Map<String, Object> params = new HashMap<>();
-                HttpClientResponse response;
-                RunWithSamples run;
-
-                if(sampleUploadController.getRunName() == null || "".equals(sampleUploadController.getRunName())) {
-                    Date date = new Date();
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd.HH:mm:ss");
-                    params.put("name", sdf.format(date));
-                } else {
-                    params.put("name", sampleUploadController.getRunName());
-                }
-                params.put("sequencingPlatform", sampleUploadController.getSequencerType().getUserData());
-
-                if(isServerItem) {
-                    params.put("serverRunDir", runPath);
-                }
-
-                List<Map<String, Object>> list = returnSampleMap();
-
-                params.put("sampleCreateRequests", list);
-
-                response = apiService.post("/runs", params, null, true);
-                run = response.getObjectBeforeConvertResponseToJSON(RunWithSamples.class);
-                if (run != null) {
-                    mainController.getBasicInformationMap().put("runId", run.getRun().getId());
-                    logger.debug(run.toString());
-                    List<Sample> samples = run.getSamples();
-
-                    for(Sample sample : samples) {
-                        postAnalysisFilesData(sample);
-                    }
-                /*for (Sample sample : sampleArrayList) {
-                    sample.setRunId(run.getId());
-                    sampleUpload(sample);
-                }*/
-
-                    if((uploadFileData != null && !uploadFileData.isEmpty()) &&
-                            (uploadFileList != null && !uploadFileList.isEmpty())) {
-                        this.mainController.runningAnalysisRequestUpload(uploadFileData, uploadFileList, run.getRun());
-                    }
-                    logger.debug("submit");
-                }
-                closeDialog();
+            if(sampleUploadController.getRunName() == null || "".equals(sampleUploadController.getRunName())) {
+                Date date = new Date();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd.HH:mm:ss");
+                params.put("name", sdf.format(date));
+            } else {
+                params.put("name", sampleUploadController.getRunName());
             }
+            params.put("sequencingPlatform", sampleUploadController.getSequencerType().getUserData());
+
+            if(isServerItem) {
+                params.put("serverRunDir", runPath);
+            }
+
+            List<Map<String, Object>> list = returnSampleMap();
+
+            params.put("sampleCreateRequests", list);
+
+            response = apiService.post("/runs", params, null, true);
+            run = response.getObjectBeforeConvertResponseToJSON(RunWithSamples.class);
+            if (run != null) {
+                mainController.getBasicInformationMap().put("runId", run.getRun().getId());
+                logger.debug(run.toString());
+                List<Sample> samples = run.getSamples();
+
+                for(Sample sample : samples) {
+                    postAnalysisFilesData(sample);
+                }
+            /*for (Sample sample : sampleArrayList) {
+                sample.setRunId(run.getId());
+                sampleUpload(sample);
+            }*/
+
+                if((uploadFileData != null && !uploadFileData.isEmpty()) &&
+                        (uploadFileList != null && !uploadFileList.isEmpty())) {
+                    this.mainController.runningAnalysisRequestUpload(uploadFileData, uploadFileList, run.getRun());
+                }
+                logger.debug("submit");
+            }
+            closeDialog();
+
         } catch (Exception e) {
             logger.error("Unknown Error", e);
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
@@ -796,8 +795,13 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     private void newSampleAdded() {
         for(Sample sample : sampleArrayList) {
             if(sample.getId() == null) {
-
-                Optional<TextField> optionalTextField = sampleNameTextFieldList.stream().filter(item ->
+                try {
+                    sample.setRunId(sampleUploadController.getRun().getId());
+                    sampleUpload(sample);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                /*Optional<TextField> optionalTextField = sampleNameTextFieldList.stream().filter(item ->
                         (!StringUtils.isEmpty(item.getText()) && sample.getName().equals(item.getText()))).findFirst();
 
                 if(optionalTextField.isPresent()) {
@@ -816,7 +820,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                     sampleUpload(sample);
                 } catch (Exception e) {
                     e.printStackTrace();
-                }
+                }*/
             } else if ((sample.getSampleStatus() != null &&
                     sample.getSampleStatus().getStep().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STEP_UPLOAD)
                     && sample.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_QUEUED))) {
@@ -825,17 +829,23 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         }
     }
 
+    private Map<String, Object> createSampleMap(Sample sample) {
+        Map<String, Object> params = new HashMap<>();
+
+        params.put("runId", sample.getRunId());
+        params.put("name", sample.getName());
+        params.put("panelId", sample.getPanelId());
+        params.put("diseaseId", sample.getDiseaseId());
+        params.put("sampleSource", sample.getSampleSource());
+        params.put("inputFType", "FASTQ.GZ");
+
+        return params;
+    }
+
     private List<Map<String, Object>> returnSampleMap() {
         List<Map<String, Object>> list = new ArrayList<>();
         for(Sample sample : sampleArrayList) {
-            Map<String, Object> params = new HashMap<>();
-
-            params.put("runId", sample.getRunId());
-            params.put("name", sample.getName());
-            params.put("panelId", sample.getPanelId());
-            params.put("diseaseId", sample.getDiseaseId());
-            params.put("sampleSource", sample.getSampleSource());
-            params.put("inputFType", "FASTQ.GZ");
+            Map<String, Object> params = createSampleMap(sample);
             list.add(params);
         }
         return list;
@@ -843,13 +853,9 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     private void sampleUpload(Sample sample) throws Exception {
 
-        Map<String, Object> params = new HashMap<>();
+        Map<String, Object> params = createSampleMap(sample);
         HttpClientResponse response;
 
-        params.put("runId", sample.getRunId());
-        params.put("name", sample.getName());
-        params.put("diseaseId", sample.getDiseaseId());
-        params.put("inputFType", "FASTQ.GZ");
         response = apiService.post("/samples", params, null, true);
         Sample sampleData = response.getObjectBeforeConvertResponseToJSON(Sample.class);
 

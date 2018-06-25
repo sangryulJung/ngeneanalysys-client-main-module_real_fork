@@ -954,19 +954,6 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                             }
                         }
 
-                        if ("oncoKBButton".equals(id)) {
-                            Button oncoKBButton = (Button) node;
-                            if(selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getOncoKB() != null &&
-                                    !StringUtils.isEmpty(selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getOncoKB().getOncokbHgvsp())) {
-                                String fullUrlOncoKB = "http://oncokb.org/#/gene/"
-                                        + selectedAnalysisResultVariant.getSnpInDel().getGenomicCoordinate().getGene()
-                                        + "/variant/"
-                                        + selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getOncoKB().getOncokbHgvsp();
-                                oncoKBButton.setOnAction(event -> getMainApp().getHostServices().showDocument(fullUrlOncoKB));
-                                oncoKBButton.setDisable(false);
-                            }
-                        }
-
                         if ("ucscButton".equals(id)) {
                             Button ucscButton = (Button) node;
                             if(start != null && end != null) {

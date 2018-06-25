@@ -2,7 +2,6 @@ package ngeneanalysys.model;
 
 public class ClinicalDatabaseExistence {
     private String cosmicExistence;
-    private String oncoKBExistence;
     private String clinVarExistence;
 
     public String getCosmicExistence() {
@@ -11,14 +10,6 @@ public class ClinicalDatabaseExistence {
 
     public void setCosmicExistence(String cosmicExistence) {
         this.cosmicExistence = cosmicExistence;
-    }
-
-    public String getOncoKBExistence() {
-        return oncoKBExistence;
-    }
-
-    public void setOncoKBExistence(String oncoKBExistence) {
-        this.oncoKBExistence = oncoKBExistence;
     }
 
     public String getClinVarExistence() {
@@ -33,7 +24,6 @@ public class ClinicalDatabaseExistence {
     public String toString() {
         return "ClinicalDatabaseExistence{" +
                 "cosmicExistence='" + cosmicExistence + '\'' +
-                ", oncoKBExistence='" + oncoKBExistence + '\'' +
                 ", clinVarExistence='" + clinVarExistence + '\'' +
                 '}';
     }

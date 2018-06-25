@@ -13,14 +13,6 @@ public class ClinicalDB {
     private String kohbraPatient;
     private String enigma;
     private BrcaExchange be;
-    private OncoKB oncoKB;
-
-    /**
-     * @return oncoKB
-     */
-    public OncoKB getOncoKB() {
-        return oncoKB;
-    }
 
     /**
      * @return cosmic

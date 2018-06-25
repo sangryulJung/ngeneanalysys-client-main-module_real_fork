@@ -106,39 +106,39 @@
             </ScrollPane>
          </children>
       </VBox>
-      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
+      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
          <children>
-            <Label styleClass="total_icon" text="T">
+            <Label styleClass="total_icon" text="T" visible="false">
                <tooltip>
                   <Tooltip text="Run Count" />
                </tooltip></Label>
-            <Label fx:id="totalCountLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" text="100">
+            <Label fx:id="totalCountLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" text="100" visible="false">
                <HBox.margin>
                   <Insets left="3.0" right="10.0" />
                </HBox.margin></Label>
-            <Label styleClass="queued_icon" text="Q">
+            <Label styleClass="queued_icon" text="Q" visible="false">
                <padding>
                   <Insets top="-1.0" />
                </padding>
                <tooltip>
                   <Tooltip text="Queued Sample Count" />
                </tooltip></Label>
-            <Label fx:id="queueLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" text="10">
+            <Label fx:id="queueLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" text="10" visible="false">
                <HBox.margin>
                   <Insets left="3.0" right="10.0" />
                </HBox.margin></Label>
-            <Label styleClass="run_icon" text="R">
+            <Label styleClass="run_icon" text="R" visible="false">
                <padding>
                   <Insets top="-1.0" />
                </padding>
                <tooltip>
                   <Tooltip text="Running Sample Count" />
                </tooltip></Label>
-            <Label fx:id="runningLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" text="10">
+            <Label fx:id="runningLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" text="10" visible="false">
                <HBox.margin>
                   <Insets left="3.0" right="10.0" />
                </HBox.margin></Label>
-            <Label styleClass="complete_icon" text="C">
+            <Label styleClass="complete_icon" text="C" visible="false">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
@@ -148,18 +148,19 @@
                <tooltip>
                   <Tooltip text="Completed Sample Count" />
                </tooltip></Label>
-            <Label fx:id="completeLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" text="10">
+            <Label fx:id="completeLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" text="10" visible="false">
                <HBox.margin>
                   <Insets left="3.0" right="10.0" />
                </HBox.margin></Label>
-            <Label styleClass="failed_icon" text="F">
+            <Label styleClass="failed_icon" text="F" visible="false">
                <tooltip>
                   <Tooltip text="Failed Sample Count" />
                </tooltip></Label>
-            <Label fx:id="failLabel" prefHeight="19.0" prefWidth="0.0" style="-fx-font-family: Noto Sans CJK KR Regular;" text="1">
+            <Label fx:id="failLabel" prefHeight="19.0" prefWidth="0.0" style="-fx-font-family: Noto Sans CJK KR Regular;" text="1" visible="false">
                <HBox.margin>
                   <Insets left="3.0" />
                </HBox.margin></Label>
+            <Button id="excel_download_image" mnemonicParsing="false" visible="false" />
          </children>
       </HBox>
       <HBox prefHeight="38.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1">

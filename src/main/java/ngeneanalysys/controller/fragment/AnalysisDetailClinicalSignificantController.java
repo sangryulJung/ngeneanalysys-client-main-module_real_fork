@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -40,10 +41,15 @@ import java.util.Optional;
 public class AnalysisDetailClinicalSignificantController extends SubPaneController {
     private static Logger logger = LoggerUtil.getLogger();
 
-    @FXML private HBox predictionArea;
-    @FXML private HBox pathogenicityArea;
-    @FXML private CheckBox addToGermlineReportCheckBox;
+    @FXML
+    private HBox predictionArea;
+    @FXML
+    private HBox pathogenicityArea;
+    @FXML
+    private CheckBox addToGermlineReportCheckBox;
 
+    @FXML
+    private VBox acmgVBox;
     @FXML
     private HBox pathogenicityPredictionHBox;
     @FXML
@@ -125,6 +131,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
     @Override
     public void show(Parent root) throws IOException {
         setGermlineArea();
+        setACMG();
         checkBoxSetting(addToGermlineReportCheckBox, selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport());
         showClinicalSignificantGraph();
         addToGermlineReportCheckBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> addToReportBtn(addToGermlineReportCheckBox));
@@ -162,8 +169,8 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                             label.getStyleClass().add("prediction_E");
                             break;
                     }
-                    label.setCursor(Cursor.HAND);
-                    addClickEvent("PREDICTION", label);
+                    //label.setCursor(Cursor.HAND);
+                    //addClickEvent("PREDICTION", label);
                 } else {
                     label.getStyleClass().add("prediction_none");
                 }
@@ -171,6 +178,89 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
         }
         String pathogenicity = selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity();
         setPathogenicityArea(pathogenicity);
+    }
+
+    public void setACMG() {
+        Map<String, Object> acmg = returnResultsAfterSearch("acmg");
+        if(acmg != null && !acmg.isEmpty()) {
+            ScrollPane scrollPane = new ScrollPane();
+            scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+            scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+            double widthSize = 250;
+            scrollPane.setMaxSize(widthSize, 200);
+
+            VBox box = new VBox();
+            box.setMaxWidth(widthSize -15);
+            box.getStyleClass().add("acmg_content_box");
+
+            scrollPane.setContent(box);
+
+            String[] results = acmg.containsKey("rules") ? ((String)acmg.get("rules")).split(",") : null;
+            String rulesText = acmg.containsKey("rules") ? "(" + acmg.get("rules") + ")" : null;
+
+            Label reason = new Label();
+            reason.setMaxWidth(widthSize);
+            reason.setWrapText(true);
+            String pathogenicity = acmg.containsKey("pathogenicity") ? (String)acmg.get("pathogenicity") : null;
+            reason.setText(pathogenicity + rulesText);
+            if("benign".equalsIgnoreCase(pathogenicity)) {
+                reason.getStyleClass().add("benign");
+            } else if("likely benign".equalsIgnoreCase(pathogenicity)) {
+                reason.getStyleClass().add("likely_benign");
+            } else if("uncertain significance".equalsIgnoreCase(pathogenicity)) {
+                reason.getStyleClass().add("uncertain_significance");
+            } else if("likely pathogenic".equalsIgnoreCase(pathogenicity)) {
+                reason.getStyleClass().add("likely_pathogenic");
+            } else if("pathogenic".equalsIgnoreCase(pathogenicity)) {
+                reason.getStyleClass().add("pathogenic");
+            }
+            box.getChildren().add(reason);
+
+            assert results != null;
+            for(String result : results) {
+                Map<String, Object> role = (Map<String, Object>) acmg.get(result);
+
+                Label roleLabel = new Label(result);
+                roleLabel.setMaxWidth(50);
+                roleLabel.setWrapText(true);
+                roleLabel.getStyleClass().add("acmg_content_role_label");
+                if(result.startsWith("PVS")) {
+                    roleLabel.getStyleClass().add("acmg_PVS");
+                } else if(result.startsWith("PS")) {
+                    roleLabel.getStyleClass().add("acmg_PS");
+                } else if(result.startsWith("PM")) {
+                    roleLabel.getStyleClass().add("acmg_PM");
+                } else if(result.startsWith("PP")) {
+                    roleLabel.getStyleClass().add("acmg_PP");
+                } else if(result.startsWith("BP")) {
+                    roleLabel.getStyleClass().add("acmg_BP");
+                } else if(result.startsWith("BS")) {
+                    roleLabel.getStyleClass().add("acmg_BS");
+                } else if(result.startsWith("BA")) {
+                    roleLabel.getStyleClass().add("acmg_BA");
+                }
+                box.getChildren().add(roleLabel);
+
+                Label descLabel = new Label();
+                String desc = role.containsKey("desc") ? (String)role.get("desc") : null;
+                descLabel.setWrapText(true);
+                descLabel.setText(desc);
+                descLabel.getStyleClass().add("acmg_content_desc_label");
+                descLabel.setMaxWidth(widthSize);
+                box.getChildren().add(descLabel);
+
+                String massage = role.containsKey("message") ? (String)role.get("message") : null;
+                if(!StringUtils.isEmpty(massage)) {
+                    Label msgLabel = new Label();
+                    msgLabel.setWrapText(true);
+                    msgLabel.setText("("+massage+")");
+                    msgLabel.getStyleClass().add("acmg_content_msg_label");
+                    msgLabel.setMaxWidth(widthSize);
+                    box.getChildren().add(msgLabel);
+                }
+            }
+            acmgVBox.getChildren().add(scrollPane);
+        }
     }
 
     public void setVariantPathogenicity(String pathogenicity) {
@@ -496,19 +586,19 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                 child.getStyleClass().removeAll(child.getStyleClass());
                 if (((Label)child).getText().equals("P") && level  == 5) {
                     child.getStyleClass().add("prediction_A");
-                    addClickEvent(text, child);
+                    //addClickEvent(text, child);
                 } else if(((Label)child).getText().equals("LP") && level == 4) {
                     child.getStyleClass().add("prediction_B");
-                    addClickEvent(text, child);
+                    //addClickEvent(text, child);
                 } else if(((Label)child).getText().equals("US") && level == 3) {
                     child.getStyleClass().add("prediction_C");
-                    addClickEvent(text, child);
+                    //addClickEvent(text, child);
                 } else if(((Label)child).getText().equals("LB") && level == 2) {
                     child.getStyleClass().add("prediction_D");
-                    addClickEvent(text, child);
+                    //addClickEvent(text, child);
                 } else if(((Label)child).getText().equals("B") && level == 1) {
                     child.getStyleClass().add("prediction_E");
-                    addClickEvent(text, child);
+                    //addClickEvent(text, child);
                 } else if(((Label)child).getText().equals(text)) {
                     child.getStyleClass().add("clinical_significant_pathogenicity_label");
                 } else {
