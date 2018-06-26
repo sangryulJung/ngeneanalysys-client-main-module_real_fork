@@ -1,4 +1,4 @@
-package ngeneanalysys.controller;
+package ngeneanalysys.controller.systemManager;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -26,6 +26,7 @@ import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.ExperimentTypeCode;
 import ngeneanalysys.code.enums.LibraryTypeCode;
 import ngeneanalysys.code.enums.SampleSourceCode;
+import ngeneanalysys.controller.VirtualPanelEditController;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;

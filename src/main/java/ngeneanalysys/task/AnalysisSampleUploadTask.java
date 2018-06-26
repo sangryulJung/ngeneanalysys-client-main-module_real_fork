@@ -19,7 +19,7 @@ import java.util.List;
  * @since 2017-08-23
  */
 public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
-    Logger logger = LoggerUtil.getLogger();
+    private Logger logger = LoggerUtil.getLogger();
 
     /** Main Controller Application Object */
     private AnalysisSampleUploadProgressTaskController analysisSampleUploadProgressTaskController;
@@ -139,7 +139,7 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
                     if (currentUploadGroupId > 0) {
                         // 현재 업로드중인 분석 요청 그룹 데이터 삭제
                         //analysisRequestService.removeRequestedJob(currentUploadGroupId);
-                        this.analysisSampleUploadProgressTaskController.getMainController().clearProgressTaskArea();
+                        this.analysisSampleUploadProgressTaskController.clearWhenUploadTaskSucceeded();
                     }
                 }
 
@@ -165,9 +165,7 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
     @Override
     protected void succeeded() {
         // 메인 화면 Progress Task 영역 삭제
-        Platform.runLater(() -> {
-            this.analysisSampleUploadProgressTaskController.clearWhenUploadTaskSucceeded();
-        });
+        Platform.runLater(() -> this.analysisSampleUploadProgressTaskController.clearWhenUploadTaskSucceeded());
 
         // 업로드 작업 중단
         if(this.analysisSampleUploadProgressTaskController.isCancel) {

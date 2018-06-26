@@ -20,6 +20,11 @@ import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.SystemMenuCode;
 import ngeneanalysys.code.enums.UserTypeBit;
 import ngeneanalysys.controller.extend.BaseStageController;
+import ngeneanalysys.controller.systemManager.SystemManagerHomeController;
+import ngeneanalysys.controller.systemMenu.SystemMenuEditController;
+import ngeneanalysys.controller.systemMenu.SystemMenuLicenseController;
+import ngeneanalysys.controller.systemMenu.SystemMenuSettingController;
+import ngeneanalysys.controller.systemMenu.SystemMenuSupportController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedPanel;
@@ -77,6 +82,8 @@ public class MainController extends BaseStageController {
     /** 분석 요청 작업 Task 관리 컨트롤러 */
     private AnalysisSampleUploadProgressTaskController analysisSampleUploadProgressTaskController;
 
+    private RawDataDownloadProgressTaskController rawDataDownloadProgressTaskController;
+
     /** 메인 레이아웃 화면 Stage */
     private Stage primaryStage;
 
@@ -129,6 +136,8 @@ public class MainController extends BaseStageController {
     private Map<String, Object> basicInformationMap = new HashMap<>();
 
     private Queue<Map<String, Object>> uploadListQueue = new LinkedList<>();
+
+    private Queue<RawDataDownloadInfo> downloadListQueue = new LinkedList<>();
 
     private MaskerPane contentsMaskerPane = new MaskerPane();
 
@@ -824,10 +833,15 @@ public class MainController extends BaseStageController {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() &&result.get() == ButtonType.OK){
             // 진행중인 분석 요청건이 있는 경우 정지 처리
-            if(progressTaskContentArea.getChildren() != null && progressTaskContentArea.getChildren().size() > 0
-                    && this.analysisSampleUploadProgressTaskController != null) {
-                this.analysisSampleUploadProgressTaskController.pauseUpload();
-                this.analysisSampleUploadProgressTaskController.interruptForce();
+            if(progressTaskContentArea.getChildren() != null && progressTaskContentArea.getChildren().size() > 0) {
+                if(this.analysisSampleUploadProgressTaskController != null) {
+                    this.analysisSampleUploadProgressTaskController.pauseUpload();
+                    this.analysisSampleUploadProgressTaskController.interruptForce();
+                }
+                if(this.rawDataDownloadProgressTaskController != null) {
+                    this.rawDataDownloadProgressTaskController.pauseUpload();
+                    this.rawDataDownloadProgressTaskController.interruptForce();
+                }
             }
             isLogoutContinue = true;
         } else {
@@ -909,6 +923,34 @@ public class MainController extends BaseStageController {
         }
     }
 
+    public void runningRawDataDownload(File folder, RunSampleView run, String type) {
+        if (folder != null && run != null) {
+            RawDataDownloadInfo info = new RawDataDownloadInfo(folder, run, type);
+            downloadListQueue.add(info);
+            if(this.rawDataDownloadProgressTaskController == null) {
+                runDownload();
+            }
+        }
+    }
+
+    public void runDownload() {
+        if(!downloadListQueue.isEmpty()) {
+            try {
+                FXMLLoader loader = mainApp.load(FXMLConstants.RAW_DATA_DOWNLOAD_TASK);
+                HBox box = loader.load();
+                this.rawDataDownloadProgressTaskController = loader.getController();
+                this.rawDataDownloadProgressTaskController.setMainController(this);
+                RawDataDownloadInfo info = downloadListQueue.poll();
+                this.rawDataDownloadProgressTaskController.setInfo(info);
+                this.rawDataDownloadProgressTaskController.show(box);
+            } catch (IOException e) {
+                DialogUtil.error("ERROR", e.getMessage(), getMainApp().getPrimaryStage(),
+                        false);
+                e.printStackTrace();
+            }
+        }
+    }
+
     /**
      * @return the progressTaskContentArea
      */
@@ -926,10 +968,16 @@ public class MainController extends BaseStageController {
     /**
      * 진행 상태 출력 영역 초기화
      */
-    public void clearProgressTaskArea() {
-        this.analysisSampleUploadProgressTaskController = null;
-        progressTaskContentArea.getChildren().removeAll(progressTaskContentArea.getChildren());
-        runUpload();
+    public void clearProgressTaskArea(Node node) {
+        //progressTaskContentArea.getChildren().removeAll(progressTaskContentArea.getChildren());
+        progressTaskContentArea.getChildren().remove(node);
+        if(analysisSampleUploadProgressTaskController != null) {
+            this.analysisSampleUploadProgressTaskController = null;
+            runUpload();
+        } else {
+            this.rawDataDownloadProgressTaskController = null;
+            runDownload();
+        }
     }
 
     /**
@@ -992,9 +1040,6 @@ public class MainController extends BaseStageController {
     	}else if(theme.equalsIgnoreCase("dna")) {
     		mainBackground.setStyle("-fx-background-image:url('layout/images/renewal/main_background12.png');");
     	}
-
-
     }
-    
 
 }

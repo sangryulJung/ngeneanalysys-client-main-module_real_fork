@@ -1,29 +1,22 @@
 package ngeneanalysys.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
-
+import javafx.concurrent.Task;
+import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.text.Text;
 import ngeneanalysys.controller.extend.SubPaneController;
+import ngeneanalysys.model.RawDataDownloadInfo;
 import ngeneanalysys.service.AnalysisRequestService;
-import ngeneanalysys.task.AnalysisSampleUploadTask;
+import ngeneanalysys.task.RawDataDownloadTask;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import org.slf4j.Logger;
 
-import javafx.concurrent.Task;
-import javafx.fxml.FXML;
-import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.text.Text;
+import java.io.IOException;
+import java.util.Optional;
 
 /**
  * 분석 요청 샘플 업로드 Progress Task 화면 [메인화면하단출력]
@@ -31,7 +24,7 @@ import javafx.scene.text.Text;
  * @author gjyoo
  * @since 2016. 5. 26. 오후 8:46:26
  */
-public class AnalysisSampleUploadProgressTaskController extends SubPaneController {
+public class RawDataDownloadProgressTaskController extends SubPaneController {
 	private static final Logger logger = LoggerUtil.getLogger();
 	
 	/** 현재 진행중인 그룹명 출력 라벨 */
@@ -42,7 +35,7 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 	@FXML
 	private ProgressBar progressBar;
 	
-	/** 업로드 완료 샘플건수 */
+	/** 다운로드 완료 샘플건수 */
 	@FXML
 	private Text completeCount;
 	
@@ -82,8 +75,17 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 	/** 작업 중지 여부 */
 	public boolean isStop = false;
 
+	private RawDataDownloadInfo info;
+
 	private Node node;
-	
+
+	/**
+	 * @param info
+	 */
+	public void setInfo(RawDataDownloadInfo info) {
+		this.info = info;
+	}
+
 	/**
 	 * @param currentUploadGroupId the currentUploadGroupId to set
 	 */
@@ -120,9 +122,7 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 		boolean isWorkStart = false;
 		this.progressIndicator.setProgress(new ProgressBar().getProgress());
 
-		List<File> fileList = (List<File>) paramMap.get("fileList");
-
-		this.task = new AnalysisSampleUploadTask(this, fileList.size());
+		this.task = new RawDataDownloadTask(this, info.getRunSampleView(),	info.getFolder(), info.getType());
 
 		progressBar.progressProperty().bind(this.task.progressProperty());
 		completeCount.textProperty().bind(this.task.messageProperty());
@@ -132,6 +132,8 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 		thread.setDaemon(true);
 		thread.start();
 		this.mainController.getProgressTaskContentArea().getChildren().add(root);
+
+		node = root;
 
 	}
 	
@@ -186,7 +188,7 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 	}
 	
 	/**
-	 * 업로드 취소 처리
+	 * 다운로드 취소 처리
 	 */
 	@FXML
 	public void cancelUpload() {
@@ -218,7 +220,7 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 	}
 
 	/**
-	 * 업로드 작업 관련 화면 출력 정리
+	 * 다운로드 작업 관련 화면 출력 정리
 	 */
 	public void clearWhenUploadTaskSucceeded() {
 		this.mainController.clearProgressTaskArea(node);

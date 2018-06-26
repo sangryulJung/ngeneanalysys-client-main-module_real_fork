@@ -1,4 +1,4 @@
-package ngeneanalysys.controller;
+package ngeneanalysys.controller.systemManager;
 
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;

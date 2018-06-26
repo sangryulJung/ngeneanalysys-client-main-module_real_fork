@@ -1,4 +1,4 @@
-package ngeneanalysys.controller;
+package ngeneanalysys.controller.systemMenu;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

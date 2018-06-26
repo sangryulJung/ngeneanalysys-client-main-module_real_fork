@@ -1,12 +1,9 @@
 package ngeneanalysys.task;
 
 import javafx.concurrent.Task;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import ngeneanalysys.controller.AnalysisDetailRawDataController;
 import ngeneanalysys.model.AnalysisFile;
 import ngeneanalysys.service.APIService;
-import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.httpclient.HttpClientUtil;
 import org.apache.http.HttpEntity;
@@ -22,9 +19,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * @author Jang

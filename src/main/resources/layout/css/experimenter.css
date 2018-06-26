@@ -225,3 +225,13 @@
     -fx-min-height : 16;
     -fx-cursor:hand;
 }
+
+.fileDownloadButton {
+    -fx-cursor:hand;
+    -fx-graphic: url("../images/renewal/download_icon.png");
+    -fx-border-width : 0;
+    -fx-pref-width : 16px;
+    -fx-pref-height : 16px;
+    -fx-font-size : 10px;
+    -fx-background-radius : 0;
+}

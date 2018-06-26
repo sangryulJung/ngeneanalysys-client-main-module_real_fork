@@ -1,4 +1,4 @@
-package ngeneanalysys.controller;
+package ngeneanalysys.controller.systemMenu;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;

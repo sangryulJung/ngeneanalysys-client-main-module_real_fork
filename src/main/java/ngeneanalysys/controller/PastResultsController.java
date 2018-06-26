@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import impl.org.controlsfx.autocompletion.SuggestionProvider;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -20,6 +21,7 @@ import ngeneanalysys.model.paged.PagedRunSampleView;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.model.render.DatepickerConverter;
+import ngeneanalysys.util.FXMLLoadUtil;
 import ngeneanalysys.util.StringUtils;
 import org.controlsfx.control.textfield.CustomTextField;
 import org.controlsfx.control.textfield.TextFields;
@@ -469,7 +471,7 @@ public class PastResultsController extends SubPaneController {
 				RunStatusGirdPane gridPane = new RunStatusGirdPane();
 				runStatusGirdPanes.add(gridPane);
 				resultVBox.getChildren().add(gridPane);
-				gridPane.setLabel(runSampleView.getRun());
+				gridPane.setLabel(runSampleView);
 				setVBoxPrefSize(gridPane);
 
 				SampleInfoVBox vBox = new SampleInfoVBox();
@@ -897,22 +899,26 @@ public class PastResultsController extends SubPaneController {
 		private Label sequencerLabel;
 		private Label submitDateLabel;
 		private Label finishDateLabel;
+		private Label downloadLabel;
 
 		public RunStatusGirdPane() {
 			ColumnConstraints col1 = new ColumnConstraints();
 			col1.setPrefWidth(225);
 			ColumnConstraints col2 = new ColumnConstraints();
-			col2.setPrefWidth(265);
+			col2.setPrefWidth(235);
 			ColumnConstraints col3 = new ColumnConstraints();
 			col3.setPrefWidth(185);
 			ColumnConstraints col4 = new ColumnConstraints();
 			col4.setPrefWidth(185);
-			this.getColumnConstraints().addAll(col1, col2, col3, col4);
+			ColumnConstraints col5 = new ColumnConstraints();
+			col5.setPrefWidth(30);
+			this.getColumnConstraints().addAll(col1, col2, col3, col4, col5);
 
 			runLabel = new Label();
 			sequencerLabel = new Label();
 			submitDateLabel = new Label();
 			finishDateLabel = new Label();
+			downloadLabel = new Label();
 
 			this.add(runLabel, 0, 0);
 
@@ -922,6 +928,9 @@ public class PastResultsController extends SubPaneController {
 			setLabelStyle(submitDateLabel);
 			this.add(finishDateLabel, 3, 0);
 			setLabelStyle(finishDateLabel);
+			this.add(downloadLabel, 4, 0);
+			setLabelStyle(downloadLabel);
+			downloadLabel.getStyleClass().add("fileDownloadButton");
 
 			this.setPrefHeight(35);
 			setLabelStyle(runLabel);
@@ -936,14 +945,26 @@ public class PastResultsController extends SubPaneController {
 			label.getStyleClass().add("sample_header");
 		}
 
-		public void setLabel(Run run) {
-			runLabel.setText(run.getName());
-			sequencerLabel.setText(run.getSequencingPlatform());
+		public void setLabel(RunSampleView runSampleView) {
+			runLabel.setText(runSampleView.getRun().getName());
+			sequencerLabel.setText(runSampleView.getRun().getSequencingPlatform());
 			SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
-			if (run.getCreatedAt() != null)
-				submitDateLabel.setText(format.format(run.getCreatedAt().toDate()));
-			if (run.getCompletedAt() != null)
-			finishDateLabel.setText(format.format(run.getCompletedAt().toDate()));
+			if (runSampleView.getRun().getCreatedAt() != null)
+				submitDateLabel.setText(format.format(runSampleView.getRun().getCreatedAt().toDate()));
+			if (runSampleView.getRun().getCompletedAt() != null)
+			finishDateLabel.setText(format.format(runSampleView.getRun().getCompletedAt().toDate()));
+			downloadLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
+				try {
+					FXMLLoader fxmlLoader = FXMLLoadUtil.load(FXMLConstants.RUN_RAW_DATA_DOWNLOAD);
+					Node node = fxmlLoader.load();
+					RunRawDataDownloadController runRawDataDownloadController = fxmlLoader.getController();
+					runRawDataDownloadController.setRunSampleView(runSampleView);
+					runRawDataDownloadController.setMainController(mainController);
+					runRawDataDownloadController.show((Parent) node);
+				} catch (IOException ioe) {
+					logger.debug(ioe.getMessage());
+				}
+			});
 		}
 
 	}
