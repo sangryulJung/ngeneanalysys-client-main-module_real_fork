@@ -693,14 +693,16 @@ public class PastResultsController extends SubPaneController {
 			Label name = new Label("Sample");
 			labelSize(name, 180., styleClass);
 			Label status = new Label("Status");
-			labelSize(status, 80., styleClass);
+			labelSize(status, 70., styleClass);
 			Label panel = new Label("Panel");
 			labelSize(panel, 170., styleClass);
 			Label variants = new Label("Variant");
 			labelSize(variants, 340., styleClass);
 			Label qc = new Label("QC");
-			labelSize(qc, 88., styleClass);
-			titleBox.getChildren().addAll(name, panel, status, variants, qc);
+			labelSize(qc, 78., styleClass);
+			Label restart = new Label();
+			labelSize(restart, 20., styleClass);
+			titleBox.getChildren().addAll(name, panel, status, variants, qc, restart);
 
 			this.getChildren().add(titleBox);
 			this.setPrefHeight(30);
@@ -782,7 +784,7 @@ public class PastResultsController extends SubPaneController {
 				Label name = new Label(sampleView.getName());
 				labelSize(name, 180., styleClass);
 				HBox statusHBox = new HBox();
-				statusHBox.setPrefWidth(80);
+				statusHBox.setPrefWidth(70);
 				statusHBox.getStyleClass().add("variant_hbox");
 				Label status = new Label(sampleView.getSampleStatus().getStatus().substring(0,1));
 				if(sampleView.getSampleStatus().getStatus().startsWith("C")) {
@@ -809,9 +811,11 @@ public class PastResultsController extends SubPaneController {
 				String qcValue = sampleView.getQcResult();
 				if(qcValue.equalsIgnoreCase("NONE")) qcValue = "";
 				Label qc = new Label(qcValue);
-				labelSize(qc, 88., styleClass);
-
-				itemHBox.getChildren().addAll(name, panel, statusHBox, variants, qc);
+				labelSize(qc, 78., styleClass);
+				//TODO add function sample restart
+				Label restart = new Label();
+				labelSize(restart, 20., styleClass);
+				itemHBox.getChildren().addAll(name, panel, statusHBox, variants, qc, restart);
 
 				this.getChildren().add(itemHBox);
 				this.setPrefHeight(this.getPrefHeight() + 35);
