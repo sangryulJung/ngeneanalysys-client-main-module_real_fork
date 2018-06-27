@@ -117,6 +117,8 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 	public void show(Parent root) throws IOException {
 		this.analysisRequestService = AnalysisRequestService.getInstance();
 
+		node = root;
+
 		boolean isWorkStart = false;
 		this.progressIndicator.setProgress(new ProgressBar().getProgress());
 

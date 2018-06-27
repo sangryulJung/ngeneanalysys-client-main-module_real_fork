@@ -106,6 +106,10 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         isServerItem = true;
         isServerFastq = true;
         if(!sampleArrayList.isEmpty()) sampleArrayList.clear();
+        if(!fileMap.isEmpty()) {
+            fileMap.clear();
+            uploadFileList.clear();
+        }
 //        try {
 //            Map<String, Object> params = new HashMap<>();
 //            params.put("subPath", path);
@@ -131,6 +135,10 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         isServerFastq = false;
         logger.debug(path);
         if(sampleArrayList.isEmpty()) sampleArrayList.clear();
+        if(!fileMap.isEmpty()) {
+            fileMap.clear();
+            uploadFileList.clear();
+        }
         try {
             Map<String, Object> params = new HashMap<>();
             params.put("runDir", path);
