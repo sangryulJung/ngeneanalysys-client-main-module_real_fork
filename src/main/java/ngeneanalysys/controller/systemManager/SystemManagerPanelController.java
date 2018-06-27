@@ -197,7 +197,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
     private CheckComboBox<String> lowConfidenceCheckComboBox = null;
 
-    private CheckComboBox<String> frequencyDBCheckComboBox = null;
+    private CheckComboBox<ComboBoxItem> frequencyDBCheckComboBox = null;
 
     private File bedFile = null;
 
@@ -374,11 +374,31 @@ public class SystemManagerPanelController extends SubPaneController {
     }
 
     public void createComboBoxItem() {
-        frequencyDBCheckComboBox.getItems().addAll("g1000.all", "g1000.african", "g1000.american",
+        frequencyDBCheckComboBox.getItems().add(new ComboBoxItem("g1000.all", "1KGP All"));
+        frequencyDBCheckComboBox.getItems().add(new ComboBoxItem("g1000.african", "1KGP African"));
+        frequencyDBCheckComboBox.getItems().add(new ComboBoxItem("g1000.american", "1KGP American"));
+        frequencyDBCheckComboBox.getItems().add(new ComboBoxItem("g1000.eastAsian", "1KGP East Asian"));
+        frequencyDBCheckComboBox.getItems().add(new ComboBoxItem("g1000.european", "1KGP European"));
+        frequencyDBCheckComboBox.getItems().add(new ComboBoxItem("g1000.southAsian", "1KGP South Asian"));
+        frequencyDBCheckComboBox.getItems().add(new ComboBoxItem("esp6500.all", "ESP All"));
+        frequencyDBCheckComboBox.getItems().add(new ComboBoxItem("esp6500.aa", "ESP African American"));
+        frequencyDBCheckComboBox.getItems().add(new ComboBoxItem("esp6500.ea", "ESP European American"));
+        frequencyDBCheckComboBox.getItems().add(new ComboBoxItem("gnomAD.all", "gnomAD All"));
+        frequencyDBCheckComboBox.getItems().add(new ComboBoxItem("gnomAD.admixedAmerican", "gnomAD Admixed American"));
+        frequencyDBCheckComboBox.getItems().add(new ComboBoxItem("gnomAD.africanAfricanAmerican", "gnomAD African African American"));
+        frequencyDBCheckComboBox.getItems().add(new ComboBoxItem("gnomAD.eastAsian", "gnomAD East Asian"));
+        frequencyDBCheckComboBox.getItems().add(new ComboBoxItem("gnomAD.finnish", "gnomAD Finnish"));
+        frequencyDBCheckComboBox.getItems().add(new ComboBoxItem("gnomAD.nonFinnishEuropean", "gnomAD Non Finnish European"));
+        frequencyDBCheckComboBox.getItems().add(new ComboBoxItem("gnomAD.others", "gnomAD Others"));
+        frequencyDBCheckComboBox.getItems().add(new ComboBoxItem("gnomAD.southAsian", "gnomAD South Asian"));
+        frequencyDBCheckComboBox.getItems().add(new ComboBoxItem("koreanExomInformationDatabase", "KoEXID"));
+        frequencyDBCheckComboBox.getItems().add(new ComboBoxItem("koreanReferenceGenomeDatabase", "KRGDB"));
+        frequencyDBCheckComboBox.getItems().add(new ComboBoxItem("exac", "ExAC"));
+        /*frequencyDBCheckComboBox.getItems().addAll("g1000.all", "g1000.african", "g1000.american",
                 "g1000.eastAsian", "g1000.european", "g1000.southAsian", "esp6500.all", "esp6500.aa",
                 "esp6500.ea", "gnomAD.all", "gnomAD.admixedAmerican", "gnomAD.africanAfricanAmerican",
                 "gnomAD.eastAsian", "gnomAD.finnish", "gnomAD.nonFinnishEuropean", "gnomAD.others", "gnomAD.southAsian",
-                "koreanExomInformationDatabase", "koreanReferenceGenomeDatabase", "exac");
+                "koreanExomInformationDatabase", "koreanReferenceGenomeDatabase", "exac");*/
         lowConfidenceCheckComboBox.getItems().addAll("artifact_in_normal", "base_quality", "clustered_events",
                 "contamination", "duplicate_evidence", "fragment_length", "germline_risk", "mapping_quality",
                 "multiallelic", "orientation_bias", "panel_of_normals", "read_position", "str_contraction",
@@ -416,8 +436,8 @@ public class SystemManagerPanelController extends SubPaneController {
 
         panelEditGridPane.add(lowConfidenceCheckComboBox, 1, 13);
 
-        final CheckComboBox<String> frequencyDBCheckComboBox = new CheckComboBox<>();
-
+        final CheckComboBox<ComboBoxItem> frequencyDBCheckComboBox = new CheckComboBox<>();
+        frequencyDBCheckComboBox.setConverter(new ComboBoxConverter());
         frequencyDBCheckComboBox.setPrefWidth(150);
         frequencyDBCheckComboBox.setMaxWidth(Double.MAX_VALUE);
 
@@ -861,7 +881,7 @@ public class SystemManagerPanelController extends SubPaneController {
                 if(panel.getVariantConfig().getReportCutOffParams().getPopulationFrequencyDBs() != null) {
                     String[] freqDBs = panel.getVariantConfig().getReportCutOffParams().getPopulationFrequencyDBs().split(",");
                     for(String freqDB : freqDBs) {
-                        frequencyDBCheckComboBox.getCheckModel().check(freqDB);
+                        //frequencyDBCheckComboBox.getCheckModel().check(freqDB);
                     }
                 }
                 if(panel.getVariantConfig().getLowConfidenceFilter() != null) {
