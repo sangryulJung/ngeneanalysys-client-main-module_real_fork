@@ -882,6 +882,9 @@ public class SystemManagerPanelController extends SubPaneController {
                     String[] freqDBs = panel.getVariantConfig().getReportCutOffParams().getPopulationFrequencyDBs().split(",");
                     for(String freqDB : freqDBs) {
                         //frequencyDBCheckComboBox.getCheckModel().check(freqDB);
+                        Optional<ComboBoxItem> comboBoxItem = frequencyDBCheckComboBox.getItems().stream().filter(item
+                                -> item.getValue().equalsIgnoreCase(freqDB)).findFirst();
+                        comboBoxItem.ifPresent(item -> frequencyDBCheckComboBox.getCheckModel().check(item));
                     }
                 }
                 if(panel.getVariantConfig().getLowConfidenceFilter() != null) {
