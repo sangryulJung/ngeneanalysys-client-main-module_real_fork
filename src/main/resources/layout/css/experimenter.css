@@ -235,3 +235,14 @@
     -fx-font-size : 10px;
     -fx-background-radius : 0;
 }
+
+.sample_restart_button {
+    -fx-content-display : center;
+    -fx-cursor:hand;
+    -fx-graphic: url("../images/renewal/share_icon.png");
+    -fx-background-color : transparent;
+    -fx-border-width : 0;
+    -fx-pref-width : 16px;
+    -fx-pref-height : 16px;
+    -fx-background-radius : 0;
+}

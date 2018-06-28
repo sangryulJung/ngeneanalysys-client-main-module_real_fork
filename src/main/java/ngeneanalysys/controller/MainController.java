@@ -923,7 +923,7 @@ public class MainController extends BaseStageController {
         }
     }
 
-    public void runningRawDataDownload(File folder, RunSampleView run, String type) {
+    public void runningRawDataDownload(File folder, RunSampleView run, List<String> type) {
         if (folder != null && run != null) {
             RawDataDownloadInfo info = new RawDataDownloadInfo(folder, run, type);
             downloadListQueue.add(info);
@@ -1040,6 +1040,16 @@ public class MainController extends BaseStageController {
     	}else if(theme.equalsIgnoreCase("dna")) {
     		mainBackground.setStyle("-fx-background-image:url('layout/images/renewal/main_background12.png');");
     	}
+    }
+
+    public void deleteSampleTab(final String id) {
+        Optional<ComboBoxItem> optionalTab = sampleList.getItems().stream().filter(item -> item.getValue()
+                .equals(id)).findFirst();
+        optionalTab.ifPresent(tab -> {
+            sampleList.getItems().remove(tab);
+            removeTopMenu(id);
+        });
+
     }
 
 }

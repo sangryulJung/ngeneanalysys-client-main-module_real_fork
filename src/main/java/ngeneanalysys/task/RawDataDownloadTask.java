@@ -53,14 +53,14 @@ public class RawDataDownloadTask extends FileUploadTask<Void> {
 
     private File folder;
 
-    private String type;
+    private List<String> type;
 
     private boolean taskStatus = true;
 
     private APIService apiService;
 
     public RawDataDownloadTask(RawDataDownloadProgressTaskController controller,
-                               RunSampleView runSampleView, File folder, String type) {
+                               RunSampleView runSampleView, File folder, List<String> type) {
         super(runSampleView.getSampleViews().size());
         System.out.println(runSampleView.getSampleViews().size());
         this.runSampleView = runSampleView;
@@ -103,14 +103,20 @@ public class RawDataDownloadTask extends FileUploadTask<Void> {
 
             for (SampleView sampleView : runSampleView.getSampleViews()) {
 
-                try {
+                if(type == null || type.isEmpty()) break;
+
+                    try {
                     Map<String,Object> paramMap = new HashMap<>();
                     paramMap.put("sampleId", sampleView.getId());
                     HttpClientResponse response = apiService.get("/analysisFiles", paramMap, null, false);
                     AnalysisFileList analysisFileList = response.getObjectBeforeConvertResponseToJSON(AnalysisFileList.class);
 
-                    List<AnalysisFile> analysisFiles = analysisFileList.getResult().stream()
-                            .filter(file -> file.getFileType().equalsIgnoreCase(type)).collect(Collectors.toList());
+                    List<AnalysisFile> analysisFiles = new ArrayList<>();
+
+                    for(String singleType : type) {
+                        analysisFiles.addAll(analysisFileList.getResult().stream()
+                                .filter(file -> file.getFileType().equalsIgnoreCase(singleType)).collect(Collectors.toList()));
+                    }
 
                     if(analysisFiles != null) {
                         final long size = analysisFiles.stream().mapToLong(AnalysisFile::getSize).sum();

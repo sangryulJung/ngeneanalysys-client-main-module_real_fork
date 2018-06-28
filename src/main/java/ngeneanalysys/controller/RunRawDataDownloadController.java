@@ -1,17 +1,22 @@
 package ngeneanalysys.controller;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.HBox;
 import javafx.stage.*;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.model.RunSampleView;
 import ngeneanalysys.util.LoggerUtil;
+import org.controlsfx.control.CheckComboBox;
 import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Jang
@@ -23,6 +28,11 @@ public class RunRawDataDownloadController extends SubPaneController {
     private Stage dialogStage;
 
     private RunSampleView runSampleView;
+
+    @FXML
+    private HBox hBox;
+
+    private CheckComboBox<String> checkComboBox;
 
     /**
      * @param runSampleView
@@ -45,33 +55,30 @@ public class RunRawDataDownloadController extends SubPaneController {
         }
         dialogStage.initOwner(getMainApp().getPrimaryStage());
 
+        createCheckComboBox();
+
         Scene scene = new Scene(root);
         dialogStage.setScene(scene);
         dialogStage.setResizable(false);
         dialogStage.showAndWait();
     }
 
-    @FXML
-    public void baiFileDownload() {
-        downloadTask("bai");
+    public void createCheckComboBox() {
+        checkComboBox = new CheckComboBox<>();
+        checkComboBox.getItems().addAll("bai", "bam", "vcf", "fastq.gz");
+        hBox.getChildren().add(checkComboBox);
     }
 
     @FXML
-    public void bamFileDownload() {
-        downloadTask("bam");
+    public void rawDataDownload() {
+        ObservableList<String> checkItem = checkComboBox.getCheckModel().getCheckedItems();
+        if(!checkItem.isEmpty()) {
+            List<String> list = checkItem.stream().collect(Collectors.toList());
+            downloadTask(list);
+        }
     }
 
-    @FXML
-    public void vcfFileDownload() {
-        downloadTask("vcf");
-    }
-
-    @FXML
-    public void fastqFileDownload() {
-        downloadTask("fastq.gz");
-    }
-
-    public void downloadTask(String fileType) {
+    public void downloadTask(List<String> fileType) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         File folder = directoryChooser.showDialog(this.getMainApp().getPrimaryStage());
 

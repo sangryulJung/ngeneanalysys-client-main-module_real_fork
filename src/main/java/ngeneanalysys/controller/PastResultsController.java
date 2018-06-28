@@ -715,6 +715,24 @@ public class PastResultsController extends SubPaneController {
 			if(style != null) label.getStyleClass().add(style);
 		}
 
+		public void openSampleTab(final SampleView sample) {
+			if(sample.getSampleStatus().getStep().equalsIgnoreCase(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STEP_PIPELINE) &&
+					sample.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_COMPLETE)) {
+				Map<String, Object> detailViewParamMap = new HashMap<>();
+				detailViewParamMap.put("id", sample.getId());
+
+				TopMenu menu = new TopMenu();
+				menu.setId("sample_" + sample.getId());
+				menu.setMenuName(sample.getName());
+				menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_LAYOUT);
+				menu.setParamMap(detailViewParamMap);
+				menu.setStaticMenu(false);
+				mainController.addTopMenu(menu, 2, true);
+			} else if(sample.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_FAIL)) {
+				DialogUtil.alert("Error message", sample.getSampleStatus().getStatusMsg(), mainController.getPrimaryStage(), true);
+			}
+		}
+
 		public void setSampleList(List<SampleView> sampleList) {
 			for(SampleView sampleView : sampleList) {
 				HBox itemHBox = new HBox();
@@ -761,25 +779,11 @@ public class PastResultsController extends SubPaneController {
 					}
 
 				});
-				itemHBox.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+				/*itemHBox.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 					if(event.getClickCount() == 1) {
-						if(sample.getSampleStatus().getStep().equalsIgnoreCase(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STEP_PIPELINE) &&
-								sample.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_COMPLETE)) {
-							Map<String, Object> detailViewParamMap = new HashMap<>();
-							detailViewParamMap.put("id", sample.getId());
 
-							TopMenu menu = new TopMenu();
-							menu.setId("sample_" + sample.getId());
-							menu.setMenuName(sample.getName());
-							menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_LAYOUT);
-							menu.setParamMap(detailViewParamMap);
-							menu.setStaticMenu(false);
-							mainController.addTopMenu(menu, 2, true);
-						} else if(sample.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_FAIL)) {
-							DialogUtil.alert("Error message", sample.getSampleStatus().getStatusMsg(), mainController.getPrimaryStage(), true);
-						}
 					}
-				});
+				});*/
 				String styleClass = null;
 				Label name = new Label(sampleView.getName());
 				labelSize(name, 180., styleClass);
@@ -812,14 +816,46 @@ public class PastResultsController extends SubPaneController {
 				if(qcValue.equalsIgnoreCase("NONE")) qcValue = "";
 				Label qc = new Label(qcValue);
 				labelSize(qc, 78., styleClass);
-				//TODO add function sample restart
+
 				Label restart = new Label();
-				labelSize(restart, 20., styleClass);
+				labelSize(restart, 20., "sample_restart_button");
+
+				name.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample));
+				panel.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample));
+				statusHBox.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample));
+				variants.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample));
+				qc.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample));
+				restart.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showAlert(sampleView));
+
 				itemHBox.getChildren().addAll(name, panel, statusHBox, variants, qc, restart);
 
 				this.getChildren().add(itemHBox);
 				this.setPrefHeight(this.getPrefHeight() + 35);
 			}
+		}
+
+		private void showAlert(final SampleView sampleView) {
+			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+			DialogUtil.setIcon(alert);
+
+			Optional<ButtonType> optional = alert.showAndWait();
+
+			optional.ifPresent(buttonType -> {
+				if(buttonType == ButtonType.OK) {
+					try {
+						HttpClientResponse response = apiService
+								.get("restartInterpretation/"  + sampleView.getId(), null, null, null);
+
+						logger.debug(response.getStatus() + "");
+
+						mainController.deleteSampleTab("sample_" + sampleView.getId());
+
+						refreshList();
+					} catch (WebAPIException wae) {
+						logger.debug(wae.getMessage());
+					}
+				}
+			});
 		}
 
 		private void setVariantHBox(HBox variantHBox, SampleView sample) {

@@ -1,6 +1,7 @@
 package ngeneanalysys.model;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * @author Jang
@@ -9,25 +10,11 @@ import java.io.File;
 public class RawDataDownloadInfo {
     private File folder;
     private RunSampleView runSampleView;
-    private String type;
+    private List<String> type;
 
-    public RawDataDownloadInfo(File folder, RunSampleView runSampleView, String type) {
+    public RawDataDownloadInfo(File folder, RunSampleView runSampleView, List<String> type) {
         this.folder = folder;
         this.runSampleView = runSampleView;
-        this.type = type;
-    }
-
-    /**
-     * @return type
-     */
-    public String getType() {
-        return type;
-    }
-
-    /**
-     * @param type
-     */
-    public void setType(String type) {
         this.type = type;
     }
 
@@ -57,5 +44,19 @@ public class RawDataDownloadInfo {
      */
     public void setRunSampleView(RunSampleView runSampleView) {
         this.runSampleView = runSampleView;
+    }
+
+    /**
+     * @return type
+     */
+    public List<String> getType() {
+        return type;
+    }
+
+    /**
+     * @param type
+     */
+    public void setType(List<String> type) {
+        this.type = type;
     }
 }
