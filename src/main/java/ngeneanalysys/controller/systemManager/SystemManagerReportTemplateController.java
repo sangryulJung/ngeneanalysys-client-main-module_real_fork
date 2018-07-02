@@ -340,6 +340,9 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                 ReportTemplate reportTemplate = response.getObjectBeforeConvertResponseToJSON(ReportTemplate.class);
 
                 if(outputTypeComboBox.getSelectionModel().getSelectedItem().equalsIgnoreCase("MS_WORD")) {
+
+                    if(wordCreatorJar == null) return;
+
                     JarUploadTask task = new JarUploadTask(wordCreatorJar, reportTemplate.getId(), getMainController());
                     final Thread downloadThread = new Thread(task);
 

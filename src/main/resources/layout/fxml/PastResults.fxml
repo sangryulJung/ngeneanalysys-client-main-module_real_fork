@@ -161,7 +161,7 @@
                <HBox.margin>
                   <Insets left="3.0" />
                </HBox.margin></Label>
-            <Button id="excel_download_image" mnemonicParsing="false" />
+            <Button id="excel_download_image" mnemonicParsing="false" onMouseClicked="#downloadExcel" />
          </children>
       </HBox>
       <HBox prefHeight="38.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1">

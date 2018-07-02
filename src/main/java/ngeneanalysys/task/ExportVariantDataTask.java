@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
+import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -69,13 +70,27 @@ public class ExportVariantDataTask extends Task<Void> {
 		apiService.setStage(mainApp.getPrimaryStage());		
 	}
 
+	public ExportVariantDataTask(MainApp mainApp, File file, Map<String, Object> params) {
+		this.file = file;
+		this.params = params;
+		this.mainApp = mainApp;
+		// api service init..
+		apiService = APIService.getInstance();
+		apiService.setStage(mainApp.getPrimaryStage());
+	}
+
 	@Override
 	protected Void call() throws Exception {
 		updateProgress(0, 1);
 		updateMessage("");
 		CloseableHttpClient httpclient = null;
 		CloseableHttpResponse response = null;
-		String downloadUrl = "/analysisResults/exportVariantData/" + sampleId;
+		String downloadUrl = "";
+		if(StringUtils.isEmpty(fileType)) {
+			downloadUrl = "/sampleSummaryExcel";
+		} else {
+			downloadUrl = "/analysisResults/exportVariantData/" + sampleId;
+		}
 
 		OutputStream os = null;
 		InputStream is = null;

@@ -21,8 +21,10 @@ import ngeneanalysys.model.paged.PagedRunSampleView;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.model.render.DatepickerConverter;
-import ngeneanalysys.util.FXMLLoadUtil;
-import ngeneanalysys.util.StringUtils;
+import ngeneanalysys.util.*;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.message.BasicNameValuePair;
 import org.controlsfx.control.textfield.CustomTextField;
 import org.controlsfx.control.textfield.TextFields;
 import org.json.simple.JSONArray;
@@ -34,8 +36,6 @@ import ngeneanalysys.code.AnalysisJobStatusCode;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.service.APIService;
-import ngeneanalysys.util.DialogUtil;
-import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 
 import javafx.animation.Animation;
@@ -674,6 +674,31 @@ public class PastResultsController extends SubPaneController {
 			}
 		}
 	}
+
+	public List<NameValuePair> convertSearchParam(Map<String, List<Object>> params, Map<String, Object> param) {
+		List<NameValuePair> paramList = new ArrayList<>();
+		if (params != null && params.size() > 0) {
+			for (Map.Entry<String, List<Object>> entry : params.entrySet()) {
+				List<Object> value = entry.getValue();
+				for (Object obj : value) {
+					param.put(entry.getKey(), obj.toString());
+				}
+			}
+		}
+		return paramList;
+	}
+
+	@FXML
+	public void downloadExcel() {
+		Map<String, List<Object>> searchParam = getSubSearchParam();
+		Map<String, Object> params = new HashMap<>();
+		if(searchParam != null && !searchParam.isEmpty()) {
+			convertSearchParam(searchParam, params);
+		}
+
+		WorksheetUtil worksheetUtil = new WorksheetUtil();
+		worksheetUtil.exportVariantData(params, this.getMainApp());
+	}
 	
 	/**
 	 * 검색 폼 리셋
@@ -825,7 +850,12 @@ public class PastResultsController extends SubPaneController {
 				statusHBox.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample));
 				variants.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample));
 				qc.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample));
-				restart.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showAlert(sampleView));
+
+                if(sampleView.getPanelName().contains("TruSight Tumor")) {
+                    restart.setVisible(false);
+                } else{
+                    restart.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showAlert(sampleView));
+                }
 
 				itemHBox.getChildren().addAll(name, panel, statusHBox, variants, qc, restart);
 
@@ -835,6 +865,7 @@ public class PastResultsController extends SubPaneController {
 		}
 
 		private void showAlert(final SampleView sampleView) {
+
 			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 			DialogUtil.setIcon(alert);
 
