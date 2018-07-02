@@ -675,26 +675,9 @@ public class PastResultsController extends SubPaneController {
 		}
 	}
 
-	public List<NameValuePair> convertSearchParam(Map<String, List<Object>> params, Map<String, Object> param) {
-		List<NameValuePair> paramList = new ArrayList<>();
-		if (params != null && params.size() > 0) {
-			for (Map.Entry<String, List<Object>> entry : params.entrySet()) {
-				List<Object> value = entry.getValue();
-				for (Object obj : value) {
-					param.put(entry.getKey(), obj.toString());
-				}
-			}
-		}
-		return paramList;
-	}
-
 	@FXML
 	public void downloadExcel() {
-		Map<String, List<Object>> searchParam = getSubSearchParam();
-		Map<String, Object> params = new HashMap<>();
-		if(searchParam != null && !searchParam.isEmpty()) {
-			convertSearchParam(searchParam, params);
-		}
+		Map<String, List<Object>> params = getSubSearchParam();
 
 		WorksheetUtil worksheetUtil = new WorksheetUtil();
 		worksheetUtil.exportVariantData(params, this.getMainApp());

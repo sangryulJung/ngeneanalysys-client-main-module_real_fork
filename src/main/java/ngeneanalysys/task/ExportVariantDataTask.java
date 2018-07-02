@@ -11,9 +11,11 @@ import java.util.*;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientUtil;
 import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
@@ -42,6 +44,7 @@ public class ExportVariantDataTask extends Task<Void> {
 	private String fileType;
 	private File file;
 	private Map<String, Object> params;
+	private Map<String, List<Object>> searchParam;
 	private int sampleId;
 	/** API Service */
 	private APIService apiService;
@@ -70,9 +73,9 @@ public class ExportVariantDataTask extends Task<Void> {
 		apiService.setStage(mainApp.getPrimaryStage());		
 	}
 
-	public ExportVariantDataTask(MainApp mainApp, File file, Map<String, Object> params) {
+	public ExportVariantDataTask(MainApp mainApp, File file, Map<String, List<Object>> params) {
 		this.file = file;
-		this.params = params;
+		this.searchParam = params;
 		this.mainApp = mainApp;
 		// api service init..
 		apiService = APIService.getInstance();
@@ -97,9 +100,16 @@ public class ExportVariantDataTask extends Task<Void> {
 		try {
 			String connectURL = apiService.getConvertConnectURL(downloadUrl);
 			URIBuilder builder = new URIBuilder(connectURL);
-			Set<Map.Entry<String, Object>> entrySet = params.entrySet();
-			for(Map.Entry<String, Object> entry : entrySet) {
-				builder.setParameter(entry.getKey(), entry.getValue().toString());
+			if(params != null) {
+				Set<Map.Entry<String, Object>> entrySet = params.entrySet();
+				for (Map.Entry<String, Object> entry : entrySet) {
+					builder.setParameter(entry.getKey(), entry.getValue().toString());
+				}
+			}
+
+			if(searchParam != null && !searchParam.isEmpty()) {
+				List<NameValuePair> paramSearchList = HttpClientUtil.convertSearchParam(searchParam);
+				builder.addParameters(paramSearchList);
 			}
 
 			// 헤더 삽입 정보 설정

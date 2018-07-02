@@ -192,7 +192,7 @@ public class WorksheetUtil {
 		}
 	}
 
-	public void exportVariantData(Map<String, Object> params, MainApp mainApp){
+	public void exportVariantData(Map<String, List<Object>> params, MainApp mainApp){
 		try {
 			// Show save file dialog
 			FileChooser fileChooser = new FileChooser();
