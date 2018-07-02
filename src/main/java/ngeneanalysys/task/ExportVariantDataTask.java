@@ -90,7 +90,8 @@ public class ExportVariantDataTask extends Task<Void> {
 		CloseableHttpResponse response = null;
 		String downloadUrl = "";
 		if(StringUtils.isEmpty(fileType)) {
-			downloadUrl = "/sampleSummaryExcel";
+			downloadUrl = "/sampleSummaryExcel?timeHourDiff=9";
+			// TODO timeHourDiff이 사용자의 타임존에 따라 자동으로 입력되어야 함.
 		} else {
 			downloadUrl = "/analysisResults/exportVariantData/" + sampleId;
 		}
