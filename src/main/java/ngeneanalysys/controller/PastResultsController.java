@@ -853,6 +853,10 @@ public class PastResultsController extends SubPaneController {
 		private void showAlert(final SampleView sampleView) {
 
 			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+			alert.setTitle("Restart VCF Interpretation");
+			alert.setHeaderText(sampleView.getName());
+			alert.setContentText("If the analysis is restarted, the results that have already been processed will be deleted. Are you sure to restart this analysis?");
+
 			DialogUtil.setIcon(alert);
 
 			Optional<ButtonType> optional = alert.showAndWait();
