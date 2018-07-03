@@ -266,10 +266,10 @@ public class IGVService {
             params.put("name", name);
             params.put("genome", this.genome);
             params.put("merge", "false");
-            if(!StringUtils.isEmpty(this.gene)) {
+            if(StringUtils.isNotEmpty(this.gene)) {
                 params.put("locus", this.gene);
             }
-            if(!StringUtils.isEmpty(this.locus)) {
+            if(StringUtils.isNotEmpty(this.locus)) {
                 params.put("locus", this.locus);
             }
 

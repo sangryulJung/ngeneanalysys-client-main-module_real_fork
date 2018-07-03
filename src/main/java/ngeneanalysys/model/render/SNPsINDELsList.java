@@ -124,7 +124,7 @@ public class SNPsINDELsList {
 		} else {
 			flagLabel.setText(flag.toUpperCase());
 		}
-		if(!StringUtils.isEmpty(flag) && "YES".equals(flag.toUpperCase())) {
+		if(StringUtils.isNotEmpty(flag) && "YES".equals(flag.toUpperCase())) {
 			flagLabel.getStyleClass().add("txt_green");
 		} else {
 			flagLabel.getStyleClass().add("txt_red");

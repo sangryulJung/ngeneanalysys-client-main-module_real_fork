@@ -35,7 +35,7 @@ public class ConvertUtil {
 	 * @return
 	 */
 	public static String convertFormatNumber(String format, String numberStr, String defaultValue) {
-		if(!StringUtils.isEmpty(numberStr)) {
+		if(StringUtils.isNotEmpty(numberStr)) {
 			return String.format(format, Double.parseDouble(numberStr));
 		}
 		return defaultValue;
@@ -48,7 +48,7 @@ public class ConvertUtil {
 	 * @return
 	 */
 	public static String convertFormatPercentageNumber(String format, String numberStr) {
-		if(!StringUtils.isEmpty(numberStr)) {
+		if(StringUtils.isNotEmpty(numberStr)) {
 			Double number = Double.parseDouble(numberStr) * 100;
 			return String.format(format, number);
 		}

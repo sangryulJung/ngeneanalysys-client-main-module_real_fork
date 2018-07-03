@@ -485,11 +485,11 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
             if(acmgFilterCode != null &&  acmgFilterCode.getCode() != null) {
                 if (acmgFilterCode.getAlias() != null && panel != null && ExperimentTypeCode.GERMLINE.getDescription().equals(panel.getAnalysisType())) {
-                    list = list.stream().filter(variant -> (!StringUtils.isEmpty(variant.getSnpInDel().getExpertPathogenicity()) && variant.getSnpInDel().getExpertPathogenicity().equals(acmgFilterCode.getAlias())) ||
+                    list = list.stream().filter(variant -> (StringUtils.isNotEmpty(variant.getSnpInDel().getExpertPathogenicity()) && variant.getSnpInDel().getExpertPathogenicity().equals(acmgFilterCode.getAlias())) ||
                             (StringUtils.isEmpty(variant.getSnpInDel().getExpertPathogenicity()) && variant.getSnpInDel().getSwPathogenicity().equals(acmgFilterCode.getAlias()))).collect(Collectors.toList());
                 } else if (acmgFilterCode.getAlias() != null && panel != null && ExperimentTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType())) {
                     list = list.stream().filter(variant ->
-                            (!StringUtils.isEmpty(variant.getSnpInDel().getExpertTier()) && variant.getSnpInDel().getExpertTier().equals(acmgFilterCode.getAlias())) ||
+                            (StringUtils.isNotEmpty(variant.getSnpInDel().getExpertTier()) && variant.getSnpInDel().getExpertTier().equals(acmgFilterCode.getAlias())) ||
                                     (StringUtils.isEmpty(variant.getSnpInDel().getExpertTier()) && variant.getSnpInDel().getSwTier().equals(acmgFilterCode.getAlias()))).collect(Collectors.toList());
                 } else if (acmgFilterCode.getAlias() == null && panel != null && ExperimentTypeCode.GERMLINE.getDescription().equals(panel.getAnalysisType())) {
                     list = list.stream().filter(variant ->
@@ -515,11 +515,11 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             if (displayList != null && displayList.size() > 0) {
                 // report & false variant 카운트 집계
                 /*for (SnpInDel item : displayList) {
-                    if (!StringUtils.isEmpty(item.getPathogenicReportYn())
+                    if (StringUtils.isNotEmpty(item.getPathogenicReportYn())
                             && "Y".equals(item.getPathogenicReportYn())) {
                         reportCount++;
                     }
-                    if (!StringUtils.isEmpty(item.getPathogenicFalseYn()) && "Y".equals(item.getPathogenicFalseYn())) {
+                    if (StringUtils.isNotEmpty(item.getPathogenicFalseYn()) && "Y".equals(item.getPathogenicFalseYn())) {
                         falseCount++;
                     }
                 }*/
@@ -712,7 +712,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
     public void showLowConfidenceTab(String warningReasonJsonStr) {
         try {
             Map<String,Object> map = null;
-            if(!StringUtils.isEmpty(warningReasonJsonStr)) {
+            if(StringUtils.isNotEmpty(warningReasonJsonStr)) {
                 map = JsonUtil.fromJsonToMap(warningReasonJsonStr.replace("'", "\""));
             }
 
@@ -858,7 +858,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                         if ("dbSNPButton".equals(id)) {
                             Button dbSNPButton = (Button) node;
 
-                            if(!StringUtils.isEmpty(rsId)) {
+                            if(StringUtils.isNotEmpty(rsId)) {
                                 String fullUrlDBsnp = "https://www.ncbi.nlm.nih.gov/projects/SNP/snp_ref.cgi?rs=" + rsId.replaceAll("rs", "");
                                 dbSNPButton.setOnAction(event -> getMainApp().getHostServices().showDocument(fullUrlDBsnp));
                                 dbSNPButton.setDisable(false);
@@ -867,7 +867,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
                         if ("clinvarButton".equals(id)) {
                             Button clinvarButton = (Button) node;
-                            if(!StringUtils.isEmpty(rsId)) {
+                            if(StringUtils.isNotEmpty(rsId)) {
                                 String fullUrlClinvar = "http://www.ncbi.nlm.nih.gov/clinvar?term=" + rsId;
                                 clinvarButton.setOnAction(event -> getMainApp().getHostServices().showDocument(fullUrlClinvar));
                                 clinvarButton.setDisable(false);
@@ -876,7 +876,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
                         if ("cosmicButton".equals(id)) {
                             Button cosmicButton = (Button) node;
-                            if(!StringUtils.isEmpty(selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getCosmic().getCosmicIds())) {
+                            if(StringUtils.isNotEmpty(selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getCosmic().getCosmicIds())) {
                                 String cosmicId = selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getCosmic().getCosmicIds().replaceAll("COSM", "");
                                 if(cosmicId.contains("|")) {
                                     String[] ids = cosmicId.split("\\|");
@@ -907,7 +907,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
                         if ("ncbiButton".equals(id)) {
                             Button ncbiButton = (Button) node;
-                            if(!StringUtils.isEmpty(geneId)) {
+                            if(StringUtils.isNotEmpty(geneId)) {
                                 String fullUrlNCBI = "http://www.ncbi.nlm.nih.gov/gene/" + geneId;
                                 ncbiButton.setOnAction(event -> getMainApp().getHostServices().showDocument(fullUrlNCBI));
                                 ncbiButton.setDisable(false);
@@ -916,7 +916,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
                         if ("gnomesButton".equals(id)) {
                             Button gnomesButton = (Button) node;
-                            if(!StringUtils.isEmpty(rsId)) {
+                            if(StringUtils.isNotEmpty(rsId)) {
                                 String fullUrl1000G = "http://grch37.ensembl.org/Homo_sapiens/Variation/Population?db=core;v="
                                         + rsId + ";vdb=variation";
                                 gnomesButton.setOnAction(event -> getMainApp().getHostServices().showDocument(fullUrl1000G));
@@ -926,7 +926,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
                         if ("exACButton".equals(id)) {
                             Button exACButton = (Button) node;
-                            if(!StringUtils.isEmpty(exacFormat)) {
+                            if(StringUtils.isNotEmpty(exacFormat)) {
                                 String fullUrlExAC = "http://exac.broadinstitute.org/variant/"
                                         + exacFormat;
                                 exACButton.setOnAction(event -> getMainApp().getHostServices().showDocument(fullUrlExAC));
@@ -936,7 +936,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
                         if ("gnomADButton".equals(id)) {
                             Button gnomADButton = (Button) node;
-                            if(!StringUtils.isEmpty(exacFormat)) {
+                            if(StringUtils.isNotEmpty(exacFormat)) {
                                 String fullUrlExAC = "http://gnomad.broadinstitute.org/variant/"
                                         + exacFormat;
                                 gnomADButton.setOnAction(event -> getMainApp().getHostServices().showDocument(fullUrlExAC));
@@ -946,7 +946,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
                         if ("koEXIDButton".equals(id)) {
                             Button koEXIDButton = (Button) node;
-                            if(!StringUtils.isEmpty(rsId)) {
+                            if(StringUtils.isNotEmpty(rsId)) {
                                 String fullUrlKoKEXID = "http://koex.snu.ac.kr/koex_main.php?section=search&db_code=15&keyword_class=varid&search_keyword="
                                         + rsId;
                                 koEXIDButton.setOnAction(event -> getMainApp().getHostServices().showDocument(fullUrlKoKEXID));
@@ -998,7 +998,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                         // exACButton
                         if("exACButton".equals(id)) {
                             Button exACButton = (Button) node;
-                            if(!StringUtils.isEmpty(urlExAC)) {
+                            if(StringUtils.isNotEmpty(urlExAC)) {
                                 exACButton.setOnAction(event -> {
                                     logger.debug(String.format("OPEN EXTERNAL LINK [%s][%s]", id, urlExAC));
                                     getMainApp().getHostServices().showDocument(urlExAC);
@@ -1037,7 +1037,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                         // brcaExchangeButton
                         if("brcaExchangeButton".equals(id)) {
                             Button brcaExchangeButton = (Button) node;
-                            if(!StringUtils.isEmpty(urlBRCAExchange)) {
+                            if(StringUtils.isNotEmpty(urlBRCAExchange)) {
                                 brcaExchangeButton.setOnAction(event -> {
                                     logger.debug(String.format("OPEN EXTERNAL LINK [%s][%s]", id, urlBRCAExchange));
                                     getMainApp().getHostServices().showDocument(urlBRCAExchange);
@@ -1049,7 +1049,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                         // clinvarButton
                         if("clinvarButton".equals(id)) {
                             Button clinvarButton = (Button) node;
-                            if(!StringUtils.isEmpty(urlClinvar)) {
+                            if(StringUtils.isNotEmpty(urlClinvar)) {
                                 clinvarButton.setOnAction(event -> {
                                     logger.debug(String.format("OPEN EXTERNAL LINK [%s][%s]", id, urlClinvar));
                                     getMainApp().getHostServices().showDocument(urlClinvar);
@@ -1061,7 +1061,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                         // ncbiButton
                         if("ncbiButton".equals(id)) {
                             Button ncbiButton = (Button) node;
-                            if(!StringUtils.isEmpty(urlNCBI)) {
+                            if(StringUtils.isNotEmpty(urlNCBI)) {
                                 ncbiButton.setOnAction(event -> {
                                     logger.debug(String.format("OPEN EXTERNAL LINK [%s][%s]", id, urlNCBI));
                                     getMainApp().getHostServices().showDocument(urlNCBI);
@@ -1073,7 +1073,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                         // ucscButton
                         if("ucscButton".equals(id)) {
                             Button ucscButton = (Button) node;
-                            if(!StringUtils.isEmpty(urlUCSC)) {
+                            if(StringUtils.isNotEmpty(urlUCSC)) {
                                 ucscButton.setOnAction(event -> {
                                     logger.debug(String.format("OPEN EXTERNAL LINK [%s][%s]", id, urlUCSC));
                                     getMainApp().getHostServices().showDocument(urlUCSC);
@@ -1174,7 +1174,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         warn.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
                     @Override
                     public void updateItem(String item, boolean empty) {
-                        setGraphic((!StringUtils.isEmpty(item)) ? SNPsINDELsList.getWarningReasonPopOver(item, panel) : null);
+                        setGraphic((StringUtils.isNotEmpty(item)) ? SNPsINDELsList.getWarningReasonPopOver(item, panel) : null);
                     }
                 });
 
@@ -1185,7 +1185,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
                     @Override
                     public void updateItem(String item, boolean empty) {
                         Label label = null;
-                        if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
+                        if(StringUtils.isNotEmpty(item) && "Y".equals(item)) {
                             label = new Label("R");
                             label.getStyleClass().remove("label");
                             label.getStyleClass().add("prediction_A");
@@ -1495,7 +1495,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             Button button = (Button)node;
             button.getStyleClass().removeAll(button.getStyleClass());
             button.getStyleClass().add("button");
-            if(!StringUtils.isEmpty(userTier)) {
+            if(StringUtils.isNotEmpty(userTier)) {
                 if(userTier.equals(button.getId())) {
                     if(selectedAnalysisResultVariant.getSnpInDel().getExpertTier().equals("T1")) {
                         button.getStyleClass().add("tier_one");
@@ -1549,7 +1549,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
             Button button = (Button)node;
             button.getStyleClass().removeAll(button.getStyleClass());
             button.getStyleClass().add("button");
-            if(!StringUtils.isEmpty(pathogenicity)) {
+            if(StringUtils.isNotEmpty(pathogenicity)) {
                 if(pathogenicity.equals(button.getText())) {
                     if(selectedAnalysisResultVariant.getSnpInDel().getExpertPathogenicity().equals("P")) {
                         button.getStyleClass().add("prediction_A_Selected");

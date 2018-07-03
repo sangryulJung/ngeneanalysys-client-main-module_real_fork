@@ -406,8 +406,8 @@ public class VariantFilterController extends SubPaneController {
 
         startFractionTextField.focusedProperty().addListener((ol, ov, nv) -> {
             if(!nv) {
-                if(!StringUtils.isEmpty(startFractionTextField.getText())
-                        && !StringUtils.isEmpty(endFractionTextField.getText())) {
+                if(StringUtils.isNotEmpty(startFractionTextField.getText())
+                        && StringUtils.isNotEmpty(endFractionTextField.getText())) {
                     if(Double.parseDouble(startFractionTextField.getText()) > Double.parseDouble(endFractionTextField.getText())) {
                         startFractionTextField.setText("");
                     }
@@ -417,8 +417,8 @@ public class VariantFilterController extends SubPaneController {
 
         endFractionTextField.focusedProperty().addListener((ol, ov, nv) -> {
             if(!nv) {
-                if(!StringUtils.isEmpty(endFractionTextField.getText())
-                        && !StringUtils.isEmpty(startFractionTextField.getText())) {
+                if(StringUtils.isNotEmpty(endFractionTextField.getText())
+                        && StringUtils.isNotEmpty(startFractionTextField.getText())) {
                     if(Double.parseDouble(startFractionTextField.getText()) > Double.parseDouble(endFractionTextField.getText())) {
                         endFractionTextField.setText("");
                     }
@@ -429,7 +429,7 @@ public class VariantFilterController extends SubPaneController {
         setComboBox();
 
         filterNameComboBox.valueProperty().addListener((ob, oValue, nValue) -> {
-            if(!StringUtils.isEmpty(nValue)) {
+            if(StringUtils.isNotEmpty(nValue)) {
                 setCurrentOption(filter.get(nValue));
             }
         });
@@ -439,7 +439,7 @@ public class VariantFilterController extends SubPaneController {
         saveBtn.setDisable(true);
 
         filterNameTextField.textProperty().addListener((ev, oldV, newV) -> {
-            if(filterNameTextField.isVisible() && !StringUtils.isEmpty(newV)) {
+            if(filterNameTextField.isVisible() && StringUtils.isNotEmpty(newV)) {
                 saveBtn.setDisable(false);
             } else {
                 saveBtn.setDisable(true);
@@ -828,7 +828,7 @@ public class VariantFilterController extends SubPaneController {
     }
 
     private void setTextArray(String option, TextField textField) {
-        if(!StringUtils.isEmpty(textField.getText())) {
+        if(StringUtils.isNotEmpty(textField.getText())) {
             textField.setText(textField.getText() + ", " + option);
         } else {
             setTextField(option, textField);
@@ -900,7 +900,7 @@ public class VariantFilterController extends SubPaneController {
     @FXML
     private void removeFilter() {
         if(!filterNameTextField.isVisible()
-                && !StringUtils.isEmpty(filterNameComboBox.getSelectionModel().getSelectedItem())) {
+                && StringUtils.isNotEmpty(filterNameComboBox.getSelectionModel().getSelectedItem())) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             DialogUtil.setIcon(alert);
             String alertHeaderText = filterNameComboBox.getSelectionModel().getSelectedItem();
@@ -1015,71 +1015,71 @@ public class VariantFilterController extends SubPaneController {
     }
 
     private void populationFrequencySave(List<Object> list) {
-        if(!StringUtils.isEmpty(tgAllTextField.getText())) {
+        if(StringUtils.isNotEmpty(tgAllTextField.getText())) {
             setFrequency(list, tgAllTextField.getText(), tgAllComboBox.getSelectionModel().getSelectedItem().getValue(), "g1000All");
         }
-        if(!StringUtils.isEmpty(tgafrTextField.getText())) {
+        if(StringUtils.isNotEmpty(tgafrTextField.getText())) {
             setFrequency(list, tgafrTextField.getText(), tgafrComboBox.getSelectionModel().getSelectedItem().getValue(), "g1000African");
         }
-        if(!StringUtils.isEmpty(tgamrTextField.getText())) {
+        if(StringUtils.isNotEmpty(tgamrTextField.getText())) {
             setFrequency(list, tgamrTextField.getText(), tgamrComboBox.getSelectionModel().getSelectedItem().getValue(), "g1000American");
         }
-        if(!StringUtils.isEmpty(tgeasTextField.getText())) {
+        if(StringUtils.isNotEmpty(tgeasTextField.getText())) {
             setFrequency(list, tgeasTextField.getText(), tgeasComboBox.getSelectionModel().getSelectedItem().getValue(), "g1000EastAsian");
         }
-        if(!StringUtils.isEmpty(tgeurTextField.getText())) {
+        if(StringUtils.isNotEmpty(tgeurTextField.getText())) {
             setFrequency(list, tgeurTextField.getText(), tgeurComboBox.getSelectionModel().getSelectedItem().getValue(), "g1000European");
         }
-        if(!StringUtils.isEmpty(tgsasTextField.getText())) {
+        if(StringUtils.isNotEmpty(tgsasTextField.getText())) {
             setFrequency(list, tgsasTextField.getText(), tgsasComboBox.getSelectionModel().getSelectedItem().getValue(), "g1000SouthAsian");
         }
 
-        if(!StringUtils.isEmpty(espallTextField.getText())) {
+        if(StringUtils.isNotEmpty(espallTextField.getText())) {
             setFrequency(list, espallTextField.getText(), espallComboBox.getSelectionModel().getSelectedItem().getValue(), "esp6500All");
         }
-        if(!StringUtils.isEmpty(espaaTextField.getText())) {
+        if(StringUtils.isNotEmpty(espaaTextField.getText())) {
             setFrequency(list, espaaTextField.getText(), espaaComboBox.getSelectionModel().getSelectedItem().getValue(), "esp6500aa");
         }
-        if(!StringUtils.isEmpty(espeaTextField.getText())) {
+        if(StringUtils.isNotEmpty(espeaTextField.getText())) {
             setFrequency(list, espeaTextField.getText(), espeaComboBox.getSelectionModel().getSelectedItem().getValue(), "esp6500ea");
         }
 
-        if(!StringUtils.isEmpty(keidTextField.getText())) {
+        if(StringUtils.isNotEmpty(keidTextField.getText())) {
             setFrequency(list, keidTextField.getText(), keidComboBox.getSelectionModel().getSelectedItem().getValue(), "koreanExomInformationDatabase");
         }
-        if(!StringUtils.isEmpty(krgdTextField.getText())) {
+        if(StringUtils.isNotEmpty(krgdTextField.getText())) {
             setFrequency(list, krgdTextField.getText(), krgdComboBox.getSelectionModel().getSelectedItem().getValue(), "koreanReferenceGenomeDatabase");
         }
-        if(!StringUtils.isEmpty(kohbraTextField.getText())) {
+        if(StringUtils.isNotEmpty(kohbraTextField.getText())) {
             setFrequency(list, kohbraTextField.getText(), kohbraComboBox.getSelectionModel().getSelectedItem().getValue(), "kohbraFreq");
         }
-        if(!StringUtils.isEmpty(exacTextField.getText())) {
+        if(StringUtils.isNotEmpty(exacTextField.getText())) {
             setFrequency(list, exacTextField.getText(), exacComboBox.getSelectionModel().getSelectedItem().getValue(), "exac");
         }
 
         if("somatic".equalsIgnoreCase(analysisType)) {
-            if (!StringUtils.isEmpty(gnomADAllTextField.getText())) {
+            if (StringUtils.isNotEmpty(gnomADAllTextField.getText())) {
                 setFrequency(list, gnomADAllTextField.getText(), gnomADAllComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADall");
             }
-            if (!StringUtils.isEmpty(gnomADmaTextField.getText())) {
+            if (StringUtils.isNotEmpty(gnomADmaTextField.getText())) {
                 setFrequency(list, gnomADmaTextField.getText(), gnomADmaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADadmixedAmerican");
             }
-            if (!StringUtils.isEmpty(gnomADaaaTextField.getText())) {
+            if (StringUtils.isNotEmpty(gnomADaaaTextField.getText())) {
                 setFrequency(list, gnomADaaaTextField.getText(), gnomADaaaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADafricanAfricanAmerican");
             }
-            if (!StringUtils.isEmpty(gnomADeaTextField.getText())) {
+            if (StringUtils.isNotEmpty(gnomADeaTextField.getText())) {
                 setFrequency(list, gnomADeaTextField.getText(), gnomADeaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADeastAsian");
             }
-            if (!StringUtils.isEmpty(gnomADfinTextField.getText())) {
+            if (StringUtils.isNotEmpty(gnomADfinTextField.getText())) {
                 setFrequency(list, gnomADfinTextField.getText(), gnomADfinComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADfinnish");
             }
-            if (!StringUtils.isEmpty(gnomADnfeTextField.getText())) {
+            if (StringUtils.isNotEmpty(gnomADnfeTextField.getText())) {
                 setFrequency(list, gnomADnfeTextField.getText(), gnomADnfeComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADnonFinnishEuropean");
             }
-            if (!StringUtils.isEmpty(gnomADotherTextField.getText())) {
+            if (StringUtils.isNotEmpty(gnomADotherTextField.getText())) {
                 setFrequency(list, gnomADotherTextField.getText(), gnomADotherComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADothers");
             }
-            if (!StringUtils.isEmpty(gnomADsaTextField.getText())) {
+            if (StringUtils.isNotEmpty(gnomADsaTextField.getText())) {
                 setFrequency(list, gnomADsaTextField.getText(), gnomADsaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADsouthAsian");
             }
         }
@@ -1253,7 +1253,7 @@ public class VariantFilterController extends SubPaneController {
             list.add("clinVarClass Benign");
         }
 
-        if(!StringUtils.isEmpty(geneTextField.getText())) {
+        if(StringUtils.isNotEmpty(geneTextField.getText())) {
 
             String[] geneList = geneTextField.getText().replaceAll(" ", "").split(",");
 
@@ -1262,7 +1262,7 @@ public class VariantFilterController extends SubPaneController {
             }
         }
 
-        if(!StringUtils.isEmpty(chromosomeTextField.getText())) {
+        if(StringUtils.isNotEmpty(chromosomeTextField.getText())) {
 
             String[] chrList = chromosomeTextField.getText().replaceAll(" ", "").split(",");
 
@@ -1298,15 +1298,15 @@ public class VariantFilterController extends SubPaneController {
         }
 
         if(cosmicOccurrenceComboBox.getSelectionModel().getSelectedItem() != null &&
-                !StringUtils.isEmpty(cosmicOccurrenceComboBox.getSelectionModel().getSelectedItem().getValue())) {
+                StringUtils.isNotEmpty(cosmicOccurrenceComboBox.getSelectionModel().getSelectedItem().getValue())) {
             list.add("cosmicOccurrence " + cosmicOccurrenceComboBox.getSelectionModel().getSelectedItem().getValue());
         }
 
-        if(StringUtils.isEmpty(endFractionTextField.getText()) && !StringUtils.isEmpty(startFractionTextField.getText())) {
+        if(StringUtils.isEmpty(endFractionTextField.getText()) && StringUtils.isNotEmpty(startFractionTextField.getText())) {
             list.add("alleleFraction gt:" + startFractionTextField.getText());
-        } else if(!StringUtils.isEmpty(endFractionTextField.getText()) && StringUtils.isEmpty(startFractionTextField.getText())) {
+        } else if(StringUtils.isNotEmpty(endFractionTextField.getText()) && StringUtils.isEmpty(startFractionTextField.getText())) {
             list.add("alleleFraction lt:" + endFractionTextField.getText());
-        } else if(!StringUtils.isEmpty(endFractionTextField.getText()) && !StringUtils.isEmpty(startFractionTextField.getText())) {
+        } else if(StringUtils.isNotEmpty(endFractionTextField.getText()) && StringUtils.isNotEmpty(startFractionTextField.getText())) {
             list.add("alleleFraction gt:" + startFractionTextField.getText() + ",lt:" + endFractionTextField.getText() + ",and");
         }
     }

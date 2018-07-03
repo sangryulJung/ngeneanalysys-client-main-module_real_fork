@@ -306,28 +306,28 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
                 child.getStyleClass().removeAll(child.getStyleClass());
                 boolean flag = false;
                 SnpInDelEvidence evidence = ConvertUtil.findPrimaryEvidence(snpInDelInterpretation);
-                /*if(((Label)child).getText().equals("A") && !StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelA())) {
+                /*if(((Label)child).getText().equals("A") && StringUtils.isNotEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelA())) {
                     child.getStyleClass().add("prediction_E");
                     //resultTextArea.setText(snpInDelInterpretation.getInterpretationEvidenceA());
                     child.setStyle("-fx-cursor:hand;");
                     child.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> resultTextArea.setText(snpInDelInterpretation.getTherapeuticEvidence().getLevelA()));
                     flag = true;
                 }
-                if(((Label)child).getText().equals("B") && !StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelB())) {
+                if(((Label)child).getText().equals("B") && StringUtils.isNotEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelB())) {
                     child.getStyleClass().add("prediction_E");
                     //resultTextArea.setText(snpInDelInterpretation.getInterpretationEvidenceB());
                     child.setStyle("-fx-cursor:hand;");
                     child.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> resultTextArea.setText(snpInDelInterpretation.getTherapeuticEvidence().getLevelB()));
                     flag = true;
                 }
-                if(((Label)child).getText().equals("C") && !StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelC())) {
+                if(((Label)child).getText().equals("C") && StringUtils.isNotEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelC())) {
                     child.getStyleClass().add("prediction_E");
                     //resultTextArea.setText(snpInDelInterpretation.getInterpretationEvidenceC());
                     child.setStyle("-fx-cursor:hand;");
                     child.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> resultTextArea.setText(snpInDelInterpretation.getTherapeuticEvidence().getLevelC()));
                     flag = true;
                 }
-                if(((Label)child).getText().equals("D") && !StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelD())) {
+                if(((Label)child).getText().equals("D") && StringUtils.isNotEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelD())) {
                     child.getStyleClass().add("prediction_E");
                     //resultTextArea.setText(snpInDelInterpretation.getInterpretationEvidenceD());
                     child.setStyle("-fx-cursor:hand;");
@@ -536,32 +536,32 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
                             item.getTranscriptId().equals(transcriptComboBox.getItems().get((int)newIdx))).findFirst();
                     if(transcriptOptional.isPresent()) {
                         SnpInDelTranscript transcript = transcriptOptional.get();
-                        String geneSymbol = (!StringUtils.isEmpty(transcript.getGeneSymbol())) ? transcript.getGeneSymbol() : "N/A";
-                        String transcriptName = (!StringUtils.isEmpty(transcript.getTranscriptId())) ? transcript.getTranscriptId() : "N/A";
-                        String codingDNA = (!StringUtils.isEmpty(transcript.getCodingDna())) ? transcript.getCodingDna() : "N/A";
-                        String protein = (!StringUtils.isEmpty(transcript.getProtein())) ? transcript.getProtein() : "N/A";
-                        String genomicDNA = (!StringUtils.isEmpty(transcript.getGenomicDna())) ? transcript.getGenomicDna() : "N/A";
+                        String geneSymbol = (StringUtils.isNotEmpty(transcript.getGeneSymbol())) ? transcript.getGeneSymbol() : "N/A";
+                        String transcriptName = (StringUtils.isNotEmpty(transcript.getTranscriptId())) ? transcript.getTranscriptId() : "N/A";
+                        String codingDNA = (StringUtils.isNotEmpty(transcript.getCodingDna())) ? transcript.getCodingDna() : "N/A";
+                        String protein = (StringUtils.isNotEmpty(transcript.getProtein())) ? transcript.getProtein() : "N/A";
+                        String genomicDNA = (StringUtils.isNotEmpty(transcript.getGenomicDna())) ? transcript.getGenomicDna() : "N/A";
 
 
                         logger.debug(String.format("variant identification choose '%s' option idx [%s]", transcriptName, newIdx));
                         List<Integer> textLength = new ArrayList<>();
                         geneSymbolTextField.setText(geneSymbol); //Gene Symbol
-                        if(!StringUtils.isEmpty(geneSymbol)) {
+                        if(StringUtils.isNotEmpty(geneSymbol)) {
                             geneSymbolTextField.setTooltip(new Tooltip(geneSymbol));
                             textLength.add(geneSymbol.length());
                         }
                         hgvspTextField.setText(protein); //Protein
-                        if(!StringUtils.isEmpty(protein)) {
+                        if(StringUtils.isNotEmpty(protein)) {
                             hgvspTextField.setTooltip(new Tooltip(protein));
                             textLength.add(protein.length());
                         }
                         hgvscTextField.setText(codingDNA); //Coding DNA
-                        if(!StringUtils.isEmpty(codingDNA)) {
+                        if(StringUtils.isNotEmpty(codingDNA)) {
                             hgvscTextField.setTooltip(new Tooltip(codingDNA));
                             textLength.add(codingDNA.length());
                         }
                         grch37TextField.setText(genomicDNA); //Genomic DNA
-                        if(!StringUtils.isEmpty(genomicDNA)) {
+                        if(StringUtils.isNotEmpty(genomicDNA)) {
                             grch37TextField.setTooltip(new Tooltip(genomicDNA));
                             textLength.add(genomicDNA.length());
                         }

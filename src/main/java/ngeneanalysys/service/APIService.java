@@ -309,7 +309,7 @@ public class APIService {
 
     public String getConvertConnectURL(String url) {
         String serverHost = config.getProperty(CommonConstants.DEFAULT_SERVER_HOST_KEY);
-        if(!StringUtils.isEmpty(serverHost) && config.getProperty(CommonConstants.DEFAULT_SERVER_HOST_KEY).endsWith("/")) {
+        if(StringUtils.isNotEmpty(serverHost) && config.getProperty(CommonConstants.DEFAULT_SERVER_HOST_KEY).endsWith("/")) {
             serverHost = serverHost.substring(0, serverHost.lastIndexOf('/'));
         }
         return (!url.startsWith("/")) ? serverHost + "/" + url : serverHost + url;

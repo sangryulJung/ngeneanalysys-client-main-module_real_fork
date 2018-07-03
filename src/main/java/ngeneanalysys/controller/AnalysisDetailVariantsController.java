@@ -91,7 +91,7 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
 
     public void setSNVTabName(String text) {
         if(snvLabel != null) {
-            if (!StringUtils.isEmpty(text)) {
+            if (StringUtils.isNotEmpty(text)) {
                 snvLabel.setText("SNV/Indel : " + text);
             } else {
                 snvLabel.setText("SNV/Indel");
