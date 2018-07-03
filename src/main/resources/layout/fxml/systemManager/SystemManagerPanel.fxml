@@ -28,7 +28,7 @@
    <children>
       <HBox prefHeight="502.0" prefWidth="1200.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
          <children>
-            <ScrollPane hbarPolicy="NEVER" maxHeight="470.0" maxWidth="385.0" prefHeight="470.0" prefWidth="385.0" vbarPolicy="ALWAYS">
+            <ScrollPane fx:id="panelContentsScrollPane" hbarPolicy="NEVER" maxHeight="470.0" maxWidth="385.0" prefHeight="470.0" prefWidth="385.0" vbarPolicy="ALWAYS">
                <HBox.margin>
                   <Insets right="1.0" />
                </HBox.margin>

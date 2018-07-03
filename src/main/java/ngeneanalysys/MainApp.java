@@ -235,7 +235,7 @@ public class MainApp extends Application {
 			props.load(reader);
 
 			return (props.containsKey("default.server.host")
-						&& !StringUtils.isEmpty(props.getProperty("default.server.host")));
+						&& StringUtils.isNotEmpty(props.getProperty("default.server.host")));
 
 		} catch (IOException e) {
 			return false;
@@ -257,7 +257,7 @@ public class MainApp extends Application {
 				String value = (String) entry.getValue();
 
 				// 설정값이 존재하는 경우 추가
-				if(!StringUtils.isEmpty(value)) {
+				if(StringUtils.isNotEmpty(value)) {
 					logger.debug(String.format("add property [%s : %s]", key, value));
 					config.setProperty(key, value);
 				}

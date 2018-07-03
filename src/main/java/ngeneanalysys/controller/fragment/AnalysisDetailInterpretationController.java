@@ -272,7 +272,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                 SnpInDelEvidence snpInDelEvidence = TypeComboBoxCell.this.getTableView().getItems().get(
                         TypeComboBoxCell.this.getIndex());
 
-                if(!StringUtils.isEmpty(t1)) {
+                if(StringUtils.isNotEmpty(t1)) {
                     snpInDelEvidence.setEvidenceType(t1);
                 }
             });
@@ -295,7 +295,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                 SnpInDelEvidence evidence = TypeComboBoxCell.this.getTableView().getItems().get(
                         TypeComboBoxCell.this.getIndex());
 
-                if(evidence != null && !StringUtils.isEmpty(evidence.getEvidenceType())) {
+                if(evidence != null && StringUtils.isNotEmpty(evidence.getEvidenceType())) {
                     comboBox.getSelectionModel().select(evidence.getEvidenceType());
                 } else {
                     comboBox.getSelectionModel().selectFirst();
@@ -314,14 +314,14 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                 SnpInDelEvidence snpInDelEvidence = EvidenceLevelComboBoxCell.this.getTableView().getItems().get(
                         EvidenceLevelComboBoxCell.this.getIndex());
 
-                if(!StringUtils.isEmpty(t1)) {
+                if(StringUtils.isNotEmpty(t1)) {
                     snpInDelEvidence.setEvidenceLevel(t1);
                     if(t1.equalsIgnoreCase("T3") || t1.equalsIgnoreCase("T4")) {
                         snpInDelEvidence.setEvidenceType("N/A");
                     } else if(snpInDelEvidence.getEvidenceType().equals("N/A")){
                         snpInDelEvidence.setEvidenceType("therapeutic");
                     }
-                    if(!StringUtils.isEmpty(t) && !t.equals(t1)) {
+                    if(StringUtils.isNotEmpty(t) && !t.equals(t1)) {
                         evidenceTableView.refresh();
                     }
                     //evidenceTableView.refresh();
@@ -346,7 +346,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                 SnpInDelEvidence evidence = EvidenceLevelComboBoxCell.this.getTableView().getItems().get(
                         EvidenceLevelComboBoxCell.this.getIndex());
 
-                if(evidence != null && !StringUtils.isEmpty(evidence.getEvidenceLevel())) {
+                if(evidence != null && StringUtils.isNotEmpty(evidence.getEvidenceLevel())) {
                     comboBox.getSelectionModel().select(evidence.getEvidenceLevel());
                 } else {
                     comboBox.getSelectionModel().selectFirst();

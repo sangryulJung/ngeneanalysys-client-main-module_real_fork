@@ -539,7 +539,7 @@ public class MainController extends BaseStageController {
         boolean isAdded = false;
         int addedMenuIdx = 0;
         for(TopMenu topMenu : this.sampleMenu) {
-            if(!StringUtils.isEmpty(menu.getId()) && !StringUtils.isEmpty(topMenu.getId()) &&
+            if(StringUtils.isNotEmpty(menu.getId()) && StringUtils.isNotEmpty(topMenu.getId()) &&
                     menu.getId().equals(topMenu.getId())) {
                     isAdded = true;
                     break;
@@ -701,7 +701,7 @@ public class MainController extends BaseStageController {
         // 최초 화면 출력 여부
         boolean isFirstShow = false;
         try {
-            if (!StringUtils.isEmpty(menu.getFxmlPath())) {
+            if (StringUtils.isNotEmpty(menu.getFxmlPath())) {
                 logger.debug("mainFrame display fxmlPath : " + menu.getMenuName());
 
                 if(topMenuContent[menu.getDisplayOrder()] == null) {
@@ -988,7 +988,7 @@ public class MainController extends BaseStageController {
         if(this.progressTaskContentArea.getChildren() != null && this.progressTaskContentArea.getChildren().size() > 0) {
             int idx = 0;
             for(Node node : this.progressTaskContentArea.getChildren()) {
-                if(!StringUtils.isEmpty(node.getId()) && id.equals(node.getId())) {
+                if(StringUtils.isNotEmpty(node.getId()) && id.equals(node.getId())) {
                     break;
                 }
                 idx++;

@@ -101,7 +101,7 @@ public class PopOverUtil {
             box.getChildren().add(descLabel);
 
             String massage = role.containsKey("message") ? (String)role.get("message") : null;
-            if(!StringUtils.isEmpty(massage)) {
+            if(StringUtils.isNotEmpty(massage)) {
                 Label msgLabel = new Label();
                 msgLabel.setWrapText(true);
                 msgLabel.setText("("+massage+")");

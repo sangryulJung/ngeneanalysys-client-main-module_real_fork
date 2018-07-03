@@ -216,7 +216,7 @@ public class SnpInDel {
 	 */
 	public String getHasWarning() {
 		if("Y".equalsIgnoreCase(this.hasWarning)) {
-			return (!StringUtils.isEmpty(this.warningReason)) ? this.warningReason : "NONE";
+			return (StringUtils.isNotEmpty(this.warningReason)) ? this.warningReason : "NONE";
 		}
 		return null;
 	}
@@ -307,7 +307,7 @@ public class SnpInDel {
 	public String createNtChangeBRCA() {
 		String cDNAbic = this.getSnpInDelExpression().getNtChange();
 		String gene = getGenomicCoordinate().getGene().toUpperCase();
-		if (!StringUtils.isEmpty(cDNAbic)
+		if (StringUtils.isNotEmpty(cDNAbic)
 				&& getGenomicCoordinate() != null && getGenomicCoordinate().getGene() != null
 				&& (gene.equals("BRCA1") || gene.equals("BRCA2"))) {
 			List<String> findCDNANums = new ArrayList<>();

@@ -74,7 +74,7 @@ public class ValidationUtil {
 			return 1;
 		}
 		// 정규식 패턴이 지정된 경우
-		if(!StringUtils.isEmpty(value) && !StringUtils.isEmpty(pattern)) {
+		if(StringUtils.isNotEmpty(value) && StringUtils.isNotEmpty(pattern)) {
 			//문자, 숫자, 특수문자의 조합인지 확인
 			Pattern p = Pattern.compile(pattern);
 			Matcher m = p.matcher(value);

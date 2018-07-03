@@ -190,6 +190,8 @@ public class SystemManagerPanelController extends SubPaneController {
     private TextField duplicatedReadsPercentageTextField;
     @FXML
     private TextField roiCoveragePercentageTextField;
+    @FXML
+    private ScrollPane panelContentsScrollPane;
 
     private CheckComboBox<ComboBoxItem> groupCheckComboBox = null;
 
@@ -614,19 +616,27 @@ public class SystemManagerPanelController extends SubPaneController {
     @FXML
     public void savePanel() {
         String panelName = panelNameTextField.getText();
+        if(StringUtils.isNotEmpty(panelName) && !panelName.matches("[a-zA-Z0-9_\\s]*")) {
+            DialogUtil.warning("Incorrect panel name combination",
+                    "Please enter at combination of English, whitespace, numbers and underscore.", mainApp.getPrimaryStage(), true);
+            panelContentsScrollPane.setVvalue(0);
+            panelNameTextField.setText("");
+            panelNameTextField.requestFocus();
+            return;
+        }
         String code = panelCodeTextField.getText();
 
-        if(!StringUtils.isEmpty(panelName) &&  !StringUtils.isEmpty(code)) {
+        if(StringUtils.isNotEmpty(code)) {
             if(bedFile == null && panelId == 0) return;
 
             Map<String,Object> params = new HashMap<>();
             params.put("name", panelName);
             params.put("code", code);
             VariantConfig variantConfig = new VariantConfig();
-            if(warningReadDepthCheckBox.isSelected() && !StringUtils.isEmpty(warningReadDepthTextField.getText())) {
+            if(warningReadDepthCheckBox.isSelected() && StringUtils.isNotEmpty(warningReadDepthTextField.getText())) {
                 variantConfig.setWarningReadDepth(Integer.parseInt(warningReadDepthTextField.getText()));
             }
-            if(warningMAFCheckBox.isSelected() && !StringUtils.isEmpty(warningMAFTextField.getText())) {
+            if(warningMAFCheckBox.isSelected() && StringUtils.isNotEmpty(warningMAFTextField.getText())) {
                 variantConfig.setWarningMAF(new BigDecimal(warningMAFTextField.getText()));
             }
             if(!lowConfidenceCheckComboBox.getCheckModel().getCheckedItems().isEmpty()) {

@@ -73,7 +73,7 @@ public class AnalysisDetailSNPsINDELsLowConfidenceController extends SubPaneCont
                     warningLabel.getStyleClass().add("font_size_12");
                     warningLabel.setText(warningString.toUpperCase());
 
-                    if (!StringUtils.isEmpty(warningString)) {
+                    if (StringUtils.isNotEmpty(warningString)) {
                         if (warningString.equalsIgnoreCase("YES")) {
                             warningLabel.getStyleClass().add("txt_green");
                         } else {
@@ -98,7 +98,7 @@ public class AnalysisDetailSNPsINDELsLowConfidenceController extends SubPaneCont
             String homopolymerRegion = (String) getParamMap().get("homopolymer_region");
             String primerRegionDeletion = (String) getParamMap().get("primer_deletion");
 
-            if(!StringUtils.isEmpty(lowVariantCoverageDepth)) {
+            if(StringUtils.isNotEmpty(lowVariantCoverageDepth)) {
                 lowVariantCoverageDepthLabel.setText(lowVariantCoverageDepth.toUpperCase());
                 if(lowVariantCoverageDepth.toUpperCase().equals("YES")) {
                     lowVariantCoverageDepthLabel.getStyleClass().add("txt_green");
@@ -109,7 +109,7 @@ public class AnalysisDetailSNPsINDELsLowConfidenceController extends SubPaneCont
                 lowVariantCoverageDepthLabel.setText(na);
             }
 
-            if(!StringUtils.isEmpty(lowVariantFraction)) {
+            if(StringUtils.isNotEmpty(lowVariantFraction)) {
                 lowVariantFractionLabel.setText(lowVariantFraction.toUpperCase());
                 if(lowVariantFraction.toUpperCase().equals("YES")) {
                     lowVariantFractionLabel.getStyleClass().add("txt_green");
@@ -120,7 +120,7 @@ public class AnalysisDetailSNPsINDELsLowConfidenceController extends SubPaneCont
                 lowVariantFractionLabel.setText(na);
             }
 
-            if(!StringUtils.isEmpty(softClippedAmplicon)) {
+            if(StringUtils.isNotEmpty(softClippedAmplicon)) {
                 softClippedAmpliconLabel.setText(softClippedAmplicon.toUpperCase());
                 if(softClippedAmplicon.toUpperCase().equals("YES")) {
                     softClippedAmpliconLabel.getStyleClass().add("txt_green");
@@ -131,7 +131,7 @@ public class AnalysisDetailSNPsINDELsLowConfidenceController extends SubPaneCont
                 softClippedAmpliconLabel.setText(na);
             }
 
-            if(!StringUtils.isEmpty(homopolymerRegion)) {
+            if(StringUtils.isNotEmpty(homopolymerRegion)) {
                 homopolymerRegionLabel.setText(homopolymerRegion.toUpperCase());
                 if(homopolymerRegion.toUpperCase().equals("YES")) {
                     homopolymerRegionLabel.getStyleClass().add("txt_green");
@@ -142,7 +142,7 @@ public class AnalysisDetailSNPsINDELsLowConfidenceController extends SubPaneCont
                 homopolymerRegionLabel.setText(na);
             }
 
-            if(!StringUtils.isEmpty(primerRegionDeletion)) {
+            if(StringUtils.isNotEmpty(primerRegionDeletion)) {
                 primerRegionDeletionLabel.setText(primerRegionDeletion.toUpperCase());
                 if(primerRegionDeletion.toUpperCase().equals("YES")) {
                     primerRegionDeletionLabel.getStyleClass().add("txt_green");
