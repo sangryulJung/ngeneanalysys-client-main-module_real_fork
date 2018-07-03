@@ -73,10 +73,11 @@ public class ExportVariantDataTask extends Task<Void> {
 		apiService.setStage(mainApp.getPrimaryStage());		
 	}
 
-	public ExportVariantDataTask(MainApp mainApp, File file, Map<String, List<Object>> params) {
+	public ExportVariantDataTask(MainApp mainApp, File file, Map<String, List<Object>> searchParams, Map<String, Object> params) {
 		this.file = file;
-		this.searchParam = params;
+		this.searchParam = searchParams;
 		this.mainApp = mainApp;
+		this.params = params;
 		// api service init..
 		apiService = APIService.getInstance();
 		apiService.setStage(mainApp.getPrimaryStage());
@@ -90,8 +91,7 @@ public class ExportVariantDataTask extends Task<Void> {
 		CloseableHttpResponse response = null;
 		String downloadUrl = "";
 		if(StringUtils.isEmpty(fileType)) {
-			downloadUrl = "/sampleSummaryExcel?timeHourDiff=9";
-			// TODO timeHourDiff이 사용자의 타임존에 따라 자동으로 입력되어야 함.
+			downloadUrl = "/sampleSummaryExcel";
 		} else {
 			downloadUrl = "/analysisResults/exportVariantData/" + sampleId;
 		}

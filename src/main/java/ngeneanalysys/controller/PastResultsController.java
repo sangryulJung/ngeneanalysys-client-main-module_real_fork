@@ -22,9 +22,6 @@ import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.model.render.DatepickerConverter;
 import ngeneanalysys.util.*;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.message.BasicNameValuePair;
 import org.controlsfx.control.textfield.CustomTextField;
 import org.controlsfx.control.textfield.TextFields;
 import org.json.simple.JSONArray;
@@ -677,10 +674,16 @@ public class PastResultsController extends SubPaneController {
 
 	@FXML
 	public void downloadExcel() {
-		Map<String, List<Object>> params = getSubSearchParam();
-
+		Map<String, List<Object>> searchParams = getSubSearchParam();
+		Map<String, Object> params = new HashMap<>();
+		params.put("timeHourDiff", getTimeHourDiff());
 		WorksheetUtil worksheetUtil = new WorksheetUtil();
-		worksheetUtil.exportVariantData(params, this.getMainApp());
+		worksheetUtil.exportVariantData(searchParams, params, this.getMainApp());
+	}
+
+	private int getTimeHourDiff() {
+		TimeZone timeZone = TimeZone.getDefault();
+		return timeZone.getRawOffset()/1000/60/60;
 	}
 	
 	/**
@@ -1002,7 +1005,7 @@ public class PastResultsController extends SubPaneController {
 		public void setLabel(RunSampleView runSampleView) {
 			runLabel.setText(runSampleView.getRun().getName());
 			sequencerLabel.setText(runSampleView.getRun().getSequencingPlatform());
-			SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+			SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 			if (runSampleView.getRun().getCreatedAt() != null)
 				submitDateLabel.setText(format.format(runSampleView.getRun().getCreatedAt().toDate()));
 			if (runSampleView.getRun().getCompletedAt() != null)
