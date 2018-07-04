@@ -13,6 +13,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import ngeneanalysys.code.constants.FXMLConstants;
@@ -853,6 +854,7 @@ public class PastResultsController extends SubPaneController {
 		private void showAlert(final SampleView sampleView) {
 
 			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+			alert.setGraphic(new ImageView(resourceUtil.getImage("/layout/images/renewal/icon_warn_small@2x.png")));
 			alert.setTitle("Restart VCF Interpretation");
 			alert.setHeaderText(sampleView.getName());
 			alert.setContentText("If the analysis is restarted, the results that have already been processed will be deleted. Are you sure to restart this analysis?");
