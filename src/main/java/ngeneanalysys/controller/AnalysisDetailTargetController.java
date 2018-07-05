@@ -117,8 +117,6 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
         tier3IndelsColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier3IndelCount()).asObject());
         tier4SnvColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier4SnpCount()).asObject());
         tier4IndelsColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTier4IndelCount()).asObject());
-        tierNSnvColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTierNSnpCount()).asObject());
-        tierNIndelsColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTierNSnpCount()).asObject());
 
         showVariantCountByGeneData();
 

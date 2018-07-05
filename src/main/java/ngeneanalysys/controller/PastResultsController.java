@@ -178,42 +178,43 @@ public class PastResultsController extends SubPaneController {
 				textField.setPrefWidth(Double.MAX_VALUE);
 				filterSearchArea.getChildren().add(textField);
 			} else if(newV.getValue().equalsIgnoreCase("DATE")) {
-				DatePicker startDate = new DatePicker();
+				final DatePicker startDate = new DatePicker();
 				startDate.setPrefWidth(240);
-				DatePicker endDate = new DatePicker();
+				final DatePicker endDate = new DatePicker();
 				endDate.setPrefWidth(240);
 
 				String dateFormat = "yyyy-MM-dd";
+
 				startDate.setConverter(DatepickerConverter.getConverter(dateFormat));
 				startDate.setPromptText(dateFormat);
-				startDate.valueProperty().addListener(element -> {
-					if(startDate.getValue() != null && endDate.getValue() != null) {
-						int minDate = Integer.parseInt(startDate.getValue().toString().replace("-", ""));
-						int maxDate = Integer.parseInt(endDate.getValue().toString().replace("-", ""));
-						if(minDate > maxDate) {
-							DialogUtil.warning("선택한 날짜가 검색의 마지막 날짜 이후의 날짜입니다.", "Date is later than the last day of the selected date search.", getMainApp().getPrimaryStage(), true);
-							startDate.setValue(null);
-						}
-					}
-				});
+				startDate.valueProperty().addListener(element -> compareDate(startDate, endDate, true
+				, "선택한 날짜가 검색의 마지막 날짜 이후의 날짜입니다.", "Date is later than the last day of the selected date search."));
+
 				endDate.setConverter(DatepickerConverter.getConverter(dateFormat));
 				endDate.setPromptText(dateFormat);
-				endDate.valueProperty().addListener(element -> {
-					if(endDate.getValue() != null && startDate.getValue() != null) {
-						int minDate = Integer.parseInt(startDate.getValue().toString().replace("-", ""));
-						int maxDate = Integer.parseInt(endDate.getValue().toString().replace("-", ""));
-						if(minDate > maxDate) {
-							DialogUtil.warning("선택한 날짜가 검색의 시작 날짜 이전의 날짜입니다.", "The selected date is the date before the search of the start date.", getMainApp().getPrimaryStage(), true);
-							endDate.setValue(null);
-						}
-					}
-				});
+				endDate.valueProperty().addListener(element -> compareDate(startDate, endDate, false
+						, "선택한 날짜가 검색의 시작 날짜 이전의 날짜입니다.", "The selected date is the date before the search of the start date."));
 
 				filterSearchArea.getChildren().addAll(startDate, endDate);
 			}
 		});
 
 		searchComboBox.getSelectionModel().select(0);
+	}
+
+	private void compareDate(DatePicker leftDate, DatePicker rightDate, boolean firstDateReset , String titleText, String contentText) {
+		if(leftDate.getValue() != null && rightDate.getValue() != null) {
+			int leftDateInt = Integer.parseInt(leftDate.getValue().toString().replace("-", ""));
+			int rightDateInt = Integer.parseInt(rightDate.getValue().toString().replace("-", ""));
+			if(leftDateInt > rightDateInt) {
+				DialogUtil.warning(titleText, contentText, getMainApp().getPrimaryStage(), true);
+				if(firstDateReset) {
+					leftDate.setValue(null);
+				} else {
+					rightDate.setValue(null);
+				}
+			}
+		}
 	}
 
 	private void updateAutoCompletion(final String value, final CustomTextField textField) {
@@ -840,8 +841,12 @@ public class PastResultsController extends SubPaneController {
 
                 if(sampleView.getPanelName().contains("TruSight Tumor")) {
                     restart.setVisible(false);
-                } else{
-                    restart.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showAlert(sampleView));
+                } else {
+                	if(sampleView.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_FAIL)) {
+                		restart.setVisible(false);
+					} else {
+						restart.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showAlert(sampleView));
+					}
                 }
 
 				itemHBox.getChildren().addAll(name, panel, statusHBox, variants, qc, restart);

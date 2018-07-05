@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -14,6 +15,7 @@ import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.*;
+import org.controlsfx.control.CheckComboBox;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -32,6 +34,9 @@ public class VariantFilterController extends SubPaneController {
     private APIService apiService;
 
     private Stage dialogStage;
+
+    @FXML
+    private GridPane variantTabGridPane;
 
     @FXML
     private Button saveBtn;
@@ -345,6 +350,8 @@ public class VariantFilterController extends SubPaneController {
 
     private AnalysisDetailSNVController snvController;
 
+    private CheckComboBox<String> lowConfidenceCheckComboBox;
+
     /**
      * @param snvController AnalysisDetailSNVController
      */
@@ -387,6 +394,8 @@ public class VariantFilterController extends SubPaneController {
 
         //setFormat(startFractionTextField);
         //setFormat(endFractionTextField);\
+
+        createLowConfidence();
 
         createFrequency();
 
@@ -450,6 +459,18 @@ public class VariantFilterController extends SubPaneController {
         Scene scene = new Scene(root);
         dialogStage.setScene(scene);
         dialogStage.showAndWait();
+    }
+
+    private void createLowConfidence() {
+        CheckComboBox<String> lowConfidenceCheckComboBox = new CheckComboBox<>();
+        lowConfidenceCheckComboBox.getItems().addAll("artifact_in_normal", "base_quality", "clustered_events",
+                "contamination", "duplicate_evidence", "fragment_length", "germline_risk", "mapping_quality",
+                "multiallelic", "orientation_bias", "panel_of_normals", "read_position", "str_contraction",
+                "strand_artifact", "t_lod", "homopolymer", "repeat_sequence", "sequencing_error", "mapping_error",
+                "snp_candidate");
+
+        this.lowConfidenceCheckComboBox = lowConfidenceCheckComboBox;
+        variantTabGridPane.add(lowConfidenceCheckComboBox, 1 , 21 );
     }
 
     private void createFrequency() {
@@ -804,6 +825,8 @@ public class VariantFilterController extends SubPaneController {
             Optional<ComboBoxItem> comboBoxItem
                     = cosmicOccurrenceComboBox.getItems().stream().filter(item -> item.getValue().equals(value)).findFirst();
             comboBoxItem.ifPresent(comboBoxItem1 -> cosmicOccurrenceComboBox.getSelectionModel().select(comboBoxItem1));
+        }else if(key.equalsIgnoreCase("lowConfidence")) {
+            
         }
     }
 
@@ -1302,6 +1325,18 @@ public class VariantFilterController extends SubPaneController {
             list.add("cosmicOccurrence " + cosmicOccurrenceComboBox.getSelectionModel().getSelectedItem().getValue());
         }
 
+        if(lowConfidenceCheckComboBox.getCheckModel().getCheckedItems() != null && !lowConfidenceCheckComboBox.getCheckModel().isEmpty()) {
+            final StringBuilder builder = new StringBuilder();
+
+            lowConfidenceCheckComboBox.getCheckModel().getCheckedItems().stream()
+                    .forEach(item -> builder.append(item +","));
+            builder.deleteCharAt(builder.length() - 1);
+
+            list.add("lowConfidence "  + builder.toString());
+
+
+        }
+
         if(StringUtils.isEmpty(endFractionTextField.getText()) && StringUtils.isNotEmpty(startFractionTextField.getText())) {
             list.add("alleleFraction gt:" + startFractionTextField.getText());
         } else if(StringUtils.isNotEmpty(endFractionTextField.getText()) && StringUtils.isEmpty(startFractionTextField.getText())) {
@@ -1312,6 +1347,7 @@ public class VariantFilterController extends SubPaneController {
     }
 
     private void resetFilterList() {
+        lowConfidenceCheckComboBox.getCheckModel().clearChecks();
         filterNameTextField.setText("");
         geneTextField.setText("");
         chromosomeTextField.setText("");

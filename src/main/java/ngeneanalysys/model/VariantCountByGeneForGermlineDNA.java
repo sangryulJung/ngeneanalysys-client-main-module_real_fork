@@ -16,6 +16,14 @@ public class VariantCountByGeneForGermlineDNA implements Comparable<VariantCount
     private Integer uncertainSignificanceInDelCount;
     private Integer likelyBenignInDelCount;
     private Integer benignInDelCount;
+    private Integer falsePositiveCount;
+
+    /**
+     * @return falsePositiveCount
+     */
+    public Integer getFalsePositiveCount() {
+        return falsePositiveCount;
+    }
 
     /**
      * @return geneSymbol
@@ -136,6 +144,7 @@ public class VariantCountByGeneForGermlineDNA implements Comparable<VariantCount
         result = 31 * result + (likelyBenignInDelCount != null ? likelyBenignInDelCount.hashCode() : 0);
         result = 31 * result + (benignSnpCount != null ? benignSnpCount.hashCode() : 0);
         result = 31 * result + (benignInDelCount != null ? benignInDelCount.hashCode() : 0);
+        result = 31 * result + (falsePositiveCount != null ? falsePositiveCount.hashCode() : 0);
         return result;
     }
 

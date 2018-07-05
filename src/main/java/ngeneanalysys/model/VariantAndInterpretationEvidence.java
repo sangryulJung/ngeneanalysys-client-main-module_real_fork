@@ -9,6 +9,21 @@ import java.util.List;
 public class VariantAndInterpretationEvidence {
     private SnpInDel snpInDel;
     private List<SnpInDelEvidence> snpInDelEvidences;
+    private Boolean checkItem = false;
+
+    /**
+     * @return checkItem
+     */
+    public Boolean getCheckItem() {
+        return checkItem;
+    }
+
+    /**
+     * @param checkItem
+     */
+    public void setCheckItem(Boolean checkItem) {
+        this.checkItem = checkItem;
+    }
 
     /**
      * @return snpInDel

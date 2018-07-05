@@ -13,12 +13,14 @@ public enum ACMGFilterCode {
 	PREDICTION_C("Uncertain Significance", "Uncertain Significance", "C", "US"),
 	PREDICTION_D("Likely Benign", "Likely Benign", "D", "LB"),
 	PREDICTION_E("Benign", "Benign", "E", "B"),
+	PREDICTION_FP("False Positive", "False Positive", "FP", "FP"),
 	LOW_CONFIDENCE("Low Confidence", "Low Confidence", "yes", null),
 	//임시
 	TIER_ONE("Tier I", "Tier I", "1", "T1"),
 	TIER_TWO("Tier II", "Tier II", "2", "T2"),
 	TIER_THREE("Tier III", "Tier III", "3", "T3"),
 	TIER_FOUR("Tier IV", "Tier IV", "4", "T4"),
+	TIER_FP("False Positive", "False Positive", "FP", "FP"),
 	TIER_NEGATIVE("Tier N", "Tier N", "N", "TN");
 
 	private String description;
@@ -76,6 +78,8 @@ public enum ACMGFilterCode {
 			aliasValue = PREDICTION_D.getAlias();
 		} else if (code.equals(PREDICTION_E.getCode())) {
 			aliasValue = PREDICTION_E.getAlias();
+		} else if (code.equals(PREDICTION_FP.getCode())) {
+			aliasValue = PREDICTION_FP.getAlias();
 		}
 		return aliasValue;
 	}
@@ -92,6 +96,8 @@ public enum ACMGFilterCode {
 			codeValue = TIER_THREE.getCode();
 		} else if (alias.equals(TIER_FOUR.getAlias())) {
 			codeValue = TIER_FOUR.getCode();
+		} else if (alias.equals(TIER_FP.getAlias())) {
+			codeValue = TIER_FP.getCode();
 		}
 		return codeValue;
 	}

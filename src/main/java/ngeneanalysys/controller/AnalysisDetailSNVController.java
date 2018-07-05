@@ -1,6 +1,7 @@
 package ngeneanalysys.controller;
 
 import javafx.application.Platform;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -8,11 +9,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -184,6 +187,12 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         logger.debug("init snv controller");
 
         apiService = APIService.getInstance();
+
+        variantListTableView.addEventFilter(ScrollEvent.ANY, scrollEvent -> {
+            variantListTableView.refresh();
+            // close text box
+            variantListTableView.edit(-1, null);
+        });
 
         //filterAddBtn.setDisable(true);
         //viewAppliedFiltersLabel.setDisable(true);
@@ -786,8 +795,40 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         variantListTableView.getColumns().add(column);
     }
 
+    private void createTableHeader(TableColumn<VariantAndInterpretationEvidence, ?> column, Double size) {
+        HBox hBox = new HBox();
+        hBox.setPrefHeight(Double.MAX_VALUE);
+        hBox.setAlignment(Pos.CENTER);
+        CheckBox box = new CheckBox();
+        hBox.getChildren().add(box);
+        column.setStyle("-fx-alignment : center");
+        column.setSortable(false);
+        column.setGraphic(box);
+
+        box.selectedProperty().addListener((list, ov, nv) -> {
+            if(variantListTableView.getItems() != null) {
+                variantListTableView.getItems().stream().forEach(item -> item.setCheckItem(nv));
+                variantListTableView.refresh();
+            }
+        });
+
+        column.widthProperty().addListener((ob, ov, nv) -> {
+            hBox.setMinWidth(column.getWidth());
+        });
+
+        if(size != null) column.setPrefWidth(size);
+
+        variantListTableView.getColumns().add(column);
+    }
+
     private void setTableViewColumn() {
         String centerStyleClass = "alignment_center";
+
+        TableColumn<VariantAndInterpretationEvidence, Boolean> checkBoxColumn = new TableColumn<>("");
+        createTableHeader(checkBoxColumn, 50d);
+        checkBoxColumn.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue() != null ));
+        checkBoxColumn.setCellFactory(param -> new BooleanCell());
+
         if(panel != null && ExperimentTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             TableColumn<VariantAndInterpretationEvidence, String> swTier = new TableColumn<>("Prediction");
             createTableHeader(swTier, "Prediction", "swTier" ,70d);
@@ -1282,5 +1323,33 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         variantListTableView.getStyleClass().clear();
         variantListTableView.getStyleClass().add("table-view");
 
+    }
+
+    class BooleanCell extends TableCell<VariantAndInterpretationEvidence, Boolean> {
+        private CheckBox checkBox = new CheckBox();
+        public BooleanCell() {
+            checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+                VariantAndInterpretationEvidence evidence = BooleanCell.this.getTableView().getItems().get(
+                        BooleanCell.this.getIndex());
+                evidence.setCheckItem(newValue);
+                checkBox.setSelected(newValue);
+
+            });
+        }
+
+        @Override
+        public void updateItem(Boolean item, boolean empty) {
+            super.updateItem(item, empty);
+            if(empty) {
+                setGraphic(null);
+                return;
+            }
+
+            VariantAndInterpretationEvidence evidence = BooleanCell.this.getTableView().getItems().get(
+                    BooleanCell.this.getIndex());
+            checkBox.setSelected(evidence.getCheckItem());
+
+            setGraphic(checkBox);
+        }
     }
 }

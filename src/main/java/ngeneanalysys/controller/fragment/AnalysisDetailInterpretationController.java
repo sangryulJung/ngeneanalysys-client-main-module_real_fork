@@ -552,11 +552,11 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         }
     }
 
-    public void returnTierClass(String tier, Label label, Integer usertier) {
+    public void returnTierClass(String tier, Label label, Integer userTier) {
         label.setAlignment(Pos.CENTER);
         logger.debug("+++++++++++++++");
-        logger.debug(userTierLabel.getText()+" "+tier+" "+usertier);
-        if(usertier == 2 && tier != null) {arrow.setVisible(true);}
+        logger.debug(userTierLabel.getText()+" "+tier+" "+userTier);
+        if(userTier == 2 && tier != null) {arrow.setVisible(true);}
         //else {arrow.setVisible(true);}
         //if(label == userTierLabel) arrow.setVisible(true);
 

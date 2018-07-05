@@ -1010,6 +1010,43 @@ Button {
 	-fx-max-height:20;
 }
 
+.pathogenic_FP {
+	-fx-background-color:#00FFD8;
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-background-insets:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-padding:0;
+	-fx-min-width:20;
+	-fx-pref-width:20;
+	-fx-max-width:20;
+	-fx-min-height:20;
+	-fx-pref-height:20;
+	-fx-max-height:20;
+	-fx-alignment : center;
+}
+
+.tier_FP {
+	-fx-background-color:#00FFD8;
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-background-insets:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-padding:0;
+	-fx-min-width:20;
+	-fx-pref-width:20;
+	-fx-max-width:20;
+	-fx-min-height:20;
+	-fx-pref-height:20;
+	-fx-max-height:20;
+	-fx-alignment : center;
+}
 
 .tier_4 {
 	-fx-background-color:#1F2D87;
