@@ -66,6 +66,15 @@ public class SystemManagerPanelController extends SubPaneController {
     private static final String DATE_FORMAT = "yyyy-MM-dd";
 
     @FXML
+    private RadioButton reportingUseRadioButton;
+
+    @FXML
+    private RadioButton reportingUnusedRadioButton;
+
+    @FXML
+    private ToggleGroup autoReporting;
+
+    @FXML
     private TextField panelNameTextField;
 
     @FXML
@@ -648,6 +657,17 @@ public class SystemManagerPanelController extends SubPaneController {
 
             variantConfig.setReportCutOffParams(setReportCutOffParams());
 
+            if(variantConfig.getReportCutOffParams().getMinReadDepth() != null &&
+                    variantConfig.getReportCutOffParams().getMinReadDepth() < 20) {
+                DialogUtil.warning("value error", "set min read depth >= 20", mainApp.getPrimaryStage(), true);
+                return;
+            }
+            if(variantConfig.getReportCutOffParams().getMinAlternateCount() != null &&
+                    variantConfig.getReportCutOffParams().getMinAlternateCount() < 6) {
+                DialogUtil.warning("value error", "set min alternate count >= 6", mainApp.getPrimaryStage(), true);
+                return;
+            }
+
             variantConfig.setEssentialGenes(essentialGenesTextField.getText());
             variantConfig.setCanonicalTranscripts(canonicalTranscriptTextArea.getText());
             params.put("qcPassConfig", setQCPassingConfig());
@@ -769,6 +789,8 @@ public class SystemManagerPanelController extends SubPaneController {
         onTargetCoverageTextField.setText("");
         duplicatedReadsPercentageTextField.setText("");
         roiCoveragePercentageTextField.setText("");
+        reportingUseRadioButton.setSelected(false);
+        reportingUnusedRadioButton.setSelected(false);
     }
 
     public void setDisabledItem(boolean condition) {
@@ -803,6 +825,8 @@ public class SystemManagerPanelController extends SubPaneController {
         roiCoveragePercentageTextField.setDisable(condition);
         defaultDiseaseComboBox.setDisable(condition);
         defaultSampleSourceComboBox.setDisable(condition);
+        reportingUseRadioButton.setDisable(condition);
+        reportingUnusedRadioButton.setDisable(condition);
     }
 
     public void deletePanel(Integer panelId) {

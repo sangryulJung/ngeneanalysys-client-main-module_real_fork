@@ -29,6 +29,26 @@
          <children>
             <HBox alignment="BOTTOM_RIGHT" maxWidth="1040.0" minWidth="870.0" prefWidth="870.0">
                <children>
+                  <Label fx:id="tierThreeConvert" text="tier 3">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="tierFourConvert" text="tier 4">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="falsePositive" text="False Positive">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="addToReport" text="report">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </Label>
                   <Label id="csv_download_image" onMouseClicked="#csvDownload" />
                   <Label id="excel_download_image" onMouseClicked="#excelDownload">
                      <HBox.margin>

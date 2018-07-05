@@ -7,12 +7,14 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Pagination?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -33,7 +35,7 @@
                   <Insets right="1.0" />
                </HBox.margin>
                <content>
-                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="862.0" prefWidth="359.0">
+                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="892.0" prefWidth="359.0">
                      <children>
                         <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="374.0">
                            <children>
@@ -54,6 +56,7 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -112,9 +115,9 @@
                                  <GridPane.margin>
                                     <Insets right="5.0" />
                                  </GridPane.margin></ComboBox>
-                              <Label text="Warning Read Depth(x)" GridPane.halignment="RIGHT" GridPane.rowIndex="10" />
-                              <Label text="Warning MAF(%)" GridPane.halignment="RIGHT" GridPane.rowIndex="14" />
-                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                              <Label text="Warning Read Depth(x)" GridPane.halignment="RIGHT" GridPane.rowIndex="11" />
+                              <Label text="Warning MAF(%)" GridPane.halignment="RIGHT" GridPane.rowIndex="15" />
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="11">
                                  <children>
                                     <TextField fx:id="warningReadDepthTextField" maxHeight="38.0" maxWidth="170.0" prefWidth="100.0" promptText="100" styleClass="txt_black">
                                        <HBox.margin>
@@ -124,7 +127,7 @@
                                     <CheckBox fx:id="warningReadDepthCheckBox" mnemonicParsing="false" text="Edit" />
                                  </children>
                               </HBox>
-                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="14">
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="15">
                                  <children>
                                     <TextField fx:id="warningMAFTextField" maxWidth="170.0" prefWidth="100.0" promptText="5.0" styleClass="txt_black">
                                        <HBox.margin>
@@ -134,12 +137,12 @@
                                     <CheckBox fx:id="warningMAFCheckBox" mnemonicParsing="false" text="Edit" />
                                  </children>
                               </HBox>
-                              <Label text="Min Allele Frequency(%)" GridPane.halignment="RIGHT" GridPane.rowIndex="15" />
-                              <Label text="Min Read Depth(x)" GridPane.halignment="RIGHT" GridPane.rowIndex="16" />
-                              <Label text="Min Alternate Count" GridPane.halignment="RIGHT" GridPane.rowIndex="17" />
-                              <Label text="Population Frequency DBs" GridPane.halignment="RIGHT" GridPane.rowIndex="18" />
-                              <Label text="Population Frequency( &lt;= 1)" GridPane.halignment="RIGHT" GridPane.rowIndex="19" />
-                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="15">
+                              <Label text="Min Allele Frequency(%)" GridPane.halignment="RIGHT" GridPane.rowIndex="16" />
+                              <Label text="Min Read Depth(x, &gt;=20)" GridPane.halignment="RIGHT" GridPane.rowIndex="17" />
+                              <Label text="Min Alternate Count( &gt;= 6)" GridPane.halignment="RIGHT" GridPane.rowIndex="18" />
+                              <Label text="Population Frequency DBs" GridPane.halignment="RIGHT" GridPane.rowIndex="19" />
+                              <Label text="Population Frequency( &lt;= 1)" GridPane.halignment="RIGHT" GridPane.rowIndex="20" />
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="16">
                                  <children>
                                     <TextField fx:id="minAlleleFrequencyTextField" maxHeight="38.0" maxWidth="170.0" prefWidth="160.0" styleClass="txt_black">
                                        <HBox.margin>
@@ -148,7 +151,7 @@
                                     </TextField>
                                  </children>
                               </HBox>
-                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="16">
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="17">
                                  <children>
                                     <TextField fx:id="minReadDepthTextField" maxHeight="38.0" maxWidth="170.0" prefWidth="160.0" styleClass="txt_black">
                                        <HBox.margin>
@@ -157,7 +160,7 @@
                                     </TextField>
                                  </children>
                               </HBox>
-                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="17">
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="18">
                                  <children>
                                     <TextField fx:id="minAlternateCountTextField" maxHeight="38.0" maxWidth="170.0" prefWidth="160.0" styleClass="txt_black">
                                        <HBox.margin>
@@ -166,7 +169,7 @@
                                     </TextField>
                                  </children>
                               </HBox>
-                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="19">
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="20">
                                  <children>
                                     <TextField fx:id="populationFrequencyTextField" maxHeight="38.0" maxWidth="170.0" prefWidth="160.0" styleClass="txt_black">
                                        <HBox.margin>
@@ -175,48 +178,48 @@
                                     </TextField>
                                  </children>
                               </HBox>
-                              <Label text="Essential Genes" GridPane.halignment="RIGHT" GridPane.rowIndex="11" />
-                              <TextField fx:id="essentialGenesTextField" styleClass="txt_black" GridPane.columnIndex="1" GridPane.rowIndex="11">
+                              <Label text="Essential Genes" GridPane.halignment="RIGHT" GridPane.rowIndex="12" />
+                              <TextField fx:id="essentialGenesTextField" styleClass="txt_black" GridPane.columnIndex="1" GridPane.rowIndex="12">
                                  <GridPane.margin>
                                     <Insets right="5.0" />
                                  </GridPane.margin></TextField>
-                              <Label text="Canonical Transcripts" GridPane.halignment="RIGHT" GridPane.rowIndex="12" />
-                              <TextArea fx:id="canonicalTranscriptTextArea" styleClass="txt_black" GridPane.columnIndex="1" GridPane.rowIndex="12">
+                              <Label text="Canonical Transcripts" GridPane.halignment="RIGHT" GridPane.rowIndex="13" />
+                              <TextArea fx:id="canonicalTranscriptTextArea" styleClass="txt_black" GridPane.columnIndex="1" GridPane.rowIndex="13">
                                  <GridPane.margin>
                                     <Insets right="5.0" />
                                  </GridPane.margin></TextArea>
-                              <Label text="Total Base Pair( bp, &gt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="20" />
-                              <TextField fx:id="totalBasePairTextField" GridPane.columnIndex="1" GridPane.rowIndex="20">
+                              <Label text="Total Base Pair( bp, &gt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="21" />
+                              <TextField fx:id="totalBasePairTextField" GridPane.columnIndex="1" GridPane.rowIndex="21">
                                  <GridPane.margin>
                                     <Insets right="5.0" />
                                  </GridPane.margin></TextField>
-                              <Label text="Q30 Trimmed Base( %, &gt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="21" />
-                              <TextField fx:id="q30TrimmedBasePercentageTextField" GridPane.columnIndex="1" GridPane.rowIndex="21">
+                              <Label text="Q30 Trimmed Base( %, &gt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="22" />
+                              <TextField fx:id="q30TrimmedBasePercentageTextField" GridPane.columnIndex="1" GridPane.rowIndex="22">
                                  <GridPane.margin>
                                     <Insets right="5.0" />
                                  </GridPane.margin></TextField>
-                              <Label text="Mapped Base( %, &gt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="22" />
-                              <TextField fx:id="mappedBasePercentageTextField" GridPane.columnIndex="1" GridPane.rowIndex="22">
+                              <Label text="Mapped Base( %, &gt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="23" />
+                              <TextField fx:id="mappedBasePercentageTextField" GridPane.columnIndex="1" GridPane.rowIndex="23">
                                  <GridPane.margin>
                                     <Insets right="5.0" />
                                  </GridPane.margin></TextField>
-                              <Label text="On Target( %, &gt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="23" />
-                              <TextField fx:id="onTargetPercentageTextField" GridPane.columnIndex="1" GridPane.rowIndex="23">
+                              <Label text="On Target( %, &gt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="24" />
+                              <TextField fx:id="onTargetPercentageTextField" GridPane.columnIndex="1" GridPane.rowIndex="24">
                                  <GridPane.margin>
                                     <Insets right="5.0" />
                                  </GridPane.margin></TextField>
-                              <Label text="On Target Coverage( x, &gt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="24" />
-                              <TextField fx:id="onTargetCoverageTextField" GridPane.columnIndex="1" GridPane.rowIndex="24">
+                              <Label text="On Target Coverage( x, &gt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="25" />
+                              <TextField fx:id="onTargetCoverageTextField" GridPane.columnIndex="1" GridPane.rowIndex="25">
                                  <GridPane.margin>
                                     <Insets right="5.0" />
                                  </GridPane.margin></TextField>
-                              <Label text="Duplicated Reads( %, &lt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="25" />
-                              <TextField fx:id="duplicatedReadsPercentageTextField" GridPane.columnIndex="1" GridPane.rowIndex="25">
+                              <Label text="Duplicated Reads( %, &lt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="26" />
+                              <TextField fx:id="duplicatedReadsPercentageTextField" GridPane.columnIndex="1" GridPane.rowIndex="26">
                                  <GridPane.margin>
                                     <Insets right="5.0" />
                                  </GridPane.margin></TextField>
-                              <Label text="ROI Coverage( %, &gt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="26" />
-                              <TextField fx:id="roiCoveragePercentageTextField" GridPane.columnIndex="1" GridPane.rowIndex="26">
+                              <Label text="ROI Coverage( %, &gt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="27" />
+                              <TextField fx:id="roiCoveragePercentageTextField" GridPane.columnIndex="1" GridPane.rowIndex="27">
                                  <GridPane.margin>
                                     <Insets right="5.0" />
                                  </GridPane.margin></TextField>
@@ -231,7 +234,18 @@
                                     <Insets right="5.0" />
                                  </GridPane.margin>
                               </ComboBox>
-                              <Label text="Low Confidence" GridPane.halignment="RIGHT" GridPane.rowIndex="13" />
+                              <Label text="Low Confidence" GridPane.halignment="RIGHT" GridPane.rowIndex="14" />
+                              <Label text="Auto Reporting" GridPane.halignment="RIGHT" GridPane.rowIndex="10" />
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                                 <children>
+                                    <RadioButton fx:id="reportingUseRadioButton" mnemonicParsing="false" text="Use">
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="autoReporting" />
+                                       </toggleGroup>
+                                    </RadioButton>
+                                    <RadioButton fx:id="reportingUnusedRadioButton" mnemonicParsing="false" text="Unused" toggleGroup="$autoReporting" />
+                                 </children>
+                              </HBox>
                            </children>
                         </GridPane>
                         <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="300.0">

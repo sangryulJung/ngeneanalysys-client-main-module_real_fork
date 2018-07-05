@@ -22,6 +22,10 @@ public class PopOverUtil {
 
     private PopOverUtil() { throw new IllegalAccessError("PopOverUtil class"); }
 
+    public static void openFalsePopOver(Label label, String text) {
+        System.out.println("text");
+    }
+
     @SuppressWarnings("unchecked")
     public static void openACMGPopOver(Label label, Map<String, Object> acmg) {
 
@@ -317,8 +321,14 @@ public class PopOverUtil {
             createHBox("gnomAD Others",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("gnomADsouthAsian")) {
             createHBox("gnomAD SouthAsian",setFeqTextField(value), box);
-        } else if(key.equalsIgnoreCase("cosmicOccurrence")) {
+        }else if(key.equalsIgnoreCase("cosmicOccurrence")) {
             createHBox("cosmic Occurrence", value.replaceAll("_", " "), box);
+        }else if(key.equalsIgnoreCase("lowConfidence")) {
+            createHBox("Low Confidence", value, box);
+        }else if(key.equalsIgnoreCase("depth")) {
+            createHBox("Depth",setFeqTextField(value), box);
+        }else if(key.equalsIgnoreCase("altCount")) {
+            createHBox("Alt Count",setFeqTextField(value), box);
         }
     }
 

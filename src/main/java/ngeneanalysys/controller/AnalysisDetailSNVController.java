@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -43,6 +44,7 @@ import org.slf4j.Logger;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Jang
@@ -108,6 +110,15 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     private Label totalLabel;
     @FXML
     private Label searchCountLabel;
+
+    @FXML
+    private Label tierThreeConvert;
+
+    @FXML
+    private Label tierFourConvert;
+
+    @FXML
+    private Label addToReport;
 
     private Sample sample = null;
     private Panel panel = null;
@@ -197,6 +208,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         //filterAddBtn.setDisable(true);
         //viewAppliedFiltersLabel.setDisable(true);
 
+        eventRegistration();
+
         sample = (Sample)paramMap.get("sample");
         panel = (Panel)paramMap.get("panel");
         if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
@@ -278,6 +291,37 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             viewAppliedFiltersLabel.setDisable(Arrays.stream(defaultFilterName).anyMatch(item -> item.equals(nv.getValue())));
 
         });
+    }
+
+    private List<VariantAndInterpretationEvidence> getSelectedItemList() {
+        if(variantListTableView.getItems() == null) {
+            return new ArrayList<>();
+        }
+        return variantListTableView.getItems().stream().filter(VariantAndInterpretationEvidence::getCheckItem)
+                .collect(Collectors.toList());
+    }
+
+    private void eventRegistration() {
+        addToReport.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
+            List<VariantAndInterpretationEvidence> selectList = getSelectedItemList();
+            if(!selectList.isEmpty()) {
+                try {
+                    FXMLLoader loader = getMainApp().load(FXMLConstants.BATCH_EXCLUDE_REPORT);
+                    Node node = loader.load();
+                    BatchExcludeReportDialogController controller = loader.getController();
+                    controller.settingItem(selectList, this);
+                    controller.setMainController(this.getMainController());
+                    controller.setParamMap(getParamMap());
+                    controller.show((Parent) node);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public void refreshTable() {
+        showVariantList(currentPageIndex + 1, 0);
     }
 
     private void setSNVTabName() {
@@ -931,7 +975,28 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                     setGraphic((!StringUtils.isEmpty(item)) ? LowConfidenceList.getLowConfidencePopOver(item) : null);
                 }
             });
+            lowConfidence.setVisible(false);
         }
+
+        //TODO change value FalsePositive
+        TableColumn<VariantAndInterpretationEvidence, String> falsePositive = new TableColumn<>("False");
+        createTableHeader(falsePositive, "False", null ,55.);
+        falsePositive.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getIsFalse()));
+        falsePositive.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
+            @Override
+            public void updateItem(String item, boolean empty) {
+                Label label = null;
+                if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
+                    VariantAndInterpretationEvidence variant = getTableView().getItems().get(getIndex());
+                    label = new Label("F");
+                    label.getStyleClass().remove("label");
+                    label.getStyleClass().add("tier_FP");
+                    label.setCursor(Cursor.HAND);
+                    PopOverUtil.openFalsePopOver(label, variant.getSnpInDel().getFalseReason());
+                }
+                setGraphic(label);
+            }
+        });
 
         TableColumn<VariantAndInterpretationEvidence, String> report = new TableColumn<>("Report");
         createTableHeader(report, "Report", null ,55.);

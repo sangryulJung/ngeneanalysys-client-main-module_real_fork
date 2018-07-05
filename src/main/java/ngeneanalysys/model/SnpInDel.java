@@ -31,6 +31,8 @@ public class SnpInDel {
 	private String lowConfidence;
 	private Integer variantNum;
 	private String comment;
+	private String isFalse;
+	private String falseReason;
 
 	private SnpInDelExpression snpInDelExpression;
 	private DBSNP dbSNP;
@@ -44,6 +46,20 @@ public class SnpInDel {
 
 	//private Integer interpretationEvidenceId;
 	private String ntChangeBRCA;
+
+	/**
+	 * @return isFalse
+	 */
+	public String getIsFalse() {
+		return isFalse;
+	}
+
+	/**
+	 * @return falseReason
+	 */
+	public String getFalseReason() {
+		return falseReason;
+	}
 
 	/**
 	 * @return genomicCoordinate

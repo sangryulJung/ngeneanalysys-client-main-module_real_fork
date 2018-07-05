@@ -341,6 +341,12 @@ public class VariantFilterController extends SubPaneController {
     @FXML
     private ComboBox<ComboBoxItem> cosmicOccurrenceComboBox;
 
+    @FXML
+    private TextField depthCountTextField;
+
+    @FXML
+    private TextField altCountTextField;
+
     private Map<String, List<Object>> filter;
 
     private String analysisType;
@@ -413,6 +419,14 @@ public class VariantFilterController extends SubPaneController {
             if (!newValue.matches("[0-9]*")) endFractionTextField.setText(oldValue);
         });
 
+        depthCountTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("[0-9]*")) endFractionTextField.setText(oldValue);
+        });
+
+        altCountTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("[0-9]*")) endFractionTextField.setText(oldValue);
+        });
+
         startFractionTextField.focusedProperty().addListener((ol, ov, nv) -> {
             if(!nv) {
                 if(StringUtils.isNotEmpty(startFractionTextField.getText())
@@ -468,6 +482,8 @@ public class VariantFilterController extends SubPaneController {
                 "multiallelic", "orientation_bias", "panel_of_normals", "read_position", "str_contraction",
                 "strand_artifact", "t_lod", "homopolymer", "repeat_sequence", "sequencing_error", "mapping_error",
                 "snp_candidate");
+
+        lowConfidenceCheckComboBox.setPrefWidth(150);
 
         this.lowConfidenceCheckComboBox = lowConfidenceCheckComboBox;
         variantTabGridPane.add(lowConfidenceCheckComboBox, 1 , 21 );
@@ -826,7 +842,13 @@ public class VariantFilterController extends SubPaneController {
                     = cosmicOccurrenceComboBox.getItems().stream().filter(item -> item.getValue().equals(value)).findFirst();
             comboBoxItem.ifPresent(comboBoxItem1 -> cosmicOccurrenceComboBox.getSelectionModel().select(comboBoxItem1));
         }else if(key.equalsIgnoreCase("lowConfidence")) {
-            
+            lowConfidenceCheckComboBox.getCheckModel().check(value);
+
+        //TODO Depth AltCount Setting
+        }else if(key.equalsIgnoreCase("depth")) {
+            depthCountTextField.setText(value);
+        }else if(key.equalsIgnoreCase("altCount")) {
+            altCountTextField.setText(value);
         }
     }
 
@@ -1326,15 +1348,8 @@ public class VariantFilterController extends SubPaneController {
         }
 
         if(lowConfidenceCheckComboBox.getCheckModel().getCheckedItems() != null && !lowConfidenceCheckComboBox.getCheckModel().isEmpty()) {
-            final StringBuilder builder = new StringBuilder();
-
             lowConfidenceCheckComboBox.getCheckModel().getCheckedItems().stream()
-                    .forEach(item -> builder.append(item +","));
-            builder.deleteCharAt(builder.length() - 1);
-
-            list.add("lowConfidence "  + builder.toString());
-
-
+                    .forEach(item -> list.add("lowConfidence "  + item));
         }
 
         if(StringUtils.isEmpty(endFractionTextField.getText()) && StringUtils.isNotEmpty(startFractionTextField.getText())) {
@@ -1343,6 +1358,15 @@ public class VariantFilterController extends SubPaneController {
             list.add("alleleFraction lt:" + endFractionTextField.getText());
         } else if(StringUtils.isNotEmpty(endFractionTextField.getText()) && StringUtils.isNotEmpty(startFractionTextField.getText())) {
             list.add("alleleFraction gt:" + startFractionTextField.getText() + ",lt:" + endFractionTextField.getText() + ",and");
+        }
+
+
+        //TODO Depth Alt Count Save
+        if(StringUtils.isNotEmpty(depthCountTextField.getText())) {
+
+        }
+        if(StringUtils.isNotEmpty(altCountTextField.getText())) {
+
         }
     }
 
@@ -1423,6 +1447,8 @@ public class VariantFilterController extends SubPaneController {
         clinVarDCheckBox.setSelected(false);
         clinVarECheckBox.setSelected(false);
         cosmicOccurrenceComboBox.getSelectionModel().clearSelection();
+        depthCountTextField.setText("");
+        altCountTextField.setText("");
 
     }
 }

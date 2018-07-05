@@ -34,7 +34,7 @@
                <content>
                   <GridPane fx:id="variantTabGridPane" alignment="CENTER_LEFT" style="-fx-background-color: #FFFFFF;">
                     <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="251.0" minWidth="10.0" prefWidth="185.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="185.0" minWidth="10.0" prefWidth="185.0" />
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="822.0" minWidth="10.0" prefWidth="675.0" />
                     </columnConstraints>
                     <rowConstraints>
@@ -86,6 +86,18 @@
                               <Label text="~" />
                               <TextField fx:id="endFractionTextField" maxWidth="100.0" prefWidth="60.0" promptText="50" />
                               <Label prefHeight="20.0" prefWidth="31.0" text="\%" />
+                              <Label prefWidth="120.0" style="-fx-font-family: Noto Sans KR Bold;" text="Depth">
+                                 <HBox.margin>
+                                    <Insets left="20.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField fx:id="depthCountTextField" prefWidth="60.0" promptText="30" />
+                              <Label prefWidth="120.0" style="-fx-font-family: Noto Sans KR Bold;" text="Alt Count">
+                                 <HBox.margin>
+                                    <Insets left="20.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField fx:id="altCountTextField" prefWidth="60.0" promptText="30" />
                            </children>
                         </HBox>
                         <Label style="-fx-font-family: Noto Sans KR Bold;" text="Prediction" />

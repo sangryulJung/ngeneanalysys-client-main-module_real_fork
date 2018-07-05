@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="100.0" prefWidth="450.0" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.BatchExcludeReportDialogController">
+   <children>
+      <VBox prefHeight="100.0" prefWidth="450.0">
+         <children>
+            <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="60.0" prefWidth="450.0">
+               <children>
+                  <Label text="Comment">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="commentTextField" prefWidth="350.0">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="200.0">
+               <children>
+                  <RadioButton fx:id="includeRadioButton" mnemonicParsing="false" text="Include">
+                     <padding>
+                        <Insets right="10.0" />
+                     </padding>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="reportingToggle" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="excludeRadioButton" mnemonicParsing="false" text="Exclude" toggleGroup="$reportingToggle">
+                     <padding>
+                        <Insets right="180.0" />
+                     </padding>
+                  </RadioButton>
+                  <Button fx:id="submitButton" mnemonicParsing="false" onAction="#ok" styleClass="btn_setting_save" text="OK">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#cancel" styleClass="btn_setting_close" text="Cancel">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
