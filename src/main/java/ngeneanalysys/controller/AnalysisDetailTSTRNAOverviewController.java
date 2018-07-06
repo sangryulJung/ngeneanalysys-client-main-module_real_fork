@@ -181,6 +181,13 @@ public class AnalysisDetailTSTRNAOverviewController extends AnalysisDetailCommon
 
             List<VariantAndInterpretationEvidence> list = analysisResultVariantList.getResult();
 
+            if(list == null) {
+                list = new ArrayList<>();
+            }
+
+            list = list.stream().filter(item -> item.getSnpInDel().getIsFalse().equalsIgnoreCase("N"))
+                    .collect(Collectors.toList());
+
             List<VariantAndInterpretationEvidence> tierOne = settingTierList(list, "T1");
 
             List<VariantAndInterpretationEvidence> tierTwo = settingTierList(list, "T2");

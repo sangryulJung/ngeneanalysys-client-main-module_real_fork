@@ -29,12 +29,7 @@
          <children>
             <HBox alignment="BOTTOM_RIGHT" maxWidth="1040.0" minWidth="870.0" prefWidth="870.0">
                <children>
-                  <Label fx:id="tierThreeConvert" text="tier 3">
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </Label>
-                  <Label fx:id="tierFourConvert" text="tier 4">
+                  <Label fx:id="changeTierLabel" text="Change Tier">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>

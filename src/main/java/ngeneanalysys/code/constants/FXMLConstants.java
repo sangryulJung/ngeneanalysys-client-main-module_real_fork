@@ -157,6 +157,8 @@ public class FXMLConstants {
 
 	public static final String BATCH_EXCLUDE_REPORT = "/layout/fxml/BatchExcludeReportDialog.fxml";
 
+	public static final String BATCH_CHANGE_TIER = "/layout/fxml/BatchChangeTierDialog.fxml";
+
 	public static final String CHANGE_TIER = "/layout/fxml/ChangeTierDialog.fxml";
 
 	public static final String CHANGE_PATHOGENICITY = "/layout/fxml/ChangePathogenicityDialog.fxml";

@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.PopOver;
@@ -22,8 +23,39 @@ public class PopOverUtil {
 
     private PopOverUtil() { throw new IllegalAccessError("PopOverUtil class"); }
 
+    public static HBox getTextItemBox(String title) {
+        HBox hBox = new HBox();
+        hBox.getChildren().add(new Label(title.toUpperCase().replaceAll("\\|", ", ")));
+        return hBox;
+    }
+
     public static void openFalsePopOver(Label label, String text) {
-        System.out.println("text");
+
+        VBox box = new VBox();
+        box.setStyle("-fx-padding:10;");
+        if(org.apache.commons.lang3.StringUtils.isEmpty(text) || "NONE".equals(text)) {
+            box.setAlignment(Pos.CENTER);
+            Label emptyLabel = new Label("< Empty Warning Reason >");
+            box.getChildren().add(emptyLabel);
+        } else {
+            box.setAlignment(Pos.BOTTOM_LEFT);
+
+            HBox hbox = getTextItemBox(text);
+            box.getChildren().add(hbox);
+        }
+
+        label.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            PopOver popOver = new PopOver();
+            popOver.setArrowLocation(PopOver.ArrowLocation.LEFT_TOP);
+            popOver.setHeaderAlwaysVisible(true);
+            popOver.setAutoHide(true);
+            popOver.setAutoFix(true);
+            popOver.setDetachable(true);
+            popOver.setArrowSize(15);
+            popOver.setArrowIndent(30);
+            popOver.setContentNode(box);
+            popOver.show(label);
+        });
     }
 
     @SuppressWarnings("unchecked")

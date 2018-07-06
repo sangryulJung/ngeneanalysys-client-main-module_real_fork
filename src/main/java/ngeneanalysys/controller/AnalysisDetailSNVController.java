@@ -112,10 +112,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     private Label searchCountLabel;
 
     @FXML
-    private Label tierThreeConvert;
-
-    @FXML
-    private Label tierFourConvert;
+    private Label changeTierLabel;
 
     @FXML
     private Label addToReport;
@@ -309,6 +306,23 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                     FXMLLoader loader = getMainApp().load(FXMLConstants.BATCH_EXCLUDE_REPORT);
                     Node node = loader.load();
                     BatchExcludeReportDialogController controller = loader.getController();
+                    controller.settingItem(selectList, this);
+                    controller.setMainController(this.getMainController());
+                    controller.setParamMap(getParamMap());
+                    controller.show((Parent) node);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        changeTierLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
+            List<VariantAndInterpretationEvidence> selectList = getSelectedItemList();
+            if(!selectList.isEmpty()) {
+                try {
+                    FXMLLoader loader = getMainApp().load(FXMLConstants.BATCH_CHANGE_TIER);
+                    Node node = loader.load();
+                    BatchChangeTierDialogController controller = loader.getController();
                     controller.settingItem(selectList, this);
                     controller.setMainController(this.getMainController());
                     controller.setParamMap(getParamMap());
@@ -978,9 +992,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             lowConfidence.setVisible(false);
         }
 
-        //TODO change value FalsePositive
         TableColumn<VariantAndInterpretationEvidence, String> falsePositive = new TableColumn<>("False");
         createTableHeader(falsePositive, "False", null ,55.);
+        falsePositive.setStyle(falsePositive.getStyle() + "-fx-alignment : center;");
         falsePositive.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getIsFalse()));
         falsePositive.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
             @Override

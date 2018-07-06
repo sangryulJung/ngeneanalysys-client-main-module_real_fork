@@ -138,6 +138,13 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
 
             List<VariantAndInterpretationEvidence> list = analysisResultVariantList.getResult();
 
+            if(list == null) {
+                list = new ArrayList<>();
+            }
+
+            list = list.stream().filter(item -> item.getSnpInDel().getIsFalse().equalsIgnoreCase("N"))
+                    .collect(Collectors.toList());
+
             List<VariantAndInterpretationEvidence> pathogenicList = returnVariant(list, "P");
 
             List<VariantAndInterpretationEvidence> likelyPathogenic = returnVariant(list, "LP");

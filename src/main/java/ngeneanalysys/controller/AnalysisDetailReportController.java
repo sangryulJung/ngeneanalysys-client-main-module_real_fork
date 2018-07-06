@@ -488,6 +488,12 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 tableList.addAll(tierThree);
             }
 
+            if(tierFour != null && !tierFour.isEmpty()) {
+                tierFour.sort((a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
+
+                tableList.addAll(tierFour);
+            }
+
             tableList = tableList.stream().filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y"))
                     .collect(Collectors.toList());
 

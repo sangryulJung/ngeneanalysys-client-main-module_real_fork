@@ -689,6 +689,8 @@ public class SystemManagerPanelController extends SubPaneController {
                 params.put("reportTemplateId", Integer.parseInt(reportId));
             }
 
+            params.put("defaultReporting", reportingUseRadioButton.isSelected());
+
             HttpClientResponse response = null;
             try {
                 //panel을 사용할 수 있는 Group을 지정함
@@ -958,6 +960,14 @@ public class SystemManagerPanelController extends SubPaneController {
                 if(panel.getReportTemplateId() != null) {
                     Optional<ComboBoxItem> reportTemplate = reportTemplateComboBox.getItems().stream().filter(item -> item.getValue().equalsIgnoreCase(panel.getReportTemplateId().toString())).findFirst();
                     reportTemplate.ifPresent(comboBoxItem -> reportTemplateComboBox.getSelectionModel().select(comboBoxItem));
+                }
+
+                if(panel.getDefaultReporting() != null) {
+                    if(panel.getDefaultReporting()) {
+                        reportingUseRadioButton.setSelected(true);
+                    } else {
+                        reportingUnusedRadioButton.setSelected(true);
+                    }
                 }
 
                 if(StringUtils.isEmpty(panel.getDefaultSampleSource())) {
