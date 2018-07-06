@@ -14,6 +14,7 @@ public class AnalysisResultSummary implements Serializable {
     private BigDecimal depthMean;
     private Integer geneCount;
     private Integer allVariantCount;
+    private Integer falseVariantCount;
     private Integer warningVariantCount;
     private Integer level1VariantCount;
     private Integer level2VariantCount;
@@ -65,6 +66,8 @@ public class AnalysisResultSummary implements Serializable {
         return level5VariantCount;
     }
 
+    public Integer getFalseVariantCount() { return falseVariantCount; }
+
     public Integer getGeneCount() {
         return geneCount;
     }
@@ -79,6 +82,7 @@ public class AnalysisResultSummary implements Serializable {
                 ", geneCount=" + geneCount +
                 ", allVariantCount=" + allVariantCount +
                 ", warningVariantCount=" + warningVariantCount +
+                ", falseVariantCount=" + falseVariantCount +
                 ", level1VariantCount=" + level1VariantCount +
                 ", level2VariantCount=" + level2VariantCount +
                 ", level3VariantCount=" + level3VariantCount +

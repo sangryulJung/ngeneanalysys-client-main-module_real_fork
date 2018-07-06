@@ -16,7 +16,7 @@ public class VariantCountByGene implements Comparable<VariantCountByGene> {
     private Integer tier3IndelCount;
     private Integer tier4SnpCount;
     private Integer tier4IndelCount;
-    private Integer falsePositiveCount;
+    private Integer falseCount;
 
     /**
      * @return geneSymbol
@@ -145,17 +145,17 @@ public class VariantCountByGene implements Comparable<VariantCountByGene> {
     }
 
     /**
-     * @return falsePositiveCount
+     * @return falseCount
      */
-    public Integer getFalsePositiveCount() {
-        return falsePositiveCount;
+    public Integer getFalseCount() {
+        return falseCount;
     }
 
     /**
-     * @param falsePositiveCount
+     * @param falseCount
      */
-    public void setFalsePositiveCount(Integer falsePositiveCount) {
-        this.falsePositiveCount = falsePositiveCount;
+    public void setFalseCount(Integer falseCount) {
+        this.falseCount = falseCount;
     }
 
     @Override
@@ -172,7 +172,7 @@ public class VariantCountByGene implements Comparable<VariantCountByGene> {
                 Objects.equals(tier3IndelCount, that.tier3IndelCount) &&
                 Objects.equals(tier4SnpCount, that.tier4SnpCount) &&
                 Objects.equals(tier4IndelCount, that.tier4IndelCount) &&
-                Objects.equals(falsePositiveCount, that.falsePositiveCount);
+                Objects.equals(falseCount, that.falseCount);
     }
 
     @Override
@@ -186,7 +186,7 @@ public class VariantCountByGene implements Comparable<VariantCountByGene> {
         result = 31 * result + (tier3IndelCount != null ? tier3IndelCount.hashCode() : 0);
         result = 31 * result + (tier4SnpCount != null ? tier4SnpCount.hashCode() : 0);
         result = 31 * result + (tier4IndelCount != null ? tier4IndelCount.hashCode() : 0);
-        result = 31 * result + (falsePositiveCount != null ? falsePositiveCount.hashCode() : 0);
+        result = 31 * result + (falseCount != null ? falseCount.hashCode() : 0);
         return result;
     }
 
