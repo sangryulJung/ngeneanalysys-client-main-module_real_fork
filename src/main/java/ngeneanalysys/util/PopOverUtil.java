@@ -357,9 +357,9 @@ public class PopOverUtil {
             createHBox("cosmic Occurrence", value.replaceAll("_", " "), box);
         }else if(key.equalsIgnoreCase("lowConfidence")) {
             createHBox("Low Confidence", value, box);
-        }else if(key.equalsIgnoreCase("depth")) {
+        }else if(key.equalsIgnoreCase("readDepth")) {
             createHBox("Depth",setFeqTextField(value), box);
-        }else if(key.equalsIgnoreCase("altCount")) {
+        }else if(key.equalsIgnoreCase("altReadNum")) {
             createHBox("Alt Count",setFeqTextField(value), box);
         }
     }

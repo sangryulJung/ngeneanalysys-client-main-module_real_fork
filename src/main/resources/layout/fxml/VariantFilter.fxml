@@ -85,19 +85,23 @@
                               <TextField fx:id="startFractionTextField" prefWidth="60.0" promptText="30" />
                               <Label text="~" />
                               <TextField fx:id="endFractionTextField" maxWidth="100.0" prefWidth="60.0" promptText="50" />
-                              <Label prefHeight="20.0" prefWidth="31.0" text="\%" />
-                              <Label prefWidth="120.0" style="-fx-font-family: Noto Sans KR Bold;" text="Depth">
+                              <Label prefHeight="20.0" prefWidth="20.0" text="\%" />
+                              <Label prefWidth="40.0" style="-fx-font-family: Noto Sans KR Bold;" text="Depth">
                                  <HBox.margin>
-                                    <Insets left="20.0" />
+                                    <Insets left="10.0" />
                                  </HBox.margin>
                               </Label>
                               <TextField fx:id="depthCountTextField" prefWidth="60.0" promptText="30" />
-                              <Label prefWidth="120.0" style="-fx-font-family: Noto Sans KR Bold;" text="Alt Count">
+                              <Label text="~" />
+                              <TextField fx:id="depthEndCountTextField" prefWidth="60.0" promptText="50" />
+                              <Label prefWidth="60.0" style="-fx-font-family: Noto Sans KR Bold;" text="Alt Count">
                                  <HBox.margin>
-                                    <Insets left="20.0" />
+                                    <Insets left="10.0" />
                                  </HBox.margin>
                               </Label>
                               <TextField fx:id="altCountTextField" prefWidth="60.0" promptText="30" />
+                              <Label text="~" />
+                              <TextField fx:id="altEndCountTextField" prefWidth="60.0" promptText="50" />
                            </children>
                         </HBox>
                         <Label style="-fx-font-family: Noto Sans KR Bold;" text="Prediction" />

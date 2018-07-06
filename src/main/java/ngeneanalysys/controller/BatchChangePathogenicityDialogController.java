@@ -15,7 +15,6 @@ import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.VariantAndInterpretationEvidence;
 import ngeneanalysys.service.APIService;
-import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import org.slf4j.Logger;
 
@@ -28,7 +27,7 @@ import java.util.Map;
  * @author Jang
  * @since 2017-11-28
  */
-public class BatchChangeTierDialogController extends SubPaneController {
+public class BatchChangePathogenicityDialogController extends SubPaneController {
     private static final Logger logger = LoggerUtil.getLogger();
 
     private APIService apiService = null;
@@ -38,16 +37,19 @@ public class BatchChangeTierDialogController extends SubPaneController {
     private AnalysisDetailSNVController snvController;
 
     @FXML
-    private RadioButton tierOneRadioButton;
+    private RadioButton lvARadioButton;
 
     @FXML
-    private RadioButton tierTwoRadioButton;
+    private RadioButton lvBRadioButton;
 
     @FXML
-    private RadioButton tierThreeRadioButton;
+    private RadioButton lvCRadioButton;
 
     @FXML
-    private RadioButton tierFourRadioButton;
+    private RadioButton lvDRadioButton;
+
+    @FXML
+    private RadioButton lvERadioButton;
 
     @FXML
     private ToggleGroup tierToggle;
@@ -78,7 +80,7 @@ public class BatchChangeTierDialogController extends SubPaneController {
         dialogStage = new Stage();
         dialogStage.initStyle(StageStyle.DECORATED);
         dialogStage.initModality(Modality.APPLICATION_MODAL);
-        dialogStage.setTitle(CommonConstants.SYSTEM_NAME + " > Change Tier");
+        dialogStage.setTitle(CommonConstants.SYSTEM_NAME + " > Change Pathogenicity");
         // OS가 Window인 경우 아이콘 출력.
         if(System.getProperty("os.name").toLowerCase().contains("window")) {
             dialogStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
@@ -106,9 +108,9 @@ public class BatchChangeTierDialogController extends SubPaneController {
                     Map<String, Object> params = new HashMap<>();
                     params.put("sampleId", sampleId);
                     params.put("snpInDelIds", stringBuilder.toString());
-                    params.put("tier", returnSelectTier());
+                    params.put("pathogenicity", returnSelectPathogenicity());
                     params.put("comment", comment);
-                    apiService.put("analysisResults/snpInDels/updateTier", params, null, true);
+                    apiService.put("analysisResults/snpInDels/updatePathogenicity", params, null, true);
                     snvController.refreshTable();
                     dialogStage.close();
                 } catch (WebAPIException wae) {
@@ -123,15 +125,17 @@ public class BatchChangeTierDialogController extends SubPaneController {
         }
     }
 
-    public String returnSelectTier() {
-        if(tierOneRadioButton.isSelected()) {
-            return "T1";
-        } else if(tierTwoRadioButton.isSelected()) {
-            return "T2";
-        } else if(tierThreeRadioButton.isSelected()) {
-            return "T3";
+    public String returnSelectPathogenicity() {
+        if(lvARadioButton.isSelected()) {
+            return "P";
+        } else if(lvBRadioButton.isSelected()) {
+            return "LP";
+        } else if(lvCRadioButton.isSelected()) {
+            return "US";
+        } else if(lvDRadioButton.isSelected()) {
+            return "LB";
         }
-        return "T4";
+        return "B";
     }
 
     @FXML

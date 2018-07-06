@@ -115,6 +115,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     private Label changeTierLabel;
 
     @FXML
+    private Label falsePositive;
+
+    @FXML
     private Label addToReport;
 
     private Sample sample = null;
@@ -205,8 +208,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         //filterAddBtn.setDisable(true);
         //viewAppliedFiltersLabel.setDisable(true);
 
-        eventRegistration();
-
         sample = (Sample)paramMap.get("sample");
         panel = (Panel)paramMap.get("panel");
         if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
@@ -214,6 +215,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         } else if(panel.getAnalysisType().equalsIgnoreCase("GERMLINE")) {
             this.filterList = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("germlineFilter");
         }
+
+        eventRegistration();
 
         interpretationLogsTitledPane.setOnMouseClicked(ev -> setAccordionContents());
 
@@ -299,6 +302,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     private void eventRegistration() {
+        addToReport.setCursor(Cursor.HAND);
         addToReport.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
             List<VariantAndInterpretationEvidence> selectList = getSelectedItemList();
             if(!selectList.isEmpty()) {
@@ -306,7 +310,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                     FXMLLoader loader = getMainApp().load(FXMLConstants.BATCH_EXCLUDE_REPORT);
                     Node node = loader.load();
                     BatchExcludeReportDialogController controller = loader.getController();
-                    controller.settingItem(selectList, this);
+                    controller.settingItem(sample.getId(), selectList, this);
                     controller.setMainController(this.getMainController());
                     controller.setParamMap(getParamMap());
                     controller.show((Parent) node);
@@ -316,14 +320,54 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             }
         });
 
-        changeTierLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
+        if("SOMATIC".equalsIgnoreCase(panel.getAnalysisType())) {
+            changeTierLabel.setCursor(Cursor.HAND);
+            changeTierLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
+                List<VariantAndInterpretationEvidence> selectList = getSelectedItemList();
+                if (!selectList.isEmpty()) {
+                    try {
+                        FXMLLoader loader = getMainApp().load(FXMLConstants.BATCH_CHANGE_TIER);
+                        Node node = loader.load();
+                        BatchChangeTierDialogController controller = loader.getController();
+                        controller.settingItem(sample.getId(), selectList, this);
+                        controller.setMainController(this.getMainController());
+                        controller.setParamMap(getParamMap());
+                        controller.show((Parent) node);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } else {
+            changeTierLabel.setText("Change Pathogenicity");
+            changeTierLabel.setCursor(Cursor.HAND);
+            changeTierLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
+                List<VariantAndInterpretationEvidence> selectList = getSelectedItemList();
+                if (!selectList.isEmpty()) {
+                    try {
+                        FXMLLoader loader = getMainApp().load(FXMLConstants.BATCH_CHANGE_PATHOGENICITY);
+                        Node node = loader.load();
+                        BatchChangePathogenicityDialogController controller = loader.getController();
+                        controller.settingItem(sample.getId(), selectList, this);
+                        controller.setMainController(this.getMainController());
+                        controller.setParamMap(getParamMap());
+                        controller.show((Parent) node);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+
+        falsePositive.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
+            falsePositive.setCursor(Cursor.HAND);
             List<VariantAndInterpretationEvidence> selectList = getSelectedItemList();
             if(!selectList.isEmpty()) {
                 try {
-                    FXMLLoader loader = getMainApp().load(FXMLConstants.BATCH_CHANGE_TIER);
+                    FXMLLoader loader = getMainApp().load(FXMLConstants.BATCH_FALSE_POSITIVE);
                     Node node = loader.load();
-                    BatchChangeTierDialogController controller = loader.getController();
-                    controller.settingItem(selectList, this);
+                    BatchFalsePositiveDialogController controller = loader.getController();
+                    controller.settingItem(sample.getId(), selectList, this);
                     controller.setMainController(this.getMainController());
                     controller.setParamMap(getParamMap());
                     controller.show((Parent) node);
@@ -800,14 +844,14 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     public void excelDownload() {
         Map<String, Object> params = new HashMap<>();
         WorksheetUtil worksheetUtil = new WorksheetUtil();
-        worksheetUtil.exportVariantData("EXCEL", params, this.getMainApp(), sample.getId());
+        worksheetUtil.exportVariantData("EXCEL", params, this.getMainApp(), sample);
     }
 
     @FXML
     public void csvDownload() {
         Map<String, Object> params = new HashMap<>();
         WorksheetUtil worksheetUtil = new WorksheetUtil();
-        worksheetUtil.exportVariantData("CSV", params, this.getMainApp(), sample.getId());
+        worksheetUtil.exportVariantData("CSV", params, this.getMainApp(), sample);
     }
 
     @FXML

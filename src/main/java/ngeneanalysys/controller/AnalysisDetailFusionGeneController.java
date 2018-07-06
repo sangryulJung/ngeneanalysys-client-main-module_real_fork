@@ -362,7 +362,7 @@ public class AnalysisDetailFusionGeneController extends SubPaneController {
     public void saveExcel() {
         Map<String, Object> params = new HashMap<>();
         WorksheetUtil worksheetUtil = new WorksheetUtil();
-        worksheetUtil.exportVariantData("EXCEL", params, this.getMainApp(), sample.getId());
+        worksheetUtil.exportVariantData("EXCEL", params, this.getMainApp(), sample);
     }
 
     @FXML
@@ -370,6 +370,6 @@ public class AnalysisDetailFusionGeneController extends SubPaneController {
         Map<String, Object> params = new HashMap<>();
         params.put("sampleId", sample.getId());
         WorksheetUtil worksheetUtil = new WorksheetUtil();
-        worksheetUtil.exportVariantData("CSV", params, this.getMainApp(), sample.getId());
+        worksheetUtil.exportVariantData("CSV", params, this.getMainApp(), sample);
     }
 }

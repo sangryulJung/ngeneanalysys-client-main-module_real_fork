@@ -859,6 +859,7 @@ public class PastResultsController extends SubPaneController {
 		private void showAlert(final SampleView sampleView) {
 
 			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+			alert.getDialogPane().setPrefWidth(450);
 			alert.setGraphic(new ImageView(resourceUtil.getImage("/layout/images/renewal/icon_warn_small@2x.png")));
 			alert.setTitle("Restart VCF Interpretation");
 			alert.setHeaderText(sampleView.getName());

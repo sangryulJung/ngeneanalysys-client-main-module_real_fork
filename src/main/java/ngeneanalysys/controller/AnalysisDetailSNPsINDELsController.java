@@ -641,7 +641,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         Map<String, Object> params = new HashMap<>();
         params.put("sampleId", sample.getId());
         WorksheetUtil worksheetUtil = new WorksheetUtil();
-        worksheetUtil.exportVariantData("EXCEL", params, this.getMainApp(), sample.getId());
+        worksheetUtil.exportVariantData("EXCEL", params, this.getMainApp(), sample);
     }
 
     @FXML
@@ -649,7 +649,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         Map<String, Object> params = new HashMap<>();
         params.put("sampleId", sample.getId());
         WorksheetUtil worksheetUtil = new WorksheetUtil();
-        worksheetUtil.exportVariantData("CSV", params, this.getMainApp(), sample.getId());
+        worksheetUtil.exportVariantData("CSV", params, this.getMainApp(), sample);
     }
 
     public void showOverviewTab(VariantAndInterpretationEvidence analysisResultVariant) {

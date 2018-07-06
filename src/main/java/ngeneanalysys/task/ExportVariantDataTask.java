@@ -15,13 +15,11 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 
 import ngeneanalysys.MainApp;
-import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
@@ -61,7 +59,7 @@ public class ExportVariantDataTask extends Task<Void> {
 			"Be.enigma.condition", "Be.enigma.update", "enigma", "Be.exLOVD.class", "Be.clinvar.patho",
 			"Be.enigma.patho", "polyphen2", "sift", "mutationtaster",			
 			"Left.seq", "Right.seq" };
-	private WebAPIException wae;
+
 	public ExportVariantDataTask(MainApp mainApp, String fileType, File file, Map<String, Object> params, int sampleId) {
 		this.fileType = fileType;
 		this.file = file;
@@ -226,174 +224,5 @@ public class ExportVariantDataTask extends Task<Void> {
 		super.failed();
 		DialogUtil.error("Variant Data Export Fail.", getException().getMessage(), this.mainApp.getPrimaryStage(), false);
 	}
-	/**
-	 * Spread Sheet Contents Return.
-	 * @return
-	 * @throws WebAPIException 
-	 */
-	public List<String[]> getSpreadSheetContentsList(List<Map<String, Object>> searchedSamples) throws WebAPIException {
-
-		List<String[]> spreadSheetList = new ArrayList<>();
-		if (searchedSamples == null || searchedSamples.size() <= 0 ) {
-			return null;
-		}
-		/*int completeCount = 0;
-		for(Map<String, Object> sample : searchedSamples){
-			if (this.isCancelled()){
-				return null;
-			}
-			String sampleID = sample.get("id").toString();
-			String sampleName = sample.get("name").toString();
-			String runName = sample.get("job_run_group_ref_name").toString();
-			// API 서버 조회
-			HttpClientResponse response = apiService.get("/analysis_result/variant_list/" + sampleID, null,
-					null, false);
-			@SuppressWarnings("unchecked")
-			List<SnpInDel> list = (List<SnpInDel>) response
-					.getMultiObjectBeforeConvertResponseToJSON(SnpInDel.class, false);
-			if(list != null && list.size() > 0) {
-				for(SnpInDel item : list) {
-					String[] contents = new String[spreadSheetHeaders.length];
-					contents[0] = runName;
-					contents[1] = sampleName;
-					// Prediction
-					PredictionTypeCode prediction = PredictionTypeCode.getByCode(item.getPrediction());
-					contents[2] = (prediction != null) ? prediction.getAlias() : "";
-					// Pathogenic
-					contents[3] = StringUtils.defaultIfEmpty(item.getPathogenicAlias(), "");
-					// warning
-					contents[4] = StringUtils.defaultIfEmpty(item.getWarning(), "");
-					// reported
-					contents[5] = StringUtils.defaultIfEmpty(item.getPathogenicReportYn(), "");
-					// set flase
-					contents[6] = StringUtils.defaultIfEmpty(item.getPathogenicFalseYn(), "");
-					// variant id
-					contents[7] = StringUtils.defaultIfEmpty(item.getSnpInDelId(), "");
-					// snp type
-					contents[8] = StringUtils.defaultIfEmpty(item.getType(), "");
-					// coding consequence
-					contents[9] = StringUtils.defaultIfEmpty(item.getCodingConsequence(), "");
-					// gene symbol
-					contents[10] = StringUtils.defaultIfEmpty(item.getGene(), "");
-					// gene strand
-					contents[11] = StringUtils.defaultIfEmpty(item.getGeneStrand(), "");
-					// reference sequence id
-					contents[12] = StringUtils.defaultIfEmpty(item.getRefSeqId(), "");
-					// c.DNA
-					contents[13] = StringUtils.defaultIfEmpty(item.getcDNA(), "");
-					// protein
-					contents[14] = StringUtils.defaultIfEmpty(item.getProtein(), "");
-					// c.DNA BIC
-					contents[15] = StringUtils.defaultIfEmpty(item.getcDNAbic(), "");
-					// reference genome
-					contents[16] = StringUtils.defaultIfEmpty(item.getReferenceGenome(), "");
-					// chromosome
-					contents[17] = StringUtils.defaultIfEmpty(item.getChromosome(), "");
-					// reference
-					contents[18] = StringUtils.defaultIfEmpty(item.getRef(), "");
-					// alternate
-					contents[19] = StringUtils.defaultIfEmpty(item.getAlt(), "");
-					// Zygosity
-					contents[20] = StringUtils.defaultIfEmpty(item.getZygosity(), "");
-					// genomic position
-					contents[21] = StringUtils.defaultIfEmpty(item.getGenomicPosition(), "");
-					// genomic end position
-					contents[22] = StringUtils.defaultIfEmpty(item.getGenomicEndPosition(), "");
-					// exon id
-					contents[23] = StringUtils.defaultIfEmpty(item.getExonId(), "");
-					// exon id bic
-					contents[24] = StringUtils.defaultIfEmpty(item.getExonIdBIC(), "");
-					// reference number
-					contents[25] = StringUtils.defaultIfEmpty(item.getReferenceNumber(), "");
-					// alternate number
-					contents[26] = StringUtils.defaultIfEmpty(item.getAlternateNumber(), "");
-					// variant depth
-					contents[27] = StringUtils.defaultIfEmpty(item.getVariantDepth(), "");
-					// allele fraction
-					contents[28] = String.format("%.2f", Double.parseDouble(StringUtils.defaultIfEmpty(item.getAlleleFraction(), "0")));
-					// snp
-					contents[29] = StringUtils.defaultIfEmpty(item.getSnp(), "");
-					// 1000genomes allele frequency
-					contents[30] = StringUtils.defaultIfEmpty(item.getThousandGenomics(), "");
-					// exac allele frequency
-					contents[31] = StringUtils.defaultIfEmpty(item.getExac(), "");
-					// esp6500 allele frequency
-					contents[32] = StringUtils.defaultIfEmpty(item.getEsp6500(), "");
-					// Korea Exome allele frequency
-					contents[33] = StringUtils.defaultIfEmpty(item.getKoreanExome(), "");
-					// clinvar accession
-					contents[34] = (item.getVariantClinical() != null) ? StringUtils.defaultIfEmpty(item.getVariantClinical().getClinvarAccession(), "") : "";
-					// clinvar disease name
-					contents[35] = (item.getVariantClinical() != null) ? StringUtils.defaultIfEmpty(item.getVariantClinical().getVariantDiseaseDbName(), "") : "";
-					// clinvar classification
-					contents[36] = (item.getVariantClinical() != null) ? StringUtils.defaultIfEmpty(item.getVariantClinical().getClassification(), "") : "";
-					// bic category
-					contents[37] = StringUtils.defaultIfEmpty(item.getBicCategory(), "");
-					// bic importance
-					contents[38] = StringUtils.defaultIfEmpty(item.getBicImportance(), "");
-					// bic classification
-					contents[39] = StringUtils.defaultIfEmpty(item.getBicClassification(), "");
-					// Experiment Type
-					contents[40] = StringUtils.defaultIfEmpty(item.getExperimentType(), "");
-					// BIC Designation
-					contents[41] = StringUtils.defaultIfEmpty(item.getBicDesignation(), "");
-					// BIC NT
-					contents[42] = StringUtils.defaultIfEmpty(item.getBicNT(), "");
-					// kohbra patient
-					contents[43] = StringUtils.defaultIfEmpty(item.getKohbraPatient(), "");
-					// kohbra frequency
-					contents[44] = StringUtils.defaultIfEmpty(item.getKohbraFrequency(), "");
-					// be.clinvar.update
-					contents[45] = StringUtils.defaultIfEmpty(item.getBeClinUpdate(), "");
-					// be.clinvar.origin
-					contents[46] = StringUtils.defaultIfEmpty(item.getBeClinOrigin(), "");
-					// be.clinvar.method
-					contents[47] = StringUtils.defaultIfEmpty(item.getBeClinMeth(), "");
-					// be.BIC.cate
-					contents[48] = StringUtils.defaultIfEmpty(item.getBeBicCate(), "");
-					// be.bic.nationality
-					contents[49] = StringUtils.defaultIfEmpty(item.getBeBicNat(), "");
-					// be.bic.ethnic
-					contents[50] = StringUtils.defaultIfEmpty(item.getBeBicEth(), "");
-					// be.bic.nationality
-					contents[51] = StringUtils.defaultIfEmpty(item.getBePathBic(), "");
-					// be.transcript
-					contents[52] = StringUtils.defaultIfEmpty(item.getBeRef(), "");
-					// be.nt
-					contents[53] = StringUtils.defaultIfEmpty(item.getBeNuc(), "");
-					// be.gene
-					contents[54] = StringUtils.defaultIfEmpty(item.getBeGene(), "");
-					// be.enigma.condition
-					contents[55] = StringUtils.defaultIfEmpty(item.getBeEniCond(), "");
-					// be.enigma.update
-					contents[56] = StringUtils.defaultIfEmpty(item.getBeEniUpdate(), "");
-					// enigma
-					contents[57] = StringUtils.defaultIfEmpty(item.getEnigma(), "");
-					// be.exLOVD.class
-					contents[58] = StringUtils.defaultIfEmpty(item.getBeEniComm(), "");
-					// be.clinvar.patho
-					contents[59] = StringUtils.defaultIfEmpty(item.getBePathClin(), "");
-					// be.enigma.patho
-					contents[60] = StringUtils.defaultIfEmpty(item.getBePathEni(), "");
-					// polyphen2
-					contents[61] = StringUtils.defaultIfEmpty(item.getPolyphen2(), "");
-					// sift
-					contents[62] = StringUtils.defaultIfEmpty(item.getSift(), "");
-					// mutationtaster
-					contents[63] = StringUtils.defaultIfEmpty(item.getMutationtaster(), "");
-					// left sequence
-					contents[64] = StringUtils.defaultIfEmpty(item.getLeftSeq(), "");
-					// right sequence
-					contents[65] = StringUtils.defaultIfEmpty(item.getRightSeq(), "");
-					spreadSheetList.add(contents);
-				}
-			}
-			completeCount++;
-			this.updateProgress(completeCount, searchedSamples.size());
-			this.updateMessage("Variant Data Download : " + completeCount + "/" + searchedSamples.size());
-		}*/
-		return spreadSheetList;
-	}
-
 
 }

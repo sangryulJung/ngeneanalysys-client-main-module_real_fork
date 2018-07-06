@@ -52,7 +52,10 @@ public class BatchExcludeReportDialogController extends SubPaneController {
 
     private Stage dialogStage;
 
-    public void settingItem(List<VariantAndInterpretationEvidence> variantList, AnalysisDetailSNVController snvController) {
+    private int sampleId;
+
+    public void settingItem(int sampleId, List<VariantAndInterpretationEvidence> variantList, AnalysisDetailSNVController snvController) {
+        this.sampleId = sampleId;
         this.variantList = variantList;
         this.snvController = snvController;
     }
@@ -86,17 +89,22 @@ public class BatchExcludeReportDialogController extends SubPaneController {
         String comment = commentTextField.getText();
         if(!comment.isEmpty()) {
             if(reportingToggle.getSelectedToggle() == null) {
-                DialogUtil.warning("Raido Button check error", "Select Include or Exclude Radio Button",
+                DialogUtil.warning("Radio Button check error", "Select Include or Exclude Radio Button",
                         dialogStage, true);
             } else {
                 try {
+                    StringBuilder stringBuilder = new StringBuilder();
+
+                    variantList.forEach(item -> stringBuilder.append(item.getSnpInDel().getId() + ","));
+                    stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+
                     String includeInReport = includeRadioButton.isSelected() ? "Y" : "N";
                     Map<String, Object> params = new HashMap<>();
+                    params.put("sampleId", sampleId);
+                    params.put("snpInDelIds", stringBuilder.toString());
                     params.put("comment", comment);
                     params.put("includeInReport", includeInReport);
-                    for(VariantAndInterpretationEvidence variant : variantList) {
-                        apiService.put("analysisResults/snpInDels/" + variant.getSnpInDel().getId() + "/updateIncludeInReport", params, null, true);
-                    }
+                    apiService.put("analysisResults/snpInDels/updateIncludeInReport", params, null, true);
                     snvController.refreshTable();
                     dialogStage.close();
                 } catch (WebAPIException wae) {

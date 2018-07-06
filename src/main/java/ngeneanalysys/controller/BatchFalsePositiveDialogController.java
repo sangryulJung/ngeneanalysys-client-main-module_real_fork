@@ -4,9 +4,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -15,7 +14,6 @@ import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.VariantAndInterpretationEvidence;
 import ngeneanalysys.service.APIService;
-import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import org.slf4j.Logger;
 
@@ -28,7 +26,7 @@ import java.util.Map;
  * @author Jang
  * @since 2017-11-28
  */
-public class BatchChangeTierDialogController extends SubPaneController {
+public class BatchFalsePositiveDialogController extends SubPaneController {
     private static final Logger logger = LoggerUtil.getLogger();
 
     private APIService apiService = null;
@@ -38,25 +36,13 @@ public class BatchChangeTierDialogController extends SubPaneController {
     private AnalysisDetailSNVController snvController;
 
     @FXML
-    private RadioButton tierOneRadioButton;
-
-    @FXML
-    private RadioButton tierTwoRadioButton;
-
-    @FXML
-    private RadioButton tierThreeRadioButton;
-
-    @FXML
-    private RadioButton tierFourRadioButton;
-
-    @FXML
-    private ToggleGroup tierToggle;
+    private CheckBox isFalseCheckBox;
 
     @FXML
     private Button submitButton;
 
     @FXML
-    private TextField commentTextField;
+    private ComboBox<String> commentComboBox;
 
     private Stage dialogStage;
 
@@ -68,6 +54,11 @@ public class BatchChangeTierDialogController extends SubPaneController {
         this.snvController = snvController;
     }
 
+    public void comboBoxItemSetting() {
+        commentComboBox.getItems().addAll("ETC");
+        commentComboBox.getSelectionModel().selectFirst();
+    }
+
     @Override
     public void show(Parent root) throws IOException {
         logger.debug("show..");
@@ -75,10 +66,12 @@ public class BatchChangeTierDialogController extends SubPaneController {
 
         apiService = APIService.getInstance();
 
+        comboBoxItemSetting();
+
         dialogStage = new Stage();
         dialogStage.initStyle(StageStyle.DECORATED);
         dialogStage.initModality(Modality.APPLICATION_MODAL);
-        dialogStage.setTitle(CommonConstants.SYSTEM_NAME + " > Change Tier");
+        dialogStage.setTitle(CommonConstants.SYSTEM_NAME + " > Change False Positive");
         // OS가 Window인 경우 아이콘 출력.
         if(System.getProperty("os.name").toLowerCase().contains("window")) {
             dialogStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
@@ -94,44 +87,30 @@ public class BatchChangeTierDialogController extends SubPaneController {
 
     @FXML
     public void ok() {
-        String comment = commentTextField.getText();
-        if(tierToggle.getSelectedToggle().isSelected()) {
-            if (!comment.isEmpty()) {
-                try {
-                    StringBuilder stringBuilder = new StringBuilder();
+        String comment = commentComboBox.getSelectionModel().getSelectedItem();
+        if(!comment.isEmpty()) {
+            try {
+                StringBuilder stringBuilder = new StringBuilder();
 
-                    variantList.forEach(item -> stringBuilder.append(item.getSnpInDel().getId() + ","));
-                    stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+                variantList.forEach(item -> stringBuilder.append(item.getSnpInDel().getId() + ","));
+                stringBuilder.deleteCharAt(stringBuilder.length() - 1);
 
-                    Map<String, Object> params = new HashMap<>();
-                    params.put("sampleId", sampleId);
-                    params.put("snpInDelIds", stringBuilder.toString());
-                    params.put("tier", returnSelectTier());
-                    params.put("comment", comment);
-                    apiService.put("analysisResults/snpInDels/updateTier", params, null, true);
-                    snvController.refreshTable();
-                    dialogStage.close();
-                } catch (WebAPIException wae) {
-                    wae.printStackTrace();
+                Map<String, Object> params = new HashMap<>();
+                params.put("sampleId", sampleId);
+                params.put("snpInDelIds", stringBuilder.toString());
+                params.put("falseReason", comment);
+                if(isFalseCheckBox.isSelected()) {
+                    params.put("isFalse", "Y");
+                } else {
+                    params.put("isFalse", "N");
                 }
-
-            } else {
-                commentTextField.requestFocus();
+                apiService.put("analysisResults/snpInDels/updateFalse", params, null, true);
+                snvController.refreshTable();
+                dialogStage.close();
+            } catch (WebAPIException wae) {
+                wae.printStackTrace();
             }
-        } else {
-            //DialogUtil.warning()
         }
-    }
-
-    public String returnSelectTier() {
-        if(tierOneRadioButton.isSelected()) {
-            return "T1";
-        } else if(tierTwoRadioButton.isSelected()) {
-            return "T2";
-        } else if(tierThreeRadioButton.isSelected()) {
-            return "T3";
-        }
-        return "T4";
     }
 
     @FXML

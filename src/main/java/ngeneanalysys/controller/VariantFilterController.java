@@ -347,6 +347,12 @@ public class VariantFilterController extends SubPaneController {
     @FXML
     private TextField altCountTextField;
 
+    @FXML
+    private TextField depthEndCountTextField;
+
+    @FXML
+    private TextField altEndCountTextField;
+
     private Map<String, List<Object>> filter;
 
     private String analysisType;
@@ -424,6 +430,14 @@ public class VariantFilterController extends SubPaneController {
         });
 
         altCountTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("[0-9]*")) endFractionTextField.setText(oldValue);
+        });
+
+        depthEndCountTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("[0-9]*")) endFractionTextField.setText(oldValue);
+        });
+
+        altEndCountTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("[0-9]*")) endFractionTextField.setText(oldValue);
         });
 
@@ -761,7 +775,7 @@ public class VariantFilterController extends SubPaneController {
         } else if(key.equalsIgnoreCase("chromosome")) {
             setTextArray(value, chromosomeTextField);
         } else if(key.equalsIgnoreCase("alleleFraction")) {
-            alleSet(value);
+            alleSet(value, startFractionTextField, endFractionTextField);
         } else if(key.equalsIgnoreCase("variantType")) {
             if(value.equalsIgnoreCase("snp")) {
                 snvCheckBox.setSelected(true);
@@ -845,14 +859,14 @@ public class VariantFilterController extends SubPaneController {
             lowConfidenceCheckComboBox.getCheckModel().check(value);
 
         //TODO Depth AltCount Setting
-        }else if(key.equalsIgnoreCase("depth")) {
-            depthCountTextField.setText(value);
-        }else if(key.equalsIgnoreCase("altCount")) {
-            altCountTextField.setText(value);
+        }else if(key.equalsIgnoreCase("readDepth")) {
+            alleSet(value, depthCountTextField, depthEndCountTextField);
+        }else if(key.equalsIgnoreCase("altReadNum")) {
+            alleSet(value, altCountTextField, altEndCountTextField);
         }
     }
 
-    private void alleSet(String value) {
+    private void alleSet(String value, TextField startTextField, TextField endTextField) {
         //Pattern p = Pattern.compile("\\d*|\\d+\\.\\d*");
         Pattern p = Pattern.compile("\\d*");
         Matcher m;
@@ -862,12 +876,12 @@ public class VariantFilterController extends SubPaneController {
             values.add(m.group());
         }
         if(value.contains("and")) {
-            setTextField(values.get(0), startFractionTextField);
-            setTextField(values.get(1), endFractionTextField);
+            setTextField(values.get(0), startTextField);
+            setTextField(values.get(1), endTextField);
         } else if(value.contains("gt")) {
-            setTextField(values.get(0), startFractionTextField);
+            setTextField(values.get(0), startTextField);
         } else {
-            setTextField(values.get(0), endFractionTextField);
+            setTextField(values.get(0), endTextField);
         }
 
     }
@@ -1360,13 +1374,20 @@ public class VariantFilterController extends SubPaneController {
             list.add("alleleFraction gt:" + startFractionTextField.getText() + ",lt:" + endFractionTextField.getText() + ",and");
         }
 
-
         //TODO Depth Alt Count Save
-        if(StringUtils.isNotEmpty(depthCountTextField.getText())) {
-
+        if(StringUtils.isEmpty(depthEndCountTextField.getText()) && StringUtils.isNotEmpty(depthCountTextField.getText())) {
+            list.add("readDepth gt:" + startFractionTextField.getText());
+        } else if(StringUtils.isNotEmpty(depthEndCountTextField.getText()) && StringUtils.isEmpty(depthCountTextField.getText())) {
+            list.add("readDepth lt:" + depthEndCountTextField.getText());
+        } else if(StringUtils.isNotEmpty(depthEndCountTextField.getText()) && StringUtils.isNotEmpty(depthCountTextField.getText())) {
+            list.add("readDepth gt:" + depthCountTextField.getText() + ",lt:" + depthEndCountTextField.getText() + ",and");
         }
-        if(StringUtils.isNotEmpty(altCountTextField.getText())) {
-
+        if(StringUtils.isEmpty(altEndCountTextField.getText()) && StringUtils.isNotEmpty(altCountTextField.getText())) {
+            list.add("altReadNum gt:" + altCountTextField.getText());
+        } else if(StringUtils.isNotEmpty(altEndCountTextField.getText()) && StringUtils.isEmpty(altCountTextField.getText())) {
+            list.add("altReadNum lt:" + altEndCountTextField.getText());
+        } else if(StringUtils.isNotEmpty(altEndCountTextField.getText()) && StringUtils.isNotEmpty(altCountTextField.getText())) {
+            list.add("altReadNum gt:" + altCountTextField.getText() + ",lt:" + altEndCountTextField.getText() + ",and");
         }
     }
 
@@ -1449,6 +1470,8 @@ public class VariantFilterController extends SubPaneController {
         cosmicOccurrenceComboBox.getSelectionModel().clearSelection();
         depthCountTextField.setText("");
         altCountTextField.setText("");
+        depthEndCountTextField.setText("");
+        altEndCountTextField.setText("");
 
     }
 }
