@@ -37,6 +37,7 @@ import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.model.render.LowConfidenceList;
 import ngeneanalysys.model.render.SNPsINDELsList;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.service.IGVService;
 import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
@@ -119,6 +120,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     @FXML
     private Label addToReport;
+
+    @FXML
+    private Label showIGV;
 
     private Sample sample = null;
     private Panel panel = null;
@@ -358,9 +362,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 }
             });
         }
-
+        falsePositive.setCursor(Cursor.HAND);
         falsePositive.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
-            falsePositive.setCursor(Cursor.HAND);
             List<VariantAndInterpretationEvidence> selectList = getSelectedItemList();
             if(!selectList.isEmpty()) {
                 try {
@@ -373,6 +376,35 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                     controller.show((Parent) node);
                 } catch (Exception e) {
                     e.printStackTrace();
+                }
+            }
+        });
+        showIGV.setCursor(Cursor.HAND);
+        showIGV.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
+            if(variantListTableView.getSelectionModel() != null
+                    && variantListTableView.getSelectionModel().getSelectedItem() != null) {
+                VariantAndInterpretationEvidence variant = variantListTableView.getSelectionModel().getSelectedItem();
+                IGVService igvService = IGVService.getInstance();
+                igvService.setMainController(getMainController());
+
+                String sampleId = sample.getId().toString();
+                String variantId = variant.getSnpInDel().getId().toString();
+                String gene = variant.getSnpInDel().getGenomicCoordinate().getGene();
+                String locus = String.format("%s:%,d-%,d",
+                        variant.getSnpInDel().getGenomicCoordinate().getChromosome(),
+                        variant.getSnpInDel().getGenomicCoordinate().getStartPosition(),
+                        variant.getSnpInDel().getGenomicCoordinate().getStartPosition());
+                String refGenome = variant.getSnpInDel().getGenomicCoordinate().getRefGenomeVer();
+                String humanGenomeVersion = (refGenome.contains("hg19")) ? "hg19" : "hg18";
+
+                try {
+                    igvService.load(sampleId, sample.getName(), variantId, gene, locus , humanGenomeVersion);
+                } catch (WebAPIException wae) {
+                    DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+                            getMainApp().getPrimaryStage(), true);
+                } catch (Exception e) {
+                    DialogUtil.generalShow(Alert.AlertType.ERROR, "IGV launch fail", "IGV software doesn't launch.",
+                            getMainApp().getPrimaryStage(), true);
                 }
             }
         });
@@ -938,17 +970,20 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             swTier.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
                 @Override
                 public void updateItem(String item, boolean empty) {
-                    Label label = null;
-                    if(item != null) {
-                        String code = ACMGFilterCode.getCodeFromAlias(item);
-                        if(code != null && !"NONE".equals(code)) {
-                            label = new Label(item);
-                            label.getStyleClass().clear();
-                            swTier.getStyleClass().add(centerStyleClass);
-                            label.getStyleClass().add("tier_" + code);
+                    Platform.runLater(() -> {
+                        Label label = null;
+                        if(item != null) {
+                            String code = ACMGFilterCode.getCodeFromAlias(item);
+                            if(code != null && !"NONE".equals(code)) {
+                                label = new Label(item);
+                                label.getStyleClass().clear();
+                                swTier.getStyleClass().add(centerStyleClass);
+                                label.getStyleClass().add("tier_" + code);
+                            }
                         }
-                    }
-                    setGraphic(label);
+                        setGraphic(label);
+
+                    });
                 }
             });
             TableColumn<VariantAndInterpretationEvidence, String> expertTier = new TableColumn<>("Tier");
@@ -1019,7 +1054,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         warn.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
             @Override
             public void updateItem(String item, boolean empty) {
-                setGraphic((!StringUtils.isEmpty(item)) ? SNPsINDELsList.getWarningReasonPopOver(item, panel) : null);
+                setGraphic((StringUtils.isNotEmpty(item)) ? SNPsINDELsList.getWarningReasonPopOver(item, panel) : null);
             }
         });
         if(panel != null && ExperimentTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
