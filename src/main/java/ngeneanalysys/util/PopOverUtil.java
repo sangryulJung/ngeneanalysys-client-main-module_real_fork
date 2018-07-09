@@ -358,9 +358,9 @@ public class PopOverUtil {
         }else if(key.equalsIgnoreCase("lowConfidence")) {
             createHBox("Low Confidence", value, box);
         }else if(key.equalsIgnoreCase("readDepth")) {
-            createHBox("Depth",setFeqTextField(value), box);
+            createHBox("Depth", alleSet(value), box);
         }else if(key.equalsIgnoreCase("altReadNum")) {
-            createHBox("Alt Count",setFeqTextField(value), box);
+            createHBox("Alt Count",alleSet(value), box);
         }
     }
 

@@ -445,7 +445,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
         this.lowConfidenceCheckComboBox = lowConfidenceCheckComboBox;
 
-        panelEditGridPane.add(lowConfidenceCheckComboBox, 1, 13);
+        panelEditGridPane.add(lowConfidenceCheckComboBox, 1, 14);
 
         final CheckComboBox<ComboBoxItem> frequencyDBCheckComboBox = new CheckComboBox<>();
         frequencyDBCheckComboBox.setConverter(new ComboBoxConverter());
@@ -454,7 +454,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
         this.frequencyDBCheckComboBox = frequencyDBCheckComboBox;
 
-        panelEditGridPane.add(frequencyDBCheckComboBox, 1, 18);
+        panelEditGridPane.add(frequencyDBCheckComboBox, 1, 19);
 
         createComboBoxItem();
     }

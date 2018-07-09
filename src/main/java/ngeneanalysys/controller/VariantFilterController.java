@@ -857,8 +857,6 @@ public class VariantFilterController extends SubPaneController {
             comboBoxItem.ifPresent(comboBoxItem1 -> cosmicOccurrenceComboBox.getSelectionModel().select(comboBoxItem1));
         }else if(key.equalsIgnoreCase("lowConfidence")) {
             lowConfidenceCheckComboBox.getCheckModel().check(value);
-
-        //TODO Depth AltCount Setting
         }else if(key.equalsIgnoreCase("readDepth")) {
             alleSet(value, depthCountTextField, depthEndCountTextField);
         }else if(key.equalsIgnoreCase("altReadNum")) {
@@ -868,7 +866,7 @@ public class VariantFilterController extends SubPaneController {
 
     private void alleSet(String value, TextField startTextField, TextField endTextField) {
         //Pattern p = Pattern.compile("\\d*|\\d+\\.\\d*");
-        Pattern p = Pattern.compile("\\d*");
+        Pattern p = Pattern.compile("\\d+");
         Matcher m;
         List<String> values = new ArrayList<>();
         m = p.matcher(value);
@@ -1374,7 +1372,6 @@ public class VariantFilterController extends SubPaneController {
             list.add("alleleFraction gt:" + startFractionTextField.getText() + ",lt:" + endFractionTextField.getText() + ",and");
         }
 
-        //TODO Depth Alt Count Save
         if(StringUtils.isEmpty(depthEndCountTextField.getText()) && StringUtils.isNotEmpty(depthCountTextField.getText())) {
             list.add("readDepth gt:" + startFractionTextField.getText());
         } else if(StringUtils.isNotEmpty(depthEndCountTextField.getText()) && StringUtils.isEmpty(depthCountTextField.getText())) {
@@ -1382,6 +1379,7 @@ public class VariantFilterController extends SubPaneController {
         } else if(StringUtils.isNotEmpty(depthEndCountTextField.getText()) && StringUtils.isNotEmpty(depthCountTextField.getText())) {
             list.add("readDepth gt:" + depthCountTextField.getText() + ",lt:" + depthEndCountTextField.getText() + ",and");
         }
+        
         if(StringUtils.isEmpty(altEndCountTextField.getText()) && StringUtils.isNotEmpty(altCountTextField.getText())) {
             list.add("altReadNum gt:" + altCountTextField.getText());
         } else if(StringUtils.isNotEmpty(altEndCountTextField.getText()) && StringUtils.isEmpty(altCountTextField.getText())) {
