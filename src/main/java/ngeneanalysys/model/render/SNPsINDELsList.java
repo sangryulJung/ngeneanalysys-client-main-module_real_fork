@@ -38,7 +38,7 @@ public class SNPsINDELsList {
 		
 		VBox box = new VBox();
 		box.setStyle("-fx-padding:10;");
-		if(StringUtils.isEmpty(jsonStr) || "NONE".equals(jsonStr) || "{}".equals(jsonStr)) {
+		if(StringUtils.isEmpty(jsonStr) || "NONE".equals(jsonStr)) {
 			box.setAlignment(Pos.CENTER);
 			Label label = new Label("< Empty Warning Reason >");
 			box.getChildren().add(label);

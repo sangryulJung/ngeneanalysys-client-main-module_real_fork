@@ -5,7 +5,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -42,7 +42,7 @@ public class BatchFalsePositiveDialogController extends SubPaneController {
     private Button submitButton;
 
     @FXML
-    private ComboBox<String> commentComboBox;
+    private TextField commentTextField;
 
     private Stage dialogStage;
 
@@ -54,19 +54,12 @@ public class BatchFalsePositiveDialogController extends SubPaneController {
         this.snvController = snvController;
     }
 
-    public void comboBoxItemSetting() {
-        commentComboBox.getItems().addAll("ETC");
-        commentComboBox.getSelectionModel().selectFirst();
-    }
-
     @Override
     public void show(Parent root) throws IOException {
         logger.debug("show..");
         // Create the dialog Stage
 
         apiService = APIService.getInstance();
-
-        comboBoxItemSetting();
 
         dialogStage = new Stage();
         dialogStage.initStyle(StageStyle.DECORATED);
@@ -87,7 +80,7 @@ public class BatchFalsePositiveDialogController extends SubPaneController {
 
     @FXML
     public void ok() {
-        String comment = commentComboBox.getSelectionModel().getSelectedItem();
+        String comment = commentTextField.getText();
         if(!comment.isEmpty()) {
             try {
                 StringBuilder stringBuilder = new StringBuilder();

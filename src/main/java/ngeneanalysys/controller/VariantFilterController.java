@@ -5,6 +5,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -353,6 +354,18 @@ public class VariantFilterController extends SubPaneController {
     @FXML
     private TextField altEndCountTextField;
 
+    @FXML
+    private HBox lowConfidenceHBox;
+
+    @FXML
+    private Button allLowConfidenceButton;
+
+    @FXML
+    private Button defaultLowConfidence;
+
+    @FXML
+    private Button uncheckLowConfidence;
+
     private Map<String, List<Object>> filter;
 
     private String analysisType;
@@ -489,6 +502,31 @@ public class VariantFilterController extends SubPaneController {
         dialogStage.showAndWait();
     }
 
+    @FXML
+    public void setAllLowConfidence() {
+        if(lowConfidenceCheckComboBox != null) {
+            lowConfidenceCheckComboBox.getCheckModel().checkAll();
+        }
+    }
+
+    @FXML
+    public void setDefaultLowConfidence() {
+        if(lowConfidenceCheckComboBox != null) {
+            lowConfidenceCheckComboBox.getCheckModel().checkAll();
+            lowConfidenceCheckComboBox.getCheckModel().clearCheck("clustered_events");
+            lowConfidenceCheckComboBox.getCheckModel().clearCheck("multiallelic");
+            lowConfidenceCheckComboBox.getCheckModel().clearCheck("t_lod");
+            lowConfidenceCheckComboBox.getCheckModel().clearCheck("germline_risk");
+        }
+    }
+
+    @FXML
+    public void setUncheckLowConfidence() {
+        if(lowConfidenceCheckComboBox != null) {
+            lowConfidenceCheckComboBox.getCheckModel().clearChecks();
+        }
+    }
+
     private void createLowConfidence() {
         CheckComboBox<String> lowConfidenceCheckComboBox = new CheckComboBox<>();
         lowConfidenceCheckComboBox.getItems().addAll("artifact_in_normal", "base_quality", "clustered_events",
@@ -500,7 +538,7 @@ public class VariantFilterController extends SubPaneController {
         lowConfidenceCheckComboBox.setPrefWidth(150);
 
         this.lowConfidenceCheckComboBox = lowConfidenceCheckComboBox;
-        variantTabGridPane.add(lowConfidenceCheckComboBox, 1 , 21 );
+        lowConfidenceHBox.getChildren().add(0, lowConfidenceCheckComboBox);
     }
 
     private void createFrequency() {

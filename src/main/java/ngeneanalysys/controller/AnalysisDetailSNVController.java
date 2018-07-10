@@ -343,7 +343,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 }
             });
         } else {
-            changeTierLabel.setText("Change Pathogenicity");
+            changeTierLabel.setText("Pathogenicity");
             changeTierLabel.setCursor(Cursor.HAND);
             changeTierLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
                 List<VariantAndInterpretationEvidence> selectList = getSelectedItemList();
@@ -1072,7 +1072,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
 
         TableColumn<VariantAndInterpretationEvidence, String> falsePositive = new TableColumn<>("False");
-        createTableHeader(falsePositive, "False", null ,55.);
+        createTableHeader(falsePositive, "False", "isFalse",55.);
         falsePositive.setStyle(falsePositive.getStyle() + "-fx-alignment : center;");
         falsePositive.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getIsFalse()));
         falsePositive.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {

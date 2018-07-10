@@ -575,7 +575,7 @@ public class SystemManagerPanelController extends SubPaneController {
         //reportCutOffParams.setPopulationFrequencyDBs(populationFrequencyDBsTextField.getText());
         if(!frequencyDBCheckComboBox.getCheckModel().getCheckedItems().isEmpty()) {
             final StringBuilder value = new StringBuilder();
-            frequencyDBCheckComboBox.getCheckModel().getCheckedItems().forEach(item -> value.append(item + ","));
+            frequencyDBCheckComboBox.getCheckModel().getCheckedItems().forEach(item -> value.append(item.getValue() + ","));
             value.deleteCharAt(value.length() - 1);
             reportCutOffParams.setPopulationFrequencyDBs(value.toString());
         }

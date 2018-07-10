@@ -34,7 +34,7 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </Label>
-                  <Label fx:id="changeTierLabel" prefWidth="80.0" styleClass="submitBtn" text="Change Tier">
+                  <Label fx:id="changeTierLabel" prefWidth="80.0" styleClass="submitBtn" text="Tier">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
@@ -44,7 +44,7 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </Label>
-                  <Label fx:id="addToReport" prefWidth="85.0" styleClass="submitBtn" text="Add to report">
+                  <Label fx:id="addToReport" prefWidth="85.0" styleClass="submitBtn" text="Report">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
