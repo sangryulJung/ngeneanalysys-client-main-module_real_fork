@@ -11,6 +11,7 @@ import javafx.stage.FileChooser;
 import ngeneanalysys.MainApp;
 import ngeneanalysys.controller.WorkProgressController;
 import ngeneanalysys.model.Sample;
+import ngeneanalysys.task.ExportInterpretationDataTask;
 import ngeneanalysys.task.ExportVariantDataTask;
 import org.slf4j.Logger;
 
@@ -22,6 +23,39 @@ import org.slf4j.Logger;
  */
 public class WorksheetUtil {
 	private static Logger logger = LoggerUtil.getLogger();
+
+	public void exportInterpretation(String fileType, Map<String, Object> params, MainApp mainApp){
+		try {
+			// Show save file dialog
+			FileChooser fileChooser = new FileChooser();
+			if ("EXCEL".equals(fileType)) {
+				fileChooser.getExtensionFilters()
+						.addAll(new FileChooser.ExtensionFilter("Microsoft Worksheet(*.xlsx)", "*.xlsx"));
+				params.put("dataType", fileType);
+			} else {
+				fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("TSV (*.tsv)", "*.tsv"));
+				params.put("dataType", fileType);
+			}
+			fileChooser.setTitle("export variants to " + fileType + " format file");
+			File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
+			if (file != null) {
+				Task<Void> task = new ExportInterpretationDataTask(mainApp, fileType, file, params);
+				Thread exportDataThread = new Thread(task);
+				WorkProgressController<Void> workProgressController = new WorkProgressController<>(mainApp, "Export variant List", task);
+				FXMLLoader loader = mainApp.load("/layout/fxml/WorkProgress.fxml");
+				loader.setController(workProgressController);
+				Node root = loader.load();
+				workProgressController.show((Parent) root);
+				exportDataThread.start();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			DialogUtil.error("Save Fail.",
+					"An error occurred during the creation of the " + fileType + " document."
+							+ e.getMessage(),
+					mainApp.getPrimaryStage(), false);
+		}
+	}
 
 	public void exportVariantData(String fileType, Map<String, Object> params, MainApp mainApp, Sample sample){
 		try {

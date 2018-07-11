@@ -88,7 +88,7 @@
                               <Label prefHeight="20.0" prefWidth="20.0" text="\%" />
                               <Label prefWidth="40.0" style="-fx-font-family: Noto Sans KR Bold;" text="Depth">
                                  <HBox.margin>
-                                    <Insets left="10.0" />
+                                    <Insets />
                                  </HBox.margin>
                               </Label>
                               <TextField fx:id="depthCountTextField" prefWidth="60.0" promptText="30" />
@@ -96,7 +96,7 @@
                               <TextField fx:id="depthEndCountTextField" prefWidth="60.0" promptText="50" />
                               <Label prefWidth="60.0" style="-fx-font-family: Noto Sans KR Bold;" text="Alt Count">
                                  <HBox.margin>
-                                    <Insets left="10.0" />
+                                    <Insets />
                                  </HBox.margin>
                               </Label>
                               <TextField fx:id="altCountTextField" prefWidth="60.0" promptText="30" />
@@ -247,9 +247,9 @@
                         <Label style="-fx-font-family: Noto Sans KR Bold;" text="Low Confidence" GridPane.rowIndex="21" />
                         <HBox fx:id="lowConfidenceHBox" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="21">
                            <children>
-                              <Button fx:id="allLowConfidenceButton" mnemonicParsing="false" onMouseClicked="#setAllLowConfidence" styleClass="submitBtn" text="All" />
-                              <Button fx:id="defaultLowConfidence" mnemonicParsing="false" onMouseClicked="#setDefaultLowConfidence" styleClass="submitBtn" text="Default" />
-                              <Button fx:id="uncheckLowConfidence" mnemonicParsing="false" onMouseClicked="#setUncheckLowConfidence" styleClass="submitBtn" text="Uncheck" />
+                              <Button fx:id="allLowConfidenceButton" mnemonicParsing="false" onMouseClicked="#setAllLowConfidence" prefWidth="70.0" styleClass="submitBtn" text="All" />
+                              <Button fx:id="defaultLowConfidence" mnemonicParsing="false" onMouseClicked="#setDefaultLowConfidence" prefWidth="70.0" styleClass="submitBtn" text="Default" />
+                              <Button fx:id="uncheckLowConfidence" mnemonicParsing="false" onMouseClicked="#setUncheckLowConfidence" prefWidth="70.0" styleClass="submitBtn" text="Uncheck" />
                            </children>
                         </HBox>
                      </children>
@@ -468,7 +468,7 @@
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="6">
                            <children>
                               <ComboBox fx:id="gnomADnfeComboBox" prefWidth="30.0" />
-                              <TextField fx:id="gnomADnfeTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                              <TextField fx:id="gnomADnfeTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
@@ -501,121 +501,121 @@
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <children>
                               <ComboBox fx:id="tgAllComboBox" prefWidth="30.0" />
-                              <TextField fx:id="tgAllTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                              <TextField fx:id="tgAllTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <children>
                               <ComboBox fx:id="tgafrComboBox" prefWidth="30.0" />
-                              <TextField fx:id="tgafrTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                              <TextField fx:id="tgafrTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                            <children>
                               <ComboBox fx:id="tgamrComboBox" prefWidth="30.0" />
-                              <TextField fx:id="tgamrTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                              <TextField fx:id="tgamrTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                            <children>
                               <ComboBox fx:id="tgeasComboBox" prefWidth="30.0" />
-                              <TextField fx:id="tgeasTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                              <TextField fx:id="tgeasTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                            <children>
                               <ComboBox fx:id="tgeurComboBox" prefWidth="30.0" />
-                              <TextField fx:id="tgeurTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                              <TextField fx:id="tgeurTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
                            <children>
                               <ComboBox fx:id="tgsasComboBox" prefWidth="30.0" />
-                              <TextField fx:id="tgsasTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                              <TextField fx:id="tgsasTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
                            <children>
                               <ComboBox fx:id="espallComboBox" prefWidth="30.0" />
-                              <TextField fx:id="espallTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                              <TextField fx:id="espallTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
                            <children>
                               <ComboBox fx:id="espaaComboBox" prefWidth="30.0" />
-                              <TextField fx:id="espaaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                              <TextField fx:id="espaaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="11">
                            <children>
                               <ComboBox fx:id="espeaComboBox" prefWidth="30.0" />
-                              <TextField fx:id="espeaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                              <TextField fx:id="espeaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
                            <children>
                               <ComboBox fx:id="gnomADAllComboBox" prefWidth="30.0" />
-                              <TextField fx:id="gnomADAllTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                              <TextField fx:id="gnomADAllTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
                            <children>
                               <ComboBox fx:id="gnomADmaComboBox" prefWidth="30.0" />
-                              <TextField fx:id="gnomADmaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                              <TextField fx:id="gnomADmaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
                            <children>
                               <ComboBox fx:id="gnomADaaaComboBox" prefWidth="30.0" />
-                              <TextField fx:id="gnomADaaaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                              <TextField fx:id="gnomADaaaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
                            <children>
                               <ComboBox fx:id="gnomADeaComboBox" prefWidth="30.0" />
-                              <TextField fx:id="gnomADeaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                              <TextField fx:id="gnomADeaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="5">
                            <children>
                               <ComboBox fx:id="gnomADfinComboBox" prefWidth="30.0" />
-                              <TextField fx:id="gnomADfinTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                              <TextField fx:id="gnomADfinTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="7">
                            <children>
                               <ComboBox fx:id="gnomADotherComboBox" prefWidth="30.0" />
-                              <TextField fx:id="gnomADotherTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                              <TextField fx:id="gnomADotherTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="8">
                            <children>
                               <ComboBox fx:id="gnomADsaComboBox" prefWidth="30.0" />
-                              <TextField fx:id="gnomADsaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                              <TextField fx:id="gnomADsaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="10" />
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="11">
                            <children>
                               <ComboBox fx:id="exacComboBox" prefWidth="30.0" />
-                              <TextField fx:id="exacTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                              <TextField fx:id="exacTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
                            </children></HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="12">
                            <children>
                               <ComboBox fx:id="keidComboBox" prefWidth="30.0" />
-                              <TextField fx:id="keidTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                              <TextField fx:id="keidTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="13">
                            <children>
                               <ComboBox fx:id="krgdComboBox" prefWidth="30.0" />
-                              <TextField fx:id="krgdTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                              <TextField fx:id="krgdTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="14">
                            <children>
                               <ComboBox fx:id="kohbraComboBox" prefWidth="30.0" />
-                              <TextField fx:id="kohbraTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
+                              <TextField fx:id="kohbraTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
                            </children>
                         </HBox>
                      </children>

@@ -513,10 +513,13 @@ public class VariantFilterController extends SubPaneController {
     public void setDefaultLowConfidence() {
         if(lowConfidenceCheckComboBox != null) {
             lowConfidenceCheckComboBox.getCheckModel().checkAll();
+            lowConfidenceCheckComboBox.getCheckModel().clearCheck("contamination");
+            lowConfidenceCheckComboBox.getCheckModel().clearCheck("duplicate_evidence");
+            lowConfidenceCheckComboBox.getCheckModel().clearCheck("base_quality");
             lowConfidenceCheckComboBox.getCheckModel().clearCheck("clustered_events");
-            lowConfidenceCheckComboBox.getCheckModel().clearCheck("multiallelic");
-            lowConfidenceCheckComboBox.getCheckModel().clearCheck("t_lod");
             lowConfidenceCheckComboBox.getCheckModel().clearCheck("germline_risk");
+            lowConfidenceCheckComboBox.getCheckModel().clearCheck("multiallelic");
+            lowConfidenceCheckComboBox.getCheckModel().clearCheck("read_position");
         }
     }
 

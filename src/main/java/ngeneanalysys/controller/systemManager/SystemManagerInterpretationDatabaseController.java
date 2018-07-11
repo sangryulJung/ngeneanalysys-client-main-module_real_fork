@@ -20,10 +20,7 @@ import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.task.ClinicalFileUploadTask;
-import ngeneanalysys.util.ConvertUtil;
-import ngeneanalysys.util.DialogUtil;
-import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.StringUtils;
+import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
@@ -806,6 +803,20 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
             return getItem() == null ? "" : getItem().toString();
         }
 
+    }
+
+    @FXML
+    public void excelDownload() {
+        Map<String, Object> params = new HashMap<>();
+        WorksheetUtil worksheetUtil = new WorksheetUtil();
+        worksheetUtil.exportInterpretation("EXCEL", params, this.getMainApp());
+    }
+
+    @FXML
+    public void tsvDownload() {
+        Map<String, Object> params = new HashMap<>();
+        WorksheetUtil worksheetUtil = new WorksheetUtil();
+        worksheetUtil.exportInterpretation("TSV", params, this.getMainApp());
     }
 
 }
