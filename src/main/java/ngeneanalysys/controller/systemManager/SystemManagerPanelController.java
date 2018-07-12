@@ -427,7 +427,7 @@ public class SystemManagerPanelController extends SubPaneController {
         this.groupCheckComboBox = groupCheckComboBox;
 
         panelEditGridPane.add(groupCheckComboBox, 1, 5);
-
+        groupCheckComboBox.setMaxWidth(Double.MAX_VALUE);
         final CheckComboBox<ComboBoxItem> diseaseCheckComboBox = new CheckComboBox<>();
         diseaseCheckComboBox.setConverter(new ComboBoxConverter());
 
@@ -445,7 +445,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
         this.lowConfidenceCheckComboBox = lowConfidenceCheckComboBox;
 
-        panelEditGridPane.add(lowConfidenceCheckComboBox, 1, 14);
+        panelEditGridPane.add(lowConfidenceCheckComboBox, 1, 15);
 
         final CheckComboBox<ComboBoxItem> frequencyDBCheckComboBox = new CheckComboBox<>();
         frequencyDBCheckComboBox.setConverter(new ComboBoxConverter());
