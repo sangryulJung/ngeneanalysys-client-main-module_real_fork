@@ -1,6 +1,5 @@
 package ngeneanalysys.controller.systemManager;
 
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -37,6 +36,39 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
     private static Logger logger = LoggerUtil.getLogger();
 
     private APIService apiService;
+
+    @FXML
+    private TextField diseaseTextField;
+
+    @FXML
+    private TextField tierTextField;
+
+    @FXML
+    private TextField chrTextField;
+
+    @FXML
+    private TextField geneTextField;
+
+    @FXML
+    private TextField transcriptTextField;
+
+    @FXML
+    private TextField hgvscTextField;
+
+    @FXML
+    private TextField hgvspTextField;
+
+    @FXML
+    private TextField startPosTextField;
+
+    @FXML
+    private TextField endPosTextField;
+
+    @FXML
+    private TextField condingConsTextField;
+
+    @FXML
+    private TextField variantTypeTextField;
 
     @FXML
     private TableView<GenomicCoordinateClinicalVariant> evidenceListTable;
@@ -141,6 +173,14 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
             evidenceListTable.refresh();
             // close text box
             evidenceListTable.edit(-1, null);
+        });
+
+        endPosTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("[0-9]*")) endPosTextField.setText(oldValue);
+        });
+
+        startPosTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("[0-9]*")) startPosTextField.setText(oldValue);
         });
 
         diseaseIdTableColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getDiseaseId()));
@@ -283,16 +323,67 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
         }
     }
 
+    public Map<String, Object> getSearchParams() {
+        Map<String, Object> param = new HashMap<>();
+
+        if(StringUtils.isNotEmpty(diseaseTextField.getText())) {
+            param.put("disease", diseaseTextField.getText());
+        }
+
+        if(StringUtils.isNotEmpty(tierTextField.getText())) {
+            param.put("tier", tierTextField.getText());
+        }
+
+        if(StringUtils.isNotEmpty(chrTextField.getText())) {
+            param.put("chr", chrTextField.getText());
+        }
+
+        if(StringUtils.isNotEmpty(geneTextField.getText())) {
+            param.put("gene", geneTextField.getText());
+        }
+
+        if(StringUtils.isNotEmpty(transcriptTextField.getText())) {
+            param.put("transcript", transcriptTextField.getText());
+        }
+
+        if(StringUtils.isNotEmpty(hgvscTextField.getText())) {
+            param.put("hgvsc", hgvscTextField.getText());
+        }
+
+        if(StringUtils.isNotEmpty(hgvspTextField.getText())) {
+            param.put("hgvsp", hgvspTextField.getText());
+        }
+
+        if(StringUtils.isNotEmpty(startPosTextField.getText())) {
+            param.put("startPosition", Integer.parseInt(startPosTextField.getText()));
+        }
+
+        if(StringUtils.isNotEmpty(endPosTextField.getText())) {
+            param.put("endPosition", Integer.parseInt(endPosTextField.getText()));
+        }
+
+        if(StringUtils.isNotEmpty(condingConsTextField.getText())) {
+            param.put("codingConsequence", condingConsTextField.getText());
+        }
+
+        if(StringUtils.isNotEmpty(variantTypeTextField.getText())) {
+            param.put("clinicalVariantType", variantTypeTextField.getText());
+        }
+
+        return param;
+    }
+
     public void setInterpretationList(int page) {
         int totalCount = 0;
         int limit = 17;
         int offset = (page - 1)  * limit;
 
-        try {
-            Map<String, Object> param = new HashMap<>();
+        Map<String, Object> param = getSearchParams();
 
-            param.put("limit", limit);
-            param.put("offset", offset);
+        param.put("limit", limit);
+        param.put("offset", offset);
+
+        try {
 
             HttpClientResponse response = apiService.get("admin/clinicalVariant/genomicCoordinate", param, null, false);
 
@@ -817,6 +908,28 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
         Map<String, Object> params = new HashMap<>();
         WorksheetUtil worksheetUtil = new WorksheetUtil();
         worksheetUtil.exportInterpretation("TSV", params, this.getMainApp());
+    }
+
+    @FXML
+    public void searchAreaReset() {
+        diseaseTextField.setText("");
+        tierTextField.setText("");
+        chrTextField.setText("");
+        geneTextField.setText("");
+        transcriptTextField.setText("");
+        hgvscTextField.setText("");
+        hgvspTextField.setText("");
+        startPosTextField.setText("");
+        endPosTextField.setText("");
+        condingConsTextField.setText("");
+        typeTableColumn.setText("");
+
+        setInterpretationList(currentPageIndex + 1);
+    }
+
+    @FXML
+    public void search() {
+        setInterpretationList(currentPageIndex + 1);
     }
 
 }

@@ -29,7 +29,7 @@
          <children>
             <HBox alignment="BOTTOM_RIGHT" maxWidth="1040.0" minWidth="870.0" prefWidth="870.0">
                <children>
-                  <Label fx:id="showIGV" prefWidth="50.0" styleClass="submitBtn" text="IGV">
+                  <Label fx:id="showIGV" prefWidth="55.0" styleClass="submitBtn" text="IGV">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
@@ -39,12 +39,12 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </Label>
-                  <Label fx:id="falsePositive" prefWidth="45.0" styleClass="submitBtn" text="False">
+                  <Label fx:id="falsePositive" prefWidth="55.0" styleClass="submitBtn" text="False">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
                   </Label>
-                  <Label fx:id="addToReport" prefWidth="85.0" styleClass="submitBtn" text="Report">
+                  <Label fx:id="addToReport" prefWidth="70.0" styleClass="submitBtn" text="Report">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>

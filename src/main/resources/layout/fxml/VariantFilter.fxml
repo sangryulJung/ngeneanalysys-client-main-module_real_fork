@@ -66,7 +66,7 @@
                         <Label style="-fx-font-family: Noto Sans KR Bold;" text="Variant Type" GridPane.rowIndex="6" />
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
                            <children>
-                              <CheckBox fx:id="snvCheckBox" mnemonicParsing="false" text="SNP" />
+                              <CheckBox fx:id="snvCheckBox" mnemonicParsing="false" text="SNV" />
                               <CheckBox fx:id="indelCheckBox" mnemonicParsing="false" text="Ins(Insertion)" />
                               <CheckBox fx:id="delCheckBox" mnemonicParsing="false" text="Del(Deletion)" />
                            </children>

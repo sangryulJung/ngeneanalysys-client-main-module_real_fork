@@ -1414,7 +1414,7 @@ public class VariantFilterController extends SubPaneController {
         }
 
         if(StringUtils.isEmpty(depthEndCountTextField.getText()) && StringUtils.isNotEmpty(depthCountTextField.getText())) {
-            list.add("readDepth gt:" + startFractionTextField.getText());
+            list.add("readDepth gt:" + depthCountTextField.getText());
         } else if(StringUtils.isNotEmpty(depthEndCountTextField.getText()) && StringUtils.isEmpty(depthCountTextField.getText())) {
             list.add("readDepth lt:" + depthEndCountTextField.getText());
         } else if(StringUtils.isNotEmpty(depthEndCountTextField.getText()) && StringUtils.isNotEmpty(depthCountTextField.getText())) {
