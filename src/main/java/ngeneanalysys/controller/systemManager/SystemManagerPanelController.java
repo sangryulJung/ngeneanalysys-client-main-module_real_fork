@@ -66,13 +66,7 @@ public class SystemManagerPanelController extends SubPaneController {
     private static final String DATE_FORMAT = "yyyy-MM-dd";
 
     @FXML
-    private RadioButton reportingUseRadioButton;
-
-    @FXML
-    private RadioButton reportingUnusedRadioButton;
-
-    @FXML
-    private ToggleGroup autoReporting;
+    private CheckBox defaultReportingCheckBox;
 
     @FXML
     private TextField panelNameTextField;
@@ -445,7 +439,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
         this.lowConfidenceCheckComboBox = lowConfidenceCheckComboBox;
 
-        panelEditGridPane.add(lowConfidenceCheckComboBox, 1, 15);
+        panelEditGridPane.add(lowConfidenceCheckComboBox, 1, 21);
 
         final CheckComboBox<ComboBoxItem> frequencyDBCheckComboBox = new CheckComboBox<>();
         frequencyDBCheckComboBox.setConverter(new ComboBoxConverter());
@@ -454,7 +448,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
         this.frequencyDBCheckComboBox = frequencyDBCheckComboBox;
 
-        panelEditGridPane.add(frequencyDBCheckComboBox, 1, 19);
+        panelEditGridPane.add(frequencyDBCheckComboBox, 1, 23);
 
         createComboBoxItem();
     }
@@ -689,7 +683,7 @@ public class SystemManagerPanelController extends SubPaneController {
                 params.put("reportTemplateId", Integer.parseInt(reportId));
             }
 
-            params.put("defaultReporting", reportingUseRadioButton.isSelected());
+            params.put("defaultReporting", defaultReportingCheckBox.isSelected());
 
             HttpClientResponse response = null;
             try {
@@ -791,8 +785,7 @@ public class SystemManagerPanelController extends SubPaneController {
         onTargetCoverageTextField.setText("");
         duplicatedReadsPercentageTextField.setText("");
         roiCoveragePercentageTextField.setText("");
-        reportingUseRadioButton.setSelected(false);
-        reportingUnusedRadioButton.setSelected(false);
+        defaultReportingCheckBox.setSelected(false);
     }
 
     public void setDisabledItem(boolean condition) {
@@ -827,8 +820,7 @@ public class SystemManagerPanelController extends SubPaneController {
         roiCoveragePercentageTextField.setDisable(condition);
         defaultDiseaseComboBox.setDisable(condition);
         defaultSampleSourceComboBox.setDisable(condition);
-        reportingUseRadioButton.setDisable(condition);
-        reportingUnusedRadioButton.setDisable(condition);
+        defaultReportingCheckBox.setDisable(condition);
     }
 
     public void deletePanel(Integer panelId) {
@@ -964,9 +956,9 @@ public class SystemManagerPanelController extends SubPaneController {
 
                 if(panel.getDefaultReporting() != null) {
                     if(panel.getDefaultReporting()) {
-                        reportingUseRadioButton.setSelected(true);
+                        defaultReportingCheckBox.setSelected(true);
                     } else {
-                        reportingUnusedRadioButton.setSelected(true);
+                        defaultReportingCheckBox.setSelected(false);
                     }
                 }
 
