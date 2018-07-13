@@ -290,8 +290,8 @@ public class PopOverUtil {
             createHBox(key, alleSet(value), box);
         } else if(key.equalsIgnoreCase("variantType")) {
             String keyValue = "Variant Type";
-            if (value.equals("snp")) {
-                value = "SNP";
+            if (value.equals("snp") || value.equals("snv")) {
+                value = "SNV";
             }else if(value.equals("ins")) {
                 value = "Ins";
             }else if(value.equals("del")) {

@@ -40,7 +40,7 @@ public class SnpInDelExpression {
      */
     public String getVariantType() {
     	//System.out.println(variantType);
-    	if (variantType.equals("snp")) {
+    	if (variantType.equals("snp") || variantType.equals("snv")) {
     		return "SNV";
     	}else if(variantType.equals("ins")) {
     		return "Ins";

@@ -57,6 +57,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     private APIService apiService;
 
     @FXML
+    private CheckBox showFalseVariantsCheckBox;
+
+    @FXML
     private GridPane snvWrapper;
 
     @FXML
@@ -231,6 +234,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 expandLeft();
             }
         });
+
         setDefaultFilter();
 
         filterComboBox.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
@@ -275,7 +279,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         setTableViewColumn();
 
-        foldLeft();
+        //foldLeft();
         foldRight();
 
         variantsController.getDetailContents().setCenter(root);
@@ -294,6 +298,10 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                     "Uncertain Significance", "Likely Benign", "Benign", "Tier 1", "Tier 2", "Tier 3", "Tier 4", "All"};
             viewAppliedFiltersLabel.setDisable(Arrays.stream(defaultFilterName).anyMatch(item -> item.equals(nv.getValue())));
 
+        });
+
+        showFalseVariantsCheckBox.addEventFilter(MouseEvent.MOUSE_CLICKED, ev -> {
+            showVariantList(currentPageIndex + 1, 0);
         });
     }
 
@@ -441,7 +449,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     private void setDefaultFilter() {
-        totalLabel.setText("Showing " + sample.getAnalysisResultSummary().getAllVariantCount());
+        totalLabel.setText("of " + sample.getAnalysisResultSummary().getAllVariantCount() + " variants");
         filterComboBox.setConverter(new ComboBoxConverter());
         filterComboBox.getItems().removeAll(filterComboBox.getItems());
         filterComboBox.getItems().add(new ComboBoxItem("All", "All"));
@@ -769,6 +777,21 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         if(comboBoxItem != null && filterList.containsKey(comboBoxItem.getValue())) {
             list.put("search", filterList.get(comboBoxItem.getValue()));
         }
+        if(showFalseVariantsCheckBox.isSelected()) {
+            setIsFalseItem("Y", list);
+        } else {
+            setIsFalseItem("N", list);
+        }
+    }
+
+    public void setIsFalseItem(String flag, Map<String, List<Object>> list) {
+        if(list.containsKey("search")) {
+            list.get("search").add("isFalse " + flag);
+        } else {
+            List<Object> searchList = new ArrayList<>();
+            searchList.add("  " + flag);
+            list.put("search", searchList);
+        }
     }
 
     public void showVariantList(int pageIndex, int selectedIdx) {
@@ -795,7 +818,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             totalCount = analysisResultVariantList.getCount();
             this.list = list;
 
-            searchCountLabel.setText("of " + totalCount + " variants");
+            searchCountLabel.setText("Showing " + totalCount);
 
             //totalVariantCountLabel.setText(sample.getAnalysisResultSummary().getAllVariantCount().toString());
             ObservableList<VariantAndInterpretationEvidence> displayList = null;

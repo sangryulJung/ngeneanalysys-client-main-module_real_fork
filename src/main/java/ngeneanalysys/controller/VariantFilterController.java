@@ -818,7 +818,7 @@ public class VariantFilterController extends SubPaneController {
         } else if(key.equalsIgnoreCase("alleleFraction")) {
             alleSet(value, startFractionTextField, endFractionTextField);
         } else if(key.equalsIgnoreCase("variantType")) {
-            if(value.equalsIgnoreCase("snp")) {
+            if(value.equalsIgnoreCase("snp") || value.equalsIgnoreCase("snv")) {
                 snvCheckBox.setSelected(true);
             } else if(value.equalsIgnoreCase("ins")) {
                 indelCheckBox.setSelected(true);
