@@ -37,6 +37,7 @@ import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -140,6 +141,24 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
                 }
             }
         });
+        downloadColumn.setSortable(false);
+
+        sizeColumn.setComparator((o1, o2) -> {
+
+            String[] item1 = o1.replaceAll(",", "").split(" ");
+            String[] item2 = o2.replaceAll(",", "").split(" ");
+            BigDecimal value1 = returnData(item1[0] ,item1[1]);
+            BigDecimal value2 = returnData(item2[0] ,item2[1]);
+
+            if(value1.longValue() > value2.longValue()) {
+                return 1;
+            } else if(value1.longValue() < value2.longValue()) {
+                return -1;
+            }
+
+            return 0;
+        });
+
 
         currentStage = new Stage();
         currentStage.setResizable(false);
@@ -155,6 +174,28 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
         Scene scene = new Scene(root);
         currentStage.setScene(scene);
         currentStage.showAndWait();
+    }
+
+    public BigDecimal returnData(String value, String unit) {
+        BigDecimal returnValue = new BigDecimal(value);
+
+        if(unit.equals("KB")) {
+            returnValue = returnValue.multiply(new BigDecimal(1024));
+         } else if(unit.equals("MB")) {
+            returnValue = returnValue.multiply(new BigDecimal(1024))
+                    .multiply(new BigDecimal(1024));
+        } else if(unit.equals("GB")) {
+            returnValue = returnValue.multiply(new BigDecimal(1024))
+                    .multiply(new BigDecimal(1024))
+                    .multiply(new BigDecimal(1024));
+        } else if(unit.equals("TB")) {
+            returnValue = returnValue.multiply(new BigDecimal(1024))
+                    .multiply(new BigDecimal(1024))
+                    .multiply(new BigDecimal(1024))
+                    .multiply(new BigDecimal(1024));
+        }
+
+        return returnValue;
     }
 
     /**
