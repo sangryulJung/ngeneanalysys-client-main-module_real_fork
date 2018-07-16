@@ -420,7 +420,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
         this.groupCheckComboBox = groupCheckComboBox;
 
-        panelEditGridPane.add(groupCheckComboBox, 1, 5);
+        panelEditGridPane.add(groupCheckComboBox, 3, 1);
         groupCheckComboBox.setMaxWidth(Double.MAX_VALUE);
         final CheckComboBox<ComboBoxItem> diseaseCheckComboBox = new CheckComboBox<>();
         diseaseCheckComboBox.setConverter(new ComboBoxConverter());
@@ -430,7 +430,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
         this.diseaseCheckComboBox = diseaseCheckComboBox;
 
-        panelEditGridPane.add(diseaseCheckComboBox, 1, 6);
+        panelEditGridPane.add(diseaseCheckComboBox, 3, 3);
 
         final CheckComboBox<String> lowConfidenceCheckComboBox = new CheckComboBox<>();
 
@@ -439,7 +439,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
         this.lowConfidenceCheckComboBox = lowConfidenceCheckComboBox;
 
-        panelEditGridPane.add(lowConfidenceCheckComboBox, 1, 21);
+        panelEditGridPane.add(lowConfidenceCheckComboBox, 1, 15, 3, 1);
 
         final CheckComboBox<ComboBoxItem> frequencyDBCheckComboBox = new CheckComboBox<>();
         frequencyDBCheckComboBox.setConverter(new ComboBoxConverter());
@@ -448,7 +448,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
         this.frequencyDBCheckComboBox = frequencyDBCheckComboBox;
 
-        panelEditGridPane.add(frequencyDBCheckComboBox, 1, 23);
+        panelEditGridPane.add(frequencyDBCheckComboBox, 2, 17, 2, 1);
 
         createComboBoxItem();
     }
