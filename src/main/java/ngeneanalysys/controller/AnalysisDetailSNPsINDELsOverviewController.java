@@ -9,7 +9,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -925,7 +924,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
                 siftText = (String)siftMap.get("text");
             }
         }
-        // POLYPHEN2
+        // metaSVM
         if (polyphenMap != null && !polyphenMap.isEmpty()) {
             if (polyphenMap.containsKey("score")) {
                 polyphenScore = (String)polyphenMap.get("score");
@@ -934,11 +933,11 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
                     try {
                         polyphenValue = Double.valueOf(polyphenScore);
                     } catch (NumberFormatException e) {
-                        logger.warn("polyphen score value is invalid " + polyphenScore);
+                        logger.warn("metaSVM score value is invalid " + polyphenScore);
                         polyphenValue = -1.0;
                     }
                 } else {
-                    logger.warn("polyphen value is null");
+                    logger.warn("metaSVM value is null");
                     polyphenValue = -1.0;
                 }
             } else if (polyphenMap.containsKey("radar")) {
@@ -946,7 +945,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
                 // clinicalSignificantPathogenicitySiftLabel.setTooltip(new
                 // Tooltip((String) siftMap.get("radar")));
             } else {
-                logger.warn("polyphen score or radar value was not found.");
+                logger.warn("metaSVM score or radar value was not found.");
                 polyphenValue = -1.0;
             }
             if (polyphenMap.containsKey("text") && polyphenMap.get("text") != null) {

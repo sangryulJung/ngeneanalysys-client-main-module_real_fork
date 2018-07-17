@@ -3,7 +3,6 @@
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Pagination?>
 <?import javafx.scene.control.Tab?>
@@ -48,82 +47,102 @@
                                         <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                       </rowConstraints>
                                        <children>
-                                          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0" visible="false" GridPane.rowIndex="1">
-                                             <children>
-                                                <ComboBox prefWidth="150.0" />
-                                                <TextField />
-                                                <Button mnemonicParsing="false" styleClass="submitBtn" text="Search" />
-                                             </children>
-                                          </HBox>
-                                          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
-                                             <children>
-                                                <Label prefWidth="80.0" text="Disease" />
-                                                <TextField maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
-                                             </children>
-                                          </HBox>
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
                                              <children>
-                                                <Label prefWidth="80.0" text="HGVS.p" />
+                                                <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="HGVS.p">
+                                                   <HBox.margin>
+                                                      <Insets right="10.0" />
+                                                   </HBox.margin></Label>
                                                 <TextField fx:id="hgvspTextField" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                                              <children>
-                                                <Label prefWidth="80.0" text="Tier" />
+                                                <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="Tier">
+                                                   <HBox.margin>
+                                                      <Insets right="10.0" />
+                                                   </HBox.margin></Label>
                                                 <TextField fx:id="tierTextField" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                              <children>
-                                                <Label prefWidth="80.0" text="Start Pos" />
+                                                <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="Start Pos">
+                                                   <HBox.margin>
+                                                      <Insets right="10.0" />
+                                                   </HBox.margin></Label>
                                                 <TextField fx:id="startPosTextField" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
                                              <children>
-                                                <Label prefWidth="80.0" text="Chr" />
+                                                <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="Chr">
+                                                   <HBox.margin>
+                                                      <Insets right="10.0" />
+                                                   </HBox.margin></Label>
                                                 <TextField fx:id="chrTextField" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                              <children>
-                                                <Label prefWidth="80.0" text="End Pos" />
+                                                <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="End Pos">
+                                                   <HBox.margin>
+                                                      <Insets right="10.0" />
+                                                   </HBox.margin></Label>
                                                 <TextField fx:id="endPosTextField" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3">
                                              <children>
-                                                <Label prefWidth="80.0" text="Gene" />
+                                                <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="Gene">
+                                                   <HBox.margin>
+                                                      <Insets right="10.0" />
+                                                   </HBox.margin></Label>
                                                 <TextField fx:id="geneTextField" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4">
                                              <children>
-                                                <Label prefWidth="80.0" text="Transcript" />
+                                                <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="Transcript">
+                                                   <HBox.margin>
+                                                      <Insets right="10.0" />
+                                                   </HBox.margin></Label>
                                                 <TextField fx:id="transcriptTextField" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5">
                                              <children>
-                                                <Label prefWidth="80.0" text="HGVS.c" />
+                                                <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="HGVS.c">
+                                                   <HBox.margin>
+                                                      <Insets right="10.0" />
+                                                   </HBox.margin></Label>
                                                 <TextField fx:id="hgvscTextField" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                                              <children>
-                                                <Label prefWidth="80.0" text="Disease" />
+                                                <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="Disease">
+                                                   <HBox.margin>
+                                                      <Insets right="10.0" />
+                                                   </HBox.margin></Label>
                                                 <TextField fx:id="diseaseTextField" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
                                              <children>
-                                                <Label prefWidth="80.0" text="Coding Cons" />
+                                                <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="Coding Cons">
+                                                   <HBox.margin>
+                                                      <Insets right="10.0" />
+                                                   </HBox.margin></Label>
                                                 <TextField fx:id="condingConsTextField" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
                                              <children>
-                                                <Label prefWidth="80.0" text="Type" />
+                                                <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="Type">
+                                                   <HBox.margin>
+                                                      <Insets right="10.0" />
+                                                   </HBox.margin></Label>
                                                 <TextField fx:id="variantTypeTextField" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
                                              </children>
                                           </HBox>

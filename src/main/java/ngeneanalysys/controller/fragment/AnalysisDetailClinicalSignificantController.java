@@ -417,7 +417,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                 // siftText = (String)siftMap.get("text");
             }
         }
-        // POLYPHEN2
+        // metaSVM
         if (polyphenMap != null && !polyphenMap.isEmpty()) {
             if (polyphenMap.containsKey("score")) {
                 polyphenScore = (String)polyphenMap.get("score");
@@ -426,11 +426,11 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                     try {
                         polyphenValue = Double.valueOf(polyphenScore);
                     } catch (NumberFormatException e) {
-                        logger.warn("polyphen score value is invalid " + polyphenScore);
+                        logger.warn("metaSVM score value is invalid " + polyphenScore);
                         polyphenValue = -1.0;
                     }
                 } else {
-                    logger.warn("polyphen value is null");
+                    logger.warn("metaSVM value is null");
                     polyphenValue = -1.0;
                 }
             } else if (polyphenMap.containsKey("radar")) {
@@ -438,7 +438,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                 // clinicalSignificantPathogenicitySiftLabel.setTooltip(new
                 // Tooltip((String) siftMap.get("radar")));
             } else {
-                logger.warn("polyphen score or radar value was not found.");
+                logger.warn("metaSVM score or radar value was not found.");
                 polyphenValue = -1.0;
             }
             if (polyphenMap.containsKey("text") && polyphenMap.get("text") != null) {

@@ -46,19 +46,6 @@ public class ExportVariantDataTask extends Task<Void> {
 	private int sampleId;
 	/** API Service */
 	private APIService apiService;
-	/** Excel, CSV 헤더 배열 */
-	private String[] spreadSheetHeaders = new String[] { "Run", "Sample",
-			"Prediction", "Pathogenicity", "Warn", "Report", "False", "ID",
-			"Type", "Cod.Cons", "Gene", "Strand", "Transcript", "NT change", "AA change", "NT change(BIC)", "ref.genome", 
-			"Chr", "Ref", "Alt", "Zygosity", "g.pos", "g.pos.end", "Exon", "Exon(BIC)",
-			"ref.num", "alt.num", "depth", "fraction",
-			"dbSNP", "1KG", "Exac", "Esp6500", "Korean", 
-			"ClinVar.Acc", "ClinVar.disease", "ClinVar.Class", "BIC.Cat", "BIC.Importance", "BIC.Class", "Experiment",
-			"BIC.Designation", "BIC.NT", "KOHBRA.patient", "KOHBRA.frequency", "Be.clinvar.update", "Be.clinvar.origin",
-			"Be.clinvar.method", "Be.BIC.category", "Be.BIC.nationality", "Be.Bic.ethnic", "Be.Bic.patho", "Be.transcript", "Be.nt", "Be.gene",
-			"Be.enigma.condition", "Be.enigma.update", "enigma", "Be.exLOVD.class", "Be.clinvar.patho",
-			"Be.enigma.patho", "polyphen2", "sift", "mutationtaster",			
-			"Left.seq", "Right.seq" };
 
 	public ExportVariantDataTask(MainApp mainApp, String fileType, File file, Map<String, Object> params, int sampleId) {
 		this.fileType = fileType;

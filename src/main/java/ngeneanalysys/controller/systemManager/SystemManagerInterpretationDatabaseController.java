@@ -393,6 +393,7 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
                 totalCount = pagedGenomicCoordinateClinicalVariant.getCount();
                 evidenceListTable.getItems().clear();
                 evidenceListTable.setItems(FXCollections.observableArrayList(pagedGenomicCoordinateClinicalVariant.getResult()));
+                evidenceListTable.refresh();
             }
 
             int pageCount = 0;
@@ -929,7 +930,7 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
 
     @FXML
     public void search() {
-        setInterpretationList(currentPageIndex + 1);
+        setInterpretationList(1);
     }
 
 }
