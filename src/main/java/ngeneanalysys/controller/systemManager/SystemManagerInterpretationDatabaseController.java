@@ -375,7 +375,7 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
 
     public void setInterpretationList(int page) {
         int totalCount = 0;
-        int limit = 17;
+        int limit = 7;
         int offset = (page - 1)  * limit;
 
         Map<String, Object> param = getSearchParams();
@@ -645,7 +645,7 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
         }
 
         private String getString() {
-            return getItem() == null ? "" : getItem().toString();
+            return getItem() == null ? "" : getItem();
         }
     }
 
@@ -850,6 +850,7 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
                 }
 
                 dialog.getDialogPane().setMinWidth(450);
+                DialogUtil.setIcon(dialog);
                 dialog.setTitle("Text Input Dialog");
                 dialog.setHeaderText("Please enter " + item +"");
 
@@ -892,7 +893,7 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
         }
 
         private String getString() {
-            return getItem() == null ? "" : getItem().toString();
+            return getItem() == null ? "" : getItem();
         }
 
     }

@@ -429,8 +429,19 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         interpretationGridPane.setPrefWidth(size);
     }
 
+    public String returnTier(String evidenceLevel) {
+        if("A".equalsIgnoreCase(evidenceLevel) || "B".equalsIgnoreCase(evidenceLevel)) {
+            return "T1";
+        } else if("C".equalsIgnoreCase(evidenceLevel) || "D".equalsIgnoreCase(evidenceLevel)) {
+            return "T2";
+        }
+
+        return evidenceLevel;
+    }
+
     @SuppressWarnings("unchecked")
     private void setEvidenceTable() {
+        saveBtn.setDisable(true);
         if(evidenceTableView.getItems() != null && !evidenceTableView.getItems().isEmpty()) {
             evidenceTableView.getItems().removeAll(evidenceTableView.getItems());
             evidenceTableView.refresh();
@@ -455,25 +466,13 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                 Optional<SnpInDelEvidence> snpInDelEvidenceOptional
                         = interpretationList.stream().filter(item -> item.getPrimaryEvidence()).findFirst();
 
-                snpInDelEvidenceOptional.ifPresent(snpInDelEvidence -> {
-                    String tier = "";
-                    if(snpInDelEvidence.getEvidenceLevel().equalsIgnoreCase("A")
-                            || snpInDelEvidence.getEvidenceLevel().equalsIgnoreCase("B")) {
-                        tier = "T1";
-                    } else if(snpInDelEvidence.getEvidenceLevel().equalsIgnoreCase("C")
-                            || snpInDelEvidence.getEvidenceLevel().equalsIgnoreCase("D")) {
-                        tier = "T2";
-                    } else if(snpInDelEvidence.getEvidenceLevel().equalsIgnoreCase("T3")) {
-                        tier = "T3";
-                    } else if(snpInDelEvidence.getEvidenceLevel().equalsIgnoreCase("T4")) {
-                        tier = "T4";
-                    }
+                snpInDelEvidenceOptional.ifPresent(snpInDelEvidence ->
+                        returnTierClass(returnTier(snpInDelEvidence.getEvidenceLevel()), userTierLabel ,2));
 
-                    returnTierClass(tier, userTierLabel ,2);
-                });
-
-                if(!interpretationList.isEmpty())
+                if(!interpretationList.isEmpty()) {
                     evidenceTableView.getItems().addAll(FXCollections.observableArrayList(interpretationList));
+                    saveBtn.setDisable(false);
+                }
 
                 interpretationTableView.getItems().addAll(FXCollections.observableArrayList(list));
 
@@ -552,7 +551,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         }
     }
 
-    public void returnTierClass(String tier, Label label, Integer userTier) {
+    private void returnTierClass(String tier, Label label, Integer userTier) {
         label.setAlignment(Pos.CENTER);
         logger.debug("+++++++++++++++");
         logger.debug(userTierLabel.getText()+" "+tier+" "+userTier);
@@ -628,7 +627,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         //returnTierClass(snpInDel.getExpertTier(), userTierLabel,2);
     }
 
-    public List<Map<String, Object>> returnEvidenceMap() {
+    private List<Map<String, Object>> returnEvidenceMap() {
         List<Map<String, Object>> list = new ArrayList<>();
         for(SnpInDelEvidence snpInDelEvidence : evidenceTableView.getItems()) {
             Map<String, Object> params = new HashMap<>();

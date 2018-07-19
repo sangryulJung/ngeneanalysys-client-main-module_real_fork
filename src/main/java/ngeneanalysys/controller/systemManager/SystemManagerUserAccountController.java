@@ -173,6 +173,8 @@ public class SystemManagerUserAccountController extends SubPaneController{
         userGroupModify.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
         userGroupModify.setCellFactory(param -> new UserGroupButton());
 
+
+
         paginationList.setPageFactory(pageIndex -> {
             setList(pageIndex + 1);
             return new VBox();
@@ -242,7 +244,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
     public void setList(int page) {
 
         int totalCount = 0;
-        int limit = 17;
+        int limit = 12;
         int offset = (page - 1)  * limit;
 
         HttpClientResponse response = null;

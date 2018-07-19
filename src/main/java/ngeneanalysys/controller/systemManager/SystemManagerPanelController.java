@@ -325,7 +325,7 @@ public class SystemManagerPanelController extends SubPaneController {
     public void setPanelList(int page) {
 
         int totalCount = 0;
-        int limit = 15;
+        int limit = 11;
         int offset = (page - 1)  * limit;
 
         HttpClientResponse response = null;

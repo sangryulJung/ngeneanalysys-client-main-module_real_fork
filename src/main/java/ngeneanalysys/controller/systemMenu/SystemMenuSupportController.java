@@ -12,6 +12,9 @@ import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import org.slf4j.Logger;
 
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.io.*;
 
 /**
@@ -85,5 +88,13 @@ public class SystemMenuSupportController extends SubPaneController {
     @FXML
     public void openReleaseNotes() {
         getMainApp().getHostServices().showDocument(CommonConstants.RELEASE_NOTE_URL);
+    }
+
+    @FXML
+    public void copyEmail() {
+        String copyText = "support@ngenebio.com";
+        StringSelection stringSelection = new StringSelection(copyText);
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(stringSelection, null);
     }
 }

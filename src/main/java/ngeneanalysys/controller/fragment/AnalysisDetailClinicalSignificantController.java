@@ -137,8 +137,8 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
         addToGermlineReportCheckBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> addToReportBtn(addToGermlineReportCheckBox));
     }
 
-    private void checkBoxSetting(CheckBox checkBox, String Symbol) {
-        if("Y".equals(Symbol)) {
+    private void checkBoxSetting(CheckBox checkBox, String symbol) {
+        if("Y".equals(symbol)) {
             checkBox.setSelected(true);
         } else {
             checkBox.setSelected(false);
@@ -168,6 +168,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                         case "B":
                             label.getStyleClass().add("prediction_E");
                             break;
+                         default:
                     }
                     //label.setCursor(Cursor.HAND);
                     //addClickEvent("PREDICTION", label);
@@ -180,7 +181,8 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
         setPathogenicityArea(pathogenicity);
     }
 
-    public void setACMG() {
+    @SuppressWarnings("unchecked")
+    private void setACMG() {
         Map<String, Object> acmg = returnResultsAfterSearch("acmg");
         if(acmg != null && !acmg.isEmpty()) {
             ScrollPane scrollPane = new ScrollPane();
@@ -295,6 +297,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                             button.getStyleClass().add("prediction_E_Selected");
                             button.setCursor(Cursor.DEFAULT);
                             break;
+                        default:
                     }
                 } else {
                     button.getStyleClass().add("no_selected_user_tier");
@@ -515,9 +518,9 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
 
     /**
      * 지정 기관의 지정 지역의 Population Frequency 정보 반환
-     * @param orgKey
-     * @param location
-     * @return
+     * @param orgKey String
+     * @param location String
+     * @return double
      */
     @SuppressWarnings("unchecked")
     private double getPopulationFrequencyByParam(String orgKey, String location) {
@@ -539,8 +542,8 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
 
     /**
      * Pathgenic Radar 차트 레벨에 따른 출력 퍼센트로 변환 반환
-     * @param level
-     * @return
+     * @param level String
+     * @return double
      */
     private double convertRadarItemPercentageByLevelForPathogenic(String level) {
         if(StringUtils.isEmpty(level)) {
@@ -559,6 +562,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
         return 4d;
     }
 
+    @SuppressWarnings("unchecked")
     private Map<String, Object> returnResultsAfterSearch(String key) {
         List<SnpInDelExtraInfo> detail = (List<SnpInDelExtraInfo>)paramMap.get("detail");
 

@@ -84,7 +84,7 @@ public class DetailSubInfoController extends SubPaneController {
 
     }
 
-    public void showInSilicoPredictions() {
+    private void showInSilicoPredictions() {
         try {
             FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_IN_SILICO_PREDICTIONS);
             Node node = loader.load();
@@ -98,6 +98,7 @@ public class DetailSubInfoController extends SubPaneController {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @FXML
     public void showLinkEvent(Event event) {
         ComboBox<String> ev = (ComboBox<String>)event.getSource();
@@ -107,7 +108,7 @@ public class DetailSubInfoController extends SubPaneController {
         }
     }
 
-    public void showPopulationFrequency() {
+    private void showPopulationFrequency() {
         try {
             FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_POPULATION_FREQUENCIES);
             Node node = loader.load();
@@ -121,10 +122,11 @@ public class DetailSubInfoController extends SubPaneController {
         }
     }
 
-    public void setComboBox() {
+    @SuppressWarnings("unchecked")
+    private void setComboBox() {
 
-        if(externalLinkComboBox.getItems() != null &&
-                !externalLinkComboBox.getItems().isEmpty()) externalLinkComboBox.getItems().removeAll(externalLinkComboBox.getItems());
+        if(externalLinkComboBox.getItems() != null
+                && !externalLinkComboBox.getItems().isEmpty()) externalLinkComboBox.getItems().removeAll(externalLinkComboBox.getItems());
 
         // String[] germlineLink = {"exAC", "brcaExchange", "ncbi", "ucsc", "alamut"};
         // String[] somaticLink = {"dbSNP", "clinvar", "cosmic", "ncbi", "gnomes", "exAC", "gnomAD", "koEXID", "oncoKB", "ucsc"};
@@ -177,7 +179,7 @@ public class DetailSubInfoController extends SubPaneController {
             Map<String, Object> geneMap = returnResultsAfterSearch("gene");
             if (geneMap != null && !geneMap.isEmpty() && geneMap.containsKey("transcript")) {
                 Map<String, Map<String, String>> transcriptDataMap = (Map<String, Map<String, String>>) geneMap.get("transcript");
-                if (!transcriptDataMap.isEmpty() && transcriptDataMap.size() > 0) {
+                if (!transcriptDataMap.isEmpty()) {
                     externalLinkComboBox.getItems().add("ALAMUT");
                 }
             }
@@ -185,6 +187,7 @@ public class DetailSubInfoController extends SubPaneController {
 
     }
 
+    @SuppressWarnings("unchecked")
     public void showBrowser(String item) {
         Map<String, Object> variantInformationMap = returnResultsAfterSearch("variant_information");
         if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
@@ -287,7 +290,7 @@ public class DetailSubInfoController extends SubPaneController {
                     int selectedIdx = this.analysisDetailVariantNomenclatureController.getTranscriptComboBoxSelectedIndex();
                     logger.debug(String.format("selected transcript combobox idx : %s", selectedIdx));
                     Map<String, String> map = transcriptDataMap.get(String.valueOf(selectedIdx));
-                    if (!map.isEmpty() && map.size() > 0) {
+                    if (!map.isEmpty()) {
                         String transcript = map.get("transcript_name");
                         String cDNA = map.get("hgvs.c");
                         String sampleId = sample.getId().toString();
@@ -302,7 +305,7 @@ public class DetailSubInfoController extends SubPaneController {
         }
     }
 
-    public void openBrowser(String url) {
+    private void openBrowser(String url) {
         if (System.getProperty("os.name").toLowerCase().contains("window")) {
             getMainApp().getHostServices().showDocument(url);
         } else {

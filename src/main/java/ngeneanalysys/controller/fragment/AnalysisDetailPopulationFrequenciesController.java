@@ -10,7 +10,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import ngeneanalysys.controller.extend.SubPaneController;
-import ngeneanalysys.model.Sample;
 import ngeneanalysys.model.VariantAndInterpretationEvidence;
 
 import java.io.IOException;
@@ -26,13 +25,10 @@ public class AnalysisDetailPopulationFrequenciesController extends SubPaneContro
     @FXML
     private GridPane populationFrequencyGraphGridPane; /** Population Frequency Graph Box */
 
-    private Sample sample;
-
     private VariantAndInterpretationEvidence variant;
 
     @Override
     public void show(Parent root) throws IOException {
-        sample = (Sample)paramMap.get("sample");
         variant = (VariantAndInterpretationEvidence)paramMap.get("variant");
         populationFrequencyGraphGridPane.getChildren().removeAll(populationFrequencyGraphGridPane.getChildren());
         showPopulationFrequency();

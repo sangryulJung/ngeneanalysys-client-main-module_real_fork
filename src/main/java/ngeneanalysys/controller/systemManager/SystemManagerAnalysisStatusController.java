@@ -139,6 +139,10 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
         restart.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
         restart.setCellFactory(param -> new UpdateButtonCreate());
 
+        pageText.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("[0-9]*")) pageText.setText(oldValue);
+        });
+
 
         this.mainController.getMainFrame().setCenter(root);
     }
@@ -212,7 +216,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
         }
 
         if(!StringUtils.isEmpty(userNameText.getText()) && userNameText.getText().trim().length() != 0){
-            param.put("user__name", userNameText.getText());
+            param.put("user_name", userNameText.getText());
         }
 
         if(!StringUtils.isEmpty(runNameText.getText()) && runNameText.getText().trim().length() != 0){

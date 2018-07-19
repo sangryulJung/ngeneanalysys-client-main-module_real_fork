@@ -99,9 +99,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     private String runPath = "";
 
-    //화면에 표시될 row 수
-    private int totalRow = 0;
-
     void setServerFASTQ(String path, List<ServerFile> serverFiles) {
         isServerItem = true;
         isServerFastq = true;
@@ -428,14 +425,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 continue;
             }
             sampleNameTextFieldList.get(row).setText(sample.getName());
-            if(mainController.getProgressTaskContentArea() == null || mainController.getProgressTaskContentArea().getChildren().isEmpty()) {
-                if(sample.getSampleStatus() != null && sample.getSampleStatus().getStep()
-                        .equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STEP_UPLOAD) &&
-                        sample.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_RUNNING)) {
-                    sampleNameTextFieldList.get(row).setStyle(sampleNameTextFieldList.get(row).getStyle() +
-                            "-fx-text-fill : #FF0000;");
-                }
-            }
 
             if(sample.getDiseaseId() != null) {
                 ComboBox<ComboBoxItem> disease = diseaseComboBoxList.get(row);
@@ -498,12 +487,16 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                                 failedAnalysisFile.setName(analysisFile.getName().replaceAll("_R2_0", "_R1_0"));
                             failedAnalysisFile.setStatus("NOT_FOUND");
                             failedAnalysisFileList.add(failedAnalysisFile);
+                            setTextColor(row);
                         }
                         for(AnalysisFile analysisFile : allFile) {
                             if(analysisFile.getStatus().equals(AnalysisJobStatusCode.SAMPLE_FILE_META_ACTIVE)) activeFile.add(analysisFile);
                         }
                         if(!activeFile.isEmpty()) allFile.removeAll(activeFile);
                         failedAnalysisFileList.addAll(allFile);
+                        if(!allFile.isEmpty()) {
+                            setTextColor(row);
+                        }
                     } catch (WebAPIException wae) {
                         DialogUtil.error(wae.getHeaderText(), wae.getContents(), getMainApp().getPrimaryStage(), true);
                     }
@@ -519,6 +512,14 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             row++;
         }
 
+    }
+
+    private void setTextColor(int row) {
+        sampleNameTextFieldList.get(row).setStyle(sampleNameTextFieldList.get(row).getStyle() +
+                "-fx-text-fill : #FF0000;");
+        panelComboBoxList.get(row).getStyleClass().add("red-text-combo-box");
+        diseaseComboBoxList.get(row).getStyleClass().add("red-text-combo-box");
+        sampleSourceComboBoxList.get(row).getStyleClass().add("red-text-combo-box");
     }
 
     private void createRow(int row) {

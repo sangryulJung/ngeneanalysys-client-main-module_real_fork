@@ -114,7 +114,7 @@ public class SystemManagerNewsAndTipsController extends SubPaneController {
     public void setNewsAndTipsListTableList(int page) {
 
         int totalCount = 0;
-        int limit = 17;
+        int limit = 13;
         int offset = (page - 1)  * limit;
 
         try {

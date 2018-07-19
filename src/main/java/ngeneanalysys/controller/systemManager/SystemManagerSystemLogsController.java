@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
@@ -15,6 +16,7 @@ import ngeneanalysys.model.SystemLogView;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
+import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
@@ -51,6 +53,9 @@ public class SystemManagerSystemLogsController extends SubPaneController {
     private TableColumn<SystemLogView, String> roleTableColumn;
 
     @FXML
+    private TextField pageText;
+
+    @FXML
     private Pagination paginationList;
 
     @Override
@@ -82,7 +87,7 @@ public class SystemManagerSystemLogsController extends SubPaneController {
     public void setLogList(int page) {
 
         int totalCount = 0;
-        int limit = 15;
+        int limit = 12;
         int offset = (page - 1)  * limit;
 
         HttpClientResponse response = null;
@@ -135,9 +140,6 @@ public class SystemManagerSystemLogsController extends SubPaneController {
         }
     }
 
-    private void setSystemLogList() {
-
-    }
     @FXML
     public void search() {
         setLogList(1);
@@ -145,7 +147,14 @@ public class SystemManagerSystemLogsController extends SubPaneController {
 
     @FXML
     public void pageMove() {
-
+        if(!StringUtils.isEmpty(pageText.getText()) && pageText.getText().trim().length() != 0) {
+            try {
+                int page = Integer.parseInt(pageText.getText());
+                setLogList(page);
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+            }
+        }
     }
 
     @FXML
@@ -155,11 +164,31 @@ public class SystemManagerSystemLogsController extends SubPaneController {
 
     @FXML
     public void prevMove() {
+        int pageIndex = paginationList.getCurrentPageIndex();
 
+        int movePage = pageIndex / 10;
+
+        if(movePage == 0)
+            paginationList.setCurrentPageIndex(0);
+        else
+            paginationList.setCurrentPageIndex(((movePage - 1) * 10));
     }
 
     @FXML
     public void nextMove() {
+        int totalPage = paginationList.getPageCount();
+        int pageIndex = paginationList.getCurrentPageIndex();
 
+        int movePage = pageIndex / 10;
+
+        if(totalPage == pageIndex)
+            paginationList.setCurrentPageIndex(totalPage);
+        else {
+            int tempTotalPage = totalPage / 10;
+            if(movePage == tempTotalPage)
+                paginationList.setCurrentPageIndex(totalPage);
+            else
+                paginationList.setCurrentPageIndex(((movePage + 1) * 10));
+        }
     }
 }

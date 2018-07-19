@@ -105,7 +105,7 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
 
             // 콤보박스 Onchange 이벤트 바인딩
             transcriptComboBox.getSelectionModel().selectedIndexProperty().addListener((ov, oldIdx, newIdx) -> {
-                if(oldIdx != newIdx) {
+                if(!oldIdx.equals(newIdx)) {
                     Optional<SnpInDelTranscript> transcriptOptional = transcriptDataList.stream().filter(item ->
                             item.getTranscriptId().equals(transcriptComboBox.getItems().get((int)newIdx))).findFirst();
                     if(transcriptOptional.isPresent()) {
@@ -118,42 +118,24 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
 
                         logger.debug(String.format("variant identification choose '%s' option idx [%s]", transcriptName, newIdx));
                         List<Integer> textLength = new ArrayList<>();
-                        geneSymbolTextField.setText(geneSymbol); //Gene Symbol
-                        if(!StringUtils.isEmpty(geneSymbol)) {
-                            geneSymbolTextField.setTooltip(new Tooltip(geneSymbol));
-                            textLength.add(geneSymbol.length());
-                        }
-                        hgvspTextField.setText(protein); //Protein
-                        if(!StringUtils.isEmpty(protein)) {
-                            hgvspTextField.setTooltip(new Tooltip(protein));
-                            textLength.add(protein.length());
-                        }
-                        hgvscTextField.setText(codingDNA); //Coding DNA
-                        if(!StringUtils.isEmpty(codingDNA)) {
-                            hgvscTextField.setTooltip(new Tooltip(codingDNA));
-                            textLength.add(codingDNA.length());
-                        }
-                        grch37TextField.setText(genomicDNA); //Genomic DNA
-                        if(!StringUtils.isEmpty(genomicDNA)) {
-                            grch37TextField.setTooltip(new Tooltip(genomicDNA));
-                            textLength.add(genomicDNA.length());
-                        }
-                        int maxTextLength = 0;
+                        setTextField(geneSymbolTextField, geneSymbol, textLength);
+                        setTextField(hgvspTextField, protein, textLength);
+                        setTextField(hgvscTextField, codingDNA, textLength);
+                        setTextField(grch37TextField, genomicDNA, textLength);
                         Optional<Integer> maxTextLengthOptional = textLength.stream().max(Integer::compare);
-                        if(maxTextLengthOptional.isPresent()) {
-                            maxTextLength = maxTextLengthOptional.get();
-                        }
-                        logger.debug("max Length : " + maxTextLength);
+                        maxTextLengthOptional.ifPresent(value -> {
+                            if(value > 29) {
+                                transcriptDetailGrid.setPrefWidth(value * 9);
+                                geneSymbolTextField.setMinWidth(value * 9);
+                                hgvspTextField.setMinWidth(value * 9);
+                                hgvscTextField.setMinWidth(value * 9);
+                                grch37TextField.setMinWidth(value * 9);
+                                transcriptDetailScrollBox.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+                                transcriptDetailScrollBox.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+                            }
+                        });
 
-                        if(maxTextLength > 29) {
-                            transcriptDetailGrid.setPrefWidth(maxTextLength * 9);
-                            geneSymbolTextField.setMinWidth(maxTextLength * 9);
-                            hgvspTextField.setMinWidth(maxTextLength * 9);
-                            hgvscTextField.setMinWidth(maxTextLength * 9);
-                            grch37TextField.setMinWidth(maxTextLength * 9);
-                            transcriptDetailScrollBox.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-                            transcriptDetailScrollBox.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-                        }
+
                     }
                 }
             });
@@ -219,6 +201,14 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
 
         transcriptAltLabel.setText(alt);
         transcriptAltTypeLabel.setText(transcriptAltType);
+    }
+
+    public void setTextField(TextField textField, String text, List<Integer> textLength) {
+        textField.setText(text); //Gene Symbol
+        if(!StringUtils.isEmpty(text)) {
+            textField.setTooltip(new Tooltip(text));
+            textLength.add(text.length());
+        }
     }
 
     public int getTranscriptComboBoxSelectedIndex() {

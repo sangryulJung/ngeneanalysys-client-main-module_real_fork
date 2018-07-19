@@ -162,33 +162,37 @@ public class SystemMenuEditController extends SubPaneController {
 
     /**
      * 저장
-     * @param event
+     * @param event ActionEvent
      */
     @FXML
     public void save(ActionEvent event) {
         if(user != null && user.getId() > 0) {
-            Map<String,Object> params = null;
+            Map<String,Object> params = new HashMap<>();
             // 개인정보 변경시 비밀번호는 반드시 입력 되어야함
             if(!StringUtils.isEmpty(currentPasswordField.getText())) {
-                params = new HashMap<>();
                 params.put("name", loginSession.getName());
                 params.put("currentLoginPassword", currentPasswordField.getText());
-                if (!StringUtils.isEmpty(newPasswordField.getText()) && validNewPwdInput() && validConfirmPwdInput())
-                    params.put("newLoginPassword", newPasswordField.getText());
+                if (StringUtils.isNotEmpty(newPasswordField.getText())) {
+                    if (validNewPwdInput() && validConfirmPwdInput()) {
+                        params.put("newLoginPassword", newPasswordField.getText());
+                    } else {
+                        return;
+                    }
+                }
 
-                if (!StringUtils.isEmpty(organizationTextField.getText())) {
+                if (StringUtils.isNotEmpty(organizationTextField.getText())) {
                     params.put("organization", organizationTextField.getText());
                 }
-                if (!StringUtils.isEmpty(departmentTextField.getText())) {
+                if (StringUtils.isNotEmpty(departmentTextField.getText())) {
                     params.put("department", departmentTextField.getText());
                 }
-                if (!StringUtils.isEmpty(addressTextField.getText())) {
+                if (StringUtils.isNotEmpty(addressTextField.getText())) {
                     params.put("address", addressTextField.getText());
                 }
-                if (!StringUtils.isEmpty(phoneTextField.getText())) {
+                if (StringUtils.isNotEmpty(phoneTextField.getText())) {
                     params.put("phone", phoneTextField.getText());
                 }
-                if (!StringUtils.isEmpty(emailTextField.getText())) {
+                if (StringUtils.isNotEmpty(emailTextField.getText())) {
                     params.put("email", emailTextField.getText());
                 }
 

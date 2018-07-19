@@ -145,7 +145,7 @@ public class SystemManagerHomeController extends SubPaneController {
         }
     }
 
-    public void refreshItem(String currentTabId) {
+    private void refreshItem(String currentTabId) {
         if(currentTabId.equals(SystemManagerTabMenuCode.TAB_SYSTEM_MANAGER_REPORT_TEMPLATE
                 .getItem().getNodeId())) {
             systemManagerReportTemplateController.setReportTableList(1);

@@ -65,7 +65,7 @@ public class AnalysisDetailReadDepthVariantFractionController extends SubPaneCon
         showFraction();
     }
 
-    public void showReadDepth() {
+    private void showReadDepth() {
         AnalysisResultSummary summary =  sample.getAnalysisResultSummary();
 
         double depthMin = summary.getDepthMin();
@@ -119,7 +119,7 @@ public class AnalysisDetailReadDepthVariantFractionController extends SubPaneCon
      * Fracion 그래프 값 입력 및 화면 출력
      */
     @SuppressWarnings("unchecked")
-    public void showFraction() {
+    private void showFraction() {
         String ref = variant.getSnpInDel().getSnpInDelExpression().getRefSequence();
         String alt = variant.getSnpInDel().getSnpInDelExpression().getAltSequence();
         double alleleFraction = 0;
