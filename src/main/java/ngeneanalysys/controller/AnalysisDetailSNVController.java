@@ -778,8 +778,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         if(comboBoxItem != null && filterList.containsKey(comboBoxItem.getValue())) {
             list.put("search", filterList.get(comboBoxItem.getValue()));
         }
-        if(showFalseVariantsCheckBox.isSelected()) {
-            setIsFalseItem("Y", list);
+        if(!showFalseVariantsCheckBox.isSelected()) {
+            setIsFalseItem("N", list);
         }
     }
 
@@ -788,7 +788,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             list.get("search").add("isFalse " + flag);
         } else {
             List<Object> searchList = new ArrayList<>();
-            searchList.add("isFalse  " + flag);
+            searchList.add("isFalse " + flag);
             list.put("search", searchList);
         }
     }
