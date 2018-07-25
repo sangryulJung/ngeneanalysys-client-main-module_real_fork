@@ -139,19 +139,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     private VariantAndInterpretationEvidence selectedAnalysisResultVariant;
     /** 현재 선택된 변이 리스트 객체의 index */
 
-    private final double rightStandardWidth = 890;
-    private final double rightFullWidth = 1040;
-
-    private final double centerStandardWidth = 890;
-    private final double centerFullWidth = 1040;
-
-    private final double minSize = 0;
-    private final double standardAccordionSize = 870;
-    private final double maxAccordionSize = 1020;
-
-    private final double standardTableSize = 830;
-    private final double maxTableSize = 980;
-
     private Integer currentPageIndex = -1;
 
     private AnalysisDetailInterpretationController interpretationController;
@@ -302,6 +289,21 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         showFalseVariantsCheckBox.addEventFilter(MouseEvent.MOUSE_CLICKED, ev -> {
             showVariantList(currentPageIndex + 1, 0);
+        });
+
+        snvWrapper.widthProperty().addListener((ob, ov, nv) -> {
+            double wrapperWidth = (Double)nv;
+            int filterWidth = (int)snvWrapper.getColumnConstraints().get(0).getPrefWidth();
+
+            if(snvWrapper.getColumnConstraints().get(1).getPrefWidth() == 0) {
+                snvWrapper.getColumnConstraints().get(2).setPrefWidth(wrapperWidth - filterWidth);
+                rightContentsHBox.setPrefWidth(wrapperWidth - filterWidth);
+                overviewAccordion.setPrefWidth(wrapperWidth - filterWidth - 70);
+            } else {
+                snvWrapper.getColumnConstraints().get(1).setPrefWidth(wrapperWidth - filterWidth - 50);
+                tableVBox.setPrefWidth(wrapperWidth - filterWidth - 50);
+                variantListTableView.setPrefWidth(wrapperWidth - filterWidth - 110);
+            }
         });
 
     }
@@ -516,19 +518,20 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     private void expandLeft() {
         double leftExpandedWidth = 200;
+        double snvWrapperWidth = snvWrapper.getWidth();
         snvWrapper.getColumnConstraints().get(0).setPrefWidth(leftExpandedWidth);
         if(snvWrapper.getColumnConstraints().get(1).getPrefWidth() == 0) {
-            snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightStandardWidth);
-            rightContentsHBox.setPrefWidth(this.rightStandardWidth);
-            if(interpretationController !=null) interpretationController.setGridPaneWidth(this.standardAccordionSize - 10);
-            overviewAccordion.setPrefWidth(this.standardAccordionSize);
+            snvWrapper.getColumnConstraints().get(2).setPrefWidth(snvWrapperWidth - leftExpandedWidth);
+            rightContentsHBox.setPrefWidth(snvWrapperWidth - leftExpandedWidth);
+            overviewAccordion.setPrefWidth(snvWrapperWidth - leftExpandedWidth - 70);
             tableVBox.setVisible(false);
         } else {
-            snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerStandardWidth);
+            snvWrapper.getColumnConstraints().get(1).setPrefWidth(snvWrapperWidth - leftExpandedWidth - 50);
+            tableVBox.setPrefWidth(snvWrapperWidth - leftExpandedWidth - 50);
+            variantListTableView.setPrefWidth(snvWrapperWidth - leftExpandedWidth - 110);
             overviewAccordion.setVisible(false);
-            tableVBox.setPrefWidth(this.centerStandardWidth);
-            variantListTableView.setPrefWidth(this.standardTableSize);
         }
+
         filterArea.setVisible(true);
         filterArea.setPrefWidth(150);
         leftSizeButton.getStyleClass().clear();
@@ -537,19 +540,19 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     private void foldLeft(){
         double leftFoldedWidth = 50;
+        double snvWrapperWidth = snvWrapper.getWidth();
         snvWrapper.getColumnConstraints().get(0).setPrefWidth(leftFoldedWidth);
-        rightContentsHBox.setPrefWidth(this.rightStandardWidth);
+        rightContentsHBox.setPrefWidth(snvWrapperWidth - leftFoldedWidth);
         if(snvWrapper.getColumnConstraints().get(1).getPrefWidth() == 0) {
-            snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightFullWidth);
-            overviewAccordion.setPrefWidth(this.maxAccordionSize);
-            if(interpretationController !=null) interpretationController.setGridPaneWidth(this.maxAccordionSize - 10);
+            snvWrapper.getColumnConstraints().get(2).setPrefWidth(snvWrapperWidth - leftFoldedWidth);
+            overviewAccordion.setPrefWidth(snvWrapperWidth - leftFoldedWidth - 70);
             overviewAccordion.setVisible(true);
             tableVBox.setVisible(false);
         } else {
-            snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerFullWidth);
+            snvWrapper.getColumnConstraints().get(1).setPrefWidth(snvWrapperWidth - leftFoldedWidth - 50);
+            tableVBox.setPrefWidth(snvWrapperWidth - leftFoldedWidth - 50);
+            variantListTableView.setPrefWidth(snvWrapperWidth - leftFoldedWidth - 110);
             overviewAccordion.setVisible(false);
-            tableVBox.setPrefWidth(this.centerFullWidth);
-            variantListTableView.setPrefWidth(this.maxTableSize);
             tableVBox.setVisible(true);
         }
         filterArea.setVisible(false);
@@ -562,20 +565,15 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         if(variantListTableView.getItems() != null && !variantListTableView.getItems().isEmpty()) {
             showVariantDetail(variantListTableView.getSelectionModel().getSelectedItem());
             double centerFoldedWidth = 0;
+            double snvWrapperWidth = snvWrapper.getWidth();
+            double filterAreaWidth = snvWrapper.getColumnConstraints().get(0).getPrefWidth();
             snvWrapper.getColumnConstraints().get(1).setPrefWidth(centerFoldedWidth);
-            if (snvWrapper.getColumnConstraints().get(0).getPrefWidth() == 200) {
-                snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightStandardWidth);
-                overviewAccordion.setPrefWidth(this.standardAccordionSize);
-                if (interpretationController != null)
-                    interpretationController.setGridPaneWidth(this.standardAccordionSize - 10);
-            } else {
-                snvWrapper.getColumnConstraints().get(2).setPrefWidth(this.rightFullWidth);
-                overviewAccordion.setPrefWidth(this.maxAccordionSize);
-                if (interpretationController != null)
-                    interpretationController.setGridPaneWidth(this.maxAccordionSize - 10);
-            }
+
+            snvWrapper.getColumnConstraints().get(2).setPrefWidth(snvWrapperWidth - filterAreaWidth);
+            overviewAccordion.setPrefWidth(snvWrapperWidth - filterAreaWidth - 70);
+
             overviewAccordion.setVisible(true);
-            tableVBox.setPrefWidth(this.minSize);
+            tableVBox.setPrefWidth(0);
             tableVBox.setVisible(false);
             rightSizeButton.getStyleClass().clear();
             rightSizeButton.getStyleClass().add("right_btn_fold");
@@ -589,17 +587,15 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             showVariantList(1, 0);
         }
         double rightFoldedWidth = 50;
+        double snvWrapperWidth = snvWrapper.getWidth();
+        double filterAreaWidth = snvWrapper.getColumnConstraints().get(0).getPrefWidth();
         snvWrapper.getColumnConstraints().get(2).setPrefWidth(rightFoldedWidth);
-        if(snvWrapper.getColumnConstraints().get(0).getPrefWidth() == 200) {
-            snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerStandardWidth);
-            tableVBox.setPrefWidth(this.centerStandardWidth);
-            variantListTableView.setPrefWidth(this.standardTableSize);
-        } else {
-            snvWrapper.getColumnConstraints().get(1).setPrefWidth(this.centerFullWidth);
-            tableVBox.setPrefWidth(this.centerFullWidth);
-            variantListTableView.setPrefWidth(this.maxTableSize);
-        }
-        rightContentsHBox.setPrefWidth(minSize);
+
+        snvWrapper.getColumnConstraints().get(1).setPrefWidth(snvWrapperWidth - filterAreaWidth - 50);
+        tableVBox.setPrefWidth(snvWrapperWidth - filterAreaWidth - 50);
+        variantListTableView.setPrefWidth(snvWrapperWidth - filterAreaWidth - 110);
+
+        rightContentsHBox.setPrefWidth(0);
         overviewAccordion.setVisible(false);
         tableVBox.setVisible(true);
         rightSizeButton.getStyleClass().clear();

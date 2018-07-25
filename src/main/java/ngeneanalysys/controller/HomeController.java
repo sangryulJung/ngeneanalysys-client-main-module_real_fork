@@ -111,7 +111,7 @@ public class HomeController extends SubPaneController{
             }
         });
 
-        getMainController().getPrimaryStage().setMaxWidth(1000);
+        //getMainController().getPrimaryStage().setMaxWidth(1000);
         this.mainController.getMainFrame().setCenter(root);
 
         initRunListLayout();

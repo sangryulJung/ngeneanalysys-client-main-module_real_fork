@@ -15,20 +15,20 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane fx:id="experimentPastResultsWrapper" prefHeight="555.0" prefWidth="1200.0" styleClass="background_white" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.PastResultsController">
+<GridPane fx:id="experimentPastResultsWrapper" maxWidth="-Infinity" prefHeight="555.0" prefWidth="1200.0" styleClass="background_white" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.PastResultsController">
    <columnConstraints>
       <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
       <ColumnConstraints hgrow="SOMETIMES" prefWidth="350.0" />
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="510.0" />
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="250.0" />
+      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="30.0" />
+      <ColumnConstraints minWidth="10.0" prefWidth="250.0" />
       <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
    </columnConstraints>
    <rowConstraints>
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" valignment="TOP" vgrow="NEVER" />
       <RowConstraints maxHeight="99.0" minHeight="-Infinity" prefHeight="35.0" vgrow="NEVER" />
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" valignment="CENTER" vgrow="NEVER" />
-      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="400.0" valignment="TOP" vgrow="NEVER" />
+      <RowConstraints minHeight="-Infinity" prefHeight="400.0" valignment="TOP" vgrow="ALWAYS" />
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" valignment="TOP" vgrow="ALWAYS" />
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="15.0" />
    </rowConstraints>

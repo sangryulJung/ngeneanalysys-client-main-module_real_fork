@@ -7,10 +7,10 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="variantStatisticsGirdPane" maxWidth="1020.0" minWidth="-Infinity" prefWidth="870.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../../css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailVariantStatisticsController">
+<GridPane fx:id="variantStatisticsGirdPane" minWidth="-Infinity" prefWidth="870.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../../css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailVariantStatisticsController">
    <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="380.0" />
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="330.0" />
+      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="380.0" />
+      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="330.0" />
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="170.0" />
    </columnConstraints>
    <rowConstraints>

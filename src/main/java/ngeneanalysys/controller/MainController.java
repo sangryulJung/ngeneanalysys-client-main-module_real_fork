@@ -131,6 +131,9 @@ public class MainController extends BaseStageController {
     @FXML
     private VBox mainBackground;
 
+    @FXML
+    private HBox topTabArea;
+
     private ComboBox<ComboBoxItem> sampleList;
 
     private Map<String, Object> basicInformationMap = new HashMap<>();
@@ -200,10 +203,12 @@ public class MainController extends BaseStageController {
 
         primaryStage.setMinHeight(setWindowHeight + 35);
         primaryStage.setHeight(setWindowHeight + 35);
-        primaryStage.setMaxHeight(setWindowHeight + 35);
+        primaryStage.setMaxHeight(Double.MAX_VALUE);
         primaryStage.setMinWidth(1280);
         primaryStage.setWidth(1280);
-        primaryStage.setMaxWidth(1280);
+        primaryStage.setMaxWidth(Double.MAX_VALUE);
+        primaryStage.setResizable(true);
+
         primaryStage.centerOnScreen();
         primaryStage.show();
         logger.debug(String.format("start %s", primaryStage.getTitle()));

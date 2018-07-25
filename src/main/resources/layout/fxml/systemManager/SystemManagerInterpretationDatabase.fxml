@@ -17,23 +17,23 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="500.0" prefWidth="1200.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.systemManager.SystemManagerInterpretationDatabaseController">
+<AnchorPane prefHeight="500.0" prefWidth="1200.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.systemManager.SystemManagerInterpretationDatabaseController">
    <stylesheets>
       <URL value="@../../css/common.css" />
       <URL value="@../../css/experimenter.css" />
    </stylesheets>
    <children>
-      <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="500.0" prefWidth="1180.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
+      <VBox prefHeight="500.0" prefWidth="1180.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
          <children>
-            <TabPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="500.0" prefWidth="1180.0" style="-fx-background-color: transparent;" tabClosingPolicy="UNAVAILABLE">
+            <TabPane prefHeight="500.0" prefWidth="1180.0" style="-fx-background-color: transparent;" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
               <tabs>
                 <Tab text="SNV &amp; InDel">
                      <content>
-                        <VBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="470.0" prefWidth="1180.0">
+                        <VBox maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefHeight="470.0" prefWidth="1180.0">
                            <children>
-                              <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="1180.0" spacing="5.0">
+                              <HBox alignment="CENTER_RIGHT" maxHeight="70.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="1180.0" spacing="5.0" VBox.vgrow="ALWAYS">
                                  <children>
-                                    <GridPane alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="80.0" HBox.hgrow="SOMETIMES">
+                                    <GridPane alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="80.0" HBox.hgrow="ALWAYS">
                                       <columnConstraints>
                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -166,7 +166,7 @@
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </padding>
                               </HBox>
-                              <TableView fx:id="evidenceListTable" editable="true" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="800.0" tableMenuButtonVisible="true">
+                              <TableView fx:id="evidenceListTable" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="800.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
                                  <columns>
                                     <TableColumn fx:id="idTableColumn" prefWidth="80.0" styleClass="txt_black" text="id" visible="false" />
                                     <TableColumn fx:id="diseaseIdTableColumn" prefWidth="100.0" styleClass="txt_black" text="Disease" />
@@ -239,7 +239,7 @@
                                     <TableColumn fx:id="deletedTableColumn" prefWidth="108.0" styleClass="txt_black" text="Deactivated" visible="false" />
                                  </columns>
                               </TableView>
-                              <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="300.0">
+                              <HBox alignment="CENTER_RIGHT" maxHeight="40.0" minHeight="-Infinity" prefHeight="40.0" prefWidth="300.0" VBox.vgrow="ALWAYS">
                                  <children>
                                     <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="200.0" HBox.hgrow="SOMETIMES">
                                        <children>
