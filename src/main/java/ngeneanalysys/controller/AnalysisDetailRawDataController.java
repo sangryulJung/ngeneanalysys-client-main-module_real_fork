@@ -181,7 +181,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
 
         if(unit.equals("KB")) {
             returnValue = returnValue.multiply(new BigDecimal(1024));
-         } else if(unit.equals("MB")) {
+        } else if(unit.equals("MB")) {
             returnValue = returnValue.multiply(new BigDecimal(1024))
                     .multiply(new BigDecimal(1024));
         } else if(unit.equals("GB")) {
