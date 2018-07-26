@@ -85,7 +85,7 @@
             <Insets />
          </GridPane.margin>
       </Label>
-      <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="1">
+      <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="1">
          <children>
             <GridPane prefWidth="300.0" style="-fx-background-color: #f2f5fa;">
               <columnConstraints>
