@@ -5,6 +5,7 @@ import ngeneanalysys.controller.AnalysisSampleUploadProgressTaskController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.AnalysisFile;
 import ngeneanalysys.model.Run;
+import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.AnalysisRequestService;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
@@ -169,6 +170,12 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
 
         // 업로드 작업 중단
         if(this.analysisSampleUploadProgressTaskController.isCancel) {
+            APIService apiService = APIService.getInstance();
+            try {
+                apiService.delete("runs/" + currentUploadGroupId);
+            } catch (WebAPIException wae) {
+                logger.debug("delete fail");
+            }
             logger.warn("complete stop upload work..!!");
             // 취소 완료 Alert창 출력
             this.analysisSampleUploadProgressTaskController.showCancelCompleteDialog();

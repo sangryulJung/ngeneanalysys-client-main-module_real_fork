@@ -16,17 +16,17 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane fx:id="snvWrapper" prefHeight="380.0" prefWidth="1140.0" style="-fx-background-color: #f2f5fa;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNVController">
+<GridPane fx:id="snvWrapper" prefHeight="380.0" prefWidth="1140.0" style="-fx-background-color: #f2f5fa;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNVController">
    <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="200.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="0.0" prefWidth="0.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="940.0" />
+      <ColumnConstraints fillWidth="false" hgrow="NEVER" maxWidth="-Infinity" minWidth="10.0" prefWidth="200.0" />
+      <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" prefWidth="0.0" />
+      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="940.0" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" vgrow="ALWAYS" />
    </rowConstraints>
    <children>
-      <VBox fx:id="tableVBox" alignment="BOTTOM_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="0.0" GridPane.columnIndex="1">
+      <VBox fx:id="tableVBox" alignment="BOTTOM_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="0.0" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.vgrow="ALWAYS">
          <children>
             <HBox alignment="BOTTOM_RIGHT" maxWidth="1040.0" minWidth="870.0" prefWidth="870.0">
                <children>
@@ -36,7 +36,7 @@
                   <Insets bottom="5.0" />
                </VBox.margin>
             </HBox>
-            <TableView fx:id="variantListTableView" maxHeight="305.0" maxWidth="-Infinity" minHeight="305.0" minWidth="-Infinity" prefHeight="305.0" tableMenuButtonVisible="true">
+            <TableView fx:id="variantListTableView" minHeight="305.0" minWidth="-Infinity" prefHeight="305.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
                <padding>
                   <Insets bottom="10.0" />
                </padding>
@@ -164,16 +164,16 @@
                </HBox.margin></Button>
          </children>
       </HBox>
-      <HBox fx:id="rightContentsHBox" style="-fx-background-color: #f2f5fa;" GridPane.columnIndex="2">
+      <HBox fx:id="rightContentsHBox" style="-fx-background-color: #f2f5fa;" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
          <children>
-            <Button fx:id="rightSizeButton" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="50.0" styleClass="right_btn_fold" />
+            <Button fx:id="rightSizeButton" maxHeight="1.7976931348623157E308" maxWidth="50.0" minWidth="-Infinity" mnemonicParsing="false" prefWidth="50.0" styleClass="right_btn_fold" />
             <Accordion fx:id="overviewAccordion" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="870.0">
               <panes>
                 <TitledPane fx:id="interpretationTitledPane" animated="false" maxWidth="-Infinity" minWidth="-Infinity" style="-fx-font-family: Noto Sans KR Bold;" text="Interpretation" />
                 <TitledPane fx:id="clinicalSignificantTitledPane" animated="false" maxWidth="-Infinity" minWidth="-Infinity" style="-fx-font-family: Noto Sans KR;" text="Clinical Significant" />
                 <TitledPane fx:id="variantDetailTitledPane" animated="false" maxWidth="-Infinity" minWidth="-Infinity" style="-fx-font-family: Noto Sans KR;" text="Variant Detail" />
                   <TitledPane fx:id="statisticsTitledPane" animated="false" maxWidth="-Infinity" minWidth="-Infinity" style="-fx-font-family: Noto Sans KR;" text="Statistics" />
-                  <TitledPane fx:id="interpretationLogsTitledPane" animated="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="890.0" style="-fx-font-family: Noto Sans KR;" text="Interpretation Log" />
+                  <TitledPane fx:id="interpretationLogsTitledPane" animated="false" maxWidth="-Infinity" minWidth="-Infinity" style="-fx-font-family: Noto Sans KR;" text="Interpretation Log" />
               </panes>
                <HBox.margin>
                   <Insets top="20.0" />

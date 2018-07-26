@@ -15,15 +15,15 @@
 <?import javafx.scene.shape.Polyline?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="1040.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="256.0" prefWidth="750.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailClinicalSignificantController">
+<GridPane alignment="CENTER_RIGHT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="256.0" prefWidth="750.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailClinicalSignificantController">
   <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="320.0" minWidth="-Infinity" prefWidth="254.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="390.0" minWidth="-Infinity" prefWidth="260.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="340.0" minWidth="-Infinity" prefWidth="236.0" />
+      <ColumnConstraints hgrow="ALWAYS" minWidth="-Infinity" prefWidth="254.0" />
+    <ColumnConstraints hgrow="ALWAYS" minWidth="-Infinity" prefWidth="260.0" />
+    <ColumnConstraints hgrow="ALWAYS" minWidth="-Infinity" prefWidth="236.0" />
   </columnConstraints>
   <rowConstraints>
-      <RowConstraints maxHeight="124.0" minHeight="10.0" prefHeight="47.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="235.0" minHeight="10.0" prefHeight="209.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="47.0" minHeight="10.0" prefHeight="47.0" vgrow="SOMETIMES" />
+    <RowConstraints minHeight="10.0" prefHeight="209.0" vgrow="ALWAYS" />
   </rowConstraints>
    <children>
       <VBox fx:id="clinicalSignificant" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="191.0" prefWidth="256.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
