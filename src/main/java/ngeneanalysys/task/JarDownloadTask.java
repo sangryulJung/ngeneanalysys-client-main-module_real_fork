@@ -78,7 +78,7 @@ public class JarDownloadTask extends Task {
             CloseableHttpResponse response = null;
 
 
-            String downloadUrl = "/admin/reportComponent/" + component.getId();
+            String downloadUrl = "/reportComponent/" + component.getId();
             //String path = CommonConstants.BASE_FULL_PATH  + File.separator + "fop" + File.separator + reportImage.getReportTemplateId() + File.separator + reportImage.getName();
             String path = CommonConstants.BASE_FULL_PATH  + File.separator + "word" + File.separator + component.getId() + File.separator + component.getName();
 
