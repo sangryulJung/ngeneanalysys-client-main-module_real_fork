@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane fx:id="homeWrapper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="555.0" minWidth="1200.0" prefHeight="555.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.HomeController">
+<GridPane fx:id="homeWrapper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="555.0" minWidth="1200.0" prefHeight="555.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.HomeController">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="34.0" minWidth="-Infinity" prefWidth="34.0" />
     <ColumnConstraints hgrow="ALWAYS" minWidth="433.0" prefWidth="433.0" />
@@ -185,7 +185,6 @@
             </VBox>
          </content>
       </ScrollPane>
-      <VBox prefHeight="194.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
       <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3" />
       <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="26.0" prefWidth="379.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>

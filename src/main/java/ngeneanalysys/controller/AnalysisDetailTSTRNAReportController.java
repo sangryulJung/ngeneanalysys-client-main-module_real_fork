@@ -1053,9 +1053,13 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
                                     URL[] jarUrls = new URL[]{jarFile1.toURI().toURL()};
                                     createWordFile(jarUrls, file, contentsMap, reportCreationErrorMsg);
                                 } catch (MalformedURLException murle) {
-                                    DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + murle.getMessage(), getMainApp().getPrimaryStage(), false);
+                                    DialogUtil.error("Report Generation Fail", reportCreationErrorMsg + "\n" + murle.getMessage(), getMainApp().getPrimaryStage(), false);
                                     murle.printStackTrace();
                                 }
+                            });
+                            task.exceptionProperty().addListener((observable, oldValue, newValue) -> {
+                                DialogUtil.error("Report Generation Fail",
+                                        ((Exception)newValue).getMessage(), getMainApp().getPrimaryStage(), false);
                             });
                         } else {
                             URL[] jarUrls = new URL[]{jarFile.toURI().toURL()};
