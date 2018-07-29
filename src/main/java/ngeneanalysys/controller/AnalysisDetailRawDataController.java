@@ -178,21 +178,21 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
 
     public BigDecimal returnData(String value, String unit) {
         BigDecimal returnValue = new BigDecimal(value);
-
+        final BigDecimal unitValue = new BigDecimal(1024);
         if(unit.equals("KB")) {
-            returnValue = returnValue.multiply(new BigDecimal(1024));
+            returnValue = returnValue.multiply(unitValue);
         } else if(unit.equals("MB")) {
-            returnValue = returnValue.multiply(new BigDecimal(1024))
-                    .multiply(new BigDecimal(1024));
+            returnValue = returnValue.multiply(unitValue)
+                    .multiply(unitValue);
         } else if(unit.equals("GB")) {
-            returnValue = returnValue.multiply(new BigDecimal(1024))
-                    .multiply(new BigDecimal(1024))
-                    .multiply(new BigDecimal(1024));
+            returnValue = returnValue.multiply(unitValue)
+                    .multiply(unitValue)
+                    .multiply(unitValue);
         } else if(unit.equals("TB")) {
-            returnValue = returnValue.multiply(new BigDecimal(1024))
-                    .multiply(new BigDecimal(1024))
-                    .multiply(new BigDecimal(1024))
-                    .multiply(new BigDecimal(1024));
+            returnValue = returnValue.multiply(unitValue)
+                    .multiply(unitValue)
+                    .multiply(unitValue)
+                    .multiply(unitValue);
         }
 
         return returnValue;

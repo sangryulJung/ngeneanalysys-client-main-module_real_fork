@@ -306,6 +306,32 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             }
         });
 
+        snvWrapper.heightProperty().addListener((ob, ov, nv) -> {
+            double wrapperHeight = (Double)nv;
+
+            if(wrapperHeight > 450) {
+                changeTitledPaneTextSize("font_size_13", "font_size_18");
+            } else {
+                changeTitledPaneTextSize("font_size_18", "font_size_13");
+            }
+        });
+
+    }
+
+    private void changeTitledPaneTextSize(String currentStyle, String changeStyle) {
+        if(interpretationTitledPane != null) {
+            interpretationTitledPane.getStyleClass().remove(currentStyle);
+            interpretationTitledPane.getStyleClass().add(changeStyle);
+        } else {
+            clinicalSignificantTitledPane.getStyleClass().remove(currentStyle);
+            clinicalSignificantTitledPane.getStyleClass().add(changeStyle);
+        }
+        variantDetailTitledPane.getStyleClass().remove(currentStyle);
+        variantDetailTitledPane.getStyleClass().add(changeStyle);
+        statisticsTitledPane.getStyleClass().remove(currentStyle);
+        statisticsTitledPane.getStyleClass().add(changeStyle);
+        interpretationLogsTitledPane.getStyleClass().remove(currentStyle);
+        interpretationLogsTitledPane.getStyleClass().add(changeStyle);
     }
 
     private List<VariantAndInterpretationEvidence> getSelectedItemList() {
@@ -928,11 +954,11 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         PopOverUtil.openFilterPopOver(viewAppliedFiltersLabel, filterList.get(comboBoxItem.getValue()));
     }
 
-    private void createTableHeader(TableColumn<VariantAndInterpretationEvidence, ?> column, String name, String sortName, Double size) {
+    /*private void createTableHeader(TableColumn<VariantAndInterpretationEvidence, ?> column, String name, String sortName, Double size) {
         Label label = new Label(name);
         label.setPrefHeight(Double.MAX_VALUE);
         column.setSortable(false);
-        if(!StringUtils.isEmpty(sortName)) {
+        if(StringUtils.isNotEmpty(sortName)) {
             //column.getStyleClass().add("sort_icon");
             label.setOnMouseClicked(e -> sortTable(sortName));
         }
@@ -941,6 +967,33 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         column.widthProperty().addListener((ob, ov, nv) -> {
             label.setMinWidth(column.getWidth());
         });
+
+        if(size != null) column.setPrefWidth(size);
+
+        variantListTableView.getColumns().add(column);
+    }*/
+
+    private void createTableHeader(TableColumn<VariantAndInterpretationEvidence, ?> column, String name, String sortName, Double size) {
+        column.setText(name);
+
+
+        if(StringUtils.isEmpty(sortName)) {
+            column.setSortable(false);
+        } else {
+            column.setComparator((v1, v2) -> 0);
+            sortMap.clear();
+            column.sortTypeProperty().addListener((ob, ov, nv) -> {
+
+                if(nv.name().equals("ASCENDING")) {
+                    sortMap.put(sortName, "ASC");
+                } else {
+                    sortMap.put(sortName, "DESC");
+                }
+                showVariantList(currentPageIndex + 1, 0);
+            });
+            //label.setOnMouseClicked(e -> sortTable(sortName));
+
+        }
 
         if(size != null) column.setPrefWidth(size);
 
