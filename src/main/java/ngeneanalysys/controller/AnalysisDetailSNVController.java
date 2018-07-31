@@ -954,7 +954,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         PopOverUtil.openFilterPopOver(viewAppliedFiltersLabel, filterList.get(comboBoxItem.getValue()));
     }
 
-    /*private void createTableHeader(TableColumn<VariantAndInterpretationEvidence, ?> column, String name, String sortName, Double size) {
+    private void createTableHeader(TableColumn<VariantAndInterpretationEvidence, ?> column, String name, String sortName, Double size) {
         Label label = new Label(name);
         label.setPrefHeight(Double.MAX_VALUE);
         column.setSortable(false);
@@ -971,9 +971,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         if(size != null) column.setPrefWidth(size);
 
         variantListTableView.getColumns().add(column);
-    }*/
+    }
 
-    private void createTableHeader(TableColumn<VariantAndInterpretationEvidence, ?> column, String name, String sortName, Double size) {
+    /*private void createTableHeader(TableColumn<VariantAndInterpretationEvidence, ?> column, String name, String sortName, Double size) {
         column.setText(name);
 
 
@@ -998,7 +998,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         if(size != null) column.setPrefWidth(size);
 
         variantListTableView.getColumns().add(column);
-    }
+    }*/
 
     private void createTableHeader(TableColumn<VariantAndInterpretationEvidence, ?> column, Double size) {
         HBox hBox = new HBox();
