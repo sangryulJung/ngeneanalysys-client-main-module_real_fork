@@ -107,7 +107,7 @@ public class AnalysisSampleUploadProgressDetailController extends BaseStageContr
         }
         dialogStage.initOwner(this.mainController.getMainApp().getPrimaryStage());
 
-        // Schen Init
+        // Scene Init
         Scene scene = new Scene(root);
         dialogStage.setScene(scene);
         dialogStage.showAndWait();

@@ -496,7 +496,7 @@ public class VariantFilterController extends SubPaneController {
             }
         });
 
-        // Schen Init
+        // Scene Init
         Scene scene = new Scene(root);
         dialogStage.setScene(scene);
         dialogStage.showAndWait();

@@ -260,10 +260,7 @@ public class MainController extends BaseStageController {
         initTopUserMenu(role);
 
         // 하단 빌드 정보 출력
-        String buildVersion = config.getProperty("application.version");
-        String buildDate = config.getProperty("application.build.date");
-        labelSystemBuild.setText(String.format("v %s (Build Date %s)", buildVersion, buildDate));
-        logger.debug(String.format("v %s (Build Date %s)", buildVersion, buildDate));
+        getSoftwareVersionInfo();
 
         // 중단된 분석 요청 작업이 있는지 체크
 
@@ -354,6 +351,19 @@ public class MainController extends BaseStageController {
 
         settingPanelAndDiseases();
         //primaryStage.setResizable(false);
+    }
+
+    private void getSoftwareVersionInfo() {
+        Platform.runLater(() -> {
+            try {
+                HttpClientResponse response = apiService.get("", null, null, null);
+                NGeneAnalySysVersion nGeneAnalySysVersion = response.getObjectBeforeConvertResponseToJSON(NGeneAnalySysVersion.class);
+                labelSystemBuild.setText("System version : " + nGeneAnalySysVersion.getSystem());
+            } catch (WebAPIException wae) {
+                logger.debug(wae.getMessage());
+            }
+        });
+
     }
 
     private void closeEvent(Event event) {
@@ -811,6 +821,12 @@ public class MainController extends BaseStageController {
                 SystemMenuLicenseController licenseController = loader.getController();
                 licenseController.setMainController(this);
                 licenseController.show((Parent) root);
+            } else if(menuId.equals(SystemMenuCode.SOFTWARE_VERSION.name())) {
+                loader = mainApp.load(FXMLConstants.SYSTEM_MENU_SOFTWARE_VERSION);
+                Node root = loader.load();
+                SystemMenuSoftwareVersionController softwareVersionController = loader.getController();
+                softwareVersionController.setMainController(this);
+                softwareVersionController.show((Parent) root);
             } /*else if(menuId.equals(SystemMenuCode.PUBLIC_DATABASES.name())) {
                 loader = mainApp.load(FXMLConstants.SYSTEM_MENU_PUBLIC_DATABASES);
                 Node root = loader.load();

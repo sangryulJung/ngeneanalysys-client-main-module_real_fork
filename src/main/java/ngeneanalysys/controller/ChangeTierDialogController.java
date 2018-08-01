@@ -184,7 +184,7 @@ public class ChangeTierDialogController extends SubPaneController {
             e.printStackTrace();
         }
 
-        // Schen Init
+        // Scene Init
         Scene scene = new Scene(root);
         dialogStage.setScene(scene);
         dialogStage.showAndWait();

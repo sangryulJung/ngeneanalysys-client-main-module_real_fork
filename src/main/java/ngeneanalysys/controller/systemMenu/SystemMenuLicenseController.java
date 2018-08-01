@@ -33,7 +33,7 @@ public class SystemMenuLicenseController extends SubPaneController{
         }
         dialogStage.initOwner(getMainApp().getPrimaryStage());
 
-        // Schen Init
+        // Scene Init
         Scene scene = new Scene(root);
         dialogStage.setScene(scene);
         dialogStage.showAndWait();

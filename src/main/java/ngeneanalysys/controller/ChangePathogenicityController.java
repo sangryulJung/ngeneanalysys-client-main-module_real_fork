@@ -80,7 +80,7 @@ public class ChangePathogenicityController extends SubPaneController {
         commentTextField.setOnKeyPressed(ev -> {
             commentTextField.setPromptText("");
         });
-        // Schen Init
+        // Scene Init
         Scene scene = new Scene(root);
         dialogStage.setScene(scene);
         dialogStage.showAndWait();

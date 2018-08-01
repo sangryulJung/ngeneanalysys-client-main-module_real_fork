@@ -116,7 +116,7 @@ public class PublicDatabaseController extends SubPaneController {
 
         setVersionComboBox();
 
-        // Schen Init
+        // Scene Init
         Scene scene = new Scene(root);
         dialogStage.setScene(scene);
         dialogStage.showAndWait();

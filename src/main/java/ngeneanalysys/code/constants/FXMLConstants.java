@@ -23,6 +23,9 @@ public class FXMLConstants {
 	
 	/** System Menu > License 화면 */
 	public static final String SYSTEM_MENU_LICENSE = "/layout/fxml/SystemMenu-License.fxml";
+
+	/** System Menu > License 화면 */
+	public static final String SYSTEM_MENU_SOFTWARE_VERSION = "/layout/fxml/SystemMenu-SoftwareVersion.fxml";
 	
 	/** System Menu > Public Databases 정보 화면 */
 	public static final String SYSTEM_MENU_PUBLIC_DATABASES = "/layout/fxml/SystemMenu-PublicDatabases.fxml";
