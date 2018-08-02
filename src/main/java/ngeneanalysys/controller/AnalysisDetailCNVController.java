@@ -9,7 +9,7 @@ import javafx.scene.control.TableView;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.CNV;
-import ngeneanalysys.model.Sample;
+import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.paged.PagedCNV;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
@@ -63,7 +63,7 @@ public class AnalysisDetailCNVController extends AnalysisDetailCommonController 
 
     public void setList() {
 
-        Sample sample = (Sample)paramMap.get("sample");
+        SampleView sample = (SampleView)paramMap.get("sampleView");
 
         try {
             HttpClientResponse response = apiService.get("/analysisResults/cnv/" + sample.getId(), null, null, null);

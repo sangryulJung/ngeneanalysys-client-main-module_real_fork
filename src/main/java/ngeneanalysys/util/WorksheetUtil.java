@@ -10,7 +10,7 @@ import javafx.scene.Parent;
 import javafx.stage.FileChooser;
 import ngeneanalysys.MainApp;
 import ngeneanalysys.controller.WorkProgressController;
-import ngeneanalysys.model.Sample;
+import ngeneanalysys.model.SampleView;
 import ngeneanalysys.task.ExportInterpretationDataTask;
 import ngeneanalysys.task.ExportVariantDataTask;
 import org.slf4j.Logger;
@@ -57,7 +57,7 @@ public class WorksheetUtil {
 		}
 	}
 
-	public void exportVariantData(String fileType, Map<String, Object> params, MainApp mainApp, Sample sample){
+	public void exportVariantData(String fileType, Map<String, Object> params, MainApp mainApp, SampleView sample){
 		try {
 			// Show save file dialog
 			FileChooser fileChooser = new FileChooser();

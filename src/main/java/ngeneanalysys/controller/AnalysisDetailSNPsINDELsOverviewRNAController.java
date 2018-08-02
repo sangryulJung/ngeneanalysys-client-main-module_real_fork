@@ -6,10 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import ngeneanalysys.animaition.VariantStatisticsTimer;
 import ngeneanalysys.controller.extend.SubPaneController;
-import ngeneanalysys.model.FusionGene;
-import ngeneanalysys.model.Panel;
-import ngeneanalysys.model.Sample;
-import ngeneanalysys.model.VariantStatistics;
+import ngeneanalysys.model.*;
 
 import java.io.IOException;
 
@@ -21,7 +18,7 @@ public class AnalysisDetailSNPsINDELsOverviewRNAController extends SubPaneContro
 
     private AnalysisDetailFusionGeneController analysisDetailFusionGeneController;
 
-    private Sample sample;
+    private SampleView sample;
 
     private Panel panel;
 
@@ -52,7 +49,7 @@ public class AnalysisDetailSNPsINDELsOverviewRNAController extends SubPaneContro
 
     @Override
     public void show(Parent root) throws IOException {
-        sample = (Sample) paramMap.get("sample");
+        sample = (SampleView) paramMap.get("sampleView");
         panel = (Panel) paramMap.get("panel");
         fusionGene = (FusionGene) paramMap.get("fusionGene");
 

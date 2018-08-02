@@ -15,6 +15,7 @@ import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.Sample;
+import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.VariantCountByGene;
 import ngeneanalysys.model.VariantCountByGeneForGermlineDNA;
 import ngeneanalysys.model.render.ComboBoxItem;
@@ -170,7 +171,7 @@ public class AnalysisDetailTargetGermlineController extends AnalysisDetailCommon
 
     @FXML
     public void searchGene() {
-        Sample sample = (Sample)getParamMap().get("sample");
+        SampleView sample = (SampleView)getParamMap().get("sampleView");
         ObservableList<VariantCountByGeneForGermlineDNA> VariantCountByGene = getVariantcountByGeneData(sample.getId(),
                     geneListTextField.getText());
         geneTable.setItems(VariantCountByGene);
@@ -187,7 +188,7 @@ public class AnalysisDetailTargetGermlineController extends AnalysisDetailCommon
 
 
     private void showVariantCountByGeneData() {
-        Sample sample = (Sample)getParamMap().get("sample");
+        SampleView sample = (SampleView)getParamMap().get("sampleView");
         ObservableList<VariantCountByGeneForGermlineDNA> VariantCountByGene = getVariantcountByGeneData(sample.getId(), null);
         geneTable.setItems(VariantCountByGene);
     }

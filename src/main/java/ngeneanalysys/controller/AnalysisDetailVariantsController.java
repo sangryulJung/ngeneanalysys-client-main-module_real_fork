@@ -16,6 +16,7 @@ import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.Panel;
 import ngeneanalysys.model.Sample;
+import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.TopMenu;
 import ngeneanalysys.model.paged.PagedCNV;
 import ngeneanalysys.service.APIService;
@@ -100,7 +101,7 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
     }
 
     private boolean checkCNV() {
-        Sample sample = (Sample)paramMap.get("sample");
+        SampleView sample = (SampleView)paramMap.get("sampleView");
 
         try {
             HttpClientResponse response = apiService.get("/analysisResults/cnv/" + sample.getId(), null, null, null);

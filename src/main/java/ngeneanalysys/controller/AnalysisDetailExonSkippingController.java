@@ -10,6 +10,7 @@ import javafx.scene.control.TableView;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.ExonSkip;
+import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.paged.PagedExonSkip;
 import ngeneanalysys.model.Sample;
 import ngeneanalysys.service.APIService;
@@ -31,7 +32,7 @@ public class AnalysisDetailExonSkippingController extends SubPaneController {
     /** API 서버 통신 서비스 */
     private APIService apiService;
 
-    private Sample sample;
+    private SampleView sample;
 
     private AnalysisDetailFusionMainController analysisDetailFusionMainController;
 
@@ -90,7 +91,7 @@ public class AnalysisDetailExonSkippingController extends SubPaneController {
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
 
-        sample = (Sample)paramMap.get("sample");
+        sample = (SampleView)paramMap.get("sampleView");
 
         setList();
 

@@ -122,7 +122,7 @@ public class AnalysisDetailFusionGeneController extends SubPaneController {
     private TabPane tabArea;
 
     /** 현재 샘플 정보 객체 */
-    private Sample sample;
+    private SampleView sample;
 
     /** 현재 선택된 변이 리스트 객체의 index */
     private int selectedVariantIndex;
@@ -147,7 +147,7 @@ public class AnalysisDetailFusionGeneController extends SubPaneController {
 
         apiService = APIService.getInstance();
 
-        sample = (Sample)paramMap.get("sample");
+        sample = (SampleView)paramMap.get("sampleView");
 
         nameTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getFusionGene().getName()));
         tierTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.tierConvert(cellData.getValue().getFusionGene().getSwTier())));

@@ -11,10 +11,7 @@ import javafx.scene.layout.VBox;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
-import ngeneanalysys.model.Panel;
-import ngeneanalysys.model.Sample;
-import ngeneanalysys.model.SnpInDelExtraInfo;
-import ngeneanalysys.model.VariantAndInterpretationEvidence;
+import ngeneanalysys.model.*;
 import ngeneanalysys.service.ALAMUTService;
 import ngeneanalysys.service.IGVService;
 import ngeneanalysys.util.DialogUtil;
@@ -41,7 +38,7 @@ public class DetailSubInfoController extends SubPaneController {
 
     private Panel panel;
 
-    private Sample sample;
+    private SampleView sample;
 
     private VariantAndInterpretationEvidence selectedAnalysisResultVariant;
 
@@ -64,7 +61,7 @@ public class DetailSubInfoController extends SubPaneController {
     public void show(Parent root) throws IOException {
 
         panel = (Panel)paramMap.get("panel");
-        sample = (Sample) paramMap.get("sample");
+        sample = (SampleView) paramMap.get("sampleView");
 
         selectedAnalysisResultVariant = (VariantAndInterpretationEvidence)paramMap.get("variant");
 

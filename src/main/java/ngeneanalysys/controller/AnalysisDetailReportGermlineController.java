@@ -106,7 +106,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
     @FXML
     private ComboBox<ComboBoxItem> virtualPanelComboBox;
 
-    private Sample sample = null;
+    private SampleView sample = null;
 
     private Panel panel = null;
 
@@ -262,7 +262,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         customFieldGridPane.getChildren().clear();
         customFieldGridPane.setPrefHeight(0);
 
-        sample = (Sample)paramMap.get("sample");
+        sample = (SampleView)paramMap.get("sampleView");
 
         predictionColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSwPathogenicity()));
         pathogenicityColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getExpertPathogenicity()));
@@ -276,9 +276,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 .toString() + "(" + cellData.getValue().getSnpInDel().getReadInfo().getAltReadNum() + "/" + cellData.getValue().getSnpInDel().getReadInfo().getReadDepth() + ")"));
 
         List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
-        Optional<Panel> panelOptional = panels.stream().filter(panelItem -> panelItem.getId().equals(sample.getPanelId())).findFirst();
-        panelOptional.ifPresent(panel1 -> panel = panel1);
-
+        panel = sample.getPanel();
         HttpClientResponse response = null;
         try {
             if(panel.getReportTemplateId() != null) {

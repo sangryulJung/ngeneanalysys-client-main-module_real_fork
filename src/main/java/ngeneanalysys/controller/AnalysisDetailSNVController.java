@@ -127,7 +127,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     @FXML
     private Label showIGV;
 
-    private Sample sample = null;
+    private SampleView sample = null;
     private Panel panel = null;
     private Map<String, String> sortMap = new HashMap<>();
 
@@ -202,7 +202,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         //filterAddBtn.setDisable(true);
         //viewAppliedFiltersLabel.setDisable(true);
 
-        sample = (Sample)paramMap.get("sample");
+        sample = (SampleView)paramMap.get("sampleView");
         panel = (Panel)paramMap.get("panel");
         if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
             this.filterList = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("somaticFilter");

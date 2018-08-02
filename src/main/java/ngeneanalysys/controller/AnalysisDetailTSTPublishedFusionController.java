@@ -10,6 +10,7 @@ import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.PublishedFusion;
 import ngeneanalysys.model.Sample;
+import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.paged.PagedPublishedFusion;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
@@ -60,7 +61,7 @@ public class AnalysisDetailTSTPublishedFusionController extends AnalysisDetailCo
 
     private APIService apiService;
 
-    private Sample sample;
+    private SampleView sample;
 
     private AnalysisDetailVariantsController variantsController;
 
@@ -77,7 +78,7 @@ public class AnalysisDetailTSTPublishedFusionController extends AnalysisDetailCo
 
         this.apiService = APIService.getInstance();
 
-        this.sample = (Sample)paramMap.get("sample");
+        this.sample = (SampleView)paramMap.get("sampleView");
 
         fusionGeneTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFusionGene()));
         mitelmanIdsTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getMitelmanIds()));

@@ -65,7 +65,7 @@ public class AnalysisDetailLayoutController extends SubPaneController {
     /** 현재 샘플의 고유 아아디 */
     private Integer sampleId;
 
-    private Sample sample;
+    private SampleView sampleView;
 
     private Panel panel;
 
@@ -109,23 +109,20 @@ public class AnalysisDetailLayoutController extends SubPaneController {
         try {
             HttpClientResponse response = apiService.get("samples/" + sampleId, null, null, true);
 
-            sample = response.getObjectBeforeConvertResponseToJSON(Sample.class);
+            sampleView = response.getObjectBeforeConvertResponseToJSON(SampleView.class);
 
             response = apiService.get("analysisResults/sampleSummary/" + sampleId , null, null, true);
 
-            sample.setAnalysisResultSummary(response.getObjectBeforeConvertResponseToJSON(AnalysisResultSummary.class));
+            sampleView.setAnalysisResultSummary(response.getObjectBeforeConvertResponseToJSON(AnalysisResultSummary.class));
 
-            getParamMap().put("sample", sample);
-
-            response = apiService.get("runs/" + sample.getRunId() , null, null, true);
-            RunWithSamples run = response.getObjectBeforeConvertResponseToJSON(RunWithSamples.class);
+            getParamMap().put("sampleView", sampleView);
 
             setPaneAndDisease();
 
-            runNameLabel.setText(run.getRun().getName());
-            runNameTooltip.setText(run.getRun().getName());
-            sequencerLabel.setText(WordUtils.capitalize(run.getRun().getSequencingPlatform()));
-            sequencerTooltip.setText(WordUtils.capitalize(run.getRun().getSequencingPlatform()));
+            runNameLabel.setText(sampleView.getRun().getName());
+            runNameTooltip.setText(sampleView.getRun().getName());
+            sequencerLabel.setText(WordUtils.capitalize(sampleView.getRun().getSequencingPlatform()));
+            sequencerTooltip.setText(WordUtils.capitalize(sampleView.getRun().getSequencingPlatform()));
 
         } catch (WebAPIException e) {
             e.printStackTrace();
@@ -176,27 +173,17 @@ public class AnalysisDetailLayoutController extends SubPaneController {
 
     }
 
-    public void setPaneAndDisease() {
-        List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
-        if(panels != null && !panels.isEmpty()) {
-            Optional<Panel> optionalPanel = panels.stream().filter(panel -> panel.getId().equals(sample.getPanelId())).findFirst();
-            optionalPanel.ifPresent(panel1 -> {
-                this.panel = panel1;
-                getParamMap().put("panel", panel);
-                panelLabel.setText(panel1.getName());
-                panelNameTooltip.setText(panel1.getName());
-            });
+    private void setPaneAndDisease() {
+        if(sampleView.getPanel() != null) {
+            this.panel = sampleView.getPanel();
+            getParamMap().put("panel", panel);
+            panelLabel.setText(panel.getName());
+            panelNameTooltip.setText(panel.getName());
+            sampleNameLabel.setText(sampleView.getName());
+            sampleNameTooltip.setText(sampleView.getName());
+            diseaseLabel.setText(sampleView.getDiseaseName());
+            diseaseTooltip.setText(sampleView.getDiseaseName());
         }
-
-        sampleNameLabel.setText(sample.getName());
-        sampleNameTooltip.setText(sample.getName());
-        List<Diseases> diseases = (List<Diseases>) mainController.getBasicInformationMap().get("diseases");
-        Optional<Diseases> diseasesOptional = diseases.stream().filter(disease -> Objects.equals(disease.getId(), sample.getDiseaseId())).findFirst();
-        diseasesOptional.ifPresent(diseases1 -> {
-            String diseaseName = diseases1.getName();
-            diseaseLabel.setText(diseaseName);
-            diseaseTooltip.setText(diseaseName);
-        });
     }
 
     private void addTab(AnalysisDetailTabItem item, int idx) {

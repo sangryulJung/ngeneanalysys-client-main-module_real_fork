@@ -117,7 +117,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
     private final double overviewFoldedHeight = 32;
     private final double overviewExpandedHeight = 304;
 
-    Sample sample = null;
+    SampleView sample = null;
     Panel panel = null;
 
     @FXML private Button tierOne;
@@ -157,7 +157,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
 
-        sample = (Sample)paramMap.get("sample");
+        sample = (SampleView)paramMap.get("sampleView");
         panel = (Panel)paramMap.get("panel");
         /*if(sample.getAnalysisResultSummary() == null) {
             dummyDataCreated();
@@ -797,7 +797,7 @@ public class AnalysisDetailSNPsINDELsController extends AnalysisDetailCommonCont
 
     @SuppressWarnings("unchecked")
     public void showLink() {
-        Sample sample = (Sample) paramMap.get("sample");
+        SampleView sample = (SampleView) paramMap.get("sampleView");
         String analysisType = (panel != null) ? panel.getAnalysisType() : "";
         FXMLLoader loader = null;
         ScrollPane somaticLinkBox = null;

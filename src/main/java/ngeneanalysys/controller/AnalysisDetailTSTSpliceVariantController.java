@@ -9,7 +9,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
-import ngeneanalysys.model.Sample;
+import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.SpliceVariant;
 import ngeneanalysys.model.paged.PagedSpliceVariant;
 import ngeneanalysys.service.APIService;
@@ -73,7 +73,7 @@ public class AnalysisDetailTSTSpliceVariantController extends AnalysisDetailComm
 
     private APIService apiService;
 
-    private Sample sample;
+    private SampleView sample;
 
     private AnalysisDetailVariantsController variantsController;
 
@@ -104,7 +104,7 @@ public class AnalysisDetailTSTSpliceVariantController extends AnalysisDetailComm
         antTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAnt()));
 
         apiService = APIService.getInstance();
-        this.sample = (Sample)paramMap.get("sample");
+        this.sample = (SampleView)paramMap.get("sampleVIew");
 
         try {
             HttpClientResponse response = apiService

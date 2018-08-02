@@ -818,7 +818,7 @@ public class PastResultsController extends SubPaneController {
 					status.getStyleClass().addAll("label","run_queued_icon");
 				}
 				statusHBox.getChildren().add(status);
-				Label panel = new Label(sampleView.getPanelName());
+				Label panel = new Label(sampleView.getPanel().getName());
 				labelSize(panel, 170., styleClass);
 				HBox variants = new HBox();
 				variants.getStyleClass().add("variant_hbox");
@@ -839,7 +839,7 @@ public class PastResultsController extends SubPaneController {
 				variants.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample));
 				qc.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample));
 
-                if(sampleView.getPanelName().contains("TruSight Tumor")) {
+                if(sampleView.getPanel().getName().contains("TruSight Tumor")) {
                     restart.setVisible(false);
                 } else {
                 	if(sampleView.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_FAIL)) {

@@ -16,6 +16,7 @@ import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.Panel;
 import ngeneanalysys.model.Sample;
+import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.VariantCountByGene;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
@@ -200,7 +201,7 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
 
     @FXML
     public void searchGene() {
-        Sample sample = (Sample)getParamMap().get("sample");
+        SampleView sample = (SampleView)getParamMap().get("sampleView");
         ObservableList<VariantCountByGene> VariantCountByGene = getVariantcountByGeneData(sample.getId(),
                     geneListTextField.getText());
         geneTable.setItems(VariantCountByGene);
@@ -217,7 +218,7 @@ public class AnalysisDetailTargetController extends AnalysisDetailCommonControll
 
 
     private void showVariantCountByGeneData() {
-        Sample sample = (Sample)getParamMap().get("sample");
+        SampleView sample = (SampleView)getParamMap().get("sampleView");
         ObservableList<VariantCountByGene> VariantCountByGene = getVariantcountByGeneData(sample.getId(), null);
         geneTable.setItems(VariantCountByGene);
     }

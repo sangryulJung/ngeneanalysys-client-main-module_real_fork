@@ -11,6 +11,7 @@ import javafx.scene.control.TableView;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.GeneExpression;
+import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.paged.PagedGeneExpression;
 import ngeneanalysys.model.Sample;
 import ngeneanalysys.service.APIService;
@@ -33,7 +34,7 @@ public class AnalysisDetailFusionExpressionController extends SubPaneController 
     /** API 서버 통신 서비스 */
     private APIService apiService;
 
-    private Sample sample;
+    private SampleView sample;
 
     private AnalysisDetailFusionMainController analysisDetailFusionMainController;
 
@@ -81,7 +82,7 @@ public class AnalysisDetailFusionExpressionController extends SubPaneController 
 
         apiService = APIService.getInstance();
 
-        sample = (Sample)paramMap.get("sample");
+        sample = (SampleView)paramMap.get("sampleView");
 
         geneIdTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getGeneId()));
         geneNameTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getGeneName()));

@@ -129,7 +129,7 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
     }
 
     public void setDisplayItem() {
-        Sample sample = (Sample) getParamMap().get("sample");
+        SampleView sample = (SampleView) getParamMap().get("sampleView");
         try {
             HttpClientResponse response = apiService.get("/analysisResults/sampleSnpInDels/" + sample.getId(), null,
                     null, false);

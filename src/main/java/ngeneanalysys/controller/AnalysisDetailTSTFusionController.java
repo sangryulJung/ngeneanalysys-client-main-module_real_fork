@@ -8,7 +8,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
-import ngeneanalysys.model.Sample;
+import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.TSTFusion;
 import ngeneanalysys.model.paged.PagedTSTFusion;
 import ngeneanalysys.service.APIService;
@@ -90,7 +90,7 @@ public class AnalysisDetailTSTFusionController extends AnalysisDetailCommonContr
 
     private APIService apiService;
 
-    private Sample sample;
+    private SampleView sample;
 
     private AnalysisDetailVariantsController variantsController;
 
@@ -128,7 +128,7 @@ public class AnalysisDetailTSTFusionController extends AnalysisDetailCommonContr
 
 
         apiService = APIService.getInstance();
-        this.sample = (Sample)paramMap.get("sample");
+        this.sample = (SampleView)paramMap.get("sampleView");
         try {
             HttpClientResponse response = apiService
                     .get("TST170RnaResults/samples/" + sample.getId() + "/fusions", null, null, null);

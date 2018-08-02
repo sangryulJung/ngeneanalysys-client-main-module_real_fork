@@ -226,7 +226,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
 
     private AnalysisDetailSNPsINDELsController analysisDetailSNPsINDELsController;
 
-    private Sample sample;
+    private SampleView sample;
 
     private Panel panel;
 
@@ -248,7 +248,7 @@ public class AnalysisDetailSNPsINDELsOverviewController extends SubPaneControlle
 
     @Override
     public void show(Parent root) throws IOException {
-        sample = (Sample) paramMap.get("sample");
+        sample = (SampleView) paramMap.get("sampleView");
         panel = (Panel) paramMap.get("panel");
         variant = (VariantAndInterpretationEvidence) paramMap.get("variant");
 

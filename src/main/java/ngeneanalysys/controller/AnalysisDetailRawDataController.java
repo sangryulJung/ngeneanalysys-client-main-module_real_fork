@@ -23,7 +23,7 @@ import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.AnalysisFile;
 import ngeneanalysys.model.AnalysisFileList;
-import ngeneanalysys.model.Sample;
+import ngeneanalysys.model.SampleView;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.task.AnalysisResultFileDownloadTask;
 import ngeneanalysys.util.ConvertUtil;
@@ -58,7 +58,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
     private Stage currentStage;
 
     /** 현재 샘플 정보 객체 */
-    private Sample sample;
+    private SampleView sample;
 
     /** 전체 파일 목록 객체 */
     private List<AnalysisFile> totalList;
@@ -99,7 +99,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
 
-        sample = (Sample)paramMap.get("sample");
+        sample = (SampleView)paramMap.get("sampleView");
         // 파일 목록 요청
         Map<String,Object> paramMap = new HashMap<>();
         paramMap.put("sampleId", sample.getId());

@@ -168,7 +168,7 @@ public class AnalysisDetailTSTRNAOverviewController extends AnalysisDetailCommon
     }
 
     public void setDisplayItem() {
-        Sample sample = (Sample) getParamMap().get("sample");
+        SampleView sample = (SampleView) getParamMap().get("sampleView");
 
         //기본 초기화
         Platform.runLater(() -> settingOverallQC(sample.getId()));

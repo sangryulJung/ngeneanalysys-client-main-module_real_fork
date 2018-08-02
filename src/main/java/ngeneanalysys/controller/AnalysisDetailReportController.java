@@ -123,7 +123,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     @FXML
     private FlowPane targetGenesFlowPane;
 
-    private Sample sample = null;
+    private SampleView sample = null;
 
     private Panel panel = null;
 
@@ -158,7 +158,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         customFieldGridPane.getChildren().clear();
         customFieldGridPane.setPrefHeight(0);
 
-        sample = (Sample)paramMap.get("sample");
+        sample = (SampleView)paramMap.get("sampleView");
 
         tierColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSwTier()));
         userTierColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getExpertTier()));
@@ -170,10 +170,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         aaChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChange()));
         alleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()
                 .toString() + "(" + cellData.getValue().getSnpInDel().getReadInfo().getAltReadNum() + "/" + cellData.getValue().getSnpInDel().getReadInfo().getReadDepth() + ")"));
-
-        List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
-        Optional<Panel> panelOptional = panels.stream().filter(panelItem -> panelItem.getId().equals(sample.getPanelId())).findFirst();
-        panelOptional.ifPresent(panel1 -> panel = panel1);
+        panel = sample.getPanel();
 
         setVirtualPanel();
 
@@ -741,12 +738,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     public Map<String, Object> contents() throws WebAPIException {
         Map<String,Object> contentsMap = new HashMap<>();
         contentsMap.put("panelName", panel.getName());
-        List<Diseases> diseases = (List<Diseases>) mainController.getBasicInformationMap().get("diseases");
-        Optional<Diseases> diseasesOptional = diseases.stream().filter(disease -> disease.getId() == sample.getDiseaseId()).findFirst();
-        if(diseasesOptional.isPresent()) {
-            String diseaseName = diseasesOptional.get().getName();
-            contentsMap.put("diseaseName", diseaseName);
-        }
+        contentsMap.put("diseaseName", sample.getDiseaseName());
         contentsMap.put("sampleSource", sample.getSampleSource());
         contentsMap.put("panelCode", panel.getCode());
         contentsMap.put("sampleName", sample.getName());
@@ -891,11 +883,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
             }
 
-            response = apiService.get("/runs/" + sample.getRunId(), null,
-                            null, false);
-
-            RunWithSamples runWithSamples = response.getObjectBeforeConvertResponseToJSON(RunWithSamples.class);
-            String runSequencer = runWithSamples.getRun().getSequencingPlatform();
+            String runSequencer = sample.getRun().getSequencingPlatform();
 
             if (runSequencer.equalsIgnoreCase("MISEQ")) {
                 contentsMap.put("sequencer", SequencerCode.MISEQ.getDescription());
@@ -926,11 +914,10 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 contentsMap.put("roiCoverage", findQCResult(qcList, "roi_coverage"));
             }
 
-            if(sample.getPipelineVersionId() != null) {
-                response = apiService.get("/pipelineVersions/" + sample.getPipelineVersionId(), null, null, false);
-                PipelineVersionView pipelineVersionView = response.getObjectBeforeConvertResponseToJSON(PipelineVersionView.class);
-
-                contentsMap.put("pipelineVersion", pipelineVersionView.getVersion());
+            if(sample.getPipelineVersion() != null) {
+                //response = apiService.get("/pipelineVersions/" + sample.getPipelineVersionId(), null, null, false);
+                //PipelineVersion pipelineVersion = response.getObjectBeforeConvertResponseToJSON(PipelineVersion.class);
+                contentsMap.put("pipelineVersion", sample.getPipelineVersion());
             }
 
             List<String> conclusionLineList = null;

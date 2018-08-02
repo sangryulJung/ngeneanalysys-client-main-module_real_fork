@@ -9,8 +9,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
+import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.TSTCNV;
-import ngeneanalysys.model.Sample;
 import ngeneanalysys.model.paged.PagedTSTCNV;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
@@ -56,7 +56,7 @@ public class AnalysisDetailTSTCNVController extends AnalysisDetailCommonControll
 
     private APIService apiService;
 
-    private Sample sample;
+    private SampleView sample;
 
     private AnalysisDetailVariantsController variantsController;
 
@@ -81,7 +81,7 @@ public class AnalysisDetailTSTCNVController extends AnalysisDetailCommonControll
         foldChangeTableColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getFoldChange()));
 
         apiService = APIService.getInstance();
-        this.sample = (Sample)paramMap.get("sample");
+        this.sample = (SampleView)paramMap.get("sampleView");
 
         showCnv();
 

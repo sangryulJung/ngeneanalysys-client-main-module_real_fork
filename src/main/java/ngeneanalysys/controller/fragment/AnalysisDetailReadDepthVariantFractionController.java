@@ -10,6 +10,7 @@ import javafx.scene.layout.VBox;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.model.AnalysisResultSummary;
 import ngeneanalysys.model.Sample;
+import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.VariantAndInterpretationEvidence;
 
 import java.io.IOException;
@@ -53,13 +54,13 @@ public class AnalysisDetailReadDepthVariantFractionController extends SubPaneCon
     @FXML
     private VBox fractionLegendVBox;					/** FRACTION > Legend Box 실제값 표시 라벨 부모 박스 */
 
-    private Sample sample;
+    private SampleView sample;
 
     private VariantAndInterpretationEvidence variant;
 
     @Override
     public void show(Parent root) throws IOException {
-        sample = (Sample)paramMap.get("sample");
+        sample = (SampleView)paramMap.get("sampleView");
         variant = (VariantAndInterpretationEvidence)paramMap.get("variant");
         showReadDepth();
         showFraction();

@@ -120,7 +120,7 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
     @FXML
     private FlowPane targetGenesFlowPane;
 
-    private Sample sample = null;
+    private SampleView sample = null;
 
     private Panel panel = null;
 
@@ -155,7 +155,7 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
         customFieldGridPane.getChildren().clear();
         customFieldGridPane.setPrefHeight(0);
 
-        sample = (Sample)paramMap.get("sample");
+        sample = (SampleView)paramMap.get("sampleView");
 
         tierColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSwTier()));
         userTierColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getExpertTier()));
@@ -168,10 +168,7 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
         alleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()
                 .toString() + "(" + cellData.getValue().getSnpInDel().getReadInfo().getAltReadNum() + "/" + cellData.getValue().getSnpInDel().getReadInfo().getReadDepth() + ")"));
 
-        List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
-        Optional<Panel> panelOptional = panels.stream().filter(panelItem -> panelItem.getId().equals(sample.getPanelId())).findFirst();
-        panelOptional.ifPresent(panel1 -> panel = panel1);
-
+        panel = sample.getPanel();
         setVirtualPanel();
 
         HttpClientResponse response;
@@ -740,12 +737,7 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
     public Map<String, Object> contents() throws WebAPIException {
         Map<String,Object> contentsMap = new HashMap<>();
         contentsMap.put("panelName", panel.getName());
-        List<Diseases> diseases = (List<Diseases>) mainController.getBasicInformationMap().get("diseases");
-        Optional<Diseases> diseasesOptional = diseases.stream().filter(disease -> disease.getId() == sample.getDiseaseId()).findFirst();
-        if(diseasesOptional.isPresent()) {
-            String diseaseName = diseasesOptional.get().getName();
-            contentsMap.put("diseaseName", diseaseName);
-        }
+        contentsMap.put("diseaseName", sample.getDiseaseName());
         contentsMap.put("sampleSource", sample.getSampleSource());
         contentsMap.put("panelCode", panel.getCode());
         contentsMap.put("sampleName", sample.getName());
@@ -890,11 +882,7 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
 
             }
 
-            response = apiService.get("/runs/" + sample.getRunId(), null,
-                    null, false);
-
-            RunWithSamples runWithSamples = response.getObjectBeforeConvertResponseToJSON(RunWithSamples.class);
-            String runSequencer = runWithSamples.getRun().getSequencingPlatform();
+            String runSequencer = sample.getRun().getSequencingPlatform();
 
             if(runSequencer.equalsIgnoreCase("MISEQ")) {
                 contentsMap.put("sequencer",SequencerCode.MISEQ.getDescription());
