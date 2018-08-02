@@ -20,8 +20,7 @@ public enum ACMGFilterCode {
 	TIER_TWO("Tier II", "Tier II", "2", "T2"),
 	TIER_THREE("Tier III", "Tier III", "3", "T3"),
 	TIER_FOUR("Tier IV", "Tier IV", "4", "T4"),
-	TIER_FP("False Positive", "False Positive", "FP", "FP"),
-	TIER_NEGATIVE("Tier N", "Tier N", "N", "TN");
+	TIER_FP("False Positive", "False Positive", "FP", "FP");
 
 	private String description;
 	private String detail;

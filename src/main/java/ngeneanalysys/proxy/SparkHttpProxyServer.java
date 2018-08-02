@@ -85,12 +85,7 @@ public class SparkHttpProxyServer {
                     URL obj = new URL(url);
                     conn = (HttpsURLConnection) obj.openConnection();
                     HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-                    conn.setHostnameVerifier(new HostnameVerifier() {
-                        @Override
-                        public boolean verify(String s, SSLSession sslSession) {
-                            return true;
-                        }
-                    });
+                    conn.setHostnameVerifier((s, sslSession) -> true);
                     conn.setDefaultUseCaches(false);
                     conn.setUseCaches(false);
                     conn.setRequestMethod("GET");

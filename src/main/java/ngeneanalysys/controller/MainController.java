@@ -349,7 +349,8 @@ public class MainController extends BaseStageController {
 
             });
 
-        settingPanelAndDiseases();
+        //settingPanelAndDiseases();
+        createFilter();
         //primaryStage.setResizable(false);
     }
 
@@ -394,35 +395,6 @@ public class MainController extends BaseStageController {
 
     private void clearComboBox() {
         Platform.runLater(() -> sampleList.getSelectionModel().clearSelection());
-    }
-
-    public void settingPanelAndDiseases() {
-        // 기본 정보 로드
-        HttpClientResponse response = null;
-
-        LoginSession loginSession = LoginSessionUtil.getCurrentLoginSession();
-        String path = System.getProperty("user.home");
-        basicInformationMap.put("path", path);
-        try {
-            Map<String,Object> params = new HashMap<>();
-            if(loginSession.getRole().equalsIgnoreCase("ADMIN")) {
-                params.put("skipOtherGroup", "false");
-            } else {
-                params.put("skipOtherGroup", "true");
-            }
-            response = apiService.get("/panels", params, null, false);
-            final PagedPanel panels = response.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
-            basicInformationMap.put("panels", panels.getResult());
-
-            response = apiService.get("/diseases", null, null, false);
-            List<Diseases> diseases = (List<Diseases>)response.getMultiObjectBeforeConvertResponseToJSON(Diseases.class, false);
-            basicInformationMap.put("diseases", diseases);
-            createFilter();
-
-        } catch (WebAPIException e) {
-            DialogUtil.error(e.getHeaderText(), e.getMessage(), getMainApp().getPrimaryStage(),
-                    false);
-        }
     }
 
     private void createFilter() {

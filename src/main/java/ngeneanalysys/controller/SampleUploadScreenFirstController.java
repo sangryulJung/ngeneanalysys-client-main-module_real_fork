@@ -18,14 +18,12 @@ import ngeneanalysys.controller.extend.BaseStageController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedAnalysisFile;
+import ngeneanalysys.model.paged.PagedPanel;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.task.SampleSheetDownloadTask;
-import ngeneanalysys.util.DialogUtil;
-import ngeneanalysys.util.FileUtil;
-import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.StringUtils;
+import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -258,14 +256,43 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         fileMap = sampleUploadController.getFileMap();
         uploadFileList = sampleUploadController.getUploadFileList();
         uploadFileData= sampleUploadController.getUploadFileData();
-        panels = (List<Panel>)mainController.getBasicInformationMap().get("panels");
-        diseases = (List<Diseases>)mainController.getBasicInformationMap().get("diseases");
+
+        settingPanelAndDiseases();
 
         if(sampleUploadController.getSamples() != null) {
             sampleArrayList = sampleUploadController.getSamples();
             tableEdit();
         }
     }
+
+    public void settingPanelAndDiseases() {
+        // 기본 정보 로드
+        HttpClientResponse response = null;
+
+        LoginSession loginSession = LoginSessionUtil.getCurrentLoginSession();
+
+        try {
+            Map<String,Object> params = new HashMap<>();
+            if(loginSession.getRole().equalsIgnoreCase("ADMIN")) {
+                params.put("skipOtherGroup", "false");
+            } else {
+                params.put("skipOtherGroup", "true");
+            }
+            response = apiService.get("/panels", params, null, false);
+            final PagedPanel panels = response.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
+            this.panels = panels.getResult();
+
+            response = apiService.get("/diseases", null, null, false);
+            List<Diseases> diseases = (List<Diseases>)response.getMultiObjectBeforeConvertResponseToJSON(Diseases.class, false);
+            this.diseases = diseases;
+
+        } catch (WebAPIException e) {
+            DialogUtil.error(e.getHeaderText(), e.getMessage(), getMainApp().getPrimaryStage(),
+                    false);
+        }
+    }
+
+
 
     public void runInfoEdit() {
         Run run = sampleUploadController.getRun();

@@ -476,7 +476,8 @@ public class SystemManagerPanelController extends SubPaneController {
                 groupCheckComboBox.getItems().addAll(items);
             }
 
-            List<Diseases> diseasesList = (List<Diseases>)mainController.getBasicInformationMap().get("diseases");
+            response = apiService.get("/diseases", null, null, false);
+            List<Diseases> diseasesList = (List<Diseases>)response.getMultiObjectBeforeConvertResponseToJSON(Diseases.class, false);
 
             if(diseasesList != null) {
                 List<ComboBoxItem> items = new ArrayList<>();
@@ -730,8 +731,6 @@ public class SystemManagerPanelController extends SubPaneController {
 
                 task.setOnSucceeded(ev -> {
                     try {
-                        mainController.settingPanelAndDiseases();
-
                         setPanelList(1);
                         setDisabledItem(true);
                         panelSaveButton.setDisable(true);

@@ -71,19 +71,11 @@ public class AnalysisDetailLayoutController extends SubPaneController {
 
     private AnalysisDetailOverviewController analysisDetailOverviewController;
 
-    /** target Tab Controller */
-    private AnalysisDetailTargetController targetController;
-
     private AnalysisDetailReportController analysisDetailReportController;
 
     private AnalysisDetailOverviewGermlineController analysisDetailOverviewGermlineController;
 
-    /** target Tab Controller */
-    private AnalysisDetailTargetGermlineController analysisDetailTargetGermlineController;
-
     private AnalysisDetailReportGermlineController analysisDetailReportGermlineController;
-
-    private AnalysisDetailSNPsINDELsController analysisDetailSNPsINDELsController;
 
     private AnalysisDetailVariantsController analysisDetailVariantsController;
 
@@ -219,12 +211,6 @@ public class AnalysisDetailLayoutController extends SubPaneController {
                             analysisDetailOverviewController.setParamMap(getParamMap());
                             analysisDetailOverviewController.show((Parent) node);
                             break;
-                        case FXMLConstants.ANALYSIS_DETAIL_TARGET:
-                            targetController = loader.getController();
-                            targetController.setAnalysisDetailLayoutController(this);
-                            targetController.setParamMap(getParamMap());
-                            targetController.show((Parent) node);
-                            break;
                         case FXMLConstants.ANALYSIS_DETAIL_REPORT :
                             analysisDetailReportController = loader.getController();
                             analysisDetailReportController.setAnalysisDetailLayoutController(this);
@@ -237,24 +223,12 @@ public class AnalysisDetailLayoutController extends SubPaneController {
                             analysisDetailOverviewGermlineController.setParamMap(getParamMap());
                             analysisDetailOverviewGermlineController.show((Parent) node);
                             break;
-                        case FXMLConstants.ANALYSIS_DETAIL_TARGET_GERMLINE:
-                            analysisDetailTargetGermlineController = loader.getController();
-                            analysisDetailTargetGermlineController.setAnalysisDetailLayoutController(this);
-                            analysisDetailTargetGermlineController.setParamMap(getParamMap());
-                            analysisDetailTargetGermlineController.show((Parent) node);
-                            break;
                         case FXMLConstants.ANALYSIS_DETAIL_REPORT_GERMLINE :
                             analysisDetailReportGermlineController = loader.getController();
                             analysisDetailReportGermlineController.setAnalysisDetailLayoutController(this);
                             analysisDetailReportGermlineController.setParamMap(getParamMap());
                             analysisDetailReportGermlineController.show((Parent) node);
                             break;
-                        case FXMLConstants.ANALYSIS_DETAIL_SNPS_INDELS_LAYOUT:
-                            analysisDetailSNPsINDELsController = loader.getController();
-                            analysisDetailSNPsINDELsController.setParamMap(getParamMap());
-                            analysisDetailSNPsINDELsController.setMainController(this.mainController);
-                            analysisDetailSNPsINDELsController.show((Parent) node);
-                        break;
                         case FXMLConstants.ANALYSIS_DETAIL_VARIANTS:
                             analysisDetailVariantsController = loader.getController();
                             analysisDetailVariantsController.setParamMap(getParamMap());

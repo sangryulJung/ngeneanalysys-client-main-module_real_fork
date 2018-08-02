@@ -52,10 +52,6 @@ AnalysisDetailSNPsINDELsMemoController extends SubPaneController {
     @FXML
     private TableColumn<SnpInDelInterpretationLogs,String> commentColumn;
 
-    private AnalysisDetailSNPsINDELsController analysisDetailSNPsINDELsController;
-
-    private AnalysisDetailFusionGeneController analysisDetailFusionGeneController;
-
     private AnalysisDetailSNVController analysisDetailSNVController;
 
     /**
@@ -63,34 +59,6 @@ AnalysisDetailSNPsINDELsMemoController extends SubPaneController {
      */
     public void setAnalysisDetailSNVController(AnalysisDetailSNVController analysisDetailSNVController) {
         this.analysisDetailSNVController = analysisDetailSNVController;
-    }
-
-    /**
-     * @return analysisDetailFusionGeneController
-     */
-    public AnalysisDetailFusionGeneController getAnalysisDetailFusionGeneController() {
-        return analysisDetailFusionGeneController;
-    }
-
-    /**
-     * @param analysisDetailFusionGeneController
-     */
-    public void setAnalysisDetailFusionGeneController(AnalysisDetailFusionGeneController analysisDetailFusionGeneController) {
-        this.analysisDetailFusionGeneController = analysisDetailFusionGeneController;
-    }
-
-    /**
-     * @return the analysisDetailSNPsINDELsController
-     */
-    public AnalysisDetailSNPsINDELsController getAnalysisDetailSNPsINDELsController() {
-        return analysisDetailSNPsINDELsController;
-    }
-    /**
-     * @param analysisDetailSNPsINDELsController the analysisDetailSNPsINDELsController to set
-     */
-    public void setAnalysisDetailSNPsINDELsController(
-            AnalysisDetailSNPsINDELsController analysisDetailSNPsINDELsController) {
-        this.analysisDetailSNPsINDELsController = analysisDetailSNPsINDELsController;
     }
 
     @Override
@@ -105,12 +73,6 @@ AnalysisDetailSNPsINDELsMemoController extends SubPaneController {
         preValueColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getOldValue()));
         nextValueColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNewValue()));
         commentColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getComment()));
-
-        if(analysisDetailSNPsINDELsController != null) {
-            analysisDetailSNPsINDELsController.subTabMemo.setContent(root);
-        } else if(analysisDetailFusionGeneController != null) {
-            analysisDetailFusionGeneController.subTabMemo.setContent(root);
-        }
 
     }
 

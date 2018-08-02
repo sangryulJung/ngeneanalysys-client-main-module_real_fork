@@ -91,8 +91,8 @@ public class IGVService {
 
     /**
      * 파일 다운로드
-     * @param jreInstall
-     * @param igvInstall
+     * @param jreInstall boolean
+     * @param igvInstall boolean
      */
     @SuppressWarnings("static-access")
     public void intall(boolean jreInstall, boolean igvInstall) {
@@ -168,7 +168,7 @@ public class IGVService {
 
     /**
      * IGV 어플리케이션 구동여부 체크
-     * @return
+     * @return boolean
      */
     public boolean isRunningIGVApp() {
         try (Socket socket = new Socket()){
@@ -256,14 +256,14 @@ public class IGVService {
     public void request() throws Exception {
         HttpClientResponse response = null;
         try {
-            logger.debug(String.format("request igv [sample id : %s, bam file : %s, genome : %s, locus : %s, gene : %s]", this.sampleId, this.bamFileName, this.genome, this.locus, this.gene));
+            logger.info(String.format("request igv [sample id : %s, bam file : %s, genome : %s, locus : %s, gene : %s]", this.sampleId, this.bamFileName, this.genome, this.locus, this.gene));
 
             String name = String.format("[%s:%s:%s]", this.sampleId, this.sampleName, this.variantId);
-            String file = String.format("http://127.0.0.1:%s/analysisFiles/%s/%s", CommonConstants.HTTP_PROXY_SERVER_PORT, this.sampleId, this.bamFileName);
-
+            String file = String.format("http://127.0.0.1:%s/analysisFiles/%s/%s", CommonConstants.HTTP_PROXY_SERVER_PORT, this.sampleId, this.bamFileName + "_final.bam");
+            String file1 = String.format("http://127.0.0.1:%s/analysisFiles/%s/%s", CommonConstants.HTTP_PROXY_SERVER_PORT, this.sampleId, this.bamFileName + "_mutect.bam");
             Map<String,Object> params = new HashMap<>();
-            params.put("file", file);
-            params.put("name", name);
+            params.put("file", file + "," + file1);
+            //params.put("name", name);
             params.put("genome", this.genome);
             params.put("merge", "false");
             if(StringUtils.isNotEmpty(this.gene)) {
@@ -296,11 +296,11 @@ public class IGVService {
 
     /**
      * IGV 연동
-     * @param sampleId
-     * @param sampleName
-     * @param gene
-     * @param locus
-     * @param genome
+     * @param sampleId String
+     * @param sampleName String
+     * @param gene String
+     * @param locus String
+     * @param genome String
      * @throws WebAPIException
      */
     public void load(String sampleId, String sampleName, String variantId, String gene, String locus, String genome) throws Exception {
@@ -311,7 +311,8 @@ public class IGVService {
             this.sampleId = sampleId;
             this.sampleName = sampleName;
             this.variantId = variantId;
-            this.bamFileName = sampleName + "_final.bam";
+            //this.bamFileName = sampleName + "_final.bam";
+            this.bamFileName = sampleName;
             this.gene = gene;
             this.locus = locus;
             this.genome = genome;

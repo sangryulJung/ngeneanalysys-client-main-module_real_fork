@@ -60,29 +60,14 @@ public class FXMLConstants {
 	/** 분석 상세 레이아웃 화면 */
 	public static final String ANALYSIS_DETAIL_LAYOUT = "/layout/fxml/AnalysisDetailLayout.fxml";
 	
-	/** 분석 상세 > SNPs-INDELs 레이아웃 화면 */
-	public static final String ANALYSIS_DETAIL_SNPS_INDELS_LAYOUT = "/layout/fxml/AnalysisDetail-SNPs-INDELs.fxml";
-	
-	/** 분석 상세 > SNPs-INDELs > FUSIONGENE TAB 화면 */
+	/** 분석 상세 */
 	public static final String ANALYSIS_DETAIL_SNPS_INDELS_OVERVIEW = "/layout/fxml/AnalysisDetail-SNPs-INDELs-Overview.fxml";
-	
-	/** 분석 상세 > SNPs-INDELs > FUSIONGENE TAB 화면 > BRCA 파이프라인 Link 화면 */
-	public static final String ANALYSIS_DETAIL_SNPS_INDELS_OVERVIEW_LINK_BRCA = "/layout/fxml/AnalysisDetail-SNPs-INDELs-Overview-Link-BRCA.fxml";
-
-	/** 분석 상세 > SNPs-INDELs > FUSIONGENE TAB 화면 > BRCA 파이프라인 Link 화면 */
-	public static final String ANALYSIS_DETAIL_SNPS_INDELS_OVERVIEW_LINK_SOMATIC = "/layout/fxml/AnalysisDetail-SNPs-INDELs-Overview-Link-SOMATIC.fxml";
-	
-	/** 분석 상세 > SNPs-INDELs > DATA SUMMARY TAB 화면 */
-	public static final String ANALYSIS_DETAIL_SNPS_INDELS_DATA_SUMMARY = "/layout/fxml/AnalysisDetail-SNPs-INDELs-DataSummary.fxml";
 	
 	/** 분석 상세 > SNPs-INDELs > Comment TAB 화면 */
 	public static final String ANALYSIS_DETAIL_SNPS_INDELS_MEMO = "/layout/fxml/AnalysisDetail-SNPs-INDELs-Memo.fxml";
 
 	/** 분석 상세 > SNPs-INDELs > WARNINGS TAB 화면 */
 	public static final String ANALYSIS_DETAIL_SNPS_INDELS_LOW_CONFIDENCE = "/layout/fxml/AnalysisDetail-SNPs-INDELs-LowConfidence.fxml";
-
-	/** 분석 상세 > SNPs-INDELs > WARNINGS TAB 화면 */
-	public static final String ANALYSIS_DETAIL_FUSION = "/layout/fxml/AnalysisDetail-Fusion.fxml";
 	
 	/** 분석 상세 > Raw data 화면 */
 	public static final String ANALYSIS_DETAIL_RAW_DATA = "/layout/fxml/AnalysisDetail-RawData.fxml";
@@ -106,9 +91,6 @@ public class FXMLConstants {
 	public static final String ANALYSIS_DETAIL_OVERVIEW_TST_RNA = "/layout/fxml/AnalysisDetail-Overview-TST-RNA.fxml";
 
 	/** 분석 상세 > Variants 화면 */
-	public static final String ANALYSIS_DETAIL_TARGET = "/layout/fxml/AnalysisDetail-Target.fxml";
-
-	/** 분석 상세 > Variants 화면 */
 	public static final String ANALYSIS_DETAIL_CNV = "/layout/fxml/AnalysisDetail-CNV.fxml";
 
 	/** 분석 상세 > Variants 화면 */
@@ -122,9 +104,6 @@ public class FXMLConstants {
 
 	/** 분석 상세 > Variants 화면 */
 	public static final String ANALYSIS_DETAIL_TST_PUBLISHED_FUSION = "/layout/fxml/AnalysisDetail-TSTPublishedFusion.fxml";
-
-	/** 분석 상세 > Variants 화면 Germline */
-	public static final String ANALYSIS_DETAIL_TARGET_GERMLINE = "/layout/fxml/AnalysisDetail-Target-Germline.fxml";
 
 	/** 시스템 매니저 화면 */
 	public static final String SYSTEM_MANAGER_HOME = "/layout/fxml/SystemManagerHome.fxml";
@@ -166,17 +145,7 @@ public class FXMLConstants {
 
 	public static final String BATCH_FALSE_POSITIVE = "/layout/fxml/BatchFalsePositiveDialog.fxml";
 
-	public static final String CHANGE_TIER = "/layout/fxml/ChangeTierDialog.fxml";
-
 	public static final String CHANGE_PATHOGENICITY = "/layout/fxml/ChangePathogenicityDialog.fxml";
-
-	public static final String ANALYSIS_DETAIL_FUSION_MAIN = "/layout/fxml/AnalysisDetail-FusionMain.fxml";
-
-	public static final String ANALYSIS_DETAIL_FUSION_GENE = "/layout/fxml/AnalysisDetail-FusionGene.fxml";
-
-	public static final String ANALYSIS_DETAIL_GENE_EXPRESSION = "/layout/fxml/AnalysisDetail-GeneExpression.fxml";
-
-	public static final String ANALYSIS_DETAIL_EXON_SKIPPING = "/layout/fxml/AnalysisDetail-ExonSkipping.fxml";
 
 	public static final String VIRTUAL_PANEL_EDIT = "/layout/fxml/VirtualPanelEdit.fxml";
 

@@ -981,12 +981,11 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             column.setSortable(false);
         } else {
             column.setComparator((v1, v2) -> 0);
-            sortMap.clear();
             column.sortTypeProperty().addListener((ob, ov, nv) -> {
-
+                sortMap.clear();
                 if(nv.name().equals("ASCENDING")) {
                     sortMap.put(sortName, "ASC");
-                } else {
+                } else if(nv.name().equals("DESCENDING")) {
                     sortMap.put(sortName, "DESC");
                 }
                 showVariantList(currentPageIndex + 1, 0);

@@ -25,9 +25,7 @@ import ngeneanalysys.model.Sample;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.FXMLLoadUtil;
 import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
-import org.apache.fop.area.Page;
 import org.slf4j.Logger;
 
 import java.io.File;
