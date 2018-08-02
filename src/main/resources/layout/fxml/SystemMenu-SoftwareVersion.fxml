@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="370.0" style="-fx-background-color: white;" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemMenuSoftwareVersionController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="370.0" style="-fx-background-color: white;" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemMenuSoftwareVersionController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="20.0" prefWidth="20.0" />
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -67,7 +67,7 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
                <children>
-                  <Label prefWidth="120.0" text="BRCAAccuTest :" />
+                  <Label prefWidth="120.0" text="BRCAaccuTest :" />
                   <Label fx:id="brcaVersionLabel" text="1.0.0.0" />
                </children>
                <padding>
@@ -76,7 +76,7 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
                <children>
-                  <Label prefWidth="120.0" text="HemeAccuTest :" />
+                  <Label prefWidth="120.0" text="HEMEaccuTest :" />
                   <Label fx:id="hemeVersionLabel" text="1.0.0.0" />
                </children>
                <padding>
@@ -85,7 +85,7 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
                <children>
-                  <Label prefWidth="120.0" text="SolidAccuTest :" />
+                  <Label prefWidth="120.0" text="SOLIDaccuTest :" />
                   <Label fx:id="solidVersionLabel" text="1.0.0.0" />
                </children>
                <padding>
@@ -94,7 +94,7 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
                <children>
-                  <Label prefWidth="120.0" text="HeredAccuTest :" />
+                  <Label prefWidth="120.0" text="HEREDaccuTest :" />
                   <Label fx:id="heredVersionLabel" text="1.0.0.0" />
                </children>
                <padding>
