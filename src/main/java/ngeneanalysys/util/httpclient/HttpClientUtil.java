@@ -136,6 +136,7 @@ public class HttpClientUtil {
 			result = getHttpClientResponse(response);
 			return result;
 		} catch (WebAPIException wae) {
+			logger.error("POST:%s", url);
 			throw wae;
 		} finally {
 			if(httpclient != null) {
@@ -263,6 +264,7 @@ public class HttpClientUtil {
 			result = getHttpClientResponse(response);
 			return result;
 		} catch (WebAPIException wae) {
+			logger.error("GET:{}", url);
 			throw wae;
 		} finally {
 			if(httpclient != null) {
@@ -307,6 +309,7 @@ public class HttpClientUtil {
 			result = getHttpClientResponse(response);
 			return result;
 		} catch (WebAPIException wae) {
+			logger.error("GET:{}", url);
 			throw wae;
 		} finally {
 			if(httpclient != null) {
@@ -464,6 +467,7 @@ public class HttpClientUtil {
 			result = getHttpClientResponse(response);
 			return result;
 		} catch (WebAPIException wae) {
+			logger.error("PUT:{}", url);
 			throw wae;
 		} finally {
 			if(httpclient != null) {
@@ -558,6 +562,7 @@ public class HttpClientUtil {
 			result = getHttpClientResponse(response);
 			return result;
 		} catch (WebAPIException wae) {
+			logger.error("PATCH:{}", url);
 			throw wae;
 		} finally {
 			if(httpclient != null) {
@@ -622,6 +627,7 @@ public class HttpClientUtil {
 			result = getHttpClientResponse(response);
 			return result;
 		} catch (WebAPIException wae) {
+			logger.error("DELETE:{}", url);
 			throw wae;
 		} finally {
 			if(httpclient != null) {
