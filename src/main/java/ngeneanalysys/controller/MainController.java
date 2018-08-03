@@ -798,6 +798,7 @@ public class MainController extends BaseStageController {
                 Node root = loader.load();
                 SystemMenuSoftwareVersionController softwareVersionController = loader.getController();
                 softwareVersionController.setMainController(this);
+                softwareVersionController.setConfig(this.config);
                 softwareVersionController.show((Parent) root);
             } /*else if(menuId.equals(SystemMenuCode.PUBLIC_DATABASES.name())) {
                 loader = mainApp.load(FXMLConstants.SYSTEM_MENU_PUBLIC_DATABASES);

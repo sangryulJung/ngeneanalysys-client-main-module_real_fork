@@ -37,6 +37,9 @@ public class SystemMenuSoftwareVersionController extends SubPaneController {
     private Label dockerVersionLabel;
 
     @FXML
+    private Label guiClientVersionLabel;
+
+    @FXML
     private Label brcaVersionLabel;
 
     @FXML
@@ -80,6 +83,9 @@ public class SystemMenuSoftwareVersionController extends SubPaneController {
             NGeneAnalySysVersion nGeneAnalySysVersion = response.getObjectBeforeConvertResponseToJSON(NGeneAnalySysVersion.class);
             systemVersionLabel.setText(nGeneAnalySysVersion.getSystem());
             apiServerVersionLabel.setText(nGeneAnalySysVersion.getApiServer());
+            String buildVersion = config.getProperty("application.version");
+            String buildDate = config.getProperty("application.build.date");
+            guiClientVersionLabel.setText(String.format("%s (Build Date %s)", buildVersion, buildDate));
 
             dockerVersionLabel.setText(nGeneAnalySysVersion.getPipelines().getDockerApp());
             brcaVersionLabel.setText(nGeneAnalySysVersion.getPipelines().getBrcaAccuTest());

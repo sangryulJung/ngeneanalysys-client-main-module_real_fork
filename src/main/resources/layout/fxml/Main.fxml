@@ -24,10 +24,10 @@
       <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
    </rowConstraints>
    <columnConstraints>
-      <ColumnConstraints maxWidth="40.0" minWidth="10.0" prefWidth="40.0" />
+      <ColumnConstraints maxWidth="40.0" minWidth="36.0" prefWidth="40.0" />
       <ColumnConstraints hgrow="ALWAYS" minWidth="-Infinity" prefWidth="600.0" />
       <ColumnConstraints hgrow="ALWAYS" minWidth="-Infinity" prefWidth="600.0" />
-      <ColumnConstraints maxWidth="40.0" minWidth="-Infinity" prefWidth="40.0" />
+      <ColumnConstraints maxWidth="40.0" minWidth="36.0" prefWidth="40.0" />
    </columnConstraints>
    <children>
       <VBox fx:id="mainBackground" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="635.0" prefWidth="2280.0" GridPane.columnSpan="4" GridPane.rowIndex="1" GridPane.rowSpan="3" />
