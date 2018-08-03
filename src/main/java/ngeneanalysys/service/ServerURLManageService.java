@@ -36,7 +36,7 @@ public class ServerURLManageService {
 
     /**
      * 싱글톤 객체 반환
-     * @return
+     * @return ServerURLManageService
      */
     public static ServerURLManageService getInstance() {
         return ServerURLManageServiceHelper.INSTANCE;

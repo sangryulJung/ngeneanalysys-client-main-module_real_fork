@@ -287,9 +287,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         });
 
-        showFalseVariantsCheckBox.addEventFilter(MouseEvent.MOUSE_CLICKED, ev -> {
-            showVariantList(currentPageIndex + 1, 0);
-        });
+        showFalseVariantsCheckBox.addEventFilter(MouseEvent.MOUSE_CLICKED, ev ->
+            showVariantList(currentPageIndex + 1, 0));
 
         snvWrapper.widthProperty().addListener((ob, ov, nv) -> {
             double wrapperWidth = (Double)nv;
@@ -499,7 +498,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     @SuppressWarnings("unchecked")
-    public void setFilterList() {
+    private void setFilterList() {
         String currentFilterName = filterComboBox.getSelectionModel().getSelectedItem().getText();
         filterComboBox.hide();
         if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {

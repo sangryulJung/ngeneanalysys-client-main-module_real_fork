@@ -42,6 +42,8 @@ public class HttpClientUtil {
 
 	private static final String DEFAULT_ENCODING = "UTF-8";
 
+	private HttpClientUtil() {}
+
 	/**
 	 * SSL 연결 커넥션 설정 반환
 	 * @return SSLConnectionSocketFactory
@@ -76,11 +78,11 @@ public class HttpClientUtil {
 
 	/**
 	 * post 설정 반환
-	 * @param url
-	 * @param params
-	 * @param headers
-	 * @param encoding
-	 * @return
+	 * @param url String
+	 * @param params Map
+	 * @param headers Map
+	 * @param encoding String
+	 * @return HttpPost
 	 */
 	private static HttpPost initPost(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, boolean isJsonRequest) {
 		HttpPost post = null;
@@ -113,11 +115,11 @@ public class HttpClientUtil {
 
 	/**
 	 * HTTPS POST
-	 * @param url
-	 * @param params
-	 * @param headers
-	 * @param encoding
-	 * @return
+	 * @param url String
+	 * @param params Map
+	 * @param headers Map
+	 * @param encoding String
+	 * @return HttpClientResponse
 	 * @throws WebAPIException
 	 */
 	public static HttpClientResponse post(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, boolean isJsonRequest) throws WebAPIException {
@@ -158,10 +160,10 @@ public class HttpClientUtil {
 
 	/**
 	 * HTTPS POST
-	 * @param url
-	 * @param params
-	 * @param headers
-	 * @return
+	 * @param url String
+	 * @param params Map
+	 * @param headers Map
+	 * @return HttpClientResponse
 	 * @throws WebAPIException
 	 */
 	public static HttpClientResponse post(String url, Map<String, Object> params, Map<String, Object> headers, boolean isJsonRequest) throws WebAPIException {
@@ -170,11 +172,11 @@ public class HttpClientUtil {
 
 	/**
 	 * get 설정 반환
-	 * @param url
-	 * @param params
-	 * @param headers
-	 * @param encoding
-	 * @return
+	 * @param url String
+	 * @param params Map
+	 * @param headers Map
+	 * @param encoding String
+	 * @return HttpGet
 	 */
 	public static HttpGet initGet(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, boolean isJsonRequest) {
 		HttpGet get = null;
@@ -206,26 +208,26 @@ public class HttpClientUtil {
 
 	/**
 	 * get 설정 반환
-	 * @param url
-	 * @param params
-	 * @param headers
-	 * @param encoding
-	 * @return
+	 * @param url String
+	 * @param params Map
+	 * @param headers Map
+	 * @param encoding String
+	 * @return HttpGet
 	 */
 	public static HttpGet initGet(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, Map<String, List<Object>> searchParam) {
 		HttpGet get = null;
 		try {
-			String requstURL = null;
+			String requestURL = null;
 			// 파라미터 List 객체로 변환
 			List<NameValuePair> paramList = convertParam(params);
-			requstURL = url + "?" + URLEncodedUtils.format(paramList, encoding);
+			requestURL = url + "?" + URLEncodedUtils.format(paramList, encoding);
 
 			if(searchParam != null && !searchParam.isEmpty()) {
 				List<NameValuePair> paramSearchList = convertSearchParam(searchParam);
-				requstURL = requstURL + "&" + URLEncodedUtils.format(paramSearchList, encoding);
+				requestURL = requestURL + "&" + URLEncodedUtils.format(paramSearchList, encoding);
 			}
 
-			get = new HttpGet(requstURL);
+			get = new HttpGet(requestURL);
 			// 지정된 헤더 삽입 정보가 있는 경우 추가
 			if(headers != null && headers.size() > 0) {
 				for (Map.Entry<String, Object> entry : headers.entrySet()) {
@@ -241,11 +243,11 @@ public class HttpClientUtil {
 
 	/**
 	 * HTTPS GET
-	 * @param url
-	 * @param params
-	 * @param headers
-	 * @param encoding
-	 * @return
+	 * @param url String
+	 * @param params Map
+	 * @param headers Map
+	 * @param encoding String
+	 * @return HttpClientResponse
 	 * @throws WebAPIException
 	 */
 	public static HttpClientResponse get(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, boolean isJsonRequest) throws WebAPIException {
@@ -286,11 +288,11 @@ public class HttpClientUtil {
 
 	/**
 	 * HTTPS GET
-	 * @param url
-	 * @param params
-	 * @param headers
-	 * @param encoding
-	 * @return
+	 * @param url String
+	 * @param params Map
+	 * @param headers Map
+	 * @param encoding String
+	 * @return HttpClientResponse
 	 * @throws WebAPIException
 	 */
 	public static HttpClientResponse get(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, Map<String, List<Object>> searchParam) throws WebAPIException {
@@ -380,11 +382,11 @@ public class HttpClientUtil {
 
 	/**
 	 * HTTPS GET
-	 * @param url
-	 * @param params
-	 * @param headers
-	 * @param isJsonRequest
-	 * @return
+	 * @param url String
+	 * @param params Map
+	 * @param headers Map
+	 * @param isJsonRequest boolean
+	 * @return HttpClientResponse
 	 * @throws WebAPIException
 	 */
 	public static HttpClientResponse get(String url, Map<String, Object> params, Map<String, Object> headers, boolean isJsonRequest) throws WebAPIException {
@@ -393,11 +395,11 @@ public class HttpClientUtil {
 
 	/**
 	 * HTTPS GET
-	 * @param url
-	 * @param params
-	 * @param headers
-	 * @param searchParam
-	 * @return
+	 * @param url String
+	 * @param params Map
+	 * @param headers Map
+	 * @param searchParam List
+	 * @return HttpClientResponse
 	 * @throws WebAPIException
 	 */
 	public static HttpClientResponse get(String url, Map<String, Object> params, Map<String, Object> headers, Map<String, List<Object>> searchParam) throws WebAPIException {
@@ -406,11 +408,11 @@ public class HttpClientUtil {
 
 	/**
 	 * PUT 설정 반환
-	 * @param url
-	 * @param params
-	 * @param headers
-	 * @param encoding
-	 * @return
+	 * @param url String
+	 * @param params Map
+	 * @param headers Map
+	 * @param encoding String
+	 * @return HttpPut
 	 */
 	private static HttpPut initPut(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, boolean isJsonRequest) {
 		logger.debug("method : [put]");
@@ -444,11 +446,11 @@ public class HttpClientUtil {
 
 	/**
 	 * HTTPS PUT
-	 * @param url
-	 * @param params
-	 * @param headers
-	 * @param encoding
-	 * @return
+	 * @param url String
+	 * @param params Map
+	 * @param headers Map
+	 * @param encoding String
+	 * @return HttpClientResponse
 	 * @throws WebAPIException
 	 */
 	public static HttpClientResponse put(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, boolean isJsonRequest) throws WebAPIException {
@@ -489,10 +491,10 @@ public class HttpClientUtil {
 
 	/**
 	 * HTTPS PUT
-	 * @param url
-	 * @param params
-	 * @param headers
-	 * @return
+	 * @param url String
+	 * @param params Map
+	 * @param headers Map
+	 * @return HttpClientResponse
 	 * @throws WebAPIException
 	 */
 	public static HttpClientResponse put(String url, Map<String, Object> params, Map<String, Object> headers, boolean isJsonRequest) throws WebAPIException {
@@ -501,11 +503,11 @@ public class HttpClientUtil {
 
 	/**
 	 * PATCH 설정 반환
-	 * @param url
-	 * @param params
-	 * @param headers
-	 * @param encoding
-	 * @return
+	 * @param url String
+	 * @param params Map
+	 * @param headers Map
+	 * @param encoding boolean
+	 * @return HttpClientResponse
 	 */
 	public static HttpPatch initPatch(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, boolean isJsonRequest) {
 		logger.debug("method : [patch]");
@@ -539,11 +541,11 @@ public class HttpClientUtil {
 
 	/**
 	 * HTTPS PATCH
-	 * @param url
-	 * @param params
-	 * @param headers
-	 * @param encoding
-	 * @return
+	 * @param url String
+	 * @param params Map
+	 * @param headers Map
+	 * @param encoding boolean
+	 * @return HttpClientResponse
 	 * @throws WebAPIException
 	 */
 	public static HttpClientResponse patch(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, boolean isJsonRequest) throws WebAPIException {
@@ -584,10 +586,10 @@ public class HttpClientUtil {
 
 	/**
 	 * HTTPS PATCH
-	 * @param url
-	 * @param params
-	 * @param headers
-	 * @return
+	 * @param url String
+	 * @param params Map
+	 * @param headers Map
+	 * @return HttpClientResponse
 	 * @throws WebAPIException
 	 */
 	public static HttpClientResponse patch(String url, Map<String, Object> params, Map<String, Object> headers, boolean isJsonRequest) throws WebAPIException {
@@ -651,7 +653,7 @@ public class HttpClientUtil {
 	 * @param params Map<String, Object>
 	 * @return List<NameValuePair>
 	 */
-	public static List<NameValuePair> convertParam(Map<String, Object> params) {
+	private static List<NameValuePair> convertParam(Map<String, Object> params) {
 		List<NameValuePair> paramList = new ArrayList<>();
 		if (params != null && params.size() > 0) {
 			Iterator<String> keys = params.keySet().iterator();
