@@ -11,9 +11,11 @@ import javafx.stage.StageStyle;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
+import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.VariantAndInterpretationEvidence;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
+import ngeneanalysys.util.StringUtils;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -72,22 +74,21 @@ public class ExcludeReportDialogController extends SubPaneController {
 
     @FXML
     public void ok() {
+        SampleView sampleView = (SampleView) paramMap.get("sampleView");
         String comment = commentTextField.getText();
-        if(!comment.isEmpty()) {
-            try {
-                Map<String, Object> params = new HashMap<>();
-                params.put("comment", comment);
-                params.put("includeInReport", symbol);
-                apiService.put("analysisResults/snpInDels/" + selectedItem.getSnpInDel().getId() + "/updateIncludeInReport", params, null, true);
-            } catch (WebAPIException wae) {
-                wae.printStackTrace();
-            }
-            selectedItem.getSnpInDel().setIncludedInReport(symbol);
-            selectedItem.getSnpInDel().setComment(comment);
-            dialogStage.close();
-        } else {
-            commentTextField.requestFocus();
+        try {
+            Map<String, Object> params = new HashMap<>();
+            params.put("sampleId", sampleView.getId());
+            params.put("snpInDelIds", selectedItem.getSnpInDel().getId().toString());
+            params.put("comment", StringUtils.isEmpty(comment) ? "N/A" : comment);
+            params.put("includeInReport", symbol);
+            apiService.put("analysisResults/snpInDels/updateIncludeInReport", params, null, true);
+        } catch (WebAPIException wae) {
+            wae.printStackTrace();
         }
+        selectedItem.getSnpInDel().setIncludedInReport(symbol);
+        selectedItem.getSnpInDel().setComment(comment);
+        dialogStage.close();
     }
 
     @FXML

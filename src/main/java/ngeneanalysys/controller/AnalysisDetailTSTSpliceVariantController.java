@@ -104,7 +104,7 @@ public class AnalysisDetailTSTSpliceVariantController extends AnalysisDetailComm
         antTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAnt()));
 
         apiService = APIService.getInstance();
-        this.sample = (SampleView)paramMap.get("sampleVIew");
+        this.sample = (SampleView)paramMap.get("sampleView");
 
         try {
             HttpClientResponse response = apiService

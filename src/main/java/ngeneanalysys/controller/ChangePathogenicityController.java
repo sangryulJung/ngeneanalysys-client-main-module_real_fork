@@ -12,6 +12,7 @@ import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.controller.fragment.AnalysisDetailClinicalSignificantController;
 import ngeneanalysys.exceptions.WebAPIException;
+import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.VariantAndInterpretationEvidence;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.DialogUtil;
@@ -89,25 +90,25 @@ public class ChangePathogenicityController extends SubPaneController {
 
     @FXML
     public void ok() {
+        SampleView sampleView = (SampleView) paramMap.get("sampleView");
         String comment = commentTextField.getText();
         Map<String, Object> params = new HashMap<>();
 
-        if(!StringUtils.isEmpty(comment)) {
-            params.put("comment", comment);
-            try {
-                params.put("pathogenicity", pathogenicity);
+        params.put("comment", StringUtils.isEmpty(comment) ? "N/A" : comment);
 
-                apiService.put("analysisResults/snpInDels/" + selectedItem.getSnpInDel().getId() + "/updatePathogenicity", params, null, true);
-            } catch (WebAPIException wae) {
-                wae.printStackTrace();
-                DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
-            }
-            clinicalSignificantController.setVariantPathogenicity(pathogenicity);
-            clinicalSignificantController.setPathogenicityArea(pathogenicity);
-            dialogStage.close();
-        } else {
-            commentTextField.setPromptText("The comment field is empty");
+        try {
+            params.put("pathogenicity", pathogenicity);
+            params.put("sampleId", sampleView.getId());
+            params.put("snpInDelIds", selectedItem.getSnpInDel().getId().toString());
+            apiService.put("analysisResults/snpInDels/updatePathogenicity", params, null, true);
+        } catch (WebAPIException wae) {
+            wae.printStackTrace();
+            DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
         }
+        clinicalSignificantController.setVariantPathogenicity(pathogenicity);
+        clinicalSignificantController.setPathogenicityArea(pathogenicity);
+        dialogStage.close();
+
     }
 
     @FXML
@@ -115,7 +116,7 @@ public class ChangePathogenicityController extends SubPaneController {
         dialogStage.close();
     }
 
-    public String getCurrentPathogenicity() {
+    private String getCurrentPathogenicity() {
         String currentPathogenicity = null;
         if(!StringUtils.isEmpty(selectedItem.getSnpInDel().getExpertPathogenicity())) {
             currentPathogenicity = selectedItem.getSnpInDel().getExpertPathogenicity();

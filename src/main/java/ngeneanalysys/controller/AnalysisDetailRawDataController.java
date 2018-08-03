@@ -176,23 +176,29 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
         currentStage.showAndWait();
     }
 
-    public BigDecimal returnData(String value, String unit) {
+    private BigDecimal returnData(String value, String unit) {
         BigDecimal returnValue = new BigDecimal(value);
         final BigDecimal unitValue = new BigDecimal(1024);
-        if(unit.equals("KB")) {
-            returnValue = returnValue.multiply(unitValue);
-        } else if(unit.equals("MB")) {
-            returnValue = returnValue.multiply(unitValue)
-                    .multiply(unitValue);
-        } else if(unit.equals("GB")) {
-            returnValue = returnValue.multiply(unitValue)
-                    .multiply(unitValue)
-                    .multiply(unitValue);
-        } else if(unit.equals("TB")) {
-            returnValue = returnValue.multiply(unitValue)
-                    .multiply(unitValue)
-                    .multiply(unitValue)
-                    .multiply(unitValue);
+        switch (unit) {
+            case "KB":
+                returnValue = returnValue.multiply(unitValue);
+                break;
+            case "MB":
+                returnValue = returnValue.multiply(unitValue)
+                        .multiply(unitValue);
+                break;
+            case "GB":
+                returnValue = returnValue.multiply(unitValue)
+                        .multiply(unitValue)
+                        .multiply(unitValue);
+                break;
+            case "TB":
+                returnValue = returnValue.multiply(unitValue)
+                        .multiply(unitValue)
+                        .multiply(unitValue)
+                        .multiply(unitValue);
+                break;
+            default:
         }
 
         return returnValue;

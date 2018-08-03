@@ -85,12 +85,6 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
     @FXML
     private TableColumn<VariantAndInterpretationEvidence, String> aaChangeColumn;
 
-    /*@FXML
-    private Tooltip roiCoverageTooltip;
-
-    @FXML
-    private Tooltip coverageUniformityTooltip;*/
-
     @FXML
     private Label roiCoverageLabel;
 
@@ -128,7 +122,7 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
         setDisplayItem();
     }
 
-    public void setDisplayItem() {
+    void setDisplayItem() {
         SampleView sample = (SampleView) getParamMap().get("sampleView");
         try {
             HttpClientResponse response = apiService.get("/analysisResults/sampleSnpInDels/" + sample.getId(), null,
@@ -259,12 +253,12 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
     }
 
     private List<VariantAndInterpretationEvidence> returnVariant(List<VariantAndInterpretationEvidence> list, String pathogenicity) {
-        return list.stream().filter(item -> ((pathogenicity.equalsIgnoreCase(item.getSnpInDel().getExpertPathogenicity()) ||
-                (StringUtils.isEmpty(item.getSnpInDel().getExpertPathogenicity()) && item.getSnpInDel().getSwPathogenicity().equalsIgnoreCase(pathogenicity)))))
+        return list.stream().filter(item -> (pathogenicity.equalsIgnoreCase(item.getSnpInDel().getExpertPathogenicity()) ||
+                (StringUtils.isEmpty(item.getSnpInDel().getExpertPathogenicity()) && item.getSnpInDel().getSwPathogenicity().equalsIgnoreCase(pathogenicity))))
                 .collect(Collectors.toList());
     }
 
-    public void setQCItem(final Label valueLabel, final Label QCLabel
+    void setQCItem(final Label valueLabel, final Label QCLabel
             , final List<SampleQC> qcList, final String qcString) {
         valueLabel.setText(findQCResult(qcList, qcString).toUpperCase());
         //valueLabel.setTooltip(new Tooltip(findQCResultString(qcList, qcString)));

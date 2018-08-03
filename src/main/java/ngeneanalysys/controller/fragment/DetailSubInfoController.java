@@ -9,6 +9,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.VBox;
 import ngeneanalysys.code.constants.FXMLConstants;
+import ngeneanalysys.code.enums.ExperimentTypeCode;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
@@ -53,7 +54,7 @@ public class DetailSubInfoController extends SubPaneController {
     /**
      * @param analysisDetailVariantNomenclatureController AnalysisDetailVariantNomenclatureController
      */
-    public void setAnalysisDetailVariantNomenclatureController(AnalysisDetailVariantNomenclatureController analysisDetailVariantNomenclatureController) {
+    void setAnalysisDetailVariantNomenclatureController(AnalysisDetailVariantNomenclatureController analysisDetailVariantNomenclatureController) {
         this.analysisDetailVariantNomenclatureController = analysisDetailVariantNomenclatureController;
     }
 
@@ -75,7 +76,7 @@ public class DetailSubInfoController extends SubPaneController {
         setComboBox();
         showPopulationFrequency();
 
-        if(panel.getAnalysisType().equalsIgnoreCase("GERMLINE")) {
+        if(panel.getAnalysisType().equals(ExperimentTypeCode.GERMLINE.getDescription())) {
             showInSilicoPredictions();
         }
 

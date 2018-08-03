@@ -58,37 +58,8 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
     private HBox pathogenicityClinVarHBox;
     @FXML
     private HBox pathogenicityEnigmaHBox;
-
-    @FXML
-    private VBox significantRadarGraphArea;				/** clinical > SIGNIFICANT > 그래프 박스 영역 */
-    @FXML
-    private Label clinicalSignificantPathogenicityPredictionLabel;					/** clinical > SIGNIFICANT > 그래프 라벨 0 */
-    @FXML
-    private Label clinicalSignificantPathogenicityBicLabel;					/** clinical > SIGNIFICANT > 그래프 라벨 1 */
-    @FXML
-    private Label clinicalSignificantPathogenicityClinVarLabel;					/** clinical > SIGNIFICANT > 그래프 라벨 2 */
-    @FXML
-    private Label clinicalSignificantPathogenicityEnigmaLabel;					/** clinical > SIGNIFICANT > 그래프 라벨 3 */
-    @FXML
-    private Label clinicalSignificantPathogenicityPolyphenLabel;					/** clinical > SIGNIFICANT > 그래프 라벨 4 */
-    @FXML
-    private Label clinicalSignificantPathogenicitySiftLabel;					/** clinical > SIGNIFICANT > 그래프 라벨 5 */
-    @FXML
-    private Polyline significantGraphPolyline;			/** clinical > SIGNIFICANT > 그래프 영역 */
     @FXML
     private VBox frequenciesRadarGraphArea;				/** clinical > FREQUENCIES > 그래프 박스 영역 */
-    @FXML
-    private Label frequencies0Label;					/** clinical > FREQUENCIES > 그래프 라벨 0 */
-    @FXML
-    private Label frequencies1Label;					/** clinical > FREQUENCIES > 그래프 라벨 1 */
-    @FXML
-    private Label frequencies2Label;					/** clinical > FREQUENCIES > 그래프 라벨 2 */
-    @FXML
-    private Label frequencies3Label;					/** clinical > FREQUENCIES > 그래프 라벨 3 */
-    @FXML
-    private Label frequencies4Label;					/** clinical > FREQUENCIES > 그래프 라벨 4 */
-    @FXML
-    private Label frequencies5Label;					/** clinical > FREQUENCIES > 그래프 라벨 5 */
     @FXML
     private Label frequencies0ValueLabel;
     @FXML
@@ -319,6 +290,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                     Node node = loader.load();
                     ExcludeReportDialogController excludeReportDialogController = loader.getController();
                     excludeReportDialogController.setMainController(mainController);
+                    excludeReportDialogController.setParamMap(this.getParamMap());
                     excludeReportDialogController.settingItem("Y", selectedAnalysisResultVariant, checkBox);
                     excludeReportDialogController.show((Parent) node);
                 } catch (IOException ioe) {
@@ -332,6 +304,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                     Node node = loader.load();
                     ExcludeReportDialogController excludeReportDialogController = loader.getController();
                     excludeReportDialogController.setMainController(mainController);
+                    excludeReportDialogController.setParamMap(this.getParamMap());
                     excludeReportDialogController.settingItem("N", selectedAnalysisResultVariant, checkBox);
                     excludeReportDialogController.show((Parent) node);
                 } catch (IOException ioe) {
@@ -491,12 +464,6 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
         frequencies3ValueLabel.setText(frequencyValueText[3]);
         frequencies4ValueLabel.setText(frequencyValueText[4]);
         frequencies5ValueLabel.setText(frequencyValueText[5]);
-        //frequencies0Label.setTooltip(new Tooltip(String.format("%f", frequenciesPercent0) + "%"));
-        //frequencies1Label.setTooltip(new Tooltip(String.format("%f", frequenciesPercent1) + "%"));
-        //frequencies2Label.setTooltip(new Tooltip(String.format("%f", frequenciesValue2) + "%"));
-        //frequencies3Label.setTooltip(new Tooltip(String.format("%f", frequenciesValue3) + "%"));
-        //frequencies4Label.setTooltip(new Tooltip(String.format("%f", frequenciesValue4) + "%"));
-        //frequencies5Label.setTooltip(new Tooltip(String.format("%f", frequenciesValue5) + "%"));
         SNPsINDELsOverviewRadarGraph frequenciesRadarGraph = new SNPsINDELsOverviewRadarGraph(
                 frequenciesRadarGraphArea,
                 frequenciesGraphPolyline,
@@ -646,6 +613,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                 ChangePathogenicityController changePathogenicityController = loader.getController();
                 changePathogenicityController.setMainController(this.getMainController());
                 changePathogenicityController.setClinicalSignificantController(this);
+                changePathogenicityController.setParamMap(this.paramMap);
                 changePathogenicityController.settingTier(value, selectedAnalysisResultVariant);
                 changePathogenicityController.show((Parent) root);
             } catch (Exception e) {

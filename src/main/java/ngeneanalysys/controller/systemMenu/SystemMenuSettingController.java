@@ -115,7 +115,7 @@ public class SystemMenuSettingController extends SubPaneController {
         autoRefreshCheckBox.setSelected("true".equals(config.getProperty("analysis.job.auto.refresh")));
 
         // 자동 새로고침 콤보박스 아이템 삽입
-        for (String second : CommonConstants.AUTO_REPRESH_SECOND_PERIOD) {
+        for (String second : CommonConstants.AUTO_REFRESH_SECOND_PERIOD) {
             autoRefreshPeriodComboBox.getItems().add(second + " second");
         }
         autoRefreshPeriodComboBox.setValue(config.getProperty("analysis.job.auto.refresh.period"));

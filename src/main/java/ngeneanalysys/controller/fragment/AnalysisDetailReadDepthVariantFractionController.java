@@ -9,7 +9,6 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.VBox;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.model.AnalysisResultSummary;
-import ngeneanalysys.model.Sample;
 import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.VariantAndInterpretationEvidence;
 

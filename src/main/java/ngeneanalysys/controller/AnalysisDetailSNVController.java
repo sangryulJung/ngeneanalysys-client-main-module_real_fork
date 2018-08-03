@@ -187,6 +187,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void show(Parent root) throws IOException {
         logger.debug("init snv controller");
@@ -446,7 +447,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         });
     }
 
-    public void refreshTable() {
+    void refreshTable() {
         showVariantList(currentPageIndex + 1, 0);
     }
 
@@ -895,7 +896,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     }
 
-    public void comboBoxSetAll() {
+    void comboBoxSetAll() {
         filterComboBox.getSelectionModel().selectFirst();
     }
 

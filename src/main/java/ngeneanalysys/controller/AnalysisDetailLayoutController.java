@@ -24,9 +24,6 @@ import org.apache.commons.lang3.text.WordUtils;
 import org.slf4j.Logger;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 /**
  * @author Jang
@@ -103,10 +100,6 @@ public class AnalysisDetailLayoutController extends SubPaneController {
 
             sampleView = response.getObjectBeforeConvertResponseToJSON(SampleView.class);
 
-            response = apiService.get("analysisResults/sampleSummary/" + sampleId , null, null, true);
-
-            sampleView.setAnalysisResultSummary(response.getObjectBeforeConvertResponseToJSON(AnalysisResultSummary.class));
-
             getParamMap().put("sampleView", sampleView);
 
             setPaneAndDisease();
@@ -126,11 +119,8 @@ public class AnalysisDetailLayoutController extends SubPaneController {
             for (AnalysisDetailTabMenuCode code : AnalysisDetailTabMenuCode.values()) {
                 AnalysisDetailTabItem item = code.getItem();
 
-                if(item.getNodeId().equals("TAB_VARIANTS")) {
-                    addTab(item, idx);
-                    idx++;
-                } else if (item.getNodeId().contains("TST_RNA") &&
-                        (panel.getName().equals(CommonConstants.TST_170_RNA))) {
+                if(item.getNodeId().equals("TAB_VARIANTS") || (item.getNodeId().contains("TST_RNA") &&
+                        (panel.getName().equals(CommonConstants.TST_170_RNA)))) {
                     addTab(item, idx);
                     idx++;
                 } else if(!(panel.getName().equals(CommonConstants.TST_170_RNA))) {

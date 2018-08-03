@@ -371,7 +371,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         });
     }
 
-    public Set<String> returnGeneList(String essentialGenes, String optionalGenes) {
+    private Set<String> returnGeneList(String essentialGenes, String optionalGenes) {
         Set<String> list = new HashSet<>();
 
         essentialGenes = essentialGenes.replaceAll("\\p{Z}", "");
@@ -387,7 +387,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         return list;
     }
 
-    public List<VariantAndInterpretationEvidence> filteringVariant(List<VariantAndInterpretationEvidence> list) {
+    private List<VariantAndInterpretationEvidence> filteringVariant(List<VariantAndInterpretationEvidence> list) {
         List<VariantAndInterpretationEvidence> filteringList = new ArrayList<>();
         if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
             try {
@@ -415,7 +415,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         return filteringList;
     }
 
-    public List<VariantCountByGene> filteringGeneList(List<VariantCountByGene> list) {
+    private List<VariantCountByGene> filteringGeneList(List<VariantCountByGene> list) {
         List<VariantCountByGene> filteringList = new ArrayList<>();
         if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
             try {
@@ -443,7 +443,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         return filteringList;
     }
 
-    public void setVariantsList() {
+    void setVariantsList() {
         HttpClientResponse response = null;
         try {
             response = apiService.get("/analysisResults/sampleSnpInDels/" + sample.getId(), null,
@@ -470,24 +470,22 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             List<VariantAndInterpretationEvidence> tableList = new ArrayList<>();
 
             if(tierOne != null && !tierOne.isEmpty()) {
-                tierOne.sort((a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
+                tierOne.sort(Comparator.comparing(variant -> variant.getSnpInDel().getGenomicCoordinate().getGene()));
                 tableList.addAll(tierOne);
             }
 
             if(tierTwo != null && !tierTwo.isEmpty()) {
-                tierTwo.sort((a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
+                tierTwo.sort(Comparator.comparing(variant -> variant.getSnpInDel().getGenomicCoordinate().getGene()));
                 tableList.addAll(tierTwo);
             }
 
             if(tierThree != null && !tierThree.isEmpty()) {
-                tierThree.sort((a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
-
+                tierThree.sort(Comparator.comparing(variant -> variant.getSnpInDel().getGenomicCoordinate().getGene()));
                 tableList.addAll(tierThree);
             }
 
             if(tierFour != null && !tierFour.isEmpty()) {
-                tierFour.sort((a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
-
+                tierFour.sort(Comparator.comparing(variant -> variant.getSnpInDel().getGenomicCoordinate().getGene()));
                 tableList.addAll(tierFour);
             }
 
@@ -505,13 +503,13 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         }
     }
 
-    public boolean discriminationOfMutation(VariantCountByGene gene) {
+    private boolean discriminationOfMutation(VariantCountByGene gene) {
         return (gene.getTier3IndelCount() > 0 || gene.getTier3SnpCount() > 0 ||
                 gene.getTier1IndelCount() > 0 || gene.getTier1SnpCount() > 0 ||
                 gene.getTier2IndelCount() > 0 || gene.getTier2SnpCount() > 0);
     }
 
-    public void setVirtualPanel() {
+    private void setVirtualPanel() {
 
         virtualPanelComboBox.setConverter(new ComboBoxConverter());
 
@@ -549,26 +547,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         return null;
     }
 
-    public SimpleStringProperty returnTherapeutic(SnpInDelInterpretation snpInDelInterpretation) {
-        String text = "";
-        if(snpInDelInterpretation != null) {
-            if (!StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelA()))
-                text += snpInDelInterpretation.getTherapeuticEvidence().getLevelA() + ", ";
-            if (!StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelB()))
-                text += snpInDelInterpretation.getTherapeuticEvidence().getLevelB() + ", ";
-            if (!StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelC()))
-                text += snpInDelInterpretation.getTherapeuticEvidence().getLevelC() + ", ";
-            if (!StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelD()))
-                text += snpInDelInterpretation.getTherapeuticEvidence().getLevelD() + ", ";
-        }
-        if(!"".equals(text)) {
-            text = text.substring(0, text.length() - 2);
-        }
-
-        return new SimpleStringProperty(text);
-    }
-
-    public void settingReportData(String contents) {
+    private void settingReportData(String contents) {
 
         Map<String,Object> contentsMap = JsonUtil.fromJsonToMap(contents);
 
@@ -599,7 +578,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
      * @param user User
      * @return boolean
      */
-    public boolean saveData(User user) {
+    private boolean saveData(User user) {
 
         String conclusionsText = conclusionsTextArea.getText();
 
@@ -735,6 +714,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         createPDF(false);
     }
 
+    @SuppressWarnings("unchecked")
     public Map<String, Object> contents() throws WebAPIException {
         Map<String,Object> contentsMap = new HashMap<>();
         contentsMap.put("panelName", panel.getName());
@@ -788,14 +768,20 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     tierOne.getSnpInDel().getIncludedInReport().equalsIgnoreCase("Y")).collect(Collectors.toList())) {
                 if("Y".equalsIgnoreCase(variant.getSnpInDel().getIncludedInReport()) && ConvertUtil.findPrimaryEvidence(variant.getSnpInDelEvidences()) != null) {
                     SnpInDelEvidence snpInDelEvidence = ConvertUtil.findPrimaryEvidence(variant.getSnpInDelEvidences());
-                    if(snpInDelEvidence.getEvidenceLevel().equals("A")) {
-                        evidenceACount++;
-                    } else if(snpInDelEvidence.getEvidenceLevel().equals("B")) {
-                        evidenceBCount++;
-                    } else if(snpInDelEvidence.getEvidenceLevel().equals("C")) {
-                        evidenceCCount++;
-                    } else if(snpInDelEvidence.getEvidenceLevel().equals("D")) {
-                        evidenceDCount++;
+                    switch (snpInDelEvidence.getEvidenceLevel()) {
+                        case "A":
+                            evidenceACount++;
+                            break;
+                        case "B":
+                            evidenceBCount++;
+                            break;
+                        case "C":
+                            evidenceCCount++;
+                            break;
+                        case "D":
+                            evidenceDCount++;
+                            break;
+                        default:
                     }
                     /*if("T2".equals(variant.getSnpInDel().getSwTier())
                             && StringUtils.isEmpty(variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelB())) evidenceBCount++;*/
@@ -808,14 +794,20 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     tierTwo.getSnpInDel().getIncludedInReport().equalsIgnoreCase("Y")).collect(Collectors.toList())) {
                 if("Y".equalsIgnoreCase(variant.getSnpInDel().getIncludedInReport()) && ConvertUtil.findPrimaryEvidence(variant.getSnpInDelEvidences()) != null) {
                     SnpInDelEvidence snpInDelEvidence = ConvertUtil.findPrimaryEvidence(variant.getSnpInDelEvidences());
-                    if(snpInDelEvidence.getEvidenceLevel().equals("A")) {
-                        evidenceACount++;
-                    } else if(snpInDelEvidence.getEvidenceLevel().equals("B")) {
-                        evidenceBCount++;
-                    } else if(snpInDelEvidence.getEvidenceLevel().equals("C")) {
-                        evidenceCCount++;
-                    } else if(snpInDelEvidence.getEvidenceLevel().equals("D")) {
-                        evidenceDCount++;
+                    switch (snpInDelEvidence.getEvidenceLevel()) {
+                        case "A":
+                            evidenceACount++;
+                            break;
+                        case "B":
+                            evidenceBCount++;
+                            break;
+                        case "C":
+                            evidenceCCount++;
+                            break;
+                        case "D":
+                            evidenceDCount++;
+                            break;
+                        default:
                     }
                     /*if("T1".equals(variant.getSnpInDel().getSwTier())
                             && StringUtils.isEmpty(variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelD())) evidenceDCount++;*/
@@ -1167,10 +1159,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                                     murle.printStackTrace();
                                 }
                             });
-                            task.exceptionProperty().addListener((observable, oldValue, newValue) -> {
+                            task.exceptionProperty().addListener((observable, oldValue, newValue) ->
                                 DialogUtil.error("Report Generation Fail",
-                                        ((Exception)newValue).getMessage(), getMainApp().getPrimaryStage(), false);
-                            });
+                                        ((Exception)newValue).getMessage(), getMainApp().getPrimaryStage(), false));
                         } else {
                             URL[] jarUrls = new URL[]{jarFile.toURI().toURL()};
                             createWordFile(jarUrls, file, contentsMap, reportCreationErrorMsg);

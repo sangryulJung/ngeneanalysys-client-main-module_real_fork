@@ -55,7 +55,7 @@ AnalysisDetailSNPsINDELsMemoController extends SubPaneController {
     private AnalysisDetailSNVController analysisDetailSNVController;
 
     /**
-     * @param analysisDetailSNVController
+     * @param analysisDetailSNVController AnalysisDetailSNVController
      */
     public void setAnalysisDetailSNVController(AnalysisDetailSNVController analysisDetailSNVController) {
         this.analysisDetailSNVController = analysisDetailSNVController;
@@ -76,7 +76,7 @@ AnalysisDetailSNPsINDELsMemoController extends SubPaneController {
 
     }
 
-    public void updateList(Integer id) {
+    void updateList(Integer id) {
         if(memoListTableView.getItems() != null && memoListTableView.getItems().isEmpty()) {
             memoListTableView.getItems().removeAll(memoListTableView.getItems());
         }
@@ -100,9 +100,9 @@ AnalysisDetailSNPsINDELsMemoController extends SubPaneController {
 
     /**
      * 목록 화면 출력
-     * @param list
+     * @param list ObservableList<SnpInDelInterpretationLogs>
      */
-    public void displayList(ObservableList<SnpInDelInterpretationLogs> list) {
+    void displayList(ObservableList<SnpInDelInterpretationLogs> list) {
         memoListTableView.setItems(list);
     }
 }

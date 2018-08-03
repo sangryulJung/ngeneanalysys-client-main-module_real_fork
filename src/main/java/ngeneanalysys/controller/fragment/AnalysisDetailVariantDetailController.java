@@ -26,6 +26,7 @@ public class AnalysisDetailVariantDetailController extends SubPaneController {
 
     @Override
     public void show(Parent root) throws IOException {
+        logger.debug("variant detail view");
         if(!detailWarpper.getChildren().isEmpty()) detailWarpper.getChildren().removeAll(detailWarpper.getChildren());
         showReadDepth();
         showVariantNomenclature();

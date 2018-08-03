@@ -399,7 +399,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         HBox box = null;
         final ImageView img = new ImageView(resourceUtil.getImage("/layout/images/renewal/delete_icon.png", 16, 16));
 
-        public DeleteButtonCreate() {
+        private DeleteButtonCreate() {
             img.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 SnpInDelEvidence evidence = DeleteButtonCreate.this.getTableView().getItems().get(
                         DeleteButtonCreate.this.getIndex());
@@ -425,11 +425,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         }
     }
 
-    public void setGridPaneWidth(double size) {
-        interpretationGridPane.setPrefWidth(size);
-    }
-
-    public String returnTier(String evidenceLevel) {
+    private String returnTier(String evidenceLevel) {
         if("A".equalsIgnoreCase(evidenceLevel) || "B".equalsIgnoreCase(evidenceLevel)) {
             return "T1";
         } else if("C".equalsIgnoreCase(evidenceLevel) || "D".equalsIgnoreCase(evidenceLevel)) {
@@ -532,6 +528,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                 Node node = loader.load();
                 ExcludeReportDialogController excludeReportDialogController = loader.getController();
                 excludeReportDialogController.setMainController(mainController);
+                excludeReportDialogController.setParamMap(this.getParamMap());
                 excludeReportDialogController.settingItem(symbol, selectedAnalysisResultVariant, checkBox);
                 excludeReportDialogController.show((Parent) node);
             } catch (IOException ioe) {
