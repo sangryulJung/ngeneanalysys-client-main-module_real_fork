@@ -13,7 +13,6 @@ public class SampleView {
     private String patientId;
     private Panel panel;
     private String diseaseName;
-    private String analysisType;
     private String sampleSource;
     private String qcResult;
     private String inputFType;
@@ -63,10 +62,6 @@ public class SampleView {
 
     public String getDiseaseName() {
         return diseaseName;
-    }
-
-    public String getAnalysisType() {
-        return analysisType;
     }
 
     public String getSampleSource() {
@@ -122,7 +117,6 @@ public class SampleView {
                 ", patientId='" + patientId + '\'' +
                 ", panel='" + panel + '\'' +
                 ", diseaseName='" + diseaseName + '\'' +
-                ", analysisType='" + analysisType + '\'' +
                 ", sampleSource='" + sampleSource + '\'' +
                 ", qcResult='" + qcResult + '\'' +
                 ", inputFType='" + inputFType + '\'' +

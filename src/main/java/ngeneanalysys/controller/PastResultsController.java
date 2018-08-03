@@ -894,7 +894,7 @@ public class PastResultsController extends SubPaneController {
 			}
 			final String countLabelStyleClass = "count_label";
 			final String countLabelStyle = "-fx-text-fill : gray;";
-			if(sample.getAnalysisType().equalsIgnoreCase("GERMLINE")) {
+			if(sample.getPanel().getAnalysisType().equalsIgnoreCase("GERMLINE")) {
 				Label lv1Icon = createIconLabel("P", "lv_i_icon");
 				Label lv1Value = createValueLabel(summary.getLevel1VariantCount().toString(), countLabelStyleClass,
 						countLabelStyle);
@@ -922,7 +922,7 @@ public class PastResultsController extends SubPaneController {
 								lv4Icon, lv4Value,
 								lv5Icon, lv5Value);
 
-			} else if (sample.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
+			} else if (sample.getPanel().getAnalysisType().equalsIgnoreCase("SOMATIC")) {
 				Label lv1Icon = createIconLabel("T1", "lv_i_icon");
 				Label lv1Value = createValueLabel(summary.getLevel1VariantCount().toString(), countLabelStyleClass,
 						countLabelStyle);
