@@ -1,6 +1,5 @@
 package ngeneanalysys.controller;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,7 +12,6 @@ import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.VariantAndInterpretationEvidence;
 import ngeneanalysys.service.APIService;
-import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import org.slf4j.Logger;
 
@@ -36,16 +34,7 @@ public class BatchExcludeReportDialogController extends SubPaneController {
     private AnalysisDetailSNVController snvController;
 
     @FXML
-    private Button submitButton;
-
-    @FXML
-    private RadioButton includeRadioButton;
-
-    @FXML
-    private RadioButton excludeRadioButton;
-
-    @FXML
-    private ToggleGroup reportingToggle;
+    private CheckBox addToReportCheckBox;
 
     @FXML
     private TextField commentTextField;
@@ -54,7 +43,7 @@ public class BatchExcludeReportDialogController extends SubPaneController {
 
     private int sampleId;
 
-    public void settingItem(int sampleId, List<VariantAndInterpretationEvidence> variantList, AnalysisDetailSNVController snvController) {
+    void settingItem(int sampleId, List<VariantAndInterpretationEvidence> variantList, AnalysisDetailSNVController snvController) {
         this.sampleId = sampleId;
         this.variantList = variantList;
         this.snvController = snvController;
@@ -87,32 +76,23 @@ public class BatchExcludeReportDialogController extends SubPaneController {
     @FXML
     public void ok() {
         String comment = commentTextField.getText();
-        if(!comment.isEmpty()) {
-            if(reportingToggle.getSelectedToggle() == null) {
-                DialogUtil.warning("Radio Button check error", "Select Include or Exclude Radio Button",
-                        dialogStage, true);
-            } else {
-                try {
-                    StringBuilder stringBuilder = new StringBuilder();
+        try {
+            StringBuilder stringBuilder = new StringBuilder();
 
-                    variantList.forEach(item -> stringBuilder.append(item.getSnpInDel().getId() + ","));
-                    stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+            variantList.forEach(item -> stringBuilder.append(item.getSnpInDel().getId()).append(","));
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
 
-                    String includeInReport = includeRadioButton.isSelected() ? "Y" : "N";
-                    Map<String, Object> params = new HashMap<>();
-                    params.put("sampleId", sampleId);
-                    params.put("snpInDelIds", stringBuilder.toString());
-                    params.put("comment", comment);
-                    params.put("includeInReport", includeInReport);
-                    apiService.put("analysisResults/snpInDels/updateIncludeInReport", params, null, true);
-                    snvController.refreshTable();
-                    dialogStage.close();
-                } catch (WebAPIException wae) {
-                    wae.printStackTrace();
-                }
-            }
-        } else {
-            commentTextField.requestFocus();
+            String includeInReport = addToReportCheckBox.isSelected() ? "Y" : "N";
+            Map<String, Object> params = new HashMap<>();
+            params.put("sampleId", sampleId);
+            params.put("snpInDelIds", stringBuilder.toString());
+            params.put("comment", comment.isEmpty() ? "N/A" : comment);
+            params.put("includeInReport", includeInReport);
+            apiService.put("analysisResults/snpInDels/updateIncludeInReport", params, null, true);
+            snvController.refreshTable();
+            dialogStage.close();
+        } catch (WebAPIException wae) {
+            wae.printStackTrace();
         }
     }
 

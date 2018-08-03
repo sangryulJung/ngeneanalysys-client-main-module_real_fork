@@ -10,13 +10,33 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="100.0" prefWidth="450.0" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.BatchChangePathogenicityDialogController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="400.0" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.BatchChangePathogenicityDialogController">
    <children>
-      <VBox prefHeight="100.0" prefWidth="450.0">
+      <VBox prefHeight="117.0" prefWidth="368.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
          <children>
-            <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="60.0" prefWidth="450.0">
+            <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="390.0" spacing="10.0">
                <children>
-                  <Label text="Comment">
+                  <RadioButton fx:id="lvARadioButton" mnemonicParsing="false" text="P">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="tierToggle" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="lvBRadioButton" mnemonicParsing="false" text="LP" toggleGroup="$tierToggle" />
+                  <RadioButton fx:id="lvCRadioButton" mnemonicParsing="false" text="US" toggleGroup="$tierToggle" />
+                  <RadioButton fx:id="lvDRadioButton" mnemonicParsing="false" text="LB" toggleGroup="$tierToggle" />
+                  <RadioButton fx:id="lvERadioButton" mnemonicParsing="false" selected="true" text="B">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="tierToggle1" />
+                     </toggleGroup>
+                  </RadioButton>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="390.0">
+               <children>
+                  <Label alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="70.0" text="Comment">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
@@ -28,31 +48,8 @@
                   </TextField>
                </children>
             </HBox>
-            <HBox alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="200.0">
+            <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="392.0">
                <children>
-                  <HBox prefHeight="100.0" prefWidth="325.0" spacing="10.0">
-                     <children>
-                        <RadioButton fx:id="lvARadioButton" mnemonicParsing="false" text="P">
-                           <HBox.margin>
-                              <Insets left="10.0" />
-                           </HBox.margin>
-                           <toggleGroup>
-                              <ToggleGroup fx:id="tierToggle" />
-                           </toggleGroup>
-                        </RadioButton>
-                        <RadioButton fx:id="lvBRadioButton" mnemonicParsing="false" text="LP" toggleGroup="$tierToggle" />
-                        <RadioButton fx:id="lvCRadioButton" mnemonicParsing="false" text="US" toggleGroup="$tierToggle" />
-                        <RadioButton fx:id="lvDRadioButton" mnemonicParsing="false" text="LB" toggleGroup="$tierToggle" />
-                        <RadioButton fx:id="lvERadioButton" mnemonicParsing="false" text="B">
-                           <toggleGroup>
-                              <ToggleGroup fx:id="tierToggle1" />
-                           </toggleGroup>
-                        </RadioButton>
-                     </children>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </HBox>
                   <Button fx:id="submitButton" mnemonicParsing="false" onAction="#ok" styleClass="btn_setting_save" text="OK">
                      <HBox.margin>
                         <Insets right="20.0" />
@@ -60,7 +57,7 @@
                   </Button>
                   <Button mnemonicParsing="false" onAction="#cancel" styleClass="btn_setting_close" text="Cancel">
                      <HBox.margin>
-                        <Insets right="20.0" />
+                        <Insets right="10.0" />
                      </HBox.margin>
                   </Button>
                </children>

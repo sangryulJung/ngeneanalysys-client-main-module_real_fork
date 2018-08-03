@@ -55,9 +55,6 @@ public class BatchChangePathogenicityDialogController extends SubPaneController 
     private ToggleGroup tierToggle;
 
     @FXML
-    private Button submitButton;
-
-    @FXML
     private TextField commentTextField;
 
     private Stage dialogStage;
@@ -97,31 +94,22 @@ public class BatchChangePathogenicityDialogController extends SubPaneController 
     @FXML
     public void ok() {
         String comment = commentTextField.getText();
-        if(tierToggle.getSelectedToggle().isSelected()) {
-            if (!comment.isEmpty()) {
-                try {
-                    StringBuilder stringBuilder = new StringBuilder();
+        try {
+            StringBuilder stringBuilder = new StringBuilder();
 
-                    variantList.forEach(item -> stringBuilder.append(item.getSnpInDel().getId() + ","));
-                    stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+            variantList.forEach(item -> stringBuilder.append(item.getSnpInDel().getId() + ","));
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
 
-                    Map<String, Object> params = new HashMap<>();
-                    params.put("sampleId", sampleId);
-                    params.put("snpInDelIds", stringBuilder.toString());
-                    params.put("pathogenicity", returnSelectPathogenicity());
-                    params.put("comment", comment);
-                    apiService.put("analysisResults/snpInDels/updatePathogenicity", params, null, true);
-                    snvController.refreshTable();
-                    dialogStage.close();
-                } catch (WebAPIException wae) {
-                    wae.printStackTrace();
-                }
-
-            } else {
-                commentTextField.requestFocus();
-            }
-        } else {
-            //DialogUtil.warning()
+            Map<String, Object> params = new HashMap<>();
+            params.put("sampleId", sampleId);
+            params.put("snpInDelIds", stringBuilder.toString());
+            params.put("pathogenicity", returnSelectPathogenicity());
+            params.put("comment", comment.isEmpty() ? "N/A" : comment);
+            apiService.put("analysisResults/snpInDels/updatePathogenicity", params, null, true);
+            snvController.refreshTable();
+            dialogStage.close();
+        } catch (WebAPIException wae) {
+            wae.printStackTrace();
         }
     }
 

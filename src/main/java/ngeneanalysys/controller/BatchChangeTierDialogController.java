@@ -53,9 +53,6 @@ public class BatchChangeTierDialogController extends SubPaneController {
     private ToggleGroup tierToggle;
 
     @FXML
-    private Button submitButton;
-
-    @FXML
     private TextField commentTextField;
 
     private Stage dialogStage;
@@ -95,43 +92,37 @@ public class BatchChangeTierDialogController extends SubPaneController {
     @FXML
     public void ok() {
         String comment = commentTextField.getText();
-        if(tierToggle.getSelectedToggle().isSelected()) {
-            if (!comment.isEmpty()) {
-                try {
-                    StringBuilder stringBuilder = new StringBuilder();
+        try {
+            StringBuilder stringBuilder = new StringBuilder();
 
-                    variantList.forEach(item -> stringBuilder.append(item.getSnpInDel().getId() + ","));
-                    stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+            variantList.forEach(item -> stringBuilder.append(item.getSnpInDel().getId()).append(","));
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
 
-                    Map<String, Object> params = new HashMap<>();
-                    params.put("sampleId", sampleId);
-                    params.put("snpInDelIds", stringBuilder.toString());
-                    params.put("tier", returnSelectTier());
-                    params.put("comment", comment);
-                    apiService.put("analysisResults/snpInDels/updateTier", params, null, true);
-                    snvController.refreshTable();
-                    dialogStage.close();
-                } catch (WebAPIException wae) {
-                    wae.printStackTrace();
-                }
-
-            } else {
-                commentTextField.requestFocus();
-            }
-        } else {
-            //DialogUtil.warning()
+            Map<String, Object> params = new HashMap<>();
+            params.put("sampleId", sampleId);
+            params.put("snpInDelIds", stringBuilder.toString());
+            params.put("tier", returnSelectTier());
+            params.put("comment", comment.isEmpty() ? "N/A" : comment);
+            apiService.put("analysisResults/snpInDels/updateTier", params, null, true);
+            snvController.refreshTable();
+            dialogStage.close();
+        } catch (WebAPIException wae) {
+            wae.printStackTrace();
         }
     }
 
-    public String returnSelectTier() {
+    private String returnSelectTier() {
         if(tierOneRadioButton.isSelected()) {
             return "T1";
         } else if(tierTwoRadioButton.isSelected()) {
             return "T2";
         } else if(tierThreeRadioButton.isSelected()) {
             return "T3";
+        } else if(tierFourRadioButton.isSelected()) {
+            return "T4";
+        } else {
+            return "";
         }
-        return "T4";
     }
 
     @FXML

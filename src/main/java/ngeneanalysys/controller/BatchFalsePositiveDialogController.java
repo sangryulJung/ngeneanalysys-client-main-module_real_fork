@@ -39,9 +39,6 @@ public class BatchFalsePositiveDialogController extends SubPaneController {
     private CheckBox isFalseCheckBox;
 
     @FXML
-    private Button submitButton;
-
-    @FXML
     private TextField commentTextField;
 
     private Stage dialogStage;
@@ -81,28 +78,26 @@ public class BatchFalsePositiveDialogController extends SubPaneController {
     @FXML
     public void ok() {
         String comment = commentTextField.getText();
-        if(!comment.isEmpty()) {
-            try {
-                StringBuilder stringBuilder = new StringBuilder();
+        try {
+            StringBuilder stringBuilder = new StringBuilder();
 
-                variantList.forEach(item -> stringBuilder.append(item.getSnpInDel().getId() + ","));
-                stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+            variantList.forEach(item -> stringBuilder.append(item.getSnpInDel().getId()).append(","));
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
 
-                Map<String, Object> params = new HashMap<>();
-                params.put("sampleId", sampleId);
-                params.put("snpInDelIds", stringBuilder.toString());
-                params.put("falseReason", comment);
-                if(isFalseCheckBox.isSelected()) {
-                    params.put("isFalse", "Y");
-                } else {
-                    params.put("isFalse", "N");
-                }
-                apiService.put("analysisResults/snpInDels/updateFalse", params, null, true);
-                snvController.refreshTable();
-                dialogStage.close();
-            } catch (WebAPIException wae) {
-                wae.printStackTrace();
+            Map<String, Object> params = new HashMap<>();
+            params.put("sampleId", sampleId);
+            params.put("snpInDelIds", stringBuilder.toString());
+            params.put("falseReason", comment.isEmpty() ? "N/A" : comment);
+            if(isFalseCheckBox.isSelected()) {
+                params.put("isFalse", "Y");
+            } else {
+                params.put("isFalse", "N");
             }
+            apiService.put("analysisResults/snpInDels/updateFalse", params, null, true);
+            snvController.refreshTable();
+            dialogStage.close();
+        } catch (WebAPIException wae) {
+            wae.printStackTrace();
         }
     }
 
