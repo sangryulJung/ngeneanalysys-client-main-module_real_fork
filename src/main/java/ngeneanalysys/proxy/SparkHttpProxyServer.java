@@ -181,8 +181,8 @@ public class SparkHttpProxyServer {
 
     /**
      * 바이트 계산
-     * @param string
-     * @return
+     * @param string String
+     * @return Long
      */
     private Long calculateBytes(String string) {
         if(string == null) {

@@ -19,9 +19,9 @@ import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.SequencerCode;
 import ngeneanalysys.controller.extend.BaseStageController;
 import ngeneanalysys.model.AnalysisFile;
+import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.paged.PagedSample;
 import ngeneanalysys.model.Run;
-import ngeneanalysys.model.Sample;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.FXMLLoadUtil;
 import ngeneanalysys.util.LoggerUtil;
@@ -53,7 +53,7 @@ public class SampleUploadController extends BaseStageController{
     /** 작업 Dialog Window Stage Object */
     private Stage currentStage;
 
-    private List<Sample> samples = new ArrayList<>(23);
+    private List<SampleView> samples = new ArrayList<>(23);
 
     @FXML
     private TextField textFieldRunName;
@@ -98,7 +98,7 @@ public class SampleUploadController extends BaseStageController{
     }
 
     /**
-     * @param run
+     * @param run Run
      */
     public void setRun(Run run) {
         this.run = run;
@@ -154,14 +154,14 @@ public class SampleUploadController extends BaseStageController{
     /**
      * @return samples
      */
-    public List<Sample> getSamples() {
+    public List<SampleView> getSamples() {
         return samples;
     }
 
     /**
      * @param samples
      */
-    public void setSamples(List<Sample> samples) {
+    public void setSamples(List<SampleView> samples) {
         this.samples = samples;
     }
 

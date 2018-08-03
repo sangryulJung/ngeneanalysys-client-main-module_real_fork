@@ -28,6 +28,20 @@ public class Panel {
     private Integer reportTemplateId;
 
     /**
+     * @param defaultDiseaseId
+     */
+    public void setDefaultDiseaseId(Integer defaultDiseaseId) {
+        this.defaultDiseaseId = defaultDiseaseId;
+    }
+
+    /**
+     * @param id
+     */
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /**
      * @return defaultReporting
      */
     public Boolean getDefaultReporting() {

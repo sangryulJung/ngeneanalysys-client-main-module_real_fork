@@ -49,7 +49,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     private SampleUploadController sampleUploadController;
 
-    private List<Sample> sampleArrayList = null;
+    private List<SampleView> sampleArrayList = null;
 
     private List<AnalysisFile> failedAnalysisFileList = new ArrayList<>();
 
@@ -176,8 +176,8 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
             //fastq 파일이 짝을 이루고 올리는데 실패한 파일인 경우
            if (pairFileList.size() == 2 && checkSameSample(fastqFilePairName)) {
-                Sample sample = new Sample();
-                sample.setName(fastqFilePairName);
+               SampleView sample = new SampleView();
+               sample.setName(fastqFilePairName);
                 sampleArrayList.add(sample);
             }
 
@@ -198,25 +198,27 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 if (tableData && sampleArrayList.size() < 23) {
                     final String sampleName = s[0];
                     logger.debug(s[0]);
-                    Sample sample = new Sample();
+                    SampleView sample = new SampleView();
+                    Panel samplePanel = new Panel();
+                    sample.setPanel(samplePanel);
                     sample.setName(sampleName);
                     if(s[8] != null && s[8].contains("DNA")) {
                         Optional<Panel> panel = panels.stream().filter(item -> item.getName().contains("Tumor 170 DNA")).findFirst();
                         if(panel.isPresent()) {
-                            sample.setPanelId(panel.get().getId());
+                            sample.getPanel().setId(panel.get().getId());
                             sample.setSampleSource(panel.get().getDefaultSampleSource());
-                            sample.setDiseaseId(panel.get().getDefaultDiseaseId());
+                            sample.getPanel().setDefaultDiseaseId(panel.get().getDefaultDiseaseId());
                             if(panel.get().getDefaultDiseaseId() != null)
-                                sample.setDiseaseId(panel.get().getDefaultDiseaseId());
+                                sample.getPanel().setDefaultDiseaseId(panel.get().getDefaultDiseaseId());
                         }
                     } else if(s[8] != null && s[8].contains("RNA")) {
                         Optional<Panel> panel = panels.stream().filter(item -> item.getName().contains("Tumor 170 RNA")).findFirst();
                         if(panel.isPresent()) {
-                            sample.setPanelId(panel.get().getId());
+                            sample.getPanel().setId(panel.get().getId());
                             sample.setSampleSource(panel.get().getDefaultSampleSource());
-                            sample.setDiseaseId(panel.get().getDefaultDiseaseId());
+                            sample.getPanel().setDefaultDiseaseId(panel.get().getDefaultDiseaseId());
                             if(panel.get().getDefaultDiseaseId() != null)
-                                sample.setDiseaseId(panel.get().getDefaultDiseaseId());
+                                sample.getPanel().setDefaultDiseaseId(panel.get().getDefaultDiseaseId());
                         }
                     }
                     sampleArrayList.add(sample);
@@ -359,7 +361,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
                     Optional<AnalysisFile> optionalFile = failedAnalysisFileList.stream().filter(item ->
                             item.getName().contains(fastqFilePairName + "_")).findFirst();
-                    Sample sample = null;
+                    SampleView sample = null;
                     if(optionalFile.isPresent()) sample = getSameSample(optionalFile.get().getSampleId());
                     //fastq 파일이 짝을 이루고 올리는데 실패한 파일인 경우
                     if(pairFileList.size() == 2 && sample != null) {
@@ -445,7 +447,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             createRow(i);
         }
 
-        for(Sample sample : sampleArrayList) {
+        for(SampleView sample : sampleArrayList) {
             if(row > 22) break;
             if(sampleNameTextFieldList.get(row).isDisable()) {
                 row++;
@@ -453,10 +455,10 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             }
             sampleNameTextFieldList.get(row).setText(sample.getName());
 
-            if(sample.getDiseaseId() != null) {
+            if(sample.getPanel().getDefaultDiseaseId() != null) {
                 ComboBox<ComboBoxItem> disease = diseaseComboBoxList.get(row);
                 disease.getItems().forEach(diseaseItem ->{
-                    if(diseaseItem.getValue().equals(sample.getDiseaseId().toString())) {
+                    if(diseaseItem.getValue().equals(sample.getPanel().getDefaultDiseaseId().toString())) {
                         disease.getSelectionModel().select(diseaseItem);
                     }
                 });
@@ -468,14 +470,25 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             ComboBox<ComboBoxItem> panel = panelComboBoxList.get(row);
             ComboBox<String> sampleSource = sampleSourceComboBoxList.get(row);
 
-            if(sample.getPanelId() == null && panel.getSelectionModel().getSelectedItem() == null) {
+            if(sample.getPanel().getId() == null && panel.getSelectionModel().getSelectedItem() == null) {
                 panel.getSelectionModel().select(0);
-            } else if (sample.getPanelId() != null) {
+            } else if (sample.getPanel().getId() != null) {
                 Optional<ComboBoxItem> optionalPanel = panel.getItems().stream()
-                        .filter(item -> item.getValue().equalsIgnoreCase(sample.getPanelId().toString())).findFirst();
+                        .filter(item -> item.getValue().equalsIgnoreCase(sample.getPanel().getId().toString())).findFirst();
                 if(optionalPanel.isPresent()) {
                     panel.getSelectionModel().select(optionalPanel.get());
-                    settingDiseaseComboBox(sample.getPanelId(), row);
+                    settingDiseaseComboBox(sample.getPanel().getId(), row);
+                } else if(StringUtils.isNotEmpty(sample.getPanel().getName())) {
+                    ComboBoxItem comboBoxItem = new ComboBoxItem(sample.getPanel().getId().toString(), sample.getPanel().getName());
+                    panel.getItems().add(comboBoxItem);
+                    panel.getSelectionModel().select(comboBoxItem);
+
+
+                    ComboBox<ComboBoxItem> disease = diseaseComboBoxList.get(row);
+                    ComboBoxItem comboBoxItem1 = new ComboBoxItem(sample.getDiseaseName(), sample.getDiseaseName());
+                    disease.getItems().add(comboBoxItem1);
+                    disease.getSelectionModel().select(comboBoxItem1);
+
                 }
             }
 
@@ -692,9 +705,9 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         int rowCount = standardDataGridPane.getChildren().size() / 4;
 
         for (int i = 0; i < rowCount; i++) {
-            Sample sample = sampleArrayList.get(i);
+            SampleView sample = sampleArrayList.get(i);
             if(sample.getId() != null) continue;
-            if(sample.getRunId() == null) sample.setRunId(-1);
+            if(sample.getRun().getId() == null) sample.getRun().setId(-1);
 
             TextField sampleName = sampleNameTextFieldList.get(i);
             if(sampleName.getText().isEmpty()) continue;
@@ -707,14 +720,14 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
             }
             Integer panelId = Integer.parseInt(panelIdComboBox.getSelectionModel().getSelectedItem().getValue());
-            sample.setPanelId(panelId);
+            sample.getPanel().setId(panelId);
 
             ComboBox<ComboBoxItem> diseaseId = diseaseComboBoxList.get(i);
             if(diseaseId.getSelectionModel().getSelectedItem().getValue() == null) {
                 ok = false;
                 break;
             }
-            sample.setDiseaseId(Integer.parseInt(diseaseId.getSelectionModel().getSelectedItem().getValue()));
+            sample.getPanel().setDefaultDiseaseId(Integer.parseInt(diseaseId.getSelectionModel().getSelectedItem().getValue()));
 
             ComboBox<String> sampleSource  = sampleSourceComboBoxList.get(i);
             if(sampleSource.getSelectionModel().getSelectedItem() == null) {
@@ -829,10 +842,10 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     }
 
     private void newSampleAdded() {
-        for(Sample sample : sampleArrayList) {
+        for(SampleView sample : sampleArrayList) {
             if(sample.getId() == null) {
                 try {
-                    sample.setRunId(sampleUploadController.getRun().getId());
+                    sample.getRun().setId(sampleUploadController.getRun().getId());
                     sampleUpload(sample);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -865,13 +878,13 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         }
     }
 
-    private Map<String, Object> createSampleMap(Sample sample) {
+    private Map<String, Object> createSampleMap(SampleView sample) {
         Map<String, Object> params = new HashMap<>();
 
-        params.put("runId", sample.getRunId());
+        params.put("runId", sample.getRun().getId());
         params.put("name", sample.getName());
-        params.put("panelId", sample.getPanelId());
-        params.put("diseaseId", sample.getDiseaseId());
+        params.put("panelId", sample.getPanel().getId());
+        params.put("diseaseId", sample.getPanel().getDefaultDiseaseId());
         params.put("sampleSource", sample.getSampleSource());
         params.put("inputFType", "FASTQ.GZ");
 
@@ -880,14 +893,14 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     private List<Map<String, Object>> returnSampleMap() {
         List<Map<String, Object>> list = new ArrayList<>();
-        for(Sample sample : sampleArrayList) {
+        for(SampleView sample : sampleArrayList) {
             Map<String, Object> params = createSampleMap(sample);
             list.add(params);
         }
         return list;
     }
 
-    private void sampleUpload(Sample sample) throws Exception {
+    private void sampleUpload(SampleView sample) throws Exception {
 
         Map<String, Object> params = createSampleMap(sample);
         HttpClientResponse response;
@@ -899,6 +912,33 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     }
 
     private void postAnalysisFilesData(Sample sample) {
+        Set<String> fileName = fileMap.keySet();
+
+        fileName.forEach(file -> {
+            Map<String, Object> fileInfo = fileMap.get(file);
+
+            if(fileInfo.get("sampleName") != null && fileInfo.get("sampleName").toString().equals(sample.getName())) {
+                fileInfo.put("sampleId", sample.getId());
+                fileInfo.put("sampleName", null);
+                fileInfo.remove("sampleName");
+                HttpClientResponse fileResponse;
+                try {
+                    fileResponse = apiService.post("/analysisFiles", fileInfo, null, true);
+                    AnalysisFile fileData = fileResponse.getObjectBeforeConvertResponseToJSON(AnalysisFile.class);
+                    logger.debug(fileData.getName());
+                    uploadFileData.add(fileData);
+                } catch (WebAPIException e) {
+                    DialogUtil.error(e.getHeaderText(), e.getMessage(), getMainApp().getPrimaryStage(), true);
+                } catch (IOException e) {
+                    logger.error("Unknown Error", e);
+                    DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+                }
+
+            }
+        });
+    }
+
+    private void postAnalysisFilesData(SampleView sample) {
         Set<String> fileName = fileMap.keySet();
 
         fileName.forEach(file -> {
@@ -979,7 +1019,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
                 Optional<AnalysisFile> optionalFile = uploadFileData.stream().filter(item ->
                         item.getName().contains(fastqFilePairName)).findFirst();
-                Sample sample = null;
+                SampleView sample = null;
                 if(optionalFile.isPresent()) sample = getSameSample(optionalFile.get().getSampleId());
                 //fastq 파일이 짝을 이루고 올리는데 실패한 파일인 경우
                 if(pairFileList.size() == 2 && sample != null) {
@@ -1036,8 +1076,8 @@ public class SampleUploadScreenFirstController extends BaseStageController{
      * @param sampleId Integer
      * @return Sample
      */
-    private Sample getSameSample(Integer sampleId) {
-        Optional<Sample> optionalSample = sampleArrayList.stream().filter(item -> (item.getId() != null
+    private SampleView getSameSample(Integer sampleId) {
+        Optional<SampleView> optionalSample = sampleArrayList.stream().filter(item -> (item.getId() != null
                         && sampleId.equals(item.getId()))).findFirst();
         return optionalSample.orElse(null);
     }
@@ -1054,7 +1094,11 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         }
         uploadFileList.addAll(fileList);
         if(newFileCheck) {
-            Sample sample = new Sample();
+            SampleView sample = new SampleView();
+            Panel panel = new Panel();
+            Run run = new Run();
+            sample.setPanel(panel);
+            sample.setRun(run);
             sample.setName(fastqFilePairName);
             sampleArrayList.add(sample);
         }
