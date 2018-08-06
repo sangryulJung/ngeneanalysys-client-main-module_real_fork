@@ -23,6 +23,7 @@ import javafx.scene.layout.VBox;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.ACMGFilterCode;
 import ngeneanalysys.code.enums.ExperimentTypeCode;
+import ngeneanalysys.code.enums.LibraryTypeCode;
 import ngeneanalysys.code.enums.PredictionTypeCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.controller.fragment.AnalysisDetailClinicalSignificantController;
@@ -116,16 +117,16 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     private Label searchCountLabel;
 
     @FXML
-    private Label changeTierLabel;
+    private Button changeTierButton;
 
     @FXML
-    private Label falsePositive;
+    private Button falsePositiveButton;
 
     @FXML
-    private Label addToReport;
+    private Button addToReportButton;
 
     @FXML
-    private Label showIGV;
+    private Button showIGVButton;
 
     private SampleView sample = null;
     private Panel panel = null;
@@ -288,8 +289,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         });
 
-        showFalseVariantsCheckBox.addEventFilter(MouseEvent.MOUSE_CLICKED, ev ->
-            showVariantList(currentPageIndex + 1, 0));
+//        showFalseVariantsCheckBox.addEventFilter(MouseEvent.MOUSE_CLICKED, ev ->
+//            showVariantList(currentPageIndex + 1, 0));
 
         snvWrapper.widthProperty().addListener((ob, ov, nv) -> {
             double wrapperWidth = (Double)nv;
@@ -343,8 +344,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     private void eventRegistration() {
-        addToReport.setCursor(Cursor.HAND);
-        addToReport.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
+        addToReportButton.setCursor(Cursor.HAND);
+        addToReportButton.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
             List<VariantAndInterpretationEvidence> selectList = getSelectedItemList();
             if(!selectList.isEmpty()) {
                 try {
@@ -362,8 +363,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         });
 
         if("SOMATIC".equalsIgnoreCase(panel.getAnalysisType())) {
-            changeTierLabel.setCursor(Cursor.HAND);
-            changeTierLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
+            changeTierButton.setCursor(Cursor.HAND);
+            changeTierButton.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
                 List<VariantAndInterpretationEvidence> selectList = getSelectedItemList();
                 if (!selectList.isEmpty()) {
                     try {
@@ -380,9 +381,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 }
             });
         } else {
-            changeTierLabel.setText("Pathogenicity");
-            changeTierLabel.setCursor(Cursor.HAND);
-            changeTierLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
+            changeTierButton.setText("Pathogenicity");
+            changeTierButton.setCursor(Cursor.HAND);
+            changeTierButton.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
                 List<VariantAndInterpretationEvidence> selectList = getSelectedItemList();
                 if (!selectList.isEmpty()) {
                     try {
@@ -399,8 +400,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 }
             });
         }
-        falsePositive.setCursor(Cursor.HAND);
-        falsePositive.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
+        falsePositiveButton.setCursor(Cursor.HAND);
+        falsePositiveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
             List<VariantAndInterpretationEvidence> selectList = getSelectedItemList();
             if(!selectList.isEmpty()) {
                 try {
@@ -416,8 +417,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 }
             }
         });
-        showIGV.setCursor(Cursor.HAND);
-        showIGV.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
+        showIGVButton.setCursor(Cursor.HAND);
+        showIGVButton.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
             if(variantListTableView.getSelectionModel() != null
                     && variantListTableView.getSelectionModel().getSelectedItem() != null) {
                 VariantAndInterpretationEvidence variant = variantListTableView.getSelectionModel().getSelectedItem();
@@ -1127,7 +1128,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 setGraphic((StringUtils.isNotEmpty(item)) ? SNPsINDELsList.getWarningReasonPopOver(item, panel) : null);
             }
         });
-        if(panel != null && ExperimentTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
+        if(panel != null && (ExperimentTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) ||
+                (ExperimentTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType()) &&
+                        LibraryTypeCode.HYBRIDIZATION_CAPTURE.getDescription().equalsIgnoreCase(panel.getLibraryType()))) {
             TableColumn<VariantAndInterpretationEvidence, String> lowConfidence = new TableColumn<>("Low Confidence");
             createTableHeader(lowConfidence, "Low Confidence", null, 70.);
             lowConfidence.getStyleClass().add(centerStyleClass);
@@ -1139,27 +1142,35 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 }
             });
             lowConfidence.setVisible(false);
+            TableColumn<VariantAndInterpretationEvidence, String> falsePositive = new TableColumn<>("False");
+            createTableHeader(falsePositive, "False", "isFalse",55.);
+            falsePositive.setStyle(falsePositive.getStyle() + "-fx-alignment : center;");
+            falsePositive.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getIsFalse()));
+            falsePositive.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
+                @Override
+                public void updateItem(String item, boolean empty) {
+                    Label label = null;
+                    if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
+                        VariantAndInterpretationEvidence variant = getTableView().getItems().get(getIndex());
+                        label = new Label("F");
+                        label.getStyleClass().remove("label");
+                        label.getStyleClass().add("tier_FP");
+                        label.setCursor(Cursor.HAND);
+                        PopOverUtil.openFalsePopOver(label, variant.getSnpInDel().getFalseReason());
+                    }
+                    setGraphic(label);
+                }
+            });
+            falsePositive.setVisible(false);
+            showFalseVariantsCheckBox.addEventFilter(MouseEvent.MOUSE_CLICKED, ev -> {
+                falsePositive.setVisible(showFalseVariantsCheckBox.isSelected());
+                showVariantList(currentPageIndex + 1, 0);
+            });
+        } else {
+            showFalseVariantsCheckBox.setVisible(false);
+            falsePositiveButton.setVisible(false);
         }
 
-        TableColumn<VariantAndInterpretationEvidence, String> falsePositive = new TableColumn<>("False");
-        createTableHeader(falsePositive, "False", "isFalse",55.);
-        falsePositive.setStyle(falsePositive.getStyle() + "-fx-alignment : center;");
-        falsePositive.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getIsFalse()));
-        falsePositive.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
-            @Override
-            public void updateItem(String item, boolean empty) {
-                Label label = null;
-                if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
-                    VariantAndInterpretationEvidence variant = getTableView().getItems().get(getIndex());
-                    label = new Label("F");
-                    label.getStyleClass().remove("label");
-                    label.getStyleClass().add("tier_FP");
-                    label.setCursor(Cursor.HAND);
-                    PopOverUtil.openFalsePopOver(label, variant.getSnpInDel().getFalseReason());
-                }
-                setGraphic(label);
-            }
-        });
 
         TableColumn<VariantAndInterpretationEvidence, String> report = new TableColumn<>("Report");
         createTableHeader(report, "Report", null ,55.);

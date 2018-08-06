@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane fx:id="snvWrapper" prefHeight="380.0" prefWidth="1140.0" style="-fx-background-color: #f2f5fa;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNVController">
+<GridPane fx:id="snvWrapper" prefHeight="380.0" prefWidth="1140.0" style="-fx-background-color: #f2f5fa;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNVController">
    <columnConstraints>
       <ColumnConstraints fillWidth="false" hgrow="NEVER" maxWidth="-Infinity" minWidth="10.0" prefWidth="200.0" />
       <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" prefWidth="0.0" />
@@ -98,14 +98,14 @@
                         </CheckBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="200.0">
                            <children>
-                              <Label fx:id="changeTierLabel" styleClass="submitBtn" text="Tier">
+                              <Button fx:id="changeTierButton" styleClass="submitBtn" text="Tier">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
                                  <padding>
                                     <Insets left="10.0" right="10.0" />
                                  </padding>
-                              </Label>
+                              </Button>
                            </children>
                            <VBox.margin>
                               <Insets top="10.0" />
@@ -113,34 +113,34 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="200.0">
                            <children>
-                              <Label fx:id="falsePositive" styleClass="submitBtn" text="False">
+                              <Button fx:id="addToReportButton" styleClass="submitBtn" text="Report">
                                  <HBox.margin>
                                     <Insets right="20.0" />
                                  </HBox.margin>
                                  <padding>
                                     <Insets left="10.0" right="10.0" />
                                  </padding>
-                              </Label>
-                              <Label fx:id="addToReport" styleClass="submitBtn" text="Report">
+                              </Button>
+                              <Button fx:id="falsePositiveButton" styleClass="submitBtn" text="False">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
                                  <padding>
                                     <Insets left="10.0" right="10.0" />
                                  </padding>
-                              </Label>
+                              </Button>
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="200.0">
                            <children>
-                              <Label fx:id="showIGV" styleClass="submitBtn" text="IGV">
+                              <Button fx:id="showIGVButton" styleClass="submitBtn" text="IGV">
                                  <HBox.margin>
                                     <Insets right="20.0" />
                                  </HBox.margin>
                                  <padding>
                                     <Insets left="10.0" right="10.0" />
                                  </padding>
-                              </Label>
+                              </Button>
                               <Label id="csv_download_image" onMouseClicked="#csvDownload" />
                               <Label id="excel_download_image" onMouseClicked="#excelDownload">
                                  <HBox.margin>
