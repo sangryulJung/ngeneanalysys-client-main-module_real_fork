@@ -8,6 +8,7 @@ import javafx.scene.layout.HBox;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.MainController;
 import ngeneanalysys.exceptions.WebAPIException;
+import ngeneanalysys.model.AnalysisFileList;
 import ngeneanalysys.task.IGVInstallTask;
 import ngeneanalysys.task.IGVProcessExecuteTask;
 import ngeneanalysys.util.DialogUtil;
@@ -64,6 +65,7 @@ public class IGVService {
     private String locus;
     /** 분석 Human Reference Version */
     private String genome;
+    private APIService apiService = null;
 
     private IGVService() {}
 
@@ -95,7 +97,7 @@ public class IGVService {
      * @param igvInstall boolean
      */
     @SuppressWarnings("static-access")
-    public void intall(boolean jreInstall, boolean igvInstall) {
+    private void install(boolean jreInstall, boolean igvInstall) {
         logger.debug(String.format("JRE Install : %s, IGV Install : %s", jreInstall, igvInstall));
 
         String progressBoxId = "DOWN_" + System.currentTimeMillis();
@@ -131,22 +133,20 @@ public class IGVService {
         Button cancelButton = new Button("cancel");
         cancelButton.getStyleClass().add("btn_cancel_normal");
         cancelButton.setOnAction(event -> {
-            if(downloadThread != null) {
-                try {
-                    logger.error("igv install cancel..");
-                    Thread.sleep(100);
-                    Platform.runLater(() -> {
-                        downloadThread.interrupt();
-                        task.cancel();
-                        getMainController().removeProgressTaskItemById(progressBoxId);
-                    });
-                } catch (Exception e) {
-                    logger.error("download cancel failed!!");
-                    DialogUtil.error("File Download Cancel Fail.", "An error occurred during the cancel file download.", getMainController().getPrimaryStage(), false);
-                }
-                // 연동 진행 여부값 초기화
-                isStartOfIGV = false;
+            try {
+                logger.error("igv install cancel..");
+                Thread.sleep(100);
+                Platform.runLater(() -> {
+                    downloadThread.interrupt();
+                    task.cancel();
+                    getMainController().removeProgressTaskItemById(progressBoxId);
+                });
+            } catch (Exception e) {
+                logger.error("download cancel failed!!");
+                DialogUtil.error("File Download Cancel Fail.", "An error occurred during the cancel file download.", getMainController().getPrimaryStage(), false);
             }
+            // 연동 진행 여부값 초기화
+            isStartOfIGV = false;
         });
 
         box.getChildren().add(titleLabel);
@@ -181,8 +181,6 @@ public class IGVService {
 
     /**
      * IGV 어플리케이션 실행.
-     * @throws WebAPIException
-     * @throws InterruptedException
      */
     @SuppressWarnings("static-access")
     public void launchIGV() throws Exception {
@@ -239,7 +237,6 @@ public class IGVService {
 
     /**
      * IGV 어플리케이션 실행 쓰레드 종료 후 연동 요청
-     * @throws Exception
      */
     public void requestAndLauncherThreadStop() throws Exception {
         if(igvProcessExecuteThread != null) {
@@ -251,18 +248,47 @@ public class IGVService {
 
     /**
      * IGV 어플리케이션 연동 요청
-     * @throws Exception
      */
     public void request() throws Exception {
         HttpClientResponse response = null;
+        //GATK4 Mutect2 Bam related file count
+        long mutectBamFileCount;
+        //GATK4 Haplotypecaller Bam related file count
+        long hcBamFileCount;
+        // Check whether Mutec2 or HaplotypeCaller Bam file exists.
+        try {
+            apiService = APIService.getInstance();
+            Map<String,Object> paramMap = new HashMap<>();
+            paramMap.put("sampleId", this.sampleId);
+            response = apiService.get("/analysisFiles", paramMap, null, false);
+            AnalysisFileList analysisFileList = response.getObjectBeforeConvertResponseToJSON(AnalysisFileList.class);
+            mutectBamFileCount = analysisFileList.getResult().stream().filter(f ->
+                    f.getName().endsWith("mutect.bam") || f.getName().endsWith("mutect.bam.bai") ||
+                            f.getName().endsWith("mutect.bam.tdf")).count();
+            hcBamFileCount = analysisFileList.getResult().stream().filter(f ->
+                    f.getName().endsWith("hc.bam") || f.getName().endsWith("hc.bam.bai") ||
+                            f.getName().endsWith("hc.bam.tdf")).count();
+        } catch (Exception e) {
+            mutectBamFileCount = 0;
+            hcBamFileCount = 0;
+            logger.error("Fail to get IGV viewing file list", e);
+        }
         try {
             logger.info(String.format("request igv [sample id : %s, bam file : %s, genome : %s, locus : %s, gene : %s]", this.sampleId, this.bamFileName, this.genome, this.locus, this.gene));
 
-            String name = String.format("[%s:%s:%s]", this.sampleId, this.sampleName, this.variantId);
-            String file = String.format("http://127.0.0.1:%s/analysisFiles/%s/%s", CommonConstants.HTTP_PROXY_SERVER_PORT, this.sampleId, this.bamFileName + "_final.bam");
-            String file1 = String.format("http://127.0.0.1:%s/analysisFiles/%s/%s", CommonConstants.HTTP_PROXY_SERVER_PORT, this.sampleId, this.bamFileName + "_mutect.bam");
+            //String name = String.format("[%s:%s:%s]", this.sampleId, this.sampleName, this.variantId);
+            String finalBamFileUrl = String.format("http://127.0.0.1:%s/analysisFiles/%s/%s", CommonConstants.HTTP_PROXY_SERVER_PORT, this.sampleId, this.bamFileName + "_final.bam");
+            String mutectBamFileUrl = String.format("http://127.0.0.1:%s/analysisFiles/%s/%s", CommonConstants.HTTP_PROXY_SERVER_PORT, this.sampleId, this.bamFileName + "_mutect.bam");
+            String hcBamFileUrl = String.format("http://127.0.0.1:%s/analysisFiles/%s/%s", CommonConstants.HTTP_PROXY_SERVER_PORT, this.sampleId, this.bamFileName + "_ha.bam");
             Map<String,Object> params = new HashMap<>();
-            params.put("file", file + "," + file1);
+            if (mutectBamFileCount == 3) {
+                params.put("file", mutectBamFileUrl + "," + finalBamFileUrl);
+            } else if (hcBamFileCount == 3) {
+                params.put("file", hcBamFileUrl + "," + finalBamFileUrl);
+            } else {
+                params.put("file", finalBamFileUrl);
+            }
+
             //params.put("name", name);
             params.put("genome", this.genome);
             params.put("merge", "false");
@@ -273,8 +299,8 @@ public class IGVService {
                 params.put("locus", this.locus);
             }
 
-            boolean isSame = file.equals(this.currentPath.get());
-            this.currentPath.set(file);
+            boolean isSame = finalBamFileUrl.equals(this.currentPath.get());
+            this.currentPath.set(finalBamFileUrl);
 
             String cmd = (isSame) ? "goto" : "load";
             String host = String.format("http://localhost:%s/%s", igvPort, cmd);
@@ -329,7 +355,7 @@ public class IGVService {
                 boolean isJREInstall = !isExistJRE;
                 // IGV 설치실행여부 true시 설치 실행
                 boolean isIGVInstall = !isExistIGV;
-                intall(isJREInstall, isIGVInstall);
+                install(isJREInstall, isIGVInstall);
             } else {
                 launchIGV();
             }
