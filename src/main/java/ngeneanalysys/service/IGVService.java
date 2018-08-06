@@ -251,6 +251,7 @@ public class IGVService {
      */
     public void request() throws Exception {
         HttpClientResponse response = null;
+        long finalBamFileCount;
         //GATK4 Mutect2 Bam related file count
         long mutectBamFileCount;
         //GATK4 Haplotypecaller Bam related file count
@@ -262,6 +263,9 @@ public class IGVService {
             paramMap.put("sampleId", this.sampleId);
             response = apiService.get("/analysisFiles", paramMap, null, false);
             AnalysisFileList analysisFileList = response.getObjectBeforeConvertResponseToJSON(AnalysisFileList.class);
+            finalBamFileCount = analysisFileList.getResult().stream().filter(f ->
+                    f.getName().endsWith("final.bam") || f.getName().endsWith("final.bam.bai") ||
+                            f.getName().endsWith("final.bam.tdf")).count();
             mutectBamFileCount = analysisFileList.getResult().stream().filter(f ->
                     f.getName().endsWith("mutect.bam") || f.getName().endsWith("mutect.bam.bai") ||
                             f.getName().endsWith("mutect.bam.tdf")).count();
@@ -269,6 +273,7 @@ public class IGVService {
                     f.getName().endsWith("hc.bam") || f.getName().endsWith("hc.bam.bai") ||
                             f.getName().endsWith("hc.bam.tdf")).count();
         } catch (Exception e) {
+            finalBamFileCount = 0;
             mutectBamFileCount = 0;
             hcBamFileCount = 0;
             logger.error("Fail to get IGV viewing file list", e);
@@ -281,12 +286,14 @@ public class IGVService {
             String mutectBamFileUrl = String.format("http://127.0.0.1:%s/analysisFiles/%s/%s", CommonConstants.HTTP_PROXY_SERVER_PORT, this.sampleId, this.bamFileName + "_mutect.bam");
             String hcBamFileUrl = String.format("http://127.0.0.1:%s/analysisFiles/%s/%s", CommonConstants.HTTP_PROXY_SERVER_PORT, this.sampleId, this.bamFileName + "_ha.bam");
             Map<String,Object> params = new HashMap<>();
-            if (mutectBamFileCount == 3) {
+            if (finalBamFileCount == 3 && mutectBamFileCount == 3) {
                 params.put("file", mutectBamFileUrl + "," + finalBamFileUrl);
-            } else if (hcBamFileCount == 3) {
+            } else if (finalBamFileCount == 3 && hcBamFileCount == 3) {
+                params.put("file", hcBamFileUrl + "," + finalBamFileUrl);
+            } else if (finalBamFileCount == 3) {
                 params.put("file", hcBamFileUrl + "," + finalBamFileUrl);
             } else {
-                params.put("file", finalBamFileUrl);
+                throw new Exception("Can not find BAM file.");
             }
 
             //params.put("name", name);
