@@ -1,6 +1,9 @@
 package ngeneanalysys.code.constants;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class CommonConstants {
 	
@@ -49,10 +52,12 @@ public class CommonConstants {
 	public static final String TEMP_PATH = System.getProperty("java.io.tmpdir") + File.separator + "ngenebio_analysis" + File.separator;
 	
 	/** 자동 새로고침 시간 간격 */
-	public static final String[] AUTO_REFRESH_SECOND_PERIOD = new String[]{"10", "20", "30" ,"45", "60"};
-	
+	public static final List<String> AUTO_REFRESH_SECOND_PERIOD = Collections.unmodifiableList(
+			new ArrayList<String>() {{add("10"); add("20"); add("30"); add("45"); add("60");}});
+
 	/** 윈도우테마 */
-	public static final String[] WINDOW_THEME = new String[] {"Default", "Dark","Red","Ice","Mountain","DNA"};
+	public static final List<String> WINDOW_THEME =  Collections.unmodifiableList(
+			new ArrayList<String>(){{add("Default"); add("Dark"); add("Red"); add("Ice"); add("Mountain"); add("DNA");}});
 
 	/** 홈페이지 URL */
 	public static final String HOMEPAGE_URL = "http://www.ngenebio.com";
