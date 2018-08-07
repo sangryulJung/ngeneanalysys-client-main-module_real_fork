@@ -27,7 +27,6 @@ import ngeneanalysys.controller.systemMenu.SystemMenuSettingController;
 import ngeneanalysys.controller.systemMenu.SystemMenuSupportController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
-import ngeneanalysys.model.paged.PagedPanel;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
@@ -1042,7 +1041,7 @@ public class MainController extends BaseStageController {
     	}
     }
 
-    public void deleteSampleTab(final String id) {
+    void deleteSampleTab(final String id) {
         Optional<ComboBoxItem> optionalTab = sampleList.getItems().stream().filter(item -> item.getValue()
                 .equals(id)).findFirst();
         optionalTab.ifPresent(tab -> {

@@ -60,14 +60,14 @@ public class ServerDirectoryViewController extends BaseStageController {
     }
 
     /**
-     * @param sampleUploadScreenFirstController
+     * @param sampleUploadScreenFirstController SampleUploadScreenFirstController
      */
     void setSampleUploadScreenFirstController(SampleUploadScreenFirstController sampleUploadScreenFirstController) {
         this.sampleUploadScreenFirstController = sampleUploadScreenFirstController;
     }
 
     /**
-     * @param sampleUploadController
+     * @param sampleUploadController SampleUploadController
      */
     void setSampleUploadController(SampleUploadController sampleUploadController) {
         this.sampleUploadController = sampleUploadController;

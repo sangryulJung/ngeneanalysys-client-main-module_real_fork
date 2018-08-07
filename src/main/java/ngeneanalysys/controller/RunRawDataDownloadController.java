@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,14 +36,15 @@ public class RunRawDataDownloadController extends SubPaneController {
     private CheckComboBox<String> checkComboBox;
 
     /**
-     * @param runSampleView
+     * @param runSampleView RunSampleView
      */
-    public void setRunSampleView(RunSampleView runSampleView) {
+    void setRunSampleView(RunSampleView runSampleView) {
         this.runSampleView = runSampleView;
     }
 
     @Override
     public void show(Parent root) throws IOException {
+        logger.debug("init raw data download");
         dialogStage = new Stage();
         dialogStage.initStyle(StageStyle.DECORATED);
         dialogStage.initModality(Modality.APPLICATION_MODAL);
@@ -63,7 +65,7 @@ public class RunRawDataDownloadController extends SubPaneController {
         dialogStage.showAndWait();
     }
 
-    public void createCheckComboBox() {
+    private void createCheckComboBox() {
         checkComboBox = new CheckComboBox<>();
         checkComboBox.getItems().addAll("bai", "bam", "vcf", "fastq.gz");
         hBox.getChildren().add(checkComboBox);
@@ -73,12 +75,12 @@ public class RunRawDataDownloadController extends SubPaneController {
     public void rawDataDownload() {
         ObservableList<String> checkItem = checkComboBox.getCheckModel().getCheckedItems();
         if(!checkItem.isEmpty()) {
-            List<String> list = checkItem.stream().collect(Collectors.toList());
+            List<String> list = new ArrayList<>(checkItem);
             downloadTask(list);
         }
     }
 
-    public void downloadTask(List<String> fileType) {
+    private void downloadTask(List<String> fileType) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         File folder = directoryChooser.showDialog(this.getMainApp().getPrimaryStage());
 

@@ -159,7 +159,7 @@ public class SampleUploadController extends BaseStageController{
     }
 
     /**
-     * @param samples
+     * @param samples List<SampleView>
      */
     public void setSamples(List<SampleView> samples) {
         this.samples = samples;
@@ -176,7 +176,7 @@ public class SampleUploadController extends BaseStageController{
 
     void setTextFieldRunName(String value) {
         if(value.contains("/")) {
-            textFieldRunName.setText(value.substring(value.lastIndexOf("/") + 1));
+            textFieldRunName.setText(value.substring(value.lastIndexOf('/') + 1));
         } else {
             textFieldRunName.setText(value);
         }
@@ -253,7 +253,7 @@ public class SampleUploadController extends BaseStageController{
         currentStage.showAndWait();
     }
 
-    void runInfoEdit() {
+    private void runInfoEdit() {
         textFieldRunName.setText(run.getName());
         textFieldRunName.setDisable(true);
 

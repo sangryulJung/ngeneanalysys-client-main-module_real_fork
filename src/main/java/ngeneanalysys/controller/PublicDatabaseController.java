@@ -12,7 +12,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -122,6 +121,7 @@ public class PublicDatabaseController extends SubPaneController {
         dialogStage.showAndWait();
     }
 
+    @SuppressWarnings("unchecked")
     private void setList(String id) {
         if(toolsContentsGridPane.getChildren() != null && !toolsContentsGridPane.getChildren().isEmpty()) {
             toolsContentsGridPane.getChildren().removeAll(toolsContentsGridPane.getChildren());

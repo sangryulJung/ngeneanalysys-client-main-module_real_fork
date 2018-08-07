@@ -439,40 +439,60 @@ public class VariantFilterController extends SubPaneController {
         });
 
         depthCountTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("[0-9]*")) endFractionTextField.setText(oldValue);
+            if (!newValue.matches("[0-9]*")) depthCountTextField.setText(oldValue);
         });
 
         altCountTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("[0-9]*")) endFractionTextField.setText(oldValue);
+            if (!newValue.matches("[0-9]*")) altCountTextField.setText(oldValue);
         });
 
         depthEndCountTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("[0-9]*")) endFractionTextField.setText(oldValue);
+            if (!newValue.matches("[0-9]*")) depthEndCountTextField.setText(oldValue);
         });
 
         altEndCountTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("[0-9]*")) endFractionTextField.setText(oldValue);
+            if (!newValue.matches("[0-9]*")) altEndCountTextField.setText(oldValue);
         });
 
         startFractionTextField.focusedProperty().addListener((ol, ov, nv) -> {
-            if(!nv) {
-                if(StringUtils.isNotEmpty(startFractionTextField.getText())
-                        && StringUtils.isNotEmpty(endFractionTextField.getText())) {
-                    if(Double.parseDouble(startFractionTextField.getText()) > Double.parseDouble(endFractionTextField.getText())) {
-                        startFractionTextField.setText("");
-                    }
-                }
+            if(!nv && checkNotEmptyTextField(startFractionTextField, endFractionTextField)
+                        && checkInequality(startFractionTextField, endFractionTextField)) {
+                startFractionTextField.setText("");
             }
         });
 
         endFractionTextField.focusedProperty().addListener((ol, ov, nv) -> {
-            if(!nv) {
-                if(StringUtils.isNotEmpty(endFractionTextField.getText())
-                        && StringUtils.isNotEmpty(startFractionTextField.getText())) {
-                    if(Double.parseDouble(startFractionTextField.getText()) > Double.parseDouble(endFractionTextField.getText())) {
-                        endFractionTextField.setText("");
-                    }
-                }
+            if(!nv && checkNotEmptyTextField(startFractionTextField, endFractionTextField)
+                    && checkInequality(startFractionTextField, endFractionTextField)) {
+                endFractionTextField.setText("");
+            }
+        });
+
+        altCountTextField.focusedProperty().addListener((ol, ov, nv) -> {
+            if(!nv && checkNotEmptyTextField(altCountTextField, altEndCountTextField)
+                    && checkInequality(altCountTextField, altEndCountTextField)) {
+                altCountTextField.setText("");
+            }
+        });
+
+        altEndCountTextField.focusedProperty().addListener((ol, ov, nv) -> {
+            if(!nv && checkNotEmptyTextField(altCountTextField, altEndCountTextField)
+                    && checkInequality(altCountTextField, altEndCountTextField)) {
+                altEndCountTextField.setText("");
+            }
+        });
+
+        depthCountTextField.focusedProperty().addListener((ol, ov, nv) -> {
+            if(!nv && checkNotEmptyTextField(depthCountTextField, depthEndCountTextField)
+                    && checkInequality(depthCountTextField, depthEndCountTextField)) {
+                depthCountTextField.setText("");
+            }
+        });
+
+        depthEndCountTextField.focusedProperty().addListener((ol, ov, nv) -> {
+            if(!nv && checkNotEmptyTextField(depthCountTextField, depthEndCountTextField)
+                    && checkInequality(depthCountTextField, depthEndCountTextField)) {
+                depthEndCountTextField.setText("");
             }
         });
 
@@ -500,6 +520,14 @@ public class VariantFilterController extends SubPaneController {
         Scene scene = new Scene(root);
         dialogStage.setScene(scene);
         dialogStage.showAndWait();
+    }
+
+    private boolean checkNotEmptyTextField(TextField textField1, TextField textField2) {
+        return StringUtils.isNotEmpty(textField1.getText()) && StringUtils.isNotEmpty(textField2.getText());
+    }
+
+    private boolean checkInequality(TextField textField1, TextField textField2) {
+        return Double.parseDouble(textField1.getText()) > Double.parseDouble(textField2.getText());
     }
 
     @FXML
@@ -1401,8 +1429,7 @@ public class VariantFilterController extends SubPaneController {
         }
 
         if(lowConfidenceCheckComboBox.getCheckModel().getCheckedItems() != null && !lowConfidenceCheckComboBox.getCheckModel().isEmpty()) {
-            lowConfidenceCheckComboBox.getCheckModel().getCheckedItems().stream()
-                    .forEach(item -> list.add("lowConfidence "  + item));
+            lowConfidenceCheckComboBox.getCheckModel().getCheckedItems().forEach(item -> list.add("lowConfidence " + item));
         }
 
         if(StringUtils.isEmpty(endFractionTextField.getText()) && StringUtils.isNotEmpty(startFractionTextField.getText())) {

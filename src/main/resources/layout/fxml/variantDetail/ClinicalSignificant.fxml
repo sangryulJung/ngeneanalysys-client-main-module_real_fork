@@ -26,9 +26,9 @@
     <RowConstraints minHeight="10.0" prefHeight="209.0" vgrow="ALWAYS" />
   </rowConstraints>
    <children>
-      <VBox fx:id="clinicalSignificant" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="191.0" prefWidth="256.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <VBox fx:id="clinicalSignificant" alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="191.0" prefWidth="256.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
-            <HBox fx:id="pathogenicityPredictionHBox" maxHeight="36.0" prefHeight="36.0" prefWidth="291.0" styleClass="clinical_significant_pathogenicity_hbox">
+            <HBox fx:id="pathogenicityPredictionHBox" fillHeight="false" maxHeight="36.0" prefHeight="36.0" prefWidth="291.0" styleClass="clinical_significant_pathogenicity_hbox">
                <children>
                   <Label fx:id="clinicalSignificantPathogenicityPredictionLabel" styleClass="clinical_significant_pathogenicity_label" text="PREDICTION" />
                   <Label styleClass="prediction_none" text="P" />
@@ -44,7 +44,7 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </HBox>
-            <HBox fx:id="pathogenicityBicHBox" prefHeight="33.0" prefWidth="260.0" styleClass="clinical_significant_pathogenicity_hbox">
+            <HBox fx:id="pathogenicityBicHBox" fillHeight="false" prefHeight="33.0" prefWidth="260.0" styleClass="clinical_significant_pathogenicity_hbox">
                <children>
                   <Label fx:id="clinicalSignificantPathogenicityBicLabel" styleClass="clinical_significant_pathogenicity_label" text="BIC" />
                   <Label styleClass="prediction_none" text="P" />
@@ -60,7 +60,7 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </HBox>
-            <HBox fx:id="pathogenicityClinVarHBox" prefHeight="33.0" prefWidth="260.0" styleClass="clinical_significant_pathogenicity_hbox">
+            <HBox fx:id="pathogenicityClinVarHBox" fillHeight="false" prefHeight="33.0" prefWidth="260.0" styleClass="clinical_significant_pathogenicity_hbox">
                <children>
                   <Label fx:id="clinicalSignificantPathogenicityClinVarLabel" styleClass="clinical_significant_pathogenicity_label" text="CLINVAR" />
                   <Label styleClass="prediction_none" text="P" />
@@ -73,7 +73,7 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </HBox>
-            <HBox fx:id="pathogenicityEnigmaHBox" prefHeight="33.0" prefWidth="260.0" styleClass="clinical_significant_pathogenicity_hbox">
+            <HBox fx:id="pathogenicityEnigmaHBox" fillHeight="false" prefHeight="33.0" prefWidth="260.0" styleClass="clinical_significant_pathogenicity_hbox">
                <children>
                   <Label fx:id="clinicalSignificantPathogenicityEnigmaLabel" styleClass="clinical_significant_pathogenicity_label" text="ENIGMA" />
                   <Label styleClass="prediction_none" text="P" />
@@ -83,7 +83,13 @@
                   <Label styleClass="prediction_none" text="B" />
                </children>
             </HBox>
-         </children></VBox>
+         </children>
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+         <padding>
+            <Insets top="10.0" />
+         </padding></VBox>
       <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="179.0" prefWidth="250.0" visible="false" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="1">
          <children>
             <VBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="200.0">
@@ -343,7 +349,7 @@
                </HBox.margin></CheckBox>
          </children>
       </HBox>
-      <VBox fx:id="acmgVBox" alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+      <VBox fx:id="acmgVBox" alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" />
    </children>
    <opaqueInsets>
       <Insets />

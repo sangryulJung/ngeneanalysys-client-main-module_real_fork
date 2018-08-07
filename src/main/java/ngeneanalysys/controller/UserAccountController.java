@@ -150,7 +150,7 @@ public class UserAccountController extends SubPaneController {
         }
     }
 
-    public boolean modifyPwdCheck() {
+    private boolean modifyPwdCheck() {
         return "modify".equalsIgnoreCase(type) && ((StringUtils.isEmpty(passwordField1.getText())
                 && StringUtils.isEmpty(passwordField2.getText())) || validPwdInput());
     }

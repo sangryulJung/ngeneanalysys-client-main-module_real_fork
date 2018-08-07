@@ -7,10 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -48,6 +45,8 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
     @FXML
     private CheckBox addToGermlineReportCheckBox;
 
+    @FXML
+    private VBox clinicalSignificant;
     @FXML
     private VBox acmgVBox;
     @FXML
@@ -160,7 +159,9 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
             scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
             scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
             double widthSize = 250;
-            scrollPane.setMaxSize(widthSize, 200);
+            scrollPane.setMinSize(widthSize, 200);
+            scrollPane.setPrefSize(widthSize, 200);
+            scrollPane.setMaxSize(widthSize, Control.USE_COMPUTED_SIZE);
 
             VBox box = new VBox();
             box.setMaxWidth(widthSize -15);
@@ -474,6 +475,15 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                 frequencyValue[4] * 100,
                 frequencyValue[5] * 100);
         frequenciesRadarGraph.display();
+
+        if(false) {
+            deleteClinicalSignificantItem();
+        }
+    }
+
+    private void deleteClinicalSignificantItem() {
+        clinicalSignificant.getChildren().remove(pathogenicityBicHBox);
+        clinicalSignificant.getChildren().remove(pathogenicityEnigmaHBox);
     }
 
     private String checkType(Object obj) {
@@ -508,7 +518,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
     }
 
     /**
-     * Pathgenic Radar 차트 레벨에 따른 출력 퍼센트로 변환 반환
+     * Pathogenic Radar 차트 레벨에 따른 출력 퍼센트로 변환 반환
      * @param level String
      * @return double
      */

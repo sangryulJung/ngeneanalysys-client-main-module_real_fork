@@ -175,7 +175,7 @@ public class RawDataDownloadProgressTaskController extends SubPaneController {
 	/**
 	 * 쓰레드 강제 종료
 	 */
-	public void interruptForce() {
+	void interruptForce() {
 		try {
 			// 일시정지
 			pauseUpload();

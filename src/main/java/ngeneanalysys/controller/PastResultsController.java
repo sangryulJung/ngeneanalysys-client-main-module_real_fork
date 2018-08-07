@@ -89,7 +89,8 @@ public class PastResultsController extends SubPaneController {
 	private APIService apiService;
 	
 	/** Timer */
-	public Timeline autoRefreshTimeline;
+	private Timeline autoRefreshTimeline;
+
 	private int itemCountPerPage;
 
 	private List<RunStatusGirdPane> runStatusGirdPanes;
@@ -100,7 +101,7 @@ public class PastResultsController extends SubPaneController {
 
 	SuggestionProvider<String> provider = null;
 
-	public void setSearchOption() {
+	private void setSearchOption() {
 		searchOption.put("SAMPLE","sampleName");
 		searchOption.put("RUN","runName");
 		searchOption.put("PANEL","panelName");
@@ -254,7 +255,7 @@ public class PastResultsController extends SubPaneController {
 	/**
 	 * 자동 새로고침 시작 처리
 	 */
-	public void startAutoRefresh() {
+	void startAutoRefresh() {
 		boolean isAutoRefreshOn = "true".equals(config.getProperty("analysis.job.auto.refresh"));
 		logger.debug(String.format("auto refresh on : %s", isAutoRefreshOn));
 		
@@ -419,7 +420,7 @@ public class PastResultsController extends SubPaneController {
 			param.put("search", searchOption.get(searchComboBox.getSelectionModel().getSelectedItem().getText()) + " " + textField.getText());
 		}
 
-		/** End 검색 항목 설정 */
+		/* End 검색 항목 설정 */
 		return param;
 	}
 
@@ -461,7 +462,7 @@ public class PastResultsController extends SubPaneController {
 	 * 
 	 * @param list List<RunSampleView>
 	 */
-	public void renderSampleList(List<RunSampleView> list) {
+	private void renderSampleList(List<RunSampleView> list) {
 
 		resultVBox.getChildren().removeAll(resultVBox.getChildren());
 		resultVBox.setPrefHeight(0);
@@ -698,7 +699,7 @@ public class PastResultsController extends SubPaneController {
 	}
 
 	class SampleInfoVBox extends VBox {
-		public SampleInfoVBox() {
+		private SampleInfoVBox() {
 			this.setPrefWidth(810);
 			this.setMaxWidth(Double.MAX_VALUE);
 			HBox titleBox = new HBox();
@@ -721,14 +722,14 @@ public class PastResultsController extends SubPaneController {
 			this.setPrefHeight(30);
 		}
 
-		public void labelSize(Label label, Double size, String style) {
+		private void labelSize(Label label, Double size, String style) {
 			label.setPrefWidth(size);
 			label.setPrefHeight(35);
 			label.setAlignment(Pos.CENTER);
 			if(style != null) label.getStyleClass().add(style);
 		}
 
-		public void openSampleTab(final SampleView sample) {
+		private void openSampleTab(final SampleView sample) {
 			if(sample.getSampleStatus().getStep().equalsIgnoreCase(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STEP_PIPELINE) &&
 					sample.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_COMPLETE)) {
 				Map<String, Object> detailViewParamMap = new HashMap<>();
@@ -746,7 +747,7 @@ public class PastResultsController extends SubPaneController {
 			}
 		}
 
-		public void setSampleList(List<SampleView> sampleList) {
+		private void setSampleList(List<SampleView> sampleList) {
 			for(SampleView sampleView : sampleList) {
 				HBox itemHBox = new HBox();
 				itemHBox.setStyle(itemHBox.getStyle() + "-fx-cursor:hand;");
