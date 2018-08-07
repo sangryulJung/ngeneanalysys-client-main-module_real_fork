@@ -1,6 +1,7 @@
 package ngeneanalysys.controller;
 
 import javafx.application.Platform;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -8,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -100,29 +102,8 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
         apiService.setStage(getMainController().getPrimaryStage());
 
         sample = (SampleView)paramMap.get("sampleView");
-        // 파일 목록 요청
-        Map<String,Object> paramMap = new HashMap<>();
-        paramMap.put("sampleId", sample.getId());
-        try {
-            HttpClientResponse response = apiService.get("/analysisFiles", paramMap, null, false);
-            totalList = null;
-            AnalysisFileList analysisFileList = response.getObjectBeforeConvertResponseToJSON(AnalysisFileList.class);
-            totalList = analysisFileList.getResult();
-            totalList = totalList.stream().sorted(Comparator.comparing(AnalysisFile::getName)).collect(Collectors.toList());
 
-            filterTitleArea.setVisible(false);
-            filterTitleArea.setPrefWidth(0);
-            filterList.getChildren().add(new Label("Analysis Result Data Download: Uploaded Fastq files, Mapped bedFile(BAM format), Variant bedFile(VCF format), Data QC Report(PDF) "));
-            setList("ALL");
-
-        } catch (WebAPIException wae) {
-            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
-                    getMainApp().getPrimaryStage(), true);
-        } catch (Exception e) {
-            logger.error("Unknown Error", e);
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
-        }
-        // 목록 컬럼 설정
+        createCheckBox();
         typeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFileType()));
         filenameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
         sizeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.convertFileSizeFormat(cellData.getValue().getSize())));
@@ -159,6 +140,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
             return 0;
         });
 
+        getAnalysisFiles();
 
         currentStage = new Stage();
         currentStage.setResizable(false);
@@ -174,6 +156,59 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
         Scene scene = new Scene(root);
         currentStage.setScene(scene);
         currentStage.showAndWait();
+    }
+
+    private void createTableHeader(TableColumn<AnalysisFile, ?> column, Double size) {
+        HBox hBox = new HBox();
+        hBox.setPrefHeight(Double.MAX_VALUE);
+        hBox.setAlignment(Pos.CENTER);
+        CheckBox box = new CheckBox();
+        hBox.getChildren().add(box);
+        column.setStyle("-fx-alignment : center");
+        column.setSortable(false);
+        column.setGraphic(box);
+
+        box.selectedProperty().addListener((list, ov, nv) -> {
+            if(rawListTableView.getItems() != null) {
+                rawListTableView.getItems().forEach(item -> item.setCheckItem(nv));
+                rawListTableView.refresh();
+            }
+        });
+
+        if(size != null) column.setPrefWidth(size);
+
+        rawListTableView.getColumns().add(0, column);
+    }
+
+    private void createCheckBox() {
+        TableColumn<AnalysisFile, Boolean> checkBoxColumn = new TableColumn<>("");
+        createTableHeader(checkBoxColumn, 50d);
+        checkBoxColumn.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue() != null ));
+        checkBoxColumn.setCellFactory(param -> new BooleanCell());
+    }
+
+    private void getAnalysisFiles() {
+        Map<String,Object> paramMap = new HashMap<>();
+        paramMap.put("sampleId", sample.getId());
+        try {
+            HttpClientResponse response = apiService.get("/analysisFiles", paramMap, null, false);
+            totalList = null;
+            AnalysisFileList analysisFileList = response.getObjectBeforeConvertResponseToJSON(AnalysisFileList.class);
+            totalList = analysisFileList.getResult();
+            totalList = totalList.stream().sorted(Comparator.comparing(AnalysisFile::getName)).collect(Collectors.toList());
+
+            filterTitleArea.setVisible(false);
+            filterTitleArea.setPrefWidth(0);
+            filterList.getChildren().add(new Label("Analysis Result Data Download: Uploaded Fastq files, Mapped bedFile(BAM format), Variant bedFile(VCF format), Data QC Report(PDF) "));
+            setList("ALL");
+
+        } catch (WebAPIException wae) {
+            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+                    getMainApp().getPrimaryStage(), true);
+        } catch (Exception e) {
+            logger.error("Unknown Error", e);
+            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+        }
     }
 
     private BigDecimal returnData(String value, String unit) {
@@ -331,6 +366,51 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
         } catch (Exception e) {
             DialogUtil.error("Save Fail.", "An error occurred during the download.", getMainController().getPrimaryStage(), false);
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void fileDelete() {
+        List<AnalysisFile> files = rawListTableView.getItems().stream().filter(AnalysisFile::getCheckItem).collect(Collectors.toList());
+
+        if(!files.isEmpty()) {
+            for(AnalysisFile analysisFile : files) {
+                try {
+                    apiService.delete("analysisFiles/" + analysisFile.getId());
+                } catch (WebAPIException wae) {
+                    logger.debug(wae.getMessage());
+                }
+            }
+            getAnalysisFiles();
+        }
+
+    }
+
+    class BooleanCell extends TableCell<AnalysisFile, Boolean> {
+        private CheckBox checkBox = new CheckBox();
+
+        private BooleanCell() {
+            checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+                AnalysisFile analysisFile = BooleanCell.this.getTableView().getItems().get(
+                        BooleanCell.this.getIndex());
+                analysisFile.setCheckItem(newValue);
+                checkBox.setSelected(newValue);
+            });
+        }
+
+        @Override
+        public void updateItem(Boolean item, boolean empty) {
+            super.updateItem(item, empty);
+            if(empty) {
+                setGraphic(null);
+                return;
+            }
+
+            AnalysisFile analysisFile = BooleanCell.this.getTableView().getItems().get(
+                    BooleanCell.this.getIndex());
+            checkBox.setSelected(analysisFile.getCheckItem());
+
+            setGraphic(checkBox);
         }
     }
 

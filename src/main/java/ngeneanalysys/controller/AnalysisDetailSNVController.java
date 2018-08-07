@@ -16,7 +16,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -148,6 +147,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     private Map<String, List<Object>> filterList = new HashMap<>();
 
+    private Map<String, TableColumn> columnMap = new HashMap<>();
+
     /**
      * @return currentPageIndex
      */
@@ -195,11 +196,11 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         apiService = APIService.getInstance();
 
-        variantListTableView.addEventFilter(ScrollEvent.ANY, scrollEvent -> {
+        /*variantListTableView.addEventFilter(ScrollEvent.ANY, scrollEvent -> {
             variantListTableView.refresh();
             // close text box
             variantListTableView.edit(-1, null);
-        });
+        });*/
 
         //filterAddBtn.setDisable(true);
         //viewAppliedFiltersLabel.setDisable(true);
@@ -972,6 +973,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         if(size != null) column.setPrefWidth(size);
 
         variantListTableView.getColumns().add(column);
+        columnMap.put(name, column);
     }
 
     /*private void createTableHeader(TableColumn<VariantAndInterpretationEvidence, ?> column, String name, String sortName, Double size) {
@@ -1033,6 +1035,49 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         createTableHeader(checkBoxColumn, 50d);
         checkBoxColumn.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue() != null ));
         checkBoxColumn.setCellFactory(param -> new BooleanCell());
+
+        TableColumn<VariantAndInterpretationEvidence, Boolean> testColumn = new TableColumn<>("testColumn");
+        createTableHeader(testColumn, "testColumn", "test" ,70d);
+        testColumn.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue() != null));
+        testColumn.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, Boolean>() {
+            @Override
+            public void updateItem(Boolean item, boolean empty) {
+                super.updateItem(item, empty);
+                if(empty) {
+                  setGraphic(null);
+                } else {
+
+                    VariantAndInterpretationEvidence variant = getTableView().getItems().get(getIndex());
+
+                    String value;
+                    String code;
+                    if (panel != null && ExperimentTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
+                        if(StringUtils.isEmpty(variant.getSnpInDel().getExpertTier())) {
+                            value = variant.getSnpInDel().getSwTier();
+                            code = "tier_" + ACMGFilterCode.getCodeFromAlias(value);
+                        } else {
+                            value = variant.getSnpInDel().getExpertTier();
+                            code = "user_tier_" + ACMGFilterCode.getCodeFromAlias(value);
+                        }
+
+                    } else {
+                        value = StringUtils.isEmpty(variant.getSnpInDel().getExpertPathogenicity()) ? variant.getSnpInDel().getSwPathogenicity()
+                                : variant.getSnpInDel().getExpertPathogenicity();
+                        code = "prediction_" + PredictionTypeCode.getCodeFromAlias(value);
+                    }
+                    Label label = null;
+                    if (variant != null) {
+                        if(code != null && !"NONE".equals(code)) {
+                            label = new Label(value);
+                            label.getStyleClass().clear();
+                            testColumn.getStyleClass().add(centerStyleClass);
+                            label.getStyleClass().add(code);
+                        }
+                    }
+                    setGraphic(label);
+                }
+            }
+        });
 
         if(panel != null && ExperimentTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             TableColumn<VariantAndInterpretationEvidence, String> swTier = new TableColumn<>("Prediction");
@@ -1566,7 +1611,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     class BooleanCell extends TableCell<VariantAndInterpretationEvidence, Boolean> {
         private CheckBox checkBox = new CheckBox();
-        public BooleanCell() {
+        private BooleanCell() {
             checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
                 VariantAndInterpretationEvidence evidence = BooleanCell.this.getTableView().getItems().get(
                         BooleanCell.this.getIndex());

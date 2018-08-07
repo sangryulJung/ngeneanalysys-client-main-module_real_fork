@@ -33,7 +33,8 @@
                   </Label>
                </children>
             </HBox>
-            <HBox fx:id="filterList" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="62.0" prefWidth="1176.0" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="filterList" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="62.0" prefWidth="900.0" HBox.hgrow="ALWAYS" />
+            <Label maxHeight="25.0" maxWidth="80.0" minHeight="25.0" minWidth="80.0" onMouseClicked="#fileDelete" prefHeight="25.0" prefWidth="80.0" style="-fx-cursor: hand;" styleClass="submitBtn" text="Delete" />
          </children>
          <padding>
             <Insets left="19.0" right="15.0" />
@@ -44,7 +45,7 @@
       <TableView fx:id="rawListTableView" prefHeight="465.0" prefWidth="968.0" BorderPane.alignment="CENTER">
         <columns>
           <TableColumn fx:id="typeColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="170.0" resizable="false" text="Type" />
-          <TableColumn fx:id="filenameColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="490.0" text="File" />
+          <TableColumn fx:id="filenameColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="440.0" text="File" />
             <TableColumn fx:id="sizeColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="120.0" resizable="false" text="Size" />
             <TableColumn fx:id="createdColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="170.0" resizable="false" text="Date" />
             <TableColumn fx:id="downloadColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="110.0" resizable="false" text="Download" />

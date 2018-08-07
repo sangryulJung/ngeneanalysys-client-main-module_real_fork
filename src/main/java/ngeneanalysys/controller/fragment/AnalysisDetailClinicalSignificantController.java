@@ -160,9 +160,9 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
             scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
             double widthSize = 250;
             scrollPane.setMinSize(widthSize, 200);
-            scrollPane.setPrefSize(widthSize, 200);
             scrollPane.setMaxSize(widthSize, Control.USE_COMPUTED_SIZE);
-
+            acmgVBox.heightProperty().addListener((observable, oldValue, newValue) ->
+                    scrollPane.setPrefHeight(newValue.doubleValue()));
             VBox box = new VBox();
             box.setMaxWidth(widthSize -15);
             box.getStyleClass().add("acmg_content_box");
