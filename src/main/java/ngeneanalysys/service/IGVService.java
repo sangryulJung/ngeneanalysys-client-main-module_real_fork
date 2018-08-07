@@ -291,7 +291,7 @@ public class IGVService {
             } else if (finalBamFileCount == 3 && hcBamFileCount == 3) {
                 params.put("file", hcBamFileUrl + "," + finalBamFileUrl);
             } else if (finalBamFileCount == 3) {
-                params.put("file", hcBamFileUrl + "," + finalBamFileUrl);
+                params.put("file", finalBamFileUrl);
             } else {
                 throw new Exception("Can not find BAM file.");
             }
