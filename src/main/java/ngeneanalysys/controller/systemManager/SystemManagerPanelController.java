@@ -702,6 +702,10 @@ public class SystemManagerPanelController extends SubPaneController {
                     diseaseIdList.add(Integer.parseInt(disease.getValue()));
                 }
 
+                if(groupIdList.isEmpty() || diseaseIdList.isEmpty()) {
+                    return;
+                }
+
                 Panel panel = null;
 
                 //패널 생성

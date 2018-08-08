@@ -44,17 +44,11 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
     @FXML
     private Label tierOneGenesCountLabel;
 
-    /*@FXML
-    private Label tierOneTherapeuticLabel;*/
-
     @FXML
     private Label tierTwoVariantsCountLabel;
 
     @FXML
     private Label tierTwoGenesCountLabel;
-
-    /*@FXML
-    private Label tierTwoTherapeuticLabel;*/
 
     @FXML
     private Label tierThreeVariantsCountLabel;
@@ -102,6 +96,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
     /** API 서버 통신 서비스 */
     private APIService apiService;
 
+    @SuppressWarnings("unchecked")
     @Override
     public void show(Parent root) throws IOException {
         logger.debug("show..");
@@ -115,7 +110,6 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                 ConvertUtil.tierConvert(cellData.getValue().getSnpInDel().getSwTier())));
         geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
         variantColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
-        //alleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()));
         alleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()
             .toString() + "(" + cellData.getValue().getSnpInDel().getReadInfo().getAltReadNum() + "/" + cellData.getValue().getSnpInDel().getReadInfo().getReadDepth() + ")"));
         positionColumn.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getSnpInDel().getGenomicCoordinate().getStartPosition()));
@@ -146,7 +140,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         setDisplayItem();
     }
 
-    public void createEvidenceLabel(List<SnpInDelEvidence> interpretation, HBox hBox, String evidenceLevel) {
+    private void createEvidenceLabel(List<SnpInDelEvidence> interpretation, HBox hBox, String evidenceLevel) {
         if(interpretation == null || interpretation.isEmpty()) {
             return;
         }
@@ -172,11 +166,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         return null;
     }
 
-    private long countTherapeutic (List<SnpInDelEvidence> snpInDelInterpretations) {
-        return snpInDelInterpretations.stream().filter(item -> (item.getEvidence().equalsIgnoreCase("therapeutic"))).count();
-    }
-
-    public void setDisplayItem() {
+    void setDisplayItem() {
         SampleView sample = (SampleView) getParamMap().get("sampleView");
 
         //기본 초기화
@@ -273,7 +263,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                 tierFourVariantsCountLabel.setText(String.valueOf(tierFour.size()));
 
                 List<GenomicCoordinate> genomicCoordinates = new ArrayList<>();
-                tierFour.stream().forEach(item -> {
+                tierFour.forEach(item -> {
                     if (item.getSnpInDel().getGenomicCoordinate() != null)
                         genomicCoordinates.add(item.getSnpInDel().getGenomicCoordinate());
                 });
@@ -286,7 +276,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         }
     }
 
-    public String returnQCTitle(String value) {
+    private String returnQCTitle(String value) {
         if(value.equals("Median_BinCount_CNV_Targets")) {
             return "Median BinCount";
         } else if(value.equals("PCT_ExonBases_100X")) {
@@ -302,7 +292,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         return WordUtils.capitalize(value.replaceAll("_", " "));
     }
 
-    public void addQCGrid(SampleQC sampleQC, int col) {
+    private void addQCGrid(SampleQC sampleQC, int col) {
         ColumnConstraints columnConstraints = new ColumnConstraints();
         columnConstraints.setHgrow(Priority.ALWAYS);
         dataQCResultGridPane.getColumnConstraints().add(columnConstraints);
@@ -336,11 +326,12 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
 
     }
 
-   public void settingOverallQC(int sampleId) {
-       if(dataQCResultGridPane.getChildren() != null && !dataQCResultGridPane.getChildren().isEmpty()) {
-           dataQCResultGridPane.getChildren().removeAll(dataQCResultGridPane.getChildren());
-           dataQCResultGridPane.getColumnConstraints().removeAll(dataQCResultGridPane.getColumnConstraints());
-       }
+    @SuppressWarnings("unchecked")
+    private void settingOverallQC(int sampleId) {
+        if(dataQCResultGridPane.getChildren() != null && !dataQCResultGridPane.getChildren().isEmpty()) {
+            dataQCResultGridPane.getChildren().removeAll(dataQCResultGridPane.getChildren());
+            dataQCResultGridPane.getColumnConstraints().removeAll(dataQCResultGridPane.getColumnConstraints());
+        }
         List<SampleQC> qcList = null;
 
         try {

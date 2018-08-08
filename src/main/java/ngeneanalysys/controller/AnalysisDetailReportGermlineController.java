@@ -275,7 +275,6 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         alleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()
                 .toString() + "(" + cellData.getValue().getSnpInDel().getReadInfo().getAltReadNum() + "/" + cellData.getValue().getSnpInDel().getReadInfo().getReadDepth() + ")"));
 
-        List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
         panel = sample.getPanel();
         HttpClientResponse response = null;
         try {
@@ -441,7 +440,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         }
     }
 
-    public void setVariantsList() {
+    void setVariantsList() {
         HttpClientResponse response = null;
         try {
             response = apiService.get("/analysisResults/sampleSnpInDels/" + sample.getId(), null,
@@ -546,10 +545,10 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
     /**
      * 입력 정보 저장
-     * @param user
-     * @return
+     * @param user User
+     * @return boolean
      */
-    public boolean saveData(User user) {
+    private boolean saveData(User user) {
 
         String conclusionsText = conclusionsTextArea.getText();
 
@@ -680,7 +679,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
     }
 
-    public boolean createPDF(boolean isDraft) {
+    private boolean createPDF(boolean isDraft) {
         boolean created = true;
         String reportCreationErrorMsg = "An error occurred during the creation of the report document.";
         try {
@@ -717,7 +716,6 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 contentsMap.put("panelCode", panel.getCode());
                 contentsMap.put("sampleSource", sample.getSampleSource());
                 //리포트를 생성할 때마다 고유 ID 부여 report ID + random Int
-                contentsMap.put("reportingDate" , new Date().toString());
                 contentsMap.put("reportID", String.format("%05d-%05d", sample.getId(), random.nextInt(99999)));
 
                 contentsMap.put("inspectorOrganization", "");
@@ -949,7 +947,6 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
             result = setWriteFilePath.invoke(application, file.getPath());
             result = updateEmbeddedDoc.invoke(application);
             result = updateWordFile.invoke(application);
-            System.out.print("test");
             createdCheck(true, file);
         } catch (Exception e) {
             DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);
@@ -957,7 +954,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         }
     }
 
-    public void createdCheck(boolean created, File file) {
+    private void createdCheck(boolean created, File file) {
         try {
             if (created) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

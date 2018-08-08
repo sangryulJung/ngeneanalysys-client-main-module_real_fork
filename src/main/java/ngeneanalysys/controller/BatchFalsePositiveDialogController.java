@@ -3,7 +3,6 @@ package ngeneanalysys.controller;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
@@ -45,7 +44,7 @@ public class BatchFalsePositiveDialogController extends SubPaneController {
 
     private int sampleId;
 
-    public void settingItem(int sampleId, List<VariantAndInterpretationEvidence> variantList, AnalysisDetailSNVController snvController) {
+    void settingItem(int sampleId, List<VariantAndInterpretationEvidence> variantList, AnalysisDetailSNVController snvController) {
         this.sampleId = sampleId;
         this.variantList = variantList;
         this.snvController = snvController;

@@ -258,16 +258,17 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
                 .collect(Collectors.toList());
     }
 
-    void setQCItem(final Label valueLabel, final Label QCLabel
+    private void setQCItem(final Label valueLabel, final Label qcLabel
             , final List<SampleQC> qcList, final String qcString) {
         valueLabel.setText(findQCResult(qcList, qcString).toUpperCase());
         //valueLabel.setTooltip(new Tooltip(findQCResultString(qcList, qcString)));
         //totalBaseTooltip.setText(findQCTooltipString(qcList, "total_base"));
         final String value = findQCTooltipString(qcList, qcString);
-        QCLabel.setOnMouseClicked(ev ->
-                PopOverUtil.openQCPopOver(QCLabel, value));
+        qcLabel.setOnMouseClicked(ev ->
+                PopOverUtil.openQCPopOver(qcLabel, value));
     }
 
+    @SuppressWarnings("unchecked")
     private void settingOverallQC(int sampleId) {
 
         try {
@@ -307,19 +308,6 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
             if(findQC.isPresent()) {
                 result = findQC.get().getQcDescription() + " " + findQC.get().getQcThreshold() + System.lineSeparator()
                         + "Value : " + findQC.get().getQcValue().stripTrailingZeros().toPlainString() + findQC.get().getQcUnit();
-            }
-        }
-
-        return result;
-    }
-
-    private String findQCResultString(List<SampleQC> qcList, String qc) {
-        String result = "";
-
-        if(qcList != null && !qcList.isEmpty()) {
-            Optional<SampleQC> findQC = qcList.stream().filter(sampleQC -> sampleQC.getQcType().equalsIgnoreCase(qc)).findFirst();
-            if(findQC.isPresent()) {
-                result = findQC.get().getQcValue() + findQC.get().getQcUnit();
             }
         }
 

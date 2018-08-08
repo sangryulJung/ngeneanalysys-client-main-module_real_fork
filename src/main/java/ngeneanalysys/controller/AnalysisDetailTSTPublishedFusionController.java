@@ -9,7 +9,6 @@ import javafx.scene.control.TableView;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.PublishedFusion;
-import ngeneanalysys.model.Sample;
 import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.paged.PagedPublishedFusion;
 import ngeneanalysys.service.APIService;

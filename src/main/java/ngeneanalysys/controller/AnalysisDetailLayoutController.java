@@ -86,6 +86,7 @@ public class AnalysisDetailLayoutController extends SubPaneController {
     @FXML
     private Button rawDataDownload;
 
+    @SuppressWarnings("unchecked")
     @Override
     public void show(Parent root) throws IOException {
         mainController.setContentsMaskerPaneVisible(true);

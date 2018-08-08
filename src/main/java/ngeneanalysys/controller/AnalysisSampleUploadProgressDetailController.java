@@ -69,7 +69,7 @@ public class AnalysisSampleUploadProgressDetailController extends BaseStageContr
     }
     /**
      * Set Parameter Map
-     * @param param
+     * @param param Map
      */
     public void setParam(Map<String,Object> param) {
         this.paramMap = param;
@@ -148,8 +148,8 @@ public class AnalysisSampleUploadProgressDetailController extends BaseStageContr
 
     /**
      * 지정 샘플의 진행률 정보 갱신
-     * @param sampleFileId
-     * @param progressPercent
+     * @param sampleFileId int
+     * @param progressPercent double
      */
     public void update(int sampleFileId, double progressPercent) {
         logger.debug(String.format("update progress [bedFile id : %s, percent : %s]", sampleFileId, progressPercent));

@@ -61,7 +61,7 @@ public class BatchChangePathogenicityDialogController extends SubPaneController 
 
     private int sampleId;
 
-    public void settingItem(int sampleId, List<VariantAndInterpretationEvidence> variantList, AnalysisDetailSNVController snvController) {
+    void settingItem(int sampleId, List<VariantAndInterpretationEvidence> variantList, AnalysisDetailSNVController snvController) {
         this.sampleId = sampleId;
         this.variantList = variantList;
         this.snvController = snvController;
@@ -113,7 +113,7 @@ public class BatchChangePathogenicityDialogController extends SubPaneController 
         }
     }
 
-    public String returnSelectPathogenicity() {
+    private String returnSelectPathogenicity() {
         if(lvARadioButton.isSelected()) {
             return "P";
         } else if(lvBRadioButton.isSelected()) {

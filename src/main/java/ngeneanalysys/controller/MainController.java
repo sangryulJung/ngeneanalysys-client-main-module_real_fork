@@ -143,7 +143,7 @@ public class MainController extends BaseStageController {
 
     private MaskerPane contentsMaskerPane = new MaskerPane();
 
-    public void setContentsMaskerPaneVisible(boolean flag) {
+    void setContentsMaskerPaneVisible(boolean flag) {
         contentsMaskerPane.setVisible(flag);
     }
 
@@ -193,7 +193,6 @@ public class MainController extends BaseStageController {
 
         primaryStage = this.mainApp.getPrimaryStage();
         primaryStage.setScene(new Scene(root));
-        //primaryStage.setTitle(CommonConstants.SYSTEM_NAME);
         primaryStage.setTitle("NGeneAnalySys");
         // OS가 Window인 경우 아이콘 출력.
         if (System.getProperty("os.name").toLowerCase().contains("window")) {
@@ -482,7 +481,7 @@ public class MainController extends BaseStageController {
      * 상단메뉴 초기 설정
      * @param role String
      */
-    public void initDefaultTopMenu(String role) {
+    private void initDefaultTopMenu(String role) {
         if(UserTypeBit.ADMIN.name().equalsIgnoreCase(role)) {
             managerBtn.setVisible(true);
             topMenus = new TopMenu[4];
@@ -526,7 +525,7 @@ public class MainController extends BaseStageController {
      * @param addPositionIdx int
      * @param isDisplay boolean
      */
-    public void addTopMenu(TopMenu menu, int addPositionIdx, boolean isDisplay) {
+    void addTopMenu(TopMenu menu, int addPositionIdx, boolean isDisplay) {
         // 중복 체크
         boolean isAdded = false;
         int addedMenuIdx = 0;
@@ -647,7 +646,7 @@ public class MainController extends BaseStageController {
                 analysisDetailLayoutController.setParamMap(menu.getParamMap());
                 analysisDetailLayoutController.show((Parent) node);
             } catch (Exception e) {
-
+                logger.debug(e.getMessage());
             }
             sampleContent[menu.getDisplayOrder()] = mainFrame.getCenter();
         } else {
@@ -667,7 +666,7 @@ public class MainController extends BaseStageController {
      * 선택 상단 메뉴 컨텐츠 출력
      * @param showIdx int
      */
-    public void showTopMenuContents(int showIdx) {
+    private void showTopMenuContents(int showIdx) {
         if(showIdx == 2) return;
         mainFrame.setCenter(null);
         TopMenu menu = topMenus[showIdx];
@@ -812,7 +811,7 @@ public class MainController extends BaseStageController {
 
     }
 
-    public void logout() {
+    private void logout() {
         boolean isLogoutContinue = false;
         String alertHeaderText = null;
         String alertContentText = "Do you want to log out?";
@@ -884,7 +883,7 @@ public class MainController extends BaseStageController {
     /**
      * 분석 요청 업로드 작업 실행
      */
-    public void runningAnalysisRequestUpload(List<AnalysisFile> uploadFileData, List<File> fileList, Run run) {
+    void runningAnalysisRequestUpload(List<AnalysisFile> uploadFileData, List<File> fileList, Run run) {
         if (uploadFileData != null && !uploadFileData.isEmpty()) {
             Map<String, Object> param = new HashMap<>();
             param.put("fileMap", uploadFileData);
@@ -897,7 +896,7 @@ public class MainController extends BaseStageController {
         }
     }
 
-    public void runUpload() {
+    private void runUpload() {
         if(!uploadListQueue.isEmpty()) {
             try {
                 FXMLLoader loader = mainApp.load(FXMLConstants.ANALYSIS_SAMPLE_UPLOAD_PROGRESS_TASK);
@@ -922,7 +921,7 @@ public class MainController extends BaseStageController {
         }
     }
 
-    public void runningRawDataDownload(File folder, RunSampleView run, List<String> type) {
+    void runningRawDataDownload(File folder, RunSampleView run, List<String> type) {
         if (folder != null && run != null) {
             RawDataDownloadInfo info = new RawDataDownloadInfo(folder, run, type);
             downloadListQueue.add(info);
@@ -932,7 +931,7 @@ public class MainController extends BaseStageController {
         }
     }
 
-    public void runDownload() {
+    private void runDownload() {
         if(!downloadListQueue.isEmpty()) {
             try {
                 FXMLLoader loader = mainApp.load(FXMLConstants.RAW_DATA_DOWNLOAD_TASK);
@@ -967,7 +966,7 @@ public class MainController extends BaseStageController {
     /**
      * 진행 상태 출력 영역 초기화
      */
-    public void clearProgressTaskArea(Node node) {
+    void clearProgressTaskArea(Node node) {
         //progressTaskContentArea.getChildren().removeAll(progressTaskContentArea.getChildren());
         progressTaskContentArea.getChildren().remove(node);
         if(analysisSampleUploadProgressTaskController != null) {
@@ -1019,7 +1018,7 @@ public class MainController extends BaseStageController {
         }
     }
 
-    public void setMainMaskerPane(boolean status) {
+    void setMainMaskerPane(boolean status) {
         maskerPane.setVisible(status);
     }
     

@@ -48,7 +48,7 @@ public class ChangePathogenicityController extends SubPaneController {
     private AnalysisDetailClinicalSignificantController clinicalSignificantController;
 
     /**
-     * @param clinicalSignificantController
+     * @param clinicalSignificantController AnalysisDetailClinicalSignificantController
      */
     public void setClinicalSignificantController(AnalysisDetailClinicalSignificantController clinicalSignificantController) {
         this.clinicalSignificantController = clinicalSignificantController;
@@ -78,9 +78,7 @@ public class ChangePathogenicityController extends SubPaneController {
         dialogStage.setResizable(false);
 
         pathogenicityLabel.setText(getCurrentPathogenicity() + " > " + pathogenicity);
-        commentTextField.setOnKeyPressed(ev -> {
-            commentTextField.setPromptText("");
-        });
+        commentTextField.setOnKeyPressed(ev -> commentTextField.setPromptText(""));
         // Scene Init
         Scene scene = new Scene(root);
         dialogStage.setScene(scene);

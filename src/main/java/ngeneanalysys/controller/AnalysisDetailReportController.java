@@ -316,7 +316,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 30);
                     contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 30);
                 }
-                variantCountByGenes = variantCountByGenes.stream().sorted(Comparator.comparing(VariantCountByGene::getGeneSymbol)).collect(Collectors.toList());
+                variantCountByGenes = variantCountByGenes.stream().sorted(Comparator.comparing(VariantCountByGene::getGeneSymbol))
+                        .collect(Collectors.toList());
                 Set<String> allGeneList = null;
                 Set<String> list = new HashSet<>();
                 if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
@@ -329,10 +330,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
                     String essentialGenes = virtualPanel.getEssentialGenes().replaceAll("\\p{Z}", "");
 
-                    list.addAll(Arrays.stream(essentialGenes.split(",")).collect(Collectors.toSet()));
+                    list.addAll(Arrays.asList(essentialGenes.split(",")));
 
                 }
-
 
                 for(VariantCountByGene gene : variantCountByGenes) {
                     Label label = new Label(gene.getGeneSymbol());
@@ -347,8 +347,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     } else {
                         label.getStyleClass().add("target_gene_variant");
                     }
-
-
 
                     targetGenesFlowPane.getChildren().add(label);
                     if(targetGenesFlowPane.getChildren().size() % 15 == 1) {
@@ -376,12 +374,12 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
         essentialGenes = essentialGenes.replaceAll("\\p{Z}", "");
 
-        list.addAll(Arrays.stream(essentialGenes.split(",")).collect(Collectors.toSet()));
+        list.addAll(Arrays.asList(essentialGenes.split(",")));
 
         if(!StringUtils.isEmpty(optionalGenes)) {
             optionalGenes = optionalGenes.replaceAll("\\p{Z}", "");
 
-            list.addAll(Arrays.stream(optionalGenes.split(",")).collect(Collectors.toSet()));
+            list.addAll(Arrays.asList(optionalGenes.split(",")));
         }
 
         return list;
@@ -539,8 +537,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
     private List<VariantAndInterpretationEvidence> settingTierList(List<VariantAndInterpretationEvidence> allTierList, String tier) {
         if(!StringUtils.isEmpty(tier)) {
-            return allTierList.stream().filter(item -> ((tier.equalsIgnoreCase(item.getSnpInDel().getExpertTier()) ||
-                    (StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && item.getSnpInDel().getSwTier().equalsIgnoreCase(tier)))))
+            return allTierList.stream().filter(item -> (tier.equalsIgnoreCase(item.getSnpInDel().getExpertTier()) ||
+                    (StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && item.getSnpInDel().getSwTier().equalsIgnoreCase(tier))))
                     .collect(Collectors.toList());
         }
 
@@ -864,8 +862,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
                 Set<String> list = new HashSet<>();
 
-                list.addAll(Arrays.stream(virtualPanel.getEssentialGenes().replaceAll("\\p{Z}", "")
-                        .split(",")).collect(Collectors.toSet()));
+                list.addAll(Arrays.asList(virtualPanel.getEssentialGenes().replaceAll("\\p{Z}", "")
+                        .split(",")));
 
                 Set<String> allGeneList = returnGeneList(virtualPanel.getEssentialGenes(), virtualPanel.getOptionalGenes());
 
@@ -917,9 +915,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 conclusionLineList = new ArrayList<>();
                 String[] lines = conclusionsTextArea.getText().split("\n");
                 if(lines != null && lines.length > 0) {
-                    for (String line : lines) {
-                        conclusionLineList.add(line);
-                    }
+                    conclusionLineList.addAll(Arrays.asList(lines));
                 } else {
                     conclusionLineList.add(conclusionsTextArea.getText());
                 }
@@ -1223,10 +1219,10 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         return created;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "UnnecessarySemicolon"})
     private void createWordFile(URL[] jarUrls, File file , Map<String, Object> contentsMap, String reportCreationErrorMsg) {
 
-        try (URLClassLoader classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader());) {
+        try (URLClassLoader classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader())) {
             Class classToLoad = Class.forName("word.create.App", true, classLoader);
             logger.debug("application init..");
             Method setParams = classToLoad.getMethod("setParams", Map.class);
