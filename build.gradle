@@ -61,8 +61,6 @@ dependencies {
     compile group: 'org.apache.velocity', name: 'velocity', version: '1.7'
     // https://mvnrepository.com/artifact/org.apache.pdfbox/fontbox
     //compile group: 'org.apache.pdfbox', name: 'fontbox', version: '1.8.13'
-    // https://mvnrepository.com/artifact/org.ahocorasick/ahocorasick
-    compile group: 'org.ahocorasick', name: 'ahocorasick', version: '0.3.0'
     // https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox
     compile group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.6'
     // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple

@@ -10,7 +10,7 @@ import javafx.scene.layout.BorderPane;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.AnalysisDetailTabMenuCode;
-import ngeneanalysys.code.enums.ExperimentTypeCode;
+import ngeneanalysys.code.enums.AnalysisTypeCode;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
@@ -124,12 +124,12 @@ public class AnalysisDetailLayoutController extends SubPaneController {
                     addTab(item, idx);
                     idx++;
                 } else if(!(panel.getName().equals(CommonConstants.TST_170_RNA))) {
-                    if (item.getNodeId().contains(ExperimentTypeCode.GERMLINE.getDescription()) &&
-                            (panel.getAnalysisType() != null && ExperimentTypeCode.GERMLINE.getDescription().equals(panel.getAnalysisType()))) {
+                    if (item.getNodeId().contains(AnalysisTypeCode.GERMLINE.getDescription()) &&
+                            (panel.getAnalysisType() != null && AnalysisTypeCode.GERMLINE.getDescription().equals(panel.getAnalysisType()))) {
                         addTab(item, idx);
                         idx++;
-                    } else if (item.getNodeId().contains(ExperimentTypeCode.SOMATIC.getDescription()) &&
-                            (panel.getAnalysisType() != null && ExperimentTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType()))) {
+                    } else if (item.getNodeId().contains(AnalysisTypeCode.SOMATIC.getDescription()) &&
+                            (panel.getAnalysisType() != null && AnalysisTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType()))) {
                         addTab(item, idx);
                         idx++;
                     }

@@ -23,7 +23,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import ngeneanalysys.code.constants.FXMLConstants;
-import ngeneanalysys.code.enums.ExperimentTypeCode;
+import ngeneanalysys.code.enums.AnalysisTypeCode;
 import ngeneanalysys.code.enums.LibraryTypeCode;
 import ngeneanalysys.code.enums.SampleSourceCode;
 import ngeneanalysys.controller.VirtualPanelEditController;
@@ -66,22 +66,13 @@ public class SystemManagerPanelController extends SubPaneController {
     private static final String DATE_FORMAT = "yyyy-MM-dd";
 
     @FXML
-    private CheckBox defaultReportingCheckBox;
-
-    @FXML
     private TextField panelNameTextField;
 
     @FXML
-    private TextField panelCodeTextField;
+    private ComboBox<ComboBoxItem> pipelineCodeComboBox;
 
     @FXML
-    private ComboBox<ComboBoxItem> targetComboBox;
-
-    @FXML
-    private ComboBox<ComboBoxItem> analysisTypeComboBox;
-
-    @FXML
-    private ComboBox<ComboBoxItem> libraryTypeComboBox;
+    private Label panelInfoLabel;
 
     @FXML
     private ComboBox<ComboBoxItem> defaultSampleSourceComboBox;
@@ -244,27 +235,6 @@ public class SystemManagerPanelController extends SubPaneController {
             warningReadDepthTextField.setDisable(!newValue)
         );
 
-        targetComboBox.setConverter(new ComboBoxConverter());
-        targetComboBox.getItems().add(new ComboBoxItem("DNA", "DNA"));
-        targetComboBox.getItems().add(new ComboBoxItem("RNA", "RNA"));
-        targetComboBox.getSelectionModel().selectFirst();
-
-        targetComboBox.getSelectionModel().selectFirst();
-
-        analysisTypeComboBox.setConverter(new ComboBoxConverter());
-        analysisTypeComboBox.getItems().add(new ComboBoxItem(ExperimentTypeCode.SOMATIC.getDescription(),
-                ExperimentTypeCode.SOMATIC.getDescription()));
-        analysisTypeComboBox.getItems().add(new ComboBoxItem(ExperimentTypeCode.GERMLINE.getDescription(),
-                ExperimentTypeCode.GERMLINE.getDescription()));
-        analysisTypeComboBox.getItems().add(new ComboBoxItem(ExperimentTypeCode.SOMATIC_AND_GERMLINE.getDescription(),
-                ExperimentTypeCode.SOMATIC_AND_GERMLINE.getDescription()));
-        analysisTypeComboBox.getSelectionModel().selectFirst();
-        libraryTypeComboBox.setConverter(new ComboBoxConverter());
-        libraryTypeComboBox.getItems().add(new ComboBoxItem(LibraryTypeCode.HYBRIDIZATION_CAPTURE.getDescription(),
-                LibraryTypeCode.HYBRIDIZATION_CAPTURE.getDescription()));
-        libraryTypeComboBox.getItems().add(new ComboBoxItem(LibraryTypeCode.AMPLICON_BASED.getDescription(),
-                LibraryTypeCode.AMPLICON_BASED.getDescription()));
-        libraryTypeComboBox.getSelectionModel().selectFirst();
         defaultSampleSourceComboBox.setConverter(new ComboBoxConverter());
         defaultSampleSourceComboBox.getItems().add(new ComboBoxItem(SampleSourceCode.ETC.getDescription(),
                 SampleSourceCode.ETC.getDescription()));
@@ -628,7 +598,7 @@ public class SystemManagerPanelController extends SubPaneController {
             panelNameTextField.requestFocus();
             return;
         }
-        String code = panelCodeTextField.getText();
+        String code = pipelineCodeComboBox.getSelectionModel().getSelectedItem().getValue();
 
         if(StringUtils.isNotEmpty(code)) {
             if(bedFile == null && panelId == 0) return;
@@ -666,9 +636,6 @@ public class SystemManagerPanelController extends SubPaneController {
             variantConfig.setEssentialGenes(essentialGenesTextField.getText());
             variantConfig.setCanonicalTranscripts(canonicalTranscriptTextArea.getText());
             params.put("qcPassConfig", setQCPassingConfig());
-            params.put("target", targetComboBox.getSelectionModel().getSelectedItem().getValue());
-            params.put("analysisType", analysisTypeComboBox.getSelectionModel().getSelectedItem().getValue());
-            params.put("libraryType", libraryTypeComboBox.getSelectionModel().getSelectedItem().getValue());
             if(defaultDiseaseComboBox.getSelectionModel().getSelectedItem() != null) {
                 params.put("defaultDiseaseId", Integer.parseInt(defaultDiseaseComboBox.getSelectionModel().getSelectedItem().getValue()));
             }
@@ -684,7 +651,6 @@ public class SystemManagerPanelController extends SubPaneController {
                 params.put("reportTemplateId", Integer.parseInt(reportId));
             }
 
-            params.put("defaultReporting", defaultReportingCheckBox.isSelected());
 
             HttpClientResponse response = null;
             try {
@@ -753,12 +719,9 @@ public class SystemManagerPanelController extends SubPaneController {
         reportTemplateComboBoxSetting();
         setPanelAndDisease();
         panelNameTextField.setText("");
-        panelCodeTextField.setText("");
+        //panelCodeTextField.setText("");
         warningMAFTextField.setText("");
         warningReadDepthTextField.setText("");
-        analysisTypeComboBox.getSelectionModel().selectFirst();
-        targetComboBox.getSelectionModel().selectFirst();
-        libraryTypeComboBox.getSelectionModel().selectFirst();
         defaultSampleSourceComboBox.getSelectionModel().selectFirst();
         bedFile = null;
         panelSaveButton.setDisable(true);
@@ -784,7 +747,6 @@ public class SystemManagerPanelController extends SubPaneController {
         onTargetCoverageTextField.setText("");
         duplicatedReadsPercentageTextField.setText("");
         roiCoveragePercentageTextField.setText("");
-        defaultReportingCheckBox.setSelected(false);
     }
 
     public void setDisabledItem(boolean condition) {
@@ -794,10 +756,7 @@ public class SystemManagerPanelController extends SubPaneController {
         warningReadDepthCheckBox.setDisable(condition);
         warningMAFCheckBox.setDisable(condition);
         panelNameTextField.setDisable(condition);
-        panelCodeTextField.setDisable(condition);
-        analysisTypeComboBox.setDisable(condition);
-        targetComboBox.setDisable(condition);
-        libraryTypeComboBox.setDisable(condition);
+        //panelCodeTextField.setDisable(condition);
         roiFileSelectionButton.setDisable(condition);
         groupCheckComboBox.setDisable(condition);
         diseaseCheckComboBox.setDisable(condition);
@@ -819,7 +778,6 @@ public class SystemManagerPanelController extends SubPaneController {
         roiCoveragePercentageTextField.setDisable(condition);
         defaultDiseaseComboBox.setDisable(condition);
         defaultSampleSourceComboBox.setDisable(condition);
-        defaultReportingCheckBox.setDisable(condition);
     }
 
     public void deletePanel(Integer panelId) {
@@ -889,7 +847,7 @@ public class SystemManagerPanelController extends SubPaneController {
                 panelId = panel.getId();
 
                 panelNameTextField.setText(panel.getName());
-                panelCodeTextField.setText(panel.getCode());
+                //panelCodeTextField.setText(panel.getCode());
                 if(panel.getVariantConfig().getWarningMAF() != null) {
                     warningMAFCheckBox.setSelected(true);
                     warningMAFTextField.setDisable(false);
@@ -935,30 +893,12 @@ public class SystemManagerPanelController extends SubPaneController {
                 if(panel.getVariantConfig().getEssentialGenes() != null) essentialGenesTextField.setText(panel.getVariantConfig().getEssentialGenes());
                 if(panel.getVariantConfig().getCanonicalTranscripts() != null) canonicalTranscriptTextArea.setText(panel.getVariantConfig().getCanonicalTranscripts());
 
-                Optional<ComboBoxItem> analysisTypeItem =
-                        analysisTypeComboBox.getItems().stream().filter(item -> item.getValue().equalsIgnoreCase(panel.getAnalysisType())).findFirst();
-                analysisTypeItem.ifPresent(comboBoxItem -> analysisTypeComboBox.getSelectionModel().select(comboBoxItem));
-
-                Optional<ComboBoxItem> targetItem = targetComboBox.getItems().stream().filter(item -> item.getValue().equalsIgnoreCase(panel.getTarget())).findFirst();
-                targetItem.ifPresent(comboBoxItem -> targetComboBox.getSelectionModel().select(comboBoxItem));
-
-                Optional<ComboBoxItem> libraryTypeItem = libraryTypeComboBox.getItems().stream().filter(item -> item.getValue().equalsIgnoreCase(panel.getLibraryType())).findFirst();
-                libraryTypeItem.ifPresent(comboBoxItem -> libraryTypeComboBox.getSelectionModel().select(comboBoxItem));
-
                 Optional<ComboBoxItem> defaultSampleSourceItem = defaultSampleSourceComboBox.getItems().stream().filter(item -> item.getValue().equalsIgnoreCase(panel.getDefaultSampleSource())).findFirst();
                 defaultSampleSourceItem.ifPresent(comboBoxItem -> defaultSampleSourceComboBox.getSelectionModel().select(comboBoxItem));
 
                 if(panel.getReportTemplateId() != null) {
                     Optional<ComboBoxItem> reportTemplate = reportTemplateComboBox.getItems().stream().filter(item -> item.getValue().equalsIgnoreCase(panel.getReportTemplateId().toString())).findFirst();
                     reportTemplate.ifPresent(comboBoxItem -> reportTemplateComboBox.getSelectionModel().select(comboBoxItem));
-                }
-
-                if(panel.getDefaultReporting() != null) {
-                    if(panel.getDefaultReporting()) {
-                        defaultReportingCheckBox.setSelected(true);
-                    } else {
-                        defaultReportingCheckBox.setSelected(false);
-                    }
                 }
 
                 if(StringUtils.isEmpty(panel.getDefaultSampleSource())) {
