@@ -18,7 +18,7 @@ public enum PipelineCode {
 	SOLID_ACCUTEST_DNA(CommonConstants.SOLID_ACCUTEST_DNA_PIPELINE, "SOLIDaccuTest DNA", AnalysisTypeCode.SOMATIC, LibraryTypeCode.HYBRIDIZATION_CAPTURE, CommonConstants.ANALYSIS_TARGET_DNA),
 	TST170_DNA(CommonConstants.TST_170_DNA, "TruSight Tumor 170 DNA", AnalysisTypeCode.SOMATIC, LibraryTypeCode.HYBRIDIZATION_CAPTURE, CommonConstants.ANALYSIS_TARGET_DNA),
 	TST170_RNA(CommonConstants.TST_170_RNA, "TruSight Tumor 170 RNA", AnalysisTypeCode.SOMATIC, LibraryTypeCode.HYBRIDIZATION_CAPTURE, CommonConstants.ANALYSIS_TARGET_RNA),
-	HERED_ACCUTEST(CommonConstants.HERED_ACCUTEST_PIPELINE, "HEREDaccuTest DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.HYBRIDIZATION_CAPTURE, CommonConstants.ANALYSIS_TARGET_DNA);
+	HERED_ACCUTEST_DNA(CommonConstants.HERED_ACCUTEST_PIPELINE, "HEREDaccuTest DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.HYBRIDIZATION_CAPTURE, CommonConstants.ANALYSIS_TARGET_DNA);
 
 
 	private String code;
