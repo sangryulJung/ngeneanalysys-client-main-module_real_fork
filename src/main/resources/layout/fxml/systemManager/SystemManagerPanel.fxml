@@ -22,7 +22,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="470.0" prefWidth="1200.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.systemManager.SystemManagerPanelController">
+<AnchorPane prefHeight="470.0" prefWidth="1200.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.systemManager.SystemManagerPanelController">
    <stylesheets>
       <URL value="@../../css/common.css" />
       <URL value="@../../css/experimenter.css" />
@@ -296,7 +296,7 @@
                   </Separator>
                </children>
             </HBox>
-            <VBox prefHeight="558.0" prefWidth="700.0" HBox.hgrow="ALWAYS">
+            <VBox prefHeight="558.0" prefWidth="600.0" HBox.hgrow="ALWAYS">
                <children>
                   <HBox alignment="CENTER_RIGHT" maxHeight="40.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="162.0">
                      <padding>
@@ -309,7 +309,7 @@
                         <Insets right="10.0" />
                      </VBox.margin>
                   </HBox>
-                  <TableView fx:id="panelListTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="415.0" prefWidth="680.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
+                  <TableView fx:id="panelListTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="415.0" prefWidth="600.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
                     <columns>
                         <TableColumn fx:id="defaultPanelTableColumn" prefWidth="75.0" text="Default" />
                         <TableColumn fx:id="panelIdTableColumn" prefWidth="60.0" text="Panel Id" visible="false" />

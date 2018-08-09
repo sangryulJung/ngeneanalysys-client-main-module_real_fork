@@ -18,6 +18,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.model.*;
+import ngeneanalysys.model.paged.PagedPanel;
 import ngeneanalysys.model.paged.PagedRunSampleView;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
@@ -160,14 +161,28 @@ public class PastResultsController extends SubPaneController {
 				if(provider != null) provider = null;
 
 				if (searchComboBox.getSelectionModel().getSelectedItem().getText().equalsIgnoreCase("PANEL")) {
-					List<Panel> panels = (List<Panel>) getMainController().getBasicInformationMap().get("panels");
-					List<Panel> filterPanel = null;
-					if (StringUtils.isEmpty(textField.getText())) {
-						filterPanel = panels.stream().filter(panel -> panel.getName().contains(textField.getText())).collect(Collectors.toList());
-					} else {
-						filterPanel = panels;
+					try {
+						Map<String,Object> params = new HashMap<>();
+						LoginSession loginSession = LoginSessionUtil.getCurrentLoginSession();
+						if(loginSession.getRole().equalsIgnoreCase("ADMIN")) {
+							params.put("skipOtherGroup", "false");
+						} else {
+							params.put("skipOtherGroup", "true");
+						}
+						HttpClientResponse response = apiService.get("/panels", params, null, false);
+
+						PagedPanel pagedPanel = response.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
+						List<Panel> panels = pagedPanel.getResult();
+						List<Panel> filterPanel = null;
+						if (StringUtils.isEmpty(textField.getText())) {
+							filterPanel = panels.stream().filter(panel -> panel.getName().contains(textField.getText())).collect(Collectors.toList());
+						} else {
+							filterPanel = panels;
+						}
+						TextFields.bindAutoCompletion(textField, getAllPanel(filterPanel)).setVisibleRowCount(10);
+					} catch (WebAPIException wae) {
+						logger.debug(wae.getMessage());
 					}
-					TextFields.bindAutoCompletion(textField, getAllPanel(filterPanel)).setVisibleRowCount(10);
 				} else if (searchComboBox.getSelectionModel().getSelectedItem().getText().equalsIgnoreCase("RUN") ||
 						searchComboBox.getSelectionModel().getSelectedItem().getText().equalsIgnoreCase("SAMPLE")) {
 					provider = SuggestionProvider.create(new HashSet<>());

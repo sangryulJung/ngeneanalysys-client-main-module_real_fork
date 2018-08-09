@@ -13,10 +13,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Polyline;
 import ngeneanalysys.code.constants.FXMLConstants;
+import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.controller.AnalysisDetailSNVController;
 import ngeneanalysys.controller.ChangePathogenicityController;
 import ngeneanalysys.controller.ExcludeReportDialogController;
 import ngeneanalysys.controller.extend.SubPaneController;
+import ngeneanalysys.model.Panel;
 import ngeneanalysys.model.SnpInDelExtraInfo;
 import ngeneanalysys.model.VariantAndInterpretationEvidence;
 import ngeneanalysys.model.render.SNPsINDELsOverviewRadarGraph;
@@ -475,8 +477,8 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                 frequencyValue[4] * 100,
                 frequencyValue[5] * 100);
         frequenciesRadarGraph.display();
-
-        if(false) {
+        Panel panel = (Panel)paramMap.get("panel");
+        if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
             deleteClinicalSignificantItem();
         }
     }

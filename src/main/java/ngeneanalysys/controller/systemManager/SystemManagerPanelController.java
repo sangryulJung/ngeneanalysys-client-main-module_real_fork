@@ -23,8 +23,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import ngeneanalysys.code.constants.FXMLConstants;
-import ngeneanalysys.code.enums.AnalysisTypeCode;
-import ngeneanalysys.code.enums.LibraryTypeCode;
+import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.code.enums.SampleSourceCode;
 import ngeneanalysys.controller.VirtualPanelEditController;
 import ngeneanalysys.controller.extend.SubPaneController;
@@ -66,16 +65,22 @@ public class SystemManagerPanelController extends SubPaneController {
     private static final String DATE_FORMAT = "yyyy-MM-dd";
 
     @FXML
+    private GridPane basicInformationGridPane;
+
+    @FXML
+    private GridPane snpPopulationFrequencyFilterGridPane;
+
+    @FXML
     private TextField panelNameTextField;
 
     @FXML
-    private ComboBox<ComboBoxItem> pipelineCodeComboBox;
+    private ComboBox<ComboBoxItem> pipelineComboBox;
 
     @FXML
     private Label panelInfoLabel;
 
     @FXML
-    private ComboBox<ComboBoxItem> defaultSampleSourceComboBox;
+    private ComboBox<SampleSourceCode> defaultSampleSourceComboBox;
 
     @FXML
     private ComboBox<ComboBoxItem> defaultDiseaseComboBox;
@@ -96,13 +101,16 @@ public class SystemManagerPanelController extends SubPaneController {
     private CheckBox warningMAFCheckBox;
 
     @FXML
-    private TextField minAlleleFrequencyTextField;
+    private TextField indelMinAlleleFrequencyTextField;
 
     @FXML
-    private TextField minReadDepthTextField;
+    private TextField indelMinReadDepthTextField;
 
     @FXML
-    private TextField minAlternateCountTextField;
+    private TextField snvMinReadDepthTextField;
+
+    @FXML
+    private TextField indelMinAlternateCountTextField;
 
     @FXML
     private TextField populationFrequencyTextField;
@@ -212,6 +220,8 @@ public class SystemManagerPanelController extends SubPaneController {
 
         panelSaveButton.setDisable(true);
 
+        createComboBox();
+
         panelIdTableColumn.setCellValueFactory(item -> new SimpleIntegerProperty(item.getValue().getId()).asObject());
         panelNameTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getName()));
         panelCodeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getCode()));
@@ -235,22 +245,40 @@ public class SystemManagerPanelController extends SubPaneController {
             warningReadDepthTextField.setDisable(!newValue)
         );
 
-        defaultSampleSourceComboBox.setConverter(new ComboBoxConverter());
-        defaultSampleSourceComboBox.getItems().add(new ComboBoxItem(SampleSourceCode.ETC.getDescription(),
-                SampleSourceCode.ETC.getDescription()));
-        defaultSampleSourceComboBox.getItems().add(new ComboBoxItem(SampleSourceCode.DNA.getDescription(),
-                SampleSourceCode.DNA.getDescription()));
-        defaultSampleSourceComboBox.getItems().add(new ComboBoxItem(SampleSourceCode.FFPE.getDescription(),
-                SampleSourceCode.FFPE.getDescription()));
-        defaultSampleSourceComboBox.getItems().add(new ComboBoxItem(SampleSourceCode.BONEMARROW.getDescription(),
-                SampleSourceCode.BONEMARROW.getDescription()));
-        defaultSampleSourceComboBox.getItems().add(new ComboBoxItem(SampleSourceCode.BONEMARROWCRYO.getDescription(),
-                SampleSourceCode.BONEMARROWCRYO.getDescription()));
-        defaultSampleSourceComboBox.getItems().add(new ComboBoxItem(SampleSourceCode.BLOOD.getDescription(),
-                SampleSourceCode.BLOOD.getDescription()));
-        defaultSampleSourceComboBox.getItems().add(new ComboBoxItem(SampleSourceCode.BLOODCRYO.getDescription(),
-                SampleSourceCode.BLOODCRYO.getDescription()));
-        defaultSampleSourceComboBox.getSelectionModel().selectFirst();
+        pipelineComboBox.setConverter(new ComboBoxConverter());
+        pipelineComboBox.getItems().add(new ComboBoxItem());
+        pipelineComboBox.getItems().add(new ComboBoxItem(PipelineCode.BRCA_ACCUTEST_DNA.getCode(),
+                PipelineCode.BRCA_ACCUTEST_DNA.getDescription()));
+        pipelineComboBox.getItems().add(new ComboBoxItem(PipelineCode.HEME_ACCUTEST_DNA.getCode(),
+                PipelineCode.HEME_ACCUTEST_DNA.getDescription()));
+        pipelineComboBox.getItems().add(new ComboBoxItem(PipelineCode.SOLID_ACCUTEST_DNA.getCode(),
+                PipelineCode.SOLID_ACCUTEST_DNA.getDescription()));
+        pipelineComboBox.getItems().add(new ComboBoxItem(PipelineCode.TST170_DNA.getCode(),
+                PipelineCode.TST170_DNA.getDescription()));
+        pipelineComboBox.getItems().add(new ComboBoxItem(PipelineCode.TST170_RNA.getCode(),
+                PipelineCode.TST170_RNA.getDescription()));
+        pipelineComboBox.getItems().add(new ComboBoxItem(PipelineCode.HERED_ACCUTEST_DNA.getCode(),
+                PipelineCode.HERED_ACCUTEST_DNA.getDescription()));
+        pipelineComboBox.getSelectionModel().selectFirst();
+
+        pipelineComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            defaultSampleSourceComboBox.getItems().removeAll(defaultSampleSourceComboBox.getItems());
+            if(lowConfidenceCheckComboBox != null) {
+                lowConfidenceCheckComboBox.getItems().removeAll(lowConfidenceCheckComboBox.getItems());
+            }
+            panelInfoLabel.setText("");
+            if(StringUtils.isNotEmpty(newValue.getValue())) {
+                defaultSampleSourceComboBox.getItems().addAll(PipelineCode.getSampleSource(newValue.getValue()));
+                if(lowConfidenceCheckComboBox != null) {
+                    lowConfidenceCheckComboBox.getItems().addAll(PipelineCode.getLowConfidences(newValue.getValue()));
+                }
+                PipelineCode pipelineCode = PipelineCode.getPipelineCode(newValue.getValue());
+                if(pipelineCode != null)
+                    panelInfoLabel.setText("Analysis Type : " + pipelineCode.getAnalysisType() + ", Library Type : "
+                            + pipelineCode.getLibraryType() + ", Analysis Target : " + pipelineCode.getAnalysisTarget());
+            }
+        });
+
         createdAtTableColumn.setCellValueFactory(item -> new SimpleStringProperty(DateFormatUtils.format(
                 item.getValue().getCreatedAt().toDate(), DATE_FORMAT)));
         updatedAtTableColumn.setCellValueFactory(item -> {
@@ -281,18 +309,16 @@ public class SystemManagerPanelController extends SubPaneController {
             return new VBox();
         });
 
-        createComboBox();
-
         setDisabledItem(true);
     }
 
-    public TextFormatter returnFormatter() {
+    private TextFormatter returnFormatter() {
         Pattern pattern = Pattern.compile("\\d*|\\d+\\.\\d*");
         return new TextFormatter((UnaryOperator<TextFormatter.Change>) change ->
                 pattern.matcher(change.getControlNewText()).matches() ? change : null);
     }
 
-    public void setPanelList(int page) {
+    void setPanelList(int page) {
 
         int totalCount = 0;
         int limit = 11;
@@ -348,7 +374,7 @@ public class SystemManagerPanelController extends SubPaneController {
         }
     }
 
-    public void createComboBoxItem() {
+    private void createComboBoxItem() {
         frequencyDBCheckComboBox.getItems().add(new ComboBoxItem("g1000.all", "1KGP All"));
         frequencyDBCheckComboBox.getItems().add(new ComboBoxItem("g1000.african", "1KGP African"));
         frequencyDBCheckComboBox.getItems().add(new ComboBoxItem("g1000.american", "1KGP American"));
@@ -369,19 +395,14 @@ public class SystemManagerPanelController extends SubPaneController {
         frequencyDBCheckComboBox.getItems().add(new ComboBoxItem("koreanExomInformationDatabase", "KoEXID"));
         frequencyDBCheckComboBox.getItems().add(new ComboBoxItem("koreanReferenceGenomeDatabase", "KRGDB"));
         frequencyDBCheckComboBox.getItems().add(new ComboBoxItem("exac", "ExAC"));
-        /*frequencyDBCheckComboBox.getItems().addAll("g1000.all", "g1000.african", "g1000.american",
-                "g1000.eastAsian", "g1000.european", "g1000.southAsian", "esp6500.all", "esp6500.aa",
-                "esp6500.ea", "gnomAD.all", "gnomAD.admixedAmerican", "gnomAD.africanAfricanAmerican",
-                "gnomAD.eastAsian", "gnomAD.finnish", "gnomAD.nonFinnishEuropean", "gnomAD.others", "gnomAD.southAsian",
-                "koreanExomInformationDatabase", "koreanReferenceGenomeDatabase", "exac");*/
-        lowConfidenceCheckComboBox.getItems().addAll("artifact_in_normal", "base_quality", "clustered_events",
+        /*lowConfidenceCheckComboBox.getItems().addAll("artifact_in_normal", "base_quality", "clustered_events",
                 "contamination", "duplicate_evidence", "fragment_length", "germline_risk", "mapping_quality",
                 "multiallelic", "orientation_bias", "panel_of_normals", "read_position", "str_contraction",
                 "strand_artifact", "t_lod", "homopolymer", "repeat_sequence", "sequencing_error", "mapping_error",
-                "snp_candidate");
+                "snp_candidate");*/
     }
 
-    public void createComboBox() {
+    private void createComboBox() {
         final CheckComboBox<ComboBoxItem> groupCheckComboBox = new CheckComboBox<>();
         groupCheckComboBox.setConverter(new ComboBoxConverter());
 
@@ -390,7 +411,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
         this.groupCheckComboBox = groupCheckComboBox;
 
-        panelEditGridPane.add(groupCheckComboBox, 3, 1);
+        basicInformationGridPane.add(groupCheckComboBox, 1, 2);
         groupCheckComboBox.setMaxWidth(Double.MAX_VALUE);
         final CheckComboBox<ComboBoxItem> diseaseCheckComboBox = new CheckComboBox<>();
         diseaseCheckComboBox.setConverter(new ComboBoxConverter());
@@ -400,7 +421,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
         this.diseaseCheckComboBox = diseaseCheckComboBox;
 
-        panelEditGridPane.add(diseaseCheckComboBox, 3, 3);
+        basicInformationGridPane.add(diseaseCheckComboBox, 1, 3);
 
         final CheckComboBox<String> lowConfidenceCheckComboBox = new CheckComboBox<>();
 
@@ -409,7 +430,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
         this.lowConfidenceCheckComboBox = lowConfidenceCheckComboBox;
 
-        panelEditGridPane.add(lowConfidenceCheckComboBox, 1, 15, 3, 1);
+        panelEditGridPane.add(lowConfidenceCheckComboBox, 1, 0);
 
         final CheckComboBox<ComboBoxItem> frequencyDBCheckComboBox = new CheckComboBox<>();
         frequencyDBCheckComboBox.setConverter(new ComboBoxConverter());
@@ -418,12 +439,13 @@ public class SystemManagerPanelController extends SubPaneController {
 
         this.frequencyDBCheckComboBox = frequencyDBCheckComboBox;
 
-        panelEditGridPane.add(frequencyDBCheckComboBox, 2, 17, 2, 1);
+        snpPopulationFrequencyFilterGridPane.add(frequencyDBCheckComboBox, 1, 0);
 
         createComboBoxItem();
     }
 
-    public void setPanelAndDisease() {
+    @SuppressWarnings("unchecked")
+    private void setPanelAndDisease() {
         HttpClientResponse response;
 
         groupCheckComboBox.getItems().removeAll(groupCheckComboBox.getItems());
@@ -496,7 +518,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
     }
 
-    public void reportTemplateComboBoxSetting() {
+    private void reportTemplateComboBoxSetting() {
 
         reportTemplateComboBox.getItems().clear();
 
@@ -522,19 +544,19 @@ public class SystemManagerPanelController extends SubPaneController {
         }
     }
 
-    public ReportCutOffParams setReportCutOffParams() {
+    private ReportCutOffParams setReportCutOffParams() {
         ReportCutOffParams reportCutOffParams = new ReportCutOffParams();
 
         try {
-            BigDecimal reportCutOffMinAlleleFrequency = new BigDecimal(minAlleleFrequencyTextField.getText());
+            BigDecimal reportCutOffMinAlleleFrequency = new BigDecimal(indelMinAlleleFrequencyTextField.getText());
             reportCutOffParams.setMinAlleleFrequency(reportCutOffMinAlleleFrequency);
         } catch (Exception e) { }
         try {
-            Integer reportCutoffMinReadDepth = Integer.parseInt(minReadDepthTextField.getText());
+            Integer reportCutoffMinReadDepth = Integer.parseInt(indelMinReadDepthTextField.getText());
             reportCutOffParams.setMinReadDepth(reportCutoffMinReadDepth);
         } catch (Exception e) { }
         try {
-            Integer reportCutOffMinAlternateCount = Integer.parseInt(minAlternateCountTextField.getText());
+            Integer reportCutOffMinAlternateCount = Integer.parseInt(indelMinAlternateCountTextField.getText());
             reportCutOffParams.setMinAlternateCount(reportCutOffMinAlternateCount);
         } catch (Exception e) { }
         //reportCutOffParams.setPopulationFrequencyDBs(populationFrequencyDBsTextField.getText());
@@ -552,7 +574,7 @@ public class SystemManagerPanelController extends SubPaneController {
         return reportCutOffParams;
     }
 
-    public QCPassConfig setQCPassingConfig() {
+    private QCPassConfig setQCPassingConfig() {
         QCPassConfig qcPassConfig = new QCPassConfig();
 
         try {
@@ -598,7 +620,7 @@ public class SystemManagerPanelController extends SubPaneController {
             panelNameTextField.requestFocus();
             return;
         }
-        String code = pipelineCodeComboBox.getSelectionModel().getSelectedItem().getValue();
+        String code = pipelineComboBox.getSelectionModel().getSelectedItem().getValue();
 
         if(StringUtils.isNotEmpty(code)) {
             if(bedFile == null && panelId == 0) return;
@@ -639,7 +661,7 @@ public class SystemManagerPanelController extends SubPaneController {
             if(defaultDiseaseComboBox.getSelectionModel().getSelectedItem() != null) {
                 params.put("defaultDiseaseId", Integer.parseInt(defaultDiseaseComboBox.getSelectionModel().getSelectedItem().getValue()));
             }
-            params.put("defaultSampleSource", defaultSampleSourceComboBox.getSelectionModel().getSelectedItem().getValue());
+            params.put("defaultSampleSource", defaultSampleSourceComboBox.getSelectionModel().getSelectedItem().getDescription());
             params.put("variantConfig", variantConfig);
 
             String reportId = null;
@@ -734,9 +756,10 @@ public class SystemManagerPanelController extends SubPaneController {
         reportTemplateComboBox.getSelectionModel().selectFirst();
         warningReadDepthCheckBox.setSelected(false);
         warningMAFCheckBox.setSelected(false);
-        minAlleleFrequencyTextField.setText("");
-        minReadDepthTextField.setText("");
-        minAlternateCountTextField.setText("");
+        indelMinAlleleFrequencyTextField.setText("");
+        indelMinReadDepthTextField.setText("");
+        snvMinReadDepthTextField.setText("");
+        indelMinAlternateCountTextField.setText("");
         populationFrequencyTextField.setText("");
         essentialGenesTextField.setText("");
         canonicalTranscriptTextArea.setText("");
@@ -749,25 +772,26 @@ public class SystemManagerPanelController extends SubPaneController {
         roiCoveragePercentageTextField.setText("");
     }
 
-    public void setDisabledItem(boolean condition) {
+    void setDisabledItem(boolean condition) {
         resetItem();
         warningReadDepthTextField.setDisable(condition);
         warningMAFTextField.setDisable(condition);
         warningReadDepthCheckBox.setDisable(condition);
         warningMAFCheckBox.setDisable(condition);
         panelNameTextField.setDisable(condition);
-        //panelCodeTextField.setDisable(condition);
         roiFileSelectionButton.setDisable(condition);
         groupCheckComboBox.setDisable(condition);
         diseaseCheckComboBox.setDisable(condition);
         reportTemplateComboBox.setDisable(condition);
-        minAlleleFrequencyTextField.setDisable(condition);
-        minReadDepthTextField.setDisable(condition);
-        minAlternateCountTextField.setDisable(condition);
+        indelMinAlleleFrequencyTextField.setDisable(condition);
+        indelMinReadDepthTextField.setDisable(condition);
+        snvMinReadDepthTextField.setDisable(condition);
+        indelMinAlternateCountTextField.setDisable(condition);
         frequencyDBCheckComboBox.setDisable(condition);
         lowConfidenceCheckComboBox.setDisable(condition);
         populationFrequencyTextField.setDisable(condition);
         essentialGenesTextField.setDisable(condition);
+        pipelineComboBox.setDisable(condition);
         canonicalTranscriptTextArea.setDisable(condition);
         totalBasePairTextField.setDisable(condition);
         q30TrimmedBasePercentageTextField.setDisable(condition);
@@ -860,9 +884,9 @@ public class SystemManagerPanelController extends SubPaneController {
                 }
 
                 ReportCutOffParams params = panel.getVariantConfig().getReportCutOffParams();
-                if(panel.getVariantConfig().getReportCutOffParams().getMinAlleleFrequency() != null) minAlleleFrequencyTextField.setText(params.getMinAlleleFrequency().toString());
-                if(panel.getVariantConfig().getReportCutOffParams().getMinReadDepth() != null) minReadDepthTextField.setText(params.getMinReadDepth().toString());
-                if(panel.getVariantConfig().getReportCutOffParams().getMinAlternateCount() != null) minAlternateCountTextField.setText(params.getMinAlternateCount().toString());
+                if(panel.getVariantConfig().getReportCutOffParams().getMinAlleleFrequency() != null) indelMinAlleleFrequencyTextField.setText(params.getMinAlleleFrequency().toString());
+                if(panel.getVariantConfig().getReportCutOffParams().getMinReadDepth() != null) indelMinReadDepthTextField.setText(params.getMinReadDepth().toString());
+                if(panel.getVariantConfig().getReportCutOffParams().getMinAlternateCount() != null) indelMinAlternateCountTextField.setText(params.getMinAlternateCount().toString());
                 if(panel.getVariantConfig().getReportCutOffParams().getPopulationFrequencyDBs() != null) {
                     String[] freqDBs = panel.getVariantConfig().getReportCutOffParams().getPopulationFrequencyDBs().split(",");
                     for(String freqDB : freqDBs) {
@@ -893,7 +917,7 @@ public class SystemManagerPanelController extends SubPaneController {
                 if(panel.getVariantConfig().getEssentialGenes() != null) essentialGenesTextField.setText(panel.getVariantConfig().getEssentialGenes());
                 if(panel.getVariantConfig().getCanonicalTranscripts() != null) canonicalTranscriptTextArea.setText(panel.getVariantConfig().getCanonicalTranscripts());
 
-                Optional<ComboBoxItem> defaultSampleSourceItem = defaultSampleSourceComboBox.getItems().stream().filter(item -> item.getValue().equalsIgnoreCase(panel.getDefaultSampleSource())).findFirst();
+                Optional<SampleSourceCode> defaultSampleSourceItem = defaultSampleSourceComboBox.getItems().stream().filter(item -> item.getDescription().equalsIgnoreCase(panel.getDefaultSampleSource())).findFirst();
                 defaultSampleSourceItem.ifPresent(comboBoxItem -> defaultSampleSourceComboBox.getSelectionModel().select(comboBoxItem));
 
                 if(panel.getReportTemplateId() != null) {
@@ -902,8 +926,8 @@ public class SystemManagerPanelController extends SubPaneController {
                 }
 
                 if(StringUtils.isEmpty(panel.getDefaultSampleSource())) {
-                    Optional<ComboBoxItem> sampleSource =
-                                defaultSampleSourceComboBox.getItems().stream().filter(item -> item.getValue().equalsIgnoreCase(panel.getDefaultSampleSource()))
+                    Optional<SampleSourceCode> sampleSource =
+                                defaultSampleSourceComboBox.getItems().stream().filter(item -> item.getDescription().equalsIgnoreCase(panel.getDefaultSampleSource()))
                                 .findFirst();
                     sampleSource.ifPresent(comboBoxItem -> defaultSampleSourceComboBox.getSelectionModel().select(comboBoxItem));
                 }
@@ -953,9 +977,9 @@ public class SystemManagerPanelController extends SubPaneController {
                     warningMAFCheckBox.setDisable(true);
                     warningMAFTextField.setDisable(true);
                     warningReadDepthCheckBox.setDisable(true);
-                    minAlleleFrequencyTextField.setDisable(true);
-                    minReadDepthTextField.setDisable(true);
-                    minAlternateCountTextField.setDisable(true);
+                    indelMinAlleleFrequencyTextField.setDisable(true);
+                    indelMinReadDepthTextField.setDisable(true);
+                    indelMinAlternateCountTextField.setDisable(true);
                     lowConfidenceCheckComboBox.setDisable(true);
                     frequencyDBCheckComboBox.setDisable(true);
                     populationFrequencyTextField.setDisable(true);

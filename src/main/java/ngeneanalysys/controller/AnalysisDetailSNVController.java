@@ -1329,7 +1329,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         TableColumn<VariantAndInterpretationEvidence, String> alt = new TableColumn<>("Alt");
         createTableHeader(alt, "Alt", null ,null);
         alt.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAltSequence()));
-
+        //TODO panel 분기 변화 필요
         if ((panel.getCode().equalsIgnoreCase("447") || panel.getCode().equalsIgnoreCase("445"))
                 && !sample.getSampleSource().equalsIgnoreCase("FFPE")) {
             TableColumn<VariantAndInterpretationEvidence, String> zigosity = new TableColumn<>("Zigosity");

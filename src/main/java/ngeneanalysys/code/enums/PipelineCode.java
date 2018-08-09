@@ -3,7 +3,6 @@ package ngeneanalysys.code.enums;
 import ngeneanalysys.code.constants.CommonConstants;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -62,14 +61,16 @@ public enum PipelineCode {
 	 * @param pipelineCode
 	 * @return
 	 */
-	public static List<SampleSourceCode> getSampleSource(PipelineCode pipelineCode) {
+	public static List<SampleSourceCode> getSampleSource(String pipelineCode) {
 		List<SampleSourceCode> list = new ArrayList<>();
-		switch (pipelineCode.getCode()) {
+		switch (pipelineCode) {
 			case CommonConstants.BRCA_ACCUTEST_DNA_PIPELINE:
 				list.add(SampleSourceCode.BLOOD);
 				list.add(SampleSourceCode.FFPE);
 				break;
 			case CommonConstants.HEME_ACCUTEST_DNA_PIPELINE:
+			case CommonConstants.TST_170_DNA:
+			case CommonConstants.TST_170_RNA:
 				list.add(SampleSourceCode.BLOOD);
 				list.add(SampleSourceCode.BLOODCRYO);
 				list.add(SampleSourceCode.BONEMARROW);
@@ -83,13 +84,41 @@ public enum PipelineCode {
 			case CommonConstants.HERED_ACCUTEST_PIPELINE:
 				list.add(SampleSourceCode.BLOOD);
 				break;
+			default:
 		}
 		return list;
 	}
 
-	public static List<String> getLowConfidences(PipelineCode pipelineCode) {
+	public static PipelineCode getPipelineCode(String pipelineCode) {
+		PipelineCode returnPipeline;
+		switch (pipelineCode) {
+			case CommonConstants.BRCA_ACCUTEST_DNA_PIPELINE:
+				returnPipeline = BRCA_ACCUTEST_DNA;
+				break;
+			case CommonConstants.HEME_ACCUTEST_DNA_PIPELINE:
+				returnPipeline = HEME_ACCUTEST_DNA;
+			break;
+			case CommonConstants.SOLID_ACCUTEST_DNA_PIPELINE:
+				returnPipeline = SOLID_ACCUTEST_DNA;
+				break;
+			case CommonConstants.TST_170_DNA:
+				returnPipeline = TST170_DNA;
+				break;
+			case CommonConstants.TST_170_RNA:
+				returnPipeline = TST170_RNA;
+				break;
+			case CommonConstants.HERED_ACCUTEST_PIPELINE:
+				returnPipeline = HERED_ACCUTEST_DNA;
+				break;
+			default:
+				returnPipeline = null;
+		}
+		return returnPipeline;
+	}
+
+	public static List<String> getLowConfidences(String pipelineCode) {
 		List<String> list = new ArrayList<>();
-		switch (pipelineCode.getCode()) {
+		switch (pipelineCode) {
 			case CommonConstants.HEME_ACCUTEST_DNA_PIPELINE:
 				list.add("mapping_quality");
 				list.add("strand_artifact");
@@ -121,6 +150,7 @@ public enum PipelineCode {
 				list.add("snp_for_cnv");
 				list.add("cnv_probe_region");
 				break;
+			default:
 		}
 		return list;
 	}

@@ -118,7 +118,7 @@ public class AnalysisDetailLayoutController extends SubPaneController {
         if(panel != null) {
             for (AnalysisDetailTabMenuCode code : AnalysisDetailTabMenuCode.values()) {
                 AnalysisDetailTabItem item = code.getItem();
-
+                //TODO Panel 분기 변화 필요
                 if(item.getNodeId().equals("TAB_VARIANTS") || (item.getNodeId().contains("TST_RNA") &&
                         (panel.getName().equals(CommonConstants.TST_170_RNA)))) {
                     addTab(item, idx);
