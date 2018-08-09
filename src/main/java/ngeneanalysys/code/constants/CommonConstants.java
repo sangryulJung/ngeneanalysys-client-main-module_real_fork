@@ -106,6 +106,7 @@ public class CommonConstants {
 	public static final String TST_170_RNA = "TruSight Tumor 170 RNA";
 
 	public static final String BRCA_ACCUTEST_DNA_PIPELINE ="BRCAaccuTest_DNA_Pipeline";
+	public static final String BRCA_ACCUTEST_PLUS_DNA_PIPELINE ="BRCAaccuTest_PLUS_DNA_Pipeline";
 	public static final String HEME_ACCUTEST_DNA_PIPELINE ="HEMEaccuTest_DNA_Pipeline";
 	public static final String SOLID_ACCUTEST_DNA_PIPELINE ="SOLIDaccuTest_DNA_Pipeline";
 	public static final String TST170_DNA_PIPELINE ="TST170_DNA_Pipeline";

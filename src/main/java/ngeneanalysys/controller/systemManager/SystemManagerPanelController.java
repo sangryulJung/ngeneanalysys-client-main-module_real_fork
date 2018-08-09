@@ -247,18 +247,10 @@ public class SystemManagerPanelController extends SubPaneController {
 
         pipelineComboBox.setConverter(new ComboBoxConverter());
         pipelineComboBox.getItems().add(new ComboBoxItem());
-        pipelineComboBox.getItems().add(new ComboBoxItem(PipelineCode.BRCA_ACCUTEST_DNA.getCode(),
-                PipelineCode.BRCA_ACCUTEST_DNA.getDescription()));
-        pipelineComboBox.getItems().add(new ComboBoxItem(PipelineCode.HEME_ACCUTEST_DNA.getCode(),
-                PipelineCode.HEME_ACCUTEST_DNA.getDescription()));
-        pipelineComboBox.getItems().add(new ComboBoxItem(PipelineCode.SOLID_ACCUTEST_DNA.getCode(),
-                PipelineCode.SOLID_ACCUTEST_DNA.getDescription()));
-        pipelineComboBox.getItems().add(new ComboBoxItem(PipelineCode.TST170_DNA.getCode(),
-                PipelineCode.TST170_DNA.getDescription()));
-        pipelineComboBox.getItems().add(new ComboBoxItem(PipelineCode.TST170_RNA.getCode(),
-                PipelineCode.TST170_RNA.getDescription()));
-        pipelineComboBox.getItems().add(new ComboBoxItem(PipelineCode.HERED_ACCUTEST_DNA.getCode(),
-                PipelineCode.HERED_ACCUTEST_DNA.getDescription()));
+        for(PipelineCode pipelineCode : PipelineCode.values()) {
+            pipelineComboBox.getItems().add(new ComboBoxItem(pipelineCode.getCode(),
+                    pipelineCode.getDescription()));
+        }
         pipelineComboBox.getSelectionModel().selectFirst();
 
         pipelineComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
