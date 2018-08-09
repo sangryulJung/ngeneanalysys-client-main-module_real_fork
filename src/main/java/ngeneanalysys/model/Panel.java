@@ -19,8 +19,6 @@ public class Panel {
     private DateTime deletedAt;
     private Integer deleted;
     private Boolean isDefault;
-    private Boolean defaultReporting;
-
     private QCPassConfig qcPassConfig;
 
     private VariantConfig variantConfig;
@@ -39,13 +37,6 @@ public class Panel {
      */
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    /**
-     * @return defaultReporting
-     */
-    public Boolean getDefaultReporting() {
-        return defaultReporting;
     }
 
     /**
@@ -131,7 +122,6 @@ public class Panel {
                 ", deletedAt=" + deletedAt +
                 ", deleted=" + deleted +
                 ", isDefault=" + isDefault +
-                ", defaultReporting=" + defaultReporting +
                 ", qcPassConfig=" + qcPassConfig +
                 ", variantConfig=" + variantConfig +
                 ", reportTemplateId=" + reportTemplateId +
