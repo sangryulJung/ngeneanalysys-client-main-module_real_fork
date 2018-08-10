@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Set;
 
 import ngeneanalysys.code.constants.CommonConstants;
+import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.model.Panel;
 import ngeneanalysys.util.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -43,7 +44,7 @@ public class SNPsINDELsList {
 			Label label = new Label("< Empty Warning Reason >");
 			box.getChildren().add(label);
 		} else {
-			box.setAlignment(Pos.BOTTOM_LEFT);
+			/*box.setAlignment(Pos.BOTTOM_LEFT);
 			Map<String,String> map = JsonUtil.fromJsonToMap(jsonStr.replace("'", "\""));
 			Set<Map.Entry<String, String>> mapKey = map.entrySet();
 			int currentIndex = 1;
@@ -66,6 +67,23 @@ public class SNPsINDELsList {
 					box.getChildren().add(hbox);
 					if (mapKey.size() > currentIndex) box.setMargin(hbox, new Insets(5, 0, 0, 0));
 					currentIndex++;
+				}
+			}*/
+			box.setAlignment(Pos.BOTTOM_LEFT);
+			String[] list = jsonStr.split(",");
+
+			for(String item : list) {
+				if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode()) ||
+						item.contains("low_variant_coverage_depth") ||
+						item.contains("low_variant_fraction") ||
+						item.contains("homopolymer_region") ||
+						item.contains("soft_clipped_amplicon") ||
+						item.contains("primer_deletion") ||
+						item.contains("low_read_depth") ||
+						item.contains("low_allele_fraction") ||
+						item.contains("low_confidence")) {
+					System.out.println(item);
+
 				}
 			}
 
@@ -119,7 +137,7 @@ public class SNPsINDELsList {
 	public static HBox getWarningReasonItemBox(String title, String flag, Panel panel) {
 		HBox hBox = new HBox();
 		Label flagLabel = new Label();
-		if(panel.getName().equals(CommonConstants.TST_170_DNA)) {
+		if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
 			flagLabel.setText(flag);
 		} else {
 			flagLabel.setText(flag.toUpperCase());

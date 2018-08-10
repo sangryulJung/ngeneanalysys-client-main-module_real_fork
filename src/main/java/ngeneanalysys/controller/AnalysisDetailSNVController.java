@@ -20,10 +20,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import ngeneanalysys.code.constants.FXMLConstants;
-import ngeneanalysys.code.enums.ACMGFilterCode;
-import ngeneanalysys.code.enums.AnalysisTypeCode;
-import ngeneanalysys.code.enums.LibraryTypeCode;
-import ngeneanalysys.code.enums.PredictionTypeCode;
+import ngeneanalysys.code.enums.*;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.controller.fragment.AnalysisDetailClinicalSignificantController;
 import ngeneanalysys.controller.fragment.AnalysisDetailInterpretationController;
@@ -34,7 +31,6 @@ import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedVariantAndInterpretationEvidence;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
-import ngeneanalysys.model.render.LowConfidenceList;
 import ngeneanalysys.model.render.SNPsINDELsList;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.IGVService;
@@ -1139,6 +1135,46 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             }
         });
 
+        TableColumn<VariantAndInterpretationEvidence, String> reportTest = new TableColumn<>("Report");
+        createTableHeader(reportTest, "Report", null ,55.);
+        reportTest.getStyleClass().add(centerStyleClass);
+        reportTest.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getIncludedInReport()));
+        reportTest.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
+            @Override
+            public void updateItem(String item, boolean empty) {
+                if(StringUtils.isEmpty(item) || empty) {
+                    setGraphic(null);
+                    return;
+                }
+                VariantAndInterpretationEvidence variant = getTableView().getItems().get(getIndex());
+                Label label = new Label("R");
+                label.getStyleClass().remove("label");
+                if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
+                    label.getStyleClass().add("report_check");
+                } else {
+                    label.getStyleClass().add("report_uncheck");
+                }
+                label.setCursor(Cursor.HAND);
+                label.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
+                    try {
+                        Map<String, Object> params = new HashMap<>();
+                        params.put("sampleId", sample.getId());
+                        params.put("snpInDelIds", variant.getSnpInDel().getId().toString());
+                        params.put("comment", "N/A");
+                        if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
+                            params.put("includeInReport", "N");
+                        } else {
+                            params.put("includeInReport", "Y");
+                        }
+                        apiService.put("analysisResults/snpInDels/updateIncludeInReport", params, null, true);
+                    } catch (WebAPIException wae) {
+                        wae.printStackTrace();
+                    }
+                });
+                setGraphic(label);
+            }
+        });
+
         TableColumn<VariantAndInterpretationEvidence, String> gene = new TableColumn<>("Gene");
         createTableHeader(gene, "Gene", "gene" ,null);
         gene.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
@@ -1258,8 +1294,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             exonBic.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getExonNumBic()));
         }
 
-        //TODO panel 분기 변화 필요
-        if ((panel.getCode().equalsIgnoreCase("447") || panel.getCode().equalsIgnoreCase("445"))
+        if ((panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) || (panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())))
                 && !sample.getSampleSource().equalsIgnoreCase("FFPE")) {
             TableColumn<VariantAndInterpretationEvidence, String> zigosity = new TableColumn<>("Zigosity");
             createTableHeader(zigosity, "Zigosity", null, null);

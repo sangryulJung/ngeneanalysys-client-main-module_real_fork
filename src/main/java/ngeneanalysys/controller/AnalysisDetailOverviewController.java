@@ -92,7 +92,6 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
     @FXML
     private TableColumn<VariantAndInterpretationEvidence, String> aaChangeColumn;
 
-
     @FXML
     private TableColumn<VariantAndInterpretationEvidence, Object> therapeuticColumn;
 

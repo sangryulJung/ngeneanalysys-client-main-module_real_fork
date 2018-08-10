@@ -283,8 +283,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         }
     }
 
-
-
     public void runInfoEdit() {
         Run run = sampleUploadController.getRun();
         if(run != null) {
@@ -956,7 +954,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         if(!panelBox.getItems().isEmpty()) panelBox.getItems().removeAll(panelBox.getItems());
         List<Panel> panelList = new ArrayList<>();
         if(isServerItem && !isServerFastq) {
-            //TODO 분기 변경
             panelList.addAll(panels.stream().filter(panel -> panel.getName().startsWith("TruSight Tumor 170")).collect(Collectors.toList()));
         } else {
             panelList.addAll(panels);

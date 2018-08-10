@@ -7,10 +7,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.AnalysisDetailTabMenuCode;
 import ngeneanalysys.code.enums.AnalysisTypeCode;
+import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
@@ -118,12 +118,12 @@ public class AnalysisDetailLayoutController extends SubPaneController {
         if(panel != null) {
             for (AnalysisDetailTabMenuCode code : AnalysisDetailTabMenuCode.values()) {
                 AnalysisDetailTabItem item = code.getItem();
-                //TODO Panel 분기 변화 필요
+
                 if(item.getNodeId().equals("TAB_VARIANTS") || (item.getNodeId().contains("TST_RNA") &&
-                        (panel.getName().equals(CommonConstants.TST_170_RNA)))) {
+                        panel.getCode().equals(PipelineCode.TST170_RNA.getCode()))) {
                     addTab(item, idx);
                     idx++;
-                } else if(!(panel.getName().equals(CommonConstants.TST_170_RNA))) {
+                } else if(!panel.getCode().equals(PipelineCode.TST170_RNA.getCode())) {
                     if (item.getNodeId().contains(AnalysisTypeCode.GERMLINE.getDescription()) &&
                             (panel.getAnalysisType() != null && AnalysisTypeCode.GERMLINE.getDescription().equals(panel.getAnalysisType()))) {
                         addTab(item, idx);

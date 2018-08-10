@@ -21,7 +21,6 @@ public class GenomicCoordinateClinicalVariant {
     private String codingConsequence;
     private String clinicalVariantType;
     private String clinVarExistence;
-    private ClinicalDatabaseExistence clinicalDatabaseExistence;
     private ClinicalEvidence therapeuticEvidence;
     private ClinicalEvidence prognosisEvidence;
     private ClinicalEvidence diagnosisEvidence;
@@ -138,14 +137,6 @@ public class GenomicCoordinateClinicalVariant {
 
     public void setClinicalVariantType(String clinicalVariantType) {
         this.clinicalVariantType = clinicalVariantType;
-    }
-
-    public ClinicalDatabaseExistence getClinicalDatabaseExistence() {
-        return clinicalDatabaseExistence;
-    }
-
-    public void setClinicalDatabaseExistence(ClinicalDatabaseExistence clinicalDatabaseExistence) {
-        this.clinicalDatabaseExistence = clinicalDatabaseExistence;
     }
 
     public ClinicalEvidence getTherapeuticEvidence() {
