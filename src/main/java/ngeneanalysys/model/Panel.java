@@ -3,7 +3,6 @@ package ngeneanalysys.model;
 import org.joda.time.DateTime;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 public class Panel {
     private Integer id;
@@ -18,12 +17,42 @@ public class Panel {
     private DateTime updatedAt;
     private DateTime deletedAt;
     private Integer deleted;
-    private Boolean isDefault;
+    private Integer warningReadDepth;
+    private BigDecimal warningMAF;
+    private VariantFilter variantFilter;
+    private String canonicalTranscripts;
+
     private QCPassConfig qcPassConfig;
 
-    private VariantConfig variantConfig;
-
     private Integer reportTemplateId;
+
+    /**
+     * @return canonicalTranscripts
+     */
+    public String getCanonicalTranscripts() {
+        return canonicalTranscripts;
+    }
+
+    /**
+     * @return variantFilter
+     */
+    public VariantFilter getVariantFilter() {
+        return variantFilter;
+    }
+
+    /**
+     * @return warningReadDepth
+     */
+    public Integer getWarningReadDepth() {
+        return warningReadDepth;
+    }
+
+    /**
+     * @return warningMAF
+     */
+    public BigDecimal getWarningMAF() {
+        return warningMAF;
+    }
 
     /**
      * @param defaultDiseaseId
@@ -44,13 +73,6 @@ public class Panel {
      */
     public QCPassConfig getQcPassConfig() {
         return qcPassConfig;
-    }
-
-    /**
-     * @return variantConfig
-     */
-    public VariantConfig getVariantConfig() {
-        return variantConfig;
     }
 
     public String getDefaultSampleSource() {
@@ -104,8 +126,6 @@ public class Panel {
         return deletedAt;
     }
 
-    public Boolean getIsDefault() { return isDefault; }
-
     @Override
     public String toString() {
         return "Panel{" +
@@ -121,9 +141,10 @@ public class Panel {
                 ", updatedAt=" + updatedAt +
                 ", deletedAt=" + deletedAt +
                 ", deleted=" + deleted +
-                ", isDefault=" + isDefault +
+                ", warningReadDepth=" + warningReadDepth +
+                ", warningMAF=" + warningMAF +
+                ", variantFilter=" + variantFilter +
                 ", qcPassConfig=" + qcPassConfig +
-                ", variantConfig=" + variantConfig +
                 ", reportTemplateId=" + reportTemplateId +
                 '}';
     }

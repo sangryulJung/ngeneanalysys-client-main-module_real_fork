@@ -13,13 +13,12 @@ import java.util.List;
  */
 public enum PipelineCode {
 	BRCA_ACCUTEST_DNA(CommonConstants.BRCA_ACCUTEST_DNA_PIPELINE, "BRCAaccuTest DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
-	BRCA_ACCUTEST_PLUS_DNA(CommonConstants.BRCA_ACCUTEST_DNA_PIPELINE, "BRCAaccuTest PLUS DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
+	BRCA_ACCUTEST_PLUS_DNA(CommonConstants.BRCA_ACCUTEST_PLUS_DNA_PIPELINE, "BRCAaccuTest PLUS DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
 	HEME_ACCUTEST_DNA(CommonConstants.HEME_ACCUTEST_DNA_PIPELINE, "HEMEaccuTest DNA", AnalysisTypeCode.SOMATIC, LibraryTypeCode.HYBRIDIZATION_CAPTURE, CommonConstants.ANALYSIS_TARGET_DNA),
 	SOLID_ACCUTEST_DNA(CommonConstants.SOLID_ACCUTEST_DNA_PIPELINE, "SOLIDaccuTest DNA", AnalysisTypeCode.SOMATIC, LibraryTypeCode.HYBRIDIZATION_CAPTURE, CommonConstants.ANALYSIS_TARGET_DNA),
 	TST170_DNA(CommonConstants.TST_170_DNA, "TruSight Tumor 170 DNA", AnalysisTypeCode.SOMATIC, LibraryTypeCode.HYBRIDIZATION_CAPTURE, CommonConstants.ANALYSIS_TARGET_DNA),
 	TST170_RNA(CommonConstants.TST_170_RNA, "TruSight Tumor 170 RNA", AnalysisTypeCode.SOMATIC, LibraryTypeCode.HYBRIDIZATION_CAPTURE, CommonConstants.ANALYSIS_TARGET_RNA),
 	HERED_ACCUTEST_DNA(CommonConstants.HERED_ACCUTEST_PIPELINE, "HEREDaccuTest DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.HYBRIDIZATION_CAPTURE, CommonConstants.ANALYSIS_TARGET_DNA);
-
 
 	private String code;
 	/** 패널 키트 정보 */
@@ -82,20 +81,20 @@ public enum PipelineCode {
 				list.add(SampleSourceCode.ETC);
 				break;
 			case CommonConstants.TST_170_DNA:
-				list.add(SampleSourceCode.FFPE);
 				list.add(SampleSourceCode.BLOOD);
 				list.add(SampleSourceCode.BLOODCRYO);
 				list.add(SampleSourceCode.BONEMARROW);
 				list.add(SampleSourceCode.BONEMARROWCRYO);
+				list.add(SampleSourceCode.FFPE);
 				list.add(SampleSourceCode.DNA);
 				list.add(SampleSourceCode.ETC);
 				break;
 			case CommonConstants.TST_170_RNA:
-				list.add(SampleSourceCode.FFPE);
 				list.add(SampleSourceCode.BLOOD);
 				list.add(SampleSourceCode.BLOODCRYO);
 				list.add(SampleSourceCode.BONEMARROW);
 				list.add(SampleSourceCode.BONEMARROWCRYO);
+				list.add(SampleSourceCode.FFPE);
 				list.add(SampleSourceCode.DNA);
 				list.add(SampleSourceCode.ETC);
 				break;
@@ -121,7 +120,7 @@ public enum PipelineCode {
 				break;
 			case CommonConstants.HEME_ACCUTEST_DNA_PIPELINE:
 				returnPipeline = HEME_ACCUTEST_DNA;
-				break;
+			break;
 			case CommonConstants.SOLID_ACCUTEST_DNA_PIPELINE:
 				returnPipeline = SOLID_ACCUTEST_DNA;
 				break;

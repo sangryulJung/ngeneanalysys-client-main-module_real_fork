@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Accordion?>
@@ -16,7 +23,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane fx:id="snvWrapper" prefHeight="380.0" prefWidth="1140.0" style="-fx-background-color: #f2f5fa;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNVController">
+<GridPane fx:id="snvWrapper" prefHeight="380.0" prefWidth="1140.0" style="-fx-background-color: #f2f5fa;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNVController">
    <columnConstraints>
       <ColumnConstraints fillWidth="false" hgrow="NEVER" maxWidth="-Infinity" minWidth="10.0" prefWidth="200.0" />
       <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" prefWidth="0.0" />
@@ -57,48 +64,54 @@
                   <Insets />
                </HBox.margin>
                <children>
-                  <Label fx:id="searchCountLabel" style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_15" text="Showing 1794" textFill="#223654">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </Label>
-                  <Label fx:id="totalLabel" style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_15" text="of 1794 variants" textFill="#223654" />
-                  <Label text="Select Filter">
-                     <VBox.margin>
-                        <Insets top="30.0" />
-                     </VBox.margin>
-                  </Label>
-                  <ComboBox fx:id="filterComboBox" prefWidth="150.0">
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
-                  </ComboBox>
-                  <VBox alignment="TOP_CENTER" prefHeight="237.0" prefWidth="130.0">
+                  <VBox prefHeight="156.0" prefWidth="135.0">
                      <children>
-                        <Button fx:id="filterAddBtn" alignment="BOTTOM_CENTER" mnemonicParsing="false" onAction="#showFilter" prefHeight="25.0" styleClass="font_size_13" text="Edit Filter">
+                        <Label fx:id="searchCountLabel" alignment="TOP_CENTER" prefHeight="19.0" prefWidth="137.0" style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_15" text="Showing 1794" textFill="#223654">
                            <VBox.margin>
-                              <Insets top="20.0" />
-                           </VBox.margin>
-                           <opaqueInsets>
                               <Insets />
-                           </opaqueInsets>
-                        </Button>
-                        <Label fx:id="viewAppliedFiltersLabel" onMouseClicked="#viewAppliedFilters" style="-fx-cursor: hand;" styleClass="font_size_13" text="View applied filters" textFill="WHITE">
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="totalLabel" alignment="TOP_CENTER" prefHeight="19.0" prefWidth="140.0" style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_15" text="of 1794 variants" textFill="#223654" />
+                        <Label alignment="TOP_CENTER" prefHeight="20.0" prefWidth="143.0" style="-fx-font-family: Noto Sans KR Bold;" text="Select filter">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <ComboBox fx:id="filterComboBox" prefWidth="150.0">
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </ComboBox>
+                        <Button fx:id="filterAddBtn" alignment="BOTTOM_CENTER" mnemonicParsing="false" onAction="#showFilter" prefHeight="16.0" styleClass="font_size_13" text="New filter">
                            <VBox.margin>
                               <Insets top="5.0" />
                            </VBox.margin>
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
+                        </Button>
+                        <Label fx:id="viewAppliedFiltersLabel" alignment="TOP_CENTER" onMouseClicked="#viewAppliedFilters" opacity="0.0" prefHeight="20.0" prefWidth="143.0" style="-fx-cursor: hand;" text="View filter options">
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" prefHeight="237.0" prefWidth="130.0">
+                     <children>
+                        <Label alignment="TOP_CENTER" prefHeight="20.0" prefWidth="143.0" style="-fx-font-family: Noto Sans KR Bold;" text="Choose your action">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
                         </Label>
                         <CheckBox fx:id="showFalseVariantsCheckBox" mnemonicParsing="false" text="Show False Variants">
                            <VBox.margin>
                               <Insets top="10.0" />
                            </VBox.margin>
                         </CheckBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="135.0">
                            <children>
-                              <Button fx:id="changeTierButton" styleClass="submitBtn" text="Tier">
+                              <Button fx:id="changeTierButton" prefHeight="30.0" prefWidth="135.0" styleClass="submitBtn" text="Change the tier">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
@@ -108,22 +121,14 @@
                               </Button>
                            </children>
                            <VBox.margin>
-                              <Insets top="10.0" />
+                              <Insets bottom="5.0" top="10.0" />
                            </VBox.margin>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="200.0">
                            <children>
-                              <Button fx:id="addToReportButton" styleClass="submitBtn" text="Report">
+                              <Button fx:id="addToReportButton" prefHeight="20.0" prefWidth="150.0" styleClass="submitBtn" text="Add to report">
                                  <HBox.margin>
-                                    <Insets right="20.0" />
-                                 </HBox.margin>
-                                 <padding>
-                                    <Insets left="10.0" right="10.0" />
-                                 </padding>
-                              </Button>
-                              <Button fx:id="falsePositiveButton" styleClass="submitBtn" text="False">
-                                 <HBox.margin>
-                                    <Insets />
+                                    <Insets bottom="5.0" />
                                  </HBox.margin>
                                  <padding>
                                     <Insets left="10.0" right="10.0" />
@@ -133,18 +138,46 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="200.0">
                            <children>
-                              <Button fx:id="showIGVButton" styleClass="submitBtn" text="IGV">
+                              <Button fx:id="showIGVButton" prefHeight="20.0" prefWidth="147.0" styleClass="submitBtn" text="Show with IGV">
                                  <HBox.margin>
-                                    <Insets right="20.0" />
+                                    <Insets bottom="5.0" />
                                  </HBox.margin>
                                  <padding>
                                     <Insets left="10.0" right="10.0" />
                                  </padding>
                               </Button>
-                              <Label id="csv_download_image" onMouseClicked="#csvDownload" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Button fx:id="falsePositiveButton" prefHeight="20.0" prefWidth="153.0" styleClass="submitBtn" text="Set to false">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                                 <padding>
+                                    <Insets left="10.0" right="10.0" />
+                                 </padding>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label text="Download a file">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </Label>
                               <Label id="excel_download_image" onMouseClicked="#excelDownload">
                                  <HBox.margin>
                                     <Insets left="10.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Label id="csv_download_image" onMouseClicked="#csvDownload">
+                                 <HBox.margin>
+                                    <Insets left="3.0" />
                                  </HBox.margin>
                               </Label>
                            </children>
@@ -156,7 +189,7 @@
                   </VBox>
                </children>
                <padding>
-                  <Insets left="15.0" top="35.0" />
+                  <Insets left="15.0" top="25.0" />
                </padding></VBox>
             <Button fx:id="leftSizeButton" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="50.0" styleClass="btn_fold">
                <HBox.margin>

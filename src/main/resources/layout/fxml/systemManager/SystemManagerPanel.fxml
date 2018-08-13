@@ -152,6 +152,7 @@
                                           <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
                                           <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                        </rowConstraints>
                                        <children>
                                           <Label text="InDel MAF( % )" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
@@ -180,6 +181,12 @@
                                              </tooltip>
                                           </Label>
                                           <TextField fx:id="snvMinReadDepthTextField" maxHeight="38.0" maxWidth="1.7976931348623157E308" prefWidth="160.0" styleClass="txt_black" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                          <Label text="homopolymer&amp;repeat sequence MAF" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+                                             <tooltip>
+                                                <Tooltip text="Min Read Depth" />
+                                             </tooltip>
+                                          </Label>
+                                          <TextField fx:id="lowConfidenceMinAlleleFractionTextField" maxHeight="38.0" maxWidth="1.7976931348623157E308" prefWidth="160.0" styleClass="txt_black" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                        </children>
                                     </GridPane>
                                  </children>
@@ -311,7 +318,6 @@
                   </HBox>
                   <TableView fx:id="panelListTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="415.0" prefWidth="600.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="defaultPanelTableColumn" prefWidth="75.0" text="Default" />
                         <TableColumn fx:id="panelIdTableColumn" prefWidth="60.0" text="Panel Id" visible="false" />
                         <TableColumn fx:id="panelNameTableColumn" prefWidth="200.0" text="Panel" />
                         <TableColumn fx:id="editPanelTableColumn" prefWidth="80.0" />

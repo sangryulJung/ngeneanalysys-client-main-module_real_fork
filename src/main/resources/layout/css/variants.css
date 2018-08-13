@@ -202,6 +202,17 @@
 	-fx-alignment:center;
 }
 
+#variantListTableView .report_uncheck {
+	-fx-background-color:#000000;
+	-fx-background-radius:15;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-pref-width:20;
+	-fx-text-alignment:center;
+	-fx-alignment:center;
+}
+
 #variantListTableView .column-header > .label  {
     -fx-content-display: graphic-only;
 }

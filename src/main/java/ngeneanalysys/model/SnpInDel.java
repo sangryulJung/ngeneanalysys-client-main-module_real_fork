@@ -28,7 +28,6 @@ public class SnpInDel {
 	private String includedInReport;
 	private String hasWarning;
 	private String warningReason;
-	private String lowConfidence;
 	private Integer variantNum;
 	private String comment;
 	private String isFalse;
@@ -259,14 +258,6 @@ public class SnpInDel {
 		this.warningReason = warningReason;
 	}
 
-	public String getLowConfidence() {
-		return lowConfidence;
-	}
-
-	public void setLowConfidence(String lowConfidence) {
-		this.lowConfidence = lowConfidence;
-	}
-
 	/**
 	 * @return variantNum
 	 */
@@ -369,7 +360,6 @@ public class SnpInDel {
 				", includedInReport='" + includedInReport + '\'' +
 				", hasWarning='" + hasWarning + '\'' +
 				", warningReason='" + warningReason + '\'' +
-				", lowConfidence='" + lowConfidence + '\'' +
 				", variantNum=" + variantNum +
 				", comment='" + comment + '\'' +
 				", snpInDelExpression=" + snpInDelExpression +

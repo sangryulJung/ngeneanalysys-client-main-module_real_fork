@@ -234,16 +234,6 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
         typeTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) ->
             (t.getTableView().getItems().get(t.getTablePosition().getRow())).setClinicalVariantType(t.getNewValue()));
 
-        cosmicExistenceTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getClinicalDatabaseExistence().getCosmicExistence()));
-        cosmicExistenceTableColumn.setCellFactory(tableColumn -> new EditingCell());
-        cosmicExistenceTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) ->
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).getClinicalDatabaseExistence().setCosmicExistence(t.getNewValue()));
-
-        clinVarExistenceTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getClinicalDatabaseExistence().getClinVarExistence()));
-        clinVarExistenceTableColumn.setCellFactory(tableColumn -> new EditingCell());
-        clinVarExistenceTableColumn.setOnEditCommit((TableColumn.CellEditEvent<GenomicCoordinateClinicalVariant, String> t) ->
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).getClinicalDatabaseExistence().setClinVarExistence(t.getNewValue()));
-
         therapeuticEvidenceATableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getTherapeuticEvidence().getLevelA()));
         therapeuticEvidenceATableColumn.setCellFactory(tableColumn -> new PopUpTableCell("therapeuticEvidenceA"));
 
