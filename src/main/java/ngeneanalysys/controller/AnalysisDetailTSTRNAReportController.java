@@ -193,7 +193,6 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
                         if (keyList.contains("conclusions")) {
                             Map<String, String> item = (Map<String, String>) variableList.get("conclusions");
                             conclusions.setText(item.get("displayName"));
-                            System.out.println(conclusions.getStyle());
                             sortedKeyList.remove("conclusions");
                             conclusions.setStyle("-fx-font-family: \"Noto Sans KR Bold\"");
                         }
@@ -367,23 +366,22 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
         });
     }
 
-    public Set<String> returnGeneList(String essentialGenes, String optionalGenes) {
+    private Set<String> returnGeneList(String essentialGenes, String optionalGenes) {
         Set<String> list = new HashSet<>();
 
         essentialGenes = essentialGenes.replaceAll("\\p{Z}", "");
 
-        list.addAll(Arrays.stream(essentialGenes.split(",")).collect(Collectors.toSet()));
-
+        list.addAll(Arrays.asList(essentialGenes.split(",")));
         if(!StringUtils.isEmpty(optionalGenes)) {
             optionalGenes = optionalGenes.replaceAll("\\p{Z}", "");
 
-            list.addAll(Arrays.stream(optionalGenes.split(",")).collect(Collectors.toSet()));
+            list.addAll(Arrays.asList(optionalGenes.split(",")));
         }
 
         return list;
     }
 
-    public List<VariantAndInterpretationEvidence> filteringVariant(List<VariantAndInterpretationEvidence> list) {
+    private List<VariantAndInterpretationEvidence> filteringVariant(List<VariantAndInterpretationEvidence> list) {
         List<VariantAndInterpretationEvidence> filteringList = new ArrayList<>();
         if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
             try {
@@ -411,7 +409,7 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
         return filteringList;
     }
 
-    public List<VariantCountByGene> filteringGeneList(List<VariantCountByGene> list) {
+    private List<VariantCountByGene> filteringGeneList(List<VariantCountByGene> list) {
         List<VariantCountByGene> filteringList = new ArrayList<>();
         if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
             try {
@@ -439,7 +437,7 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
         return filteringList;
     }
 
-    public void setVariantsList() {
+    void setVariantsList() {
         HttpClientResponse response = null;
         try {
             response = apiService.get("/analysisResults/sampleSnpInDels/" + sample.getId(), null,
@@ -466,17 +464,17 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
             List<VariantAndInterpretationEvidence> tableList = new ArrayList<>();
 
             if(tierOne != null && !tierOne.isEmpty()) {
-                tierOne.sort((a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
+                tierOne.sort(Comparator.comparing(a -> a.getSnpInDel().getGenomicCoordinate().getGene()));
                 tableList.addAll(tierOne);
             }
 
             if(tierTwo != null && !tierTwo.isEmpty()) {
-                tierTwo.sort((a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
+                tierTwo.sort(Comparator.comparing(a -> a.getSnpInDel().getGenomicCoordinate().getGene()));
                 tableList.addAll(tierTwo);
             }
 
             if(tierThree != null && !tierThree.isEmpty()) {
-                tierThree.sort((a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
+                tierThree.sort(Comparator.comparing(a -> a.getSnpInDel().getGenomicCoordinate().getGene()));
 
                 tableList.addAll(tierThree);
             }
@@ -492,13 +490,13 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
         }
     }
 
-    public boolean discriminationOfMutation(VariantCountByGene gene) {
+    private boolean discriminationOfMutation(VariantCountByGene gene) {
         return (gene.getTier3IndelCount() > 0 || gene.getTier3SnpCount() > 0 ||
                 gene.getTier1IndelCount() > 0 || gene.getTier1SnpCount() > 0 ||
                 gene.getTier2IndelCount() > 0 || gene.getTier2SnpCount() > 0);
     }
 
-    public void setVirtualPanel() {
+    private void setVirtualPanel() {
 
         virtualPanelComboBox.setConverter(new ComboBoxConverter());
 
@@ -555,7 +553,7 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
         return new SimpleStringProperty(text);
     }
 
-    public void settingReportData(String contents) {
+    private void settingReportData(String contents) {
 
         Map<String,Object> contentsMap = JsonUtil.fromJsonToMap(contents);
 
@@ -586,7 +584,7 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
      * @param user User
      * @return boolean
      */
-    public boolean saveData(User user) {
+    private boolean saveData(User user) {
 
         String conclusionsText = conclusionsTextArea.getText();
 
@@ -906,9 +904,7 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
                 conclusionLineList = new ArrayList<>();
                 String[] lines = conclusionsTextArea.getText().split("\n");
                 if(lines != null && lines.length > 0) {
-                    for (String line : lines) {
-                        conclusionLineList.add(line);
-                    }
+                    conclusionLineList.addAll(Arrays.asList(lines));
                 } else {
                     conclusionLineList.add(conclusionsTextArea.getText());
                 }

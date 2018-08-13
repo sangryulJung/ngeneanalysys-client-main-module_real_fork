@@ -250,6 +250,7 @@ public class PublicDatabaseController extends SubPaneController {
         return label;
     }
 
+    @SuppressWarnings("unchecked")
     private void setVersionComboBox() {
         versionComboBox.setConverter(new ComboBoxConverter());
         try {

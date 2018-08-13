@@ -52,6 +52,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     private APIService apiService;
 
+    private CheckBox headerCheckBox;
+
     @FXML
     private CheckBox showFalseVariantsCheckBox;
 
@@ -820,6 +822,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     public void showVariantList(int pageIndex, int selectedIdx) {
+        headerCheckBox.setSelected(false);
         int totalCount;
         int limit = 100;
         int offset = (pageIndex - 1)  * limit;
@@ -1010,6 +1013,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         hBox.setPrefHeight(Double.MAX_VALUE);
         hBox.setAlignment(Pos.CENTER);
         CheckBox box = new CheckBox();
+        headerCheckBox = box;
         hBox.getChildren().add(box);
         column.setStyle("-fx-alignment : center");
         column.setSortable(false);
@@ -1064,9 +1068,13 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                         }
 
                     } else {
-                        value = StringUtils.isEmpty(variant.getSnpInDel().getExpertPathogenicity()) ? variant.getSnpInDel().getSwPathogenicity()
-                                : variant.getSnpInDel().getExpertPathogenicity();
-                        code = "prediction_" + PredictionTypeCode.getCodeFromAlias(value);
+                        if(StringUtils.isEmpty(variant.getSnpInDel().getExpertPathogenicity())) {
+                            value = variant.getSnpInDel().getSwPathogenicity();
+                            code = "prediction_" + PredictionTypeCode.getCodeFromAlias(value);
+                        } else {
+                            value = variant.getSnpInDel().getExpertPathogenicity();
+                            code = "user_prediction_" + PredictionTypeCode.getCodeFromAlias(value);
+                        }
                     }
                     Label label = null;
                     if (variant != null) {

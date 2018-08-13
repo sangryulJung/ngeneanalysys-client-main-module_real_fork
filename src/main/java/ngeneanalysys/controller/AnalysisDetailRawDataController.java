@@ -158,7 +158,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
         currentStage.showAndWait();
     }
 
-    private void createTableHeader(TableColumn<AnalysisFile, ?> column, Double size) {
+    private void createTableHeader(TableColumn<AnalysisFile, ?> column) {
         HBox hBox = new HBox();
         hBox.setPrefHeight(Double.MAX_VALUE);
         hBox.setAlignment(Pos.CENTER);
@@ -175,14 +175,14 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
             }
         });
 
-        if(size != null) column.setPrefWidth(size);
+        column.setPrefWidth(50);
 
         rawListTableView.getColumns().add(0, column);
     }
 
     private void createCheckBox() {
         TableColumn<AnalysisFile, Boolean> checkBoxColumn = new TableColumn<>("");
-        createTableHeader(checkBoxColumn, 50d);
+        createTableHeader(checkBoxColumn);
         checkBoxColumn.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue() != null ));
         checkBoxColumn.setCellFactory(param -> new BooleanCell());
     }

@@ -94,6 +94,7 @@ public class AnalysisDetailTSTRNAOverviewController extends AnalysisDetailCommon
     /** API 서버 통신 서비스 */
     private APIService apiService;
 
+    @SuppressWarnings("unchecked")
     @Override
     public void show(Parent root) throws IOException {
         logger.debug("show..");
@@ -137,7 +138,7 @@ public class AnalysisDetailTSTRNAOverviewController extends AnalysisDetailCommon
         setDisplayItem();
     }
 
-    public void createEvidenceLabel(List<SnpInDelEvidence> interpretation, HBox hBox, String evidenceLevel) {
+    private void createEvidenceLabel(List<SnpInDelEvidence> interpretation, HBox hBox, String evidenceLevel) {
         if(interpretation == null || interpretation.isEmpty()) {
             return;
         }
@@ -163,11 +164,7 @@ public class AnalysisDetailTSTRNAOverviewController extends AnalysisDetailCommon
         return null;
     }
 
-    private long countTherapeutic (List<SnpInDelEvidence> snpInDelInterpretations) {
-        return snpInDelInterpretations.stream().filter(item -> (item.getEvidence().equalsIgnoreCase("therapeutic"))).count();
-    }
-
-    public void setDisplayItem() {
+    void setDisplayItem() {
         SampleView sample = (SampleView) getParamMap().get("sampleView");
 
         //기본 초기화
@@ -278,7 +275,7 @@ public class AnalysisDetailTSTRNAOverviewController extends AnalysisDetailCommon
 
     }
 
-    public String returnQCTitle(String value) {
+    private String returnQCTitle(String value) {
         if(value.equals("Median_BinCount_CNV_Targets")) {
             return "Median BinCount";
         } else if(value.equals("PCT_ExonBases_100X")) {
@@ -294,7 +291,7 @@ public class AnalysisDetailTSTRNAOverviewController extends AnalysisDetailCommon
         return value.replaceAll("_", " ");
     }
 
-    public void addQCGrid(SampleQC sampleQC, int col) {
+    private void addQCGrid(SampleQC sampleQC, int col) {
         ColumnConstraints columnConstraints = new ColumnConstraints();
         columnConstraints.setHgrow(Priority.ALWAYS);
         dataQCResultGridPane.getColumnConstraints().add(columnConstraints);
@@ -328,7 +325,8 @@ public class AnalysisDetailTSTRNAOverviewController extends AnalysisDetailCommon
 
     }
 
-    public void settingOverallQC(int sampleId) {
+    @SuppressWarnings("unchecked")
+    private void settingOverallQC(int sampleId) {
         if(dataQCResultGridPane.getChildren() != null && !dataQCResultGridPane.getChildren().isEmpty()) {
             dataQCResultGridPane.getChildren().removeAll(dataQCResultGridPane.getChildren());
             dataQCResultGridPane.getColumnConstraints().removeAll(dataQCResultGridPane.getColumnConstraints());

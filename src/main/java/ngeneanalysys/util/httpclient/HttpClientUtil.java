@@ -3,10 +3,7 @@ package ngeneanalysys.util.httpclient;
 import java.io.*;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -656,9 +653,8 @@ public class HttpClientUtil {
 	private static List<NameValuePair> convertParam(Map<String, Object> params) {
 		List<NameValuePair> paramList = new ArrayList<>();
 		if (params != null && params.size() > 0) {
-			Iterator<String> keys = params.keySet().iterator();
-			while (keys.hasNext()) {
-				String key = keys.next();
+			Set<String> keys = params.keySet();
+			for (String key : keys) {
 				paramList.add(new BasicNameValuePair(key, params.get(key).toString()));
 			}
 		}
@@ -689,14 +685,12 @@ public class HttpClientUtil {
 	 */
 	private static String convertResponseContent(InputStream content) {
 		if (content == null) return null;
-		try {
-			BufferedReader rd = new BufferedReader(new InputStreamReader(content));
+		try (BufferedReader rd = new BufferedReader(new InputStreamReader(content))){
 			String line;
 			StringBuilder sb = new StringBuilder();
 			while ((line = rd.readLine()) != null) {
 				sb.append(line);
 			}
-			rd.close();
 			return sb.toString();
 		} catch (Exception e) {
 			logger.error(e.getMessage());

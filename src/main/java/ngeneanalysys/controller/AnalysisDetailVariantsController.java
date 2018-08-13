@@ -15,7 +15,6 @@ import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.Panel;
-import ngeneanalysys.model.Sample;
 import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.TopMenu;
 import ngeneanalysys.model.paged.PagedCNV;
@@ -115,7 +114,7 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
         return false;
     }
 
-    public void setDefaultTab() {
+    private void setDefaultTab() {
         if(panel.getTarget().equalsIgnoreCase("DNA")) {
             TopMenu menu;
             if(panel.getName().equals(CommonConstants.TST_170_DNA)) {
@@ -186,7 +185,7 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
      * 상단 메뉴 새로 출력
      * @param selectIdx int
      */
-    public void refreshShowTopMenu(int selectIdx) {
+    private void refreshShowTopMenu(int selectIdx) {
         // 기존 메뉴 엘레멘트 제거
         tabMenuHBox.getChildren().removeAll();
         if(topMenus != null && topMenus.length > 0) {
@@ -233,7 +232,7 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
      * @param menu TopMenu
      * @param showIdx int
      */
-    public void showTopMenuContents(TopMenu menu, int showIdx) {
+    private void showTopMenuContents(TopMenu menu, int showIdx) {
         detailContents.setCenter(null);
         if(menu == null) menu = topMenus[showIdx];
 

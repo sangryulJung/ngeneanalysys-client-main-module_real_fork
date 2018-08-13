@@ -63,7 +63,7 @@ public class AnalysisDetailTSTCNVController extends AnalysisDetailCommonControll
     /**
      * @param variantsController AnalysisDetailVariantsController
      */
-    public void setVariantsController(AnalysisDetailVariantsController variantsController) {
+    void setVariantsController(AnalysisDetailVariantsController variantsController) {
         this.variantsController = variantsController;
     }
 
@@ -88,7 +88,7 @@ public class AnalysisDetailTSTCNVController extends AnalysisDetailCommonControll
         variantsController.getDetailContents().setCenter(root);
     }
 
-    public void showCnv() {
+    private void showCnv() {
         if(cnvTableView.getItems() != null && !cnvTableView.getItems().isEmpty()) {
             cnvTableView.getItems().removeAll(cnvTableView.getItems());
             cnvTableView.refresh();

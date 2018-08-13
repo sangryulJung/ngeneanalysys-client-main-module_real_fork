@@ -1398,7 +1398,7 @@ public class VariantFilterController extends SubPaneController {
         }
 
         if(snvCheckBox.isSelected()) {
-            list.add("variantType snp");
+            list.add("variantType snv");
         }
 
         if(indelCheckBox.isSelected()) {

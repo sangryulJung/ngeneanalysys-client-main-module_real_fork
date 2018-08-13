@@ -40,15 +40,14 @@ public class LoginController extends BaseStageController {
 	public void initialize(){
 		showCapLock();	
 	}
-	
-	 
+
 	private static final Logger logger = LoggerUtil.getLogger();
 
 	@FXML
 	private Label CapsLock;
 	
 	@FXML
-	private GridPane contentswrapper;
+	private GridPane contentsWrapper;
 	
 	@FXML
 	private Button loginBtn;
@@ -79,8 +78,8 @@ public class LoginController extends BaseStageController {
 
 	@FXML
 	public void checkValidateLoginID(KeyEvent ke) {
-		boolean vaild = validateLoginID();
-		if(ke.getCode().equals(KeyCode.ENTER) && vaild) {
+		boolean valid = validateLoginID();
+		if(ke.getCode().equals(KeyCode.ENTER) && valid) {
 			runLogin();
 		}
 	}
@@ -184,8 +183,7 @@ public class LoginController extends BaseStageController {
 		}
 	}
 
-	public void showCapLock() {
-		//System.out.println("hi");
+	private void showCapLock() {
 		if (Toolkit.getDefaultToolkit().getLockingKeyState(java.awt.event.KeyEvent.VK_CAPS_LOCK) ) {
 			CapsLock.setStyle("-fx-background-image:url('layout/images/renewal/upper_case_icon.png');-fx-background-repeat: no-repeat;-fx-background-position: center;");
 		}else {
@@ -248,7 +246,7 @@ public class LoginController extends BaseStageController {
 
 	}
 
-	public boolean validateLoginID() {
+	private boolean validateLoginID() {
 		if (StringUtils.isEmpty(inputLoginID.getText())) {
 			labelLoginID.setText("Please enter the username");
 			labelLoginID.setVisible(true);
@@ -259,7 +257,8 @@ public class LoginController extends BaseStageController {
 		}
 		return true;
 	}
-	public boolean validatePassword() {
+
+	private boolean validatePassword() {
 		if (StringUtils.isEmpty(inputPassword.getText())) {
 			labelPassword.setText("Please enter the password");
 			labelPassword.setVisible(true);
@@ -276,20 +275,17 @@ public class LoginController extends BaseStageController {
     	logger.debug("Login theme:" + theme);
     	
     	if(theme.equalsIgnoreCase("default")) {
-    		contentswrapper.setStyle("-fx-background-image:url('layout/images/renewal/main_background.png');");
+    		contentsWrapper.setStyle("-fx-background-image:url('layout/images/renewal/main_background.png');");
     	}else if(theme.equalsIgnoreCase("dark")) {
-    		contentswrapper.setStyle("-fx-background-image:url('layout/images/renewal/main_background01.png');");
+    		contentsWrapper.setStyle("-fx-background-image:url('layout/images/renewal/main_background01.png');");
     	}else if(theme.equalsIgnoreCase("red")) {
-    		contentswrapper.setStyle("-fx-background-image:url('layout/images/renewal/main_background06.png');");
+    		contentsWrapper.setStyle("-fx-background-image:url('layout/images/renewal/main_background06.png');");
     	}else if(theme.equalsIgnoreCase("ice")) {
-    		contentswrapper.setStyle("-fx-background-image:url('layout/images/renewal/main_background02.png');");
+    		contentsWrapper.setStyle("-fx-background-image:url('layout/images/renewal/main_background02.png');");
     	}else if(theme.equalsIgnoreCase("mountain")) {
-    		contentswrapper.setStyle("-fx-background-image:url('layout/images/renewal/main_background10.png');");
+    		contentsWrapper.setStyle("-fx-background-image:url('layout/images/renewal/main_background10.png');");
     	}else if(theme.equalsIgnoreCase("dna")) {
-    		contentswrapper.setStyle("-fx-background-image:url('layout/images/renewal/main_background12.png');");
+    		contentsWrapper.setStyle("-fx-background-image:url('layout/images/renewal/main_background12.png');");
     	}
-    	
-    	//System.out.println((String)contentswrapper.getStyle());
-
     }
 }
