@@ -161,9 +161,6 @@ public class SystemManagerPanelController extends SubPaneController {
     private TableColumn<PanelView, Boolean> editPanelTableColumn;
 
     @FXML
-    private TableColumn<PanelView, String> defaultPanelTableColumn;
-
-    @FXML
     private TableColumn<PanelView, Boolean> virtualPanelColumn;
 
     @FXML
@@ -231,7 +228,6 @@ public class SystemManagerPanelController extends SubPaneController {
         panelTargetTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getTarget()));
         analysisTypeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getAnalysisType()));
         libraryTypeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getLibraryType()));
-        defaultPanelTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getIsDefault() ? "Y" : "N"));
         deletedTableColumn.setCellValueFactory(item -> new SimpleStringProperty((item.getValue().getDeleted() == 0) ? "N" : "Y"));
 
         warningMAFTextField.setTextFormatter(returnFormatter());
@@ -641,6 +637,14 @@ public class SystemManagerPanelController extends SubPaneController {
             params.put("name", panelName);
             params.put("code", code);
 
+            PipelineCode pipelineCode = PipelineCode.getPipelineCode(code);
+
+            if(pipelineCode != null) {
+                params.put("target", pipelineCode.getAnalysisTarget());
+                params.put("analysisType", pipelineCode.getAnalysisType());
+                params.put("libraryType", pipelineCode.getLibraryType());
+            }
+
             if(warningReadDepthCheckBox.isSelected() && StringUtils.isNotEmpty(warningReadDepthTextField.getText())) {
                 params.put("warningReadDepth", Integer.parseInt(warningReadDepthTextField.getText()));
             }
@@ -847,6 +851,13 @@ public class SystemManagerPanelController extends SubPaneController {
         }
     }
 
+    private void selectPipelineComboBox(String code) {
+        Optional<ComboBoxItem> comboBoxItem = pipelineComboBox.getItems().stream()
+                .filter(item -> item.getValue().equals(code)).findFirst();
+
+        comboBoxItem.ifPresent(item -> pipelineComboBox.getSelectionModel().select(item));
+    }
+
     private class PanelModifyButton extends TableCell<PanelView, Boolean> {
         HBox box = null;
         final ImageView img1 = new ImageView(resourceUtil.getImage("/layout/images/modify.png", 18, 18));
@@ -874,6 +885,8 @@ public class SystemManagerPanelController extends SubPaneController {
                 setDisabledItem(false);
 
                 panelId = panel.getId();
+
+                selectPipelineComboBox(panel.getCode());
 
                 panelNameTextField.setText(panel.getName());
                 //panelCodeTextField.setText(panel.getCode());

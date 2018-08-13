@@ -71,8 +71,9 @@ public class SNPsINDELsList {
 			}*/
 			box.setAlignment(Pos.BOTTOM_LEFT);
 			String[] list = jsonStr.split(",");
-
+			int currentIndex = 0;
 			for(String item : list) {
+				currentIndex++;
 				if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode()) ||
 						item.contains("low_variant_coverage_depth") ||
 						item.contains("low_variant_fraction") ||
@@ -82,7 +83,13 @@ public class SNPsINDELsList {
 						item.contains("low_read_depth") ||
 						item.contains("low_allele_fraction") ||
 						item.contains("low_confidence")) {
-					System.out.println(item);
+					String[] splitItem = item.split(":");
+
+					String titleString = "* " + WordUtils.capitalize(splitItem[0].replaceAll("_", " ")) + " : ";
+					HBox hbox = getWarningReasonItemBox(titleString, splitItem[1], panel);
+					box.getChildren().add(hbox);
+
+					if (list.length > currentIndex) box.setMargin(hbox, new Insets(5, 0, 0, 0));
 
 				}
 			}
