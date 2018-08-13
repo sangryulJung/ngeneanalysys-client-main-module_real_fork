@@ -203,12 +203,15 @@
 }
 
 #variantListTableView .report_uncheck {
-	-fx-background-color:#000000;
+	-fx-background-color:#FFFFFF;
 	-fx-background-radius:15;
 	-fx-font-size:12;
 	-fx-font-weight:bold;
-	-fx-text-fill:#fff;
+	-fx-text-fill:#595959;
 	-fx-pref-width:20;
+	-fx-border-width : 1;
+	-fx-border-radius : 15;
+	-fx-border-color : #595959;
 	-fx-text-alignment:center;
 	-fx-alignment:center;
 }
