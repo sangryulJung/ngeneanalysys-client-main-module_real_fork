@@ -258,7 +258,7 @@ public class SystemManagerPanelController extends SubPaneController {
                 lowConfidenceCheckComboBox.getItems().removeAll(lowConfidenceCheckComboBox.getItems());
             }
             panelInfoLabel.setText("");
-            if(StringUtils.isNotEmpty(newValue.getValue())) {
+            if(newValue != null && StringUtils.isNotEmpty(newValue.getValue())) {
                 defaultSampleSourceComboBox.getItems().addAll(PipelineCode.getSampleSource(newValue.getValue()));
                 if(lowConfidenceCheckComboBox != null) {
                     lowConfidenceCheckComboBox.getItems().addAll(PipelineCode.getLowConfidences(newValue.getValue()));
@@ -633,6 +633,11 @@ public class SystemManagerPanelController extends SubPaneController {
         if(StringUtils.isNotEmpty(code)) {
             if(bedFile == null && panelId == 0) return;
 
+            if(defaultSampleSourceComboBox.getSelectionModel().getSelectedItem() == null) {
+                defaultSampleSourceComboBox.requestFocus();
+                return;
+            }
+
             Map<String,Object> params = new HashMap<>();
             params.put("name", panelName);
             params.put("code", code);
@@ -668,6 +673,7 @@ public class SystemManagerPanelController extends SubPaneController {
             if(defaultDiseaseComboBox.getSelectionModel().getSelectedItem() != null) {
                 params.put("defaultDiseaseId", Integer.parseInt(defaultDiseaseComboBox.getSelectionModel().getSelectedItem().getValue()));
             }
+
             params.put("defaultSampleSource", defaultSampleSourceComboBox.getSelectionModel().getSelectedItem().getDescription());
             params.put("variantFilter", variantFilter);
 
@@ -749,9 +755,14 @@ public class SystemManagerPanelController extends SubPaneController {
         setPanelAndDisease();
         panelNameTextField.setText("");
         //panelCodeTextField.setText("");
+        if(pipelineComboBox.getSelectionModel().getSelectedItem() != null) {
+            pipelineComboBox.getSelectionModel().clearSelection();
+        }
         warningMAFTextField.setText("");
         warningReadDepthTextField.setText("");
-        defaultSampleSourceComboBox.getSelectionModel().selectFirst();
+        if(defaultSampleSourceComboBox.getSelectionModel().getSelectedItem() != null) {
+            defaultSampleSourceComboBox.getSelectionModel().clearSelection();
+        }
         bedFile = null;
         panelSaveButton.setDisable(true);
         groupCheckComboBox.getCheckModel().clearChecks();

@@ -318,7 +318,6 @@
                   </HBox>
                   <TableView fx:id="panelListTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="415.0" prefWidth="600.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="defaultPanelTableColumn" prefWidth="75.0" text="Default" />
                         <TableColumn fx:id="panelIdTableColumn" prefWidth="60.0" text="Panel Id" visible="false" />
                         <TableColumn fx:id="panelNameTableColumn" prefWidth="200.0" text="Panel" />
                         <TableColumn fx:id="editPanelTableColumn" prefWidth="80.0" />
