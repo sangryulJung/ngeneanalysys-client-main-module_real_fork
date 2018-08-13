@@ -67,6 +67,14 @@ public class BatchExcludeReportDialogController extends SubPaneController {
         dialogStage.initOwner(getMainApp().getPrimaryStage());
         dialogStage.setResizable(false);
 
+        if(variantList.stream().allMatch(v -> v.getSnpInDel().getIncludedInReport().equals("Y"))) {
+            addToReportCheckBox.setSelected(true);
+        } else if(variantList.stream().allMatch(v -> v.getSnpInDel().getIncludedInReport().equals("N"))) {
+            addToReportCheckBox.setSelected(false);
+        } else {
+            addToReportCheckBox.setIndeterminate(true);
+        }
+
         // Scene Init
         Scene scene = new Scene(root);
         dialogStage.setScene(scene);
@@ -75,6 +83,12 @@ public class BatchExcludeReportDialogController extends SubPaneController {
 
     @FXML
     public void ok() {
+
+        if(addToReportCheckBox.isIndeterminate()) {
+            addToReportCheckBox.requestFocus();
+            return;
+        }
+
         String comment = commentTextField.getText();
         try {
             StringBuilder stringBuilder = new StringBuilder();

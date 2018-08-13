@@ -13,6 +13,7 @@ import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.model.VariantAndInterpretationEvidence;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 
 /**
  * @author Jang
@@ -76,7 +77,7 @@ public class AnalysisDetailPopulationFrequenciesController extends SubPaneContro
         graphHBox.getStyleClass().add("horizon_stick");
         Label graphLabel = new Label("");
         graphHBox.getChildren().add(graphLabel);
-        Label percentLabel = new Label((percentage > -1) ? String.valueOf(percentage) : "");
+        Label percentLabel = new Label((percentage > -1) ? BigDecimal.valueOf(percentage).stripTrailingZeros().toString() : "");
         percentLabel.getStyleClass().add("percent");
         percentLabel.setPrefWidth(130);
         percentLabel.setMinWidth(130);

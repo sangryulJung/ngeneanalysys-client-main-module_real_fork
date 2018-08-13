@@ -20,7 +20,7 @@ public class GenomicCoordinateClinicalVariant {
     private Integer endPosition;
     private String codingConsequence;
     private String clinicalVariantType;
-    private ClinicalDatabaseExistence clinicalDatabaseExistence;
+    private String clinVarExistence;
     private ClinicalEvidence therapeuticEvidence;
     private ClinicalEvidence prognosisEvidence;
     private ClinicalEvidence diagnosisEvidence;
@@ -28,6 +28,20 @@ public class GenomicCoordinateClinicalVariant {
     private DateTime updatedAt;
     private DateTime deletedAt;
     private Integer deleted;
+
+    /**
+     * @return clinVarExistence
+     */
+    public String getClinVarExistence() {
+        return clinVarExistence;
+    }
+
+    /**
+     * @param clinVarExistence
+     */
+    public void setClinVarExistence(String clinVarExistence) {
+        this.clinVarExistence = clinVarExistence;
+    }
 
     public Integer getId() {
         return id;
@@ -123,14 +137,6 @@ public class GenomicCoordinateClinicalVariant {
 
     public void setClinicalVariantType(String clinicalVariantType) {
         this.clinicalVariantType = clinicalVariantType;
-    }
-
-    public ClinicalDatabaseExistence getClinicalDatabaseExistence() {
-        return clinicalDatabaseExistence;
-    }
-
-    public void setClinicalDatabaseExistence(ClinicalDatabaseExistence clinicalDatabaseExistence) {
-        this.clinicalDatabaseExistence = clinicalDatabaseExistence;
     }
 
     public ClinicalEvidence getTherapeuticEvidence() {

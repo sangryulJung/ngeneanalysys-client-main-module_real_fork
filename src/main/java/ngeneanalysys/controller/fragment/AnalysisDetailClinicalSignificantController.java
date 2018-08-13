@@ -13,10 +13,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Polyline;
 import ngeneanalysys.code.constants.FXMLConstants;
+import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.controller.AnalysisDetailSNVController;
 import ngeneanalysys.controller.ChangePathogenicityController;
 import ngeneanalysys.controller.ExcludeReportDialogController;
 import ngeneanalysys.controller.extend.SubPaneController;
+import ngeneanalysys.model.Panel;
 import ngeneanalysys.model.SnpInDelExtraInfo;
 import ngeneanalysys.model.VariantAndInterpretationEvidence;
 import ngeneanalysys.model.render.SNPsINDELsOverviewRadarGraph;
@@ -475,8 +477,8 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                 frequencyValue[4] * 100,
                 frequencyValue[5] * 100);
         frequenciesRadarGraph.display();
-
-        if(false) {
+        Panel panel = (Panel)paramMap.get("panel");
+        if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
             deleteClinicalSignificantItem();
         }
     }
@@ -509,7 +511,11 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                 Map<String,Object> locationMap = (Map<String,Object>) orgMap.get(location);
                 if(!locationMap.isEmpty() && locationMap.containsKey("allele_frequency")) {
                     if(!StringUtils.isEmpty(locationMap.get("allele_frequency").toString())) {
-                        percentage = (double) locationMap.get("allele_frequency");
+                        if(locationMap.get("allele_frequency") instanceof String) {
+                            percentage = Double.parseDouble((String)locationMap.get("allele_frequency"));
+                        } else if(locationMap.get("allele_frequency") instanceof Double){
+                            percentage = (double) locationMap.get("allele_frequency");
+                        }
                     }
                 }
             }
@@ -553,7 +559,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
 
     private void renderClinicalPathogenicityData(HBox node, String text, String value) {
         int level = 0;
-        if (!StringUtils.isEmpty(value)) {
+        if (!StringUtils.isEmpty(value) && !"None".equals(value)) {
             try {
                 level = Integer.valueOf(value);
             } catch(NumberFormatException nfe){

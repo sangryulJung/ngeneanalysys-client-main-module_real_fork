@@ -11,6 +11,7 @@ import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import ngeneanalysys.code.constants.CommonConstants;
+import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.code.enums.SequencerCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
@@ -886,7 +887,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
             List<SampleQC> qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
 
-            if(panel.getName().equals(CommonConstants.TST_170_DNA)) {
+            if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
                 contentsMap.put("q30ScoreRead1", findQCResult(qcList, "Q30_score_read1"));
                 contentsMap.put("q30ScoreRead2", findQCResult(qcList, "Q30_score_read2"));
                 contentsMap.put("coverageMAD", findQCResult(qcList, "Coverage_MAD"));
@@ -1078,7 +1079,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
                 String contents = "";
                 if(panel.getReportTemplateId() == null) {
-                    if(panel.getName().equals(CommonConstants.TST_170_DNA)) {
+                    if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
                         contents = velocityUtil.getContents("/layout/velocity/report_tst.vm", "UTF-8", model);
                     } else {
                         contents = velocityUtil.getContents("/layout/velocity/report.vm", "UTF-8", model);

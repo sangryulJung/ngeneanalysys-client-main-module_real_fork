@@ -283,8 +283,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         }
     }
 
-
-
     public void runInfoEdit() {
         Run run = sampleUploadController.getRun();
         if(run != null) {
@@ -488,7 +486,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 sampleSource.getSelectionModel().select(sample.getSampleSource());
             }
 
-
             //sample Status 가 존재한다면 그에 따른 추가기능의 설정
             if(sample.getSampleStatus() != null) {
                 if(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STEP_UPLOAD.equalsIgnoreCase(sample.getSampleStatus().getStep())
@@ -619,7 +616,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         });
 
         ComboBox<String> source = new ComboBox<>();
-        source.getItems().addAll("Peripheral Blood", "Peripheral Blood (Cryo)", "Bone marrow", "Bone marrow (Cryo)", "FFPE","DNA", "Etc");
         source.setMaxWidth(200);
         sampleSourceComboBoxList.add(source);
         source.setStyle("-fx-text-inner-color: black; -fx-border-width: 0;");

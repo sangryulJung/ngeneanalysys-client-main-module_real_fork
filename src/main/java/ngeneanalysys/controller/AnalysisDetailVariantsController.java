@@ -10,8 +10,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
-import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.constants.FXMLConstants;
+import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.Panel;
@@ -117,7 +117,7 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
     private void setDefaultTab() {
         if(panel.getTarget().equalsIgnoreCase("DNA")) {
             TopMenu menu;
-            if(panel.getName().equals(CommonConstants.TST_170_DNA)) {
+            if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
                 topMenus = new TopMenu[2];
                 topMenuContent = new Node[topMenus.length];
                 menu = new TopMenu();
@@ -151,7 +151,7 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
             menu.setStaticMenu(true);
             topMenus[0] = menu;
         } else if(panel.getTarget().equalsIgnoreCase("RNA")) {
-            if(panel.getName().equals(CommonConstants.TST_170_RNA)) {
+            if(panel.getCode().equals(PipelineCode.TST170_RNA.getCode())) {
                 topMenus = new TopMenu[3];
                 topMenuContent = new Node[topMenus.length];
                 TopMenu menu = new TopMenu();

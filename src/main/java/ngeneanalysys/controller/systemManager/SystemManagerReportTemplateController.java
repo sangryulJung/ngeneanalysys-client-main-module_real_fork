@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -146,6 +147,12 @@ public class SystemManagerReportTemplateController extends SubPaneController{
     @Override
     public void show(Parent root) throws IOException {
         logger.debug("system manager report template init");
+
+        reportTemplateListTable.addEventFilter(ScrollEvent.ANY, scrollEvent -> {
+            reportTemplateListTable.refresh();
+            // close text box
+            reportTemplateListTable.edit(-1, null);
+        });
 
         apiService = APIService.getInstance();
 
@@ -310,6 +317,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
     @FXML
     public void saveReportTemplate() {
         String reportName = reportNameTextField.getText();
+        boolean isPut = false;
         if(!StringUtils.isEmpty(reportName) && !StringUtils.isEmpty(contents)) {
             try {
                 Map<String, Object> param = new HashMap<>();
@@ -329,12 +337,19 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                 } else {
                     response = apiService.put("admin/reportTemplate/" + id, param, null, true);
                     id = 0;
-
+                    isPut = true;
                     if(!deleteImageList.isEmpty()) {
                         for(ReportImage deleteImage : deleteImageList) {
                             apiService.delete("admin/reportImage/" + deleteImage.getId());
                         }
                     }
+                }
+
+                if(isPut && wordCreatorJar == null && this.imageList.isEmpty()) {
+                    setReportTableList(1);
+                    resetItem();
+                    setDisabledItem(true);
+                    return;
                 }
 
                 ReportTemplate reportTemplate = response.getObjectBeforeConvertResponseToJSON(ReportTemplate.class);
@@ -687,6 +702,9 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                 Optional<ButtonType> result = alert.showAndWait();
                 if(result.get() == ButtonType.OK) {
                     deleteReportTemplate(reportTemplate.getId());
+                    resetItem();
+                    setDisabledItem(true);
+                    setReportTableList(1);
                 } else {
                     logger.debug(result.get() + " : button select");
                     alert.close();

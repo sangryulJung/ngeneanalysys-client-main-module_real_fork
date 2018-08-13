@@ -1,5 +1,8 @@
 package ngeneanalysys.code.constants;
 
+import ngeneanalysys.code.enums.AnalysisTypeCode;
+import ngeneanalysys.code.enums.LibraryTypeCode;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -101,4 +104,14 @@ public class CommonConstants {
 	public static final String TST_170_DNA = "TruSight Tumor 170 DNA";
 
 	public static final String TST_170_RNA = "TruSight Tumor 170 RNA";
+
+	public static final String BRCA_ACCUTEST_DNA_PIPELINE ="BRCAaccuTest_DNA_Pipeline";
+	public static final String BRCA_ACCUTEST_PLUS_DNA_PIPELINE ="BRCAaccuTest_PLUS_DNA_Pipeline";
+	public static final String HEME_ACCUTEST_DNA_PIPELINE ="HEMEaccuTest_DNA_Pipeline";
+	public static final String SOLID_ACCUTEST_DNA_PIPELINE ="SOLIDaccuTest_DNA_Pipeline";
+	public static final String TST170_DNA_PIPELINE ="TST170_DNA_Pipeline";
+	public static final String TST170_RNA_PIPELINE ="TST170_RNA_Pipeline";
+	public static final String HERED_ACCUTEST_PIPELINE ="HEREDaccuTest_DNA_Pipeline";
+	public static final String ANALYSIS_TARGET_DNA ="DNA";
+	public static final String ANALYSIS_TARGET_RNA ="RNA";
 }

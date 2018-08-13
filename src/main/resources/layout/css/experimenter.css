@@ -242,6 +242,7 @@
     -fx-graphic: url("../images/renewal/share_icon.png");
     -fx-background-color : transparent;
     -fx-border-width : 0;
+    -fx-padding: 6px 0 0 0;
     -fx-pref-width : 16px;
     -fx-pref-height : 16px;
     -fx-background-radius : 0;
