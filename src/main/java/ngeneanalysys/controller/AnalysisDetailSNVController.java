@@ -283,6 +283,12 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             String[] defaultFilterName = {"Tier I", "Tier II", "Tier III", "Tier IV", "Pathogenic", "Likely Pathogenic",
                     "Uncertain Significance", "Likely Benign", "Benign", "Tier 1", "Tier 2", "Tier 3", "Tier 4", "All"};
             viewAppliedFiltersLabel.setDisable(Arrays.stream(defaultFilterName).anyMatch(item -> item.equals(nv.getValue())));
+            if (Arrays.stream(defaultFilterName).anyMatch(item -> item.equals(nv.getValue()))){
+            	viewAppliedFiltersLabel.setOpacity(0);
+            }else {
+            	viewAppliedFiltersLabel.setOpacity(100);
+            }
+            
 
         });
 
@@ -948,6 +954,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     @FXML
     public void viewAppliedFilters() {
+    	viewAppliedFiltersLabel.setOpacity(100);
         ComboBoxItem comboBoxItem = filterComboBox.getSelectionModel().getSelectedItem();
         PopOverUtil.openFilterPopOver(viewAppliedFiltersLabel, filterList.get(comboBoxItem.getValue()));
     }
