@@ -599,7 +599,7 @@ public class SystemManagerPanelController extends SubPaneController {
         } catch (Exception e) { }
         try {
             Double onTarget = new Double(onTargetPercentageTextField.getText());
-            qcPassConfig.setOnTargetCoverage(onTarget);
+            qcPassConfig.setOnTargetPercentage(onTarget);
         } catch (Exception e) { }
         try {
             Double onTargetCoverage = new Double(onTargetCoverageTextField.getText());

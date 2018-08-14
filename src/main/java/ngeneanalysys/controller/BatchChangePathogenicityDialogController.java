@@ -16,6 +16,7 @@ import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.VariantAndInterpretationEvidence;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
+import ngeneanalysys.util.StringUtils;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -84,6 +85,26 @@ public class BatchChangePathogenicityDialogController extends SubPaneController 
         }
         dialogStage.initOwner(getMainApp().getPrimaryStage());
         dialogStage.setResizable(false);
+
+        if(variantList.stream().allMatch(v -> (StringUtils.isNotEmpty(v.getSnpInDel().getExpertPathogenicity())
+                && v.getSnpInDel().getExpertPathogenicity().equals("P")) || (StringUtils.isEmpty(v.getSnpInDel().getExpertPathogenicity())
+                && v.getSnpInDel().getSwPathogenicity().equals("P")))) {
+            lvARadioButton.setSelected(true);
+        }else if(variantList.stream().allMatch(v -> (StringUtils.isNotEmpty(v.getSnpInDel().getExpertPathogenicity())
+                && v.getSnpInDel().getExpertPathogenicity().equals("LP")) || (StringUtils.isEmpty(v.getSnpInDel().getExpertPathogenicity())
+                && v.getSnpInDel().getSwPathogenicity().equals("LP")))) {
+            lvBRadioButton.setSelected(true);
+        }else if(variantList.stream().allMatch(v -> (StringUtils.isNotEmpty(v.getSnpInDel().getExpertPathogenicity())
+                && v.getSnpInDel().getExpertPathogenicity().equals("US")) || (StringUtils.isEmpty(v.getSnpInDel().getExpertPathogenicity())
+                && v.getSnpInDel().getSwPathogenicity().equals("US")))) {
+            lvCRadioButton.setSelected(true);
+        }else if(variantList.stream().allMatch(v -> (StringUtils.isNotEmpty(v.getSnpInDel().getExpertPathogenicity())
+                && v.getSnpInDel().getExpertPathogenicity().equals("LB")) || (StringUtils.isEmpty(v.getSnpInDel().getExpertPathogenicity())
+                && v.getSnpInDel().getSwPathogenicity().equals("LB")))) {
+            lvDRadioButton.setSelected(true);
+        }else {
+            lvERadioButton.setSelected(true);
+        }
 
         // Scene Init
         Scene scene = new Scene(root);

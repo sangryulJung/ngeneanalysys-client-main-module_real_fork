@@ -3,7 +3,6 @@ package ngeneanalysys.controller;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -15,8 +14,8 @@ import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.VariantAndInterpretationEvidence;
 import ngeneanalysys.service.APIService;
-import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
+import ngeneanalysys.util.StringUtils;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -83,7 +82,23 @@ public class BatchChangeTierDialogController extends SubPaneController {
         dialogStage.initOwner(getMainApp().getPrimaryStage());
         dialogStage.setResizable(false);
 
-        // Scene Init
+        if(variantList.stream().allMatch(v -> (StringUtils.isNotEmpty(v.getSnpInDel().getExpertTier())
+                && v.getSnpInDel().getExpertTier().equals("T1")) || (StringUtils.isEmpty(v.getSnpInDel().getExpertTier())
+                && v.getSnpInDel().getSwTier().equals("T1")))) {
+            tierOneRadioButton.setSelected(true);
+        }else if(variantList.stream().allMatch(v -> (StringUtils.isNotEmpty(v.getSnpInDel().getExpertTier())
+                && v.getSnpInDel().getExpertTier().equals("T2")) || (StringUtils.isEmpty(v.getSnpInDel().getExpertTier())
+                && v.getSnpInDel().getSwTier().equals("T2")))) {
+            tierTwoRadioButton.setSelected(true);
+        }else if(variantList.stream().allMatch(v -> (StringUtils.isNotEmpty(v.getSnpInDel().getExpertTier())
+                && v.getSnpInDel().getExpertTier().equals("T3")) || (StringUtils.isEmpty(v.getSnpInDel().getExpertTier())
+                && v.getSnpInDel().getSwTier().equals("T3")))) {
+            tierThreeRadioButton.setSelected(true);
+        }else{
+            tierFourRadioButton.setSelected(true);
+        }
+
+            // Scene Init
         Scene scene = new Scene(root);
         dialogStage.setScene(scene);
         dialogStage.showAndWait();

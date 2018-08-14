@@ -68,6 +68,14 @@ public class BatchFalsePositiveDialogController extends SubPaneController {
         dialogStage.initOwner(getMainApp().getPrimaryStage());
         dialogStage.setResizable(false);
 
+        if(variantList.stream().allMatch(v -> v.getSnpInDel().getIsFalse().equals("Y"))) {
+            isFalseCheckBox.setSelected(true);
+        } else if(variantList.stream().allMatch(v -> v.getSnpInDel().getIsFalse().equals("N"))) {
+            isFalseCheckBox.setSelected(false);
+        } else {
+            isFalseCheckBox.setIndeterminate(true);
+        }
+
         // Scene Init
         Scene scene = new Scene(root);
         dialogStage.setScene(scene);
@@ -76,6 +84,12 @@ public class BatchFalsePositiveDialogController extends SubPaneController {
 
     @FXML
     public void ok() {
+
+        if(isFalseCheckBox.isIndeterminate()) {
+            isFalseCheckBox.requestFocus();
+            return;
+        }
+
         String comment = commentTextField.getText();
         try {
             StringBuilder stringBuilder = new StringBuilder();

@@ -1149,6 +1149,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 setGraphic(label);
             }
         });
+        report.setVisible(false);
 
         TableColumn<VariantAndInterpretationEvidence, String> reportTest = new TableColumn<>("Report");
         createTableHeader(reportTest, "Report", null ,55.);
@@ -1182,6 +1183,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                             params.put("includeInReport", "Y");
                         }
                         apiService.put("analysisResults/snpInDels/updateIncludeInReport", params, null, true);
+                        refreshTable();
                     } catch (WebAPIException wae) {
                         wae.printStackTrace();
                     }

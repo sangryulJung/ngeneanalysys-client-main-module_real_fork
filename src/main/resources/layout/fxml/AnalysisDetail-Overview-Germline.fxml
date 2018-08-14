@@ -50,7 +50,7 @@
             <TableColumn fx:id="variantColumn" editable="false" prefWidth="160.0" sortable="false" text="Variant" />
             <TableColumn fx:id="transcriptColumn" editable="false" prefWidth="180.0" sortable="false" text="Transcript" />
             <TableColumn fx:id="ntChangeColumn" editable="false" prefWidth="250.0" sortable="false" text="NT Change" />
-            <TableColumn fx:id="aaChangeColumn" editable="false" prefWidth="223.0" sortable="false" text="AA Change" />
+            <TableColumn fx:id="aaChangeColumn" editable="false" prefWidth="213.0" sortable="false" text="AA Change" />
          </columns>
          <GridPane.margin>
             <Insets right="2.0" />
