@@ -10,8 +10,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ngeneanalysys.code.constants.CommonConstants;
+import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
+import ngeneanalysys.model.Panel;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
@@ -368,7 +370,7 @@ public class VariantFilterController extends SubPaneController {
 
     private Map<String, List<Object>> filter;
 
-    private String analysisType;
+    private Panel panel;
 
     private String[] defaultFilterName = {"Tier I", "Tier II", "Tier III", "Tier IV", "Pathogenic", "Likely Pathogenic",
     "Uncertain Significance", "Likely Benign", "Benign", "Tier 1", "Tier 2", "Tier 3", "Tier 4"};
@@ -380,15 +382,15 @@ public class VariantFilterController extends SubPaneController {
     /**
      * @param snvController AnalysisDetailSNVController
      */
-    public void setSnvController(AnalysisDetailSNVController snvController) {
+    void setSnvController(AnalysisDetailSNVController snvController) {
         this.snvController = snvController;
     }
 
     /**
-     * @param analysisType String
+     * @param panel panel
      */
-    public void setAnalysisType(String analysisType) {
-        this.analysisType = analysisType;
+    void setPanel(Panel panel) {
+        this.panel = panel;
     }
 
     /**
@@ -504,8 +506,8 @@ public class VariantFilterController extends SubPaneController {
             }
         });
 
-        newFilterNameLabel.setVisible(false);
-        filterNameTextField.setVisible(false);
+        //newFilterNameLabel.setVisible(false);
+        //filterNameTextField.setVisible(false);
         saveBtn.setDisable(true);
 
         filterNameTextField.textProperty().addListener((ev, oldV, newV) -> {
@@ -560,11 +562,23 @@ public class VariantFilterController extends SubPaneController {
 
     private void createLowConfidence() {
         CheckComboBox<String> lowConfidenceCheckComboBox = new CheckComboBox<>();
-        lowConfidenceCheckComboBox.getItems().addAll("artifact_in_normal", "base_quality", "clustered_events",
+        /*lowConfidenceCheckComboBox.getItems().addAll("artifact_in_normal", "base_quality", "clustered_events",
                 "contamination", "duplicate_evidence", "fragment_length", "germline_risk", "mapping_quality",
                 "multiallelic", "orientation_bias", "panel_of_normals", "read_position", "str_contraction",
                 "strand_artifact", "t_lod", "homopolymer", "repeat_sequence", "sequencing_error", "mapping_error",
-                "snp_candidate");
+                "snp_candidate");*/
+        if(panel != null) {
+            if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
+                lowConfidenceCheckComboBox.getItems().addAll("mapping_quality", "strand_artifact", "panel_of_normal"
+                , "fragment_length", "orientation_bias", "sequencing_error", "mapping_error", "snp_candidate", "t_lod", "repeat_sequence");
+            } else if(panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
+                lowConfidenceCheckComboBox.getItems().addAll("mapping_quality", "strand_artifact", "panel_of_normal"
+                , "fragment_length", "orientation_bias", "sequencing_error", "mapping_error", "snp_candidate", "repeat_sequence");
+            } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+                lowConfidenceCheckComboBox.getItems().addAll("homopolymer", "repeat_sequence", "sequencing_error"
+                ,"mapping_error", "snp_candidate", "low_vaf", "snp_for_cnv", "cnv_probe_region", "repeat_sequence");
+            }
+        }
 
         lowConfidenceCheckComboBox.setPrefWidth(150);
 
@@ -672,14 +686,14 @@ public class VariantFilterController extends SubPaneController {
         Set<String> keySet = filter.keySet();
 
         for(String key : keySet) {
-            if(!Arrays.stream(defaultFilterName).anyMatch(item -> item.equals(key))) {
+            if(Arrays.stream(defaultFilterName).noneMatch(item -> item.equals(key))) {
                 filterNameComboBox.getItems().add(key);
             }
         }
     }
 
     private void setPathogenicity() {
-        if("SOMATIC".equalsIgnoreCase(analysisType)) {
+        if("SOMATIC".equalsIgnoreCase(panel.getAnalysisType())) {
             caseLabel.setText("Tier");
             caseECheckBox.setVisible(false);
             predictionECheckBox.setVisible(false);
@@ -723,6 +737,13 @@ public class VariantFilterController extends SubPaneController {
             gnomADotherTextField.setDisable(true);
             gnomADsaComboBox.setDisable(true);
             gnomADsaTextField.setDisable(true);
+        }
+
+        if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
+                panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+            lowConfidenceHBox.setDisable(true);
+            cosmicidCheckBox.setDisable(true);
+            cosmicOccurrenceComboBox.setDisable(true);
         }
 
         clinVarACheckBox.setText("P(Pathogentic)");
@@ -1048,9 +1069,9 @@ public class VariantFilterController extends SubPaneController {
                 Map<String, Object> map = new HashMap<>();
                 map.put("value", gg);
                 try {
-                    if ("somatic".equalsIgnoreCase(analysisType)) {
+                    if ("somatic".equalsIgnoreCase(panel.getAnalysisType())) {
                         apiService.put("/member/memberOption/somaticFilter", map, null, true);
-                    } else if ("germline".equalsIgnoreCase(analysisType)) {
+                    } else if ("germline".equalsIgnoreCase(panel.getAnalysisType())) {
                         apiService.put("/member/memberOption/germlineFilter", map, null, true);
                     }
                 } catch (WebAPIException wae) {
@@ -1117,9 +1138,9 @@ public class VariantFilterController extends SubPaneController {
         Map<String, Object> map = new HashMap<>();
         map.put("value", gg);
         try {
-            if ("somatic".equalsIgnoreCase(analysisType)) {
+            if ("somatic".equalsIgnoreCase(panel.getAnalysisType())) {
                 apiService.put("/member/memberOption/somaticFilter", map, null, true);
-            } else if ("germline".equalsIgnoreCase(analysisType)) {
+            } else if ("germline".equalsIgnoreCase(panel.getAnalysisType())) {
                 apiService.put("/member/memberOption/germlineFilter", map, null, true);
             }
         } catch (WebAPIException wae) {
@@ -1131,10 +1152,10 @@ public class VariantFilterController extends SubPaneController {
     }
 
     private void changeFilter() {
-        if("somatic".equalsIgnoreCase(analysisType)) {
+        if("somatic".equalsIgnoreCase(panel.getAnalysisType())) {
             mainController.getBasicInformationMap().remove("somaticFilter");
             mainController.getBasicInformationMap().put("somaticFilter", filter);
-        } else if("germline".equalsIgnoreCase(analysisType)) {
+        } else if("germline".equalsIgnoreCase(panel.getAnalysisType())) {
             mainController.getBasicInformationMap().remove("germlineFilter");
             mainController.getBasicInformationMap().put("germlineFilter", filter);
         }
@@ -1183,7 +1204,7 @@ public class VariantFilterController extends SubPaneController {
             setFrequency(list, exacTextField.getText(), exacComboBox.getSelectionModel().getSelectedItem().getValue(), "exac");
         }
 
-        if("somatic".equalsIgnoreCase(analysisType)) {
+        if("somatic".equalsIgnoreCase(panel.getAnalysisType())) {
             if (StringUtils.isNotEmpty(gnomADAllTextField.getText())) {
                 setFrequency(list, gnomADAllTextField.getText(), gnomADAllComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADall");
             }
@@ -1303,7 +1324,7 @@ public class VariantFilterController extends SubPaneController {
 
     private void variantTabSave(List<Object> list) {
 
-        if("SOMATIC".equalsIgnoreCase(analysisType)) {
+        if("SOMATIC".equalsIgnoreCase(panel.getAnalysisType())) {
             if(caseACheckBox.isSelected()) {
                 list.add("expertTier T1");
             }

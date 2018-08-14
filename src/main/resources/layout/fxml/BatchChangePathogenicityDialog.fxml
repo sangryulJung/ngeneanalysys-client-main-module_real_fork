@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="400.0" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.BatchChangePathogenicityDialogController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="400.0" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.BatchChangePathogenicityDialogController">
    <children>
       <VBox prefHeight="117.0" prefWidth="368.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
          <children>
@@ -27,11 +27,7 @@
                   <RadioButton fx:id="lvBRadioButton" mnemonicParsing="false" text="LP" toggleGroup="$tierToggle" />
                   <RadioButton fx:id="lvCRadioButton" mnemonicParsing="false" text="US" toggleGroup="$tierToggle" />
                   <RadioButton fx:id="lvDRadioButton" mnemonicParsing="false" text="LB" toggleGroup="$tierToggle" />
-                  <RadioButton fx:id="lvERadioButton" mnemonicParsing="false" selected="true" text="B">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="tierToggle1" />
-                     </toggleGroup>
-                  </RadioButton>
+                  <RadioButton fx:id="lvERadioButton" mnemonicParsing="false" text="B" toggleGroup="$tierToggle" />
                </children>
             </HBox>
             <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="390.0">

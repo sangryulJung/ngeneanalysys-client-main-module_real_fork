@@ -9,6 +9,14 @@ public class ClinVar {
     private String clinVarDisease;
     private String clinVarClass;
     private String clinVarTraitOMIM;
+    private String clinVarReviewStatus;
+
+    /**
+     * @return clinVarReviewStatus
+     */
+    public String getClinVarReviewStatus() {
+        return clinVarReviewStatus;
+    }
 
     /**
      * @return clinVarAcc

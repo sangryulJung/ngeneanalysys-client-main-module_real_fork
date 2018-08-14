@@ -141,7 +141,7 @@ public class SNPsINDELsList {
 	 * @param flag String
 	 * @return HBox
 	 */
-	public static HBox getWarningReasonItemBox(String title, String flag, Panel panel) {
+	private static HBox getWarningReasonItemBox(String title, String flag, Panel panel) {
 		HBox hBox = new HBox();
 		Label flagLabel = new Label();
 		if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {

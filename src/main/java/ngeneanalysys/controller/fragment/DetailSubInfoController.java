@@ -75,7 +75,9 @@ public class DetailSubInfoController extends SubPaneController {
 
         setComboBox();
         showPopulationFrequency();
-        showInSilicoPredictions();
+        if(panel != null && panel.getAnalysisType().equalsIgnoreCase(AnalysisTypeCode.GERMLINE.getDescription())) {
+            showInSilicoPredictions();
+        }
 
 
     }

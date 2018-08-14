@@ -65,9 +65,6 @@ public enum PipelineCode {
 		List<SampleSourceCode> list = new ArrayList<>();
 		switch (pipelineCode) {
 			case CommonConstants.BRCA_ACCUTEST_DNA_PIPELINE:
-				list.add(SampleSourceCode.BLOOD);
-				list.add(SampleSourceCode.FFPE);
-				break;
 			case CommonConstants.BRCA_ACCUTEST_PLUS_DNA_PIPELINE:
 				list.add(SampleSourceCode.BLOOD);
 				list.add(SampleSourceCode.FFPE);
@@ -81,14 +78,6 @@ public enum PipelineCode {
 				list.add(SampleSourceCode.ETC);
 				break;
 			case CommonConstants.TST_170_DNA:
-				list.add(SampleSourceCode.BLOOD);
-				list.add(SampleSourceCode.BLOODCRYO);
-				list.add(SampleSourceCode.BONEMARROW);
-				list.add(SampleSourceCode.BONEMARROWCRYO);
-				list.add(SampleSourceCode.FFPE);
-				list.add(SampleSourceCode.DNA);
-				list.add(SampleSourceCode.ETC);
-				break;
 			case CommonConstants.TST_170_RNA:
 				list.add(SampleSourceCode.BLOOD);
 				list.add(SampleSourceCode.BLOODCRYO);

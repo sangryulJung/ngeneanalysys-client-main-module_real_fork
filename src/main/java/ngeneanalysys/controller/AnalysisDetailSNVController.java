@@ -947,7 +947,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             variantFilterController.setFilter(filterList);
             variantFilterController.setParamMap(paramMap);
             variantFilterController.setSnvController(this);
-            variantFilterController.setAnalysisType(panel.getAnalysisType());
+            variantFilterController.setPanel(panel);
             variantFilterController.show((Parent) node);
             statisticsTitledPane.setContent(node);
         } catch (Exception e) {
@@ -1271,6 +1271,21 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         createTableHeader(type, "Type", "variantType" ,null);
         type.getStyleClass().clear();
         type.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getVariantType()));
+
+        if(panel != null && panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())
+                || panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
+            TableColumn<VariantAndInterpretationEvidence, String> siftPrediction = new TableColumn<>("SIFT Prediction");
+            createTableHeader(siftPrediction, "SIFT Prediction", null,null);
+            siftPrediction.setCellValueFactory(cellData ->
+                    new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getSiftPrediction()));
+
+            TableColumn<VariantAndInterpretationEvidence, String> mutationTasterPrediction = new TableColumn<>("Mutation Taster Prediction");
+            createTableHeader(mutationTasterPrediction, "Mutation Taster Prediction", null,null);
+            mutationTasterPrediction.getStyleClass().clear();
+            mutationTasterPrediction.setCellValueFactory(cellData ->
+                    new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getMutationTasterPrediction()));
+
+        }
 
         if(panel != null && AnalysisTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             TableColumn<VariantAndInterpretationEvidence, String> cosmicIds = new TableColumn<>("COSMIC ID");

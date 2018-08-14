@@ -23,9 +23,9 @@ public class PopOverUtil {
 
     private PopOverUtil() { throw new IllegalAccessError("PopOverUtil class"); }
 
-    public static HBox getTextItemBox(String title) {
+    private static HBox getTextItemBox(String title) {
         HBox hBox = new HBox();
-        hBox.getChildren().add(new Label(title.toUpperCase().replaceAll("\\|", ", ")));
+        hBox.getChildren().add(new Label(title.toUpperCase()));
         return hBox;
     }
 
@@ -39,9 +39,11 @@ public class PopOverUtil {
             box.getChildren().add(emptyLabel);
         } else {
             box.setAlignment(Pos.BOTTOM_LEFT);
-
-            HBox hbox = getTextItemBox(text);
-            box.getChildren().add(hbox);
+            String[] items = text.split("\\|");
+            for(String item : items) {
+                HBox hbox = getTextItemBox(item);
+                box.getChildren().add(hbox);
+            }
         }
 
         label.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {

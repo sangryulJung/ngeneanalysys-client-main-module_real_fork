@@ -244,7 +244,7 @@
                               </Separator>
                            </children>
                         </HBox>
-                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="Low Confidence" GridPane.rowIndex="21" />
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="Warning" GridPane.rowIndex="21" />
                         <HBox fx:id="lowConfidenceHBox" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="21">
                            <children>
                               <Button fx:id="allLowConfidenceButton" mnemonicParsing="false" onMouseClicked="#setAllLowConfidence" prefWidth="70.0" styleClass="submitBtn" text="All" />
