@@ -14,13 +14,6 @@ public class ClinicalDB {
     private DBNSFP dbNSFP;
 
     /**
-     * @return dbNSFP
-     */
-    public DBNSFP getDbNSFP() {
-        return dbNSFP;
-    }
-
-    /**
      * @return cosmic
      */
     public CatalogueOfSomaticMutationsInCancer getCosmic() {
@@ -95,5 +88,9 @@ public class ClinicalDB {
      */
     public void setBic(BrcaCancerInformationCore bic) {
         this.bic = bic;
+    }
+
+    public DBNSFP getDbNSFP() {
+        return dbNSFP;
     }
 }

@@ -12,13 +12,6 @@ public class ClinVar {
     private String clinVarReviewStatus;
 
     /**
-     * @return clinVarReviewStatus
-     */
-    public String getClinVarReviewStatus() {
-        return clinVarReviewStatus;
-    }
-
-    /**
      * @return clinVarAcc
      */
     public String getClinVarAcc() {
@@ -66,5 +59,9 @@ public class ClinVar {
 
     public void setClinVarTraitOMIM(String clinVarTraitOMIM) {
         this.clinVarTraitOMIM = clinVarTraitOMIM;
+    }
+
+    public String getClinVarReviewStatus() {
+        return clinVarReviewStatus;
     }
 }
