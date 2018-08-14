@@ -9,6 +9,7 @@ public class ClinVar {
     private String clinVarDisease;
     private String clinVarClass;
     private String clinVarTraitOMIM;
+    private String clinVarReviewStatus;
 
     /**
      * @return clinVarAcc
@@ -58,5 +59,9 @@ public class ClinVar {
 
     public void setClinVarTraitOMIM(String clinVarTraitOMIM) {
         this.clinVarTraitOMIM = clinVarTraitOMIM;
+    }
+
+    public String getClinVarReviewStatus() {
+        return clinVarReviewStatus;
     }
 }
