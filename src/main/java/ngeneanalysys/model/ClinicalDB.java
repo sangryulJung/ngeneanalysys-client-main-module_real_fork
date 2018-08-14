@@ -13,6 +13,7 @@ public class ClinicalDB {
     private String kohbraPatient;
     private String enigma;
     private BrcaExchange be;
+    private DBNSFP dbNSFP;
 
     /**
      * @return cosmic
@@ -89,5 +90,9 @@ public class ClinicalDB {
      */
     public void setBic(BrcaCancerInformationCore bic) {
         this.bic = bic;
+    }
+
+    public DBNSFP getDbNSFP() {
+        return dbNSFP;
     }
 }
