@@ -132,16 +132,6 @@ public enum PipelineCode {
 		List<String> list = new ArrayList<>();
 		switch (pipelineCode) {
 			case CommonConstants.HEME_ACCUTEST_DNA_PIPELINE:
-				list.add("mapping_quality");
-				list.add("strand_artifact");
-				list.add("panel_of_normal");
-				list.add("fragment_length");
-				list.add("orientation_bias");
-				list.add("sequencing_error");
-				list.add("mapping_error");
-				list.add("snp_candidate");
-				list.add("t_lod");
-				break;
 			case CommonConstants.SOLID_ACCUTEST_DNA_PIPELINE:
 				list.add("mapping_quality");
 				list.add("strand_artifact");
@@ -151,6 +141,7 @@ public enum PipelineCode {
 				list.add("sequencing_error");
 				list.add("mapping_error");
 				list.add("snp_candidate");
+				list.add("t_lod");
 				break;
 			case CommonConstants.HERED_ACCUTEST_PIPELINE:
 				list.add("homopolymer");

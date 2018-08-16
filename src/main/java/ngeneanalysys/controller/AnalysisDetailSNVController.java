@@ -232,9 +232,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         setDefaultFilter();
 
-        filterComboBox.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
-            setFilterList();
-        });
+        filterComboBox.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> setFilterList());
 
         //setFilterList();
 
@@ -288,13 +286,13 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         });
 
         filterComboBox.valueProperty().addListener((ob, ov, nv) -> {
-            showVariantList(1 ,0);
+            Platform.runLater(() -> showVariantList(1 ,0));
             String[] defaultFilterName = {"Tier I", "Tier II", "Tier III", "Tier IV", "Pathogenic", "Likely Pathogenic",
                     "Uncertain Significance", "Likely Benign", "Benign", "Tier 1", "Tier 2", "Tier 3", "Tier 4", "All"};
             viewAppliedFiltersLabel.setDisable(Arrays.stream(defaultFilterName).anyMatch(item -> item.equals(nv.getValue())));
-            if (Arrays.stream(defaultFilterName).anyMatch(item -> item.equals(nv.getValue()))){
+            if (Arrays.stream(defaultFilterName).anyMatch(item -> item.equals(nv.getValue()))) {
             	viewAppliedFiltersLabel.setOpacity(0);
-            }else {
+            } else {
             	viewAppliedFiltersLabel.setOpacity(100);
             }
             
@@ -511,49 +509,62 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         viewAppliedFiltersLabel.setDisable(true);
     }
 
-    @SuppressWarnings("unchecked")
-    private void setFilterList() {
-        String currentFilterName = filterComboBox.getSelectionModel().getSelectedItem().getText();
-        filterComboBox.hide();
-        if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
+    private void setSomaticFilterList(String filterName) {
+        Map<String, List<Object>> filter = (Map<String, List<Object>>)mainController.getBasicInformationMap().get(filterName);
+        Set<String> keySet = filter.keySet();
 
-            Map<String, List<Object>> filter = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("hemeFilter");
-            Set<String> keySet = filter.keySet();
-
-            if(filterComboBox.getItems().size() > 5) {
-                while(filterComboBox.getItems().size() > 5) {
-                    filterComboBox.getItems().remove(filterComboBox.getItems().size() - 1);
-                }
-            }
-
-            for(String key : keySet) {
-                if(!(key.equals("Tier 1") || key.equals("Tier 2") ||key.equals("Tier 3") ||key.equals("Tier 4"))) {
-                    filterComboBox.getItems().add(new ComboBoxItem(key, key));
-                }
-            }
-            filterList = filter;
-        } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
-                panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
-
-            Map<String, List<Object>> filter = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("brcaFilter");
-            Set<String> keySet = filter.keySet();
-
-            while(filterComboBox.getItems().size() > 6) {
+        if(filterComboBox.getItems().size() > 5) {
+            while(filterComboBox.getItems().size() > 5) {
                 filterComboBox.getItems().remove(filterComboBox.getItems().size() - 1);
             }
+        }
 
-            for(String key : keySet) {
-                if(!(key.equals("Pathogenic") || key.equals("Likely Pathogenic") ||key.equals("Uncertain Significance")
-                        || key.equals("Likely Benign") || key.equals("Benign"))) {
-                    filterComboBox.getItems().add(new ComboBoxItem(key, key));
-                }
-                filterList = filter;
+        for(String key : keySet) {
+            if(!(key.equals("Tier 1") || key.equals("Tier 2") ||key.equals("Tier 3") ||key.equals("Tier 4"))) {
+                filterComboBox.getItems().add(new ComboBoxItem(key, key));
             }
         }
-        filterComboBox.show();
+        filterList = filter;
+    }
+
+    private void setGermlineFilterList(String filterName){
+        Map<String, List<Object>> filter = (Map<String, List<Object>>)mainController.getBasicInformationMap().get(filterName);
+        Set<String> keySet = filter.keySet();
+
+        while(filterComboBox.getItems().size() > 6) {
+            filterComboBox.getItems().remove(filterComboBox.getItems().size() - 1);
+        }
+
+        for(String key : keySet) {
+            if(!(key.equals("Pathogenic") || key.equals("Likely Pathogenic") ||key.equals("Uncertain Significance")
+                    || key.equals("Likely Benign") || key.equals("Benign"))) {
+                filterComboBox.getItems().add(new ComboBoxItem(key, key));
+            }
+            filterList = filter;
+        }
+    }
+
+   @SuppressWarnings("unchecked")
+    private void setFilterList() {
+        filterComboBox.hide();
+        String currentFilterName = filterComboBox.getSelectionModel().getSelectedItem().getText();
+        if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
+            setSomaticFilterList("hemeFilter");
+        } else if (panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
+            setSomaticFilterList("solidFilter");
+        } else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
+            setSomaticFilterList("tstDNAFilter");
+        } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
+                panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
+            setGermlineFilterList("brcaFilter");
+        } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+            setGermlineFilterList("heredFilter");
+        }
+
         Optional<ComboBoxItem> optionalComboBoxItem = filterComboBox.getItems().stream().filter(item
                 -> item.getText().equalsIgnoreCase(currentFilterName)).findFirst();
         optionalComboBoxItem.ifPresent(comboBoxItem -> filterComboBox.getSelectionModel().select(comboBoxItem));
+        filterComboBox.show();
     }
 
     private void expandLeft() {
@@ -819,7 +830,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
     }
 
-    public void setIsFalseItem(String flag, Map<String, List<Object>> list) {
+    private void setIsFalseItem(String flag, Map<String, List<Object>> list) {
         if(list.containsKey("search")) {
             list.get("search").add("isFalse " + flag);
         } else {
@@ -1205,6 +1216,15 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         createTableHeader(gene, "Gene", "gene" ,null);
         gene.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
 
+        TableColumn<VariantAndInterpretationEvidence, String> transcript = new TableColumn<>("Transcript");
+        createTableHeader(transcript, "Transcript", null ,null);
+        transcript.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getTranscript()));
+
+        TableColumn<VariantAndInterpretationEvidence, String> type = new TableColumn<>("Type");
+        createTableHeader(type, "Type", "variantType" ,null);
+        type.getStyleClass().clear();
+        type.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getVariantType()));
+
         TableColumn<VariantAndInterpretationEvidence, String> codCons = new TableColumn<>("Consequence");
         createTableHeader(codCons, "Consequence", null ,140.);
         codCons.getStyleClass().clear();
@@ -1214,7 +1234,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         createTableHeader(ntChange, "NT Change", null ,160.);
         ntChange.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
 
-        if(panel != null && AnalysisTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
+        if(panel != null && panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
+                panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
             TableColumn<VariantAndInterpretationEvidence, String> ntChangeBIC = new TableColumn<>("NT Change (BIC)");
             createTableHeader(ntChangeBIC, "NT Change (BIC)", null ,140.);
             ntChangeBIC.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().createNtChangeBRCA()));
@@ -1231,10 +1252,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChangeConversion()) :
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChangeSingleLetter()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> clinVarClass = new TableColumn<>("ClinVar Class");
-        createTableHeader(clinVarClass, "ClinVar Class", null ,150d);
-        clinVarClass.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarClass()));
-
         TableColumn<VariantAndInterpretationEvidence, String> chr = new TableColumn<>("Chr");
         createTableHeader(chr, "Chr", "chromosome" ,null);
         chr.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getChromosome()));
@@ -1242,11 +1259,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         TableColumn<VariantAndInterpretationEvidence, Integer> genomicCoordinate = new TableColumn<>("Start Position");
         createTableHeader(genomicCoordinate, "Start Position", "startPosition" ,null);
         genomicCoordinate.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getStartPosition()).asObject());
-
-        TableColumn<VariantAndInterpretationEvidence, String> exon = new TableColumn<>("Exon");
-        createTableHeader(exon, "Exon", null ,null);
-        exon.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getExonNum()));
-        exon.setVisible(true);
 
         TableColumn<VariantAndInterpretationEvidence, String> ref = new TableColumn<>("Ref");
         createTableHeader(ref, "Ref", null ,null);
@@ -1272,29 +1284,15 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         createTableHeader(altNum, "Alt Count", "altReadNum" ,null);
         altNum.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getReadInfo().getAltReadNum()).asObject());
 
-        TableColumn<VariantAndInterpretationEvidence, String> transcript = new TableColumn<>("Transcript");
-        createTableHeader(transcript, "Transcript", null ,null);
-        transcript.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getTranscript()));
+        TableColumn<VariantAndInterpretationEvidence, String> dbSnpRsId = new TableColumn<>("dbSNP ID");
+        createTableHeader(dbSnpRsId, "dbSNP ID", null ,null);
+        dbSnpRsId.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getDbSNP().getDbSnpRsId()));
+        dbSnpRsId.setVisible(true);
 
-        TableColumn<VariantAndInterpretationEvidence, String> type = new TableColumn<>("Type");
-        createTableHeader(type, "Type", "variantType" ,null);
-        type.getStyleClass().clear();
-        type.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getVariantType()));
-
-        if(panel != null && panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())
-                || panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
-            TableColumn<VariantAndInterpretationEvidence, String> siftPrediction = new TableColumn<>("SIFT Prediction");
-            createTableHeader(siftPrediction, "SIFT Prediction", null,null);
-            siftPrediction.setCellValueFactory(cellData ->
-                    new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getSiftPrediction()));
-
-            TableColumn<VariantAndInterpretationEvidence, String> mutationTasterPrediction = new TableColumn<>("Mutation Taster Prediction");
-            createTableHeader(mutationTasterPrediction, "Mutation Taster Prediction", null,null);
-            mutationTasterPrediction.getStyleClass().clear();
-            mutationTasterPrediction.setCellValueFactory(cellData ->
-                    new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getMutationTasterPrediction()));
-
-        }
+        TableColumn<VariantAndInterpretationEvidence, String> exon = new TableColumn<>("Exon");
+        createTableHeader(exon, "Exon", null ,null);
+        exon.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getExonNum()));
+        exon.setVisible(true);
 
         if(panel != null && AnalysisTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             TableColumn<VariantAndInterpretationEvidence, String> cosmicIds = new TableColumn<>("COSMIC ID");
@@ -1302,45 +1300,18 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             cosmicIds.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getCosmic().getCosmicIds()));
             cosmicIds.setVisible(true);
         }
-        TableColumn<VariantAndInterpretationEvidence, String> dbSnpRsId = new TableColumn<>("dbSNP ID");
-        createTableHeader(dbSnpRsId, "dbSNP ID", null ,null);
-        dbSnpRsId.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getDbSNP().getDbSnpRsId()));
-        dbSnpRsId.setVisible(true);
 
         TableColumn<VariantAndInterpretationEvidence, String> clinVarAcc = new TableColumn<>("ClinVar Accession\n");
         createTableHeader(clinVarAcc, "ClinVar Accession\n", null ,150d);
         clinVarAcc.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarAcc()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> strand = new TableColumn<>("Strand");
-        createTableHeader(strand, "Strand", null ,55.);
-        strand.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getStrand()));
-        strand.setVisible(false);
+        TableColumn<VariantAndInterpretationEvidence, String> clinVarClass = new TableColumn<>("ClinVar Class");
+        createTableHeader(clinVarClass, "ClinVar Class", null ,150d);
+        clinVarClass.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarClass()));
 
-        if(panel != null && AnalysisTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
-            TableColumn<VariantAndInterpretationEvidence, String> typeExtension = new TableColumn<>("Type Extension");
-            createTableHeader(typeExtension, "Type Extension", "variantTypeExtension", 70.);
-            typeExtension.getStyleClass().clear();
-            typeExtension.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getVariantTypeExtension()));
-            typeExtension.setVisible(false);
-        }
-
-        TableColumn<VariantAndInterpretationEvidence, String> dbSnpCommonId = new TableColumn<>("dbSNP Common ID");
-        createTableHeader(dbSnpCommonId, "dbSNP Common ID", null ,null);
-        dbSnpCommonId.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getDbSNP().getDbSnpCommonId()));
-        dbSnpCommonId.setVisible(false);
-
-        if(panel != null && AnalysisTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
-            TableColumn<VariantAndInterpretationEvidence, String> exonBic = new TableColumn<>("Exon (BIC)");
-            createTableHeader(exonBic, "Exon (BIC)", null ,null);
-            exonBic.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getExonNumBic()));
-        }
-
-        if ((panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) || (panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())))
-                && !sample.getSampleSource().equalsIgnoreCase("FFPE")) {
-            TableColumn<VariantAndInterpretationEvidence, String> zigosity = new TableColumn<>("Zigosity");
-            createTableHeader(zigosity, "Zigosity", null, null);
-            zigosity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getZygosity()));
-        }
+        TableColumn<VariantAndInterpretationEvidence, String> clinVarReviewStatus = new TableColumn<>("ClinVar Review status");
+        createTableHeader(clinVarReviewStatus, "ClinVar Review status", null ,150d);
+        clinVarReviewStatus.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarReviewStatus()));
 
         TableColumn<VariantAndInterpretationEvidence, String> clinVarDisease = new TableColumn<>("ClinVar Disease");
         createTableHeader(clinVarDisease, "ClinVar Disease", null ,null);
@@ -1442,6 +1413,52 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         createTableHeader(koreanExomInformationDatabase, "KoEXID", null ,null);
         koreanExomInformationDatabase.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getKoreanExomInformationDatabase())));
         koreanExomInformationDatabase.setVisible(false);
+
+        TableColumn<VariantAndInterpretationEvidence, String> dbSnpCommonId = new TableColumn<>("dbSNP Common ID");
+        createTableHeader(dbSnpCommonId, "dbSNP Common ID", null ,null);
+        dbSnpCommonId.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getDbSNP().getDbSnpCommonId()));
+        dbSnpCommonId.setVisible(false);
+
+        TableColumn<VariantAndInterpretationEvidence, String> strand = new TableColumn<>("Strand");
+        createTableHeader(strand, "Strand", null ,55.);
+        strand.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getStrand()));
+        strand.setVisible(false);
+
+        if(panel != null && AnalysisTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
+            TableColumn<VariantAndInterpretationEvidence, String> typeExtension = new TableColumn<>("Type Extension");
+            createTableHeader(typeExtension, "Type Extension", "variantTypeExtension", 70.);
+            typeExtension.getStyleClass().clear();
+            typeExtension.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getVariantTypeExtension()));
+            typeExtension.setVisible(false);
+        }
+
+        if(panel != null && AnalysisTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
+            TableColumn<VariantAndInterpretationEvidence, String> exonBic = new TableColumn<>("Exon (BIC)");
+            createTableHeader(exonBic, "Exon (BIC)", null ,null);
+            exonBic.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getExonNumBic()));
+        }
+
+        if ((panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) || (panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())))
+                && !sample.getSampleSource().equalsIgnoreCase("FFPE")) {
+            TableColumn<VariantAndInterpretationEvidence, String> zigosity = new TableColumn<>("Zigosity");
+            createTableHeader(zigosity, "Zigosity", null, null);
+            zigosity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getZygosity()));
+        }
+
+        if(panel != null && panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())
+                || panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
+            TableColumn<VariantAndInterpretationEvidence, String> siftPrediction = new TableColumn<>("SIFT Prediction");
+            createTableHeader(siftPrediction, "SIFT Prediction", null,null);
+            siftPrediction.setCellValueFactory(cellData ->
+                    new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getSiftPrediction()));
+
+            TableColumn<VariantAndInterpretationEvidence, String> mutationTasterPrediction = new TableColumn<>("Mutation Taster Prediction");
+            createTableHeader(mutationTasterPrediction, "Mutation Taster Prediction", null,null);
+            mutationTasterPrediction.getStyleClass().clear();
+            mutationTasterPrediction.setCellValueFactory(cellData ->
+                    new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getMutationTasterPrediction()));
+
+        }
 
         if(panel != null && AnalysisTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             TableColumn<VariantAndInterpretationEvidence, String> cosmicOccurrence = new TableColumn<>("COSMIC Occurrence");
@@ -1587,7 +1604,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         variantListTableView.getStyleClass().clear();
         variantListTableView.getStyleClass().add("table-view");
-
     }
 
     class BooleanCell extends TableCell<VariantAndInterpretationEvidence, Boolean> {

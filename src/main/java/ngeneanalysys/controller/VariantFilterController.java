@@ -542,14 +542,14 @@ public class VariantFilterController extends SubPaneController {
     @FXML
     public void setDefaultLowConfidence() {
         if(lowConfidenceCheckComboBox != null) {
-            lowConfidenceCheckComboBox.getCheckModel().checkAll();
-            lowConfidenceCheckComboBox.getCheckModel().clearCheck("contamination");
-            lowConfidenceCheckComboBox.getCheckModel().clearCheck("duplicate_evidence");
-            lowConfidenceCheckComboBox.getCheckModel().clearCheck("base_quality");
-            lowConfidenceCheckComboBox.getCheckModel().clearCheck("clustered_events");
-            lowConfidenceCheckComboBox.getCheckModel().clearCheck("germline_risk");
-            lowConfidenceCheckComboBox.getCheckModel().clearCheck("multiallelic");
-            lowConfidenceCheckComboBox.getCheckModel().clearCheck("read_position");
+            if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())
+                    || panel.getCode().equals(PipelineCode.TST170_DNA.getCode())
+                    || panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
+                lowConfidenceCheckComboBox.getCheckModel().checkAll();
+                lowConfidenceCheckComboBox.getCheckModel().clearCheck("t_lod");
+            } else if (panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
+                lowConfidenceCheckComboBox.getCheckModel().checkAll();
+            }
         }
     }
 
@@ -562,22 +562,8 @@ public class VariantFilterController extends SubPaneController {
 
     private void createLowConfidence() {
         CheckComboBox<String> lowConfidenceCheckComboBox = new CheckComboBox<>();
-        /*lowConfidenceCheckComboBox.getItems().addAll("artifact_in_normal", "base_quality", "clustered_events",
-                "contamination", "duplicate_evidence", "fragment_length", "germline_risk", "mapping_quality",
-                "multiallelic", "orientation_bias", "panel_of_normals", "read_position", "str_contraction",
-                "strand_artifact", "t_lod", "homopolymer", "repeat_sequence", "sequencing_error", "mapping_error",
-                "snp_candidate");*/
         if(panel != null) {
-            if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
-                lowConfidenceCheckComboBox.getItems().addAll("mapping_quality", "strand_artifact", "panel_of_normal"
-                , "fragment_length", "orientation_bias", "sequencing_error", "mapping_error", "snp_candidate", "t_lod", "repeat_sequence");
-            } else if(panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
-                lowConfidenceCheckComboBox.getItems().addAll("mapping_quality", "strand_artifact", "panel_of_normal"
-                , "fragment_length", "orientation_bias", "sequencing_error", "mapping_error", "snp_candidate", "repeat_sequence");
-            } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
-                lowConfidenceCheckComboBox.getItems().addAll("homopolymer", "repeat_sequence", "sequencing_error"
-                ,"mapping_error", "snp_candidate", "low_vaf", "snp_for_cnv", "cnv_probe_region", "repeat_sequence");
-            }
+            lowConfidenceCheckComboBox.getItems().addAll(PipelineCode.getLowConfidences(panel.getCode()));
         }
 
         lowConfidenceCheckComboBox.setPrefWidth(150);
@@ -741,7 +727,7 @@ public class VariantFilterController extends SubPaneController {
 
         if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
                 panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
-            lowConfidenceHBox.setDisable(true);
+            if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode())) lowConfidenceHBox.setDisable(true);
             cosmicidCheckBox.setDisable(true);
             cosmicOccurrenceComboBox.setDisable(true);
         }
@@ -1167,12 +1153,22 @@ public class VariantFilterController extends SubPaneController {
     }
 
     private void changeFilter() {
-        if("somatic".equalsIgnoreCase(panel.getAnalysisType())) {
-            mainController.getBasicInformationMap().remove("somaticFilter");
-            mainController.getBasicInformationMap().put("somaticFilter", filter);
-        } else if("germline".equalsIgnoreCase(panel.getAnalysisType())) {
-            mainController.getBasicInformationMap().remove("germlineFilter");
-            mainController.getBasicInformationMap().put("germlineFilter", filter);
+        if (panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
+            mainController.getBasicInformationMap().remove("hemeFilter");
+            mainController.getBasicInformationMap().put("hemeFilter", filter);
+        } else if (panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
+            mainController.getBasicInformationMap().remove("solidFilter");
+            mainController.getBasicInformationMap().put("solidFilter", filter);
+        } else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
+            mainController.getBasicInformationMap().remove("tstDNAFilter");
+            mainController.getBasicInformationMap().put("tstDNAFilter", filter);
+        } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
+                panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
+            mainController.getBasicInformationMap().remove("brcaFilter");
+            mainController.getBasicInformationMap().put("brcaFilter", filter);
+        } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+            mainController.getBasicInformationMap().remove("heredFilter");
+            mainController.getBasicInformationMap().put("heredFilter", filter);
         }
     }
 

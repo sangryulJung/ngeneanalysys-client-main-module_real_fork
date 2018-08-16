@@ -255,18 +255,29 @@ public class SystemManagerPanelController extends SubPaneController {
         pipelineComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
             defaultSampleSourceComboBox.getItems().removeAll(defaultSampleSourceComboBox.getItems());
             if(lowConfidenceCheckComboBox != null) {
+                lowConfidenceCheckComboBox.getCheckModel().clearChecks();
                 lowConfidenceCheckComboBox.getItems().removeAll(lowConfidenceCheckComboBox.getItems());
             }
             panelInfoLabel.setText("");
             if(newValue != null && StringUtils.isNotEmpty(newValue.getValue())) {
-                defaultSampleSourceComboBox.getItems().addAll(PipelineCode.getSampleSource(newValue.getValue()));
-                if(lowConfidenceCheckComboBox != null) {
-                    lowConfidenceCheckComboBox.getItems().addAll(PipelineCode.getLowConfidences(newValue.getValue()));
-                }
+
                 PipelineCode pipelineCode = PipelineCode.getPipelineCode(newValue.getValue());
-                if(pipelineCode != null)
+                if(pipelineCode != null) {
                     panelInfoLabel.setText("Analysis Type : " + pipelineCode.getAnalysisType() + ", Library Type : "
                             + pipelineCode.getLibraryType() + ", Analysis Target : " + pipelineCode.getAnalysisTarget());
+
+                    if(pipelineCode.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
+                            pipelineCode.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
+                        setBRCADefault();
+                    } else if(pipelineCode.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+                        setHEREDDefault();
+                    }
+
+                    defaultSampleSourceComboBox.getItems().addAll(PipelineCode.getSampleSource(newValue.getValue()));
+                    if(lowConfidenceCheckComboBox != null) {
+                        lowConfidenceCheckComboBox.getItems().addAll(PipelineCode.getLowConfidences(newValue.getValue()));
+                    }
+                }
             }
         });
 
@@ -301,6 +312,86 @@ public class SystemManagerPanelController extends SubPaneController {
         });
 
         setDisabledItem(true);
+    }
+
+    private void setHEREDDefault() {
+        canonicalTranscriptTextArea.setText("");
+        canonicalTranscriptTextArea.setDisable(true);
+
+        warningMAFCheckBox.setSelected(false);
+        warningMAFCheckBox.setDisable(true);
+
+        essentialGenesTextField.setText("");
+        essentialGenesTextField.setDisable(true);
+
+        indelMinAlleleFrequencyTextField.setText("");
+        indelMinAlleleFrequencyTextField.setDisable(true);
+        indelMinReadDepthTextField.setText("");
+        indelMinReadDepthTextField.setDisable(true);
+        indelMinAlternateCountTextField.setText("");
+        indelMinAlternateCountTextField.setDisable(true);
+        snvMinReadDepthTextField.setText("");
+        snvMinReadDepthTextField.setDisable(true);
+
+        populationFrequencyTextField.setText("");
+        populationFrequencyTextField.setDisable(true);
+
+        frequencyDBCheckComboBox.getCheckModel().clearChecks();
+        frequencyDBCheckComboBox.setDisable(true);
+
+        roiCoveragePercentageTextField.setText("");
+        roiCoveragePercentageTextField.setDisable(true);
+    }
+
+    private void setBRCADefault() {
+        canonicalTranscriptTextArea.setText("");
+        canonicalTranscriptTextArea.setDisable(true);
+
+        warningReadDepthCheckBox.setSelected(false);
+        warningReadDepthCheckBox.setDisable(true);
+        warningReadDepthTextField.setText("");
+        warningReadDepthTextField.setDisable(true);
+        warningMAFCheckBox.setSelected(false);
+        warningMAFCheckBox.setDisable(true);
+        warningMAFTextField.setText("");
+        warningMAFTextField.setDisable(true);
+
+        essentialGenesTextField.setText("");
+        essentialGenesTextField.setDisable(true);
+
+        indelMinAlleleFrequencyTextField.setText("");
+        indelMinAlleleFrequencyTextField.setDisable(true);
+        indelMinReadDepthTextField.setText("");
+        indelMinReadDepthTextField.setDisable(true);
+        indelMinAlternateCountTextField.setText("");
+        indelMinAlternateCountTextField.setDisable(true);
+        snvMinReadDepthTextField.setText("");
+        snvMinReadDepthTextField.setDisable(true);
+
+        lowConfidenceCheckComboBox.getCheckModel().clearChecks();
+        lowConfidenceCheckComboBox.setDisable(true);
+
+        populationFrequencyTextField.setText("");
+        populationFrequencyTextField.setDisable(true);
+
+        frequencyDBCheckComboBox.getCheckModel().clearChecks();
+        frequencyDBCheckComboBox.setDisable(true);
+
+        totalBasePairTextField.setText("");
+        totalBasePairTextField.setDisable(true);
+        q30TrimmedBasePercentageTextField.setText("");
+        q30TrimmedBasePercentageTextField.setDisable(true);
+        mappedBasePercentageTextField.setText("");
+        mappedBasePercentageTextField.setDisable(true);
+        onTargetCoverageTextField.setText("");
+        onTargetCoverageTextField.setDisable(true);
+        onTargetPercentageTextField.setText("");
+        onTargetPercentageTextField.setDisable(true);
+        duplicatedReadsPercentageTextField.setText("");
+        duplicatedReadsPercentageTextField.setDisable(true);
+        roiCoveragePercentageTextField.setText("");
+        roiCoveragePercentageTextField.setDisable(true);
+
     }
 
     private TextFormatter returnFormatter() {
@@ -997,33 +1088,6 @@ public class SystemManagerPanelController extends SubPaneController {
 
                 roiFileSelectionButton.setDisable(false);
                 panelSaveButton.setDisable(false);
-
-                if(panelDetail.getName().contains("BRCA")) {
-                    //diseaseCheckComboBox.setDisable(true);
-                    warningReadDepthTextField.setDisable(true);
-                    essentialGenesTextField.setDisable(true);
-                    canonicalTranscriptTextArea.setDisable(true);
-                    warningMAFCheckBox.setDisable(true);
-                    warningMAFTextField.setDisable(true);
-                    warningReadDepthCheckBox.setDisable(true);
-                    indelMinAlleleFrequencyTextField.setDisable(true);
-                    indelMinReadDepthTextField.setDisable(true);
-                    indelMinAlternateCountTextField.setDisable(true);
-                    lowConfidenceMinAlleleFractionTextField.setDisable(true);
-                    snvMinReadDepthTextField.setDisable(true);
-                    lowConfidenceCheckComboBox.setDisable(true);
-                    frequencyDBCheckComboBox.setDisable(true);
-                    populationFrequencyTextField.setDisable(true);
-                    essentialGenesTextField.setDisable(true);
-                    canonicalTranscriptTextArea.setDisable(true);
-                    totalBasePairTextField.setDisable(true);
-                    q30TrimmedBasePercentageTextField.setDisable(true);
-                    mappedBasePercentageTextField.setDisable(true);
-                    onTargetPercentageTextField.setDisable(true);
-                    onTargetCoverageTextField.setDisable(true);
-                    duplicatedReadsPercentageTextField.setDisable(true);
-                    roiCoveragePercentageTextField.setDisable(true);
-                }
             });
 
             img2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
