@@ -6,7 +6,9 @@ package ngeneanalysys.model;
  */
 public class NGeneAnalySysVersion {
     private String system;
+    private String pipelineDocker;
     private String apiServer;
+
     private PipelineSoftwareVersion pipelines;
 
     /**
@@ -14,6 +16,13 @@ public class NGeneAnalySysVersion {
      */
     public String getSystem() {
         return system;
+    }
+
+    /**
+     * @return pipelineDocker
+     */
+    public String getPipelineDocker() {
+        return pipelineDocker;
     }
 
     /**

@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="370.0" style="-fx-background-color: white;" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemMenuSoftwareVersionController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="370.0" style="-fx-background-color: white;" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemMenuSoftwareVersionController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="20.0" prefWidth="20.0" />
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -58,18 +58,15 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
                <children>
-                  <Label prefWidth="90.0" text="Pipeline version" />
-                  <Separator prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                  <Label prefWidth="120.0" text="Pipeline Docker" />
+                  <Label fx:id="dockerVersionLabel" text="1.0.0.0" />
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
                <children>
-                  <Label prefWidth="120.0" text="Docker App :" />
-                  <Label fx:id="dockerVersionLabel" text="1.0.0.0" />
+                  <Label prefWidth="90.0" text="Pipeline version" />
+                  <Separator prefWidth="200.0" HBox.hgrow="ALWAYS" />
                </children>
-               <padding>
-                  <Insets left="40.0" />
-               </padding>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
                <children>
