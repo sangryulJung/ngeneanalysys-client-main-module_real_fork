@@ -25,7 +25,7 @@ public class PopOverUtil {
 
     private static HBox getTextItemBox(String title) {
         HBox hBox = new HBox();
-        hBox.getChildren().add(new Label(title.toUpperCase()));
+        hBox.getChildren().add(new Label(title.replace(":", " : ")));
         return hBox;
     }
 
@@ -39,7 +39,7 @@ public class PopOverUtil {
             box.getChildren().add(emptyLabel);
         } else {
             box.setAlignment(Pos.BOTTOM_LEFT);
-            String[] items = text.split("\\|");
+            String[] items = text.split(",");
             for(String item : items) {
                 HBox hbox = getTextItemBox(item);
                 box.getChildren().add(hbox);

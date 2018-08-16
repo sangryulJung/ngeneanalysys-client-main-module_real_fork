@@ -74,24 +74,24 @@ public class SNPsINDELsList {
 			int currentIndex = 0;
 			for(String item : list) {
 				currentIndex++;
-				if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode()) ||
-						item.contains("low_variant_coverage_depth") ||
-						item.contains("low_variant_fraction") ||
-						item.contains("homopolymer_region") ||
-						item.contains("soft_clipped_amplicon") ||
-						item.contains("primer_deletion") ||
-						item.contains("low_read_depth") ||
-						item.contains("low_allele_fraction") ||
-						item.contains("low_confidence")) {
-					String[] splitItem = item.split(":");
+//				if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode()) ||
+//						item.contains("low_variant_coverage_depth") ||
+//						item.contains("low_variant_fraction") ||
+//						item.contains("homopolymer_region") ||
+//						item.contains("soft_clipped_amplicon") ||
+//						item.contains("primer_deletion") ||
+//						item.contains("low_read_depth") ||
+//						item.contains("low_allele_fraction") ||
+//						item.contains("low_confidence")) {
+//					String[] splitItem = item.split(":");
 
-					String titleString = "* " + WordUtils.capitalize(splitItem[0].replaceAll("_", " ")) + " : ";
-					HBox hbox = getWarningReasonItemBox(titleString, splitItem[1], panel);
+					//String titleString = "* " + WordUtils.capitalize(splitItem[0].replaceAll("_", " ")) + " : ";
+					HBox hbox = getWarningReasonItemBox(item, "NONE" , panel);
 					box.getChildren().add(hbox);
 
 					if (list.length > currentIndex) box.setMargin(hbox, new Insets(5, 0, 0, 0));
 
-				}
+				//}
 			}
 
 			/*if(map != null && !map.isEmpty() && map.size() > 0) {
@@ -155,8 +155,8 @@ public class SNPsINDELsList {
 			flagLabel.getStyleClass().add("txt_red");
 		}
 		flagLabel.getStyleClass().add("weight_bold");
-		hBox.getChildren().add(new Label(title));
-		hBox.getChildren().add(flagLabel);
+		hBox.getChildren().add(new Label(title.replace(":", " : ")));
+		//hBox.getChildren().add(flagLabel);
 		return hBox;
 	}
 }
