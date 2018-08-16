@@ -14,6 +14,8 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import ngeneanalysys.code.AnalysisJobStatusCode;
 import ngeneanalysys.code.constants.FXMLConstants;
+import ngeneanalysys.code.enums.PipelineCode;
+import ngeneanalysys.code.enums.SampleSourceCode;
 import ngeneanalysys.controller.extend.BaseStageController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
@@ -470,7 +472,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                     panel.getItems().add(comboBoxItem);
                     panel.getSelectionModel().select(comboBoxItem);
 
-
                     ComboBox<ComboBoxItem> disease = diseaseComboBoxList.get(row);
                     ComboBoxItem comboBoxItem1 = new ComboBoxItem(sample.getDiseaseName(), sample.getDiseaseName());
                     disease.getItems().add(comboBoxItem1);
@@ -657,6 +658,15 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             // 질병명이 없는 패널일 경우 샘플의 질병을 N/A로 설정되도록 함.
             if (diseaseComboBox.getItems().size() == 0) {
                 diseaseComboBox.getItems().add(new ComboBoxItem("0", "N/A"));
+            }
+            List<SampleSourceCode> sampleSourceCodes = PipelineCode.getSampleSource(panelDetail.getCode());
+
+            if(!sampleSourceComboBoxList.get(index).getItems().isEmpty()) {
+                sampleSourceComboBoxList.get(index).getItems().removeAll(sampleSourceComboBoxList.get(index).getItems());
+            }
+
+            for(SampleSourceCode sampleSourceCode : sampleSourceCodes) {
+                sampleSourceComboBoxList.get(index).getItems().add(sampleSourceCode.getDescription());
             }
 
             if(panelDetail.getDefaultSampleSource() != null) {

@@ -205,10 +205,17 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         sample = (SampleView)paramMap.get("sampleView");
         panel = (Panel)paramMap.get("panel");
-        if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
-            this.filterList = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("somaticFilter");
-        } else if(panel.getAnalysisType().equalsIgnoreCase("GERMLINE")) {
-            this.filterList = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("germlineFilter");
+        if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
+            this.filterList = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("hemeFilter");
+        } else if(panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
+            this.filterList = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("solidFilter");
+        } else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
+            this.filterList = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("tstDNAFilter");
+        } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
+                panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
+            this.filterList = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("brcaFilter");
+        } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+            this.filterList = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("heredFilter");
         }
 
         eventRegistration();
@@ -508,9 +515,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     private void setFilterList() {
         String currentFilterName = filterComboBox.getSelectionModel().getSelectedItem().getText();
         filterComboBox.hide();
-        if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
+        if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
 
-            Map<String, List<Object>> filter = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("somaticFilter");
+            Map<String, List<Object>> filter = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("hemeFilter");
             Set<String> keySet = filter.keySet();
 
             if(filterComboBox.getItems().size() > 5) {
@@ -525,9 +532,10 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 }
             }
             filterList = filter;
-        } else if(panel.getAnalysisType().equalsIgnoreCase("GERMLINE")) {
+        } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
+                panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
 
-            Map<String, List<Object>> filter = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("germlineFilter");
+            Map<String, List<Object>> filter = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("brcaFilter");
             Set<String> keySet = filter.keySet();
 
             while(filterComboBox.getItems().size() > 6) {
@@ -1163,9 +1171,10 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                     return;
                 }
                 VariantAndInterpretationEvidence variant = getTableView().getItems().get(getIndex());
-                Label label = new Label("R");
+                Label label = new Label();
                 label.getStyleClass().remove("label");
                 if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
+                    label.setText("R");
                     label.getStyleClass().add("report_check");
                 } else {
                     label.getStyleClass().add("report_uncheck");

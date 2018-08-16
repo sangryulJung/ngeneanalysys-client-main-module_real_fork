@@ -1069,11 +1069,19 @@ public class VariantFilterController extends SubPaneController {
                 Map<String, Object> map = new HashMap<>();
                 map.put("value", gg);
                 try {
-                    if ("somatic".equalsIgnoreCase(panel.getAnalysisType())) {
-                        apiService.put("/member/memberOption/somaticFilter", map, null, true);
-                    } else if ("germline".equalsIgnoreCase(panel.getAnalysisType())) {
-                        apiService.put("/member/memberOption/germlineFilter", map, null, true);
+                    if (panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
+                        apiService.put("/member/memberOption/hemeFilter", map, null, true);
+                    } else if (panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
+                        apiService.put("/member/memberOption/solidFilter", map, null, true);
+                    } else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
+                        apiService.put("/member/memberOption/tstDNAFilter", map, null, true);
+                    } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
+                            panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
+                        apiService.put("/member/memberOption/brcaFilter", map, null, true);
+                    } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+                        apiService.put("/member/memberOption/heredFilter", map, null, true);
                     }
+
                 } catch (WebAPIException wae) {
                     DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainApp.getPrimaryStage(), true);
                 }
@@ -1138,10 +1146,17 @@ public class VariantFilterController extends SubPaneController {
         Map<String, Object> map = new HashMap<>();
         map.put("value", gg);
         try {
-            if ("somatic".equalsIgnoreCase(panel.getAnalysisType())) {
-                apiService.put("/member/memberOption/somaticFilter", map, null, true);
-            } else if ("germline".equalsIgnoreCase(panel.getAnalysisType())) {
-                apiService.put("/member/memberOption/germlineFilter", map, null, true);
+            if (panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
+                apiService.put("/member/memberOption/hemeFilter", map, null, true);
+            } else if (panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
+                apiService.put("/member/memberOption/solidFilter", map, null, true);
+            } else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
+                apiService.put("/member/memberOption/tstDNAFilter", map, null, true);
+            } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
+                    panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
+                apiService.put("/member/memberOption/brcaFilter", map, null, true);
+            } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+                apiService.put("/member/memberOption/heredFilter", map, null, true);
             }
         } catch (WebAPIException wae) {
             DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainApp.getPrimaryStage(), true);

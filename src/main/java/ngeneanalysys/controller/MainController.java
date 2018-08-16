@@ -348,7 +348,7 @@ public class MainController extends BaseStageController {
             });
 
         //settingPanelAndDiseases();
-        createFilter();
+        Platform.runLater(this::createFilter);
         //primaryStage.setResizable(false);
     }
 
@@ -401,43 +401,72 @@ public class MainController extends BaseStageController {
         Map<String, List<Object>> somaticFilter = new HashMap<>();
 
         try {
-            response = apiService.get("member/memberOption/somaticFilter", null, null, null);
+            response = apiService.get("member/memberOption/hemeFilter", null, null, null);
             somaticFilter = JsonUtil.fromJsonToMap(response.getContentString());
         } catch (WebAPIException wae) {
 
         } finally {
-            setDefaultSomaticFilter(somaticFilter);
+            setDefaultSomaticFilter(somaticFilter, "hemeFilter");
+        }
+
+        try {
+            response = apiService.get("member/memberOption/solidFilter", null, null, null);
+            somaticFilter = JsonUtil.fromJsonToMap(response.getContentString());
+        } catch (WebAPIException wae) {
+
+        } finally {
+            setDefaultSomaticFilter(somaticFilter, "solidFilter");
+        }
+
+        try {
+            response = apiService.get("member/memberOption/tstDNAFilter", null, null, null);
+            somaticFilter = JsonUtil.fromJsonToMap(response.getContentString());
+        } catch (WebAPIException wae) {
+
+        } finally {
+            setDefaultSomaticFilter(somaticFilter, "tstDNAFilter");
         }
 
         Map<String, List<Object>> germlineFilter = new HashMap<>();
 
         try {
             response = apiService
-                    .get("member/memberOption/germlineFilter", null, null, null);
+                    .get("member/memberOption/brcaFilter", null, null, null);
             germlineFilter = JsonUtil.fromJsonToMap(response.getContentString());
 
         } catch (WebAPIException wae) {
 
         } finally {
-            setDefaultGermlineFilter(germlineFilter);
+            setDefaultGermlineFilter(germlineFilter, "brcaFilter");
+        }
+
+        try {
+            response = apiService
+                    .get("member/memberOption/heredFilter", null, null, null);
+            germlineFilter = JsonUtil.fromJsonToMap(response.getContentString());
+
+        } catch (WebAPIException wae) {
+
+        } finally {
+            setDefaultGermlineFilter(germlineFilter, "heredFilter");
         }
     }
 
-    private void setDefaultGermlineFilter(Map<String, List<Object>> germlineFilter) {
+    private void setDefaultGermlineFilter(Map<String, List<Object>> germlineFilter, String filterName) {
         germlineFilter.put("Pathogenic", setStandardFilter("pathogenicity", "P"));
         germlineFilter.put("Likely Pathogenic", setStandardFilter("pathogenicity", "LP"));
         germlineFilter.put("Uncertain Significance", setStandardFilter("pathogenicity", "US"));
         germlineFilter.put("Likely Benign", setStandardFilter("pathogenicity", "LB"));
         germlineFilter.put("Benign", setStandardFilter("pathogenicity", "B"));
-        basicInformationMap.put("germlineFilter", germlineFilter);
+        basicInformationMap.put(filterName, germlineFilter);
     }
 
-    private void setDefaultSomaticFilter(Map<String, List<Object>> somaticFilter) {
+    private void setDefaultSomaticFilter(Map<String, List<Object>> somaticFilter, String filterName) {
         somaticFilter.put("Tier 1", setStandardFilter("tier", "T1"));
         somaticFilter.put("Tier 2", setStandardFilter("tier", "T2"));
         somaticFilter.put("Tier 3", setStandardFilter("tier", "T3"));
         somaticFilter.put("Tier 4", setStandardFilter("tier", "T4"));
-        basicInformationMap.put("somaticFilter", somaticFilter);
+        basicInformationMap.put(filterName, somaticFilter);
     }
 
     private List<Object> setStandardFilter(String key, String value) {
