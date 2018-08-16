@@ -997,7 +997,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         if(size != null) column.setPrefWidth(size);
 
-        variantListTableView.getColumns().add(column);
+        //variantListTableView.getColumns().add(column);
         columnMap.put(name, column);
     }
 
@@ -1604,6 +1604,20 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         variantListTableView.getStyleClass().clear();
         variantListTableView.getStyleClass().add("table-view");
+
+        List<TableColumnInfo> columnInfos = new ArrayList<>();
+        columnInfos.add(new TableColumnInfo(1, "Gene", true));
+        columnInfos.add(new TableColumnInfo(3, "KoEXID", true));
+        columnInfos.add(new TableColumnInfo(4, "Alt", true));
+        columnInfos.add(new TableColumnInfo(2, "Depth", false));
+
+        columnInfos.sort(Comparator.comparing(TableColumnInfo::getOrder));
+
+        for(TableColumnInfo info : columnInfos) {
+            if(columnMap.containsKey(info.getColumnName()))
+                variantListTableView.getColumns().add(columnMap.get(info.getColumnName()));
+        }
+
     }
 
     class BooleanCell extends TableCell<VariantAndInterpretationEvidence, Boolean> {
