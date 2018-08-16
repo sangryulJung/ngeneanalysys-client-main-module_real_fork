@@ -194,6 +194,11 @@ public class SystemManagerPanelController extends SubPaneController {
     private TextField roiCoveragePercentageTextField;
     @FXML
     private ScrollPane panelContentsScrollPane;
+    @FXML
+    private TextField uniformity02PercentageTextField;
+
+    @FXML
+    private TextField mappingQuality60PercentageTextField;
 
     private CheckComboBox<ComboBoxItem> groupCheckComboBox = null;
 
@@ -391,6 +396,10 @@ public class SystemManagerPanelController extends SubPaneController {
         duplicatedReadsPercentageTextField.setDisable(true);
         roiCoveragePercentageTextField.setText("");
         roiCoveragePercentageTextField.setDisable(true);
+        uniformity02PercentageTextField.setText("");
+        uniformity02PercentageTextField.setDisable(true);
+        mappingQuality60PercentageTextField.setText("");
+        mappingQuality60PercentageTextField.setDisable(true);
 
     }
 
@@ -704,6 +713,14 @@ public class SystemManagerPanelController extends SubPaneController {
             Double roiCoverage = new Double(roiCoveragePercentageTextField.getText());
             qcPassConfig.setRoiCoveragePercentage(roiCoverage);
         } catch (Exception e) { }
+        try {
+            Double uniformity = new Double(uniformity02PercentageTextField.getText());
+            qcPassConfig.setUniformity02Percentage(uniformity);
+        } catch (Exception e) { }
+        try {
+            Double mappingQuality = new Double(mappingQuality60PercentageTextField.getText());
+            qcPassConfig.setMappingQuality60Percentage(mappingQuality);
+        } catch (Exception e) { }
 
         return qcPassConfig;
     }
@@ -884,6 +901,8 @@ public class SystemManagerPanelController extends SubPaneController {
         lowConfidenceMinAlleleFractionTextField.setText("");
         duplicatedReadsPercentageTextField.setText("");
         roiCoveragePercentageTextField.setText("");
+        mappingQuality60PercentageTextField.setText("");
+        uniformity02PercentageTextField.setText("");
     }
 
     void setDisabledItem(boolean condition) {
@@ -917,6 +936,8 @@ public class SystemManagerPanelController extends SubPaneController {
         roiCoveragePercentageTextField.setDisable(condition);
         defaultDiseaseComboBox.setDisable(condition);
         defaultSampleSourceComboBox.setDisable(condition);
+        mappingQuality60PercentageTextField.setDisable(condition);
+        uniformity02PercentageTextField.setDisable(condition);
     }
 
     public void deletePanel(Integer panelId) {
@@ -1038,6 +1059,8 @@ public class SystemManagerPanelController extends SubPaneController {
                     if(panel.getQcPassConfig().getOnTargetPercentage() != null) onTargetPercentageTextField.setText(panel.getQcPassConfig().getOnTargetPercentage().toString());
                     if(panel.getQcPassConfig().getQ30TrimmedBasePercentage() != null) q30TrimmedBasePercentageTextField.setText(panel.getQcPassConfig().getQ30TrimmedBasePercentage().toString());
                     if(panel.getQcPassConfig().getRoiCoveragePercentage() != null) roiCoveragePercentageTextField.setText(panel.getQcPassConfig().getRoiCoveragePercentage().toString());
+                    if(panel.getQcPassConfig().getUniformity02Percentage() != null) uniformity02PercentageTextField.setText(panel.getQcPassConfig().getUniformity02Percentage().toString());
+                    if(panel.getQcPassConfig().getMappingQuality60Percentage() != null) mappingQuality60PercentageTextField.setText(panel.getQcPassConfig().getMappingQuality60Percentage().toString());
                 }
 
                 if(panel.getVariantFilter().getEssentialGenes() != null) essentialGenesTextField.setText(panel.getVariantFilter().getEssentialGenes());
