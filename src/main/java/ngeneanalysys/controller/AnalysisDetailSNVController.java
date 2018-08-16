@@ -1153,7 +1153,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
 
         TableColumn<VariantAndInterpretationEvidence, String> report = new TableColumn<>("Report");
-        createTableHeader(report, "Report", null ,55.);
+        createTableHeader(report, "Report", "includedInReport" ,55.);
         report.getStyleClass().add(centerStyleClass);
         report.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getIncludedInReport()));
         report.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
@@ -1171,7 +1171,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         report.setVisible(false);
 
         TableColumn<VariantAndInterpretationEvidence, String> reportTest = new TableColumn<>("Report");
-        createTableHeader(reportTest, "Report", null ,55.);
+        createTableHeader(reportTest, "Report", "includedInReport" ,55.);
         reportTest.getStyleClass().add(centerStyleClass);
         reportTest.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getIncludedInReport()));
         reportTest.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
