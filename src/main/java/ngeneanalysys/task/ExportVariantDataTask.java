@@ -78,7 +78,7 @@ public class ExportVariantDataTask extends Task<Void> {
 		if(StringUtils.isEmpty(fileType)) {
 			downloadUrl = "/sampleSummaryExcel";
 		} else {
-			downloadUrl = "/analysisResults/exportVariantData/" + sampleId;
+			downloadUrl = "/analysisResults/sampleSnpInDels/" + sampleId;
 		}
 
 		OutputStream os = null;

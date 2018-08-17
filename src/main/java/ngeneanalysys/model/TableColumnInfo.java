@@ -9,12 +9,6 @@ public class TableColumnInfo {
     private String columnName;
     private boolean visible;
 
-    public TableColumnInfo(Integer order, String columnName, boolean visible) {
-        this.order = order;
-        this.columnName = columnName;
-        this.visible = visible;
-    }
-
     /**
      * @return order
      */

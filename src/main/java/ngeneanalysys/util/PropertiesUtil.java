@@ -1,6 +1,7 @@
 package ngeneanalysys.util;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Properties;
 
@@ -33,6 +34,26 @@ public class PropertiesUtil {
 				properties.load(input);
 				input.close();
 				return properties;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static String getJsonString(String path) {
+		try {
+			ResourceUtil resourceUtil = new ResourceUtil();
+			InputStream input = resourceUtil.getResourceAsStream(path);
+			if(input != null) {
+				InputStreamReader inputStreamReader = new InputStreamReader(input, StandardCharsets.UTF_8);
+				BufferedReader reader = new BufferedReader(inputStreamReader);
+
+				StringBuilder stringBuilder = new StringBuilder();
+				for (String line; (line = reader.readLine()) != null;) {
+					stringBuilder.append(line);
+				}
+				return stringBuilder.toString();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
