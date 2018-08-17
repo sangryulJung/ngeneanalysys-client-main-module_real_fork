@@ -20,6 +20,21 @@ public class CommonConstants {
 	
 	/** 기본 프로퍼티 파일 경로 */
 	public static final String BASE_PROPERTIES_PATH = "/properties/application.properties";
+
+	/** 기본 프로퍼티 파일 경로 */
+	public static final String BASE_HEME_COLUMN_ORDER_PATH = "/layout/column/heme";
+
+	/** 기본 프로퍼티 파일 경로 */
+	public static final String BASE_BRCA_COLUMN_ORDER_PATH = "/layout/column/brca";
+
+	/** 기본 프로퍼티 파일 경로 */
+	public static final String BASE_HERED_COLUMN_ORDER_PATH = "/layout/column/hered";
+
+	/** 기본 프로퍼티 파일 경로 */
+	public static final String BASE_SOLID_COLUMN_ORDER_PATH = "/layout/column/solid";
+
+	/** 기본 프로퍼티 파일 경로 */
+	public static final String BASE_TSTDNA_COLUMN_ORDER_PATH = "/layout/column/tstdna";
 	
 	/** 최소 메인화면 높이 */
 	public static final int MIN_MAIN_SCENE_HEIGHT = 600;

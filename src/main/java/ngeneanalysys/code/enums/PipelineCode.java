@@ -151,7 +151,6 @@ public enum PipelineCode {
 				list.add("snp_candidate");
 				list.add("low_vaf");
 				list.add("snp_for_cnv");
-				list.add("cnv_probe_region");
 				break;
 			default:
 		}

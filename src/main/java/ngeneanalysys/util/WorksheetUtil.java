@@ -65,11 +65,11 @@ public class WorksheetUtil {
 				fileChooser.getExtensionFilters()
 						.addAll(new FileChooser.ExtensionFilter("Microsoft Worksheet(*.xlsx)", "*.xlsx"));
 				fileChooser.setInitialFileName(sample.getName());
-				params.put("dataType", fileType);
+				params.put("exportDataType", fileType);
 			} else {
 				fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("CSV (*.csv)", "*.csv"));
 				fileChooser.setInitialFileName(sample.getName());
-				params.put("dataType", fileType);
+				params.put("exportDataType", fileType);
 			}
 			fileChooser.setTitle("export variants to " + fileType + " format file");
 			File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());

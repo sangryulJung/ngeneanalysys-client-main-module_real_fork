@@ -1,6 +1,7 @@
 package ngeneanalysys.util;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -81,5 +82,21 @@ public class JsonUtil {
 		}
 		
 		return map;
+	}
+
+	public static <T> T getObjectList(String str,Class<T> valueType) {
+		try {
+			if(StringUtils.isNotEmpty(str)) {
+				ObjectMapper mapper = new ObjectMapper();
+				mapper.registerModule(new JodaModule());
+				List<Class<T>> list = mapper.readValue(str, mapper.getTypeFactory().constructCollectionType(List.class, valueType));
+				if(list != null && !list.isEmpty()) {
+					return (T) list;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
