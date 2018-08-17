@@ -6,7 +6,9 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -972,16 +974,18 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     private String getExportFields() {
-        StringBuilder stringBuilder = new StringBuilder();
+//        StringBuilder stringBuilder = new StringBuilder();
 
-        variantListTableView.getColumns().forEach(column -> {
-            if(StringUtils.isNotEmpty(column.getId()) && column.isVisible()) {
-                stringBuilder.append("," + column.getId());
-            }
-        });
+        return variantListTableView.getColumns().stream().filter(TableColumn::isVisible).filter(c -> c.getId() != null)
+                .map(TableColumn::getId).collect(Collectors.joining(","));
+//                .forEach(column -> {
+//            if(StringUtils.isNotEmpty(column.getId()) && column.isVisible()) {
+//                stringBuilder.append("," + column.getId());
+//            }
+//        });
 
-        stringBuilder.deleteCharAt(0);
-        return stringBuilder.toString();
+//        stringBuilder.deleteCharAt(0);
+//        return stringBuilder.toString();
     }
 
     @FXML
@@ -1146,7 +1150,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         });
 
         TableColumn<VariantAndInterpretationEvidence, String> warn = new TableColumn<>("Warning");
-        createTableHeader(warn, "Warning", "hasWarning" ,55., "hasWarning");
+        createTableHeader(warn, "Warning", "hasWarning" ,55., "warningReason");
         warn.getStyleClass().add(centerStyleClass);
         warn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getHasWarning()));
         warn.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
@@ -1159,7 +1163,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 (AnalysisTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType()) &&
                         LibraryTypeCode.HYBRIDIZATION_CAPTURE.getDescription().equalsIgnoreCase(panel.getLibraryType()))) {
             TableColumn<VariantAndInterpretationEvidence, String> falsePositive = new TableColumn<>("False");
-            createTableHeader(falsePositive, "False", "isFalse",55., "isFalse");
+            createTableHeader(falsePositive, "False", "isFalse",55., "falseReason");
             falsePositive.setStyle(falsePositive.getStyle() + "-fx-alignment : center;");
             falsePositive.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getIsFalse()));
             falsePositive.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
@@ -1637,6 +1641,18 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             setDefaultTableColumnOrder(CommonConstants.BASE_HERED_COLUMN_ORDER_PATH);
         }
 
+        variantListTableView.getColumns().addListener(
+                (ListChangeListener<TableColumn<VariantAndInterpretationEvidence, ?>>) c -> {
+                    String columnString = variantListTableView.getColumns().stream()
+                            .filter(column -> column.getId() != null).map(column -> {
+                                if (column.isVisible()) {
+                                    return column.getId() + ":" + column.getText() + ":Y";
+                                } else {
+                                    return column.getId() + ":" + column.getText() + ":N";
+                                }
+                            }).collect(Collectors.joining(","));
+                    logger.info(columnString);
+                });
     }
 
     public void addAColumnToTable(List<TableColumnInfo> columnInfos) {
