@@ -35,6 +35,7 @@ import ngeneanalysys.model.paged.PagedReportTemplate;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.service.PanelTextFileSaveService;
 import ngeneanalysys.task.BedFileUploadTask;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.FXMLLoadUtil;
@@ -199,6 +200,9 @@ public class SystemManagerPanelController extends SubPaneController {
 
     @FXML
     private TextField mappingQuality60PercentageTextField;
+
+    @FXML
+    private Button saveTextFile;
 
     private CheckComboBox<ComboBoxItem> groupCheckComboBox = null;
 
@@ -725,6 +729,93 @@ public class SystemManagerPanelController extends SubPaneController {
         return qcPassConfig;
     }
 
+
+    @FXML
+    public void showSaveTextFile() {
+        if(panelId == 0) {
+            return;
+        }
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("save Panel Information to txt file");
+        fileChooser.getExtensionFilters()
+                .addAll(new FileChooser.ExtensionFilter("Text File(*.txt)", "*.txt"));
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        fileChooser.setInitialFileName(panelNameTextField.getText() + ".txt");
+        File file = fileChooser.showSaveDialog(mainController.getPrimaryStage());
+
+        if(file != null) {
+            String panelName = panelNameTextField.getText();
+            String code = pipelineComboBox.getSelectionModel().getSelectedItem().getValue();
+
+            Map<String,Object> params = new HashMap<>();
+            params.put("name", panelName);
+            params.put("code", code);
+
+            PipelineCode pipelineCode = PipelineCode.getPipelineCode(code);
+
+            if(pipelineCode != null) {
+                params.put("target", pipelineCode.getAnalysisTarget());
+                params.put("analysisType", pipelineCode.getAnalysisType());
+                params.put("libraryType", pipelineCode.getLibraryType());
+            }
+
+            if(warningReadDepthCheckBox.isSelected() && StringUtils.isNotEmpty(warningReadDepthTextField.getText())) {
+                params.put("warningReadDepth", Integer.parseInt(warningReadDepthTextField.getText()));
+            }
+            if(warningMAFCheckBox.isSelected() && StringUtils.isNotEmpty(warningMAFTextField.getText())) {
+                params.put("warningMAF", new BigDecimal(warningMAFTextField.getText()));
+            }
+
+            VariantFilter variantFilter = setVariantFilter();
+
+            if(variantFilter.getInDelMinReadDepth() != null && variantFilter.getInDelMinReadDepth() < 20) {
+                DialogUtil.warning("value error", "set min read depth >= 20", mainApp.getPrimaryStage(), true);
+                return;
+            }
+            if(variantFilter.getInDelMinAlternateCount() != null && variantFilter.getInDelMinAlternateCount() < 6) {
+                DialogUtil.warning("value error", "set min alternate count >= 6", mainApp.getPrimaryStage(), true);
+                return;
+            }
+
+            params.put("canonicalTranscripts", canonicalTranscriptTextArea.getText());
+            params.put("qcPassConfig", setQCPassingConfig());
+            if(defaultDiseaseComboBox.getSelectionModel().getSelectedItem() != null) {
+                params.put("defaultDiseaseId", Integer.parseInt(defaultDiseaseComboBox.getSelectionModel().getSelectedItem().getValue()));
+            }
+
+            params.put("defaultSampleSource", defaultSampleSourceComboBox.getSelectionModel().getSelectedItem().getDescription());
+            params.put("variantFilter", variantFilter);
+
+            String reportId = null;
+            if(!reportTemplateComboBox.getSelectionModel().isEmpty()) {
+                reportId = reportTemplateComboBox.getSelectionModel().getSelectedItem().getValue();
+            }
+
+            if(!StringUtils.isEmpty(reportId)) {
+                params.put("reportTemplateId", Integer.parseInt(reportId));
+            }
+
+            List<Integer> groupIdList = new ArrayList<>();
+            ObservableList<ComboBoxItem> checkedGroupList =  groupCheckComboBox.getCheckModel().getCheckedItems();
+            for(ComboBoxItem  group : checkedGroupList) {
+                groupIdList.add(Integer.parseInt(group.getValue()));
+            }
+
+            //panel에서 선택할 수 있는 질병을 지정함
+            List<Integer> diseaseIdList = new ArrayList<>();
+            ObservableList<ComboBoxItem> checkedDiseaseList =  diseaseCheckComboBox.getCheckModel().getCheckedItems();
+            for(ComboBoxItem  disease : checkedDiseaseList) {
+                diseaseIdList.add(Integer.parseInt(disease.getValue()));
+            }
+
+            params.put("memberGroupIds", groupIdList);
+            params.put("diseaseIds", diseaseIdList);
+
+            PanelTextFileSaveService panelTextFileSaveService = PanelTextFileSaveService.getInstance();
+            panelTextFileSaveService.saveFile(file, params);
+        }
+    }
+
     @FXML
     public void savePanel() {
         String panelName = panelNameTextField.getText();
@@ -907,6 +998,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
     void setDisabledItem(boolean condition) {
         resetItem();
+        saveTextFile.setDisable(condition);
         warningReadDepthTextField.setDisable(condition);
         warningMAFTextField.setDisable(condition);
         warningReadDepthCheckBox.setDisable(condition);

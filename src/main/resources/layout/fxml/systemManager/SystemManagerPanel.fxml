@@ -290,6 +290,11 @@
                   </Accordion>
                   <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="300.0">
                      <children>
+                        <Button fx:id="saveTextFile" mnemonicParsing="false" onAction="#showSaveTextFile" styleClass="submitBtn" text="Save as *.txt file">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </Button>
                         <Button fx:id="roiFileSelectionButton" mnemonicParsing="false" onAction="#selectROIFile" styleClass="submitBtn" text="Select ROI file">
                            <HBox.margin>
                               <Insets right="10.0" />
