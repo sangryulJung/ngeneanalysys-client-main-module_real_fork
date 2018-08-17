@@ -354,7 +354,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     private void viewCheckAlert() {
-        DialogUtil.alert("", "Please select a list.", mainController.getPrimaryStage(), true);
+        DialogUtil.warning("", "Please select variants to change the value.", mainController.getPrimaryStage(), true);
     }
 
     private void eventRegistration() {
