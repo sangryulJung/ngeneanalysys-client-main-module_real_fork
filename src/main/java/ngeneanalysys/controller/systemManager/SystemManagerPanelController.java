@@ -780,7 +780,7 @@ public class SystemManagerPanelController extends SubPaneController {
             params.put("canonicalTranscripts", canonicalTranscriptTextArea.getText());
             params.put("qcPassConfig", setQCPassingConfig());
             if(defaultDiseaseComboBox.getSelectionModel().getSelectedItem() != null) {
-                params.put("defaultDiseaseId", Integer.parseInt(defaultDiseaseComboBox.getSelectionModel().getSelectedItem().getValue()));
+                params.put("defaultDiseaseId", defaultDiseaseComboBox.getSelectionModel().getSelectedItem().getText());
             }
 
             params.put("defaultSampleSource", defaultSampleSourceComboBox.getSelectionModel().getSelectedItem().getDescription());
@@ -788,28 +788,28 @@ public class SystemManagerPanelController extends SubPaneController {
 
             String reportId = null;
             if(!reportTemplateComboBox.getSelectionModel().isEmpty()) {
-                reportId = reportTemplateComboBox.getSelectionModel().getSelectedItem().getValue();
+                reportId = reportTemplateComboBox.getSelectionModel().getSelectedItem().getText();
             }
 
             if(!StringUtils.isEmpty(reportId)) {
-                params.put("reportTemplateId", Integer.parseInt(reportId));
+                params.put("reportTemplate", reportId);
             }
 
-            List<Integer> groupIdList = new ArrayList<>();
+            StringBuilder groupString = new StringBuilder();
             ObservableList<ComboBoxItem> checkedGroupList =  groupCheckComboBox.getCheckModel().getCheckedItems();
             for(ComboBoxItem  group : checkedGroupList) {
-                groupIdList.add(Integer.parseInt(group.getValue()));
+                groupString.append(group.getText() + " ");
             }
 
             //panel에서 선택할 수 있는 질병을 지정함
-            List<Integer> diseaseIdList = new ArrayList<>();
+            StringBuilder diseaseList = new StringBuilder();
             ObservableList<ComboBoxItem> checkedDiseaseList =  diseaseCheckComboBox.getCheckModel().getCheckedItems();
             for(ComboBoxItem  disease : checkedDiseaseList) {
-                diseaseIdList.add(Integer.parseInt(disease.getValue()));
+                diseaseList.append(disease.getText() + " ");
             }
 
-            params.put("memberGroupIds", groupIdList);
-            params.put("diseaseIds", diseaseIdList);
+            params.put("memberGroupIds", groupString.toString());
+            params.put("diseaseIds", diseaseList.toString());
 
             PanelTextFileSaveService panelTextFileSaveService = PanelTextFileSaveService.getInstance();
             panelTextFileSaveService.saveFile(file, params);

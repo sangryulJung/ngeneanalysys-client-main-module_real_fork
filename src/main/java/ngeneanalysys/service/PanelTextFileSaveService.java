@@ -19,11 +19,11 @@ public class PanelTextFileSaveService {
     private static final Logger logger = LoggerUtil.getLogger();
 
     private String[] viewList = new String[]{"name", "code", "target", "analysisType", "libraryType", "memberGroupIds",
-            "diseaseIds", "defaultDiseaseId", "defaultSampleSource", "reportTemplateId", "canonicalTranscripts",
+            "diseaseIds", "defaultDiseaseId", "defaultSampleSource", "reportTemplate", "canonicalTranscripts",
             "warningReadDepth", "warningMAF", "variantFilter", "qcPassConfig"};
 
-    private String[] saveList = new String[]{"Panel name", "pipeline", "Target", "Analysis Type", "Library Type", "Group Ids",
-            "Disease Ids", "defaultDiseaseId", "Default Sample Source", "Report Template Id", "Canonical Transcripts",
+    private String[] saveList = new String[]{"Panel name", "pipeline", "Target", "Analysis Type", "Library Type", "Groups",
+            "Diseases", "Default Disease", "Default Sample Source", "Report Template", "Canonical Transcripts",
             "Warning Read Depth", "Warning MAF"};
 
     /**
@@ -41,50 +41,56 @@ public class PanelTextFileSaveService {
 
     public static PanelTextFileSaveService getInstance() { return PanelTextFileSaveHelper.INSTANCE; }
 
+    private String returnStringText(Object obj) {
+        if(obj == null) return "";
+
+        return obj.toString();
+    }
+
     public void saveFile(File file, Map<String, Object> panelMap) {
         try (BufferedWriter out = new BufferedWriter(new FileWriter(file))) {
 
             for(int i = 0; i < viewList.length ; i++) {
                 if(viewList[i].equals("variantFilter")) {
                     VariantFilter variantFilter = (VariantFilter)panelMap.get(viewList[i]);
-                    out.write("Essential Genes" + " : " + variantFilter.getEssentialGenes());
+                    out.write("Essential Genes" + " : " + returnStringText(variantFilter.getEssentialGenes()));
                     out.newLine();
-                    out.write("InDel MRD" + " : " + variantFilter.getInDelMinReadDepth());
+                    out.write("InDel MRD" + " : " + returnStringText(variantFilter.getInDelMinReadDepth()));
                     out.newLine();
-                    out.write("InDel MAF" + " : " + variantFilter.getInDelMinAlleleFraction());
+                    out.write("InDel MAF" + " : " + returnStringText(variantFilter.getInDelMinAlleleFraction()));
                     out.newLine();
-                    out.write("InDel MAC" + " : " + variantFilter.getInDelMinAlternateCount());
+                    out.write("InDel MAC" + " : " + returnStringText(variantFilter.getInDelMinAlternateCount()));
                     out.newLine();
-                    out.write("SNV MRD" + " : " + variantFilter.getSnvMinReadDepth());
+                    out.write("SNV MRD" + " : " + returnStringText(variantFilter.getSnvMinReadDepth()));
                     out.newLine();
-                    out.write("Low Confidence" + " : " + variantFilter.getLowConfidenceFilter());
+                    out.write("Low Confidence" + " : " + returnStringText(variantFilter.getLowConfidenceFilter()));
                     out.newLine();
-                    out.write("Population Frequency DBs" + " : " + variantFilter.getPopulationFrequencyDBs());
+                    out.write("Population Frequency DBs" + " : " + returnStringText(variantFilter.getPopulationFrequencyDBs()));
                     out.newLine();
-                    out.write("Frequency Threshold" + " : " + variantFilter.getPopulationFrequency());
+                    out.write("Frequency Threshold" + " : " + returnStringText(variantFilter.getPopulationFrequency()));
                     out.newLine();
                 } else if(viewList[i].equals("qcPassConfig")) {
                     QCPassConfig qcPassConfig = (QCPassConfig)panelMap.get(viewList[i]);
-                    out.write("Total Base Pair : " + qcPassConfig.getTotalBasePair());
+                    out.write("Total Base Pair : " + returnStringText(qcPassConfig.getTotalBasePair()));
                     out.newLine();
-                    out.write("Q30 Trimmed Base : " + qcPassConfig.getQ30TrimmedBasePercentage());
+                    out.write("Q30 Trimmed Base : " + returnStringText(qcPassConfig.getQ30TrimmedBasePercentage()));
                     out.newLine();
-                    out.write("Mapped Base : " + qcPassConfig.getMappedBasePercentage());
+                    out.write("Mapped Base : " + returnStringText(qcPassConfig.getMappedBasePercentage()));
                     out.newLine();
-                    out.write("On Target : " + qcPassConfig.getOnTargetPercentage());
+                    out.write("On Target : " + returnStringText(qcPassConfig.getOnTargetPercentage()));
                     out.newLine();
-                    out.write("On Target Coverage : " + qcPassConfig.getOnTargetCoverage());
+                    out.write("On Target Coverage : " + returnStringText(qcPassConfig.getOnTargetCoverage()));
                     out.newLine();
-                    out.write("Duplicated Reads : " + qcPassConfig.getDuplicatedReadsPercentage());
+                    out.write("Duplicated Reads : " + returnStringText(qcPassConfig.getDuplicatedReadsPercentage()));
                     out.newLine();
-                    out.write("ROI Coverage : " + qcPassConfig.getRoiCoveragePercentage());
+                    out.write("ROI Coverage : " + returnStringText(qcPassConfig.getRoiCoveragePercentage()));
                     out.newLine();
-                    out.write("Uniformity : " + qcPassConfig.getUniformity02Percentage());
+                    out.write("Uniformity : " + returnStringText(qcPassConfig.getUniformity02Percentage()));
                     out.newLine();
-                    out.write("Mapping Quality : " + qcPassConfig.getMappingQuality60Percentage());
+                    out.write("Mapping Quality : " + returnStringText(qcPassConfig.getMappingQuality60Percentage()));
                     out.newLine();
                 } else {
-                    out.write(saveList[i] + " : " + panelMap.get(viewList[i]));
+                    out.write(saveList[i] + " : " + ((panelMap.get(viewList[i]) != null) ? panelMap.get(viewList[i]) : ""));
                     out.newLine();
                 }
             }

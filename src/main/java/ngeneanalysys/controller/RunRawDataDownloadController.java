@@ -9,6 +9,7 @@ import javafx.stage.*;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.model.RunSampleView;
+import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import org.controlsfx.control.CheckComboBox;
 import org.slf4j.Logger;
@@ -77,6 +78,8 @@ public class RunRawDataDownloadController extends SubPaneController {
         if(!checkItem.isEmpty()) {
             List<String> list = new ArrayList<>(checkItem);
             downloadTask(list);
+        } else {
+            DialogUtil.warning("", "Please select file to delete.", mainController.getPrimaryStage(), true);
         }
     }
 
