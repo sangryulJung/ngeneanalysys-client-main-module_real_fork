@@ -357,7 +357,7 @@ public class VariantFilterController extends SubPaneController {
     private TextField altEndCountTextField;
 
     @FXML
-    private HBox lowConfidenceHBox;
+    private HBox warningHBox;
 
     @FXML
     private Button allLowConfidenceButton;
@@ -377,7 +377,7 @@ public class VariantFilterController extends SubPaneController {
 
     private AnalysisDetailSNVController snvController;
 
-    private CheckComboBox<String> lowConfidenceCheckComboBox;
+    private CheckComboBox<String> warningCheckComboBox;
 
     /**
      * @param snvController AnalysisDetailSNVController
@@ -534,29 +534,29 @@ public class VariantFilterController extends SubPaneController {
 
     @FXML
     public void setAllLowConfidence() {
-        if(lowConfidenceCheckComboBox != null) {
-            lowConfidenceCheckComboBox.getCheckModel().checkAll();
+        if(warningCheckComboBox != null) {
+            warningCheckComboBox.getCheckModel().checkAll();
         }
     }
 
     @FXML
     public void setDefaultLowConfidence() {
-        if(lowConfidenceCheckComboBox != null) {
+        if(warningCheckComboBox != null) {
             if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())
                     || panel.getCode().equals(PipelineCode.TST170_DNA.getCode())
                     || panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
-                lowConfidenceCheckComboBox.getCheckModel().checkAll();
-                lowConfidenceCheckComboBox.getCheckModel().clearCheck("t_lod");
+                warningCheckComboBox.getCheckModel().checkAll();
+                warningCheckComboBox.getCheckModel().clearCheck("t_lod");
             } else if (panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
-                lowConfidenceCheckComboBox.getCheckModel().checkAll();
+                warningCheckComboBox.getCheckModel().checkAll();
             }
         }
     }
 
     @FXML
     public void setUncheckLowConfidence() {
-        if(lowConfidenceCheckComboBox != null) {
-            lowConfidenceCheckComboBox.getCheckModel().clearChecks();
+        if(warningCheckComboBox != null) {
+            warningCheckComboBox.getCheckModel().clearChecks();
         }
     }
 
@@ -564,12 +564,16 @@ public class VariantFilterController extends SubPaneController {
         CheckComboBox<String> lowConfidenceCheckComboBox = new CheckComboBox<>();
         if(panel != null) {
             lowConfidenceCheckComboBox.getItems().addAll(PipelineCode.getLowConfidences(panel.getCode()));
+            if (panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode()) ||
+                    panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
+                lowConfidenceCheckComboBox.getItems().addAll("homopolymer", "repeat_sequence", "lowcoverage_indel", "lowcoverage_snv");
+            }
         }
 
         lowConfidenceCheckComboBox.setPrefWidth(150);
 
-        this.lowConfidenceCheckComboBox = lowConfidenceCheckComboBox;
-        lowConfidenceHBox.getChildren().add(0, lowConfidenceCheckComboBox);
+        this.warningCheckComboBox = lowConfidenceCheckComboBox;
+        warningHBox.getChildren().add(0, lowConfidenceCheckComboBox);
     }
 
     private void createFrequency() {
@@ -727,7 +731,7 @@ public class VariantFilterController extends SubPaneController {
 
         if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
                 panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
-            if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode())) lowConfidenceHBox.setDisable(true);
+            if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode())) warningHBox.setDisable(true);
             cosmicidCheckBox.setDisable(true);
             cosmicOccurrenceComboBox.setDisable(true);
         }
@@ -931,8 +935,8 @@ public class VariantFilterController extends SubPaneController {
             Optional<ComboBoxItem> comboBoxItem
                     = cosmicOccurrenceComboBox.getItems().stream().filter(item -> item.getValue().equals(value)).findFirst();
             comboBoxItem.ifPresent(comboBoxItem1 -> cosmicOccurrenceComboBox.getSelectionModel().select(comboBoxItem1));
-        }else if(key.equalsIgnoreCase("lowConfidence")) {
-            lowConfidenceCheckComboBox.getCheckModel().check(value);
+        }else if(key.equalsIgnoreCase("warningReason")) {
+            warningCheckComboBox.getCheckModel().check(value);
         }else if(key.equalsIgnoreCase("readDepth")) {
             alleSet(value, depthCountTextField, depthEndCountTextField);
         }else if(key.equalsIgnoreCase("altReadNum")) {
@@ -1460,8 +1464,8 @@ public class VariantFilterController extends SubPaneController {
             list.add("cosmicOccurrence " + cosmicOccurrenceComboBox.getSelectionModel().getSelectedItem().getValue());
         }
 
-        if(lowConfidenceCheckComboBox.getCheckModel().getCheckedItems() != null && !lowConfidenceCheckComboBox.getCheckModel().isEmpty()) {
-            lowConfidenceCheckComboBox.getCheckModel().getCheckedItems().forEach(item -> list.add("lowConfidence " + item));
+        if(warningCheckComboBox.getCheckModel().getCheckedItems() != null && !warningCheckComboBox.getCheckModel().isEmpty()) {
+            warningCheckComboBox.getCheckModel().getCheckedItems().forEach(item -> list.add("warningReason " + item));
         }
 
         if(StringUtils.isEmpty(endFractionTextField.getText()) && StringUtils.isNotEmpty(startFractionTextField.getText())) {
@@ -1490,7 +1494,7 @@ public class VariantFilterController extends SubPaneController {
     }
 
     private void resetFilterList() {
-        lowConfidenceCheckComboBox.getCheckModel().clearChecks();
+        warningCheckComboBox.getCheckModel().clearChecks();
         filterNameTextField.setText("");
         geneTextField.setText("");
         chromosomeTextField.setText("");

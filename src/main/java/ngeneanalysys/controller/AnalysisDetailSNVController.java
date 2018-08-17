@@ -353,6 +353,10 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 .collect(Collectors.toList());
     }
 
+    private void viewCheckAlert() {
+        DialogUtil.alert("", "Please select a list.", mainController.getPrimaryStage(), true);
+    }
+
     private void eventRegistration() {
         addToReportButton.setCursor(Cursor.HAND);
         addToReportButton.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
@@ -369,6 +373,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            } else {
+                viewCheckAlert();
             }
         });
 
@@ -388,6 +394,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                } else {
+                    viewCheckAlert();
                 }
             });
         } else {
@@ -407,6 +415,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                } else {
+                    viewCheckAlert();
                 }
             });
         }
@@ -425,6 +435,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            } else {
+                viewCheckAlert();
             }
         });
         showIGVButton.setCursor(Cursor.HAND);
@@ -1153,7 +1165,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
 
         TableColumn<VariantAndInterpretationEvidence, String> report = new TableColumn<>("Report");
-        createTableHeader(report, "Report", null ,55.);
+        createTableHeader(report, "Report", "includedInReport" ,55.);
         report.getStyleClass().add(centerStyleClass);
         report.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getIncludedInReport()));
         report.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
@@ -1171,7 +1183,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         report.setVisible(false);
 
         TableColumn<VariantAndInterpretationEvidence, String> reportTest = new TableColumn<>("Report");
-        createTableHeader(reportTest, "Report", null ,55.);
+        createTableHeader(reportTest, "Report", "includedInReport" ,55.);
         reportTest.getStyleClass().add(centerStyleClass);
         reportTest.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getIncludedInReport()));
         reportTest.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
@@ -1301,8 +1313,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             cosmicIds.setVisible(true);
         }
 
-        TableColumn<VariantAndInterpretationEvidence, String> clinVarAcc = new TableColumn<>("ClinVar Accession\n");
-        createTableHeader(clinVarAcc, "ClinVar Accession\n", null ,150d);
+        TableColumn<VariantAndInterpretationEvidence, String> clinVarAcc = new TableColumn<>("ClinVar Accession");
+        createTableHeader(clinVarAcc, "ClinVar Accession", null ,150d);
         clinVarAcc.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarAcc()));
 
         TableColumn<VariantAndInterpretationEvidence, String> clinVarClass = new TableColumn<>("ClinVar Class");

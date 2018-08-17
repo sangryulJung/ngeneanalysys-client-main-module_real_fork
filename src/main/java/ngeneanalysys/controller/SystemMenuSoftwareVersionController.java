@@ -81,17 +81,17 @@ public class SystemMenuSoftwareVersionController extends SubPaneController {
         try {
             HttpClientResponse response = apiService.get("", null, null, null);
             NGeneAnalySysVersion nGeneAnalySysVersion = response.getObjectBeforeConvertResponseToJSON(NGeneAnalySysVersion.class);
-            systemVersionLabel.setText(nGeneAnalySysVersion.getSystem());
-            apiServerVersionLabel.setText(nGeneAnalySysVersion.getApiServer());
+            systemVersionLabel.setText("v" + nGeneAnalySysVersion.getSystem());
+            apiServerVersionLabel.setText("v" + nGeneAnalySysVersion.getApiServer());
             String buildVersion = config.getProperty("application.version");
             String buildDate = config.getProperty("application.build.date");
-            guiClientVersionLabel.setText(String.format("%s (Build Date %s)", buildVersion, buildDate));
+            guiClientVersionLabel.setText("v" + String.format("%s (Build Date %s)", buildVersion, buildDate));
 
-            dockerVersionLabel.setText(nGeneAnalySysVersion.getPipelines().getDockerApp());
-            brcaVersionLabel.setText(nGeneAnalySysVersion.getPipelines().getBrcaAccuTest());
-            hemeVersionLabel.setText(nGeneAnalySysVersion.getPipelines().getHemeAccuTest());
-            solidVersionLabel.setText(nGeneAnalySysVersion.getPipelines().getSolidAccuTest());
-            heredVersionLabel.setText(nGeneAnalySysVersion.getPipelines().getHeredAccuTest());
+            dockerVersionLabel.setText("v" + nGeneAnalySysVersion.getPipelineDocker());
+            brcaVersionLabel.setText("v" + nGeneAnalySysVersion.getPipelines().getBrcaAccuTest());
+            hemeVersionLabel.setText("v" + nGeneAnalySysVersion.getPipelines().getHemeAccuTest());
+            solidVersionLabel.setText("v" + nGeneAnalySysVersion.getPipelines().getSolidAccuTest());
+            heredVersionLabel.setText("v" + nGeneAnalySysVersion.getPipelines().getHeredAccuTest());
         } catch (WebAPIException wae) {
             logger.debug(wae.getMessage());
         }

@@ -32,12 +32,12 @@
          <children>
             <VBox minWidth="-Infinity" prefHeight="200.0" prefWidth="600.0">
                <children>
-                  <HBox alignment="CENTER" prefHeight="29.0" prefWidth="200.0">
+                  <HBox alignment="CENTER" prefHeight="25.0" prefWidth="200.0">
                      <children>
                         <Label fx:id="titleLabel" />
                      </children>
                   </HBox>
-                  <Accordion fx:id="panelEditAccordion" prefHeight="436.0" prefWidth="500.0">
+                  <Accordion fx:id="panelEditAccordion" prefHeight="446.0" prefWidth="500.0">
                     <panes>
                       <TitledPane animated="false" text="Basic Information">
                         <content>
@@ -239,22 +239,24 @@
                         </TitledPane>
                         <TitledPane animated="false" text="QC Metrics Pass Threshold">
                           <content>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="246.0" prefWidth="200.0">
                                  <children>
-                                    <GridPane fx:id="qcMetricsPassThresholdGridPane" hgap="2.0" maxWidth="-Infinity" prefHeight="934.0" prefWidth="450.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <GridPane fx:id="qcMetricsPassThresholdGridPane" maxWidth="-Infinity" prefHeight="240.0" prefWidth="450.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <columnConstraints>
                                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="166.0" minWidth="150.0" prefWidth="166.0" />
                                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="326.0" minWidth="77.0" prefWidth="158.0" />
                                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="191.0" minWidth="5.0" prefWidth="150.0" />
                                        </columnConstraints>
                                        <rowConstraints>
-                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="27.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="27.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="27.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="27.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="27.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="27.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="27.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="27.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="27.0" vgrow="SOMETIMES" />
                                        </rowConstraints>
                                        <children>
                                           <Label text="Total Base Pair( bp, &gt;= )" GridPane.halignment="RIGHT" />
@@ -271,7 +273,14 @@
                                           <TextField fx:id="duplicatedReadsPercentageTextField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" />
                                           <Label text="ROI Coverage( %, &gt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
                                           <TextField fx:id="roiCoveragePercentageTextField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" />
+                                          <TextField fx:id="uniformity02PercentageTextField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                          <TextField fx:id="mappingQuality60PercentageTextField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                                          <Label text="Uniformity( %, &lt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="7" />
+                                          <Label text="Mapping Quality( %, &lt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="8" />
                                        </children>
+                                       <padding>
+                                          <Insets bottom="-5.0" top="-5.0" />
+                                       </padding>
                                     </GridPane>
                                  </children>
                               </AnchorPane>
@@ -281,6 +290,11 @@
                   </Accordion>
                   <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="300.0">
                      <children>
+                        <Button fx:id="saveTextFile" mnemonicParsing="false" onAction="#showSaveTextFile" styleClass="submitBtn" text="Save as *.txt file">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </Button>
                         <Button fx:id="roiFileSelectionButton" mnemonicParsing="false" onAction="#selectROIFile" styleClass="submitBtn" text="Select ROI file">
                            <HBox.margin>
                               <Insets right="10.0" />

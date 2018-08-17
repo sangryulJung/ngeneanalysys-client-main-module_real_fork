@@ -12,6 +12,8 @@ public class QCPassConfig {
     private Double onTargetCoverage;
     private Double duplicatedReadsPercentage;
     private Double roiCoveragePercentage;
+    private Double uniformity02Percentage;
+    private Double mappingQuality60Percentage;
 
     /**
      * @param totalBasePair
@@ -109,5 +111,33 @@ public class QCPassConfig {
      */
     public Double getRoiCoveragePercentage() {
         return roiCoveragePercentage;
+    }
+
+    /**
+     * @return uniformity02Percentage
+     */
+    public Double getUniformity02Percentage() {
+        return uniformity02Percentage;
+    }
+
+    /**
+     * @param uniformity02Percentage
+     */
+    public void setUniformity02Percentage(Double uniformity02Percentage) {
+        this.uniformity02Percentage = uniformity02Percentage;
+    }
+
+    /**
+     * @return mappingQuality60Percentage
+     */
+    public Double getMappingQuality60Percentage() {
+        return mappingQuality60Percentage;
+    }
+
+    /**
+     * @param mappingQuality60Percentage
+     */
+    public void setMappingQuality60Percentage(Double mappingQuality60Percentage) {
+        this.mappingQuality60Percentage = mappingQuality60Percentage;
     }
 }
