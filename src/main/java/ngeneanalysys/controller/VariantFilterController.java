@@ -1055,9 +1055,9 @@ public class VariantFilterController extends SubPaneController {
                 resetFilterList();
                 changeFilter();
 
-                String gg = JsonUtil.toJson(filter);
+                String valueJsonString = JsonUtil.toJson(filter);
                 Map<String, Object> map = new HashMap<>();
-                map.put("value", gg);
+                map.put("value", valueJsonString);
                 try {
                     if (panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
                         apiService.put("/member/memberOption/hemeFilter", map, null, true);

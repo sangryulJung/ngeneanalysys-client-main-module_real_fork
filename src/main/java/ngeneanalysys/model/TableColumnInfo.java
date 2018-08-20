@@ -10,6 +10,27 @@ public class TableColumnInfo {
     private boolean visible;
 
     /**
+     * @param order
+     */
+    public void setOrder(Integer order) {
+        this.order = order;
+    }
+
+    /**
+     * @param columnName
+     */
+    public void setColumnName(String columnName) {
+        this.columnName = columnName;
+    }
+
+    /**
+     * @param visible
+     */
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    /**
      * @return order
      */
     public Integer getOrder() {
