@@ -104,7 +104,7 @@ public class LoginController extends BaseStageController {
 			inputPassword.setStyle("-fx-background-image:url('layout/images/renewal/login_password_icon.png')");
 		}else {
 			inputPassword.setStyle("-fx-background-image:url('layout/images/renewal/login_password_icon_on.png')");
-		}		
+		}
 	}
 	
 	@FXML

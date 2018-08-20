@@ -110,12 +110,6 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
     private TableColumn<GenomicCoordinateClinicalVariant, String> typeTableColumn;
 
     @FXML
-    private TableColumn<GenomicCoordinateClinicalVariant, String> cosmicExistenceTableColumn;
-
-    @FXML
-    private TableColumn<GenomicCoordinateClinicalVariant, String> clinVarExistenceTableColumn;
-
-    @FXML
     private TableColumn<GenomicCoordinateClinicalVariant, String> therapeuticEvidenceATableColumn;
 
     @FXML
@@ -164,10 +158,20 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
 
     private Set<Integer> modifiedList = new HashSet<>();
 
+    private List<Diseases> diseases;
+
     @Override
     public void show(Parent root) throws IOException {
 
         apiService = APIService.getInstance();
+
+        try {
+            HttpClientResponse response = apiService.get("/diseases", null, null, false);
+            List<Diseases> diseases = (List<Diseases>)response.getMultiObjectBeforeConvertResponseToJSON(Diseases.class, false);
+            this.diseases = diseases;
+        } catch (WebAPIException wae) {
+            logger.debug(wae.getMessage());
+        }
 
         evidenceListTable.addEventFilter(ScrollEvent.ANY, scrollEvent -> {
             evidenceListTable.refresh();
@@ -313,7 +317,7 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
         }
     }
 
-    public Map<String, Object> getSearchParams() {
+    private Map<String, Object> getSearchParams() {
         Map<String, Object> param = new HashMap<>();
 
         if(StringUtils.isNotEmpty(diseaseTextField.getText())) {
@@ -363,9 +367,9 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
         return param;
     }
 
-    public void setInterpretationList(int page) {
+    void setInterpretationList(int page) {
         int totalCount = 0;
-        int limit = 7;
+        int limit = 17;
         int offset = (page - 1)  * limit;
 
         Map<String, Object> param = getSearchParams();
@@ -451,7 +455,7 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
         }
     }
 
-    public void addModifiedList(GenomicCoordinateClinicalVariant variant) {
+    private void addModifiedList(GenomicCoordinateClinicalVariant variant) {
         if(variant.getId() != null && variant.getId() != 0) {
             modifiedList.add(variant.getId());
         }
@@ -536,10 +540,7 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
                 } catch (Exception e) {
                     value = null;
                 }
-                if(t.getCode() == KeyCode.ENTER) {
-                    commitEdit(value);
-                    addModifiedList(variant);
-                } else if (t.getCode() == KeyCode.TAB) {
+                if(t.getCode() == KeyCode.ENTER || t.getCode() == KeyCode.TAB) {
                     commitEdit(value);
                     addModifiedList(variant);
                 } else if(t.getCode() == KeyCode.ESCAPE) {
@@ -616,10 +617,7 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
             textField.setMinWidth(this.getWidth() - this.getGraphicTextGap() * 2);
             GenomicCoordinateClinicalVariant variant = this.getTableView().getItems().get(this.getTableRow().getIndex());
             textField.setOnKeyPressed(t -> {
-                if(t.getCode() == KeyCode.ENTER) {
-                    commitEdit(textField.getText());
-                    addModifiedList(variant);
-                } else if (t.getCode() == KeyCode.TAB) {
+                if(t.getCode() == KeyCode.ENTER || t.getCode() == KeyCode.TAB) {
                     commitEdit(textField.getText());
                     addModifiedList(variant);
                 } else if(t.getCode() == KeyCode.ESCAPE) {
@@ -741,8 +739,6 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
                 comboBox.setConverter(new ComboBoxConverter());
 
                 comboBox.getSelectionModel().selectFirst();
-
-                List<Diseases> diseases = (List<Diseases>)mainController.getBasicInformationMap().get("diseases");
 
                 if(diseases != null && !diseases.isEmpty()) {
 

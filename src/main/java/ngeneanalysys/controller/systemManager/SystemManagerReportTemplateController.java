@@ -611,7 +611,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
         variableList.clear();
     }
 
-    public void setDisabledItem(boolean condition) {
+    void setDisabledItem(boolean condition) {
         resetItem();
         customFieldsTextArea.setDisable(condition);
         reportNameTextField.setDisable(condition);

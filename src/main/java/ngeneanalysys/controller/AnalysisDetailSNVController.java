@@ -10,7 +10,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -804,7 +803,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
 
         // 첫번째 탭 선택 처리
-        if(panel.getAnalysisType().equals("SOMATIC")) {
+        if(PipelineCode.HEME_ACCUTEST_DNA.getCode().equals(panel.getCode())
+                || PipelineCode.SOLID_ACCUTEST_DNA.getCode().equals(panel.getCode())
+                || PipelineCode.TST170_DNA.getCode().equals(panel.getCode())) {
             overviewAccordion.setExpandedPane(interpretationTitledPane);
         } else {
             overviewAccordion.setExpandedPane(clinicalSignificantTitledPane);
@@ -1062,7 +1063,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         variantListTableView.getColumns().add(column);
     }*/
 
-    private void createTableHeader(TableColumn<VariantAndInterpretationEvidence, ?> column, Double size) {
+    private void createCheckBoxTableHeader(TableColumn<VariantAndInterpretationEvidence, ?> column, Double size) {
         HBox hBox = new HBox();
         hBox.setPrefHeight(Double.MAX_VALUE);
         hBox.setAlignment(Pos.CENTER);
@@ -1091,7 +1092,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         String centerStyleClass = "alignment_center";
 
         TableColumn<VariantAndInterpretationEvidence, Boolean> checkBoxColumn = new TableColumn<>("");
-        createTableHeader(checkBoxColumn, 50d);
+        createCheckBoxTableHeader(checkBoxColumn, 50d);
         checkBoxColumn.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue() != null ));
         checkBoxColumn.setCellFactory(param -> new BooleanCell());
         String columnName = "Pathogenicity";
@@ -1475,7 +1476,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                     new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getMutationTasterPrediction()));
 
         }
-
 
         TableColumn<VariantAndInterpretationEvidence, String> cosmicOccurrence = new TableColumn<>("COSMIC Occurrence");
         createTableHeader(cosmicOccurrence, "COSMIC Occurrence", null ,null, "cosmicOccurrence");

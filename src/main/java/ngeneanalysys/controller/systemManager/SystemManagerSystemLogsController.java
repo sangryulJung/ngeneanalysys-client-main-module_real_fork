@@ -87,7 +87,7 @@ public class SystemManagerSystemLogsController extends SubPaneController {
     public void setLogList(int page) {
 
         int totalCount = 0;
-        int limit = 12;
+        int limit = 20;
         int offset = (page - 1)  * limit;
 
         HttpClientResponse response = null;

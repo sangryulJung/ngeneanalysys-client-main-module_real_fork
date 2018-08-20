@@ -745,6 +745,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
         if(file != null) {
             String panelName = panelNameTextField.getText();
+            if(pipelineComboBox.getSelectionModel().getSelectedItem() == null) return;
             String code = pipelineComboBox.getSelectionModel().getSelectedItem().getValue();
 
             Map<String,Object> params = new HashMap<>();
@@ -782,12 +783,13 @@ public class SystemManagerPanelController extends SubPaneController {
             if(defaultDiseaseComboBox.getSelectionModel().getSelectedItem() != null) {
                 params.put("defaultDiseaseId", defaultDiseaseComboBox.getSelectionModel().getSelectedItem().getText());
             }
-
-            params.put("defaultSampleSource", defaultSampleSourceComboBox.getSelectionModel().getSelectedItem().getDescription());
+            SampleSourceCode item = defaultSampleSourceComboBox.getSelectionModel().getSelectedItem();
+            params.put("defaultSampleSource", (item != null) ? item.getDescription() : "");
             params.put("variantFilter", variantFilter);
 
             String reportId = null;
-            if(!reportTemplateComboBox.getSelectionModel().isEmpty()) {
+            if(!reportTemplateComboBox.getSelectionModel().isEmpty() &&
+                    reportTemplateComboBox.getSelectionModel().getSelectedItem() != null) {
                 reportId = reportTemplateComboBox.getSelectionModel().getSelectedItem().getText();
             }
 

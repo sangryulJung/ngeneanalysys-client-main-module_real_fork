@@ -196,7 +196,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 gene.getLikelyPathogenicInDelCount() > 0 || gene.getLikelyPathogenicSnpCount() > 0;
     }
 
-    public Set<String> returnGeneList(String essentialGenes, String optionalGenes) {
+    private Set<String> returnGeneList(String essentialGenes, String optionalGenes) {
         Set<String> list = new HashSet<>();
 
         essentialGenes = essentialGenes.replaceAll("\\p{Z}", "");
@@ -213,7 +213,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
     }
 
 
-    public List<VariantCountByGeneForGermlineDNA> filteringGeneList(List<VariantCountByGeneForGermlineDNA> list) {
+    private List<VariantCountByGeneForGermlineDNA> filteringGeneList(List<VariantCountByGeneForGermlineDNA> list) {
         List<VariantCountByGeneForGermlineDNA> filteringList = new ArrayList<>();
         try {
             if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
