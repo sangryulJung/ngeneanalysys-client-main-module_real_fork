@@ -6,7 +6,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -151,6 +150,11 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     private Map<String, TableColumn> columnMap = new HashMap<>();
 
+    private final ListChangeListener<TableColumn<VariantAndInterpretationEvidence, ?>> tableColumnListChangeListener =
+            c -> saveColumnInfoToServer();
+    private final ChangeListener<Boolean> tableColumnVisibilityChangeListener = (observable, oldValue, newValue) -> {
+        if(!oldValue.equals(newValue)) saveColumnInfoToServer();
+    };
     /**
      * @return currentPageIndex
      */
@@ -1089,6 +1093,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     private void setTableViewColumn() {
+        variantListTableView.getColumns().removeListener(tableColumnListChangeListener);
         String centerStyleClass = "alignment_center";
 
         TableColumn<VariantAndInterpretationEvidence, Boolean> checkBoxColumn = new TableColumn<>("");
@@ -1619,11 +1624,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
             putTableColumn("heredColumnOrder", CommonConstants.BASE_HERED_COLUMN_ORDER_PATH);
         }
-
         variantListTableView.getColumns().addListener(
-                (ListChangeListener<TableColumn<VariantAndInterpretationEvidence, ?>>) c -> {
-                    saveColumnInfoToServer();
-                });
+                tableColumnListChangeListener);
     }
 
     private void saveColumnInfoToServer() {
@@ -1693,9 +1695,11 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         for(TableColumnInfo info : columnInfos) {
             if(columnMap.containsKey(info.getColumnName())) {
+                columnMap.get(info.getColumnName()).visibleProperty()
+                        .removeListener(tableColumnVisibilityChangeListener);
                 columnMap.get(info.getColumnName()).setVisible(info.isVisible());
                 columnMap.get(info.getColumnName()).visibleProperty()
-                        .addListener((observable, oldValue, newValue) -> saveColumnInfoToServer());
+                        .addListener(tableColumnVisibilityChangeListener);
                 variantListTableView.getColumns().add(columnMap.get(info.getColumnName()));
             }
         }
