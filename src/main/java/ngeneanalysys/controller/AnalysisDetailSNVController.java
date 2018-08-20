@@ -5,6 +5,8 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -1031,8 +1033,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         });
 
         if(size != null) column.setPrefWidth(size);
-
-        //variantListTableView.getColumns().add(column);
         columnMap.put(name, column);
     }
 
@@ -1617,40 +1617,48 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         variantListTableView.getColumns().addListener(
                 (ListChangeListener<TableColumn<VariantAndInterpretationEvidence, ?>>) c -> {
-                    String columnString = variantListTableView.getColumns().stream()
-                            .filter(column -> StringUtils.isNotEmpty(column.getText())).map(column -> {
-                                if (column.isVisible()) {
-                                    return column.getText() + ":" + variantListTableView.getColumns().indexOf(column) + ":Y";
-                                } else {
-                                    return column.getText() + ":" + variantListTableView.getColumns().indexOf(column) + ":N";
-                                }
-                            }).collect(Collectors.joining(","));
-                    logger.debug(columnString);
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("value", columnString);
-                    try {
-                        apiService.put("/member/memberOption/" + getColumnOrderType(), map, null, true);
-                    } catch (WebAPIException wae) {
-                        logger.debug(wae.getMessage());
-                    }
+                    saveColumnInfoToServer();
                 });
+    }
+
+    private void saveColumnInfoToServer() {
+        String columnString = variantListTableView.getColumns().stream()
+                .filter(column -> StringUtils.isNotEmpty(column.getText())).map(column -> {
+                    if (column.isVisible()) {
+                        return column.getText() + ":" + variantListTableView.getColumns().indexOf(column) + ":Y";
+                    } else {
+                        return column.getText() + ":" + variantListTableView.getColumns().indexOf(column) + ":N";
+                    }
+                }).collect(Collectors.joining(","));
+        logger.debug(columnString);
+        Map<String, Object> map = new HashMap<>();
+        map.put("value", columnString);
+        try {
+            apiService.put("/member/memberOption/" + getColumnOrderType(), map, null, true);
+        } catch (WebAPIException wae) {
+            logger.debug(wae.getMessage());
+        }
     }
 
     private void putTableColumn(String key, String path) {
         try {
             HttpClientResponse response = apiService.get("/member/memberOption/" + key, null, null, null);
             String[] columnList = response.getContentString().split(",");
-            List<TableColumnInfo> tableColumnInfos = new ArrayList<>();
-            for(String value : columnList) {
-                String[] columnInfo = value.split(":");
-                if(columnInfo[1].equals("0")) continue;
-                TableColumnInfo tableColumnInfo = new TableColumnInfo();
-                tableColumnInfo.setVisible(columnInfo[2].equals("Y") ? true : false);
-                tableColumnInfo.setColumnName(columnInfo[0]);
-                tableColumnInfo.setOrder(Integer.parseInt(columnInfo[1]));
-                tableColumnInfos.add(tableColumnInfo);
+            if (columnList.length > 0) {
+                List<TableColumnInfo> tableColumnInfos = Arrays.stream(columnList)
+                        .map(v -> v.split(":"))
+                        .filter(v -> v.length == 3 && !v[1].equals("0"))
+                        .map(v -> {
+                            TableColumnInfo tableColumnInfo = new TableColumnInfo();
+                            tableColumnInfo.setVisible(v[2].equals("Y"));
+                            tableColumnInfo.setColumnName(v[0]);
+                            tableColumnInfo.setOrder(Integer.parseInt(v[1]));
+                            return tableColumnInfo;
+                        }).collect(Collectors.toList());
+                addAColumnToTable(tableColumnInfos);
+            } else {
+                apiService.delete("/member/memberOption/" + key);
             }
-            addAColumnToTable(tableColumnInfos);
         } catch (WebAPIException wae) {
             setDefaultTableColumnOrder(path);
         }
@@ -1681,6 +1689,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         for(TableColumnInfo info : columnInfos) {
             if(columnMap.containsKey(info.getColumnName())) {
                 columnMap.get(info.getColumnName()).setVisible(info.isVisible());
+                columnMap.get(info.getColumnName()).visibleProperty()
+                        .addListener((observable, oldValue, newValue) -> saveColumnInfoToServer());
                 variantListTableView.getColumns().add(columnMap.get(info.getColumnName()));
             }
         }
