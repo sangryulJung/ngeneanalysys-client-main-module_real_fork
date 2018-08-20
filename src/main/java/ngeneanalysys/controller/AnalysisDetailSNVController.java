@@ -1393,7 +1393,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> exac = new TableColumn<>("ExAC");
         createTableHeader(exac, "ExAC", null ,null, "exac");
         exac.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getExac())));
-        if(panel != null && AnalysisTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
+        if(panel != null && (panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode()) ||
+                panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode()) ||
+                panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode()))) {
             TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadAll = new TableColumn<>("gnomAD All");
             createTableHeader(gnomadAll, "gnomAD All", null, null, "gnomADall");
             gnomadAll.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getAll())));
@@ -1407,7 +1409,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             gnomadAfricanAfricanAmerican.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getAfricanAfricanAmerican())));
 
             TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadEastAsian = new TableColumn<>("gnomAD East Asian");
-            createTableHeader(gnomadEastAsian, "gnomAD EastAsian", null, null, "gnomADeastAsian");
+            createTableHeader(gnomadEastAsian, "gnomAD East Asian", null, null, "gnomADeastAsian");
             gnomadEastAsian.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getAdmixedAmerican())));
 
             TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadFinnish = new TableColumn<>("gnomAD Finnish");
@@ -1442,28 +1444,30 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         createTableHeader(strand, "Strand", null ,55., "strand");
         strand.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getStrand()));
 
-        if(panel != null && AnalysisTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
+        if(panel != null && panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
             TableColumn<VariantAndInterpretationEvidence, String> typeExtension = new TableColumn<>("Type Extension");
             createTableHeader(typeExtension, "Type Extension", "variantTypeExtension", 70., "variantTypeExtension");
             typeExtension.getStyleClass().clear();
             typeExtension.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getVariantTypeExtension()));
         }
 
-        if(panel != null && AnalysisTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
+        if(panel != null && (panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
+                panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode()))) {
             TableColumn<VariantAndInterpretationEvidence, String> exonBic = new TableColumn<>("Exon (BIC)");
             createTableHeader(exonBic, "Exon (BIC)", null ,null, "exonNumBic");
             exonBic.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getExonNumBic()));
         }
 
-        if ((panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) || (panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())))
-                && !sample.getSampleSource().equalsIgnoreCase("FFPE")) {
+        if (panel != null && (panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
+                (panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode()))) &&
+                !sample.getSampleSource().equalsIgnoreCase("FFPE")) {
             TableColumn<VariantAndInterpretationEvidence, String> zigosity = new TableColumn<>("Zigosity");
             createTableHeader(zigosity, "Zigosity", null, null, "zygosity");
             zigosity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getZygosity()));
         }
 
-        if(panel != null && panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())
-                || panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
+        if(panel != null && (panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode()) ||
+                panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode()))) {
             TableColumn<VariantAndInterpretationEvidence, String> siftPrediction = new TableColumn<>("SIFT Prediction");
             createTableHeader(siftPrediction, "SIFT Prediction", null,null, "siftPrediction");
             siftPrediction.setCellValueFactory(cellData ->
@@ -1486,7 +1490,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         cosmicCount.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getCosmic().getCosmicCount()));
 
 
-        if(panel != null && AnalysisTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
+        if(panel != null && (panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
+                (panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())))) {
 
             TableColumn<VariantAndInterpretationEvidence, String> bicCategory = new TableColumn<>("BIC Category");
             createTableHeader(bicCategory, "BIC Category", null ,null, "bicCategory");
