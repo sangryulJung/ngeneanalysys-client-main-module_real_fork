@@ -1668,7 +1668,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             response = apiService.get("/member/memberOption/" + getColumnOrderType(), null, null, null);
         } catch (WebAPIException wae) { }
 
-        if(response != null) {
+        if(response != null && response.getStatus() == 200) {
             if(StringUtils.isEmpty(response.getContentString())) {
                 String str = "";
                 if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
