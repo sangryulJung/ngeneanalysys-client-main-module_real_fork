@@ -1284,9 +1284,13 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         createTableHeader(gene, "Gene", "gene" ,null, "gene");
         gene.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> transcript = new TableColumn<>("Transcript");
-        createTableHeader(transcript, "Transcript", null ,null, "transcriptAccession");
-        transcript.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getTranscriptAccession()));
+        TableColumn<VariantAndInterpretationEvidence, String> transcriptAccession = new TableColumn<>("Transcript Accession");
+        createTableHeader(transcriptAccession, "Transcript Accession", null ,null, "transcriptAccession");
+        transcriptAccession.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getTranscriptAccession()));
+
+        TableColumn<VariantAndInterpretationEvidence, String> proteinAccession = new TableColumn<>("Protein Accession");
+        createTableHeader(proteinAccession, "Protein Accession", null ,null, "proteinAccession");
+        proteinAccession.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getProteinAccession()));
 
         TableColumn<VariantAndInterpretationEvidence, String> type = new TableColumn<>("Type");
         createTableHeader(type, "Type", "variantType" ,null, "variantType");
@@ -1491,6 +1495,36 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         mutationTasterPrediction.getStyleClass().clear();
         mutationTasterPrediction.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getMutationTasterPrediction()));
+
+        TableColumn<VariantAndInterpretationEvidence, String> gerpNrScore = new TableColumn<>("GERP++ NR");
+        createTableHeader(gerpNrScore, "GERP++ NR", null,null, "gerpNrScore");
+        gerpNrScore.getStyleClass().clear();
+        gerpNrScore.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getGerpNrScore()));
+
+        TableColumn<VariantAndInterpretationEvidence, String> gerpRsScore = new TableColumn<>("GERP++ RS");
+        createTableHeader(gerpRsScore, "GERP++ RS", null,null, "gerpRsScore");
+        gerpRsScore.getStyleClass().clear();
+        gerpRsScore.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getGerpRsScore()));
+
+        TableColumn<VariantAndInterpretationEvidence, String> fathmmPrediction = new TableColumn<>("FATHMM Prediction");
+        createTableHeader(fathmmPrediction, "FATHMM Prediction", null,null, "fathmmPrediction");
+        fathmmPrediction.getStyleClass().clear();
+        fathmmPrediction.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getFathmmPrediction()));
+
+        TableColumn<VariantAndInterpretationEvidence, String> lrtPrediction = new TableColumn<>("LRT Prediction");
+        createTableHeader(lrtPrediction, "LRT Prediction", null,null, "lrtPrediction");
+        lrtPrediction.getStyleClass().clear();
+        lrtPrediction.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getLrtPrediction()));
+
+        TableColumn<VariantAndInterpretationEvidence, String> mutationAssessorPrediction = new TableColumn<>("MutationAssessor Prediction");
+        createTableHeader(mutationAssessorPrediction, "MutationAssessor Prediction", null,null, "mutationAssessorPrediction");
+        mutationAssessorPrediction.getStyleClass().clear();
+        mutationAssessorPrediction.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getMutationAssessorPrediction()));
 
         TableColumn<VariantAndInterpretationEvidence, String> cosmicOccurrence = new TableColumn<>("COSMIC Occurrence");
         createTableHeader(cosmicOccurrence, "COSMIC Occurrence", null ,null, "cosmicOccurrence");
