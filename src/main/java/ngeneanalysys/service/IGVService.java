@@ -284,7 +284,7 @@ public class IGVService {
             //String name = String.format("[%s:%s:%s]", this.sampleId, this.sampleName, this.variantId);
             String finalBamFileUrl = String.format("http://127.0.0.1:%s/analysisFiles/%s/%s", CommonConstants.HTTP_PROXY_SERVER_PORT, this.sampleId, this.bamFileName + "_final.bam");
             String mutectBamFileUrl = String.format("http://127.0.0.1:%s/analysisFiles/%s/%s", CommonConstants.HTTP_PROXY_SERVER_PORT, this.sampleId, this.bamFileName + "_mutect.bam");
-            String hcBamFileUrl = String.format("http://127.0.0.1:%s/analysisFiles/%s/%s", CommonConstants.HTTP_PROXY_SERVER_PORT, this.sampleId, this.bamFileName + "_ha.bam");
+            String hcBamFileUrl = String.format("http://127.0.0.1:%s/analysisFiles/%s/%s", CommonConstants.HTTP_PROXY_SERVER_PORT, this.sampleId, this.bamFileName + "_hc.bam");
             Map<String,Object> params = new HashMap<>();
             if (finalBamFileCount == 3 && mutectBamFileCount == 3) {
                 params.put("file", mutectBamFileUrl + "," + finalBamFileUrl);
