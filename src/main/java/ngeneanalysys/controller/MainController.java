@@ -143,7 +143,7 @@ public class MainController extends BaseStageController {
 
     private MaskerPane contentsMaskerPane = new MaskerPane();
 
-    void setContentsMaskerPaneVisible(boolean flag) {
+    public void setContentsMaskerPaneVisible(boolean flag) {
         contentsMaskerPane.setVisible(flag);
     }
 

@@ -864,6 +864,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     public void showVariantList(int pageIndex, int selectedIdx) {
         headerCheckBox.setSelected(false);
+
+        Platform.runLater(() -> compareColumnOrder());
+
         int totalCount;
         int limit = 100;
         int offset = (pageIndex - 1)  * limit;
@@ -1605,6 +1608,47 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         runColumnAction();
 
+    }
+
+    private void compareColumnOrder() {
+        String columnString = variantListTableView.getColumns().stream()
+                .filter(column -> StringUtils.isNotEmpty(column.getText())).map(column -> {
+                    if (column.isVisible()) {
+                        return column.getText() + ":" + variantListTableView.getColumns().indexOf(column) + ":Y";
+                    } else {
+                        return column.getText() + ":" + variantListTableView.getColumns().indexOf(column) + ":N";
+                    }
+                }).collect(Collectors.joining(","));
+        HttpClientResponse response = null;
+        try {
+            response = apiService.get("/member/memberOption/" + getColumnOrderType(), null, null, null);
+        } catch (WebAPIException wae) { }
+
+        if(response != null) {
+            if(StringUtils.isEmpty(response.getContentString())) {
+                String str = "";
+                if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
+                    str = PropertiesUtil.getJsonString(CommonConstants.BASE_HEME_COLUMN_ORDER_PATH);
+                } else if(panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
+                    str = PropertiesUtil.getJsonString(CommonConstants.BASE_SOLID_COLUMN_ORDER_PATH);
+                } else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
+                    str = PropertiesUtil.getJsonString(CommonConstants.BASE_TSTDNA_COLUMN_ORDER_PATH);
+                } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode())
+                        || panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
+                    str = PropertiesUtil.getJsonString(CommonConstants.BASE_BRCA_COLUMN_ORDER_PATH);
+                } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+                    str = PropertiesUtil.getJsonString(CommonConstants.BASE_HERED_COLUMN_ORDER_PATH);
+                }
+
+                if(!str.equals(columnString)) {
+                    deleteColumn();
+                    runColumnAction();
+                }
+            } else if(!columnString.equals(response.getContentString())) {
+                deleteColumn();
+                runColumnAction();
+            }
+        }
     }
 
     private void deleteColumn() {

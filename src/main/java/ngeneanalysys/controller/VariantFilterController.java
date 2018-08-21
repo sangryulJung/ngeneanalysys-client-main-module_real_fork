@@ -547,7 +547,7 @@ public class VariantFilterController extends SubPaneController {
                     || panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
                 warningCheckComboBox.getCheckModel().checkAll();
                 warningCheckComboBox.getCheckModel().clearCheck("t_lod");
-            } else if (panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
+            } else if (panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
                 warningCheckComboBox.getCheckModel().checkAll();
             }
         }
@@ -730,8 +730,10 @@ public class VariantFilterController extends SubPaneController {
         }
 
         if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
+                panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode()) ||
                 panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
-            if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode())) warningHBox.setDisable(true);
+            if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode())
+                    || panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) warningHBox.setDisable(true);
             cosmicidCheckBox.setDisable(true);
             cosmicOccurrenceComboBox.setDisable(true);
         }

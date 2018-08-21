@@ -147,7 +147,6 @@ public class SystemManagerReportTemplateController extends SubPaneController{
     @Override
     public void show(Parent root) throws IOException {
         logger.debug("system manager report template init");
-
         reportTemplateListTable.addEventFilter(ScrollEvent.ANY, scrollEvent -> {
             reportTemplateListTable.refresh();
             // close text box
@@ -316,6 +315,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
 
     @FXML
     public void saveReportTemplate() {
+        mainController.setContentsMaskerPaneVisible(true);
         String reportName = reportNameTextField.getText();
         boolean isPut = false;
         if(!StringUtils.isEmpty(reportName) && !StringUtils.isEmpty(contents)) {
@@ -347,7 +347,6 @@ public class SystemManagerReportTemplateController extends SubPaneController{
 
                 if(isPut && wordCreatorJar == null && this.imageList.isEmpty()) {
                     setReportTableList(1);
-                    resetItem();
                     setDisabledItem(true);
                     return;
                 }
@@ -359,34 +358,31 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                     if(wordCreatorJar == null) return;
 
                     JarUploadTask task = new JarUploadTask(wordCreatorJar, reportTemplate.getId(), getMainController());
-                    final Thread downloadThread = new Thread(task);
+                    final Thread uploadThread = new Thread(task);
 
                     // Thread 실행
-                    downloadThread.setDaemon(true);
-                    downloadThread.start();
+                    uploadThread.setDaemon(true);
+                    uploadThread.start();
 
                     task.setOnSucceeded(ev -> {
                         setReportTableList(1);
-                        resetItem();
                         setDisabledItem(true);
                     });
                 } else {
                     if (!this.imageList.isEmpty()) {
                         ReportImageFileUploadTask task = new ReportImageFileUploadTask(imageList, reportTemplate.getId(), getMainController());
-                        final Thread downloadThread = new Thread(task);
+                        final Thread uploadThread = new Thread(task);
 
                         // Thread 실행
-                        downloadThread.setDaemon(true);
-                        downloadThread.start();
+                        uploadThread.setDaemon(true);
+                        uploadThread.start();
 
                         task.setOnSucceeded(ev -> {
                             setReportTableList(1);
-                            resetItem();
                             setDisabledItem(true);
                         });
                     } else {
                         setReportTableList(1);
-                        resetItem();
                         setDisabledItem(true);
                     }
                 }
@@ -401,6 +397,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                 e.printStackTrace();
             }
         }
+        mainController.setContentsMaskerPaneVisible(false);
     }
 
     @FXML
