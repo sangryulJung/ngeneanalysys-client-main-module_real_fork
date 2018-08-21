@@ -461,9 +461,10 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
                 Optional<SnpInDelEvidence> snpInDelEvidenceOptional
                         = interpretationList.stream().filter(item -> item.getPrimaryEvidence()).findFirst();
-
-                snpInDelEvidenceOptional.ifPresent(snpInDelEvidence ->
-                        returnTierClass(returnTier(snpInDelEvidence.getEvidenceLevel()), userTierLabel ,2));
+                if (selectedAnalysisResultVariant.getSnpInDel().getExpertTier() != null) {
+                    snpInDelEvidenceOptional.ifPresent(snpInDelEvidence ->
+                            returnTierClass(returnTier(snpInDelEvidence.getEvidenceLevel()), userTierLabel ,2));
+                }
 
                 if(!interpretationList.isEmpty()) {
                     evidenceTableView.getItems().addAll(FXCollections.observableArrayList(interpretationList));
@@ -621,7 +622,9 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
     public void setTier(SnpInDel snpInDel) {
         returnTierClass(snpInDel.getSwTier(), swTierLabel,1);
-        returnTierClass(snpInDel.getExpertTier(), userTierLabel,2);
+        if (snpInDel.getExpertTier() != null) {
+            returnTierClass(snpInDel.getExpertTier(), userTierLabel,2);
+        }
     }
 
     private List<Map<String, Object>> returnEvidenceMap() {
