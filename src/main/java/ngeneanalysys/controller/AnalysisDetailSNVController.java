@@ -1756,23 +1756,24 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     private void putTableColumn(String key, String path) {
         try {
             HttpClientResponse response = apiService.get("/member/memberOption/" + key, null, null, null);
-            String[] columnList = response.getContentString().split(",");
-            if (StringUtils.isNotEmpty(response.getContentString()) && columnList.length > 0) {
-                List<TableColumnInfo> tableColumnInfos = Arrays.stream(columnList)
-                        .map(v -> v.split(":"))
-                        .filter(v -> v.length == 3 && !v[1].equals("0"))
-                        .map(v -> {
-                            TableColumnInfo tableColumnInfo = new TableColumnInfo();
-                            tableColumnInfo.setVisible(v[2].equals("Y"));
-                            tableColumnInfo.setColumnName(v[0]);
-                            tableColumnInfo.setOrder(Integer.parseInt(v[1]));
-                            return tableColumnInfo;
-                        }).collect(Collectors.toList());
-                addAColumnToTable(tableColumnInfos);
-            } else {
-                //apiService.delete("/member/memberOption/" + key);
-                removeColumnOrder(key);
-                setDefaultTableColumnOrder(path);
+            if(response != null && response.getStatus() == 200) {
+                String[] columnList = response.getContentString().split(",");
+                if (StringUtils.isNotEmpty(response.getContentString()) && columnList.length > 0) {
+                    List<TableColumnInfo> tableColumnInfos = Arrays.stream(columnList)
+                            .map(v -> v.split(":"))
+                            .filter(v -> v.length == 3 && !v[1].equals("0"))
+                            .map(v -> {
+                                TableColumnInfo tableColumnInfo = new TableColumnInfo();
+                                tableColumnInfo.setVisible(v[2].equals("Y"));
+                                tableColumnInfo.setColumnName(v[0]);
+                                tableColumnInfo.setOrder(Integer.parseInt(v[1]));
+                                return tableColumnInfo;
+                            }).collect(Collectors.toList());
+                    addAColumnToTable(tableColumnInfos);
+                } else {
+                    removeColumnOrder(key);
+                    setDefaultTableColumnOrder(path);
+                }
             }
         } catch (WebAPIException wae) {
             setDefaultTableColumnOrder(path);
