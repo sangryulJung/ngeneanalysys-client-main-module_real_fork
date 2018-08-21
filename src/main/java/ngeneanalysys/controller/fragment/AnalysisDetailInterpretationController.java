@@ -621,7 +621,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
     public void setTier(SnpInDel snpInDel) {
         returnTierClass(snpInDel.getSwTier(), swTierLabel,1);
-        //returnTierClass(snpInDel.getExpertTier(), userTierLabel,2);
+        returnTierClass(snpInDel.getExpertTier(), userTierLabel,2);
     }
 
     private List<Map<String, Object>> returnEvidenceMap() {
