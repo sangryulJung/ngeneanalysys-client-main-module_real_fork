@@ -487,20 +487,26 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             VariantAndInterpretationEvidence variant = variantListTableView.getSelectionModel()
                     .getSelectedItem();
             String title;
+            String conSeq = StringUtils.isNotEmpty(variant.getSnpInDel().getSnpInDelExpression().getCodingConsequence()) ?
+                    variant.getSnpInDel().getSnpInDelExpression().getCodingConsequence().split(";")[0] : "";
             if (panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
                 title = variant.getSnpInDel().getGenomicCoordinate().getGene() + " "
-                        + variant.getSnpInDel().getSnpInDelExpression().getCodingConsequence().split(";")[0] + " "
+                        + conSeq + " "
                         + variant.getSnpInDel().getSnpInDelExpression().getTranscript() + " "
                         + variant.getSnpInDel().getSnpInDelExpression().getNtChange() + " "
                         + variant.getSnpInDel().getSnpInDelExpression().getAaChangeSingleLetter();
             } else {
-                String[] ntChange = variant.getSnpInDel().getSnpInDelExpression().getNtChange().split(":");
-                String[] aaChangeConversion = variant.getSnpInDel().getSnpInDelExpression().getAaChangeSingleLetter().split(":");
+                String ntChange = StringUtils.isNotEmpty(variant.getSnpInDel().getSnpInDelExpression().getNtChange()) ?
+                        variant.getSnpInDel().getSnpInDelExpression().getNtChange() : "";
+                String aaChange = StringUtils.isNotEmpty(variant.getSnpInDel().getSnpInDelExpression().getAaChangeSingleLetter()) ?
+                        variant.getSnpInDel().getSnpInDelExpression().getAaChangeSingleLetter() : "";
+                String[] ntChangeArray = ntChange.split(":");
+                String[] aaChangeConversionArray = aaChange.split(":");
                 title = variant.getSnpInDel().getGenomicCoordinate().getGene() + " "
-                        + variant.getSnpInDel().getSnpInDelExpression().getCodingConsequence().split(";")[0] + " "
+                        + conSeq + " "
                         + variant.getSnpInDel().getSnpInDelExpression().getTranscript() + " "
-                        + ntChange[ntChange.length - 1] + " "
-                        + aaChangeConversion[aaChangeConversion.length - 1];
+                        + ntChangeArray[ntChangeArray.length - 1] + " "
+                        + aaChangeConversionArray[aaChangeConversionArray.length - 1];
             }
             variantsController.setSNVTabName(title);
         } else {
