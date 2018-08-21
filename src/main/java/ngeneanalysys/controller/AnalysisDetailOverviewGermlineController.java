@@ -4,11 +4,19 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Tooltip;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
@@ -16,10 +24,12 @@ import ngeneanalysys.model.paged.PagedVariantAndInterpretationEvidence;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
+import org.apache.commons.lang.WordUtils;
 import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,6 +40,9 @@ import java.util.stream.Collectors;
  */
 public class AnalysisDetailOverviewGermlineController extends AnalysisDetailCommonController {
     private static Logger logger = LoggerUtil.getLogger();
+
+    @FXML
+    private GridPane dataQCResultGridPane;
 
     @FXML
     private Label pVariantsCountLabel;
@@ -115,7 +128,7 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
         geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
         variantColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
         positionColumn.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getSnpInDel().getGenomicCoordinate().getStartPosition()));
-        transcriptColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getTranscript()));
+        transcriptColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getTranscriptAccession()));
         ntChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
         aaChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChange()));
 
@@ -258,18 +271,57 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
                 .collect(Collectors.toList());
     }
 
-    private void setQCItem(final Label valueLabel, final Label qcLabel
-            , final List<SampleQC> qcList, final String qcString) {
-        valueLabel.setText(findQCResult(qcList, qcString).toUpperCase());
-        //valueLabel.setTooltip(new Tooltip(findQCResultString(qcList, qcString)));
-        //totalBaseTooltip.setText(findQCTooltipString(qcList, "total_base"));
-        final String value = findQCTooltipString(qcList, qcString);
-        qcLabel.setOnMouseClicked(ev ->
-                PopOverUtil.openQCPopOver(qcLabel, value));
+    private String returnQCTitle(String value) {
+        return WordUtils.capitalize(value.replaceAll("_", " "));
+    }
+
+    private void addQCGrid(SampleQC sampleQC, int col) {
+        ColumnConstraints columnConstraints = new ColumnConstraints();
+        columnConstraints.setHgrow(Priority.ALWAYS);
+        dataQCResultGridPane.getColumnConstraints().add(columnConstraints);
+        HBox hBox = new HBox();
+        hBox.setSpacing(10);
+        hBox.setStyle(hBox.getStyle() + "-fx-background-color : #8f9fb9;");
+        hBox.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        hBox.setAlignment(Pos.CENTER);
+        String title = returnQCTitle(sampleQC.getQcType());
+        Label titleLabel = new Label(title);
+        titleLabel.setStyle(titleLabel.getStyle() + "-fx-text-fill : #FFF;");
+        Label descriptionLabel = new Label();
+
+        descriptionLabel.getStyleClass().add("help_tooltip_white");
+        descriptionLabel.setStyle(descriptionLabel.getStyle() + "-fx-cursor : hand;");
+        String value = sampleQC.getQcDescription() + " " + sampleQC.getQcThreshold() + System.lineSeparator()
+                + "Value : " + sampleQC.getQcValue().stripTrailingZeros().toPlainString() + sampleQC.getQcUnit();
+        descriptionLabel.setOnMouseClicked(ev ->
+                PopOverUtil.openQCPopOver(descriptionLabel, value));
+
+        hBox.getChildren().addAll(titleLabel, descriptionLabel);
+
+        dataQCResultGridPane.add(hBox, col, 0);
+
+        Label qcResultLabel = new Label(sampleQC.getQcResult().toUpperCase());
+        //qcResultLabel.setTooltip(new Tooltip(sampleQC.getQcValue() + sampleQC.getQcUnit()));
+
+        dataQCResultGridPane.add(qcResultLabel, col, 1);
+        GridPane.setValignment(qcResultLabel, VPos.CENTER);
+        GridPane.setHalignment(qcResultLabel, HPos.CENTER);
+
     }
 
     @SuppressWarnings("unchecked")
     private void settingOverallQC(int sampleId) {
+        if(dataQCResultGridPane.getChildren() != null && !dataQCResultGridPane.getChildren().isEmpty()) {
+            dataQCResultGridPane.getChildren().removeAll(dataQCResultGridPane.getChildren());
+            dataQCResultGridPane.getColumnConstraints().removeAll(dataQCResultGridPane.getColumnConstraints());
+        }
+
+        SampleView sample = (SampleView) getParamMap().get("sampleView");
+        if(sample.getPanel().getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
+                sample.getPanel().getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
+            dataQCResultGridPane.setPrefWidth(570);
+            dataQCResultGridPane.setMaxWidth(570);
+        }
 
         try {
             HttpClientResponse response = apiService.get("/analysisResults/sampleQCs/" + sampleId, null,
@@ -277,8 +329,13 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
 
             List<SampleQC> qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
 
-            setQCItem(roiCoverageLabel, roiCoverageQCLabel, qcList, "roi_coverage");
-            setQCItem(coverageUniformityLabel, coverageUniQCLabel, qcList, "coverage_uniformity");
+            qcList.sort(Comparator.comparing(SampleQC::getQcType));
+            int i = 0;
+            for(SampleQC sampleQC : qcList) {
+                if(!sampleQC.getQcThreshold().equals("N/A")) {
+                    addQCGrid(sampleQC, i++);
+                }
+            }
 
         } catch(WebAPIException e) {
             DialogUtil.alert("QC ERROR", e.getMessage(), this.getMainApp().getPrimaryStage(), true);

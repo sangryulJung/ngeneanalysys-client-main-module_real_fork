@@ -56,39 +56,15 @@
             <Insets right="2.0" />
          </GridPane.margin>
       </TableView>
-      <HBox maxWidth="570.0" minWidth="570.0" prefHeight="100.0" prefWidth="570.0" GridPane.rowIndex="5">
+      <HBox maxWidth="1140.0" minWidth="1140.0" prefHeight="100.0" prefWidth="1140.0" GridPane.rowIndex="5">
          <children>
             <VBox alignment="CENTER_LEFT" prefHeight="75.0" prefWidth="1140.0">
                <children>
                   <GridPane fx:id="dataQCResultGridPane" prefWidth="1140.0">
-                     <columnConstraints>
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                     </columnConstraints>
                      <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
-                     <children>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;">
-                           <children>
-                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="28.0" prefWidth="102.0" text="ROI Coverage" textFill="WHITE" />
-                              <Label fx:id="roiCoverageQCLabel" alignment="CENTER_RIGHT" contentDisplay="RIGHT" style="-fx-cursor: hand;" styleClass="help_tooltip_white">
-                                 <opaqueInsets>
-                                    <Insets />
-                                 </opaqueInsets>
-                              </Label>
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;" GridPane.columnIndex="1">
-                           <children>
-                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="144.0" text="Corverage Uniformity" textFill="WHITE" />
-                              <Label fx:id="coverageUniQCLabel" style="-fx-cursor: hand;" styleClass="help_tooltip_white" />
-                           </children>
-                        </HBox>
-                        <Label fx:id="coverageUniformityLabel" text="pass" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label fx:id="roiCoverageLabel" text="pass" GridPane.rowIndex="1" />
-                     </children>
                   </GridPane>
                </children>
             </VBox>

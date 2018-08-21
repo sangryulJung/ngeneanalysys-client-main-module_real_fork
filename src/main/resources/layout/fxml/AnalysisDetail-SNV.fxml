@@ -29,12 +29,15 @@
    <children>
       <VBox fx:id="tableVBox" alignment="BOTTOM_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="0.0" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.vgrow="ALWAYS">
          <children>
-            <HBox alignment="BOTTOM_RIGHT" minWidth="870.0" prefWidth="870.0">
+            <HBox alignment="BOTTOM_RIGHT" minWidth="870.0" prefHeight="26.0" prefWidth="870.0">
                <children>
-                  <Button fx:id="resetTableColumn" onAction="#resetTableColumnOrder" prefHeight="20.0" prefWidth="110.0" styleClass="submitBtn" text="Reset Colums">
+                  <Button fx:id="resetTableColumn" onAction="#resetTableColumnOrder" prefHeight="16.0" prefWidth="110.0" styleClass="submitBtn" text="Reset Colums">
                      <padding>
                         <Insets left="10.0" right="10.0" />
                      </padding>
+                     <HBox.margin>
+                        <Insets top="3.0" />
+                     </HBox.margin>
                   </Button>
                   <Label maxWidth="20.0" minWidth="20.0" prefWidth="20.0" />
                </children>

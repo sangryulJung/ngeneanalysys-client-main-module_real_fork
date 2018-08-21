@@ -11,6 +11,7 @@ import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import ngeneanalysys.code.constants.CommonConstants;
+import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
@@ -32,6 +33,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -271,7 +273,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         chrColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getChromosome()));
         geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
         positionColumn.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getSnpInDel().getGenomicCoordinate().getStartPosition()));
-        transcriptColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getTranscript()));
+        transcriptColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getTranscriptAccession()));
         ntChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
         aaChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChange()));
         alleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()
@@ -821,7 +823,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
                 if(list != null && !list.isEmpty()) {
                     for(VariantAndInterpretationEvidence variant : list){
-                        variant.getSnpInDel().getSnpInDelExpression().setTranscript(ConvertUtil.insertTextAtFixedPosition(variant.getSnpInDel().getSnpInDelExpression().getTranscript(), 15, "\n"));
+                        variant.getSnpInDel().getSnpInDelExpression().setTranscript(ConvertUtil.insertTextAtFixedPosition(variant.getSnpInDel().getSnpInDelExpression().getTranscriptAccession(), 15, "\n"));
                         variant.getSnpInDel().getSnpInDelExpression().setNtChange(ConvertUtil.insertTextAtFixedPosition(variant.getSnpInDel().getSnpInDelExpression().getNtChange(), 15, "\n"));
                         variant.getSnpInDel().getSnpInDelExpression().setAaChange(ConvertUtil.insertTextAtFixedPosition(variant.getSnpInDel().getSnpInDelExpression().getAaChange(), 15, "\n"));
                     }
@@ -849,6 +851,23 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 model.put("draftImageURL", draftImageStr);
                 model.put("ngenebioLogo", ngenebioLogo);
                 model.put("contents", contentsMap);
+
+                if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+
+                    HttpClientResponse response = apiService.get("/analysisResults/sampleQCs/" + sample.getId(), null,
+                            null, false);
+
+                    List<SampleQC> qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
+
+                    contentsMap.put("totalBase", findQCResult(qcList, "total_base"));
+                    contentsMap.put("q30", findQCResult(qcList, "q30_trimmed_base"));
+                    contentsMap.put("mappedBase", findQCResult(qcList, "mapped_base"));
+                    contentsMap.put("onTarget", findQCResult(qcList, "on_target"));
+                    contentsMap.put("onTargetCoverage", findQCResult(qcList, "on_target_coverage"));
+                    contentsMap.put("duplicatedReads", findQCResult(qcList, "duplicated_reads"));
+                    contentsMap.put("roiCoverage", findQCResult(qcList, "roi_coverage"));
+                }
+
 
                 // 템플릿에 데이터 바인딩하여 pdf 생성 스크립트 생성
                 String contents = null;
@@ -1011,5 +1030,24 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
             DialogUtil.error("Save Fail.", "An error occurred during the creation of the report document.",
                     getMainApp().getPrimaryStage(), false);
         }
+    }
+
+    private SampleQC findQCResult(List<SampleQC> qcList, String qc) {
+        if(qcList != null && !qcList.isEmpty()) {
+            Optional<SampleQC> findQC = qcList.stream().filter(sampleQC -> sampleQC.getQcType().equalsIgnoreCase(qc)).findFirst();
+            if(findQC.isPresent()) {
+                SampleQC qcData = findQC.get();
+                String number = findQC.get().getQcValue().toString();
+                Long value = Math.round(Double.parseDouble(number));
+                if(qc.equalsIgnoreCase("total_base")) {
+                    qcData.setQcUnit("Mb");
+                    qcData.setQcValue(BigDecimal.valueOf(value / 1024 / 1024));
+                    return qcData;
+                }
+                qcData.setQcValue(BigDecimal.valueOf(value));
+                return qcData;
+            }
+        }
+        return null;
     }
 }

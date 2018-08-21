@@ -9,7 +9,6 @@ import ngeneanalysys.util.ConvertUtil;
 public class SnpInDelExpression {
     private String variantType;
     private String variantTypeExtension;
-    private String transcript;
     private String codingConsequence;
     private String ntChange;
     private String ntChangeBic;
@@ -20,6 +19,51 @@ public class SnpInDelExpression {
     private String leftSequence;
     private String rightSequence;
     private String zygosity;
+    private String transcriptAccession;
+    private String proteinAccession;
+    private String transcript;
+
+    /**
+     * @return transcript
+     */
+    public String getTranscript() {
+        return transcript;
+    }
+
+    /**
+     * @param transcript
+     */
+    public void setTranscript(String transcript) {
+        this.transcript = transcript;
+    }
+
+    /**
+     * @param transcriptAccession
+     */
+    public void setTranscriptAccession(String transcriptAccession) {
+        this.transcriptAccession = transcriptAccession;
+    }
+
+    /**
+     * @param proteinAccession
+     */
+    public void setProteinAccession(String proteinAccession) {
+        this.proteinAccession = proteinAccession;
+    }
+
+    /**
+     * @return proteinAccession
+     */
+    public String getProteinAccession() {
+        return proteinAccession;
+    }
+
+    /**
+     * @return transcriptAccession
+     */
+    public String getTranscriptAccession() {
+        return transcriptAccession;
+    }
 
     /**
      * @return aaChangeSingleLetter
@@ -66,20 +110,6 @@ public class SnpInDelExpression {
 
     public void setVariantTypeExtension(String variantTypeExtension) {
         this.variantTypeExtension = variantTypeExtension;
-    }
-
-    /**
-     * @return transcript
-     */
-    public String getTranscript() {
-        return transcript;
-    }
-
-    /**
-     * @param transcript
-     */
-    public void setTranscript(String transcript) {
-        this.transcript = transcript;
     }
 
     /**
@@ -216,14 +246,18 @@ public class SnpInDelExpression {
         return "SnpInDelExpression{" +
                 "variantType='" + variantType + '\'' +
                 ", variantTypeExtension='" + variantTypeExtension + '\'' +
-                ", transcript='" + transcript + '\'' +
                 ", codingConsequence='" + codingConsequence + '\'' +
                 ", ntChange='" + ntChange + '\'' +
                 ", ntChangeBic='" + ntChangeBic + '\'' +
                 ", aaChange='" + aaChange + '\'' +
                 ", aaChangeSingleLetter='" + aaChangeSingleLetter + '\'' +
+                ", refSequence='" + refSequence + '\'' +
+                ", altSequence='" + altSequence + '\'' +
+                ", leftSequence='" + leftSequence + '\'' +
+                ", rightSequence='" + rightSequence + '\'' +
                 ", zygosity='" + zygosity + '\'' +
-                ", aaChangeSingleLetter='" + aaChangeSingleLetter + '\'' +
+                ", transcriptAccession='" + transcriptAccession + '\'' +
+                ", proteinAccession='" + proteinAccession + '\'' +
                 '}';
     }
 }

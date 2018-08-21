@@ -492,7 +492,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             if (panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
                 title = variant.getSnpInDel().getGenomicCoordinate().getGene() + " "
                         + conSeq + " "
-                        + variant.getSnpInDel().getSnpInDelExpression().getTranscript() + " "
+                        + variant.getSnpInDel().getSnpInDelExpression().getTranscriptAccession() + " "
                         + variant.getSnpInDel().getSnpInDelExpression().getNtChange() + " "
                         + variant.getSnpInDel().getSnpInDelExpression().getAaChangeSingleLetter();
             } else {
@@ -504,7 +504,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 String[] aaChangeConversionArray = aaChange.split(":");
                 title = variant.getSnpInDel().getGenomicCoordinate().getGene() + " "
                         + conSeq + " "
-                        + variant.getSnpInDel().getSnpInDelExpression().getTranscript() + " "
+                        + variant.getSnpInDel().getSnpInDelExpression().getTranscriptAccession() + " "
                         + ntChangeArray[ntChangeArray.length - 1] + " "
                         + aaChangeConversionArray[aaChangeConversionArray.length - 1];
             }
@@ -519,12 +519,14 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         filterComboBox.setConverter(new ComboBoxConverter());
         filterComboBox.getItems().removeAll(filterComboBox.getItems());
         filterComboBox.getItems().add(new ComboBoxItem("All", "All"));
-        if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
+        if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode()) ||
+                panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode()) ||
+                panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
             filterComboBox.getItems().add(new ComboBoxItem("Tier 1", "Tier I"));
             filterComboBox.getItems().add(new ComboBoxItem("Tier 2", "Tier II"));
             filterComboBox.getItems().add(new ComboBoxItem("Tier 3", "Tier III"));
             filterComboBox.getItems().add(new ComboBoxItem("Tier 4", "Tier IV"));
-        } else if(panel.getAnalysisType().equalsIgnoreCase("GERMLINE")) {
+        } else {
             filterComboBox.getItems().add(new ComboBoxItem("Pathogenic", "Pathogenic"));
             filterComboBox.getItems().add(new ComboBoxItem("Likely Pathogenic", "Likely Pathogenic"));
             filterComboBox.getItems().add(new ComboBoxItem("Uncertain Significance", "Uncertain Significance"));
@@ -871,7 +873,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     public void showVariantList(int pageIndex, int selectedIdx) {
         headerCheckBox.setSelected(false);
 
-        Platform.runLater(() -> compareColumnOrder());
+        Platform.runLater(this::compareColumnOrder);
 
         int totalCount;
         int limit = 100;
@@ -1283,8 +1285,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         gene.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
 
         TableColumn<VariantAndInterpretationEvidence, String> transcript = new TableColumn<>("Transcript");
-        createTableHeader(transcript, "Transcript", null ,null, "transcript");
-        transcript.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getTranscript()));
+        createTableHeader(transcript, "Transcript", null ,null, "transcriptAccession");
+        transcript.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getTranscriptAccession()));
 
         TableColumn<VariantAndInterpretationEvidence, String> type = new TableColumn<>("Type");
         createTableHeader(type, "Type", "variantType" ,null, "variantType");
@@ -1617,6 +1619,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     private void compareColumnOrder() {
+        mainController.setContentsMaskerPaneVisible(true);
+        if(variantListTableView.getColumns().size() == 1) return;
         String columnString = variantListTableView.getColumns().stream()
                 .filter(column -> StringUtils.isNotEmpty(column.getText())).map(column -> {
                     if (column.isVisible()) {
@@ -1655,6 +1659,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 runColumnAction();
             }
         }
+        mainController.setContentsMaskerPaneVisible(false);
     }
 
     private void deleteColumn() {
