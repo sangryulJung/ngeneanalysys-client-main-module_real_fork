@@ -15,6 +15,8 @@ import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedVariantAndInterpretationEvidence;
+import ngeneanalysys.model.paged.PagedVirtualPanel;
+import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.model.render.DatepickerConverter;
 import ngeneanalysys.service.APIService;
@@ -276,6 +278,9 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 .toString() + "(" + cellData.getValue().getSnpInDel().getReadInfo().getAltReadNum() + "/" + cellData.getValue().getSnpInDel().getReadInfo().getReadDepth() + ")"));
 
         panel = sample.getPanel();
+
+        setVirtualPanel();
+
         HttpClientResponse response = null;
         try {
             if(panel.getReportTemplateId() != null) {
@@ -437,6 +442,34 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
                 customFieldGridPane.add(textField, colIndex++, rowIndex);
             }
+        }
+    }
+
+    private void setVirtualPanel() {
+
+        virtualPanelComboBox.setConverter(new ComboBoxConverter());
+
+        virtualPanelComboBox.getItems().add(new ComboBoxItem());
+
+        virtualPanelComboBox.getSelectionModel().selectFirst();
+
+        try {
+
+            Map<String, Object> params = new HashMap<>();
+
+            params.put("panelId", panel.getId());
+
+            HttpClientResponse response = apiService.get("virtualPanels", params, null, false);
+
+            PagedVirtualPanel pagedVirtualPanel = response.getObjectBeforeConvertResponseToJSON(PagedVirtualPanel.class);
+
+            if(pagedVirtualPanel.getCount() > 0) {
+                for(VirtualPanel virtualPanel : pagedVirtualPanel.getResult()) {
+                    virtualPanelComboBox.getItems().add(new ComboBoxItem(virtualPanel.getId().toString(), virtualPanel.getName()));
+                }
+            }
+        } catch (WebAPIException wae) {
+            wae.printStackTrace();
         }
     }
 
