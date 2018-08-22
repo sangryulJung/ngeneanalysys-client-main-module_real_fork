@@ -106,9 +106,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     private ComboBox<ComboBoxItem> filterComboBox;
 
     @FXML
-    private Button filterAddBtn;
-
-    @FXML
     private Label viewAppliedFiltersLabel;
 
     @FXML
@@ -133,16 +130,12 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     private Map<String, String> sortMap = new HashMap<>();
 
     private AnalysisDetailVariantsController variantsController;
-    //VariantList
-    private List<VariantAndInterpretationEvidence> list = null;
 
     /** 현재 선택된 변이 정보 객체 */
     private VariantAndInterpretationEvidence selectedAnalysisResultVariant;
     /** 현재 선택된 변이 리스트 객체의 index */
 
     private Integer currentPageIndex = -1;
-
-    private AnalysisDetailInterpretationController interpretationController;
 
     private AnalysisDetailSNPsINDELsMemoController memoController;
 
@@ -154,6 +147,19 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             c -> saveColumnInfoToServer();
     private final ChangeListener<Boolean> tableColumnVisibilityChangeListener = (observable, oldValue, newValue) -> {
         if(!oldValue.equals(newValue)) saveColumnInfoToServer();
+    };
+    private ChangeListener<ComboBoxItem> filterComboBoxValuePropertyChangeListener = (ob, ov, nv) -> {
+        if (!nv.equals(ov)) {
+            Platform.runLater(() -> showVariantList(1 ,0));
+        }
+        String[] defaultFilterName = {"Tier I", "Tier II", "Tier III", "Tier IV", "Pathogenic", "Likely Pathogenic",
+                "Uncertain Significance", "Likely Benign", "Benign", "Tier 1", "Tier 2", "Tier 3", "Tier 4", "All"};
+        viewAppliedFiltersLabel.setDisable(Arrays.stream(defaultFilterName).anyMatch(item -> item.equals(nv.getValue())));
+        if (Arrays.stream(defaultFilterName).anyMatch(item -> item.equals(nv.getValue()))) {
+            viewAppliedFiltersLabel.setOpacity(0);
+        } else {
+            viewAppliedFiltersLabel.setOpacity(100);
+        }
     };
     /**
      * @return currentPageIndex
@@ -240,7 +246,11 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         setDefaultFilter();
 
-        filterComboBox.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> setFilterList());
+        filterComboBox.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
+            filterComboBox.valueProperty().removeListener(filterComboBoxValuePropertyChangeListener);
+            setFilterList();
+            filterComboBox.valueProperty().addListener(filterComboBoxValuePropertyChangeListener);
+        });
 
         //setFilterList();
 
@@ -292,23 +302,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             }
             return new VBox();
         });
-
-        filterComboBox.valueProperty().addListener((ob, ov, nv) -> {
-            Platform.runLater(() -> showVariantList(1 ,0));
-            String[] defaultFilterName = {"Tier I", "Tier II", "Tier III", "Tier IV", "Pathogenic", "Likely Pathogenic",
-                    "Uncertain Significance", "Likely Benign", "Benign", "Tier 1", "Tier 2", "Tier 3", "Tier 4", "All"};
-            viewAppliedFiltersLabel.setDisable(Arrays.stream(defaultFilterName).anyMatch(item -> item.equals(nv.getValue())));
-            if (Arrays.stream(defaultFilterName).anyMatch(item -> item.equals(nv.getValue()))) {
-            	viewAppliedFiltersLabel.setOpacity(0);
-            } else {
-            	viewAppliedFiltersLabel.setOpacity(100);
-            }
-            
-
-        });
-
-//        showFalseVariantsCheckBox.addEventFilter(MouseEvent.MOUSE_CLICKED, ev ->
-//            showVariantList(currentPageIndex + 1, 0));
 
         snvWrapper.widthProperty().addListener((ob, ov, nv) -> {
             double wrapperWidth = (Double)nv;
@@ -717,7 +710,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_INTERPRETATION);
             Node node = loader.load();
             AnalysisDetailInterpretationController controller = loader.getController();
-            interpretationController = controller;
             controller.setMainController(this.getMainController());
             controller.setAnalysisDetailSNVController(this);
             controller.setParamMap(getParamMap());
@@ -856,16 +848,16 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             list.put("search", filterList.get(comboBoxItem.getValue()));
         }
         if(!showFalseVariantsCheckBox.isSelected()) {
-            setIsFalseItem("N", list);
+            setIsFalseItemToN(list);
         }
     }
 
-    private void setIsFalseItem(String flag, Map<String, List<Object>> list) {
+    private void setIsFalseItemToN(Map<String, List<Object>> list) {
         if(list.containsKey("search")) {
-            list.get("search").add("isFalse " + flag);
+            list.get("search").add("isFalse " + "N");
         } else {
             List<Object> searchList = new ArrayList<>();
-            searchList.add("isFalse " + flag);
+            searchList.add("isFalse " + "N");
             list.put("search", searchList);
         }
     }
@@ -896,7 +888,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
             List<VariantAndInterpretationEvidence> list = analysisResultVariantList.getResult();
             totalCount = analysisResultVariantList.getCount();
-            this.list = list;
 
             searchCountLabel.setText("Showing " + totalCount);
 
@@ -1057,9 +1048,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         if(id != null) column.setId(id);
 
-        column.widthProperty().addListener((ob, ov, nv) -> {
-            label.setMinWidth(column.getWidth());
-        });
+        column.widthProperty().addListener((ob, ov, nv) -> label.setMinWidth(column.getWidth()));
 
         if(size != null) column.setPrefWidth(size);
         columnMap.put(name, column);
@@ -1164,13 +1153,11 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                         }
                     }
                     Label label = null;
-                    if (variant != null) {
-                        if(code != null && !"NONE".equals(code)) {
-                            label = new Label(value);
-                            label.getStyleClass().clear();
-                            testColumn.getStyleClass().add(centerStyleClass);
-                            label.getStyleClass().add(code);
-                        }
+                    if(!"NONE".equals(code)) {
+                        label = new Label(value);
+                        label.getStyleClass().clear();
+                        testColumn.getStyleClass().add(centerStyleClass);
+                        label.getStyleClass().add(code);
                     }
                     setGraphic(label);
                 }
@@ -1698,10 +1685,10 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     private void deleteColumn() {
         variantListTableView.getColumns().removeListener(tableColumnListChangeListener);
-        Integer columnSize = variantListTableView.getColumns().size();
+        int columnSize = variantListTableView.getColumns().size();
 
-        for(int index = 1 ; index < columnSize ; index++) {
-            variantListTableView.getColumns().remove(1);
+        if (columnSize > 1) {
+            variantListTableView.getColumns().subList(1, columnSize).clear();
         }
     }
 
@@ -1722,15 +1709,12 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     private void removeColumnOrder(String key) {
-        /*try {
-            apiService.delete("/member/memberOption/" + key);
-        } catch (WebAPIException wae) { }*/
-        Map<String, Object> map = new HashMap<>();
-        map.put("value", "");
         try {
-            apiService.put("/member/memberOption/" + key, map, null, true);
+            apiService.delete("/member/memberOption/" + key);
         } catch (WebAPIException wae) {
-            logger.debug(wae.getMessage());
+            if (wae.getResponse() == null || wae.getResponse().getStatus() != 404) {
+                logger.error(wae.getMessage());
+            }
         }
     }
 
@@ -1749,7 +1733,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         try {
             apiService.put("/member/memberOption/" + getColumnOrderType(), map, null, true);
         } catch (WebAPIException wae) {
-            logger.debug(wae.getMessage());
+            logger.error(wae.getMessage());
         }
     }
 
@@ -1819,7 +1803,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         List<TableColumnInfo> columnInfos = (List<TableColumnInfo>)JsonUtil.getObjectList(str, TableColumnInfo.class);
 
-        addAColumnToTable(columnInfos);
+        if (columnInfos != null) {
+            addAColumnToTable(columnInfos);
+        }
     }
 
     class BooleanCell extends TableCell<VariantAndInterpretationEvidence, Boolean> {
