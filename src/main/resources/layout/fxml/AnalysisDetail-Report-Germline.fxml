@@ -168,7 +168,7 @@
                                     <Insets bottom="15.0" top="15.0" />
                                  </padding>
                                  <VBox.margin>
-                                    <Insets left="5.0" right="5.0" />
+                                    <Insets />
                                  </VBox.margin>
                               </FlowPane>
                            </children>

@@ -169,6 +169,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
            if (pairFileList.size() == 2 && checkSameSample(fastqFilePairName)) {
                SampleView sample = new SampleView();
                sample.setName(fastqFilePairName);
+               sample.setPanel(new Panel());
                 sampleArrayList.add(sample);
             }
 

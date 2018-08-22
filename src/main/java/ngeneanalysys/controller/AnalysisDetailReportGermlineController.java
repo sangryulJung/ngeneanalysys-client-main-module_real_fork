@@ -859,6 +859,8 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
                     List<SampleQC> qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
 
+                    contentsMap.put("mappingQuality", findQCResult(qcList, "mapping_quality_60"));
+                    contentsMap.put("uniformity", findQCResult(qcList, "uniformity_0.2"));
                     contentsMap.put("totalBase", findQCResult(qcList, "total_base"));
                     contentsMap.put("q30", findQCResult(qcList, "q30_trimmed_base"));
                     contentsMap.put("mappedBase", findQCResult(qcList, "mapped_base"));

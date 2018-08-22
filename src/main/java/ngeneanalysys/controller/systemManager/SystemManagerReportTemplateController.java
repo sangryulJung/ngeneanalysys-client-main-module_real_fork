@@ -348,6 +348,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                 if(isPut && wordCreatorJar == null && this.imageList.isEmpty()) {
                     setReportTableList(1);
                     setDisabledItem(true);
+                    mainController.setContentsMaskerPaneVisible(false);
                     return;
                 }
 
@@ -367,6 +368,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                     task.setOnSucceeded(ev -> {
                         setReportTableList(1);
                         setDisabledItem(true);
+                        mainController.setContentsMaskerPaneVisible(false);
                     });
                 } else {
                     if (!this.imageList.isEmpty()) {
@@ -384,6 +386,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                     } else {
                         setReportTableList(1);
                         setDisabledItem(true);
+                        mainController.setContentsMaskerPaneVisible(false);
                     }
                 }
 
@@ -397,7 +400,6 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                 e.printStackTrace();
             }
         }
-        mainController.setContentsMaskerPaneVisible(false);
     }
 
     @FXML
