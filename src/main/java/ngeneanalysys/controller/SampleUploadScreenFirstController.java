@@ -162,6 +162,11 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             ServerFile serverFile = serverFiles.get(0);
             String fastqFilePairName = FileUtil.getFASTQFilePairName(serverFile.getName());
 
+            if(StringUtils.isEmpty(fastqFilePairName)) {
+                serverFiles.remove(serverFile);
+                continue;
+            }
+
             List<ServerFile> pairFileList = serverFiles.stream().filter(file ->
                     file.getName().startsWith(fastqFilePairName + "_")).collect(Collectors.toList());
 
@@ -169,6 +174,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
            if (pairFileList.size() == 2 && checkSameSample(fastqFilePairName)) {
                SampleView sample = new SampleView();
                sample.setName(fastqFilePairName);
+               sample.setRun(new Run());
                sample.setPanel(new Panel());
                 sampleArrayList.add(sample);
             }
@@ -345,6 +351,11 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                     //mainController.getBasicInformationMap().put("path", folder.getAbsolutePath());
                     File fastqFile = fileList.get(0);
                     String fastqFilePairName = FileUtil.getFASTQFilePairName(fastqFile.getName());
+
+                    if(StringUtils.isEmpty(fastqFilePairName)) {
+                        fileList.remove(fastqFile);
+                        continue;
+                    }
 
                     List<File> pairFileList = fileList.stream().filter(file ->
                             file.getName().startsWith(fastqFilePairName + "_")).collect(Collectors.toList());
@@ -1009,6 +1020,11 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 mainController.getBasicInformationMap().put("path", folder.getAbsolutePath());
                 File fastqFile = fileList.get(0);
                 String fastqFilePairName = FileUtil.getFASTQFilePairName(fastqFile.getName());
+
+                if(StringUtils.isEmpty(fastqFilePairName)) {
+                    fileList.remove(fastqFile);
+                    continue;
+                }
 
                 List<File> pairFileList = fileList.stream().filter(file ->
                         file.getName().startsWith(fastqFilePairName)).collect(Collectors.toList());

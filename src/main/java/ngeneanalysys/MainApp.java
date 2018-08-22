@@ -44,7 +44,6 @@ public class MainApp extends Application {
 	// 메인 Stage
 	private Stage primaryStage;
 
-
 	/**
 	 *
 	 * @return SparkHttpProxyServer
