@@ -1,6 +1,6 @@
 [
     {"order":1,"columnName":"Pathogenicity","visible":true},{"order":2,"columnName":"Warning","visible":true},{"order":3,"columnName":"False","visible":false},{"order":4,"columnName":"Report","visible":true},
-    {"order":5,"columnName":"Gene","visible":true},{"order":6,"columnName":"Transcript Accession","visible":true},{"order":7,"columnName":"Type","visible":true},{"order":8,"columnName":"Conseqeunce","visible":true},
+    {"order":5,"columnName":"Gene","visible":true},{"order":6,"columnName":"Transcript Accession","visible":true},{"order":7,"columnName":"Type","visible":true},{"order":8,"columnName":"Consequence","visible":true},
     {"order":9,"columnName":"NT Change","visible":true},{"order":10,"columnName":"Protein Accession","visible":false},{"order":11,"columnName":"AA Change","visible":false},{"order":12,"columnName":"AA Change (Single)","visible":true},
     {"order":13,"columnName":"Chr","visible":true},
     {"order":14,"columnName":"Start Position","visible":true},
@@ -27,7 +27,7 @@
     {"order":35,"columnName":"ESP African American","visible":false},
     {"order":36,"columnName":"ESP European American","visible":false},
     {"order":37,"columnName":"ExAC","visible":true},
-    {"order":38,"columnName":"Korean Referecne Gnome Database","visible":true},
+    {"order":38,"columnName":"Korean Reference Genome Database","visible":true},
     {"order":39,"columnName":"Korean Exom Information Database","visible":true},
     {"order":40,"columnName":"gnomAD All","visible":true},
     {"order":41,"columnName":"gnomAD African African American","visible":false},

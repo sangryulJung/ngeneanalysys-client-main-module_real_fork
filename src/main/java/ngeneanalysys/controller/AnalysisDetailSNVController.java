@@ -1359,8 +1359,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         createTableHeader(clinVarClass, "ClinVar Class", null ,150d, "clinVarClass");
         clinVarClass.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarClass()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> clinVarReviewStatus = new TableColumn<>("ClinVar Review status");
-        createTableHeader(clinVarReviewStatus, "ClinVar Review status", null ,150d, "clinVarReviewStatus");
+        TableColumn<VariantAndInterpretationEvidence, String> clinVarReviewStatus = new TableColumn<>("ClinVar Review Status");
+        createTableHeader(clinVarReviewStatus, "ClinVar Review Status", null ,150d, "clinVarReviewStatus");
         clinVarReviewStatus.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarReviewStatus()));
 
         TableColumn<VariantAndInterpretationEvidence, String> clinVarDisease = new TableColumn<>("ClinVar Disease");
@@ -1404,7 +1404,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         espaa.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getEsp6500().getAa())));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> espea = new TableColumn<>("ESP European American");
-        createTableHeader(espea, "ESP  European American", null ,null, "esp6500ea");
+        createTableHeader(espea, "ESP European American", null ,null, "esp6500ea");
         espea.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getEsp6500().getEa())));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> exac = new TableColumn<>("ExAC");
@@ -1444,11 +1444,11 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         gnomadSouthAsian.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getSouthAsian())));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> koreanReferenceDatabase = new TableColumn<>("Korean Reference Genome Database");
-        createTableHeader(koreanReferenceDatabase, "KRGDB", null ,null, "koreanReferenceGenomeDatabase");
+        createTableHeader(koreanReferenceDatabase, "Korean Reference Genome Database", null ,null, "koreanReferenceGenomeDatabase");
         koreanReferenceDatabase.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getKoreanReferenceGenomeDatabase())));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> koreanExomInformationDatabase = new TableColumn<>("Korean Exom Information Database");
-        createTableHeader(koreanExomInformationDatabase, "KoEXID", null ,null, "koreanExomInformationDatabase");
+        createTableHeader(koreanExomInformationDatabase, "Korean Exom Information Database", null ,null, "koreanExomInformationDatabase");
         koreanExomInformationDatabase.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getKoreanExomInformationDatabase())));
 
         TableColumn<VariantAndInterpretationEvidence, String> dbSnpCommonId = new TableColumn<>("dbSNP Common ID");
@@ -1796,6 +1796,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 variantListTableView.getColumns().add(columnMap.get(info.getColumnName()));
             }
         }
+        logger.info("Column Count = " + variantListTableView.getColumns().size());
     }
 
     private void setDefaultTableColumnOrder(String path) {

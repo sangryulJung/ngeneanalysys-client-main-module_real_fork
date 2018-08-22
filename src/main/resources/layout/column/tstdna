@@ -8,7 +8,7 @@
     {"order":7,"columnName":"Transcript Accession","visible":true},
     {"order":8,"columnName":"Type","visible":true},
     {"order":9,"columnName":"Type Extension","visible":false},
-    {"order":10,"columnName":"Conseqeunce","visible":true},
+    {"order":10,"columnName":"Consequence","visible":true},
     {"order":11,"columnName":"NT Change","visible":true},
     {"order":12,"columnName":"Protein Accession","visible":false},
     {"order":13,"columnName":"AA Change","visible":false},
@@ -52,12 +52,11 @@
     {"order":51,"columnName":"gnomAD All","visible":true},
     {"order":52,"columnName":"gnomAD Admixed American","visible":false},
     {"order":53,"columnName":"gnomAD African African American","visible":false},
-    {"order":54,"columnName":"gnomAD Ashkenazi Jewish","visible":false},
-    {"order":55,"columnName":"gnomAD East Asian","visible":true},
-    {"order":56,"columnName":"gnomAD Finnish","visible":false},
-    {"order":57,"columnName":"gnomAD Non Finnish European","visible":false},
-    {"order":58,"columnName":"gnomAD Others","visible":false},
-    {"order":59,"columnName":"gnomAD South Asian","visible":false},
-    {"order":60,"columnName":"Korean Referecne Gnome Database","visible":true},
-    {"order":61,"columnName":"Korean Exom Information Database","visible":false}
+    {"order":54,"columnName":"gnomAD East Asian","visible":true},
+    {"order":55,"columnName":"gnomAD Finnish","visible":false},
+    {"order":56,"columnName":"gnomAD Non Finnish European","visible":false},
+    {"order":57,"columnName":"gnomAD Others","visible":false},
+    {"order":58,"columnName":"gnomAD South Asian","visible":false},
+    {"order":59,"columnName":"Korean Reference Genome Database","visible":true},
+    {"order":60,"columnName":"Korean Exom Information Database","visible":false}
 ]

@@ -343,8 +343,6 @@ public class PopOverUtil {
             createHBox("gnomAD Admixed American",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("gnomADafricanAfricanAmerican")) {
             createHBox("gnomAD African African American",setFeqTextField(value), box);
-        }else if(key.equalsIgnoreCase("gnomADashkenaziJewish")) {
-            createHBox("gnomAD Ashkenazi Jewish",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("gnomADeastAsian")) {
             createHBox("gnomAD East Asian",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("gnomADfinnish")) {
