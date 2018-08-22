@@ -845,7 +845,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     private void setFilterItem(Map<String, List<Object>> list) {
         ComboBoxItem comboBoxItem = filterComboBox.getSelectionModel().getSelectedItem();
         if(comboBoxItem != null && filterList.containsKey(comboBoxItem.getValue())) {
-            list.put("search", filterList.get(comboBoxItem.getValue()));
+            list.put("search", filterList.get(comboBoxItem.getValue()).stream().collect(Collectors.toList()));
         }
         if(!showFalseVariantsCheckBox.isSelected()) {
             setIsFalseItemToN(list);
@@ -877,13 +877,13 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             params.put("offset", offset);
             params.put("limit", limit);
 
-            Map<String, List<Object>> sortItem = new HashMap<>();
+            Map<String, List<Object>> sortAndSearchItem = new HashMap<>();
 
-            setSortItem(sortItem);
-            setFilterItem(sortItem);
+            setSortItem(sortAndSearchItem);
+            setFilterItem(sortAndSearchItem);
 
             HttpClientResponse response = apiService.get("/analysisResults/sampleSnpInDels/"+ sample.getId(), params,
-                    null, sortItem);
+                    null, sortAndSearchItem);
             PagedVariantAndInterpretationEvidence analysisResultVariantList = response.getObjectBeforeConvertResponseToJSON(PagedVariantAndInterpretationEvidence.class);
 
             List<VariantAndInterpretationEvidence> list = analysisResultVariantList.getResult();
