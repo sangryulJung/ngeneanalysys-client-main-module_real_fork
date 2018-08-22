@@ -171,7 +171,8 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
 
             scrollPane.setContent(box);
 
-            String[] results = acmg.containsKey("rules") ? ((String)acmg.get("rules")).split(",") : null;
+            String rules = (String)acmg.get("rules");
+            String[] results = StringUtils.isNotEmpty(rules) ? rules.split(",") : null;
             String rulesText = acmg.containsKey("rules") ? "(" + acmg.get("rules") + ")" : null;
 
             Label reason = new Label();
@@ -192,7 +193,10 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
             }
             box.getChildren().add(reason);
 
-            assert results != null;
+            if(results == null) {
+                return;
+            }
+
             for(String result : results) {
                 Map<String, Object> role = (Map<String, Object>) acmg.get(result);
 
