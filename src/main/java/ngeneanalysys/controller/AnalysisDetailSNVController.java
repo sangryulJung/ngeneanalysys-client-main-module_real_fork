@@ -1114,15 +1114,17 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         checkBoxColumn.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue() != null ));
         checkBoxColumn.setCellFactory(param -> new BooleanCell());
         String columnName = "Pathogenicity";
+        String filterPredictionName = "pathogenicity";
         if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())
                 || panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())
                 || panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
             columnName = "Tier";
+            filterPredictionName = "tier";
         }
-        TableColumn<VariantAndInterpretationEvidence, Boolean> testColumn = new TableColumn<>(columnName);
-        createTableHeader(testColumn, columnName, "test" ,70d, columnName.toLowerCase());
-        testColumn.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue() != null));
-        testColumn.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, Boolean>() {
+        TableColumn<VariantAndInterpretationEvidence, Boolean> predictionColumn = new TableColumn<>(columnName);
+        createTableHeader(predictionColumn, columnName, filterPredictionName ,70d, columnName.toLowerCase());
+        predictionColumn.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue() != null));
+        predictionColumn.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, Boolean>() {
             @Override
             public void updateItem(Boolean item, boolean empty) {
                 super.updateItem(item, empty);
@@ -1156,7 +1158,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                     if(!"NONE".equals(code)) {
                         label = new Label(value);
                         label.getStyleClass().clear();
-                        testColumn.getStyleClass().add(centerStyleClass);
+                        predictionColumn.getStyleClass().add(centerStyleClass);
                         label.getStyleClass().add(code);
                     }
                     setGraphic(label);
