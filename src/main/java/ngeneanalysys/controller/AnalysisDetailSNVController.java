@@ -868,7 +868,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         Platform.runLater(this::compareColumnOrder);
 
         int totalCount;
-        int limit = 100;
+        int limit = 500;
         int offset = (pageIndex - 1)  * limit;
 
         try {
