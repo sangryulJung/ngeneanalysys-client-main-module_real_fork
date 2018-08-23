@@ -1796,7 +1796,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 variantListTableView.getColumns().add(columnMap.get(info.getColumnName()));
             }
         }
-        logger.info("Column Count = " + variantListTableView.getColumns().size());
+        logger.debug("Column Count = " + variantListTableView.getColumns().size());
     }
 
     private void setDefaultTableColumnOrder(String path) {
