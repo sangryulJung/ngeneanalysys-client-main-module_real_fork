@@ -51,7 +51,7 @@
     {"order":50,"columnName":"KOHBRA Patient","visible":true},
     {"order":51,"columnName":"Be BIC Category","visible":false},
     {"order":52,"columnName":"Be BIC Ethnic","visible":false},
-    {"order":53"columnName":"Be BIC Nationality","visible":false},
+    {"order":53,"columnName":"Be BIC Nationality","visible":false},
     {"order":54,"columnName":"Be BIC Pathogenicity","visible":false},
     {"order":55,"columnName":"Be ClinVar Method","visible":false},
     {"order":56,"columnName":"Be ClinVar Origin","visible":false},

@@ -288,6 +288,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose Report Template File");
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+
         if(outputTypeComboBox.getSelectionModel().getSelectedItem().equalsIgnoreCase("pdf")) {
             fileChooser.getExtensionFilters()
                     .addAll(new FileChooser.ExtensionFilter("vm", "*.vm"));
@@ -539,6 +540,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
     private void settingReportType() {
         outputTypeComboBox.getItems().add("PDF");
         outputTypeComboBox.getItems().add("MS_WORD");
+        outputTypeComboBox.getSelectionModel().select("MS_WORD");
     }
 
     private void settingImageListComboBox() {
