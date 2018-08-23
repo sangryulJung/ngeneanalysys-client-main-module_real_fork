@@ -193,7 +193,12 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
         double textLength = (double)(displayLeft22Bp.length() + ref.length() + displayRight22Bp.length());
         logger.debug("text length : " + textLength);
 
-        if(textLength > 21) {
+
+        if(alt.length() > 21 && (textLength - displayLeft22Bp.length()) < alt.length()){
+            gridBox.setPrefWidth(alt.length() * 12);
+            sequenceCharsBox.setStyle("-fx-padding:-10 0 0 20;");
+            scrollBox.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        } else if(textLength > 31) {
             gridBox.setPrefWidth(textLength * 12);
             sequenceCharsBox.setStyle("-fx-padding:-10 0 0 20;");
             scrollBox.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);

@@ -173,7 +173,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
 
             String rules = (String)acmg.get("rules");
             String[] results = StringUtils.isNotEmpty(rules) ? rules.split(",") : null;
-            String rulesText = acmg.containsKey("rules") ? "(" + acmg.get("rules") + ")" : null;
+            String rulesText = StringUtils.isNotEmpty(rules) ? "(" + rules + ")" : "";
 
             Label reason = new Label();
             reason.setMaxWidth(widthSize);
@@ -194,49 +194,53 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
             box.getChildren().add(reason);
 
             if(results == null) {
-                return;
-            }
-
-            for(String result : results) {
-                Map<String, Object> role = (Map<String, Object>) acmg.get(result);
-
-                Label roleLabel = new Label(result);
-                roleLabel.setMaxWidth(50);
+                Label roleLabel = new Label("No rules apply.");
+                roleLabel.setMaxWidth(widthSize);
+                roleLabel.getStyleClass().add("font_size_15");
                 roleLabel.setWrapText(true);
-                roleLabel.getStyleClass().add("acmg_content_role_label");
-                if(result.startsWith("PVS")) {
-                    roleLabel.getStyleClass().add("acmg_PVS");
-                } else if(result.startsWith("PS")) {
-                    roleLabel.getStyleClass().add("acmg_PS");
-                } else if(result.startsWith("PM")) {
-                    roleLabel.getStyleClass().add("acmg_PM");
-                } else if(result.startsWith("PP")) {
-                    roleLabel.getStyleClass().add("acmg_PP");
-                } else if(result.startsWith("BP")) {
-                    roleLabel.getStyleClass().add("acmg_BP");
-                } else if(result.startsWith("BS")) {
-                    roleLabel.getStyleClass().add("acmg_BS");
-                } else if(result.startsWith("BA")) {
-                    roleLabel.getStyleClass().add("acmg_BA");
-                }
                 box.getChildren().add(roleLabel);
+            } else {
+                for (String result : results) {
+                    Map<String, Object> role = (Map<String, Object>) acmg.get(result);
 
-                Label descLabel = new Label();
-                String desc = role.containsKey("desc") ? (String)role.get("desc") : null;
-                descLabel.setWrapText(true);
-                descLabel.setText(desc);
-                descLabel.getStyleClass().add("acmg_content_desc_label");
-                descLabel.setMaxWidth(widthSize);
-                box.getChildren().add(descLabel);
+                    Label roleLabel = new Label(result);
+                    roleLabel.setMaxWidth(50);
+                    roleLabel.setWrapText(true);
+                    roleLabel.getStyleClass().add("acmg_content_role_label");
+                    if (result.startsWith("PVS")) {
+                        roleLabel.getStyleClass().add("acmg_PVS");
+                    } else if (result.startsWith("PS")) {
+                        roleLabel.getStyleClass().add("acmg_PS");
+                    } else if (result.startsWith("PM")) {
+                        roleLabel.getStyleClass().add("acmg_PM");
+                    } else if (result.startsWith("PP")) {
+                        roleLabel.getStyleClass().add("acmg_PP");
+                    } else if (result.startsWith("BP")) {
+                        roleLabel.getStyleClass().add("acmg_BP");
+                    } else if (result.startsWith("BS")) {
+                        roleLabel.getStyleClass().add("acmg_BS");
+                    } else if (result.startsWith("BA")) {
+                        roleLabel.getStyleClass().add("acmg_BA");
+                    }
+                    box.getChildren().add(roleLabel);
 
-                String massage = role.containsKey("message") ? (String)role.get("message") : null;
-                if(!StringUtils.isEmpty(massage)) {
-                    Label msgLabel = new Label();
-                    msgLabel.setWrapText(true);
-                    msgLabel.setText("("+massage+")");
-                    msgLabel.getStyleClass().add("acmg_content_msg_label");
-                    msgLabel.setMaxWidth(widthSize);
-                    box.getChildren().add(msgLabel);
+                    Label descLabel = new Label();
+                    String desc = role.containsKey("desc") ? (String) role.get("desc") : null;
+                    descLabel.setWrapText(true);
+                    descLabel.setText(desc);
+                    descLabel.getStyleClass().add("acmg_content_desc_label");
+                    descLabel.setMaxWidth(widthSize);
+                    box.getChildren().add(descLabel);
+
+                    String massage = role.containsKey("message") ? (String) role.get("message") : null;
+                    if (!StringUtils.isEmpty(massage)) {
+                        Label msgLabel = new Label();
+                        msgLabel.setWrapText(true);
+                        msgLabel.setText("(" + massage + ")");
+                        msgLabel.getStyleClass().add("acmg_content_msg_label");
+                        msgLabel.setMaxWidth(widthSize);
+                        box.getChildren().add(msgLabel);
+                    }
                 }
             }
             acmgVBox.getChildren().add(scrollPane);
