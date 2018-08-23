@@ -307,6 +307,16 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
                     detailContents.setCenter(topMenuContent[menu.getDisplayOrder()]);
                 }
 
+                if(currentShowFrameId != null) {
+                    if (!currentShowFrameId.equals(detailContents.getCenter().getId())) {
+                        if (currentShowFrameId.equals("snvWrapper") && !detailContents.getCenter().getId().equals("snvWrapper")) {
+                            snvLabel.setText("SNV/Indel");
+                        } else if (!currentShowFrameId.equals("snvWrapper") && detailContents.getCenter().getId().equals("snvWrapper")) {
+                            snvController.setSNVTabName();
+                        }
+                    }
+                }
+
                 currentShowFrameId = detailContents.getCenter().getId();
             }
         } catch (IOException e) {

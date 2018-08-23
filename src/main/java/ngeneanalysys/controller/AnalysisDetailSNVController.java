@@ -475,7 +475,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         showVariantList(currentPageIndex + 1, 0);
     }
 
-    private void setSNVTabName() {
+    void setSNVTabName() {
         if(variantListTableView.getItems() != null) {
             VariantAndInterpretationEvidence variant = variantListTableView.getSelectionModel()
                     .getSelectedItem();
