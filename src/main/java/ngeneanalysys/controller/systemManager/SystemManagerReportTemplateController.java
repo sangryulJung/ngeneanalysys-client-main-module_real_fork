@@ -316,7 +316,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
 
     @FXML
     public void saveReportTemplate() {
-        mainController.setContentsMaskerPaneVisible(true);
+        //mainController.setContentsMaskerPaneVisible(true);
         String reportName = reportNameTextField.getText();
         boolean isPut = false;
         if(!StringUtils.isEmpty(reportName) && !StringUtils.isEmpty(contents)) {
@@ -369,7 +369,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                     task.setOnSucceeded(ev -> {
                         setReportTableList(1);
                         setDisabledItem(true);
-                        mainController.setContentsMaskerPaneVisible(false);
+                        //mainController.setContentsMaskerPaneVisible(false);
                     });
                 } else {
                     if (!this.imageList.isEmpty()) {
@@ -387,7 +387,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                     } else {
                         setReportTableList(1);
                         setDisabledItem(true);
-                        mainController.setContentsMaskerPaneVisible(false);
+                        //mainController.setContentsMaskerPaneVisible(false);
                     }
                 }
 
