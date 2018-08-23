@@ -4,7 +4,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Pagination?>
@@ -98,37 +97,29 @@
                                  <children>
                                     <GridPane fx:id="panelEditGridPane" hgap="2.0" layoutX="19.6" layoutY="19.6" maxWidth="-Infinity" prefHeight="67.0" prefWidth="483.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" percentWidth="30.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" percentWidth="20.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" percentWidth="16.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" percentWidth="34.0" />
                                           <ColumnConstraints hgrow="SOMETIMES" percentWidth="30.0" />
                                           <ColumnConstraints hgrow="SOMETIMES" percentWidth="20.0" />
                                        </columnConstraints>
                                        <rowConstraints>
                                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                        </rowConstraints>
                                        <children>
-                                          <Label text="Read Depth(x)" GridPane.halignment="RIGHT" />
-                                          <Label text="MAF(%)" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
+                                          <Label text="Read Depth( x )" GridPane.halignment="RIGHT" />
+                                          <Label text="MAF( % )" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                                              <children>
-                                                <TextField fx:id="warningReadDepthTextField" maxHeight="38.0" maxWidth="170.0" prefWidth="37.0" promptText="100" styleClass="txt_black" HBox.hgrow="ALWAYS">
+                                                <TextField fx:id="warningReadDepthTextField" maxHeight="38.0" maxWidth="170.0" prefWidth="37.0" styleClass="txt_black" HBox.hgrow="ALWAYS">
                                                    <HBox.margin>
                                                       <Insets right="3.0" />
                                                    </HBox.margin>
                                                 </TextField>
-                                                <CheckBox fx:id="warningReadDepthCheckBox" mnemonicParsing="false" text="Edit" />
                                              </children>
                                           </HBox>
-                                          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3">
-                                             <children>
-                                                <TextField fx:id="warningMAFTextField" maxWidth="170.0" prefWidth="25.0" promptText="5.0" styleClass="txt_black" HBox.hgrow="ALWAYS">
-                                                   <HBox.margin>
-                                                      <Insets right="3.0" />
-                                                   </HBox.margin>
-                                                </TextField>
-                                                <CheckBox fx:id="warningMAFCheckBox" mnemonicParsing="false" text="Edit" />
-                                             </children>
-                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" />
+                                          <TextField fx:id="warningMAFTextField" maxWidth="170.0" prefWidth="25.0" styleClass="txt_black" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                        </children>
                                     </GridPane>
                                  </children>
@@ -141,10 +132,10 @@
                                  <children>
                                     <GridPane fx:id="panelEditGridPane" hgap="2.0" layoutX="28.6" layoutY="29.6" maxWidth="-Infinity" prefHeight="121.0" prefWidth="458.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="134.99999237060547" minWidth="112.0" prefWidth="129.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="360.0" minWidth="337.00000762939453" prefWidth="343.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" />
-                                          <ColumnConstraints hgrow="SOMETIMES" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="260.0" minWidth="93.00000762939453" prefWidth="260.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="478.99999237060547" minWidth="260.0" prefWidth="312.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="0.0" minWidth="0.0" prefWidth="0.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="0.0" minWidth="0.0" prefWidth="0.0" />
                                        </columnConstraints>
                                        <rowConstraints>
                                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -157,17 +148,17 @@
                                        <children>
                                           <Label text="InDel MAF( % )" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                                              <tooltip>
-                                                <Tooltip text="Min Allele Frequency" />
+                                                <Tooltip text="Min Allele Fraction, Default 5%" />
                                              </tooltip>
                                           </Label>
-                                          <Label text="InDel MRD( x, &gt;=20 )" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                                          <Label text="InDel MRD( x )" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                                              <tooltip>
-                                                <Tooltip text="Min Read Depth" />
+                                                <Tooltip text="Min Read Depth, Default 30x" />
                                              </tooltip>
                                           </Label>
-                                          <Label text="InDel MAC( &gt;= 6 )" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+                                          <Label text="InDel MAC" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
                                              <tooltip>
-                                                <Tooltip text="Min Alternate Count" />
+                                                <Tooltip text="Min Alternate Count, Default 6" />
                                              </tooltip>
                                           </Label>
                                           <TextField fx:id="indelMinAlleleFrequencyTextField" maxHeight="38.0" maxWidth="1.7976931348623157E308" prefWidth="160.0" styleClass="txt_black" GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -175,15 +166,15 @@
                                           <TextField fx:id="indelMinAlternateCountTextField" maxHeight="38.0" maxWidth="1.7976931348623157E308" prefWidth="160.0" styleClass="txt_black" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                           <Label text="Essential Genes" GridPane.halignment="RIGHT" />
                                           <TextField fx:id="essentialGenesTextField" maxWidth="1.7976931348623157E308" styleClass="txt_black" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
-                                          <Label text="SNV MRD( x, &gt;=20 )" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+                                          <Label text="SNV MRD( x )" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
                                              <tooltip>
-                                                <Tooltip text="Min Read Depth" />
+                                                <Tooltip text="Min Read Depth, Default 30x" />
                                              </tooltip>
                                           </Label>
                                           <TextField fx:id="snvMinReadDepthTextField" maxHeight="38.0" maxWidth="1.7976931348623157E308" prefWidth="160.0" styleClass="txt_black" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                          <Label text="homopolymer&amp;repeat sequence MAF" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+                                          <Label text="Homopolymer &amp; Repeat sequence MAF( x )" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
                                              <tooltip>
-                                                <Tooltip text="homopolymer&amp;repeat sequence MAF" />
+                                                <Tooltip text="Default 30x" />
                                              </tooltip>
                                           </Label>
                                           <TextField fx:id="lowConfidenceMinAlleleFractionTextField" maxHeight="38.0" maxWidth="1.7976931348623157E308" prefWidth="160.0" styleClass="txt_black" GridPane.columnIndex="1" GridPane.rowIndex="5" />

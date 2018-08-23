@@ -99,12 +99,6 @@ public class SystemManagerPanelController extends SubPaneController {
     private TextField lowConfidenceMinAlleleFractionTextField;
 
     @FXML
-    private CheckBox warningReadDepthCheckBox;
-
-    @FXML
-    private CheckBox warningMAFCheckBox;
-
-    @FXML
     private TextField indelMinAlleleFrequencyTextField;
 
     @FXML
@@ -245,14 +239,6 @@ public class SystemManagerPanelController extends SubPaneController {
             if(!newValue.matches("[0-9]*")) warningReadDepthTextField.setText(oldValue);
         });
 
-        warningMAFCheckBox.selectedProperty().addListener((observable, oldValue,  newValue) ->
-            warningMAFTextField.setDisable(!newValue)
-        );
-
-        warningReadDepthCheckBox.selectedProperty().addListener((observable, oldValue,  newValue) ->
-            warningReadDepthTextField.setDisable(!newValue)
-        );
-
         pipelineComboBox.setConverter(new ComboBoxConverter());
         pipelineComboBox.getItems().add(new ComboBoxItem());
         for(PipelineCode pipelineCode : PipelineCode.values()) {
@@ -327,41 +313,6 @@ public class SystemManagerPanelController extends SubPaneController {
         canonicalTranscriptTextArea.setText("");
         canonicalTranscriptTextArea.setDisable(true);
 
-        warningMAFCheckBox.setSelected(false);
-        warningMAFCheckBox.setDisable(true);
-
-        essentialGenesTextField.setText("");
-        essentialGenesTextField.setDisable(true);
-
-        indelMinAlleleFrequencyTextField.setText("");
-        indelMinAlleleFrequencyTextField.setDisable(true);
-        indelMinReadDepthTextField.setText("");
-        indelMinReadDepthTextField.setDisable(true);
-        indelMinAlternateCountTextField.setText("");
-        indelMinAlternateCountTextField.setDisable(true);
-        snvMinReadDepthTextField.setText("");
-        snvMinReadDepthTextField.setDisable(true);
-
-        populationFrequencyTextField.setText("");
-        populationFrequencyTextField.setDisable(true);
-
-        frequencyDBCheckComboBox.getCheckModel().clearChecks();
-        frequencyDBCheckComboBox.setDisable(true);
-
-        roiCoveragePercentageTextField.setText("");
-        roiCoveragePercentageTextField.setDisable(true);
-    }
-
-    private void setBRCADefault() {
-        canonicalTranscriptTextArea.setText("");
-        canonicalTranscriptTextArea.setDisable(true);
-
-        warningReadDepthCheckBox.setSelected(false);
-        warningReadDepthCheckBox.setDisable(true);
-        warningReadDepthTextField.setText("");
-        warningReadDepthTextField.setDisable(true);
-        warningMAFCheckBox.setSelected(false);
-        warningMAFCheckBox.setDisable(true);
         warningMAFTextField.setText("");
         warningMAFTextField.setDisable(true);
 
@@ -376,6 +327,40 @@ public class SystemManagerPanelController extends SubPaneController {
         indelMinAlternateCountTextField.setDisable(true);
         snvMinReadDepthTextField.setText("");
         snvMinReadDepthTextField.setDisable(true);
+        lowConfidenceMinAlleleFractionTextField.setText("");
+        lowConfidenceMinAlleleFractionTextField.setDisable(true);
+        populationFrequencyTextField.setText("");
+        populationFrequencyTextField.setDisable(true);
+
+        frequencyDBCheckComboBox.getCheckModel().clearChecks();
+        frequencyDBCheckComboBox.setDisable(true);
+
+        roiCoveragePercentageTextField.setText("");
+        roiCoveragePercentageTextField.setDisable(true);
+    }
+
+    private void setBRCADefault() {
+        canonicalTranscriptTextArea.setText("");
+        canonicalTranscriptTextArea.setDisable(true);
+
+        warningReadDepthTextField.setText("");
+        warningReadDepthTextField.setDisable(true);
+        warningMAFTextField.setText("");
+        warningMAFTextField.setDisable(true);
+
+        essentialGenesTextField.setText("");
+        essentialGenesTextField.setDisable(true);
+
+        indelMinAlleleFrequencyTextField.setText("");
+        indelMinAlleleFrequencyTextField.setDisable(true);
+        indelMinReadDepthTextField.setText("");
+        indelMinReadDepthTextField.setDisable(true);
+        indelMinAlternateCountTextField.setText("");
+        indelMinAlternateCountTextField.setDisable(true);
+        snvMinReadDepthTextField.setText("");
+        snvMinReadDepthTextField.setDisable(true);
+        lowConfidenceMinAlleleFractionTextField.setText("");
+        lowConfidenceMinAlleleFractionTextField.setDisable(true);
 
         lowConfidenceCheckComboBox.getCheckModel().clearChecks();
         lowConfidenceCheckComboBox.setDisable(true);
@@ -760,10 +745,10 @@ public class SystemManagerPanelController extends SubPaneController {
                 params.put("libraryType", pipelineCode.getLibraryType());
             }
 
-            if(warningReadDepthCheckBox.isSelected() && StringUtils.isNotEmpty(warningReadDepthTextField.getText())) {
+            if(StringUtils.isNotEmpty(warningReadDepthTextField.getText())) {
                 params.put("warningReadDepth", Integer.parseInt(warningReadDepthTextField.getText()));
             }
-            if(warningMAFCheckBox.isSelected() && StringUtils.isNotEmpty(warningMAFTextField.getText())) {
+            if(StringUtils.isNotEmpty(warningMAFTextField.getText())) {
                 params.put("warningMAF", new BigDecimal(warningMAFTextField.getText()));
             }
 
@@ -851,10 +836,10 @@ public class SystemManagerPanelController extends SubPaneController {
                 params.put("libraryType", pipelineCode.getLibraryType());
             }
 
-            if(warningReadDepthCheckBox.isSelected() && StringUtils.isNotEmpty(warningReadDepthTextField.getText())) {
+            if(StringUtils.isNotEmpty(warningReadDepthTextField.getText())) {
                 params.put("warningReadDepth", Integer.parseInt(warningReadDepthTextField.getText()));
             }
-            if(warningMAFCheckBox.isSelected() && StringUtils.isNotEmpty(warningMAFTextField.getText())) {
+            if(StringUtils.isNotEmpty(warningMAFTextField.getText())) {
                 params.put("warningMAF", new BigDecimal(warningMAFTextField.getText()));
             }
 
@@ -977,8 +962,6 @@ public class SystemManagerPanelController extends SubPaneController {
         lowConfidenceCheckComboBox.getCheckModel().clearChecks();
         defaultDiseaseComboBox.getItems().removeAll(defaultDiseaseComboBox.getItems());
         reportTemplateComboBox.getSelectionModel().selectFirst();
-        warningReadDepthCheckBox.setSelected(false);
-        warningMAFCheckBox.setSelected(false);
         indelMinAlleleFrequencyTextField.setText("");
         indelMinReadDepthTextField.setText("");
         snvMinReadDepthTextField.setText("");
@@ -1003,8 +986,6 @@ public class SystemManagerPanelController extends SubPaneController {
         saveTextFile.setDisable(condition);
         warningReadDepthTextField.setDisable(condition);
         warningMAFTextField.setDisable(condition);
-        warningReadDepthCheckBox.setDisable(condition);
-        warningMAFCheckBox.setDisable(condition);
         panelNameTextField.setDisable(condition);
         roiFileSelectionButton.setDisable(condition);
         groupCheckComboBox.setDisable(condition);
@@ -1112,12 +1093,10 @@ public class SystemManagerPanelController extends SubPaneController {
                 panelNameTextField.setText(panel.getName());
                 //panelCodeTextField.setText(panel.getCode());
                 if(panel.getWarningMAF() != null) {
-                    warningMAFCheckBox.setSelected(true);
                     warningMAFTextField.setDisable(false);
                     warningMAFTextField.setText(panel.getWarningMAF().toString());
                 }
                 if(panel.getWarningReadDepth() != null) {
-                    warningReadDepthCheckBox.setSelected(true);
                     warningReadDepthTextField.setDisable(false);
                     warningReadDepthTextField.setText(panel.getWarningReadDepth().toString());
                 }
