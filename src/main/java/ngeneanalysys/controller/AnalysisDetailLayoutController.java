@@ -43,6 +43,8 @@ public class AnalysisDetailLayoutController extends SubPaneController {
     @FXML
     private Tooltip sampleNameTooltip;
     @FXML
+    private Tooltip sampleIdTooltip;
+    @FXML
     private Label runNameLabel;
     @FXML
     private Tooltip runNameTooltip;
@@ -164,6 +166,7 @@ public class AnalysisDetailLayoutController extends SubPaneController {
             panelNameTooltip.setText(panel.getName());
             sampleNameLabel.setText(sampleView.getName());
             sampleNameTooltip.setText(sampleView.getName());
+            sampleIdTooltip.setText(sampleView.getId().toString());
             diseaseLabel.setText(sampleView.getDiseaseName());
             diseaseTooltip.setText(sampleView.getDiseaseName());
         }
