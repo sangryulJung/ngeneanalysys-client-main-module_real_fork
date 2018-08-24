@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="snvWrapper" prefHeight="380.0" prefWidth="1140.0" style="-fx-background-color: #f2f5fa;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNVController">
+<GridPane fx:id="snvWrapper" prefHeight="380.0" prefWidth="1140.0" style="-fx-background-color: #f2f5fa;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNVController">
    <columnConstraints>
       <ColumnConstraints fillWidth="false" hgrow="NEVER" maxWidth="-Infinity" minWidth="10.0" prefWidth="200.0" />
       <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" prefWidth="0.0" />
@@ -202,18 +202,22 @@
       <HBox fx:id="rightContentsHBox" style="-fx-background-color: #f2f5fa;" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
          <children>
             <Button fx:id="rightSizeButton" maxHeight="1.7976931348623157E308" maxWidth="50.0" minWidth="-Infinity" mnemonicParsing="false" prefWidth="50.0" styleClass="right_btn_fold" />
-            <Accordion fx:id="overviewAccordion" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="870.0">
-              <panes>
-                <TitledPane fx:id="interpretationTitledPane" animated="false" maxWidth="-Infinity" minWidth="-Infinity" style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_13" text="Interpretation" />
-                <TitledPane fx:id="clinicalSignificantTitledPane" animated="false" maxWidth="-Infinity" minWidth="-Infinity" style="-fx-font-family: Noto Sans KR;" styleClass="font_size_13" text="Clinical Significant" />
-                <TitledPane fx:id="variantDetailTitledPane" animated="false" maxWidth="-Infinity" minWidth="-Infinity" style="-fx-font-family: Noto Sans KR;" styleClass="font_size_13" text="Variant Detail" />
-                  <TitledPane fx:id="statisticsTitledPane" animated="false" maxWidth="-Infinity" minWidth="-Infinity" style="-fx-font-family: Noto Sans KR;" styleClass="font_size_13" text="Statistics" />
-                  <TitledPane fx:id="interpretationLogsTitledPane" animated="false" maxWidth="-Infinity" minWidth="-Infinity" style="-fx-font-family: Noto Sans KR;" styleClass="font_size_13" text="Interpretation Log" />
-              </panes>
+            <VBox>
+               <children>
+                  <Accordion fx:id="overviewAccordion">
+                    <panes>
+                      <TitledPane fx:id="interpretationTitledPane" animated="false" style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_15" text="Interpretation" />
+                      <TitledPane fx:id="clinicalSignificantTitledPane" animated="false" maxWidth="-Infinity" style="-fx-font-family: Noto Sans KR;" styleClass="font_size_15" text="Clinical Significant" />
+                      <TitledPane fx:id="variantDetailTitledPane" animated="false" maxWidth="-Infinity" style="-fx-font-family: Noto Sans KR;" styleClass="font_size_15" text="Variant Detail" />
+                        <TitledPane fx:id="statisticsTitledPane" animated="false" maxWidth="-Infinity" prefHeight="222.0" prefWidth="870.0" style="-fx-font-family: Noto Sans KR;" styleClass="font_size_15" text="Statistics" />
+                        <TitledPane fx:id="interpretationLogsTitledPane" animated="false" maxWidth="-Infinity" style="-fx-font-family: Noto Sans KR;" styleClass="font_size_15" text="Interpretation Log" />
+                    </panes>
+                  </Accordion>
+               </children>
                <HBox.margin>
                   <Insets top="20.0" />
                </HBox.margin>
-            </Accordion>
+            </VBox>
          </children>
       </HBox>
    </children>

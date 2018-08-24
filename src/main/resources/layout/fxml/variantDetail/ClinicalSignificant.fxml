@@ -15,11 +15,12 @@
 <?import javafx.scene.shape.Polyline?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="CENTER_RIGHT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="256.0" prefWidth="750.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailClinicalSignificantController">
+<GridPane alignment="CENTER_RIGHT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="256.0" prefWidth="750.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailClinicalSignificantController">
   <columnConstraints>
-      <ColumnConstraints hgrow="ALWAYS" minWidth="-Infinity" prefWidth="254.0" />
-    <ColumnConstraints hgrow="ALWAYS" minWidth="-Infinity" prefWidth="260.0" />
-    <ColumnConstraints hgrow="ALWAYS" minWidth="-Infinity" prefWidth="236.0" />
+      <ColumnConstraints minWidth="-Infinity" />
+    <ColumnConstraints minWidth="-Infinity" />
+    <ColumnConstraints minWidth="-Infinity" />
+      <ColumnConstraints hgrow="ALWAYS" minWidth="-Infinity" />
   </columnConstraints>
   <rowConstraints>
       <RowConstraints maxHeight="47.0" minHeight="10.0" prefHeight="47.0" vgrow="SOMETIMES" />
@@ -341,7 +342,7 @@
             </VBox>
          </children>
       </HBox>
-      <HBox alignment="CENTER_RIGHT" prefHeight="47.0" prefWidth="193.0" GridPane.columnIndex="2">
+      <HBox alignment="CENTER_LEFT" prefHeight="47.0" prefWidth="193.0" GridPane.columnIndex="2">
          <children>
             <CheckBox fx:id="addToGermlineReportCheckBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="47.0" text="Add to Report">
                <HBox.margin>
@@ -349,7 +350,7 @@
                </HBox.margin></CheckBox>
          </children>
       </HBox>
-      <VBox fx:id="acmgVBox" alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" />
+      <VBox fx:id="acmgVBox" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
    </children>
    <opaqueInsets>
       <Insets />

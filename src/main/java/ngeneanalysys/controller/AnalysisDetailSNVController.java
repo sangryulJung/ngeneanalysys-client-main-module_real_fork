@@ -318,15 +318,15 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             }
         });
 
-        snvWrapper.heightProperty().addListener((ob, ov, nv) -> {
-            double wrapperHeight = (Double)nv;
-
-            if(wrapperHeight > 450) {
-                changeTitledPaneTextSize("font_size_13", "font_size_18");
-            } else {
-                changeTitledPaneTextSize("font_size_18", "font_size_13");
-            }
-        });
+//        snvWrapper.heightProperty().addListener((ob, ov, nv) -> {
+//            double wrapperHeight = (Double)nv;
+//
+//            if(wrapperHeight > 450) {
+//                changeTitledPaneTextSize("font_size_15", "font_size_15");
+//            } else {
+//                changeTitledPaneTextSize("font_size_15", "font_size_15");
+//            }
+//        });
 
     }
 
