@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="mainGridPane" prefHeight="410.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailReportController">
+<GridPane fx:id="mainGridPane" prefHeight="410.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailReportController">
    <columnConstraints>
       <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" prefWidth="405.0" />
       <ColumnConstraints />
@@ -99,8 +99,7 @@
                               </Label>
                               <TableView fx:id="variantsTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="1120.0" style="-fx-border-width: 0;" styleClass="txt_black" VBox.vgrow="ALWAYS">
                                 <columns>
-                                    <TableColumn fx:id="tierColumn" prefWidth="75.0" styleClass="txt_black" text="Prediction" />
-                                    <TableColumn fx:id="userTierColumn" prefWidth="75.0" styleClass="txt_black" text="Tier" />
+                                    <TableColumn fx:id="tierColumn" prefWidth="75.0" styleClass="txt_black" text="Tier" />
                                     <TableColumn fx:id="chrColumn" prefWidth="125.0" styleClass="txt_black" text="Chr" />
                                   <TableColumn fx:id="geneColumn" prefWidth="135.0" styleClass="txt_black" text="Gene" />
                                     <TableColumn fx:id="positionColumn" prefWidth="110.0" styleClass="txt_black" text="Position" />

@@ -268,8 +268,10 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
         sample = (SampleView)paramMap.get("sampleView");
 
-        predictionColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSwPathogenicity()));
-        pathogenicityColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getExpertPathogenicity()));
+        pathogenicityColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getSnpInDel().getExpertPathogenicity() != null ?
+                        cellData.getValue().getSnpInDel().getExpertPathogenicity() :
+                        cellData.getValue().getSnpInDel().getSwPathogenicity()));
         chrColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getChromosome()));
         geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
         positionColumn.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getSnpInDel().getGenomicCoordinate().getStartPosition()));
