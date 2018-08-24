@@ -762,8 +762,9 @@ public class SystemManagerPanelController extends SubPaneController {
                 DialogUtil.warning("value error", "set min alternate count >= 6", mainApp.getPrimaryStage(), true);
                 return;
             }
-
-            params.put("canonicalTranscripts", canonicalTranscriptTextArea.getText());
+            if (StringUtils.isNotEmpty(canonicalTranscriptTextArea.getText())) {
+                params.put("canonicalTranscripts", canonicalTranscriptTextArea.getText());
+            }
             params.put("qcPassConfig", setQCPassingConfig());
             if(defaultDiseaseComboBox.getSelectionModel().getSelectedItem() != null) {
                 params.put("defaultDiseaseId", defaultDiseaseComboBox.getSelectionModel().getSelectedItem().getText());
@@ -853,8 +854,9 @@ public class SystemManagerPanelController extends SubPaneController {
                 DialogUtil.warning("value error", "set min alternate count >= 6", mainApp.getPrimaryStage(), true);
                 return;
             }
-
-            params.put("canonicalTranscripts", canonicalTranscriptTextArea.getText());
+            if(StringUtils.isNotEmpty(canonicalTranscriptTextArea.getText())) {
+                params.put("canonicalTranscripts", canonicalTranscriptTextArea.getText());
+            }
             params.put("qcPassConfig", setQCPassingConfig());
             if(defaultDiseaseComboBox.getSelectionModel().getSelectedItem() != null) {
                 params.put("defaultDiseaseId", Integer.parseInt(defaultDiseaseComboBox.getSelectionModel().getSelectedItem().getValue()));
