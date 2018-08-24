@@ -309,21 +309,6 @@ public class VariantFilterController extends SubPaneController {
     private CheckBox caseECheckBox;
 
     @FXML
-    private CheckBox predictionACheckBox;
-
-    @FXML
-    private CheckBox predictionBCheckBox;
-
-    @FXML
-    private CheckBox predictionCCheckBox;
-
-    @FXML
-    private CheckBox predictionDCheckBox;
-
-    @FXML
-    private CheckBox predictionECheckBox;
-
-    @FXML
     private CheckBox clinVarACheckBox;
 
     @FXML
@@ -686,17 +671,10 @@ public class VariantFilterController extends SubPaneController {
         if("SOMATIC".equalsIgnoreCase(panel.getAnalysisType())) {
             caseLabel.setText("Tier");
             caseECheckBox.setVisible(false);
-            predictionECheckBox.setVisible(false);
             caseACheckBox.setText("Tier1");
             caseBCheckBox.setText("Tier2");
             caseCCheckBox.setText("Tier3");
             caseDCheckBox.setText("Tier4");
-
-            predictionACheckBox.setText("Tier1");
-            predictionBCheckBox.setText("Tier2");
-            predictionCCheckBox.setText("Tier3");
-            predictionDCheckBox.setText("Tier4");
-
         } else {
             caseLabel.setText("Pathogenicity");
             caseACheckBox.setText("P(Pathogentic)");
@@ -704,12 +682,6 @@ public class VariantFilterController extends SubPaneController {
             caseCCheckBox.setText("US(Uncertatin Significance)");
             caseDCheckBox.setText("LB(Likely Benign)");
             caseECheckBox.setText("B(Benign)");
-
-            predictionACheckBox.setText("P(Pathogentic)");
-            predictionBCheckBox.setText("LP(Likely Pathogenic)");
-            predictionCCheckBox.setText("US(Uncertatin Significance)");
-            predictionDCheckBox.setText("LB(Likely Benign)");
-            predictionECheckBox.setText("B(Benign)");
 
             gnomADaaaComboBox.setDisable(true);
             gnomADaaaTextField.setDisable(true);
@@ -815,17 +787,17 @@ public class VariantFilterController extends SubPaneController {
         }
     }
 
-    private void setPrediction(String value) {
+    private void setVariantLevel(String value) {
         if(value.equalsIgnoreCase("T1") || value.equalsIgnoreCase("P")) {
-            predictionACheckBox.setSelected(true);
+            caseACheckBox.setSelected(true);
         } else if(value.equalsIgnoreCase("T2") || value.equalsIgnoreCase("LP")) {
-            predictionBCheckBox.setSelected(true);
+            caseBCheckBox.setSelected(true);
         } else if(value.equalsIgnoreCase("T3") || value.equalsIgnoreCase("US")) {
-            predictionCCheckBox.setSelected(true);
+            caseCCheckBox.setSelected(true);
         } else if(value.equalsIgnoreCase("T4") || value.equalsIgnoreCase("LB")) {
-            predictionDCheckBox.setSelected(true);
-        } else {
-            predictionECheckBox.setSelected(true);
+            caseDCheckBox.setSelected(true);
+        } else if (value.equalsIgnoreCase("B")){
+            caseECheckBox.setSelected(true);
         }
     }
 
@@ -844,10 +816,8 @@ public class VariantFilterController extends SubPaneController {
     }
 
     private void setKeyValue(String key, String value) {
-        if(key.equalsIgnoreCase("expertTier") || key.equalsIgnoreCase("expertPathogenicity")) {
-            setCase(value);
-        } else if(key.equalsIgnoreCase("swTier") || key.equalsIgnoreCase("swPathogenicity")) {
-            setPrediction(value);
+        if(key.equalsIgnoreCase("tier") || key.equalsIgnoreCase("pathogenicity")) {
+            setVariantLevel(value);
         } else if(key.equalsIgnoreCase("clinVarClass")) {
             setClinVar(value);
         } else if(key.equalsIgnoreCase("codingConsequence")) {
@@ -1343,61 +1313,32 @@ public class VariantFilterController extends SubPaneController {
 
         if("SOMATIC".equalsIgnoreCase(panel.getAnalysisType())) {
             if(caseACheckBox.isSelected()) {
-                list.add("expertTier T1");
+                list.add("tier T1");
             }
             if(caseBCheckBox.isSelected()) {
-                list.add("expertTier T2");
+                list.add("tier T2");
             }
             if(caseCCheckBox.isSelected()) {
-                list.add("expertTier T3");
+                list.add("tier T3");
             }
             if(caseDCheckBox.isSelected()) {
-                list.add("expertTier T4");
-            }
-
-            if(predictionACheckBox.isSelected()) {
-                list.add("swTier T1");
-            }
-            if(predictionBCheckBox.isSelected()) {
-                list.add("swTier T2");
-            }
-            if(predictionCCheckBox.isSelected()) {
-                list.add("swTier T3");
-            }
-            if(predictionDCheckBox.isSelected()) {
-                list.add("swTier T4");
+                list.add("tier T4");
             }
         } else {
             if(caseACheckBox.isSelected()) {
-                list.add("expertPathogenicity P");
+                list.add("pathogenicity P");
             }
             if(caseBCheckBox.isSelected()) {
-                list.add("expertPathogenicity LP");
+                list.add("pathogenicity LP");
             }
             if(caseCCheckBox.isSelected()) {
-                list.add("expertPathogenicity US");
+                list.add("pathogenicity US");
             }
             if(caseDCheckBox.isSelected()) {
-                list.add("expertPathogenicity LB");
+                list.add("pathogenicity LB");
             }
             if(caseECheckBox.isSelected()) {
-                list.add("expertPathogenicity B");
-            }
-
-            if(predictionACheckBox.isSelected()) {
-                list.add("swPathogenicity P");
-            }
-            if(predictionBCheckBox.isSelected()) {
-                list.add("swPathogenicity LP");
-            }
-            if(predictionCCheckBox.isSelected()) {
-                list.add("swPathogenicity US");
-            }
-            if(predictionDCheckBox.isSelected()) {
-                list.add("swPathogenicity LB");
-            }
-            if(predictionECheckBox.isSelected()) {
-                list.add("swPathogenicity B");
+                list.add("pathogenicity B");
             }
         }
 
@@ -1561,11 +1502,6 @@ public class VariantFilterController extends SubPaneController {
         caseCCheckBox.setSelected(false);
         caseDCheckBox.setSelected(false);
         caseECheckBox.setSelected(false);
-        predictionACheckBox.setSelected(false);
-        predictionBCheckBox.setSelected(false);
-        predictionCCheckBox.setSelected(false);
-        predictionDCheckBox.setSelected(false);
-        predictionECheckBox.setSelected(false);
         clinVarACheckBox.setSelected(false);
         clinVarBCheckBox.setSelected(false);
         clinVarCCheckBox.setSelected(false);
