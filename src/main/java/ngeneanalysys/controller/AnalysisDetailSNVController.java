@@ -1,5 +1,6 @@
 package ngeneanalysys.controller;
 
+import com.sun.javafx.scene.control.skin.TableHeaderRow;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -12,6 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.AccessibleAttribute;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -20,6 +22,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.constants.FXMLConstants;
@@ -1811,7 +1814,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
     }
 
-    class BooleanCell extends TableCell<VariantAndInterpretationEvidence, Boolean> {
+    class BooleanCell extends LockedTableCell<VariantAndInterpretationEvidence, Boolean> {
         private CheckBox checkBox = new CheckBox();
         private BooleanCell() {
             checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
@@ -1837,5 +1840,37 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
             setGraphic(checkBox);
         }
+    }
+
+    public abstract class LockedTableCell<T, S> extends TableCell<T, S> {
+
+        {
+
+            Platform.runLater(() -> {
+
+                ScrollBar sc = (ScrollBar) getTableView().queryAccessibleAttribute(AccessibleAttribute.HORIZONTAL_SCROLLBAR);
+
+                TableHeaderRow thr = (TableHeaderRow) getTableView().queryAccessibleAttribute(AccessibleAttribute.HEADER);
+
+                Region headerNode = thr.getColumnHeaderFor(this.getTableColumn());
+
+                sc.valueProperty().addListener((ob, o, n) -> {
+
+                    double doubleValue = n.doubleValue();
+
+                    headerNode.setTranslateX(doubleValue);
+
+                    headerNode.toFront();
+
+                    this.setTranslateX(doubleValue);
+
+                    this.toFront();
+
+                });
+
+            });
+
+        }
+
     }
 }
