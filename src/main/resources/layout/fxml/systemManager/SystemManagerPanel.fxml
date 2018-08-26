@@ -321,10 +321,10 @@
                         <Insets right="10.0" />
                      </VBox.margin>
                   </HBox>
-                  <TableView fx:id="panelListTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="415.0" prefWidth="600.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
+                  <TableView fx:id="panelListTable" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
                     <columns>
                         <TableColumn fx:id="panelIdTableColumn" prefWidth="60.0" text="Panel Id" visible="false" />
-                        <TableColumn fx:id="panelNameTableColumn" prefWidth="200.0" text="Panel" />
+                        <TableColumn fx:id="panelNameTableColumn" maxWidth="-1.0" minWidth="200.0" prefWidth="-1.0" text="Panel" />
                         <TableColumn fx:id="editPanelTableColumn" prefWidth="80.0" />
                         <TableColumn fx:id="virtualPanelColumn" prefWidth="195.0" style="-fx-alignment: center;" text="Virtual Panel" />
                         <TableColumn fx:id="panelCodeTableColumn" prefWidth="60.79998779296875" text="Code" />
