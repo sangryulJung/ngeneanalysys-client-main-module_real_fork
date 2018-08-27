@@ -101,27 +101,23 @@
                   </VBox>
                   <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="130.0">
                      <children>
-                        <Label alignment="TOP_CENTER" prefHeight="20.0" prefWidth="143.0" style="-fx-font-family: Noto Sans KR Bold;" text="Choose your action">
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin>
-                        </Label>
+                        <Label alignment="TOP_CENTER" prefHeight="20.0" prefWidth="143.0" style="-fx-font-family: Noto Sans KR Bold;" text="Choose your action" />
                         <HBox prefHeight="20.0" prefWidth="200.0">
                            <children>
-                              <CheckBox fx:id="levelACheckBox" mnemonicParsing="false" text="1" />
-                              <CheckBox fx:id="levelBCheckBox" mnemonicParsing="false" text="2" />
+                              <CheckBox fx:id="levelACheckBox" minWidth="-Infinity" mnemonicParsing="false" prefWidth="40.0" text="1" />
+                              <CheckBox fx:id="levelBCheckBox" minWidth="-Infinity" mnemonicParsing="false" prefWidth="40.0" text="2" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <CheckBox fx:id="levelCCheckBox" mnemonicParsing="false" text="3" />
-                              <CheckBox fx:id="levelDCheckBox" mnemonicParsing="false" text="4" />
-                              <CheckBox fx:id="levelECheckBox" mnemonicParsing="false" text="5" />
+                              <CheckBox fx:id="levelCCheckBox" minWidth="-Infinity" mnemonicParsing="false" prefWidth="40.0" text="3" />
+                              <CheckBox fx:id="levelDCheckBox" minWidth="-Infinity" mnemonicParsing="false" prefWidth="40.0" text="4" />
+                              <CheckBox fx:id="levelECheckBox" minWidth="-Infinity" mnemonicParsing="false" prefWidth="40.0" text="5" />
                            </children>
                         </HBox>
-                        <HBox spacing="3.0">
+                        <HBox>
                            <children>
-                              <CheckBox fx:id="reportCheckBox" mnemonicParsing="false" styleClass="font_size_8" text="Reported" />
+                              <CheckBox fx:id="reportCheckBox" minWidth="-Infinity" mnemonicParsing="false" prefWidth="80.0" text="Reported" />
                               <CheckBox fx:id="showFalseVariantsCheckBox" mnemonicParsing="false" text="False" />
                            </children>
                         </HBox>
