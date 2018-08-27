@@ -24,6 +24,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.*;
@@ -47,6 +48,7 @@ import org.slf4j.Logger;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.logging.Filter;
 import java.util.stream.Collectors;
 
 /**
@@ -59,6 +61,19 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     private APIService apiService;
 
     private CheckBox headerCheckBox;
+
+    @FXML
+    private CheckBox levelACheckBox;
+    @FXML
+    private CheckBox levelBCheckBox;
+    @FXML
+    private CheckBox levelCCheckBox;
+    @FXML
+    private CheckBox levelDCheckBox;
+    @FXML
+    private CheckBox levelECheckBox;
+    @FXML
+    private CheckBox reportCheckBox;
 
     @FXML
     private CheckBox showFalseVariantsCheckBox;
@@ -178,6 +193,48 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         this.variantsController = variantsController;
     }
 
+    private void defaultFilterAction(Map<String, List<Object>> list) {
+        List<Object> filterList;
+        if(list.containsKey("search")) {
+            filterList = list.get("search");
+        } else {
+            filterList = new ArrayList<>();
+            list.put("search", filterList);
+        }
+        if(panel.getCode().equalsIgnoreCase(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
+                panel.getCode().equalsIgnoreCase(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode()) ||
+                panel.getCode().equalsIgnoreCase(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+            if(levelACheckBox.isSelected()) {
+                filterList.add("pathogenicity P");
+            }
+            if(levelBCheckBox.isSelected()) {
+                filterList.add("pathogenicity LP");
+            }
+            if(levelCCheckBox.isSelected()) {
+                filterList.add("pathogenicity US");
+            }
+            if(levelDCheckBox.isSelected()) {
+                filterList.add("pathogenicity LB");
+            }
+            if(levelECheckBox.isSelected()) {
+                filterList.add("pathogenicity B");
+            }
+        } else {
+            if(levelACheckBox.isSelected()) {
+                filterList.add("tier T1");
+            }
+            if(levelBCheckBox.isSelected()) {
+                filterList.add("tier T2");
+            }
+            if(levelCCheckBox.isSelected()) {
+                filterList.add("tier T3");
+            }
+            if(levelDCheckBox.isSelected()) {
+                filterList.add("tier T4");
+            }
+        }
+    }
+
     private void setAccordionContents() {
 
         try {
@@ -202,6 +259,28 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             logger.error("Unknown Error", e);
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
+    }
+
+    public void setCheckBoxFilter() {
+        levelACheckBox.selectedProperty().addListener((ob, ov, nv) -> {
+            if(nv != null) showVariantList(1, 0);
+        });
+
+        levelBCheckBox.selectedProperty().addListener((ob, ov, nv) -> {
+            if(nv != null) showVariantList(1, 0);
+        });
+
+        levelCCheckBox.selectedProperty().addListener((ob, ov, nv) -> {
+            if(nv != null) showVariantList(1, 0);
+        });
+
+        levelDCheckBox.selectedProperty().addListener((ob, ov, nv) -> {
+            if(nv != null) showVariantList(1, 0);
+        });
+
+        levelECheckBox.selectedProperty().addListener((ob, ov, nv) -> {
+            if(nv != null) showVariantList(1, 0);
+        });
     }
 
     @SuppressWarnings("unchecked")
@@ -292,7 +371,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
 
         setTableViewColumn();
-
+        setCheckBoxFilter();
         //foldLeft();
         foldRight();
 
@@ -850,6 +929,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         if(comboBoxItem != null && filterList.containsKey(comboBoxItem.getValue())) {
             list.put("search", filterList.get(comboBoxItem.getValue()).stream().collect(Collectors.toList()));
         }
+        defaultFilterAction(list);
         if(!showFalseVariantsCheckBox.isSelected()) {
             setIsFalseItemToN(list);
         }
@@ -985,17 +1065,21 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     @FXML
     public void excelDownload() {
         Map<String, Object> params = new HashMap<>();
+        Map<String, List<Object>> filterList = new HashMap<>();
+        setFilterItem(filterList);
         params.put("exportFields", getExportFields());
         WorksheetUtil worksheetUtil = new WorksheetUtil();
-        worksheetUtil.exportVariantData("EXCEL", params, this.getMainApp(), sample);
+        worksheetUtil.exportSampleData("EXCEL", filterList, params, this.getMainApp(), sample);
     }
 
     @FXML
     public void csvDownload() {
         Map<String, Object> params = new HashMap<>();
+        Map<String, List<Object>> filterList = new HashMap<>();
+        setFilterItem(filterList);
         params.put("exportFields", getExportFields());
         WorksheetUtil worksheetUtil = new WorksheetUtil();
-        worksheetUtil.exportVariantData("CSV", params, this.getMainApp(), sample);
+        worksheetUtil.exportSampleData("CSV", filterList, params, this.getMainApp(), sample);
     }
 
     private String getExportFields() {
@@ -1102,6 +1186,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         });
 
         column.widthProperty().addListener((ob, ov, nv) -> hBox.setMinWidth(column.getWidth()));
+        column.setResizable(false);
 
         if(size != null) column.setPrefWidth(size);
 
@@ -1275,6 +1360,29 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         TableColumn<VariantAndInterpretationEvidence, String> gene = new TableColumn<>("Gene");
         createTableHeader(gene, "Gene", "gene" ,null, "gene");
         gene.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
+        gene.setCellFactory(column ->
+            new TableCell<VariantAndInterpretationEvidence, String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if(item == null || empty) {
+                        setText(null);
+                        setStyle("");
+                    } else {
+                        if(panel.getVariantFilter() != null
+                                && StringUtils.isNotEmpty(panel.getVariantFilter().getEssentialGenes())) {
+                            if(Arrays.stream(panel.getVariantFilter().getEssentialGenes().split(",")).anyMatch(
+                                    gene -> gene.equalsIgnoreCase(item))) {
+                                setTextFill(Color.RED);
+                            } else {
+                                setTextFill(Color.BLACK);
+                            }
+                        }
+                        setText(item);
+                    }
+                }
+            }
+        );
 
         TableColumn<VariantAndInterpretationEvidence, String> transcriptAccession = new TableColumn<>("Transcript Accession");
         createTableHeader(transcriptAccession, "Transcript Accession", null ,null, "transcriptAccession");
@@ -1343,6 +1451,25 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         TableColumn<VariantAndInterpretationEvidence, Integer> altNum = new TableColumn<>("Alt Count");
         createTableHeader(altNum, "Alt Count", "altReadNum" ,null, "altReadNum");
         altNum.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getReadInfo().getAltReadNum()).asObject());
+        altNum.setCellFactory(column ->
+                new TableCell<VariantAndInterpretationEvidence, Integer>() {
+                    @Override
+                    protected void updateItem(Integer item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if(item == null || empty) {
+                            setText(null);
+                            setStyle("");
+                        } else {
+                            if(item <= 6) {
+                                setTextFill(Color.RED);
+                            } else {
+                                setTextFill(Color.BLACK);
+                            }
+                            setText(item.toString());
+                        }
+                    }
+                }
+        );
 
         TableColumn<VariantAndInterpretationEvidence, String> dbSnpRsId = new TableColumn<>("dbSNP ID");
         createTableHeader(dbSnpRsId, "dbSNP ID", null ,null, "dbSnpRsId");

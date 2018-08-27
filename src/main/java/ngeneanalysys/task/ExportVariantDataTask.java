@@ -47,11 +47,13 @@ public class ExportVariantDataTask extends Task<Void> {
 	/** API Service */
 	private APIService apiService;
 
-	public ExportVariantDataTask(MainApp mainApp, String fileType, File file, Map<String, Object> params, int sampleId) {
+	public ExportVariantDataTask(MainApp mainApp, String fileType, File file, Map<String, List<Object>> filterList,
+								 Map<String, Object> params, int sampleId) {
 		this.fileType = fileType;
 		this.file = file;
 		this.params = params;
 		this.mainApp = mainApp;
+		this.searchParam = filterList;
 		this.sampleId = sampleId;
 		// api service init..
 		apiService = APIService.getInstance();

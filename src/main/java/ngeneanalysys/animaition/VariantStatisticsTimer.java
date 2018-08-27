@@ -56,7 +56,7 @@ public final class VariantStatisticsTimer extends AnimationTimer {
 		gc.setStroke(Color.web("#F6545C"));
 		gc.setTextAlign(TextAlignment.CENTER);
 		gc.setTextBaseline(VPos.CENTER);
-		gc.setFont(Font.font(10));
+		gc.setFont(Font.font(12));
 		// gc2.strokeText("Hello", defaultMargin, defaultMargin);
 		gc.setFill(Color.web("#8D8D8D"));
 		gc.fillText(this.labelText1, this.defaultMargin + (this.outerCircleSize / 2.0),

@@ -21,7 +21,6 @@ import ngeneanalysys.model.paged.PagedVariantAndInterpretationEvidence;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
-import org.apache.commons.lang.WordUtils;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -275,22 +274,6 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         }
     }
 
-    private String returnQCTitle(String value) {
-        if(value.equals("Median_BinCount_CNV_Targets")) {
-            return "Median BinCount";
-        } else if(value.equals("PCT_ExonBases_100X")) {
-            return "PCT ExonBases";
-        } else if(value.equals("Q30_score_read1")) {
-            return "Q30+ Read2";
-        } else if(value.equals("Q30_score_read2")) {
-            return "Q30+ Read1";
-        } else if(value.equals("roi_coverage")) {
-            return "ROI Coverage";
-        }
-
-        return WordUtils.capitalize(value.replaceAll("_", " "));
-    }
-
     private void addQCGrid(SampleQC sampleQC, int col) {
         ColumnConstraints columnConstraints = new ColumnConstraints();
         columnConstraints.setHgrow(Priority.ALWAYS);
@@ -300,7 +283,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         hBox.setStyle(hBox.getStyle() + "-fx-background-color : #8f9fb9;");
         hBox.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         hBox.setAlignment(Pos.CENTER);
-        String title = returnQCTitle(sampleQC.getQcType());
+        String title = ConvertUtil.returnQCTitle(sampleQC.getQcType());
         Label titleLabel = new Label(title);
         titleLabel.setStyle(titleLabel.getStyle() + "-fx-text-fill : #FFF;");
         Label descriptionLabel = new Label();

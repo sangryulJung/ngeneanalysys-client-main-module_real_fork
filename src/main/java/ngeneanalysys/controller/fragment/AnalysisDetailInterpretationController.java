@@ -459,11 +459,8 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                 List<SnpInDelEvidence> interpretationList = new ArrayList<>();
                 interpretationList.addAll(list.stream().filter(item -> "Active".equalsIgnoreCase(item.getStatus())).collect(Collectors.toList()));
 
-                Optional<SnpInDelEvidence> snpInDelEvidenceOptional
-                        = interpretationList.stream().filter(item -> item.getPrimaryEvidence()).findFirst();
-                if (selectedAnalysisResultVariant.getSnpInDel().getExpertTier() != null) {
-                    snpInDelEvidenceOptional.ifPresent(snpInDelEvidence ->
-                            returnTierClass(returnTier(snpInDelEvidence.getEvidenceLevel()), userTierLabel ,2));
+                if (StringUtils.isNotEmpty(selectedAnalysisResultVariant.getSnpInDel().getExpertTier())) {
+                        returnTierClass(returnTier(selectedAnalysisResultVariant.getSnpInDel().getExpertTier()), userTierLabel ,2);
                 }
 
                 if(!interpretationList.isEmpty()) {
@@ -590,6 +587,19 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         return evidenceTableView.getItems().stream().anyMatch(item -> (item.getPrimaryEvidence() != null) ? item.getPrimaryEvidence() : false);
     }
 
+    private String getPrimaryEvidence() {
+        Optional<SnpInDelEvidence> optionalSnpInDelEvidence = evidenceTableView.getItems().stream()
+                .filter(SnpInDelEvidence::getPrimaryEvidence).findFirst();
+
+        String evidenceLevel = "";
+
+        if(optionalSnpInDelEvidence.isPresent()) {
+            evidenceLevel = optionalSnpInDelEvidence.get().getEvidenceLevel();
+        }
+
+        return evidenceLevel;
+    }
+
     @FXML
     public void saveInterpretation() {
         if(evidenceTableView.getItems() != null && !evidenceTableView.getItems().isEmpty()) {
@@ -602,6 +612,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                     response = apiService.post("/analysisResults/snpInDels/"
                             + selectedAnalysisResultVariant.getSnpInDel().getId() + "/evidences", params, null, true);
                     logger.debug(response.getContentString());
+                    selectedAnalysisResultVariant.getSnpInDel().setExpertTier(returnTier(getPrimaryEvidence()));
                     setEvidenceTable();
                     setPastCases();
                 } catch (WebAPIException wae) {

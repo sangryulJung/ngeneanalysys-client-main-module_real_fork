@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import ngeneanalysys.model.SnpInDelEvidence;
+import org.apache.commons.lang.WordUtils;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -128,18 +129,6 @@ public class ConvertUtil {
 		return convertTier;
 	}
 
-	public static String convertButtonId(String tier) {
-		String convertTier = "";
-		if(tier != null) {
-			if (tier.equalsIgnoreCase("T1")) convertTier = "tierOne";
-			else if (tier.equalsIgnoreCase("T2")) convertTier = "tierTwo";
-			else if (tier.equalsIgnoreCase("T3")) convertTier = "tierThree";
-			else if (tier.equalsIgnoreCase("T4")) convertTier = "tierFour";
-		}
-
-		return convertTier;
-	}
-
 	public static <T> Map<String, Object> getMapToModel(T item) {
 		Field[] fields = item.getClass().getDeclaredFields();
 		Map<String, Object> params = new HashMap<>();
@@ -177,5 +166,21 @@ public class ConvertUtil {
 		/*if(aminoAcid.startsWith("p."))
 			aminoAcid = aminoAcid.replaceFirst("p.", "");*/
 		return StringUtils.replaceEach(aminoAcid, pattern1, pattern2);
+	}
+
+	public static String returnQCTitle(String value) {
+		if(value.equals("Median_BinCount_CNV_Targets")) {
+			return "Median BinCount";
+		} else if(value.equals("PCT_ExonBases_100X")) {
+			return "PCT ExonBases";
+		} else if(value.equals("Q30_score_read1")) {
+			return "Q30+ Read2";
+		} else if(value.equals("Q30_score_read2")) {
+			return "Q30+ Read1";
+		} else if(value.equals("roi_coverage")) {
+			return "ROI Coverage";
+		}
+
+		return WordUtils.capitalize(value.replaceAll("_", " "));
 	}
 }

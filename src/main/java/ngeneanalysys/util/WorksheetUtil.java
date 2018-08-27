@@ -57,7 +57,8 @@ public class WorksheetUtil {
 		}
 	}
 
-	public void exportVariantData(String fileType, Map<String, Object> params, MainApp mainApp, SampleView sample){
+	public void exportSampleData(String fileType, Map<String, List<Object>> filterList,
+								 Map<String, Object> params, MainApp mainApp, SampleView sample){
 		try {
 			// Show save file dialog
 			FileChooser fileChooser = new FileChooser();
@@ -74,7 +75,7 @@ public class WorksheetUtil {
 			fileChooser.setTitle("export variants to " + fileType + " format file");
 			File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
 			if (file != null) {
-				Task<Void> task = new ExportVariantDataTask(mainApp, fileType, file, params, sample.getId());
+				Task<Void> task = new ExportVariantDataTask(mainApp, fileType, file, filterList, params, sample.getId());
 				Thread exportDataThread = new Thread(task);
 				WorkProgressController<Void> workProgressController = new WorkProgressController<>(mainApp, "Export variant List", task);
 				FXMLLoader loader = mainApp.load("/layout/fxml/WorkProgress.fxml");
@@ -92,7 +93,7 @@ public class WorksheetUtil {
 		}
 	}
 
-	public void exportVariantData(Map<String, List<Object>> searchParams, Map<String, Object> params, MainApp mainApp){
+	public void exportSampleData(Map<String, List<Object>> searchParams, Map<String, Object> params, MainApp mainApp){
 		try {
 			// Show save file dialog
 			FileChooser fileChooser = new FileChooser();

@@ -11,7 +11,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.Tooltip;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -24,7 +23,6 @@ import ngeneanalysys.model.paged.PagedVariantAndInterpretationEvidence;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
-import org.apache.commons.lang.WordUtils;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -271,10 +269,6 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
                 .collect(Collectors.toList());
     }
 
-    private String returnQCTitle(String value) {
-        return WordUtils.capitalize(value.replaceAll("_", " "));
-    }
-
     private void addQCGrid(SampleQC sampleQC, int col) {
         ColumnConstraints columnConstraints = new ColumnConstraints();
         columnConstraints.setHgrow(Priority.ALWAYS);
@@ -284,7 +278,7 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
         hBox.setStyle(hBox.getStyle() + "-fx-background-color : #8f9fb9;");
         hBox.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         hBox.setAlignment(Pos.CENTER);
-        String title = returnQCTitle(sampleQC.getQcType());
+        String title = ConvertUtil.returnQCTitle(sampleQC.getQcType());
         Label titleLabel = new Label(title);
         titleLabel.setStyle(titleLabel.getStyle() + "-fx-text-fill : #FFF;");
         Label descriptionLabel = new Label();

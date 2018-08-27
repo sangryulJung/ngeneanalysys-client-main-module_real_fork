@@ -696,7 +696,7 @@ public class PastResultsController extends SubPaneController {
 		Map<String, Object> params = new HashMap<>();
 		params.put("timeHourDiff", getTimeHourDiff());
 		WorksheetUtil worksheetUtil = new WorksheetUtil();
-		worksheetUtil.exportVariantData(searchParams, params, this.getMainApp());
+		worksheetUtil.exportSampleData(searchParams, params, this.getMainApp());
 	}
 
 	private int getTimeHourDiff() {
