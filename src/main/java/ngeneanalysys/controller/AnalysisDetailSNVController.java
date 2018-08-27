@@ -1506,82 +1506,102 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000All = new TableColumn<>("1KGP All");
         createTableHeader(g1000All, "1KGP All", null ,null, "g1000All");
         g1000All.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getG1000().getAll())));
+        g1000All.setCellFactory(cell -> new PopTableCell("g1000.all"));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000African = new TableColumn<>("1KGP African");
         createTableHeader(g1000African, "1KGP African", null ,null, "g1000African");
         g1000African.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getG1000().getAfrican())));
+        g1000African.setCellFactory(cell -> new PopTableCell("g1000.african"));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000American = new TableColumn<>("1KGP American");
         createTableHeader(g1000American, "1KGP American", null ,null, "g1000American");
         g1000American.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getG1000().getAmerican())));
+        g1000American.setCellFactory(cell -> new PopTableCell("g1000.american"));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000EastAsian = new TableColumn<>("1KGP East Asian");
         createTableHeader(g1000EastAsian, "1KGP East Asian", null ,null, "g1000EastAsian");
         g1000EastAsian.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getG1000().getEastAsian())));
+        g1000EastAsian.setCellFactory(cell -> new PopTableCell("g1000.eastAsian"));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000European = new TableColumn<>("1KGP European");
         createTableHeader(g1000European, "1KGP European", null ,null, "g1000European");
         g1000European.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getG1000().getEuropean())));
+        g1000European.setCellFactory(cell -> new PopTableCell("g1000.european"));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000SouthAsian = new TableColumn<>("1KGP South Asian");
         createTableHeader(g1000SouthAsian, "1KGP South Asian", null ,null, "g1000SouthAsian");
         g1000SouthAsian.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getG1000().getSouthAsian())));
+        g1000SouthAsian.setCellFactory(cell -> new PopTableCell("g1000.southAsian"));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> espAll = new TableColumn<>("ESP All");
         createTableHeader(espAll, "ESP All", null ,null, "esp6500All");
         espAll.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getEsp6500().getAll())));
+        espAll.setCellFactory(cell -> new PopTableCell("esp6500.all"));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> espaa = new TableColumn<>("ESP African American");
         createTableHeader(espaa, "ESP African American", null ,null, "esp6500aa");
         espaa.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getEsp6500().getAa())));
+        espaa.setCellFactory(cell -> new PopTableCell("esp6500.aa"));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> espea = new TableColumn<>("ESP European American");
         createTableHeader(espea, "ESP European American", null ,null, "esp6500ea");
         espea.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getEsp6500().getEa())));
+        espea.setCellFactory(cell -> new PopTableCell("esp6500.ea"));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> exac = new TableColumn<>("ExAC");
         createTableHeader(exac, "ExAC", null ,null, "exac");
         exac.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getExac())));
+        exac.setCellFactory(cell -> new PopTableCell("exac"));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadAll = new TableColumn<>("gnomAD All");
         createTableHeader(gnomadAll, "gnomAD All", null, null, "gnomADall");
         gnomadAll.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getAll())));
+        gnomadAll.setCellFactory(cell -> new PopTableCell("gnomAD.all"));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadAdmixedAmerican = new TableColumn<>("gnomAD Admixed American");
         createTableHeader(gnomadAdmixedAmerican, "gnomAD Admixed American", null, null, "gnomADadmixedAmerican");
         gnomadAdmixedAmerican.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getAdmixedAmerican())));
+        gnomadAdmixedAmerican.setCellFactory(cell -> new PopTableCell("gnomAD.admixedAmerican"));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadAfricanAfricanAmerican = new TableColumn<>("gnomAD African African American");
         createTableHeader(gnomadAfricanAfricanAmerican, "gnomAD African African American", null, null, "gnomADafricanAfricanAmerican");
         gnomadAfricanAfricanAmerican.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getAfricanAfricanAmerican())));
+        gnomadAfricanAfricanAmerican.setCellFactory(cell -> new PopTableCell("gnomAD.africanAfricanAmerican"));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadEastAsian = new TableColumn<>("gnomAD East Asian");
         createTableHeader(gnomadEastAsian, "gnomAD East Asian", null, null, "gnomADeastAsian");
         gnomadEastAsian.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getAdmixedAmerican())));
+        gnomadEastAsian.setCellFactory(cell -> new PopTableCell("gnomAD.eastAsian"));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadFinnish = new TableColumn<>("gnomAD Finnish");
         createTableHeader(gnomadFinnish, "gnomAD Finnish", null, null, "gnomADfinnish");
         gnomadFinnish.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getFinnish())));
+        gnomadFinnish.setCellFactory(cell -> new PopTableCell("gnomAD.finnish"));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadNonFinnishEuropean = new TableColumn<>("gnomAD Non Finnish European");
         createTableHeader(gnomadNonFinnishEuropean, "gnomAD Non Finnish European", null, null, "gnomADnonFinnishEuropean");
         gnomadNonFinnishEuropean.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getNonFinnishEuropean())));
+        gnomadNonFinnishEuropean.setCellFactory(cell -> new PopTableCell("gnomAD.nonFinnishEuropean"));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadOthers = new TableColumn<>("gnomAD Others");
         createTableHeader(gnomadOthers, "gnomAD Others", null, null, "gnomADothers");
         gnomadOthers.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getOthers())));
+        gnomadOthers.setCellFactory(cell -> new PopTableCell("gnomAD.others"));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadSouthAsian = new TableColumn<>("gnomAD South Asian");
         createTableHeader(gnomadSouthAsian, "gnomAD South Asian", null, null, "gnomADsouthAsian");
         gnomadSouthAsian.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getSouthAsian())));
+        gnomadSouthAsian.setCellFactory(cell -> new PopTableCell("gnomAD.southAsian"));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> koreanReferenceDatabase = new TableColumn<>("Korean Reference Genome Database");
         createTableHeader(koreanReferenceDatabase, "Korean Reference Genome Database", null ,null, "koreanReferenceGenomeDatabase");
         koreanReferenceDatabase.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getKoreanReferenceGenomeDatabase())));
+        koreanReferenceDatabase.setCellFactory(cell -> new PopTableCell("koreanReferenceGenomeDatabase"));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> koreanExomInformationDatabase = new TableColumn<>("Korean Exom Information Database");
         createTableHeader(koreanExomInformationDatabase, "Korean Exom Information Database", null ,null, "koreanExomInformationDatabase");
         koreanExomInformationDatabase.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getKoreanExomInformationDatabase())));
+        koreanExomInformationDatabase.setCellFactory(cell -> new PopTableCell("koreanExomInformationDatabase"));
 
         TableColumn<VariantAndInterpretationEvidence, String> dbSnpCommonId = new TableColumn<>("dbSNP Common ID");
         createTableHeader(dbSnpCommonId, "dbSNP Common ID", null ,null, "dbSnpCommonId");
@@ -1770,6 +1790,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         runColumnAction();
 
     }
+
+
 
     private void compareColumnOrder() {
         mainController.setContentsMaskerPaneVisible(true);
@@ -1966,6 +1988,38 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             checkBox.setSelected(evidence.getCheckItem());
 
             setGraphic(checkBox);
+        }
+    }
+
+    public class PopTableCell extends TableCell<VariantAndInterpretationEvidence, BigDecimal> {
+        String type;
+
+        public PopTableCell(String type) {
+            this.type = type;
+        }
+
+        @Override
+        protected void updateItem(BigDecimal item, boolean empty) {
+            super.updateItem(item, empty);
+            if(item == null || empty) {
+                setText(null);
+                setStyle("");
+            } else {
+                if(StringUtils.isNotEmpty(panel.getVariantFilter().getPopulationFrequencyDBs()) &&
+                        Arrays.stream(panel.getVariantFilter().getPopulationFrequencyDBs().split(",")).anyMatch(db ->
+                                db.equalsIgnoreCase(type)) && item.doubleValue() >=
+                        panel.getVariantFilter().getPopulationFrequency().doubleValue()) {
+                    setTextFill(Color.RED);
+                    setText(item.toString());
+                } else {
+                    if(item.doubleValue() >= 0.01) {
+                        setTextFill(Color.RED);
+                    } else {
+                        setTextFill(Color.BLACK);
+                    }
+                    setText(item.toString());
+                }
+            }
         }
     }
 
