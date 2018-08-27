@@ -256,6 +256,8 @@ public class IGVService {
         long mutectBamFileCount;
         //GATK4 Haplotypecaller Bam related file count
         long hcBamFileCount;
+        // Normal Sample Bam file count
+        long normalBamFileCount;
         // Check whether Mutec2 or HaplotypeCaller Bam file exists.
         try {
             apiService = APIService.getInstance();
@@ -272,10 +274,14 @@ public class IGVService {
             hcBamFileCount = analysisFileList.getResult().stream().filter(f ->
                     f.getName().endsWith("hc.bam") || f.getName().endsWith("hc.bam.bai") ||
                             f.getName().endsWith("hc.bam.tdf")).count();
+            normalBamFileCount = analysisFileList.getResult().stream().filter(f ->
+                    f.getName().endsWith("normal.bam") || f.getName().endsWith("normal.bam.bai") ||
+                            f.getName().endsWith("normal.bam.tdf")).count();
         } catch (Exception e) {
             finalBamFileCount = 0;
             mutectBamFileCount = 0;
             hcBamFileCount = 0;
+            normalBamFileCount = 0;
             logger.error("Fail to get IGV viewing file list", e);
         }
         try {
@@ -285,8 +291,11 @@ public class IGVService {
             String finalBamFileUrl = String.format("http://127.0.0.1:%s/analysisFiles/%s/%s", CommonConstants.HTTP_PROXY_SERVER_PORT, this.sampleId, this.bamFileName + "_final.bam");
             String mutectBamFileUrl = String.format("http://127.0.0.1:%s/analysisFiles/%s/%s", CommonConstants.HTTP_PROXY_SERVER_PORT, this.sampleId, this.bamFileName + "_mutect.bam");
             String hcBamFileUrl = String.format("http://127.0.0.1:%s/analysisFiles/%s/%s", CommonConstants.HTTP_PROXY_SERVER_PORT, this.sampleId, this.bamFileName + "_hc.bam");
+            String normalBamFileUrl = String.format("http://127.0.0.1:%s/analysisFiles/%s/%s", CommonConstants.HTTP_PROXY_SERVER_PORT, this.sampleId, this.bamFileName + "_normal.bam");
             Map<String,Object> params = new HashMap<>();
-            if (finalBamFileCount == 3 && mutectBamFileCount == 3) {
+            if (finalBamFileCount == 3 && mutectBamFileCount == 3 && normalBamFileCount == 3) {
+                params.put("file", mutectBamFileUrl + "," + finalBamFileUrl + "," + normalBamFileUrl);
+            } if (finalBamFileCount == 3 && mutectBamFileCount == 3) {
                 params.put("file", mutectBamFileUrl + "," + finalBamFileUrl);
             } else if (finalBamFileCount == 3 && hcBamFileCount == 3) {
                 params.put("file", hcBamFileUrl + "," + finalBamFileUrl);
