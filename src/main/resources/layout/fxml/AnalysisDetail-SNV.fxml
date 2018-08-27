@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="snvWrapper" prefHeight="380.0" prefWidth="1140.0" style="-fx-background-color: #f2f5fa;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNVController">
+<GridPane fx:id="snvWrapper" prefHeight="380.0" prefWidth="1140.0" style="-fx-background-color: #f2f5fa;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNVController">
    <columnConstraints>
       <ColumnConstraints fillWidth="false" hgrow="NEVER" maxWidth="-Infinity" minWidth="10.0" prefWidth="200.0" />
       <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" prefWidth="0.0" />
@@ -66,16 +66,6 @@
                   <Insets />
                </HBox.margin>
                <children>
-                  <HBox prefHeight="20.0" prefWidth="200.0">
-                     <children>
-                        <CheckBox fx:id="levelACheckBox" mnemonicParsing="false" text="1" />
-                        <CheckBox fx:id="levelBCheckBox" mnemonicParsing="false" text="2" />
-                        <CheckBox fx:id="levelCCheckBox" mnemonicParsing="false" text="3" />
-                        <CheckBox fx:id="levelDCheckBox" mnemonicParsing="false" text="4" />
-                        <CheckBox fx:id="levelECheckBox" mnemonicParsing="false" text="5" />
-                        <CheckBox fx:id="reportCheckBox" mnemonicParsing="false" text="6" />
-                     </children>
-                  </HBox>
                   <VBox prefHeight="175.0" prefWidth="135.0">
                      <children>
                         <Label fx:id="searchCountLabel" alignment="TOP_CENTER" prefHeight="19.0" prefWidth="137.0" style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_15" text="Showing 1794" textFill="#223654">
@@ -116,11 +106,25 @@
                               <Insets top="10.0" />
                            </VBox.margin>
                         </Label>
-                        <CheckBox fx:id="showFalseVariantsCheckBox" mnemonicParsing="false" text="Show False Variants">
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin>
-                        </CheckBox>
+                        <HBox prefHeight="20.0" prefWidth="200.0">
+                           <children>
+                              <CheckBox fx:id="levelACheckBox" mnemonicParsing="false" text="1" />
+                              <CheckBox fx:id="levelBCheckBox" mnemonicParsing="false" text="2" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <CheckBox fx:id="levelCCheckBox" mnemonicParsing="false" text="3" />
+                              <CheckBox fx:id="levelDCheckBox" mnemonicParsing="false" text="4" />
+                              <CheckBox fx:id="levelECheckBox" mnemonicParsing="false" text="5" />
+                           </children>
+                        </HBox>
+                        <HBox spacing="3.0">
+                           <children>
+                              <CheckBox fx:id="reportCheckBox" mnemonicParsing="false" styleClass="font_size_8" text="Reported" />
+                              <CheckBox fx:id="showFalseVariantsCheckBox" mnemonicParsing="false" text="False" />
+                           </children>
+                        </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="135.0">
                            <children>
                               <Button fx:id="changeTierButton" prefHeight="30.0" prefWidth="135.0" styleClass="submitBtn" text="Change the tier">

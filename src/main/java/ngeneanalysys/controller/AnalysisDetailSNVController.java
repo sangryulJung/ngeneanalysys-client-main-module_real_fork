@@ -19,6 +19,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -233,6 +234,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 filterList.add("tier T4");
             }
         }
+        if(reportCheckBox.isSelected()) {
+            filterList.add("includedInReport Y");
+        }
     }
 
     private void setAccordionContents() {
@@ -281,6 +285,10 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         levelECheckBox.selectedProperty().addListener((ob, ov, nv) -> {
             if(nv != null) showVariantList(1, 0);
         });
+
+        reportCheckBox.selectedProperty().addListener((ob, ov, nv) -> {
+            if(nv != null) showVariantList(1, 0);
+        });
     }
 
     @SuppressWarnings("unchecked")
@@ -313,7 +321,20 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
             this.filterList = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("heredFilter");
         }
-
+        if("SOMATIC".equalsIgnoreCase(panel.getAnalysisType())) {
+            levelACheckBox.setText("T1");
+            levelBCheckBox.setText("T2");
+            levelCCheckBox.setText("T3");
+            levelDCheckBox.setText("T4");
+            levelECheckBox.setVisible(false);
+            levelECheckBox.setDisable(true);
+        } else {
+            levelACheckBox.setText("P");
+            levelBCheckBox.setText("LP");
+            levelCCheckBox.setText("US");
+            levelDCheckBox.setText("LB");
+            levelECheckBox.setText("B");
+        }
         eventRegistration();
 
         interpretationLogsTitledPane.setOnMouseClicked(ev -> setAccordionContents());
@@ -1129,7 +1150,13 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         column.setSortable(false);
         if(StringUtils.isNotEmpty(sortName)) {
             //column.getStyleClass().add("sort_icon");
-            label.setOnMouseClicked(e -> sortTable(sortName));
+            label.setOnMouseClicked(e -> {
+                if(e.getButton() == MouseButton.PRIMARY) {
+                    sortTable(sortName);
+                } else if(e.getButton() == MouseButton.SECONDARY) {
+                    column.setEditable(false);
+                }
+            });
         }
         column.setGraphic(label);
 
