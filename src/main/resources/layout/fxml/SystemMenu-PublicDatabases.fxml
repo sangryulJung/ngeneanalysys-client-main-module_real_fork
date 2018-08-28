@@ -93,7 +93,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
                <children>
-                  <Label style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_15" text="Pipeline Information">
+                  <Label  styleClass="font_size_15" text="Pipeline Information">
                      <HBox.margin>
                         <Insets bottom="10.0" />
                      </HBox.margin>
@@ -105,9 +105,9 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="1010.0">
                <children>
-                  <Label style="-fx-font-family: Noto Sans KR Regular;" text="Pipeline version:   " />
+                  <Label  text="Pipeline version:   " />
                   <ComboBox fx:id="versionComboBox" prefWidth="84.0" />
-                  <Label style="-fx-font-family: Noto Sans KR Regular;" text="Release Date: ">
+                  <Label text="Release Date: ">
                      <HBox.margin>
                         <Insets left="20.0" right="10.0" />
                      </HBox.margin>
@@ -120,7 +120,7 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="31.0" prefWidth="1010.0">
                <children>
-                  <Label style="-fx-font-family: Noto Sans KR Regular;" text="Release Note" />
+                  <Label  text="Release Note" />
                </children>
                <padding>
                   <Insets left="10.0" />

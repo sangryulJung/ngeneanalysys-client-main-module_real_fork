@@ -72,28 +72,40 @@
                   <Insets />
                </HBox.margin>
                <children>
-                  <VBox prefHeight="114.0" prefWidth="135.0">
+                  <VBox prefHeight="124.0" prefWidth="135.0">
                      <children>
-                        <Label fx:id="searchCountLabel" alignment="TOP_CENTER" prefHeight="19.0" prefWidth="137.0" style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_15" text="Showing 1794" textFill="#223654">
+                        <Label fx:id="searchCountLabel" alignment="TOP_CENTER" prefHeight="19.0" prefWidth="137.0" text="Showing 1794" textFill="#223654">
                            <VBox.margin>
-                              <Insets top="15.0" />
+                              <Insets top="5.0" />
                            </VBox.margin>
+                           <styleClass>
+                              <String fx:value="font_size_14" />
+                              <String fx:value="bold" />
+                           </styleClass>
                         </Label>
-                        <Label fx:id="totalLabel" alignment="TOP_CENTER" prefHeight="19.0" prefWidth="140.0" style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_15" text="of 1794 variants" textFill="#223654" />
-                        <Label alignment="TOP_CENTER" prefHeight="20.0" prefWidth="143.0" style="-fx-font-family: Noto Sans KR;" styleClass="font_size_12" text="Select filter">
+                        <Label fx:id="totalLabel" alignment="TOP_CENTER" prefHeight="19.0" prefWidth="140.0" text="of 1794 variants" textFill="#223654">
+                           <styleClass>
+                              <String fx:value="font_size_14" />
+                              <String fx:value="bold" />
+                           </styleClass></Label>
+                        <Label alignment="TOP_CENTER" prefHeight="20.0" prefWidth="143.0" text="Select filter">
                            <VBox.margin>
-                              <Insets bottom="5.0" top="15.0" />
+                              <Insets />
                            </VBox.margin>
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
+                           <styleClass>
+                              <String fx:value="font_size_12" />
+                              <String fx:value="regular" />
+                           </styleClass>
                         </Label>
                         <ComboBox fx:id="filterComboBox" minHeight="20.0" prefHeight="20.0" prefWidth="135.0" styleClass="font_size_9">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
                         </ComboBox>
-                        <Button fx:id="filterAddBtn" alignment="BOTTOM_CENTER" mnemonicParsing="false" onAction="#showFilter" prefHeight="16.0" style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_10" text="New filter">
+                        <Button fx:id="filterAddBtn" alignment="BOTTOM_CENTER" mnemonicParsing="false" onAction="#showFilter" prefHeight="16.0" styleClass="font_size_10" text="New filter">
                            <VBox.margin>
                               <Insets top="5.0" />
                            </VBox.margin>
@@ -101,56 +113,89 @@
                               <Insets />
                            </opaqueInsets>
                         </Button>
-                        <Label fx:id="viewAppliedFiltersLabel" alignment="TOP_CENTER" onMouseClicked="#viewAppliedFilters" opacity="0.0" prefHeight="14.0" prefWidth="135.0" style="-fx-cursor: hand; -fx-font-family: Noto Sans KR;" styleClass="font_size_9" text="View filter options">
+                        <Label fx:id="viewAppliedFiltersLabel" alignment="TOP_CENTER" onMouseClicked="#viewAppliedFilters" opacity="0.0" prefHeight="7.0" prefWidth="135.0" style="-fx-cursor: hand;" styleClass="font_size_9" text="View filter options">
                            <VBox.margin>
-                              <Insets bottom="10.0" top="5.0" />
+                              <Insets bottom="5.0" top="5.0" />
                            </VBox.margin>
                         </Label>
                      </children>
                   </VBox>
-                  <VBox alignment="TOP_CENTER" prefHeight="223.0" prefWidth="135.0">
+                  <VBox alignment="TOP_CENTER" prefHeight="207.0" prefWidth="135.0">
                      <children>
-                        <Label alignment="TOP_CENTER" prefHeight="20.0" prefWidth="143.0" style="-fx-font-family: Noto Sans KR;" styleClass="font_size_12" text="Choose your action">
-                           <VBox.margin>
-                              <Insets bottom="7.0" />
-                           </VBox.margin></Label>
-                        <HBox prefHeight="20.0" prefWidth="200.0">
-                           <children>
-                              <CheckBox fx:id="levelACheckBox" minWidth="-Infinity" mnemonicParsing="false" prefHeight="15.0" prefWidth="46.0" style="-fx-font-family: Noto Sans KR;" styleClass="font_size_9" text="1" />
-                              <CheckBox fx:id="levelBCheckBox" minWidth="-Infinity" mnemonicParsing="false" prefWidth="40.0" style="-fx-font-family: Noto Sans KR;" styleClass="font_size_9" text="2" />
-                           </children>
+                        <Label alignment="TOP_CENTER" prefHeight="20.0" prefWidth="143.0" text="Choose your action">
                            <VBox.margin>
                               <Insets bottom="5.0" />
+                           </VBox.margin>
+                           <styleClass>
+                              <String fx:value="font_size_12" />
+                              <String fx:value="regular" />
+                           </styleClass></Label>
+                        <HBox prefHeight="20.0" prefWidth="200.0" styleClass="light">
+                           <children>
+                              <CheckBox fx:id="levelACheckBox" minWidth="-Infinity" mnemonicParsing="false" prefHeight="15.0" prefWidth="46.0" text="1">
+                                 <styleClass>
+                                    <String fx:value="font_size_9" />
+                                    <String fx:value="light" />
+                                 </styleClass></CheckBox>
+                              <CheckBox fx:id="levelBCheckBox" minWidth="-Infinity" mnemonicParsing="false" prefWidth="40.0" text="2">
+                                 <styleClass>
+                                    <String fx:value="font_size_9" />
+                                    <String fx:value="light" />
+                                 </styleClass></CheckBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="2.0" />
                            </VBox.margin>
                         </HBox>
                         <HBox prefHeight="38.0" prefWidth="135.0">
                            <children>
-                              <CheckBox fx:id="levelCCheckBox" minWidth="-Infinity" mnemonicParsing="false" prefHeight="20.0" prefWidth="46.0" style="-fx-font-family: Noto Sans KR;" styleClass="font_size_9" text="3" />
-                              <CheckBox fx:id="levelDCheckBox" minWidth="-Infinity" mnemonicParsing="false" prefHeight="20.0" prefWidth="49.0" style="-fx-font-family: Noto Sans KR;" styleClass="font_size_9" text="4" />
-                              <CheckBox fx:id="levelECheckBox" minWidth="-Infinity" mnemonicParsing="false" prefWidth="40.0" style="-fx-font-family: Noto Sans KR;" styleClass="font_size_9" text="5">
+                              <CheckBox fx:id="levelCCheckBox" minWidth="-Infinity" mnemonicParsing="false" prefHeight="20.0" prefWidth="46.0" text="3">
+                                 <styleClass>
+                                    <String fx:value="font_size_9" />
+                                    <String fx:value="light" />
+                                 </styleClass></CheckBox>
+                              <CheckBox fx:id="levelDCheckBox" minWidth="-Infinity" mnemonicParsing="false" prefHeight="20.0" prefWidth="49.0" text="4">
+                                 <styleClass>
+                                    <String fx:value="font_size_9" />
+                                    <String fx:value="light" />
+                                 </styleClass></CheckBox>
+                              <CheckBox fx:id="levelECheckBox" minWidth="-Infinity" mnemonicParsing="false" prefWidth="40.0" text="5">
                                  <HBox.margin>
                                     <Insets />
-                                 </HBox.margin></CheckBox>
+                                 </HBox.margin>
+                                 <styleClass>
+                                    <String fx:value="font_size_9" />
+                                    <String fx:value="light" />
+                                 </styleClass></CheckBox>
                            </children>
                            <VBox.margin>
-                              <Insets bottom="5.0" />
+                              <Insets bottom="2.0" />
                            </VBox.margin>
                         </HBox>
                         <HBox>
                            <children>
-                              <CheckBox fx:id="reportCheckBox" minWidth="-Infinity" mnemonicParsing="false" prefHeight="15.0" prefWidth="69.0" style="-fx-font-family: Noto Sans KR;" styleClass="font_size_9" text="Report" />
-                              <CheckBox fx:id="showFalseVariantsCheckBox" mnemonicParsing="false" style="-fx-font-family: Noto Sans KR;" styleClass="font_size_9" text="False" />
+                              <CheckBox fx:id="reportCheckBox" minWidth="-Infinity" mnemonicParsing="false" prefHeight="15.0" prefWidth="69.0" text="Report">
+                                 <styleClass>
+                                    <String fx:value="font_size_9" />
+                                    <String fx:value="light" />
+                                 </styleClass></CheckBox>
+                              <CheckBox fx:id="showFalseVariantsCheckBox" mnemonicParsing="false" text="False">
+                                 <styleClass>
+                                    <String fx:value="font_size_9" />
+                                    <String fx:value="light" />
+                                 </styleClass></CheckBox>
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="135.0">
                            <children>
-                              <Button fx:id="changeTierButton" prefHeight="17.0" prefWidth="135.0" text="Change the tier">
+                              <Button fx:id="changeTierButton" prefHeight="15.0" prefWidth="135.0" text="Change the tier">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
                                  <styleClass>
                                     <String fx:value="submitBtn" />
                                     <String fx:value="font_size_9" />
+                                    <String fx:value="light" />
                                  </styleClass>
                               </Button>
                            </children>
@@ -160,13 +205,14 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="200.0">
                            <children>
-                              <Button fx:id="addToReportButton" prefHeight="17.0" prefWidth="135.0" text="Add to report">
+                              <Button fx:id="addToReportButton" prefHeight="15.0" prefWidth="135.0" text="Add to report">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
                                  <styleClass>
                                     <String fx:value="submitBtn" />
                                     <String fx:value="font_size_9" />
+                                    <String fx:value="light" />
                                  </styleClass>
                               </Button>
                            </children>
@@ -176,13 +222,31 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="200.0">
                            <children>
-                              <Button fx:id="showIGVButton" prefHeight="17.0" prefWidth="135.0" text="Show with IGV">
+                              <Button fx:id="showIGVButton" prefHeight="15.0" prefWidth="135.0" text="Show with IGV">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
                                  <styleClass>
                                     <String fx:value="submitBtn" />
                                     <String fx:value="font_size_9" />
+                                    <String fx:value="light" />
+                                 </styleClass>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="2.0" top="2.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox prefHeight="26.0" prefWidth="135.0">
+                           <children>
+                              <Button fx:id="falsePositiveButton" prefHeight="15.0" prefWidth="135.0" text="Set to false">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                                 <styleClass>
+                                    <String fx:value="submitBtn" />
+                                    <String fx:value="font_size_9" />
+                                    <String fx:value="light" />
                                  </styleClass>
                               </Button>
                            </children>
@@ -192,29 +256,17 @@
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Button fx:id="falsePositiveButton" prefHeight="17.0" prefWidth="135.0" text="Set to false">
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
-                                 <styleClass>
-                                    <String fx:value="submitBtn" />
-                                    <String fx:value="font_size_9" />
-                                 </styleClass>
-                              </Button>
-                           </children>
-                           <VBox.margin>
-                              <Insets bottom="2.0" top="2.0" />
-                           </VBox.margin>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Label prefWidth="80.0" styleClass="font_size_9" text="Download a file">
+                              <Label prefWidth="80.0" text="Download a file">
                                  <font>
                                     <Font size="10.0" />
                                  </font>
                                  <HBox.margin>
                                     <Insets left="10.0" />
                                  </HBox.margin>
+                                 <styleClass>
+                                    <String fx:value="font_size_9" />
+                                    <String fx:value="light" />
+                                 </styleClass>
                               </Label>
                               <Label id="excel_download_image" onMouseClicked="#excelDownload">
                                  <HBox.margin>
@@ -227,6 +279,9 @@
                                  </HBox.margin>
                               </Label>
                            </children>
+                           <VBox.margin>
+                              <Insets top="3.0" />
+                           </VBox.margin>
                         </HBox>
                      </children>
                      <opaqueInsets>
@@ -250,11 +305,11 @@
                <children>
                   <Accordion fx:id="overviewAccordion">
                     <panes>
-                      <TitledPane fx:id="interpretationTitledPane" animated="false" style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_15" text="Interpretation" />
-                      <TitledPane fx:id="clinicalSignificantTitledPane" animated="false" maxWidth="-Infinity" style="-fx-font-family: Noto Sans KR;" styleClass="font_size_15" text="Clinical Significant" />
-                      <TitledPane fx:id="variantDetailTitledPane" animated="false" maxWidth="-Infinity" style="-fx-font-family: Noto Sans KR;" styleClass="font_size_15" text="Variant Detail" />
-                        <TitledPane fx:id="statisticsTitledPane" animated="false" maxWidth="-Infinity" prefHeight="222.0" prefWidth="870.0" style="-fx-font-family: Noto Sans KR;" styleClass="font_size_15" text="Statistics" />
-                        <TitledPane fx:id="interpretationLogsTitledPane" animated="false" maxWidth="-Infinity" style="-fx-font-family: Noto Sans KR;" styleClass="font_size_15" text="Interpretation Log" />
+                      <TitledPane fx:id="interpretationTitledPane" animated="false" styleClass="font_size_15" text="Interpretation" />
+                      <TitledPane fx:id="clinicalSignificantTitledPane" animated="false" maxWidth="-Infinity" styleClass="font_size_15" text="Clinical Significant" />
+                      <TitledPane fx:id="variantDetailTitledPane" animated="false" maxWidth="-Infinity" styleClass="font_size_15" text="Variant Detail" />
+                        <TitledPane fx:id="statisticsTitledPane" animated="false" maxWidth="-Infinity" prefHeight="222.0" prefWidth="870.0" styleClass="font_size_15" text="Statistics" />
+                        <TitledPane fx:id="interpretationLogsTitledPane" animated="false" maxWidth="-Infinity" styleClass="font_size_15" text="Interpretation Log" />
                     </panes>
                   </Accordion>
                </children>

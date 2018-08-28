@@ -93,8 +93,10 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
         if(snvLabel != null) {
             if (StringUtils.isNotEmpty(text)) {
                 snvLabel.setText("SNV/Indel : " + text);
+                snvLabel.getStyleClass().add("bold");
             } else {
                 snvLabel.setText("SNV/Indel");
+                snvLabel.getStyleClass().add("bold");
             }
         }
     }
@@ -311,6 +313,7 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
                     if (!currentShowFrameId.equals(detailContents.getCenter().getId())) {
                         if (currentShowFrameId.equals("snvWrapper") && !detailContents.getCenter().getId().equals("snvWrapper")) {
                             snvLabel.setText("SNV/Indel");
+                            snvLabel.getStyleClass().add("bold");
                         } else if (!currentShowFrameId.equals("snvWrapper") && detailContents.getCenter().getId().equals("snvWrapper")) {
                             snvController.setSNVTabName();
                         }

@@ -1,26 +1,41 @@
 @font-face {
-	src: url("../font/NotoSansKR-Light.otf"),
-	 url("../font/NotoSansKR-Bold.otf"),
-	 url("../font/NotoSansKR-Medium.otf"),
-	 url("../font/NotoSansKR-Regular.otf"),
-	 url("../font/NotoSansKR-DemiLight.otf"),
-	 url("../font/NotoSansCJKkr-Bold.otf"),
-	 url("../font/NotoSansCJKkr-Regular.otf"),
-	 url("../font/NotoSansCJKkr-DemiLight.otf"),	 
-	 url("../font/NanumSquareB.ttf"),
-	 url("../font/NanumSquareR.ttf"),
-	 url("../font/NanumSquareR.ttf");	 
+	font-family: "Noto Sans KR Light";
+	src: url("../font/NotoSansKR-Light.otf");	 
+}
+
+@font-face {
+	font-family: "Noto Sans KR Bold";
+	src: url("../font/NotoSansKR-Bold.otf");	 
+}
+
+@font-face {
+	font-family: "Noto Sans KR Regular";
+	src: url("../font/NotoSansKR-Regular.otf");	 
+}
+
+@font-face {
+	font-family: "Noto Sans KR Medium";
+	src: url("../font/NotoSansKR-Medium.otf");	 
 }
 
 /** 기본 폰트 설정 */
-* {
-	-fx-font-family: "Noto Sans KR Light";
-	/*-fx-font-family: "Noto Sans CJK KR Regular";*/
-	/*-fx-font-family: "Noto Sans KR Regular";*/
-    /*-fx-font-family: "나눔스퀘어 Bold";*/
-    /*-fx-font-family: "나눔스퀘어";*/
-	/*-fx-focus-traversable: false;*/
+.root{
+	-fx-font: 13px "Noto Sans KR Light";
 }
+
+.bold{
+	-fx-font-family: "Noto Sans KR Bold";
+}
+
+.regular{
+	-fx-font-family: "Noto Sans KR Regular";
+}
+
+.light{
+	-fx-font-family: "Noto Sans KR Light";
+}
+
+
 
 Button {
 	-fx-cursor:hand;
@@ -49,6 +64,7 @@ Button {
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
 }
+
 
 .text-field, .combo-box, .choice-box, .date-picker {
 	-fx-background-color:#fff;
@@ -441,6 +457,7 @@ Button {
  	-fx-border-width:0;
  	-fx-padding:0;
  	-fx-table-cell-border-color: transparent;
+ 	-fx-font-family: "Noto Sans KR Medium";
 }
 
 .table-view .column-header-background .nested-column-header .label{
@@ -459,10 +476,16 @@ Button {
 	-fx-background-color: #ffffff;
 	-fx-border-width : 0 0 0.5 0;
 	-fx-border-color:#000000;
-	-fx-font-family:"Noto Sans KR Bold";
 }
 
 .table-row-cell {
+	-fx-background-insets:0;
+	-fx-background-color: -fx-table-cell-border-color, #FFFFFF;
+    -fx-border-width : 0;
+    -fx-font-size : 13;
+}
+
+.table-row-cell:odd{
 	-fx-background-insets:0;
 	-fx-background-color: -fx-table-cell-border-color, #FFFFFF;
     -fx-border-width : 0;
@@ -479,8 +502,8 @@ Button {
 
 .table-row-cell:selected {
     -fx-table-cell-border-color: transparent;
-	-fx-background-color : #F2F5FA;
-	-fx-text-background-color:#656565;
+	-fx-background-color : #005797;
+	-fx-text-background-color:#ffffff;
 }
 
 .table-view .table-cell .label {
@@ -1638,7 +1661,6 @@ Button {
 	-fx-text-fill:#223654;
 	-fx-font-size:18; 
 	-fx-font-weight:bold;
-	-fx-font-family: Noto Sans KR Bold;
 }
 
 .no_selected_sw_tier {
@@ -1763,7 +1785,7 @@ Button {
 }
 
 .font_Sans_Regular {
-    -fx-font-family : "Noto Sans CJK KR Regular";
+    -fx-font-family : "Noto Sans KR";
 }
 
 .submitBtn {

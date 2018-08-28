@@ -28,7 +28,7 @@
             <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" percentHeight="0.0" prefHeight="10.0" vgrow="SOMETIMES" />
 			</rowConstraints>
 			<children>
-				<Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_14" text="Run">
+				<Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="font_size_14" text="Run">
 					<GridPane.margin>
 						<Insets left="10.0" />
 					</GridPane.margin>
@@ -52,7 +52,7 @@
 						<Insets right="20.0" />
 					</padding>
 				</HBox>
-				<Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="109.0" style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_13" text="Sequencer" GridPane.columnIndex="2">
+				<Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="109.0"  styleClass="font_size_13" text="Sequencer" GridPane.columnIndex="2">
 					<GridPane.margin>
 						<Insets right="20.0" />
 					</GridPane.margin>

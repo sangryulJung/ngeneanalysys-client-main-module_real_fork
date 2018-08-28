@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
@@ -16,7 +23,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="mainGridPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="700.0" minWidth="1280.0" prefHeight="700.0" prefWidth="1280.0" style="-fx-background-color: white;" styleClass="layoutGrid" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.MainController">
+<GridPane fx:id="mainGridPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="700.0" minWidth="1280.0" prefHeight="700.0" prefWidth="1280.0" style="-fx-background-color: white;" styleClass="layoutGrid" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.MainController">
    <rowConstraints>
       <RowConstraints maxHeight="65.0" minHeight="65.0" prefHeight="65.0" vgrow="ALWAYS" />
       <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="ALWAYS" />
@@ -41,14 +48,14 @@
                         <Insets right="5.0" />
                      </HBox.margin>
                      <children>
-                        <Label fx:id="dashBoardBtn" maxHeight="1.7976931348623157E308" style="-fx-font-family: Noto Sans KR Bold;" text="DASHBOARD" />
-                        <Label fx:id="resultsBtn" maxHeight="1.7976931348623157E308" style="-fx-font-family: Noto Sans KR Bold;" text="RESULTS" />
+                        <Label fx:id="dashBoardBtn" maxHeight="1.7976931348623157E308" styleClass="bold" text="DASHBOARD" />
+                        <Label fx:id="resultsBtn" maxHeight="1.7976931348623157E308" styleClass="bold" text="RESULTS" />
                         <StackPane fx:id="sampleListStackPane" prefHeight="150.0" prefWidth="200.0">
                            <children>
-                              <Label fx:id="sampleListLabel" maxHeight="60.0" maxWidth="100.0" minHeight="60.0" minWidth="100.0" prefHeight="60.0" prefWidth="100.0" style="-fx-background-color: white; -fx-font-family: Noto Sans KR Bold;" text="SAMPLES" />
+                              <Label fx:id="sampleListLabel" maxHeight="60.0" maxWidth="100.0" minHeight="60.0" minWidth="100.0" prefHeight="60.0" prefWidth="100.0" style="-fx-background-color: white;" styleClass="bold" text="SAMPLES" />
                            </children>
                         </StackPane>
-                        <Label fx:id="managerBtn" maxHeight="1.7976931348623157E308" style="-fx-font-family: Noto Sans KR Bold;" text="MANAGER" visible="false" />
+                        <Label fx:id="managerBtn" maxHeight="1.7976931348623157E308" text="MANAGER" visible="false" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="238.0" styleClass="bg_main_header_right2" HBox.hgrow="NEVER">
@@ -119,7 +126,7 @@
       </HBox>
       <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
          <children>
-            <Label alignment="CENTER_RIGHT" prefHeight="40.0" style="-fx-font-family: Noto Sans KR Bold;" text="NGeneBio" textAlignment="RIGHT" textFill="WHITE">
+            <Label alignment="CENTER_RIGHT" prefHeight="40.0" text="NGeneBio" textAlignment="RIGHT" textFill="WHITE">
                <font>
                   <Font size="11.0" />
                </font>

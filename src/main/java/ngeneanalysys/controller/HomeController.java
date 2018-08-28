@@ -150,12 +150,12 @@ public class HomeController extends SubPaneController{
 
     @FXML
     public void newAnalysisMouseEnter() {
-    	buttonUpload.setStyle("-fx-background-image:url('layout/images/renewal/plus-symbol-on.png'); -fx-font-family: \"Noto Sans KR Bold\"");
+    	buttonUpload.setStyle("-fx-background-image:url('layout/images/renewal/plus-symbol-on.png');");
     }
     
     @FXML
     public void newAnalysisMouseExit() {
-    	buttonUpload.setStyle("-fx-background-image:url('layout/images/renewal/plus-symbol.png'); -fx-font-family: \"Noto Sans KR Bold\"");
+    	buttonUpload.setStyle("-fx-background-image:url('layout/images/renewal/plus-symbol.png');");
     }
 
     private void initRunListLayout() {
@@ -409,6 +409,7 @@ public class HomeController extends SubPaneController{
             runName.setPrefHeight(16);
             runName.setMinWidth(190);
             runName.setPrefWidth(190);
+            runName.getStyleClass().add("bold");
             statusLabel = new Label();
             statusLabel.setMinWidth(17);
             statusLabel.setPrefWidth(17);

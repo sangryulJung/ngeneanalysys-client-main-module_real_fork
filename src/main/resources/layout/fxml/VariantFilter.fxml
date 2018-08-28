@@ -61,7 +61,7 @@
                         <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="Variant Type" GridPane.rowIndex="5" />
+                        <Label  text="Variant Type" GridPane.rowIndex="5" />
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                            <children>
                               <CheckBox fx:id="snvCheckBox" mnemonicParsing="false" text="SNV" />

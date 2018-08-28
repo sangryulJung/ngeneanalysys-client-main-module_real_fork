@@ -196,7 +196,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                             Map<String, String> item = (Map<String, String>) variableList.get("conclusions");
                             conclusions.setText(item.get("displayName"));
                             sortedKeyList.remove("conclusions");
-                            conclusions.setStyle("-fx-font-family: \"Noto Sans KR Bold\"");
+                            //conclusions.setStyle("-fx-font-family: \"Noto Sans KR Bold\"");
                         }
 
 

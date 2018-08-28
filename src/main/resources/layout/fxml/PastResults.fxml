@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
@@ -15,7 +20,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane fx:id="experimentPastResultsWrapper" prefHeight="555.0" prefWidth="1200.0" styleClass="background_white" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.PastResultsController">
+<GridPane fx:id="experimentPastResultsWrapper" prefHeight="555.0" prefWidth="1200.0" styleClass="background_white" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.PastResultsController">
    <columnConstraints>
       <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
       <ColumnConstraints prefWidth="350.0" />
@@ -36,13 +41,14 @@
       <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
             <Label id="results_image_icon" />
-            <Label alignment="TOP_LEFT" style="-fx-font-family: Noto Sans KR Bold;" text="RESULTS">
+            <Label alignment="TOP_LEFT" text="RESULTS">
                <HBox.margin>
-                  <Insets top="2.0" />
+                  <Insets top="-2.0" />
                </HBox.margin>
                <styleClass>
                   <String fx:value="font_gray" />
                   <String fx:value="font_size_18" />
+                  <String fx:value="bold" />
                </styleClass></Label>
          </children>
       </HBox>
@@ -62,10 +68,26 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="header" text="Run" />
-            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="header" text="Sequencer" GridPane.columnIndex="1" />
-            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="header" text="Start Date" GridPane.columnIndex="2" />
-            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="header" text="Finished Date" GridPane.columnIndex="3" />
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Run">
+               <styleClass>
+                  <String fx:value="header" />
+                  <String fx:value="regular" />
+               </styleClass></Label>
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Sequencer" GridPane.columnIndex="1">
+               <styleClass>
+                  <String fx:value="header" />
+                  <String fx:value="regular" />
+               </styleClass></Label>
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Start Date" GridPane.columnIndex="2">
+               <styleClass>
+                  <String fx:value="header" />
+                  <String fx:value="regular" />
+               </styleClass></Label>
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Finished Date" GridPane.columnIndex="3">
+               <styleClass>
+                  <String fx:value="header" />
+                  <String fx:value="regular" />
+               </styleClass></Label>
          </children>
       </GridPane>
       <ScrollPane fx:id="mainContentsScrollPane" maxHeight="1.7976931348623157E308" maxWidth="870.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3">
@@ -113,7 +135,7 @@
                <tooltip>
                   <Tooltip text="Run Count" />
                </tooltip></Label>
-            <Label fx:id="totalCountLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" text="100" visible="false">
+            <Label fx:id="totalCountLabel" text="100" visible="false">
                <HBox.margin>
                   <Insets left="3.0" right="10.0" />
                </HBox.margin></Label>
@@ -124,7 +146,7 @@
                <tooltip>
                   <Tooltip text="Queued Sample Count" />
                </tooltip></Label>
-            <Label fx:id="queueLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" text="10" visible="false">
+            <Label fx:id="queueLabel" text="10" visible="false">
                <HBox.margin>
                   <Insets left="3.0" right="10.0" />
                </HBox.margin></Label>
@@ -135,7 +157,7 @@
                <tooltip>
                   <Tooltip text="Running Sample Count" />
                </tooltip></Label>
-            <Label fx:id="runningLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" text="10" visible="false">
+            <Label fx:id="runningLabel" text="10" visible="false">
                <HBox.margin>
                   <Insets left="3.0" right="10.0" />
                </HBox.margin></Label>
@@ -149,7 +171,7 @@
                <tooltip>
                   <Tooltip text="Completed Sample Count" />
                </tooltip></Label>
-            <Label fx:id="completeLabel" style="-fx-font-family: Noto Sans CJK KR Regular;" text="10" visible="false">
+            <Label fx:id="completeLabel" text="10" visible="false">
                <HBox.margin>
                   <Insets left="3.0" right="10.0" />
                </HBox.margin></Label>
@@ -157,7 +179,7 @@
                <tooltip>
                   <Tooltip text="Failed Sample Count" />
                </tooltip></Label>
-            <Label fx:id="failLabel" prefHeight="19.0" prefWidth="0.0" style="-fx-font-family: Noto Sans CJK KR Regular;" text="1" visible="false">
+            <Label fx:id="failLabel" prefHeight="19.0" prefWidth="0.0" text="1" visible="false">
                <HBox.margin>
                   <Insets left="3.0" />
                </HBox.margin></Label>
@@ -171,13 +193,14 @@
                   <Insets right="5.0" />
                </HBox.margin>
             </Label>
-            <Label style="-fx-font-family: Noto Sans KR Bold;" text="SEARCH">
+            <Label text="SEARCH">
                <styleClass>
                   <String fx:value="font_size_18" />
                   <String fx:value="font_gray" />
+                  <String fx:value="bold" />
                </styleClass>
                <HBox.margin>
-                  <Insets top="1.0" />
+                  <Insets top="-2.0" />
                </HBox.margin>
             </Label>
          </children>

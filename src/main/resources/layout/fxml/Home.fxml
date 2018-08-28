@@ -52,7 +52,7 @@
          <content>
             <HBox fx:id="runListHBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="200.0">
                <children>
-                  <Button fx:id="buttonUpload" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showUploadFASTQ" onMouseEntered="#newAnalysisMouseEnter" onMouseExited="#newAnalysisMouseExit" prefHeight="220.0" prefWidth="200.0" style="-fx-font-family: Noto Sans KR Bold;" styleClass="new_analysis_button" text="New Analysis">
+                  <Button fx:id="buttonUpload" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showUploadFASTQ" onMouseEntered="#newAnalysisMouseEnter" onMouseExited="#newAnalysisMouseExit" prefHeight="220.0" prefWidth="200.0" styleClass="new_analysis_button" text="New Analysis">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
@@ -71,10 +71,11 @@
                   <Insets right="5.0" />
                </HBox.margin>
             </Label>
-            <Label style="-fx-font-family: Noto Sans KR;" text="LATEST ANALYSIS">
+            <Label text="LATEST ANALYSIS">
                <styleClass>
                   <String fx:value="font_size_18" />
                   <String fx:value="font_gray" />
+                  <String fx:value="bold" />
                </styleClass>
             </Label>
          </children>
@@ -86,7 +87,7 @@
                   <Insets left="-1.0" top="-2.0" />
                </padding>
             </Label>
-            <Label style="-fx-font-family: Noto Sans CJK KR Regular;" styleClass="font_size_11" text="Queued">
+            <Label styleClass="font_size_11" text="Queued">
                <HBox.margin>
                   <Insets left="3.0" right="5.0" />
                </HBox.margin>
@@ -96,7 +97,7 @@
                   <Insets top="-1.0" />
                </padding>
             </Label>
-            <Label style="-fx-font-family: Noto Sans CJK KR Regular;" styleClass="font_size_11" text="Running">
+            <Label styleClass="font_size_11" text="Running">
                <HBox.margin>
                   <Insets left="3.0" right="5.0" />
                </HBox.margin>
@@ -106,7 +107,7 @@
                   <Insets left="-1.0" top="-1.0" />
                </padding>
             </Label>
-            <Label style="-fx-font-family: Noto Sans CJK KR Regular;" styleClass="font_size_11" text="Complete">
+            <Label styleClass="font_size_11" text="Complete">
                <HBox.margin>
                   <Insets left="3.0" right="5.0" />
                </HBox.margin>
@@ -116,7 +117,7 @@
                   <Insets top="-1.0" />
                </padding>
             </Label>
-            <Label style="-fx-font-family: Noto Sans CJK KR Regular;" styleClass="font_size_11" text="Failed">
+            <Label styleClass="font_size_11" text="Failed">
                <HBox.margin>
                   <Insets left="3.0" right="5.0" />
                </HBox.margin>
@@ -199,10 +200,11 @@
                   <Insets right="5.0" />
                </HBox.margin>
             </Label>
-            <Label style="-fx-font-family: Noto Sans KR;" text="SYSTEM USAGE">
+            <Label style="-fx-font-family: ;" text="SYSTEM USAGE">
                <styleClass>
                   <String fx:value="font_size_18" />
                   <String fx:value="font_gray" />
+                  <String fx:value="bold" />
                </styleClass>
             </Label>
          </children>
@@ -214,13 +216,14 @@
                   <Insets right="5.0" />
                </HBox.margin>
             </Label>
-            <Label prefHeight="23.0" prefWidth="441.0" style="-fx-font-family: Noto Sans KR;" text="NEWS &amp; TIPS">
+            <Label prefHeight="23.0" prefWidth="441.0" text="NEWS &amp; TIPS">
                <padding>
                   <Insets right="10.0" />
                </padding>
                <styleClass>
                   <String fx:value="font_size_18" />
                   <String fx:value="font_gray" />
+                  <String fx:value="bold" />
                </styleClass>
             </Label>
          </children>
@@ -232,10 +235,11 @@
                   <Insets right="5.0" />
                </HBox.margin>
             </Label>
-            <Label style="-fx-font-family: Noto Sans KR Bold;" text="TOOLS &amp; DATABASES">
+            <Label text="TOOLS &amp; DATABASES">
                <styleClass>
                   <String fx:value="font_size_18" />
                   <String fx:value="font_gray" />
+                  <String fx:value="bold" />
                </styleClass>
             </Label>
          </children>
