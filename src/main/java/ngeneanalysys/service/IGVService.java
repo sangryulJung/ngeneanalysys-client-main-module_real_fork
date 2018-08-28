@@ -295,7 +295,7 @@ public class IGVService {
             Map<String,Object> params = new HashMap<>();
             if (finalBamFileCount == 3 && mutectBamFileCount == 3 && normalBamFileCount == 3) {
                 params.put("file", mutectBamFileUrl + "," + finalBamFileUrl + "," + normalBamFileUrl);
-            } if (finalBamFileCount == 3 && mutectBamFileCount == 3) {
+            } else if (finalBamFileCount == 3 && mutectBamFileCount == 3) {
                 params.put("file", mutectBamFileUrl + "," + finalBamFileUrl);
             } else if (finalBamFileCount == 3 && hcBamFileCount == 3) {
                 params.put("file", hcBamFileUrl + "," + finalBamFileUrl);
