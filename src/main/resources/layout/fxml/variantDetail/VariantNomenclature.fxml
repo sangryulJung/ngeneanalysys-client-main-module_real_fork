@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
@@ -13,7 +18,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="identificationArea" alignment="TOP_CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="272.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailVariantNomenclatureController">
+<VBox fx:id="identificationArea" alignment="TOP_CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="272.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailVariantNomenclatureController">
    <children>
       <HBox alignment="TOP_CENTER">
          <children>
@@ -150,7 +155,7 @@
             <Insets top="6.0" />
          </VBox.margin>
       </VBox>
-      <ScrollPane fx:id="transcriptDetailScrollBox" focusTraversable="false" prefHeight="90.0" prefWidth="260.0">
+      <ScrollPane fx:id="transcriptDetailScrollBox" focusTraversable="false" prefHeight="90.0" prefWidth="283.0">
          <content>
             <GridPane fx:id="transcriptDetailGrid" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="260.0">
                <columnConstraints>
@@ -172,8 +177,8 @@
                   </Label>
                   <TextField fx:id="geneSymbolTextField" editable="false" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1">
                      <styleClass>
+                        <String fx:value="txt_gray_656565" />
                         <String fx:value="font_size_10" />
-                        <String fx:value="txt_black" />
                      </styleClass>
                   </TextField>
                   <Label maxWidth="1.7976931348623157E308" text="HGVS Nucleotide" GridPane.rowIndex="1">
@@ -185,9 +190,8 @@
                   </Label>
                   <TextField fx:id="hgvscTextField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <styleClass>
-                        <String fx:value="bg_efefef" />
+                        <String fx:value="txt_gray_656565" />
                         <String fx:value="font_size_10" />
-                        <String fx:value="txt_black" />
                      </styleClass>
                   </TextField>
                   <Label maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="15.0" text="HGVS Protein" GridPane.rowIndex="2">
@@ -199,7 +203,7 @@
                   <TextField fx:id="hgvspTextField" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <styleClass>
                         <String fx:value="font_size_10" />
-                        <String fx:value="txt_black" />
+                        <String fx:value="txt_gray_656565" />
                      </styleClass>
                   </TextField>
                   <Label maxWidth="1.7976931348623157E308" prefWidth="87.0" text="Genome(GRCh37)" GridPane.rowIndex="3">
@@ -211,9 +215,8 @@
                   </Label>
                   <TextField fx:id="grch37TextField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <styleClass>
-                        <String fx:value="bg_efefef" />
+                        <String fx:value="txt_gray_656565" />
                         <String fx:value="font_size_10" />
-                        <String fx:value="txt_black" />
                      </styleClass>
                   </TextField>
                </children>
