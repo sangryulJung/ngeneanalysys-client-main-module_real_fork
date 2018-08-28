@@ -1311,12 +1311,12 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                         LibraryTypeCode.HYBRIDIZATION_CAPTURE.getDescription().equalsIgnoreCase(panel.getLibraryType()))) {
             TableColumn<VariantAndInterpretationEvidence, String> falsePositive = new TableColumn<>("False");
             createTableHeader(falsePositive, "False", "isFalse",55., "falseReason");
-            falsePositive.setStyle(falsePositive.getStyle() + "-fx-alignment : center;");
             falsePositive.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getIsFalse()));
             falsePositive.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
                 @Override
                 public void updateItem(String item, boolean empty) {
                     Label label = null;
+                    getStyleClass().add(centerStyleClass);
                     if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
                         VariantAndInterpretationEvidence variant = getTableView().getItems().get(getIndex());
                         label = new Label("F");
@@ -1400,7 +1400,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         });
 
         TableColumn<VariantAndInterpretationEvidence, String> gene = new TableColumn<>("Gene");
-        gene.setStyle(gene.getStyle() + "-fx-alignment : center;");
         createTableHeader(gene, "Gene", "gene" ,null, "gene");
         gene.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
         gene.setCellFactory(column ->
@@ -1408,9 +1407,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 @Override
                 protected void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty);
+                    getStyleClass().add(centerStyleClass);
                     if(item == null || empty) {
                         setText(null);
-                        setStyle("");
                     } else {
                         if(panel.getVariantFilter() != null
                                 && StringUtils.isNotEmpty(panel.getVariantFilter().getEssentialGenes())) {
@@ -1436,15 +1435,13 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         proteinAccession.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getProteinAccession()));
 
         TableColumn<VariantAndInterpretationEvidence, String> type = new TableColumn<>("Type");
-        type.setStyle(type.getStyle() + "-fx-alignment : center;");
+        type.getStyleClass().add(centerStyleClass);
         createTableHeader(type, "Type", "variantType" ,null, "variantType");
-        type.getStyleClass().clear();
         type.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getVariantType()));
 
         TableColumn<VariantAndInterpretationEvidence, String> codCons = new TableColumn<>("Consequence");
-        codCons.setStyle(codCons.getStyle() + "-fx-alignment : center;");
+        codCons.getStyleClass().add(centerStyleClass);
         createTableHeader(codCons, "Consequence", null ,140., "codingConsequence");
-        codCons.getStyleClass().clear();
         codCons.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getCodingConsequence()));
 
         TableColumn<VariantAndInterpretationEvidence, String> ntChange = new TableColumn<>("NT Change");
@@ -1498,7 +1495,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         refNum.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getReadInfo().getRefReadNum()).asObject());
 
         TableColumn<VariantAndInterpretationEvidence, Integer> altNum = new TableColumn<>("Alt Count");
-        altNum.setStyle(altNum.getStyle() + "-fx-alignment : baseline-right;");
         createTableHeader(altNum, "Alt Count", "altReadNum" ,null, "altReadNum");
         altNum.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getReadInfo().getAltReadNum()).asObject());
         altNum.setCellFactory(column ->
@@ -1506,9 +1502,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                     @Override
                     protected void updateItem(Integer item, boolean empty) {
                         super.updateItem(item, empty);
+                        setStyle(getStyle() + "; -fx-alignment : baseline-right;");
                         if(item == null || empty) {
                             setText(null);
-                            setStyle("");
                         } else {
                             if(item <= 6) {
                                 setTextFill(Color.RED);
@@ -2066,7 +2062,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         public PopTableCell(String type) {
             this.type = type;
-            this.setStyle(this.getStyle()+"-fx-alignment:baseline-right");
+            this.setStyle(this.getStyle()+"; -fx-alignment:baseline-right; -fx-padding: 0 10 0 0;");
         }
 
         @Override
@@ -2074,7 +2070,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             super.updateItem(item, empty);
             if(item == null || empty) {
                 setText(null);
-                setStyle("-fx-alignment:baseline-right");
+                setStyle(this.getStyle()+";-fx-alignment:baseline-right; -fx-padding: 0 10 0 0;");
             } else {
                 if(StringUtils.isNotEmpty(panel.getVariantFilter().getPopulationFrequencyDBs()) &&
                         Arrays.stream(panel.getVariantFilter().getPopulationFrequencyDBs().split(",")).anyMatch(db ->
@@ -2082,7 +2078,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                         panel.getVariantFilter().getPopulationFrequency().doubleValue()) {
                     setTextFill(Color.RED);
                 } else {
-                    if(item.doubleValue() >= 0.01) {
+                    if(item.doubleValue() < 0.01) {
                         setTextFill(Color.RED);
                     } else {
                         setTextFill(Color.BLACK);

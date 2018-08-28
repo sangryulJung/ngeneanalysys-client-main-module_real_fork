@@ -1,7 +1,5 @@
 package ngeneanalysys.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -21,6 +19,14 @@ public class AnalysisResultSummary implements Serializable {
     private Integer level3VariantCount;
     private Integer level4VariantCount;
     private Integer level5VariantCount;
+    private Integer reportVariantCount;
+
+    /**
+     * @return reportVariantCount
+     */
+    public Integer getReportVariantCount() {
+        return reportVariantCount;
+    }
 
     public Integer getSampleId() {
         return sampleId;
