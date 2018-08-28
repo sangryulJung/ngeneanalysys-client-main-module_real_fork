@@ -248,185 +248,6 @@
                   </GridPane>
                </content>
           </Tab>
-          <Tab text="Consequence">
-               <content>
-                  <VBox prefHeight="177.0" prefWidth="880.0">
-                     <children>
-                        <ScrollPane prefHeight="400.0" prefWidth="880.0">
-                          <content>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="376.0" prefWidth="880.0">
-                                 <children>
-                                    <GridPane prefHeight="290.0" prefWidth="857.0">
-                                      <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="425.0" minWidth="10.0" prefWidth="147.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="696.0" minWidth="10.0" prefWidth="690.0" />
-                                      </columnConstraints>
-                                      <rowConstraints>
-                                        <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
-                                      </rowConstraints>
-                                       <children>
-                                          <HBox prefHeight="100.0" prefWidth="200.0">
-                                             <children>
-                                                <Label prefHeight="35.0" prefWidth="233.0" style="-fx-font-family: Noto Sans KR Bold;" text="Stop gain or loss" />
-                                             </children></HBox>
-                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
-                                             <children>
-                                                <Label prefHeight="35.0" prefWidth="238.0" style="-fx-font-family: Noto Sans KR Bold;" text="Splice site" />
-                                             </children>
-                                          </HBox>
-                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4">
-                                             <children>
-                                                <Label prefHeight="35.0" prefWidth="233.0" style="-fx-font-family: Noto Sans KR Bold;" text="Indels" />
-                                             </children>
-                                          </HBox>
-                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5" />
-                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="6" />
-                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="8">
-                                             <children>
-                                                <Label prefHeight="35.0" prefWidth="248.0" style="-fx-font-family: Noto Sans KR Bold;" text="Missense" />
-                                             </children>
-                                          </HBox>
-                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="10">
-                                             <children>
-                                                <Label prefHeight="35.0" prefWidth="239.0" style="-fx-font-family: Noto Sans KR Bold;" text="Silent" />
-                                             </children>
-                                          </HBox>
-                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="11" />
-                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="12" />
-                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="13" />
-                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
-                                             <children>
-                                                <CheckBox fx:id="stopGainedCheckBox" mnemonicParsing="false" prefHeight="39.0" prefWidth="98.0" text="stop_gained" />
-                                                <CheckBox fx:id="stoplostCheckBox" mnemonicParsing="false" prefHeight="38.0" prefWidth="81.0" text="stop_lost" />
-                                             </children>
-                                          </HBox>
-                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                             <children>
-                                                <CheckBox fx:id="spliceDonorVariantCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="168.0" text="splice_donor_variant" />
-                                                <CheckBox fx:id="spliceAcceptorVariantCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="176.0" text="splice_acceptor_variant" />
-                                                <CheckBox fx:id="spliceRegionVariantCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="167.0" text="splice_region_variant" />
-                                             </children>
-                                          </HBox>
-                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                                             <children>
-                                                <CheckBox fx:id="frameshiftVariantCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="138.0" text="frameshift_variant" />
-                                                <CheckBox fx:id="inframeDeletionCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="138.0" text="inframe_deletion" />
-                                                <CheckBox fx:id="inframeInsertionCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="138.0" text="inframe_insertion" />
-                                             </children>
-                                          </HBox>
-                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                                             <children>
-                                                <CheckBox fx:id="cidCheckBox" mnemonicParsing="false" prefHeight="40.0" prefWidth="199.0" text="conservative_inframe_deletion" />
-                                                <CheckBox fx:id="ciiCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="225.0" text="conservative_inframe_insertion" />
-                                             </children>
-                                          </HBox>
-                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
-                                             <children>
-                                                <CheckBox fx:id="didCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="212.0" text="disruptive_inframe_deletion" />
-                                                <CheckBox fx:id="diiCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="212.0" text="disruptive_inframe_insertion" />
-                                             </children>
-                                          </HBox>
-                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
-                                             <children>
-                                                <CheckBox fx:id="missenseCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="144.0" text="missense_variant" />
-                                                <CheckBox fx:id="startLostCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="144.0" text="start_lost" />
-                                             </children>
-                                          </HBox>
-                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
-                                             <children>
-                                                <CheckBox fx:id="threePrimeUTRVCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="160.0" text="3_prime_UTR_variant" />
-                                                <CheckBox fx:id="threePrimeUTRTCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="206.0" text="3_prime_UTR_truncation" />
-                                             </children>
-                                          </HBox>
-                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="11">
-                                             <children>
-                                                <CheckBox fx:id="fivePrimeUTRVCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="160.0" text="5_prime_UTR_variant" />
-                                                <CheckBox fx:id="fivePrimeUTRTCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="206.0" text="5_prime_UTR_truncation" />
-                                             </children>
-                                          </HBox>
-                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="12">
-                                             <children>
-                                                <CheckBox fx:id="civCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="224.0" text="conserved_intergenic_variant" />
-                                                <CheckBox fx:id="dgvCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="224.0" text="downstream_gene_variant" />
-                                                <CheckBox fx:id="irCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="224.0" text="intergenic_region" />
-                                             </children>
-                                          </HBox>
-                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="13">
-                                             <children>
-                                                <CheckBox fx:id="intronCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="119.0" text="intron_variant" />
-                                                <CheckBox fx:id="srvCheckbox" mnemonicParsing="false" prefHeight="35.0" prefWidth="169.0" text="stop_retained_variant" />
-                                                <CheckBox fx:id="synonymousCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="169.0" text="synonymous_variant" />
-                                                <CheckBox fx:id="ugvCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="179.0" text="upstream_gene_variant" />
-                                             </children>
-                                          </HBox>
-                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
-                                             <children>
-                                                <Separator prefWidth="890.0">
-                                                   <padding>
-                                                      <Insets right="10.0" />
-                                                   </padding>
-                                                </Separator>
-                                             </children>
-                                          </HBox>
-                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="3">
-                                             <children>
-                                                <Separator prefWidth="890.0">
-                                                   <padding>
-                                                      <Insets right="10.0" />
-                                                   </padding>
-                                                </Separator>
-                                             </children>
-                                          </HBox>
-                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="7">
-                                             <children>
-                                                <Separator prefWidth="890.0">
-                                                   <padding>
-                                                      <Insets right="10.0" />
-                                                   </padding>
-                                                </Separator>
-                                             </children>
-                                          </HBox>
-                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="9">
-                                             <children>
-                                                <Separator prefWidth="890.0">
-                                                   <padding>
-                                                      <Insets right="10.0" />
-                                                   </padding>
-                                                </Separator>
-                                             </children>
-                                          </HBox>
-                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="14">
-                                             <children>
-                                                <Separator prefWidth="890.0" />
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                       </padding>
-                                    </GridPane>
-                                 </children>
-                              </AnchorPane>
-                          </content>
-                        </ScrollPane>
-                     </children>
-                  </VBox>
-               </content>
-          </Tab>
             <Tab text="Population Frequency">
                <content>
                   <GridPane fx:id="populationFrequencyGridPane">
@@ -614,6 +435,185 @@
                   </GridPane>
                </content>
             </Tab>
+          <Tab text="Consequence">
+               <content>
+                  <VBox prefHeight="177.0" prefWidth="880.0">
+                     <children>
+                        <ScrollPane prefHeight="400.0" prefWidth="880.0">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="376.0" prefWidth="880.0">
+                                 <children>
+                                    <GridPane prefHeight="290.0" prefWidth="857.0">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="425.0" minWidth="10.0" prefWidth="147.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="696.0" minWidth="10.0" prefWidth="690.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <HBox prefHeight="100.0" prefWidth="200.0">
+                                             <children>
+                                                <Label prefHeight="35.0" prefWidth="233.0" style="-fx-font-family: Noto Sans KR Bold;" text="Stop gain or loss" />
+                                             </children></HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+                                             <children>
+                                                <Label prefHeight="35.0" prefWidth="238.0" style="-fx-font-family: Noto Sans KR Bold;" text="Splice site" />
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4">
+                                             <children>
+                                                <Label prefHeight="35.0" prefWidth="233.0" style="-fx-font-family: Noto Sans KR Bold;" text="Indels" />
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5" />
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="6" />
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="8">
+                                             <children>
+                                                <Label prefHeight="35.0" prefWidth="248.0" style="-fx-font-family: Noto Sans KR Bold;" text="Missense" />
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="10">
+                                             <children>
+                                                <Label prefHeight="35.0" prefWidth="239.0" style="-fx-font-family: Noto Sans KR Bold;" text="Silent" />
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="11" />
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="12" />
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="13" />
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+                                             <children>
+                                                <CheckBox fx:id="stopGainedCheckBox" mnemonicParsing="false" prefHeight="39.0" prefWidth="98.0" text="stop_gained" />
+                                                <CheckBox fx:id="stoplostCheckBox" mnemonicParsing="false" prefHeight="38.0" prefWidth="81.0" text="stop_lost" />
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                             <children>
+                                                <CheckBox fx:id="spliceDonorVariantCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="168.0" text="splice_donor_variant" />
+                                                <CheckBox fx:id="spliceAcceptorVariantCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="176.0" text="splice_acceptor_variant" />
+                                                <CheckBox fx:id="spliceRegionVariantCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="167.0" text="splice_region_variant" />
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                             <children>
+                                                <CheckBox fx:id="frameshiftVariantCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="138.0" text="frameshift_variant" />
+                                                <CheckBox fx:id="inframeDeletionCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="138.0" text="inframe_deletion" />
+                                                <CheckBox fx:id="inframeInsertionCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="138.0" text="inframe_insertion" />
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                             <children>
+                                                <CheckBox fx:id="cidCheckBox" mnemonicParsing="false" prefHeight="40.0" prefWidth="199.0" text="conservative_inframe_deletion" />
+                                                <CheckBox fx:id="ciiCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="225.0" text="conservative_inframe_insertion" />
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                             <children>
+                                                <CheckBox fx:id="didCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="212.0" text="disruptive_inframe_deletion" />
+                                                <CheckBox fx:id="diiCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="212.0" text="disruptive_inframe_insertion" />
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                                             <children>
+                                                <CheckBox fx:id="missenseCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="144.0" text="missense_variant" />
+                                                <CheckBox fx:id="startLostCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="144.0" text="start_lost" />
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                                             <children>
+                                                <CheckBox fx:id="threePrimeUTRVCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="160.0" text="3_prime_UTR_variant" />
+                                                <CheckBox fx:id="threePrimeUTRTCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="206.0" text="3_prime_UTR_truncation" />
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="11">
+                                             <children>
+                                                <CheckBox fx:id="fivePrimeUTRVCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="160.0" text="5_prime_UTR_variant" />
+                                                <CheckBox fx:id="fivePrimeUTRTCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="206.0" text="5_prime_UTR_truncation" />
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="12">
+                                             <children>
+                                                <CheckBox fx:id="civCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="224.0" text="conserved_intergenic_variant" />
+                                                <CheckBox fx:id="dgvCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="224.0" text="downstream_gene_variant" />
+                                                <CheckBox fx:id="irCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="224.0" text="intergenic_region" />
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="13">
+                                             <children>
+                                                <CheckBox fx:id="intronCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="119.0" text="intron_variant" />
+                                                <CheckBox fx:id="srvCheckbox" mnemonicParsing="false" prefHeight="35.0" prefWidth="169.0" text="stop_retained_variant" />
+                                                <CheckBox fx:id="synonymousCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="169.0" text="synonymous_variant" />
+                                                <CheckBox fx:id="ugvCheckBox" mnemonicParsing="false" prefHeight="35.0" prefWidth="179.0" text="upstream_gene_variant" />
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                                             <children>
+                                                <Separator prefWidth="890.0">
+                                                   <padding>
+                                                      <Insets right="10.0" />
+                                                   </padding>
+                                                </Separator>
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="3">
+                                             <children>
+                                                <Separator prefWidth="890.0">
+                                                   <padding>
+                                                      <Insets right="10.0" />
+                                                   </padding>
+                                                </Separator>
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="7">
+                                             <children>
+                                                <Separator prefWidth="890.0">
+                                                   <padding>
+                                                      <Insets right="10.0" />
+                                                   </padding>
+                                                </Separator>
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="9">
+                                             <children>
+                                                <Separator prefWidth="890.0">
+                                                   <padding>
+                                                      <Insets right="10.0" />
+                                                   </padding>
+                                                </Separator>
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="14">
+                                             <children>
+                                                <Separator prefWidth="890.0" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </GridPane>
+                                 </children>
+                              </AnchorPane>
+                          </content>
+                        </ScrollPane>
+                     </children>
+                  </VBox>
+               </content>
+          </Tab>
         </tabs>
          <opaqueInsets>
             <Insets />
