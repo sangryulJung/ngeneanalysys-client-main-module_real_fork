@@ -337,8 +337,8 @@ public class VariantFilterController extends SubPaneController {
 
     private Panel panel;
 
-    private String[] defaultFilterName = {"Tier I", "Tier II", "Tier III", "Tier IV", "Pathogenic", "Likely Pathogenic",
-    "Uncertain Significance", "Likely Benign", "Benign", "Tier 1", "Tier 2", "Tier 3", "Tier 4"};
+    /*private String[] defaultFilterName = {"Tier I", "Tier II", "Tier III", "Tier IV", "Pathogenic", "Likely Pathogenic",
+    "Uncertain Significance", "Likely Benign", "Benign", "Tier 1", "Tier 2", "Tier 3", "Tier 4"};*/
 
     private AnalysisDetailSNVController snvController;
 
@@ -641,9 +641,9 @@ public class VariantFilterController extends SubPaneController {
         Set<String> keySet = filter.keySet();
 
         for(String key : keySet) {
-            if(Arrays.stream(defaultFilterName).noneMatch(item -> item.equals(key))) {
+            /*if(Arrays.stream(defaultFilterName).noneMatch(item -> item.equals(key))) {
                 filterNameComboBox.getItems().add(key);
-            }
+            }*/
         }
     }
 
@@ -1034,7 +1034,7 @@ public class VariantFilterController extends SubPaneController {
                 DialogUtil.alert("No filter name found", "Please enter a filter name", mainApp.getPrimaryStage(), true);
                 filterNameTextField.requestFocus();
                 return;
-            } else if(Arrays.stream(defaultFilterName).anyMatch(item -> item.equals(filterNameTextField.getText()))) {
+            } else if("All".equalsIgnoreCase(filterNameTextField.getText())) {
                 DialogUtil.alert("Unavailable name", "Please edit the filter name", mainApp.getPrimaryStage(), true);
                 filterNameTextField.requestFocus();
                 return;

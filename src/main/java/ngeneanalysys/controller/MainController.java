@@ -404,27 +404,30 @@ public class MainController extends BaseStageController {
             response = apiService.get("member/memberOption/hemeFilter", null, null, null);
             somaticFilter = JsonUtil.fromJsonToMap(response.getContentString());
         } catch (WebAPIException wae) {
-
+            somaticFilter = new HashMap<>();
         } finally {
-            setDefaultSomaticFilter(somaticFilter, "hemeFilter");
+            //setDefaultSomaticFilter(somaticFilter, "hemeFilter");
+            basicInformationMap.put("hemeFilter", somaticFilter);
         }
 
         try {
             response = apiService.get("member/memberOption/solidFilter", null, null, null);
             somaticFilter = JsonUtil.fromJsonToMap(response.getContentString());
         } catch (WebAPIException wae) {
-
+            somaticFilter = new HashMap<>();
         } finally {
-            setDefaultSomaticFilter(somaticFilter, "solidFilter");
+            //setDefaultSomaticFilter(somaticFilter, "solidFilter");
+            basicInformationMap.put("solidFilter", somaticFilter);
         }
 
         try {
             response = apiService.get("member/memberOption/tstDNAFilter", null, null, null);
             somaticFilter = JsonUtil.fromJsonToMap(response.getContentString());
         } catch (WebAPIException wae) {
-
+            somaticFilter = new HashMap<>();
         } finally {
-            setDefaultSomaticFilter(somaticFilter, "tstDNAFilter");
+            //setDefaultSomaticFilter(somaticFilter, "tstDNAFilter");
+            basicInformationMap.put("tstDNAFilter", somaticFilter);
         }
 
         Map<String, List<Object>> germlineFilter = new HashMap<>();
@@ -435,9 +438,10 @@ public class MainController extends BaseStageController {
             germlineFilter = JsonUtil.fromJsonToMap(response.getContentString());
 
         } catch (WebAPIException wae) {
-
+            germlineFilter = new HashMap<>();
         } finally {
-            setDefaultGermlineFilter(germlineFilter, "brcaFilter");
+            //setDefaultGermlineFilter(germlineFilter, "brcaFilter");
+            basicInformationMap.put("brcaFilter", germlineFilter);
         }
 
         try {
@@ -446,13 +450,14 @@ public class MainController extends BaseStageController {
             germlineFilter = JsonUtil.fromJsonToMap(response.getContentString());
 
         } catch (WebAPIException wae) {
-
+            germlineFilter = new HashMap<>();
         } finally {
-            setDefaultGermlineFilter(germlineFilter, "heredFilter");
+            //setDefaultGermlineFilter(germlineFilter, "heredFilter");
+            basicInformationMap.put("heredFilter", germlineFilter);
         }
     }
 
-    private void setDefaultGermlineFilter(Map<String, List<Object>> germlineFilter, String filterName) {
+    /*private void setDefaultGermlineFilter(Map<String, List<Object>> germlineFilter, String filterName) {
         germlineFilter.put("Pathogenic", setStandardFilter("pathogenicity", "P"));
         germlineFilter.put("Likely Pathogenic", setStandardFilter("pathogenicity", "LP"));
         germlineFilter.put("Uncertain Significance", setStandardFilter("pathogenicity", "US"));
@@ -467,7 +472,7 @@ public class MainController extends BaseStageController {
         somaticFilter.put("Tier 3", setStandardFilter("tier", "T3"));
         somaticFilter.put("Tier 4", setStandardFilter("tier", "T4"));
         basicInformationMap.put(filterName, somaticFilter);
-    }
+    }*/
 
     private List<Object> setStandardFilter(String key, String value) {
         List<Object> list = new ArrayList<>();

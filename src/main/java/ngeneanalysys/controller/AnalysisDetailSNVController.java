@@ -171,10 +171,10 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         if (!nv.equals(ov)) {
             Platform.runLater(() -> showVariantList(1 ,0));
         }
-        String[] defaultFilterName = {"Tier I", "Tier II", "Tier III", "Tier IV", "Pathogenic", "Likely Pathogenic",
-                "Uncertain Significance", "Likely Benign", "Benign", "Tier 1", "Tier 2", "Tier 3", "Tier 4", "All"};
-        viewAppliedFiltersLabel.setDisable(Arrays.stream(defaultFilterName).anyMatch(item -> item.equals(nv.getValue())));
-        if (Arrays.stream(defaultFilterName).anyMatch(item -> item.equals(nv.getValue()))) {
+        /*String[] defaultFilterName = {"Tier I", "Tier II", "Tier III", "Tier IV", "Pathogenic", "Likely Pathogenic",
+                "Uncertain Significance", "Likely Benign", "Benign", "Tier 1", "Tier 2", "Tier 3", "Tier 4", "All"};*/
+        viewAppliedFiltersLabel.setDisable(nv.getValue().equalsIgnoreCase("All"));
+        if (nv.getValue().equalsIgnoreCase("All")) {
             viewAppliedFiltersLabel.setOpacity(0);
         } else {
             viewAppliedFiltersLabel.setOpacity(100);
@@ -615,7 +615,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         filterComboBox.setConverter(new ComboBoxConverter());
         filterComboBox.getItems().removeAll(filterComboBox.getItems());
         filterComboBox.getItems().add(new ComboBoxItem("All", "All"));
-        if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode()) ||
+        /*if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode()) ||
                 panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode()) ||
                 panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
             filterComboBox.getItems().add(new ComboBoxItem("Tier 1", "Tier I"));
@@ -628,7 +628,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             filterComboBox.getItems().add(new ComboBoxItem("Uncertain Significance", "Uncertain Significance"));
             filterComboBox.getItems().add(new ComboBoxItem("Likely Benign", "Likely Benign"));
             filterComboBox.getItems().add(new ComboBoxItem("Benign", "Benign"));
-        }
+        }*/
         filterComboBox.getSelectionModel().select(0);
         viewAppliedFiltersLabel.setDisable(true);
     }
@@ -637,16 +637,14 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         Map<String, List<Object>> filter = (Map<String, List<Object>>)mainController.getBasicInformationMap().get(filterName);
         Set<String> keySet = filter.keySet();
 
-        if(filterComboBox.getItems().size() > 5) {
-            while(filterComboBox.getItems().size() > 5) {
+        if(filterComboBox.getItems().size() > 1) {
+            while(filterComboBox.getItems().size() > 1) {
                 filterComboBox.getItems().remove(filterComboBox.getItems().size() - 1);
             }
         }
 
         for(String key : keySet) {
-            if(!(key.equals("Tier 1") || key.equals("Tier 2") ||key.equals("Tier 3") ||key.equals("Tier 4"))) {
-                filterComboBox.getItems().add(new ComboBoxItem(key, key));
-            }
+            filterComboBox.getItems().add(new ComboBoxItem(key, key));
         }
         filterList = filter;
     }
@@ -655,17 +653,14 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         Map<String, List<Object>> filter = (Map<String, List<Object>>)mainController.getBasicInformationMap().get(filterName);
         Set<String> keySet = filter.keySet();
 
-        while(filterComboBox.getItems().size() > 6) {
+        while(filterComboBox.getItems().size() > 1) {
             filterComboBox.getItems().remove(filterComboBox.getItems().size() - 1);
         }
 
         for(String key : keySet) {
-            if(!(key.equals("Pathogenic") || key.equals("Likely Pathogenic") ||key.equals("Uncertain Significance")
-                    || key.equals("Likely Benign") || key.equals("Benign"))) {
-                filterComboBox.getItems().add(new ComboBoxItem(key, key));
-            }
-            filterList = filter;
+            filterComboBox.getItems().add(new ComboBoxItem(key, key));
         }
+        filterList = filter;
     }
 
    @SuppressWarnings("unchecked")
@@ -1523,7 +1518,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         clinVarReviewStatus.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarReviewStatus()));
 
         TableColumn<VariantAndInterpretationEvidence, String> clinVarDisease = new TableColumn<>("ClinVar Disease");
-        createTableHeader(clinVarDisease, "ClinVar Disease", null ,null, "clinVarDisease");
+        createTableHeader(clinVarDisease, "ClinVar Disease", null ,150d, "clinVarDisease");
         clinVarDisease.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarDisease()));
 
         TableColumn<VariantAndInterpretationEvidence, String> clinVarTraitOMIM = new TableColumn<>("ClinVar Trait OMIM");
@@ -2009,7 +2004,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 setGraphic(null);
                 return;
             }
-
+            this.setStyle(this.getStyle() + "; -fx-background-color : white;");
             VariantAndInterpretationEvidence evidence = BooleanCell.this.getTableView().getItems().get(
                     BooleanCell.this.getIndex());
             checkBox.setSelected(evidence.getCheckItem());
@@ -2037,15 +2032,14 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                                 db.equalsIgnoreCase(type)) && item.doubleValue() >=
                         panel.getVariantFilter().getPopulationFrequency().doubleValue()) {
                     setTextFill(Color.RED);
-                    setText(item.toString());
                 } else {
                     if(item.doubleValue() >= 0.01) {
                         setTextFill(Color.RED);
                     } else {
                         setTextFill(Color.BLACK);
                     }
-                    setText(item.toString());
                 }
+                setText(item.toString());
             }
         }
     }
