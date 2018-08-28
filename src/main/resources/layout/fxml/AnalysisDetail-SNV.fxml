@@ -6,22 +6,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<?import java.net.URL?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Accordion?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Pagination?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
 <GridPane fx:id="snvWrapper" prefHeight="380.0" prefWidth="1140.0" style="-fx-background-color: #f2f5fa;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNVController">
    <columnConstraints>
@@ -304,6 +288,7 @@
             <VBox>
                <children>
                   <Accordion fx:id="overviewAccordion">
+<<<<<<< HEAD
                     <panes>
                       <TitledPane fx:id="interpretationTitledPane" animated="false" text="Interpretation">
                            <styleClass>
@@ -331,6 +316,15 @@
                               <String fx:value="regular" />
                            </styleClass></TitledPane>
                     </panes>
+=======
+                     <panes>
+                        <TitledPane fx:id="interpretationTitledPane" animated="false" styleClass="font_size_15" text="Interpretation" />
+                        <TitledPane fx:id="clinicalSignificantTitledPane" animated="false" maxWidth="-Infinity" styleClass="font_size_15" text="Clinical Significant" />
+                        <TitledPane fx:id="variantDetailTitledPane" animated="false" maxWidth="-Infinity" styleClass="font_size_15" text="Variant Detail" />
+                        <TitledPane fx:id="statisticsTitledPane" animated="false" maxWidth="-Infinity" prefHeight="222.0" prefWidth="870.0" styleClass="font_size_15" text="Statistics" />
+                        <TitledPane fx:id="interpretationLogsTitledPane" animated="false" maxWidth="-Infinity" styleClass="font_size_15" text="Interpretation Log" />
+                     </panes>
+>>>>>>> branch 'dev_v1.3' of https://github.com/ngenebio/ngeneanalysys-client-main-module.git
                   </Accordion>
                </children>
                <HBox.margin>
