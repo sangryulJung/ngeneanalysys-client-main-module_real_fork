@@ -2032,7 +2032,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 setGraphic(null);
                 return;
             }
-
+            this.setStyle(this.getStyle() + "; -fx-background-color : white;");
             VariantAndInterpretationEvidence evidence = BooleanCell.this.getTableView().getItems().get(
                     BooleanCell.this.getIndex());
             checkBox.setSelected(evidence.getCheckItem());

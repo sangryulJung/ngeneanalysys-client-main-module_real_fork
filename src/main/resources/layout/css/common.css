@@ -14,7 +14,7 @@
 
 /** 기본 폰트 설정 */
 * {
-	-fx-font-family: "Noto Sans KR Regular";
+	-fx-font-family: "Noto Sans KR Light";
 	/*-fx-font-family: "Noto Sans CJK KR Regular";*/
 	/*-fx-font-family: "Noto Sans KR Regular";*/
     /*-fx-font-family: "나눔스퀘어 Bold";*/
@@ -436,10 +436,11 @@ Button {
 
 /** Base Table View CSS */
 .table-view {
+	-fx-background-color: #FFFFFF;
+ 	-fx-border-color:#FFFFFF;
  	-fx-border-width:0;
  	-fx-padding:0;
-	-fx-background: -fx-control-inner-background, #FFFFFF;
-    -fx-background-color: -fx-table-cell-border-color, #FFFFFF;
+ 	-fx-table-cell-border-color: transparent;
 }
 
 .table-view .column-header-background .nested-column-header .label{
@@ -449,7 +450,7 @@ Button {
 
 .table-view .column-header-background .filler {
  	-fx-background-color:#FFFFFF;
-	-fx-border-color:#d5d9dc;
+	-fx-border-color:#000000;
 	-fx-border-width:0 0 0.5 0;
 }
 
@@ -457,38 +458,29 @@ Button {
 	-fx-pref-height:35;
 	-fx-background-color: #ffffff;
 	-fx-border-width : 0 0 0.5 0;
-	-fx-border-color:#d5d9dc;
+	-fx-border-color:#000000;
+	-fx-font-family:"Noto Sans KR Bold";
 }
 
 .table-row-cell {
 	-fx-background-insets:0;
-	-fx-background-color:  #FFFFFF;
-	-fx-table-cell-border-color: #E3E0DB;
+	-fx-background-color: -fx-table-cell-border-color, #FFFFFF;
     -fx-border-width : 0;
     -fx-font-size : 13;
-    -fx-padding: 0.3em;
-}
-
-.table-row-cell:odd{
-    -fx-background-color:  #f4f7f7;
-	-fx-table-cell-border-color: #E3E0DB;
-    -fx-background-insets: 0, 0 0 1 0;
-    -fx-padding: 0.3em; /* 0 */  
 }
 
 .table-row-cell:empty {
-    -fx-background-color : #ffffff;
-    -fx-table-cell-border-color: #ffffff;
+    -fx-background-color : white;
 }
 
 .table-row-cell:hover{
-    -fx-table-cell-border-color: #E3E0DB;
+    -fx-table-cell-border-color: transparent;
 }
 
 .table-row-cell:selected {
-    -fx-table-cell-border-color: #eff0f1;
-	-fx-background-color : #005797;
-	-fx-text-background-color:#ffffff;
+    -fx-table-cell-border-color: transparent;
+	-fx-background-color : #F2F5FA;
+	-fx-text-background-color:#656565;
 }
 
 .table-view .table-cell .label {
