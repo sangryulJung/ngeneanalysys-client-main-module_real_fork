@@ -258,7 +258,7 @@ public class DetailSubInfoController extends SubPaneController {
                 }
                 Integer startMinus = start - 30;
                 Integer endPlus = end + 30;
-                String fullUrlUCSC = "http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&highlight=hg19.{"
+                String fullUrlUCSC = "http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&highlight=hg19."
                         + selectedAnalysisResultVariant.getSnpInDel().getGenomicCoordinate().getChromosome() + "%3A"
                         + insertStart + "-"
                         + insertEnd + "&position="
