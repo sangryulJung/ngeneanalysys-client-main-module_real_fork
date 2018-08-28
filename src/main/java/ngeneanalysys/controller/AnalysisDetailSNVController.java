@@ -49,7 +49,6 @@ import org.slf4j.Logger;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.logging.Filter;
 import java.util.stream.Collectors;
 
 /**
@@ -64,6 +63,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     private CheckBox headerCheckBox;
 
     @FXML
+    private Label reportedCountLabel;
+
+   @FXML
     private CheckBox levelACheckBox;
     @FXML
     private CheckBox levelBCheckBox;
@@ -1016,6 +1018,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             response = apiService.get("/analysisResults/sampleSummary/"+ sample.getId(), null, null, false);
 
             sample.setAnalysisResultSummary(response.getObjectBeforeConvertResponseToJSON(AnalysisResultSummary.class));
+            //reportedCountLabel.setText("(" + sample.getAnalysisResultSummary().getReportVariantCount() +" Reported)");
 
             if (list != null && !list.isEmpty()) {
                 displayList = FXCollections.observableArrayList(list);

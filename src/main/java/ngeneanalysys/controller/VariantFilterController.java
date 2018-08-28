@@ -590,10 +590,10 @@ public class VariantFilterController extends SubPaneController {
 
     private void createOperatorComboBox(ComboBox<ComboBoxItem> comboBox) {
         comboBox.setConverter(new ComboBoxConverter());
-        comboBox.getItems().add(new ComboBoxItem("gt:", ">"));
         comboBox.getItems().add(new ComboBoxItem("lt:", "<"));
-        comboBox.getItems().add(new ComboBoxItem("gte:", "≥"));
+        comboBox.getItems().add(new ComboBoxItem("gt:", ">"));
         comboBox.getItems().add(new ComboBoxItem("lte:", "≤"));
+        comboBox.getItems().add(new ComboBoxItem("gte:", "≥"));
         comboBox.getSelectionModel().selectFirst();
     }
 
