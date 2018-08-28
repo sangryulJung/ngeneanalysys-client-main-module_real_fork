@@ -641,9 +641,9 @@ public class VariantFilterController extends SubPaneController {
         Set<String> keySet = filter.keySet();
 
         for(String key : keySet) {
-            /*if(Arrays.stream(defaultFilterName).noneMatch(item -> item.equals(key))) {
-                filterNameComboBox.getItems().add(key);
-            }*/
+            //if(Arrays.stream(defaultFilterName).noneMatch(item -> item.equals(key))) {
+            filterNameComboBox.getItems().add(key);
+            //}
         }
     }
 
