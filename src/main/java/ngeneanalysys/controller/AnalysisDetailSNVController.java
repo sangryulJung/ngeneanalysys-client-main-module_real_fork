@@ -206,36 +206,56 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 panel.getCode().equalsIgnoreCase(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode()) ||
                 panel.getCode().equalsIgnoreCase(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
             if(levelACheckBox.isSelected()) {
-                filterList.add("pathogenicity P");
+                if(!filterList.contains("pathogenicity P")) {
+                    filterList.add("pathogenicity P");
+                }
             }
             if(levelBCheckBox.isSelected()) {
-                filterList.add("pathogenicity LP");
+                if(!filterList.contains("pathogenicity LP")) {
+                    filterList.add("pathogenicity LP");
+                }
             }
             if(levelCCheckBox.isSelected()) {
-                filterList.add("pathogenicity US");
+                if(!filterList.contains("pathogenicity US")) {
+                    filterList.add("pathogenicity US");
+                }
             }
             if(levelDCheckBox.isSelected()) {
-                filterList.add("pathogenicity LB");
+                if(!filterList.contains("pathogenicity LP")) {
+                    filterList.add("pathogenicity LP");
+                }
             }
             if(levelECheckBox.isSelected()) {
-                filterList.add("pathogenicity B");
+                if(!filterList.contains("pathogenicity B")) {
+                    filterList.add("pathogenicity B");
+                }
             }
         } else {
             if(levelACheckBox.isSelected()) {
-                filterList.add("tier T1");
+                if(!filterList.contains("pathogenicity T1")) {
+                    filterList.add("tier T1");
+                }
             }
             if(levelBCheckBox.isSelected()) {
-                filterList.add("tier T2");
+                if(!filterList.contains("pathogenicity T2")) {
+                    filterList.add("tier T2");
+                }
             }
             if(levelCCheckBox.isSelected()) {
-                filterList.add("tier T3");
+                if(!filterList.contains("pathogenicity T3")) {
+                    filterList.add("tier T3");
+                }
             }
             if(levelDCheckBox.isSelected()) {
-                filterList.add("tier T4");
+                if(!filterList.contains("pathogenicity T4")) {
+                    filterList.add("tier T4");
+                }
             }
         }
         if(reportCheckBox.isSelected()) {
-            filterList.add("includedInReport Y");
+            if(!filterList.contains("includedInReport Y")) {
+                filterList.add("includedInReport Y");
+            }
         }
     }
 
@@ -2058,7 +2078,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             } else {
                 if(StringUtils.isNotEmpty(panel.getVariantFilter().getPopulationFrequencyDBs()) &&
                         Arrays.stream(panel.getVariantFilter().getPopulationFrequencyDBs().split(",")).anyMatch(db ->
-                                db.equalsIgnoreCase(type)) && item.doubleValue() >=
+                                db.equalsIgnoreCase(type)) && item.doubleValue() <
                         panel.getVariantFilter().getPopulationFrequency().doubleValue()) {
                     setTextFill(Color.RED);
                 } else {

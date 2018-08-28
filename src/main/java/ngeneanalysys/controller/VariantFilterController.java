@@ -291,6 +291,23 @@ public class VariantFilterController extends SubPaneController {
     @FXML
     private ComboBox<ComboBoxItem> exacComboBox;
 
+    /////
+
+    @FXML
+    private CheckBox caseACheckBox;
+
+    @FXML
+    private CheckBox caseBCheckBox;
+
+    @FXML
+    private CheckBox caseCCheckBox;
+
+    @FXML
+    private CheckBox caseDCheckBox;
+
+    @FXML
+    private CheckBox caseECheckBox;
+
     @FXML
     private CheckBox clinVarACheckBox;
 
@@ -305,6 +322,9 @@ public class VariantFilterController extends SubPaneController {
 
     @FXML
     private CheckBox clinVarECheckBox;
+
+    @FXML
+    private Label caseLabel;
 
     @FXML
     private ComboBox<ComboBoxItem> cosmicOccurrenceComboBox;
@@ -337,8 +357,8 @@ public class VariantFilterController extends SubPaneController {
 
     private Panel panel;
 
-    /*private String[] defaultFilterName = {"Tier I", "Tier II", "Tier III", "Tier IV", "Pathogenic", "Likely Pathogenic",
-    "Uncertain Significance", "Likely Benign", "Benign", "Tier 1", "Tier 2", "Tier 3", "Tier 4"};*/
+    private String[] defaultFilterName = {"Tier I", "Tier II", "Tier III", "Tier IV", "Pathogenic", "Likely Pathogenic",
+    "Uncertain Significance", "Likely Benign", "Benign", "Tier 1", "Tier 2", "Tier 3", "Tier 4"};
 
     private AnalysisDetailSNVController snvController;
 
@@ -641,16 +661,28 @@ public class VariantFilterController extends SubPaneController {
         Set<String> keySet = filter.keySet();
 
         for(String key : keySet) {
-            /*if(Arrays.stream(defaultFilterName).noneMatch(item -> item.equals(key))) {
+            if(Arrays.stream(defaultFilterName).noneMatch(item -> item.equals(key))) {
                 filterNameComboBox.getItems().add(key);
-            }*/
+            }
         }
     }
 
     private void setPathogenicity() {
         if("SOMATIC".equalsIgnoreCase(panel.getAnalysisType())) {
-
+            caseLabel.setText("Tier");
+            caseECheckBox.setVisible(false);
+            caseACheckBox.setText("Tier1");
+            caseBCheckBox.setText("Tier2");
+            caseCCheckBox.setText("Tier3");
+            caseDCheckBox.setText("Tier4");
         } else {
+            caseLabel.setText("Pathogenicity");
+            caseACheckBox.setText("P(Pathogentic)");
+            caseBCheckBox.setText("LP(Likely Pathogenic)");
+            caseCCheckBox.setText("US(Uncertatin Significance)");
+            caseDCheckBox.setText("LB(Likely Benign)");
+            caseECheckBox.setText("B(Benign)");
+
             if(panel.getCode().equalsIgnoreCase(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
                 kohbraComboBox.setDisable(true);
                 kohbraTextField.setDisable(true);
@@ -747,6 +779,34 @@ public class VariantFilterController extends SubPaneController {
         }
     }
 
+    private void setCase(String value) {
+        if(value.equalsIgnoreCase("T1") || value.equalsIgnoreCase("P")) {
+            caseACheckBox.setSelected(true);
+        } else if(value.equalsIgnoreCase("T2") || value.equalsIgnoreCase("LP")) {
+            caseBCheckBox.setSelected(true);
+        } else if(value.equalsIgnoreCase("T3") || value.equalsIgnoreCase("US")) {
+            caseCCheckBox.setSelected(true);
+        } else if(value.equalsIgnoreCase("T4") || value.equalsIgnoreCase("LB")) {
+            caseDCheckBox.setSelected(true);
+        } else {
+            caseECheckBox.setSelected(true);
+        }
+    }
+
+    private void setVariantLevel(String value) {
+        if(value.equalsIgnoreCase("T1") || value.equalsIgnoreCase("P")) {
+            caseACheckBox.setSelected(true);
+        } else if(value.equalsIgnoreCase("T2") || value.equalsIgnoreCase("LP")) {
+            caseBCheckBox.setSelected(true);
+        } else if(value.equalsIgnoreCase("T3") || value.equalsIgnoreCase("US")) {
+            caseCCheckBox.setSelected(true);
+        } else if(value.equalsIgnoreCase("T4") || value.equalsIgnoreCase("LB")) {
+            caseDCheckBox.setSelected(true);
+        } else if (value.equalsIgnoreCase("B")){
+            caseECheckBox.setSelected(true);
+        }
+    }
+
     private void setClinVar(String value) {
         if(value.equalsIgnoreCase("Pathogenic")) {
             clinVarACheckBox.setSelected(true);
@@ -762,7 +822,9 @@ public class VariantFilterController extends SubPaneController {
     }
 
     private void setKeyValue(String key, String value) {
-        if(key.equalsIgnoreCase("clinVarClass")) {
+        if(key.equalsIgnoreCase("tier") || key.equalsIgnoreCase("pathogenicity")) {
+            setVariantLevel(value);
+        } else if(key.equalsIgnoreCase("clinVarClass")) {
             setClinVar(value);
         } else if(key.equalsIgnoreCase("codingConsequence")) {
             codingConsequenceCheck(value);
@@ -1034,7 +1096,7 @@ public class VariantFilterController extends SubPaneController {
                 DialogUtil.alert("No filter name found", "Please enter a filter name", mainApp.getPrimaryStage(), true);
                 filterNameTextField.requestFocus();
                 return;
-            } else if("All".equalsIgnoreCase(filterNameTextField.getText())) {
+            } else if(Arrays.stream(defaultFilterName).anyMatch(item -> item.equals(filterNameTextField.getText()))) {
                 DialogUtil.alert("Unavailable name", "Please edit the filter name", mainApp.getPrimaryStage(), true);
                 filterNameTextField.requestFocus();
                 return;
@@ -1253,6 +1315,38 @@ public class VariantFilterController extends SubPaneController {
     }
 
     private void variantTabSave(List<Object> list) {
+
+        if("SOMATIC".equalsIgnoreCase(panel.getAnalysisType())) {
+            if(caseACheckBox.isSelected()) {
+                list.add("tier T1");
+            }
+            if(caseBCheckBox.isSelected()) {
+                list.add("tier T2");
+            }
+            if(caseCCheckBox.isSelected()) {
+                list.add("tier T3");
+            }
+            if(caseDCheckBox.isSelected()) {
+                list.add("tier T4");
+            }
+        } else {
+            if(caseACheckBox.isSelected()) {
+                list.add("pathogenicity P");
+            }
+            if(caseBCheckBox.isSelected()) {
+                list.add("pathogenicity LP");
+            }
+            if(caseCCheckBox.isSelected()) {
+                list.add("pathogenicity US");
+            }
+            if(caseDCheckBox.isSelected()) {
+                list.add("pathogenicity LB");
+            }
+            if(caseECheckBox.isSelected()) {
+                list.add("pathogenicity B");
+            }
+        }
+
         if (clinVarACheckBox.isSelected()) {
             list.add("clinVarClass Pathogenic");
         }
@@ -1408,6 +1502,11 @@ public class VariantFilterController extends SubPaneController {
         gnomADotherTextField.setText("");
         gnomADsaTextField.setText("");
         exacTextField.setText("");
+        caseACheckBox.setSelected(false);
+        caseBCheckBox.setSelected(false);
+        caseCCheckBox.setSelected(false);
+        caseDCheckBox.setSelected(false);
+        caseECheckBox.setSelected(false);
         clinVarACheckBox.setSelected(false);
         clinVarBCheckBox.setSelected(false);
         clinVarCCheckBox.setSelected(false);
