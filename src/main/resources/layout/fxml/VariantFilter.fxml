@@ -85,7 +85,7 @@
                         <TextField fx:id="chromosomeTextField" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" promptText="chr7, chr9" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0" GridPane.columnIndex="1" GridPane.rowIndex="17">
                            <children>
-                              <Label prefWidth="80.0" style="-fx-font-family: Noto Sans KR Bold;" text="Alt Count">
+                              <Label minWidth="-Infinity" prefWidth="80.0" style="-fx-font-family: Noto Sans KR Bold;" text="Alt Count">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
@@ -224,7 +224,7 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0" GridPane.columnIndex="1" GridPane.rowIndex="16">
                            <children>
-                              <Label prefWidth="80.0" style="-fx-font-family: Noto Sans KR Bold;" text="Allele Fraction" />
+                              <Label minWidth="-Infinity" prefWidth="80.0" style="-fx-font-family: Noto Sans KR Bold;" text="Allele Fraction" />
                               <TextField fx:id="startFractionTextField" prefWidth="60.0" promptText="30" />
                               <Label text="~" />
                               <TextField fx:id="endFractionTextField" maxWidth="100.0" prefWidth="60.0" promptText="50" />
