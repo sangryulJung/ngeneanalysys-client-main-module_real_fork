@@ -41,8 +41,6 @@
                         <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
@@ -62,24 +60,24 @@
                         <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="Variant Type" GridPane.rowIndex="5" />
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="Variant Type" GridPane.rowIndex="3" />
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                            <children>
                               <CheckBox fx:id="snvCheckBox" mnemonicParsing="false" text="SNV" />
                               <CheckBox fx:id="indelCheckBox" mnemonicParsing="false" text="Ins(Insertion)" />
                               <CheckBox fx:id="delCheckBox" mnemonicParsing="false" text="Del(Deletion)" />
                            </children>
                         </HBox>
-                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="Chromosome" GridPane.rowIndex="8" />
-                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="Gene" GridPane.rowIndex="10" />
-                        <TextField fx:id="geneTextField" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" promptText="FLT3,CEBPA" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="dbSNP" GridPane.rowIndex="12" />
-                        <CheckBox fx:id="dbSNPidCheckBox" mnemonicParsing="false" text="Has dbSNP ID" GridPane.columnIndex="1" GridPane.rowIndex="12" />
-                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="COSMIC" GridPane.rowIndex="14" />
-                        <CheckBox fx:id="cosmicidCheckBox" mnemonicParsing="false" text="Has COSMIC ID" GridPane.columnIndex="1" GridPane.rowIndex="14" />
-                        <TextField fx:id="chromosomeTextField" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" promptText="chr7, chr9" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="Allele Fraction" GridPane.rowIndex="18" />
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0" GridPane.columnIndex="1" GridPane.rowIndex="18">
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="Chromosome" GridPane.rowIndex="6" />
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="Gene" GridPane.rowIndex="8" />
+                        <TextField fx:id="geneTextField" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" promptText="FLT3,CEBPA" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="dbSNP" GridPane.rowIndex="10" />
+                        <CheckBox fx:id="dbSNPidCheckBox" mnemonicParsing="false" text="Has dbSNP ID" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="COSMIC" GridPane.rowIndex="12" />
+                        <CheckBox fx:id="cosmicidCheckBox" mnemonicParsing="false" text="Has COSMIC ID" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+                        <TextField fx:id="chromosomeTextField" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" promptText="chr7, chr9" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="Allele Fraction" GridPane.rowIndex="16" />
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0" GridPane.columnIndex="1" GridPane.rowIndex="16">
                            <children>
                               <TextField fx:id="startFractionTextField" prefWidth="60.0" promptText="30" />
                               <Label text="~" />
@@ -103,8 +101,8 @@
                               <TextField fx:id="altEndCountTextField" prefWidth="60.0" promptText="50" />
                            </children>
                         </HBox>
-                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="ClinVar" GridPane.rowIndex="3" />
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="ClinVar" GridPane.rowIndex="1" />
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <children>
                               <CheckBox fx:id="clinVarACheckBox" mnemonicParsing="false" text="CheckBox" />
                               <CheckBox fx:id="clinVarBCheckBox" mnemonicParsing="false" text="CheckBox" />
@@ -113,24 +111,14 @@
                               <CheckBox fx:id="clinVarECheckBox" mnemonicParsing="false" text="CheckBox" />
                            </children>
                         </HBox>
-                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="COSMIC Occurrence" GridPane.rowIndex="16" />
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="COSMIC Occurrence" GridPane.rowIndex="14" />
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                            <children>
                               <CheckBox fx:id="mnpCheckBox" mnemonicParsing="false" text="MNP(Multiple-nucleotide polymorphism)" />
                               <CheckBox fx:id="complexCheckBox" mnemonicParsing="false" text="Complex(Multiple-nucloetied and an InDel)" />
                            </children>
                         </HBox>
-                        <Label fx:id="caseLabel" style="-fx-font-family: Noto Sans KR Bold;" text="Pathogenicity" GridPane.rowIndex="1" />
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                           <children>
-                              <CheckBox fx:id="caseACheckBox" mnemonicParsing="false" text="CheckBox" />
-                              <CheckBox fx:id="caseBCheckBox" mnemonicParsing="false" text="CheckBox" />
-                              <CheckBox fx:id="caseCCheckBox" mnemonicParsing="false" text="CheckBox" />
-                              <CheckBox fx:id="caseDCheckBox" mnemonicParsing="false" text="CheckBox" />
-                              <CheckBox fx:id="caseECheckBox" mnemonicParsing="false" text="CheckBox" />
-                           </children>
-                        </HBox>
-                        <ComboBox fx:id="cosmicOccurrenceComboBox" prefWidth="150.0" promptText="Tissue selection" GridPane.columnIndex="1" GridPane.rowIndex="16" />
+                        <ComboBox fx:id="cosmicOccurrenceComboBox" prefWidth="150.0" promptText="Tissue selection" GridPane.columnIndex="1" GridPane.rowIndex="14" />
                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2">
                            <children>
                               <Separator prefWidth="890.0">
@@ -149,7 +137,7 @@
                               </Separator>
                            </children>
                         </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="4">
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="5">
                            <children>
                               <Separator prefWidth="890.0">
                                  <padding>
@@ -177,6 +165,9 @@
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="11">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
                            <children>
                               <Separator prefWidth="890.0">
                                  <padding>
@@ -186,9 +177,6 @@
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="13">
-                           <GridPane.margin>
-                              <Insets />
-                           </GridPane.margin>
                            <children>
                               <Separator prefWidth="890.0">
                                  <padding>
@@ -224,17 +212,8 @@
                               </Separator>
                            </children>
                         </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="21">
-                           <children>
-                              <Separator prefWidth="890.0">
-                                 <padding>
-                                    <Insets right="10.0" />
-                                 </padding>
-                              </Separator>
-                           </children>
-                        </HBox>
-                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="Warning(Low Confidence)" GridPane.rowIndex="20" />
-                        <HBox fx:id="warningHBox" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="20">
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="Warning(Low Confidence)" GridPane.rowIndex="18" />
+                        <HBox fx:id="warningHBox" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="18">
                            <children>
                               <Button fx:id="allLowConfidenceButton" mnemonicParsing="false" onMouseClicked="#setAllLowConfidence" prefWidth="70.0" styleClass="submitBtn" text="All" />
                               <Button fx:id="defaultLowConfidence" mnemonicParsing="false" onMouseClicked="#setDefaultLowConfidence" prefWidth="70.0" styleClass="submitBtn" text="Default" />
