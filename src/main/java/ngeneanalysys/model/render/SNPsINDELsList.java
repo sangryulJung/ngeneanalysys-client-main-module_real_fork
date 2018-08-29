@@ -119,7 +119,7 @@ public class SNPsINDELsList {
 			}*/
 		}
 		
-		/*button.setOnAction(event -> {
+		button.setOnAction(event -> {
 			PopOver popOver = new PopOver();
 			popOver.setArrowLocation(ArrowLocation.LEFT_TOP);
 			popOver.setHeaderAlwaysVisible(true);
@@ -130,26 +130,8 @@ public class SNPsINDELsList {
 			popOver.setArrowIndent(30);
 			popOver.setContentNode(box);
 			popOver.show(button);
-		});*/
-
-
-
-		button.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-			PopOver popOver = new PopOver();
-			popOver.setArrowLocation(ArrowLocation.LEFT_TOP);
-			popOver.setHeaderAlwaysVisible(true);
-			popOver.setAutoHide(true);
-			popOver.setAutoFix(true);
-			popOver.setDetachable(true);
-			popOver.setArrowSize(15);
-			popOver.setArrowIndent(30);
-			popOver.setContentNode(box);
-			popOver.show(button);
-			popOver.addEventHandler(MouseEvent.MOUSE_CLICKED, evt ->{
-				popOver.hide();
-			});
+			popOver.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> popOver.hide());
 		});
-
 		
 		return button;
 	}

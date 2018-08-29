@@ -1426,6 +1426,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                     if(item == null || empty) {
                         setText(null);
                     } else {
+                        setText(item);
                         if(panel.getVariantFilter() != null
                                 && StringUtils.isNotEmpty(panel.getVariantFilter().getEssentialGenes())) {
                             if(Arrays.stream(panel.getVariantFilter().getEssentialGenes().split(",")).anyMatch(
@@ -1435,7 +1436,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                                 setTextFill(Color.BLACK);
                             }
                         }
-                        setText(item);
                     }
                 }
             }
@@ -1521,12 +1521,12 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                         if(item == null || empty) {
                             setText(null);
                         } else {
+                            setText(item.toString());
                             if(item <= 6) {
                                 setTextFill(Color.RED);
                             } else {
                                 setTextFill(Color.BLACK);
                             }
-                            setText(item.toString());
                         }
                     }
                 }
@@ -2067,7 +2067,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             if(item == null || empty) {
                 setText(null);
             } else {
+                setText(item.toString());
                 if(StringUtils.isNotEmpty(panel.getVariantFilter().getPopulationFrequencyDBs()) &&
+                        panel.getVariantFilter().getPopulationFrequency() != null &&
                         Arrays.stream(panel.getVariantFilter().getPopulationFrequencyDBs().split(",")).anyMatch(db ->
                                 db.equalsIgnoreCase(type)) && item.doubleValue() <
                         panel.getVariantFilter().getPopulationFrequency().doubleValue()) {
@@ -2079,7 +2081,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                         setTextFill(Color.BLACK);
                     }
                 }
-                setText(item.toString());
             }
         }
     }

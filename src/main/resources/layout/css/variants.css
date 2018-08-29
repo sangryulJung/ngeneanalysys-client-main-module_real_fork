@@ -248,12 +248,11 @@
  	-fx-border-color:#000 #F7F7F7 #F7F7F7 #F7F7F7;
  	-fx-border-width:0 1 0 0;
 }
-
+/*
 #variantListTableView .table-row-cell {
 	-fx-background-insets:0;
 	-fx-padding:0;
 	-fx-border-width:2 0 2 0;
-
 }
 
 #variantListTableView .table-row-cell:empty {
@@ -268,7 +267,7 @@
 
 #variantListTableView .table-cell .label {
 	-fx-text-fill:#656565;
-}
+}*/
 
 #variantListTableView:row-selection .column-header-background .nested-column-header .sub_column {
 	-fx-background-color:#cbd3d7;
