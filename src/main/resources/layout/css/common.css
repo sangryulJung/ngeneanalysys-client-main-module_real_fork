@@ -480,14 +480,13 @@ Button {
 
 .table-row-cell {
 	-fx-background-insets:0;
-	-fx-background-color: -fx-table-cell-border-color, #FFFFFF;
+
     -fx-border-width : 0;
     -fx-font-size : 13;
 }
 
 .table-row-cell:odd{
 	-fx-background-insets:0;
-	-fx-background-color: -fx-table-cell-border-color, #FFFFFF;
     -fx-border-width : 0;
     -fx-font-size : 13;
 }
@@ -502,12 +501,10 @@ Button {
 
 .table-row-cell:selected {
     -fx-table-cell-border-color: transparent;
-	-fx-background-color : #005797;
-	-fx-text-background-color:#ffffff;
+
 }
 
 .table-view .table-cell .label {
-	-fx-text-fill:#656565;
 	-fx-background-color : #FFFFFF;
 	-fx-pref-height : 25;
 }
