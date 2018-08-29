@@ -526,6 +526,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                 Node node = loader.load();
                 ExcludeReportDialogController excludeReportDialogController = loader.getController();
                 excludeReportDialogController.setMainController(mainController);
+                excludeReportDialogController.setSnvController(analysisDetailSNVController);
                 excludeReportDialogController.setParamMap(this.getParamMap());
                 excludeReportDialogController.settingItem(symbol, selectedAnalysisResultVariant, checkBox);
                 excludeReportDialogController.show((Parent) node);
@@ -533,8 +534,8 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                 ioe.printStackTrace();
             }
 
-            if(!oldSymbol.equals(selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport()))
-                analysisDetailSNVController.showVariantList(analysisDetailSNVController.getCurrentPageIndex() + 1, 0);
+            /*if(!oldSymbol.equals(selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport()))
+                analysisDetailSNVController.showVariantList(analysisDetailSNVController.getCurrentPageIndex() + 1, 0);*/
         }
     }
 
