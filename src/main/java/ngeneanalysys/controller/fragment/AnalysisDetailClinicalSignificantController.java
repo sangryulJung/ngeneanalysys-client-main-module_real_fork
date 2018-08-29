@@ -302,13 +302,14 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                     ExcludeReportDialogController excludeReportDialogController = loader.getController();
                     excludeReportDialogController.setMainController(mainController);
                     excludeReportDialogController.setParamMap(this.getParamMap());
+                    excludeReportDialogController.setSnvController(controller);
                     excludeReportDialogController.settingItem("Y", selectedAnalysisResultVariant, checkBox);
                     excludeReportDialogController.show((Parent) node);
                 } catch (IOException ioe) {
                     ioe.printStackTrace();
                 }
-                if(!oldSymbol.equals(selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport()))
-                    controller.showVariantList(controller.getCurrentPageIndex() + 1,0);
+                /*if(!oldSymbol.equals(selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport()))
+                    controller.showVariantList(controller.getCurrentPageIndex() + 1,0);*/
             } else {
                 try {
                     FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
@@ -316,14 +317,15 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                     ExcludeReportDialogController excludeReportDialogController = loader.getController();
                     excludeReportDialogController.setMainController(mainController);
                     excludeReportDialogController.setParamMap(this.getParamMap());
+                    excludeReportDialogController.setSnvController(controller);
                     excludeReportDialogController.settingItem("N", selectedAnalysisResultVariant, checkBox);
                     excludeReportDialogController.show((Parent) node);
                 } catch (IOException ioe) {
                     ioe.printStackTrace();
                 }
             }
-            if(!oldSymbol.equals(selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport()))
-                controller.showVariantList(controller.getCurrentPageIndex() + 1,0);
+            /*if(!oldSymbol.equals(selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport()))
+                controller.showVariantList(controller.getCurrentPageIndex() + 1,0);*/
         }
     }
 
@@ -637,6 +639,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                 ChangePathogenicityController changePathogenicityController = loader.getController();
                 changePathogenicityController.setMainController(this.getMainController());
                 changePathogenicityController.setClinicalSignificantController(this);
+                changePathogenicityController.setSnvController(controller);
                 changePathogenicityController.setParamMap(this.paramMap);
                 changePathogenicityController.settingTier(value, selectedAnalysisResultVariant);
                 changePathogenicityController.show((Parent) root);

@@ -47,6 +47,15 @@ public class ChangePathogenicityController extends SubPaneController {
 
     private AnalysisDetailClinicalSignificantController clinicalSignificantController;
 
+    private AnalysisDetailSNVController snvController;
+
+    /**
+     * @param snvController
+     */
+    public void setSnvController(AnalysisDetailSNVController snvController) {
+        this.snvController = snvController;
+    }
+
     /**
      * @param clinicalSignificantController AnalysisDetailClinicalSignificantController
      */
@@ -99,6 +108,9 @@ public class ChangePathogenicityController extends SubPaneController {
             params.put("sampleId", sampleView.getId());
             params.put("snpInDelIds", selectedItem.getSnpInDel().getId().toString());
             apiService.put("analysisResults/snpInDels/updatePathogenicity", params, null, true);
+
+            if(snvController != null) snvController.setrFlag(true);
+
         } catch (WebAPIException wae) {
             wae.printStackTrace();
             DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);

@@ -35,12 +35,21 @@ public class ExcludeReportDialogController extends SubPaneController {
 
     private VariantAndInterpretationEvidence selectedItem = null;
 
+    private AnalysisDetailSNVController snvController;
+
     private CheckBox checkBox;
 
     @FXML
     private TextField commentTextField;
 
     private Stage dialogStage;
+
+    /**
+     * @param snvController
+     */
+    public void setSnvController(AnalysisDetailSNVController snvController) {
+        this.snvController = snvController;
+    }
 
     public void settingItem(String symbol, VariantAndInterpretationEvidence selectedItem, CheckBox checkBox) {
         this.symbol = symbol;
@@ -83,6 +92,7 @@ public class ExcludeReportDialogController extends SubPaneController {
             params.put("comment", StringUtils.isEmpty(comment) ? "N/A" : comment);
             params.put("includeInReport", symbol);
             apiService.put("analysisResults/snpInDels/updateIncludeInReport", params, null, true);
+            if(snvController != null) snvController.setrFlag(true);
         } catch (WebAPIException wae) {
             wae.printStackTrace();
         }
