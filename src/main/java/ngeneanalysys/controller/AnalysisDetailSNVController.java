@@ -1631,7 +1631,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadEastAsian = new TableColumn<>("gnomAD East Asian");
         createTableHeader(gnomadEastAsian, "gnomAD East Asian", null, null, "gnomADeastAsian");
-        gnomadEastAsian.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getAdmixedAmerican())));
+        gnomadEastAsian.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getEastAsian())));
         gnomadEastAsian.setCellFactory(cell -> new PopTableCell("gnomAD.eastAsian"));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadFinnish = new TableColumn<>("gnomAD Finnish");
