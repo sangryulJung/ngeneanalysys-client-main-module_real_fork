@@ -1848,6 +1848,19 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         variantListTableView.getStyleClass().clear();
         variantListTableView.getStyleClass().add("table-view");
 
+        variantListTableView.skinProperty().addListener((obs, oldSkin, newSkin) -> {
+            final TableHeaderRow header = (TableHeaderRow) variantListTableView.lookup("TableHeaderRow");
+            header.reorderingProperty().addListener((o, oldVal, newVal) -> {
+                ObservableList columns = variantListTableView.getColumns();
+
+                // If the first columns is not in the first index change it
+                if (columns.indexOf(checkBoxColumn) != 0) {
+                    columns.remove(checkBoxColumn);
+                    columns.add(0, checkBoxColumn);
+                }
+            });
+        });
+
         runColumnAction();
 
     }
