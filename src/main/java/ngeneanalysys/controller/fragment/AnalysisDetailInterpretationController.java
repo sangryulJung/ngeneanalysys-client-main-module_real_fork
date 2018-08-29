@@ -615,6 +615,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                     selectedAnalysisResultVariant.getSnpInDel().setExpertTier(returnTier(getPrimaryEvidence()));
                     setEvidenceTable();
                     setPastCases();
+                    analysisDetailSNVController.setrFlag(true);
                 } catch (WebAPIException wae) {
                     DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                             getMainApp().getPrimaryStage(), true);

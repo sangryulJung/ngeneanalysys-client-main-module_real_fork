@@ -158,11 +158,20 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     private Integer currentPageIndex = -1;
 
+    private Boolean rFlag = false;
+
     private AnalysisDetailSNPsINDELsMemoController memoController;
 
     private Map<String, List<Object>> filterList = new HashMap<>();
 
     private Map<String, TableColumn> columnMap = new HashMap<>();
+
+    /**
+     * @param rFlag
+     */
+    public void setrFlag(Boolean rFlag) {
+        this.rFlag = rFlag;
+    }
 
     private final ListChangeListener<TableColumn<VariantAndInterpretationEvidence, ?>> tableColumnListChangeListener =
             c -> saveColumnInfoToServer();
@@ -773,10 +782,13 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     private void foldRight(){
-        if(currentPageIndex != -1) {
-            showVariantList(currentPageIndex + 1, 0);
-        } else {
-            showVariantList(1, 0);
+        if(rFlag) {
+            if (currentPageIndex != -1) {
+                showVariantList(currentPageIndex + 1, 0);
+            } else {
+                showVariantList(1, 0);
+            }
+            rFlag = false;
         }
         double rightFoldedWidth = 50;
         double snvWrapperWidth = snvWrapper.getWidth();
@@ -1018,7 +1030,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             response = apiService.get("/analysisResults/sampleSummary/"+ sample.getId(), null, null, false);
 
             sample.setAnalysisResultSummary(response.getObjectBeforeConvertResponseToJSON(AnalysisResultSummary.class));
-            reportedCountLabel.setText("(" + sample.getAnalysisResultSummary().getReportVariantCount() +")");
+            reportedCountLabel.setText("(R : " + sample.getAnalysisResultSummary().getReportVariantCount() +")");
 
             if (list != null && !list.isEmpty()) {
                 displayList = FXCollections.observableArrayList(list);

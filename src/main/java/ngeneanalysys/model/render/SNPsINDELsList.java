@@ -3,6 +3,7 @@ package ngeneanalysys.model.render;
 import java.util.Map;
 import java.util.Set;
 
+import javafx.scene.input.MouseEvent;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.model.Panel;
@@ -26,7 +27,6 @@ import javafx.scene.layout.VBox;
  * @since 2016. 6. 17. 오후 11:14:41
  */
 public class SNPsINDELsList {
-
 	/**
 	 * Warning 상세 이유 팝업 출력 버튼 객체 반환
 	 * @param jsonStr
@@ -119,7 +119,7 @@ public class SNPsINDELsList {
 			}*/
 		}
 		
-		button.setOnAction(event -> {
+		/*button.setOnAction(event -> {
 			PopOver popOver = new PopOver();
 			popOver.setArrowLocation(ArrowLocation.LEFT_TOP);
 			popOver.setHeaderAlwaysVisible(true);
@@ -130,6 +130,24 @@ public class SNPsINDELsList {
 			popOver.setArrowIndent(30);
 			popOver.setContentNode(box);
 			popOver.show(button);
+		});*/
+
+		PopOver popOver = new PopOver();
+		popOver.setArrowLocation(ArrowLocation.LEFT_TOP);
+		popOver.setHeaderAlwaysVisible(true);
+		popOver.setAutoHide(true);
+		popOver.setAutoFix(true);
+		popOver.setDetachable(true);
+		popOver.setArrowSize(15);
+		popOver.setArrowIndent(30);
+		popOver.setContentNode(box);
+
+		button.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
+			popOver.show(button);
+		});
+
+		button.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+			popOver.hide();
 		});
 		
 		return button;
