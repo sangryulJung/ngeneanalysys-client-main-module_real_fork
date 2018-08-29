@@ -25,7 +25,9 @@ public class PopOverUtil {
 
     private static HBox getTextItemBox(String title) {
         HBox hBox = new HBox();
-        hBox.getChildren().add(new Label(title.replace(":", " : ")));
+        Label label = new Label(title.replace(":", " : "));
+        label.setStyle("-fx-text-fill : black;");
+        hBox.getChildren().add(label);
         return hBox;
     }
 

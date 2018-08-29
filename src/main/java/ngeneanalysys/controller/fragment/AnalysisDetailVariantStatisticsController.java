@@ -58,7 +58,7 @@ public class AnalysisDetailVariantStatisticsController extends SubPaneController
 
             AnimationTimer variantStatisticsRunTimer = new VariantStatisticsTimer(
                     canvasVariantStatisticsRun.getGraphicsContext2D(), variantFrequencyRun, "RUN",
-                    String.format("%.2f%%\n(%s)", variantFrequencyRun * 100.0, variantFrequencyPanelCount + "/" + variantFrequencyPanelTotalCount), this.gaugeSpeed);
+                    String.format("%.2f%%\n(%s)", variantFrequencyRun * 100.0, variantFrequencyRunCount + "/" + variantFrequencyRunTotalCount), this.gaugeSpeed);
             AnimationTimer variantStatisticsPanelTimer = new VariantStatisticsTimer(
                     canvasVariantStatisticsPanel.getGraphicsContext2D(), variantFrequencyPanel, "PANEL",
                     String.format("%.2f%%\n(%s)", variantFrequencyPanel * 100.0, variantFrequencyPanelCount + "/" + variantFrequencyPanelTotalCount), this.gaugeSpeed);

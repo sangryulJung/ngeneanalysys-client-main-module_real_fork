@@ -1256,6 +1256,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         TableColumn<VariantAndInterpretationEvidence, Boolean> checkBoxColumn = new TableColumn<>("");
         createCheckBoxTableHeader(checkBoxColumn, 50d);
+        //checkBoxColumn.impl_setReorderable(false); 컬럼 이동 방지 코드
         checkBoxColumn.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue() != null ));
         checkBoxColumn.setCellFactory(param -> new BooleanCell());
         String columnName = "Pathogenicity";
