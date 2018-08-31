@@ -29,6 +29,7 @@ import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 
 import java.io.File;
@@ -842,6 +843,9 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             }
             closeDialog();
 
+        } catch (WebAPIException e) {
+            DialogUtil.warning(e.getHeaderText(), e.getMessage(), getMainApp().getPrimaryStage(), true);
+            logger.warn("Analysis request warning : ", e.getMessage());
         } catch (Exception e) {
             logger.error("Unknown Error", e);
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);

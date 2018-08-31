@@ -11,6 +11,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import org.apache.http.HttpStatus;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.BaseStageController;
 import ngeneanalysys.exceptions.WebAPIException;
@@ -21,7 +22,6 @@ import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
-import org.eclipse.jetty.http.HttpStatus;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -154,7 +154,7 @@ public class LoginController extends BaseStageController {
 
 					mainApp.showMain();
 				} catch (WebAPIException wae){
-					if (wae.getResponse() != null && wae.getResponse().getStatus() == HttpStatus.BAD_REQUEST_400) {
+					if (wae.getResponse() != null && wae.getResponse().getStatus() == HttpStatus.SC_BAD_REQUEST) {
 						DialogUtil.warning(null, "The Username and Password do not match.", getMainApp().getPrimaryStage(), true);
 					} else {
 						DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(), getMainApp().getPrimaryStage(), true);
