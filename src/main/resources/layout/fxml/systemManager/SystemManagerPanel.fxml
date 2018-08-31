@@ -4,6 +4,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Pagination?>
@@ -38,7 +39,7 @@
                   </HBox>
                   <Accordion fx:id="panelEditAccordion" prefHeight="446.0" prefWidth="500.0">
                     <panes>
-                      <TitledPane animated="false" text="Basic Information">
+                      <TitledPane fx:id="basicInformationTitlePane" animated="false" text="Basic Information">
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="498.0">
                                  <children>
@@ -130,54 +131,67 @@
                           <content>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <GridPane fx:id="panelEditGridPane" hgap="2.0" layoutX="28.6" layoutY="29.6" maxWidth="-Infinity" prefHeight="121.0" prefWidth="458.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <GridPane fx:id="panelEditGridPane" hgap="10.0" layoutX="28.6" layoutY="29.6" maxWidth="-Infinity" prefHeight="121.0" prefWidth="458.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="260.0" minWidth="93.00000762939453" prefWidth="260.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="478.99999237060547" minWidth="260.0" prefWidth="312.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="93.00000762939453" percentWidth="25.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="478.99999237060547" minWidth="260.0" percentWidth="25.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="260.0" percentWidth="25.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="260.0" percentWidth="25.0" />
                                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="0.0" minWidth="0.0" prefWidth="0.0" />
                                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="0.0" minWidth="0.0" prefWidth="0.0" />
                                        </columnConstraints>
                                        <rowConstraints>
                                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
                                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
                                           <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
                                        </rowConstraints>
                                        <children>
-                                          <Label text="InDel MAF( % )" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                                          <Label text="InDel MAF( % )" GridPane.halignment="LEFT">
                                              <tooltip>
                                                 <Tooltip text="Min Allele Fraction, Default 5%" />
                                              </tooltip>
                                           </Label>
-                                          <Label text="InDel MRD( x )" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                                          <Label text="InDel MRD( x )" GridPane.halignment="LEFT" GridPane.rowIndex="2">
                                              <tooltip>
                                                 <Tooltip text="Min Read Depth, Default 30x" />
                                              </tooltip>
                                           </Label>
-                                          <Label text="InDel MAC" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+                                          <Label text="InDel MAC" GridPane.halignment="LEFT" GridPane.rowIndex="1">
                                              <tooltip>
                                                 <Tooltip text="Min Alternate Count, Default 6" />
                                              </tooltip>
                                           </Label>
-                                          <TextField fx:id="indelMinAlleleFrequencyTextField" maxHeight="38.0" maxWidth="1.7976931348623157E308" prefWidth="160.0" styleClass="txt_black" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                          <TextField fx:id="indelMinReadDepthTextField" maxHeight="38.0" maxWidth="1.7976931348623157E308" prefWidth="160.0" styleClass="txt_black" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                          <TextField fx:id="indelMinAlternateCountTextField" maxHeight="38.0" maxWidth="1.7976931348623157E308" prefWidth="160.0" styleClass="txt_black" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                          <Label text="Essential Genes" GridPane.halignment="RIGHT" />
-                                          <TextField fx:id="essentialGenesTextField" maxWidth="1.7976931348623157E308" styleClass="txt_black" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
-                                          <Label text="SNV MRD( x )" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+                                          <TextField fx:id="indelMinAlleleFractionTextField" maxHeight="38.0" maxWidth="1.7976931348623157E308" prefWidth="160.0" styleClass="txt_black" GridPane.columnIndex="1" />
+                                          <TextField fx:id="indelMinReadDepthTextField" maxHeight="38.0" maxWidth="1.7976931348623157E308" prefWidth="160.0" styleClass="txt_black" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                          <TextField fx:id="indelMinAlternateCountTextField" maxHeight="38.0" maxWidth="1.7976931348623157E308" prefWidth="160.0" styleClass="txt_black" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <Label text="Essential Genes" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+                                          <TextField fx:id="essentialGenesTextField" maxWidth="1.7976931348623157E308" styleClass="txt_black" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" />
+                                          <Label text="SNV MRD( x )" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="2">
                                              <tooltip>
                                                 <Tooltip text="Min Read Depth, Default 30x" />
                                              </tooltip>
                                           </Label>
-                                          <TextField fx:id="snvMinReadDepthTextField" maxHeight="38.0" maxWidth="1.7976931348623157E308" prefWidth="160.0" styleClass="txt_black" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                          <Label text="Homopolymer &amp; Repeat sequence MAF( x )" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+                                          <TextField fx:id="snvMinReadDepthTextField" maxHeight="38.0" maxWidth="1.7976931348623157E308" prefWidth="160.0" styleClass="txt_black" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                          <Label text="Homopolymer &amp; Repeat sequence MAF( x )" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="3">
                                              <tooltip>
                                                 <Tooltip text="Default 30x" />
                                              </tooltip>
                                           </Label>
-                                          <TextField fx:id="lowConfidenceMinAlleleFractionTextField" maxHeight="38.0" maxWidth="1.7976931348623157E308" prefWidth="160.0" styleClass="txt_black" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                          <TextField fx:id="lowConfidenceMinAlleleFractionTextField" maxHeight="38.0" maxWidth="1.7976931348623157E308" prefWidth="160.0" styleClass="txt_black" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                          <Label text="SNV MAC" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                             <tooltip>
+                                                <Tooltip text="Min Read Depth, Default 30x" />
+                                             </tooltip>
+                                          </Label>
+                                          <Label text="SNV MAF( % )" GridPane.columnIndex="2">
+                                             <tooltip>
+                                                <Tooltip text="Min Allele Fraction, Default 5%" />
+                                             </tooltip>
+                                          </Label>
+                                          <TextField fx:id="snvMinAlternateCountTextField" maxHeight="38.0" maxWidth="1.7976931348623157E308" prefWidth="160.0" styleClass="txt_black" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                          <TextField fx:id="snvMinAlleleFractionTextField" maxHeight="38.0" maxWidth="1.7976931348623157E308" prefWidth="160.0" styleClass="txt_black" GridPane.columnIndex="3" />
                                        </children>
                                     </GridPane>
                                  </children>
@@ -204,11 +218,11 @@
                               </AnchorPane>
                           </content>
                         </TitledPane>
-                        <TitledPane animated="false" text="SNP Population Frequency Filter">
+                        <TitledPane animated="false" text="Somatic Variant Tier4 Filter">
                           <content>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <GridPane fx:id="snpPopulationFrequencyFilterGridPane" hgap="2.0" maxWidth="-Infinity" prefHeight="934.0" prefWidth="450.0" AnchorPane.bottomAnchor="-0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <GridPane fx:id="snpPopulationFrequencyFilterGridPane" hgap="10.0" maxWidth="-Infinity" prefHeight="934.0" prefWidth="450.0" AnchorPane.bottomAnchor="-0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <columnConstraints>
                                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="210.0" minWidth="187.0" prefWidth="210.0" />
                                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="207.0" minWidth="73.0" prefWidth="128.0" />
@@ -217,11 +231,14 @@
                                        <rowConstraints>
                                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
                                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                        </rowConstraints>
                                        <children>
                                           <Label text="Choose Population Frequency DBs" GridPane.halignment="RIGHT" />
                                           <Label text="Frequency Threshold( &lt;= 1.00  )" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
                                           <TextField fx:id="populationFrequencyTextField" maxHeight="38.0" maxWidth="1.7976931348623157E308" prefWidth="160.0" styleClass="txt_black" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <Label text="ClinVar Drug Response Check" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                                          <CheckBox fx:id="clinVarDrugResponseCheckBox" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                        </children>
                                     </GridPane>
                                  </children>

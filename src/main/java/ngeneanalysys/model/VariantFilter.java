@@ -8,11 +8,13 @@ public class VariantFilter {
     private BigDecimal inDelMinAlleleFraction;
     private Integer inDelMinReadDepth;
     private Integer inDelMinAlternateCount;
+    private BigDecimal snvMinAlleleFraction;
+    private Integer snvMinAlternateCount;
     private Integer snvMinReadDepth;
     private BigDecimal lowConfidenceMinAlleleFraction;
     private String populationFrequencyDBs;
     private BigDecimal populationFrequency;
-
+    private Boolean clinVarDrugResponseCheck = false;
     /**
      * @param lowConfidenceMinAlleleFraction
      */
@@ -96,6 +98,30 @@ public class VariantFilter {
     public void setInDelMinAlternateCount(Integer inDelMinAlternateCount) {
         this.inDelMinAlternateCount = inDelMinAlternateCount;
     }
+    /**
+     * @return snvMinAlleleFraction
+     */
+    public BigDecimal getSnvMinAlleleFraction() {
+        return snvMinAlleleFraction;
+    }
+    /**
+     * @param snvMinAlleleFraction
+     */
+    public void setSnvMinAlleleFraction(BigDecimal snvMinAlleleFraction) {
+        this.snvMinAlleleFraction = snvMinAlleleFraction;
+    }
+    /**
+     * @return snvMinAlternateCount
+     */
+    public Integer getSnvMinAlternateCount() {
+        return snvMinAlternateCount;
+    }
+    /**
+     * @param snvMinAlternateCount
+     */
+    public void setSnvMinAlternateCount(Integer snvMinAlternateCount) {
+        this.snvMinAlternateCount = snvMinAlternateCount;
+    }
 
     /**
      * @return snvMinReadDepth
@@ -138,6 +164,18 @@ public class VariantFilter {
     public void setPopulationFrequency(BigDecimal populationFrequency) {
         this.populationFrequency = populationFrequency;
     }
+    /**
+     * @return clinVarDrugResponseCheck
+     */
+    public Boolean getClinVarDrugResponseCheck() {
+        return clinVarDrugResponseCheck;
+    }
+    /**
+     * @param clinVarDrugResponseCheck
+     */
+    public void setClinVarDrugResponseCheck(Boolean clinVarDrugResponseCheck) {
+        this.clinVarDrugResponseCheck = clinVarDrugResponseCheck;
+    }
 
     @Override
     public String toString() {
@@ -147,9 +185,12 @@ public class VariantFilter {
                 ", inDelMinAlleleFraction=" + inDelMinAlleleFraction +
                 ", inDelMinReadDepth=" + inDelMinReadDepth +
                 ", inDelMinAlternateCount=" + inDelMinAlternateCount +
+                ", snvMinAlleleFraction=" + snvMinAlleleFraction +
+                ", snvMinAlternateCount=" + snvMinAlternateCount +
                 ", snvMinReadDepth=" + snvMinReadDepth +
                 ", populationFrequencyDBs='" + populationFrequencyDBs + '\'' +
                 ", populationFrequency=" + populationFrequency +
+                ", clinVarDrugResponseCheck=" + clinVarDrugResponseCheck +
                 '}';
     }
 }

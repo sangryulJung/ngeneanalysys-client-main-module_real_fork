@@ -149,8 +149,6 @@ public enum PipelineCode {
 				list.add("sequencing_error");
 				list.add("mapping_error");
 				list.add("snp_candidate");
-				list.add("low_vaf");
-				list.add("snp_for_cnv");
 				break;
 			default:
 		}
