@@ -277,9 +277,11 @@ public class SystemManagerPanelController extends SubPaneController {
                             pipelineCode.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
                         setBRCADefault();
                     } else if(pipelineCode.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
-                        setHEREDDefault();
+                        setHeredDefault();
                     } else if(pipelineCode.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
-                        setHEMEDefault();
+                        setHemeDefault();
+                    } else if(pipelineCode.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
+                        setSolidDefault();
                     }
 
                     defaultSampleSourceComboBox.getItems().addAll(PipelineCode.getSampleSource(newValue.getValue()));
@@ -323,12 +325,14 @@ public class SystemManagerPanelController extends SubPaneController {
         setDisabledItem(true);
     }
 
-    private void setHEREDDefault() {
+    private void setHeredDefault() {
         canonicalTranscriptTextArea.setText("");
         canonicalTranscriptTextArea.setDisable(false);
 
-        warningMAFTextField.setText("");
-        warningMAFTextField.setDisable(true);
+        warningMAFTextField.setText("30");
+        warningMAFTextField.setDisable(false);
+        warningReadDepthTextField.setText("");
+        warningReadDepthTextField.setDisable(true);
 
         essentialGenesTextField.setText("");
         essentialGenesTextField.setDisable(true);
@@ -359,12 +363,51 @@ public class SystemManagerPanelController extends SubPaneController {
         roiCoveragePercentageTextField.setDisable(true);
     }
 
-    private void setHEMEDefault() {
+    private void setHemeDefault() {
         canonicalTranscriptTextArea.setText("");
         canonicalTranscriptTextArea.setDisable(false);
 
-        warningMAFTextField.setText("");
+        warningMAFTextField.setText("5.0");
         warningMAFTextField.setDisable(false);
+        warningReadDepthTextField.setText("100");
+        warningReadDepthTextField.setDisable(false);
+
+        essentialGenesTextField.setText("");
+        essentialGenesTextField.setDisable(false);
+        indelMinAlleleFractionTextField.setText("5.0");
+        indelMinAlleleFractionTextField.setDisable(false);
+        indelMinReadDepthTextField.setText("30");
+        indelMinReadDepthTextField.setDisable(false);
+        indelMinAlternateCountTextField.setText("6");
+        indelMinAlternateCountTextField.setDisable(false);
+
+        snvMinAlleleFractionTextField.setText("");
+        snvMinAlleleFractionTextField.setDisable(true);
+        snvMinAlternateCountTextField.setText("");
+        snvMinAlternateCountTextField.setDisable(true);
+        snvMinReadDepthTextField.setText("30");
+        snvMinReadDepthTextField.setDisable(false);
+        lowConfidenceMinAlleleFractionTextField.setText("5.0");
+        lowConfidenceMinAlleleFractionTextField.setDisable(false);
+        populationFrequencyTextField.setText("");
+        populationFrequencyTextField.setDisable(false);
+        clinVarDrugResponseCheckBox.setSelected(false);
+        clinVarDrugResponseCheckBox.setDisable(false);
+        frequencyDBCheckComboBox.getCheckModel().clearChecks();
+        frequencyDBCheckComboBox.setDisable(false);
+
+        roiCoveragePercentageTextField.setText("");
+        roiCoveragePercentageTextField.setDisable(true);
+    }
+
+    private void setSolidDefault() {
+        canonicalTranscriptTextArea.setText("");
+        canonicalTranscriptTextArea.setDisable(false);
+
+        warningMAFTextField.setText("5.0");
+        warningMAFTextField.setDisable(false);
+        warningReadDepthTextField.setText("100");
+        warningReadDepthTextField.setDisable(false);
 
         essentialGenesTextField.setText("");
         essentialGenesTextField.setDisable(false);
@@ -387,7 +430,7 @@ public class SystemManagerPanelController extends SubPaneController {
         populationFrequencyTextField.setText("");
         populationFrequencyTextField.setDisable(false);
         clinVarDrugResponseCheckBox.setSelected(false);
-        clinVarDrugResponseCheckBox.setDisable(false);
+        clinVarDrugResponseCheckBox.setDisable(true);
         frequencyDBCheckComboBox.getCheckModel().clearChecks();
         frequencyDBCheckComboBox.setDisable(false);
 
@@ -1181,15 +1224,22 @@ public class SystemManagerPanelController extends SubPaneController {
                     warningReadDepthTextField.setText(panel.getWarningReadDepth().toString());
                 }
 
-                VariantFilter params = panel.getVariantFilter();
-                if(panel.getVariantFilter().getInDelMinAlleleFraction() != null) indelMinAlleleFractionTextField.setText(params.getInDelMinAlleleFraction().toString());
-                if(panel.getVariantFilter().getSnvMinAlleleFraction() != null) snvMinAlleleFractionTextField.setText(params.getSnvMinAlleleFraction().toString());
-                if(panel.getVariantFilter().getInDelMinAlternateCount() != null) indelMinAlternateCountTextField.setText(params.getInDelMinAlternateCount().toString());
-                if(panel.getVariantFilter().getSnvMinAlleleFraction() != null) snvMinAlternateCountTextField.setText(params.getSnvMinAlternateCount().toString());
-                if(panel.getVariantFilter().getInDelMinReadDepth() != null) indelMinReadDepthTextField.setText(params.getInDelMinReadDepth().toString());
-                if(panel.getVariantFilter().getSnvMinReadDepth() != null) snvMinReadDepthTextField.setText(params.getSnvMinReadDepth().toString());
-                if(panel.getVariantFilter().getLowConfidenceMinAlleleFraction() != null) lowConfidenceMinAlleleFractionTextField.setText(params.getLowConfidenceMinAlleleFraction().toString());
-                if(panel.getVariantFilter().getPopulationFrequencyDBs() != null) {
+                VariantFilter variantFilter = panel.getVariantFilter();
+                if(variantFilter.getInDelMinAlleleFraction() != null)
+                    indelMinAlleleFractionTextField.setText(variantFilter.getInDelMinAlleleFraction().toString());
+                if(variantFilter.getSnvMinAlleleFraction() != null)
+                    snvMinAlleleFractionTextField.setText(variantFilter.getSnvMinAlleleFraction().toString());
+                if(variantFilter.getInDelMinAlternateCount() != null)
+                    indelMinAlternateCountTextField.setText(variantFilter.getInDelMinAlternateCount().toString());
+                if(variantFilter.getSnvMinAlternateCount() != null)
+                    snvMinAlternateCountTextField.setText(variantFilter.getSnvMinAlternateCount().toString());
+                if(variantFilter.getInDelMinReadDepth() != null)
+                    indelMinReadDepthTextField.setText(variantFilter.getInDelMinReadDepth().toString());
+                if(variantFilter.getSnvMinReadDepth() != null)
+                    snvMinReadDepthTextField.setText(variantFilter.getSnvMinReadDepth().toString());
+                if(variantFilter.getLowConfidenceMinAlleleFraction() != null)
+                    lowConfidenceMinAlleleFractionTextField.setText(variantFilter.getLowConfidenceMinAlleleFraction().toString());
+                if(variantFilter.getPopulationFrequencyDBs() != null) {
                     String[] freqDBs = panel.getVariantFilter().getPopulationFrequencyDBs().split(",");
                     for(String freqDB : freqDBs) {
                         //frequencyDBCheckComboBox.getCheckModel().check(freqDB);
@@ -1204,8 +1254,8 @@ public class SystemManagerPanelController extends SubPaneController {
                         lowConfidenceCheckComboBox.getCheckModel().check(lowConfidence);
                     }
                 }
-                if(panel.getVariantFilter().getPopulationFrequency() != null) populationFrequencyTextField.setText(params.getPopulationFrequency().toString());
-                if(panel.getVariantFilter().getClinVarDrugResponseCheck() != null) clinVarDrugResponseCheckBox.setSelected(params.getClinVarDrugResponseCheck());
+                if(panel.getVariantFilter().getPopulationFrequency() != null) populationFrequencyTextField.setText(variantFilter.getPopulationFrequency().toString());
+                if(panel.getVariantFilter().getClinVarDrugResponseCheck() != null) clinVarDrugResponseCheckBox.setSelected(variantFilter.getClinVarDrugResponseCheck());
 
                 if(panel.getQcPassConfig() != null) {
                     if(panel.getQcPassConfig().getTotalBasePair() != null) totalBasePairTextField.setText(panel.getQcPassConfig().getTotalBasePair().toString());

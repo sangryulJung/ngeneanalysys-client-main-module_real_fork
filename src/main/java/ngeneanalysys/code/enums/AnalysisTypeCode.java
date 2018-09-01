@@ -7,9 +7,9 @@ package ngeneanalysys.code.enums;
  * @since 2016. 5. 24. 오전 10:32:36
  */
 public enum AnalysisTypeCode {
-	GERMLINE("GERMLINE"),
-	SOMATIC("SOMATIC");
-	
+	SOMATIC("SOMATIC"),
+	GERMLINE("GERMLINE");
+
 	private String description;
 	
 	AnalysisTypeCode(String name) {

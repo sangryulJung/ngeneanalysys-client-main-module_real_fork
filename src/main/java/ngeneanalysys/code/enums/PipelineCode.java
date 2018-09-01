@@ -12,13 +12,13 @@ import java.util.List;
  * @since 2016. 5. 31. 오전 9:28:11
  */
 public enum PipelineCode {
-	BRCA_ACCUTEST_DNA(CommonConstants.BRCA_ACCUTEST_DNA_PIPELINE, "BRCAaccuTest DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
-	BRCA_ACCUTEST_PLUS_DNA(CommonConstants.BRCA_ACCUTEST_PLUS_DNA_PIPELINE, "BRCAaccuTest PLUS DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
 	HEME_ACCUTEST_DNA(CommonConstants.HEME_ACCUTEST_DNA_PIPELINE, "HEMEaccuTest DNA", AnalysisTypeCode.SOMATIC, LibraryTypeCode.HYBRIDIZATION_CAPTURE, CommonConstants.ANALYSIS_TARGET_DNA),
 	SOLID_ACCUTEST_DNA(CommonConstants.SOLID_ACCUTEST_DNA_PIPELINE, "SOLIDaccuTest DNA", AnalysisTypeCode.SOMATIC, LibraryTypeCode.HYBRIDIZATION_CAPTURE, CommonConstants.ANALYSIS_TARGET_DNA),
+	HERED_ACCUTEST_DNA(CommonConstants.HERED_ACCUTEST_PIPELINE, "HEREDaccuTest DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.HYBRIDIZATION_CAPTURE, CommonConstants.ANALYSIS_TARGET_DNA),
+	BRCA_ACCUTEST_PLUS_DNA(CommonConstants.BRCA_ACCUTEST_PLUS_DNA_PIPELINE, "BRCAaccuTest PLUS DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
+	BRCA_ACCUTEST_DNA(CommonConstants.BRCA_ACCUTEST_DNA_PIPELINE, "BRCAaccuTest DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
 	TST170_DNA(CommonConstants.TST170_DNA_PIPELINE, "TruSight Tumor 170 DNA", AnalysisTypeCode.SOMATIC, LibraryTypeCode.HYBRIDIZATION_CAPTURE, CommonConstants.ANALYSIS_TARGET_DNA),
-	TST170_RNA(CommonConstants.TST170_RNA_PIPELINE, "TruSight Tumor 170 RNA", AnalysisTypeCode.SOMATIC, LibraryTypeCode.HYBRIDIZATION_CAPTURE, CommonConstants.ANALYSIS_TARGET_RNA),
-	HERED_ACCUTEST_DNA(CommonConstants.HERED_ACCUTEST_PIPELINE, "HEREDaccuTest DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.HYBRIDIZATION_CAPTURE, CommonConstants.ANALYSIS_TARGET_DNA);
+	TST170_RNA(CommonConstants.TST170_RNA_PIPELINE, "TruSight Tumor 170 RNA", AnalysisTypeCode.SOMATIC, LibraryTypeCode.HYBRIDIZATION_CAPTURE, CommonConstants.ANALYSIS_TARGET_RNA);
 
 	private String code;
 	/** 패널 키트 정보 */
