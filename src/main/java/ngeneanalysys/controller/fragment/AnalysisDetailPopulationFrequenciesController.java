@@ -10,10 +10,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import ngeneanalysys.controller.extend.SubPaneController;
-import ngeneanalysys.model.Sample;
 import ngeneanalysys.model.VariantAndInterpretationEvidence;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 
 /**
  * @author Jang
@@ -26,13 +26,10 @@ public class AnalysisDetailPopulationFrequenciesController extends SubPaneContro
     @FXML
     private GridPane populationFrequencyGraphGridPane; /** Population Frequency Graph Box */
 
-    private Sample sample;
-
     private VariantAndInterpretationEvidence variant;
 
     @Override
     public void show(Parent root) throws IOException {
-        sample = (Sample)paramMap.get("sample");
         variant = (VariantAndInterpretationEvidence)paramMap.get("variant");
         populationFrequencyGraphGridPane.getChildren().removeAll(populationFrequencyGraphGridPane.getChildren());
         showPopulationFrequency();
@@ -60,10 +57,12 @@ public class AnalysisDetailPopulationFrequenciesController extends SubPaneContro
 
     /**
      * 주요 기관 발현 빈도수(Population Frequencies) 그래프 화면 추가
-     * @param title
-     * @param percentage
+     * @param row int
+     * @param col int
+     * @param title String
+     * @param percentage double
      */
-    public void addPopulationFrequencyGraph(int row, int col, String title, double percentage) {
+    private void addPopulationFrequencyGraph(int row, int col, String title, double percentage) {
         double graphPercentage = percentage * 100;
         VBox vbox = new VBox();
         vbox.setAlignment(Pos.CENTER);
@@ -78,7 +77,7 @@ public class AnalysisDetailPopulationFrequenciesController extends SubPaneContro
         graphHBox.getStyleClass().add("horizon_stick");
         Label graphLabel = new Label("");
         graphHBox.getChildren().add(graphLabel);
-        Label percentLabel = new Label((percentage > -1) ? String.valueOf(percentage) : "");
+        Label percentLabel = new Label((percentage > -1) ? BigDecimal.valueOf(percentage).stripTrailingZeros().toString() : "");
         percentLabel.getStyleClass().add("percent");
         percentLabel.setPrefWidth(130);
         percentLabel.setMinWidth(130);

@@ -5,6 +5,7 @@ import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -20,6 +21,7 @@ import javafx.util.Duration;
 import ngeneanalysys.animaition.HddStatusTimer;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
+import ngeneanalysys.controller.systemMenu.SystemMenuPublicDatabasesController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedNotice;
@@ -82,7 +84,7 @@ public class HomeController extends SubPaneController{
     /** API Service */
     private APIService apiService;
     /** Timer */
-    public Timeline autoRefreshTimeline;
+    Timeline autoRefreshTimeline;
 
     private List<RunStatusVBox> runList;
 
@@ -109,7 +111,7 @@ public class HomeController extends SubPaneController{
             }
         });
 
-        getMainController().getPrimaryStage().setMaxWidth(1000);
+        //getMainController().getPrimaryStage().setMaxWidth(1000);
         this.mainController.getMainFrame().setCenter(root);
 
         initRunListLayout();
@@ -123,6 +125,10 @@ public class HomeController extends SubPaneController{
      */
     @FXML
     public void showUploadFASTQ() {
+        runUploadFASTQ(null);
+    }
+
+    private void runUploadFASTQ(Run run) {
         getMainController().setMainMaskerPane(true);
         try {
             // Load the fxml file and create a new stage for the popup dialog
@@ -131,6 +137,9 @@ public class HomeController extends SubPaneController{
             SampleUploadController controller = loader.getController();
             controller.setMainController(this.mainController);
             controller.setHomeController(this);
+            if(run != null) {
+                controller.setRun(run);
+            }
             controller.show(page);
             showRunList();
         } catch (IOException e) {
@@ -141,12 +150,12 @@ public class HomeController extends SubPaneController{
 
     @FXML
     public void newAnalysisMouseEnter() {
-    	buttonUpload.setStyle("-fx-background-image:url('layout/images/renewal/plus-symbol-on.png'); -fx-font-family: \"Noto Sans KR Bold\"");
+    	buttonUpload.setStyle("-fx-background-image:url('layout/images/renewal/plus-symbol-on.png');");
     }
     
     @FXML
     public void newAnalysisMouseExit() {
-    	buttonUpload.setStyle("-fx-background-image:url('layout/images/renewal/plus-symbol.png'); -fx-font-family: \"Noto Sans KR Bold\"");
+    	buttonUpload.setStyle("-fx-background-image:url('layout/images/renewal/plus-symbol.png');");
     }
 
     private void initRunListLayout() {
@@ -154,7 +163,7 @@ public class HomeController extends SubPaneController{
         try {
             runList = new ArrayList<>();
             for (int i = 0; i < maxRunNumberOfPage; i++) {
-                RunStatusVBox box = new RunStatusVBox();
+                RunStatusVBox box = new RunStatusVBox(this);
                 runList.add(box);
                 runListHBox.setPrefWidth(runListHBox.getPrefWidth() + 235);
                 runListHBox.getChildren().add(box);
@@ -168,7 +177,7 @@ public class HomeController extends SubPaneController{
     private void setToolsAndDatabase() {
         databaseVersionVBox.getChildren().removeAll(databaseVersionVBox.getChildren());
         try {
-            HttpClientResponse response = apiService.get("pipelineVersions", null, null, null);
+            HttpClientResponse response = apiService.get("pipelineVersions/currentVersionGroupByPanel", null, null, null);
 
             List<PipelineVersionView> pipelineVersionViewList = (List<PipelineVersionView>)response.getMultiObjectBeforeConvertResponseToJSON(PipelineVersionView.class, false);
             if(pipelineVersionViewList != null && !pipelineVersionViewList.isEmpty()) {
@@ -265,12 +274,12 @@ public class HomeController extends SubPaneController{
              }
 
         } catch (WebAPIException wae) {
-
+            wae.printStackTrace();
         }
 
     }
 
-    public boolean noticeLabelSetting(int index) {
+    private boolean noticeLabelSetting(int index) {
         if(noticeList == null || index > noticeList.size() -1) return false;
         NoticeView noticeView = noticeList.get(index);
         //noticeTitleLabel.setText(noticeView.getTitle());
@@ -300,7 +309,7 @@ public class HomeController extends SubPaneController{
             availableTier.start();
 
         } catch (WebAPIException wae) {
-
+            wae.printStackTrace();
         }
     }
 
@@ -309,9 +318,9 @@ public class HomeController extends SubPaneController{
         if(autoRefreshTimeline != null)
             logger.debug("cycle time : " + autoRefreshTimeline.getCycleDuration());
 
-        Platform.runLater(() -> hddCheck());
-        Platform.runLater(() -> setNoticeArea());
-        Platform.runLater(() -> setToolsAndDatabase());
+        Platform.runLater(this::hddCheck);
+        Platform.runLater(this::setNoticeArea);
+        Platform.runLater(this::setToolsAndDatabase);
         final int maxRunNumberOfPage = 4;
         CompletableFuture<PagedRun> getPagedRun = new CompletableFuture<>();
         CompletableFuture.supplyAsync(() -> {
@@ -353,7 +362,7 @@ public class HomeController extends SubPaneController{
         getMainController().setContentsMaskerPaneVisible(false);
     }
 
-    class RunStatusVBox extends VBox {
+    static class RunStatusVBox extends VBox {
         private Label runName;
         private Label panelLabel;
         private HBox panelHBox;
@@ -369,13 +378,26 @@ public class HomeController extends SubPaneController{
         private Label queuedLabel;
         private HBox queuedHBox;
         private Label runningLabel;
-        private HBox runningHBox;
         private Label failedLabel;
-        private HBox failedHBox;
+        private ProgressBar progressBar;
+        private Label progressLabel;
+        private HBox progressHBox;
 
         private VBox itemVBox;
 
-        private RunStatusVBox() {
+        private Run run;
+
+        private HomeController homeController;
+
+        private EventHandler mouseEventEventHandler = new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                homeController.runUploadFASTQ(run);
+            }
+        };
+
+        private RunStatusVBox(HomeController homeController) {
+            this.homeController = homeController;
             this.setPrefSize(220, 220);
             this.setMinSize(220, 220);
             this.getStyleClass().add("run_box");
@@ -387,6 +409,7 @@ public class HomeController extends SubPaneController{
             runName.setPrefHeight(16);
             runName.setMinWidth(190);
             runName.setPrefWidth(190);
+            runName.getStyleClass().add("bold");
             statusLabel = new Label();
             statusLabel.setMinWidth(17);
             statusLabel.setPrefWidth(17);
@@ -415,14 +438,32 @@ public class HomeController extends SubPaneController{
             startDateHBox = createHBox(startDateLabel, "Start : ");
             finishDateLabel = new Label();
             finishDateHBox = createHBox(finishDateLabel, "Finished : ");
-            completeLabel = new Label();
+            /*completeLabel = new Label();
             completeHBox = createHBox(completeLabel, "Complete : ");
             queuedLabel = new Label();
             queuedHBox = createHBox(queuedLabel, "Queued : ");
             runningLabel = new Label();
             runningHBox = createHBox(runningLabel, "Running : ");
             failedLabel = new Label();
-            failedHBox = createHBox(failedLabel, "Failed : ");
+            failedHBox = createHBox(failedLabel, "Failed : ");*/
+            completeLabel = new Label();
+            failedLabel = new Label();
+            completeHBox = createHBox(completeLabel, "Complete : ", failedLabel, "Failed : ");
+            runningLabel = new Label();
+            queuedLabel = new Label();
+            queuedHBox = createHBox(runningLabel, "Running : ", queuedLabel, "Queued : ");
+
+            progressBar = new ProgressBar();
+            progressBar.getStyleClass().add("status_progress");
+            progressBar.setPrefWidth(150);
+            progressLabel = new Label();
+            progressLabel.getStyleClass().add("font_gray");
+            progressLabel.setPrefWidth(35);
+            progressHBox = new HBox();
+            progressHBox.setSpacing(5);
+            progressHBox.setAlignment(Pos.CENTER_LEFT);
+            progressHBox.setPrefHeight(20);
+            progressHBox.getChildren().addAll(progressBar, progressLabel);
 
             backgroundVBox.getChildren().add(itemVBox);
 
@@ -431,7 +472,7 @@ public class HomeController extends SubPaneController{
 
         private HBox createHBox(Label label, String titleLabelString) {
             HBox box = new HBox();
-            box.setPrefHeight(20);
+            box.setPrefHeight(24);
             Label titleLabel = new Label(titleLabelString);
             titleLabel.setPrefWidth(75);
             titleLabel.getStyleClass().add("font_gray");
@@ -442,12 +483,32 @@ public class HomeController extends SubPaneController{
             return box;
         }
 
+        private HBox createHBox(Label label1, String titleLabelString1
+                ,Label label2, String titleLabelString2) {
+            HBox box = new HBox();
+            box.setPrefHeight(24);
+            Label titleLabel = new Label(titleLabelString1);
+            titleLabel.setPrefWidth(75);
+            titleLabel.getStyleClass().add("font_gray");
+            box.getChildren().addAll(titleLabel, label1);
+            label1.setStyle("-fx-text-fill : gray;");
+            label1.setPrefWidth(20);
+
+            titleLabel = new Label(titleLabelString2);
+            titleLabel.setPrefWidth(75);
+            titleLabel.getStyleClass().add("font_gray");
+            box.getChildren().addAll(titleLabel, label2);
+            label2.setStyle("-fx-text-fill : gray;");
+            label2.setPrefWidth(25);
+            return box;
+        }
+
         private void setRunStatus(Run run) {
             runName.setText(run.getName());
             /////////////run status 설정
             statusLabel.setText("");
             statusLabel.getStyleClass().removeAll(statusLabel.getStyleClass());
-            statusLabel.setTooltip(new Tooltip(run.getRunStatus().getProgressPercentage() + "%"));
+            //statusLabel.setTooltip(new Tooltip(run.getRunStatus().getProgressPercentage() + "%"));
             switch (run.getRunStatus().getStatus().toUpperCase()) {
                 case "QUEUED":
                     statusLabel.getStyleClass().addAll("label", "queued_icon");
@@ -484,6 +545,13 @@ public class HomeController extends SubPaneController{
             runningLabel.setText(String.valueOf(runStatus.getRunningCount()));
             queuedLabel.setText(String.valueOf(runStatus.getQueuedCount()));
             failedLabel.setText(String.valueOf(runStatus.getFailedCount()));
+            if(runStatus.getStatus().equals("FAIL")) {
+                progressBar.setProgress(1);
+                progressLabel.setText("100%");
+            } else {
+                progressBar.setProgress(run.getRunStatus().getProgressPercentage() / 100d);
+                progressLabel.setText(run.getRunStatus().getProgressPercentage() + "%");
+            }
 
             if(!itemVBox.getChildren().contains(panelHBox))
                 itemVBox.getChildren().add(panelHBox);
@@ -495,16 +563,22 @@ public class HomeController extends SubPaneController{
                 itemVBox.getChildren().add(finishDateHBox);
             if(!itemVBox.getChildren().contains(completeHBox))
                 itemVBox.getChildren().add(completeHBox);
-            if(!itemVBox.getChildren().contains(runningHBox))
-                itemVBox.getChildren().add(runningHBox);
+            /*if(!itemVBox.getChildren().contains(runningHBox))
+                itemVBox.getChildren().add(runningHBox);*/
             if(!itemVBox.getChildren().contains(queuedHBox))
                 itemVBox.getChildren().add(queuedHBox);
-            if(!itemVBox.getChildren().contains(failedHBox))
-                itemVBox.getChildren().add(failedHBox);
-
+            /*if(!itemVBox.getChildren().contains(failedHBox))
+                itemVBox.getChildren().add(failedHBox);*/
+            if(!itemVBox.getChildren().contains(progressHBox)) {
+                itemVBox.getChildren().add(progressHBox);
+            }
+            this.run = run;
+            this.setCursor(Cursor.HAND);
+            this.setEventHandler(MouseEvent.MOUSE_CLICKED, mouseEventEventHandler);
         }
 
         public void reset() {
+            progressBar.setProgress(0);
             runName.setText("");
             statusLabel.getStyleClass().removeAll(startDateHBox.getStyleClass());
             startDateLabel.setText("");
@@ -514,6 +588,9 @@ public class HomeController extends SubPaneController{
             queuedLabel.setText("");
             runningLabel.setText("");
             failedLabel.setText("");
+            run = null;
+            this.setCursor(Cursor.DEFAULT);
+            this.removeEventHandler(MouseEvent.MOUSE_CLICKED, mouseEventEventHandler);
             //itemVBox.getChildren().removeAll(itemVBox.getChildren());
         }
 
@@ -522,7 +599,7 @@ public class HomeController extends SubPaneController{
     /**
      * 자동 새로고침 시작 처리
      */
-    public void startAutoRefresh() {
+    void startAutoRefresh() {
         boolean isAutoRefreshOn = "true".equals(config.getProperty("analysis.job.auto.refresh"));
         logger.debug(String.format("auto refresh on : %s", isAutoRefreshOn));
 
@@ -555,7 +632,7 @@ public class HomeController extends SubPaneController{
     /**
      * 자동 새로고침 일시정지
      */
-    public void pauseAutoRefresh() {
+    void pauseAutoRefresh() {
         boolean isAutoRefreshOn = "true".equals(config.getProperty("analysis.job.auto.refresh"));
         // 기능 실행중인 상태인 경우 실행
         if(autoRefreshTimeline != null && isAutoRefreshOn) {
@@ -572,7 +649,7 @@ public class HomeController extends SubPaneController{
     /**
      * 자동 새로고침 시작
      */
-    public void resumeAutoRefresh() {
+    void resumeAutoRefresh() {
         boolean isAutoRefreshOn = "true".equals(config.getProperty("analysis.job.auto.refresh"));
         int refreshPeriodSecond = (Integer.parseInt(config.getProperty("analysis.job.auto.refresh.period")) * 1000) - 1;
         // 기능 실행중인 상태인 경우 실행
@@ -589,7 +666,7 @@ public class HomeController extends SubPaneController{
     }
 
 
-    public void databaseView() {
+    private void databaseView() {
         try {
             FXMLLoader loader = mainApp.load(FXMLConstants.SYSTEM_MENU_DEFAULT_PUBLIC_DATABASE);
             Node root = loader.load();

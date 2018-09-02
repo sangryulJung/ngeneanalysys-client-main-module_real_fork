@@ -7,10 +7,6 @@ package ngeneanalysys.model;
 public class GenomicCoordinate {
     private String chromosome;
     private String gene;
-    private String refSequence;
-    private String altSequence;
-    private String leftSequence;
-    private String rightSequence;
     private Integer startPosition;
     private String exonNum;
     private String exonNumBic;
@@ -57,62 +53,6 @@ public class GenomicCoordinate {
      */
     public void setGene(String gene) {
         this.gene = gene;
-    }
-
-    /**
-     * @return refSequence
-     */
-    public String getRefSequence() {
-        return refSequence;
-    }
-
-    /**
-     * @param refSequence
-     */
-    public void setRefSequence(String refSequence) {
-        this.refSequence = refSequence;
-    }
-
-    /**
-     * @return altSequence
-     */
-    public String getAltSequence() {
-        return altSequence;
-    }
-
-    /**
-     * @param altSequence
-     */
-    public void setAltSequence(String altSequence) {
-        this.altSequence = altSequence;
-    }
-
-    /**
-     * @return leftSequence
-     */
-    public String getLeftSequence() {
-        return leftSequence;
-    }
-
-    /**
-     * @param leftSequence
-     */
-    public void setLeftSequence(String leftSequence) {
-        this.leftSequence = leftSequence;
-    }
-
-    /**
-     * @return rightSequence
-     */
-    public String getRightSequence() {
-        return rightSequence;
-    }
-
-    /**
-     * @param rightSequence
-     */
-    public void setRightSequence(String rightSequence) {
-        this.rightSequence = rightSequence;
     }
 
     /**

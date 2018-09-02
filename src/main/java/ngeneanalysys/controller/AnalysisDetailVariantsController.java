@@ -11,12 +11,17 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import ngeneanalysys.code.constants.FXMLConstants;
+import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
+import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.Panel;
+import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.TopMenu;
+import ngeneanalysys.model.paged.PagedCNV;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
+import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -44,12 +49,24 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
 
     private AnalysisDetailSNVController snvController;
 
+    private AnalysisDetailCNVController cnvController;
+
+    private AnalysisDetailTSTCNVController tstCNVController;
+
+    private AnalysisDetailTSTFusionController tstFusionController;
+
+    private AnalysisDetailTSTSpliceVariantController spliceVariantController;
+
+    private AnalysisDetailTSTPublishedFusionController publishedFusionController;
+
     /** 이전 화면 정보 */
     private String currentShowFrameId;
     /** 현재 화면 출력중인 최상단 탭메뉴 인덱스 */
     private int selectedTopMenuIdx = 0;
 
     private Panel panel;
+
+    private Label snvLabel;
 
     /**
      * @return detailContents
@@ -73,20 +90,62 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
     }
 
     public void setSNVTabName(String text) {
-        if(!StringUtils.isEmpty(text)) {
-            topMenus[0].setMenuName("SNV/Indel : " + text);
-        } else {
-            topMenus[0].setMenuName("SNV/Indel");
+        if(snvLabel != null) {
+            if (StringUtils.isNotEmpty(text)) {
+                snvLabel.setText("SNV/Indel : " + text);
+                snvLabel.getStyleClass().add("bold");
+            } else {
+                snvLabel.setText("SNV/Indel");
+                snvLabel.getStyleClass().add("bold");
+            }
         }
-        refreshShowTopMenu(0);
-
     }
 
-    public void setDefaultTab() {
+    private boolean checkCNV() {
+        SampleView sample = (SampleView)paramMap.get("sampleView");
+
+        try {
+            HttpClientResponse response = apiService.get("/analysisResults/cnv/" + sample.getId(), null, null, null);
+            PagedCNV pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedCNV.class);
+            if(pagedCNV.getCount() > 0) {
+                return true;
+            }
+        } catch (WebAPIException wae) {
+            return false;
+        }
+        return false;
+    }
+
+    private void setDefaultTab() {
         if(panel.getTarget().equalsIgnoreCase("DNA")) {
-            topMenus = new TopMenu[1];
-            topMenuContent = new Node[topMenus.length];
-            TopMenu menu = new TopMenu();
+            TopMenu menu;
+            if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
+                topMenus = new TopMenu[2];
+                topMenuContent = new Node[topMenus.length];
+                menu = new TopMenu();
+                menu.setMenuName("CNV");
+                menu.setParamMap(getParamMap());
+                menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_TST_CNV);
+                menu.setDisplayOrder(1);
+                menu.setStaticMenu(true);
+                topMenus[1] = menu;
+            } else {
+                if(checkCNV()) {
+                    topMenus = new TopMenu[2];
+                    topMenuContent = new Node[topMenus.length];
+                    menu = new TopMenu();
+                    menu.setMenuName("CNV");
+                    menu.setParamMap(getParamMap());
+                    menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_CNV);
+                    menu.setDisplayOrder(1);
+                    menu.setStaticMenu(true);
+                    topMenus[1] = menu;
+                } else {
+                    topMenus = new TopMenu[1];
+                    topMenuContent = new Node[topMenus.length];
+                }
+            }
+            menu = new TopMenu();
             menu.setMenuName("SNV");
             menu.setParamMap(getParamMap());
             menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_VARIANTS_SNV);
@@ -94,31 +153,41 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
             menu.setStaticMenu(true);
             topMenus[0] = menu;
         } else if(panel.getTarget().equalsIgnoreCase("RNA")) {
-            topMenus = new TopMenu[2];
-            topMenuContent = new Node[topMenus.length];
-            TopMenu menu = new TopMenu();
-            menu.setMenuName("CNV");
-            menu.setParamMap(getParamMap());
-            menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_VARIANTS_SNV);
-            menu.setDisplayOrder(0);
-            menu.setStaticMenu(true);
-            topMenus[0] = menu;
+            if(panel.getCode().equals(PipelineCode.TST170_RNA.getCode())) {
+                topMenus = new TopMenu[3];
+                topMenuContent = new Node[topMenus.length];
+                TopMenu menu = new TopMenu();
+                menu.setMenuName("Fusion");
+                menu.setParamMap(getParamMap());
+                menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_TST_FUSION);
+                menu.setDisplayOrder(0);
+                menu.setStaticMenu(true);
+                topMenus[0] = menu;
 
-            menu = new TopMenu();
-            menu.setMenuName("TARGET");
-            menu.setParamMap(getParamMap());
-            menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_VARIANTS_SNV);
-            menu.setDisplayOrder(1);
-            menu.setStaticMenu(true);
-            topMenus[1] = menu;
+                menu = new TopMenu();
+                menu.setMenuName("Splice Variant");
+                menu.setParamMap(getParamMap());
+                menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_TST_SPLICE_VARIANT);
+                menu.setDisplayOrder(1);
+                menu.setStaticMenu(true);
+                topMenus[1] = menu;
+
+                menu = new TopMenu();
+                menu.setMenuName("Published Fusion");
+                menu.setParamMap(getParamMap());
+                menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_TST_PUBLISHED_FUSION);
+                menu.setDisplayOrder(2);
+                menu.setStaticMenu(true);
+                topMenus[2] = menu;
+            }
         }
     }
 
     /**
      * 상단 메뉴 새로 출력
-     * @param selectIdx
+     * @param selectIdx int
      */
-    public void refreshShowTopMenu(int selectIdx) {
+    private void refreshShowTopMenu(int selectIdx) {
         // 기존 메뉴 엘레멘트 제거
         tabMenuHBox.getChildren().removeAll();
         if(topMenus != null && topMenus.length > 0) {
@@ -126,22 +195,31 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
             Group[] topMenuGroups = new Group[topMenus.length];
             for (TopMenu topMenu : topMenus) {
                 Group menu = new Group();
-
                 if (selectIdx >= 0 && idx == selectIdx) {
                     menu.setId("selectedMenu");
                 }
 
                 Region region = new Region();
-                //region.setLayoutX();
-
                 Label menuName = new Label(topMenu.getMenuName());
                 menuName.setLayoutX(0);
 
+                region.getStyleClass().removeAll(region.getStyleClass());
+                menuName.getStyleClass().removeAll(menuName.getStyleClass());
+                if(topMenu.getMenuName().equals("SNV")) {
+                    snvLabel = menuName;
+                    menu.getStyleClass().add("group-big");
+                    region.getStyleClass().add("region-big");
+                    menuName.getStyleClass().add("label-big");
+                } else {
+                    menu.getStyleClass().add("group-small");
+                    region.getStyleClass().add("region-small");
+                    menuName.getStyleClass().add("label-small");
+                }
                 menu.getChildren().setAll(region, menuName);
 
                 // 마우스 커서 타입 설정
                 menu.setCursor(Cursor.HAND);
-                menu.setOnMouseClicked(event -> showTopMenuContents(topMenu, 0));
+                menu.setOnMouseClicked(event -> showTopMenuContents(topMenu, selectIdx));
 
                 topMenuGroups[idx] = menu;
                 idx++;
@@ -153,10 +231,10 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
 
     /**
      * 선택 상단 메뉴 컨텐츠 출력
-     * @param menu
-     * @param showIdx
+     * @param menu TopMenu
+     * @param showIdx int
      */
-    public void showTopMenuContents(TopMenu menu, int showIdx) {
+    private void showTopMenuContents(TopMenu menu, int showIdx) {
         detailContents.setCenter(null);
         if(menu == null) menu = topMenus[showIdx];
 
@@ -181,6 +259,13 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
                     Node node = loader.load();
 
                     switch (menu.getFxmlPath()) {
+                        case FXMLConstants.ANALYSIS_DETAIL_TST_CNV:
+                            tstCNVController = loader.getController();
+                            tstCNVController.setMainController(this.getMainController());
+                            tstCNVController.setVariantsController(this);
+                            tstCNVController.setParamMap(menu.getParamMap());
+                            tstCNVController.show((Parent) node);
+                            break;
                         case FXMLConstants.ANALYSIS_DETAIL_VARIANTS_SNV:
                             snvController = loader.getController();
                             snvController.setMainController(this.getMainController());
@@ -188,11 +273,33 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
                             snvController.setParamMap(menu.getParamMap());
                             snvController.show((Parent) node);
                             break;
-                        case FXMLConstants.ANALYSIS_DETAIL_FUSION_GENE:
-
+                        case FXMLConstants.ANALYSIS_DETAIL_TST_FUSION:
+                            tstFusionController = loader.getController();
+                            tstFusionController.setMainController(this.getMainController());
+                            tstFusionController.setVariantsController(this);
+                            tstFusionController.setParamMap(menu.getParamMap());
+                            tstFusionController.show((Parent) node);
                             break;
-                        case FXMLConstants.ANALYSIS_DETAIL_GENE_EXPRESSION:
-
+                        case FXMLConstants.ANALYSIS_DETAIL_TST_SPLICE_VARIANT:
+                            spliceVariantController = loader.getController();
+                            spliceVariantController.setMainController(this.getMainController());
+                            spliceVariantController.setVariantsController(this);
+                            spliceVariantController.setParamMap(menu.getParamMap());
+                            spliceVariantController.show((Parent) node);
+                            break;
+                        case FXMLConstants.ANALYSIS_DETAIL_TST_PUBLISHED_FUSION:
+                            publishedFusionController = loader.getController();
+                            publishedFusionController.setMainController(this.getMainController());
+                            publishedFusionController.setVariantsController(this);
+                            publishedFusionController.setParamMap(menu.getParamMap());
+                            publishedFusionController.show((Parent) node);
+                            break;
+                        case FXMLConstants.ANALYSIS_DETAIL_CNV:
+                            cnvController = loader.getController();
+                            cnvController.setMainController(this.getMainController());
+                            cnvController.setVariantsController(this);
+                            cnvController.setParamMap(menu.getParamMap());
+                            cnvController.show((Parent) node);
                             break;
                         default:
                             break;
@@ -200,6 +307,17 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
                     topMenuContent[menu.getDisplayOrder()] = detailContents.getCenter();
                 } else {
                     detailContents.setCenter(topMenuContent[menu.getDisplayOrder()]);
+                }
+
+                if(currentShowFrameId != null) {
+                    if (!currentShowFrameId.equals(detailContents.getCenter().getId())) {
+                        if (currentShowFrameId.equals("snvWrapper") && !detailContents.getCenter().getId().equals("snvWrapper")) {
+                            snvLabel.setText("SNV/Indel");
+                            snvLabel.getStyleClass().add("bold");
+                        } else if (!currentShowFrameId.equals("snvWrapper") && detailContents.getCenter().getId().equals("snvWrapper")) {
+                            snvController.setSNVTabName();
+                        }
+                    }
                 }
 
                 currentShowFrameId = detailContents.getCenter().getId();

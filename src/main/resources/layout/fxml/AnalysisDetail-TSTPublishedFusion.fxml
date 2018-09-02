@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane fx:id="tstCNVGridPane" prefHeight="380.0" prefWidth="1140.0" style="-fx-background-color: #f2f5fa;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailTSTPublishedFusionController">
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+   </rowConstraints>
+   <children>
+      <TableView fx:id="publishedFusionTableView" prefHeight="340.0" prefWidth="1100.0" styleClass="custom-table">
+         <GridPane.margin>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </GridPane.margin>
+         <columns>
+            <TableColumn fx:id="fusionGeneTableColumn" prefWidth="117.0" text="Fusion Gene" />
+            <TableColumn fx:id="mitelmanIdsTableColumn" prefWidth="96.0" text="Mitelman Ids" />
+            <TableColumn fx:id="observedTableColumn" prefWidth="67.0" text="Observed" />
+            <TableColumn fx:id="breakpoint1TableColumn" prefWidth="101.0" text="Breakpoint1" />
+            <TableColumn fx:id="breakpoint2TableColumn" prefWidth="107.0" text="Breakpoint2" />
+            <TableColumn fx:id="fusionSupportingReadsTableColumn" prefWidth="127.0" text="Fusion Supporting Reads" />
+            <TableColumn fx:id="gene1ReferenceReadsTableColumn" prefWidth="123.0" text="Gene1 Reference Reads" />
+            <TableColumn fx:id="gene2ReferenceReadsTableColumn" prefWidth="125.0" text="Gene2 Reference Reads" />
+            <TableColumn fx:id="scoreTableColumn" prefWidth="111.0" text="Score" />
+            <TableColumn fx:id="filterTableColumn" prefWidth="119.0" text="Filter" />
+         </columns>
+      </TableView>
+   </children>
+   <stylesheets>
+      <URL value="@../css/common.css" />
+      <URL value="@../css/variants.css" />
+   </stylesheets>
+</GridPane>

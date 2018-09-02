@@ -9,7 +9,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.AnalysisDetailTabMenuCode;
-import ngeneanalysys.code.enums.ExperimentTypeCode;
+import ngeneanalysys.code.enums.AnalysisTypeCode;
+import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
@@ -23,9 +24,6 @@ import org.apache.commons.lang3.text.WordUtils;
 import org.slf4j.Logger;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 /**
  * @author Jang
@@ -44,6 +42,8 @@ public class AnalysisDetailLayoutController extends SubPaneController {
     private Label sampleNameLabel;
     @FXML
     private Tooltip sampleNameTooltip;
+    @FXML
+    private Tooltip sampleIdTooltip;
     @FXML
     private Label runNameLabel;
     @FXML
@@ -64,27 +64,23 @@ public class AnalysisDetailLayoutController extends SubPaneController {
     /** 현재 샘플의 고유 아아디 */
     private Integer sampleId;
 
-    private Sample sample;
+    private SampleView sampleView;
 
     private Panel panel;
 
     private AnalysisDetailOverviewController analysisDetailOverviewController;
 
-    /** target Tab Controller */
-    private AnalysisDetailTargetController targetController;
-
     private AnalysisDetailReportController analysisDetailReportController;
 
     private AnalysisDetailOverviewGermlineController analysisDetailOverviewGermlineController;
 
-    /** target Tab Controller */
-    private AnalysisDetailTargetGermlineController analysisDetailTargetGermlineController;
-
     private AnalysisDetailReportGermlineController analysisDetailReportGermlineController;
 
-    private AnalysisDetailSNPsINDELsController analysisDetailSNPsINDELsController;
-
     private AnalysisDetailVariantsController analysisDetailVariantsController;
+
+    private AnalysisDetailTSTRNAReportController tstrnaReportController;
+
+    private AnalysisDetailTSTRNAOverviewController tstrnaOverviewController;
 
     /** API 서버 통신 서비스 */
     private APIService apiService;
@@ -92,6 +88,7 @@ public class AnalysisDetailLayoutController extends SubPaneController {
     @FXML
     private Button rawDataDownload;
 
+    @SuppressWarnings("unchecked")
     @Override
     public void show(Parent root) throws IOException {
         mainController.setContentsMaskerPaneVisible(true);
@@ -104,23 +101,16 @@ public class AnalysisDetailLayoutController extends SubPaneController {
         try {
             HttpClientResponse response = apiService.get("samples/" + sampleId, null, null, true);
 
-            sample = response.getObjectBeforeConvertResponseToJSON(Sample.class);
+            sampleView = response.getObjectBeforeConvertResponseToJSON(SampleView.class);
 
-            response = apiService.get("analysisResults/sampleSummary/" + sampleId , null, null, true);
-
-            sample.setAnalysisResultSummary(response.getObjectBeforeConvertResponseToJSON(AnalysisResultSummary.class));
-
-            getParamMap().put("sample", sample);
-
-            response = apiService.get("runs/" + sample.getRunId() , null, null, true);
-            RunWithSamples run = response.getObjectBeforeConvertResponseToJSON(RunWithSamples.class);
+            getParamMap().put("sampleView", sampleView);
 
             setPaneAndDisease();
 
-            runNameLabel.setText(run.getRun().getName());
-            runNameTooltip.setText(run.getRun().getName());
-            sequencerLabel.setText(WordUtils.capitalize(run.getRun().getSequencingPlatform()));
-            sequencerTooltip.setText(WordUtils.capitalize(run.getRun().getSequencingPlatform()));
+            runNameLabel.setText(sampleView.getRun().getName());
+            runNameTooltip.setText(sampleView.getRun().getName());
+            sequencerLabel.setText(WordUtils.capitalize(sampleView.getRun().getSequencingPlatform()));
+            sequencerTooltip.setText(WordUtils.capitalize(sampleView.getRun().getSequencingPlatform()));
 
         } catch (WebAPIException e) {
             e.printStackTrace();
@@ -132,17 +122,20 @@ public class AnalysisDetailLayoutController extends SubPaneController {
             for (AnalysisDetailTabMenuCode code : AnalysisDetailTabMenuCode.values()) {
                 AnalysisDetailTabItem item = code.getItem();
 
-                if (item.getNodeId().contains(ExperimentTypeCode.GERMLINE.getDescription()) &&
-                        (panel.getAnalysisType() != null && ExperimentTypeCode.GERMLINE.getDescription().equals(panel.getAnalysisType()))) {
+                if(item.getNodeId().equals("TAB_VARIANTS") || (item.getNodeId().contains("TST_RNA") &&
+                        panel.getCode().equals(PipelineCode.TST170_RNA.getCode()))) {
                     addTab(item, idx);
                     idx++;
-                } else if (!item.getNodeId().contains(ExperimentTypeCode.GERMLINE.getDescription()) &&
-                        (panel.getAnalysisType() != null && ExperimentTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType()))) {
-                    addTab(item, idx);
-                    idx++;
-                } else if (item.getNodeId().equalsIgnoreCase("TAB_VARIANTS")) {
-                    addTab(item, idx);
-                    idx++;
+                } else if(!panel.getCode().equals(PipelineCode.TST170_RNA.getCode())) {
+                    if (item.getNodeId().contains(AnalysisTypeCode.GERMLINE.getDescription()) &&
+                            (panel.getAnalysisType() != null && AnalysisTypeCode.GERMLINE.getDescription().equals(panel.getAnalysisType()))) {
+                        addTab(item, idx);
+                        idx++;
+                    } else if (item.getNodeId().contains(AnalysisTypeCode.SOMATIC.getDescription()) &&
+                            (panel.getAnalysisType() != null && AnalysisTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType()))) {
+                        addTab(item, idx);
+                        idx++;
+                    }
                 }
             }
         } else {
@@ -165,27 +158,18 @@ public class AnalysisDetailLayoutController extends SubPaneController {
 
     }
 
-    public void setPaneAndDisease() {
-        List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
-        if(panels != null && !panels.isEmpty()) {
-            Optional<Panel> optionalPanel = panels.stream().filter(panel -> panel.getId().equals(sample.getPanelId())).findFirst();
-            optionalPanel.ifPresent(panel1 -> {
-                this.panel = panel1;
-                getParamMap().put("panel", panel);
-                panelLabel.setText(panel1.getName());
-                panelNameTooltip.setText(panel1.getName());
-            });
+    private void setPaneAndDisease() {
+        if(sampleView.getPanel() != null) {
+            this.panel = sampleView.getPanel();
+            getParamMap().put("panel", panel);
+            panelLabel.setText(panel.getName());
+            panelNameTooltip.setText(panel.getName());
+            sampleNameLabel.setText(sampleView.getName());
+            sampleNameTooltip.setText(sampleView.getName());
+            sampleIdTooltip.setText(sampleView.getId().toString());
+            diseaseLabel.setText(sampleView.getDiseaseName());
+            diseaseTooltip.setText(sampleView.getDiseaseName());
         }
-
-        sampleNameLabel.setText(sample.getName());
-        sampleNameTooltip.setText(sample.getName());
-        List<Diseases> diseases = (List<Diseases>) mainController.getBasicInformationMap().get("diseases");
-        Optional<Diseases> diseasesOptional = diseases.stream().filter(disease -> Objects.equals(disease.getId(), sample.getDiseaseId())).findFirst();
-        diseasesOptional.ifPresent(diseases1 -> {
-            String diseaseName = diseases1.getName();
-            diseaseLabel.setText(diseaseName);
-            diseaseTooltip.setText(diseaseName);
-        });
     }
 
     private void addTab(AnalysisDetailTabItem item, int idx) {
@@ -197,6 +181,7 @@ public class AnalysisDetailLayoutController extends SubPaneController {
         if (idx == 0)
             setTabContent(tab);
         topTabPane.getTabs().add(tab);
+        //topTabPane.setStyle("-fx-font-family: Noto Sans KR Bold");
     }
 
     /**
@@ -221,12 +206,6 @@ public class AnalysisDetailLayoutController extends SubPaneController {
                             analysisDetailOverviewController.setParamMap(getParamMap());
                             analysisDetailOverviewController.show((Parent) node);
                             break;
-                        case FXMLConstants.ANALYSIS_DETAIL_TARGET:
-                            targetController = loader.getController();
-                            targetController.setAnalysisDetailLayoutController(this);
-                            targetController.setParamMap(getParamMap());
-                            targetController.show((Parent) node);
-                            break;
                         case FXMLConstants.ANALYSIS_DETAIL_REPORT :
                             analysisDetailReportController = loader.getController();
                             analysisDetailReportController.setAnalysisDetailLayoutController(this);
@@ -239,29 +218,29 @@ public class AnalysisDetailLayoutController extends SubPaneController {
                             analysisDetailOverviewGermlineController.setParamMap(getParamMap());
                             analysisDetailOverviewGermlineController.show((Parent) node);
                             break;
-                        case FXMLConstants.ANALYSIS_DETAIL_TARGET_GERMLINE:
-                            analysisDetailTargetGermlineController = loader.getController();
-                            analysisDetailTargetGermlineController.setAnalysisDetailLayoutController(this);
-                            analysisDetailTargetGermlineController.setParamMap(getParamMap());
-                            analysisDetailTargetGermlineController.show((Parent) node);
-                            break;
                         case FXMLConstants.ANALYSIS_DETAIL_REPORT_GERMLINE :
                             analysisDetailReportGermlineController = loader.getController();
                             analysisDetailReportGermlineController.setAnalysisDetailLayoutController(this);
                             analysisDetailReportGermlineController.setParamMap(getParamMap());
                             analysisDetailReportGermlineController.show((Parent) node);
                             break;
-                        case FXMLConstants.ANALYSIS_DETAIL_SNPS_INDELS_LAYOUT:
-                            analysisDetailSNPsINDELsController = loader.getController();
-                            analysisDetailSNPsINDELsController.setParamMap(getParamMap());
-                            analysisDetailSNPsINDELsController.setMainController(this.mainController);
-                            analysisDetailSNPsINDELsController.show((Parent) node);
-                        break;
                         case FXMLConstants.ANALYSIS_DETAIL_VARIANTS:
                             analysisDetailVariantsController = loader.getController();
                             analysisDetailVariantsController.setParamMap(getParamMap());
                             analysisDetailVariantsController.setMainController(this.mainController);
                             analysisDetailVariantsController.show((Parent) node);
+                            break;
+                        case FXMLConstants.ANALYSIS_DETAIL_TST_RNA_REPORT:
+                            tstrnaReportController = loader.getController();
+                            tstrnaReportController.setParamMap(getParamMap());
+                            tstrnaReportController.setMainController(this.mainController);
+                            tstrnaReportController.show((Parent) node);
+                            break;
+                        case FXMLConstants.ANALYSIS_DETAIL_OVERVIEW_TST_RNA:
+                            tstrnaOverviewController = loader.getController();
+                            tstrnaOverviewController.setAnalysisDetailLayoutController(this);
+                            tstrnaOverviewController.setParamMap(getParamMap());
+                            tstrnaOverviewController.show((Parent) node);
                             break;
                         default:
                             break;
@@ -285,16 +264,20 @@ public class AnalysisDetailLayoutController extends SubPaneController {
     private void executeReloadByTab(Tab tab) {
         // 보고서 탭인 경우 reported variant list 갱신함.
 
-        if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_OVERVIEW.name())) {
+        if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_OVERVIEW_SOMATIC.name())) {
             analysisDetailOverviewController.setDisplayItem();
         } else if (tab.getId().equals(AnalysisDetailTabMenuCode.TAB_OVERVIEW_GERMLINE.name())) {
             analysisDetailOverviewGermlineController.setDisplayItem();
-        } else if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_REPORT.name())) {
+        } else if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_REPORT_SOMATIC.name())) {
             logger.debug("report tab reported variant list reload...");
             analysisDetailReportController.setVariantsList();
         } else if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_REPORT_GERMLINE.name())) {
             logger.debug("germline report tab reported variant list reload...");
             analysisDetailReportGermlineController.setVariantsList();
+        } else if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_REPORT_TST_RNA.name())) {
+            tstrnaReportController.setVariantsList();
+        } else if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_OVERVIEW_TST_RNA.name())) {
+            tstrnaOverviewController.setDisplayItem();
         }
     }
 

@@ -47,7 +47,7 @@ public class ALAMUTService {
 
     /**
      * 어플리케이션 연결가능한지 체크 여부
-     * @return
+     * @return boolean
      */
     private boolean isConnect() {
         try (Socket socket = new Socket()){

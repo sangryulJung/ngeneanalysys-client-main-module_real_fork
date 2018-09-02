@@ -85,12 +85,7 @@ public class SparkHttpProxyServer {
                     URL obj = new URL(url);
                     conn = (HttpsURLConnection) obj.openConnection();
                     HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-                    conn.setHostnameVerifier(new HostnameVerifier() {
-                        @Override
-                        public boolean verify(String s, SSLSession sslSession) {
-                            return true;
-                        }
-                    });
+                    conn.setHostnameVerifier((s, sslSession) -> true);
                     conn.setDefaultUseCaches(false);
                     conn.setUseCaches(false);
                     conn.setRequestMethod("GET");
@@ -186,8 +181,8 @@ public class SparkHttpProxyServer {
 
     /**
      * 바이트 계산
-     * @param string
-     * @return
+     * @param string String
+     * @return Long
      */
     private Long calculateBytes(String string) {
         if(string == null) {

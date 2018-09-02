@@ -11,37 +11,41 @@ import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import ngeneanalysys.code.constants.CommonConstants;
+import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.code.enums.SequencerCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
+import ngeneanalysys.model.paged.PagedCNV;
 import ngeneanalysys.model.paged.PagedVariantAndInterpretationEvidence;
 import ngeneanalysys.model.paged.PagedVirtualPanel;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.model.render.DatepickerConverter;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.service.ImageService;
 import ngeneanalysys.service.PDFCreateService;
 import ngeneanalysys.task.ImageFileDownloadTask;
 import ngeneanalysys.task.JarDownloadTask;
 import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
+import ngeneanalysys.util.httpclient.HttpClientUtil;
 import org.apache.commons.io.FileUtils;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.rendering.ImageType;
-import org.apache.pdfbox.rendering.PDFRenderer;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -76,9 +80,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     private TableColumn<VariantAndInterpretationEvidence, String> tierColumn;
 
     @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> userTierColumn;
-
-    @FXML
     private TableColumn<VariantAndInterpretationEvidence, String> chrColumn;
 
     @FXML
@@ -97,7 +98,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     private TableColumn<VariantAndInterpretationEvidence, String> aaChangeColumn;
 
     @FXML
-    private TableColumn<VariantAndInterpretationEvidence, BigDecimal> alleleFrequencyColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> alleleFrequencyColumn;
 
     @FXML
     private GridPane customFieldGridPane;
@@ -120,7 +121,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     @FXML
     private FlowPane targetGenesFlowPane;
 
-    private Sample sample = null;
+    private SampleView sample = null;
 
     private Panel panel = null;
 
@@ -155,21 +156,20 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         customFieldGridPane.getChildren().clear();
         customFieldGridPane.setPrefHeight(0);
 
-        sample = (Sample)paramMap.get("sample");
+        sample = (SampleView)paramMap.get("sampleView");
 
-        tierColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSwTier()));
-        userTierColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getExpertTier()));
+        tierColumn.setCellValueFactory(cellData -> new SimpleStringProperty(
+                cellData.getValue().getSnpInDel().getExpertTier() != null ? cellData.getValue().getSnpInDel().getExpertTier() :
+                        cellData.getValue().getSnpInDel().getSwTier()));
         chrColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getChromosome()));
         geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
         positionColumn.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getSnpInDel().getGenomicCoordinate().getStartPosition()));
-        refSeqColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getTranscript()));
+        refSeqColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getTranscriptAccession()));
         ntChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
         aaChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChange()));
-        alleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()));
-
-        List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
-        Optional<Panel> panelOptional = panels.stream().filter(panelItem -> panelItem.getId().equals(sample.getPanelId())).findFirst();
-        panelOptional.ifPresent(panel1 -> panel = panel1);
+        alleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()
+                .toString() + "(" + cellData.getValue().getSnpInDel().getReadInfo().getAltReadNum() + "/" + cellData.getValue().getSnpInDel().getReadInfo().getReadDepth() + ")"));
+        panel = sample.getPanel();
 
         setVirtualPanel();
 
@@ -195,9 +195,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         if (keyList.contains("conclusions")) {
                             Map<String, String> item = (Map<String, String>) variableList.get("conclusions");
                             conclusions.setText(item.get("displayName"));
-                            System.out.println(conclusions.getStyle());
                             sortedKeyList.remove("conclusions");
-                            conclusions.setStyle("-fx-font-family: \"Noto Sans KR Bold\"");
+                            //conclusions.setStyle("-fx-font-family: \"Noto Sans KR Bold\"");
                         }
 
 
@@ -316,7 +315,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 30);
                     contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 30);
                 }
-                variantCountByGenes = variantCountByGenes.stream().sorted(Comparator.comparing(VariantCountByGene::getGeneSymbol)).collect(Collectors.toList());
+                variantCountByGenes = variantCountByGenes.stream().sorted(Comparator.comparing(VariantCountByGene::getGeneSymbol))
+                        .collect(Collectors.toList());
                 Set<String> allGeneList = null;
                 Set<String> list = new HashSet<>();
                 if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
@@ -329,10 +329,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
                     String essentialGenes = virtualPanel.getEssentialGenes().replaceAll("\\p{Z}", "");
 
-                    list.addAll(Arrays.stream(essentialGenes.split(",")).collect(Collectors.toSet()));
+                    list.addAll(Arrays.asList(essentialGenes.split(",")));
 
                 }
-
 
                 for(VariantCountByGene gene : variantCountByGenes) {
                     Label label = new Label(gene.getGeneSymbol());
@@ -347,8 +346,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     } else {
                         label.getStyleClass().add("target_gene_variant");
                     }
-
-
 
                     targetGenesFlowPane.getChildren().add(label);
                     if(targetGenesFlowPane.getChildren().size() % 15 == 1) {
@@ -371,23 +368,23 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         });
     }
 
-    public Set<String> returnGeneList(String essentialGenes, String optionalGenes) {
+    private Set<String> returnGeneList(String essentialGenes, String optionalGenes) {
         Set<String> list = new HashSet<>();
 
         essentialGenes = essentialGenes.replaceAll("\\p{Z}", "");
 
-        list.addAll(Arrays.stream(essentialGenes.split(",")).collect(Collectors.toSet()));
+        list.addAll(Arrays.asList(essentialGenes.split(",")));
 
         if(!StringUtils.isEmpty(optionalGenes)) {
             optionalGenes = optionalGenes.replaceAll("\\p{Z}", "");
 
-            list.addAll(Arrays.stream(optionalGenes.split(",")).collect(Collectors.toSet()));
+            list.addAll(Arrays.asList(optionalGenes.split(",")));
         }
 
         return list;
     }
 
-    public List<VariantAndInterpretationEvidence> filteringVariant(List<VariantAndInterpretationEvidence> list) {
+    private List<VariantAndInterpretationEvidence> filteringVariant(List<VariantAndInterpretationEvidence> list) {
         List<VariantAndInterpretationEvidence> filteringList = new ArrayList<>();
         if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
             try {
@@ -415,7 +412,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         return filteringList;
     }
 
-    public List<VariantCountByGene> filteringGeneList(List<VariantCountByGene> list) {
+    private List<VariantCountByGene> filteringGeneList(List<VariantCountByGene> list) {
         List<VariantCountByGene> filteringList = new ArrayList<>();
         if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
             try {
@@ -443,7 +440,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         return filteringList;
     }
 
-    public void setVariantsList() {
+    void setVariantsList() {
         HttpClientResponse response = null;
         try {
             response = apiService.get("/analysisResults/sampleSnpInDels/" + sample.getId(), null,
@@ -470,20 +467,27 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             List<VariantAndInterpretationEvidence> tableList = new ArrayList<>();
 
             if(tierOne != null && !tierOne.isEmpty()) {
-                tierOne.sort((a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
+                tierOne.sort(Comparator.comparing(variant -> variant.getSnpInDel().getGenomicCoordinate().getGene()));
                 tableList.addAll(tierOne);
             }
 
             if(tierTwo != null && !tierTwo.isEmpty()) {
-                tierTwo.sort((a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
+                tierTwo.sort(Comparator.comparing(variant -> variant.getSnpInDel().getGenomicCoordinate().getGene()));
                 tableList.addAll(tierTwo);
             }
 
             if(tierThree != null && !tierThree.isEmpty()) {
-                tierThree.sort((a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
-
+                tierThree.sort(Comparator.comparing(variant -> variant.getSnpInDel().getGenomicCoordinate().getGene()));
                 tableList.addAll(tierThree);
             }
+
+            if(tierFour != null && !tierFour.isEmpty()) {
+                tierFour.sort(Comparator.comparing(variant -> variant.getSnpInDel().getGenomicCoordinate().getGene()));
+                tableList.addAll(tierFour);
+            }
+
+            tableList = tableList.stream().filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y"))
+                    .collect(Collectors.toList());
 
             if(variantsTable.getItems() != null && !variantsTable.getItems().isEmpty()) {
                 variantsTable.getItems().removeAll(variantsTable.getItems());
@@ -496,13 +500,13 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         }
     }
 
-    public boolean discriminationOfMutation(VariantCountByGene gene) {
+    private boolean discriminationOfMutation(VariantCountByGene gene) {
         return (gene.getTier3IndelCount() > 0 || gene.getTier3SnpCount() > 0 ||
                 gene.getTier1IndelCount() > 0 || gene.getTier1SnpCount() > 0 ||
                 gene.getTier2IndelCount() > 0 || gene.getTier2SnpCount() > 0);
     }
 
-    public void setVirtualPanel() {
+    private void setVirtualPanel() {
 
         virtualPanelComboBox.setConverter(new ComboBoxConverter());
 
@@ -532,34 +536,15 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
     private List<VariantAndInterpretationEvidence> settingTierList(List<VariantAndInterpretationEvidence> allTierList, String tier) {
         if(!StringUtils.isEmpty(tier)) {
-            return allTierList.stream().filter(item -> ((tier.equalsIgnoreCase(item.getSnpInDel().getExpertTier()) ||
-                    (StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && item.getSnpInDel().getSwTier().equalsIgnoreCase(tier)))))
+            return allTierList.stream().filter(item -> (tier.equalsIgnoreCase(item.getSnpInDel().getExpertTier()) ||
+                    (StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && item.getSnpInDel().getSwTier().equalsIgnoreCase(tier))))
                     .collect(Collectors.toList());
         }
 
         return null;
     }
 
-    public SimpleStringProperty returnTherapeutic(SnpInDelInterpretation snpInDelInterpretation) {
-        String text = "";
-        if(snpInDelInterpretation != null) {
-            if (!StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelA()))
-                text += snpInDelInterpretation.getTherapeuticEvidence().getLevelA() + ", ";
-            if (!StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelB()))
-                text += snpInDelInterpretation.getTherapeuticEvidence().getLevelB() + ", ";
-            if (!StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelC()))
-                text += snpInDelInterpretation.getTherapeuticEvidence().getLevelC() + ", ";
-            if (!StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelD()))
-                text += snpInDelInterpretation.getTherapeuticEvidence().getLevelD() + ", ";
-        }
-        if(!"".equals(text)) {
-            text = text.substring(0, text.length() - 2);
-        }
-
-        return new SimpleStringProperty(text);
-    }
-
-    public void settingReportData(String contents) {
+    private void settingReportData(String contents) {
 
         Map<String,Object> contentsMap = JsonUtil.fromJsonToMap(contents);
 
@@ -590,7 +575,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
      * @param user User
      * @return boolean
      */
-    public boolean saveData(User user) {
+    private boolean saveData(User user) {
 
         String conclusionsText = conclusionsTextArea.getText();
 
@@ -613,6 +598,10 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 if(datePicker.getValue() != null) {
                     contentsMap.put(datePicker.getId(), datePicker.getValue().toString());
                 }
+            } else if(gridObject instanceof ComboBox) {
+                ComboBox<String> comboBox = (ComboBox<String>) gridObject;
+                String value = comboBox.getSelectionModel().getSelectedItem();
+                if(!StringUtils.isEmpty(value)) contentsMap.put(comboBox.getId(), value);
             }
         }
         String contents = JsonUtil.toJson(contentsMap);
@@ -639,6 +628,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     @FXML
     public void save() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        DialogUtil.setIcon(alert);
         alert.initOwner(getMainController().getPrimaryStage());
         alert.setTitle(CONFIRMATION_DIALOG);
         alert.setHeaderText("Save Report Information");
@@ -670,6 +660,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         User user;
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        DialogUtil.setIcon(alert);
         alert.initOwner(getMainController().getPrimaryStage());
         alert.setTitle(CONFIRMATION_DIALOG);
         alert.setHeaderText("Test conducting organization information");
@@ -720,31 +711,11 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         createPDF(false);
     }
 
-    public void convertPDFtoImage(File file, String baseFileName) {
-        String path = file.getParentFile().getAbsolutePath();
-        try {
-        PDDocument document = PDDocument.load(file);
-            PDFRenderer d = new PDFRenderer(document);
-            int index = document.getNumberOfPages();
-
-            for(int i = 0; i < index ;i++) {
-                BufferedImage im  = d.renderImage(i, 2, ImageType.RGB);
-                ImageIO.write(im, "jpg",  new File(path + "\\\\" + baseFileName + "_" + i+".jpg"));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
+    @SuppressWarnings("unchecked")
     public Map<String, Object> contents() throws WebAPIException {
         Map<String,Object> contentsMap = new HashMap<>();
         contentsMap.put("panelName", panel.getName());
-        List<Diseases> diseases = (List<Diseases>) mainController.getBasicInformationMap().get("diseases");
-        Optional<Diseases> diseasesOptional = diseases.stream().filter(disease -> disease.getId() == sample.getDiseaseId()).findFirst();
-        if(diseasesOptional.isPresent()) {
-            String diseaseName = diseasesOptional.get().getName();
-            contentsMap.put("diseaseName", diseaseName);
-        }
+        contentsMap.put("diseaseName", sample.getDiseaseName());
         contentsMap.put("sampleSource", sample.getSampleSource());
         contentsMap.put("panelCode", panel.getCode());
         contentsMap.put("sampleName", sample.getName());
@@ -779,7 +750,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 tierThree.getSnpInDel().getIncludedInReport().equalsIgnoreCase("Y")).collect(Collectors.toList()));
 
         for(VariantAndInterpretationEvidence variant : variantList) {
-            variant.getSnpInDel().getSnpInDelExpression().setTranscript(ConvertUtil.insertTextAtFixedPosition(variant.getSnpInDel().getSnpInDelExpression().getTranscript(), 15, "\n"));
+            variant.getSnpInDel().getSnpInDelExpression().setTranscript(ConvertUtil.insertTextAtFixedPosition(variant.getSnpInDel().getSnpInDelExpression().getTranscriptAccession(), 15, "\n"));
             variant.getSnpInDel().getSnpInDelExpression().setNtChange(ConvertUtil.insertTextAtFixedPosition(variant.getSnpInDel().getSnpInDelExpression().getNtChange(), 15, "\n"));
             variant.getSnpInDel().getSnpInDelExpression().setAaChange(ConvertUtil.insertTextAtFixedPosition(variant.getSnpInDel().getSnpInDelExpression().getAaChange(), 15, "\n"));
         }
@@ -794,14 +765,20 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     tierOne.getSnpInDel().getIncludedInReport().equalsIgnoreCase("Y")).collect(Collectors.toList())) {
                 if("Y".equalsIgnoreCase(variant.getSnpInDel().getIncludedInReport()) && ConvertUtil.findPrimaryEvidence(variant.getSnpInDelEvidences()) != null) {
                     SnpInDelEvidence snpInDelEvidence = ConvertUtil.findPrimaryEvidence(variant.getSnpInDelEvidences());
-                    if(snpInDelEvidence.getEvidenceLevel().equals("A")) {
-                        evidenceACount++;
-                    } else if(snpInDelEvidence.getEvidenceLevel().equals("B")) {
-                        evidenceBCount++;
-                    } else if(snpInDelEvidence.getEvidenceLevel().equals("C")) {
-                        evidenceCCount++;
-                    } else if(snpInDelEvidence.getEvidenceLevel().equals("D")) {
-                        evidenceDCount++;
+                    switch (snpInDelEvidence.getEvidenceLevel()) {
+                        case "A":
+                            evidenceACount++;
+                            break;
+                        case "B":
+                            evidenceBCount++;
+                            break;
+                        case "C":
+                            evidenceCCount++;
+                            break;
+                        case "D":
+                            evidenceDCount++;
+                            break;
+                        default:
                     }
                     /*if("T2".equals(variant.getSnpInDel().getSwTier())
                             && StringUtils.isEmpty(variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelB())) evidenceBCount++;*/
@@ -814,14 +791,20 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     tierTwo.getSnpInDel().getIncludedInReport().equalsIgnoreCase("Y")).collect(Collectors.toList())) {
                 if("Y".equalsIgnoreCase(variant.getSnpInDel().getIncludedInReport()) && ConvertUtil.findPrimaryEvidence(variant.getSnpInDelEvidences()) != null) {
                     SnpInDelEvidence snpInDelEvidence = ConvertUtil.findPrimaryEvidence(variant.getSnpInDelEvidences());
-                    if(snpInDelEvidence.getEvidenceLevel().equals("A")) {
-                        evidenceACount++;
-                    } else if(snpInDelEvidence.getEvidenceLevel().equals("B")) {
-                        evidenceBCount++;
-                    } else if(snpInDelEvidence.getEvidenceLevel().equals("C")) {
-                        evidenceCCount++;
-                    } else if(snpInDelEvidence.getEvidenceLevel().equals("D")) {
-                        evidenceDCount++;
+                    switch (snpInDelEvidence.getEvidenceLevel()) {
+                        case "A":
+                            evidenceACount++;
+                            break;
+                        case "B":
+                            evidenceBCount++;
+                            break;
+                        case "C":
+                            evidenceCCount++;
+                            break;
+                        case "D":
+                            evidenceDCount++;
+                            break;
+                        default:
                     }
                     /*if("T1".equals(variant.getSnpInDel().getSwTier())
                             && StringUtils.isEmpty(variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelD())) evidenceDCount++;*/
@@ -878,8 +861,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
                 Set<String> list = new HashSet<>();
 
-                list.addAll(Arrays.stream(virtualPanel.getEssentialGenes().replaceAll("\\p{Z}", "")
-                        .split(",")).collect(Collectors.toSet()));
+                list.addAll(Arrays.asList(virtualPanel.getEssentialGenes().replaceAll("\\p{Z}", "")
+                        .split(",")));
 
                 Set<String> allGeneList = returnGeneList(virtualPanel.getEssentialGenes(), virtualPanel.getOptionalGenes());
 
@@ -889,16 +872,12 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
             }
 
-            response = apiService.get("/runs/" + sample.getRunId(), null,
-                    null, false);
+            String runSequencer = sample.getRun().getSequencingPlatform();
 
-            RunWithSamples runWithSamples = response.getObjectBeforeConvertResponseToJSON(RunWithSamples.class);
-            String runSequencer = runWithSamples.getRun().getSequencingPlatform();
-
-            if(runSequencer.equalsIgnoreCase("MISEQ")) {
-                contentsMap.put("sequencer",SequencerCode.MISEQ.getDescription());
+            if (runSequencer.equalsIgnoreCase("MISEQ")) {
+                contentsMap.put("sequencer", SequencerCode.MISEQ.getDescription());
             } else {
-                contentsMap.put("sequencer",SequencerCode.MISEQ_DX.getDescription());
+                contentsMap.put("sequencer", SequencerCode.MISEQ_DX.getDescription());
             }
 
             response = apiService.get("/analysisResults/sampleQCs/" + sample.getId(), null,
@@ -906,31 +885,144 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
             List<SampleQC> qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
 
-            contentsMap.put("totalBase",findQCResult(qcList, "total_base"));
-            contentsMap.put("q30",findQCResult(qcList, "q30_trimmed_base"));
-            contentsMap.put("mappedBase",findQCResult(qcList, "mapped_base"));
-            contentsMap.put("onTarget",findQCResult(qcList, "on_target"));
-            contentsMap.put("onTargetCoverage",findQCResult(qcList, "on_target_coverage"));
-            contentsMap.put("duplicatedReads",findQCResult(qcList, "duplicated_reads"));
-            contentsMap.put("roiCoverage",findQCResult(qcList, "roi_coverage"));
+            if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
+                contentsMap.put("q30ScoreRead1", findQCResult(qcList, "Q30_score_read1"));
+                contentsMap.put("q30ScoreRead2", findQCResult(qcList, "Q30_score_read2"));
+                contentsMap.put("coverageMAD", findQCResult(qcList, "Coverage_MAD"));
+                contentsMap.put("medianBinCountCNVTargets", findQCResult(qcList, "Median_BinCount_CNV_Targets"));
+                contentsMap.put("medianInsertSize", findQCResult(qcList, "Median_Insert_Size"));
+                contentsMap.put("pctExonBases100X", findQCResult(qcList, "PCT_ExonBases_100X"));
+                contentsMap.put("readsPF", findQCResult(qcList, "Reads_PF"));
+            } else {
+                contentsMap.put("mappingQuality", findQCResult(qcList, "mapping_quality_60"));
+                contentsMap.put("uniformity", findQCResult(qcList, "uniformity_0.2"));
+                contentsMap.put("totalBase", findQCResult(qcList, "total_base"));
+                contentsMap.put("q30", findQCResult(qcList, "q30_trimmed_base"));
+                contentsMap.put("mappedBase", findQCResult(qcList, "mapped_base"));
+                contentsMap.put("onTarget", findQCResult(qcList, "on_target"));
+                contentsMap.put("onTargetCoverage", findQCResult(qcList, "on_target_coverage"));
+                contentsMap.put("duplicatedReads", findQCResult(qcList, "duplicated_reads"));
+                contentsMap.put("roiCoverage", findQCResult(qcList, "roi_coverage"));
+            }
+
+            if(sample.getPipelineVersion() != null) {
+                //response = apiService.get("/pipelineVersions/" + sample.getPipelineVersionId(), null, null, false);
+                //PipelineVersion pipelineVersion = response.getObjectBeforeConvertResponseToJSON(PipelineVersion.class);
+                contentsMap.put("pipelineVersion", sample.getPipelineVersion());
+            }
 
             List<String> conclusionLineList = null;
             if(!StringUtils.isEmpty(conclusionsTextArea.getText())) {
                 conclusionLineList = new ArrayList<>();
                 String[] lines = conclusionsTextArea.getText().split("\n");
                 if(lines != null && lines.length > 0) {
-                    for (String line : lines) {
-                        conclusionLineList.add(line);
-                    }
+                    conclusionLineList.addAll(Arrays.asList(lines));
                 } else {
                     conclusionLineList.add(conclusionsTextArea.getText());
                 }
             }
             contentsMap.put("conclusions", conclusionLineList);
 
+            Map<String, Object> analysisFileMap = new HashMap<>();
+            analysisFileMap.put("sampleId", sample.getId());
+            response = apiService.get("/analysisFiles", analysisFileMap, null, false);
+            AnalysisFileList analysisFileList = response.getObjectBeforeConvertResponseToJSON(AnalysisFileList.class);
+
+            List<AnalysisFile> analysisFiles = analysisFileList.getResult();
+
+            Optional<AnalysisFile> optionalAnalysisFile = analysisFiles.stream()
+                    .filter(item -> item.getName().contains("cnv_plot.png")).findFirst();
+
+            if(optionalAnalysisFile.isPresent()) {
+                contentsMap.put("cnvImagePath", optionalAnalysisFile.get().getName());
+                downloadCNVImage(optionalAnalysisFile.get());
+            }
+
+            try {
+                response = apiService.get("/analysisResults/cnv/" + sample.getId(), null, null, null);
+                PagedCNV pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedCNV.class);
+                contentsMap.put("cnvList", pagedCNV.getResult());
+
+            } catch (WebAPIException wae) {
+                logger.debug(wae.getMessage());
+            }
         }
 
         return contentsMap;
+    }
+
+    private String downloadCNVImage(AnalysisFile analysisFile) {
+        CloseableHttpClient httpclient = null;
+        CloseableHttpResponse response = null;
+
+        String tempPath = CommonConstants.BASE_FULL_PATH  + File.separator + "temp";
+        File tempFile = new File(tempPath);
+
+        if(!tempFile.exists()) {
+            tempFile.mkdirs();
+        }
+
+        String downloadUrl = "/analysisFiles/" + analysisFile.getSampleId() + "/" + analysisFile.getName();
+        String path = CommonConstants.BASE_FULL_PATH  + File.separator + "temp" +
+                File.separator + analysisFile.getName();
+
+        File file = new File(path);
+
+        OutputStream os = null;
+        try {
+            String connectURL = apiService.getConvertConnectURL(downloadUrl);
+
+            // 헤더 삽입 정보 설정
+            Map<String,Object> headerMap = apiService.getDefaultHeaders(true);
+
+            HttpGet get = new HttpGet(connectURL);
+            logger.debug("GET:" + get.getURI());
+
+            // 지정된 헤더 삽입 정보가 있는 경우 추가
+            if(headerMap != null && headerMap.size() > 0) {
+                for (Map.Entry<String, Object> entry : headerMap.entrySet()) {
+                    get.setHeader(entry.getKey(), entry.getValue().toString());
+                }
+            }
+
+            httpclient = HttpClients.custom().setSSLSocketFactory(HttpClientUtil.getSSLSocketFactory()).build();
+            if (httpclient != null)
+                response = httpclient.execute(get);
+            if (response == null){
+                logger.error("httpclient response is null");
+                throw new NullPointerException();
+            }
+            int status = response.getStatusLine().getStatusCode();
+
+            if(status >= 200 && status < 300) {
+                HttpEntity entity = response.getEntity();
+                InputStream content = entity.getContent();
+
+                os = Files.newOutputStream(Paths.get(file.toURI()));
+
+                byte[] buf = new byte[8192];
+                int n;
+                while ((n = content.read(buf)) > 0) {
+                    os.write(buf, 0, n);
+                }
+                content.close();
+                os.flush();
+                if (httpclient != null) httpclient.close();
+                if (response != null) response.close();
+            }
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+        } finally {
+            if(os != null) {
+                try {
+                    os.close();
+                } catch (Exception e) {
+                    logger.error(e.getMessage());
+                }
+            }
+        }
+
+        return path;
     }
 
     private boolean createPDF(boolean isDraft) {
@@ -954,8 +1046,10 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             FileChooser fileChooser = new FileChooser();
             if(outputType != null && outputType.equalsIgnoreCase("MS_WORD")) {
                 fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF (*.docx)", "*.docx"));
-            } else {
+            } else if(outputType != null && outputType.equalsIgnoreCase("PDF")){
                 fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf"));
+            } else if(outputType != null && outputType.equalsIgnoreCase("IMG")){
+                fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("JPG (*.jpg)", "*.jpg"));
             }
             fileChooser.setInitialFileName(baseSaveName);
             File file = fileChooser.showSaveDialog(this.getMainApp().getPrimaryStage());
@@ -985,7 +1079,11 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
                 String contents = "";
                 if(panel.getReportTemplateId() == null) {
-                    contents = velocityUtil.getContents("/layout/velocity/report.vm", "UTF-8", model);
+                    if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
+                        contents = velocityUtil.getContents("/layout/velocity/report_tst.vm", "UTF-8", model);
+                    } else {
+                        contents = velocityUtil.getContents("/layout/velocity/report.vm", "UTF-8", model);
+                    }
                     created = pdfCreateService.createPDF(file, contents);
                     createdCheck(created, file);
                     //convertPDFtoImage(file, sample.getName());
@@ -1035,9 +1133,12 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         }
 
                         if(!jarFile.exists()) {
-
                             File folder = new File(filePath);
-                            if (!folder.exists()) folder.mkdirs();
+                            if (!folder.exists()){
+                                if(!folder.mkdirs()) {
+                                    throw new Exception("Fail to make jarFile directory");
+                                }
+                            }
 
                             Task task = new JarDownloadTask(this, component);
 
@@ -1051,10 +1152,13 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                                     URL[] jarUrls = new URL[]{jarFile1.toURI().toURL()};
                                     createWordFile(jarUrls, file, contentsMap, reportCreationErrorMsg);
                                 } catch (MalformedURLException murle) {
-                                    DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + murle.getMessage(), getMainApp().getPrimaryStage(), false);
+                                    DialogUtil.error("Report Generation Fail", reportCreationErrorMsg + "\n" + murle.getMessage(), getMainApp().getPrimaryStage(), false);
                                     murle.printStackTrace();
                                 }
                             });
+                            task.exceptionProperty().addListener((observable, oldValue, newValue) ->
+                                DialogUtil.error("Report Generation Fail",
+                                        ((Exception)newValue).getMessage(), getMainApp().getPrimaryStage(), false));
                         } else {
                             URL[] jarUrls = new URL[]{jarFile.toURI().toURL()};
                             createWordFile(jarUrls, file, contentsMap, reportCreationErrorMsg);
@@ -1083,8 +1187,17 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         final String contents1 = velocityUtil.getContents(reportContents.getReportTemplate().getId() + "/" + reportContents.getReportTemplate().getName() + ".vm", "UTF-8", model);
                         task.setOnSucceeded(ev -> {
                             try {
-                                final boolean created1 = pdfCreateService.createPDF(file, contents1);
-                                createdCheck(created1, file);
+                                if(reportContents.getReportTemplate().getOutputType() != null
+                                        && reportContents.getReportTemplate().getOutputType().equalsIgnoreCase("PDF")) {
+                                    final boolean created1 = pdfCreateService.createPDF(file, contents1);
+                                    createdCheck(created1, file);
+                                } else {
+                                    String path = CommonConstants.BASE_FULL_PATH + File.separator + "temp" + File.separator + "tempPDF.pdf";
+                                    File tempPDFFile = new File(path);
+                                    final boolean created1 = pdfCreateService.createPDF(tempPDFFile, contents1);
+                                    createdCheck(created1, tempPDFFile);
+                                    ImageService.convertPDFtoImage(tempPDFFile, sample.getName(), file);
+                                }
 
                             } catch (Exception e) {
                                 DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);
@@ -1107,14 +1220,12 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         return created;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "UnnecessarySemicolon"})
     private void createWordFile(URL[] jarUrls, File file , Map<String, Object> contentsMap, String reportCreationErrorMsg) {
-        URLClassLoader classLoader = null;
-        try {
-            classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader());
+
+        try (URLClassLoader classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader())) {
             Class classToLoad = Class.forName("word.create.App", true, classLoader);
             logger.debug("application init..");
-            Method[] methods = classToLoad.getMethods();
             Method setParams = classToLoad.getMethod("setParams", Map.class);
             Method updateEmbeddedDoc = classToLoad.getMethod("updateEmbeddedDoc");
             Method updateWordFile = classToLoad.getDeclaredMethod("updateWordFile");
@@ -1127,12 +1238,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             createdCheck(true, file);
         } catch (Exception e) {
             DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);
-        } finally {
-            try {
-                if(classLoader != null) classLoader.close();
-            } catch (IOException e) {
-                DialogUtil.error("close error", e.getMessage(), getMainApp().getPrimaryStage(), false);
-            }
+            e.printStackTrace();
         }
     }
 
@@ -1140,6 +1246,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         try {
             if (created) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                DialogUtil.setIcon(alert);
                 alert.initOwner(getMainController().getPrimaryStage());
                 alert.setTitle(CONFIRMATION_DIALOG);
                 alert.setHeaderText("Creating the report document was completed.");

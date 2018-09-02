@@ -47,9 +47,11 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     private Label swTierLabel;
     @FXML
     private Label userTierLabel;
-
     @FXML
     private Label arrow;
+
+    @FXML
+    private Button saveBtn;
 
     @FXML
     private CheckBox addToReportCheckBox;
@@ -170,14 +172,19 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         interpretationEvidenceColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEvidenceLevel()));
         interpretationEvidenceCommentColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEvidence()));
         interpretationStatusColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
-        interpretationDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(DateFormatUtils.format(cellData.getValue().getCreatedAt().toDate(), "yyyy-MM-dd HH:mm:ss")));
+        interpretationDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(DateFormatUtils
+                .format(cellData.getValue().getCreatedAt().toDate(), "yyyy-MM-dd HH:mm:ss")));
 
         pastCasesSampleColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSampleName()));
-        pastCasesTypeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDelEvidence() != null ? cellData.getValue().getSnpInDelEvidence().getEvidenceType() : ""));
-        pastCasesEvidenceColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDelEvidence() != null ? cellData.getValue().getSnpInDelEvidence().getEvidenceLevel() : ""));
+        pastCasesTypeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDelEvidence()
+                != null ? cellData.getValue().getSnpInDelEvidence().getEvidenceType() : ""));
+        pastCasesEvidenceColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDelEvidence()
+                != null ? cellData.getValue().getSnpInDelEvidence().getEvidenceLevel() : ""));
         pastCasesInterpretationColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTier()));
-        pastCasesEvidenceCommentColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDelEvidence() != null ? cellData.getValue().getSnpInDelEvidence().getEvidence() : ""));
-        pastCasesDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDelEvidence() != null ? DateFormatUtils.format(cellData.getValue().getSnpInDelEvidence().getCreatedAt().toDate(), "yyyy-MM-dd hh:mm:ss") : ""));
+        pastCasesEvidenceCommentColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()
+                .getSnpInDelEvidence() != null ? cellData.getValue().getSnpInDelEvidence().getEvidence() : ""));
+        pastCasesDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDelEvidence()
+                != null ? DateFormatUtils.format(cellData.getValue().getSnpInDelEvidence().getCreatedAt().toDate(), "yyyy-MM-dd hh:mm:ss") : ""));
 
         setEvidenceTable();
         setPastCases();
@@ -234,7 +241,6 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
             textField = new TextField(getString());
             textField.getStyleClass().add("txt_black");
             textField.setMinWidth(this.getWidth() - this.getGraphicTextGap() * 2);
-            SnpInDelEvidence variant = this.getTableView().getItems().get(this.getTableRow().getIndex());
             textField.setOnKeyPressed(t -> {
                 if(t.getCode() == KeyCode.ENTER) {
                     commitEdit(textField.getText());
@@ -260,14 +266,13 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
     private class TypeComboBoxCell extends TableCell<SnpInDelEvidence, String> {
         private ComboBox<String> comboBox = new ComboBox<>();
-        /*boolean setting = false;*/
 
         private TypeComboBoxCell() {
             comboBox.getSelectionModel().selectedItemProperty().addListener((ov, t, t1) -> {
                 SnpInDelEvidence snpInDelEvidence = TypeComboBoxCell.this.getTableView().getItems().get(
                         TypeComboBoxCell.this.getIndex());
 
-                if(!StringUtils.isEmpty(t1)) {
+                if(StringUtils.isNotEmpty(t1)) {
                     snpInDelEvidence.setEvidenceType(t1);
                 }
             });
@@ -286,12 +291,11 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                 if(panel.getAnalysisType().equals("SOMATIC")) {
                     comboBox.getItems().addAll("therapeutic", "prognosis", "diagnosis", "N/A");
                 }
-                //comboBox.getSelectionModel().selectFirst();
 
                 SnpInDelEvidence evidence = TypeComboBoxCell.this.getTableView().getItems().get(
                         TypeComboBoxCell.this.getIndex());
 
-                if(evidence != null && !StringUtils.isEmpty(evidence.getEvidenceType())) {
+                if(evidence != null && StringUtils.isNotEmpty(evidence.getEvidenceType())) {
                     comboBox.getSelectionModel().select(evidence.getEvidenceType());
                 } else {
                     comboBox.getSelectionModel().selectFirst();
@@ -304,19 +308,23 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
     private class EvidenceLevelComboBoxCell extends TableCell<SnpInDelEvidence, String> {
         private ComboBox<String> comboBox = new ComboBox<>();
-        boolean setting = false;
 
         private EvidenceLevelComboBoxCell() {
             comboBox.getSelectionModel().selectedItemProperty().addListener((ov, t, t1) -> {
                 SnpInDelEvidence snpInDelEvidence = EvidenceLevelComboBoxCell.this.getTableView().getItems().get(
                         EvidenceLevelComboBoxCell.this.getIndex());
 
-                if(!StringUtils.isEmpty(t1)) {
+                if(StringUtils.isNotEmpty(t1)) {
                     snpInDelEvidence.setEvidenceLevel(t1);
                     if(t1.equalsIgnoreCase("T3") || t1.equalsIgnoreCase("T4")) {
                         snpInDelEvidence.setEvidenceType("N/A");
+                    } else if(snpInDelEvidence.getEvidenceType().equals("N/A")){
+                        snpInDelEvidence.setEvidenceType("therapeutic");
+                    }
+                    if(StringUtils.isNotEmpty(t) && !t.equals(t1)) {
                         evidenceTableView.refresh();
                     }
+                    //evidenceTableView.refresh();
                 }
             });
         }
@@ -334,12 +342,11 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                 if(panel.getAnalysisType().equals("SOMATIC")) {
                     comboBox.getItems().addAll("A", "B", "C", "D", "T3", "T4");
                 }
-                //comboBox.getSelectionModel().selectFirst();
 
                 SnpInDelEvidence evidence = EvidenceLevelComboBoxCell.this.getTableView().getItems().get(
                         EvidenceLevelComboBoxCell.this.getIndex());
 
-                if(evidence != null && !StringUtils.isEmpty(evidence.getEvidenceLevel())) {
+                if(evidence != null && StringUtils.isNotEmpty(evidence.getEvidenceLevel())) {
                     comboBox.getSelectionModel().select(evidence.getEvidenceLevel());
                 } else {
                     comboBox.getSelectionModel().selectFirst();
@@ -354,7 +361,6 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
     private class PrimaryRadioButtonCell extends TableCell<SnpInDelEvidence, Boolean> {
         private RadioButton radioButton = new RadioButton();
-        boolean setting = false;
 
         private PrimaryRadioButtonCell() {
             radioButton.selectedProperty().addListener((ob, ov, nv) -> {
@@ -393,7 +399,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         HBox box = null;
         final ImageView img = new ImageView(resourceUtil.getImage("/layout/images/renewal/delete_icon.png", 16, 16));
 
-        public DeleteButtonCreate() {
+        private DeleteButtonCreate() {
             img.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 SnpInDelEvidence evidence = DeleteButtonCreate.this.getTableView().getItems().get(
                         DeleteButtonCreate.this.getIndex());
@@ -419,20 +425,26 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         }
     }
 
-    public void setGridPaneWidth(double size) {
-        interpretationGridPane.setPrefWidth(size);
+    private String returnTier(String evidenceLevel) {
+        if("A".equalsIgnoreCase(evidenceLevel) || "B".equalsIgnoreCase(evidenceLevel)) {
+            return "T1";
+        } else if("C".equalsIgnoreCase(evidenceLevel) || "D".equalsIgnoreCase(evidenceLevel)) {
+            return "T2";
+        }
+
+        return evidenceLevel;
     }
 
-    public void setEvidenceTable() {
+    @SuppressWarnings("unchecked")
+    private void setEvidenceTable() {
+        saveBtn.setDisable(true);
         if(evidenceTableView.getItems() != null && !evidenceTableView.getItems().isEmpty()) {
             evidenceTableView.getItems().removeAll(evidenceTableView.getItems());
             evidenceTableView.refresh();
-            //evidenceTableView.setItems(null);
         }
         if(interpretationTableView.getItems() != null && !interpretationTableView.getItems().isEmpty()) {
             interpretationTableView.getItems().removeAll(interpretationTableView.getItems());
             interpretationTableView.refresh();
-            //interpretationTableView.setItems(null);
         }
         try {
             HttpClientResponse response = apiService.get("/analysisResults/snpInDels/"+
@@ -447,28 +459,14 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                 List<SnpInDelEvidence> interpretationList = new ArrayList<>();
                 interpretationList.addAll(list.stream().filter(item -> "Active".equalsIgnoreCase(item.getStatus())).collect(Collectors.toList()));
 
-                Optional<SnpInDelEvidence> snpInDelEvidenceOptional
-                        = interpretationList.stream().filter(item -> item.getPrimaryEvidence()).findFirst();
+                if (StringUtils.isNotEmpty(selectedAnalysisResultVariant.getSnpInDel().getExpertTier())) {
+                        returnTierClass(returnTier(selectedAnalysisResultVariant.getSnpInDel().getExpertTier()), userTierLabel ,2);
+                }
 
-                snpInDelEvidenceOptional.ifPresent(snpInDelEvidence -> {
-                    String tier = "";
-                    if(snpInDelEvidence.getEvidenceLevel().equalsIgnoreCase("A")
-                            || snpInDelEvidence.getEvidenceLevel().equalsIgnoreCase("B")) {
-                        tier = "T1";
-                    } else if(snpInDelEvidence.getEvidenceLevel().equalsIgnoreCase("C")
-                            || snpInDelEvidence.getEvidenceLevel().equalsIgnoreCase("D")) {
-                        tier = "T2";
-                    } else if(snpInDelEvidence.getEvidenceLevel().equalsIgnoreCase("T3")) {
-                        tier = "T3";
-                    } else if(snpInDelEvidence.getEvidenceLevel().equalsIgnoreCase("T4")) {
-                        tier = "T4";
-                    }
-
-                    returnTierClass(tier, userTierLabel ,2);
-                });
-
-                if(!interpretationList.isEmpty())
+                if(!interpretationList.isEmpty()) {
                     evidenceTableView.getItems().addAll(FXCollections.observableArrayList(interpretationList));
+                    saveBtn.setDisable(false);
+                }
 
                 interpretationTableView.getItems().addAll(FXCollections.observableArrayList(list));
 
@@ -484,7 +482,8 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         }
     }
 
-    public void setPastCases() {
+    @SuppressWarnings("unchecked")
+    private void setPastCases() {
         if(pastCasesTableView.getItems() != null && !pastCasesTableView.getItems().isEmpty()) {
             pastCasesTableView.getItems().removeAll(pastCasesTableView.getItems());
         }
@@ -514,36 +513,29 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         }
     }
 
-    public void addToReportBtn(CheckBox checkBox) {
+    private void addToReportBtn(CheckBox checkBox) {
         if(selectedAnalysisResultVariant != null) {
             String oldSymbol = selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport();
+            String symbol = "N";
             if (checkBox.isSelected()) {
-                try {
-                    FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
-                    Node node = loader.load();
-                    ExcludeReportDialogController excludeReportDialogController = loader.getController();
-                    excludeReportDialogController.setMainController(mainController);
-                    excludeReportDialogController.settingItem("Y", selectedAnalysisResultVariant, checkBox);
-                    excludeReportDialogController.show((Parent) node);
-                } catch (IOException ioe) {
-                    ioe.printStackTrace();
-                }
-                if(!oldSymbol.equals(selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport()))
-                    analysisDetailSNVController.showVariantList(analysisDetailSNVController.getCurrentPageIndex() + 1, 0);
-            } else {
-                try {
-                    FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
-                    Node node = loader.load();
-                    ExcludeReportDialogController excludeReportDialogController = loader.getController();
-                    excludeReportDialogController.setMainController(mainController);
-                    excludeReportDialogController.settingItem("N", selectedAnalysisResultVariant, checkBox);
-                    excludeReportDialogController.show((Parent) node);
-                } catch (IOException ioe) {
-                    ioe.printStackTrace();
-                }
+                symbol = "Y";
             }
-            if(!oldSymbol.equals(selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport()))
-                analysisDetailSNVController.showVariantList(analysisDetailSNVController.getCurrentPageIndex() + 1, 0);
+
+            try {
+                FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
+                Node node = loader.load();
+                ExcludeReportDialogController excludeReportDialogController = loader.getController();
+                excludeReportDialogController.setMainController(mainController);
+                excludeReportDialogController.setSnvController(analysisDetailSNVController);
+                excludeReportDialogController.setParamMap(this.getParamMap());
+                excludeReportDialogController.settingItem(symbol, selectedAnalysisResultVariant, checkBox);
+                excludeReportDialogController.show((Parent) node);
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+
+            /*if(!oldSymbol.equals(selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport()))
+                analysisDetailSNVController.showVariantList(analysisDetailSNVController.getCurrentPageIndex() + 1, 0);*/
         }
     }
 
@@ -555,11 +547,11 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         }
     }
 
-    public void returnTierClass(String tier, Label label, Integer usertier) {
+    private void returnTierClass(String tier, Label label, Integer userTier) {
         label.setAlignment(Pos.CENTER);
         logger.debug("+++++++++++++++");
-        logger.debug(userTierLabel.getText()+" "+tier+" "+usertier);
-        if(usertier == 2 && tier != null) {arrow.setVisible(true);}
+        logger.debug(userTierLabel.getText()+" "+tier+" "+userTier);
+        if(userTier == 2 && tier != null) {arrow.setVisible(true);}
         //else {arrow.setVisible(true);}
         //if(label == userTierLabel) arrow.setVisible(true);
 
@@ -589,10 +581,24 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     public void addInterpretation() {
         SnpInDelEvidence snpInDelEvidence = new SnpInDelEvidence();
         evidenceTableView.getItems().add(snpInDelEvidence);
+        saveBtn.setDisable(false);
     }
 
     private boolean checkPrimary() {
         return evidenceTableView.getItems().stream().anyMatch(item -> (item.getPrimaryEvidence() != null) ? item.getPrimaryEvidence() : false);
+    }
+
+    private String getPrimaryEvidence() {
+        Optional<SnpInDelEvidence> optionalSnpInDelEvidence = evidenceTableView.getItems().stream()
+                .filter(SnpInDelEvidence::getPrimaryEvidence).findFirst();
+
+        String evidenceLevel = "";
+
+        if(optionalSnpInDelEvidence.isPresent()) {
+            evidenceLevel = optionalSnpInDelEvidence.get().getEvidenceLevel();
+        }
+
+        return evidenceLevel;
     }
 
     @FXML
@@ -607,8 +613,10 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                     response = apiService.post("/analysisResults/snpInDels/"
                             + selectedAnalysisResultVariant.getSnpInDel().getId() + "/evidences", params, null, true);
                     logger.debug(response.getContentString());
+                    selectedAnalysisResultVariant.getSnpInDel().setExpertTier(returnTier(getPrimaryEvidence()));
                     setEvidenceTable();
                     setPastCases();
+                    analysisDetailSNVController.setrFlag(true);
                 } catch (WebAPIException wae) {
                     DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                             getMainApp().getPrimaryStage(), true);
@@ -627,10 +635,12 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
     public void setTier(SnpInDel snpInDel) {
         returnTierClass(snpInDel.getSwTier(), swTierLabel,1);
-        //returnTierClass(snpInDel.getExpertTier(), userTierLabel,2);
+        if (snpInDel.getExpertTier() != null) {
+            returnTierClass(snpInDel.getExpertTier(), userTierLabel,2);
+        }
     }
 
-    public List<Map<String, Object>> returnEvidenceMap() {
+    private List<Map<String, Object>> returnEvidenceMap() {
         List<Map<String, Object>> list = new ArrayList<>();
         for(SnpInDelEvidence snpInDelEvidence : evidenceTableView.getItems()) {
             Map<String, Object> params = new HashMap<>();
@@ -647,6 +657,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
     public void delete(SnpInDelEvidence snpInDelEvidence) {
         evidenceTableView.getItems().remove(snpInDelEvidence);
+        if(evidenceTableView.getItems().isEmpty()) saveBtn.setDisable(true);
     }
 
 

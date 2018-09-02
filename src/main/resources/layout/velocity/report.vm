@@ -47,7 +47,7 @@
                             </fo:table-cell>
                             <fo:table-cell>
                                 <fo:block font-size="5.5pt" font-family="Noto Sans CJK KR Regular">
-                                    Head-Office:220-626, 1, Gwanak-ro, Gwanak-gu, Seoul, Korea | Branch-Office : 1104, Hanhwa Bizmetro, 242, Digital-ro, Guro-gu, Seoul, Korea
+                                    Head-Office: 1104, Hanhwa Bizmetro, 242, Digital-ro, Guro-gu, Seoul, Korea
                                 </fo:block>
                                 <fo:block font-size="5.5pt" font-family="Noto Sans CJK KR Regular">
                                     Tel : +82 2 867 9798 | FAX : +82 2 883 9784 | Email : business@ngenebio.com
@@ -74,7 +74,7 @@
 				<fo:block font-size="24pt" font-weight="bold" margin-bottom="1mm">
                     <fo:external-graphic  content-width="18.4cm" content-height="1.5cm" src="${testInformationText}"  padding-bottom="0mm"/>
                 </fo:block>
-				<fo:block background-color="#e6e6e7" font-size="13pt" margin-bottom="5mm" padding-top="3mm" padding-bottom="3mm">
+				<fo:block background-color="#e6e6e7" font-size="12pt" margin-bottom="5mm" padding-top="3mm" padding-bottom="3mm">
                     <fo:table>
                         <fo:table-body>
                             <fo:table-row>
@@ -109,11 +109,7 @@
                     </fo:table>
 				</fo:block>
 				<fo:block>
-					<fo:block font-size="16pt" margin-bottom="1mm" font-family="Noto Sans CJK KR Bold" font-weight="bold">Panel : $contents.panelName</fo:block>
-
-                    #if($contents.sampleSource && $contents.sampleSource == "BLOOD")
-                    <fo:block margin-bottom="10mm"> </fo:block>
-                    #end
+					<fo:block font-size="14pt" margin-bottom="1mm" font-family="Noto Sans CJK KR Bold" font-weight="bold">Panel : $contents.panelName</fo:block>
 
                     #if($contents.sampleSource && $contents.sampleSource == "FFPE")
 					<fo:table table-layout="fixed" width="100%" margin-bottom="4mm" border-bottom="solid 0.1mm black" border-top="solid 0.1mm black">
@@ -135,6 +131,8 @@
 							#end
 						</fo:table-body>
 					</fo:table>
+                    #else
+                    <fo:block margin-bottom="10mm"> </fo:block>
                     #end
                     <fo:table>
                         <fo:table-body>
@@ -330,13 +328,14 @@
 				</fo:table>
 			</fo:block>
 			</fo:block>
+            <fo:block page-break-before="always"> </fo:block>
 
             <!-- Pertinent Negatives -->
-            <fo:block margin-bottom="10mm" font-size="10pt" margin-top="5mm">
+            <!--<fo:block margin-bottom="10mm" font-size="10pt" margin-top="5mm">
                 <fo:block font-size="24pt" font-weight="bold" margin-bottom="1mm" font-family="Noto Sans CJK KR Regular">
                     <fo:external-graphic content-width="18.4cm" content-height="1.5cm" src="${pertinetNegativeText}" padding-bottom="-3mm" />
                 </fo:block>
-                <!--<fo:block background-color="#e6e6e7" font-size="13pt" padding-top="3mm" padding-bottom="3mm">
+                <fo:block background-color="#e6e6e7" font-size="13pt" padding-top="3mm" padding-bottom="3mm">
                     <fo:table font-family="Noto Sans CJK KR Regular">
                         <fo:table-body>
                             <fo:table-row>
@@ -347,7 +346,7 @@
                             </fo:table-row>
                         </fo:table-body>
                     </fo:table>
-                </fo:block>-->
+                </fo:block>
                 <fo:block margin-bottom="5mm"></fo:block>
                 <fo:block font-size="11pt">
                     <fo:table table-layout="fixed" width="100%" margin-bottom="4mm" border-bottom="solid 0.1mm black">
@@ -413,7 +412,7 @@
                     </fo:table>
                 </fo:block>
                 <fo:block page-break-before="always"> </fo:block>
-            </fo:block>
+            </fo:block>-->
 
 			<!-- Variant Details -->
 			<fo:block text-align="center" margin-top="10mm" margin-bottom="4mm">
@@ -434,7 +433,7 @@
                             #set($color = "#f9c03b")
                         #end
 
-					<fo:table table-layout="fixed" width="100%" margin-bottom="4mm" display-align="center" text-align="center" font-size="11pt">
+					<fo:table table-layout="fixed" width="100%" margin-bottom="4mm" display-align="center" text-align="center" font-size="10pt">
 						<fo:table-column column-width="proportional-column-width(0.25)" />
 						<fo:table-column column-width="proportional-column-width(0.35)" />
 						<fo:table-column column-width="proportional-column-width(0.2)" />
@@ -490,7 +489,9 @@
 									</fo:block>
 								</fo:table-cell>
 								<fo:table-cell border-width="0.5pt" background-color="#e7e7e8">
-									<fo:block padding-bottom="2mm" padding-top="2mm">$variant.snpInDel.populationFrequency.dbsnpRsId
+									<fo:block padding-bottom="2mm" padding-top="2mm">
+                                        #if($variant.snpInDel.dbSNP.dbSnpRsId) $variant.snpInDel.dbSNP.dbSnpRsId
+                                        #end
 									</fo:block>
 								</fo:table-cell>
 							</fo:table-row>
@@ -871,11 +872,11 @@
             </fo:block>
             #if($contents.sampleSource && $contents.sampleSource == "FFPE")
 			<fo:block id="lastPage"> </fo:block>
-            #elseif($contents.sampleSource && $contents.sampleSource == "BLOOD")
+            #else
             <fo:block page-break-before="always"> </fo:block>
             #end
 
-            #if($contents.sampleSource && $contents.sampleSource == "BLOOD")
+            #if($contents.sampleSource && $contents.sampleSource != "FFPE")
             <fo:block>
                 <fo:block font-size="16pt" margin-bottom="4mm" margin-top="10mm" font-family="Noto Sans CJK KR Bold" font-weight="bold">Target Gene List</fo:block>
                 <fo:table table-layout="fixed" width="100%" margin-bottom="4mm" border-bottom="solid 0.1mm black" border-top="solid 0.1mm black">

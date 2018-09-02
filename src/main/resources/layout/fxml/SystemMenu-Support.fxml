@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Hyperlink?>
@@ -15,8 +10,10 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.TextFlow?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="231.0" prefWidth="500.0" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemMenuSupportController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="231.0" prefWidth="500.0" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.systemMenu.SystemMenuSupportController">
    <children>
       <GridPane prefHeight="252.0" prefWidth="500.0">
         <columnConstraints>
@@ -105,7 +102,7 @@
                               <String fx:value="font_size_12" />
                            </styleClass>
                         </Label>
-                        <Hyperlink focusTraversable="false" styleClass="txt_support_label" text="support@ngenebio.com">
+                        <Hyperlink focusTraversable="false" onMouseClicked="#copyEmail" styleClass="txt_support_label" text="support@ngenebio.com">
                            <HBox.margin>
                               <Insets right="5.0" />
                            </HBox.margin></Hyperlink>

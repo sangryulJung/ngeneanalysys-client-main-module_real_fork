@@ -180,10 +180,8 @@ public class APIService {
 
             // 지정된 헤더 삽입 정보가 있는 경우 추가
             if(headerMap != null && headerMap.size() > 0) {
-                Iterator<String> keys = headerMap.keySet().iterator();
-                while (keys.hasNext()) {
-                    String key = keys.next();
-                    post.setHeader(key, headerMap.get(key).toString());
+                for (Map.Entry<String, Object> entry : headerMap.entrySet()) {
+                    post.setHeader(entry.getKey(), entry.getValue().toString());
                 }
             }
 
@@ -311,7 +309,7 @@ public class APIService {
 
     public String getConvertConnectURL(String url) {
         String serverHost = config.getProperty(CommonConstants.DEFAULT_SERVER_HOST_KEY);
-        if(!StringUtils.isEmpty(serverHost) && config.getProperty(CommonConstants.DEFAULT_SERVER_HOST_KEY).endsWith("/")) {
+        if(StringUtils.isNotEmpty(serverHost) && config.getProperty(CommonConstants.DEFAULT_SERVER_HOST_KEY).endsWith("/")) {
             serverHost = serverHost.substring(0, serverHost.lastIndexOf('/'));
         }
         return (!url.startsWith("/")) ? serverHost + "/" + url : serverHost + url;

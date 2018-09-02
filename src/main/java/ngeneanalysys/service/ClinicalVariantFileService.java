@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -54,9 +53,9 @@ public class ClinicalVariantFileService {
             headerMap.remove("Content-Type");
 
             // 지정된 헤더 삽입 정보가 있는 경우 추가
-            if(headerMap != null && headerMap.size() > 0) {
-                for (String key : headerMap.keySet()) {
-                    post.setHeader(key, headerMap.get(key).toString());
+            if(headerMap.size() > 0) {
+                for (Map.Entry<String, Object> entry : headerMap.entrySet()) {
+                    post.setHeader(entry.getKey(), entry.getValue().toString());
                 }
             }
 

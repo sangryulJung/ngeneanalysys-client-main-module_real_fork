@@ -1,6 +1,3 @@
-/**
- * 
- */
 package ngeneanalysys.code.constants;
 
 /**
@@ -26,6 +23,9 @@ public class FXMLConstants {
 	
 	/** System Menu > License 화면 */
 	public static final String SYSTEM_MENU_LICENSE = "/layout/fxml/SystemMenu-License.fxml";
+
+	/** System Menu > License 화면 */
+	public static final String SYSTEM_MENU_SOFTWARE_VERSION = "/layout/fxml/SystemMenu-SoftwareVersion.fxml";
 	
 	/** System Menu > Public Databases 정보 화면 */
 	public static final String SYSTEM_MENU_PUBLIC_DATABASES = "/layout/fxml/SystemMenu-PublicDatabases.fxml";
@@ -60,39 +60,6 @@ public class FXMLConstants {
 	/** 분석 상세 레이아웃 화면 */
 	public static final String ANALYSIS_DETAIL_LAYOUT = "/layout/fxml/AnalysisDetailLayout.fxml";
 	
-	/** 분석 상세 > SNPs-INDELs 레이아웃 화면 */
-	public static final String ANALYSIS_DETAIL_SNPS_INDELS_LAYOUT = "/layout/fxml/AnalysisDetail-SNPs-INDELs.fxml";
-	
-	/** 분석 상세 > SNPs-INDELs > FUSIONGENE TAB 화면 */
-	public static final String ANALYSIS_DETAIL_SNPS_INDELS_OVERVIEW = "/layout/fxml/AnalysisDetail-SNPs-INDELs-Overview.fxml";
-	
-	/** 분석 상세 > SNPs-INDELs > FUSIONGENE TAB 화면 > BRCA 파이프라인 Link 화면 */
-	public static final String ANALYSIS_DETAIL_SNPS_INDELS_OVERVIEW_LINK_BRCA = "/layout/fxml/AnalysisDetail-SNPs-INDELs-Overview-Link-BRCA.fxml";
-
-	/** 분석 상세 > SNPs-INDELs > FUSIONGENE TAB 화면 > BRCA 파이프라인 Link 화면 */
-	public static final String ANALYSIS_DETAIL_SNPS_INDELS_OVERVIEW_LINK_SOMATIC = "/layout/fxml/AnalysisDetail-SNPs-INDELs-Overview-Link-SOMATIC.fxml";
-	
-	/** 분석 상세 > SNPs-INDELs > DATA SUMMARY TAB 화면 */
-	public static final String ANALYSIS_DETAIL_SNPS_INDELS_DATA_SUMMARY = "/layout/fxml/AnalysisDetail-SNPs-INDELs-DataSummary.fxml";
-	
-	/** 분석 상세 > SNPs-INDELs > Comment TAB 화면 */
-	public static final String ANALYSIS_DETAIL_SNPS_INDELS_MEMO = "/layout/fxml/AnalysisDetail-SNPs-INDELs-Memo.fxml";
-	
-	/** 분석 상세 > SNPs-INDELs > VIEWER TAB 화면 */
-	public static final String ANALYSIS_DETAIL_SNPS_INDELS_VIEWER = "/layout/fxml/AnalysisDetail-SNPs-INDELs-Viewer.fxml";
-	
-	/** 분석 상세 > SNPs-INDELs > WARNINGS TAB 화면 */
-	public static final String ANALYSIS_DETAIL_SNPS_INDELS_LOW_CONFIDENCE = "/layout/fxml/AnalysisDetail-SNPs-INDELs-LowConfidence.fxml";
-
-	/** 분석 상세 > SNPs-INDELs > WARNINGS TAB 화면 */
-	public static final String ANALYSIS_DETAIL_FUSION = "/layout/fxml/AnalysisDetail-Fusion.fxml";
-	
-	/** 분석 상세 > Genes 화면 */
-	public static final String ANALYSIS_DETAIL_GENES = "/layout/fxml/AnalysisDetail-Genes.fxml";
-	
-	/** 분석 상세 > Warnings 화면 */
-	public static final String ANALYSIS_DETAIL_WARNINGS = "/layout/fxml/AnalysisDetail-Warnings.fxml";
-	
 	/** 분석 상세 > Raw data 화면 */
 	public static final String ANALYSIS_DETAIL_RAW_DATA = "/layout/fxml/AnalysisDetail-RawData.fxml";
 	
@@ -101,21 +68,33 @@ public class FXMLConstants {
 
 	/** 분석 상세 > Report 화면 */
 	public static final String ANALYSIS_DETAIL_REPORT_GERMLINE = "/layout/fxml/AnalysisDetail-Report-Germline.fxml";
-	
-	/** 분석 요청 그룹 검색 Dialog 화면 */
-	public static final String ANALYSIS_JOB_RUN_GROUP_SEARCH_DIALOG = "/layout/fxml/AnalysisJobRunGroupSearch.fxml";
 
+	/** 분석 상세 > Report 화면 */
+	public static final String ANALYSIS_DETAIL_TST_RNA_REPORT = "/layout/fxml/AnalysisDetail-TSTRNAReport.fxml";
+	
 	/** 분석 상세 > OverView 화면 */
 	public static final String ANALYSIS_DETAIL_OVERVIEW = "/layout/fxml/AnalysisDetail-Overview.fxml";
 
 	/** 분석 상세 > OverView 화면 */
 	public static final String ANALYSIS_DETAIL_OVERVIEW_GERMLINE = "/layout/fxml/AnalysisDetail-Overview-Germline.fxml";
 
-	/** 분석 상세 > Variants 화면 */
-	public static final String ANALYSIS_DETAIL_TARGET = "/layout/fxml/AnalysisDetail-Target.fxml";
+	/** 분석 상세 > OverView 화면 */
+	public static final String ANALYSIS_DETAIL_OVERVIEW_TST_RNA = "/layout/fxml/AnalysisDetail-Overview-TST-RNA.fxml";
 
-	/** 분석 상세 > Variants 화면 Germline */
-	public static final String ANALYSIS_DETAIL_TARGET_GERMLINE = "/layout/fxml/AnalysisDetail-Target-Germline.fxml";
+	/** 분석 상세 > Variants 화면 */
+	public static final String ANALYSIS_DETAIL_CNV = "/layout/fxml/AnalysisDetail-CNV.fxml";
+
+	/** 분석 상세 > Variants 화면 */
+	public static final String ANALYSIS_DETAIL_TST_CNV = "/layout/fxml/AnalysisDetail-TST-CNV.fxml";
+
+	/** 분석 상세 > Variants 화면 */
+	public static final String ANALYSIS_DETAIL_TST_FUSION = "/layout/fxml/AnalysisDetail-TST170Fusion.fxml";
+
+	/** 분석 상세 > Variants 화면 */
+	public static final String ANALYSIS_DETAIL_TST_SPLICE_VARIANT = "/layout/fxml/AnalysisDetail-TSTSpliceVariant.fxml";
+
+	/** 분석 상세 > Variants 화면 */
+	public static final String ANALYSIS_DETAIL_TST_PUBLISHED_FUSION = "/layout/fxml/AnalysisDetail-TSTPublishedFusion.fxml";
 
 	/** 시스템 매니저 화면 */
 	public static final String SYSTEM_MANAGER_HOME = "/layout/fxml/SystemManagerHome.fxml";
@@ -149,17 +128,15 @@ public class FXMLConstants {
 
 	public static final String EXCLUDE_REPORT = "/layout/fxml/ExcludeReportDialog.fxml";
 
-	public static final String CHANGE_TIER = "/layout/fxml/ChangeTierDialog.fxml";
+	public static final String BATCH_EXCLUDE_REPORT = "/layout/fxml/BatchExcludeReportDialog.fxml";
+
+	public static final String BATCH_CHANGE_TIER = "/layout/fxml/BatchChangeTierDialog.fxml";
+
+	public static final String BATCH_CHANGE_PATHOGENICITY = "/layout/fxml/BatchChangePathogenicityDialog.fxml";
+
+	public static final String BATCH_FALSE_POSITIVE = "/layout/fxml/BatchFalsePositiveDialog.fxml";
 
 	public static final String CHANGE_PATHOGENICITY = "/layout/fxml/ChangePathogenicityDialog.fxml";
-
-	public static final String ANALYSIS_DETAIL_FUSION_MAIN = "/layout/fxml/AnalysisDetail-FusionMain.fxml";
-
-	public static final String ANALYSIS_DETAIL_FUSION_GENE = "/layout/fxml/AnalysisDetail-FusionGene.fxml";
-
-	public static final String ANALYSIS_DETAIL_GENE_EXPRESSION = "/layout/fxml/AnalysisDetail-GeneExpression.fxml";
-
-	public static final String ANALYSIS_DETAIL_EXON_SKIPPING = "/layout/fxml/AnalysisDetail-ExonSkipping.fxml";
 
 	public static final String VIRTUAL_PANEL_EDIT = "/layout/fxml/VirtualPanelEdit.fxml";
 
@@ -190,4 +167,8 @@ public class FXMLConstants {
 	public static final String ANALYSIS_DETAIL_IN_SILICO_PREDICTIONS = "/layout/fxml/variantDetail/InSilicoPredictions.fxml";
 
 	public static final String ANALYSIS_DETAIL_VARIANT_FILTER = "/layout/fxml/VariantFilter.fxml";
+
+	public static final String RUN_RAW_DATA_DOWNLOAD = "/layout/fxml/RunRawDataDownload.fxml";
+
+	public static final String RAW_DATA_DOWNLOAD_TASK = "/layout/fxml/AnalysisSampleDownloadProgressTask.fxml";
 }

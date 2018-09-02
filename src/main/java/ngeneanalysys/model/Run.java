@@ -1,13 +1,10 @@
 package ngeneanalysys.model;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.joda.time.DateTime;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
 
-public class Run implements Serializable {
+public class Run{
     @JsonProperty("id")
     private Integer id;
 
@@ -51,6 +48,13 @@ public class Run implements Serializable {
     private RunStatus runStatus;
 
     private String panelName;
+
+    /**
+     * @param id
+     */
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     /**
      * @return panelName

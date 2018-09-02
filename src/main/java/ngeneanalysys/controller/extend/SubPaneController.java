@@ -1,15 +1,13 @@
 package ngeneanalysys.controller.extend;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.stage.Stage;
 import ngeneanalysys.controller.MainController;
 import ngeneanalysys.controller.LoginController;
 import ngeneanalysys.model.LoginSession;
 
-import java.awt.event.ActionEvent;
-import java.io.IOException;
 import java.util.Map;
 
 /**

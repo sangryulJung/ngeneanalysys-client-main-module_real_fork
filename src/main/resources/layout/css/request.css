@@ -102,3 +102,12 @@
 	-fx-border-width : 0.5 0 0.5 0;
     -fx-border-color : #999999;
 }
+
+.red-text-combo-box .list-cell, .combo-box .list-cell .text {
+	-fx-padding:-2 5 0 5;
+	-fx-text-fill : #FF0000;
+	/*-fx-font-size:12px;*/
+	-fx-min-height:26px;
+	-fx-pref-height:26px;
+	-fx-max-height:26px;
+}

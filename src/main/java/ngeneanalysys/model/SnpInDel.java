@@ -15,7 +15,7 @@ import org.apache.commons.lang3.StringUtils;
  * @author gjyoo
  * @since 2016. 6. 15. 오후 7:37:59
  */
-public class SnpInDel implements Serializable {
+public class SnpInDel {
 	private static final long serialVersionUID = -5728637480602616382L;
 
 	private Integer id;
@@ -28,9 +28,10 @@ public class SnpInDel implements Serializable {
 	private String includedInReport;
 	private String hasWarning;
 	private String warningReason;
-	private String lowConfidence;
 	private Integer variantNum;
 	private String comment;
+	private String isFalse;
+	private String falseReason;
 
 	private SnpInDelExpression snpInDelExpression;
 	private DBSNP dbSNP;
@@ -44,6 +45,20 @@ public class SnpInDel implements Serializable {
 
 	//private Integer interpretationEvidenceId;
 	private String ntChangeBRCA;
+
+	/**
+	 * @return isFalse
+	 */
+	public String getIsFalse() {
+		return isFalse;
+	}
+
+	/**
+	 * @return falseReason
+	 */
+	public String getFalseReason() {
+		return falseReason;
+	}
 
 	/**
 	 * @return genomicCoordinate
@@ -216,7 +231,7 @@ public class SnpInDel implements Serializable {
 	 */
 	public String getHasWarning() {
 		if("Y".equalsIgnoreCase(this.hasWarning)) {
-			return (!StringUtils.isEmpty(this.warningReason)) ? this.warningReason : "NONE";
+			return (StringUtils.isNotEmpty(this.warningReason)) ? this.warningReason : "NONE";
 		}
 		return null;
 	}
@@ -241,14 +256,6 @@ public class SnpInDel implements Serializable {
 	 */
 	public void setWarningReason(String warningReason) {
 		this.warningReason = warningReason;
-	}
-
-	public String getLowConfidence() {
-		return lowConfidence;
-	}
-
-	public void setLowConfidence(String lowConfidence) {
-		this.lowConfidence = lowConfidence;
 	}
 
 	/**
@@ -307,7 +314,7 @@ public class SnpInDel implements Serializable {
 	public String createNtChangeBRCA() {
 		String cDNAbic = this.getSnpInDelExpression().getNtChange();
 		String gene = getGenomicCoordinate().getGene().toUpperCase();
-		if (!StringUtils.isEmpty(cDNAbic)
+		if (StringUtils.isNotEmpty(cDNAbic)
 				&& getGenomicCoordinate() != null && getGenomicCoordinate().getGene() != null
 				&& (gene.equals("BRCA1") || gene.equals("BRCA2"))) {
 			List<String> findCDNANums = new ArrayList<>();
@@ -353,7 +360,6 @@ public class SnpInDel implements Serializable {
 				", includedInReport='" + includedInReport + '\'' +
 				", hasWarning='" + hasWarning + '\'' +
 				", warningReason='" + warningReason + '\'' +
-				", lowConfidence='" + lowConfidence + '\'' +
 				", variantNum=" + variantNum +
 				", comment='" + comment + '\'' +
 				", snpInDelExpression=" + snpInDelExpression +

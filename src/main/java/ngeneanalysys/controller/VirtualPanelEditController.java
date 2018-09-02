@@ -90,7 +90,7 @@ public class VirtualPanelEditController extends SubPaneController {
             optionalGenesTextField.setText(virtualPanel.getOptionalGenes());
 
         } catch (WebAPIException wae) {
-
+            logger.debug(wae.getMessage());
         }
     }
 
@@ -124,9 +124,7 @@ public class VirtualPanelEditController extends SubPaneController {
 
             Map<String, Object> params = new HashMap<>();
 
-            if(StringUtils.isEmpty(nameTextField.getText())) {
-                return;
-            } else if(StringUtils.isEmpty(essentialGenesTextField.getText())) {
+            if(StringUtils.isEmpty(nameTextField.getText()) || StringUtils.isEmpty(essentialGenesTextField.getText())) {
                 return;
             }
 

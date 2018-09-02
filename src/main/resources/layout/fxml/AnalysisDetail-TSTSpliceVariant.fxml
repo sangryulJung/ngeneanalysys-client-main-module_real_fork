@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane fx:id="spliceVariantGridPane" prefHeight="380.0" prefWidth="1140.0" style="-fx-background-color: #f2f5fa;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailTSTSpliceVariantController">
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+   </rowConstraints>
+   <children>
+      <TableView fx:id="spliceVariantTableView" prefHeight="200.0" prefWidth="200.0" styleClass="custom-table">
+         <columns>
+            <TableColumn fx:id="chrTableColumn" prefWidth="75.0" text="Chr" />
+            <TableColumn fx:id="startPositionTableColumn" prefWidth="109.0" text="Start Position" />
+            <TableColumn fx:id="endPositionTableColumn" prefWidth="109.0" text="End Position" />
+            <TableColumn fx:id="refTableColumn" prefWidth="109.0" text="Ref" />
+            <TableColumn fx:id="altTableColumn" prefWidth="109.0" text="Alt" />
+            <TableColumn fx:id="qualityTableColumn" prefWidth="109.0" text="Quality" />
+            <TableColumn fx:id="filterTableColumn" prefWidth="109.0" text="Filter" />
+            <TableColumn fx:id="altDedupTableColumn" prefWidth="109.0" text="Alt Dedup" />
+            <TableColumn fx:id="svTypeTableColumn" prefWidth="109.0" text="Sv Type" />
+            <TableColumn fx:id="altDupTableColumn" prefWidth="109.0" text="Alt Dup" />
+            <TableColumn fx:id="refDedupTableColumn" prefWidth="109.0" text="Ref Dedup" />
+            <TableColumn fx:id="refDupTableColumn" prefWidth="109.0" text="refDup" />
+            <TableColumn fx:id="intergenicTableColumn" prefWidth="109.0" text="Intergenic" />
+            <TableColumn fx:id="antTableColumn" prefWidth="109.0" text="Ant" />
+         </columns>
+         <GridPane.margin>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </GridPane.margin>
+      </TableView>
+   </children>
+   <stylesheets>
+      <URL value="@../css/common.css" />
+      <URL value="@../css/variants.css" />
+   </stylesheets>
+</GridPane>

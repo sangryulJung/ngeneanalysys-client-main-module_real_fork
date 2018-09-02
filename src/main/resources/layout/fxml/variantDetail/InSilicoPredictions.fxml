@@ -7,22 +7,22 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="TOP_CENTER" maxHeight="115.0" minHeight="115.0" prefHeight="115.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.InSilicoPredictionsController">
+<VBox alignment="TOP_CENTER" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.InSilicoPredictionsController">
    <children>
       <Label styleClass="title1" text="IN SILICO PREDICTIONS" />
-      <HBox maxWidth="240.0" minWidth="240.0" prefHeight="95.0" prefWidth="240.0">
+      <HBox alignment="TOP_CENTER" maxWidth="240.0" minWidth="240.0" prefHeight="95.0" prefWidth="240.0">
          <children>
-            <Canvas fx:id="polyphenCanvas" height="90.0" width="80.0">
-               <HBox.margin>
-                  <Insets top="5.0" />
-               </HBox.margin>
-            </Canvas>
             <Canvas fx:id="siftCanvas" height="90.0" width="80.0">
                <HBox.margin>
                   <Insets top="5.0" />
                </HBox.margin>
             </Canvas>
             <Canvas fx:id="mtCanvas" height="90.0" width="80.0">
+               <HBox.margin>
+                  <Insets top="5.0" />
+               </HBox.margin>
+            </Canvas>
+            <Canvas fx:id="polyphenCanvas" height="90.0" width="80.0">
                <HBox.margin>
                   <Insets top="5.0" />
                </HBox.margin>

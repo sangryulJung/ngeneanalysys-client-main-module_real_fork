@@ -4,17 +4,21 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ngeneanalysys.code.constants.CommonConstants;
+import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
-import ngeneanalysys.model.LoginSession;
+import ngeneanalysys.model.Panel;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.*;
+import org.controlsfx.control.CheckComboBox;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -33,6 +37,15 @@ public class VariantFilterController extends SubPaneController {
     private APIService apiService;
 
     private Stage dialogStage;
+
+    @FXML
+    private GridPane variantTabGridPane;
+
+    @FXML
+    private Button saveBtn;
+
+    @FXML
+    private Label newFilterNameLabel;
 
     @FXML
     private ComboBox<String> filterNameComboBox;
@@ -189,34 +202,96 @@ public class VariantFilterController extends SubPaneController {
     private TextField kohbraTextField;
 
     @FXML
-    private TextField genomADAllTextField;
+    private TextField gnomADAllTextField;
 
     @FXML
-    private TextField genomADmaTextField;
+    private TextField gnomADmaTextField;
 
     @FXML
-    private TextField genomADaaaTextField;
+    private TextField gnomADaaaTextField;
 
     @FXML
-    private TextField genomADajgenomAD;
+    private TextField gnomADeaTextField;
 
     @FXML
-    private TextField genomADeaTextField;
+    private TextField gnomADfinTextField;
 
     @FXML
-    private TextField genomADfinTextField;
+    private TextField gnomADnfeTextField;
 
     @FXML
-    private TextField genomADnfeTextField;
+    private TextField gnomADotherTextField;
 
     @FXML
-    private TextField genomADotherTextField;
-
-    @FXML
-    private TextField genomADsaTextField;
+    private TextField gnomADsaTextField;
 
     @FXML
     private TextField exacTextField;
+
+    @FXML
+    private ComboBox<ComboBoxItem> tgAllComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> tgafrComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> tgamrComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> tgeasComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> tgeurComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> tgsasComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> espallComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> espaaComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> espeaComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> keidComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> krgdComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> kohbraComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> gnomADAllComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> gnomADmaComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> gnomADaaaComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> gnomADeaComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> gnomADfinComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> gnomADnfeComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> gnomADotherComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> gnomADsaComboBox;
+
+    @FXML
+    private ComboBox<ComboBoxItem> exacComboBox;
+
+    /////
 
     @FXML
     private CheckBox caseACheckBox;
@@ -234,21 +309,6 @@ public class VariantFilterController extends SubPaneController {
     private CheckBox caseECheckBox;
 
     @FXML
-    private CheckBox predictionACheckBox;
-
-    @FXML
-    private CheckBox predictionBCheckBox;
-
-    @FXML
-    private CheckBox predictionCCheckBox;
-
-    @FXML
-    private CheckBox predictionDCheckBox;
-
-    @FXML
-    private CheckBox predictionECheckBox;
-
-    @FXML
     private CheckBox clinVarACheckBox;
 
     @FXML
@@ -264,32 +324,61 @@ public class VariantFilterController extends SubPaneController {
     private CheckBox clinVarECheckBox;
 
     @FXML
+    private CheckBox clinVarDrugResponseCheckBox;
+
+    @FXML
     private Label caseLabel;
 
     @FXML
     private ComboBox<ComboBoxItem> cosmicOccurrenceComboBox;
 
+    @FXML
+    private TextField depthCountTextField;
+
+    @FXML
+    private TextField altCountTextField;
+
+    @FXML
+    private TextField depthEndCountTextField;
+
+    @FXML
+    private TextField altEndCountTextField;
+
+    @FXML
+    private HBox warningHBox;
+
+    @FXML
+    private Button allLowConfidenceButton;
+
+    @FXML
+    private Button defaultLowConfidence;
+
+    @FXML
+    private Button uncheckLowConfidence;
+
     private Map<String, List<Object>> filter;
 
-    private String analysisType;
+    private Panel panel;
 
-    private String[] defaultFilterName = {"Tier I", "Tier II", "Tier III", "Tier IV", "Pathogenic", "Likely Pathogenic",
-    "Uncertain Significance", "Likely Benign", "Benign", "Tier 1", "Tier 2", "Tier 3", "Tier 4"};
+    /*private String[] defaultFilterName = {"Tier I", "Tier II", "Tier III", "Tier IV", "Pathogenic", "Likely Pathogenic",
+    "Uncertain Significance", "Likely Benign", "Benign", "Tier 1", "Tier 2", "Tier 3", "Tier 4"};*/
 
     private AnalysisDetailSNVController snvController;
+
+    private CheckComboBox<String> warningCheckComboBox;
 
     /**
      * @param snvController AnalysisDetailSNVController
      */
-    public void setSnvController(AnalysisDetailSNVController snvController) {
+    void setSnvController(AnalysisDetailSNVController snvController) {
         this.snvController = snvController;
     }
 
     /**
-     * @param analysisType String
+     * @param panel panel
      */
-    public void setAnalysisType(String analysisType) {
-        this.analysisType = analysisType;
+    void setPanel(Panel panel) {
+        this.panel = panel;
     }
 
     /**
@@ -319,7 +408,11 @@ public class VariantFilterController extends SubPaneController {
         this.dialogStage = dialogStage;
 
         //setFormat(startFractionTextField);
-        //setFormat(endFractionTextField);
+        //setFormat(endFractionTextField);\
+
+        createLowConfidence();
+
+        createFrequency();
 
         setCosmicOccurrenceComboBoxItem();
 
@@ -335,44 +428,193 @@ public class VariantFilterController extends SubPaneController {
             if (!newValue.matches("[0-9]*")) endFractionTextField.setText(oldValue);
         });
 
+        depthCountTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("[0-9]*")) depthCountTextField.setText(oldValue);
+        });
+
+        altCountTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("[0-9]*")) altCountTextField.setText(oldValue);
+        });
+
+        depthEndCountTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("[0-9]*")) depthEndCountTextField.setText(oldValue);
+        });
+
+        altEndCountTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("[0-9]*")) altEndCountTextField.setText(oldValue);
+        });
+
         startFractionTextField.focusedProperty().addListener((ol, ov, nv) -> {
-            if(!nv) {
-                if(!StringUtils.isEmpty(startFractionTextField.getText())
-                        && !StringUtils.isEmpty(endFractionTextField.getText())) {
-                    if(Double.parseDouble(startFractionTextField.getText()) > Double.parseDouble(endFractionTextField.getText())) {
-                        startFractionTextField.setText("");
-                    }
-                }
+            if(!nv && checkNotEmptyTextField(startFractionTextField, endFractionTextField)
+                        && checkInequality(startFractionTextField, endFractionTextField)) {
+                startFractionTextField.setText("");
             }
         });
 
         endFractionTextField.focusedProperty().addListener((ol, ov, nv) -> {
-            if(!nv) {
-                if(!StringUtils.isEmpty(endFractionTextField.getText())
-                        && !StringUtils.isEmpty(startFractionTextField.getText())) {
-                    if(Double.parseDouble(startFractionTextField.getText()) > Double.parseDouble(endFractionTextField.getText())) {
-                        endFractionTextField.setText("");
-                    }
-                }
+            if(!nv && checkNotEmptyTextField(startFractionTextField, endFractionTextField)
+                    && checkInequality(startFractionTextField, endFractionTextField)) {
+                endFractionTextField.setText("");
+            }
+        });
+
+        altCountTextField.focusedProperty().addListener((ol, ov, nv) -> {
+            if(!nv && checkNotEmptyTextField(altCountTextField, altEndCountTextField)
+                    && checkInequality(altCountTextField, altEndCountTextField)) {
+                altCountTextField.setText("");
+            }
+        });
+
+        altEndCountTextField.focusedProperty().addListener((ol, ov, nv) -> {
+            if(!nv && checkNotEmptyTextField(altCountTextField, altEndCountTextField)
+                    && checkInequality(altCountTextField, altEndCountTextField)) {
+                altEndCountTextField.setText("");
+            }
+        });
+
+        depthCountTextField.focusedProperty().addListener((ol, ov, nv) -> {
+            if(!nv && checkNotEmptyTextField(depthCountTextField, depthEndCountTextField)
+                    && checkInequality(depthCountTextField, depthEndCountTextField)) {
+                depthCountTextField.setText("");
+            }
+        });
+
+        depthEndCountTextField.focusedProperty().addListener((ol, ov, nv) -> {
+            if(!nv && checkNotEmptyTextField(depthCountTextField, depthEndCountTextField)
+                    && checkInequality(depthCountTextField, depthEndCountTextField)) {
+                depthEndCountTextField.setText("");
             }
         });
 
         setComboBox();
 
         filterNameComboBox.valueProperty().addListener((ob, oValue, nValue) -> {
-            if(!StringUtils.isEmpty(nValue)) {
+            if(StringUtils.isNotEmpty(nValue)) {
                 setCurrentOption(filter.get(nValue));
             }
         });
 
-        // Schen Init
+        //newFilterNameLabel.setVisible(false);
+        //filterNameTextField.setVisible(false);
+        saveBtn.setDisable(true);
+
+        filterNameTextField.textProperty().addListener((ev, oldV, newV) -> {
+            if(filterNameTextField.isVisible() && StringUtils.isNotEmpty(newV)) {
+                saveBtn.setDisable(false);
+            } else {
+                saveBtn.setDisable(true);
+            }
+        });
+
+        // Scene Init
         Scene scene = new Scene(root);
         dialogStage.setScene(scene);
         dialogStage.showAndWait();
     }
 
+    private boolean checkNotEmptyTextField(TextField textField1, TextField textField2) {
+        return StringUtils.isNotEmpty(textField1.getText()) && StringUtils.isNotEmpty(textField2.getText());
+    }
+
+    private boolean checkInequality(TextField textField1, TextField textField2) {
+        return Double.parseDouble(textField1.getText()) > Double.parseDouble(textField2.getText());
+    }
+
+    @FXML
+    public void setAllLowConfidence() {
+        if(warningCheckComboBox != null) {
+            warningCheckComboBox.getCheckModel().checkAll();
+        }
+    }
+
+    @FXML
+    public void setDefaultLowConfidence() {
+        if(warningCheckComboBox != null) {
+            if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())
+                    || panel.getCode().equals(PipelineCode.TST170_DNA.getCode())
+                    || panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
+                warningCheckComboBox.getCheckModel().checkAll();
+                warningCheckComboBox.getCheckModel().clearCheck("t_lod");
+            } else if (panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+                warningCheckComboBox.getCheckModel().checkAll();
+            }
+        }
+    }
+
+    @FXML
+    public void setUncheckLowConfidence() {
+        if(warningCheckComboBox != null) {
+            warningCheckComboBox.getCheckModel().clearChecks();
+        }
+    }
+
+    private void createLowConfidence() {
+        CheckComboBox<String> lowConfidenceCheckComboBox = new CheckComboBox<>();
+        if(panel != null) {
+            lowConfidenceCheckComboBox.getItems().addAll(PipelineCode.getLowConfidences(panel.getCode()));
+            if (panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode()) ||
+                    panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
+                lowConfidenceCheckComboBox.getItems().addAll("homopolymer", "repeat_sequence", "lowcoverage_indel", "lowcoverage_snv");
+            }
+        }
+
+        lowConfidenceCheckComboBox.setPrefWidth(150);
+
+        this.warningCheckComboBox = lowConfidenceCheckComboBox;
+        warningHBox.getChildren().add(0, lowConfidenceCheckComboBox);
+    }
+
+    private void createFrequency() {
+        createOperatorComboBox(tgAllComboBox);
+        createOperatorComboBox(tgafrComboBox);
+        createOperatorComboBox(tgamrComboBox);
+        createOperatorComboBox(tgeasComboBox);
+        createOperatorComboBox(tgeurComboBox);
+        createOperatorComboBox(tgsasComboBox);
+
+        createOperatorComboBox(espallComboBox);
+        createOperatorComboBox(espaaComboBox);
+        createOperatorComboBox(espeaComboBox);
+
+        createOperatorComboBox(exacComboBox);
+        createOperatorComboBox(keidComboBox);
+        createOperatorComboBox(krgdComboBox);
+        createOperatorComboBox(kohbraComboBox);
+
+        createOperatorComboBox(gnomADAllComboBox);
+        createOperatorComboBox(gnomADmaComboBox);
+        createOperatorComboBox(gnomADaaaComboBox);
+        createOperatorComboBox(gnomADeaComboBox);
+        createOperatorComboBox(gnomADfinComboBox);
+        createOperatorComboBox(gnomADnfeComboBox);
+        createOperatorComboBox(gnomADotherComboBox);
+        createOperatorComboBox(gnomADsaComboBox);
+    }
+
+    private void createOperatorComboBox(ComboBox<ComboBoxItem> comboBox) {
+        comboBox.setConverter(new ComboBoxConverter());
+        comboBox.getItems().add(new ComboBoxItem("lt:", "<"));
+        comboBox.getItems().add(new ComboBoxItem("gt:", ">"));
+        comboBox.getItems().add(new ComboBoxItem("lte:", "≤"));
+        comboBox.getItems().add(new ComboBoxItem("gte:", "≥"));
+        comboBox.getSelectionModel().selectFirst();
+    }
+
+    private void setOperator(String value, ComboBox<ComboBoxItem> comboBox) {
+        if(value.contains("gte:")) {
+            comboBox.getSelectionModel().select(2);
+        } else if(value.contains("lte:")) {
+            comboBox.getSelectionModel().select(3);
+        } else if(value.contains("gt:")) {
+            comboBox.getSelectionModel().select(0);
+        } else if(value.contains("lt:")) {
+            comboBox.getSelectionModel().select(1);
+        }
+    }
+
     private void setCosmicOccurrenceComboBoxItem() {
         cosmicOccurrenceComboBox.setConverter(new ComboBoxConverter());
+        cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("", "No selection"));
         cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("adrenal_gland", "Adrenal gland"));
         cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("autonomic_ganglia", "Autonomic ganglia"));
         cosmicOccurrenceComboBox.getItems().add(new ComboBoxItem("biliary_tract", "Biliary tract"));
@@ -422,27 +664,20 @@ public class VariantFilterController extends SubPaneController {
         Set<String> keySet = filter.keySet();
 
         for(String key : keySet) {
-            if(!Arrays.stream(defaultFilterName).anyMatch(item -> item.equals(key))) {
-                filterNameComboBox.getItems().add(key);
-            }
+            //if(Arrays.stream(defaultFilterName).noneMatch(item -> item.equals(key))) {
+            filterNameComboBox.getItems().add(key);
+            //}
         }
     }
 
     private void setPathogenicity() {
-        if("SOMATIC".equalsIgnoreCase(analysisType)) {
+        if("SOMATIC".equalsIgnoreCase(panel.getAnalysisType())) {
             caseLabel.setText("Tier");
             caseECheckBox.setVisible(false);
-            predictionECheckBox.setVisible(false);
             caseACheckBox.setText("Tier1");
             caseBCheckBox.setText("Tier2");
             caseCCheckBox.setText("Tier3");
             caseDCheckBox.setText("Tier4");
-
-            predictionACheckBox.setText("Tier1");
-            predictionBCheckBox.setText("Tier2");
-            predictionCCheckBox.setText("Tier3");
-            predictionDCheckBox.setText("Tier4");
-
         } else {
             caseLabel.setText("Pathogenicity");
             caseACheckBox.setText("P(Pathogentic)");
@@ -451,18 +686,38 @@ public class VariantFilterController extends SubPaneController {
             caseDCheckBox.setText("LB(Likely Benign)");
             caseECheckBox.setText("B(Benign)");
 
-            predictionACheckBox.setText("P(Pathogentic)");
-            predictionBCheckBox.setText("LP(Likely Pathogenic)");
-            predictionCCheckBox.setText("US(Uncertatin Significance)");
-            predictionDCheckBox.setText("LB(Likely Benign)");
-            predictionECheckBox.setText("B(Benign)");
+            if(panel.getCode().equalsIgnoreCase(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+                kohbraComboBox.setDisable(true);
+                kohbraTextField.setDisable(true);
+            } else if(panel.getCode().equalsIgnoreCase(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
+                    panel.getCode().equalsIgnoreCase(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())){
+                gnomADaaaComboBox.setDisable(true);
+                gnomADaaaTextField.setDisable(true);
+                gnomADAllComboBox.setDisable(true);
+                gnomADAllTextField.setDisable(true);
+                gnomADeaComboBox.setDisable(true);
+                gnomADeaTextField.setDisable(true);
+                gnomADfinComboBox.setDisable(true);
+                gnomADfinTextField.setDisable(true);
+                gnomADmaComboBox.setDisable(true);
+                gnomADmaTextField.setDisable(true);
+                gnomADnfeComboBox.setDisable(true);
+                gnomADnfeTextField.setDisable(true);
+                gnomADotherComboBox.setDisable(true);
+                gnomADotherTextField.setDisable(true);
+                gnomADsaComboBox.setDisable(true);
+                gnomADsaTextField.setDisable(true);
+            }
         }
 
-        clinVarACheckBox.setText("P(Pathogentic)");
-        clinVarBCheckBox.setText("LP(Likely Pathogenic)");
-        clinVarCCheckBox.setText("US(Uncertatin Significance)");
-        clinVarDCheckBox.setText("LB(Likely Benign)");
-        clinVarECheckBox.setText("B(Benign)");
+        if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
+                panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode()) ||
+                panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+            if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode())
+                    || panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) warningHBox.setDisable(true);
+            cosmicidCheckBox.setDisable(true);
+            cosmicOccurrenceComboBox.setDisable(true);
+        }
     }
 
     private void setFormat(TextField textField) {
@@ -484,15 +739,14 @@ public class VariantFilterController extends SubPaneController {
         setFormat(espaaTextField);
         setFormat(espeaTextField);
 
-        setFormat(genomADAllTextField);
-        setFormat(genomADmaTextField);
-        setFormat(genomADaaaTextField);
-        setFormat(genomADajgenomAD);
-        setFormat(genomADeaTextField);
-        setFormat(genomADfinTextField);
-        setFormat(genomADnfeTextField);
-        setFormat(genomADotherTextField);
-        setFormat(genomADsaTextField);
+        setFormat(gnomADAllTextField);
+        setFormat(gnomADmaTextField);
+        setFormat(gnomADaaaTextField);
+        setFormat(gnomADeaTextField);
+        setFormat(gnomADfinTextField);
+        setFormat(gnomADnfeTextField);
+        setFormat(gnomADotherTextField);
+        setFormat(gnomADsaTextField);
 
         setFormat(exacTextField);
         setFormat(keidTextField);
@@ -502,6 +756,8 @@ public class VariantFilterController extends SubPaneController {
 
     private void setCurrentOption(List<Object> currentFilter) {
         filterNameTextField.setVisible(false);
+        newFilterNameLabel.setVisible(false);
+        saveBtn.setDisable(false);
         resetFilterList();
         for(Object obj : currentFilter) {
             String option = obj.toString();
@@ -534,17 +790,17 @@ public class VariantFilterController extends SubPaneController {
         }
     }
 
-    private void setPrediction(String value) {
+    private void setVariantLevel(String value) {
         if(value.equalsIgnoreCase("T1") || value.equalsIgnoreCase("P")) {
-            predictionACheckBox.setSelected(true);
+            caseACheckBox.setSelected(true);
         } else if(value.equalsIgnoreCase("T2") || value.equalsIgnoreCase("LP")) {
-            predictionBCheckBox.setSelected(true);
+            caseBCheckBox.setSelected(true);
         } else if(value.equalsIgnoreCase("T3") || value.equalsIgnoreCase("US")) {
-            predictionCCheckBox.setSelected(true);
+            caseCCheckBox.setSelected(true);
         } else if(value.equalsIgnoreCase("T4") || value.equalsIgnoreCase("LB")) {
-            predictionDCheckBox.setSelected(true);
-        } else {
-            predictionECheckBox.setSelected(true);
+            caseDCheckBox.setSelected(true);
+        } else if (value.equalsIgnoreCase("B")){
+            caseECheckBox.setSelected(true);
         }
     }
 
@@ -559,14 +815,14 @@ public class VariantFilterController extends SubPaneController {
             clinVarDCheckBox.setSelected(true);
         } else if(value.equalsIgnoreCase("Benign")) {
             clinVarECheckBox.setSelected(true);
+        } else if(value.equalsIgnoreCase("drug_response")) {
+            clinVarDrugResponseCheckBox.setSelected(true);
         }
     }
 
     private void setKeyValue(String key, String value) {
-        if(key.equalsIgnoreCase("expertTier") || key.equalsIgnoreCase("expertPathogenicity")) {
-            setCase(value);
-        } else if(key.equalsIgnoreCase("swTier") || key.equalsIgnoreCase("swPathogenicity")) {
-            setPrediction(value);
+        if(key.equalsIgnoreCase("tier") || key.equalsIgnoreCase("pathogenicity")) {
+            setVariantLevel(value);
         } else if(key.equalsIgnoreCase("clinVarClass")) {
             setClinVar(value);
         } else if(key.equalsIgnoreCase("codingConsequence")) {
@@ -576,9 +832,9 @@ public class VariantFilterController extends SubPaneController {
         } else if(key.equalsIgnoreCase("chromosome")) {
             setTextArray(value, chromosomeTextField);
         } else if(key.equalsIgnoreCase("alleleFraction")) {
-            alleSet(value);
+            alleSet(value, startFractionTextField, endFractionTextField);
         } else if(key.equalsIgnoreCase("variantType")) {
-            if(value.equalsIgnoreCase("snp")) {
+            if(value.equalsIgnoreCase("snp") || value.equalsIgnoreCase("snv")) {
                 snvCheckBox.setSelected(true);
             } else if(value.equalsIgnoreCase("ins")) {
                 indelCheckBox.setSelected(true);
@@ -591,58 +847,83 @@ public class VariantFilterController extends SubPaneController {
             }
         } else if(key.equalsIgnoreCase("g1000All")) {
             setFeqTextField(value, tgAllTextField);
+            setOperator(value, tgAllComboBox);
         }else if(key.equalsIgnoreCase("g1000African")) {
             setFeqTextField(value, tgafrTextField);
+            setOperator(value, tgafrComboBox);
         }else if(key.equalsIgnoreCase("g1000American")) {
             setFeqTextField(value, tgamrTextField);
+            setOperator(value, tgamrComboBox);
         }else if(key.equalsIgnoreCase("g1000EastAsian")) {
             setFeqTextField(value, tgeasTextField);
+            setOperator(value, tgeasComboBox);
         }else if(key.equalsIgnoreCase("g1000European")) {
             setFeqTextField(value, tgeurTextField);
+            setOperator(value, tgeurComboBox);
         }else if(key.equalsIgnoreCase("g1000SouthAsian")) {
             setFeqTextField(value, tgsasTextField);
+            setOperator(value, tgsasComboBox);
         }else if(key.equalsIgnoreCase("esp6500All")) {
             setFeqTextField(value, espallTextField);
+            setOperator(value, espallComboBox);
         }else if(key.equalsIgnoreCase("esp6500aa")) {
             setFeqTextField(value, espaaTextField);
+            setOperator(value, espaaComboBox);
         }else if(key.equalsIgnoreCase("esp6500ea")) {
             setFeqTextField(value, espeaTextField);
+            setOperator(value, espeaComboBox);
         }else if(key.equalsIgnoreCase("koreanExomInformationDatabase")) {
             setFeqTextField(value, keidTextField);
+            setOperator(value, keidComboBox);
         }else if(key.equalsIgnoreCase("koreanReferenceGenomeDatabase")) {
             setFeqTextField(value, krgdTextField);
+            setOperator(value, krgdComboBox);
         }else if(key.equalsIgnoreCase("kohbraFreq")) {
             setFeqTextField(value, kohbraTextField);
+            setOperator(value, kohbraComboBox);
         }else if(key.equalsIgnoreCase("exac")) {
             setFeqTextField(value, exacTextField);
-        }else if(key.equalsIgnoreCase("genomADall")) {
-            setFeqTextField(value, genomADAllTextField);
-        }else if(key.equalsIgnoreCase("genomADadmixedAmerican")) {
-            setFeqTextField(value, genomADmaTextField);
-        }else if(key.equalsIgnoreCase("genomADafricanAfricanAmerican")) {
-            setFeqTextField(value, genomADaaaTextField);
-        }else if(key.equalsIgnoreCase("genomADashkenaziJewish")) {
-            setFeqTextField(value, genomADajgenomAD);
-        }else if(key.equalsIgnoreCase("genomADeastAsian")) {
-            setFeqTextField(value, genomADeaTextField);
-        }else if(key.equalsIgnoreCase("genomADfinnish")) {
-            setFeqTextField(value, genomADfinTextField);
-        }else if(key.equalsIgnoreCase("genomADnonFinnishEuropean")) {
-            setFeqTextField(value, genomADnfeTextField);
-        }else if(key.equalsIgnoreCase("genomADothers")) {
-            setFeqTextField(value, genomADotherTextField);
-        }else if(key.equalsIgnoreCase("genomADsouthAsian")) {
-            setFeqTextField(value, genomADsaTextField);
+            setOperator(value, exacComboBox);
+        }else if(key.equalsIgnoreCase("gnomADall")) {
+            setFeqTextField(value, gnomADAllTextField);
+            setOperator(value, gnomADAllComboBox);
+        }else if(key.equalsIgnoreCase("gnomADadmixedAmerican")) {
+            setFeqTextField(value, gnomADmaTextField);
+            setOperator(value, gnomADmaComboBox);
+        }else if(key.equalsIgnoreCase("gnomADafricanAfricanAmerican")) {
+            setFeqTextField(value, gnomADaaaTextField);
+            setOperator(value, gnomADaaaComboBox);
+        }else if(key.equalsIgnoreCase("gnomADeastAsian")) {
+            setFeqTextField(value, gnomADeaTextField);
+            setOperator(value, gnomADeaComboBox);
+        }else if(key.equalsIgnoreCase("gnomADfinnish")) {
+            setFeqTextField(value, gnomADfinTextField);
+            setOperator(value, gnomADfinComboBox);
+        }else if(key.equalsIgnoreCase("gnomADnonFinnishEuropean")) {
+            setFeqTextField(value, gnomADnfeTextField);
+            setOperator(value, gnomADnfeComboBox);
+        }else if(key.equalsIgnoreCase("gnomADothers")) {
+            setFeqTextField(value, gnomADotherTextField);
+            setOperator(value, gnomADotherComboBox);
+        }else if(key.equalsIgnoreCase("gnomADsouthAsian")) {
+            setFeqTextField(value, gnomADsaTextField);
+            setOperator(value, gnomADsaComboBox);
         }else if(key.equalsIgnoreCase("cosmicOccurrence")) {
             Optional<ComboBoxItem> comboBoxItem
                     = cosmicOccurrenceComboBox.getItems().stream().filter(item -> item.getValue().equals(value)).findFirst();
             comboBoxItem.ifPresent(comboBoxItem1 -> cosmicOccurrenceComboBox.getSelectionModel().select(comboBoxItem1));
+        }else if(key.equalsIgnoreCase("warningReason")) {
+            warningCheckComboBox.getCheckModel().check(value);
+        }else if(key.equalsIgnoreCase("readDepth")) {
+            alleSet(value, depthCountTextField, depthEndCountTextField);
+        }else if(key.equalsIgnoreCase("altReadNum")) {
+            alleSet(value, altCountTextField, altEndCountTextField);
         }
     }
 
-    private void alleSet(String value) {
+    private void alleSet(String value, TextField startTextField, TextField endTextField) {
         //Pattern p = Pattern.compile("\\d*|\\d+\\.\\d*");
-        Pattern p = Pattern.compile("\\d*");
+        Pattern p = Pattern.compile("\\d+");
         Matcher m;
         List<String> values = new ArrayList<>();
         m = p.matcher(value);
@@ -650,18 +931,18 @@ public class VariantFilterController extends SubPaneController {
             values.add(m.group());
         }
         if(value.contains("and")) {
-            setTextField(values.get(0), startFractionTextField);
-            setTextField(values.get(1), endFractionTextField);
+            setTextField(values.get(0), startTextField);
+            setTextField(values.get(1), endTextField);
         } else if(value.contains("gt")) {
-            setTextField(values.get(0), startFractionTextField);
+            setTextField(values.get(0), startTextField);
         } else {
-            setTextField(values.get(0), endFractionTextField);
+            setTextField(values.get(0), endTextField);
         }
 
     }
 
     private void setTextArray(String option, TextField textField) {
-        if(!StringUtils.isEmpty(textField.getText())) {
+        if(StringUtils.isNotEmpty(textField.getText())) {
             textField.setText(textField.getText() + ", " + option);
         } else {
             setTextField(option, textField);
@@ -733,27 +1014,47 @@ public class VariantFilterController extends SubPaneController {
     @FXML
     private void removeFilter() {
         if(!filterNameTextField.isVisible()
-                && !StringUtils.isEmpty(filterNameComboBox.getSelectionModel().getSelectedItem())) {
-            filter.remove(filterNameComboBox.getSelectionModel().getSelectedItem());
-            String name = filterNameComboBox.getSelectionModel().getSelectedItem();
-            filterNameComboBox.getSelectionModel().clearSelection();
-            filterNameComboBox.getItems().remove(name);
-            resetFilterList();
-            changeFilter();
+                && StringUtils.isNotEmpty(filterNameComboBox.getSelectionModel().getSelectedItem())) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            DialogUtil.setIcon(alert);
+            String alertHeaderText = filterNameComboBox.getSelectionModel().getSelectedItem();
+            String alertContentText = "Are you sure to delete this filter?";
 
-            filterNameTextField.setVisible(true);
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText(alertHeaderText);
+            alert.setContentText(alertContentText);
+            Optional<ButtonType> result = alert.showAndWait();
+            if(result.get() == ButtonType.OK) {
+                filter.remove(filterNameComboBox.getSelectionModel().getSelectedItem());
+                String name = filterNameComboBox.getSelectionModel().getSelectedItem();
+                filterNameComboBox.getSelectionModel().clearSelection();
+                filterNameComboBox.getItems().remove(name);
+                resetFilterList();
+                changeFilter();
 
-            String gg = JsonUtil.toJson(filter);
-            Map<String, Object> map = new HashMap<>();
-            map.put("value", gg);
-            try {
-                if ("somatic".equalsIgnoreCase(analysisType)) {
-                    apiService.put("/member/memberOption/somaticFilter", map, null, true);
-                } else if ("germline".equalsIgnoreCase(analysisType)) {
-                    apiService.put("/member/memberOption/germlineFilter", map, null, true);
+                String valueJsonString = JsonUtil.toJson(filter);
+                Map<String, Object> map = new HashMap<>();
+                map.put("value", valueJsonString);
+                try {
+                    if (panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
+                        apiService.put("/member/memberOption/hemeFilter", map, null, true);
+                    } else if (panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
+                        apiService.put("/member/memberOption/solidFilter", map, null, true);
+                    } else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
+                        apiService.put("/member/memberOption/tstDNAFilter", map, null, true);
+                    } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
+                            panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
+                        apiService.put("/member/memberOption/brcaFilter", map, null, true);
+                    } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+                        apiService.put("/member/memberOption/heredFilter", map, null, true);
+                    }
+
+                } catch (WebAPIException wae) {
+                    DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainApp.getPrimaryStage(), true);
                 }
-            } catch (WebAPIException wae) {
-                DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainApp.getPrimaryStage(), true);
+                saveBtn.setDisable(true);
+            } else {
+                alert.close();
             }
         }
     }
@@ -767,6 +1068,8 @@ public class VariantFilterController extends SubPaneController {
     public void addFilter() {
         filterNameComboBox.getSelectionModel().clearSelection();
         filterNameTextField.setVisible(true);
+        newFilterNameLabel.setVisible(true);
+        saveBtn.setDisable(true);
         resetFilterList();
     }
 
@@ -782,14 +1085,17 @@ public class VariantFilterController extends SubPaneController {
 
         String filterName = "";
 
-        if(list.isEmpty()) return;
+        if(list.isEmpty()) {
+            DialogUtil.alert("Warning", "No filtering elements found.", this.dialogStage, true);
+            return;
+        }
 
         if(filterNameTextField.isVisible()) {
             if(StringUtils.isEmpty(filterNameTextField.getText())) {
                 DialogUtil.alert("No filter name found", "Please enter a filter name", mainApp.getPrimaryStage(), true);
                 filterNameTextField.requestFocus();
                 return;
-            } else if(Arrays.stream(defaultFilterName).anyMatch(item -> item.equals(filterNameTextField.getText()))) {
+            } else if("All".equalsIgnoreCase(filterNameTextField.getText())) {
                 DialogUtil.alert("Unavailable name", "Please edit the filter name", mainApp.getPrimaryStage(), true);
                 filterNameTextField.requestFocus();
                 return;
@@ -807,10 +1113,17 @@ public class VariantFilterController extends SubPaneController {
         Map<String, Object> map = new HashMap<>();
         map.put("value", gg);
         try {
-            if ("somatic".equalsIgnoreCase(analysisType)) {
-                apiService.put("/member/memberOption/somaticFilter", map, null, true);
-            } else if ("germline".equalsIgnoreCase(analysisType)) {
-                apiService.put("/member/memberOption/germlineFilter", map, null, true);
+            if (panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
+                apiService.put("/member/memberOption/hemeFilter", map, null, true);
+            } else if (panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
+                apiService.put("/member/memberOption/solidFilter", map, null, true);
+            } else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
+                apiService.put("/member/memberOption/tstDNAFilter", map, null, true);
+            } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
+                    panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
+                apiService.put("/member/memberOption/brcaFilter", map, null, true);
+            } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+                apiService.put("/member/memberOption/heredFilter", map, null, true);
             }
         } catch (WebAPIException wae) {
             DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainApp.getPrimaryStage(), true);
@@ -821,89 +1134,98 @@ public class VariantFilterController extends SubPaneController {
     }
 
     private void changeFilter() {
-        if("somatic".equalsIgnoreCase(analysisType)) {
-            mainController.getBasicInformationMap().remove("somaticFilter");
-            mainController.getBasicInformationMap().put("somaticFilter", filter);
-        } else if("germline".equalsIgnoreCase(analysisType)) {
-            mainController.getBasicInformationMap().remove("germlineFilter");
-            mainController.getBasicInformationMap().put("germlineFilter", filter);
+        if (panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
+            mainController.getBasicInformationMap().remove("hemeFilter");
+            mainController.getBasicInformationMap().put("hemeFilter", filter);
+        } else if (panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
+            mainController.getBasicInformationMap().remove("solidFilter");
+            mainController.getBasicInformationMap().put("solidFilter", filter);
+        } else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
+            mainController.getBasicInformationMap().remove("tstDNAFilter");
+            mainController.getBasicInformationMap().put("tstDNAFilter", filter);
+        } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
+                panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
+            mainController.getBasicInformationMap().remove("brcaFilter");
+            mainController.getBasicInformationMap().put("brcaFilter", filter);
+        } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+            mainController.getBasicInformationMap().remove("heredFilter");
+            mainController.getBasicInformationMap().put("heredFilter", filter);
         }
     }
 
     private void populationFrequencySave(List<Object> list) {
-        if(!StringUtils.isEmpty(tgAllTextField.getText())) {
-            setFrequency(list, tgAllTextField.getText(), "g1000All");
+        if(StringUtils.isNotEmpty(tgAllTextField.getText())) {
+            setFrequency(list, tgAllTextField.getText(), tgAllComboBox.getSelectionModel().getSelectedItem().getValue(), "g1000All");
         }
-        if(!StringUtils.isEmpty(tgafrTextField.getText())) {
-            setFrequency(list, tgafrTextField.getText(), "g1000African");
+        if(StringUtils.isNotEmpty(tgafrTextField.getText())) {
+            setFrequency(list, tgafrTextField.getText(), tgafrComboBox.getSelectionModel().getSelectedItem().getValue(), "g1000African");
         }
-        if(!StringUtils.isEmpty(tgamrTextField.getText())) {
-            setFrequency(list, tgamrTextField.getText(), "g1000American");
+        if(StringUtils.isNotEmpty(tgamrTextField.getText())) {
+            setFrequency(list, tgamrTextField.getText(), tgamrComboBox.getSelectionModel().getSelectedItem().getValue(), "g1000American");
         }
-        if(!StringUtils.isEmpty(tgeasTextField.getText())) {
-            setFrequency(list, tgeasTextField.getText(), "g1000EastAsian");
+        if(StringUtils.isNotEmpty(tgeasTextField.getText())) {
+            setFrequency(list, tgeasTextField.getText(), tgeasComboBox.getSelectionModel().getSelectedItem().getValue(), "g1000EastAsian");
         }
-        if(!StringUtils.isEmpty(tgeurTextField.getText())) {
-            setFrequency(list, tgeurTextField.getText(), "g1000European");
+        if(StringUtils.isNotEmpty(tgeurTextField.getText())) {
+            setFrequency(list, tgeurTextField.getText(), tgeurComboBox.getSelectionModel().getSelectedItem().getValue(), "g1000European");
         }
-        if(!StringUtils.isEmpty(tgsasTextField.getText())) {
-            setFrequency(list, tgsasTextField.getText(), "g1000SouthAsian");
-        }
-
-        if(!StringUtils.isEmpty(espallTextField.getText())) {
-            setFrequency(list, espallTextField.getText(), "esp6500All");
-        }
-        if(!StringUtils.isEmpty(espaaTextField.getText())) {
-            setFrequency(list, espaaTextField.getText(), "esp6500aa");
-        }
-        if(!StringUtils.isEmpty(espeaTextField.getText())) {
-            setFrequency(list, espeaTextField.getText(), "esp6500ea");
+        if(StringUtils.isNotEmpty(tgsasTextField.getText())) {
+            setFrequency(list, tgsasTextField.getText(), tgsasComboBox.getSelectionModel().getSelectedItem().getValue(), "g1000SouthAsian");
         }
 
-        if(!StringUtils.isEmpty(keidTextField.getText())) {
-            setFrequency(list, keidTextField.getText(), "koreanExomInformationDatabase");
+        if(StringUtils.isNotEmpty(espallTextField.getText())) {
+            setFrequency(list, espallTextField.getText(), espallComboBox.getSelectionModel().getSelectedItem().getValue(), "esp6500All");
         }
-        if(!StringUtils.isEmpty(krgdTextField.getText())) {
-            setFrequency(list, krgdTextField.getText(), "koreanReferenceGenomeDatabase");
+        if(StringUtils.isNotEmpty(espaaTextField.getText())) {
+            setFrequency(list, espaaTextField.getText(), espaaComboBox.getSelectionModel().getSelectedItem().getValue(), "esp6500aa");
         }
-        if(!StringUtils.isEmpty(kohbraTextField.getText())) {
-            setFrequency(list, kohbraTextField.getText(), "kohbraFreq");
-        }
-        if(!StringUtils.isEmpty(exacTextField.getText())) {
-            setFrequency(list, exacTextField.getText(), "exac");
+        if(StringUtils.isNotEmpty(espeaTextField.getText())) {
+            setFrequency(list, espeaTextField.getText(), espeaComboBox.getSelectionModel().getSelectedItem().getValue(), "esp6500ea");
         }
 
-        if(!StringUtils.isEmpty(genomADAllTextField.getText())) {
-            setFrequency(list, genomADAllTextField.getText(), "genomADall");
+        if(StringUtils.isNotEmpty(keidTextField.getText())) {
+            setFrequency(list, keidTextField.getText(), keidComboBox.getSelectionModel().getSelectedItem().getValue(), "koreanExomInformationDatabase");
         }
-        if(!StringUtils.isEmpty(genomADmaTextField.getText())) {
-            setFrequency(list, genomADmaTextField.getText(), "genomADadmixedAmerican");
+        if(StringUtils.isNotEmpty(krgdTextField.getText())) {
+            setFrequency(list, krgdTextField.getText(), krgdComboBox.getSelectionModel().getSelectedItem().getValue(), "koreanReferenceGenomeDatabase");
         }
-        if(!StringUtils.isEmpty(genomADaaaTextField.getText())) {
-            setFrequency(list, genomADaaaTextField.getText(), "genomADafricanAfricanAmerican");
+        if(StringUtils.isNotEmpty(kohbraTextField.getText())) {
+            setFrequency(list, kohbraTextField.getText(), kohbraComboBox.getSelectionModel().getSelectedItem().getValue(), "kohbraFreq");
         }
-        if(!StringUtils.isEmpty(genomADajgenomAD.getText())) {
-            setFrequency(list, genomADajgenomAD.getText(), "genomADashkenaziJewish");
+        if(StringUtils.isNotEmpty(exacTextField.getText())) {
+            setFrequency(list, exacTextField.getText(), exacComboBox.getSelectionModel().getSelectedItem().getValue(), "exac");
         }
-        if(!StringUtils.isEmpty(genomADeaTextField.getText())) {
-            setFrequency(list, genomADeaTextField.getText(), "genomADeastAsian");
-        }
-        if(!StringUtils.isEmpty(genomADfinTextField.getText())) {
-            setFrequency(list, genomADfinTextField.getText(), "genomADfinnish");
-        }
-        if(!StringUtils.isEmpty(genomADnfeTextField.getText())) {
-            setFrequency(list, genomADnfeTextField.getText(), "genomADnonFinnishEuropean");
-        }
-        if(!StringUtils.isEmpty(genomADotherTextField.getText())) {
-            setFrequency(list, genomADotherTextField.getText(), "genomADothers");
-        }
-        if(!StringUtils.isEmpty(genomADsaTextField.getText())) {
-            setFrequency(list, genomADsaTextField.getText(), "genomADsouthAsian");
+
+        if("somatic".equalsIgnoreCase(panel.getAnalysisType())) {
+            if (StringUtils.isNotEmpty(gnomADAllTextField.getText())) {
+                setFrequency(list, gnomADAllTextField.getText(), gnomADAllComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADall");
+            }
+            if (StringUtils.isNotEmpty(gnomADmaTextField.getText())) {
+                setFrequency(list, gnomADmaTextField.getText(), gnomADmaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADadmixedAmerican");
+            }
+            if (StringUtils.isNotEmpty(gnomADaaaTextField.getText())) {
+                setFrequency(list, gnomADaaaTextField.getText(), gnomADaaaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADafricanAfricanAmerican");
+            }
+            if (StringUtils.isNotEmpty(gnomADeaTextField.getText())) {
+                setFrequency(list, gnomADeaTextField.getText(), gnomADeaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADeastAsian");
+            }
+            if (StringUtils.isNotEmpty(gnomADfinTextField.getText())) {
+                setFrequency(list, gnomADfinTextField.getText(), gnomADfinComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADfinnish");
+            }
+            if (StringUtils.isNotEmpty(gnomADnfeTextField.getText())) {
+                setFrequency(list, gnomADnfeTextField.getText(), gnomADnfeComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADnonFinnishEuropean");
+            }
+            if (StringUtils.isNotEmpty(gnomADotherTextField.getText())) {
+                setFrequency(list, gnomADotherTextField.getText(), gnomADotherComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADothers");
+            }
+            if (StringUtils.isNotEmpty(gnomADsaTextField.getText())) {
+                setFrequency(list, gnomADsaTextField.getText(), gnomADsaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADsouthAsian");
+            }
         }
     }
 
-    private void setFrequency(List<Object> list, String text, String key) {
-        list.add(key + " gte:" + text);
+    private void setFrequency(List<Object> list, String text,String operator , String key) {
+        list.add(key + " " + operator + text);
     }
 
     private void consequenceSave(List<Object> list) {
@@ -954,7 +1276,6 @@ public class VariantFilterController extends SubPaneController {
             list.add("codingConsequence start_lost");
         }
 
-
         if(threePrimeUTRVCheckBox.isSelected()) {
             list.add("codingConsequence 3_prime_UTR_variant");
         }
@@ -994,63 +1315,34 @@ public class VariantFilterController extends SubPaneController {
 
     private void variantTabSave(List<Object> list) {
 
-        if("SOMATIC".equalsIgnoreCase(analysisType)) {
+        if("SOMATIC".equalsIgnoreCase(panel.getAnalysisType())) {
             if(caseACheckBox.isSelected()) {
-                list.add("expertTier T1");
+                list.add("tier T1");
             }
             if(caseBCheckBox.isSelected()) {
-                list.add("expertTier T2");
+                list.add("tier T2");
             }
             if(caseCCheckBox.isSelected()) {
-                list.add("expertTier T3");
+                list.add("tier T3");
             }
             if(caseDCheckBox.isSelected()) {
-                list.add("expertTier T4");
-            }
-
-            if(predictionACheckBox.isSelected()) {
-                list.add("swTier T1");
-            }
-            if(predictionBCheckBox.isSelected()) {
-                list.add("swTier T2");
-            }
-            if(predictionCCheckBox.isSelected()) {
-                list.add("swTier T3");
-            }
-            if(predictionDCheckBox.isSelected()) {
-                list.add("swTier T4");
+                list.add("tier T4");
             }
         } else {
             if(caseACheckBox.isSelected()) {
-                list.add("expertPathogenicity P");
+                list.add("pathogenicity P");
             }
             if(caseBCheckBox.isSelected()) {
-                list.add("expertPathogenicity LP");
+                list.add("pathogenicity LP");
             }
             if(caseCCheckBox.isSelected()) {
-                list.add("expertPathogenicity US");
+                list.add("pathogenicity US");
             }
             if(caseDCheckBox.isSelected()) {
-                list.add("expertPathogenicity LB");
+                list.add("pathogenicity LB");
             }
             if(caseECheckBox.isSelected()) {
-                list.add("expertPathogenicity B");
-            }
-
-            if(predictionACheckBox.isSelected()) {
-                list.add("swPathogenicity P");
-            }
-            if(predictionBCheckBox.isSelected()) {
-                list.add("swPathogenicity LP");
-            }
-            if(predictionCCheckBox.isSelected()) {
-                list.add("swPathogenicity US");
-            }
-            if(predictionDCheckBox.isSelected()) {
-                list.add("swPathogenicity LB");
-            }
-            if(predictionECheckBox.isSelected()) {
-                list.add("swPathogenicity B");
+                list.add("pathogenicity B");
             }
         }
 
@@ -1069,8 +1361,11 @@ public class VariantFilterController extends SubPaneController {
         if (clinVarECheckBox.isSelected()) {
             list.add("clinVarClass Benign");
         }
+        if (clinVarDrugResponseCheckBox.isSelected()) {
+            list.add("clinVarClass drug_response");
+        }
 
-        if(!StringUtils.isEmpty(geneTextField.getText())) {
+        if(StringUtils.isNotEmpty(geneTextField.getText())) {
 
             String[] geneList = geneTextField.getText().replaceAll(" ", "").split(",");
 
@@ -1079,7 +1374,7 @@ public class VariantFilterController extends SubPaneController {
             }
         }
 
-        if(!StringUtils.isEmpty(chromosomeTextField.getText())) {
+        if(StringUtils.isNotEmpty(chromosomeTextField.getText())) {
 
             String[] chrList = chromosomeTextField.getText().replaceAll(" ", "").split(",");
 
@@ -1089,7 +1384,7 @@ public class VariantFilterController extends SubPaneController {
         }
 
         if(snvCheckBox.isSelected()) {
-            list.add("variantType snp");
+            list.add("variantType snv");
         }
 
         if(indelCheckBox.isSelected()) {
@@ -1114,20 +1409,42 @@ public class VariantFilterController extends SubPaneController {
             list.add("cosmicIds");
         }
 
-        if(cosmicOccurrenceComboBox.getSelectionModel().getSelectedItem() != null) {
+        if(cosmicOccurrenceComboBox.getSelectionModel().getSelectedItem() != null &&
+                StringUtils.isNotEmpty(cosmicOccurrenceComboBox.getSelectionModel().getSelectedItem().getValue())) {
             list.add("cosmicOccurrence " + cosmicOccurrenceComboBox.getSelectionModel().getSelectedItem().getValue());
         }
 
-        if(StringUtils.isEmpty(endFractionTextField.getText()) && !StringUtils.isEmpty(startFractionTextField.getText())) {
+        if(warningCheckComboBox.getCheckModel().getCheckedItems() != null && !warningCheckComboBox.getCheckModel().isEmpty()) {
+            warningCheckComboBox.getCheckModel().getCheckedItems().forEach(item -> list.add("warningReason " + item));
+        }
+
+        if(StringUtils.isEmpty(endFractionTextField.getText()) && StringUtils.isNotEmpty(startFractionTextField.getText())) {
             list.add("alleleFraction gt:" + startFractionTextField.getText());
-        } else if(!StringUtils.isEmpty(endFractionTextField.getText()) && StringUtils.isEmpty(startFractionTextField.getText())) {
+        } else if(StringUtils.isNotEmpty(endFractionTextField.getText()) && StringUtils.isEmpty(startFractionTextField.getText())) {
             list.add("alleleFraction lt:" + endFractionTextField.getText());
-        } else if(!StringUtils.isEmpty(endFractionTextField.getText()) && !StringUtils.isEmpty(startFractionTextField.getText())) {
+        } else if(StringUtils.isNotEmpty(endFractionTextField.getText()) && StringUtils.isNotEmpty(startFractionTextField.getText())) {
             list.add("alleleFraction gt:" + startFractionTextField.getText() + ",lt:" + endFractionTextField.getText() + ",and");
+        }
+
+        if(StringUtils.isEmpty(depthEndCountTextField.getText()) && StringUtils.isNotEmpty(depthCountTextField.getText())) {
+            list.add("readDepth gt:" + depthCountTextField.getText());
+        } else if(StringUtils.isNotEmpty(depthEndCountTextField.getText()) && StringUtils.isEmpty(depthCountTextField.getText())) {
+            list.add("readDepth lt:" + depthEndCountTextField.getText());
+        } else if(StringUtils.isNotEmpty(depthEndCountTextField.getText()) && StringUtils.isNotEmpty(depthCountTextField.getText())) {
+            list.add("readDepth gt:" + depthCountTextField.getText() + ",lt:" + depthEndCountTextField.getText() + ",and");
+        }
+        
+        if(StringUtils.isEmpty(altEndCountTextField.getText()) && StringUtils.isNotEmpty(altCountTextField.getText())) {
+            list.add("altReadNum gt:" + altCountTextField.getText());
+        } else if(StringUtils.isNotEmpty(altEndCountTextField.getText()) && StringUtils.isEmpty(altCountTextField.getText())) {
+            list.add("altReadNum lt:" + altEndCountTextField.getText());
+        } else if(StringUtils.isNotEmpty(altEndCountTextField.getText()) && StringUtils.isNotEmpty(altCountTextField.getText())) {
+            list.add("altReadNum gt:" + altCountTextField.getText() + ",lt:" + altEndCountTextField.getText() + ",and");
         }
     }
 
     private void resetFilterList() {
+        warningCheckComboBox.getCheckModel().clearChecks();
         filterNameTextField.setText("");
         geneTextField.setText("");
         chromosomeTextField.setText("");
@@ -1135,6 +1452,8 @@ public class VariantFilterController extends SubPaneController {
         snvCheckBox.selectedProperty().setValue(false);
         indelCheckBox.setSelected(false);
         delCheckBox.setSelected(false);
+        mnpCheckBox.setSelected(false);
+        complexCheckBox.setSelected(false);
         fivePrimeUTRVCheckBox.setSelected(false);
         cidCheckBox.setSelected(false);
         didCheckBox.setSelected(false);
@@ -1176,32 +1495,30 @@ public class VariantFilterController extends SubPaneController {
         keidTextField.setText("");
         krgdTextField.setText("");
         kohbraTextField.setText("");
-        genomADAllTextField.setText("");
-        genomADmaTextField.setText("");
-        genomADaaaTextField.setText("");
-        genomADajgenomAD.setText("");
-        genomADeaTextField.setText("");
-        genomADfinTextField.setText("");
-        genomADnfeTextField.setText("");
-        genomADotherTextField.setText("");
-        genomADsaTextField.setText("");
+        gnomADAllTextField.setText("");
+        gnomADmaTextField.setText("");
+        gnomADaaaTextField.setText("");
+        gnomADeaTextField.setText("");
+        gnomADfinTextField.setText("");
+        gnomADnfeTextField.setText("");
+        gnomADotherTextField.setText("");
+        gnomADsaTextField.setText("");
         exacTextField.setText("");
         caseACheckBox.setSelected(false);
         caseBCheckBox.setSelected(false);
         caseCCheckBox.setSelected(false);
         caseDCheckBox.setSelected(false);
         caseECheckBox.setSelected(false);
-        predictionACheckBox.setSelected(false);
-        predictionBCheckBox.setSelected(false);
-        predictionCCheckBox.setSelected(false);
-        predictionDCheckBox.setSelected(false);
-        predictionECheckBox.setSelected(false);
         clinVarACheckBox.setSelected(false);
         clinVarBCheckBox.setSelected(false);
         clinVarCCheckBox.setSelected(false);
         clinVarDCheckBox.setSelected(false);
         clinVarECheckBox.setSelected(false);
         cosmicOccurrenceComboBox.getSelectionModel().clearSelection();
+        depthCountTextField.setText("");
+        altCountTextField.setText("");
+        depthEndCountTextField.setText("");
+        altEndCountTextField.setText("");
 
     }
 }

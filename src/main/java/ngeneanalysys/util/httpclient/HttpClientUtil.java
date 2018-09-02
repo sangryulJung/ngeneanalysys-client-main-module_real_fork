@@ -2,12 +2,8 @@ package ngeneanalysys.util.httpclient;
 
 import java.io.*;
 import java.security.SecureRandom;
-import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -15,18 +11,17 @@ import javax.net.ssl.X509TrustManager;
 
 import javafx.scene.control.Alert;
 import ngeneanalysys.exceptions.WebAPIException;
+import ngeneanalysys.model.ErrorMessage;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.*;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.ssl.SSLContexts;
 import org.slf4j.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -40,13 +35,15 @@ import ngeneanalysys.util.LoggerUtil;
  *
  */
 public class HttpClientUtil {
-	private final static Logger logger = LoggerUtil.getLogger();
+	private static final Logger logger = LoggerUtil.getLogger();
 
 	private static final String DEFAULT_ENCODING = "UTF-8";
 
+	private HttpClientUtil() {}
+
 	/**
 	 * SSL 연결 커넥션 설정 반환
-	 * @return
+	 * @return SSLConnectionSocketFactory
 	 */
 	public static SSLConnectionSocketFactory getSSLSocketFactory() {
 		SSLConnectionSocketFactory factory = null;
@@ -78,22 +75,20 @@ public class HttpClientUtil {
 
 	/**
 	 * post 설정 반환
-	 * @param url
-	 * @param params
-	 * @param headers
-	 * @param encoding
-	 * @return
+	 * @param url String
+	 * @param params Map
+	 * @param headers Map
+	 * @param encoding String
+	 * @return HttpPost
 	 */
-	public static HttpPost initPost(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, boolean isJsonRequest) {
+	private static HttpPost initPost(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, boolean isJsonRequest) {
 		HttpPost post = null;
 		try {
 			post = new HttpPost(url);
 			// 지정된 헤더 삽입 정보가 있는 경우 추가
 			if(headers != null && headers.size() > 0) {
-				Iterator<String> keys = headers.keySet().iterator();
-				while (keys.hasNext()) {
-					String key = keys.next();
-					post.addHeader(key, headers.get(key).toString());
+				for (Map.Entry<String, Object> entry : headers.entrySet()) {
+					post.addHeader(entry.getKey(), entry.getValue().toString());
 				}
 			}
 
@@ -117,11 +112,11 @@ public class HttpClientUtil {
 
 	/**
 	 * HTTPS POST
-	 * @param url
-	 * @param params
-	 * @param headers
-	 * @param encoding
-	 * @return
+	 * @param url String
+	 * @param params Map
+	 * @param headers Map
+	 * @param encoding String
+	 * @return HttpClientResponse
 	 * @throws WebAPIException
 	 */
 	public static HttpClientResponse post(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, boolean isJsonRequest) throws WebAPIException {
@@ -140,6 +135,7 @@ public class HttpClientUtil {
 			result = getHttpClientResponse(response);
 			return result;
 		} catch (WebAPIException wae) {
+			logger.error("POST:%s", url);
 			throw wae;
 		} finally {
 			if(httpclient != null) {
@@ -161,10 +157,10 @@ public class HttpClientUtil {
 
 	/**
 	 * HTTPS POST
-	 * @param url
-	 * @param params
-	 * @param headers
-	 * @return
+	 * @param url String
+	 * @param params Map
+	 * @param headers Map
+	 * @return HttpClientResponse
 	 * @throws WebAPIException
 	 */
 	public static HttpClientResponse post(String url, Map<String, Object> params, Map<String, Object> headers, boolean isJsonRequest) throws WebAPIException {
@@ -173,11 +169,11 @@ public class HttpClientUtil {
 
 	/**
 	 * get 설정 반환
-	 * @param url
-	 * @param params
-	 * @param headers
-	 * @param encoding
-	 * @return
+	 * @param url String
+	 * @param params Map
+	 * @param headers Map
+	 * @param encoding String
+	 * @return HttpGet
 	 */
 	public static HttpGet initGet(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, boolean isJsonRequest) {
 		HttpGet get = null;
@@ -196,10 +192,8 @@ public class HttpClientUtil {
 			get = new HttpGet(requstURL);
 			// 지정된 헤더 삽입 정보가 있는 경우 추가
 			if(headers != null && headers.size() > 0) {
-				Iterator<String> keys = headers.keySet().iterator();
-				while (keys.hasNext()) {
-					String key = keys.next();
-					get.addHeader(key, headers.get(key).toString());
+				for (Map.Entry<String, Object> entry : headers.entrySet()) {
+					get.addHeader(entry.getKey(), entry.getValue().toString());
 				}
 			}
 			logger.debug("GET:" + get.getURI());
@@ -211,32 +205,30 @@ public class HttpClientUtil {
 
 	/**
 	 * get 설정 반환
-	 * @param url
-	 * @param params
-	 * @param headers
-	 * @param encoding
-	 * @return
+	 * @param url String
+	 * @param params Map
+	 * @param headers Map
+	 * @param encoding String
+	 * @return HttpGet
 	 */
 	public static HttpGet initGet(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, Map<String, List<Object>> searchParam) {
 		HttpGet get = null;
 		try {
-			String requstURL = null;
+			String requestURL = null;
 			// 파라미터 List 객체로 변환
 			List<NameValuePair> paramList = convertParam(params);
-			requstURL = url + "?" + URLEncodedUtils.format(paramList, encoding);
+			requestURL = url + "?" + URLEncodedUtils.format(paramList, encoding);
 
 			if(searchParam != null && !searchParam.isEmpty()) {
 				List<NameValuePair> paramSearchList = convertSearchParam(searchParam);
-				requstURL = requstURL + "&" + URLEncodedUtils.format(paramSearchList, encoding);
+				requestURL = requestURL + "&" + URLEncodedUtils.format(paramSearchList, encoding);
 			}
 
-			get = new HttpGet(requstURL);
+			get = new HttpGet(requestURL);
 			// 지정된 헤더 삽입 정보가 있는 경우 추가
 			if(headers != null && headers.size() > 0) {
-				Iterator<String> keys = headers.keySet().iterator();
-				while (keys.hasNext()) {
-					String key = keys.next();
-					get.addHeader(key, headers.get(key).toString());
+				for (Map.Entry<String, Object> entry : headers.entrySet()) {
+					get.addHeader(entry.getKey(), entry.getValue().toString());
 				}
 			}
 			logger.debug("GET:" + get.getURI());
@@ -248,11 +240,11 @@ public class HttpClientUtil {
 
 	/**
 	 * HTTPS GET
-	 * @param url
-	 * @param params
-	 * @param headers
-	 * @param encoding
-	 * @return
+	 * @param url String
+	 * @param params Map
+	 * @param headers Map
+	 * @param encoding String
+	 * @return HttpClientResponse
 	 * @throws WebAPIException
 	 */
 	public static HttpClientResponse get(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, boolean isJsonRequest) throws WebAPIException {
@@ -271,6 +263,7 @@ public class HttpClientUtil {
 			result = getHttpClientResponse(response);
 			return result;
 		} catch (WebAPIException wae) {
+			logger.error("GET:{}", url);
 			throw wae;
 		} finally {
 			if(httpclient != null) {
@@ -292,11 +285,11 @@ public class HttpClientUtil {
 
 	/**
 	 * HTTPS GET
-	 * @param url
-	 * @param params
-	 * @param headers
-	 * @param encoding
-	 * @return
+	 * @param url String
+	 * @param params Map
+	 * @param headers Map
+	 * @param encoding String
+	 * @return HttpClientResponse
 	 * @throws WebAPIException
 	 */
 	public static HttpClientResponse get(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, Map<String, List<Object>> searchParam) throws WebAPIException {
@@ -315,6 +308,7 @@ public class HttpClientUtil {
 			result = getHttpClientResponse(response);
 			return result;
 		} catch (WebAPIException wae) {
+			logger.error("GET:{}", url);
 			throw wae;
 		} finally {
 			if(httpclient != null) {
@@ -360,22 +354,36 @@ public class HttpClientUtil {
 				return result;
 			} else {
 				logger.error(String.format("Web API RESULT STATUS = %s, CONTENTS = %s", status ,result.getContentString()));
-				errorMessage = String.format("Server API ERROR(%s)\n\n%s", status, result.getContentString());
-				throw new WebAPIException(result, Alert.AlertType.ERROR, errorHeader, errorMessage, false);
+				if (result.getContentString().startsWith("{")) {
+					ErrorMessage serverErrorMessage = result.getObjectBeforeConvertResponseToJSON(ErrorMessage.class);
+					if (serverErrorMessage == null) {
+						errorMessage = result.getContentString();
+					} else {
+						errorMessage = serverErrorMessage.getMessage();
+					}
+				} else {
+					errorMessage = result.getContentString();
+				}
+				if (status >= 400 && status < 500) {
+					errorHeader = "Invalid Server API Request";
+					throw new WebAPIException(result, Alert.AlertType.WARNING, errorHeader, errorMessage, false);
+				} else {
+					throw new WebAPIException(result, Alert.AlertType.ERROR, errorHeader, errorMessage, false);
+				}
 			}
 		} else {
-			errorMessage = "Server API ERROR\n\nAPI Server Connection Fail.";
-			throw new WebAPIException(result, Alert.AlertType.ERROR, errorHeader, errorMessage, false);
+			errorMessage = "Server Connection Fail.";
+			throw new WebAPIException(null, Alert.AlertType.ERROR, errorHeader, errorMessage, false);
 		}
 	}
 
 	/**
 	 * HTTPS GET
-	 * @param url
-	 * @param params
-	 * @param headers
-	 * @param isJsonRequest
-	 * @return
+	 * @param url String
+	 * @param params Map
+	 * @param headers Map
+	 * @param isJsonRequest boolean
+	 * @return HttpClientResponse
 	 * @throws WebAPIException
 	 */
 	public static HttpClientResponse get(String url, Map<String, Object> params, Map<String, Object> headers, boolean isJsonRequest) throws WebAPIException {
@@ -384,11 +392,11 @@ public class HttpClientUtil {
 
 	/**
 	 * HTTPS GET
-	 * @param url
-	 * @param params
-	 * @param headers
-	 * @param searchParam
-	 * @return
+	 * @param url String
+	 * @param params Map
+	 * @param headers Map
+	 * @param searchParam List
+	 * @return HttpClientResponse
 	 * @throws WebAPIException
 	 */
 	public static HttpClientResponse get(String url, Map<String, Object> params, Map<String, Object> headers, Map<String, List<Object>> searchParam) throws WebAPIException {
@@ -397,13 +405,13 @@ public class HttpClientUtil {
 
 	/**
 	 * PUT 설정 반환
-	 * @param url
-	 * @param params
-	 * @param headers
-	 * @param encoding
-	 * @return
+	 * @param url String
+	 * @param params Map
+	 * @param headers Map
+	 * @param encoding String
+	 * @return HttpPut
 	 */
-	public static HttpPut initPut(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, boolean isJsonRequest) {
+	private static HttpPut initPut(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, boolean isJsonRequest) {
 		logger.debug("method : [put]");
 		HttpPut httpPut = null;
 		try {
@@ -411,10 +419,8 @@ public class HttpClientUtil {
 
 			// 지정된 헤더 삽입 정보가 있는 경우 추가
 			if(headers != null && headers.size() > 0) {
-				Iterator<String> keys = headers.keySet().iterator();
-				while (keys.hasNext()) {
-					String key = keys.next();
-					httpPut.addHeader(key, headers.get(key).toString());
+				for (Map.Entry<String, Object> entry : headers.entrySet()) {
+					httpPut.addHeader(entry.getKey(), entry.getValue().toString());
 				}
 			}
 			logger.debug("PUT:" + httpPut.getURI());
@@ -437,11 +443,11 @@ public class HttpClientUtil {
 
 	/**
 	 * HTTPS PUT
-	 * @param url
-	 * @param params
-	 * @param headers
-	 * @param encoding
-	 * @return
+	 * @param url String
+	 * @param params Map
+	 * @param headers Map
+	 * @param encoding String
+	 * @return HttpClientResponse
 	 * @throws WebAPIException
 	 */
 	public static HttpClientResponse put(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, boolean isJsonRequest) throws WebAPIException {
@@ -460,6 +466,7 @@ public class HttpClientUtil {
 			result = getHttpClientResponse(response);
 			return result;
 		} catch (WebAPIException wae) {
+			logger.error("PUT:{}", url);
 			throw wae;
 		} finally {
 			if(httpclient != null) {
@@ -481,10 +488,10 @@ public class HttpClientUtil {
 
 	/**
 	 * HTTPS PUT
-	 * @param url
-	 * @param params
-	 * @param headers
-	 * @return
+	 * @param url String
+	 * @param params Map
+	 * @param headers Map
+	 * @return HttpClientResponse
 	 * @throws WebAPIException
 	 */
 	public static HttpClientResponse put(String url, Map<String, Object> params, Map<String, Object> headers, boolean isJsonRequest) throws WebAPIException {
@@ -493,11 +500,11 @@ public class HttpClientUtil {
 
 	/**
 	 * PATCH 설정 반환
-	 * @param url
-	 * @param params
-	 * @param headers
-	 * @param encoding
-	 * @return
+	 * @param url String
+	 * @param params Map
+	 * @param headers Map
+	 * @param encoding boolean
+	 * @return HttpClientResponse
 	 */
 	public static HttpPatch initPatch(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, boolean isJsonRequest) {
 		logger.debug("method : [patch]");
@@ -507,10 +514,8 @@ public class HttpClientUtil {
 
 			// 지정된 헤더 삽입 정보가 있는 경우 추가
 			if(headers != null && headers.size() > 0) {
-				Iterator<String> keys = headers.keySet().iterator();
-				while (keys.hasNext()) {
-					String key = keys.next();
-					httpPatch.addHeader(key, headers.get(key).toString());
+				for (Map.Entry<String, Object> entry : headers.entrySet()) {
+					httpPatch.addHeader(entry.getKey(), entry.getValue().toString());
 				}
 			}
 			logger.debug("PATCH:" + httpPatch.getURI());
@@ -533,11 +538,11 @@ public class HttpClientUtil {
 
 	/**
 	 * HTTPS PATCH
-	 * @param url
-	 * @param params
-	 * @param headers
-	 * @param encoding
-	 * @return
+	 * @param url String
+	 * @param params Map
+	 * @param headers Map
+	 * @param encoding boolean
+	 * @return HttpClientResponse
 	 * @throws WebAPIException
 	 */
 	public static HttpClientResponse patch(String url, Map<String, Object> params, Map<String, Object> headers, String encoding, boolean isJsonRequest) throws WebAPIException {
@@ -556,6 +561,7 @@ public class HttpClientUtil {
 			result = getHttpClientResponse(response);
 			return result;
 		} catch (WebAPIException wae) {
+			logger.error("PATCH:{}", url);
 			throw wae;
 		} finally {
 			if(httpclient != null) {
@@ -577,10 +583,10 @@ public class HttpClientUtil {
 
 	/**
 	 * HTTPS PATCH
-	 * @param url
-	 * @param params
-	 * @param headers
-	 * @return
+	 * @param url String
+	 * @param params Map
+	 * @param headers Map
+	 * @return HttpClientResponse
 	 * @throws WebAPIException
 	 */
 	public static HttpClientResponse patch(String url, Map<String, Object> params, Map<String, Object> headers, boolean isJsonRequest) throws WebAPIException {
@@ -593,10 +599,8 @@ public class HttpClientUtil {
 			delete = new HttpDelete(url);
 			// 지정된 헤더 삽입 정보가 있는 경우 추가
 			if(headers != null && headers.size() > 0) {
-				Iterator<String> keys = headers.keySet().iterator();
-				while (keys.hasNext()) {
-					String key = keys.next();
-					delete.addHeader(key, headers.get(key).toString());
+				for (Map.Entry<String, Object> entry : headers.entrySet()) {
+					delete.addHeader(entry.getKey(), entry.getValue().toString());
 				}
 			}
 			logger.debug("DELETE:" + delete.getURI());
@@ -622,6 +626,7 @@ public class HttpClientUtil {
 			result = getHttpClientResponse(response);
 			return result;
 		} catch (WebAPIException wae) {
+			logger.error("DELETE:{}", url);
 			throw wae;
 		} finally {
 			if(httpclient != null) {
@@ -642,15 +647,14 @@ public class HttpClientUtil {
 	}
 	/**
 	 * Convert Parameter Map to List
-	 * @param params
-	 * @return
+	 * @param params Map<String, Object>
+	 * @return List<NameValuePair>
 	 */
-	public static List<NameValuePair> convertParam(Map<String, Object> params) {
+	private static List<NameValuePair> convertParam(Map<String, Object> params) {
 		List<NameValuePair> paramList = new ArrayList<>();
 		if (params != null && params.size() > 0) {
-			Iterator<String> keys = params.keySet().iterator();
-			while (keys.hasNext()) {
-				String key = keys.next();
+			Set<String> keys = params.keySet();
+			for (String key : keys) {
 				paramList.add(new BasicNameValuePair(key, params.get(key).toString()));
 			}
 		}
@@ -658,18 +662,16 @@ public class HttpClientUtil {
 	}
 	/**
 	 * Convert Parameter Map to List
-	 * @param params
-	 * @return
+	 * @param params Map<String, List<Object>>
+	 * @return List<NameValuePair>
 	 */
 	public static List<NameValuePair> convertSearchParam(Map<String, List<Object>> params) {
 		List<NameValuePair> paramList = new ArrayList<>();
 		if (params != null && params.size() > 0) {
-			Iterator<String> keys = params.keySet().iterator();
-			while (keys.hasNext()) {
-				String key = keys.next();
-				List<Object> value = params.get(key);
-				for(Object obj : value) {
-					paramList.add(new BasicNameValuePair(key, obj.toString()));
+			for (Map.Entry<String, List<Object>> entry : params.entrySet()) {
+				List<Object> value = entry.getValue();
+				for (Object obj : value) {
+					paramList.add(new BasicNameValuePair(entry.getKey(), obj.toString()));
 				}
 			}
 		}
@@ -678,19 +680,17 @@ public class HttpClientUtil {
 
 	/**
 	 * 응답 결과 문자열로 변환
-	 * @param content
-	 * @return
+	 * @param content InputStream
+	 * @return String
 	 */
-	public static String convertResponseContent(InputStream content) {
+	private static String convertResponseContent(InputStream content) {
 		if (content == null) return null;
-		try {
-			BufferedReader rd = new BufferedReader(new InputStreamReader(content));
+		try (BufferedReader rd = new BufferedReader(new InputStreamReader(content))){
 			String line;
 			StringBuilder sb = new StringBuilder();
 			while ((line = rd.readLine()) != null) {
 				sb.append(line);
 			}
-			rd.close();
 			return sb.toString();
 		} catch (Exception e) {
 			logger.error(e.getMessage());

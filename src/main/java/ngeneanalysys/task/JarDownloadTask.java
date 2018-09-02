@@ -4,6 +4,7 @@ import javafx.concurrent.Task;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.AnalysisDetailReportController;
 import ngeneanalysys.controller.AnalysisDetailReportGermlineController;
+import ngeneanalysys.controller.AnalysisDetailTSTRNAReportController;
 import ngeneanalysys.model.ReportComponent;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
@@ -34,6 +35,8 @@ public class JarDownloadTask extends Task {
     /** 컨트롤러 클래스 */
     private AnalysisDetailReportController controller;
 
+    private AnalysisDetailTSTRNAReportController tstrnaReportController;
+
     private AnalysisDetailReportGermlineController analysisDetailReportGermlineController;
 
     private ReportComponent component;
@@ -53,17 +56,29 @@ public class JarDownloadTask extends Task {
         progressBoxId = "DOWNLOAD JAR";
     }
 
+    public JarDownloadTask(AnalysisDetailTSTRNAReportController controller, ReportComponent component) {
+        this.tstrnaReportController = controller;
+        this.component = component;
+        progressBoxId = "DOWNLOAD JAR";
+    }
+
     @Override
     protected Void call() throws Exception {
         if(component != null) {
             APIService apiService = APIService.getInstance();
-            apiService.setStage(controller.getMainController().getPrimaryStage());
+            if(controller != null) {
+                apiService.setStage(controller.getMainController().getPrimaryStage());
+            } else if(analysisDetailReportGermlineController != null) {
+                apiService.setStage(analysisDetailReportGermlineController.getMainController().getPrimaryStage());
+            } else {
+                apiService.setStage(tstrnaReportController.getMainController().getPrimaryStage());
+            }
 
             CloseableHttpClient httpclient = null;
             CloseableHttpResponse response = null;
 
 
-            String downloadUrl = "/admin/reportComponent/" + component.getId();
+            String downloadUrl = "/reportComponent/" + component.getId();
             //String path = CommonConstants.BASE_FULL_PATH  + File.separator + "fop" + File.separator + reportImage.getReportTemplateId() + File.separator + reportImage.getName();
             String path = CommonConstants.BASE_FULL_PATH  + File.separator + "word" + File.separator + component.getId() + File.separator + component.getName();
 
@@ -80,11 +95,9 @@ public class JarDownloadTask extends Task {
                 logger.debug("GET:" + get.getURI());
 
                 // 지정된 헤더 삽입 정보가 있는 경우 추가
-                if (headerMap != null && headerMap.size() > 0) {
-                    Iterator<String> keys = headerMap.keySet().iterator();
-                    while (keys.hasNext()) {
-                        String key = keys.next();
-                        get.setHeader(key, headerMap.get(key).toString());
+                if(headerMap != null && headerMap.size() > 0) {
+                    for (Map.Entry<String, Object> entry : headerMap.entrySet()) {
+                        get.setHeader(entry.getKey(), entry.getValue().toString());
                     }
                 }
 
@@ -143,7 +156,11 @@ public class JarDownloadTask extends Task {
      */
     @Override
     protected void failed() {
-        controller.getMainController().removeProgressTaskItemById(progressBoxId);
+        if(controller != null) {
+            controller.getMainController().removeProgressTaskItemById(progressBoxId);
+        } else {
+            analysisDetailReportGermlineController.getMainController().removeProgressTaskItemById(progressBoxId);
+        }
     }
 
     /**
@@ -151,7 +168,10 @@ public class JarDownloadTask extends Task {
      */
     @Override
     protected void succeeded() {
-        controller.getMainController().removeProgressTaskItemById(progressBoxId);
-
+        if(controller != null) {
+            controller.getMainController().removeProgressTaskItemById(progressBoxId);
+        } else {
+            analysisDetailReportGermlineController.getMainController().removeProgressTaskItemById(progressBoxId);
+        }
     }
 }

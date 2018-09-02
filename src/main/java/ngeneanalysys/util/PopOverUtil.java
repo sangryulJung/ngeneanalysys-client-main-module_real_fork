@@ -1,8 +1,10 @@
 package ngeneanalysys.util;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.PopOver;
@@ -20,6 +22,45 @@ import java.util.regex.Pattern;
 public class PopOverUtil {
 
     private PopOverUtil() { throw new IllegalAccessError("PopOverUtil class"); }
+
+    private static HBox getTextItemBox(String title) {
+        HBox hBox = new HBox();
+        Label label = new Label(title.replace(":", " : "));
+        label.setStyle("-fx-text-fill : black;");
+        hBox.getChildren().add(label);
+        return hBox;
+    }
+
+    public static void openFalsePopOver(Label label, String text) {
+
+        VBox box = new VBox();
+        box.setStyle("-fx-padding:10;");
+        if(org.apache.commons.lang3.StringUtils.isEmpty(text) || "NONE".equals(text)) {
+            box.setAlignment(Pos.CENTER);
+            Label emptyLabel = new Label("< Empty Warning Reason >");
+            box.getChildren().add(emptyLabel);
+        } else {
+            box.setAlignment(Pos.BOTTOM_LEFT);
+            String[] items = text.split(",");
+            for(String item : items) {
+                HBox hbox = getTextItemBox(item);
+                box.getChildren().add(hbox);
+            }
+        }
+
+        label.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            PopOver popOver = new PopOver();
+            popOver.setArrowLocation(PopOver.ArrowLocation.LEFT_TOP);
+            popOver.setHeaderAlwaysVisible(true);
+            popOver.setAutoHide(true);
+            popOver.setAutoFix(true);
+            popOver.setDetachable(true);
+            popOver.setArrowSize(15);
+            popOver.setArrowIndent(30);
+            popOver.setContentNode(box);
+            popOver.show(label);
+        });
+    }
 
     @SuppressWarnings("unchecked")
     public static void openACMGPopOver(Label label, Map<String, Object> acmg) {
@@ -100,7 +141,7 @@ public class PopOverUtil {
             box.getChildren().add(descLabel);
 
             String massage = role.containsKey("message") ? (String)role.get("message") : null;
-            if(!StringUtils.isEmpty(massage)) {
+            if(StringUtils.isNotEmpty(massage)) {
                 Label msgLabel = new Label();
                 msgLabel.setWrapText(true);
                 msgLabel.setText("("+massage+")");
@@ -112,6 +153,39 @@ public class PopOverUtil {
 
         popOver.setContentNode(scrollPane);
         popOver.show(label, 10);
+    }
+
+    public static void openQCPopOver(Label label, String value) {
+        if(StringUtils.isEmpty(value)) return;
+        PopOver popOver = new PopOver();
+        popOver.setArrowLocation(PopOver.ArrowLocation.BOTTOM_CENTER);
+        popOver.setHeaderAlwaysVisible(true);
+        popOver.setAutoHide(true);
+        popOver.setAutoFix(true);
+        popOver.setDetachable(true);
+        popOver.setArrowSize(15);
+        popOver.setMaxSize(200, 80);
+        popOver.setPrefSize(200, 80);
+        popOver.setMinSize(200, 80);
+
+        VBox box = new VBox();
+        box.setMinWidth(200);
+        box.setPrefWidth(200);
+        box.setMaxWidth(200);
+
+        Label contents = new Label();
+        contents.setPadding(new Insets(0, 0, 0, 10));
+        contents.setAlignment(Pos.TOP_LEFT);
+        contents.setPrefHeight(80);
+        contents.setPrefWidth(200);
+        contents.setWrapText(true);
+
+        contents.setText(value);
+
+        box.getChildren().add(contents);
+
+        popOver.setContentNode(box);
+        popOver.show(label, 0);
     }
 
     public static void openFilterPopOver(Label label, List<Object> list) {
@@ -188,11 +262,21 @@ public class PopOverUtil {
     }
 
     private static String setFeqTextField(String option) {
-        return "≥ " + option.substring(option.indexOf(":") + 1);
+        String operator = "";
+        if(option.contains("gte:")) {
+            operator = "≥ ";
+        } else if(option.contains("lte:")) {
+            operator = "≤ ";
+        } else if(option.contains("gt:")) {
+            operator = "> ";
+        } else if(option.contains("lt:")) {
+            operator = "< ";
+        }
+        return operator + option.substring(option.indexOf(":") + 1);
     }
 
     private static void setKeyValue(String key, String value, VBox box) {
-        if(key.equalsIgnoreCase("swTier") || key.equalsIgnoreCase("swPathogenicity")) {
+        if(key.equalsIgnoreCase("Tier") || key.equalsIgnoreCase("Pathogenicity")) {
             createHBox("Prediction", value, box);
         } else if(key.equalsIgnoreCase("expertTier")) {
             createHBox("Tier", value, box);
@@ -210,6 +294,17 @@ public class PopOverUtil {
             createHBox(key, alleSet(value), box);
         } else if(key.equalsIgnoreCase("variantType")) {
             String keyValue = "Variant Type";
+            if (value.equals("snp") || value.equals("snv")) {
+                value = "SNV";
+            }else if(value.equals("ins")) {
+                value = "Ins";
+            }else if(value.equals("del")) {
+                value = "Del";
+            }else if(value.equals("complex")) {
+                value = "Complex";
+            }else if(value.equals("mnp")) {
+                value = "MNP";
+            }
             createHBox(keyValue, value, box);
             /*if(value.equalsIgnoreCase("snp")) {
                 createHBox(keyValue, "snv", box);
@@ -244,26 +339,30 @@ public class PopOverUtil {
             createHBox("kOHBRA",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("exac")) {
             createHBox("ExAC",setFeqTextField(value), box);
-        }else if(key.equalsIgnoreCase("genomADall")) {
-            createHBox("genomAD All",setFeqTextField(value), box);
-        }else if(key.equalsIgnoreCase("genomADadmixedAmerican")) {
-            createHBox("genomAD Admixed American",setFeqTextField(value), box);
-        }else if(key.equalsIgnoreCase("genomADafricanAfricanAmerican")) {
-            createHBox("genomAD African African American",setFeqTextField(value), box);
-        }else if(key.equalsIgnoreCase("genomADashkenaziJewish")) {
-            createHBox("genomAD Ashkenazi Jewish",setFeqTextField(value), box);
-        }else if(key.equalsIgnoreCase("genomADeastAsian")) {
-            createHBox("genomAD East Asian",setFeqTextField(value), box);
-        }else if(key.equalsIgnoreCase("genomADfinnish")) {
-            createHBox("genomAD Finnish",setFeqTextField(value), box);
-        }else if(key.equalsIgnoreCase("genomADnonFinnishEuropean")) {
-            createHBox("genomAD Non Finnish European",setFeqTextField(value), box);
-        }else if(key.equalsIgnoreCase("genomADothers")) {
-            createHBox("genomAD Others",setFeqTextField(value), box);
-        }else if(key.equalsIgnoreCase("genomADsouthAsian")) {
-            createHBox("genomAD SouthAsian",setFeqTextField(value), box);
-        } else if(key.equalsIgnoreCase("cosmicOccurrence")) {
+        }else if(key.equalsIgnoreCase("gnomADall")) {
+            createHBox("gnomAD All",setFeqTextField(value), box);
+        }else if(key.equalsIgnoreCase("gnomADadmixedAmerican")) {
+            createHBox("gnomAD Admixed American",setFeqTextField(value), box);
+        }else if(key.equalsIgnoreCase("gnomADafricanAfricanAmerican")) {
+            createHBox("gnomAD African African American",setFeqTextField(value), box);
+        }else if(key.equalsIgnoreCase("gnomADeastAsian")) {
+            createHBox("gnomAD East Asian",setFeqTextField(value), box);
+        }else if(key.equalsIgnoreCase("gnomADfinnish")) {
+            createHBox("gnomAD Finnish",setFeqTextField(value), box);
+        }else if(key.equalsIgnoreCase("gnomADnonFinnishEuropean")) {
+            createHBox("gnomAD Non Finnish European",setFeqTextField(value), box);
+        }else if(key.equalsIgnoreCase("gnomADothers")) {
+            createHBox("gnomAD Others",setFeqTextField(value), box);
+        }else if(key.equalsIgnoreCase("gnomADsouthAsian")) {
+            createHBox("gnomAD SouthAsian",setFeqTextField(value), box);
+        }else if(key.equalsIgnoreCase("cosmicOccurrence")) {
             createHBox("cosmic Occurrence", value.replaceAll("_", " "), box);
+        }else if(key.equalsIgnoreCase("lowConfidence")) {
+            createHBox("Low Confidence", value, box);
+        }else if(key.equalsIgnoreCase("readDepth")) {
+            createHBox("Depth", alleSet(value), box);
+        }else if(key.equalsIgnoreCase("altReadNum")) {
+            createHBox("Alt Count",alleSet(value), box);
         }
     }
 

@@ -15,20 +15,21 @@
 <?import javafx.scene.shape.Polyline?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="1040.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="256.0" prefWidth="750.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailClinicalSignificantController">
+<GridPane alignment="CENTER_RIGHT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="256.0" prefWidth="750.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailClinicalSignificantController">
   <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="320.0" minWidth="-Infinity" prefWidth="254.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="390.0" minWidth="-Infinity" prefWidth="260.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="340.0" minWidth="-Infinity" prefWidth="236.0" />
+      <ColumnConstraints minWidth="-Infinity" />
+    <ColumnConstraints minWidth="-Infinity" />
+    <ColumnConstraints minWidth="-Infinity" />
+      <ColumnConstraints hgrow="ALWAYS" minWidth="-Infinity" />
   </columnConstraints>
   <rowConstraints>
-      <RowConstraints maxHeight="124.0" minHeight="10.0" prefHeight="47.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="235.0" minHeight="10.0" prefHeight="209.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="47.0" minHeight="10.0" prefHeight="47.0" vgrow="SOMETIMES" />
+    <RowConstraints minHeight="10.0" prefHeight="209.0" vgrow="ALWAYS" />
   </rowConstraints>
    <children>
-      <VBox fx:id="clinicalSignificant" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="191.0" prefWidth="256.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <VBox fx:id="clinicalSignificant" alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="191.0" prefWidth="256.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
-            <HBox fx:id="pathogenicityPredictionHBox" maxHeight="36.0" prefHeight="36.0" prefWidth="291.0" styleClass="clinical_significant_pathogenicity_hbox">
+            <HBox fx:id="pathogenicityPredictionHBox" fillHeight="false" maxHeight="36.0" prefHeight="36.0" prefWidth="291.0" styleClass="clinical_significant_pathogenicity_hbox">
                <children>
                   <Label fx:id="clinicalSignificantPathogenicityPredictionLabel" styleClass="clinical_significant_pathogenicity_label" text="PREDICTION" />
                   <Label styleClass="prediction_none" text="P" />
@@ -44,7 +45,7 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </HBox>
-            <HBox fx:id="pathogenicityBicHBox" prefHeight="33.0" prefWidth="260.0" styleClass="clinical_significant_pathogenicity_hbox">
+            <HBox fx:id="pathogenicityBicHBox" fillHeight="false" prefHeight="33.0" prefWidth="260.0" styleClass="clinical_significant_pathogenicity_hbox">
                <children>
                   <Label fx:id="clinicalSignificantPathogenicityBicLabel" styleClass="clinical_significant_pathogenicity_label" text="BIC" />
                   <Label styleClass="prediction_none" text="P" />
@@ -60,7 +61,7 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </HBox>
-            <HBox fx:id="pathogenicityClinVarHBox" prefHeight="33.0" prefWidth="260.0" styleClass="clinical_significant_pathogenicity_hbox">
+            <HBox fx:id="pathogenicityClinVarHBox" fillHeight="false" prefHeight="33.0" prefWidth="260.0" styleClass="clinical_significant_pathogenicity_hbox">
                <children>
                   <Label fx:id="clinicalSignificantPathogenicityClinVarLabel" styleClass="clinical_significant_pathogenicity_label" text="CLINVAR" />
                   <Label styleClass="prediction_none" text="P" />
@@ -73,7 +74,7 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </HBox>
-            <HBox fx:id="pathogenicityEnigmaHBox" prefHeight="33.0" prefWidth="260.0" styleClass="clinical_significant_pathogenicity_hbox">
+            <HBox fx:id="pathogenicityEnigmaHBox" fillHeight="false" prefHeight="33.0" prefWidth="260.0" styleClass="clinical_significant_pathogenicity_hbox">
                <children>
                   <Label fx:id="clinicalSignificantPathogenicityEnigmaLabel" styleClass="clinical_significant_pathogenicity_label" text="ENIGMA" />
                   <Label styleClass="prediction_none" text="P" />
@@ -83,7 +84,13 @@
                   <Label styleClass="prediction_none" text="B" />
                </children>
             </HBox>
-         </children></VBox>
+         </children>
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+         <padding>
+            <Insets top="10.0" />
+         </padding></VBox>
       <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="179.0" prefWidth="250.0" visible="false" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="1">
          <children>
             <VBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="200.0">
@@ -335,18 +342,22 @@
             </VBox>
          </children>
       </HBox>
-      <HBox alignment="CENTER_RIGHT" prefHeight="47.0" prefWidth="193.0" GridPane.columnIndex="2">
+      <HBox alignment="CENTER_LEFT" prefHeight="47.0" prefWidth="193.0" GridPane.columnIndex="2">
          <children>
-            <CheckBox fx:id="addToGermlineReportCheckBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="47.0" text="Add to Report" />
+            <CheckBox fx:id="addToGermlineReportCheckBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="47.0" text="Add to Report">
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin></CheckBox>
          </children>
       </HBox>
+      <VBox fx:id="acmgVBox" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
    </children>
    <opaqueInsets>
       <Insets />
    </opaqueInsets>
    <stylesheets>
       <URL value="@../../css/common.css" />
-      <URL value="@../../css/variantDetail.css" />
       <URL value="@../../css/variants.css" />
+      <URL value="@../../css/variantDetail.css" />
    </stylesheets>
 </GridPane>

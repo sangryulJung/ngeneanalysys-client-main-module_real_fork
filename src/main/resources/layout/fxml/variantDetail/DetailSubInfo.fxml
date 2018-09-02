@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="mainVBox" minWidth="350.0" prefHeight="256.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../../css/variantDetail.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.DetailSubInfoController">
+<VBox fx:id="mainVBox" alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" spacing="10.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../../css/variantDetail.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.DetailSubInfoController">
    <children>
-      <HBox alignment="CENTER" prefHeight="23.0" prefWidth="200.0" spacing="10.0">
-         <children>
-            <Label styleClass="title1" text="External Links" />
-            <ComboBox fx:id="externalLinkComboBox" onAction="#showLinkEvent" prefWidth="120.0" promptText="Please select...">
-               <HBox.margin>
-                  <Insets right="10.0" />
-               </HBox.margin></ComboBox>
-            <Label onMouseClicked="#showIGV" style="-fx-cursor: hand;" styleClass="title1" text="View In IGV" />
-         </children>
-         <VBox.margin>
-            <Insets />
-         </VBox.margin>
-      </HBox>
+      <Label styleClass="title1" text="External Links" />
+      <ScrollPane VBox.vgrow="ALWAYS">
+         <content>
+            <GridPane fx:id="dbLinkGridPane" hgap="5.0" maxWidth="1.7976931348623157E308" minWidth="30.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="150.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="15.0" minHeight="15.0" prefHeight="15.0" />
+               </rowConstraints>
+               <children>
+                  <Label styleClass="title1" text="IGV" />
+                  <Label onMouseClicked="#showIGV" style="-fx-cursor: hand;" styleClass="title1" text="View" GridPane.columnIndex="1" />
+               </children>
+            </GridPane>
+         </content>
+      </ScrollPane>
    </children>
 </VBox>

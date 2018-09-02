@@ -5,7 +5,9 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import ngeneanalysys.animaition.ClinicalSignificantTimer;
+import ngeneanalysys.code.enums.AnalysisTypeCode;
 import ngeneanalysys.controller.extend.SubPaneController;
+import ngeneanalysys.model.Panel;
 import ngeneanalysys.model.SnpInDelExtraInfo;
 import ngeneanalysys.util.JsonUtil;
 import ngeneanalysys.util.LoggerUtil;
@@ -33,8 +35,14 @@ public class InSilicoPredictionsController extends SubPaneController {
     @FXML
     private Canvas mtCanvas;
 
+    private Panel panel;
+
     @Override
     public void show(Parent root) throws IOException {
+        panel = (Panel)paramMap.get("panel");
+        if(panel != null && panel.getAnalysisType().equalsIgnoreCase(AnalysisTypeCode.SOMATIC.getDescription())) {
+          polyphenCanvas.setVisible(false);
+        }
         showInSilicoPredictions();
     }
 
@@ -122,7 +130,7 @@ public class InSilicoPredictionsController extends SubPaneController {
                 siftText = (String)siftMap.get("text");
             }
         }
-        // POLYPHEN2
+        // metaSVM
         if (polyphenMap != null && !polyphenMap.isEmpty()) {
             if (polyphenMap.containsKey("score")) {
                 polyphenScore = (String)polyphenMap.get("score");
@@ -131,11 +139,11 @@ public class InSilicoPredictionsController extends SubPaneController {
                     try {
                         polyphenValue = Double.valueOf(polyphenScore);
                     } catch (NumberFormatException e) {
-                        logger.warn("polyphen score value is invalid " + polyphenScore);
+                        logger.warn("metaSVM score value is invalid " + polyphenScore);
                         polyphenValue = -1.0;
                     }
                 } else {
-                    logger.warn("polyphen value is null");
+                    logger.warn("metaSVM value is null");
                     polyphenValue = -1.0;
                 }
             } else if (polyphenMap.containsKey("radar")) {
@@ -143,7 +151,7 @@ public class InSilicoPredictionsController extends SubPaneController {
                 // clinicalSignificantPathogenicitySiftLabel.setTooltip(new
                 // Tooltip((String) siftMap.get("radar")));
             } else {
-                logger.warn("polyphen score or radar value was not found.");
+                logger.warn("metaSVM score or radar value was not found.");
                 polyphenValue = -1.0;
             }
             if (polyphenMap.containsKey("text") && polyphenMap.get("text") != null) {

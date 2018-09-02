@@ -7,55 +7,40 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<?import java.lang.String?>
-<?import java.net.URL?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<GridPane fx:id="mainGridPane" maxHeight="-Infinity" prefHeight="700.0" prefWidth="1280.0" style="-fx-background-color: white;" styleClass="layoutGrid" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.MainController">
+<GridPane fx:id="mainGridPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="700.0" minWidth="1280.0" prefHeight="700.0" prefWidth="1280.0" style="-fx-background-color: white;" styleClass="layoutGrid" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.MainController">
    <rowConstraints>
-      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" vgrow="ALWAYS" />
-      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="65.0" minHeight="65.0" prefHeight="65.0" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="ALWAYS" />
       <RowConstraints minHeight="-Infinity" prefHeight="555.0" vgrow="ALWAYS" />
-      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" vgrow="NEVER" />
+      <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
    </rowConstraints>
    <columnConstraints>
-      <ColumnConstraints maxWidth="40.0" minWidth="10.0" prefWidth="40.0" />
-      <ColumnConstraints maxWidth="1225.0" minWidth="10.0" prefWidth="600.0" />
-      <ColumnConstraints maxWidth="-Infinity" minWidth="10.0" prefWidth="600.0" />
-      <ColumnConstraints maxWidth="-Infinity" minWidth="-Infinity" prefWidth="40.0" />
+      <ColumnConstraints maxWidth="40.0" minWidth="36.0" prefWidth="40.0" />
+      <ColumnConstraints hgrow="ALWAYS" minWidth="-Infinity" prefWidth="600.0" />
+      <ColumnConstraints hgrow="ALWAYS" minWidth="-Infinity" prefWidth="600.0" />
+      <ColumnConstraints maxWidth="40.0" minWidth="36.0" prefWidth="40.0" />
    </columnConstraints>
    <children>
-      <VBox fx:id="mainBackground" prefHeight="200.0" prefWidth="100.0" GridPane.columnSpan="4" GridPane.rowIndex="1" GridPane.rowSpan="3" />
-      <VBox fx:id="mainHeader" prefHeight="200.0" prefWidth="1280.0" GridPane.columnIndex="1" GridPane.columnSpan="2">
+      <VBox fx:id="mainBackground" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="635.0" prefWidth="2280.0" GridPane.columnSpan="4" GridPane.rowIndex="1" GridPane.rowSpan="3" />
+      <VBox fx:id="mainHeader" maxHeight="65.0" maxWidth="1.7976931348623157E308" prefHeight="65.0" prefWidth="1200.0" GridPane.columnIndex="1" GridPane.columnSpan="2">
          <children>
-            <HBox id="topMenuArea" alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="900.0">
+            <HBox id="topMenuArea" fx:id="topTabArea" alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="1200.0">
                <children>
                   <HBox alignment="TOP_RIGHT" minWidth="160.0" prefHeight="40.0" prefWidth="300.0" styleClass="bg_main_header_logo" />
-                  <HBox fx:id="topMenuArea1" spacing="20.0" HBox.hgrow="ALWAYS">
+                  <HBox fx:id="topMenuArea1" prefHeight="60.0" prefWidth="657.0" spacing="20.0" HBox.hgrow="ALWAYS">
                      <HBox.margin>
                         <Insets right="5.0" />
                      </HBox.margin>
                      <children>
-                        <Label fx:id="dashBoardBtn" maxHeight="1.7976931348623157E308" style="-fx-font-family: Noto Sans KR Bold;" text="DASHBOARD" />
-                        <Label fx:id="resultsBtn" maxHeight="1.7976931348623157E308" style="-fx-font-family: Noto Sans KR Bold;" text="RESULTS" />
+                        <Label fx:id="dashBoardBtn" maxHeight="1.7976931348623157E308" styleClass="bold" text="DASHBOARD" />
+                        <Label fx:id="resultsBtn" maxHeight="1.7976931348623157E308" styleClass="bold" text="RESULTS" />
                         <StackPane fx:id="sampleListStackPane" prefHeight="150.0" prefWidth="200.0">
                            <children>
-                              <Label fx:id="sampleListLabel" maxHeight="60.0" maxWidth="100.0" minHeight="60.0" minWidth="100.0" prefHeight="60.0" prefWidth="100.0" style="-fx-background-color: white; -fx-font-family: Noto Sans KR Bold;" text="SAMPLES" />
+                              <Label fx:id="sampleListLabel" maxHeight="60.0" maxWidth="100.0" minHeight="60.0" minWidth="100.0" prefHeight="60.0" prefWidth="100.0" style="-fx-background-color: white;" styleClass="bold" text="SAMPLES" />
                            </children>
                         </StackPane>
-                        <Label fx:id="managerBtn" maxHeight="1.7976931348623157E308" style="-fx-font-family: Noto Sans KR Bold;" text="MANAGER" visible="false" />
+                        <Label fx:id="managerBtn" maxHeight="1.7976931348623157E308" styleClass="bold" text="MANAGER" visible="false" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="238.0" styleClass="bg_main_header_right2" HBox.hgrow="NEVER">
@@ -97,7 +82,7 @@
             </HBox>
          </children>
       </VBox>
-      <BorderPane fx:id="mainFrame" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
+      <BorderPane fx:id="mainFrame" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="555.0" prefWidth="1200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
          <opaqueInsets>
             <Insets left="20.0" />
          </opaqueInsets></BorderPane>
@@ -126,7 +111,7 @@
       </HBox>
       <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
          <children>
-            <Label alignment="CENTER_RIGHT" prefHeight="40.0" style="-fx-font-family: Noto Sans KR Bold;" text="NGeneBio" textAlignment="RIGHT" textFill="WHITE">
+            <Label alignment="CENTER_RIGHT" prefHeight="40.0" text="NGeneBio" textAlignment="RIGHT" textFill="WHITE">
                <font>
                   <Font size="11.0" />
                </font>

@@ -7,8 +7,13 @@ package ngeneanalysys.code.enums;
  * @since 2016. 5. 24. 오전 10:31:15
  */
 public enum SampleSourceCode {
-	BLOOD("BLOOD"),
-	FFPE("FFPE");
+	BLOOD("Peripheral Blood"),
+	BLOODCRYO("Peripheral Blood (Cryo)"),
+	BONEMARROW("Bone marrow"),
+	BONEMARROWCRYO("Bone marrow (Cryo)"),
+	FFPE("FFPE"),
+	DNA("DNA"),
+	ETC("Etc");
 	
 	private String description;
 	
@@ -23,10 +28,8 @@ public enum SampleSourceCode {
 		return description;
 	}
 
-	/**
-	 * @param description the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
+	@Override
+	public String toString() {
+		return description;
 	}
 }

@@ -80,10 +80,10 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
     private void showVariantIdentification() {
         List<SnpInDelTranscript> transcriptDataList = (List<SnpInDelTranscript>) paramMap.get("snpInDelTranscripts");
 
-        String ref = variant.getSnpInDel().getGenomicCoordinate().getRefSequence();
-        String alt = variant.getSnpInDel().getGenomicCoordinate().getAltSequence();
-        String left22Bp = variant.getSnpInDel().getGenomicCoordinate().getLeftSequence();
-        String right22Bp = variant.getSnpInDel().getGenomicCoordinate().getRightSequence();
+        String ref = variant.getSnpInDel().getSnpInDelExpression().getRefSequence();
+        String alt = variant.getSnpInDel().getSnpInDelExpression().getAltSequence();
+        String left22Bp = variant.getSnpInDel().getSnpInDelExpression().getLeftSequence();
+        String right22Bp = variant.getSnpInDel().getSnpInDelExpression().getRightSequence();
         String genePositionStart = String.valueOf(variant.getSnpInDel().getGenomicCoordinate().getStartPosition());
         String transcriptAltType = variant.getSnpInDel().getSnpInDelExpression().getVariantType();
         String defaultTranscript = null;
@@ -105,7 +105,7 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
 
             // 콤보박스 Onchange 이벤트 바인딩
             transcriptComboBox.getSelectionModel().selectedIndexProperty().addListener((ov, oldIdx, newIdx) -> {
-                if(oldIdx != newIdx) {
+                if(!oldIdx.equals(newIdx)) {
                     Optional<SnpInDelTranscript> transcriptOptional = transcriptDataList.stream().filter(item ->
                             item.getTranscriptId().equals(transcriptComboBox.getItems().get((int)newIdx))).findFirst();
                     if(transcriptOptional.isPresent()) {
@@ -116,45 +116,26 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
                         String protein = (!StringUtils.isEmpty(transcript.getProtein())) ? transcript.getProtein() : "N/A";
                         String genomicDNA = (!StringUtils.isEmpty(transcript.getGenomicDna())) ? transcript.getGenomicDna() : "N/A";
 
-
                         logger.debug(String.format("variant identification choose '%s' option idx [%s]", transcriptName, newIdx));
                         List<Integer> textLength = new ArrayList<>();
-                        geneSymbolTextField.setText(geneSymbol); //Gene Symbol
-                        if(!StringUtils.isEmpty(geneSymbol)) {
-                            geneSymbolTextField.setTooltip(new Tooltip(geneSymbol));
-                            textLength.add(geneSymbol.length());
-                        }
-                        hgvspTextField.setText(protein); //Protein
-                        if(!StringUtils.isEmpty(protein)) {
-                            hgvspTextField.setTooltip(new Tooltip(protein));
-                            textLength.add(protein.length());
-                        }
-                        hgvscTextField.setText(codingDNA); //Coding DNA
-                        if(!StringUtils.isEmpty(codingDNA)) {
-                            hgvscTextField.setTooltip(new Tooltip(codingDNA));
-                            textLength.add(codingDNA.length());
-                        }
-                        grch37TextField.setText(genomicDNA); //Genomic DNA
-                        if(!StringUtils.isEmpty(genomicDNA)) {
-                            grch37TextField.setTooltip(new Tooltip(genomicDNA));
-                            textLength.add(genomicDNA.length());
-                        }
-                        int maxTextLength = 0;
+                        setTextField(geneSymbolTextField, geneSymbol, textLength);
+                        setTextField(hgvspTextField, protein, textLength);
+                        setTextField(hgvscTextField, codingDNA, textLength);
+                        setTextField(grch37TextField, genomicDNA, textLength);
                         Optional<Integer> maxTextLengthOptional = textLength.stream().max(Integer::compare);
-                        if(maxTextLengthOptional.isPresent()) {
-                            maxTextLength = maxTextLengthOptional.get();
-                        }
-                        logger.debug("max Length : " + maxTextLength);
+                        maxTextLengthOptional.ifPresent(value -> {
+                            if(value > 29) {
+                                transcriptDetailGrid.setPrefWidth(value * 9);
+                                geneSymbolTextField.setMinWidth(value * 9);
+                                hgvspTextField.setMinWidth(value * 9);
+                                hgvscTextField.setMinWidth(value * 9);
+                                grch37TextField.setMinWidth(value * 9);
+                                transcriptDetailScrollBox.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+                                transcriptDetailScrollBox.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+                            }
+                        });
 
-                        if(maxTextLength > 29) {
-                            transcriptDetailGrid.setPrefWidth(maxTextLength * 9);
-                            geneSymbolTextField.setMinWidth(maxTextLength * 9);
-                            hgvspTextField.setMinWidth(maxTextLength * 9);
-                            hgvscTextField.setMinWidth(maxTextLength * 9);
-                            grch37TextField.setMinWidth(maxTextLength * 9);
-                            transcriptDetailScrollBox.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-                            transcriptDetailScrollBox.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-                        }
+
                     }
                 }
             });
@@ -212,7 +193,12 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
         double textLength = (double)(displayLeft22Bp.length() + ref.length() + displayRight22Bp.length());
         logger.debug("text length : " + textLength);
 
-        if(textLength > 21) {
+
+        if(alt.length() > 21 && (textLength - displayLeft22Bp.length()) < alt.length()){
+            gridBox.setPrefWidth(alt.length() * 12);
+            sequenceCharsBox.setStyle("-fx-padding:-10 0 0 20;");
+            scrollBox.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        } else if(textLength > 31) {
             gridBox.setPrefWidth(textLength * 12);
             sequenceCharsBox.setStyle("-fx-padding:-10 0 0 20;");
             scrollBox.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
@@ -220,6 +206,14 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
 
         transcriptAltLabel.setText(alt);
         transcriptAltTypeLabel.setText(transcriptAltType);
+    }
+
+    public void setTextField(TextField textField, String text, List<Integer> textLength) {
+        textField.setText(text); //Gene Symbol
+        if(!StringUtils.isEmpty(text)) {
+            textField.setTooltip(new Tooltip(text));
+            textLength.add(text.length());
+        }
     }
 
     public int getTranscriptComboBoxSelectedIndex() {

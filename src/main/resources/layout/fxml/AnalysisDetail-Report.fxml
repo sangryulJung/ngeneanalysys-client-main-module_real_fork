@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<GridPane fx:id="mainGridPane" prefHeight="410.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailReportController">
+<GridPane fx:id="mainGridPane" prefHeight="410.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailReportController">
    <columnConstraints>
       <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" prefWidth="405.0" />
       <ColumnConstraints />
@@ -15,7 +27,7 @@
       <ColumnConstraints />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="370.0" valignment="BOTTOM" />
+      <RowConstraints minHeight="-Infinity" prefHeight="370.0" valignment="BOTTOM" vgrow="ALWAYS" />
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" valignment="BOTTOM" />
    </rowConstraints>
    <children>
@@ -51,13 +63,13 @@
             <Button layoutX="1155.0" layoutY="20.0" mnemonicParsing="false" onAction="#confirmPDFAsFinal" prefHeight="35.0" prefWidth="156.0" styleClass="btn_blue_sm" text="Confirm Final Report" />
          </children>
       </HBox>
-      <HBox maxWidth="1140.0" minWidth="1140.0" prefHeight="100.0" prefWidth="1140.0">
+      <HBox minWidth="1140.0" prefHeight="100.0" prefWidth="1140.0" GridPane.hgrow="ALWAYS">
          <children>
-            <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" maxHeight="370.0" minHeight="370.0" prefHeight="370.0" prefWidth="1137.0">
+            <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" minHeight="370.0" prefHeight="370.0" prefWidth="1137.0" HBox.hgrow="ALWAYS">
                <content>
-                  <Pane fx:id="mainContentsPane" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="370.0" prefWidth="1120.0">
+                  <Pane fx:id="mainContentsPane" minHeight="-Infinity" prefHeight="370.0" prefWidth="1120.0">
                      <children>
-                        <VBox fx:id="contentVBox" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="370.0" prefWidth="1120.0">
+                        <VBox fx:id="contentVBox" minHeight="-Infinity" prefHeight="370.0" prefWidth="1120.0">
                            <children>
                               <GridPane>
                                 <columnConstraints>
@@ -76,7 +88,7 @@
                                     <Insets top="5.0" />
                                  </VBox.margin>
                               </GridPane>
-                              <Label style="-fx-font-family: Noto Sans KR Bold;" text="DETECTED VARIANT">
+                              <Label  text="REPORTED VARIANT">
                                  <VBox.margin>
                                     <Insets top="5.0" />
                                  </VBox.margin>
@@ -85,10 +97,9 @@
                                     <String fx:value="font_gray" />
                                  </styleClass>
                               </Label>
-                              <TableView fx:id="variantsTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="1120.0" style="-fx-border-width: 0;" styleClass="txt_black">
+                              <TableView fx:id="variantsTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="1120.0" style="-fx-border-width: 0;" styleClass="txt_black" VBox.vgrow="ALWAYS">
                                 <columns>
-                                    <TableColumn fx:id="tierColumn" prefWidth="75.0" styleClass="txt_black" text="Prediction" />
-                                    <TableColumn fx:id="userTierColumn" prefWidth="75.0" styleClass="txt_black" text="Tier" />
+                                    <TableColumn fx:id="tierColumn" prefWidth="75.0" styleClass="txt_black" text="Tier" />
                                     <TableColumn fx:id="chrColumn" prefWidth="125.0" styleClass="txt_black" text="Chr" />
                                   <TableColumn fx:id="geneColumn" prefWidth="135.0" styleClass="txt_black" text="Gene" />
                                     <TableColumn fx:id="positionColumn" prefWidth="110.0" styleClass="txt_black" text="Position" />
@@ -98,7 +109,7 @@
                                     <TableColumn fx:id="alleleFrequencyColumn" prefWidth="75.0" styleClass="txt_black" text="VAF" />
                                 </columns>
                               </TableView>
-                              <Label fx:id="conclusions" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-font-family: Noto Sans KR Bold;" text="CONCLUSION">
+                              <Label fx:id="conclusions" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"  text="CONCLUSION">
                                  <VBox.margin>
                                     <Insets top="15.0" />
                                  </VBox.margin>
@@ -107,8 +118,8 @@
                                     <String fx:value="font_gray" />
                                  </styleClass>
                               </Label>
-                              <TextArea fx:id="conclusionsTextArea" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="73.0" style="-fx-font-family: Noto Sans KR Regular;" styleClass="txt_black" />
-                              <Label fx:id="extraFields" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-font-family: Noto Sans KR Regular;" text="REPORT EXTRA FIELDS" visible="false">
+                              <TextArea fx:id="conclusionsTextArea" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="73.0"  styleClass="txt_black" VBox.vgrow="ALWAYS" />
+                              <Label fx:id="extraFields" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"  text="REPORT EXTRA FIELDS" visible="false">
                                  
                                  <VBox.margin>
                                     <Insets top="15.0" />

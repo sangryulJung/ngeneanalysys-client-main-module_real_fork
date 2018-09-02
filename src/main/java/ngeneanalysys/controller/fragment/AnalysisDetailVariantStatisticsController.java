@@ -58,37 +58,37 @@ public class AnalysisDetailVariantStatisticsController extends SubPaneController
 
             AnimationTimer variantStatisticsRunTimer = new VariantStatisticsTimer(
                     canvasVariantStatisticsRun.getGraphicsContext2D(), variantFrequencyRun, "RUN",
-                    String.format("%.2f%%", variantFrequencyRun * 100.0), this.gaugeSpeed);
+                    String.format("%.2f%%\n(%s)", variantFrequencyRun * 100.0, variantFrequencyRunCount + "/" + variantFrequencyRunTotalCount), this.gaugeSpeed);
             AnimationTimer variantStatisticsPanelTimer = new VariantStatisticsTimer(
                     canvasVariantStatisticsPanel.getGraphicsContext2D(), variantFrequencyPanel, "PANEL",
-                    String.format("%.2f%%", variantFrequencyPanel * 100.0), this.gaugeSpeed);
+                    String.format("%.2f%%\n(%s)", variantFrequencyPanel * 100.0, variantFrequencyPanelCount + "/" + variantFrequencyPanelTotalCount), this.gaugeSpeed);
             AnimationTimer variantStatisticsGroupTimer = new VariantStatisticsTimer(
                     canvasVariantStatisticsGroup.getGraphicsContext2D(), variantFrequencyAccount, "GROUP",
-                    String.format("%.2f%%", variantFrequencyAccount * 100.0), this.gaugeSpeed);
+                    String.format("%.2f%%\n(%s)", variantFrequencyAccount * 100.0, variantFrequencyAccountCount + "/" + variantFrequencyAccountTotalCount), this.gaugeSpeed);
             variantStatisticsRunTimer.start();
             variantStatisticsPanelTimer.start();
             variantStatisticsGroupTimer.start();
-            AnimationTimer variantStatisticsRunTimer1 = new VariantStatisticsTimer(
-                    canvasVariantStatisticsRun.getGraphicsContext2D(), variantFrequencyRun, "RUN",
-                    variantFrequencyRunCount + "/" + variantFrequencyRunTotalCount, gaugeSpeed);
-            AnimationTimer variantStatisticsPanelTimer1 = new VariantStatisticsTimer(
-                    canvasVariantStatisticsPanel.getGraphicsContext2D(), variantFrequencyPanel, "PANEL",
-                    variantFrequencyPanelCount + "/" + variantFrequencyPanelTotalCount, gaugeSpeed);
-            AnimationTimer variantStatisticsGroupTimer1 = new VariantStatisticsTimer(
-                    canvasVariantStatisticsGroup.getGraphicsContext2D(), variantFrequencyAccount, "GROUP",
-                    variantFrequencyAccountCount + "/" + variantFrequencyAccountTotalCount, gaugeSpeed);
-            canvasVariantStatisticsRun.setOnMouseEntered(event ->
-                    variantStatisticsRunTimer1.start());
-            canvasVariantStatisticsRun.setOnMouseExited(event ->
-                    variantStatisticsRunTimer.start());
-            canvasVariantStatisticsPanel.setOnMouseEntered(event ->
-                    variantStatisticsPanelTimer1.start());
-            canvasVariantStatisticsPanel.setOnMouseExited(event ->
-                    variantStatisticsPanelTimer.start());
-            canvasVariantStatisticsGroup.setOnMouseEntered(event ->
-                    variantStatisticsGroupTimer1.start());
-            canvasVariantStatisticsGroup.setOnMouseExited(event ->
-                    variantStatisticsGroupTimer.start());
+//            AnimationTimer variantStatisticsRunTimer1 = new VariantStatisticsTimer(
+//                    canvasVariantStatisticsRun.getGraphicsContext2D(), variantFrequencyRun, "RUN",
+//                    variantFrequencyRunCount + "/" + variantFrequencyRunTotalCount, gaugeSpeed);
+//            AnimationTimer variantStatisticsPanelTimer1 = new VariantStatisticsTimer(
+//                    canvasVariantStatisticsPanel.getGraphicsContext2D(), variantFrequencyPanel, "PANEL",
+//                    variantFrequencyPanelCount + "/" + variantFrequencyPanelTotalCount, gaugeSpeed);
+//            AnimationTimer variantStatisticsGroupTimer1 = new VariantStatisticsTimer(
+//                    canvasVariantStatisticsGroup.getGraphicsContext2D(), variantFrequencyAccount, "GROUP",
+//                    variantFrequencyAccountCount + "/" + variantFrequencyAccountTotalCount, gaugeSpeed);
+//            canvasVariantStatisticsRun.setOnMouseEntered(event ->
+//                    variantStatisticsRunTimer1.start());
+//            canvasVariantStatisticsRun.setOnMouseExited(event ->
+//                    variantStatisticsRunTimer.start());
+//            canvasVariantStatisticsPanel.setOnMouseEntered(event ->
+//                    variantStatisticsPanelTimer1.start());
+//            canvasVariantStatisticsPanel.setOnMouseExited(event ->
+//                    variantStatisticsPanelTimer.start());
+//            canvasVariantStatisticsGroup.setOnMouseEntered(event ->
+//                    variantStatisticsGroupTimer1.start());
+//            canvasVariantStatisticsGroup.setOnMouseExited(event ->
+//                    variantStatisticsGroupTimer.start());
         }
     }
 }

@@ -58,7 +58,7 @@ public class AnalysisJobResultOverview {
 	 */
 	@SuppressWarnings("static-access")
 	public Button getQCIcon(String flag, String percentage, String title, String contents) {
-//		if(!StringUtils.isEmpty(flag) && !StringUtils.isEmpty(percentage)) {
+//		if(StringUtils.isNotEmpty(flag) && StringUtils.isNotEmpty(percentage)) {
 //			Button button = new Button();
 //			if("PASS".equals(flag.toUpperCase())) {
 //				button.getStyleClass().add("bullet_green");

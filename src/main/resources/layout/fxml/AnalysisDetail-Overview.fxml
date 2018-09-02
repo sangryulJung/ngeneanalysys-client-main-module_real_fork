@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -16,7 +22,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="experimentPastResultsWrapper" prefHeight="410.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailOverviewController">
+<GridPane fx:id="experimentPastResultsWrapper" prefHeight="410.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailOverviewController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" prefWidth="1140.0" />
    </columnConstraints>
@@ -24,7 +30,7 @@
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" vgrow="NEVER" />
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" vgrow="NEVER" />
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" valignment="TOP" vgrow="NEVER" />
-      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="135.0" valignment="TOP" vgrow="ALWAYS" />
+      <RowConstraints minHeight="-Infinity" prefHeight="135.0" valignment="TOP" vgrow="ALWAYS" />
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" valignment="BOTTOM" vgrow="NEVER" />
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="80.0" valignment="TOP" vgrow="NEVER" />
    </rowConstraints>
@@ -33,13 +39,14 @@
          <children>
             <HBox alignment="BOTTOM_LEFT" HBox.hgrow="ALWAYS">
                <children>
-                  <Label alignment="TOP_LEFT" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" prefWidth="1240.0" style="-fx-font-family: Noto Sans KR Bold;" text="DETECTED VARIANT SUMMARY">
+                  <Label alignment="TOP_LEFT" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" prefWidth="1240.0" text="DETECTED VARIANT SUMMARY">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
                      <styleClass>
                         <String fx:value="font_size_15" />
                         <String fx:value="font_gray" />
+                        <String fx:value="bold" />
                      </styleClass>
                   </Label>
                </children>
@@ -68,113 +75,26 @@
             <VBox alignment="CENTER_LEFT" prefHeight="75.0" prefWidth="1140.0">
                <children>
                   <GridPane fx:id="dataQCResultGridPane" prefWidth="1140.0">
-                     <columnConstraints>
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                     </columnConstraints>
                      <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
-                     <children>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;">
-                           <children>
-                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="80.0" text="Total Base" textFill="WHITE" />
-                              <Label styleClass="help_tooltip_white">
-                                 <tooltip>
-                                    <Tooltip fx:id="totalBaseTooltip" text="Empty Tooltip" />
-                                 </tooltip>
-                              </Label>
-                           </children>
-                        </HBox>
-                        <Label fx:id="totalBaseLabel" text="pass" GridPane.rowIndex="1" />
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;" GridPane.columnIndex="1">
-                           <children>
-                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="120.0" text="Q30 Trimmed Base" textFill="WHITE" />
-                              <Label styleClass="help_tooltip_white">
-                                 <tooltip>
-                                    <Tooltip fx:id="q30Tooltip" text="Empty Tooltip" />
-                                 </tooltip>
-                              </Label>
-                           </children>
-                        </HBox>
-                        <Label fx:id="q30Label" text="pass" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;" GridPane.columnIndex="2">
-                           <children>
-                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="90.0" text="Mapped Base" textFill="WHITE" />
-                              <Label styleClass="help_tooltip_white">
-                                 <tooltip>
-                                    <Tooltip fx:id="mappedBaseTooltip" text="Empty Tooltip" />
-                                 </tooltip>
-                              </Label>
-                           </children>
-                        </HBox>
-                        <Label fx:id="mappedLabel" text="pass" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;" GridPane.columnIndex="3">
-                           <children>
-                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="80.0" text="On Target" textFill="WHITE" />
-                              <Label styleClass="help_tooltip_white">
-                                 <tooltip>
-                                    <Tooltip fx:id="onTargetTooltip" text="Empty Tooltip" />
-                                 </tooltip>
-                              </Label>
-                           </children>
-                        </HBox>
-                        <Label fx:id="onTargetLabel" text="pass" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;" GridPane.columnIndex="4">
-                           <children>
-                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="120.0" text="On Target Coverage" textFill="WHITE" />
-                              <Label styleClass="help_tooltip_white">
-                                 <tooltip>
-                                    <Tooltip fx:id="onTargetCoverageTooltip" text="Empty Tooltip" />
-                                 </tooltip>
-                              </Label>
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;" GridPane.columnIndex="5">
-                           <children>
-                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="110.0" text="Duplicated Reads" textFill="WHITE" />
-                              <Label styleClass="help_tooltip_white">
-                                 <tooltip>
-                                    <Tooltip fx:id="duplicatedReadsTooltip" text="Empty Tooltip" />
-                                 </tooltip>
-                              </Label>
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #8f9fb9;" GridPane.columnIndex="6">
-                           <children>
-                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="90.0" text="ROI Coverage" textFill="WHITE" />
-                              <Label styleClass="help_tooltip_white">
-                                 <tooltip>
-                                    <Tooltip fx:id="roiCoverageTooltip" text="Empty Tooltip" />
-                                 </tooltip>
-                              </Label>
-                           </children>
-                        </HBox>
-                        <Label fx:id="onTargetCoverageLabel" text="pass" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                        <Label fx:id="duplicatedReadsLabel" text="pass" GridPane.columnIndex="5" GridPane.rowIndex="1" />
-                        <Label fx:id="roiCoverageLabel" text="pass" GridPane.columnIndex="6" GridPane.rowIndex="1" />
-                     </children>
                   </GridPane>
                </children>
             </VBox>
          </children>
       </HBox>
-      <Label alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="85.0" style="-fx-pref-height: 30; -fx-font-family: Noto Sans KR Bold;" text="QC MATRIX" GridPane.rowIndex="4">
+      <Label alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="85.0" style="-fx-pref-height: 30;" text="QC METRICS" GridPane.rowIndex="4">
          <styleClass>
             <String fx:value="font_size_15" />
             <String fx:value="font_gray" />
+            <String fx:value="bold" />
          </styleClass>
          <GridPane.margin>
             <Insets />
          </GridPane.margin>
       </Label>
-      <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="1">
+      <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="1">
          <children>
             <GridPane prefWidth="300.0" style="-fx-background-color: #f2f5fa;">
               <columnConstraints>
@@ -188,20 +108,20 @@
                   <StackPane prefHeight="150.0" prefWidth="200.0">
                      <children>
                         <Circle fill="#f6545c" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                        <Label style="-fx-text-fill: #ffffff; -fx-font-family: Noto Sans KR Bold;" styleClass="font_size_18" text="Tier I" />
+                        <Label style="-fx-text-fill: #ffffff;" styleClass="font_size_18" text="Tier I" />
                      </children>
                   </StackPane>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
                      <children>
                         <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                            <children>
-                              <Label style="-fx-font-family: Noto Sans KR Bold;" text="Variants : " />
+                              <Label text="Variants : " />
                               <Label fx:id="tierOneVariantsCountLabel" text="0" />
                            </children>
                         </HBox>
                         <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                            <children>
-                              <Label style="-fx-font-family: Noto Sans KR Bold;" text="Gene : " />
+                              <Label text="Gene : " />
                               <Label fx:id="tierOneGenesCountLabel" text="0" />
                            </children>
                         </HBox>
@@ -222,13 +142,13 @@
                      <children>
                         <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                            <children>
-                              <Label style="-fx-font-family: Noto Sans KR Bold;" text="Variants : " />
+                              <Label text="Variants : " />
                               <Label fx:id="tierTwoVariantsCountLabel" text="0" />
                            </children>
                         </HBox>
                         <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                            <children>
-                              <Label style="-fx-font-family: Noto Sans KR Bold;" text="Gene : " />
+                              <Label text="Gene : " />
                               <Label fx:id="tierTwoGenesCountLabel" text="0" />
                            </children>
                         </HBox>
@@ -237,7 +157,7 @@
                   <StackPane prefHeight="150.0" prefWidth="200.0">
                      <children>
                         <Circle fill="#ff9482" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                        <Label style="-fx-text-fill: #ffffff; -fx-font-family: Noto Sans KR Bold;" styleClass="font_size_18" text="Tier II" />
+                        <Label style="-fx-text-fill: #ffffff; " styleClass="font_size_18" text="Tier II" />
                      </children>
                   </StackPane>
                </children>
@@ -255,13 +175,13 @@
                      <children>
                         <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                            <children>
-                              <Label style="-fx-font-family: Noto Sans KR Bold;" text="Variants : " />
+                              <Label text="Variants : " />
                               <Label fx:id="tierThreeVariantsCountLabel" text="0" />
                            </children>
                         </HBox>
                         <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                            <children>
-                              <Label style="-fx-font-family: Noto Sans KR Bold;" text="Gene : " />
+                              <Label text="Gene : " />
                               <Label fx:id="tierThreeGenesCountLabel" text="0" />
                            </children>
                         </HBox>
@@ -271,7 +191,7 @@
                   <StackPane prefHeight="150.0" prefWidth="200.0">
                      <children>
                         <Circle fill="#70acf5" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                        <Label style="-fx-text-fill: #ffffff; -fx-font-family: Noto Sans KR Bold;" styleClass="font_size_18" text="Tier III" />
+                        <Label style="-fx-text-fill: #ffffff;" styleClass="font_size_18" text="Tier III" />
                      </children>
                   </StackPane>
                </children>
@@ -289,13 +209,13 @@
                      <children>
                         <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                            <children>
-                              <Label style="-fx-font-family: Noto Sans KR Bold;" text="Variants : " />
+                              <Label text="Variants : " />
                               <Label fx:id="tierFourVariantsCountLabel" text="0" />
                            </children>
                         </HBox>
                         <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                            <children>
-                              <Label style="-fx-font-family: Noto Sans KR Bold;" text="Gene : " />
+                              <Label text="Gene : " />
                               <Label fx:id="tierFourGenesCountLabel" text="0" />
                            </children>
                         </HBox>
@@ -305,7 +225,7 @@
                   <StackPane prefHeight="150.0" prefWidth="200.0">
                      <children>
                         <Circle fill="#1f2d87" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                        <Label style="-fx-text-fill: #ffffff; -fx-font-family: Noto Sans KR Bold;" styleClass="font_size_18" text="Tier IV" />
+                        <Label style="-fx-text-fill: #ffffff;" styleClass="font_size_18" text="Tier IV" />
                      </children>
                   </StackPane>
                </children>

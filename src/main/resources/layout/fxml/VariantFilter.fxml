@@ -1,13 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.VariantFilterController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="997.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.VariantFilterController">
   <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
   </columnConstraints>
   <rowConstraints>
       <RowConstraints maxHeight="95.0" minHeight="10.0" prefHeight="55.0" vgrow="SOMETIMES" />
@@ -19,13 +32,12 @@
         <tabs>
           <Tab text="Variant">
                <content>
-                  <GridPane alignment="CENTER_LEFT" style="-fx-background-color: #FFFFFF;">
+                  <GridPane fx:id="variantTabGridPane" alignment="CENTER_LEFT" style="-fx-background-color: #FFFFFF;">
                     <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="251.0" minWidth="10.0" prefWidth="185.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="185.0" minWidth="10.0" prefWidth="185.0" />
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="822.0" minWidth="10.0" prefWidth="675.0" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
@@ -42,65 +54,66 @@
                         <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="Variant Type" GridPane.rowIndex="6" />
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="Variant Type" GridPane.rowIndex="5" />
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                            <children>
-                              <CheckBox fx:id="snvCheckBox" mnemonicParsing="false" text="SNP" />
+                              <CheckBox fx:id="snvCheckBox" mnemonicParsing="false" text="SNV" />
                               <CheckBox fx:id="indelCheckBox" mnemonicParsing="false" text="Ins(Insertion)" />
                               <CheckBox fx:id="delCheckBox" mnemonicParsing="false" text="Del(Deletion)" />
                            </children>
                         </HBox>
-                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="Chromosome" GridPane.rowIndex="9" />
-                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="Gene" GridPane.rowIndex="11" />
-                        <TextField fx:id="geneTextField" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" promptText="FLT3,CEBPA" GridPane.columnIndex="1" GridPane.rowIndex="11" />
-                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="dbSNP" GridPane.rowIndex="13" />
-                        <CheckBox fx:id="dbSNPidCheckBox" mnemonicParsing="false" text="Has dbSNP ID" GridPane.columnIndex="1" GridPane.rowIndex="13" />
-                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="COSMIC" GridPane.rowIndex="15" />
-                        <CheckBox fx:id="cosmicidCheckBox" mnemonicParsing="false" text="Has COSMIC ID" GridPane.columnIndex="1" GridPane.rowIndex="15" />
-                        <TextField fx:id="chromosomeTextField" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" promptText="chr7, chr9" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="Allele Fraction" GridPane.rowIndex="17" />
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="Chromosome" GridPane.rowIndex="8" />
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="Gene" GridPane.rowIndex="10" />
+                        <TextField fx:id="geneTextField" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" promptText="FLT3,CEBPA" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="dbSNP" GridPane.rowIndex="12" />
+                        <CheckBox fx:id="dbSNPidCheckBox" mnemonicParsing="false" text="dbSNP ID" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="COSMIC" GridPane.rowIndex="14" />
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="14">
+                           <children>
+                              <CheckBox fx:id="cosmicidCheckBox" mnemonicParsing="false" text="COSMIC ID" />
+                              <Label style="-fx-font-family: Noto Sans KR Bold;" text="COSMIC Occurrence" />
+                              <ComboBox fx:id="cosmicOccurrenceComboBox" prefWidth="150.0" promptText="Tissue selection" />
+                           </children>
+                        </HBox>
+                        <TextField fx:id="chromosomeTextField" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" promptText="chr7, chr9" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0" GridPane.columnIndex="1" GridPane.rowIndex="17">
                            <children>
-                              <TextField fx:id="startFractionTextField" prefWidth="60.0" promptText="30" />
+                              <Label minWidth="-Infinity" prefWidth="100.0" style="-fx-font-family: Noto Sans KR Bold;" text="Alt Count">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField fx:id="altCountTextField" prefWidth="60.0" promptText="30" />
                               <Label text="~" />
-                              <TextField fx:id="endFractionTextField" maxWidth="100.0" prefWidth="60.0" promptText="50" />
+                              <TextField fx:id="altEndCountTextField" prefWidth="60.0" promptText="50" />
                            </children>
                         </HBox>
-                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="Prediction" />
-                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="ClinVar" GridPane.rowIndex="4" />
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="ClinVar" GridPane.rowIndex="3" />
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                            <children>
-                              <CheckBox fx:id="predictionACheckBox" mnemonicParsing="false" text="CheckBox" />
-                              <CheckBox fx:id="predictionBCheckBox" mnemonicParsing="false" text="CheckBox" />
-                              <CheckBox fx:id="predictionCCheckBox" mnemonicParsing="false" text="CheckBox" />
-                              <CheckBox fx:id="predictionDCheckBox" mnemonicParsing="false" text="CheckBox" />
-                              <CheckBox fx:id="predictionECheckBox" mnemonicParsing="false" text="CheckBox" />
+                              <CheckBox fx:id="clinVarACheckBox" mnemonicParsing="false" text="P(Pathogentic)" />
+                              <CheckBox fx:id="clinVarBCheckBox" mnemonicParsing="false" text="LP(Likely Pathogenic)" />
+                              <CheckBox fx:id="clinVarCCheckBox" mnemonicParsing="false" text="US(Uncertatin Significance)" />
+                              <CheckBox fx:id="clinVarDCheckBox" mnemonicParsing="false" text="LB(Likely Benign)" />
+                              <CheckBox fx:id="clinVarECheckBox" mnemonicParsing="false" text="B(Benign)" />
+                              <CheckBox fx:id="clinVarDrugResponseCheckBox" mnemonicParsing="false" text="Drug Response" />
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                           <children>
-                              <CheckBox fx:id="clinVarACheckBox" mnemonicParsing="false" text="CheckBox" />
-                              <CheckBox fx:id="clinVarBCheckBox" mnemonicParsing="false" text="CheckBox" />
-                              <CheckBox fx:id="clinVarCCheckBox" mnemonicParsing="false" text="CheckBox" />
-                              <CheckBox fx:id="clinVarDCheckBox" mnemonicParsing="false" text="CheckBox" />
-                              <CheckBox fx:id="clinVarECheckBox" mnemonicParsing="false" text="CheckBox" />
-                           </children>
-                        </HBox>
-                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="COSMIC Occurrence" GridPane.rowIndex="19" />
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
                            <children>
                               <CheckBox fx:id="mnpCheckBox" mnemonicParsing="false" text="MNP(Multiple-nucleotide polymorphism)" />
                               <CheckBox fx:id="complexCheckBox" mnemonicParsing="false" text="Complex(Multiple-nucloetied and an InDel)" />
                            </children>
                         </HBox>
-                        <Label fx:id="caseLabel" style="-fx-font-family: Noto Sans KR Bold;" text="Pathogenicity" GridPane.rowIndex="2" />
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <Label fx:id="caseLabel" style="-fx-font-family: Noto Sans KR Bold;" text="Pathogenicity" GridPane.rowIndex="1" />
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <children>
                               <CheckBox fx:id="caseACheckBox" mnemonicParsing="false" text="CheckBox" />
                               <CheckBox fx:id="caseBCheckBox" mnemonicParsing="false" text="CheckBox" />
@@ -109,8 +122,52 @@
                               <CheckBox fx:id="caseECheckBox" mnemonicParsing="false" text="CheckBox" />
                            </children>
                         </HBox>
-                        <ComboBox fx:id="cosmicOccurrenceComboBox" prefWidth="150.0" promptText="Tissue selection" GridPane.columnIndex="1" GridPane.rowIndex="19" />
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2">
+                           <children>
+                              <Separator prefWidth="890.0" HBox.hgrow="ALWAYS">
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
+                              </Separator>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="2">
+                           <children>
+                              <Separator prefWidth="890.0" HBox.hgrow="ALWAYS">
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
+                              </Separator>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="4">
+                           <children>
+                              <Separator prefWidth="890.0" HBox.hgrow="ALWAYS">
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
+                              </Separator>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="7">
+                           <children>
+                              <Separator prefWidth="890.0" HBox.hgrow="ALWAYS">
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
+                              </Separator>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="9">
+                           <children>
+                              <Separator prefWidth="890.0" HBox.hgrow="ALWAYS">
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
+                              </Separator>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="11">
                            <children>
                               <Separator prefWidth="890.0">
                                  <padding>
@@ -119,66 +176,21 @@
                               </Separator>
                            </children>
                         </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="3">
-                           <children>
-                              <Separator prefWidth="890.0">
-                                 <padding>
-                                    <Insets right="10.0" />
-                                 </padding>
-                              </Separator>
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="5">
-                           <children>
-                              <Separator prefWidth="890.0">
-                                 <padding>
-                                    <Insets right="10.0" />
-                                 </padding>
-                              </Separator>
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="8">
-                           <children>
-                              <Separator prefWidth="890.0">
-                                 <padding>
-                                    <Insets right="10.0" />
-                                 </padding>
-                              </Separator>
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="10">
-                           <children>
-                              <Separator prefWidth="890.0">
-                                 <padding>
-                                    <Insets right="10.0" />
-                                 </padding>
-                              </Separator>
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="12">
-                           <children>
-                              <Separator prefWidth="890.0">
-                                 <padding>
-                                    <Insets right="10.0" />
-                                 </padding>
-                              </Separator>
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="14">
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="13">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin>
                            <children>
-                              <Separator prefWidth="890.0">
+                              <Separator prefWidth="890.0" HBox.hgrow="ALWAYS">
                                  <padding>
                                     <Insets right="10.0" />
                                  </padding>
                               </Separator>
                            </children>
                         </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="16">
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="15">
                            <children>
-                              <Separator prefWidth="890.0">
+                              <Separator prefWidth="890.0" HBox.hgrow="ALWAYS">
                                  <padding>
                                     <Insets right="10.0" />
                                  </padding>
@@ -187,7 +199,7 @@
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="18">
                            <children>
-                              <Separator prefWidth="890.0">
+                              <Separator prefWidth="890.0" HBox.hgrow="ALWAYS">
                                  <padding>
                                     <Insets right="10.0" />
                                  </padding>
@@ -196,11 +208,225 @@
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="20">
                            <children>
-                              <Separator prefWidth="890.0">
+                              <Separator prefWidth="890.0" HBox.hgrow="ALWAYS">
                                  <padding>
                                     <Insets right="10.0" />
                                  </padding>
                               </Separator>
+                           </children>
+                        </HBox>
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="Warning(Low Confidence)" GridPane.rowIndex="19" />
+                        <HBox fx:id="warningHBox" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="19">
+                           <children>
+                              <Button fx:id="allLowConfidenceButton" mnemonicParsing="false" onMouseClicked="#setAllLowConfidence" prefWidth="70.0" styleClass="submitBtn" text="All" />
+                              <Button fx:id="defaultLowConfidence" mnemonicParsing="false" onMouseClicked="#setDefaultLowConfidence" prefWidth="70.0" styleClass="submitBtn" text="Default" />
+                              <Button fx:id="uncheckLowConfidence" mnemonicParsing="false" onMouseClicked="#setUncheckLowConfidence" prefWidth="70.0" styleClass="submitBtn" text="Uncheck" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0" GridPane.columnIndex="1" GridPane.rowIndex="16">
+                           <children>
+                              <Label minWidth="-Infinity" prefWidth="100.0" style="-fx-font-family: Noto Sans KR Bold;" text="Allele Fraction" />
+                              <TextField fx:id="startFractionTextField" prefWidth="60.0" promptText="30" />
+                              <Label text="~" />
+                              <TextField fx:id="endFractionTextField" maxWidth="100.0" prefWidth="60.0" promptText="50" />
+                              <Label prefHeight="20.0" prefWidth="20.0" text="\%" />
+                              <Label style="-fx-font-family: Noto Sans KR Bold;" text="Depth">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField fx:id="depthCountTextField" prefWidth="60.0" promptText="30" />
+                              <Label text="~" />
+                              <TextField fx:id="depthEndCountTextField" prefWidth="60.0" promptText="50" />
+                              <Label prefHeight="20.0" prefWidth="20.0" text="X" />
+                           </children>
+                        </HBox>
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" text="Reads Coverage" GridPane.rowIndex="16" GridPane.rowSpan="2" />
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </GridPane>
+               </content>
+          </Tab>
+            <Tab text="Population Frequency">
+               <content>
+                  <GridPane fx:id="populationFrequencyGridPane">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" minWidth="10.0" prefWidth="180.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="298.0" minWidth="10.0" prefWidth="260.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="6">
+                           <children>
+                              <ComboBox fx:id="gnomADnfeComboBox" prefWidth="30.0" />
+                              <TextField fx:id="gnomADnfeTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_13" text="1KGP" />
+                        <Label text="All" GridPane.rowIndex="1" />
+                        <Label text="AFR(African)" GridPane.rowIndex="2" />
+                        <Label text="AMR(Ad Mixed American)" GridPane.rowIndex="3" />
+                        <Label text="EAS(East Asian)" GridPane.rowIndex="4" />
+                        <Label text="EUR(European)" GridPane.rowIndex="5" />
+                        <Label text="SAS(South Asian)" GridPane.rowIndex="6" />
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_13" text="gnomAD" GridPane.columnIndex="2" />
+                        <Label text="All" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Label text="Mixed American" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <Label text="African African American" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                        <Label text="East Asian" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                        <Label text="Finnish" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                        <Label text="Non Finnish European" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                        <Label text="Others" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                        <Label text="South Asian" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_13" text="ESP 6500" GridPane.rowIndex="8" GridPane.valignment="BOTTOM" />
+                        <Label text="All" GridPane.rowIndex="9" />
+                        <Label text="AA (African American)" GridPane.rowIndex="10" />
+                        <Label text="EA(European American)" GridPane.rowIndex="11" />
+                        <Label style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_13" text="ETC" GridPane.columnIndex="2" GridPane.rowIndex="10" />
+                        <Label text="KoEXID(Korean Exome Information Database)" GridPane.columnIndex="2" GridPane.rowIndex="12" />
+                        <Label text="KRGDB(Korean Reference Genome Database)" GridPane.columnIndex="2" GridPane.rowIndex="13" />
+                        <Label text="KOHBRA(Korean Hereditary Breast Cancer)" GridPane.columnIndex="2" GridPane.rowIndex="14" />
+                        <Label text="ExAC(Exome Aggregation Consortium)" GridPane.columnIndex="2" GridPane.rowIndex="11" />
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" />
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <children>
+                              <ComboBox fx:id="tgAllComboBox" prefWidth="30.0" />
+                              <TextField fx:id="tgAllTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <children>
+                              <ComboBox fx:id="tgafrComboBox" prefWidth="30.0" />
+                              <TextField fx:id="tgafrTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                           <children>
+                              <ComboBox fx:id="tgamrComboBox" prefWidth="30.0" />
+                              <TextField fx:id="tgamrTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                           <children>
+                              <ComboBox fx:id="tgeasComboBox" prefWidth="30.0" />
+                              <TextField fx:id="tgeasTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                           <children>
+                              <ComboBox fx:id="tgeurComboBox" prefWidth="30.0" />
+                              <TextField fx:id="tgeurTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                           <children>
+                              <ComboBox fx:id="tgsasComboBox" prefWidth="30.0" />
+                              <TextField fx:id="tgsasTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                           <children>
+                              <ComboBox fx:id="espallComboBox" prefWidth="30.0" />
+                              <TextField fx:id="espallTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                           <children>
+                              <ComboBox fx:id="espaaComboBox" prefWidth="30.0" />
+                              <TextField fx:id="espaaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="11">
+                           <children>
+                              <ComboBox fx:id="espeaComboBox" prefWidth="30.0" />
+                              <TextField fx:id="espeaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                           <children>
+                              <ComboBox fx:id="gnomADAllComboBox" prefWidth="30.0" />
+                              <TextField fx:id="gnomADAllTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                           <children>
+                              <ComboBox fx:id="gnomADmaComboBox" prefWidth="30.0" />
+                              <TextField fx:id="gnomADmaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                           <children>
+                              <ComboBox fx:id="gnomADaaaComboBox" prefWidth="30.0" />
+                              <TextField fx:id="gnomADaaaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                           <children>
+                              <ComboBox fx:id="gnomADeaComboBox" prefWidth="30.0" />
+                              <TextField fx:id="gnomADeaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="5">
+                           <children>
+                              <ComboBox fx:id="gnomADfinComboBox" prefWidth="30.0" />
+                              <TextField fx:id="gnomADfinTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="7">
+                           <children>
+                              <ComboBox fx:id="gnomADotherComboBox" prefWidth="30.0" />
+                              <TextField fx:id="gnomADotherTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="8">
+                           <children>
+                              <ComboBox fx:id="gnomADsaComboBox" prefWidth="30.0" />
+                              <TextField fx:id="gnomADsaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="10" />
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="11">
+                           <children>
+                              <ComboBox fx:id="exacComboBox" prefWidth="30.0" />
+                              <TextField fx:id="exacTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
+                           </children></HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="12">
+                           <children>
+                              <ComboBox fx:id="keidComboBox" prefWidth="30.0" />
+                              <TextField fx:id="keidTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="13">
+                           <children>
+                              <ComboBox fx:id="krgdComboBox" prefWidth="30.0" />
+                              <TextField fx:id="krgdTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="14">
+                           <children>
+                              <ComboBox fx:id="kohbraComboBox" prefWidth="30.0" />
+                              <TextField fx:id="kohbraTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.01" />
                            </children>
                         </HBox>
                      </children>
@@ -209,7 +435,7 @@
                      </padding>
                   </GridPane>
                </content>
-          </Tab>
+            </Tab>
           <Tab text="Consequence">
                <content>
                   <VBox prefHeight="177.0" prefWidth="880.0">
@@ -389,203 +615,6 @@
                   </VBox>
                </content>
           </Tab>
-            <Tab text="Population Frequency">
-               <content>
-                  <GridPane fx:id="populationFrequencyGridPane">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" minWidth="10.0" prefWidth="180.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="298.0" minWidth="10.0" prefWidth="260.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="6">
-                           <children>
-                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
-                              <TextField fx:id="genomADfinTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                        <Label style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_13" text="1KGP" />
-                        <Label text="All" GridPane.rowIndex="1" />
-                        <Label text="AFR(African)" GridPane.rowIndex="2" />
-                        <Label text="AMR(Ad Mixed American)" GridPane.rowIndex="3" />
-                        <Label text="EAS(East Asian)" GridPane.rowIndex="4" />
-                        <Label text="EUR(European)" GridPane.rowIndex="5" />
-                        <Label text="SAS(South Asian)" GridPane.rowIndex="6" />
-                        <Label style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_13" text="genomAD" GridPane.columnIndex="2" />
-                        <Label text="All" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <Label text="Mixed American" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                        <Label text="African African American" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                        <Label text="Ashkenazi Jewish" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                        <Label text="East Asian" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-                        <Label text="Finnish" GridPane.columnIndex="2" GridPane.rowIndex="6" />
-                        <Label text="Non Finnish European" GridPane.columnIndex="2" GridPane.rowIndex="7" />
-                        <Label text="Others" GridPane.columnIndex="2" GridPane.rowIndex="8" />
-                        <Label text="South Asian" GridPane.columnIndex="2" GridPane.rowIndex="9" />
-                        <Label style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_13" text="ESP 6500" GridPane.rowIndex="8" GridPane.valignment="BOTTOM" />
-                        <Label text="All" GridPane.rowIndex="9" />
-                        <Label text="AA (African American)" GridPane.rowIndex="10" />
-                        <Label text="EA(European American)" GridPane.rowIndex="11" />
-                        <Label style="-fx-font-family: Noto Sans KR Bold;" styleClass="font_size_13" text="ETC" GridPane.columnIndex="2" GridPane.rowIndex="11" />
-                        <Label text="KoEXID(Korean Exome Information Database)" GridPane.columnIndex="2" GridPane.rowIndex="13" />
-                        <Label text="KRGDB(Korean Reference Genome Database)" GridPane.columnIndex="2" GridPane.rowIndex="14" />
-                        <Label text="KOHBRA(Korean Hereditary Breast Cancer)" GridPane.columnIndex="2" GridPane.rowIndex="15" />
-                        <Label text="ExAC(Exome Aggregation Consortium)" GridPane.columnIndex="2" GridPane.rowIndex="12" />
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" />
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                           <children>
-                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
-                              <TextField fx:id="tgAllTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                           <children>
-                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
-                              <TextField fx:id="tgafrTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                           <children>
-                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
-                              <TextField fx:id="tgamrTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                           <children>
-                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
-                              <TextField fx:id="tgeasTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                           <children>
-                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
-                              <TextField fx:id="tgeurTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
-                           <children>
-                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
-                              <TextField fx:id="tgsasTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
-                           <children>
-                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
-                              <TextField fx:id="espallTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
-                           <children>
-                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
-                              <TextField fx:id="espaaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="11">
-                           <children>
-                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
-                              <TextField fx:id="espeaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                           <children>
-                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
-                              <TextField fx:id="genomADAllTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
-                           <children>
-                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
-                              <TextField fx:id="genomADmaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
-                           <children>
-                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
-                              <TextField fx:id="genomADaaaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
-                           <children>
-                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
-                              <TextField fx:id="genomADajgenomAD" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="5">
-                           <children>
-                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
-                              <TextField fx:id="genomADeaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="7">
-                           <children>
-                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
-                              <TextField fx:id="genomADnfeTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="8">
-                           <children>
-                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
-                              <TextField fx:id="genomADotherTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="9">
-                           <children>
-                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
-                              <TextField fx:id="genomADsaTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="10" />
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="11" />
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="12">
-                           <children>
-                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
-                              <TextField fx:id="exacTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="13">
-                           <children>
-                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
-                              <TextField fx:id="keidTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="14">
-                           <children>
-                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
-                              <TextField fx:id="krgdTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="15">
-                           <children>
-                              <Label prefHeight="27.0" prefWidth="17.0" text="&lt;" />
-                              <TextField fx:id="kohbraTextField" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" promptText="0.1" />
-                           </children>
-                        </HBox>
-                     </children>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                  </GridPane>
-               </content>
-            </Tab>
         </tabs>
          <opaqueInsets>
             <Insets />
@@ -605,12 +634,16 @@
       </HBox>
       <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
          <children>
-            <Label style="-fx-font-family: Noto Sans KR Bold;" text="Create New Filter" />
-            <Button mnemonicParsing="false" onAction="#addFilter" styleClass="submitBtn" text="New Filter" />
-            <TextField fx:id="filterNameTextField" maxHeight="31.0" prefHeight="31.0" prefWidth="136.0" promptText="Filter Name" />
-            <Label style="-fx-font-family: Noto Sans KR Bold;" text="Load Saved Filter" />
+            <Label style="-fx-font-family: Noto Sans KR Bold;" text="Filter" />
             <ComboBox fx:id="filterNameComboBox" prefWidth="150.0" />
-            <Button mnemonicParsing="false" onAction="#removeFilter" prefHeight="23.0" prefWidth="99.0" styleClass="cancelBtn" text="Remove Filter" />
+            <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addFilter" prefHeight="26.0" prefWidth="26.0" styleClass="submitBtn" text="+" />
+            <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#removeFilter" prefHeight="26.0" prefWidth="26.0" styleClass="cancelBtn" text="-" />
+            <Label fx:id="newFilterNameLabel" style="-fx-font-family: Noto Sans KR Bold;" text="New Filter Name">
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="filterNameTextField" maxHeight="31.0" prefHeight="31.0" prefWidth="136.0" promptText="Filter Name" />
          </children>
          <GridPane.margin>
             <Insets left="10.0" top="10.0" />

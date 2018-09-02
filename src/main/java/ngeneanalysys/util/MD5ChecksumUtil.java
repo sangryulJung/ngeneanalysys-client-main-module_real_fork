@@ -18,8 +18,8 @@ public class MD5ChecksumUtil {
 
 	/**
 	 * 체크섬 문자열 생성 [apache DigestUtils 사용]
-	 * @param file
-	 * @return
+	 * @param file File
+	 * @return String
 	 */
 	public static String getFileChecksum(File file) {
 		String checksum = null;

@@ -7,9 +7,6 @@ import javafx.scene.Parent;
 import javafx.scene.layout.GridPane;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
-import ngeneanalysys.model.*;
-import ngeneanalysys.service.ALAMUTService;
-import ngeneanalysys.service.IGVService;
 import ngeneanalysys.util.*;
 import org.slf4j.Logger;
 
@@ -25,39 +22,19 @@ public class AnalysisDetailVariantDetailController extends SubPaneController {
     @FXML
     private GridPane detailWarpper;
 
-    private Panel panel;
-
-    private VariantAndInterpretationEvidence selectedAnalysisResultVariant;
-
-    /** IGV 연동 서비스 */
-    private IGVService igvService;
-
-    /** Alamut 연동 서비스 */
-    private ALAMUTService alamutService;
-
     private AnalysisDetailVariantNomenclatureController analysisDetailVariantNomenclatureController;
 
     @Override
     public void show(Parent root) throws IOException {
-        panel = (Panel)paramMap.get("panel");
-
-        selectedAnalysisResultVariant = (VariantAndInterpretationEvidence)paramMap.get("variant");
-
-        igvService = IGVService.getInstance();
-        igvService.setMainController(getMainController());
-
-        // alamut service init
-        alamutService = ALAMUTService.getInstance();
-        alamutService.setMainController(getMainController());
-
+        logger.debug("variant detail view");
         if(!detailWarpper.getChildren().isEmpty()) detailWarpper.getChildren().removeAll(detailWarpper.getChildren());
         showReadDepth();
         showVariantNomenclature();
         showDetailSub();
-
+        showPopulationFrequency();
     }
 
-    public void showDetailSub() {
+    private void showDetailSub() {
         try {
             FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_DETAIL_SUB_INFO);
             Node node = loader.load();
@@ -72,7 +49,7 @@ public class AnalysisDetailVariantDetailController extends SubPaneController {
         }
     }
 
-    public void showReadDepth() {
+    private void showReadDepth() {
         try {
             FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_READ_DEPTH);
             Node node = loader.load();
@@ -85,7 +62,7 @@ public class AnalysisDetailVariantDetailController extends SubPaneController {
             e.printStackTrace();
         }
     }
-    public void showVariantNomenclature() {
+    private void showVariantNomenclature() {
         try {
             FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_VARIANT_NOMENCLATURE);
             Node node = loader.load();
@@ -99,5 +76,17 @@ public class AnalysisDetailVariantDetailController extends SubPaneController {
             e.printStackTrace();
         }
     }
-
+    private void showPopulationFrequency() {
+        try {
+            FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_POPULATION_FREQUENCIES);
+            Node node = loader.load();
+            AnalysisDetailPopulationFrequenciesController controller = loader.getController();
+            controller.setMainController(this.getMainController());
+            controller.setParamMap(paramMap);
+            controller.show((Parent) node);
+            detailWarpper.add(node, 3, 0);
+        } catch (Exception e) {
+            logger.debug(e.getMessage());
+        }
+    }
 }

@@ -14,17 +14,17 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="558.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemManagerUserAccountController">
+<AnchorPane prefHeight="558.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.systemManager.SystemManagerUserAccountController">
    <children>
       <HBox prefHeight="592.0" prefWidth="1220.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
          <children>
-            <VBox prefHeight="592.0" prefWidth="300.0">
+            <VBox minWidth="300.0" prefHeight="592.0" prefWidth="300.0">
                <children>
                   <VBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" prefWidth="100.0">
                      <children>
                         <HBox alignment="CENTER" prefHeight="29.0" prefWidth="200.0">
                            <children>
-                              <Label text="User Group" />
+                              <Label text="Group" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="200.0">
@@ -46,7 +46,7 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
                   </VBox>
-                  <TableView fx:id="groupListTable" prefHeight="426.0" prefWidth="300.0">
+                  <TableView fx:id="groupListTable" maxHeight="1.7976931348623157E308" prefHeight="426.0" prefWidth="300.0" VBox.vgrow="ALWAYS">
                     <columns>
                         <TableColumn minWidth="7.000030517578125" prefWidth="20.399993896484375" />
                       <TableColumn fx:id="userGroupId" prefWidth="27.5999755859375" text="ID" />
@@ -55,10 +55,10 @@
                         <TableColumn fx:id="userGroupModify" prefWidth="84.0" text="Modify" />
                     </columns>
                   </TableView>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="300.0">
+                  <HBox alignment="CENTER" maxHeight="48.0" prefHeight="48.0" prefWidth="300.0">
                      <children>
                         <Pagination fx:id="groupPaginationList" maxPageIndicatorCount="5" pageCount="100" prefHeight="24.0" prefWidth="200.0" />
-                        <Button fx:id="groupAddBtn" mnemonicParsing="false" onAction="#groupAdd" styleClass="submitBtn" text="Add" />
+                        <Button fx:id="groupAddBtn" mnemonicParsing="false" onAction="#groupAdd" styleClass="submitBtn" text="+" />
                      </children>
                   </HBox>
                </children>
@@ -71,7 +71,7 @@
                      </HBox.margin></Separator>
                </children>
             </HBox>
-            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="592.0" prefWidth="860.0">
+            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="900.0" prefHeight="592.0" prefWidth="900.0" HBox.hgrow="ALWAYS">
                <children>
                   <VBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" prefWidth="900.0">
                      <children>
@@ -130,11 +130,11 @@
                   <TableView fx:id="userListTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
                      <columns>
                         <TableColumn fx:id="userCheckBox" prefWidth="33.0" />
-                        <TableColumn fx:id="id" minWidth="0.0" prefWidth="27.0" text="Id" visible="false" />
+                        <TableColumn fx:id="id" minWidth="0.0" prefWidth="27.0" text="User ID" visible="false" />
                         <TableColumn fx:id="loginId" prefWidth="150.0" text="Login ID" />
                         <TableColumn fx:id="name" prefWidth="71.0" text="Name" />
                         <TableColumn fx:id="role" prefWidth="82.0" text="User Type" />
-                        <TableColumn fx:id="groupId" prefWidth="75.0" text="Group Id" visible="false" />
+                        <TableColumn fx:id="groupId" prefWidth="75.0" text="Group ID" visible="false" />
                         <TableColumn fx:id="groupName" prefWidth="150.0" text="Group" />
                         <TableColumn fx:id="createdAt" prefWidth="120.0" text="Created At" />
                         <TableColumn fx:id="updatedAt" prefWidth="120.0" text="Updated At" />
@@ -143,7 +143,7 @@
                         <TableColumn fx:id="userModify" prefWidth="83.0" text="Modify" />
                      </columns>
                   </TableView>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="48.0" prefWidth="900.0" spacing="5.0" VBox.vgrow="NEVER">
+                  <HBox alignment="CENTER" maxHeight="48.0" maxWidth="1.7976931348623157E308" prefHeight="48.0" prefWidth="900.0" spacing="5.0" VBox.vgrow="NEVER">
                      <children>
                         <Button mnemonicParsing="false" styleClass="submitBtn" text="&lt;&lt;" />
                         <Pagination fx:id="paginationList" pageCount="100" />
@@ -157,12 +157,18 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="48.0" prefWidth="168.0">
                            <children>
-                              <Button fx:id="userAddBtn" mnemonicParsing="false" onAction="#userAdd" styleClass="submitBtn" text="Add" />
+                              <Button fx:id="userAddBtn" mnemonicParsing="false" onAction="#userAdd" styleClass="submitBtn" text="+" />
                            </children>
                         </HBox>
                      </children>
                   </HBox>
                </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+               <padding>
+                  <Insets right="10.0" />
+               </padding>
             </VBox>
          </children>
       </HBox>

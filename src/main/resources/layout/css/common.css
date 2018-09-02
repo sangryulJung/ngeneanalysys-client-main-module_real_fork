@@ -1,26 +1,41 @@
 @font-face {
-	src: url("../font/NotoSansKR-Light.otf"),
-	 url("../font/NotoSansKR-Bold.otf"),
-	 url("../font/NotoSansKR-Medium.otf"),
-	 url("../font/NotoSansKR-Regular.otf"),
-	 url("../font/NotoSansKR-DemiLight.otf"),
-	 url("../font/NotoSansCJKkr-Bold.otf"),
-	 url("../font/NotoSansCJKkr-Regular.otf"),
-	 url("../font/NotoSansCJKkr-DemiLight.otf"),	 
-	 url("../font/NanumSquareB.ttf"),
-	 url("../font/NanumSquareR.ttf"),
-	 url("../font/NanumSquareR.ttf");	 
+	font-family: "Noto Sans KR Light";
+	src: url("../font/NotoSansKR-Light.otf");	 
+}
+
+@font-face {
+	font-family: "Noto Sans KR Bold";
+	src: url("../font/NotoSansKR-Bold.otf");	 
+}
+
+@font-face {
+	font-family: "Noto Sans KR Regular";
+	src: url("../font/NotoSansKR-Regular.otf");	 
+}
+
+@font-face {
+	font-family: "Noto Sans KR Medium";
+	src: url("../font/NotoSansKR-Medium.otf");	 
 }
 
 /** 기본 폰트 설정 */
-* {
-	-fx-font-family: "Noto Sans KR Light";
-	/*-fx-font-family: "Noto Sans CJK KR Regular";*/
-	/*-fx-font-family: "Noto Sans KR Regular";*/
-    /*-fx-font-family: "나눔스퀘어 Bold";*/
-    /*-fx-font-family: "나눔스퀘어";*/
-	/*-fx-focus-traversable: false;*/
+.root{
+	-fx-font: 13px "Noto Sans KR Light";
 }
+
+.bold{
+	-fx-font-family: "Noto Sans KR Bold";
+}
+
+.regular{
+	-fx-font-family: "Noto Sans KR Regular";
+}
+
+.light{
+	-fx-font-family: "Noto Sans KR Light";
+}
+
+
 
 Button {
 	-fx-cursor:hand;
@@ -49,6 +64,7 @@ Button {
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
 }
+
 
 .text-field, .combo-box, .choice-box, .date-picker {
 	-fx-background-color:#fff;
@@ -441,6 +457,7 @@ Button {
  	-fx-border-width:0;
  	-fx-padding:0;
  	-fx-table-cell-border-color: transparent;
+ 	-fx-font-family: "Noto Sans KR Medium";
 }
 
 .table-view .column-header-background .nested-column-header .label{
@@ -459,12 +476,17 @@ Button {
 	-fx-background-color: #ffffff;
 	-fx-border-width : 0 0 0.5 0;
 	-fx-border-color:#000000;
-	-fx-font-family:"Noto Sans KR Bold";
 }
 
 .table-row-cell {
 	-fx-background-insets:0;
-	-fx-background-color: -fx-table-cell-border-color, #FFFFFF;
+
+    -fx-border-width : 0;
+    -fx-font-size : 13;
+}
+
+.table-row-cell:odd{
+	-fx-background-insets:0;
     -fx-border-width : 0;
     -fx-font-size : 13;
 }
@@ -479,12 +501,10 @@ Button {
 
 .table-row-cell:selected {
     -fx-table-cell-border-color: transparent;
-	-fx-background-color : #F2F5FA;
-	-fx-text-background-color:#656565;
+
 }
 
 .table-view .table-cell .label {
-	-fx-text-fill:#656565;
 	-fx-background-color : #FFFFFF;
 	-fx-pref-height : 25;
 }
@@ -837,6 +857,121 @@ Button {
 	-fx-alignment:center;
 }
 
+.user_prediction_E {
+	-fx-background-color:#FFFFFF;
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-background-insets:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#5a64a5;
+	-fx-padding:0;
+    -fx-border-width:1;
+    -fx-border-radius:2;
+    -fx-border-insets:0;
+	-fx-border-color:#5a64a5;
+	-fx-min-width:19;
+	-fx-pref-width:19;
+	-fx-max-width:19;
+	-fx-min-height:19;
+	-fx-pref-height:19;
+	-fx-max-height:19;
+	-fx-alignment : center;
+}
+
+.user_prediction_D {
+	-fx-background-color:#FFFFFF;
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-background-insets:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#1F2D87;
+	-fx-padding:0;
+    -fx-border-width:1;
+    -fx-border-radius:2;
+    -fx-border-insets:0;
+	-fx-border-color:#1F2D87;
+	-fx-min-width:19;
+	-fx-pref-width:19;
+	-fx-max-width:19;
+	-fx-min-height:19;
+	-fx-pref-height:19;
+	-fx-max-height:19;
+	-fx-alignment : center;
+}
+
+.user_prediction_C {
+	-fx-background-color:#FFFFFF;
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-background-insets:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#70ACF5;
+	-fx-padding:0;
+    -fx-border-width:1;
+    -fx-border-radius:2;
+    -fx-border-insets:0;
+	-fx-border-color:#70ACF5;
+	-fx-min-width:19;
+	-fx-pref-width:19;
+	-fx-max-width:19;
+	-fx-min-height:19;
+	-fx-pref-height:19;
+	-fx-max-height:19;
+	-fx-alignment : center;
+}
+
+.user_prediction_B {
+	-fx-background-color:#FFFFFF;
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-background-insets:0;
+	-fx-text-fill:#000;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#FF9482;
+	-fx-padding:0;
+	-fx-border-width:1;
+	-fx-border-radius:2;
+	-fx-border-insets:0;
+	-fx-border-color:#FF9482;
+	-fx-min-width:20;
+	-fx-pref-width:20;
+	-fx-max-width:20;
+	-fx-min-height:20;
+	-fx-pref-height:20;
+	-fx-max-height:20;
+	-fx-alignment : center;
+}
+
+.user_prediction_A {
+	-fx-background-color:#FFFFFF;
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-background-insets:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#F6545C;
+	-fx-padding:0;
+    -fx-border-width:1;
+    -fx-border-radius:2;
+    -fx-border-insets:0;
+	-fx-border-color:#F6545C;
+	-fx-min-width:19;
+	-fx-pref-width:19;
+	-fx-max-width:19;
+	-fx-min-height:19;
+	-fx-pref-height:19;
+	-fx-max-height:19;
+	-fx-alignment : center;
+}
+
 
 .reported {
 	-fx-background-color:#c30d23;
@@ -1010,6 +1145,43 @@ Button {
 	-fx-max-height:20;
 }
 
+.pathogenic_FP {
+	-fx-background-color:#9933FF;
+	-fx-border-width:0;
+	-fx-background-radius:15;
+	-fx-background-insets:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-padding:0;
+	-fx-min-width:20;
+	-fx-pref-width:20;
+	-fx-max-width:20;
+	-fx-min-height:20;
+	-fx-pref-height:20;
+	-fx-max-height:20;
+	-fx-alignment : center;
+}
+
+.tier_FP {
+	-fx-background-color:#9933FF;
+	-fx-border-width:0;
+	-fx-background-radius:15;
+	-fx-background-insets:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-padding:0;
+	-fx-min-width:20;
+	-fx-pref-width:20;
+	-fx-max-width:20;
+	-fx-min-height:20;
+	-fx-pref-height:20;
+	-fx-max-height:20;
+	-fx-alignment : center;
+}
 
 .tier_4 {
 	-fx-background-color:#1F2D87;
@@ -1084,6 +1256,98 @@ Button {
 	-fx-min-height:20;
 	-fx-pref-height:20;
 	-fx-max-height:20;
+	-fx-alignment : center;
+}
+
+.user_tier_4 {
+	-fx-background-color:#FFFFFF;
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-background-insets:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#1F2D87;
+	-fx-padding:0;
+    -fx-border-width:1;
+    -fx-border-radius:2;
+    -fx-border-insets:0;
+	-fx-border-color:#1F2D87;
+	-fx-min-width:19;
+	-fx-pref-width:19;
+	-fx-max-width:19;
+	-fx-min-height:19;
+	-fx-pref-height:19;
+	-fx-max-height:19;
+	-fx-alignment : center;
+}
+
+.user_tier_3 {
+	-fx-background-color:#FFFFFF;
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-background-insets:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#70ACF5;
+	-fx-padding:0;
+    -fx-border-width:1;
+    -fx-border-radius:2;
+    -fx-border-insets:0;
+	-fx-border-color:#70ACF5;
+	-fx-min-width:19;
+	-fx-pref-width:19;
+	-fx-max-width:19;
+	-fx-min-height:19;
+	-fx-pref-height:19;
+	-fx-max-height:19;
+	-fx-alignment : center;
+}
+
+.user_tier_2 {
+	-fx-background-color:#FFFFFF;
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-background-insets:0;
+	-fx-text-fill:#000;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#FF9482;
+	-fx-padding:0;
+	-fx-border-width:1;
+	-fx-border-radius:2;
+	-fx-border-insets:0;
+	-fx-border-color:#FF9482;
+	-fx-min-width:20;
+	-fx-pref-width:20;
+	-fx-max-width:20;
+	-fx-min-height:20;
+	-fx-pref-height:20;
+	-fx-max-height:20;
+	-fx-alignment : center;
+}
+
+.user_tier_1 {
+	-fx-background-color:#FFFFFF;
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-background-insets:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#F6545C;
+	-fx-padding:0;
+    -fx-border-width:1;
+    -fx-border-radius:2;
+    -fx-border-insets:0;
+	-fx-border-color:#F6545C;
+	-fx-min-width:19;
+	-fx-pref-width:19;
+	-fx-max-width:19;
+	-fx-min-height:19;
+	-fx-pref-height:19;
+	-fx-max-height:19;
 	-fx-alignment : center;
 }
 
@@ -1243,7 +1507,7 @@ Button {
 .progress-bar {
 	-fx-background-radius: 0;
     -fx-background-color: #FFFFFF;
-    -fx-opacity: 0.5;
+    /*-fx-opacity: 0.5;*/
 }
 
 .progress-bar > .bar {
@@ -1394,7 +1658,6 @@ Button {
 	-fx-text-fill:#223654;
 	-fx-font-size:18; 
 	-fx-font-weight:bold;
-	-fx-font-family: Noto Sans KR Bold;
 }
 
 .no_selected_sw_tier {
@@ -1519,7 +1782,7 @@ Button {
 }
 
 .font_Sans_Regular {
-    -fx-font-family : "Noto Sans CJK KR Regular";
+    -fx-font-family : "Noto Sans KR";
 }
 
 .submitBtn {

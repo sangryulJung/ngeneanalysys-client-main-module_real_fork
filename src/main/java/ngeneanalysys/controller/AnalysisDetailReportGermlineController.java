@@ -11,10 +11,13 @@ import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import ngeneanalysys.code.constants.CommonConstants;
+import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedVariantAndInterpretationEvidence;
+import ngeneanalysys.model.paged.PagedVirtualPanel;
+import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.model.render.DatepickerConverter;
 import ngeneanalysys.service.APIService;
@@ -70,9 +73,6 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
     private TableColumn<VariantAndInterpretationEvidence, String> pathogenicityColumn;
 
     @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> reportedTableColumn;
-
-    @FXML
     private TableColumn<VariantAndInterpretationEvidence, String> chrColumn;
 
     @FXML
@@ -91,7 +91,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
     private TableColumn<VariantAndInterpretationEvidence, String> aaChangeColumn;
 
     @FXML
-    private TableColumn<VariantAndInterpretationEvidence, BigDecimal> alleleFrequencyColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> alleleFrequencyColumn;
 
     @FXML
     private GridPane customFieldGridPane;
@@ -110,7 +110,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
     @FXML
     private ComboBox<ComboBoxItem> virtualPanelComboBox;
 
-    private Sample sample = null;
+    private SampleView sample = null;
 
     private Panel panel = null;
 
@@ -200,7 +200,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 gene.getLikelyPathogenicInDelCount() > 0 || gene.getLikelyPathogenicSnpCount() > 0;
     }
 
-    public Set<String> returnGeneList(String essentialGenes, String optionalGenes) {
+    private Set<String> returnGeneList(String essentialGenes, String optionalGenes) {
         Set<String> list = new HashSet<>();
 
         essentialGenes = essentialGenes.replaceAll("\\p{Z}", "");
@@ -217,7 +217,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
     }
 
 
-    public List<VariantCountByGeneForGermlineDNA> filteringGeneList(List<VariantCountByGeneForGermlineDNA> list) {
+    private List<VariantCountByGeneForGermlineDNA> filteringGeneList(List<VariantCountByGeneForGermlineDNA> list) {
         List<VariantCountByGeneForGermlineDNA> filteringList = new ArrayList<>();
         try {
             if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
@@ -266,22 +266,24 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         customFieldGridPane.getChildren().clear();
         customFieldGridPane.setPrefHeight(0);
 
-        sample = (Sample)paramMap.get("sample");
+        sample = (SampleView)paramMap.get("sampleView");
 
-        predictionColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSwPathogenicity()));
-        pathogenicityColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getExpertPathogenicity()));
-        reportedTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getIncludedInReport()));
+        pathogenicityColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getSnpInDel().getExpertPathogenicity() != null ?
+                        cellData.getValue().getSnpInDel().getExpertPathogenicity() :
+                        cellData.getValue().getSnpInDel().getSwPathogenicity()));
         chrColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getChromosome()));
         geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
         positionColumn.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getSnpInDel().getGenomicCoordinate().getStartPosition()));
-        transcriptColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getTranscript()));
+        transcriptColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getTranscriptAccession()));
         ntChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
         aaChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChange()));
-        alleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()));
+        alleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()
+                .toString() + "(" + cellData.getValue().getSnpInDel().getReadInfo().getAltReadNum() + "/" + cellData.getValue().getSnpInDel().getReadInfo().getReadDepth() + ")"));
 
-        List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
-        Optional<Panel> panelOptional = panels.stream().filter(panelItem -> panelItem.getId().equals(sample.getPanelId())).findFirst();
-        panelOptional.ifPresent(panel1 -> panel = panel1);
+        panel = sample.getPanel();
+
+        setVirtualPanel();
 
         HttpClientResponse response = null;
         try {
@@ -385,6 +387,11 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
             e.printStackTrace();
         }
 
+        virtualPanelComboBox.getSelectionModel().selectedItemProperty().addListener((ov, t, t1) -> {
+            if(!t1.equals(t)) setVariantsList();
+            if(!t1.equals(t)) setTargetGenesList();
+        });
+
         setTargetGenesList();
     }
 
@@ -442,7 +449,35 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         }
     }
 
-    public void setVariantsList() {
+    private void setVirtualPanel() {
+
+        virtualPanelComboBox.setConverter(new ComboBoxConverter());
+
+        virtualPanelComboBox.getItems().add(new ComboBoxItem());
+
+        virtualPanelComboBox.getSelectionModel().selectFirst();
+
+        try {
+
+            Map<String, Object> params = new HashMap<>();
+
+            params.put("panelId", panel.getId());
+
+            HttpClientResponse response = apiService.get("virtualPanels", params, null, false);
+
+            PagedVirtualPanel pagedVirtualPanel = response.getObjectBeforeConvertResponseToJSON(PagedVirtualPanel.class);
+
+            if(pagedVirtualPanel.getCount() > 0) {
+                for(VirtualPanel virtualPanel : pagedVirtualPanel.getResult()) {
+                    virtualPanelComboBox.getItems().add(new ComboBoxItem(virtualPanel.getId().toString(), virtualPanel.getName()));
+                }
+            }
+        } catch (WebAPIException wae) {
+            wae.printStackTrace();
+        }
+    }
+
+    void setVariantsList() {
         HttpClientResponse response = null;
         try {
             response = apiService.get("/analysisResults/sampleSnpInDels/" + sample.getId(), null,
@@ -462,9 +497,9 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
             benignList = settingPathogenicityList(list, "B");
 
-            List<VariantAndInterpretationEvidence> tableList = new ArrayList<>();
+            List<VariantAndInterpretationEvidence> tableList;
 
-            if(pathogenicList != null && !pathogenicList.isEmpty()) {
+            /*if(pathogenicList != null && !pathogenicList.isEmpty()) {
                 Collections.sort(pathogenicList,
                         (a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
                 tableList.addAll(pathogenicList);
@@ -481,11 +516,17 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                         (a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
 
                 tableList.addAll(uncertainSignificanceList);
-            }
+            }*/
+
+            Collections.sort(list,
+                    (a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
 
             if(variantsTable.getItems() != null && !variantsTable.getItems().isEmpty()) {
                 variantsTable.getItems().removeAll(variantsTable.getItems());
             }
+
+            tableList = list.stream().filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y"))
+                    .collect(Collectors.toList());
 
             variantsTable.getItems().addAll(tableList);
         } catch (WebAPIException wae) {
@@ -541,10 +582,10 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
     /**
      * 입력 정보 저장
-     * @param user
-     * @return
+     * @param user User
+     * @return boolean
      */
-    public boolean saveData(User user) {
+    private boolean saveData(User user) {
 
         String conclusionsText = conclusionsTextArea.getText();
 
@@ -592,6 +633,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
     @FXML
     public void save() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        DialogUtil.setIcon(alert);
         alert.initOwner(getMainController().getPrimaryStage());
         alert.setTitle(CONFIRMATION_DIALOG);
         alert.setHeaderText("Save Report Information");
@@ -612,7 +654,9 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
     public void createPDFAsDraft() {
         boolean dataSave = saveData(null);
         if(dataSave){
-            createPDF(true);
+            if(createPDF(true)) {
+                setVariantsList();
+            }
         }
     }
 
@@ -621,6 +665,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         User user;
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        DialogUtil.setIcon(alert);
         alert.initOwner(getMainController().getPrimaryStage());
         alert.setTitle(CONFIRMATION_DIALOG);
         alert.setHeaderText("Test conducting organization information");
@@ -650,6 +695,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                     // 최종 보고서 생성이 정상 처리된 경우 분석 샘플의 상태값 완료 처리.
                     if (createPDF(false)) {
                         //setComplete();
+                        setVariantsList();
                     }
                 }
             }  catch (WebAPIException wae) {
@@ -670,7 +716,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
     }
 
-    public boolean createPDF(boolean isDraft) {
+    private boolean createPDF(boolean isDraft) {
         boolean created = true;
         String reportCreationErrorMsg = "An error occurred during the creation of the report document.";
         try {
@@ -707,7 +753,6 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 contentsMap.put("panelCode", panel.getCode());
                 contentsMap.put("sampleSource", sample.getSampleSource());
                 //리포트를 생성할 때마다 고유 ID 부여 report ID + random Int
-                contentsMap.put("reportingDate" , new Date().toString());
                 contentsMap.put("reportID", String.format("%05d-%05d", sample.getId(), random.nextInt(99999)));
 
                 contentsMap.put("inspectorOrganization", "");
@@ -780,7 +825,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
                 if(list != null && !list.isEmpty()) {
                     for(VariantAndInterpretationEvidence variant : list){
-                        variant.getSnpInDel().getSnpInDelExpression().setTranscript(ConvertUtil.insertTextAtFixedPosition(variant.getSnpInDel().getSnpInDelExpression().getTranscript(), 15, "\n"));
+                        variant.getSnpInDel().getSnpInDelExpression().setTranscript(ConvertUtil.insertTextAtFixedPosition(variant.getSnpInDel().getSnpInDelExpression().getTranscriptAccession(), 15, "\n"));
                         variant.getSnpInDel().getSnpInDelExpression().setNtChange(ConvertUtil.insertTextAtFixedPosition(variant.getSnpInDel().getSnpInDelExpression().getNtChange(), 15, "\n"));
                         variant.getSnpInDel().getSnpInDelExpression().setAaChange(ConvertUtil.insertTextAtFixedPosition(variant.getSnpInDel().getSnpInDelExpression().getAaChange(), 15, "\n"));
                     }
@@ -808,6 +853,25 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 model.put("draftImageURL", draftImageStr);
                 model.put("ngenebioLogo", ngenebioLogo);
                 model.put("contents", contentsMap);
+
+                if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+
+                    HttpClientResponse response = apiService.get("/analysisResults/sampleQCs/" + sample.getId(), null,
+                            null, false);
+
+                    List<SampleQC> qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
+
+                    contentsMap.put("mappingQuality", findQCResult(qcList, "mapping_quality_60"));
+                    contentsMap.put("uniformity", findQCResult(qcList, "uniformity_0.2"));
+                    contentsMap.put("totalBase", findQCResult(qcList, "total_base"));
+                    contentsMap.put("q30", findQCResult(qcList, "q30_trimmed_base"));
+                    contentsMap.put("mappedBase", findQCResult(qcList, "mapped_base"));
+                    contentsMap.put("onTarget", findQCResult(qcList, "on_target"));
+                    contentsMap.put("onTargetCoverage", findQCResult(qcList, "on_target_coverage"));
+                    contentsMap.put("duplicatedReads", findQCResult(qcList, "duplicated_reads"));
+                    contentsMap.put("roiCoverage", findQCResult(qcList, "roi_coverage"));
+                }
+
 
                 // 템플릿에 데이터 바인딩하여 pdf 생성 스크립트 생성
                 String contents = null;
@@ -844,7 +908,11 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                         if(!jarFile.exists()) {
 
                             File folder = new File(filePath);
-                            if (!folder.exists()) folder.mkdirs();
+                            if (!folder.exists()){
+                                if(!folder.mkdirs()) {
+                                    throw new Exception("Fail to make jarFile directory");
+                                }
+                            }
 
                             Task task = new JarDownloadTask(this, component);
 
@@ -858,9 +926,13 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                                     URL[] jarUrls = new URL[]{jarFile1.toURI().toURL()};
                                     createWordFile(jarUrls, file, contentsMap, reportCreationErrorMsg);
                                 } catch (MalformedURLException murle) {
-                                    DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + murle.getMessage(), getMainApp().getPrimaryStage(), false);
+                                    DialogUtil.error("Report Generation Fail", reportCreationErrorMsg + "\n" + murle.getMessage(), getMainApp().getPrimaryStage(), false);
                                     murle.printStackTrace();
                                 }
+                            });
+                            task.exceptionProperty().addListener((observable, oldValue, newValue) -> {
+                                DialogUtil.error("Report Generation Fail",
+                                        ((Exception)newValue).getMessage(), getMainApp().getPrimaryStage(), false);
                             });
                         } else {
                             URL[] jarUrls = new URL[]{jarFile.toURI().toURL()};
@@ -922,7 +994,6 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
             @SuppressWarnings("unchecked")
             Class classToLoad = Class.forName("word.create.App", true, classLoader);
             logger.debug("application init..");
-            Method[] methods = classToLoad.getMethods();
             Method setParams = classToLoad.getMethod("setParams", Map.class);
             Method updateEmbeddedDoc = classToLoad.getMethod("updateEmbeddedDoc");
             Method updateWordFile = classToLoad.getDeclaredMethod("updateWordFile");
@@ -932,7 +1003,6 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
             result = setWriteFilePath.invoke(application, file.getPath());
             result = updateEmbeddedDoc.invoke(application);
             result = updateWordFile.invoke(application);
-            System.out.print("test");
             createdCheck(true, file);
         } catch (Exception e) {
             DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);
@@ -940,10 +1010,11 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         }
     }
 
-    public void createdCheck(boolean created, File file) {
+    private void createdCheck(boolean created, File file) {
         try {
             if (created) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                DialogUtil.setIcon(alert);
                 alert.initOwner(getMainController().getPrimaryStage());
                 alert.setTitle(CONFIRMATION_DIALOG);
                 alert.setHeaderText("Creating the report document was completed.");
@@ -963,5 +1034,24 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
             DialogUtil.error("Save Fail.", "An error occurred during the creation of the report document.",
                     getMainApp().getPrimaryStage(), false);
         }
+    }
+
+    private SampleQC findQCResult(List<SampleQC> qcList, String qc) {
+        if(qcList != null && !qcList.isEmpty()) {
+            Optional<SampleQC> findQC = qcList.stream().filter(sampleQC -> sampleQC.getQcType().equalsIgnoreCase(qc)).findFirst();
+            if(findQC.isPresent()) {
+                SampleQC qcData = findQC.get();
+                String number = findQC.get().getQcValue().toString();
+                Long value = Math.round(Double.parseDouble(number));
+                if(qc.equalsIgnoreCase("total_base")) {
+                    qcData.setQcUnit("Mb");
+                    qcData.setQcValue(BigDecimal.valueOf(value / 1024 / 1024));
+                    return qcData;
+                }
+                qcData.setQcValue(BigDecimal.valueOf(value));
+                return qcData;
+            }
+        }
+        return null;
     }
 }

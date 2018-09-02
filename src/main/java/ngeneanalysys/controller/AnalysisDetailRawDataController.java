@@ -1,6 +1,7 @@
 package ngeneanalysys.controller;
 
 import javafx.application.Platform;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -8,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -23,7 +25,7 @@ import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.AnalysisFile;
 import ngeneanalysys.model.AnalysisFileList;
-import ngeneanalysys.model.Sample;
+import ngeneanalysys.model.SampleView;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.task.AnalysisResultFileDownloadTask;
 import ngeneanalysys.util.ConvertUtil;
@@ -37,6 +39,7 @@ import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -57,7 +60,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
     private Stage currentStage;
 
     /** 현재 샘플 정보 객체 */
-    private Sample sample;
+    private SampleView sample;
 
     /** 전체 파일 목록 객체 */
     private List<AnalysisFile> totalList;
@@ -98,8 +101,93 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
 
-        sample = (Sample)paramMap.get("sample");
-        // 파일 목록 요청
+        sample = (SampleView)paramMap.get("sampleView");
+
+        createCheckBox();
+        typeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFileType()));
+        filenameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
+        sizeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.convertFileSizeFormat(cellData.getValue().getSize())));
+        createdColumn.setCellValueFactory(cellData -> new SimpleStringProperty(DateFormatUtils.format(cellData.getValue().getCreatedAt().toDate(), "yyyy/MM/dd")));
+        downloadColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue()));
+        downloadColumn.setCellFactory(param -> new TableCell<AnalysisFile, Object>() {
+            @Override
+            public void updateItem(Object item, boolean empty) {
+                if (item != null) {
+                    Button button = new Button("Download");
+                    button.getStyleClass().add("btn_raw_data_download");
+                    button.setOnAction(event -> download((AnalysisFile) item));
+                    setGraphic(button);
+                } else {
+                    setGraphic(null);
+                }
+            }
+        });
+        downloadColumn.setSortable(false);
+
+        sizeColumn.setComparator((o1, o2) -> {
+
+            String[] item1 = o1.replaceAll(",", "").split(" ");
+            String[] item2 = o2.replaceAll(",", "").split(" ");
+            BigDecimal value1 = returnData(item1[0] ,item1[1]);
+            BigDecimal value2 = returnData(item2[0] ,item2[1]);
+
+            if(value1.longValue() > value2.longValue()) {
+                return 1;
+            } else if(value1.longValue() < value2.longValue()) {
+                return -1;
+            }
+
+            return 0;
+        });
+
+        getAnalysisFiles();
+
+        currentStage = new Stage();
+        currentStage.setResizable(false);
+        currentStage.initStyle(StageStyle.DECORATED);
+        currentStage.initModality(Modality.APPLICATION_MODAL);
+        currentStage.setTitle(CommonConstants.SYSTEM_NAME + " > Analysis Result Data Download");
+        // OS가 Window인 경우 아이콘 출력.
+        if (System.getProperty("os.name").toLowerCase().contains("window")) {
+            currentStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
+        }
+        currentStage.initOwner(getMainApp().getPrimaryStage());
+
+        Scene scene = new Scene(root);
+        currentStage.setScene(scene);
+        currentStage.showAndWait();
+    }
+
+    private void createTableHeader(TableColumn<AnalysisFile, ?> column) {
+        HBox hBox = new HBox();
+        hBox.setPrefHeight(Double.MAX_VALUE);
+        hBox.setAlignment(Pos.CENTER);
+        CheckBox box = new CheckBox();
+        hBox.getChildren().add(box);
+        column.setStyle("-fx-alignment : center");
+        column.setSortable(false);
+        column.setGraphic(box);
+
+        box.selectedProperty().addListener((list, ov, nv) -> {
+            if(rawListTableView.getItems() != null) {
+                rawListTableView.getItems().forEach(item -> item.setCheckItem(nv));
+                rawListTableView.refresh();
+            }
+        });
+
+        column.setPrefWidth(50);
+
+        rawListTableView.getColumns().add(0, column);
+    }
+
+    private void createCheckBox() {
+        TableColumn<AnalysisFile, Boolean> checkBoxColumn = new TableColumn<>("");
+        createTableHeader(checkBoxColumn);
+        checkBoxColumn.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue() != null ));
+        checkBoxColumn.setCellFactory(param -> new BooleanCell());
+    }
+
+    private void getAnalysisFiles() {
         Map<String,Object> paramMap = new HashMap<>();
         paramMap.put("sampleId", sample.getId());
         try {
@@ -121,40 +209,34 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
             logger.error("Unknown Error", e);
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
-        // 목록 컬럼 설정
-        typeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFileType()));
-        filenameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
-        sizeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.convertFileSizeFormat(cellData.getValue().getSize().longValue())));
-        createdColumn.setCellValueFactory(cellData -> new SimpleStringProperty(DateFormatUtils.format(cellData.getValue().getCreatedAt().toDate(), "yyyy/MM/dd")));
-        downloadColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue()));
-        downloadColumn.setCellFactory(param -> new TableCell<AnalysisFile, Object>() {
-            @Override
-            public void updateItem(Object item, boolean empty) {
-                if (item != null) {
-                    Button button = new Button("Download");
-                    button.getStyleClass().add("btn_raw_data_download");
-                    button.setOnAction(event -> download((AnalysisFile) item));
-                    setGraphic(button);
-                } else {
-                    setGraphic(null);
-                }
-            }
-        });
+    }
 
-        currentStage = new Stage();
-        currentStage.setResizable(false);
-        currentStage.initStyle(StageStyle.DECORATED);
-        currentStage.initModality(Modality.APPLICATION_MODAL);
-        currentStage.setTitle(CommonConstants.SYSTEM_NAME + " > Analysis Result Data Download");
-        // OS가 Window인 경우 아이콘 출력.
-        if (System.getProperty("os.name").toLowerCase().contains("window")) {
-            currentStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
+    private BigDecimal returnData(String value, String unit) {
+        BigDecimal returnValue = new BigDecimal(value);
+        final BigDecimal unitValue = new BigDecimal(1024);
+        switch (unit) {
+            case "KB":
+                returnValue = returnValue.multiply(unitValue);
+                break;
+            case "MB":
+                returnValue = returnValue.multiply(unitValue)
+                        .multiply(unitValue);
+                break;
+            case "GB":
+                returnValue = returnValue.multiply(unitValue)
+                        .multiply(unitValue)
+                        .multiply(unitValue);
+                break;
+            case "TB":
+                returnValue = returnValue.multiply(unitValue)
+                        .multiply(unitValue)
+                        .multiply(unitValue)
+                        .multiply(unitValue);
+                break;
+            default:
         }
-        currentStage.initOwner(getMainApp().getPrimaryStage());
 
-        Scene scene = new Scene(root);
-        currentStage.setScene(scene);
-        currentStage.showAndWait();
+        return returnValue;
     }
 
     /**
@@ -284,6 +366,51 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
         } catch (Exception e) {
             DialogUtil.error("Save Fail.", "An error occurred during the download.", getMainController().getPrimaryStage(), false);
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void fileDelete() {
+        List<AnalysisFile> files = rawListTableView.getItems().stream().filter(AnalysisFile::getCheckItem).collect(Collectors.toList());
+
+        if(!files.isEmpty()) {
+            for(AnalysisFile analysisFile : files) {
+                try {
+                    apiService.delete("analysisFiles/" + analysisFile.getId());
+                } catch (WebAPIException wae) {
+                    logger.debug(wae.getMessage());
+                }
+            }
+            getAnalysisFiles();
+        }
+
+    }
+
+    class BooleanCell extends TableCell<AnalysisFile, Boolean> {
+        private CheckBox checkBox = new CheckBox();
+
+        private BooleanCell() {
+            checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+                AnalysisFile analysisFile = BooleanCell.this.getTableView().getItems().get(
+                        BooleanCell.this.getIndex());
+                analysisFile.setCheckItem(newValue);
+                checkBox.setSelected(newValue);
+            });
+        }
+
+        @Override
+        public void updateItem(Boolean item, boolean empty) {
+            super.updateItem(item, empty);
+            if(empty) {
+                setGraphic(null);
+                return;
+            }
+
+            AnalysisFile analysisFile = BooleanCell.this.getTableView().getItems().get(
+                    BooleanCell.this.getIndex());
+            checkBox.setSelected(analysisFile.getCheckItem());
+
+            setGraphic(checkBox);
         }
     }
 

@@ -9,7 +9,7 @@ import java.util.List;
  * @author Jang
  * @since 2017-09-04
  */
-public class RunGroupForPaging extends CommonPagination implements Serializable {
+public class RunGroupForPaging extends CommonPagination {
     private static final long serialVersionUID = -1285015411935459072L;
 
     /** 목록 */

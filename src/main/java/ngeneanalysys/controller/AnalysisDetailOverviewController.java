@@ -1,27 +1,29 @@
 package ngeneanalysys.controller;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedVariantAndInterpretationEvidence;
 import ngeneanalysys.service.APIService;
-import ngeneanalysys.util.ConvertUtil;
-import ngeneanalysys.util.DialogUtil;
-import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.StringUtils;
+import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,22 +35,19 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
     private static Logger logger = LoggerUtil.getLogger();
 
     @FXML
+    private GridPane dataQCResultGridPane;
+
+    @FXML
     private Label tierOneVariantsCountLabel;
 
     @FXML
     private Label tierOneGenesCountLabel;
-
-    /*@FXML
-    private Label tierOneTherapeuticLabel;*/
 
     @FXML
     private Label tierTwoVariantsCountLabel;
 
     @FXML
     private Label tierTwoGenesCountLabel;
-
-    /*@FXML
-    private Label tierTwoTherapeuticLabel;*/
 
     @FXML
     private Label tierThreeVariantsCountLabel;
@@ -86,58 +85,16 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
     @FXML
     private TableColumn<VariantAndInterpretationEvidence, String> aaChangeColumn;
 
-
     @FXML
     private TableColumn<VariantAndInterpretationEvidence, Object> therapeuticColumn;
 
     @FXML
-    private TableColumn<VariantAndInterpretationEvidence, BigDecimal> alleleFrequencyColumn;
-
-    @FXML
-    private Label totalBaseLabel;
-
-    @FXML
-    private Label q30Label;
-
-    @FXML
-    private Label mappedLabel;
-
-    @FXML
-    private Label onTargetLabel;
-
-    @FXML
-    private Label onTargetCoverageLabel;
-
-    @FXML
-    private Label duplicatedReadsLabel;
-
-    @FXML
-    private Label roiCoverageLabel;
-
-    @FXML
-    private Tooltip totalBaseTooltip;
-
-    @FXML
-    private Tooltip q30Tooltip;
-
-    @FXML
-    private Tooltip mappedBaseTooltip;
-
-    @FXML
-    private Tooltip onTargetTooltip;
-
-    @FXML
-    private Tooltip onTargetCoverageTooltip;
-
-    @FXML
-    private Tooltip duplicatedReadsTooltip;
-
-    @FXML
-    private Tooltip roiCoverageTooltip;
+    private TableColumn<VariantAndInterpretationEvidence, String> alleleFrequencyColumn;
 
     /** API 서버 통신 서비스 */
     private APIService apiService;
 
+    @SuppressWarnings("unchecked")
     @Override
     public void show(Parent root) throws IOException {
         logger.debug("show..");
@@ -151,9 +108,10 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                 ConvertUtil.tierConvert(cellData.getValue().getSnpInDel().getSwTier())));
         geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
         variantColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
-        alleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()));
+        alleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()
+            .toString() + "(" + cellData.getValue().getSnpInDel().getReadInfo().getAltReadNum() + "/" + cellData.getValue().getSnpInDel().getReadInfo().getReadDepth() + ")"));
         positionColumn.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getSnpInDel().getGenomicCoordinate().getStartPosition()));
-        transcriptColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getTranscript()));
+        transcriptColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getTranscriptAccession()));
         ntChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
         aaChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChange()));
         therapeuticColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDelEvidences()));
@@ -167,7 +125,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                     List<SnpInDelEvidence> interpretation = (List<SnpInDelEvidence>) item;
 
                     Map<String, List<SnpInDelEvidence>> evidenceInterpretation = interpretation.stream().collect(
-                            Collectors.groupingBy(evidence -> evidence.getEvidenceLevel()));
+                            Collectors.groupingBy(SnpInDelEvidence::getEvidenceLevel));
 
                     createEvidenceLabel(evidenceInterpretation.get("A"), hBox, "A");
                     createEvidenceLabel(evidenceInterpretation.get("B"), hBox, "B");
@@ -180,7 +138,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         setDisplayItem();
     }
 
-    public void createEvidenceLabel(List<SnpInDelEvidence> interpretation, HBox hBox, String evidenceLevel) {
+    private void createEvidenceLabel(List<SnpInDelEvidence> interpretation, HBox hBox, String evidenceLevel) {
         if(interpretation == null || interpretation.isEmpty()) {
             return;
         }
@@ -206,12 +164,12 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         return null;
     }
 
-    private long countTherapeutic (List<SnpInDelEvidence> snpInDelInterpretations) {
-        return snpInDelInterpretations.stream().filter(item -> (item.getEvidence().equalsIgnoreCase("therapeutic"))).count();
-    }
+    void setDisplayItem() {
+        SampleView sample = (SampleView) getParamMap().get("sampleView");
 
-    public void setDisplayItem() {
-        Sample sample = (Sample) getParamMap().get("sample");
+        //기본 초기화
+        Platform.runLater(() -> settingOverallQC(sample.getId()));
+
         try {
             HttpClientResponse response = apiService.get("/analysisResults/sampleSnpInDels/" + sample.getId(), null,
                     null, false);
@@ -219,6 +177,13 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
             PagedVariantAndInterpretationEvidence analysisResultVariantList = response.getObjectBeforeConvertResponseToJSON(PagedVariantAndInterpretationEvidence.class);
 
             List<VariantAndInterpretationEvidence> list = analysisResultVariantList.getResult();
+
+            if(list == null) {
+                list = new ArrayList<>();
+            }
+
+            list = list.stream().filter(item -> item.getSnpInDel().getIsFalse().equalsIgnoreCase("N"))
+                    .collect(Collectors.toList());
 
             List<VariantAndInterpretationEvidence> tierOne = settingTierList(list, "T1");
 
@@ -296,7 +261,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                 tierFourVariantsCountLabel.setText(String.valueOf(tierFour.size()));
 
                 List<GenomicCoordinate> genomicCoordinates = new ArrayList<>();
-                tierFour.stream().forEach(item -> {
+                tierFour.forEach(item -> {
                     if (item.getSnpInDel().getGenomicCoordinate() != null)
                         genomicCoordinates.add(item.getSnpInDel().getGenomicCoordinate());
                 });
@@ -307,13 +272,48 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        //기본 초기화
-        settingOverallQC(sample.getId());
     }
 
-    public void settingOverallQC(int sampleId) {
+    private void addQCGrid(SampleQC sampleQC, int col) {
+        ColumnConstraints columnConstraints = new ColumnConstraints();
+        columnConstraints.setHgrow(Priority.ALWAYS);
+        dataQCResultGridPane.getColumnConstraints().add(columnConstraints);
+        HBox hBox = new HBox();
+        hBox.setSpacing(10);
+        hBox.setStyle(hBox.getStyle() + "-fx-background-color : #8f9fb9;");
+        hBox.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        hBox.setAlignment(Pos.CENTER);
+        String title = ConvertUtil.returnQCTitle(sampleQC.getQcType());
+        Label titleLabel = new Label(title);
+        titleLabel.setStyle(titleLabel.getStyle() + "-fx-text-fill : #FFF;");
+        Label descriptionLabel = new Label();
 
+        descriptionLabel.getStyleClass().add("help_tooltip_white");
+        descriptionLabel.setStyle(descriptionLabel.getStyle() + "-fx-cursor : hand;");
+        String value = sampleQC.getQcDescription() + " " + sampleQC.getQcThreshold() + System.lineSeparator()
+                + "Value : " + sampleQC.getQcValue().stripTrailingZeros().toPlainString() + sampleQC.getQcUnit();
+        descriptionLabel.setOnMouseClicked(ev ->
+            PopOverUtil.openQCPopOver(descriptionLabel, value));
+
+        hBox.getChildren().addAll(titleLabel, descriptionLabel);
+
+        dataQCResultGridPane.add(hBox, col, 0);
+
+        Label qcResultLabel = new Label(sampleQC.getQcResult().toUpperCase());
+        //qcResultLabel.setTooltip(new Tooltip(sampleQC.getQcValue() + sampleQC.getQcUnit()));
+
+        dataQCResultGridPane.add(qcResultLabel, col, 1);
+        GridPane.setValignment(qcResultLabel, VPos.CENTER);
+        GridPane.setHalignment(qcResultLabel, HPos.CENTER);
+
+    }
+
+    @SuppressWarnings("unchecked")
+    private void settingOverallQC(int sampleId) {
+        if(dataQCResultGridPane.getChildren() != null && !dataQCResultGridPane.getChildren().isEmpty()) {
+            dataQCResultGridPane.getChildren().removeAll(dataQCResultGridPane.getChildren());
+            dataQCResultGridPane.getColumnConstraints().removeAll(dataQCResultGridPane.getColumnConstraints());
+        }
         List<SampleQC> qcList = null;
 
         try {
@@ -322,78 +322,17 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
 
             qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
 
-            totalBaseLabel.setText(findQCResult(qcList, "total_base"));
-            totalBaseLabel.setTooltip(new Tooltip(findQCResultString(qcList, "total_base")));
-            totalBaseTooltip.setText(findQCTooltipString(qcList, "total_base"));
-
-            q30Label.setText(findQCResult(qcList, "q30_trimmed_base"));
-            q30Label.setTooltip(new Tooltip(findQCResultString(qcList, "q30_trimmed_base")));
-            q30Tooltip.setText(findQCTooltipString(qcList, "q30_trimmed_base"));
-
-            mappedLabel.setText(findQCResult(qcList, "mapped_base"));
-            mappedLabel.setTooltip(new Tooltip(findQCResultString(qcList, "mapped_base")));
-            mappedBaseTooltip.setText(findQCTooltipString(qcList, "mapped_base"));
-
-            onTargetLabel.setText(findQCResult(qcList, "on_target"));
-            onTargetLabel.setTooltip(new Tooltip(findQCResultString(qcList, "on_target")));
-            onTargetTooltip.setText(findQCTooltipString(qcList, "on_target"));
-
-            onTargetCoverageLabel.setText(findQCResult(qcList, "on_target_coverage"));
-            onTargetCoverageLabel.setTooltip(new Tooltip(findQCResultString(qcList, "on_target_coverage")));
-            onTargetCoverageTooltip.setText(findQCTooltipString(qcList, "on_target_coverage"));
-
-            duplicatedReadsLabel.setText(findQCResult(qcList, "duplicated_reads"));
-            duplicatedReadsLabel.setTooltip(new Tooltip(findQCResultString(qcList, "duplicated_reads")));
-            duplicatedReadsTooltip.setText(findQCTooltipString(qcList, "duplicated_reads"));
-
-            roiCoverageLabel.setText(findQCResult(qcList, "roi_coverage"));
-            roiCoverageLabel.setTooltip(new Tooltip(findQCResultString(qcList, "roi_coverage")));
-            roiCoverageTooltip.setText(findQCTooltipString(qcList, "roi_coverage"));
+            qcList.sort(Comparator.comparing(SampleQC::getQcType));
+            int i = 0;
+            for(SampleQC sampleQC : qcList) {
+                if(!sampleQC.getQcThreshold().equals("N/A")) {
+                    addQCGrid(sampleQC, i++);
+                }
+            }
 
         } catch(WebAPIException e) {
             DialogUtil.alert("QC ERROR", e.getMessage(), this.getMainApp().getPrimaryStage(), true);
         }
-    }
-
-    //qcList에서 해당 qc 결과를 반환
-    private String findQCResult(List<SampleQC> qcList, String qc) {
-        String result = "none";
-
-        if(qcList != null && !qcList.isEmpty()) {
-            Optional<SampleQC> findQC = qcList.stream().filter(sampleQC -> sampleQC.getQcType().equalsIgnoreCase(qc)).findFirst();
-            if(findQC.isPresent()) {
-                result = findQC.get().getQcResult();
-            }
-        }
-
-        return result;
-    }
-
-    //qcList에서 해당 qc 결과를 반환
-    private String findQCTooltipString(List<SampleQC> qcList, String qc) {
-        String result = "";
-
-        if(qcList != null && !qcList.isEmpty()) {
-            Optional<SampleQC> findQC = qcList.stream().filter(sampleQC -> sampleQC.getQcType().equalsIgnoreCase(qc)).findFirst();
-            if(findQC.isPresent()) {
-                result = findQC.get().getQcDescription() + " " + findQC.get().getQcThreshold();
-            }
-        }
-
-        return result;
-    }
-
-    private String findQCResultString(List<SampleQC> qcList, String qc) {
-        String result = "";
-
-        if(qcList != null && !qcList.isEmpty()) {
-            Optional<SampleQC> findQC = qcList.stream().filter(sampleQC -> sampleQC.getQcType().equalsIgnoreCase(qc)).findFirst();
-            if(findQC.isPresent()) {
-                result = findQC.get().getQcValue() + findQC.get().getQcUnit();
-            }
-        }
-
-        return result;
     }
 
 }

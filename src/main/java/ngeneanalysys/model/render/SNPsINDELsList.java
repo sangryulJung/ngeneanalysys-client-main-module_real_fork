@@ -3,6 +3,10 @@ package ngeneanalysys.model.render;
 import java.util.Map;
 import java.util.Set;
 
+import javafx.scene.input.MouseEvent;
+import ngeneanalysys.code.constants.CommonConstants;
+import ngeneanalysys.code.enums.PipelineCode;
+import ngeneanalysys.model.Panel;
 import ngeneanalysys.util.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
@@ -23,14 +27,13 @@ import javafx.scene.layout.VBox;
  * @since 2016. 6. 17. 오후 11:14:41
  */
 public class SNPsINDELsList {
-
 	/**
 	 * Warning 상세 이유 팝업 출력 버튼 객체 반환
 	 * @param jsonStr
 	 * @return
 	 */
 	@SuppressWarnings("static-access")
-	public static Button getWarningReasonPopOver(String jsonStr) {
+	public static Button getWarningReasonPopOver(String jsonStr, Panel panel) {
 		Button button = new Button();
 		button.getStyleClass().add("btn_warn");
 		
@@ -41,30 +44,54 @@ public class SNPsINDELsList {
 			Label label = new Label("< Empty Warning Reason >");
 			box.getChildren().add(label);
 		} else {
-			box.setAlignment(Pos.BOTTOM_LEFT);
+			/*box.setAlignment(Pos.BOTTOM_LEFT);
 			Map<String,String> map = JsonUtil.fromJsonToMap(jsonStr.replace("'", "\""));
-
-			Set<String> mapKey = map.keySet();
+			Set<Map.Entry<String, String>> mapKey = map.entrySet();
 			int currentIndex = 1;
-			for(String key : mapKey) {
+			for(Map.Entry<String, String> entry : mapKey) {
 				//if(key.toUpperCase().equals("WARNING")) continue;
 
-				if (key.equalsIgnoreCase("low_variant_coverage_depth") ||
-						key.equalsIgnoreCase("low_variant_fraction") ||
-						key.equalsIgnoreCase("homopolymer_region") ||
-						key.equalsIgnoreCase("soft_clipped_amplicon") ||
-						key.equalsIgnoreCase("primer_deletion") ||
-						key.equalsIgnoreCase("low_read_depth") ||
-						key.equalsIgnoreCase("low_allele_fraction") ||
-						key.equalsIgnoreCase("low_confidence")) {
+				if (panel.getName().equals(CommonConstants.TST_170_DNA) ||
+						entry.getKey().equalsIgnoreCase("low_variant_coverage_depth") ||
+						entry.getKey().equalsIgnoreCase("low_variant_fraction") ||
+						entry.getKey().equalsIgnoreCase("homopolymer_region") ||
+						entry.getKey().equalsIgnoreCase("soft_clipped_amplicon") ||
+						entry.getKey().equalsIgnoreCase("primer_deletion") ||
+						entry.getKey().equalsIgnoreCase("low_read_depth") ||
+						entry.getKey().equalsIgnoreCase("low_allele_fraction") ||
+						entry.getKey().equalsIgnoreCase("low_confidence")) {
 
-					String warningString = map.get(key);
-					String titleString = "* " + WordUtils.capitalize(key.replaceAll("_", " ")) + " : ";
-					HBox hbox = getWarningReasonItemBox(titleString, warningString == null ? "N/A" : warningString);
+					String warningString = map.getOrDefault(entry.getKey(), "N/A");
+					String titleString = "* " + WordUtils.capitalize(entry.getKey().replaceAll("_", " ")) + " : ";
+					HBox hbox = getWarningReasonItemBox(titleString, warningString, panel);
 					box.getChildren().add(hbox);
 					if (mapKey.size() > currentIndex) box.setMargin(hbox, new Insets(5, 0, 0, 0));
 					currentIndex++;
 				}
+			}*/
+			box.setAlignment(Pos.BOTTOM_LEFT);
+			String[] list = jsonStr.split(",");
+			int currentIndex = 0;
+			for(String item : list) {
+				currentIndex++;
+//				if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode()) ||
+//						item.contains("low_variant_coverage_depth") ||
+//						item.contains("low_variant_fraction") ||
+//						item.contains("homopolymer_region") ||
+//						item.contains("soft_clipped_amplicon") ||
+//						item.contains("primer_deletion") ||
+//						item.contains("low_read_depth") ||
+//						item.contains("low_allele_fraction") ||
+//						item.contains("low_confidence")) {
+//					String[] splitItem = item.split(":");
+
+					//String titleString = "* " + WordUtils.capitalize(splitItem[0].replaceAll("_", " ")) + " : ";
+					HBox hbox = getWarningReasonItemBox(item, "NONE" , panel);
+					box.getChildren().add(hbox);
+
+					if (list.length > currentIndex) box.setMargin(hbox, new Insets(5, 0, 0, 0));
+
+				//}
 			}
 
 			/*if(map != null && !map.isEmpty() && map.size() > 0) {
@@ -103,6 +130,7 @@ public class SNPsINDELsList {
 			popOver.setArrowIndent(30);
 			popOver.setContentNode(box);
 			popOver.show(button);
+			popOver.addEventHandler(MouseEvent.MOUSE_CLICKED, evt -> popOver.hide());
 		});
 		
 		return button;
@@ -110,21 +138,26 @@ public class SNPsINDELsList {
 	
 	/**
 	 * Warning 상세 이유 개별 항목 HBOX 객체 반환
-	 * @param title
-	 * @param flag
-	 * @return
+	 * @param title String
+	 * @param flag String
+	 * @return HBox
 	 */
-	public static HBox getWarningReasonItemBox(String title, String flag) {
+	private static HBox getWarningReasonItemBox(String title, String flag, Panel panel) {
 		HBox hBox = new HBox();
-		Label flagLabel = new Label(flag.toUpperCase());
-		if(!StringUtils.isEmpty(flag) && "YES".equals(flag.toUpperCase())) {
+		Label flagLabel = new Label();
+		if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
+			flagLabel.setText(flag);
+		} else {
+			flagLabel.setText(flag.toUpperCase());
+		}
+		if(StringUtils.isNotEmpty(flag) && "YES".equals(flag.toUpperCase())) {
 			flagLabel.getStyleClass().add("txt_green");
 		} else {
 			flagLabel.getStyleClass().add("txt_red");
 		}
 		flagLabel.getStyleClass().add("weight_bold");
-		hBox.getChildren().add(new Label(title));
-		hBox.getChildren().add(flagLabel);
+		hBox.getChildren().add(new Label(title.replace(":", " : ")));
+		//hBox.getChildren().add(flagLabel);
 		return hBox;
 	}
 }

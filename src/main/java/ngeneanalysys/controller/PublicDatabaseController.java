@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -65,6 +66,9 @@ public class PublicDatabaseController extends SubPaneController {
     @FXML
     private ScrollPane releaseNoteScrollPane;
 
+    @FXML
+    private TabPane itemTabPane;
+
     /**
      * @param panelId Integer
      */
@@ -88,7 +92,8 @@ public class PublicDatabaseController extends SubPaneController {
             dialogStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
         }
         dialogStage.initOwner(getMainApp().getPrimaryStage());
-        dialogStage.resizableProperty().setValue(false);
+        dialogStage.setMinWidth(1030);
+        dialogStage.setMinHeight(566);
 
         versionComboBox.getSelectionModel().selectedItemProperty().addListener((ob, ov, nv) -> {
             logger.debug("test");
@@ -110,12 +115,13 @@ public class PublicDatabaseController extends SubPaneController {
 
         setVersionComboBox();
 
-        // Schen Init
+        // Scene Init
         Scene scene = new Scene(root);
         dialogStage.setScene(scene);
         dialogStage.showAndWait();
     }
 
+    @SuppressWarnings("unchecked")
     private void setList(String id) {
         if(toolsContentsGridPane.getChildren() != null && !toolsContentsGridPane.getChildren().isEmpty()) {
             toolsContentsGridPane.getChildren().removeAll(toolsContentsGridPane.getChildren());
@@ -244,6 +250,7 @@ public class PublicDatabaseController extends SubPaneController {
         return label;
     }
 
+    @SuppressWarnings("unchecked")
     private void setVersionComboBox() {
         versionComboBox.setConverter(new ComboBoxConverter());
         try {

@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<ScrollPane prefHeight="475.0" prefWidth="1030.0" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SystemMenuPublicDatabasesController">
+<ScrollPane prefHeight="475.0" prefWidth="1030.0" stylesheets="@../css/common.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.systemMenu.SystemMenuPublicDatabasesController">
    <content>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1840.0" prefWidth="1015.0" styleClass="bg_gray_f3">
          <children>

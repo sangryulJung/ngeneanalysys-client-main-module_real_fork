@@ -1,6 +1,5 @@
 package ngeneanalysys.model.render;
 
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -32,17 +31,6 @@ public class LowConfidenceList {
             HBox hbox = getLowConfidenceItemBox(lowConfidence);
             box.getChildren().add(hbox);
 
-            //String[] map = lowConfidence.split("|");
-
-            /*int currentIndex = 0;
-            for(int i = 0 ; i < map.length ; i++) {
-                String titleString = "* " + map[i];
-                HBox hbox = getLowConfidenceItemBox(titleString);
-                box.getChildren().add(hbox);
-                if (map.length > currentIndex) box.setMargin(hbox, new Insets(5, 0, 0, 0));
-                currentIndex++;
-
-            }*/
         }
 
         button.setOnAction(event -> {
@@ -63,12 +51,12 @@ public class LowConfidenceList {
 
     /**
      * Warning 상세 이유 개별 항목 HBOX 객체 반환
-     * @param title
-     * @return
+     * @param title String
+     * @return HBox
      */
-    public static HBox getLowConfidenceItemBox(String title) {
+    private static HBox getLowConfidenceItemBox(String title) {
         HBox hBox = new HBox();
-        hBox.getChildren().add(new Label(title));
+        hBox.getChildren().add(new Label(title.toUpperCase().replaceAll("\\|", ", ")));
         return hBox;
     }
 }

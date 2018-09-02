@@ -214,3 +214,56 @@
     -fx-text-fill : #FFFFFF;
     -fx-alignment : center;
 }
+
+#excel_download_image {
+    -fx-cursor:hand;
+    -fx-graphic: url("../images/renewal/excel16_icon.png");
+    -fx-background-color : transparent;
+    -fx-pref-width : 16;
+    -fx-pref-height : 16;
+    -fx-min-width : 16;
+    -fx-min-height : 16;
+    -fx-cursor:hand;
+}
+
+.fileDownloadButton {
+    -fx-cursor:hand;
+    -fx-graphic: url("../images/renewal/download_icon.png");
+    -fx-border-width : 0;
+    -fx-pref-width : 16px;
+    -fx-pref-height : 16px;
+    -fx-font-size : 10px;
+    -fx-background-radius : 0;
+}
+
+.sample_restart_button {
+    -fx-content-display : center;
+    -fx-cursor:hand;
+    -fx-graphic: url("../images/renewal/share_icon.png");
+    -fx-background-color : transparent;
+    -fx-border-width : 0;
+    -fx-padding: 6px 0 0 0;
+    -fx-pref-width : 16px;
+    -fx-pref-height : 16px;
+    -fx-background-radius : 0;
+}
+
+.excel_download_image {
+    -fx-cursor:hand;
+    -fx-graphic: url("../images/renewal/excel16_icon.png");
+    -fx-pref-width : 16;
+    -fx-pref-height : 16;
+    -fx-min-width : 16;
+    -fx-min-height : 16;
+    -fx-cursor:hand;
+}
+
+.csv_download_image {
+    -fx-cursor:hand;
+    -fx-graphic: url("../images/renewal/csv16_icon.png");
+    -fx-pref-width : 16;
+    -fx-pref-height : 16;
+    -fx-min-width : 16;
+    -fx-min-height : 16;
+    -fx-cursor:hand;
+}

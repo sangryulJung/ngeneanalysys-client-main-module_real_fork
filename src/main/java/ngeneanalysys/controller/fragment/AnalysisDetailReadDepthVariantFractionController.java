@@ -9,7 +9,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.VBox;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.model.AnalysisResultSummary;
-import ngeneanalysys.model.Sample;
+import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.VariantAndInterpretationEvidence;
 
 import java.io.IOException;
@@ -53,19 +53,19 @@ public class AnalysisDetailReadDepthVariantFractionController extends SubPaneCon
     @FXML
     private VBox fractionLegendVBox;					/** FRACTION > Legend Box 실제값 표시 라벨 부모 박스 */
 
-    private Sample sample;
+    private SampleView sample;
 
     private VariantAndInterpretationEvidence variant;
 
     @Override
     public void show(Parent root) throws IOException {
-        sample = (Sample)paramMap.get("sample");
+        sample = (SampleView)paramMap.get("sampleView");
         variant = (VariantAndInterpretationEvidence)paramMap.get("variant");
         showReadDepth();
         showFraction();
     }
 
-    public void showReadDepth() {
+    private void showReadDepth() {
         AnalysisResultSummary summary =  sample.getAnalysisResultSummary();
 
         double depthMin = summary.getDepthMin();
@@ -103,7 +103,7 @@ public class AnalysisDetailReadDepthVariantFractionController extends SubPaneCon
 
                 // 설명 라벨 위치 1pixel씩 증가
                 double lableBottomMargin = idx - 2;
-                double imageLeftMargin = Math.round(idx*(maxLeftMarginForImage/depthValueHeight));
+                // double imageLeftMargin = Math.round(idx*(maxLeftMarginForImage/depthValueHeight));
                 if(lableBottomMargin < -6) lableBottomMargin = -8;
                 depthLegendVBox.setMargin(depthLegendBox, new Insets(0, 0, lableBottomMargin, 0));
                 idx += step;
@@ -119,9 +119,9 @@ public class AnalysisDetailReadDepthVariantFractionController extends SubPaneCon
      * Fracion 그래프 값 입력 및 화면 출력
      */
     @SuppressWarnings("unchecked")
-    public void showFraction() {
-        String ref = variant.getSnpInDel().getGenomicCoordinate().getRefSequence();
-        String alt = variant.getSnpInDel().getGenomicCoordinate().getAltSequence();
+    private void showFraction() {
+        String ref = variant.getSnpInDel().getSnpInDelExpression().getRefSequence();
+        String alt = variant.getSnpInDel().getSnpInDelExpression().getAltSequence();
         double alleleFraction = 0;
 
         BigDecimal allele = variant.getSnpInDel().getReadInfo().getAlleleFraction();
@@ -161,7 +161,7 @@ public class AnalysisDetailReadDepthVariantFractionController extends SubPaneCon
 
                 // 설명 라벨 위치 1pixel씩 증가
                 double lableBottomMargin = idx - 2;
-                double imageLeftMargin = Math.round(idx*(maxLeftMarginForImage/fractionValueHeight));
+                // double imageLeftMargin = Math.round(idx*(maxLeftMarginForImage/fractionValueHeight));
                 if(lableBottomMargin < -6) lableBottomMargin = -8;
                 fractionLegendVBox.setMargin(fractionLegendBox, new Insets(0, 0, lableBottomMargin, 0));
                 idx += step;

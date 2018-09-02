@@ -8,6 +8,7 @@ import javafx.scene.layout.HBox;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.MainController;
 import ngeneanalysys.exceptions.WebAPIException;
+import ngeneanalysys.model.AnalysisFileList;
 import ngeneanalysys.task.IGVInstallTask;
 import ngeneanalysys.task.IGVProcessExecuteTask;
 import ngeneanalysys.util.DialogUtil;
@@ -64,6 +65,7 @@ public class IGVService {
     private String locus;
     /** 분석 Human Reference Version */
     private String genome;
+    private APIService apiService = null;
 
     private IGVService() {}
 
@@ -91,11 +93,11 @@ public class IGVService {
 
     /**
      * 파일 다운로드
-     * @param jreInstall
-     * @param igvInstall
+     * @param jreInstall boolean
+     * @param igvInstall boolean
      */
     @SuppressWarnings("static-access")
-    public void intall(boolean jreInstall, boolean igvInstall) {
+    private void install(boolean jreInstall, boolean igvInstall) {
         logger.debug(String.format("JRE Install : %s, IGV Install : %s", jreInstall, igvInstall));
 
         String progressBoxId = "DOWN_" + System.currentTimeMillis();
@@ -131,22 +133,20 @@ public class IGVService {
         Button cancelButton = new Button("cancel");
         cancelButton.getStyleClass().add("btn_cancel_normal");
         cancelButton.setOnAction(event -> {
-            if(downloadThread != null) {
-                try {
-                    logger.error("igv install cancel..");
-                    Thread.sleep(100);
-                    Platform.runLater(() -> {
-                        downloadThread.interrupt();
-                        task.cancel();
-                        getMainController().removeProgressTaskItemById(progressBoxId);
-                    });
-                } catch (Exception e) {
-                    logger.error("download cancel failed!!");
-                    DialogUtil.error("File Download Cancel Fail.", "An error occurred during the cancel file download.", getMainController().getPrimaryStage(), false);
-                }
-                // 연동 진행 여부값 초기화
-                isStartOfIGV = false;
+            try {
+                logger.error("igv install cancel..");
+                Thread.sleep(100);
+                Platform.runLater(() -> {
+                    downloadThread.interrupt();
+                    task.cancel();
+                    getMainController().removeProgressTaskItemById(progressBoxId);
+                });
+            } catch (Exception e) {
+                logger.error("download cancel failed!!");
+                DialogUtil.error("File Download Cancel Fail.", "An error occurred during the cancel file download.", getMainController().getPrimaryStage(), false);
             }
+            // 연동 진행 여부값 초기화
+            isStartOfIGV = false;
         });
 
         box.getChildren().add(titleLabel);
@@ -168,7 +168,7 @@ public class IGVService {
 
     /**
      * IGV 어플리케이션 구동여부 체크
-     * @return
+     * @return boolean
      */
     public boolean isRunningIGVApp() {
         try (Socket socket = new Socket()){
@@ -181,8 +181,6 @@ public class IGVService {
 
     /**
      * IGV 어플리케이션 실행.
-     * @throws WebAPIException
-     * @throws InterruptedException
      */
     @SuppressWarnings("static-access")
     public void launchIGV() throws Exception {
@@ -239,7 +237,6 @@ public class IGVService {
 
     /**
      * IGV 어플리케이션 실행 쓰레드 종료 후 연동 요청
-     * @throws Exception
      */
     public void requestAndLauncherThreadStop() throws Exception {
         if(igvProcessExecuteThread != null) {
@@ -251,30 +248,75 @@ public class IGVService {
 
     /**
      * IGV 어플리케이션 연동 요청
-     * @throws Exception
      */
     public void request() throws Exception {
         HttpClientResponse response = null;
+        long finalBamFileCount;
+        //GATK4 Mutect2 Bam related file count
+        long mutectBamFileCount;
+        //GATK4 Haplotypecaller Bam related file count
+        long hcBamFileCount;
+        // Normal Sample Bam file count
+        long normalBamFileCount;
+        // Check whether Mutec2 or HaplotypeCaller Bam file exists.
         try {
-            logger.debug(String.format("request igv [sample id : %s, bam file : %s, genome : %s, locus : %s, gene : %s]", this.sampleId, this.bamFileName, this.genome, this.locus, this.gene));
+            apiService = APIService.getInstance();
+            Map<String,Object> paramMap = new HashMap<>();
+            paramMap.put("sampleId", this.sampleId);
+            response = apiService.get("/analysisFiles", paramMap, null, false);
+            AnalysisFileList analysisFileList = response.getObjectBeforeConvertResponseToJSON(AnalysisFileList.class);
+            finalBamFileCount = analysisFileList.getResult().stream().filter(f ->
+                    f.getName().endsWith("final.bam") || f.getName().endsWith("final.bam.bai") ||
+                            f.getName().endsWith("final.bam.tdf")).count();
+            mutectBamFileCount = analysisFileList.getResult().stream().filter(f ->
+                    f.getName().endsWith("mutect.bam") || f.getName().endsWith("mutect.bam.bai") ||
+                            f.getName().endsWith("mutect.bam.tdf")).count();
+            hcBamFileCount = analysisFileList.getResult().stream().filter(f ->
+                    f.getName().endsWith("hc.bam") || f.getName().endsWith("hc.bam.bai") ||
+                            f.getName().endsWith("hc.bam.tdf")).count();
+            normalBamFileCount = analysisFileList.getResult().stream().filter(f ->
+                    f.getName().endsWith("normal.bam") || f.getName().endsWith("normal.bam.bai") ||
+                            f.getName().endsWith("normal.bam.tdf")).count();
+        } catch (Exception e) {
+            finalBamFileCount = 0;
+            mutectBamFileCount = 0;
+            hcBamFileCount = 0;
+            normalBamFileCount = 0;
+            logger.error("Fail to get IGV viewing file list", e);
+        }
+        try {
+            logger.info(String.format("request igv [sample id : %s, bam file : %s, genome : %s, locus : %s, gene : %s]", this.sampleId, this.bamFileName, this.genome, this.locus, this.gene));
 
-            String name = String.format("[%s:%s:%s]", this.sampleId, this.sampleName, this.variantId);
-            String file = String.format("http://127.0.0.1:%s/analysisFiles/%s/%s", CommonConstants.HTTP_PROXY_SERVER_PORT, this.sampleId, this.bamFileName);
-
+            //String name = String.format("[%s:%s:%s]", this.sampleId, this.sampleName, this.variantId);
+            String finalBamFileUrl = String.format("http://127.0.0.1:%s/analysisFiles/%s/%s", CommonConstants.HTTP_PROXY_SERVER_PORT, this.sampleId, this.bamFileName + "_final.bam");
+            String mutectBamFileUrl = String.format("http://127.0.0.1:%s/analysisFiles/%s/%s", CommonConstants.HTTP_PROXY_SERVER_PORT, this.sampleId, this.bamFileName + "_mutect.bam");
+            String hcBamFileUrl = String.format("http://127.0.0.1:%s/analysisFiles/%s/%s", CommonConstants.HTTP_PROXY_SERVER_PORT, this.sampleId, this.bamFileName + "_hc.bam");
+            String normalBamFileUrl = String.format("http://127.0.0.1:%s/analysisFiles/%s/%s", CommonConstants.HTTP_PROXY_SERVER_PORT, this.sampleId, this.bamFileName + "_normal.bam");
             Map<String,Object> params = new HashMap<>();
-            params.put("file", file);
-            params.put("name", name);
+            if (finalBamFileCount == 3 && mutectBamFileCount == 3 && normalBamFileCount == 3) {
+                params.put("file", mutectBamFileUrl + "," + finalBamFileUrl + "," + normalBamFileUrl);
+            } else if (finalBamFileCount == 3 && mutectBamFileCount == 3) {
+                params.put("file", mutectBamFileUrl + "," + finalBamFileUrl);
+            } else if (finalBamFileCount == 3 && hcBamFileCount == 3) {
+                params.put("file", hcBamFileUrl + "," + finalBamFileUrl);
+            } else if (finalBamFileCount == 3) {
+                params.put("file", finalBamFileUrl);
+            } else {
+                throw new Exception("Can not find BAM file.");
+            }
+
+            //params.put("name", name);
             params.put("genome", this.genome);
             params.put("merge", "false");
-            if(!StringUtils.isEmpty(this.gene)) {
+            if(StringUtils.isNotEmpty(this.gene)) {
                 params.put("locus", this.gene);
             }
-            if(!StringUtils.isEmpty(this.locus)) {
+            if(StringUtils.isNotEmpty(this.locus)) {
                 params.put("locus", this.locus);
             }
 
-            boolean isSame = file.equals(this.currentPath.get());
-            this.currentPath.set(file);
+            boolean isSame = finalBamFileUrl.equals(this.currentPath.get());
+            this.currentPath.set(finalBamFileUrl);
 
             String cmd = (isSame) ? "goto" : "load";
             String host = String.format("http://localhost:%s/%s", igvPort, cmd);
@@ -296,11 +338,11 @@ public class IGVService {
 
     /**
      * IGV 연동
-     * @param sampleId
-     * @param sampleName
-     * @param gene
-     * @param locus
-     * @param genome
+     * @param sampleId String
+     * @param sampleName String
+     * @param gene String
+     * @param locus String
+     * @param genome String
      * @throws WebAPIException
      */
     public void load(String sampleId, String sampleName, String variantId, String gene, String locus, String genome) throws Exception {
@@ -311,7 +353,8 @@ public class IGVService {
             this.sampleId = sampleId;
             this.sampleName = sampleName;
             this.variantId = variantId;
-            this.bamFileName = sampleName + "_final.bam";
+            //this.bamFileName = sampleName + "_final.bam";
+            this.bamFileName = sampleName;
             this.gene = gene;
             this.locus = locus;
             this.genome = genome;
@@ -328,7 +371,7 @@ public class IGVService {
                 boolean isJREInstall = !isExistJRE;
                 // IGV 설치실행여부 true시 설치 실행
                 boolean isIGVInstall = !isExistIGV;
-                intall(isJREInstall, isIGVInstall);
+                install(isJREInstall, isIGVInstall);
             } else {
                 launchIGV();
             }
