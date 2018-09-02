@@ -7,9 +7,11 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import ngeneanalysys.code.constants.FXMLConstants;
-import ngeneanalysys.code.enums.AnalysisTypeCode;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
@@ -34,8 +36,9 @@ public class DetailSubInfoController extends SubPaneController {
     private static Logger logger = LoggerUtil.getLogger();
     @FXML
     private VBox mainVBox;
+
     @FXML
-    private ComboBox<String> externalLinkComboBox;
+    private GridPane dbLinkGridPane;
 
     private Panel panel;
 
@@ -73,11 +76,11 @@ public class DetailSubInfoController extends SubPaneController {
         alamutService = ALAMUTService.getInstance();
         alamutService.setMainController(getMainController());
 
-        setComboBox();
-        showPopulationFrequency();
-        if(panel != null && panel.getAnalysisType().equalsIgnoreCase(AnalysisTypeCode.GERMLINE.getDescription())) {
+        showDbLinkLisk();
+        // showPopulationFrequency();
+        //if(panel != null && panel.getAnalysisType().equalsIgnoreCase(AnalysisTypeCode.GERMLINE.getDescription())) {
             showInSilicoPredictions();
-        }
+        //}
 
 
     }
@@ -121,11 +124,13 @@ public class DetailSubInfoController extends SubPaneController {
     }
 
     @SuppressWarnings("unchecked")
-    private void setComboBox() {
-
-        if(externalLinkComboBox.getItems() != null
-                && !externalLinkComboBox.getItems().isEmpty()) externalLinkComboBox.getItems().removeAll(externalLinkComboBox.getItems());
-
+    private void showDbLinkLisk() {
+        if(dbLinkGridPane.getChildren() != null && !dbLinkGridPane.getChildren().isEmpty() && dbLinkGridPane.getChildren().size() > 1) {
+            while(dbLinkGridPane.getChildren().size() > 2) {
+                dbLinkGridPane.getChildren().remove(2);
+            }
+        }
+        double rowHeight = 15.0;
         // String[] germlineLink = {"exAC", "brcaExchange", "ncbi", "ucsc", "alamut"};
         // String[] somaticLink = {"dbSNP", "clinvar", "cosmic", "ncbi", "gnomes", "exAC", "gnomAD", "koEXID", "oncoKB", "ucsc"};
         Map<String, Object> variantInformationMap = returnResultsAfterSearch("variant_information");
@@ -137,19 +142,77 @@ public class DetailSubInfoController extends SubPaneController {
             Integer end = (variantInformationMap.containsKey("stop")) ? (Integer) variantInformationMap.get("stop") : null;
 
             if (!StringUtils.isEmpty(rsId)) {
-                externalLinkComboBox.getItems().addAll("dbSNP", "ClinVar", "1000G", "KoEXID");
+                dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
+                Label dbNameLabel = new Label("dbSNP");
+                dbNameLabel.getStyleClass().add("title1");
+                dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+                Label dbContentLabel = new Label(rsId);
+                dbContentLabel.getStyleClass().add("title1");
+                dbContentLabel.setOnMouseClicked(event -> {
+                    showBrowser("dbSNP");
+                });
+                dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
             }
             if (!StringUtils.isEmpty(geneId)) {
-                externalLinkComboBox.getItems().addAll("NCBI");
+                dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
+                Label dbNameLabel = new Label("NCBI");
+                dbNameLabel.getStyleClass().add("title1");
+                dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+                Label dbContentLabel = new Label(geneId);
+                dbContentLabel.getStyleClass().add("title1");
+                dbContentLabel.setOnMouseClicked(event -> {
+                    showBrowser("NCBI");
+                });
+                dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
             }
             if (!StringUtils.isEmpty(exacFormat)) {
-                externalLinkComboBox.getItems().addAll("ExAC", "gnomAD");
+                dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
+                Label dbNameLabel = new Label("ExAC");
+                dbNameLabel.getStyleClass().add("title1");
+                dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+                Label dbContentLabel = new Label(exacFormat);
+                dbContentLabel.getStyleClass().add("title1");
+                dbContentLabel.setOnMouseClicked(event -> {
+                    showBrowser("ExAC");
+                });
+                dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
             }
+            if (!StringUtils.isEmpty(exacFormat)) {
+                dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
+                Label dbNameLabel = new Label("gnomAD");
+                dbNameLabel.getStyleClass().add("title1");
+                dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+                Label dbContentLabel = new Label(exacFormat);
+                dbContentLabel.getStyleClass().add("title1");
+                dbContentLabel.setOnMouseClicked(event -> {
+                    showBrowser("gnomAD");
+                });
+                dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+            }
+
             if (!StringUtils.isEmpty(selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getCosmic().getCosmicIds())) {
-                externalLinkComboBox.getItems().addAll("COSMIC");
+                dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
+                Label dbNameLabel = new Label("COSMIC");
+                dbNameLabel.getStyleClass().add("title1");
+                dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+                Label dbContentLabel = new Label(selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getCosmic().getCosmicIds());
+                dbContentLabel.getStyleClass().add("title1");
+                dbContentLabel.setOnMouseClicked(event -> {
+                    showBrowser("COSMIC");
+                });
+                dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
             }
             if (start != null && end != null) {
-                externalLinkComboBox.getItems().addAll("UCSC");
+                dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
+                Label dbNameLabel = new Label("UCSC");
+                dbNameLabel.getStyleClass().add("title1");
+                dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+                Label dbContentLabel = new Label("View");
+                dbContentLabel.getStyleClass().add("title1");
+                dbContentLabel.setOnMouseClicked(event -> {
+                    showBrowser("UCSC");
+                });
+                dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
             }
 
         } else if(panel.getAnalysisType().equalsIgnoreCase("GERMLINE")) {
@@ -160,25 +223,79 @@ public class DetailSubInfoController extends SubPaneController {
             String urlUCSC = (variantInformationMap.containsKey("ucsc_url")) ? (String) variantInformationMap.get("ucsc_url") : null;
 
             if (!StringUtils.isEmpty(urlExAC)) {
-                externalLinkComboBox.getItems().add("ExAC");
+                dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
+                Label dbNameLabel = new Label("ExAC");
+                dbNameLabel.getStyleClass().add("title1");
+                dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+                Label dbContentLabel = new Label("View");
+                dbContentLabel.getStyleClass().add("title1");
+                dbContentLabel.setOnMouseClicked(event -> {
+                    showBrowser("ExAC");
+                });
+                dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
             }
             if (!StringUtils.isEmpty(urlBRCAExchange)) {
-                externalLinkComboBox.getItems().add("BRCA Exchange");
+                dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
+                Label dbNameLabel = new Label("BRCA Exchange");
+                dbNameLabel.getStyleClass().add("title1");
+                dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+                Label dbContentLabel = new Label("View");
+                dbContentLabel.getStyleClass().add("title1");
+                dbContentLabel.setOnMouseClicked(event -> {
+                    showBrowser("BRCA Exchange");
+                });
+                dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
             }
             if (!StringUtils.isEmpty(urlClinvar)) {
-                externalLinkComboBox.getItems().add("ClinVar");
+                dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
+                Label dbNameLabel = new Label("ClinVar");
+                dbNameLabel.getStyleClass().add("title1");
+                dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+                Label dbContentLabel = new Label("View");
+                dbContentLabel.getStyleClass().add("title1");
+                dbContentLabel.setOnMouseClicked(event -> {
+                    showBrowser("ClinVar");
+                });
+                dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
             }
             if (!StringUtils.isEmpty(urlNCBI)) {
-                externalLinkComboBox.getItems().add("NCBI");
+                dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
+                Label dbNameLabel = new Label("NCBI");
+                dbNameLabel.getStyleClass().add("title1");
+                dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+                Label dbContentLabel = new Label("View");
+                dbContentLabel.getStyleClass().add("title1");
+                dbContentLabel.setOnMouseClicked(event -> {
+                    showBrowser("NCBI");
+                });
+                dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
             }
             if (!StringUtils.isEmpty(urlUCSC)) {
-                externalLinkComboBox.getItems().add("UCSC");
+                dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
+                Label dbNameLabel = new Label("UCSC");
+                dbNameLabel.getStyleClass().add("title1");
+                dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+                Label dbContentLabel = new Label("View");
+                dbContentLabel.getStyleClass().add("title1");
+                dbContentLabel.setOnMouseClicked(event -> {
+                    showBrowser("UCSC");
+                });
+                dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
             }
             Map<String, Object> geneMap = returnResultsAfterSearch("gene");
             if (geneMap != null && !geneMap.isEmpty() && geneMap.containsKey("transcript")) {
                 Map<String, Map<String, String>> transcriptDataMap = (Map<String, Map<String, String>>) geneMap.get("transcript");
                 if (!transcriptDataMap.isEmpty()) {
-                    externalLinkComboBox.getItems().add("ALAMUT");
+                    dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
+                    Label dbNameLabel = new Label("ALAMUT");
+                    dbNameLabel.getStyleClass().add("title1");
+                    dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+                    Label dbContentLabel = new Label("View");
+                    dbContentLabel.getStyleClass().add("title1");
+                    dbContentLabel.setOnMouseClicked(event -> {
+                        showBrowser("ALAMUT");
+                    });
+                    dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
                 }
             }
         }

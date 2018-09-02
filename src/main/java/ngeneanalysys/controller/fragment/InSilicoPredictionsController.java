@@ -5,7 +5,9 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import ngeneanalysys.animaition.ClinicalSignificantTimer;
+import ngeneanalysys.code.enums.AnalysisTypeCode;
 import ngeneanalysys.controller.extend.SubPaneController;
+import ngeneanalysys.model.Panel;
 import ngeneanalysys.model.SnpInDelExtraInfo;
 import ngeneanalysys.util.JsonUtil;
 import ngeneanalysys.util.LoggerUtil;
@@ -33,8 +35,14 @@ public class InSilicoPredictionsController extends SubPaneController {
     @FXML
     private Canvas mtCanvas;
 
+    private Panel panel;
+
     @Override
     public void show(Parent root) throws IOException {
+        panel = (Panel)paramMap.get("panel");
+        if(panel != null && panel.getAnalysisType().equalsIgnoreCase(AnalysisTypeCode.SOMATIC.getDescription())) {
+          polyphenCanvas.setVisible(false);
+        }
         showInSilicoPredictions();
     }
 

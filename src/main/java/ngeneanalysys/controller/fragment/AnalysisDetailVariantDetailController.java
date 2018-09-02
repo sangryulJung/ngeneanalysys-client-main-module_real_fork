@@ -31,7 +31,7 @@ public class AnalysisDetailVariantDetailController extends SubPaneController {
         showReadDepth();
         showVariantNomenclature();
         showDetailSub();
-
+        showPopulationFrequency();
     }
 
     private void showDetailSub() {
@@ -76,5 +76,17 @@ public class AnalysisDetailVariantDetailController extends SubPaneController {
             e.printStackTrace();
         }
     }
-
+    private void showPopulationFrequency() {
+        try {
+            FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_POPULATION_FREQUENCIES);
+            Node node = loader.load();
+            AnalysisDetailPopulationFrequenciesController controller = loader.getController();
+            controller.setMainController(this.getMainController());
+            controller.setParamMap(paramMap);
+            controller.show((Parent) node);
+            detailWarpper.add(node, 3, 0);
+        } catch (Exception e) {
+            logger.debug(e.getMessage());
+        }
+    }
 }
