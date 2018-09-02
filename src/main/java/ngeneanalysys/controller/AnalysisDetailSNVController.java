@@ -48,6 +48,7 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -121,9 +122,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     private TitledPane interpretationLogsTitledPane;
 
     @FXML
-    private Pagination variantPagination;
-
-    @FXML
     private ComboBox<ComboBoxItem> filterComboBox;
 
     @FXML
@@ -156,8 +154,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     private VariantAndInterpretationEvidence selectedAnalysisResultVariant;
     /** 현재 선택된 변이 리스트 객체의 index */
 
-    private Integer currentPageIndex = -1;
-
     private Boolean rFlag = false;
 
     private AnalysisDetailSNPsINDELsMemoController memoController;
@@ -180,7 +176,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     };
     private ChangeListener<ComboBoxItem> filterComboBoxValuePropertyChangeListener = (ob, ov, nv) -> {
         if (!nv.equals(ov)) {
-            Platform.runLater(() -> showVariantList(1 ,0));
+            Platform.runLater(() -> showVariantList(0));
         }
         /*String[] defaultFilterName = {"Tier I", "Tier II", "Tier III", "Tier IV", "Pathogenic", "Likely Pathogenic",
                 "Uncertain Significance", "Likely Benign", "Benign", "Tier 1", "Tier 2", "Tier 3", "Tier 4", "All"};*/
@@ -191,12 +187,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             viewAppliedFiltersLabel.setOpacity(100);
         }
     };
-    /**
-     * @return currentPageIndex
-     */
-    public Integer getCurrentPageIndex() {
-        return currentPageIndex;
-    }
 
     /**
      * @param variantsController AnalysisDetailVariantsController
@@ -298,27 +288,27 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     public void setCheckBoxFilter() {
         levelACheckBox.selectedProperty().addListener((ob, ov, nv) -> {
-            if(nv != null) showVariantList(1, 0);
+            if(nv != null) showVariantList(0);
         });
 
         levelBCheckBox.selectedProperty().addListener((ob, ov, nv) -> {
-            if(nv != null) showVariantList(1, 0);
+            if(nv != null) showVariantList(0);
         });
 
         levelCCheckBox.selectedProperty().addListener((ob, ov, nv) -> {
-            if(nv != null) showVariantList(1, 0);
+            if(nv != null) showVariantList(0);
         });
 
         levelDCheckBox.selectedProperty().addListener((ob, ov, nv) -> {
-            if(nv != null) showVariantList(1, 0);
+            if(nv != null) showVariantList(0);
         });
 
         levelECheckBox.selectedProperty().addListener((ob, ov, nv) -> {
-            if(nv != null) showVariantList(1, 0);
+            if(nv != null) showVariantList(0);
         });
 
         reportCheckBox.selectedProperty().addListener((ob, ov, nv) -> {
-            if(nv != null) showVariantList(1, 0);
+            if(nv != null) showVariantList(0);
         });
     }
 
@@ -429,14 +419,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         variantsController.getDetailContents().setCenter(root);
 
-        variantPagination.setPageFactory(pageIndex -> {
-            if(!Objects.equals(currentPageIndex, pageIndex)) {
-                showVariantList(pageIndex + 1, 0);
-                currentPageIndex = pageIndex;
-            }
-            return new VBox();
-        });
-
         snvWrapper.widthProperty().addListener((ob, ov, nv) -> {
             double wrapperWidth = (Double)nv;
             int filterWidth = (int)snvWrapper.getColumnConstraints().get(0).getPrefWidth();
@@ -451,6 +433,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 variantListTableView.setPrefWidth(wrapperWidth - filterWidth - 110);
             }
         });
+        showVariantList(0);
 
 //        snvWrapper.heightProperty().addListener((ob, ov, nv) -> {
 //            double wrapperHeight = (Double)nv;
@@ -606,7 +589,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     void refreshTable() {
-        showVariantList(currentPageIndex + 1, 0);
+        showVariantList(0);
     }
 
     void setSNVTabName() {
@@ -783,11 +766,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     private void foldRight(){
         if(rFlag) {
-            if (currentPageIndex != -1) {
-                showVariantList(currentPageIndex + 1, 0);
-            } else {
-                showVariantList(1, 0);
-            }
+            showVariantList(0);
             rFlag = false;
         }
         double rightFoldedWidth = 50;
@@ -995,88 +974,74 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
     }
 
-    public void showVariantList(int pageIndex, int selectedIdx) {
-        headerCheckBox.setSelected(false);
+    public void showVariantList(int selectedIdx) {
+        Platform.runLater(() ->{
+            mainController.setMainMaskerPane(true);
+            try {
+                headerCheckBox.setSelected(false);
+                compareColumnOrder();
+                int totalCount;
 
-        Platform.runLater(this::compareColumnOrder);
+                try {
+                    // API 서버 조회
+                    Map<String, Object> params = new HashMap<>();
 
-        int totalCount;
-        int limit = 500;
-        int offset = (pageIndex - 1)  * limit;
+                    Map<String, List<Object>> sortAndSearchItem = new HashMap<>();
 
-        try {
-            // API 서버 조회
-            Map<String, Object> params = new HashMap<>();
-            params.put("offset", offset);
-            params.put("limit", limit);
+                    setSortItem(sortAndSearchItem);
+                    setFilterItem(sortAndSearchItem);
 
-            Map<String, List<Object>> sortAndSearchItem = new HashMap<>();
+                    HttpClientResponse response = apiService.get("/analysisResults/sampleSnpInDels/"+ sample.getId(), params,
+                            null, sortAndSearchItem);
+                    PagedVariantAndInterpretationEvidence analysisResultVariantList =
+                            response.getObjectBeforeConvertResponseToJSON(PagedVariantAndInterpretationEvidence.class);
 
-            setSortItem(sortAndSearchItem);
-            setFilterItem(sortAndSearchItem);
+                    List<VariantAndInterpretationEvidence> list = analysisResultVariantList.getResult();
+                    totalCount = analysisResultVariantList.getCount();
 
-            HttpClientResponse response = apiService.get("/analysisResults/sampleSnpInDels/"+ sample.getId(), params,
-                    null, sortAndSearchItem);
-            PagedVariantAndInterpretationEvidence analysisResultVariantList = response.getObjectBeforeConvertResponseToJSON(PagedVariantAndInterpretationEvidence.class);
+                    searchCountLabel.setText(totalCount +"/");
 
-            List<VariantAndInterpretationEvidence> list = analysisResultVariantList.getResult();
-            totalCount = analysisResultVariantList.getCount();
+                    //totalVariantCountLabel.setText(sample.getAnalysisResultSummary().getAllVariantCount().toString());
+                    ObservableList<VariantAndInterpretationEvidence> displayList = null;
 
-            searchCountLabel.setText(totalCount +"/");
+                    response = apiService.get("/analysisResults/sampleSummary/"+ sample.getId(), null, null, false);
 
-            //totalVariantCountLabel.setText(sample.getAnalysisResultSummary().getAllVariantCount().toString());
-            ObservableList<VariantAndInterpretationEvidence> displayList = null;
+                    sample.setAnalysisResultSummary(response.getObjectBeforeConvertResponseToJSON(AnalysisResultSummary.class));
+                    reportedCountLabel.setText("(R : " + sample.getAnalysisResultSummary().getReportVariantCount() +")");
 
-            response = apiService.get("/analysisResults/sampleSummary/"+ sample.getId(), null, null, false);
+                    if (list != null && !list.isEmpty()) {
+                        displayList = FXCollections.observableArrayList(list);
+                    }
 
-            sample.setAnalysisResultSummary(response.getObjectBeforeConvertResponseToJSON(AnalysisResultSummary.class));
-            reportedCountLabel.setText("(R : " + sample.getAnalysisResultSummary().getReportVariantCount() +")");
+                    // 리스트 삽입
+                    if (variantListTableView.getItems() != null && variantListTableView.getItems().size() > 0) {
+                        variantListTableView.getItems().clear();
+                    }
+                    variantListTableView.setItems(displayList);
 
-            if (list != null && !list.isEmpty()) {
-                displayList = FXCollections.observableArrayList(list);
-            }
-
-            // 리스트 삽입
-            if (variantListTableView.getItems() != null && variantListTableView.getItems().size() > 0) {
-                variantListTableView.getItems().clear();
-            }
-            variantListTableView.setItems(displayList);
-
-            // 화면 출력
-            if (displayList != null && displayList.size() > 0) {
-                variantListTableView.getSelectionModel().select(selectedIdx);
-                //showVariantDetail(displayList.get(selectedIdx));
-            }
-
-            int pageCount = 0;
-
-            if(totalCount > 0) {
-                pageCount = totalCount / limit;
-                variantPagination.setCurrentPageIndex(pageIndex - 1);
-                if(totalCount % limit > 0) {
-                    pageCount++;
+                    // 화면 출력
+                    if (displayList != null && displayList.size() > 0) {
+                        variantListTableView.getSelectionModel().select(selectedIdx);
+                        //showVariantDetail(displayList.get(selectedIdx));
+                    }
+                    setSNVTabName();
+                } catch (WebAPIException wae) {
+                    variantListTableView.setItems(null);
+                    DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+                            getMainApp().getPrimaryStage(), true);
+                    wae.printStackTrace();
+                } catch (Exception e) {
+                    logger.error("Unknown Error", e);
+                    variantListTableView.setItems(null);
+                    DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
                 }
+            } finally {
+                mainController.setMainMaskerPane(false);
             }
 
-            logger.debug("total count : " + totalCount + ", page count : " + pageCount);
+        });
 
-            if (pageCount > 0) {
-                variantPagination.setVisible(true);
-                variantPagination.setPageCount(pageCount);
-            } else {
-                variantPagination.setVisible(false);
-            }
-            setSNVTabName();
-        } catch (WebAPIException wae) {
-            variantListTableView.setItems(null);
-            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
-                    getMainApp().getPrimaryStage(), true);
-            wae.printStackTrace();
-        } catch (Exception e) {
-            logger.error("Unknown Error", e);
-            variantListTableView.setItems(null);
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
-        }
+
 
     }
 
@@ -1097,7 +1062,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             sortMap.clear();
             sortMap.put(column, "ASC");
          }
-        showVariantList(currentPageIndex + 1, 0);
+        showVariantList(0);
     }
 
     @FXML
@@ -1177,22 +1142,22 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                                    Double size, String id) {
         Label label = new Label(name);
         label.setPrefHeight(Double.MAX_VALUE);
-        column.setSortable(false);
-        if(StringUtils.isNotEmpty(sortName)) {
-            //column.getStyleClass().add("sort_icon");
-            label.setOnMouseClicked(e -> {
-                if(e.getButton() == MouseButton.PRIMARY) {
-                    sortTable(sortName);
-                } else if(e.getButton() == MouseButton.SECONDARY) {
-                    column.setEditable(false);
-                }
-            });
-        }
+        //column.setSortable(false);
+//        if(StringUtils.isNotEmpty(sortName)) {
+//            //column.getStyleClass().add("sort_icon");
+//            label.setOnMouseClicked(e -> {
+//                if(e.getButton() == MouseButton.PRIMARY) {
+//                    sortTable(sortName);
+//                }
+//            });
+//        }
         column.setGraphic(label);
 
         if(id != null) column.setId(id);
-
-        column.widthProperty().addListener((ob, ov, nv) -> label.setMinWidth(column.getWidth()));
+        column.setMinWidth(50.0);
+        column.widthProperty().addListener((ob, ov, nv) -> {
+            label.setMinWidth(column.getWidth());
+        });
 
         if(size != null) column.setPrefWidth(size);
         columnMap.put(name, column);
@@ -1261,18 +1226,66 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         checkBoxColumn.setCellFactory(param -> new BooleanCell());
         String columnName = "Pathogenicity";
         String filterPredictionName = "pathogenicity";
-        if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())
-                || panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())
-                || panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
+        if(panel.getAnalysisType().equals(AnalysisTypeCode.SOMATIC.getDescription())) {
             columnName = "Tier";
             filterPredictionName = "tier";
         }
-        TableColumn<VariantAndInterpretationEvidence, Boolean> predictionColumn = new TableColumn<>(columnName);
+        TableColumn<VariantAndInterpretationEvidence, String> predictionColumn = new TableColumn<>(columnName);
         createTableHeader(predictionColumn, columnName, filterPredictionName ,70d, columnName.toLowerCase());
-        predictionColumn.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue() != null));
-        predictionColumn.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, Boolean>() {
+        if (panel.getAnalysisType().equals(AnalysisTypeCode.SOMATIC.getDescription())) {
+            predictionColumn.setCellValueFactory(cellData ->
+                    new SimpleStringProperty(
+                            cellData.getValue().getSnpInDel().getExpertTier() != null
+                                    ? cellData.getValue().getSnpInDel().getExpertTier()
+                                    : cellData.getValue().getSnpInDel().getSwTier()
+                    )
+            );
+        } else {
+            predictionColumn.setCellValueFactory(cellData ->
+                    new SimpleStringProperty(
+                            cellData.getValue().getSnpInDel().getExpertPathogenicity() != null
+                                    ? cellData.getValue().getSnpInDel().getExpertPathogenicity()
+                                    : cellData.getValue().getSnpInDel().getSwPathogenicity()
+                    )
+            );
+        }
+        predictionColumn.setComparator((o1, o2) -> {
+            if (o1.equals(VariantLevelCode.TIER_ONE.getAlias())
+                    || o1.equals(VariantLevelCode.TIER_TWO.getAlias())
+                    || o1.equals(VariantLevelCode.TIER_THREE.getAlias())
+                    || o1.equals(VariantLevelCode.TIER_FOUR.getAlias())) {
+                return o1.compareTo(o2);
+            } else {
+                String o1Level;
+                String o2Level;
+                if (o1.equals(VariantLevelCode.PREDICTION_A.getAlias())) {
+                    o1Level = VariantLevelCode.PREDICTION_A.getCode();
+                } else if (o1.equals(VariantLevelCode.PREDICTION_B.getAlias())) {
+                    o1Level = VariantLevelCode.PREDICTION_B.getCode();
+                } else if (o1.equals(VariantLevelCode.PREDICTION_C.getAlias())) {
+                    o1Level = VariantLevelCode.PREDICTION_C.getCode();
+                } else if (o1.equals(VariantLevelCode.PREDICTION_D.getAlias())) {
+                    o1Level = VariantLevelCode.PREDICTION_D.getCode();
+                } else {
+                    o1Level = VariantLevelCode.PREDICTION_E.getCode();
+                }
+                if (o2.equals(VariantLevelCode.PREDICTION_A.getAlias())) {
+                    o2Level = VariantLevelCode.PREDICTION_A.getCode();
+                } else if (o2.equals(VariantLevelCode.PREDICTION_B.getAlias())) {
+                    o2Level = VariantLevelCode.PREDICTION_B.getCode();
+                } else if (o2.equals(VariantLevelCode.PREDICTION_C.getAlias())) {
+                    o2Level = VariantLevelCode.PREDICTION_C.getCode();
+                } else if (o2.equals(VariantLevelCode.PREDICTION_D.getAlias())) {
+                    o2Level = VariantLevelCode.PREDICTION_D.getCode();
+                } else {
+                    o2Level = VariantLevelCode.PREDICTION_E.getCode();
+                }
+                return o1Level.compareTo(o2Level);
+            }
+        });
+        predictionColumn.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
             @Override
-            public void updateItem(Boolean item, boolean empty) {
+            public void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
                 if(empty) {
                   setGraphic(null);
@@ -1285,10 +1298,10 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                     if (panel != null && AnalysisTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
                         if(StringUtils.isEmpty(variant.getSnpInDel().getExpertTier())) {
                             value = variant.getSnpInDel().getSwTier();
-                            code = "tier_" + ACMGFilterCode.getCodeFromAlias(value);
+                            code = "tier_" + VariantLevelCode.getCodeFromAlias(value);
                         } else {
                             value = variant.getSnpInDel().getExpertTier();
-                            code = "user_tier_" + ACMGFilterCode.getCodeFromAlias(value);
+                            code = "user_tier_" + VariantLevelCode.getCodeFromAlias(value);
                         }
 
                     } else {
@@ -1347,7 +1360,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             falsePositive.setVisible(false);
             showFalseVariantsCheckBox.addEventFilter(MouseEvent.MOUSE_CLICKED, ev -> {
                 falsePositive.setVisible(showFalseVariantsCheckBox.isSelected());
-                showVariantList(currentPageIndex + 1, 0);
+                showVariantList(0);
             });
         } else {
             showFalseVariantsCheckBox.setVisible(false);
@@ -2081,7 +2094,11 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             if(item == null || empty) {
                 setText(null);
             } else {
-                setText(item.toString());
+                DecimalFormat df = new DecimalFormat();
+                df.setMinimumFractionDigits(3);
+                df.setMaximumFractionDigits(3);
+                setText(df.format(item));
+                setTooltip(new Tooltip(item.toString()));
                 if(StringUtils.isNotEmpty(panel.getVariantFilter().getPopulationFrequencyDBs()) &&
                         panel.getVariantFilter().getPopulationFrequency() != null &&
                         Arrays.stream(panel.getVariantFilter().getPopulationFrequencyDBs().split(",")).anyMatch(db ->

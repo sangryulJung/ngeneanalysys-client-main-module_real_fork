@@ -6,14 +6,12 @@ package ngeneanalysys.code.enums;
  * @author gjyoo
  * @since 2016. 6. 15. 오후 7:07:58
  */
-public enum ACMGFilterCode {
-	TOTAL_VARIANT("Total Variant", "Total Variant", null, null),
+public enum VariantLevelCode {
 	PREDICTION_A("Pathogenic", "Pathogenic", "A", "P"),
 	PREDICTION_B("Likely Pathogenic", "Likely Pathogenic", "B", "LP"),
 	PREDICTION_C("Uncertain Significance", "Uncertain Significance", "C", "US"),
 	PREDICTION_D("Likely Benign", "Likely Benign", "D", "LB"),
 	PREDICTION_E("Benign", "Benign", "E", "B"),
-	LOW_CONFIDENCE("Low Confidence", "Low Confidence", "yes", null),
 	//임시
 	TIER_ONE("Tier I", "Tier I", "1", "T1"),
 	TIER_TWO("Tier II", "Tier II", "2", "T2"),
@@ -25,7 +23,7 @@ public enum ACMGFilterCode {
 	private String code;
 	private String alias;
 
-	ACMGFilterCode(String name, String detail, String code, String alias) {
+	VariantLevelCode(String name, String detail, String code, String alias) {
 		this.description = name;
 		this.detail = detail;
 		this.code = code;
