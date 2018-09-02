@@ -75,8 +75,6 @@ public enum ACMGFilterCode {
 			aliasValue = PREDICTION_D.getAlias();
 		} else if (code.equals(PREDICTION_E.getCode())) {
 			aliasValue = PREDICTION_E.getAlias();
-		} else if (code.equals(PREDICTION_FP.getCode())) {
-			aliasValue = PREDICTION_FP.getAlias();
 		}
 		return aliasValue;
 	}
@@ -93,8 +91,6 @@ public enum ACMGFilterCode {
 			codeValue = TIER_THREE.getCode();
 		} else if (alias.equals(TIER_FOUR.getAlias())) {
 			codeValue = TIER_FOUR.getCode();
-		} else if (alias.equals(TIER_FP.getAlias())) {
-			codeValue = TIER_FP.getCode();
 		}
 		return codeValue;
 	}
