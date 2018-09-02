@@ -18,9 +18,9 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.VariantFilterController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="997.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.VariantFilterController">
   <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
   </columnConstraints>
   <rowConstraints>
       <RowConstraints maxHeight="95.0" minHeight="10.0" prefHeight="55.0" vgrow="SOMETIMES" />
@@ -98,11 +98,12 @@
                         <Label style="-fx-font-family: Noto Sans KR Bold;" text="ClinVar" GridPane.rowIndex="3" />
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                            <children>
-                              <CheckBox fx:id="clinVarACheckBox" mnemonicParsing="false" text="CheckBox" />
-                              <CheckBox fx:id="clinVarBCheckBox" mnemonicParsing="false" text="CheckBox" />
-                              <CheckBox fx:id="clinVarCCheckBox" mnemonicParsing="false" text="CheckBox" />
-                              <CheckBox fx:id="clinVarDCheckBox" mnemonicParsing="false" text="CheckBox" />
-                              <CheckBox fx:id="clinVarECheckBox" mnemonicParsing="false" text="CheckBox" />
+                              <CheckBox fx:id="clinVarACheckBox" mnemonicParsing="false" text="P(Pathogentic)" />
+                              <CheckBox fx:id="clinVarBCheckBox" mnemonicParsing="false" text="LP(Likely Pathogenic)" />
+                              <CheckBox fx:id="clinVarCCheckBox" mnemonicParsing="false" text="US(Uncertatin Significance)" />
+                              <CheckBox fx:id="clinVarDCheckBox" mnemonicParsing="false" text="LB(Likely Benign)" />
+                              <CheckBox fx:id="clinVarECheckBox" mnemonicParsing="false" text="B(Benign)" />
+                              <CheckBox fx:id="clinVarDrugResponseCheckBox" mnemonicParsing="false" text="Drug Response" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
@@ -123,7 +124,7 @@
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2">
                            <children>
-                              <Separator prefWidth="890.0">
+                              <Separator prefWidth="890.0" HBox.hgrow="ALWAYS">
                                  <padding>
                                     <Insets right="10.0" />
                                  </padding>
@@ -132,7 +133,7 @@
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="2">
                            <children>
-                              <Separator prefWidth="890.0">
+                              <Separator prefWidth="890.0" HBox.hgrow="ALWAYS">
                                  <padding>
                                     <Insets right="10.0" />
                                  </padding>
@@ -141,7 +142,7 @@
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="4">
                            <children>
-                              <Separator prefWidth="890.0">
+                              <Separator prefWidth="890.0" HBox.hgrow="ALWAYS">
                                  <padding>
                                     <Insets right="10.0" />
                                  </padding>
@@ -150,7 +151,7 @@
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="7">
                            <children>
-                              <Separator prefWidth="890.0">
+                              <Separator prefWidth="890.0" HBox.hgrow="ALWAYS">
                                  <padding>
                                     <Insets right="10.0" />
                                  </padding>
@@ -159,7 +160,7 @@
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="9">
                            <children>
-                              <Separator prefWidth="890.0">
+                              <Separator prefWidth="890.0" HBox.hgrow="ALWAYS">
                                  <padding>
                                     <Insets right="10.0" />
                                  </padding>
@@ -180,7 +181,7 @@
                               <Insets />
                            </GridPane.margin>
                            <children>
-                              <Separator prefWidth="890.0">
+                              <Separator prefWidth="890.0" HBox.hgrow="ALWAYS">
                                  <padding>
                                     <Insets right="10.0" />
                                  </padding>
@@ -189,7 +190,7 @@
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="15">
                            <children>
-                              <Separator prefWidth="890.0">
+                              <Separator prefWidth="890.0" HBox.hgrow="ALWAYS">
                                  <padding>
                                     <Insets right="10.0" />
                                  </padding>
@@ -198,7 +199,7 @@
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="18">
                            <children>
-                              <Separator prefWidth="890.0">
+                              <Separator prefWidth="890.0" HBox.hgrow="ALWAYS">
                                  <padding>
                                     <Insets right="10.0" />
                                  </padding>
@@ -207,7 +208,7 @@
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="20">
                            <children>
-                              <Separator prefWidth="890.0">
+                              <Separator prefWidth="890.0" HBox.hgrow="ALWAYS">
                                  <padding>
                                     <Insets right="10.0" />
                                  </padding>

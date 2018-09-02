@@ -324,6 +324,9 @@ public class VariantFilterController extends SubPaneController {
     private CheckBox clinVarECheckBox;
 
     @FXML
+    private CheckBox clinVarDrugResponseCheckBox;
+
+    @FXML
     private Label caseLabel;
 
     @FXML
@@ -715,12 +718,6 @@ public class VariantFilterController extends SubPaneController {
             cosmicidCheckBox.setDisable(true);
             cosmicOccurrenceComboBox.setDisable(true);
         }
-
-        clinVarACheckBox.setText("P(Pathogentic)");
-        clinVarBCheckBox.setText("LP(Likely Pathogenic)");
-        clinVarCCheckBox.setText("US(Uncertatin Significance)");
-        clinVarDCheckBox.setText("LB(Likely Benign)");
-        clinVarECheckBox.setText("B(Benign)");
     }
 
     private void setFormat(TextField textField) {
@@ -818,6 +815,8 @@ public class VariantFilterController extends SubPaneController {
             clinVarDCheckBox.setSelected(true);
         } else if(value.equalsIgnoreCase("Benign")) {
             clinVarECheckBox.setSelected(true);
+        } else if(value.equalsIgnoreCase("drug_response")) {
+            clinVarDrugResponseCheckBox.setSelected(true);
         }
     }
 
@@ -1361,6 +1360,9 @@ public class VariantFilterController extends SubPaneController {
         }
         if (clinVarECheckBox.isSelected()) {
             list.add("clinVarClass Benign");
+        }
+        if (clinVarDrugResponseCheckBox.isSelected()) {
+            list.add("clinVarClass drug_response");
         }
 
         if(StringUtils.isNotEmpty(geneTextField.getText())) {
