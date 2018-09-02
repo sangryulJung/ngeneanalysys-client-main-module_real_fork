@@ -106,26 +106,26 @@
 				</HBox>
 				<TableView fx:id="variantListTableView" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
 					<columns>
-                  <TableColumn fx:id="classColumn1" editable="false" maxWidth="500.0" minWidth="-Infinity" styleClass="alignment_center" text="Fusion Gene">
+                  <TableColumn editable="false" maxWidth="500.0" minWidth="-Infinity" styleClass="alignment_center" text="Fusion Gene">
                      <columns>
       						<TableColumn fx:id="classColumn" editable="false" maxWidth="500.0" minWidth="-Infinity" styleClass="alignment_center" text="Class" />
                      </columns>
                   </TableColumn>
-                  <TableColumn fx:id="classColumn11" editable="false" maxWidth="500.0" minWidth="-Infinity" styleClass="alignment_center" text="Gene A">
+                  <TableColumn editable="false" maxWidth="500.0" minWidth="-Infinity" styleClass="alignment_center" text="Gene A">
                      <columns>
-                        <TableColumn fx:id="classColumn2" editable="false" maxWidth="500.0" minWidth="-Infinity" styleClass="alignment_center" text="Name" />
-                        <TableColumn fx:id="classColumn21" editable="false" maxWidth="500.0" minWidth="-Infinity" prefWidth="40.0" styleClass="alignment_center" text="Chr" />
-                        <TableColumn fx:id="classColumn211" editable="false" maxWidth="500.0" minWidth="-Infinity" styleClass="alignment_center" text="Breakpoint" />
-                        <TableColumn fx:id="classColumn2111" editable="false" maxWidth="500.0" minWidth="-Infinity" prefWidth="130.0" styleClass="alignment_center" text="Supporting BLAST Reads" />
+                        <TableColumn editable="false" maxWidth="500.0" minWidth="-Infinity" styleClass="alignment_center" text="Name" />
+                        <TableColumn editable="false" maxWidth="500.0" minWidth="-Infinity" prefWidth="40.0" styleClass="alignment_center" text="Chr" />
+                        <TableColumn editable="false" maxWidth="500.0" minWidth="-Infinity" styleClass="alignment_center" text="Breakpoint" />
+                        <TableColumn editable="false" maxWidth="500.0" minWidth="-Infinity" prefWidth="130.0" styleClass="alignment_center" text="Supporting BLAST Reads" />
                      </columns>
                   </TableColumn>
-                  <TableColumn fx:id="classColumn12" editable="false" maxWidth="500.0" minWidth="-Infinity" prefWidth="100.0" styleClass="alignment_center" text="Inserted Sequence" />
-                  <TableColumn fx:id="classColumn111" editable="false" maxWidth="500.0" minWidth="-Infinity" styleClass="alignment_center" text="Gene B">
+                  <TableColumn editable="false" maxWidth="500.0" minWidth="-Infinity" prefWidth="100.0" styleClass="alignment_center" text="Inserted Sequence" />
+                  <TableColumn editable="false" maxWidth="500.0" minWidth="-Infinity" styleClass="alignment_center" text="Gene B">
                      <columns>
-                        <TableColumn fx:id="classColumn21" editable="false" maxWidth="500.0" minWidth="-Infinity" styleClass="alignment_center" text="Name" />
-                        <TableColumn fx:id="classColumn211" editable="false" maxWidth="500.0" minWidth="-Infinity" prefWidth="40.0" styleClass="alignment_center" text="Chr" />
-                        <TableColumn fx:id="classColumn2111" editable="false" maxWidth="500.0" minWidth="-Infinity" styleClass="alignment_center" text="Breakpoint" />
-                        <TableColumn fx:id="classColumn21111" editable="false" maxWidth="500.0" minWidth="-Infinity" prefWidth="130.0" styleClass="alignment_center" text="Supporting BLAST Reads" />
+                        <TableColumn editable="false" maxWidth="500.0" minWidth="-Infinity" styleClass="alignment_center" text="Name" />
+                        <TableColumn editable="false" maxWidth="500.0" minWidth="-Infinity" prefWidth="40.0" styleClass="alignment_center" text="Chr" />
+                        <TableColumn editable="false" maxWidth="500.0" minWidth="-Infinity" styleClass="alignment_center" text="Breakpoint" />
+                        <TableColumn editable="false" maxWidth="500.0" minWidth="-Infinity" prefWidth="130.0" styleClass="alignment_center" text="Supporting BLAST Reads" />
                      </columns>
                   </TableColumn>
 					</columns>

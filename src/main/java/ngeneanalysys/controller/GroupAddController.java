@@ -54,9 +54,9 @@ public class GroupAddController extends SubPaneController{
         this.type = type;
         this.group = group;
         if("add".equalsIgnoreCase(type)) {
-            titleText.setText("Group Add");
+            titleText.setText("New Group");
         } else {
-            titleText.setText("Group Modify");
+            titleText.setText("Edit Group");
             groupNameTextField.setText(group.getName());
         }
     }
@@ -70,7 +70,12 @@ public class GroupAddController extends SubPaneController{
         dialogStage = new Stage();
         dialogStage.initStyle(StageStyle.DECORATED);
         dialogStage.initModality(Modality.APPLICATION_MODAL);
-        dialogStage.setTitle(CommonConstants.SYSTEM_NAME + " > group " + type);
+        if("add".equalsIgnoreCase(type)) {
+            dialogStage.setTitle(CommonConstants.SYSTEM_NAME + " > New Group");
+        } else {
+            dialogStage.setTitle(CommonConstants.SYSTEM_NAME + " > Edit Group");
+        }
+
         // OS가 Window인 경우 아이콘 출력.
         if(System.getProperty("os.name").toLowerCase().contains("window")) {
             dialogStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
@@ -92,7 +97,7 @@ public class GroupAddController extends SubPaneController{
     public void save() {
         Map<String,Object> params = null;
 
-        if(ValidationUtil.text(groupNameTextField.getText(), "Group name", 4, 16, null, null, true, dialogStage) > 0) {
+        if(ValidationUtil.text(groupNameTextField.getText(), "Group Name", 4, 255, null, null, true, dialogStage) > 0) {
             groupNameTextField.requestFocus();
         } else {
             params = new HashMap<>();
@@ -113,6 +118,7 @@ public class GroupAddController extends SubPaneController{
                 DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                         getMainApp().getPrimaryStage(), true);
             } catch (Exception e) {
+                logger.error("Unknown Error", e);
                 DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
             }
         }

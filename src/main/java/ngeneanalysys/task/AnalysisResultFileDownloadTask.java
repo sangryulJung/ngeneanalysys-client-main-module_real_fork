@@ -1,12 +1,9 @@
 package ngeneanalysys.task;
 
 import javafx.concurrent.Task;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import ngeneanalysys.controller.AnalysisDetailRawDataController;
 import ngeneanalysys.model.AnalysisFile;
 import ngeneanalysys.service.APIService;
-import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.httpclient.HttpClientUtil;
 import org.apache.http.HttpEntity;
@@ -22,9 +19,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * @author Jang
@@ -68,14 +63,12 @@ public class AnalysisResultFileDownloadTask extends Task<Void> {
                 Map<String,Object> headerMap = apiService.getDefaultHeaders(true);
 
                 HttpGet get = new HttpGet(connectURL);
-                logger.info("GET:" + get.getURI());
+                logger.debug("GET:" + get.getURI());
 
                 // 지정된 헤더 삽입 정보가 있는 경우 추가
                 if(headerMap != null && headerMap.size() > 0) {
-                    Iterator<String> keys = headerMap.keySet().iterator();
-                    while (keys.hasNext()) {
-                        String key = keys.next();
-                        get.setHeader(key, headerMap.get(key).toString());
+                    for (Map.Entry<String, Object> entry : headerMap.entrySet()) {
+                        get.setHeader(entry.getKey(), entry.getValue().toString());
                     }
                 }
 
@@ -93,13 +86,12 @@ public class AnalysisResultFileDownloadTask extends Task<Void> {
                     InputStream content = entity.getContent();
                     long fileLength = entity.getContentLength();
 
-                    InputStream is = content;
                     os = Files.newOutputStream(Paths.get(saveFile.toURI()));
 
                     long nread = 0L;
                     byte[] buf = new byte[8192];
                     int n;
-                    while ((n = is.read(buf)) > 0) {
+                    while ((n = content.read(buf)) > 0) {
                         if (isCancelled()) {
                             break;
                         }
@@ -108,7 +100,7 @@ public class AnalysisResultFileDownloadTask extends Task<Void> {
                         updateProgress(nread, fileLength);
                         updateMessage(String.valueOf(Math.round(((double) nread / (double) fileLength) * 100)) + "%");
                     }
-                    is.close();
+                    content.close();
                     os.flush();
                     if (httpclient != null) httpclient.close();
                     if (response != null) response.close();
@@ -144,7 +136,7 @@ public class AnalysisResultFileDownloadTask extends Task<Void> {
      */
     @Override
     protected void succeeded() {
-        //logger.info(String.format("download task complete [original : %s, save : %s]", analysisResultFile.getName(), saveFile.getName()));
+        //logger.debug(String.format("download task complete [original : %s, save : %s]", analysisResultFile.getName(), saveFile.getName()));
         controller.getMainController().removeProgressTaskItemById(progressBoxId);
 
         /*try {

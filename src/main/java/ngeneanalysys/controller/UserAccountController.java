@@ -52,7 +52,9 @@ public class UserAccountController extends SubPaneController {
     private TextField nameTextField;
     /** 비밀번호 */
     @FXML
-    private PasswordField passwordField;
+    private PasswordField passwordField1;
+    @FXML
+    private PasswordField passwordField2;
     /** 소속기관 입력란 */
     @FXML
     private TextField organizationTextField;
@@ -88,7 +90,12 @@ public class UserAccountController extends SubPaneController {
         dialogStage = new Stage();
         dialogStage.initStyle(StageStyle.DECORATED);
         dialogStage.initModality(Modality.APPLICATION_MODAL);
-        dialogStage.setTitle(CommonConstants.SYSTEM_NAME + " > user account " + type);
+        if("add".equalsIgnoreCase(type)) {
+            dialogStage.setTitle(CommonConstants.SYSTEM_NAME + " > New User");
+        } else {
+            dialogStage.setTitle(CommonConstants.SYSTEM_NAME + " > Edit User");
+        }
+
         // OS가 Window인 경우 아이콘 출력.
         if(System.getProperty("os.name").toLowerCase().contains("window")) {
             dialogStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
@@ -123,9 +130,9 @@ public class UserAccountController extends SubPaneController {
         groupNameComboBoxCreate();
 
         if("add".equalsIgnoreCase(type)) {
-            titleLabel.setText("User Add");
+            titleLabel.setText("New User");
         } else {
-            titleLabel.setText("User Modify");
+            titleLabel.setText("Edit User");
             loginIdTextField.setText(user.getLoginId());
             nameTextField.setText(user.getName());
             organizationTextField.setText(user.getOrganization());
@@ -135,16 +142,17 @@ public class UserAccountController extends SubPaneController {
             emailTextField.setText(user.getEmail());
             final Optional<ComboBoxItem> userGroup = selectUserGroup.getItems().stream().filter(
                     item -> item.getText().equals(user.getMemberGroupName())).findFirst();
-            if(userGroup.isPresent()) {
-                selectUserGroup.setValue(userGroup.get());
-            }
+            userGroup.ifPresent(comboBoxItem -> selectUserGroup.setValue(comboBoxItem));
 
             final Optional<ComboBoxItem> userType = selectUserType.getItems().stream().filter(
                     item -> item.getText().equals(user.getRole())).findFirst();
-            if(userType.isPresent()) {
-                selectUserType.setValue(userType.get());
-            }
+            userType.ifPresent(comboBoxItem -> selectUserType.setValue(comboBoxItem));
         }
+    }
+
+    private boolean modifyPwdCheck() {
+        return "modify".equalsIgnoreCase(type) && ((StringUtils.isEmpty(passwordField1.getText())
+                && StringUtils.isEmpty(passwordField2.getText())) || validPwdInput());
     }
 
     @FXML
@@ -155,21 +163,21 @@ public class UserAccountController extends SubPaneController {
             selectUserType.requestFocus();
         } else if(selectUserGroup.getSelectionModel().getSelectedIndex() == 0 || selectUserGroup.getValue() == null) {
             selectUserGroup.requestFocus();
-        } else if(ValidationUtil.text(loginIdTextField.getText(), "login ID", 4, 50, null, null, true, dialogStage) > 0) {
+        } else if(ValidationUtil.text(loginIdTextField.getText(), "Login ID", 4, 50, null, null, true, dialogStage) > 0) {
             loginIdTextField.requestFocus();
-        } else if(ValidationUtil.text(nameTextField.getText(), "name", 1, 100, null, null, true, dialogStage) > 0) {
+        } else if(ValidationUtil.text(nameTextField.getText(), "Name", 1, 255, null, null, true, dialogStage) > 0) {
             nameTextField.requestFocus();
-        } else if(!StringUtils.isEmpty(organizationTextField.getText()) && ValidationUtil.text(organizationTextField.getText(), "organization", -1, 50, null, null, true, dialogStage) > 0) {
+        } else if(!StringUtils.isEmpty(organizationTextField.getText()) && ValidationUtil.text(organizationTextField.getText(), "Organization", -1, 50, null, null, true, dialogStage) > 0) {
             organizationTextField.requestFocus();
-        } else if(!StringUtils.isEmpty(departmentTextField.getText()) && ValidationUtil.text(departmentTextField.getText(), "department", -1, 50, null, null, true, dialogStage) > 0) {
+        } else if(!StringUtils.isEmpty(departmentTextField.getText()) && ValidationUtil.text(departmentTextField.getText(), "Department", -1, 50, null, null, true, dialogStage) > 0) {
             departmentTextField.requestFocus();
-        } else if(!StringUtils.isEmpty(addressTextField.getText()) && ValidationUtil.text(addressTextField.getText(), "address", -1, -1, null, null, true, dialogStage) > 0) {
+        } else if(!StringUtils.isEmpty(addressTextField.getText()) && ValidationUtil.text(addressTextField.getText(), "Address", -1, -1, null, null, true, dialogStage) > 0) {
             addressTextField.requestFocus();
-        } else if(!StringUtils.isEmpty(phoneTextField.getText()) && ValidationUtil.text(phoneTextField.getText(), "phone", -1, 50, null, null, true, dialogStage) > 0) {
+        } else if(!StringUtils.isEmpty(phoneTextField.getText()) && ValidationUtil.text(phoneTextField.getText(), "Phone", -1, 50, null, null, true, dialogStage) > 0) {
             phoneTextField.requestFocus();
-        } else if(!StringUtils.isEmpty(emailTextField.getText()) && ValidationUtil.text(emailTextField.getText(), "email", -1, 50, null, null, true, dialogStage) > 0) {
+        } else if(!StringUtils.isEmpty(emailTextField.getText()) && ValidationUtil.text(emailTextField.getText(), "Email", -1, 50, null, null, true, dialogStage) > 0) {
             emailTextField.requestFocus();
-        } else if(validPwdInput()) {
+        } else if(modifyPwdCheck() || ("add".equalsIgnoreCase(type) && validPwdInput())) {
             params = new HashMap<>();
             params.put("role", selectUserType.getSelectionModel().getSelectedItem().getValue());
             params.put("memberGroupId", Integer.parseInt(selectUserGroup.getSelectionModel().getSelectedItem().getValue()));
@@ -194,12 +202,14 @@ public class UserAccountController extends SubPaneController {
 
             try {
                 if("add".equalsIgnoreCase(type)) {
-                    params.put("loginPassword", passwordField.getText());
+                    params.put("loginPassword", passwordField1.getText());
                     apiService.post("/admin/members", params, null, true);
                     DialogUtil.alert("Create User Account Success", "A user account has been created.",
                             dialogStage, true);
                 } else {
-                    params.put("newLoginPassword", passwordField.getText());
+                    if(!StringUtils.isEmpty(passwordField1.getText())) {
+                        params.put("newLoginPassword", passwordField1.getText());
+                    }
                     apiService.put("/admin/members/" + user.getId(), params, null, true);
                     DialogUtil.alert("Modify User Account Success", "A user account has been modified.",
                             dialogStage, true);
@@ -210,6 +220,7 @@ public class UserAccountController extends SubPaneController {
                 DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                         getMainApp().getPrimaryStage(), true);
             } catch (Exception e) {
+                logger.error("Unknown Error", e);
                 DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
             }
         }
@@ -217,22 +228,29 @@ public class UserAccountController extends SubPaneController {
 
     /**
      * 비밀번호 입력폼 유효성 체크
-     * @return
+     * @return boolean
      */
-    public boolean validPwdInput() {
-        if(ValidationUtil.text(passwordField.getText(), "password", 7, -1, "([a-zA-Z0-9].*[!,@,#,$,%,^,&,*,?,_,~])|([!,@,#,$,%,^,&,*,?,_,~].*[a-zA-Z0-9])", null, false, dialogStage) > 0) {
-            DialogUtil.warning("Incorrect password combination.", "Please enter at least 8 characters with a combination of English, numbers and special characters.", dialogStage, true);
+    private boolean validPwdInput() {
+        if(ValidationUtil.text(passwordField1.getText(), "password", 7, -1, "([a-zA-Z0-9].*[!,@,#,$,%,^,&,*,?,_,~])|([!,@,#,$,%,^,&,*,?,_,~].*[a-zA-Z0-9])", null, false, dialogStage) > 0) {
+            DialogUtil.warning("Incorrect password combination", "Please enter at least 8 characters with a combination of English, numbers and special characters.", dialogStage, true);
             // 입력 내용 삭제
-            passwordField.setText(null);
+            passwordField1.setText(null);
             // 포커스 이동
-            passwordField.requestFocus();
+            passwordField1.requestFocus();
+            return false;
+        }
+
+        if(!passwordField1.getText().equals(passwordField2.getText())) {
+            DialogUtil.warning("Mismatch Confirm Password", "The password does not match the confirm password.", dialogStage, true);
+            // 포커스 이동
+            passwordField2.requestFocus();
             return false;
         }
         return true;
     }
 
     @SuppressWarnings("unchecked")
-    public void groupNameComboBoxCreate() {
+    private void groupNameComboBoxCreate() {
         selectUserGroup.setConverter(new ComboBoxConverter());
         selectUserGroup.getItems().add(new ComboBoxItem());
 
@@ -243,7 +261,7 @@ public class UserAccountController extends SubPaneController {
             param.put("format", "json");
 
             response = apiService.get("/admin/memberGroups", param, null, false);
-            logger.info(response.getContentString());
+            logger.debug(response.getContentString());
             if(response != null) {
                 SystemManagerUserGroupPaging systemManagerUserGroupPaging =
                         response.getObjectBeforeConvertResponseToJSON(SystemManagerUserGroupPaging.class);
@@ -261,13 +279,14 @@ public class UserAccountController extends SubPaneController {
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
+            logger.error("Unknown Error", e);
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
 
     public void modifySetting() {
         titleLabel.setText("User Modify");
-        logger.info("in modify");
+        logger.debug("in modify");
     }
 
     @FXML

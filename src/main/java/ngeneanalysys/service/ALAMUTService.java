@@ -47,12 +47,12 @@ public class ALAMUTService {
 
     /**
      * 어플리케이션 연결가능한지 체크 여부
-     * @return
+     * @return boolean
      */
-    public boolean isConnect() {
+    private boolean isConnect() {
         try (Socket socket = new Socket()){
             socket.connect(new InetSocketAddress("localhost", alamutPort), 500);
-            logger.info("alamut connect socket : " + socket);
+            logger.debug("alamut connect socket : " + socket);
         } catch (Exception arg3) {
             return false;
         }
@@ -90,7 +90,7 @@ public class ALAMUTService {
      * @param bamFileName
      * @throws InterruptedException
      */
-    public void requestAlamutURL(String transcript, String cDNA, String sampleId, String bamFileName) {
+    private void requestAlamutURL(String transcript, String cDNA, String sampleId, String bamFileName) {
         String host = String.format("http://localhost:%s/show", alamutPort);
 
         Thread thread = new Thread(new Runnable() {
@@ -99,7 +99,7 @@ public class ALAMUTService {
                 try {
                     // 연동 URL 호출
                     URL url = new URL(host + "?" + String.format("request=%s:%s&synchronous=true", transcript, cDNA));
-                    logger.info("first step url : " + url.toString());
+                    logger.debug("first step url : " + url.toString());
 
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("GET");
@@ -107,14 +107,14 @@ public class ALAMUTService {
 
                     if(conn.getResponseCode() >= 200 && conn.getResponseCode() < 300) {
                         url = new URL(host + "?" + String.format("request=BAM<http://127.0.0.1:%s/analysisFiles/%s/%s", CommonConstants.HTTP_PROXY_SERVER_PORT, sampleId, bamFileName));
-                        logger.info("second step url : " + url.toString());
+                        logger.debug("second step url : " + url.toString());
 
                         conn = (HttpURLConnection) url.openConnection();
                         conn.setRequestMethod("GET");
                         conn.setDoOutput(true);
 
                         if(conn.getResponseCode() >= 200 && conn.getResponseCode() < 300) {
-                            logger.info("alamut second step request success!!");
+                            logger.debug("alamut second step request success!!");
                         } else {
                             logger.error("alamut second step request fail!!");
                         }
@@ -128,7 +128,7 @@ public class ALAMUTService {
 
             @Override
             protected void finalize() throws Throwable {
-                logger.info("alamut call thread finished..");
+                logger.debug("alamut call thread finished..");
                 super.finalize();
             }
         });
@@ -136,7 +136,7 @@ public class ALAMUTService {
         thread.start();
 
         try {
-            logger.info(String.format("Waits for this alamut call thread to die...[%s]", thread.getName()));
+            logger.debug(String.format("Waits for this alamut call thread to die...[%s]", thread.getName()));
             thread.join();
         } catch (InterruptedException e) {
             logger.error("alamut request url thread die process exception");

@@ -1,46 +1,48 @@
 package ngeneanalysys.controller;
 
+import com.sun.javafx.scene.control.skin.ComboBoxListViewSkin;
+import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import javafx.stage.Window;
-import javafx.util.Duration;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.SystemMenuCode;
 import ngeneanalysys.code.enums.UserTypeBit;
 import ngeneanalysys.controller.extend.BaseStageController;
+import ngeneanalysys.controller.systemManager.SystemManagerHomeController;
+import ngeneanalysys.controller.systemMenu.SystemMenuEditController;
+import ngeneanalysys.controller.systemMenu.SystemMenuLicenseController;
+import ngeneanalysys.controller.systemMenu.SystemMenuSettingController;
+import ngeneanalysys.controller.systemMenu.SystemMenuSupportController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
-import ngeneanalysys.model.paged.PagedPanel;
+import ngeneanalysys.model.render.ComboBoxConverter;
+import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.CacheMemoryService;
-import ngeneanalysys.util.DialogUtil;
-import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.LoginSessionUtil;
-import ngeneanalysys.util.StringUtils;
+import ngeneanalysys.service.PropertiesService;
+import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.apache.commons.lang3.ArrayUtils;
+import org.controlsfx.control.MaskerPane;
 import org.slf4j.Logger;
 
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @author Jang
@@ -48,11 +50,18 @@ import java.util.Optional;
  */
 public class MainController extends BaseStageController {
     private static final Logger logger = LoggerUtil.getLogger();
-
+    
     /** api server 연동 서비스 */
     private APIService apiService;
     /** cache memory 관리 서비스 */
     private CacheMemoryService cacheMemoryService;
+
+    /** 최상단 탭메뉴 정보 배열  */
+    private TopMenu[] sampleMenu = new TopMenu[]{};
+    /** 최상단 탭메뉴 화면 출력중인 컨텐츠 Scene 배열  */
+    private Node[] sampleContent = new Node[]{};
+
+    private String currentSampleId = null;
 
     /** 최상단 탭메뉴 정보 배열  */
     private TopMenu[] topMenus = null;
@@ -72,24 +81,10 @@ public class MainController extends BaseStageController {
     /** 분석 요청 작업 Task 관리 컨트롤러 */
     private AnalysisSampleUploadProgressTaskController analysisSampleUploadProgressTaskController;
 
+    private RawDataDownloadProgressTaskController rawDataDownloadProgressTaskController;
+
     /** 메인 레이아웃 화면 Stage */
     private Stage primaryStage;
-
-    /** 상단 탭 메뉴 > 스크롤 왼쪽으로 이동 버튼 */
-    @FXML
-    private Button topMenuScrollLeftButton;
-
-    /** 상단 탭 메뉴 > 스크롤 오른쪽으로 이동 버튼 */
-    @FXML
-    private Button topMenuScrollRightButton;
-
-    /** 상단 탭 메뉴 Area */
-    @FXML
-    private ScrollPane topMenuScrollPane;
-
-    /** 상단 탭 메뉴 Area */
-    @FXML
-    private HBox topMenuArea;
 
     /** 상단 로그인 사용자명 */
     @FXML
@@ -111,10 +106,49 @@ public class MainController extends BaseStageController {
     @FXML
     private Label labelSystemBuild;
 
+    @FXML
+    private Label managerBtn;
+
+    @FXML
+    private Label dashBoardBtn;
+
+    @FXML
+    private Label resultsBtn;
+
+    @FXML
+    private HBox topMenuArea1;
+
+    @FXML
+    private Label sampleListLabel;
+
+    @FXML
+    private StackPane sampleListStackPane;
+
+    @FXML
+    private GridPane mainGridPane;
+    
+    @FXML
+    private VBox mainBackground;
+
+    @FXML
+    private HBox topTabArea;
+
+    private ComboBox<ComboBoxItem> sampleList;
+
     private Map<String, Object> basicInformationMap = new HashMap<>();
 
+    private Queue<Map<String, Object>> uploadListQueue = new LinkedList<>();
+
+    private Queue<RawDataDownloadInfo> downloadListQueue = new LinkedList<>();
+
+    private MaskerPane contentsMaskerPane = new MaskerPane();
+
+    public void setContentsMaskerPaneVisible(boolean flag) {
+        contentsMaskerPane.setVisible(flag);
+    }
+
     /**
-     * @return basicInformationMap
+     * @return Map<String, Object>
      */
     public Map<String, Object> getBasicInformationMap() {
         return basicInformationMap;
@@ -122,7 +156,7 @@ public class MainController extends BaseStageController {
 
     /**
      * 메인 컨텐츠 프레임 Pane Node 객체 반환
-     * @return
+     * @return BorderPane
      */
     public BorderPane getMainFrame() {
         return this.mainFrame;
@@ -130,7 +164,7 @@ public class MainController extends BaseStageController {
 
     /**
      * 메인 레이아웃의 Stage 객체 반환
-     * @return
+     * @return Stage
      */
     public Stage getPrimaryStage() {
         return this.primaryStage;
@@ -138,15 +172,19 @@ public class MainController extends BaseStageController {
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("main controller...");
-
+        logger.debug("main controller...");
+        
+        PropertiesService propertiesService = PropertiesService.getInstance();	
+        String theme = propertiesService.getConfig().getProperty("window.theme");
+        applyTheme(theme);
+    	
         apiService = APIService.getInstance();
         cacheMemoryService = CacheMemoryService.getInstance();
 
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         int usersMonitorWidth = gd.getDisplayMode().getWidth();
         int usersMonitorHeight = gd.getDisplayMode().getHeight();
-        logger.info(String.format("user's monitor size [width : %s, height : %s]", usersMonitorWidth, usersMonitorHeight));
+        logger.debug(String.format("user's monitor size [width : %s, height : %s]", usersMonitorWidth, usersMonitorHeight));
 
         int setWindowHeight = CommonConstants.DEFAULT_MAIN_SCENE_HEIGHT;
         if (usersMonitorHeight < CommonConstants.DEFAULT_MAIN_SCENE_HEIGHT) {
@@ -155,47 +193,54 @@ public class MainController extends BaseStageController {
 
         primaryStage = this.mainApp.getPrimaryStage();
         primaryStage.setScene(new Scene(root));
-        primaryStage.setTitle(CommonConstants.SYSTEM_NAME);
+        primaryStage.setTitle("NGeneAnalySys");
         // OS가 Window인 경우 아이콘 출력.
         if (System.getProperty("os.name").toLowerCase().contains("window")) {
             primaryStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
         }
-        primaryStage.setResizable(true);
+
         primaryStage.setMinHeight(setWindowHeight + 35);
         primaryStage.setHeight(setWindowHeight + 35);
-        primaryStage.setMinWidth(1290);
-        primaryStage.setWidth(1290);
-        primaryStage.setResizable(false);
+        primaryStage.setMaxHeight(Double.MAX_VALUE);
+        primaryStage.setMinWidth(1280);
+        primaryStage.setWidth(1280);
+        primaryStage.setMaxWidth(Double.MAX_VALUE);
+        primaryStage.setResizable(true);
+
         primaryStage.centerOnScreen();
         primaryStage.show();
-        logger.info(String.format("start %s", primaryStage.getTitle()));
+        logger.debug(String.format("start %s", primaryStage.getTitle()));
 
+        mainGridPane.add(maskerPane,0 ,0, 4, 4);
+        maskerPane.setPrefWidth(primaryStage.getWidth());
+        maskerPane.setPrefHeight(primaryStage.getHeight());
+        maskerPane.setVisible(false);
+
+        mainGridPane.add(contentsMaskerPane,1 ,2, 2, 1);
+        contentsMaskerPane.setPrefWidth(mainFrame.getPrefWidth());
+        contentsMaskerPane.setPrefHeight(mainFrame.getPrefHeight());
+        contentsMaskerPane.setVisible(false);
 
         primaryStage.setOnCloseRequest(event -> {
-            boolean isClose = false;
-            String alertHeaderText = null;
-            String alertContentText = "Do you want to exit the application?";
+            /*if(!progressTaskContentArea.getChildren().isEmpty()) {
+                String alertContentText = "The job is running. Are you sure you want to quit?";
 
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.initOwner(this.primaryStage);
-            alert.setTitle("Confirmation Dialog");
-            alert.setHeaderText(alertHeaderText);
-            alert.setContentText(alertContentText);
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.initOwner(this.primaryStage);
+                alert.setTitle("Warning Dialog");
+                alert.setContentText(alertContentText);
 
-            Optional<ButtonType> result = alert.showAndWait();
+                Optional<ButtonType> result = alert.showAndWait();
 
-            if(result.get() == ButtonType.OK) {
-                isClose = true;
-            }
-
-            if(isClose) {
-                if (mainApp.getProxyServer() != null) {
-                    mainApp.getProxyServer().stopServer();
+                if(result.get() == ButtonType.CANCEL) {
+                    event.consume();
+                } else {
+                    closeEvent(event);
                 }
-                primaryStage.close();
             } else {
-                event.consume();
-            }
+                closeEvent(event);
+            }*/
+            closeEvent(event);
         });
 
         //로그인 사용자 세션
@@ -205,86 +250,241 @@ public class MainController extends BaseStageController {
         //우상단 로그인 사용자명 삽입
         loginUserName.setText(loginSession.getName());
 
-        //상단 탭메뉴 스크롤 영역 설정
-        topMenuScrollPane.widthProperty().addListener((ov, oldWidth, newWidth) -> {
-            if (oldWidth != newWidth) {
-                logger.debug(String.format("current top tab menu scroll pane area width :%s, topMenuArea width : %s ", newWidth, topMenuArea.getWidth()));
-                if (newWidth.doubleValue() < topMenuArea.getWidth()) {
-                    topMenuScrollLeftButton.setVisible(true);
-                    topMenuScrollRightButton.setVisible(true);
-                } else {
-                    topMenuScrollLeftButton.setVisible(false);
-                    topMenuScrollRightButton.setVisible(false);
-                }
-            }
-        });
-
-        //상단 탭메뉴 영역 가로사이즈 리스너 바인딩
-        topMenuArea.widthProperty().addListener((ov, oldWidth, newWidth) -> {
-            if(oldWidth != newWidth) {
-                logger.debug(String.format("current top tab menu area width :%s, scroll pane area width : %s ", newWidth, topMenuScrollPane.getWidth()));
-                if(newWidth.doubleValue() > topMenuScrollPane.getWidth()) {
-                    topMenuScrollLeftButton.setVisible(true);
-                    topMenuScrollRightButton.setVisible(true);
-                } else {
-                    topMenuScrollLeftButton.setVisible(false);
-                    topMenuScrollRightButton.setVisible(false);
-                }
-            }
-        });
-
         //상단 메뉴 설정
         initDefaultTopMenu(role);
-        refreshShowTopMenu(-1);
-        showTopMenuContents(null, 0);
+        showTopMenuContents(0);
 
         //상단 사용자 시스템 메뉴 설정
         initTopUserMenu(role);
 
         // 하단 빌드 정보 출력
-        String buildVersion = config.getProperty("application.version");
-        String buildDate = config.getProperty("application.build.date");
-        labelSystemBuild.setText(String.format("v %s (Build Date %s)", buildVersion, buildDate));
-        logger.info(String.format("v %s (Build Date %s)", buildVersion, buildDate));
+        getSoftwareVersionInfo();
 
         // 중단된 분석 요청 작업이 있는지 체크
 
-        settingPanelAndDiseases();
+        dashBoardBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showTopMenuContents(0));
+        resultsBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showTopMenuContents(1));
+        managerBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showTopMenuContents(3));
+
+        final ComboBox<ComboBoxItem> sampleList = new ComboBox<ComboBoxItem>() {
+            @Override
+            protected javafx.scene.control.Skin<?> createDefaultSkin() {
+                return new ComboBoxListViewSkin<ComboBoxItem>( this ) {
+                    @Override
+                    protected boolean isHideOnClickEnabled() {
+                        return false;
+                    }
+                };
+            }
+        };
+
+        this.sampleList = sampleList;
+        sampleList.getStyleClass().add("combo-box");
+        sampleList.setDisable(true);
+        sampleListLabel.setDisable(true);
+        sampleList.getStyleClass().addAll("combo-box", "combo-box-base");
+        sampleListStackPane.getChildren().add(0, sampleList);
+
+        sampleListStackPane.setOnMouseClicked(ev -> {
+            if(!sampleList.getItems().isEmpty()) sampleList.show();
+        });
+
+        sampleList.setConverter(new ComboBoxConverter());
+        sampleList.setVisibleRowCount(15);
+        sampleList.setCellFactory(lv ->
+            new ListCell<ComboBoxItem>() {
+                private HBox graphic;
+
+                {
+                    Label label = new Label();
+                    label.getStyleClass().removeAll(label.getStyleClass());
+
+                    label.textProperty().bind(Bindings.convert(itemProperty()));
+
+                    label.setMinWidth(150);
+                    label.setPrefWidth(150);
+                    label.setMaxWidth(150);
+
+                    label.setOnMouseClicked(event -> {
+                        if(itemProperty() == null) return;
+                        Optional<TopMenu> optionalTopMenu = Arrays.stream(sampleMenu).filter(menu ->
+                                menu.getId().equalsIgnoreCase(itemProperty().getValue().getValue())).findFirst();
+                        optionalTopMenu.ifPresent(topMenu -> showSampleDetail(topMenu));
+                        clearComboBox();
+                        sampleList.hide();
+                    });
+
+                    Button btn = new Button("X");
+                    btn.getStyleClass().removeAll(btn.getStyleClass());
+                    btn.getStyleClass().add("remove_btn");
+                    /*btn.setPrefWidth(6);
+                    btn.setPrefHeight(6);*/
+                    btn.addEventHandler(MouseEvent.MOUSE_CLICKED, event-> {
+                        ComboBoxItem item = getItem();
+
+                        removeTopMenu(item.getValue());
+                        sampleList.getItems().remove(item);
+                        sampleList.hide();
+                        Platform.runLater(() -> sampleList.getSelectionModel().select(null));
+                    });
+
+                    graphic = new HBox(label, btn);
+                    graphic.setPrefWidth(170);
+                    graphic.setAlignment(Pos.CENTER);
+                    HBox.setHgrow(label, Priority.ALWAYS);
+                    setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+                }
+
+                @Override
+                protected void updateItem(ComboBoxItem item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(graphic);
+                    }
+                }
+
+            });
+
+        //settingPanelAndDiseases();
+        Platform.runLater(this::createFilter);
+        //primaryStage.setResizable(false);
     }
 
-    public void settingPanelAndDiseases() {
-        // 기본 정보 로드
-        HttpClientResponse response = null;
-
-        LoginSession loginSession = LoginSessionUtil.getCurrentLoginSession();
-        String path = System.getProperty("user.home");
-        basicInformationMap.put("path", path);
-        try {
-            Map<String,Object> params = new HashMap<>();
-            if(loginSession.getRole().equalsIgnoreCase("ADMIN")) {
-                params.put("skipOtherGroup", "false");
-            } else {
-                params.put("skipOtherGroup", "true");
+    private void getSoftwareVersionInfo() {
+        Platform.runLater(() -> {
+            try {
+                HttpClientResponse response = apiService.get("", null, null, null);
+                NGeneAnalySysVersion nGeneAnalySysVersion = response.getObjectBeforeConvertResponseToJSON(NGeneAnalySysVersion.class);
+                labelSystemBuild.setText("System version : " + nGeneAnalySysVersion.getSystem());
+            } catch (WebAPIException wae) {
+                logger.debug(wae.getMessage());
             }
-            response = apiService.get("/panels", params, null, false);
-            final PagedPanel panels = response.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
-            basicInformationMap.put("panels", panels.getResult());
+        });
 
-            response = apiService.get("/diseases", null, null, false);
-            List<Diseases> diseases = (List<Diseases>)response.getMultiObjectBeforeConvertResponseToJSON(Diseases.class, false);
-            basicInformationMap.put("diseases", diseases);
+    }
 
-        } catch (WebAPIException e) {
-            logger.info(e.getMessage());
+    private void closeEvent(Event event) {
+        boolean isClose = false;
+        String alertContentText = "Do you want to exit the application?";
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        DialogUtil.setIcon(alert);
+        alert.initOwner(this.primaryStage);
+        alert.setTitle("Confirmation Dialog");
+        alert.setContentText(alertContentText);
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if(result.get() == ButtonType.OK) {
+            isClose = true;
+        }
+
+        if(isClose) {
+            if (mainApp.getProxyServer() != null) {
+                mainApp.getProxyServer().stopServer();
+            }
+            primaryStage.close();
+        } else {
+            event.consume();
         }
     }
 
+    private void clearComboBox() {
+        Platform.runLater(() -> sampleList.getSelectionModel().clearSelection());
+    }
+
+    private void createFilter() {
+        HttpClientResponse response;
+
+        Map<String, List<Object>> somaticFilter = new HashMap<>();
+
+        try {
+            response = apiService.get("member/memberOption/hemeFilter", null, null, null);
+            somaticFilter = JsonUtil.fromJsonToMap(response.getContentString());
+        } catch (WebAPIException wae) {
+            somaticFilter = new HashMap<>();
+        } finally {
+            //setDefaultSomaticFilter(somaticFilter, "hemeFilter");
+            basicInformationMap.put("hemeFilter", somaticFilter);
+        }
+
+        try {
+            response = apiService.get("member/memberOption/solidFilter", null, null, null);
+            somaticFilter = JsonUtil.fromJsonToMap(response.getContentString());
+        } catch (WebAPIException wae) {
+            somaticFilter = new HashMap<>();
+        } finally {
+            //setDefaultSomaticFilter(somaticFilter, "solidFilter");
+            basicInformationMap.put("solidFilter", somaticFilter);
+        }
+
+        try {
+            response = apiService.get("member/memberOption/tstDNAFilter", null, null, null);
+            somaticFilter = JsonUtil.fromJsonToMap(response.getContentString());
+        } catch (WebAPIException wae) {
+            somaticFilter = new HashMap<>();
+        } finally {
+            //setDefaultSomaticFilter(somaticFilter, "tstDNAFilter");
+            basicInformationMap.put("tstDNAFilter", somaticFilter);
+        }
+
+        Map<String, List<Object>> germlineFilter = new HashMap<>();
+
+        try {
+            response = apiService
+                    .get("member/memberOption/brcaFilter", null, null, null);
+            germlineFilter = JsonUtil.fromJsonToMap(response.getContentString());
+
+        } catch (WebAPIException wae) {
+            germlineFilter = new HashMap<>();
+        } finally {
+            //setDefaultGermlineFilter(germlineFilter, "brcaFilter");
+            basicInformationMap.put("brcaFilter", germlineFilter);
+        }
+
+        try {
+            response = apiService
+                    .get("member/memberOption/heredFilter", null, null, null);
+            germlineFilter = JsonUtil.fromJsonToMap(response.getContentString());
+
+        } catch (WebAPIException wae) {
+            germlineFilter = new HashMap<>();
+        } finally {
+            //setDefaultGermlineFilter(germlineFilter, "heredFilter");
+            basicInformationMap.put("heredFilter", germlineFilter);
+        }
+    }
+
+    /*private void setDefaultGermlineFilter(Map<String, List<Object>> germlineFilter, String filterName) {
+        germlineFilter.put("Pathogenic", setStandardFilter("pathogenicity", "P"));
+        germlineFilter.put("Likely Pathogenic", setStandardFilter("pathogenicity", "LP"));
+        germlineFilter.put("Uncertain Significance", setStandardFilter("pathogenicity", "US"));
+        germlineFilter.put("Likely Benign", setStandardFilter("pathogenicity", "LB"));
+        germlineFilter.put("Benign", setStandardFilter("pathogenicity", "B"));
+        basicInformationMap.put(filterName, germlineFilter);
+    }
+
+    private void setDefaultSomaticFilter(Map<String, List<Object>> somaticFilter, String filterName) {
+        somaticFilter.put("Tier 1", setStandardFilter("tier", "T1"));
+        somaticFilter.put("Tier 2", setStandardFilter("tier", "T2"));
+        somaticFilter.put("Tier 3", setStandardFilter("tier", "T3"));
+        somaticFilter.put("Tier 4", setStandardFilter("tier", "T4"));
+        basicInformationMap.put(filterName, somaticFilter);
+    }*/
+
+    private List<Object> setStandardFilter(String key, String value) {
+        List<Object> list = new ArrayList<>();
+        list.add(key + " " + value);
+        return list;
+    }
 
     /**
      * 상단 사용자 메뉴 설정 : 사용자 권한에 따른 메뉴 출력
-     * @param role
+     * @param role String
      */
-    public void initTopUserMenu(String role) {
+    private void initTopUserMenu(String role) {
         int userAccessBit = UserTypeBit.valueOf(role).getAuth();
 
         int idx = 0;
@@ -313,212 +513,212 @@ public class MainController extends BaseStageController {
 
     /**
      * 상단메뉴 초기 설정
-     * @param role
+     * @param role String
      */
-    public void initDefaultTopMenu(String role) {
+    private void initDefaultTopMenu(String role) {
         if(UserTypeBit.ADMIN.name().equalsIgnoreCase(role)) {
-            topMenus = new TopMenu[3];
+            managerBtn.setVisible(true);
+            topMenus = new TopMenu[4];
             topMenuContent = new Node[topMenus.length];
             TopMenu menu = new TopMenu();
-            menu.setMenuName("System Manager");
+            menu.setMenuName("MANAGER");
             menu.setFxmlPath(FXMLConstants.SYSTEM_MANAGER_HOME);
-            menu.setDisplayOrder(2);
+            menu.setDisplayOrder(3);
             menu.setStaticMenu(true);
-            topMenus[2] = menu;
+            topMenus[3] = menu;
         } else {
-            topMenus = new TopMenu[2];
+            managerBtn.setVisible(false);
+            topMenus = new TopMenu[3];
             topMenuContent = new Node[topMenus.length];
         }
         TopMenu menu = new TopMenu();
-        menu.setMenuName("Home");
+        menu.setMenuName("DASH BOARD");
         menu.setFxmlPath(FXMLConstants.HOME);
-        menu.setDisplayOrder(0);
         menu.setStaticMenu(true);
+        menu.setDisplayOrder(0);
         topMenus[0] = menu;
 
         menu = new TopMenu();
-        menu.setMenuName("Past Result");
+        menu.setMenuName("RESULT");
         menu.setFxmlPath(FXMLConstants.PAST_RESULTS);
-        menu.setDisplayOrder(1);
         menu.setStaticMenu(true);
+        menu.setDisplayOrder(1);
         topMenus[1] = menu;
-    }
 
-    /**
-     * 상단 메뉴 새로 출력
-     * @param selectIdx
-     */
-    public void refreshShowTopMenu(int selectIdx) {
-        // 기존 메뉴 엘레멘트 제거
-        topMenuArea.getChildren().removeAll();
-        if(topMenus != null && topMenus.length > 0) {
-            int idx = 0;
-            Group[] topMenuGroups = new Group[topMenus.length];
-            for (TopMenu topMenu : topMenus) {
-                Group menu = new Group();
-
-                if (selectIdx >= 0 && idx == selectIdx) {
-                    menu.setId("selectedMenu");
-                }
-
-                Region region = new Region();
-                region.setLayoutX(5);
-
-                Label menuName = new Label(topMenu.getMenuName());
-                menuName.setLayoutX(0);
-                //menuName.setLayoutY(5);
-
-                if (!topMenu.isStaticMenu()) {
-                    region.setId("addMenu");
-                    menuName.setId("addMenuLabel");
-
-                    // 닫기 버튼 삽입
-                    Button closeButton = new Button("");
-                    closeButton.getStyleClass().add("close_btn");
-                    closeButton.setLayoutX(158);
-                    closeButton.setLayoutY(13);
-
-                    //메뉴 삭제 이벤트 바인딩
-                    closeButton.setOnMouseClicked(event -> {
-                        logger.info("remove top menu idx : " + topMenu.getDisplayOrder());
-                        // 해당 메뉴 객체 삭제
-                        removeTopMenu(topMenu.getDisplayOrder());
-                        // 다른 메뉴 출력
-                        if(selectedTopMenuIdx == topMenu.getDisplayOrder()) {
-                            logger.info("현재 보고 있는 메뉴 삭제");
-                            selectedTopMenuIdx -= 1;
-                            // 상단 메뉴 출력 새로고침
-                            refreshShowTopMenu(-1);
-                            // 현재 선택된 메뉴를 삭제하는 경우 바로 좌측 메뉴 출력
-                            showTopMenuContents(topMenus[selectedTopMenuIdx], 0);
-                        } else if(selectedTopMenuIdx < topMenu.getDisplayOrder()) {
-                            logger.info("현재 보고 있는 메뉴 다음 메뉴 삭제");
-                            refreshShowTopMenu(selectedTopMenuIdx);
-                        } else {
-                            logger.info("현재 보고 있는 메뉴 이전 메뉴 삭제");
-                            selectedTopMenuIdx = selectedTopMenuIdx - 1;
-                            refreshShowTopMenu(selectedTopMenuIdx);
-                        }
-                    });
-                    menu.getChildren().setAll(region, menuName, closeButton);
-                } else {
-                    menu.getChildren().setAll(region, menuName);
-                }
-
-                // 마우스 커서 타입 설정
-                menu.setCursor(Cursor.HAND);
-                menu.setOnMouseClicked(event -> showTopMenuContents(topMenu, 0));
-
-                topMenuGroups[idx] = menu;
-                idx++;
-            }
-            topMenuArea.getChildren().setAll(topMenuGroups);
-
-        }
+        menu = new TopMenu();
+        menu.setMenuName("SAMPLE");
+        menu.setFxmlPath(null);
+        menu.setStaticMenu(true);
+        menu.setDisplayOrder(2);
+        topMenus[2] = menu;
     }
 
     /**
      * 상단 메뉴 추가
-     * @param menu
-     * @param addPositionIdx
-     * @param isDisplay
+     * @param menu TopMenu
+     * @param addPositionIdx int
+     * @param isDisplay boolean
      */
-    public void addTopMenu(TopMenu menu, int addPositionIdx, boolean isDisplay) {
+    void addTopMenu(TopMenu menu, int addPositionIdx, boolean isDisplay) {
         // 중복 체크
         boolean isAdded = false;
         int addedMenuIdx = 0;
-        for(TopMenu topMenu : this.topMenus) {
-            if(!StringUtils.isEmpty(menu.getId()) && !StringUtils.isEmpty(topMenu.getId()) &&
+        for(TopMenu topMenu : this.sampleMenu) {
+            if(StringUtils.isNotEmpty(menu.getId()) && StringUtils.isNotEmpty(topMenu.getId()) &&
                     menu.getId().equals(topMenu.getId())) {
                     isAdded = true;
                     break;
             }
             addedMenuIdx++;
         }
-        logger.info(String.format("top menu added : %s, menu index : %s", isAdded, addedMenuIdx));
+        logger.debug(String.format("top menu added : %s, menu index : %s", isAdded, addedMenuIdx));
 
-        // 추가되어 있지 않은 경우 추가
-        if(!isAdded) {
-            TopMenu[] newMenus = new TopMenu[topMenus.length + 1];
-            TopMenu addMenu = null;
-            Node[] newSubScenes = new Node[topMenus.length + 1];
-            Node addNode = null;
-            for (int i = 0; i < newMenus.length; i++) {
-                if(i == addPositionIdx) {
-                    addMenu = menu;
-                    addNode = null;
-                } else if(i < addPositionIdx) {
-                    addMenu = topMenus[i];
-                    addNode = topMenuContent[i];
-                } else {
-                    addMenu = topMenus[i-1];
-                    addNode = topMenuContent[i-1];
-                }
-                // 메뉴 출력 순서 업데이트
-                addMenu.setDisplayOrder(i);
-                newMenus[i] = addMenu;
-                newSubScenes[i] = addNode;
-            }
-            topMenus = newMenus;
-            topMenuContent = newSubScenes;
-
-            // 추가 대상 메뉴 컨텐츠 출력 설정인 경우
-            if(isDisplay) {
-                refreshShowTopMenu(-1);
-                selectedTopMenuIdx = addPositionIdx;
-                showTopMenuContents(menu, 0);
-            } else {
-                // 기존 메뉴 선택 상태 처리
-                if(selectedTopMenuIdx >= addPositionIdx) {
-                    selectedTopMenuIdx++;
-                }
-                refreshShowTopMenu(selectedTopMenuIdx);
-            }
-        } else {
+        if(isAdded) {
             // 이미 추가 되어있는 경우 해당 메뉴 화면으로 전환함.
-            selectedTopMenuIdx = addedMenuIdx;
-            refreshShowTopMenu(selectedTopMenuIdx);
-            showTopMenuContents(null, addedMenuIdx);
+            showSampleDetail(menu);
+            return;
         }
 
+        if(sampleMenu.length == 8) {
+            DialogUtil.warning("", "The maximum number of tabs is eight.", this.getPrimaryStage(), true);
+            return;
+        }
+
+        // 추가되어 있지 않은 경우 추가
+
+        if(sampleList.isDisabled()) {
+            sampleList.setDisable(false);
+            sampleListLabel.setDisable(false);
+        }
+        ComboBoxItem item = new ComboBoxItem();
+        item.setText(menu.getMenuName());
+        item.setValue(menu.getId());
+        sampleList.getItems().add(item);
+        TopMenu[] newMenus = new TopMenu[this.sampleMenu.length + 1];
+        menu.setDisplayOrder(newMenus.length - 1);
+        Node[] newSubScenes = new Node[this.sampleMenu.length + 1];
+        Node addNode = null;
+        System.arraycopy(this.sampleMenu, 0, newMenus, 0, sampleMenu.length);
+        System.arraycopy(this.sampleContent, 0, newSubScenes, 0, sampleContent.length);
+
+        newMenus[newMenus.length - 1] = menu;
+        newSubScenes[newSubScenes.length - 1] = addNode;
+
+        sampleMenu = newMenus;
+        sampleContent = newSubScenes;
+
+        // 추가 대상 메뉴 컨텐츠 출력 설정인 경우
+        if(isDisplay) {
+            showSampleDetail(menu);
+        }
     }
 
     /**
      * 지정 배열의 상단 메뉴 엘레멘트 삭제
-     * @param removeIdx
+     * @param id String
      */
-    private void removeTopMenu(int removeIdx) {
-        if(topMenus != null && topMenus.length > 0) {
+    private void removeTopMenu(String id) {
+        if(sampleMenu != null && sampleMenu.length > 0) {
+            int removeIdx = -1;
+            for(int i = 0; i < sampleMenu.length ; i++) {
+                if(sampleMenu[i].getId().equalsIgnoreCase(id)) {
+                    removeIdx = i;
+                    break;
+                }
+            }
+
             int idx = 0;
-            TopMenu[] newTopMenus = ArrayUtils.remove(topMenus, removeIdx);
-            topMenuContent = ArrayUtils.remove(topMenuContent, removeIdx);
+            TopMenu[] newTopMenus = ArrayUtils.remove(sampleMenu, removeIdx);
+            sampleContent = ArrayUtils.remove(sampleContent, removeIdx);
             for (TopMenu topMenu : newTopMenus) {
                 topMenu.setDisplayOrder(idx);
                 newTopMenus[idx] = topMenu;
                 idx++;
             }
-            topMenus = newTopMenus;
+            sampleMenu = newTopMenus;
+
+            if(currentSampleId == null) {
+
+            } else if(sampleMenu.length == 0) {
+                currentSampleId = null;
+                showTopMenuContents(1);
+            } else {
+                if(removeIdx > 0) {
+                    currentSampleId = sampleMenu[removeIdx - 1].getId();
+                    showSampleDetail(sampleMenu[removeIdx - 1]);
+                } else {
+                    showSampleDetail(sampleMenu[removeIdx]);
+                }
+            }
+            if(sampleMenu == null || sampleMenu.length == 0) {
+                sampleList.setDisable(true);
+                sampleListLabel.setDisable(true);
+            }
         }
+    }
+
+    private void showSampleDetail(final TopMenu menu) {
+        boolean isFirstShow = false;
+        if(selectedTopMenuIdx != 2) {
+
+            sampleListLabel.setId("selectedMenu");
+
+            Node preSelectMenuGroup = topMenuArea1.getChildren().get(selectedTopMenuIdx);
+            preSelectMenuGroup.setId(null);
+
+            selectedTopMenuIdx = 2;
+        }
+        currentSampleId = menu.getId();
+
+        if(sampleContent[menu.getDisplayOrder()] == null) {
+            isFirstShow = true;
+            try {
+                FXMLLoader loader = mainApp.load(menu.getFxmlPath());
+                Node node = loader.load();
+                AnalysisDetailLayoutController analysisDetailLayoutController = loader.getController();
+                analysisDetailLayoutController.setMainController(this);
+                analysisDetailLayoutController.setParamMap(menu.getParamMap());
+                analysisDetailLayoutController.show((Parent) node);
+            } catch (Exception e) {
+                logger.debug(e.getMessage());
+            }
+            sampleContent[menu.getDisplayOrder()] = mainFrame.getCenter();
+        } else {
+            for(int i = 0; i < sampleMenu.length ; i++) {
+                if(sampleMenu[i].getId().equalsIgnoreCase(menu.getId())) {
+                    mainFrame.setCenter(sampleContent[i]);
+                    break;
+                }
+            }
+        }
+
+        setAuto(isFirstShow);
 
     }
 
     /**
      * 선택 상단 메뉴 컨텐츠 출력
-     * @param menu
-     * @param showIdx
+     * @param showIdx int
      */
-    public void showTopMenuContents(TopMenu menu, int showIdx) {
+    private void showTopMenuContents(int showIdx) {
+        if(showIdx == 2) return;
         mainFrame.setCenter(null);
-        if(menu == null) menu = topMenus[showIdx];
+        TopMenu menu = topMenus[showIdx];
 
-        Group group = (Group) topMenuArea.getChildren().get(menu.getDisplayOrder());
-        group.setId("selectedMenu");
+        currentSampleId = null;
+
+        Node item = topMenuArea1.getChildren().get(showIdx);
+        item.setId("selectedMenu");
 
         // 현재 선택된 메뉴와 컨텐츠 출력 대상 메뉴가 다른경우
         if(selectedTopMenuIdx != menu.getDisplayOrder()) {
             // 기존 선택 메뉴 아이디 제거
-            Group preSelectMenuGroup = (Group) topMenuArea.getChildren().get(selectedTopMenuIdx);
-            preSelectMenuGroup.setId(null);
+            Node preSelectMenuGroup = topMenuArea1.getChildren().get(selectedTopMenuIdx);
+            if(selectedTopMenuIdx != 2) {
+                preSelectMenuGroup.setId(null);
+            } else {
+                sampleListLabel.setId(null);
+            }
         }
 
         selectedTopMenuIdx = menu.getDisplayOrder();
@@ -526,8 +726,8 @@ public class MainController extends BaseStageController {
         // 최초 화면 출력 여부
         boolean isFirstShow = false;
         try {
-            if (!StringUtils.isEmpty(menu.getFxmlPath())) {
-                logger.info("mainFrame display fxmlPath : " + menu.getMenuName());
+            if (StringUtils.isNotEmpty(menu.getFxmlPath())) {
+                logger.debug("mainFrame display fxmlPath : " + menu.getMenuName());
 
                 if(topMenuContent[menu.getDisplayOrder()] == null) {
                     FXMLLoader loader = mainApp.load(menu.getFxmlPath());
@@ -547,12 +747,6 @@ public class MainController extends BaseStageController {
                             pastResultsController.setParamMap(menu.getParamMap());
                             pastResultsController.show((Parent) node);
                             break;
-                        case FXMLConstants.ANALYSIS_DETAIL_LAYOUT:
-                            AnalysisDetailLayoutController analysisDetailLayoutController = loader.getController();
-                            analysisDetailLayoutController.setMainController(this);
-                            analysisDetailLayoutController.setParamMap(menu.getParamMap());
-                            analysisDetailLayoutController.show((Parent) node);
-                            break;
                         case FXMLConstants.SYSTEM_MANAGER_HOME:
                             systemManagerHomeController= loader.getController();
                             systemManagerHomeController.setMainController(this);
@@ -567,40 +761,41 @@ public class MainController extends BaseStageController {
                     mainFrame.setCenter(topMenuContent[menu.getDisplayOrder()]);
                 }
 
-                if("homeWrapper".equals(currentShowFrameId)) {	// 이전 화면이 분석자 HOME인 경우 자동 새로고침 토글
-                    homeController.autoRefreshTimeline.stop();
-                    homeController.sampleListAutoRefreshTimeline.stop();
-                } else if("experimentPastResultsWrapper".equals(currentShowFrameId)) {	// 이전 화면이 분석자 Past Results인 경우 자동 새로고침 토글
-                    pastResultsController.pauseAutoRefresh();
-                } else if ("systemManagerHomeWrapper".equals(currentShowFrameId)) {
-                    homeController.autoRefreshTimeline.stop();
-                    homeController.sampleListAutoRefreshTimeline.stop();
-                    pastResultsController.pauseAutoRefresh();
-                }
+                setAuto(isFirstShow);
 
-                if("homeWrapper".equals(mainFrame.getCenter().getId())) {	// 현재 출력화면이 분석자 HOME 화면인 경우 다른 화면의 자동 새로고침 실행 토글 처리
-                    // 최초 화면 출력이 아닌 경우 분석자 HOME 화면 자동 새로고침 기능 시작
-                    if(!isFirstShow) {
-                        homeController.autoRefreshTimeline.play();
-                        homeController.sampleListAutoRefreshTimeline.play();
-                    }
-                } else if("experimentPastResultsWrapper".equals(mainFrame.getCenter().getId())) {	// 현재 출력화면이 분석자 Past Results 화면인 경우 다른 화면의 자동 새로고침 실행 토글 처리
-                    // 최초 화면 출력이 아닌 경우 분석자 Past Results 화면 자동 새로고침 기능 시작
-                    if(!isFirstShow) pastResultsController.resumeAutoRefresh();
-                }
-
-                currentShowFrameId = mainFrame.getCenter().getId();
             }
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
         }
     }
 
+    private void setAuto(boolean isFirstShow) {
+        if("homeWrapper".equals(currentShowFrameId)) {	// 이전 화면이 분석자 HOME인 경우 자동 새로고침 토글
+            homeController.pauseAutoRefresh();
+        } else if("experimentPastResultsWrapper".equals(currentShowFrameId)) {	// 이전 화면이 분석자 Past Results인 경우 자동 새로고침 토글
+            pastResultsController.pauseAutoRefresh();
+        } else if ("systemManagerHomeWrapper".equals(currentShowFrameId)) {
+            homeController.pauseAutoRefresh();
+            pastResultsController.pauseAutoRefresh();
+        }
+
+        if("homeWrapper".equals(mainFrame.getCenter().getId())) {	// 현재 출력화면이 분석자 HOME 화면인 경우 다른 화면의 자동 새로고침 실행 토글 처리
+            // 최초 화면 출력이 아닌 경우 분석자 HOME 화면 자동 새로고침 기능 시작
+            if(!isFirstShow) homeController.resumeAutoRefresh();
+
+        } else if("experimentPastResultsWrapper".equals(mainFrame.getCenter().getId())) {	// 현재 출력화면이 분석자 Past Results 화면인 경우 다른 화면의 자동 새로고침 실행 토글 처리
+            // 최초 화면 출력이 아닌 경우 분석자 Past Results 화면 자동 새로고침 기능 시작
+            if(!isFirstShow) pastResultsController.resumeAutoRefresh();
+        }
+
+        currentShowFrameId = mainFrame.getCenter().getId();
+    }
+
     /**
      * 선택 시스템 메뉴 Dialog창 출력
-     * @param actionEvent
+     * @param actionEvent ActionEvent
      */
-    public void openSystemMenu(ActionEvent actionEvent) {
+    private void openSystemMenu(ActionEvent actionEvent) {
         MenuItem menuItem = (MenuItem) actionEvent.getSource();
 
         try {
@@ -630,20 +825,27 @@ public class MainController extends BaseStageController {
                 SystemMenuLicenseController licenseController = loader.getController();
                 licenseController.setMainController(this);
                 licenseController.show((Parent) root);
-            } else if(menuId.equals(SystemMenuCode.PUBLIC_DATABASES.name())) {
+            } else if(menuId.equals(SystemMenuCode.SOFTWARE_VERSION.name())) {
+                loader = mainApp.load(FXMLConstants.SYSTEM_MENU_SOFTWARE_VERSION);
+                Node root = loader.load();
+                SystemMenuSoftwareVersionController softwareVersionController = loader.getController();
+                softwareVersionController.setMainController(this);
+                softwareVersionController.setConfig(this.config);
+                softwareVersionController.show((Parent) root);
+            } /*else if(menuId.equals(SystemMenuCode.PUBLIC_DATABASES.name())) {
                 loader = mainApp.load(FXMLConstants.SYSTEM_MENU_PUBLIC_DATABASES);
                 Node root = loader.load();
                 SystemMenuPublicDatabasesController publicDatabasesController = loader.getController();
                 publicDatabasesController.setMainController(this);
                 publicDatabasesController.show((Parent) root);
-            }
+            }*/
         } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
 
-    public void logout() {
+    private void logout() {
         boolean isLogoutContinue = false;
         String alertHeaderText = null;
         String alertContentText = "Do you want to log out?";
@@ -654,8 +856,9 @@ public class MainController extends BaseStageController {
         }
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.initOwner((Window) this.primaryStage);
-        alert.setTitle("Confirmation Dialog");
+        DialogUtil.setIcon(alert);
+        alert.initOwner(this.primaryStage);
+        alert.setTitle("Log out");
         alert.setHeaderText(alertHeaderText);
         alert.setContentText(alertContentText);
 
@@ -666,6 +869,10 @@ public class MainController extends BaseStageController {
                 if(this.analysisSampleUploadProgressTaskController != null) {
                     this.analysisSampleUploadProgressTaskController.pauseUpload();
                     this.analysisSampleUploadProgressTaskController.interruptForce();
+                }
+                if(this.rawDataDownloadProgressTaskController != null) {
+                    this.rawDataDownloadProgressTaskController.pauseUpload();
+                    this.rawDataDownloadProgressTaskController.interruptForce();
                 }
             }
             isLogoutContinue = true;
@@ -689,13 +896,11 @@ public class MainController extends BaseStageController {
 
             // 분석자 HOME 자동 새로고침 기능 중지
             if(homeController != null && homeController.autoRefreshTimeline != null) {
-                homeController.autoRefreshTimeline.stop();
-                homeController.sampleListAutoRefreshTimeline.stop();
+                homeController.pauseAutoRefresh();
             }
 
             // 분석자 Past Results 자동 새로고침 기능 중지
             if(pastResultsController != null) {
-                //pastResultsController.autoRefreshTimeline.stop();
                 pastResultsController.pauseAutoRefresh();
             }
 
@@ -709,26 +914,72 @@ public class MainController extends BaseStageController {
 
     }
 
-
     /**
      * 분석 요청 업로드 작업 실행
      */
-    public void runningAnalysisRequestUpload(List<AnalysisFile> uploadFileData, List<File> fileList, Run run) {
-        try {
-            FXMLLoader loader = mainApp.load(FXMLConstants.ANALYSIS_SAMPLE_UPLOAD_PROGRESS_TASK);
-            HBox box = loader.load();
-            this.analysisSampleUploadProgressTaskController = loader.getController();
-            this.analysisSampleUploadProgressTaskController.setMainController(this);
-            if(uploadFileData != null && !uploadFileData.isEmpty()) {
-                Map<String,Object> param = new HashMap<>();
+    void runningAnalysisRequestUpload(List<AnalysisFile> uploadFileData, List<File> fileList, Run run) {
+        if (uploadFileData != null && !uploadFileData.isEmpty()) {
+            Map<String, Object> param = new HashMap<>();
+            param.put("fileMap", uploadFileData);
+            param.put("fileList", fileList);
+            param.put("run", run);
+            uploadListQueue.add(param);
+            if(this.analysisSampleUploadProgressTaskController == null) {
+                runUpload();
+            }
+        }
+    }
+
+    private void runUpload() {
+        if(!uploadListQueue.isEmpty()) {
+            try {
+                FXMLLoader loader = mainApp.load(FXMLConstants.ANALYSIS_SAMPLE_UPLOAD_PROGRESS_TASK);
+                HBox box = loader.load();
+                this.analysisSampleUploadProgressTaskController = loader.getController();
+                this.analysisSampleUploadProgressTaskController.setMainController(this);
+                Map<String, Object> param = uploadListQueue.poll();
+            /*if (uploadFileData != null && !uploadFileData.isEmpty()) {
+                Map<String, Object> param = new HashMap<>();
                 param.put("fileMap", uploadFileData);
                 param.put("fileList", fileList);
                 param.put("run", run);
                 this.analysisSampleUploadProgressTaskController.setParamMap(param);
+            }*/
+                this.analysisSampleUploadProgressTaskController.setParamMap(param);
+                this.analysisSampleUploadProgressTaskController.show(box);
+            } catch (IOException e) {
+                DialogUtil.error("ERROR", e.getMessage(), getMainApp().getPrimaryStage(),
+                        false);
+                e.printStackTrace();
             }
-            this.analysisSampleUploadProgressTaskController.show(box);
-        } catch (IOException e) {
-            e.printStackTrace();
+        }
+    }
+
+    void runningRawDataDownload(File folder, RunSampleView run, List<String> type) {
+        if (folder != null && run != null) {
+            RawDataDownloadInfo info = new RawDataDownloadInfo(folder, run, type);
+            downloadListQueue.add(info);
+            if(this.rawDataDownloadProgressTaskController == null) {
+                runDownload();
+            }
+        }
+    }
+
+    private void runDownload() {
+        if(!downloadListQueue.isEmpty()) {
+            try {
+                FXMLLoader loader = mainApp.load(FXMLConstants.RAW_DATA_DOWNLOAD_TASK);
+                HBox box = loader.load();
+                this.rawDataDownloadProgressTaskController = loader.getController();
+                this.rawDataDownloadProgressTaskController.setMainController(this);
+                RawDataDownloadInfo info = downloadListQueue.poll();
+                this.rawDataDownloadProgressTaskController.setInfo(info);
+                this.rawDataDownloadProgressTaskController.show(box);
+            } catch (IOException e) {
+                DialogUtil.error("ERROR", e.getMessage(), getMainApp().getPrimaryStage(),
+                        false);
+                e.printStackTrace();
+            }
         }
     }
 
@@ -749,40 +1000,27 @@ public class MainController extends BaseStageController {
     /**
      * 진행 상태 출력 영역 초기화
      */
-    public void clearProgressTaskArea() {
-        this.analysisSampleUploadProgressTaskController = null;
-        progressTaskContentArea.getChildren().removeAll(progressTaskContentArea.getChildren());
-    }
-
-    /**
-     * 상단 탭 메뉴 스크롤 왼족으로 이동
-     */
-    @FXML
-    public void moveScrollLeft() {
-        double moveLength = topMenuScrollPane.getWidth()/topMenuArea.getWidth();
-        logger.info(String.format("scroll move [left] H-value : %s, move length : %s", topMenuScrollPane.getHvalue(), moveLength));
-        topMenuScrollPane.setHvalue(topMenuScrollPane.getHvalue() - moveLength);
-    }
-
-    /**
-     * 상단 탭 메뉴 스크롤 오른족으로 이동
-     */
-    @FXML
-    public void moveScrollRight() {
-        double moveLength = topMenuScrollPane.getWidth()/topMenuArea.getWidth();
-        logger.info(String.format("scroll move [right] H-value : %s, move length : %s", topMenuScrollPane.getHvalue(), moveLength));
-        topMenuScrollPane.setHvalue(topMenuScrollPane.getHvalue() + moveLength);
+    void clearProgressTaskArea(Node node) {
+        //progressTaskContentArea.getChildren().removeAll(progressTaskContentArea.getChildren());
+        progressTaskContentArea.getChildren().remove(node);
+        if(analysisSampleUploadProgressTaskController != null) {
+            this.analysisSampleUploadProgressTaskController = null;
+            runUpload();
+        } else {
+            this.rawDataDownloadProgressTaskController = null;
+            runDownload();
+        }
     }
 
     /**
      * 지정 아이디에 해당하는 객체 삭제
-     * @param id
+     * @param id String
      */
     public void removeProgressTaskItemById(String id) {
         if(this.progressTaskContentArea.getChildren() != null && this.progressTaskContentArea.getChildren().size() > 0) {
             int idx = 0;
             for(Node node : this.progressTaskContentArea.getChildren()) {
-                if(!StringUtils.isEmpty(node.getId()) && id.equals(node.getId())) {
+                if(StringUtils.isNotEmpty(node.getId()) && id.equals(node.getId())) {
                     break;
                 }
                 idx++;
@@ -796,21 +1034,54 @@ public class MainController extends BaseStageController {
      */
     public void applyAutoRefreshSettings() {
         // 현재 화면에 출력중인 화면이 분석자 HOME 화면인 경우
-        if("HomeWrapper".equals(currentShowFrameId)) {
-            homeController.autoRefreshTimeline.setDelay((Duration.millis(Integer.parseInt(config.getProperty("analysis.job.auto.refresh.period")) * 1000)));
-            homeController.autoRefreshTimeline.play();
+        if("homeWrapper".equals(currentShowFrameId)) {
+            homeController.startAutoRefresh();
             if(pastResultsController != null) {
                 pastResultsController.startAutoRefresh();
+                pastResultsController.pauseAutoRefresh();
             }
         }
 
         // 현재 화면에 출력중인 화면이 분석자 Past Results 화면인 경우
         if("experimentPastResultsWrapper".equals(currentShowFrameId)) {
-            pastResultsController.startAutoRefresh();
+            if(pastResultsController != null) pastResultsController.startAutoRefresh();
             if(homeController != null) {
-                homeController.autoRefreshTimeline.play();
+                homeController.startAutoRefresh();
+                homeController.pauseAutoRefresh();
             }
         }
+    }
+
+    void setMainMaskerPane(boolean status) {
+        maskerPane.setVisible(status);
+    }
+    
+    public void applyTheme(String theme) {
+    	logger.debug("Main theme: " + theme);
+    	
+    	if(theme.equalsIgnoreCase("default")) {
+    		mainBackground.setStyle("-fx-background-image:url('layout/images/renewal/main_background.png');");
+    	}else if(theme.equalsIgnoreCase("dark")) {
+    		mainBackground.setStyle("-fx-background-image:url('layout/images/renewal/main_background01.png');");
+    	}else if(theme.equalsIgnoreCase("red")) {
+    		mainBackground.setStyle("-fx-background-image:url('layout/images/renewal/main_background03.png');");
+    	}else if(theme.equalsIgnoreCase("ice")) {
+    		mainBackground.setStyle("-fx-background-image:url('layout/images/renewal/main_background02.png');");
+    	}else if(theme.equalsIgnoreCase("mountain")) {
+    		mainBackground.setStyle("-fx-background-image:url('layout/images/renewal/main_background10.png');");
+    	}else if(theme.equalsIgnoreCase("dna")) {
+    		mainBackground.setStyle("-fx-background-image:url('layout/images/renewal/main_background12.png');");
+    	}
+    }
+
+    void deleteSampleTab(final String id) {
+        Optional<ComboBoxItem> optionalTab = sampleList.getItems().stream().filter(item -> item.getValue()
+                .equals(id)).findFirst();
+        optionalTab.ifPresent(tab -> {
+            sampleList.getItems().remove(tab);
+            removeTopMenu(id);
+        });
+
     }
 
 }

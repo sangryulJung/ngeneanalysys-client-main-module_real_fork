@@ -4,11 +4,10 @@ import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TimeZone;
+import java.util.*;
 
+import ngeneanalysys.model.SnpInDelEvidence;
+import org.apache.commons.lang.WordUtils;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -37,7 +36,7 @@ public class ConvertUtil {
 	 * @return
 	 */
 	public static String convertFormatNumber(String format, String numberStr, String defaultValue) {
-		if(!StringUtils.isEmpty(numberStr)) {
+		if(StringUtils.isNotEmpty(numberStr)) {
 			return String.format(format, Double.parseDouble(numberStr));
 		}
 		return defaultValue;
@@ -50,7 +49,7 @@ public class ConvertUtil {
 	 * @return
 	 */
 	public static String convertFormatPercentageNumber(String format, String numberStr) {
-		if(!StringUtils.isEmpty(numberStr)) {
+		if(StringUtils.isNotEmpty(numberStr)) {
 			Double number = Double.parseDouble(numberStr) * 100;
 			return String.format(format, number);
 		}
@@ -65,7 +64,7 @@ public class ConvertUtil {
 	public static String convertFileSizeFormat(long size) {
 		if (size <= 0)
 			return "0";
-		final String[] units = new String[] { "B", "kB", "MB", "GB", "TB" };
+		final String[] units = new String[] { "B", "KB", "MB", "GB", "TB" };
 		int digitGroups = (int) (Math.log10(size) / Math.log10(1024));
 		return new DecimalFormat("#,##0.#").format(size / Math.pow(1024, digitGroups)) + " " + units[digitGroups];
 	}
@@ -130,18 +129,6 @@ public class ConvertUtil {
 		return convertTier;
 	}
 
-	public static String convertButtonId(String tier) {
-		String convertTier = "";
-		if(tier != null) {
-			if (tier.equalsIgnoreCase("T1")) convertTier = "tierOne";
-			else if (tier.equalsIgnoreCase("T2")) convertTier = "tierTwo";
-			else if (tier.equalsIgnoreCase("T3")) convertTier = "tierThree";
-			else if (tier.equalsIgnoreCase("T4")) convertTier = "tierFour";
-		}
-
-		return convertTier;
-	}
-
 	public static <T> Map<String, Object> getMapToModel(T item) {
 		Field[] fields = item.getClass().getDeclaredFields();
 		Map<String, Object> params = new HashMap<>();
@@ -161,6 +148,14 @@ public class ConvertUtil {
 		return (bigDecimal != null) ? bigDecimal.stripTrailingZeros() : null;
 	}
 
+	public static SnpInDelEvidence findPrimaryEvidence(List<SnpInDelEvidence> snpInDelEvidenceList) {
+		if (snpInDelEvidenceList == null || snpInDelEvidenceList.isEmpty()) return null;
+		for(SnpInDelEvidence snpInDelEvidence : snpInDelEvidenceList) {
+			if(snpInDelEvidence.getPrimaryEvidence()) return snpInDelEvidence;
+		}
+		return null;
+	}
+
 	public static String getAminoAcid(String aminoAcid) {
 		if(ngeneanalysys.util.StringUtils.isEmpty(aminoAcid)) return null;
 
@@ -171,5 +166,21 @@ public class ConvertUtil {
 		/*if(aminoAcid.startsWith("p."))
 			aminoAcid = aminoAcid.replaceFirst("p.", "");*/
 		return StringUtils.replaceEach(aminoAcid, pattern1, pattern2);
+	}
+
+	public static String returnQCTitle(String value) {
+		if(value.equals("Median_BinCount_CNV_Targets")) {
+			return "Median BinCount";
+		} else if(value.equals("PCT_ExonBases_100X")) {
+			return "PCT ExonBases";
+		} else if(value.equals("Q30_score_read1")) {
+			return "Q30+ Read2";
+		} else if(value.equals("Q30_score_read2")) {
+			return "Q30+ Read1";
+		} else if(value.equals("roi_coverage")) {
+			return "ROI Coverage";
+		}
+
+		return WordUtils.capitalize(value.replaceAll("_", " "));
 	}
 }

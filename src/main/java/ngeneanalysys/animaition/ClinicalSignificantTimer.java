@@ -35,8 +35,12 @@ public final class ClinicalSignificantTimer extends AnimationTimer {
 		this.gaugeSpeed = gaugeSpeed;
 		this.angleStep = angle / this.gaugeSpeed;
 		this.innerCircleSize = outerCircleSize - (innerOuterCircleGap * 2);
-		this.labelText1 = labelText1 != null ? labelText1.trim() : labelText1;
-		this.labelText2 = labelText2 != null ? labelText2.trim() : labelText2;
+		if (labelText1 != null) {
+			this.labelText1 = labelText1.trim();
+		}
+		if (labelText2 != null) {
+			this.labelText2 = labelText2.trim();
+		}
 	}
 
 	@Override
@@ -48,14 +52,14 @@ public final class ClinicalSignificantTimer extends AnimationTimer {
 		currAngle += angleStep;
 		if (currAngle > angle) {
 			currAngle = angle;
-		}			
+		}
 		gc.setFill(Color.web("#FF9482"));
 		if (value >= 0.0) {
 			gc.fillArc(this.defaultMarginX + this.innerOuterCircleGap, this.defaultMarginY + this.innerOuterCircleGap, this.innerCircleSize, this.innerCircleSize, this.gaugeStartAngle, -this.currAngle, ArcType.ROUND);
 		}
 		gc.setTextAlign(TextAlignment.CENTER);
 		gc.setTextBaseline(VPos.CENTER);
-		gc.setFont(Font.font(8));				
+		gc.setFont(Font.font(8));
 		//gc2.strokeText("Hello", defaultMargin, defaultMargin);
 		gc.setFill(Color.BLACK);
 		gc.fillText(labelText1, this.defaultMarginX + (this.outerCircleSize / 2.0), this.defaultMarginY + this.outerCircleSize + 10);

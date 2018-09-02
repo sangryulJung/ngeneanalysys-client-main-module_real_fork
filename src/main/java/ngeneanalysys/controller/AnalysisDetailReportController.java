@@ -1,55 +1,51 @@
 package ngeneanalysys.controller;
 
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.control.*;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.transform.Transform;
 import javafx.stage.FileChooser;
 import ngeneanalysys.code.constants.CommonConstants;
-import ngeneanalysys.code.constants.FXMLConstants;
+import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.code.enums.SequencerCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
+import ngeneanalysys.model.paged.PagedCNV;
 import ngeneanalysys.model.paged.PagedVariantAndInterpretationEvidence;
 import ngeneanalysys.model.paged.PagedVirtualPanel;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.model.render.DatepickerConverter;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.service.ImageService;
 import ngeneanalysys.service.PDFCreateService;
 import ngeneanalysys.task.ImageFileDownloadTask;
 import ngeneanalysys.task.JarDownloadTask;
 import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
+import ngeneanalysys.util.httpclient.HttpClientUtil;
 import org.apache.commons.io.FileUtils;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.rendering.ImageType;
-import org.apache.pdfbox.rendering.PDFRenderer;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -75,91 +71,34 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     private VelocityUtil velocityUtil = new VelocityUtil();
 
     @FXML
-    private Label diseaseLabel;
-
-    @FXML
-    private Label panelLabel;
-
-    @FXML
     private TextArea conclusionsTextArea;
 
     @FXML
-    private TableView<VariantAndInterpretationEvidence> tierOneVariantsTable;
+    private TableView<VariantAndInterpretationEvidence> variantsTable;
 
     @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> tierOneGeneColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> tierColumn;
 
     @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> tierOneVariantsColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> chrColumn;
 
     @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> tierOneTherapeuticColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> geneColumn;
 
     @FXML
-    private TableColumn<VariantAndInterpretationEvidence, BigDecimal> tierOneAlleleFrequencyColumn;
+    private TableColumn<VariantAndInterpretationEvidence, Integer> positionColumn;
 
     @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> tierOneDrugColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> refSeqColumn;
 
     @FXML
-    private TableColumn<VariantAndInterpretationEvidence, Boolean> tierOneExceptColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> ntChangeColumn;
 
     @FXML
-    private TableView<VariantAndInterpretationEvidence> tierTwoVariantsTable;
+    private TableColumn<VariantAndInterpretationEvidence, String> aaChangeColumn;
 
     @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> tierTwoGeneColumn;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> tierTwoVariantsColumn;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> tierTwoTherapeuticColumn;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, BigDecimal> tierTwoAlleleFrequencyColumn;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> tierTwoDrugColumn;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, Boolean> tierTwoExceptColumn;
-
-    @FXML
-    private TableView<VariantAndInterpretationEvidence> tierThreeVariantsTable;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> tierThreeGeneColumn;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> tierThreeVariantsColumn;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> tierThreeTherapeuticColumn;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, BigDecimal> tierThreeAlleleFrequencyColumn;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, Boolean> tierThreeExceptColumn;
-
-    @FXML
-    private TableView<VariantAndInterpretationEvidence> negativeVariantsTable;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> negativeGeneColumn;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> negativeVariantsColumn;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> negativeCauseColumn;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> negativeAlleleFrequencyColumn;
-
-    @FXML
-    private TableColumn<VariantAndInterpretationEvidence, Boolean> negativeExceptColumn;
+    private TableColumn<VariantAndInterpretationEvidence, String> alleleFrequencyColumn;
 
     @FXML
     private GridPane customFieldGridPane;
@@ -174,50 +113,36 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     private Label conclusions;
 
     @FXML
-    private Label patientIdLabel;
+    private Label extraFields;
 
     @FXML
     private ComboBox<ComboBoxItem> virtualPanelComboBox;
 
-    Sample sample = null;
+    @FXML
+    private FlowPane targetGenesFlowPane;
 
-    Panel panel = null;
+    private SampleView sample = null;
 
-    List<VariantAndInterpretationEvidence> tierOne = null;
+    private Panel panel = null;
 
-    List<VariantAndInterpretationEvidence> tierTwo = null;
+    private List<VariantAndInterpretationEvidence> tierOne = null;
 
-    List<VariantAndInterpretationEvidence> tierThree = null;
+    private List<VariantAndInterpretationEvidence> tierTwo = null;
 
-    List<VariantAndInterpretationEvidence> tierFour = null;
+    private List<VariantAndInterpretationEvidence> tierThree = null;
 
-    List<VariantAndInterpretationEvidence> negativeList = null;
+    private List<VariantAndInterpretationEvidence> tierFour = null;
 
-    private VariantAndInterpretationEvidence selectedItem = null;
-
-    private TableView<VariantAndInterpretationEvidence> selectedTable = null;
-
-    private TableRow<VariantAndInterpretationEvidence> rowItem;
+    private List<VariantAndInterpretationEvidence> negativeList = null;
 
     private boolean reportData = false;
 
-    @FXML
-    private GridPane mainGridPane;
-
+    @SuppressWarnings("unchecked")
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("show..");
+        logger.debug("show..");
 
-        tableCellUpdateFix(tierOneVariantsTable);
-        tableCellUpdateFix(tierTwoVariantsTable);
-        tableCellUpdateFix(tierThreeVariantsTable);
-        tableCellUpdateFix(negativeVariantsTable);
-
-        //Drag & Drop 으로 Variant의 Tier를 변경
-
-        settingTableViewDragAndDrop(tierOneVariantsTable, "T1");
-        settingTableViewDragAndDrop(tierTwoVariantsTable, "T2");
-        settingTableViewDragAndDrop(tierThreeVariantsTable, "T3");
+        tableCellUpdateFix(variantsTable);
 
         // API 서비스 클래스 init
         apiService = APIService.getInstance();
@@ -231,56 +156,24 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         customFieldGridPane.getChildren().clear();
         customFieldGridPane.setPrefHeight(0);
 
-        sample = (Sample)paramMap.get("sample");
+        sample = (SampleView)paramMap.get("sampleView");
 
-        patientIdLabel.setText(sample.getPaitentId());
-
-        tierOneGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
-        tierOneVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
-        tierOneAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()));
-        tierOneExceptColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
-        tierOneExceptColumn.setCellFactory(param -> new ReportedCheckBox(this));
-        tierOneTherapeuticColumn.setCellValueFactory(cellData -> returnTherapeutic(cellData.getValue().getInterpretationEvidence()));
-
-        tierTwoGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
-        tierTwoVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
-        tierTwoAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()));
-        tierTwoExceptColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
-        tierTwoExceptColumn.setCellFactory(param -> new ReportedCheckBox(this));
-        tierTwoTherapeuticColumn.setCellValueFactory(cellData -> returnTherapeutic(cellData.getValue().getInterpretationEvidence()));
-
-        tierThreeGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
-        tierThreeVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
-        tierThreeAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()));
-        tierThreeExceptColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
-        tierThreeExceptColumn.setCellFactory(param -> new ReportedCheckBox(this));
-        tierThreeTherapeuticColumn.setCellValueFactory(cellData -> returnTherapeutic(cellData.getValue().getInterpretationEvidence()));
-
-        negativeGeneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
-        negativeVariantsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
-        //negativeCauseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getInterpretationEvidence().getEvidencePersistentNegative()));
-        negativeAlleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction().toString()));
-        negativeExceptColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
-        negativeExceptColumn.setCellFactory(param -> new ReportedCheckBox(this));
-
-        List<Diseases> diseases = (List<Diseases>) mainController.getBasicInformationMap().get("diseases");
-        Optional<Diseases> diseasesOptional = diseases.stream().filter(disease -> disease.getId() == sample.getDiseaseId()).findFirst();
-        if(diseasesOptional.isPresent()) {
-            String diseaseName = diseasesOptional.get().getName();
-            diseaseLabel.setText(diseaseName);
-        }
-
-        List<Panel> panels = (List<Panel>) mainController.getBasicInformationMap().get("panels");
-        Optional<Panel> panelOptional = panels.stream().filter(panelItem -> panelItem.getId().equals(sample.getPanelId())).findFirst();
-        if(panelOptional.isPresent()) {
-            panel = panelOptional.get();
-            String panelName = panel.getName();
-            panelLabel.setText(panelName);
-        }
+        tierColumn.setCellValueFactory(cellData -> new SimpleStringProperty(
+                cellData.getValue().getSnpInDel().getExpertTier() != null ? cellData.getValue().getSnpInDel().getExpertTier() :
+                        cellData.getValue().getSnpInDel().getSwTier()));
+        chrColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getChromosome()));
+        geneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
+        positionColumn.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getSnpInDel().getGenomicCoordinate().getStartPosition()));
+        refSeqColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getTranscriptAccession()));
+        ntChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
+        aaChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChange()));
+        alleleFrequencyColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()
+                .toString() + "(" + cellData.getValue().getSnpInDel().getReadInfo().getAltReadNum() + "/" + cellData.getValue().getSnpInDel().getReadInfo().getReadDepth() + ")"));
+        panel = sample.getPanel();
 
         setVirtualPanel();
 
-        HttpClientResponse response = null;
+        HttpClientResponse response;
 
         try {
             if(panel.getReportTemplateId() != null) {
@@ -290,6 +183,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
                 ReportTemplate template = reportContents.getReportTemplate();
                 if (template.getContents() != null) {
+                    extraFields.setVisible(true);
                     Map<String, Object> variableList = JsonUtil.fromJsonToMap(template.getCustomFields());
 
                     if (variableList != null && !variableList.isEmpty()) {
@@ -302,6 +196,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                             Map<String, String> item = (Map<String, String>) variableList.get("conclusions");
                             conclusions.setText(item.get("displayName"));
                             sortedKeyList.remove("conclusions");
+                            //conclusions.setStyle("-fx-font-family: \"Noto Sans KR Bold\"");
                         }
 
 
@@ -326,7 +221,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                                 rowIndex++;
                             }
                             Label label = new Label(item.get("displayName"));
-                            label.setStyle("-fx-text-fill : #C20E20;");
+                            label.setStyle("-fx-text-fill : #595959;");
                             customFieldGridPane.add(label, colIndex++, rowIndex);
                             label.setMaxHeight(Double.MAX_VALUE);
                             label.setMaxWidth(Double.MAX_VALUE);
@@ -341,6 +236,16 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                                 datePicker.setConverter(DatepickerConverter.getConverter(dateType));
                                 datePicker.setId(key);
                                 customFieldGridPane.add(datePicker, colIndex++, rowIndex);
+                            } else if (type.equalsIgnoreCase("ComboBox")) {
+                                ComboBox<String> comboBox = new ComboBox<>();
+                                comboBox.getStyleClass().add("txt_black");
+                                comboBox.setId(key);
+                                String list = item.get("comboBoxItemList");
+                                String[] comboBoxItem = list.split("&\\^\\|");
+                                comboBox.getItems().addAll(comboBoxItem);
+                                comboBox.getSelectionModel().selectFirst();
+
+                                customFieldGridPane.add(comboBox, colIndex++, rowIndex);
                             } else {
                                 TextField textField = new TextField();
                                 textField.getStyleClass().add("txt_black");
@@ -367,9 +272,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     if(sampleReport.getVirtualPanelId() != null) {
                         Optional<ComboBoxItem> item = virtualPanelComboBox.getItems().stream().filter(
                                 comboBoxItem -> comboBoxItem.getValue().equals(sampleReport.getVirtualPanelId().toString())).findFirst();
-                        if(item.isPresent()) {
-                            virtualPanelComboBox.getSelectionModel().select(item.get());
-                        }
+                        item.ifPresent(comboBoxItem -> virtualPanelComboBox.getSelectionModel().select(comboBoxItem));
                     }
                     settingReportData(sampleReport.getContents());
                 }
@@ -380,11 +283,84 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
         virtualPanelComboBox.getSelectionModel().selectedItemProperty().addListener((ov, t, t1) -> {
             if(!t1.equals(t)) setVariantsList();
+            if(!t1.equals(t)) setTargetGenesList();
         });
+
+        setTargetGenesList();
 
     }
 
-    public void tableCellUpdateFix(TableView<VariantAndInterpretationEvidence> tableView) {
+    @SuppressWarnings("unchecked")
+    private void setTargetGenesList() {
+        if(!targetGenesFlowPane.getChildren().isEmpty()) {
+            mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() - targetGenesFlowPane.getPrefHeight());
+            contentVBox.setPrefHeight(contentVBox.getPrefHeight() - targetGenesFlowPane.getPrefHeight());
+            targetGenesFlowPane.getChildren().removeAll(targetGenesFlowPane.getChildren());
+            targetGenesFlowPane.setPrefHeight(0);
+        }
+        try {
+            HttpClientResponse response = apiService.get("/analysisResults/variantCountByGeneForSomaticDNA/" + sample.getId(),
+                    null, null, false);
+            if (response != null) {
+                List<VariantCountByGene> variantCountByGenes = (List<VariantCountByGene>) response
+                        .getMultiObjectBeforeConvertResponseToJSON(VariantCountByGene.class,
+                                false);
+                if (variantCountByGenes == null) {
+                    variantCountByGenes = new ArrayList<>();
+                }
+                variantCountByGenes = filteringGeneList(variantCountByGenes);
+
+                if(variantCountByGenes != null && !variantCountByGenes.isEmpty()) {
+                    targetGenesFlowPane.setPrefHeight(targetGenesFlowPane.getPrefHeight() + 30);
+                    mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 30);
+                    contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 30);
+                }
+                variantCountByGenes = variantCountByGenes.stream().sorted(Comparator.comparing(VariantCountByGene::getGeneSymbol))
+                        .collect(Collectors.toList());
+                Set<String> allGeneList = null;
+                Set<String> list = new HashSet<>();
+                if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
+                    response = apiService.get("virtualPanels/" + virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue(),
+                            null, null, false);
+
+                    VirtualPanel virtualPanel = response.getObjectBeforeConvertResponseToJSON(VirtualPanel.class);
+
+                    allGeneList = returnGeneList(virtualPanel.getEssentialGenes(), virtualPanel.getOptionalGenes());
+
+                    String essentialGenes = virtualPanel.getEssentialGenes().replaceAll("\\p{Z}", "");
+
+                    list.addAll(Arrays.asList(essentialGenes.split(",")));
+
+                }
+
+                for(VariantCountByGene gene : variantCountByGenes) {
+                    Label label = new Label(gene.getGeneSymbol());
+                    if(discriminationOfMutation(gene)) {
+                        label.getStyleClass().add("text_color_blue");
+                    } else {
+                        label.getStyleClass().add("text_color_white");
+                    }
+
+                    if(allGeneList == null || !list.contains(gene.getGeneSymbol())) {
+                        label.getStyleClass().add("target_gene_variant_not");
+                    } else {
+                        label.getStyleClass().add("target_gene_variant");
+                    }
+
+                    targetGenesFlowPane.getChildren().add(label);
+                    if(targetGenesFlowPane.getChildren().size() % 15 == 1) {
+                        targetGenesFlowPane.setPrefHeight(targetGenesFlowPane.getPrefHeight() + 29);
+                        mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 29);
+                        contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 29);
+                    }
+                }
+            }
+        } catch (WebAPIException wae) {
+            wae.printStackTrace();
+        }
+    }
+
+    private void tableCellUpdateFix(TableView<VariantAndInterpretationEvidence> tableView) {
         tableView.addEventFilter(ScrollEvent.ANY, scrollEvent -> {
             tableView.refresh();
             // close text box
@@ -392,23 +368,23 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         });
     }
 
-    public Set<String> returnGeneList(String essentialGenes, String optionalGenes) {
+    private Set<String> returnGeneList(String essentialGenes, String optionalGenes) {
         Set<String> list = new HashSet<>();
 
         essentialGenes = essentialGenes.replaceAll("\\p{Z}", "");
 
-        list.addAll(Arrays.stream(essentialGenes.split(",")).collect(Collectors.toSet()));
+        list.addAll(Arrays.asList(essentialGenes.split(",")));
 
         if(!StringUtils.isEmpty(optionalGenes)) {
             optionalGenes = optionalGenes.replaceAll("\\p{Z}", "");
 
-            list.addAll(Arrays.stream(optionalGenes.split(",")).collect(Collectors.toSet()));
+            list.addAll(Arrays.asList(optionalGenes.split(",")));
         }
 
         return list;
     }
 
-    public List<VariantAndInterpretationEvidence> filteringVariant(List<VariantAndInterpretationEvidence> list) {
+    private List<VariantAndInterpretationEvidence> filteringVariant(List<VariantAndInterpretationEvidence> list) {
         List<VariantAndInterpretationEvidence> filteringList = new ArrayList<>();
         if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
             try {
@@ -436,7 +412,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         return filteringList;
     }
 
-    public List<VariantCountByGene> filteringGeneList(List<VariantCountByGene> list) {
+    private List<VariantCountByGene> filteringGeneList(List<VariantCountByGene> list) {
         List<VariantCountByGene> filteringList = new ArrayList<>();
         if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
             try {
@@ -453,10 +429,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     }
                 }
             } catch (WebAPIException wae) {
-
+                return list;
             }
-        } else {
-            return list;
         }
 
         if(filteringList.isEmpty()) {
@@ -466,7 +440,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         return filteringList;
     }
 
-    public void setVariantsList() {
+    void setVariantsList() {
         HttpClientResponse response = null;
         try {
             response = apiService.get("/analysisResults/sampleSnpInDels/" + sample.getId(), null,
@@ -490,20 +464,49 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
             tierFour = settingTierList(list, "T4");
 
-            orderingAndAddTableItem(tierOneVariantsTable, tierOne);
+            List<VariantAndInterpretationEvidence> tableList = new ArrayList<>();
 
-            orderingAndAddTableItem(tierTwoVariantsTable, tierTwo);
+            if(tierOne != null && !tierOne.isEmpty()) {
+                tierOne.sort(Comparator.comparing(variant -> variant.getSnpInDel().getGenomicCoordinate().getGene()));
+                tableList.addAll(tierOne);
+            }
 
-            orderingAndAddTableItem(tierThreeVariantsTable, tierThree);
+            if(tierTwo != null && !tierTwo.isEmpty()) {
+                tierTwo.sort(Comparator.comparing(variant -> variant.getSnpInDel().getGenomicCoordinate().getGene()));
+                tableList.addAll(tierTwo);
+            }
 
-            orderingAndAddTableItem(negativeVariantsTable, negativeList);
+            if(tierThree != null && !tierThree.isEmpty()) {
+                tierThree.sort(Comparator.comparing(variant -> variant.getSnpInDel().getGenomicCoordinate().getGene()));
+                tableList.addAll(tierThree);
+            }
+
+            if(tierFour != null && !tierFour.isEmpty()) {
+                tierFour.sort(Comparator.comparing(variant -> variant.getSnpInDel().getGenomicCoordinate().getGene()));
+                tableList.addAll(tierFour);
+            }
+
+            tableList = tableList.stream().filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y"))
+                    .collect(Collectors.toList());
+
+            if(variantsTable.getItems() != null && !variantsTable.getItems().isEmpty()) {
+                variantsTable.getItems().removeAll(variantsTable.getItems());
+            }
+
+            Objects.requireNonNull(variantsTable.getItems()).addAll(tableList);
 
         } catch (WebAPIException wae) {
             DialogUtil.error(wae.getHeaderText(), wae.getContents(), this.getMainApp().getPrimaryStage(), true);
         }
     }
 
-    public void setVirtualPanel() {
+    private boolean discriminationOfMutation(VariantCountByGene gene) {
+        return (gene.getTier3IndelCount() > 0 || gene.getTier3SnpCount() > 0 ||
+                gene.getTier1IndelCount() > 0 || gene.getTier1SnpCount() > 0 ||
+                gene.getTier2IndelCount() > 0 || gene.getTier2SnpCount() > 0);
+    }
+
+    private void setVirtualPanel() {
 
         virtualPanelComboBox.setConverter(new ComboBoxConverter());
 
@@ -531,67 +534,17 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         }
     }
 
-    public void settingTableViewDragAndDrop(TableView<VariantAndInterpretationEvidence> tableView, String tier) {
-        if(!StringUtils.isEmpty(tier) && tableView != null) {
-            tableView.setOnDragDetected(e -> onDragDetected(e, tableView));
-            tableView.setOnDragDone(e -> onDragDone(e));
-            tableView.setOnDragOver(e -> onDragOver(e, tableView));
-            tableView.setOnDragExited(e -> onDragExited(e, tableView));
-            tableView.setOnDragDropped(e -> onDragDropped(e, tableView, tier));
-            tableView.setOnMouseClicked(e -> onClicked(e, tableView , tier));
-
-            tableView.setRowFactory(tv -> {
-                TableRow<VariantAndInterpretationEvidence> rowData = new TableRow<>();
-                rowData.setOnDragDetected(e -> rowItem = rowData);
-                return rowData;
-            });
-        }
-    }
-
-    public void orderingAndAddTableItem(TableView<VariantAndInterpretationEvidence> tableView,
-                                        List<VariantAndInterpretationEvidence> tierList) {
-        if(tierList != null && !tierList.isEmpty()) {
-
-            if(tableView.getItems() != null && !tableView.getItems().isEmpty()) {
-                tableView.getItems().removeAll(tableView.getItems());
-            }
-
-            Collections.sort(tierList,
-                    (a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
-            tableView.getItems().addAll(tierList);
-        }
-    }
-
-    public List<VariantAndInterpretationEvidence> settingTierList(List<VariantAndInterpretationEvidence> allTierList, String tier) {
+    private List<VariantAndInterpretationEvidence> settingTierList(List<VariantAndInterpretationEvidence> allTierList, String tier) {
         if(!StringUtils.isEmpty(tier)) {
-            return allTierList.stream().filter(item -> ((tier.equalsIgnoreCase(item.getSnpInDel().getExpertTier()) ||
-                    (StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && item.getSnpInDel().getSwTier().equalsIgnoreCase(tier)))))
+            return allTierList.stream().filter(item -> (tier.equalsIgnoreCase(item.getSnpInDel().getExpertTier()) ||
+                    (StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && item.getSnpInDel().getSwTier().equalsIgnoreCase(tier))))
                     .collect(Collectors.toList());
         }
 
         return null;
     }
 
-    public SimpleStringProperty returnTherapeutic(SnpInDelInterpretation snpInDelInterpretation) {
-        String text = "";
-        if(snpInDelInterpretation != null) {
-            if (!StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelA()))
-                text += snpInDelInterpretation.getTherapeuticEvidence().getLevelA() + ", ";
-            if (!StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelB()))
-                text += snpInDelInterpretation.getTherapeuticEvidence().getLevelB() + ", ";
-            if (!StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelC()))
-                text += snpInDelInterpretation.getTherapeuticEvidence().getLevelC() + ", ";
-            if (!StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelD()))
-                text += snpInDelInterpretation.getTherapeuticEvidence().getLevelD() + ", ";
-        }
-        if(!"".equals(text)) {
-            text = text.substring(0, text.length() - 2);
-        }
-
-        return new SimpleStringProperty(text);
-    }
-
-    public void settingReportData(String contents) {
+    private void settingReportData(String contents) {
 
         Map<String,Object> contentsMap = JsonUtil.fromJsonToMap(contents);
 
@@ -609,6 +562,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                     datePicker.setValue(LocalDate.parse((String)contentsMap.get(datePicker.getId()), formatter));
                 }
+            } else if(gridObject instanceof ComboBox) {
+                ComboBox comboBox = (ComboBox)gridObject;
+                if(contentsMap.containsKey(comboBox.getId())) comboBox.getSelectionModel().select((String)contentsMap.get(comboBox.getId()));
             }
         }
 
@@ -616,10 +572,10 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
     /**
      * 입력 정보 저장
-     * @param user
-     * @return
+     * @param user User
+     * @return boolean
      */
-    public boolean saveData(User user) {
+    private boolean saveData(User user) {
 
         String conclusionsText = conclusionsTextArea.getText();
 
@@ -642,6 +598,10 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 if(datePicker.getValue() != null) {
                     contentsMap.put(datePicker.getId(), datePicker.getValue().toString());
                 }
+            } else if(gridObject instanceof ComboBox) {
+                ComboBox<String> comboBox = (ComboBox<String>) gridObject;
+                String value = comboBox.getSelectionModel().getSelectedItem();
+                if(!StringUtils.isEmpty(value)) contentsMap.put(comboBox.getId(), value);
             }
         }
         String contents = JsonUtil.toJson(contentsMap);
@@ -650,12 +610,11 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             params.put("virtualPanelId", Integer.parseInt(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue()));
         }
 
-        HttpClientResponse response = null;
         try {
             if(reportData) {
-                response = apiService.put("/sampleReport/" + sample.getId(), params, null, true);
+                apiService.put("/sampleReport/" + sample.getId(), params, null, true);
             } else {
-                response = apiService.post("/sampleReport/" + sample.getId(), params, null, true);
+                apiService.post("/sampleReport/" + sample.getId(), params, null, true);
             }
         } catch (WebAPIException wae) {
             wae.printStackTrace();
@@ -669,6 +628,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     @FXML
     public void save() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        DialogUtil.setIcon(alert);
         alert.initOwner(getMainController().getPrimaryStage());
         alert.setTitle(CONFIRMATION_DIALOG);
         alert.setHeaderText("Save Report Information");
@@ -689,7 +649,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     public void createPDFAsDraft() {
         boolean dataSave = saveData(null);
         if(dataSave){
-            createPDF(true);
+            if(createPDF(true)) {
+                setVariantsList();
+            }
         }
     }
 
@@ -698,6 +660,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         User user;
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        DialogUtil.setIcon(alert);
         alert.initOwner(getMainController().getPrimaryStage());
         alert.setTitle(CONFIRMATION_DIALOG);
         alert.setHeaderText("Test conducting organization information");
@@ -706,11 +669,11 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         Optional<ButtonType> result = alert.showAndWait();
         if(result.isPresent() && result.get() == ButtonType.OK) {
             try {
-                HttpClientResponse response = apiService.get("/members", null,
+                HttpClientResponse response = apiService.get("/member", null,
                         null, false);
                 user = response.getObjectBeforeConvertResponseToJSON(User.class);
                 // 소속기관, 연락처 정보 존재 확인
-                if (!StringUtils.isEmpty(user.getOrganization()) && !StringUtils.isEmpty(user.getPhone())) {
+                /*if (!StringUtils.isEmpty(user.getOrganization()) && !StringUtils.isEmpty(user.getPhone())) {
                     boolean dataSave = saveData(user);
                     if (dataSave) {
                         // 최종 보고서 생성이 정상 처리된 경우 분석 샘플의 상태값 완료 처리.
@@ -721,6 +684,13 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 } else {
                     DialogUtil.warning("Empty Reviewer Information",
                             "Please Input a Reviewer Information. [Menu > Edit]", getMainApp().getPrimaryStage(), true);
+                }*/
+                boolean dataSave = saveData(user);
+                if (dataSave) {
+                    // 최종 보고서 생성이 정상 처리된 경우 분석 샘플의 상태값 완료 처리.
+                    if (createPDF(false)) {
+                        setVariantsList();
+                    }
                 }
 
             }  catch (WebAPIException wae) {
@@ -728,7 +698,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                         getMainApp().getPrimaryStage(), true);
             } catch (Exception e) {
-                logger.error("exception", e);
+                logger.error("Unknown Error", e);
                 DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
             }
         } else {
@@ -741,27 +711,12 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         createPDF(false);
     }
 
-    public void convertPDFtoImage(File file, String baseFileName) {
-        String path = file.getParentFile().getAbsolutePath();
-        try {
-        PDDocument document = PDDocument.load(file);
-            PDFRenderer d = new PDFRenderer(document);
-            int index = document.getNumberOfPages();
-
-            for(int i = 0; i < index ;i++) {
-                BufferedImage im  = d.renderImage(i, 2, ImageType.RGB);
-                ImageIO.write(im, "jpg",  new File(path + "\\\\" + baseFileName + "_" + i+".jpg"));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
+    @SuppressWarnings("unchecked")
     public Map<String, Object> contents() throws WebAPIException {
         Map<String,Object> contentsMap = new HashMap<>();
         contentsMap.put("panelName", panel.getName());
-        contentsMap.put("diseaseName", diseaseLabel.getText());
-        contentsMap.put("sampleSource", panel.getSampleSource());
+        contentsMap.put("diseaseName", sample.getDiseaseName());
+        contentsMap.put("sampleSource", sample.getSampleSource());
         contentsMap.put("panelCode", panel.getCode());
         contentsMap.put("sampleName", sample.getName());
         contentsMap.put("patientCode", "SS17-01182");
@@ -773,15 +728,13 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         contentsMap.put("date", sdf.format(date));
 
         List<VariantAndInterpretationEvidence> variantList = new ArrayList<>();
-        if(!tierOneVariantsTable.getItems().isEmpty()) variantList.addAll(tierOneVariantsTable.getItems().stream().collect(Collectors.toList()));
-        if(!tierTwoVariantsTable.getItems().isEmpty()) variantList.addAll(tierTwoVariantsTable.getItems().stream().collect(Collectors.toList()));
-        //if(tierOne != null && !tierOne.isEmpty()) variantList.addAll(tierOne);
-        //if(tierTwo != null && !tierTwo.isEmpty()) variantList.addAll(tierTwo);
+        if(tierOne != null && !tierOne.isEmpty()) variantList.addAll(tierOne);
+        if(tierTwo != null && !tierTwo.isEmpty()) variantList.addAll(tierTwo);
 
         List<VariantAndInterpretationEvidence> negativeResult = new ArrayList<>();
         //리포트에서 제외된 negative 정보를 제거
         if(negativeList != null && !negativeList.isEmpty()) {
-            negativeResult.addAll(negativeVariantsTable.getItems().stream().filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).collect(Collectors.toList()));
+            negativeResult.addAll(negativeList.stream().filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).collect(Collectors.toList()));
         }
         //리포트에서 제외된 variant를 제거
         if(!variantList.isEmpty()) {
@@ -793,11 +746,11 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         clinicalVariantList.addAll(variantList);
 
         //if(tierThree != null && !tierThree.isEmpty()) variantList.addAll(tierThree);
-        if(!tierThreeVariantsTable.getItems().isEmpty()) variantList.addAll(tierThreeVariantsTable.getItems().stream().filter(tierThree ->
+        if(tierThree != null && !tierThree.isEmpty()) variantList.addAll(tierThree.stream().filter(tierThree ->
                 tierThree.getSnpInDel().getIncludedInReport().equalsIgnoreCase("Y")).collect(Collectors.toList()));
 
         for(VariantAndInterpretationEvidence variant : variantList) {
-            variant.getSnpInDel().getSnpInDelExpression().setTranscript(ConvertUtil.insertTextAtFixedPosition(variant.getSnpInDel().getSnpInDelExpression().getTranscript(), 15, "\n"));
+            variant.getSnpInDel().getSnpInDelExpression().setTranscript(ConvertUtil.insertTextAtFixedPosition(variant.getSnpInDel().getSnpInDelExpression().getTranscriptAccession(), 15, "\n"));
             variant.getSnpInDel().getSnpInDelExpression().setNtChange(ConvertUtil.insertTextAtFixedPosition(variant.getSnpInDel().getSnpInDelExpression().getNtChange(), 15, "\n"));
             variant.getSnpInDel().getSnpInDelExpression().setAaChange(ConvertUtil.insertTextAtFixedPosition(variant.getSnpInDel().getSnpInDelExpression().getAaChange(), 15, "\n"));
         }
@@ -807,30 +760,54 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         Integer evidenceCCount = 0;
         Integer evidenceDCount = 0;
 
-        if(!tierOneVariantsTable.getItems().isEmpty()) {
-            for(VariantAndInterpretationEvidence variant : tierOneVariantsTable.getItems().stream().filter(tierOne ->
+        if(tierOne != null && !tierOne.isEmpty()) {
+            for(VariantAndInterpretationEvidence variant : tierOne.stream().filter(tierOne ->
                     tierOne.getSnpInDel().getIncludedInReport().equalsIgnoreCase("Y")).collect(Collectors.toList())) {
-                if("Y".equalsIgnoreCase(variant.getSnpInDel().getIncludedInReport()) && variant.getInterpretationEvidence() != null) {
-                    if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelA())) evidenceACount++;
-                    if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelB())) evidenceBCount++;
-                    if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelC())) evidenceCCount++;
-                    if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelD())) evidenceDCount++;
-                    if("T2".equals(variant.getSnpInDel().getSwTier())
-                            && StringUtils.isEmpty(variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelB())) evidenceBCount++;
+                if("Y".equalsIgnoreCase(variant.getSnpInDel().getIncludedInReport()) && ConvertUtil.findPrimaryEvidence(variant.getSnpInDelEvidences()) != null) {
+                    SnpInDelEvidence snpInDelEvidence = ConvertUtil.findPrimaryEvidence(variant.getSnpInDelEvidences());
+                    switch (snpInDelEvidence.getEvidenceLevel()) {
+                        case "A":
+                            evidenceACount++;
+                            break;
+                        case "B":
+                            evidenceBCount++;
+                            break;
+                        case "C":
+                            evidenceCCount++;
+                            break;
+                        case "D":
+                            evidenceDCount++;
+                            break;
+                        default:
+                    }
+                    /*if("T2".equals(variant.getSnpInDel().getSwTier())
+                            && StringUtils.isEmpty(variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelB())) evidenceBCount++;*/
                 }
             }
         }
 
-        if(!tierTwoVariantsTable.getItems().isEmpty()) {
-            for(VariantAndInterpretationEvidence variant : tierTwoVariantsTable.getItems().stream().filter(tierTwo ->
+        if(tierTwo != null && !tierTwo.isEmpty()) {
+            for(VariantAndInterpretationEvidence variant : tierTwo.stream().filter(tierTwo ->
                     tierTwo.getSnpInDel().getIncludedInReport().equalsIgnoreCase("Y")).collect(Collectors.toList())) {
-                if("Y".equalsIgnoreCase(variant.getSnpInDel().getIncludedInReport()) && variant.getInterpretationEvidence() != null) {
-                    if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelA())) evidenceACount++;
-                    if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelB())) evidenceBCount++;
-                    if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelC())) evidenceCCount++;
-                    if(!StringUtils.isEmpty(variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelD())) evidenceDCount++;
-                    if("T1".equals(variant.getSnpInDel().getSwTier())
-                            && StringUtils.isEmpty(variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelD())) evidenceDCount++;
+                if("Y".equalsIgnoreCase(variant.getSnpInDel().getIncludedInReport()) && ConvertUtil.findPrimaryEvidence(variant.getSnpInDelEvidences()) != null) {
+                    SnpInDelEvidence snpInDelEvidence = ConvertUtil.findPrimaryEvidence(variant.getSnpInDelEvidences());
+                    switch (snpInDelEvidence.getEvidenceLevel()) {
+                        case "A":
+                            evidenceACount++;
+                            break;
+                        case "B":
+                            evidenceBCount++;
+                            break;
+                        case "C":
+                            evidenceCCount++;
+                            break;
+                        case "D":
+                            evidenceDCount++;
+                            break;
+                        default:
+                    }
+                    /*if("T1".equals(variant.getSnpInDel().getSwTier())
+                            && StringUtils.isEmpty(variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelD())) evidenceDCount++;*/
                 }
             }
         }
@@ -838,16 +815,15 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         contentsMap.put("clinicalVariantList", clinicalVariantList);
         contentsMap.put("variantList", variantList);
         contentsMap.put("tierThreeVariantList", tierThree);
-        contentsMap.put("tierOneCount", tierOneVariantsTable.getItems().filtered(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).size());
-        contentsMap.put("tierTwoCount", tierTwoVariantsTable.getItems().filtered(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).size());
-        contentsMap.put("tierThreeCount", tierThreeVariantsTable.getItems().filtered(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).size());
+        contentsMap.put("tierOneCount", (int)tierOne.stream().filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).count());
+        contentsMap.put("tierTwoCount", (int)tierTwo.stream().filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).count());
+        contentsMap.put("tierThreeCount", (int)tierThree.stream().filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).count());
         contentsMap.put("tierFourCount", (tierFour != null) ? tierFour.size() : 0);
         contentsMap.put("evidenceACount", evidenceACount);
         contentsMap.put("evidenceBCount", evidenceBCount);
         contentsMap.put("evidenceCCount", evidenceCCount);
         contentsMap.put("evidenceDCount", evidenceDCount);
         contentsMap.put("negativeList", negativeResult);
-        contentsMap.put("qcData", sample.getQcData());
 
         //Genes in panel
 
@@ -885,8 +861,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
                 Set<String> list = new HashSet<>();
 
-                list.addAll(Arrays.stream(virtualPanel.getEssentialGenes().replaceAll("\\p{Z}", "")
-                        .split(",")).collect(Collectors.toSet()));
+                list.addAll(Arrays.asList(virtualPanel.getEssentialGenes().replaceAll("\\p{Z}", "")
+                        .split(",")));
 
                 Set<String> allGeneList = returnGeneList(virtualPanel.getEssentialGenes(), virtualPanel.getOptionalGenes());
 
@@ -896,16 +872,12 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
             }
 
-            response = apiService.get("/runs/" + sample.getRunId(), null,
-                    null, false);
+            String runSequencer = sample.getRun().getSequencingPlatform();
 
-            RunWithSamples runWithSamples = response.getObjectBeforeConvertResponseToJSON(RunWithSamples.class);
-            String runSequencer = runWithSamples.getRun().getSequencingPlatform();
-
-            if(runSequencer.equalsIgnoreCase("MISEQ")) {
-                contentsMap.put("sequencer",SequencerCode.MISEQ.getDescription());
+            if (runSequencer.equalsIgnoreCase("MISEQ")) {
+                contentsMap.put("sequencer", SequencerCode.MISEQ.getDescription());
             } else {
-                contentsMap.put("sequencer",SequencerCode.MISEQ_DX.getDescription());
+                contentsMap.put("sequencer", SequencerCode.MISEQ_DX.getDescription());
             }
 
             response = apiService.get("/analysisResults/sampleQCs/" + sample.getId(), null,
@@ -913,34 +885,147 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
             List<SampleQC> qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
 
-            contentsMap.put("totalBase",findQCResult(qcList, "total_base"));
-            contentsMap.put("q30",findQCResult(qcList, "q30_trimmed_base"));
-            contentsMap.put("mappedBase",findQCResult(qcList, "mapped_base"));
-            contentsMap.put("onTarget",findQCResult(qcList, "on_target"));
-            contentsMap.put("onTargetCoverage",findQCResult(qcList, "on_target_coverage"));
-            contentsMap.put("duplicatedReads",findQCResult(qcList, "duplicated_reads"));
-            contentsMap.put("roiCoverage",findQCResult(qcList, "roi_coverage"));
+            if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
+                contentsMap.put("q30ScoreRead1", findQCResult(qcList, "Q30_score_read1"));
+                contentsMap.put("q30ScoreRead2", findQCResult(qcList, "Q30_score_read2"));
+                contentsMap.put("coverageMAD", findQCResult(qcList, "Coverage_MAD"));
+                contentsMap.put("medianBinCountCNVTargets", findQCResult(qcList, "Median_BinCount_CNV_Targets"));
+                contentsMap.put("medianInsertSize", findQCResult(qcList, "Median_Insert_Size"));
+                contentsMap.put("pctExonBases100X", findQCResult(qcList, "PCT_ExonBases_100X"));
+                contentsMap.put("readsPF", findQCResult(qcList, "Reads_PF"));
+            } else {
+                contentsMap.put("mappingQuality", findQCResult(qcList, "mapping_quality_60"));
+                contentsMap.put("uniformity", findQCResult(qcList, "uniformity_0.2"));
+                contentsMap.put("totalBase", findQCResult(qcList, "total_base"));
+                contentsMap.put("q30", findQCResult(qcList, "q30_trimmed_base"));
+                contentsMap.put("mappedBase", findQCResult(qcList, "mapped_base"));
+                contentsMap.put("onTarget", findQCResult(qcList, "on_target"));
+                contentsMap.put("onTargetCoverage", findQCResult(qcList, "on_target_coverage"));
+                contentsMap.put("duplicatedReads", findQCResult(qcList, "duplicated_reads"));
+                contentsMap.put("roiCoverage", findQCResult(qcList, "roi_coverage"));
+            }
+
+            if(sample.getPipelineVersion() != null) {
+                //response = apiService.get("/pipelineVersions/" + sample.getPipelineVersionId(), null, null, false);
+                //PipelineVersion pipelineVersion = response.getObjectBeforeConvertResponseToJSON(PipelineVersion.class);
+                contentsMap.put("pipelineVersion", sample.getPipelineVersion());
+            }
 
             List<String> conclusionLineList = null;
             if(!StringUtils.isEmpty(conclusionsTextArea.getText())) {
                 conclusionLineList = new ArrayList<>();
                 String[] lines = conclusionsTextArea.getText().split("\n");
                 if(lines != null && lines.length > 0) {
-                    for (String line : lines) {
-                        conclusionLineList.add(line);
-                    }
+                    conclusionLineList.addAll(Arrays.asList(lines));
                 } else {
                     conclusionLineList.add(conclusionsTextArea.getText());
                 }
             }
             contentsMap.put("conclusions", conclusionLineList);
 
+            Map<String, Object> analysisFileMap = new HashMap<>();
+            analysisFileMap.put("sampleId", sample.getId());
+            response = apiService.get("/analysisFiles", analysisFileMap, null, false);
+            AnalysisFileList analysisFileList = response.getObjectBeforeConvertResponseToJSON(AnalysisFileList.class);
+
+            List<AnalysisFile> analysisFiles = analysisFileList.getResult();
+
+            Optional<AnalysisFile> optionalAnalysisFile = analysisFiles.stream()
+                    .filter(item -> item.getName().contains("cnv_plot.png")).findFirst();
+
+            if(optionalAnalysisFile.isPresent()) {
+                contentsMap.put("cnvImagePath", optionalAnalysisFile.get().getName());
+                downloadCNVImage(optionalAnalysisFile.get());
+            }
+
+            try {
+                response = apiService.get("/analysisResults/cnv/" + sample.getId(), null, null, null);
+                PagedCNV pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedCNV.class);
+                contentsMap.put("cnvList", pagedCNV.getResult());
+
+            } catch (WebAPIException wae) {
+                logger.debug(wae.getMessage());
+            }
         }
 
         return contentsMap;
     }
 
-    public boolean createPDF(boolean isDraft) {
+    private String downloadCNVImage(AnalysisFile analysisFile) {
+        CloseableHttpClient httpclient = null;
+        CloseableHttpResponse response = null;
+
+        String tempPath = CommonConstants.BASE_FULL_PATH  + File.separator + "temp";
+        File tempFile = new File(tempPath);
+
+        if(!tempFile.exists()) {
+            tempFile.mkdirs();
+        }
+
+        String downloadUrl = "/analysisFiles/" + analysisFile.getSampleId() + "/" + analysisFile.getName();
+        String path = CommonConstants.BASE_FULL_PATH  + File.separator + "temp" +
+                File.separator + analysisFile.getName();
+
+        File file = new File(path);
+
+        OutputStream os = null;
+        try {
+            String connectURL = apiService.getConvertConnectURL(downloadUrl);
+
+            // 헤더 삽입 정보 설정
+            Map<String,Object> headerMap = apiService.getDefaultHeaders(true);
+
+            HttpGet get = new HttpGet(connectURL);
+            logger.debug("GET:" + get.getURI());
+
+            // 지정된 헤더 삽입 정보가 있는 경우 추가
+            if(headerMap != null && headerMap.size() > 0) {
+                for (Map.Entry<String, Object> entry : headerMap.entrySet()) {
+                    get.setHeader(entry.getKey(), entry.getValue().toString());
+                }
+            }
+
+            httpclient = HttpClients.custom().setSSLSocketFactory(HttpClientUtil.getSSLSocketFactory()).build();
+            if (httpclient != null)
+                response = httpclient.execute(get);
+            if (response == null){
+                logger.error("httpclient response is null");
+                throw new NullPointerException();
+            }
+            int status = response.getStatusLine().getStatusCode();
+
+            if(status >= 200 && status < 300) {
+                HttpEntity entity = response.getEntity();
+                InputStream content = entity.getContent();
+
+                os = Files.newOutputStream(Paths.get(file.toURI()));
+
+                byte[] buf = new byte[8192];
+                int n;
+                while ((n = content.read(buf)) > 0) {
+                    os.write(buf, 0, n);
+                }
+                content.close();
+                os.flush();
+                if (httpclient != null) httpclient.close();
+                if (response != null) response.close();
+            }
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+        } finally {
+            if(os != null) {
+                try {
+                    os.close();
+                } catch (Exception e) {
+                    logger.error(e.getMessage());
+                }
+            }
+        }
+
+        return path;
+    }
+
+    private boolean createPDF(boolean isDraft) {
         boolean created = true;
         String reportCreationErrorMsg = "An error occurred during the creation of the report document.";
         try {
@@ -961,8 +1046,10 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             FileChooser fileChooser = new FileChooser();
             if(outputType != null && outputType.equalsIgnoreCase("MS_WORD")) {
                 fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF (*.docx)", "*.docx"));
-            } else {
+            } else if(outputType != null && outputType.equalsIgnoreCase("PDF")){
                 fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf"));
+            } else if(outputType != null && outputType.equalsIgnoreCase("IMG")){
+                fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("JPG (*.jpg)", "*.jpg"));
             }
             fileChooser.setInitialFileName(baseSaveName);
             File file = fileChooser.showSaveDialog(this.getMainApp().getPrimaryStage());
@@ -992,7 +1079,11 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
                 String contents = "";
                 if(panel.getReportTemplateId() == null) {
-                    contents = velocityUtil.getContents("/layout/velocity/report.vm", "UTF-8", model);
+                    if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
+                        contents = velocityUtil.getContents("/layout/velocity/report_tst.vm", "UTF-8", model);
+                    } else {
+                        contents = velocityUtil.getContents("/layout/velocity/report.vm", "UTF-8", model);
+                    }
                     created = pdfCreateService.createPDF(file, contents);
                     createdCheck(created, file);
                     //convertPDFtoImage(file, sample.getName());
@@ -1010,6 +1101,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                             } else {
                                 contentsMap.put(datePicker.getId(), "");
                             }
+                        } else if(gridObject instanceof ComboBox) {
+                            ComboBox<String> comboBox = (ComboBox<String>)gridObject;
+                            contentsMap.put(comboBox.getId(), comboBox.getSelectionModel().getSelectedItem());
                         }
                     }
 
@@ -1039,9 +1133,12 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         }
 
                         if(!jarFile.exists()) {
-
                             File folder = new File(filePath);
-                            if (!folder.exists()) folder.mkdirs();
+                            if (!folder.exists()){
+                                if(!folder.mkdirs()) {
+                                    throw new Exception("Fail to make jarFile directory");
+                                }
+                            }
 
                             Task task = new JarDownloadTask(this, component);
 
@@ -1055,10 +1152,13 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                                     URL[] jarUrls = new URL[]{jarFile1.toURI().toURL()};
                                     createWordFile(jarUrls, file, contentsMap, reportCreationErrorMsg);
                                 } catch (MalformedURLException murle) {
-                                    DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + murle.getMessage(), getMainApp().getPrimaryStage(), false);
+                                    DialogUtil.error("Report Generation Fail", reportCreationErrorMsg + "\n" + murle.getMessage(), getMainApp().getPrimaryStage(), false);
                                     murle.printStackTrace();
                                 }
                             });
+                            task.exceptionProperty().addListener((observable, oldValue, newValue) ->
+                                DialogUtil.error("Report Generation Fail",
+                                        ((Exception)newValue).getMessage(), getMainApp().getPrimaryStage(), false));
                         } else {
                             URL[] jarUrls = new URL[]{jarFile.toURI().toURL()};
                             createWordFile(jarUrls, file, contentsMap, reportCreationErrorMsg);
@@ -1072,7 +1172,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                                     + File.separator + image.getName() + "')";
                             path = path.replaceAll("\\\\", "/");
                             String name = image.getName().substring(0, image.getName().lastIndexOf('.'));
-                            logger.info(name + " : " + path);
+                            logger.debug(name + " : " + path);
                             model.put(name, path);
                         }
 
@@ -1087,8 +1187,17 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         final String contents1 = velocityUtil.getContents(reportContents.getReportTemplate().getId() + "/" + reportContents.getReportTemplate().getName() + ".vm", "UTF-8", model);
                         task.setOnSucceeded(ev -> {
                             try {
-                                final boolean created1 = pdfCreateService.createPDF(file, contents1);
-                                createdCheck(created1, file);
+                                if(reportContents.getReportTemplate().getOutputType() != null
+                                        && reportContents.getReportTemplate().getOutputType().equalsIgnoreCase("PDF")) {
+                                    final boolean created1 = pdfCreateService.createPDF(file, contents1);
+                                    createdCheck(created1, file);
+                                } else {
+                                    String path = CommonConstants.BASE_FULL_PATH + File.separator + "temp" + File.separator + "tempPDF.pdf";
+                                    File tempPDFFile = new File(path);
+                                    final boolean created1 = pdfCreateService.createPDF(tempPDFFile, contents1);
+                                    createdCheck(created1, tempPDFFile);
+                                    ImageService.convertPDFtoImage(tempPDFFile, sample.getName(), file);
+                                }
 
                             } catch (Exception e) {
                                 DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);
@@ -1105,50 +1214,39 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
             DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);
-            e.printStackTrace();
             created = false;
         }
 
         return created;
     }
 
-    public void createWordFile(URL[] jarUrls, File file , Map<String, Object> contentsMap, String reportCreationErrorMsg) {
-        //try (URLClassLoader classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader())) {
-        URLClassLoader classLoader = null;
-        try {
-            classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader());
-            //Thread.currentThread().setContextClassLoader(classLoader);
-            @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "UnnecessarySemicolon"})
+    private void createWordFile(URL[] jarUrls, File file , Map<String, Object> contentsMap, String reportCreationErrorMsg) {
+
+        try (URLClassLoader classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader())) {
             Class classToLoad = Class.forName("word.create.App", true, classLoader);
-            logger.info("application init..");
-            Method[] methods = classToLoad.getMethods();
+            logger.debug("application init..");
             Method setParams = classToLoad.getMethod("setParams", Map.class);
             Method updateEmbeddedDoc = classToLoad.getMethod("updateEmbeddedDoc");
             Method updateWordFile = classToLoad.getDeclaredMethod("updateWordFile");
             Method setWriteFilePath = classToLoad.getDeclaredMethod("setWriteFilePath", String.class);
             Object application = classToLoad.newInstance();
-            Object result = setParams.invoke(application, contentsMap);
-            result = setWriteFilePath.invoke(application, file.getPath());
-            result = updateEmbeddedDoc.invoke(application);
-            result = updateWordFile.invoke(application);
+            setParams.invoke(application, contentsMap);
+            setWriteFilePath.invoke(application, file.getPath());
+            updateEmbeddedDoc.invoke(application);
+            updateWordFile.invoke(application);
             createdCheck(true, file);
         } catch (Exception e) {
             DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);
             e.printStackTrace();
-        } finally {
-            try {
-                if(classLoader != null) classLoader.close();
-            } catch (IOException e) {
-                DialogUtil.error("close error", e.getMessage(), getMainApp().getPrimaryStage(), false);
-            }
-
         }
     }
 
-    public void createdCheck(boolean created, File file) {
+    private void createdCheck(boolean created, File file) {
         try {
             if (created) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                DialogUtil.setIcon(alert);
                 alert.initOwner(getMainController().getPrimaryStage());
                 alert.setTitle(CONFIRMATION_DIALOG);
                 alert.setHeaderText("Creating the report document was completed.");
@@ -1165,7 +1263,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         getMainApp().getPrimaryStage(), false);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            DialogUtil.error("Save Fail.", "An error occurred during the creation of the report document.",
+                    getMainApp().getPrimaryStage(), false);
         }
     }
 
@@ -1186,214 +1285,5 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             }
         }
         return null;
-    }
-
-    /**
-     * 보고서 작업 완료 처리
-     */
-    public void setComplete() {
-        /*try {
-            // step_report 상태값 완료 처리.
-            int jobStatusId = sample.getJobStatus().getId();
-            Map<String, Object> param = new HashMap<String, Object>();
-            param.put("step_report", AnalysisJobStatusCode.SAMPLE_JOB_STATUS_COMPLETE);
-            param.put("step msg", "Complete Review and Reporting");
-            apiService.patch("/analysis_progress_state/jobstatus_update/" + jobStatusId, param, null, true);
-            // 상태값 변경이 정상 처리된 경우 화면 상태 변경 처리.
-            // 보고서 작업화면 비활성화
-            setActive(false);
-            // 상위 레이아웃 컨트롤러의 완료 처리 메소드 실행
-            getAnalysisDetailLayoutController().setReviewComplete();
-        } catch (WebAPIException wae) {
-            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
-                    getMainApp().getPrimaryStage(), true);
-        } catch (Exception e) {
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
-        }*/
-    }
-
-
-    private class ReportedCheckBox extends TableCell<VariantAndInterpretationEvidence, Boolean> {
-        HBox box = null;
-        final CheckBox checkBox = new CheckBox();
-
-        ReportedCheckBox(AnalysisDetailReportController analysisDetailReportController) {
-            checkBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-                VariantAndInterpretationEvidence analysisResultVariant = ReportedCheckBox.this.getTableView().getItems().get(
-                        ReportedCheckBox.this.getIndex());
-
-                selectedItem = analysisResultVariant;
-
-                TextInputDialog dialog = new TextInputDialog();
-                dialog.setContentText("cause:");
-                dialog.setTitle("Reported variant");
-
-                if (!checkBox.isSelected()) {
-                    try {
-                        FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
-                        Node root = loader.load();
-                        ExcludeReportDialogController excludeReportDialogController = loader.getController();
-                        excludeReportDialogController.setMainController(mainController);
-                        //excludeReportDialogController.setAnalysisDetailReportController(analysisDetailReportController);
-                        excludeReportDialogController.settingItem("Y", selectedItem, checkBox);
-                        excludeReportDialogController.show((Parent) root);
-                    } catch (IOException ioe) {
-                        ioe.printStackTrace();
-                    }
-                } else {
-                    try {
-                        FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
-                        Node root = loader.load();
-                        ExcludeReportDialogController excludeReportDialogController = loader.getController();
-                        excludeReportDialogController.setMainController(mainController);
-                        excludeReportDialogController.settingItem("N", selectedItem, checkBox);
-                        excludeReportDialogController.show((Parent) root);
-                    } catch (IOException ioe) {
-                        ioe.printStackTrace();
-                    }
-                }
-            });
-        }
-
-        @Override
-        protected void updateItem(Boolean item, boolean empty) {
-            super.updateItem(item, empty);
-            if(isEmpty()) {
-                setGraphic(null);
-                return;
-            }
-            if(box == null) {
-                VariantAndInterpretationEvidence analysisResultVariant = ReportedCheckBox.this.getTableView().getItems().get(
-                        ReportedCheckBox.this.getIndex());
-
-                if (analysisResultVariant.getSnpInDel().getIncludedInReport().equalsIgnoreCase("N")) {
-                    checkBox.setSelected(true);
-                }
-
-                box = new HBox();
-
-                box.setAlignment(Pos.CENTER);
-
-                box.setSpacing(10);
-                checkBox.setStyle("-fx-cursor:hand;");
-                box.getChildren().add(checkBox);
-            }
-
-            setGraphic(box);
-
-        }
-
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////
-
-    /*
-    TableView 간의 Drag and Drop 기능 구현
-     */
-
-    /**
-     *
-     * @param e
-     * @param table
-     */
-    public void onDragDetected(MouseEvent e, TableView<VariantAndInterpretationEvidence> table) {
-        VariantAndInterpretationEvidence selectedVariant = table.getSelectionModel().getSelectedItem();
-        if(selectedVariant == null) return;
-
-        selectedTable = table;
-
-        selectedItem = selectedVariant;
-
-        Dragboard db = table.startDragAndDrop(TransferMode.ANY);
-        ClipboardContent content = new ClipboardContent();
-        //저장된 row를 기준으로 스냅샷 생성
-        SnapshotParameters sp = new SnapshotParameters();
-        sp.setTransform(Transform.scale(2, 2));
-
-        db.setDragView(rowItem.snapshot(sp, null));
-
-        content.putString(selectedVariant.toString());
-        db.setContent(content);
-        e.consume();
-    }
-
-    public void onDragDone(DragEvent e) {
-        e.consume();
-    }
-
-    public void onDragOver(DragEvent t, TableView<VariantAndInterpretationEvidence> table) {
-        if(selectedTable != table) {
-            t.acceptTransferModes(TransferMode.ANY);
-            DropShadow dropShadow = new DropShadow();
-            dropShadow.setRadius(5.0);
-            dropShadow.setOffsetX(3.0);
-            dropShadow.setOffsetY(3.0);
-            dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
-            table.setEffect(dropShadow);
-        }
-    }
-
-    public void onDragExited(DragEvent t, TableView<VariantAndInterpretationEvidence> table) {
-        t.acceptTransferModes(TransferMode.ANY);
-        table.setEffect(null);
-        t.consume();
-    }
-
-    public void onDragDropped(DragEvent t, TableView<VariantAndInterpretationEvidence> table, String tier) {
-        if(selectedItem != null && selectedTable != table) {
-            try {
-                FXMLLoader loader = mainApp.load(FXMLConstants.CHANGE_TIER);
-                Node root = loader.load();
-                ChangeTierDialogController changeTierDialogController = loader.getController();
-                changeTierDialogController.setMainController(this.getMainController());
-                changeTierDialogController.setAnalysisDetailReportController(this);
-                changeTierDialogController.settingItem(table, tier, selectedItem, rowItem);
-                changeTierDialogController.show((Parent) root);
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
-            }
-
-        }
-        t.setDropCompleted(true);
-    }
-
-    public void onClicked(MouseEvent e,TableView<VariantAndInterpretationEvidence> table, String tier) {
-
-        if(e.getClickCount() == 2) {
-            VariantAndInterpretationEvidence variantAndInterpretationEvidence = table.getSelectionModel().getSelectedItem();
-            try {
-                FXMLLoader loader = mainApp.load(FXMLConstants.CHANGE_TIER);
-                Node root = loader.load();
-                ChangeTierDialogController changeTierDialogController = loader.getController();
-                changeTierDialogController.setMainController(this.getMainController());
-                changeTierDialogController.setAnalysisDetailReportController(this);
-                changeTierDialogController.settingTier(tier, variantAndInterpretationEvidence);
-                changeTierDialogController.show((Parent) root);
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
-            }
-        }
-    }
-
-    public void resetData(TableView<VariantAndInterpretationEvidence> table) {
-        if(selectedTable != null && table != null) {
-            selectedTable.getItems().remove(selectedItem);
-            table.getItems().add(selectedItem);
-        }
-        selectedItem = null;
-        selectedTable = null;
-        rowItem = null;
-    }
-
-    public void selectClear(String tier) {
-        if(tier.equals("T1")) {
-            tierOneVariantsTable.getSelectionModel().clearSelection();
-        } else if(tier.equals("T2")) {
-            tierTwoVariantsTable.getSelectionModel().clearSelection();
-        } else if(tier.equals("T3")) {
-            tierThreeVariantsTable.getSelectionModel().clearSelection();
-        } else if(tier.equals("TN")) {
-            negativeVariantsTable.getSelectionModel().clearSelection();
-        }
     }
 }

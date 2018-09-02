@@ -147,7 +147,7 @@
 								<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt" font-weight="bold">Specimen Type</fo:block>
 							</fo:table-cell>
 							<fo:table-cell padding="2mm" border-width="0.5pt" border-style="solid">
-								<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt" >Blood</fo:block>
+								<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt" >$contents.sampleSource</fo:block>
 							</fo:table-cell>
 							<fo:table-cell padding="2mm" border-width="0.5pt" border-style="solid" border-left-style="double" border-left-width="2.0pt">
 								<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt" font-weight="bold">Name</fo:block>
@@ -161,7 +161,7 @@
 								<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt" font-weight="bold">Draw Date</fo:block>
 							</fo:table-cell>
 							<fo:table-cell padding="2mm" border-width="0.5pt" border-style="solid">
-								<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt" ></fo:block>
+								<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt" >$contents.DrawDate</fo:block>
 							</fo:table-cell>
 							<fo:table-cell padding="2mm" border-width="0.5pt" border-style="solid" border-left-style="double" border-left-width="2.0pt">
 								<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt" font-weight="bold">Date of Birth</fo:block>
@@ -175,7 +175,7 @@
 								<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt" font-weight="bold">Received Date</fo:block>
 							</fo:table-cell>
 							<fo:table-cell padding="2mm" border-width="0.5pt" border-style="solid">
-								<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt" ></fo:block>
+								<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt" >$contents.ReceivedDate</fo:block>
 							</fo:table-cell>
 							<fo:table-cell padding="2mm" border-width="0.5pt" border-style="solid" border-left-style="double" border-left-width="2.0pt">
 								<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt" font-weight="bold">Patient ID</fo:block>
@@ -185,11 +185,8 @@
 							</fo:table-cell>
 						</fo:table-row>
 						<fo:table-row>
-							<fo:table-cell padding="2mm" border-width="0.5pt" border-style="solid">
-								<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt" font-weight="bold">Report Date</fo:block>
-							</fo:table-cell>
-							<fo:table-cell padding="2mm" border-width="0.5pt" border-style="solid" >
-								<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt">${contents.reportingDate}</fo:block>
+							<fo:table-cell padding="2mm" border-width="0.5pt" border-style="solid" number-columns-spanned="2">
+								<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt" font-weight="bold"></fo:block>
 							</fo:table-cell>
 							<fo:table-cell padding="2mm" border-width="0.5pt" border-style="solid" border-left-style="double" border-left-width="2.0pt">
 								<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt" font-weight="bold">Gender</fo:block>
@@ -212,11 +209,16 @@
 							<fo:table-cell padding="2mm" border-width="0.5pt" border-style="solid" number-columns-spanned="4">
 								<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt">
 								#if($contents.isExistReportedVariant == "Y")
-									<fo:block padding="2mm">Positive-Clinically significant mutation identified.</fo:block>
+									<fo:block padding="2mm">Positive-clinically significant mutation identified.</fo:block>
 									#foreach($variant in $contents.variantList)
 										#if($variant.snpInDel.includedInReport == 'Y')
 											<fo:block padding="1mm">
-												<![CDATA[$variant.snpInDel.genomicCoordinate.gene]]>,  <![CDATA[$variant.snpInDel.snpInDelExpression.ntChange]]>, <![CDATA[$variant.snpInDel.snpInDelExpression.aaChange]]>, <![CDATA[$variant.snpInDel.snpInDelExpression.zygosity]]>
+												<![CDATA[$variant.snpInDel.genomicCoordinate.gene]]>,  <![CDATA[$variant.snpInDel.snpInDelExpression.ntChange]]>, <![CDATA[$variant.snpInDel.snpInDelExpression.aaChange]]>,
+												#if($contents.sampleSource && $contents.sampleSource == "FFPE")
+												VAF $variant.snpInDel.readInfo.alleleFraction%
+												#else
+												<![CDATA[$variant.snpInDel.snpInDelExpression.zygosity]]>
+												#end
 											</fo:block>
 										#end	
 									#end
@@ -283,7 +285,13 @@
 													<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt">AA Change<fo:inline vertical-align="super" font-size="5pt">3</fo:inline></fo:block>
 												</fo:table-cell>
 												<fo:table-cell text-align="center" padding="2mm" border-width="0.5pt" border-style="solid">
-													<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt">Zygosity</fo:block>
+													<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt">
+														#if($contents.sampleSource && $contents.sampleSource == "FFPE")
+															VAF
+														#else
+															Zygosity
+														#end
+													</fo:block>
 												</fo:table-cell>
 												<fo:table-cell text-align="center" padding="2mm" border-width="0.5pt" border-style="solid">
 													<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt">Type</fo:block>
@@ -306,7 +314,13 @@
 																<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt"><![CDATA[$variant.snpInDel.snpInDelExpression.aaChange]]></fo:block>
 															</fo:table-cell>
 															<fo:table-cell text-align="left" padding="2mm" border-width="0.5pt" border-style="solid">
-																<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt"><![CDATA[$variant.snpInDel.snpInDelExpression.zygosity]]></fo:block>
+																<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt">
+																	#if($contents.sampleSource && $contents.sampleSource == "FFPE")
+																	$variant.snpInDel.readInfo.alleleFraction%
+																	#else
+																	<![CDATA[$variant.snpInDel.snpInDelExpression.zygosity]]>
+																	#end
+																</fo:block>
 															</fo:table-cell>
 															<fo:table-cell text-align="center" padding="2mm" border-width="0.5pt" border-style="solid">
 																<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt"><![CDATA[$variant.snpInDel.snpInDelExpression.variantType]]></fo:block>
@@ -385,7 +399,13 @@
 													<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt">AA Change<fo:inline vertical-align="super" font-size="5pt">3</fo:inline></fo:block>
 												</fo:table-cell>
 												<fo:table-cell text-align="center" padding="2mm" border-width="0.5pt" border-style="solid">
-													<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt">Zygosity</fo:block>
+													<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt">
+														#if($contents.sampleSource && $contents.sampleSource == "FFPE")
+														VAF
+														#else
+														Zygosity
+														#end
+													</fo:block>
 												</fo:table-cell>
 												<fo:table-cell text-align="center" padding="2mm" border-width="0.5pt" border-style="solid">
 													<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt">Type</fo:block>
@@ -408,7 +428,13 @@
 																<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt"><![CDATA[$variant.snpInDel.snpInDelExpression.aaChange]]></fo:block>
 															</fo:table-cell>
 															<fo:table-cell text-align="left" padding="2mm" border-width="0.5pt" border-style="solid">
-																<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt"><![CDATA[$variant.snpInDel.snpInDelExpression.zygosity]]></fo:block>
+																<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt">
+																	#if($contents.sampleSource && $contents.sampleSource == "FFPE")
+																		$variant.snpInDel.readInfo.alleleFraction%
+																	#else
+																		<![CDATA[$variant.snpInDel.snpInDelExpression.zygosity]]>
+																	#end
+																</fo:block>
 															</fo:table-cell>
 															<fo:table-cell text-align="center" padding="2mm" border-width="0.5pt" border-style="solid">
 																<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt"><![CDATA[$variant.snpInDel.snpInDelExpression.variantType]]></fo:block>
@@ -465,7 +491,7 @@
 						</fo:table-row>
 						<fo:table-row>
 							<fo:table-cell border-width="0.5pt" font-family="Noto Sans CJK KR Regular" font-size="9pt" number-columns-spanned="4" >
-								<fo:block padding="1mm"  font-size="10pt">1. Specimen: Blood</fo:block>
+								<fo:block padding="1mm"  font-size="10pt">1. Specimen: $contents.sampleSource</fo:block>
 								<fo:block padding="1mm" font-size="10pt">2. Clinical information</fo:block>
 								<fo:block padding="1mm" font-size="10pt">3. Test method</fo:block>
 								<fo:block padding="1mm" margin-left="3mm">1) BRCA1</fo:block>
@@ -533,7 +559,7 @@
 													<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt">Contact</fo:block>
 												</fo:table-cell>
 												<fo:table-cell padding="2mm" border-width="0.5pt" border-style="solid">
-													<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt" >${contents.inspectorContact}</fo:block>
+													<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt" >#if($contents.inspectorContact)$contents.inspectorContact #end</fo:block>
 												</fo:table-cell>
 											</fo:table-row>
 										</fo:table-body>

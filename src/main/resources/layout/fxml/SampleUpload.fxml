@@ -14,27 +14,31 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="contentWrapper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="850.0" styleClass="bg_white" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SampleUploadController">
+<VBox fx:id="contentWrapper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="500.0" minWidth="1200.0" prefHeight="500.0" prefWidth="1200.0" styleClass="bg_white" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.SampleUploadController">
 	<children>
-		<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="820.0">
+		<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="1140.0">
 			<columnConstraints>
-				<ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" percentWidth="0.0" prefWidth="100.0" />
-				<ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" percentWidth="0.0" prefWidth="720.0" />
+				<ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" percentWidth="0.0" prefWidth="80.0" />
+				<ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" percentWidth="0.0" prefWidth="410.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" percentWidth="0.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" percentWidth="0.0" prefWidth="540.0" />
 			</columnConstraints>
 			<rowConstraints>
 				<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" percentHeight="0.0" prefHeight="40.0" valignment="CENTER" vgrow="SOMETIMES" />
-				<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" percentHeight="0.0" prefHeight="40.0" vgrow="SOMETIMES" />
-				<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" percentHeight="0.0" prefHeight="40.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" percentHeight="0.0" prefHeight="10.0" vgrow="SOMETIMES" />
 			</rowConstraints>
 			<children>
-				<Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="formTitleLabel" text="Run Name">
+				<Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="font_size_14" text="Run">
 					<GridPane.margin>
-						<Insets right="20.0" />
+						<Insets left="10.0" />
 					</GridPane.margin>
 				</Label>
 				<HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.valignment="CENTER">
 					<children>
-						<TextField fx:id="textFieldRunName" focusTraversable="false" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" promptText="Enter the Run Name" styleClass="field_height" HBox.hgrow="ALWAYS" />
+						<TextField fx:id="textFieldRunName" focusTraversable="false" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="350.0" promptText="Enter the Run Name" styleClass="field_height" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin></TextField>
 						<Label styleClass="help_tooltip">
 							<HBox.margin>
 								<Insets left="5.0" />
@@ -48,37 +52,56 @@
 						<Insets right="20.0" />
 					</padding>
 				</HBox>
-				<Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="formTitleLabel" text="Sequencer" GridPane.rowIndex="1">
+				<Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="109.0"  styleClass="font_size_13" text="Sequencer" GridPane.columnIndex="2">
 					<GridPane.margin>
 						<Insets right="20.0" />
 					</GridPane.margin>
 				</Label>
-            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3">
                <children>
-                  <RadioButton fx:id="sequencerMiSeqDXRadioButton" mnemonicParsing="false" selected="true" text="Illumina MiSeq DX">
+                  <RadioButton fx:id="sequencerMiSeqDXRadioButton" mnemonicParsing="false" selected="true" text="Illumina MiSeqDX">
                      <toggleGroup>
                         <ToggleGroup fx:id="sequencerType" />
                      </toggleGroup>
+                     <padding>
+                        <Insets right="13.0" />
+                     </padding>
                   </RadioButton>
-                  <RadioButton fx:id="sequencerMiSeqRadioButton" mnemonicParsing="false" text="Illumina MiSeq" toggleGroup="$sequencerType" />
-                  <RadioButton fx:id="nextSeqDxRadioButton" mnemonicParsing="false" text="NextSeq DX" toggleGroup="$sequencerType" />
+                  <RadioButton fx:id="sequencerMiSeqRadioButton" mnemonicParsing="false" text="Illumina MiSeq" toggleGroup="$sequencerType">
+                     <padding>
+                        <Insets right="13.0" />
+                     </padding></RadioButton>
+                  <RadioButton fx:id="nextSeqDxRadioButton" mnemonicParsing="false" text="Illumina NextSeq 550Dx" toggleGroup="$sequencerType">
+                     <padding>
+                        <Insets right="13.0" />
+                     </padding></RadioButton>
                   <Label styleClass="help_tooltip">
                      <tooltip>
                         <Tooltip text="Choose sequencing instrument platform" />
                      </tooltip>
                   </Label>
                </children>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
             </HBox>
-            <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="15.0" prefWidth="200.0" style="-fx-background-color: #C30D23;" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+            <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="1130.0" style="-fx-border-color: #999999; -fx-border-width: 0 0 0.5 0;" GridPane.columnSpan="4" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="10.0" />
+               </GridPane.margin>
+            </VBox>
 			</children>
 		</GridPane>
-      <Pane fx:id="tableRegion" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="820.0" VBox.vgrow="ALWAYS" />
+      <Pane fx:id="tableRegion" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="430.0" prefWidth="1130.0" VBox.vgrow="ALWAYS">
+         <VBox.margin>
+            <Insets left="10.0" top="10.0" />
+         </VBox.margin></Pane>
 	</children>
 	<stylesheets>
 		<URL value="@../css/common.css" />
 		<URL value="@../css/request.css" />
 	</stylesheets>
    <padding>
-      <Insets left="15.0" right="15.0" top="15.0" />
+      <Insets left="30.0" right="30.0" top="20.0" />
    </padding>
 </VBox>

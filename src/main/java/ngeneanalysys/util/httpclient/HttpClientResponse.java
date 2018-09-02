@@ -36,7 +36,7 @@ public class HttpClientResponse {
 	public <T> T getObjectBeforeConvertResponseToJSON(Class<T> valueType) {
 		try {
 			String response = getContentString();
-			if(!StringUtils.isEmpty(response)) {
+			if(StringUtils.isNotEmpty(response)) {
 				return JsonUtil.fromJson(response, valueType);
 			}
 		} catch (Exception e) {
@@ -55,7 +55,7 @@ public class HttpClientResponse {
 	public <T> T getMultiObjectBeforeConvertResponseToJSON(Class<T> valueType, boolean isConvertObservableList) {
 		try {
 			String response = getContentString();
-			if(!StringUtils.isEmpty(response)) {
+			if(StringUtils.isNotEmpty(response)) {
 				ObjectMapper mapper = new ObjectMapper();
 				mapper.registerModule(new JodaModule());
 				List<Class<T>> list = mapper.readValue(response, mapper.getTypeFactory().constructCollectionType(List.class, valueType));

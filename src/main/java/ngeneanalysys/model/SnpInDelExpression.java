@@ -1,7 +1,6 @@
 package ngeneanalysys.model;
 
 import ngeneanalysys.util.ConvertUtil;
-import ngeneanalysys.util.StringUtils;
 
 /**
  * @author Jang
@@ -9,42 +8,20 @@ import ngeneanalysys.util.StringUtils;
  */
 public class SnpInDelExpression {
     private String variantType;
-    private String transcript;
+    private String variantTypeExtension;
     private String codingConsequence;
     private String ntChange;
     private String ntChangeBic;
     private String aaChange;
     private String aaChangeSingleLetter;
+    private String refSequence;
+    private String altSequence;
+    private String leftSequence;
+    private String rightSequence;
     private String zygosity;
-    private String aachangeSingleLetter;
-
-    /**
-     * @return aachangeSingleLetter
-     */
-    public String getAachangeSingleLetter() {
-        return aachangeSingleLetter;
-    }
-
-    /**
-     * @param aachangeSingleLetter
-     */
-    public void setAachangeSingleLetter(String aachangeSingleLetter) {
-        this.aachangeSingleLetter = aachangeSingleLetter;
-    }
-
-    /**
-     * @return variantType
-     */
-    public String getVariantType() {
-        return variantType;
-    }
-
-    /**
-     * @param variantType
-     */
-    public void setVariantType(String variantType) {
-        this.variantType = variantType;
-    }
+    private String transcriptAccession;
+    private String proteinAccession;
+    private String transcript;
 
     /**
      * @return transcript
@@ -58,6 +35,81 @@ public class SnpInDelExpression {
      */
     public void setTranscript(String transcript) {
         this.transcript = transcript;
+    }
+
+    /**
+     * @param transcriptAccession
+     */
+    public void setTranscriptAccession(String transcriptAccession) {
+        this.transcriptAccession = transcriptAccession;
+    }
+
+    /**
+     * @param proteinAccession
+     */
+    public void setProteinAccession(String proteinAccession) {
+        this.proteinAccession = proteinAccession;
+    }
+
+    /**
+     * @return proteinAccession
+     */
+    public String getProteinAccession() {
+        return proteinAccession;
+    }
+
+    /**
+     * @return transcriptAccession
+     */
+    public String getTranscriptAccession() {
+        return transcriptAccession;
+    }
+
+    /**
+     * @return aaChangeSingleLetter
+     */
+    public String getAaChangeSingleLetter() {
+        return aaChangeSingleLetter;
+    }
+
+    /**
+     * @param aaChangeSingleLetter
+     */
+    public void setAachangeSingleLetter(String aaChangeSingleLetter) {
+        this.aaChangeSingleLetter = aaChangeSingleLetter;
+    }
+
+    /**
+     * @return variantType
+     */
+    public String getVariantType() {
+    	//System.out.println(variantType);
+    	if (variantType.equals("snp") || variantType.equals("snv")) {
+    		return "SNV";
+    	}else if(variantType.equals("ins")) {
+    		return "Ins";
+    	}else if(variantType.equals("del")) {
+    		return "Del";
+    	}else if(variantType.equals("complex")) {
+    		return "Complex";
+    	}else if(variantType.equals("mnp")) {
+    		return "MNP";
+    	}else {
+    		return variantType;
+    	}
+    }
+
+    /**
+     * @param variantType
+     */
+    public void setVariantType(String variantType) {
+        this.variantType = variantType;
+    }
+
+    public String getVariantTypeExtension() { return variantTypeExtension; }
+
+    public void setVariantTypeExtension(String variantTypeExtension) {
+        this.variantTypeExtension = variantTypeExtension;
     }
 
     /**
@@ -130,15 +182,82 @@ public class SnpInDelExpression {
         this.zygosity = zygosity;
     }
 
-    public String getAaChangeSingleLetter() {
-        return aaChangeSingleLetter;
-    }
-
-    public void setAaChangeSingleLetter(String aaChangeSingleLetter) {
-        this.aaChangeSingleLetter = aaChangeSingleLetter;
-    }
-
     public String getAaChangeConversion() {
         return ConvertUtil.getAminoAcid(aaChange);
+    }
+    /**
+     * @return refSequence
+     */
+    public String getRefSequence() {
+        return refSequence;
+    }
+
+    /**
+     * @param refSequence
+     */
+    public void setRefSequence(String refSequence) {
+        this.refSequence = refSequence;
+    }
+
+    /**
+     * @return altSequence
+     */
+    public String getAltSequence() {
+        return altSequence;
+    }
+
+    /**
+     * @param altSequence
+     */
+    public void setAltSequence(String altSequence) {
+        this.altSequence = altSequence;
+    }
+
+    /**
+     * @return leftSequence
+     */
+    public String getLeftSequence() {
+        return leftSequence;
+    }
+
+    /**
+     * @param leftSequence
+     */
+    public void setLeftSequence(String leftSequence) {
+        this.leftSequence = leftSequence;
+    }
+
+    /**
+     * @return rightSequence
+     */
+    public String getRightSequence() {
+        return rightSequence;
+    }
+
+    /**
+     * @param rightSequence
+     */
+    public void setRightSequence(String rightSequence) {
+        this.rightSequence = rightSequence;
+    }
+
+    @Override
+    public String toString() {
+        return "SnpInDelExpression{" +
+                "variantType='" + variantType + '\'' +
+                ", variantTypeExtension='" + variantTypeExtension + '\'' +
+                ", codingConsequence='" + codingConsequence + '\'' +
+                ", ntChange='" + ntChange + '\'' +
+                ", ntChangeBic='" + ntChangeBic + '\'' +
+                ", aaChange='" + aaChange + '\'' +
+                ", aaChangeSingleLetter='" + aaChangeSingleLetter + '\'' +
+                ", refSequence='" + refSequence + '\'' +
+                ", altSequence='" + altSequence + '\'' +
+                ", leftSequence='" + leftSequence + '\'' +
+                ", rightSequence='" + rightSequence + '\'' +
+                ", zygosity='" + zygosity + '\'' +
+                ", transcriptAccession='" + transcriptAccession + '\'' +
+                ", proteinAccession='" + proteinAccession + '\'' +
+                '}';
     }
 }

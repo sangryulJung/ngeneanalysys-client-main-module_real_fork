@@ -27,16 +27,34 @@ public class JarUploadTask extends Task {
         this.jar = jar;
         this.templateId = templateId;
         this.mainController = mainController;
-        jarUploadService = jarUploadService.getInstance();
+        jarUploadService = JarUploadService.getInstance();
     }
 
     @Override
     protected Object call() throws Exception {
-        logger.info("jar upload...");
-
+        logger.debug("jar upload...");
+        mainController.setContentsMaskerPaneVisible(true);
         jarUploadService.uploadJar(templateId, jar, mainController);
 
 
         return null;
+    }
+
+    @Override
+    protected void succeeded() {
+        mainController.setContentsMaskerPaneVisible(false);
+        super.succeeded();
+    }
+
+    @Override
+    protected void failed() {
+        mainController.setContentsMaskerPaneVisible(false);
+        super.failed();
+    }
+
+    @Override
+    protected void cancelled() {
+        mainController.setContentsMaskerPaneVisible(false);
+        super.cancelled();
     }
 }

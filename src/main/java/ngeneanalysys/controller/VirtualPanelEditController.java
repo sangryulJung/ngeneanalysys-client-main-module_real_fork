@@ -61,14 +61,14 @@ public class VirtualPanelEditController extends SubPaneController {
     private ComboBox<ComboBoxItem> comboBox;
 
     /**
-     * @param comboBox
+     * @param comboBox ComboBox<ComboBoxItem>
      */
     public void setComboBox(ComboBox<ComboBoxItem> comboBox) {
         this.comboBox = comboBox;
     }
 
     /**
-     * @param panelId
+     * @param panelId Integer
      */
     public void setPanelId(Integer panelId) {
         this.panelId = panelId;
@@ -90,14 +90,14 @@ public class VirtualPanelEditController extends SubPaneController {
             optionalGenesTextField.setText(virtualPanel.getOptionalGenes());
 
         } catch (WebAPIException wae) {
-
+            logger.debug(wae.getMessage());
         }
     }
 
     @Override
     public void show(Parent root) throws IOException {
 
-        logger.info("show virtual Panel Edit");
+        logger.debug("show virtual Panel Edit");
         // Create the dialog Stage
 
         apiService = APIService.getInstance();
@@ -124,9 +124,7 @@ public class VirtualPanelEditController extends SubPaneController {
 
             Map<String, Object> params = new HashMap<>();
 
-            if(StringUtils.isEmpty(nameTextField.getText())) {
-                return;
-            } else if(StringUtils.isEmpty(essentialGenesTextField.getText())) {
+            if(StringUtils.isEmpty(nameTextField.getText()) || StringUtils.isEmpty(essentialGenesTextField.getText())) {
                 return;
             }
 
@@ -150,9 +148,7 @@ public class VirtualPanelEditController extends SubPaneController {
                 Optional<ComboBoxItem> item = comboBox.getItems().stream().filter(comboBoxItem ->
                     comboBoxItem.getValue().equals(virtualPanel.getId().toString())).findFirst();
 
-                if(item.isPresent()) {
-                    item.get().setText(virtualPanel.getName());
-                }
+                item.ifPresent(comboBoxItem -> comboBoxItem.setText(virtualPanel.getName()));
             } else {
                 comboBox.getItems().add(new ComboBoxItem(virtualPanel.getId().toString(), virtualPanel.getName()));
             }

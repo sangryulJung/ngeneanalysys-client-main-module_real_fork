@@ -21,14 +21,14 @@ public class Sample {
     @JsonProperty("name")
     private String name;
 
-    @JsonProperty("patientId")
-    private String patientId;
-
     @JsonProperty("panelId")
     private Integer panelId;
 
     @JsonProperty("diseaseId")
     private Integer diseaseId;
+
+    @JsonProperty("sampleSource")
+    private String sampleSource;
 
     @JsonProperty("qcResult")
     private String qcResult;
@@ -38,6 +38,9 @@ public class Sample {
 
     @JsonProperty("sampleStatus")
     private SampleStatus sampleStatus;
+
+    @JsonProperty("pipelineVersionId")
+    private Integer pipelineVersionId;
 
     @JsonProperty("createdAt")
     private DateTime createdAt;
@@ -50,11 +53,6 @@ public class Sample {
 
     @JsonProperty("deleted")
     private Integer deleted;
-
-    @JsonProperty("sampleSheet")
-    private SampleSheet sampleSheet;
-
-    private QcData qcData;
 
     private AnalysisResultSummary analysisResultSummary;
 
@@ -129,20 +127,6 @@ public class Sample {
     }
 
     /**
-     * @return paitentId
-     */
-    public String getPaitentId() {
-        return patientId;
-    }
-
-    /**
-     * @param paitentId
-     */
-    public void setPaitentId(String paitentId) {
-        this.patientId = paitentId;
-    }
-
-    /**
      * @return panelId
      */
     public Integer getPanelId() {
@@ -168,6 +152,15 @@ public class Sample {
      */
     public void setDiseaseId(Integer diseaseId) {
         this.diseaseId = diseaseId;
+    }
+
+
+    public String getSampleSource() {
+        return sampleSource;
+    }
+
+    public void setSampleSource(String sampleSource) {
+        this.sampleSource = sampleSource;
     }
 
     /**
@@ -210,6 +203,14 @@ public class Sample {
      */
     public void setSampleStatus(SampleStatus sampleStatus) {
         this.sampleStatus = sampleStatus;
+    }
+
+    public Integer getPipelineVersionId() {
+        return pipelineVersionId;
+    }
+
+    public void setPipelineVersionId(Integer pipelineVersionId) {
+        this.pipelineVersionId = pipelineVersionId;
     }
 
     /**
@@ -268,34 +269,6 @@ public class Sample {
         this.deleted = deleted;
     }
 
-    /**
-     * @return sampleSheet
-     */
-    public SampleSheet getSampleSheet() {
-        return sampleSheet;
-    }
-
-    /**
-     * @param sampleSheet
-     */
-    public void setSampleSheet(SampleSheet sampleSheet) {
-        this.sampleSheet = sampleSheet;
-    }
-
-    /**
-     * @return qcData
-     */
-    public QcData getQcData() {
-        return qcData;
-    }
-
-    /**
-     * @param qcData
-     */
-    public void setQcData(QcData qcData) {
-        this.qcData = qcData;
-    }
-
     @Override
     public String toString() {
         return "Sample{" +
@@ -303,18 +276,18 @@ public class Sample {
                 ", runId=" + runId +
                 ", memberId=" + memberId +
                 ", name='" + name + '\'' +
-                ", patientId='" + patientId + '\'' +
                 ", panelId=" + panelId +
                 ", diseaseId=" + diseaseId +
+                ", sampleSource='" + sampleSource + '\'' +
                 ", qcResult='" + qcResult + '\'' +
                 ", inputFType='" + inputFType + '\'' +
                 ", sampleStatus=" + sampleStatus +
+                ", pipelineVersionId='" + pipelineVersionId + '\'' +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", deletedAt=" + deletedAt +
                 ", deleted=" + deleted +
-                ", sampleSheet=" + sampleSheet +
-                ", qcData=" + qcData +
+                ", analysisResultSummary=" + analysisResultSummary +
                 '}';
     }
 }

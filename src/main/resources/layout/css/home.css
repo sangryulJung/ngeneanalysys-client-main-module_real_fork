@@ -7,3 +7,125 @@
 .text_header {
     -fx-text-fill : #666465;
 }
+
+.small_icon_q {
+    -fx-background-image:url('../images/renewal/small_icon_q.png');
+    -fx-background-repeat: no-repeat;
+    -fx-pref-width:19;
+    -fx-pref-height:19;
+}
+
+.small_icon_r {
+    -fx-background-image:url('../images/renewal/small_icon_r.png');
+    -fx-background-repeat: no-repeat;
+    -fx-pref-width:19;
+    -fx-pref-height:19;
+}
+
+.small_icon_c {
+    -fx-background-image:url('../images/renewal/small_icon_c.png');
+    -fx-background-repeat: no-repeat;
+    -fx-pref-width:19;
+    -fx-pref-height:19;
+}
+
+.icon_q {
+    -fx-background-image:url('../images/renewal/icon_q.png');
+    -fx-background-repeat: no-repeat;
+}
+
+.icon_r {
+    -fx-background-image:url('../images/renewal/icon_r.png');
+    -fx-background-repeat: no-repeat;
+}
+
+.icon_c {
+    -fx-background-image:url('../images/renewal/icon_c.png');
+    -fx-background-repeat: no-repeat;
+}
+
+.sw_info_arrow {
+    -fx-background-image:url('../images/renewal/sw_info_arrow.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-position : center;
+    -fx-background-color : transparent;
+}
+
+#toggleGroupHBox .toggle_button {
+    -fx-background-color : transparent;
+    -fx-background-image:url('../images/renewal/news_tip_button.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-position : center;
+    -fx-cursor:hand;
+}
+
+#toggleGroupHBox .toggle_button:selected {
+    -fx-background-color : transparent;
+    -fx-background-image:url('../images/renewal/news_tip_button_selected.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-position : center;
+    -fx-cursor:hand;
+}
+
+.new_analysis_button {
+    -fx-background-color :  #263d5f;
+    -fx-text-fill : #FFFFFF;
+    -fx-font-size : 17;
+    -fx-background-radius : 0;
+    -fx-alignment : top-center;
+    -fx-padding : 70 0 0 0;
+    -fx-background-image:url('../images/renewal/plus-symbol.png');
+    -fx-background-size : 24 24;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center 120;
+}
+
+.run_box {
+    /*-fx-effect: dropshadow(gaussian, rgba(0.0, 0.0, 0.0, 0.7), 0.7, 0.7, 0.0, 0.0);*/
+    -fx-background-color: white;
+    -fx-border-width : 0.5 0.5 0.5 0.5;
+    -fx-border-color : black;
+}
+
+#tools_image_icon {
+    -fx-graphic: url("../images/renewal/tools_icon.png");
+    -fx-pref-width : 24;
+    -fx-pref-height : 24;
+}
+
+#latest_image_icon {
+    -fx-graphic: url("../images/renewal/latest_icon.png");
+    -fx-pref-width : 24;
+    -fx-pref-height : 24;
+}
+
+#news_image_icon {
+    -fx-graphic: url("../images/renewal/news_icon.png");
+    -fx-pref-width : 24;
+    -fx-pref-height : 24;
+}
+
+#system_image_icon {
+    -fx-graphic: url("../images/renewal/system_icon.png");
+    -fx-pref-width : 24;
+    -fx-pref-height : 24;
+}
+
+.status_progress {
+	-fx-background-radius: 0;
+    -fx-background-color: #FFFFFF;
+    -fx-accent: #73739B;
+    -fx-background-insets:0;
+    -fx-padding:0;
+}
+
+.status_progress > .bar {
+	-fx-background-radius: 0;
+	-fx-background-color : #263d5f;
+}
+
+.status_progress > .track {
+	-fx-background-insets: 0;
+	-fx-background-color : white;
+    -fx-background-radius: 0;
+}

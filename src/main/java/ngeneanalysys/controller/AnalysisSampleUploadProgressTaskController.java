@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import javafx.scene.Node;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.service.AnalysisRequestService;
 import ngeneanalysys.task.AnalysisSampleUploadTask;
@@ -80,6 +81,8 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 	public boolean isCancel = false;
 	/** 작업 중지 여부 */
 	public boolean isStop = false;
+
+	private Node node;
 	
 	/**
 	 * @param currentUploadGroupId the currentUploadGroupId to set
@@ -100,7 +103,7 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 
 	/**
 	 * 현재 그룹의 총 샘플 수 화면 출력
-	 * @param totalCount
+	 * @param totalCount String
 	 */
 	public void updateTotalCount(String totalCount) {
 		this.totalCount.setText(totalCount);
@@ -113,6 +116,8 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 	@Override
 	public void show(Parent root) throws IOException {
 		this.analysisRequestService = AnalysisRequestService.getInstance();
+
+		node = root;
 
 		boolean isWorkStart = false;
 		this.progressIndicator.setProgress(new ProgressBar().getProgress());
@@ -138,7 +143,7 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 
 	@FXML
 	public void startUpload() {
-		logger.info("resume from task controller..");
+		logger.debug("resume from task controller..");
 		try {
 			Thread.sleep(100);
 			isPause = false;
@@ -155,7 +160,7 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 	 */
 	@FXML
 	public void pauseUpload() {
-		logger.info("pause from task controller..");
+		logger.debug("pause from task controller..");
 		try {
 			Thread.sleep(100);
 			isPause = true;
@@ -188,6 +193,7 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 	@FXML
 	public void cancelUpload() {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
+		DialogUtil.setIcon(alert);
 		alert.initOwner(getMainController().getPrimaryStage());
 		alert.setTitle("Confirmation Dialog");
 		alert.setHeaderText("Analysis Cancel Request");
@@ -217,7 +223,7 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 	 * 업로드 작업 관련 화면 출력 정리
 	 */
 	public void clearWhenUploadTaskSucceeded() {
-		this.mainController.clearProgressTaskArea();
+		this.mainController.clearProgressTaskArea(node);
 	}
 
 	/**

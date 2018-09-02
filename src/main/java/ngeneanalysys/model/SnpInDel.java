@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import ngeneanalysys.util.ConvertUtil;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -14,7 +15,7 @@ import org.apache.commons.lang3.StringUtils;
  * @author gjyoo
  * @since 2016. 6. 15. 오후 7:37:59
  */
-public class SnpInDel implements Serializable {
+public class SnpInDel {
 	private static final long serialVersionUID = -5728637480602616382L;
 
 	private Integer id;
@@ -29,9 +30,11 @@ public class SnpInDel implements Serializable {
 	private String warningReason;
 	private Integer variantNum;
 	private String comment;
+	private String isFalse;
+	private String falseReason;
 
 	private SnpInDelExpression snpInDelExpression;
-
+	private DBSNP dbSNP;
 	private ClinicalDB clinicalDB;
 
 	private GenomicCoordinate genomicCoordinate;
@@ -41,6 +44,21 @@ public class SnpInDel implements Serializable {
 	private PopulationFrequency populationFrequency;
 
 	//private Integer interpretationEvidenceId;
+	private String ntChangeBRCA;
+
+	/**
+	 * @return isFalse
+	 */
+	public String getIsFalse() {
+		return isFalse;
+	}
+
+	/**
+	 * @return falseReason
+	 */
+	public String getFalseReason() {
+		return falseReason;
+	}
 
 	/**
 	 * @return genomicCoordinate
@@ -68,6 +86,10 @@ public class SnpInDel implements Serializable {
 	 */
 	public void setReadInfo(ReadInfo readInfo) {
 		this.readInfo = readInfo;
+	}
+
+	public DBSNP getDbSNP() {
+		return dbSNP;
 	}
 
 	/**
@@ -209,7 +231,7 @@ public class SnpInDel implements Serializable {
 	 */
 	public String getHasWarning() {
 		if("Y".equalsIgnoreCase(this.hasWarning)) {
-			return (!StringUtils.isEmpty(this.warningReason)) ? this.warningReason : "NONE";
+			return (StringUtils.isNotEmpty(this.warningReason)) ? this.warningReason : "NONE";
 		}
 		return null;
 	}
@@ -227,6 +249,7 @@ public class SnpInDel implements Serializable {
 	public String getWarningReason() {
 		return warningReason;
 	}
+
 
 	/**
 	 * @param warningReason
@@ -281,16 +304,24 @@ public class SnpInDel implements Serializable {
 	 * @return the cDNAbic
 	 */
 	public String getNtChangeBRCA() {
+		return ConvertUtil.insertTextAtFixedPosition(ntChangeBRCA, 15, "\n");
+	}
+
+	public void setNtChangeBRCA() {
+		this.ntChangeBRCA = createNtChangeBRCA();
+	}
+
+	public String createNtChangeBRCA() {
 		String cDNAbic = this.getSnpInDelExpression().getNtChange();
-		if (cDNAbic != null
-				&& !cDNAbic.isEmpty()
+		String gene = getGenomicCoordinate().getGene().toUpperCase();
+		if (StringUtils.isNotEmpty(cDNAbic)
 				&& getGenomicCoordinate() != null && getGenomicCoordinate().getGene() != null
-				&& (getGenomicCoordinate().getGene().toUpperCase().equals("BRCA1") || getGenomicCoordinate().getGene().toUpperCase().equals("BRCA2"))) {
+				&& (gene.equals("BRCA1") || gene.equals("BRCA2"))) {
 			List<String> findCDNANums = new ArrayList<>();
 			Pattern p = Pattern.compile("\\d+");
-			Matcher m = null;
+			Matcher m;
 			if(cDNAbic.contains(":")) {
-				String tempcDNAbic = cDNAbic.substring(cDNAbic.indexOf(":") + 1);
+				String tempcDNAbic = cDNAbic.substring(cDNAbic.indexOf(':') + 1);
 				m = p.matcher(tempcDNAbic);
 			} else {
 				m = p.matcher(cDNAbic);
@@ -298,16 +329,13 @@ public class SnpInDel implements Serializable {
 			while (m.find()) {
 				findCDNANums.add(m.group());
 			}
-			int cdnaNum = 0;
 			for(String cdnaItem : findCDNANums){
 				try {
-					cdnaNum = Integer.parseInt(cdnaItem);
-					if(getGenomicCoordinate().getGene().toUpperCase().equals("BRCA1")){
+					int cdnaNum = Integer.parseInt(cdnaItem);
+					if(gene.equals("BRCA1")){
 						cDNAbic = cDNAbic.replace(cdnaItem, String.valueOf(cdnaNum+119));
-					} else if (getGenomicCoordinate().getGene().toUpperCase().equals("BRCA2")){
+					} else if (gene.equals("BRCA2")){
 						cDNAbic = cDNAbic.replace(cdnaItem, String.valueOf(cdnaNum+228));
-					} else {
-
 					}
 				} catch (NumberFormatException e){
 					return "cDNA parsing error. " + cdnaItem;
@@ -316,5 +344,29 @@ public class SnpInDel implements Serializable {
 			return cDNAbic;
 		}
 		return "";
+	}
+
+	@Override
+	public String
+	toString() {
+		return "SnpInDel{" +
+				"id=" + id +
+				", sampleId=" + sampleId +
+				", serialNumber='" + serialNumber + '\'' +
+				", swPathogenicity='" + swPathogenicity + '\'' +
+				", expertPathogenicity='" + expertPathogenicity + '\'' +
+				", swTier='" + swTier + '\'' +
+				", expertTier='" + expertTier + '\'' +
+				", includedInReport='" + includedInReport + '\'' +
+				", hasWarning='" + hasWarning + '\'' +
+				", warningReason='" + warningReason + '\'' +
+				", variantNum=" + variantNum +
+				", comment='" + comment + '\'' +
+				", snpInDelExpression=" + snpInDelExpression +
+				", clinicalDB=" + clinicalDB +
+				", genomicCoordinate=" + genomicCoordinate +
+				", readInfo=" + readInfo +
+				", populationFrequency=" + populationFrequency +
+				'}';
 	}
 }

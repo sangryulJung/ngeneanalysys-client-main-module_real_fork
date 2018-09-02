@@ -1,0 +1,731 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">
+	<!-- Layout setting -->
+	<fo:layout-master-set>
+		<fo:simple-page-master master-name="all-pages" margin-top="5mm" margin-bottom="5mm" margin-left="10mm" margin-right="10mm" page-width="210mm" page-height="297mm">
+			#if($isDraft)
+			<fo:region-body region-name="xsl-region-body" margin-top="25mm" margin-bottom="15mm" background-position-horizontal="center" background-position-vertical="center" background-repeat="no-repeat" background-image="${draftImageURL}" />
+			#else
+			<fo:region-body region-name="xsl-region-body" margin-top="25mm" margin-bottom="15mm" />
+			#end
+			<!--<fo:region-body region-name="xsl-region-body" margin-top="20mm" margin-bottom="25mm" margin-left="10mm" margin-right="10mm" />-->
+			<fo:region-before region-name="xsl-region-before" display-align="after" extent="25mm" />
+			<fo:region-after region-name="xsl-region-after" display-align="before" extent="8mm" />
+		</fo:simple-page-master>
+		<fo:page-sequence-master master-name="default-sequence">
+			<fo:repeatable-page-master-reference page-position="any" master-reference="all-pages"/>
+		</fo:page-sequence-master>
+	</fo:layout-master-set>
+
+	<!-- Page Contents -->
+	<fo:page-sequence master-reference="all-pages" margin-left="3mm" margin-right="3mm">
+		<!-- header contents -->
+		<fo:static-content flow-name="xsl-region-before">
+			<fo:block font-size="7pt" text-align="right" border-width="0" padding-bottom="5mm">
+                <fo:block text-align="right">
+                    <fo:external-graphic src="${ngenebioLogo}" content-width="45mm" content-height="10mm" padding-bottom="1mm"/>
+                </fo:block>
+                <fo:block background-color="#d0272c" width="100%" padding-top="3mm">
+                </fo:block>
+			</fo:block>
+		</fo:static-content>
+		<!-- End header contents -->
+
+		<!-- footer contents -->
+		<fo:static-content flow-name="xsl-region-after">
+			<fo:block font-size="6pt" text-align="left" border-width="0pt" background-color="#d0272c" padding-left="15mm" padding-right="15mm" padding-bottom="15mm">
+                <fo:table table-layout="fixed" width="100%" color="white" margin-top="4mm">
+                    <fo:table-column column-width="16%" />
+                    <fo:table-column column-width="75%" />
+                    <fo:table-column column-width="proportional-column-width(1)" />
+                    <fo:table-body>
+                        <fo:table-row>
+                            <fo:table-cell display-align="center" border-right="solid 0.1mm white">
+                                <fo:block font-family="Noto Sans CJK KR Bold" font-weight="bold">
+                                    NGeneBio Co.,Ltd.
+                                </fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell>
+                                <fo:block font-size="5.5pt" font-family="Noto Sans CJK KR Regular">
+                                    Head-Office: 1104, Hanhwa Bizmetro, 242, Digital-ro, Guro-gu, Seoul, Korea
+                                </fo:block>
+                                <fo:block font-size="5.5pt" font-family="Noto Sans CJK KR Regular">
+                                    Tel : +82 2 867 9798 | FAX : +82 2 883 9784 | Email : business@ngenebio.com
+                                </fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell display-align="center">
+                                <fo:block text-align="right" font-family="Noto Sans CJK KR Regular">
+                                    <fo:page-number/> of <fo:page-number-citation ref-id="lastPage"/>
+                                </fo:block>
+                            </fo:table-cell>
+
+                        </fo:table-row>
+                    </fo:table-body>
+                </fo:table>
+			</fo:block>
+		</fo:static-content>
+		<!-- End footer contents -->
+
+		<!-- Contents Area -->
+		<fo:flow flow-name="xsl-region-body">
+
+			<!-- Test Information -->
+			<fo:block margin-bottom="10mm" font-size="10pt" margin-top="10mm">
+				<fo:block font-size="24pt" font-weight="bold" margin-bottom="1mm">
+                    <fo:external-graphic  content-width="18.4cm" content-height="1.5cm" src="${testInformationText}"  padding-bottom="0mm"/>
+                </fo:block>
+				<fo:block background-color="#e6e6e7" font-size="13pt" margin-bottom="5mm" padding-top="3mm" padding-bottom="3mm">
+                    <fo:table>
+                        <fo:table-body>
+                            <fo:table-row>
+                                <fo:table-cell>
+                                    <fo:block font-family="Noto Sans CJK KR Bold" font-weight="bold">Report Date</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block font-family="Noto Sans CJK KR Regular">$contents.date</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block font-family="Noto Sans CJK KR Bold" font-weight="bold">Patient ID</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block font-family="Noto Sans CJK KR Regular">$contents.patientCode</fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                            <fo:table-row>
+                                <fo:table-cell>
+                                    <fo:block font-family="Noto Sans CJK KR Bold" font-weight="bold">Disease</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block font-family="Noto Sans CJK KR Regular">$contents.diseaseName</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block font-family="Noto Sans CJK KR Bold" font-weight="bold">Specimen Type</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block font-family="Noto Sans CJK KR Regular">$contents.sampleSource</fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                        </fo:table-body>
+                    </fo:table>
+				</fo:block>
+				<fo:block>
+					<fo:block font-size="16pt" margin-bottom="1mm" font-family="Noto Sans CJK KR Bold" font-weight="bold">Panel : $contents.panelName</fo:block>
+
+                    #if($contents.sampleSource && $contents.sampleSource == "FFPE")
+					<fo:table table-layout="fixed" width="100%" margin-bottom="4mm" border-bottom="solid 0.1mm black" border-top="solid 0.1mm black">
+						<fo:table-body>
+							#foreach($i in [0..$contents.geneTableCount])
+                                #if(($i % 7) == 0)
+                                    <fo:table-row border-bottom="solid 0.1mm black" height="7mm" display-align="center" text-align="center">
+                                #end
+                                    <fo:table-cell>
+                                        <fo:block font-family="Noto Sans CJK KR Regular">
+                                        #if($i < $contents.variantCountByGenes.size())
+                                            $contents.variantCountByGenes.get($i).geneSymbol
+                                        #end
+                                        </fo:block>
+                                    </fo:table-cell>
+                                #if(($i % 7) == 6)
+                                </fo:table-row>
+                                #end
+							#end
+						</fo:table-body>
+					</fo:table>
+                    #else
+                    <fo:block margin-bottom="10mm"> </fo:block>
+                    #end
+                    <fo:table>
+                        <fo:table-body>
+                            <fo:table-row>
+                                <fo:table-cell number-columns-spanned="8">
+                                    <fo:block color="#000000" font-weight="bold" font-family="Noto Sans CJK KR Bold" font-size="14pt">
+                                        Number of variants
+                                    </fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                            <fo:table-row display-align="center" text-align="center">
+                                <fo:table-cell height="6mm" border-bottom="solid 0.2mm black" border-top="solid 0.2mm black">
+                                    <fo:block color="#000000" text-align="center" font-weight="bold" font-family="Noto Sans CJK KR Bold">
+                                        Tier I
+                                    </fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell border-bottom="solid 0.2mm black" border-top="solid 0.2mm black">
+                                    <fo:block>
+                                        $contents.tierOneCount
+                                    </fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell border-bottom="solid 0.2mm black" border-top="solid 0.2mm black">
+                                    <fo:block color="#000000" text-align="center" font-weight="bold" font-family="Noto Sans CJK KR Bold">
+                                        Tier II
+                                    </fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell border-bottom="solid 0.2mm black" border-top="solid 0.2mm black">
+                                    <fo:block>
+                                        $contents.tierTwoCount
+                                    </fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell border-bottom="solid 0.2mm black" border-top="solid 0.2mm black">
+                                    <fo:block color="#000000" text-align="center" font-weight="bold" font-family="Noto Sans CJK KR Bold">
+                                        Tier III
+                                    </fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell border-bottom="solid 0.2mm black" border-top="solid 0.2mm black">
+                                    <fo:block>
+                                        $contents.tierThreeCount
+                                    </fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell border-bottom="solid 0.2mm black" border-top="solid 0.2mm black">
+                                    <fo:block color="#000000" text-align="center" font-weight="bold" font-family="Noto Sans CJK KR Bold">
+                                        Tier IV
+                                    </fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell border-bottom="solid 0.2mm black" border-top="solid 0.2mm black">
+                                    <fo:block>
+                                        $contents.tierFourCount
+                                    </fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                            <!--<fo:table-row display-align="center">
+                                <fo:table-cell number-rows-spanned="2">
+                                    <fo:block color="#000000" text-align="center" font-weight="bold" font-family="Noto Sans CJK KR Bold">
+                                        Number of variants
+                                    </fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell height="6mm" border-bottom="solid 0.2mm black" border-top="solid 0.2mm black" border-left="solid 0.2mm black">
+                                    <fo:block color="#000000" text-align="center" font-weight="bold" font-family="Noto Sans CJK KR Bold">
+                                    Tier I
+                                    </fo:block>
+                                </fo:table-cell>
+
+                                <fo:table-cell border-bottom="solid 0.2mm black" border-top="solid 0.2mm black">
+                                    <fo:block color="#000000" text-align="center" font-weight="bold" font-family="Noto Sans CJK KR Bold">
+                                        Tier II
+                                    </fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell border-bottom="solid 0.2mm black" border-top="solid 0.2mm black">
+                                    <fo:block color="#000000" text-align="center" font-weight="bold" font-family="Noto Sans CJK KR Bold">
+                                        Tier III
+                                    </fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell border-bottom="solid 0.2mm black" border-top="solid 0.2mm black">
+                                    <fo:block color="#000000" text-align="center" font-weight="bold" font-family="Noto Sans CJK KR Bold">
+                                        Tier IV
+                                    </fo:block>
+                                </fo:table-cell>
+
+                            </fo:table-row>
+                            <fo:table-row height="6mm" display-align="center" text-align="center" font-family="Noto Sans CJK KR Regular">
+                                <fo:table-cell border-bottom="solid 0.2mm black" border-left="solid 0.2mm black">
+                                    <fo:block>
+                                        $contents.tierOneCount
+                                    </fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell border-bottom="solid 0.2mm black">
+                                    <fo:block>
+                                        $contents.tierTwoCount
+                                    </fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell border-bottom="solid 0.2mm black">
+                                    <fo:block>
+                                        $contents.tierThreeCount
+                                    </fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell border-bottom="solid 0.2mm black">
+                                    <fo:block>
+                                        $contents.tierFourCount
+                                    </fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>-->
+                        </fo:table-body>
+                    </fo:table>
+				</fo:block>
+			</fo:block>
+
+            <!-- Pathogenic Mutations Detected -->
+			<fo:block margin-bottom="8mm" font-size="10pt">
+			<fo:block font-size="24pt" font-weight="bold" margin-bottom="1mm" font-family="Noto Sans CJK KR Regular">
+                <fo:external-graphic content-width="18.4cm" content-height="1.5cm" src="${pathogenicMutationsDetectedText}" padding-bottom="0mm" />
+            </fo:block>
+			<fo:block background-color="#e6e6e7" font-size="13pt" padding-top="3mm" padding-bottom="3mm">
+                <fo:table font-family="Noto Sans CJK KR Regular">
+                    <fo:table-body>
+                        <fo:table-row>
+                            <fo:table-cell>
+                                <fo:block font-weight="bold" font-family="Noto Sans CJK KR Bold">Tier I : <fo:inline font-weight="normal" font-family="Noto Sans CJK KR Regular">Strong Clinical Significance</fo:inline></fo:block>
+                                <fo:block font-weight="bold" font-family="Noto Sans CJK KR Bold">Tier II : <fo:inline font-weight="normal" font-family="Noto Sans CJK KR Regular">Potential Clinical Significance</fo:inline></fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                    </fo:table-body>
+                </fo:table>
+			</fo:block>
+			<fo:block margin-bottom="5mm"></fo:block>
+			<fo:block font-size="11pt">
+				<fo:table table-layout="fixed" width="100%" margin-bottom="4mm" border-bottom="solid 0.1mm black">
+					<fo:table-column column-width="proportional-column-width(0.14)" />
+					<fo:table-column column-width="proportional-column-width(0.18)" />
+					<fo:table-column column-width="proportional-column-width(0.21)" />
+					<fo:table-column column-width="proportional-column-width(0.21)" />
+					<fo:table-column column-width="proportional-column-width(0.18)" />
+					<fo:table-column column-width="proportional-column-width(0.08)" />
+					<fo:table-body>
+						<fo:table-row height="8mm" display-align="center">
+							<fo:table-cell background-color="#5a5657" border-right="solid 0.5mm white">
+								<fo:block color="#FFFFFF" text-align="center" font-weight="bold" font-family="Noto Sans CJK KR Bold">Gene</fo:block>
+							</fo:table-cell>
+							<fo:table-cell background-color="#5a5657" border-right="solid 0.5mm white">
+								<fo:block color="#FFFFFF" text-align="center" font-weight="bold" font-family="Noto Sans CJK KR Bold">Ref Seq</fo:block>
+							</fo:table-cell>
+							<fo:table-cell background-color="#5a5657" border-right="solid 0.5mm white">
+								<fo:block color="#FFFFFF" text-align="center" font-weight="bold" font-family="Noto Sans CJK KR Bold">Nucleotide</fo:block>
+							</fo:table-cell>
+							<fo:table-cell background-color="#5a5657" border-right="solid 0.5mm white">
+								<fo:block color="#FFFFFF" text-align="center" font-weight="bold" font-family="Noto Sans CJK KR Bold">Amino acid</fo:block>
+							</fo:table-cell>
+							<fo:table-cell background-color="#5a5657" border-right="solid 0.5mm white">
+								<fo:block color="#FFFFFF" text-align="center" font-weight="bold" font-family="Noto Sans CJK KR Bold">VAF</fo:block>
+							</fo:table-cell>
+							<fo:table-cell background-color="#5a5657">
+								<fo:block color="#FFFFFF" text-align="center" font-weight="bold" font-family="Noto Sans CJK KR Bold">Tier</fo:block>
+							</fo:table-cell>
+						</fo:table-row>
+
+						#foreach($variant in $contents.variantList)
+                        #if(($variant.snpInDel.expertTier && $variant.snpInDel.expertTier == "T1") ||
+                        ((!$variant.snpInDel.expertTier || $variant.snpInDel.expertTier == "") && $variant.snpInDel.swTier == "T1") ||
+                        ($variant.snpInDel.expertTier && $variant.snpInDel.expertTier =="T2") ||
+                        ((!$variant.snpInDel.expertTier || $variant.snpInDel.expertTier == "") && $variant.snpInDel.swTier == "T2"))
+						<fo:table-row height="8mm" display-align="center" text-align="center" font-family="Noto Sans CJK KR Regular">
+							<fo:table-cell border-bottom="solid 0.1mm black">
+								<fo:block text-align="center">$variant.snpInDel.genomicCoordinate.gene</fo:block>
+							</fo:table-cell>
+							<fo:table-cell border-bottom="solid 0.1mm black">
+								<fo:block text-align="center">$variant.snpInDel.snpInDelExpression.transcript</fo:block>
+							</fo:table-cell>
+							<fo:table-cell border-bottom="solid 0.1mm black">
+								<fo:block text-align="center">$variant.snpInDel.snpInDelExpression.ntChange</fo:block>
+							</fo:table-cell>
+							<fo:table-cell border-bottom="solid 0.1mm black">
+								<fo:block text-align="center">$variant.snpInDel.snpInDelExpression.aaChange</fo:block>
+							</fo:table-cell>
+							<fo:table-cell border-bottom="solid 0.1mm black">
+								<fo:block text-align="center">$variant.snpInDel.readInfo.alleleFraction%<fo:inline font-weight="normal" font-family="Noto Sans CJK KR Regular" font-size="9pt">($variant.snpInDel.readInfo.altReadNum/$variant.snpInDel.readInfo.readDepth)</fo:inline> </fo:block>
+							</fo:table-cell>
+							<fo:table-cell border-bottom="solid 0.1mm black">
+								<fo:block>
+									#if(($variant.snpInDel.expertTier && $variant.snpInDel.expertTier == "T1") ||
+                                    ((!$variant.snpInDel.expertTier || $variant.snpInDel.expertTier == "") && $variant.snpInDel.swTier == "T1")) I
+									#elseif(($variant.snpInDel.expertTier && $variant.snpInDel.expertTier == "T2") ||
+                                    ((!$variant.snpInDel.expertTier || $variant.snpInDel.expertTier == "") && $variant.snpInDel.swTier == "T2")) II
+									#elseif(($variant.snpInDel.expertTier && $variant.snpInDel.expertTier == "T3") ||
+                                    ((!$variant.snpInDel.expertTier || $variant.snpInDel.expertTier == "") && $variant.snpInDel.swTier == "T3")) III
+									#end
+								</fo:block>
+							</fo:table-cell>
+						</fo:table-row>
+                        #end
+						#end
+					</fo:table-body>
+				</fo:table>
+			</fo:block>
+			</fo:block>
+
+            <fo:block color="#000000" font-weight="bold" font-family="Noto Sans CJK KR Bold" font-size="14pt">
+                Conclusions
+            </fo:block>
+
+            #if($contents.conclusions != $null)
+                #foreach($line in $contents.conclusions)
+                <fo:block margin-top="1mm" font-family="Noto Sans CJK KR Regular" font-size="12pt"><![CDATA[$line]]></fo:block>
+                #end
+            #end
+            <fo:block page-break-before="always"> </fo:block>
+
+
+            <!-- Pertinent Negatives -->
+            <!--<fo:block margin-bottom="10mm" font-size="10pt" margin-top="5mm">
+                <fo:block font-size="24pt" font-weight="bold" margin-bottom="1mm" font-family="Noto Sans CJK KR Regular">
+                    <fo:external-graphic content-width="18.4cm" content-height="1.5cm" src="${pertinetNegativeText}" padding-bottom="-3mm" />
+                </fo:block>
+                <fo:block margin-bottom="5mm"></fo:block>
+                <fo:block font-size="11pt">
+                    <fo:table table-layout="fixed" width="100%" margin-bottom="4mm" border-bottom="solid 0.1mm black">
+                        <fo:table-column column-width="proportional-column-width(0.14)" />
+                        <fo:table-column column-width="proportional-column-width(0.18)" />
+                        <fo:table-column column-width="proportional-column-width(0.21)" />
+                        <fo:table-column column-width="proportional-column-width(0.21)" />
+                        <fo:table-column column-width="proportional-column-width(0.18)" />
+                        <fo:table-column column-width="proportional-column-width(0.08)" />
+                        <fo:table-body>
+                            <fo:table-row height="8mm" display-align="center">
+                                <fo:table-cell background-color="#5a5657" border-right="solid 0.5mm white">
+                                    <fo:block color="#FFFFFF" text-align="center" font-weight="bold" font-family="Noto Sans CJK KR Bold">Gene</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell background-color="#5a5657" border-right="solid 0.5mm white">
+                                    <fo:block color="#FFFFFF" text-align="center" font-weight="bold" font-family="Noto Sans CJK KR Bold">Ref Seq</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell background-color="#5a5657" border-right="solid 0.5mm white">
+                                    <fo:block color="#FFFFFF" text-align="center" font-weight="bold" font-family="Noto Sans CJK KR Bold">Nucleotide</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell background-color="#5a5657" border-right="solid 0.5mm white">
+                                    <fo:block color="#FFFFFF" text-align="center" font-weight="bold" font-family="Noto Sans CJK KR Bold">Amino acid</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell background-color="#5a5657" border-right="solid 0.5mm white">
+                                    <fo:block color="#FFFFFF" text-align="center" font-weight="bold" font-family="Noto Sans CJK KR Bold">VAF</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell background-color="#5a5657">
+                                    <fo:block color="#FFFFFF" text-align="center" font-weight="bold" font-family="Noto Sans CJK KR Bold">Tier</fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+
+                            #foreach($negative in $contents.negativeList)
+                            <fo:table-row height="8mm" display-align="center" text-align="center" font-family="Noto Sans CJK KR Regular">
+                                <fo:table-cell border-bottom="solid 0.1mm black">
+                                    <fo:block text-align="center">$negative.snpInDel.genomicCoordinate.gene</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell border-bottom="solid 0.1mm black">
+                                    <fo:block text-align="center">$negative.snpInDel.snpInDelExpression.transcript</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell border-bottom="solid 0.1mm black">
+                                    <fo:block text-align="center">$negative.snpInDel.snpInDelExpression.ntChange</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell border-bottom="solid 0.1mm black">
+                                    <fo:block text-align="center">$negative.snpInDel.snpInDelExpression.aaChange</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell border-bottom="solid 0.1mm black">
+                                    <fo:block text-align="center">$negative.snpInDel.readInfo.alleleFraction%<fo:inline font-weight="normal" font-family="Noto Sans CJK KR Regular" font-size="9pt">($negative.variant.readInfo.altReadNum/$negative.variant.readInfo.readDepth)</fo:inline> </fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell border-bottom="solid 0.1mm black">
+                                    <fo:block>
+                                        #if(($negative.snpInDel.expertTier && $negative.snpInDel.expertTier == "TN" && $negative.snpInDel.swTier == "T1") ||
+                                        ((!$negative.snpInDel.expertTier || $negative.snpInDel.expertTier == "") && $negative.snpInDel.swTier == "T1")) I
+                                        #elseif(($negative.snpInDel.expertTier && $negative.snpInDel.expertTier == "TN" && $negative.snpInDel.swTier == "T2") ||
+                                        ((!$negative.snpInDel.expertTier || $negative.snpInDel.expertTier == "") && $negative.snpInDel.swTier == "T2")) II
+                                        #elseif(($negative.snpInDel.expertTier && $negative.snpInDel.expertTier == "TN" && $negative.snpInDel.swTier == "T3") ||
+                                        ((!$negative.snpInDel.expertTier || $negative.snpInDel.expertTier == "") && $negative.snpInDel.swTier == "T3")) III
+                                        #end
+                                    </fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                            #end
+                        </fo:table-body>
+                    </fo:table>
+                </fo:block>
+                <fo:block page-break-before="always"> </fo:block>
+            </fo:block>-->
+
+			<!-- Variant Details -->
+			<fo:block text-align="center" margin-top="10mm" margin-bottom="4mm">
+                <fo:external-graphic content-width="18.4cm" content-height="1.5cm" src="${variantDetailText}" />
+            </fo:block>
+			#if($contents.clinicalVariantList && $contents.clinicalVariantList.size() > 0)
+			<fo:block margin-bottom="10mm" font-size="10pt">
+				<fo:block margin-bottom="5mm">
+					#foreach($variant in $contents.clinicalVariantList)
+                        #if(($variant.snpInDel.expertTier && $variant.snpInDel.expertTier == "T1") ||
+                    (!$variant.snpInDel.expertTier || $variant.variant.expertTier == "") && $variant.snpInDel.swTier == "T1")
+                            #set($color = "#e93429")
+                        #elseif(($variant.snpInDel.expertTier && $variant.snpInDel.expertTier == "T2") ||
+                    (!$variant.snpInDel.expertTier || $variant.variant.expertTier == "") && $variant.snpInDel.swTier == "T2")
+                            #set($color = "#f18101")
+                        #elseif(($variant.snpInDel.expertTier && $variant.snpInDel.expertTier == "T3") ||
+                    (!$variant.snpInDel.expertTier || $variant.snpInDel.expertTier == "") && $variant.snpInDel.swTier == "T3")
+                            #set($color = "#f9c03b")
+                        #end
+
+					<fo:table table-layout="fixed" width="100%" margin-bottom="4mm" display-align="center" text-align="center" font-size="11pt">
+						<fo:table-column column-width="proportional-column-width(0.25)" />
+						<fo:table-column column-width="proportional-column-width(0.35)" />
+						<fo:table-column column-width="proportional-column-width(0.2)" />
+						<fo:table-column column-width="proportional-column-width(0.2)" />
+						<fo:table-body>
+							<fo:table-row font-weight="bold" font-family="Noto Sans CJK KR Bold" border-bottom="solid 1mm white">
+								<fo:table-cell border-width="0.5pt" background-color="#58585a" border-right="solid 1mm white">
+									<fo:block text-align="center" color="white" padding-bottom="2mm" padding-top="2mm">$variant.snpInDel.genomicCoordinate.gene</fo:block>
+								</fo:table-cell>
+								<fo:table-cell number-columns-spanned="2" border-width="0.5pt" background-color="#58585a" border-right="solid 1mm white">
+									<fo:block text-align="center" color="white">$variant.snpInDel.snpInDelExpression.transcript:<![CDATA[$variant.snpInDel.snpInDelExpression.ntChange]]>
+                                        #if($variant.snpInDel.snpInDelExpression.aaChange && $variant.snpInDel.snpInDelExpression.aaChange != "")
+                                        (<![CDATA[$variant.snpInDel.snpInDelExpression.aaChange]]>)
+                                        #end
+                                    </fo:block>
+								</fo:table-cell>
+								<fo:table-cell background-color="$color">
+									<fo:block text-align="center" color="white">Tier
+                                        #if(($variant.snpInDel.expertTier && $variant.snpInDel.expertTier == "T1") ||
+                                        ((!$variant.snpInDel.expertTier || $variant.snpInDel.expertTier == "") && $variant.snpInDel.swTier == "T1")) I
+													#elseif(($variant.snpInDel.expertTier && $variant.snpInDel.expertTier == "T2") ||
+                                        ((!$variant.snpInDel.expertTier || $variant.snpInDel.expertTier == "") && $variant.snpInDel.swTier == "T2")) II
+													#elseif(($variant.snpInDel.expertTier && $variant.snpInDel.expertTier == "T3") ||
+                                        ((!$variant.snpInDel.expertTier || $variant.snpInDel.expertTier == "") && $variant.snpInDel.swTier == "T3")) III
+													#end
+									</fo:block>
+								</fo:table-cell>
+							</fo:table-row>
+                            #if($variant.snpInDel.swTier == "T1" || $variant.snpInDel.swTier == "T2")
+							<fo:table-row border-bottom="solid 1mm white" display-align="center">
+								<fo:table-cell number-columns-spanned="4" background-color="#e7e7e8" border-bottom="solid 1mm white">
+									<fo:block font-family="Noto Sans CJK KR Regular" text-align="left" padding-bottom="2mm" padding-top="2mm">
+										#if ($variant.interpretationEvidence.evidenceLevelA && !($variant.interpretationEvidence.evidenceLevelA == "")) <![CDATA[[LEVEL A]]]> $variant.interpretationEvidence.evidenceLevelA
+										#elseif ($variant.interpretationEvidence.evidenceLevelB && !($variant.interpretationEvidence.evidenceLevelB == "")) <![CDATA[[LEVEL B]]]> $variant.interpretationEvidence.evidenceLevelB
+										#elseif ($variant.interpretationEvidence.evidenceLevelC && !($variant.interpretationEvidence.evidenceLevelC == "")) <![CDATA[[LEVEL C]]]> $variant.interpretationEvidence.evidenceLevelC
+										#elseif ($variant.interpretationEvidence.evidenceLevelD && !($variant.interpretationEvidence.evidenceLevelD == "")) <![CDATA[[LEVEL D]]]> $variant.interpretationEvidence.evidenceLevelD
+										#end
+									</fo:block>
+								</fo:table-cell>
+							</fo:table-row>
+                            #end
+							<fo:table-row display-align="center" font-family="Noto Sans CJK KR Regular" border-bottom="solid 1mm white">
+								<fo:table-cell border-width="0.5pt" background-color="#fde2cb" border-right="solid 1mm white">
+									<fo:block padding-bottom="2mm" padding-top="2mm">Variant Type
+									</fo:block>
+								</fo:table-cell>
+								<fo:table-cell border-width="0.5pt" background-color="#e7e7e8" border-right="solid 1mm white">
+									<fo:block padding-bottom="2mm" padding-top="2mm"><![CDATA[$variant.snpInDel.snpInDelExpression.variantType ($variant.snpInDel.snpInDelExpression.codingConsequence variant)]]>
+									</fo:block>
+								</fo:table-cell>
+								<fo:table-cell border-width="0.5pt" background-color="#fde2cb" border-right="solid 1mm white">
+									<fo:block padding-bottom="2mm" padding-top="2mm">dbSNP
+									</fo:block>
+								</fo:table-cell>
+								<fo:table-cell border-width="0.5pt" background-color="#e7e7e8">
+									<fo:block padding-bottom="2mm" padding-top="2mm">
+                                        #if($variant.snpInDel.dbSNP.dbSnpRsId) $variant.snpInDel.dbSNP.dbSnpRsId
+                                        #end
+									</fo:block>
+								</fo:table-cell>
+							</fo:table-row>
+							<fo:table-row display-align="center" border-bottom="solid 1mm white">
+								<fo:table-cell border-width="0.5pt" background-color="#fde2cb" border-right="solid 1mm white">
+									<fo:block padding-bottom="2mm" padding-top="2mm" font-family="Noto Sans CJK KR Regular">Variant Frequency
+									</fo:block>
+								</fo:table-cell>
+								<fo:table-cell border-width="0.5pt" background-color="#e7e7e8" border-right="solid 1mm white">
+									<fo:block font-family="Noto Sans CJK KR Regular" padding-bottom="2mm" padding-top="2mm">$variant.snpInDel.readInfo.alleleFraction
+									</fo:block>
+								</fo:table-cell>
+								<fo:table-cell border-width="0.5pt" background-color="#fde2cb" border-right="solid 1mm white">
+									<fo:block font-family="Noto Sans CJK KR Regular" padding-bottom="2mm" padding-top="2mm">Zygosity
+									</fo:block>
+								</fo:table-cell>
+								<fo:table-cell border-width="0.5pt" background-color="#e7e7e8">
+									<fo:block font-family="Noto Sans CJK KR Regular" padding-bottom="2mm" padding-top="2mm">#if($variant.snpInDel.variantExpression.zygosity && !($variant.snpInDel.variantExpression.zygosity == "")) $variant.snpInDel.variantExpression.zygosity
+												#else Not-determied
+												#end
+									</fo:block>
+								</fo:table-cell>
+							</fo:table-row>
+							<fo:table-row font-family="Noto Sans CJK KR Regular" border-bottom="solid 1mm white">
+								<fo:table-cell border-width="0.5pt" background-color="#fde2cb" border-right="solid 1mm white">
+									<fo:block padding-bottom="2mm" padding-top="2mm">Population DB (MAF)
+									</fo:block>
+								</fo:table-cell>
+								<fo:table-cell border-width="0.5pt" background-color="#e7e7e8" border-right="solid 1mm white" text-align="left" padding-bottom="2mm" padding-top="2mm">
+									<fo:block>ESP6500: #if($variant.snpInDel.populationFrequency.esp6500 && $variant.snpInDel.populationFrequency.esp6500.all) $variant.snpInDel.populationFrequency.esp6500.all
+														#else no frequency data
+														#end
+									</fo:block>
+									<fo:block>1000G: #if($variant.snpInDel.populationFrequency.g1000 && $variant.snpInDel.populationFrequency.g1000.all) $variant.snpInDel.populationFrequency.g1000.all
+										#else no frequency data
+										#end
+									</fo:block>
+									<fo:block>ExAC: #if($variant.snpInDel.populationFrequency.exac && $variant.snpInDel.populationFrequency.exac.all) $variant.snpInDel.populationFrequency.exac.all
+										#else no frequency data
+										#end
+									</fo:block>
+								</fo:table-cell>
+                                <fo:table-cell background-color="#e7e7e8" border-right="solid 1mm white">
+                                    <fo:block></fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell background-color="#e7e7e8">
+                                    <fo:block></fo:block>
+                                </fo:table-cell>
+							</fo:table-row>
+							<fo:table-row font-family="Noto Sans CJK KR Regular">
+								<fo:table-cell border-width="0.5pt" background-color="#fde2cb" border-right="solid 1mm white">
+									<fo:block padding-bottom="2mm" padding-top="2mm">Clinical DB (ClinVar)
+									</fo:block>
+								</fo:table-cell>
+								<fo:table-cell border-width="0.5pt" background-color="#e7e7e8" border-right="solid 1mm white">
+									<fo:block padding-bottom="2mm" padding-top="2mm">
+										#if($variant.snpInDel.clinicalDB.clinVar.clinVarAcc)
+											$variant.snpInDel.clinicalDB.clinVar.clinVarAcc ($variant.snpInDel.clinicalDB.clinVar.clinVarClass)
+										#else
+											Not found
+										#end
+                                    </fo:block>
+								</fo:table-cell>
+                                <fo:table-cell background-color="#e7e7e8" border-right="solid 1mm white">
+                                    <fo:block padding-bottom="2mm" padding-top="2mm"></fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell background-color="#e7e7e8">
+                                    <fo:block padding-bottom="2mm" padding-top="2mm"></fo:block>
+                                </fo:table-cell>
+							</fo:table-row>
+						</fo:table-body>
+					</fo:table>
+					#end
+				</fo:block>
+				<fo:block page-break-before="always"> </fo:block>
+			</fo:block>
+			#end
+
+			<fo:block text-align="center" margin-top="10mm" margin-bottom="5mm">
+                <fo:external-graphic content-width="18.4cm" content-height="1.5cm" src="${dataQcText}" />
+            </fo:block>
+            <fo:block padding-bottom="15mm">
+                <fo:table table-layout="fixed" width="100%" margin-bottom="4mm" border-top="solid 0.1mm black" text-align="center" display-align="center" font-family="Noto Sans CJK KR Regular">
+                    <fo:table-column column-width="proportional-column-width(0.35)" />
+                    <fo:table-column column-width="proportional-column-width(0.2)" />
+                    <fo:table-column column-width="proportional-column-width(0.15)" />
+                    <fo:table-column column-width="proportional-column-width(0.3)" />
+                    <fo:table-body>
+                        <fo:table-row border-bottom="solid 1mm white">
+                            <fo:table-cell background-color="#58585a">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm" color="white">Q metric</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#58585a">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm" color="white">Parameters</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#58585a">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm" color="white">Results</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#58585a">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm" color="white">Acceptable range</fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                        <fo:table-row>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">Reads PF</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.readsPF) $contents.readsPF.qcUnit #end</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.readsPF) $contents.readsPF.qcValue #end</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.readsPF)<![CDATA[$contents.readsPF.qcThreshold]]> #end</fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                        <fo:table-row>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">Q30+ Read1</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.q30ScoreRead1) $contents.q30ScoreRead1.qcUnit #end</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.q30ScoreRead1) $contents.q30ScoreRead1.qcValue #end</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.q30ScoreRead1)<![CDATA[$contents.q30ScoreRead1.qcThreshold]]> #end</fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                        <fo:table-row>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">Q30+ Read2</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.q30ScoreRead2)$contents.q30ScoreRead2.qcUnit #end</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.q30ScoreRead2)$contents.q30ScoreRead2.qcValue #end</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.q30ScoreRead2)<![CDATA[$contents.q30ScoreRead2.qcThreshold]]> #end</fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                        <fo:table-row>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">Coverage MAD</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.coverageMAD)$contents.coverageMAD.qcUnit #end</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.coverageMAD)$contents.coverageMAD.qcValue #end</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.coverageMAD)<![CDATA[$contents.coverageMAD.qcThreshold]]> #end</fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                        <fo:table-row>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">Median BinCount CNV Target</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.medianBinCountCNVTargets)$contents.medianBinCountCNVTargets.qcUnit #end</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.medianBinCountCNVTargets)$contents.medianBinCountCNVTargets.qcValue #end</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.medianBinCountCNVTargets)<![CDATA[$contents.medianBinCountCNVTargets.qcThreshold]]> #end</fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                        <fo:table-row>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">Median Insert Size</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.medianInsertSize)$contents.medianInsertSize.qcUnit #end</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.medianInsertSize)$contents.medianInsertSize.qcValue #end</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.medianInsertSize)<![CDATA[$contents.medianInsertSize.qcThreshold]]> #end</fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                        <fo:table-row>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">PCT ExonBases</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.pctExonBases100X)$contents.pctExonBases100X.qcUnit #end</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.pctExonBases100X)$contents.pctExonBases100X.qcValue #end</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell background-color="#e7e7e8">
+                                <fo:block padding-top="2.5mm" padding-bottom="2.5mm">#if($contents.pctExonBases100X)<![CDATA[$contents.pctExonBases100X.qcThreshold]]> #end</fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                    </fo:table-body>
+                </fo:table>
+            </fo:block>
+            #if($contents.sampleSource && $contents.sampleSource == "FFPE")
+			<fo:block id="lastPage"> </fo:block>
+            #else
+            <fo:block page-break-before="always"> </fo:block>
+            #end
+
+            #if($contents.sampleSource && $contents.sampleSource != "FFPE")
+            <fo:block>
+                <fo:block font-size="16pt" margin-bottom="4mm" margin-top="10mm" font-family="Noto Sans CJK KR Bold" font-weight="bold">Target Gene List</fo:block>
+                <fo:table table-layout="fixed" width="100%" margin-bottom="4mm" border-bottom="solid 0.1mm black" border-top="solid 0.1mm black">
+                    <fo:table-body>
+                        #foreach($i in [0..$contents.geneTableCount])
+                        #if(($i % 7) == 0)
+                        <fo:table-row border-bottom="solid 0.1mm black" height="7mm" display-align="center" text-align="center">
+                            #end
+                            <fo:table-cell>
+                                <fo:block font-family="Noto Sans CJK KR Regular">
+                                    #if($i < $contents.variantCountByGenes.size())
+                                    $contents.variantCountByGenes.get($i).geneSymbol
+                                    #end
+                                </fo:block>
+                            </fo:table-cell>
+                            #if(($i % 7) == 6)
+                        </fo:table-row>
+                        #end
+                        #end
+                    </fo:table-body>
+                </fo:table>
+
+            </fo:block>
+            <fo:block id="lastPage"> </fo:block>
+            #end
+		</fo:flow>
+	</fo:page-sequence>
+</fo:root>

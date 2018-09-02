@@ -1,124 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
-<?import java.net.URL?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<GridPane maxHeight="-Infinity" prefHeight="700.0" prefWidth="1280.0" styleClass="layoutGrid" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.MainController">
+<GridPane fx:id="mainGridPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="700.0" minWidth="1280.0" prefHeight="700.0" prefWidth="1280.0" style="-fx-background-color: white;" styleClass="layoutGrid" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.MainController">
    <rowConstraints>
-      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" vgrow="ALWAYS" />
-      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="76.0" vgrow="ALWAYS" />
-      <RowConstraints minHeight="-Infinity" prefHeight="534.0" vgrow="ALWAYS" />
-      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" vgrow="NEVER" />
+      <RowConstraints maxHeight="65.0" minHeight="65.0" prefHeight="65.0" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="ALWAYS" />
+      <RowConstraints minHeight="-Infinity" prefHeight="555.0" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
    </rowConstraints>
    <columnConstraints>
-      <ColumnConstraints maxWidth="1225.0" minWidth="10.0" prefWidth="721.0" />
-      <ColumnConstraints maxWidth="-Infinity" minWidth="-Infinity" prefWidth="580.0" />
+      <ColumnConstraints maxWidth="40.0" minWidth="36.0" prefWidth="40.0" />
+      <ColumnConstraints hgrow="ALWAYS" minWidth="-Infinity" prefWidth="600.0" />
+      <ColumnConstraints hgrow="ALWAYS" minWidth="-Infinity" prefWidth="600.0" />
+      <ColumnConstraints maxWidth="40.0" minWidth="36.0" prefWidth="40.0" />
    </columnConstraints>
    <children>
-      <HBox fx:id="mainFooter" maxHeight="25.0" minHeight="25.0" prefHeight="25.0" GridPane.columnSpan="2" GridPane.rowIndex="3">
+      <VBox fx:id="mainBackground" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="635.0" prefWidth="2280.0" GridPane.columnSpan="4" GridPane.rowIndex="1" GridPane.rowSpan="3" />
+      <VBox fx:id="mainHeader" maxHeight="65.0" maxWidth="1.7976931348623157E308" prefHeight="65.0" prefWidth="1200.0" GridPane.columnIndex="1" GridPane.columnSpan="2">
          <children>
-            <Label fx:id="progressTaskLabel" maxHeight="25.0" maxWidth="85.0" minHeight="25.0" minWidth="85.0" prefHeight="25.0" prefWidth="85.0" text="Progress Task" textFill="#99cbe4" HBox.hgrow="NEVER">
-               <HBox.margin>
-                  <Insets left="5.0" />
-               </HBox.margin>
-               <font>
-                  <Font size="10.0" />
-               </font>
-            </Label>
-            <HBox fx:id="progressTaskContentArea" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="940.0" HBox.hgrow="ALWAYS" />
-            <Label fx:id="labelSystemBuild" alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxHeight="25.0" maxWidth="250.0" minHeight="25.0" minWidth="250.0" prefHeight="25.0" prefWidth="250.0" text="v 1.0 (Build Date 20160630)" textFill="WHITE">
-               <font>
-                  <Font size="10.0" />
-               </font>
-               <padding>
-                  <Insets right="5.0" />
-               </padding>
-            </Label>
-         </children>
-      </HBox>
-      <VBox fx:id="mainHeader" prefHeight="200.0" prefWidth="1280.0" GridPane.columnSpan="2" GridPane.rowSpan="2">
-         <children>
-            <HBox id="topMenuArea" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="900.0">
+            <HBox id="topMenuArea" fx:id="topTabArea" alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="1200.0">
                <children>
-                  <Button fx:id="topMenuScrollLeftButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#moveScrollLeft" prefHeight="23.0" prefWidth="8.0" styleClass="scroll_left_btn" visible="false" HBox.hgrow="NEVER">
-                     <HBox.margin>
-                        <Insets left="5.0" right="5.0" />
-                     </HBox.margin>
-                  </Button>
-                  <ScrollPane fx:id="topMenuScrollPane" focusTraversable="false" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="900.0" minHeight="-Infinity" pannable="true" prefHeight="45.0" prefWidth="900.0" vbarPolicy="NEVER" HBox.hgrow="ALWAYS">
-                     <content>
-                        <GridPane>
-                           <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                           </columnConstraints>
-                           <rowConstraints>
-                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                           </rowConstraints>
-                           <children>
-                              <HBox fx:id="topMenuArea" alignment="BOTTOM_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="45.0" prefWidth="100.0" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="NEVER" />
-                           </children>
-                        </GridPane>
-                     </content>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
+                  <HBox alignment="TOP_RIGHT" minWidth="160.0" prefHeight="40.0" prefWidth="300.0" styleClass="bg_main_header_logo" />
+                  <HBox fx:id="topMenuArea1" prefHeight="60.0" prefWidth="657.0" spacing="20.0" HBox.hgrow="ALWAYS">
                      <HBox.margin>
                         <Insets right="5.0" />
                      </HBox.margin>
-                  </ScrollPane>
-                  <Button fx:id="topMenuScrollRightButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#moveScrollRight" prefHeight="23.0" prefWidth="8.0" styleClass="scroll_right_btn" visible="false" HBox.hgrow="NEVER">
-                     <HBox.margin>
-                        <Insets left="5.0" right="5.0" />
-                     </HBox.margin>
-                  </Button>
-               </children>
-            </HBox>
-            <HBox alignment="TOP_RIGHT" maxHeight="121.0" maxWidth="1.7976931348623157E308" minHeight="50.0" prefHeight="121.0" prefWidth="1280.0" styleClass="mainHeader">
-               <children>
-                  <HBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="200.0" styleClass="bg_main_header_right2" HBox.hgrow="NEVER">
                      <children>
-                        <ImageView fitHeight="13.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
+                        <Label fx:id="dashBoardBtn" maxHeight="1.7976931348623157E308" styleClass="bold" text="DASHBOARD" />
+                        <Label fx:id="resultsBtn" maxHeight="1.7976931348623157E308" styleClass="bold" text="RESULTS" />
+                        <StackPane fx:id="sampleListStackPane" prefHeight="150.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="sampleListLabel" maxHeight="60.0" maxWidth="100.0" minHeight="60.0" minWidth="100.0" prefHeight="60.0" prefWidth="100.0" style="-fx-background-color: white;" styleClass="bold" text="SAMPLES" />
+                           </children>
+                        </StackPane>
+                        <Label fx:id="managerBtn" maxHeight="1.7976931348623157E308" styleClass="bold" text="MANAGER" visible="false" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="238.0" styleClass="bg_main_header_right2" HBox.hgrow="NEVER">
+                     <children>
+                        <Label id="user_image_icon" alignment="CENTER_RIGHT">
                            <HBox.margin>
-                              <Insets bottom="10.0" left="5.0" right="10.0" />
+                              <Insets right="6.0" />
                            </HBox.margin>
-                           <image>
-                              <Image url="@../images/icon_user1.png" />
-                           </image>
-                        </ImageView>
-                        <Label fx:id="loginUserName" alignment="TOP_CENTER" text="Login User Account" textFill="WHITE">
+                        </Label>
+                        <Label fx:id="loginUserName" alignment="CENTER_RIGHT" text="Login User Account" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                            <HBox.margin>
-                              <Insets bottom="7.0" right="10.0" />
+                              <Insets bottom="2.0" />
                            </HBox.margin>
                            <styleClass>
                               <String fx:value="font_size_12" />
                               <String fx:value="user_name" />
                            </styleClass>
                         </Label>
-                        <MenuBar fx:id="userMenuBar" maxHeight="25.0" maxWidth="32.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="32.0">
+                        <MenuBar fx:id="userMenuBar" maxHeight="20.0" maxWidth="30.0" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="30.0">
                           <menus>
                             <Menu fx:id="userSystemMenu" mnemonicParsing="false" />
                           </menus>
                            <HBox.margin>
-                              <Insets bottom="4.0" right="12.0" />
+                              <Insets bottom="10.0" />
                            </HBox.margin>
                            <cursor>
                               <Cursor fx:constant="HAND" />
@@ -129,12 +78,54 @@
                         <Insets left="10.0" />
                      </padding>
                   </HBox>
-                  <HBox alignment="TOP_RIGHT" minWidth="160.0" prefHeight="50.0" prefWidth="160.0" styleClass="bg_main_header_logo" />
                </children>
             </HBox>
          </children>
       </VBox>
-      <BorderPane fx:id="mainFrame" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.rowSpan="2" GridPane.vgrow="ALWAYS" />      
+      <BorderPane fx:id="mainFrame" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="555.0" prefWidth="1200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
+         <opaqueInsets>
+            <Insets left="20.0" />
+         </opaqueInsets></BorderPane>
+      <HBox fx:id="mainFooter" maxHeight="25.0" minHeight="25.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3">
+         <children>
+            <HBox fx:id="progressTaskContentArea" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="800.0" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin></HBox>
+            <Label fx:id="labelSystemBuild" alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxHeight="25.0" maxWidth="200.0" minHeight="25.0" minWidth="200.0" prefHeight="25.0" prefWidth="200.0" style="-fx-text-fill: #FFFFFF;" text="v 1.0 (Build Date 20160630)" textFill="WHITE">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <padding>
+                  <Insets right="5.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets right="40.0" />
+               </HBox.margin>
+               <styleClass>
+                  <String fx:value="font_gray" />
+                  <String fx:value="font_size_12" />
+               </styleClass>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+         <children>
+            <Label alignment="CENTER_RIGHT" prefHeight="40.0" text="NGeneBio" textAlignment="RIGHT" textFill="WHITE">
+               <font>
+                  <Font size="11.0" />
+               </font>
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+            </Label>
+            <Label alignment="CENTER_RIGHT" prefHeight="40.0" text="Innovative &amp; Next Generation Biotechnology" textAlignment="RIGHT" textFill="WHITE">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>      
    </children>
    <stylesheets>
       <URL value="@../css/common.css" />

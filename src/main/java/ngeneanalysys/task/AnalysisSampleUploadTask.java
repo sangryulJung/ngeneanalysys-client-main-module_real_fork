@@ -1,11 +1,11 @@
 package ngeneanalysys.task;
 
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import ngeneanalysys.controller.AnalysisSampleUploadProgressTaskController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.AnalysisFile;
 import ngeneanalysys.model.Run;
+import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.AnalysisRequestService;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
@@ -20,7 +20,7 @@ import java.util.List;
  * @since 2017-08-23
  */
 public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
-    Logger logger = LoggerUtil.getLogger();
+    private Logger logger = LoggerUtil.getLogger();
 
     /** Main Controller Application Object */
     private AnalysisSampleUploadProgressTaskController analysisSampleUploadProgressTaskController;
@@ -70,7 +70,7 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
 
     @Override
     protected Void call() throws Exception {
-        logger.info("start upload task...");
+        logger.debug("start upload task...");
 
         try {
 
@@ -140,14 +140,14 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
                     if (currentUploadGroupId > 0) {
                         // 현재 업로드중인 분석 요청 그룹 데이터 삭제
                         //analysisRequestService.removeRequestedJob(currentUploadGroupId);
-                        this.analysisSampleUploadProgressTaskController.getMainController().clearProgressTaskArea();
+                        this.analysisSampleUploadProgressTaskController.clearWhenUploadTaskSucceeded();
                     }
                 }
 
                 //completeFile.add(fileData);
             }
         } catch (Exception e) {
-            logger.info(e.getMessage());
+            logger.debug(e.getMessage());
             e.printStackTrace();
         }
 
@@ -166,18 +166,22 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
     @Override
     protected void succeeded() {
         // 메인 화면 Progress Task 영역 삭제
-        Platform.runLater(() -> {
-            this.analysisSampleUploadProgressTaskController.clearWhenUploadTaskSucceeded();
-        });
+        Platform.runLater(() -> this.analysisSampleUploadProgressTaskController.clearWhenUploadTaskSucceeded());
 
         // 업로드 작업 중단
         if(this.analysisSampleUploadProgressTaskController.isCancel) {
+            APIService apiService = APIService.getInstance();
+            try {
+                apiService.delete("runs/" + currentUploadGroupId);
+            } catch (WebAPIException wae) {
+                logger.debug("delete fail");
+            }
             logger.warn("complete stop upload work..!!");
             // 취소 완료 Alert창 출력
             this.analysisSampleUploadProgressTaskController.showCancelCompleteDialog();
         } else {
             if(!this.analysisSampleUploadProgressTaskController.isStop) {
-                logger.info("upload task work finished!!");
+                logger.debug("upload task work finished!!");
 
                 if(this.taskStatus) {
                     // 완료 메시지 출력
@@ -187,7 +191,7 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
                     DialogUtil.error("Upload Failed", String.format("[%s] %s", this.msgDialogHeader, this.msgDialogContent), analysisSampleUploadProgressTaskController.getMainController().getPrimaryStage(), false);
                 }
             } else {
-                logger.info("upload task work stop!!");
+                logger.debug("upload task work stop!!");
             }
         }
     }
@@ -196,7 +200,7 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
      * 현재 업로드 진행중인 분석 요청 그룹 정보 전달 [MainController 화면]
      */
     private void updateCurrentUploadGroupInfo() {
-        logger.info("updateCurrentUploadGroupInfo..");
+        logger.debug("updateCurrentUploadGroupInfo..");
         try {
             Thread.sleep(50);
             Platform.runLater(() -> {

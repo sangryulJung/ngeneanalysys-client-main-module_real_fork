@@ -8,11 +8,12 @@ package ngeneanalysys.code.enums;
  */
 public enum SystemMenuCode {
 
-	EDIT("Edit", 15),
+	EDIT("User Profile", 15),
 	SETTINGS("Settings", 15),
 	SUPPORT("Support", 15),
 	LICENSE("License", 0),
-	PUBLIC_DATABASES("Public Databases", 15),
+	SOFTWARE_VERSION("Software Version", 15),
+	/*PUBLIC_DATABASES("Public Databases", 15),*/
 	LOGOUT("Logout", 15);
 	
 	private String menuName;
@@ -30,21 +31,9 @@ public enum SystemMenuCode {
 		return menuName;
 	}
 	/**
-	 * @param menuName the menuName to set
-	 */
-	public void setMenuName(String menuName) {
-		this.menuName = menuName;
-	}
-	/**
 	 * @return the authBit
 	 */
 	public Integer getAuthBit() {
 		return authBit;
-	}
-	/**
-	 * @param authBit the authBit to set
-	 */
-	public void setAuthBit(Integer authBit) {
-		this.authBit = authBit;
 	}
 }

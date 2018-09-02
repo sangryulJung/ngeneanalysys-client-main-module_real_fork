@@ -4,6 +4,7 @@ import javafx.concurrent.Task;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.AnalysisDetailReportController;
 import ngeneanalysys.controller.AnalysisDetailReportGermlineController;
+import ngeneanalysys.controller.AnalysisDetailTSTRNAReportController;
 import ngeneanalysys.model.ReportImage;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
@@ -35,6 +36,8 @@ public class ImageFileDownloadTask extends Task {
     /** 컨트롤러 클래스 */
     private AnalysisDetailReportController controller;
 
+    private AnalysisDetailTSTRNAReportController tstrnaReportController;
+
     private AnalysisDetailReportGermlineController analysisDetailReportGermlineController;
 
     private List<ReportImage> images;
@@ -54,6 +57,12 @@ public class ImageFileDownloadTask extends Task {
         progressBoxId = "DOWNLOAD IMAGE";
     }
 
+    public ImageFileDownloadTask(AnalysisDetailTSTRNAReportController controller, List<ReportImage> images) {
+        this.tstrnaReportController = controller;
+        this.images = images;
+        progressBoxId = "DOWNLOAD IMAGE";
+    }
+
     @Override
     protected Void call() throws Exception {
         if(images != null && !images.isEmpty()) {
@@ -64,8 +73,10 @@ public class ImageFileDownloadTask extends Task {
             CloseableHttpResponse response = null;
 
             for (ReportImage reportImage : images) {
-                String downloadUrl = "/admin/reportImage/" + reportImage.getId();
+                String downloadUrl = "/reportImage/" + reportImage.getId();
                 String path = CommonConstants.BASE_FULL_PATH  + File.separator + "fop" + File.separator + reportImage.getReportTemplateId() + File.separator + reportImage.getName();
+
+                File file = new File(path);
 
                 OutputStream os = null;
                 try {
@@ -75,17 +86,14 @@ public class ImageFileDownloadTask extends Task {
                     Map<String, Object> headerMap = apiService.getDefaultHeaders(true);
 
                     HttpGet get = new HttpGet(connectURL);
-                    logger.info("GET:" + get.getURI());
+                    logger.debug("GET:" + get.getURI());
 
                     // 지정된 헤더 삽입 정보가 있는 경우 추가
-                    if (headerMap != null && headerMap.size() > 0) {
-                        Iterator<String> keys = headerMap.keySet().iterator();
-                        while (keys.hasNext()) {
-                            String key = keys.next();
-                            get.setHeader(key, headerMap.get(key).toString());
+                    if(headerMap != null && headerMap.size() > 0) {
+                        for (Map.Entry<String, Object> entry : headerMap.entrySet()) {
+                            get.setHeader(entry.getKey(), entry.getValue().toString());
                         }
                     }
-
                     httpclient = HttpClients.custom().setSSLSocketFactory(HttpClientUtil.getSSLSocketFactory()).build();
                     if (httpclient != null)
                         response = httpclient.execute(get);
@@ -100,13 +108,12 @@ public class ImageFileDownloadTask extends Task {
                         InputStream content = entity.getContent();
                         long fileLength = entity.getContentLength();
 
-                        InputStream is = content;
-                        os = Files.newOutputStream(Paths.get(path));
+                        os = Files.newOutputStream(Paths.get(file.toURI()));
 
                         long nread = 0L;
                         byte[] buf = new byte[8192];
                         int n;
-                        while ((n = is.read(buf)) > 0) {
+                        while ((n = content.read(buf)) > 0) {
                             if (isCancelled()) {
                                 break;
                             }
@@ -115,7 +122,7 @@ public class ImageFileDownloadTask extends Task {
                             updateProgress(nread, fileLength);
                             updateMessage(String.valueOf(Math.round(((double) nread / (double) fileLength) * 100)) + "%");
                         }
-                        is.close();
+                        content.close();
                         os.flush();
                         if (httpclient != null) httpclient.close();
                         if (response != null) response.close();
@@ -142,7 +149,13 @@ public class ImageFileDownloadTask extends Task {
      */
     @Override
     protected void failed() {
-        controller.getMainController().removeProgressTaskItemById(progressBoxId);
+        if(controller != null) {
+            controller.getMainController().removeProgressTaskItemById(progressBoxId);
+        } else if(analysisDetailReportGermlineController != null) {
+            analysisDetailReportGermlineController.getMainController().removeProgressTaskItemById(progressBoxId);
+        } else {
+            tstrnaReportController.getMainController().removeProgressTaskItemById(progressBoxId);
+        }
     }
 
     /**
@@ -150,8 +163,12 @@ public class ImageFileDownloadTask extends Task {
      */
     @Override
     protected void succeeded() {
-        controller.getMainController().removeProgressTaskItemById(progressBoxId);
-
+        if(controller != null) {
+            controller.getMainController().removeProgressTaskItemById(progressBoxId);
+        } else if(analysisDetailReportGermlineController != null){
+            analysisDetailReportGermlineController.getMainController().removeProgressTaskItemById(progressBoxId);
+        } else {
+            tstrnaReportController.getMainController().removeProgressTaskItemById(progressBoxId);
+        }
     }
-
 }

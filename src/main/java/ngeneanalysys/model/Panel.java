@@ -3,7 +3,6 @@ package ngeneanalysys.model;
 import org.joda.time.DateTime;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 public class Panel {
     private Integer id;
@@ -12,22 +11,76 @@ public class Panel {
     private String target;
     private String analysisType;
     private String libraryType;
-    private String sampleSource;
+    private String defaultSampleSource;
+    private Integer defaultDiseaseId;
     private DateTime createdAt;
     private DateTime updatedAt;
     private DateTime deletedAt;
     private Integer deleted;
-    private Boolean isDefault;
+    private Integer warningReadDepth;
+    private BigDecimal warningMAF;
+    private VariantFilter variantFilter;
+    private String canonicalTranscripts;
 
-    private VariantConfig variantConfig;
+    private QCPassConfig qcPassConfig;
 
     private Integer reportTemplateId;
 
     /**
-     * @return variantConfig
+     * @return canonicalTranscripts
      */
-    public VariantConfig getVariantConfig() {
-        return variantConfig;
+    public String getCanonicalTranscripts() {
+        return canonicalTranscripts;
+    }
+
+    /**
+     * @return variantFilter
+     */
+    public VariantFilter getVariantFilter() {
+        return variantFilter;
+    }
+
+    /**
+     * @return warningReadDepth
+     */
+    public Integer getWarningReadDepth() {
+        return warningReadDepth;
+    }
+
+    /**
+     * @return warningMAF
+     */
+    public BigDecimal getWarningMAF() {
+        return warningMAF;
+    }
+
+    /**
+     * @param defaultDiseaseId
+     */
+    public void setDefaultDiseaseId(Integer defaultDiseaseId) {
+        this.defaultDiseaseId = defaultDiseaseId;
+    }
+
+    /**
+     * @param id
+     */
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /**
+     * @return qcPassConfig
+     */
+    public QCPassConfig getQcPassConfig() {
+        return qcPassConfig;
+    }
+
+    public String getDefaultSampleSource() {
+        return defaultSampleSource;
+    }
+
+    public Integer getDefaultDiseaseId() {
+        return defaultDiseaseId;
     }
 
     /**
@@ -59,10 +112,6 @@ public class Panel {
 
     public String getLibraryType() { return libraryType; }
 
-    public String getSampleSource() {
-        return sampleSource;
-    }
-
     public Integer getDeleted() {
         return deleted;
     }
@@ -77,8 +126,6 @@ public class Panel {
         return deletedAt;
     }
 
-    public Boolean getIsDefault() { return isDefault; }
-
     @Override
     public String toString() {
         return "Panel{" +
@@ -88,12 +135,16 @@ public class Panel {
                 ", target='" + target + '\'' +
                 ", analysisType='" + analysisType + '\'' +
                 ", libraryType='" + libraryType + '\'' +
-                ", sampleSource='" + sampleSource + '\'' +
+                ", defaultSampleSource='" + defaultSampleSource + '\'' +
+                ", defaultDiseaseId=" + defaultDiseaseId +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", deletedAt=" + deletedAt +
                 ", deleted=" + deleted +
-                ", isDefault=" + isDefault +
+                ", warningReadDepth=" + warningReadDepth +
+                ", warningMAF=" + warningMAF +
+                ", variantFilter=" + variantFilter +
+                ", qcPassConfig=" + qcPassConfig +
                 ", reportTemplateId=" + reportTemplateId +
                 '}';
     }

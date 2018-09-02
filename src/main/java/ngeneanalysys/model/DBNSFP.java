@@ -1,64 +1,52 @@
 package ngeneanalysys.model;
 
-/**
- * @author Jang
- * @since 2017-12-28
- */
 public class DBNSFP {
-    private Sift sift;
-    private PolyPhen2 polyPhen2;
-    private MutationTaster mutationTaster;
-    private GERP gerp;
-    private LRT lrt;
-    private FATHMM fathmm;
-    private MutationAssessor mutationAssessor;
+    private String siftPrediction;
+    private String mutationTasterPrediction;
+    private String gerpNrScore;
+    private String gerpRsScore;
+    private String fathmmPrediction;
+    private String lrtPrediction;
+    private String mutationAssessorPrediction;
 
-    /**
-     * @return mutationAssessor
-     */
-    public MutationAssessor getMutationAssessor() {
-        return mutationAssessor;
+    public String getSiftPrediction() {
+        return siftPrediction;
     }
 
-    /**
-     * @return fathmm
-     */
-    public FATHMM getFathmm() {
-        return fathmm;
+    public String getMutationTasterPrediction() {
+        return mutationTasterPrediction;
     }
 
-    /**
-     * @return sift
-     */
-    public Sift getSift() {
-        return sift;
+    public String getGerpNrScore() {
+        return gerpNrScore;
     }
 
-    /**
-     * @return polyPhen2
-     */
-    public PolyPhen2 getPolyPhen2() {
-        return polyPhen2;
+    public String getGerpRsScore() {
+        return gerpRsScore;
     }
 
-    /**
-     * @return mutationTaster
-     */
-    public MutationTaster getMutationTaster() {
-        return mutationTaster;
+    public String getFathmmPrediction() {
+        return fathmmPrediction;
     }
 
-    /**
-     * @return gerp
-     */
-    public GERP getGerp() {
-        return gerp;
+    public String getLrtPrediction() {
+        return lrtPrediction;
     }
 
-    /**
-     * @return lrt
-     */
-    public LRT getLrt() {
-        return lrt;
+    public String getMutationAssessorPrediction() {
+        return mutationAssessorPrediction;
+    }
+
+    @Override
+    public String toString() {
+        return "DBNSFP{" +
+                "siftPrediction='" + siftPrediction + '\'' +
+                ", mutationTasterPrediction='" + mutationTasterPrediction + '\'' +
+                ", gerpNrScore='" + gerpNrScore + '\'' +
+                ", gerpRsScore='" + gerpRsScore + '\'' +
+                ", fathmmPrediction='" + fathmmPrediction + '\'' +
+                ", lrtPrediction='" + lrtPrediction + '\'' +
+                ", mutationAssessorPrediction='" + mutationAssessorPrediction + '\'' +
+                '}';
     }
 }

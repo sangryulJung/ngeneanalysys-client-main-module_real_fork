@@ -8,6 +8,8 @@ public class ClinVar {
     private String clinVarAcc;
     private String clinVarDisease;
     private String clinVarClass;
+    private String clinVarTraitOMIM;
+    private String clinVarReviewStatus;
 
     /**
      * @return clinVarAcc
@@ -49,5 +51,17 @@ public class ClinVar {
      */
     public void setClinVarClass(String clinVarClass) {
         this.clinVarClass = clinVarClass;
+    }
+
+    public String getClinVarTraitOMIM() {
+        return clinVarTraitOMIM;
+    }
+
+    public void setClinVarTraitOMIM(String clinVarTraitOMIM) {
+        this.clinVarTraitOMIM = clinVarTraitOMIM;
+    }
+
+    public String getClinVarReviewStatus() {
+        return clinVarReviewStatus;
     }
 }

@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="identificationArea" alignment="TOP_CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="272.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailVariantNomenclatureController">
+   <children>
+      <HBox alignment="TOP_CENTER">
+         <children>
+            <Label styleClass="title1" text="SEQUENCE">
+               <padding>
+                  <Insets top="-5.0" />
+               </padding>
+            </Label>
+            <Label styleClass="title1" text="VARIANT" HBox.hgrow="ALWAYS">
+               <padding>
+                  <Insets top="-5.0" />
+               </padding>
+            </Label>
+            <Label styleClass="title1" text="NOMENCLATURE" HBox.hgrow="ALWAYS" />
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <padding>
+            <Insets bottom="5.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER" VBox.vgrow="NEVER">
+         <VBox.margin>
+            <Insets top="8.0" />
+         </VBox.margin>
+         <children>
+            <Label text="RefSeq Transcript : " HBox.hgrow="NEVER">
+               <styleClass>
+                  <String fx:value="font_size_12" />
+                  <String fx:value="txt_gray_656565" />
+               </styleClass>
+            </Label>
+            <ComboBox fx:id="transcriptComboBox" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+      <VBox fx:id="positionBox" alignment="TOP_RIGHT" layoutX="15.0" layoutY="12.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="260.0" VBox.vgrow="NEVER">
+         <children>
+            <ScrollPane fx:id="scrollBox" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="87.0" prefWidth="260.0" vbarPolicy="NEVER" VBox.vgrow="NEVER">
+               <content>
+                  <GridPane fx:id="gridBox" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="88.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="85.0" valignment="BOTTOM" vgrow="NEVER" />
+                     </rowConstraints>
+                     <children>
+                        <HBox fx:id="sequenceCharsBox" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="85.0" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="NEVER">
+                           <children>
+                              <VBox fx:id="leftVbox" alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="75.0" prefWidth="110.0">
+                                 <children>
+                                    <Label fx:id="genePositionStartLabel" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="15.0" text="32,950,937">
+                                       <styleClass>
+                                          <String fx:value="txt_black" />
+                                          <String fx:value="font_size_9" />
+                                          <String fx:value="weight_bold" />
+                                       </styleClass>
+                                       <VBox.margin>
+                                          <Insets top="5.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label fx:id="left22BpLabel" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" minWidth="-Infinity" text="GTATGCTAA" textOverrun="LEADING_WORD_ELLIPSIS" HBox.hgrow="ALWAYS">
+                                       <styleClass>
+                                          <String fx:value="txt_gray_b1b1b1" />
+                                          <String fx:value="font_size_12" />
+                                          <String fx:value="weight_bold" />
+                                       </styleClass>
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                       <VBox.margin>
+                                          <Insets top="2.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label fx:id="transcriptAltTypeLabel" styleClass="variant_type" text="DEL">
+                                       <VBox.margin>
+                                          <Insets top="9.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox fx:id="refArea" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="75.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <HBox VBox.vgrow="NEVER">
+                                       <children>
+                                          <Label fx:id="transcriptRefLabel" text="T" HBox.hgrow="ALWAYS">
+                                             <styleClass>
+                                                <String fx:value="txt_black" />
+                                                <String fx:value="font_size_12" />
+                                                <String fx:value="weight_bold" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label fx:id="deletionRefLabel" layoutX="10.0" layoutY="10.0">
+                                             <styleClass>
+                                                <String fx:value="txt_red" />
+                                                <String fx:value="font_size_12" />
+                                                <String fx:value="weight_bold" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label fx:id="right22BpLabel" text="AAGAGTGTT" HBox.hgrow="ALWAYS">
+                                             <styleClass>
+                                                <String fx:value="txt_gray_b1b1b1" />
+                                                <String fx:value="font_size_12" />
+                                                <String fx:value="weight_bold" />
+                                             </styleClass>
+                                          </Label>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets top="2.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                    <Label fx:id="transcriptAltLabel" styleClass="variant_alt" text="CA">
+                                       <VBox.margin>
+                                          <Insets top="18.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets top="20.0" />
+                                 </padding>
+                              </VBox>
+                           </children>
+                           <padding>
+                              <Insets top="5.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                  </GridPane>
+               </content>
+            </ScrollPane>
+         </children>
+         <VBox.margin>
+            <Insets top="6.0" />
+         </VBox.margin>
+      </VBox>
+      <ScrollPane fx:id="transcriptDetailScrollBox" focusTraversable="false" prefHeight="90.0" prefWidth="283.0">
+         <content>
+            <GridPane fx:id="transcriptDetailGrid" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="260.0">
+               <columnConstraints>
+                  <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="113.0" minWidth="-Infinity" prefWidth="95.0" />
+                  <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="-Infinity" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" valignment="CENTER" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" valignment="CENTER" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" valignment="CENTER" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" valignment="CENTER" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Label maxWidth="1.7976931348623157E308" text="Gene Symbol">
+                     <styleClass>
+                        <String fx:value="txt_gray_656565" />
+                        <String fx:value="font_size_10" />
+                     </styleClass>
+                  </Label>
+                  <TextField fx:id="geneSymbolTextField" editable="false" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1">
+                     <styleClass>
+                        <String fx:value="txt_gray_656565" />
+                        <String fx:value="font_size_10" />
+                     </styleClass>
+                  </TextField>
+                  <Label maxWidth="1.7976931348623157E308" text="HGVS Nucleotide" GridPane.rowIndex="1">
+                     <styleClass>
+                        <String fx:value="txt_gray_656565" />
+                        <String fx:value="font_size_10" />
+                        <String fx:value="bg_efefef" />
+                     </styleClass>
+                  </Label>
+                  <TextField fx:id="hgvscTextField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <styleClass>
+                        <String fx:value="txt_gray_656565" />
+                        <String fx:value="font_size_10" />
+                     </styleClass>
+                  </TextField>
+                  <Label maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="15.0" text="HGVS Protein" GridPane.rowIndex="2">
+                     <styleClass>
+                        <String fx:value="txt_gray_656565" />
+                        <String fx:value="font_size_10" />
+                     </styleClass>
+                  </Label>
+                  <TextField fx:id="hgvspTextField" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <styleClass>
+                        <String fx:value="font_size_10" />
+                        <String fx:value="txt_gray_656565" />
+                     </styleClass>
+                  </TextField>
+                  <Label maxWidth="1.7976931348623157E308" prefWidth="87.0" text="Genome(GRCh37)" GridPane.rowIndex="3">
+                     <styleClass>
+                        <String fx:value="txt_gray_656565" />
+                        <String fx:value="font_size_10" />
+                        <String fx:value="bg_efefef" />
+                     </styleClass>
+                  </Label>
+                  <TextField fx:id="grch37TextField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <styleClass>
+                        <String fx:value="txt_gray_656565" />
+                        <String fx:value="font_size_10" />
+                     </styleClass>
+                  </TextField>
+               </children>
+            </GridPane>
+         </content>
+      </ScrollPane>
+   </children>
+   <stylesheets>
+      <URL value="@../../css/common.css" />
+      <URL value="@../../css/variantDetail.css" />
+   </stylesheets>
+</VBox>

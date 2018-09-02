@@ -16,8 +16,8 @@ public class FXMLLoadUtil {
 
 	/**
 	 * 지정 경로의 FXML 로드
-	 * @param fxmlPath
-	 * @return
+	 * @param fxmlPath String
+	 * @return FXMLLoader
 	 */
 	public static FXMLLoader load(String fxmlPath) {
 		ResourceUtil resourceUtil = new ResourceUtil();
@@ -26,8 +26,8 @@ public class FXMLLoadUtil {
 	
 	/**
 	 * 지정 경로의 FXML 로드
-	 * @param url
-	 * @return
+	 * @param url URL
+	 * @return FXMLLoader
 	 */
 	public static FXMLLoader load(URL url) {
 		FXMLLoader loader = new FXMLLoader();

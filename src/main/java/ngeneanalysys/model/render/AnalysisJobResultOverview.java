@@ -28,94 +28,6 @@ import javafx.scene.layout.VBox;
 public class AnalysisJobResultOverview {
 
 	/**
-	 * Past Results > list > Result Overview 컬럼 화면 출력
-	 * @param sample
-	 * @return
-	 */
-	@SuppressWarnings("static-access")
-	public VBox getResultOverview(Sample sample) {
-		VBox vBox = new VBox();
-//		vBox.setId("result_overview");
-//
-//		if(sample != null && sample.getAnalysisResultSummary() != null) {
-//			AnalysisResultSummary summary = sample.getAnalysisResultSummary();
-//
-//			GridPane gridPane = new GridPane();
-//			ColumnConstraints col1 = new ColumnConstraints();
-//			col1.setPercentWidth(30);
-//			ColumnConstraints col2 = new ColumnConstraints();
-//			col2.setPercentWidth(34);
-//			ColumnConstraints col3 = new ColumnConstraints();
-//			col3.setPercentWidth(36);
-//			gridPane.getColumnConstraints().addAll(col1, col2, col3);
-//
-//			// gene count
-//			String genes = (summary.getGenes() != null) ? String.valueOf(summary.getGenes()) : "-";
-//			HBox genesHBox = getCountInfo("GENES : ", genes);
-//			gridPane.add(genesHBox, 0, 0);
-//
-//			// min depth count
-//			HBox depthMinHBox = getCountInfo("DEPTH MIN : ", summary.getDepthMin());
-//			gridPane.add(depthMinHBox, 1, 0);
-//
-//			// max depth count
-//			HBox depthMaxHBox = getCountInfo("DEPTH MAX : ", summary.getDepthMax());
-//			gridPane.add(depthMaxHBox, 2, 0);
-//
-//			// total variant count
-//			HBox variantsHBox = getCountInfo("VARIANTS : ", StringUtils.defaultIfEmpty(summary.getTotalVariants(), "0"));
-//			gridPane.add(variantsHBox, 0, 1);
-//
-//			// warnings count
-//			HBox warnHBox = getCountInfo("WARNING : ", StringUtils.defaultIfEmpty(summary.getWarning(), "0"));
-//			gridPane.add(warnHBox, 1, 1);
-//
-//			// qc flag box
-//			HBox qcFlagHbox = new HBox();
-//			qcFlagHbox.getStyleClass().add("alignment_center_left");
-//
-//			Button absoluteCoverageButton = getQCIcon(summary.getRoiCoverageMessage(),
-//					summary.getRoiCoveragePercentage(), "ROI Coverage",
-//					"Percentage of ROI region\nwith coverage of least 20X (\u2265 100%)");
-//			Button meanReadQualityButton = getQCIcon(summary.getMeanReadQualityMessage(),
-//					summary.getMeanReadQualityPercentage(), "Mean Read Quality",
-//					"Percentage of reads\nwith mean Phred base quality above 30 (\u2265 90%)");
-//			Button retainedReadsButton = getQCIcon(summary.getRetainedReadsMessage(),
-//					summary.getRetainedReadsPercentage(), "Retained Reads", "Percentage of QC passed reads (\u2265 80%)");
-//			Button ampliconCoverageButton = getQCIcon(summary.getCoverageUniformityMessage(),
-//					summary.getCoverageUniformityPercentage(), "Coverage Uniformity",
-//					"Percentage of bases\ncovered at \u2265 20% of the mean coverage");
-//
-//			qcFlagHbox.getChildren().addAll(absoluteCoverageButton, meanReadQualityButton, retainedReadsButton, ampliconCoverageButton);
-//			qcFlagHbox.setMargin(meanReadQualityButton, new Insets(0, 0, 0, 5));
-//			qcFlagHbox.setMargin(retainedReadsButton, new Insets(0, 0, 0, 5));
-//			qcFlagHbox.setMargin(ampliconCoverageButton, new Insets(0, 0, 0, 5));
-//
-//			if(sample.getJobStatus() != null && !StringUtils.isEmpty(sample.getJobStatus().getStepReport())) {
-//				Label reportLabel = new Label();
-//				// 보고서 작성 완료 상태인 경우
-//				if(AnalysisJobStatusCode.SAMPLE_JOB_STATUS_COMPLETE.equals(sample.getJobStatus().getStepReport())) {
-//					reportLabel.setText("REPORTED");
-//					reportLabel.setId("jobStatus_sm_COMPLETE");
-//				} else if(AnalysisJobStatusCode.SAMPLE_JOB_STATUS_RUNNING.equals(sample.getJobStatus().getStepReport())) {
-//					reportLabel.setText("REVIEWING");
-//					reportLabel.setId("jobStatus_sm_RUNNING");
-//				}
-//				qcFlagHbox.getChildren().add(reportLabel);
-//				qcFlagHbox.setMargin(reportLabel, new Insets(0, 0, 0, 5));
-//			}
-//
-//			vBox.getChildren().addAll(gridPane, qcFlagHbox);
-//			vBox.setMargin(qcFlagHbox, new Insets(5, 0, 0, 0));
-//		} else {
-//			Label emptyLabel = new Label("empty result overview data.");
-//			emptyLabel.getStyleClass().add("txt_gray");
-//			vBox.getChildren().add(emptyLabel);
-//		}
-		return vBox;
-	}
-	
-	/**
 	 * 집계 정보 박스 반환
 	 * @param title
 	 * @param count
@@ -146,7 +58,7 @@ public class AnalysisJobResultOverview {
 	 */
 	@SuppressWarnings("static-access")
 	public Button getQCIcon(String flag, String percentage, String title, String contents) {
-//		if(!StringUtils.isEmpty(flag) && !StringUtils.isEmpty(percentage)) {
+//		if(StringUtils.isNotEmpty(flag) && StringUtils.isNotEmpty(percentage)) {
 //			Button button = new Button();
 //			if("PASS".equals(flag.toUpperCase())) {
 //				button.getStyleClass().add("bullet_green");

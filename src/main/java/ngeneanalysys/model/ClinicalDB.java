@@ -1,7 +1,5 @@
 package ngeneanalysys.model;
 
-import java.math.BigDecimal;
-
 /**
  * @author Jang
  * @since 2017-09-08
@@ -13,22 +11,7 @@ public class ClinicalDB {
     private String kohbraPatient;
     private String enigma;
     private BrcaExchange be;
-    private OncoKB oncoKB;
     private DBNSFP dbNSFP;
-
-    /**
-     * @return dbNSFP
-     */
-    public DBNSFP getDbNSFP() {
-        return dbNSFP;
-    }
-
-    /**
-     * @return oncoKB
-     */
-    public OncoKB getOncoKB() {
-        return oncoKB;
-    }
 
     /**
      * @return cosmic
@@ -105,5 +88,9 @@ public class ClinicalDB {
      */
     public void setBic(BrcaCancerInformationCore bic) {
         this.bic = bic;
+    }
+
+    public DBNSFP getDbNSFP() {
+        return dbNSFP;
     }
 }

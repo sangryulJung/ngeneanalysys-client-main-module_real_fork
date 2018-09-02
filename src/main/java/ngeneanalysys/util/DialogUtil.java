@@ -2,7 +2,9 @@ package ngeneanalysys.util;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
+import ngeneanalysys.code.constants.CommonConstants;
 
 /**
  * Dialog 출력 Util Class
@@ -16,15 +18,15 @@ public class DialogUtil {
 	
 	/**
 	 * 일반 Dialog 출력
-	 * @param alterType
-	 * @param headerText
-	 * @param contentText
-	 * @param ownerStage
-	 * @param waitAfterShow
-	 * @return
+	 * @param alterType AlertType
+	 * @param headerText String
+	 * @param contentText String
+	 * @param ownerStage Stage
+	 * @param waitAfterShow boolean
+	 * @return Alert
 	 */
 	public static Alert generalShow(AlertType alterType, String headerText, String contentText, Stage ownerStage, boolean waitAfterShow) {
-		Alert alert = new Alert(alterType);
+ 		Alert alert = new Alert(alterType);
 		if(ownerStage != null) {
 			alert.initOwner(ownerStage);
 		}
@@ -41,6 +43,7 @@ public class DialogUtil {
 		} else {
 			title = "INFORMATION";
 		}
+		setIcon(alert);
 
 		alert.setResizable(true);
 		alert.setTitle(title);
@@ -67,11 +70,11 @@ public class DialogUtil {
 
 	/**
 	 * INFORMATION 알림창 출력
-	 * @param headerText
-	 * @param contentText
-	 * @param ownerStage
-	 * @param waitAfterShow
-	 * @return
+	 * @param headerText String
+	 * @param contentText String
+	 * @param ownerStage Stage
+	 * @param waitAfterShow boolean
+	 * @return Alert
 	 */
 	public static Alert alert(String headerText, String contentText, Stage ownerStage, boolean waitAfterShow) {
 		return generalShow(AlertType.INFORMATION, headerText, contentText, ownerStage, waitAfterShow);
@@ -79,11 +82,11 @@ public class DialogUtil {
 	
 	/**
 	 * 경고 알림창 출력
-	 * @param headerText
-	 * @param contentText
-	 * @param ownerStage
-	 * @param waitAfterShow
-	 * @return
+	 * @param headerText String
+	 * @param contentText String
+	 * @param ownerStage Stage
+	 * @param waitAfterShow boolean
+	 * @return Alert
 	 */
 	public static Alert warning(String headerText, String contentText, Stage ownerStage, boolean waitAfterShow) {
 		return generalShow(AlertType.WARNING, headerText, contentText, ownerStage, waitAfterShow);
@@ -91,13 +94,29 @@ public class DialogUtil {
 	
 	/**
 	 * 오류 알림창 출력
-	 * @param headerText
-	 * @param contentText
-	 * @param ownerStage
-	 * @param waitAfterShow
-	 * @return
+	 * @param headerText String
+	 * @param contentText String
+	 * @param ownerStage Stage
+	 * @param waitAfterShow boolean
+	 * @return Alert
 	 */
 	public static Alert error(String headerText, String contentText, Stage ownerStage, boolean waitAfterShow) {
 		return generalShow(AlertType.ERROR, headerText, contentText, ownerStage, waitAfterShow);
 	}
+
+	public static void setIcon(Alert alert) {
+		if (System.getProperty("os.name").toLowerCase().contains("window")) {
+			ResourceUtil resourceUtil = new ResourceUtil();
+			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+			stage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
+		}
+	}
+
+    public static void setIcon(TextInputDialog alert) {
+        if (System.getProperty("os.name").toLowerCase().contains("window")) {
+            ResourceUtil resourceUtil = new ResourceUtil();
+            Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+            stage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
+        }
+    }
 }

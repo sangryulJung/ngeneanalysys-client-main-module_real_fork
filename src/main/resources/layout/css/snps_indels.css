@@ -178,58 +178,6 @@
 	-fx-border-width:1 0 0 0
 }
 
-#variantListTableView .column-header .label {
-	-fx-font-size:9;
-	/*-fx-border-width: 0 0 0 1;*/
-    /*-fx-border-color:
-            transparent
-            transparent
-            transparent
-            derive(-fx-base, 80%);*/
-    /*-fx-border-insets: 0 0 1 2;*/
-
-}
-
-
-#variantListTableView #predictionColumn .label, #variantListTableView #pathgenicColumn .label, #variantListTableView #reportColumn .label, #variantListTableView #falseColumn .label {
-	-fx-alignment:center;
-	-fx-text-fill:#fff;
-	-fx-padding:0;
-	-fx-min-width:18;
-	-fx-pref-width:18;
-	-fx-max-width:18;
-	-fx-min-height:18;
-	-fx-pref-height:18;
-	-fx-max-height:18;
-}
-#variantListTableView .btn_warn {
-	-fx-background-image:url('../images/icon_warn_small.png');
-	-fx-background-size:16;
-	-fx-background-repeat:no-repeat;
-	-fx-background-color:transparent;
-	-fx-background-insets:0;
-	-fx-border-width:0;
-	-fx-pref-width:16;
-	-fx-min-height:16;
-	-fx-pref-height:16;
-	-fx-max-height:16;
-	-fx-padding:1 0 0 0;
-}
-
-#variantListTableView .icon_filtered {
-	-fx-background-image:url('../images/icon_qc_pass.png');
-	-fx-background-size:16;
-	-fx-background-repeat:no-repeat;
-	-fx-background-color:transparent;
-	-fx-background-insets:0;
-	-fx-border-width:0;
-	-fx-pref-width:16;
-	-fx-min-height:16;
-	-fx-pref-height:16;
-	-fx-max-height:16;
-	-fx-padding:1 0 0 0;
-}
-
 #tabArea.tab-pane:top>.tab-header-area {
 	-fx-padding:4 5 0 5;
 }
@@ -361,6 +309,32 @@
 	-fx-background-image:url('../images/btn_fold_over.png');
 }
 
-.table-view .column-header.header {
-    -fx-font-size: 15;
+
+#targetGenesFlowPane {
+    -fx-border-color : #000;
+    -fx-border-width : 0.5 0 0.5 0;
+}
+
+#targetGenesFlowPane > .target_gene_variant_not {
+    -fx-alignment : center;
+    -fx-background-radius : 10 10;
+    -fx-background-color : #8F9FB9;
+    -fx-pref-width : 65;
+    -fx-pref-height : 20;
+}
+
+#targetGenesFlowPane > .target_gene_variant {
+    -fx-alignment : center;
+    -fx-background-radius : 10 10;
+    -fx-background-color : #63CBFF;
+    -fx-pref-width : 65;
+    -fx-pref-height : 20;
+}
+
+#targetGenesFlowPane > .text_color_white {
+    -fx-text-fill : #ffffff;
+}
+
+#targetGenesFlowPane > .text_color_blue {
+    -fx-text-fill : #DB2856;
 }

@@ -1,9 +1,7 @@
 package ngeneanalysys.util;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Properties;
 
@@ -24,8 +22,8 @@ public class PropertiesUtil {
 	
 	/**
 	 * 프로퍼티 반환
-	 * @param path
-	 * @return
+	 * @param path String
+	 * @return Properties
 	 */
 	public static Properties getPropertiesByPath(String path) {
 		try {
@@ -42,15 +40,35 @@ public class PropertiesUtil {
 		}
 		return null;
 	}
+
+	public static String getJsonString(String path) {
+		try {
+			ResourceUtil resourceUtil = new ResourceUtil();
+			InputStream input = resourceUtil.getResourceAsStream(path);
+			if(input != null) {
+				InputStreamReader inputStreamReader = new InputStreamReader(input, StandardCharsets.UTF_8);
+				BufferedReader reader = new BufferedReader(inputStreamReader);
+
+				StringBuilder stringBuilder = new StringBuilder();
+				for (String line; (line = reader.readLine()) != null;) {
+					stringBuilder.append(line);
+				}
+				return stringBuilder.toString();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	/**
 	 * 지정 프로퍼티 파일에 프로퍼티 저장
-	 * @param propertiesFile
-	 * @param map
+	 * @param propertiesFile File
+	 * @param map Map<String,String>
 	 */
 	public static void saveProperties(File propertiesFile, Map<String,String> map) {
 		
-		try (FileReader reader = new FileReader(propertiesFile)){
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(propertiesFile), "UTF-8"))){
 			// 기존 설정 파일 내용
 			String fileContent = FileUtils.readFileToString(propertiesFile);
 			
@@ -60,14 +78,19 @@ public class PropertiesUtil {
 			Properties properties = new Properties();
 			properties.load(reader);
 				
-			for(String key : map.keySet()) {
-				properties.setProperty(key, map.get(key));
+			for(Map.Entry<String, String> entry : map.entrySet()) {
+				properties.setProperty(entry.getKey(), entry.getValue());
 			}
 				
-			FileWriter writer = new FileWriter(propertiesFile);
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(propertiesFile, false), "UTF-8"));
 			properties.store(writer, "Update Settings");
 			writer.close();
-					
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -75,14 +98,13 @@ public class PropertiesUtil {
 	
 	/**
 	 * 시스템 기본 프로퍼티객체 반환 : 사용자 디렉토리 설정 정보 포함하여 반환함.
-	 * @return
+	 * @return Properties
 	 */
 	public static Properties getSystemDefaultProperties() {
 		Properties config = getPropertiesByPath(CommonConstants.BASE_PROPERTIES_PATH);
 		File configFile = new File(CommonConstants.BASE_FULL_PATH, CommonConstants.CONFIG_PROPERTIES);
-		try (FileReader reader = new FileReader(configFile)){
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), "UTF-8"))){
 			// 서버 정보 설정 파일에 입력 받은 내용을 기록
-			
 			Properties properties = new Properties();
 			properties.load(reader);
 
@@ -90,8 +112,10 @@ public class PropertiesUtil {
 				String key = (String) entry.getKey();
 				String value = (String) entry.getValue();
 				// 설정값이 존재하는 경우 추가
-				if(!StringUtils.isEmpty(value)) {
-					config.setProperty(key, value);
+				if(StringUtils.isNotEmpty(value)) {
+					if (config != null) {
+						config.setProperty(key, value);
+					}
 				}
 			}
 		} catch (Exception e) {

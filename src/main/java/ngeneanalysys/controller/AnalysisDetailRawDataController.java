@@ -1,6 +1,7 @@
 package ngeneanalysys.controller;
 
 import javafx.application.Platform;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -8,12 +9,12 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -24,7 +25,7 @@ import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.AnalysisFile;
 import ngeneanalysys.model.AnalysisFileList;
-import ngeneanalysys.model.Sample;
+import ngeneanalysys.model.SampleView;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.task.AnalysisResultFileDownloadTask;
 import ngeneanalysys.util.ConvertUtil;
@@ -38,9 +39,12 @@ import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Jang
@@ -56,13 +60,10 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
     private Stage currentStage;
 
     /** 현재 샘플 정보 객체 */
-    private Sample sample;
+    private SampleView sample;
 
     /** 전체 파일 목록 객체 */
     private List<AnalysisFile> totalList;
-
-    /** 파일 목록 filter map 객체 */
-    private Map<String,Integer> filterMap;
 
     @FXML
     private HBox filterTitleArea;
@@ -96,48 +97,17 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("show..");
+        logger.debug("show..");
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
 
-        sample = (Sample)paramMap.get("sample");
-        // 파일 목록 요청
-        Map<String,Object> paramMap = new HashMap<>();
-        paramMap.put("sampleId", sample.getId());
-        try {
-            HttpClientResponse response = apiService.get("/analysisFiles", paramMap, null, false);
-            totalList = null;
-            AnalysisFileList analysisFileList = response.getObjectBeforeConvertResponseToJSON(AnalysisFileList.class);
-            totalList = analysisFileList.getResult();
-            int foundFileCount = (int)totalList.stream().filter(item -> "FASTQ.GZ".equals(item.getFileType())).count();
+        sample = (SampleView)paramMap.get("sampleView");
 
-            /*for(AnalysisFilesSampleFileMeta sampleFileMeta : sample.getFileList()){
-                AnalysisResultFile analysisResultFile = new AnalysisResultFile();
-                analysisResultFile.setCreatedAt(sampleFileMeta.getCreatedAt());
-                analysisResultFile.setId(sampleFileMeta.getId());
-                analysisResultFile.setName(sampleFileMeta.getName());
-                analysisResultFile.setSampleId(sampleFileMeta.getSample());
-                analysisResultFile.setSize(sampleFileMeta.getSize());
-                analysisResultFile.setTag("FASTQ");
-                totalList.add(analysisResultFile);
-            }*/
-            //addFilterBox();
-            filterTitleArea.setVisible(false);
-            filterTitleArea.setPrefWidth(0);
-            filterList.getChildren().add(new Label("Raw Data Download: Upload fastq files, Mapped bedFile(BAM format), Variant bedFile(VCF format), Data QC Report(PDF) "));
-            setList("ALL");
-
-        } catch (WebAPIException wae) {
-            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
-                    getMainApp().getPrimaryStage(), true);
-        } catch (Exception e) {
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
-        }
-        // 목록 컬럼 설정
+        createCheckBox();
         typeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFileType()));
         filenameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
-        sizeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.convertFileSizeFormat(cellData.getValue().getSize().longValue())));
-        createdColumn.setCellValueFactory(cellData -> new SimpleStringProperty(DateFormatUtils.format(cellData.getValue().getCreatedAt().toDate(), "yyyy-MM-dd HH:mm:ss")));
+        sizeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.convertFileSizeFormat(cellData.getValue().getSize())));
+        createdColumn.setCellValueFactory(cellData -> new SimpleStringProperty(DateFormatUtils.format(cellData.getValue().getCreatedAt().toDate(), "yyyy/MM/dd")));
         downloadColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue()));
         downloadColumn.setCellFactory(param -> new TableCell<AnalysisFile, Object>() {
             @Override
@@ -152,12 +122,31 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
                 }
             }
         });
+        downloadColumn.setSortable(false);
+
+        sizeColumn.setComparator((o1, o2) -> {
+
+            String[] item1 = o1.replaceAll(",", "").split(" ");
+            String[] item2 = o2.replaceAll(",", "").split(" ");
+            BigDecimal value1 = returnData(item1[0] ,item1[1]);
+            BigDecimal value2 = returnData(item2[0] ,item2[1]);
+
+            if(value1.longValue() > value2.longValue()) {
+                return 1;
+            } else if(value1.longValue() < value2.longValue()) {
+                return -1;
+            }
+
+            return 0;
+        });
+
+        getAnalysisFiles();
 
         currentStage = new Stage();
         currentStage.setResizable(false);
         currentStage.initStyle(StageStyle.DECORATED);
         currentStage.initModality(Modality.APPLICATION_MODAL);
-        currentStage.setTitle(CommonConstants.SYSTEM_NAME + " > Raw Data Download");
+        currentStage.setTitle(CommonConstants.SYSTEM_NAME + " > Analysis Result Data Download");
         // OS가 Window인 경우 아이콘 출력.
         if (System.getProperty("os.name").toLowerCase().contains("window")) {
             currentStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
@@ -169,71 +158,90 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
         currentStage.showAndWait();
     }
 
-    /**
-     * 필터 박스 추가
-     */
-    @SuppressWarnings("static-access")
-    public void addFilterBox() {
-        if(totalList != null && !totalList.isEmpty()) {
-            this.filterMap = new HashMap<>();
-            for(AnalysisFile item : totalList) {
-                Integer count = (filterMap.containsKey(item.getFileType())) ? filterMap.get(item.getFileType()) : 0;
-                count++;
-                filterMap.put(item.getFileType(), count);
-            }
+    private void createTableHeader(TableColumn<AnalysisFile, ?> column) {
+        HBox hBox = new HBox();
+        hBox.setPrefHeight(Double.MAX_VALUE);
+        hBox.setAlignment(Pos.CENTER);
+        CheckBox box = new CheckBox();
+        hBox.getChildren().add(box);
+        column.setStyle("-fx-alignment : center");
+        column.setSortable(false);
+        column.setGraphic(box);
 
-            VBox allFilterBox = getFilterBox("ALL", totalList.size());
-            this.filterList.getChildren().add(allFilterBox);
-            this.filterList.setMargin(allFilterBox, new Insets(0, 5, 0, 0));
-
-            if(!filterMap.isEmpty() && filterMap.size() > 0) {
-                for(String key : filterMap.keySet()) {
-                    VBox box = getFilterBox(key, filterMap.get(key).intValue());
-                    this.filterList.getChildren().add(box);
-                    this.filterList.setMargin(box, new Insets(0, 5, 0, 0));
-                }
+        box.selectedProperty().addListener((list, ov, nv) -> {
+            if(rawListTableView.getItems() != null) {
+                rawListTableView.getItems().forEach(item -> item.setCheckItem(nv));
+                rawListTableView.refresh();
             }
+        });
+
+        column.setPrefWidth(50);
+
+        rawListTableView.getColumns().add(0, column);
+    }
+
+    private void createCheckBox() {
+        TableColumn<AnalysisFile, Boolean> checkBoxColumn = new TableColumn<>("");
+        createTableHeader(checkBoxColumn);
+        checkBoxColumn.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue() != null ));
+        checkBoxColumn.setCellFactory(param -> new BooleanCell());
+    }
+
+    private void getAnalysisFiles() {
+        Map<String,Object> paramMap = new HashMap<>();
+        paramMap.put("sampleId", sample.getId());
+        try {
+            HttpClientResponse response = apiService.get("/analysisFiles", paramMap, null, false);
+            totalList = null;
+            AnalysisFileList analysisFileList = response.getObjectBeforeConvertResponseToJSON(AnalysisFileList.class);
+            totalList = analysisFileList.getResult();
+            totalList = totalList.stream().sorted(Comparator.comparing(AnalysisFile::getName)).collect(Collectors.toList());
+
+            filterTitleArea.setVisible(false);
+            filterTitleArea.setPrefWidth(0);
+            filterList.getChildren().add(new Label("Analysis Result Data Download: Uploaded Fastq files, Mapped bedFile(BAM format), Variant bedFile(VCF format), Data QC Report(PDF) "));
+            setList("ALL");
+
+        } catch (WebAPIException wae) {
+            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+                    getMainApp().getPrimaryStage(), true);
+        } catch (Exception e) {
+            logger.error("Unknown Error", e);
+            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
 
-    /**
-     * 필터 박스 반환
-     * @param tag
-     * @param count
-     * @return
-     */
-    public VBox getFilterBox(String tag, int count) {
-        VBox box = new VBox();
-        box.setId(tag);
-
-        Region region = new Region();
-
-        Label levelLabel = new Label(tag);
-        levelLabel.getStyleClass().add("level");
-
-        if("ALL".equals(tag)) {
-            box.getStyleClass().add("selected");
-            region.getStyleClass().add("level_ALL");
-            levelLabel.getStyleClass().add("txt_black");
+    private BigDecimal returnData(String value, String unit) {
+        BigDecimal returnValue = new BigDecimal(value);
+        final BigDecimal unitValue = new BigDecimal(1024);
+        switch (unit) {
+            case "KB":
+                returnValue = returnValue.multiply(unitValue);
+                break;
+            case "MB":
+                returnValue = returnValue.multiply(unitValue)
+                        .multiply(unitValue);
+                break;
+            case "GB":
+                returnValue = returnValue.multiply(unitValue)
+                        .multiply(unitValue)
+                        .multiply(unitValue);
+                break;
+            case "TB":
+                returnValue = returnValue.multiply(unitValue)
+                        .multiply(unitValue)
+                        .multiply(unitValue)
+                        .multiply(unitValue);
+                break;
+            default:
         }
 
-        Label countLabel = new Label(String.valueOf(count));
-        countLabel.getStyleClass().add("count");
-
-        box.getChildren().setAll(region, levelLabel, countLabel);
-
-        // 마우스 클릭 이벤트 바인딩
-        box.setOnMouseClicked(event -> {
-            setList(tag);
-            setOnSelectedFilter(tag);
-        });
-
-        return box;
+        return returnValue;
     }
 
     /**
      * 필터 선택 표시
-     * @param tag
+     * @param tag String
      */
     public void setOnSelectedFilter(String tag) {
         if(filterList.getChildren() != null && filterList.getChildren().size() > 0) {
@@ -251,7 +259,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
 
     /**
      * 목록 화면 출력
-     * @param tag
+     * @param tag String
      */
     public void setList(String tag) {
         ObservableList<AnalysisFile> displayList = null;
@@ -280,11 +288,11 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
 
     /**
      * 파일 다운로드
-     * @param resultFile
+     * @param resultFile AnalysisFile
      */
     @SuppressWarnings("static-access")
     public void download(AnalysisFile resultFile) {
-        logger.info(resultFile.getName());
+        logger.debug(resultFile.getName());
         String fileExtension = FilenameUtils.getExtension(resultFile.getName());
         String extensionFilterTypeName = String.format("%s (*.%s)", fileExtension.toUpperCase(), fileExtension);
         String extensionFilterName = String.format("*.%s", fileExtension);
@@ -297,7 +305,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
 
         try {
             if(file != null) {
-                logger.info(String.format("start download..[%s]", file.getName()));
+                logger.debug(String.format("start download..[%s]", file.getName()));
 
                 Task<Void> task = new AnalysisResultFileDownloadTask(this, resultFile, file);
                 final Thread downloadThread = new Thread(task);
@@ -316,6 +324,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
 
                 Label titleLabel = new Label("Download File : " + resultFile.getName());
                 ProgressBar progressBar = new ProgressBar();
+                progressBar.getStyleClass().add("progress-bar");
                 progressBar.progressProperty().bind(task.progressProperty());
                 Label messageLabel = new Label();
                 messageLabel.textProperty().bind(task.messageProperty());
@@ -357,6 +366,51 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
         } catch (Exception e) {
             DialogUtil.error("Save Fail.", "An error occurred during the download.", getMainController().getPrimaryStage(), false);
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void fileDelete() {
+        List<AnalysisFile> files = rawListTableView.getItems().stream().filter(AnalysisFile::getCheckItem).collect(Collectors.toList());
+
+        if(!files.isEmpty()) {
+            for(AnalysisFile analysisFile : files) {
+                try {
+                    apiService.delete("analysisFiles/" + analysisFile.getId());
+                } catch (WebAPIException wae) {
+                    logger.debug(wae.getMessage());
+                }
+            }
+            getAnalysisFiles();
+        }
+
+    }
+
+    class BooleanCell extends TableCell<AnalysisFile, Boolean> {
+        private CheckBox checkBox = new CheckBox();
+
+        private BooleanCell() {
+            checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+                AnalysisFile analysisFile = BooleanCell.this.getTableView().getItems().get(
+                        BooleanCell.this.getIndex());
+                analysisFile.setCheckItem(newValue);
+                checkBox.setSelected(newValue);
+            });
+        }
+
+        @Override
+        public void updateItem(Boolean item, boolean empty) {
+            super.updateItem(item, empty);
+            if(empty) {
+                setGraphic(null);
+                return;
+            }
+
+            AnalysisFile analysisFile = BooleanCell.this.getTableView().getItems().get(
+                    BooleanCell.this.getIndex());
+            checkBox.setSelected(analysisFile.getCheckItem());
+
+            setGraphic(checkBox);
         }
     }
 

@@ -36,7 +36,7 @@ public class ServerURLManageService {
 
     /**
      * 싱글톤 객체 반환
-     * @return
+     * @return ServerURLManageService
      */
     public static ServerURLManageService getInstance() {
         return ServerURLManageServiceHelper.INSTANCE;
@@ -51,18 +51,16 @@ public class ServerURLManageService {
         String regex = "^(http|https?):\\/\\/([^:\\/\\s]+)(:([^\\/]*))?((\\/[^\\s/\\/]+)*)?\\/?([^#\\s\\?]*)(\\?([^#\\s]*))?(#(\\w*))?$";
         Pattern pattern = Pattern.compile(regex);
         if(pattern.matcher(inputURL).matches()) {
-            String url = inputURL;
-            //String url = inputURL + "/client_upgrade/client_version";
             HttpClientResponse response = null;
             try {
-                response = HttpClientUtil.get(url, null, null, false);
+                response = HttpClientUtil.get(inputURL, null, null, false);
                 if(response != null) {
                     int status = response.getStatus();
-                    logger.info("HTTP Status : " + status);
+                    logger.debug("HTTP Status : " + status);
                     return status;
                 }
             } catch (WebAPIException e) {
-                logger.info(e.getMessage());
+                logger.debug(e.getMessage());
             }
         } else {
             return 0;

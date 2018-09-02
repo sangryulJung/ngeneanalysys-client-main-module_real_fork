@@ -27,7 +27,7 @@ public class VelocityUtil {
 	
 	/** Init VelocityEngine */
 	public void init() {
-		logger.info("Init Velocity Engine");
+		logger.debug("Init Velocity Engine");
 		engine = new VelocityEngine();
 		engine.setProperty(RuntimeConstants.RESOURCE_LOADER, "file,classpath");
 		engine.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
@@ -39,14 +39,13 @@ public class VelocityUtil {
 	
 	/**
 	 * 지정 argument 템플릿에 적용 후 내용 반환
-	 * @param templatePath
-	 * @param encoding
-	 * @param model
-	 * @return
-	 * @throws Exception
+	 * @param templatePath String
+	 * @param encoding String
+	 * @param model Map<String,Object>
+	 * @return String
 	 */
-	public String getContents(String templatePath, String encoding, Map<String,Object> model) throws Exception {
-		logger.info(String.format("template [%s], encoding [%s]", templatePath, encoding));
+	public String getContents(String templatePath, String encoding, Map<String,Object> model) {
+		logger.debug(String.format("template [%s], encoding [%s]", templatePath, encoding));
 
 		if(engine == null) init();
 		if(StringUtils.isEmpty(encoding)) encoding = "UTF-8";

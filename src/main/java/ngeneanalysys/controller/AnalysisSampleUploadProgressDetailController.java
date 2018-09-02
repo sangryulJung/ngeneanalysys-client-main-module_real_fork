@@ -69,7 +69,7 @@ public class AnalysisSampleUploadProgressDetailController extends BaseStageContr
     }
     /**
      * Set Parameter Map
-     * @param param
+     * @param param Map
      */
     public void setParam(Map<String,Object> param) {
         this.paramMap = param;
@@ -107,7 +107,7 @@ public class AnalysisSampleUploadProgressDetailController extends BaseStageContr
         }
         dialogStage.initOwner(this.mainController.getMainApp().getPrimaryStage());
 
-        // Schen Init
+        // Scene Init
         Scene scene = new Scene(root);
         dialogStage.setScene(scene);
         dialogStage.showAndWait();
@@ -127,11 +127,11 @@ public class AnalysisSampleUploadProgressDetailController extends BaseStageContr
     @FXML
     public void pause() {
         if(this.taskController.isPause) {
-            logger.info("Resume from detail..");
+            logger.debug("Resume from detail..");
             this.taskController.startUpload();
             buttonPause.setText("Pause");
         } else {
-            logger.info("pause from detail..");
+            logger.debug("pause from detail..");
             this.taskController.pauseUpload();
             buttonPause.setText("Resume");
         }
@@ -148,11 +148,11 @@ public class AnalysisSampleUploadProgressDetailController extends BaseStageContr
 
     /**
      * 지정 샘플의 진행률 정보 갱신
-     * @param sampleFileId
-     * @param progressPercent
+     * @param sampleFileId int
+     * @param progressPercent double
      */
     public void update(int sampleFileId, double progressPercent) {
-        logger.info(String.format("update progress [bedFile id : %s, percent : %s]", sampleFileId, progressPercent));
+        logger.debug(String.format("update progress [bedFile id : %s, percent : %s]", sampleFileId, progressPercent));
         if(listViewSampleFile.getItems() != null && listViewSampleFile.getItems().size() > 0) {
             String selector = "#sampleFile_" + sampleFileId;
             HBox hbox = (HBox) listViewSampleFile.lookup(selector);

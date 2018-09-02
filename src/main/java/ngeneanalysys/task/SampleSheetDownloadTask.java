@@ -1,10 +1,12 @@
 package ngeneanalysys.task;
 
 import javafx.concurrent.Task;
+import javafx.stage.Stage;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.SampleUploadController;
 import ngeneanalysys.controller.SampleUploadScreenFirstController;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.httpclient.HttpClientUtil;
 import org.apache.http.HttpEntity;
@@ -37,16 +39,12 @@ public class SampleSheetDownloadTask extends Task {
 
     private String runDir;
 
-    /** 진행상태 박스 id */
-    private String progressBoxId;
-
     public SampleSheetDownloadTask(SampleUploadController controller,
                                    SampleUploadScreenFirstController sampleUploadScreenFirstController,
                                    String runDir) {
         this.controller = controller;
         this.sampleUploadScreenFirstController = sampleUploadScreenFirstController;
         this.runDir = runDir;
-        progressBoxId = "DOWNLOAD SampleSheet";
     }
 
     @Override
@@ -54,13 +52,13 @@ public class SampleSheetDownloadTask extends Task {
         if(runDir != null) {
             APIService apiService = APIService.getInstance();
 
-            CloseableHttpClient httpclient = null;
+            CloseableHttpClient httpclient;
             CloseableHttpResponse response = null;
 
 
             //String downloadUrl = "/sampleSheet?runDir=" + runDir;
             String downloadUrl = "runDir/sampleSheet?runDir=" + runDir;
-            String path = CommonConstants.BASE_FULL_PATH  + File.separator + runDir + "_" + "SampleSheet.csv";
+            String path = CommonConstants.BASE_FULL_PATH  + File.separator + "SampleSheet.csv";
             OutputStream os = null;
             try {
                 String connectURL = apiService.getConvertConnectURL(downloadUrl);
@@ -69,13 +67,11 @@ public class SampleSheetDownloadTask extends Task {
                 Map<String, Object> headerMap = apiService.getDefaultHeaders(true);
 
                 HttpGet get = new HttpGet(connectURL);
-                logger.info("GET:" + get.getURI());
+                logger.debug("GET:" + get.getURI());
                 // 지정된 헤더 삽입 정보가 있는 경우 추가
-                if (headerMap != null && headerMap.size() > 0) {
-                    Iterator<String> keys = headerMap.keySet().iterator();
-                    while (keys.hasNext()) {
-                        String key = keys.next();
-                        get.setHeader(key, headerMap.get(key).toString());
+                if(headerMap != null && headerMap.size() > 0) {
+                    for (Map.Entry<String, Object> entry : headerMap.entrySet()) {
+                        get.setHeader(entry.getKey(), entry.getValue().toString());
                     }
                 }
 
@@ -93,13 +89,12 @@ public class SampleSheetDownloadTask extends Task {
                     InputStream content = entity.getContent();
                     long fileLength = entity.getContentLength();
 
-                    InputStream is = content;
                     os = Files.newOutputStream(Paths.get(path));
 
                     long nread = 0L;
                     byte[] buf = new byte[8192];
                     int n;
-                    while ((n = is.read(buf)) > 0) {
+                    while ((n = content.read(buf)) > 0) {
                         if (isCancelled()) {
                             break;
                         }
@@ -108,15 +103,17 @@ public class SampleSheetDownloadTask extends Task {
                         updateProgress(nread, fileLength);
                         updateMessage(String.valueOf(Math.round(((double) nread / (double) fileLength) * 100)) + "%");
                     }
-                    is.close();
+                    content.close();
                     os.flush();
-                    if (httpclient != null) httpclient.close();
-                    if (response != null) response.close();
+                    httpclient.close();
+                    response.close();
                 } else {
-                    logger.info(response.getStatusLine().toString());
+                    logger.debug(response.getStatusLine().toString());
+                    throw new Exception("Not Found");
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+                throw e;
             } finally {
                 if (os != null) {
                     try {
@@ -138,6 +135,11 @@ public class SampleSheetDownloadTask extends Task {
     @Override
     protected void failed() {
         //controller.getMainController().removeProgressTaskItemById(progressBoxId);
+        if ("Not Found".equals(this.getException().getMessage())) {
+            DialogUtil.warning("TST170 SampleSheet Download", "No sample sheet file.", (Stage)controller.getWindow(), true);
+        } else {
+            DialogUtil.warning("TST170 SampleSheet Download", "Sample Sheet Download faild.\n" + this.getException().getMessage(), (Stage)controller.getWindow(), true);
+        }
     }
 
     /**
@@ -145,7 +147,7 @@ public class SampleSheetDownloadTask extends Task {
      */
     @Override
     protected void succeeded() {
-        String path = CommonConstants.BASE_FULL_PATH  + File.separator + runDir + "_" + "SampleSheet.csv";
+        String path = CommonConstants.BASE_FULL_PATH  + File.separator + "SampleSheet.csv";
         sampleUploadScreenFirstController.setSampleSheet(path);
 
     }

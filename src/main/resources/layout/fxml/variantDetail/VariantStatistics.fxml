@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane fx:id="variantStatisticsGirdPane" minWidth="-Infinity" prefWidth="870.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../../css/common.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailVariantStatisticsController">
+   <columnConstraints>
+      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="380.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+   </rowConstraints>
+   <children>
+      <HBox maxWidth="1.7976931348623157E308" spacing="10.0">
+         <children>
+            <Canvas fx:id="canvasVariantStatisticsRun" height="185.0" width="180.0" HBox.hgrow="NEVER">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Canvas>
+            <Canvas fx:id="canvasVariantStatisticsPanel" height="185.0" width="180.0">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Canvas>
+            <Canvas fx:id="canvasVariantStatisticsGroup" height="185.0" width="180.0">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Canvas>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+   </children>
+</GridPane>

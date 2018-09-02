@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id="ngeneanalysys-client-main-module:test" external.linked.project.path="$MODULE_DIR$/../.." external.root.project.path="$MODULE_DIR$/../.." external.system.id="GRADLE" external.system.module.group="ngenebio" external.system.module.type="sourceSet" external.system.module.version="1.2.20180308" type="JAVA_MODULE" version="4">
+<module external.linked.project.id="ngeneanalysys-client-main-module:test" external.linked.project.path="$MODULE_DIR$/../.." external.root.project.path="$MODULE_DIR$/../.." external.system.id="GRADLE" external.system.module.group="ngenebio" external.system.module.type="sourceSet" external.system.module.version="1.3.20180802" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
     <output-test url="file://$MODULE_DIR$/../../out/test/classes" />
     <exclude-output />
@@ -7,7 +7,6 @@
       <sourceFolder url="file://$MODULE_DIR$/../../src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../src/test/resources" type="java-test-resource" />
     </content>
-    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="ngeneanalysys-client-main-module_main" />
     <orderEntry type="library" name="Gradle: commons-io:commons-io:2.4" level="project" />
@@ -27,8 +26,8 @@
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-compress:1.12" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.xmlgraphics:fop:2.2" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.velocity:velocity:1.7" level="project" />
-    <orderEntry type="library" name="Gradle: org.ahocorasick:ahocorasick:0.3.0" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.pdfbox:pdfbox:2.0.6" level="project" />
+    <orderEntry type="library" name="Gradle: com.googlecode.json-simple:json-simple:1.1.1" level="project" />
     <orderEntry type="library" name="Gradle: org.controlsfx:controlsfx:8.40.13" level="project" />
     <orderEntry type="library" name="Gradle: junit:junit:4.12" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.httpcomponents:httpcore:4.4.4" level="project" />
@@ -57,7 +56,6 @@
     <orderEntry type="library" name="Gradle: org.apache.avalon.framework:avalon-framework-api:4.3.1" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.avalon.framework:avalon-framework-impl:4.3.1" level="project" />
     <orderEntry type="library" name="Gradle: commons-lang:commons-lang:2.4" level="project" />
-    <orderEntry type="library" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
     <orderEntry type="library" name="Gradle: javax.servlet:javax.servlet-api:3.1.0" level="project" />
     <orderEntry type="library" name="Gradle: org.eclipse.jetty:jetty-http:9.3.6.v20151106" level="project" />
     <orderEntry type="library" name="Gradle: org.eclipse.jetty:jetty-io:9.3.6.v20151106" level="project" />
@@ -87,6 +85,7 @@
     <orderEntry type="library" name="Gradle: xalan:serializer:2.7.2" level="project" />
     <orderEntry type="library" name="Gradle: stax:stax-api:1.0.1" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.pdfbox:fontbox:2.0.6" level="project" />
+    <orderEntry type="library" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
   </component>
   <component name="TestModuleProperties" production-module="ngeneanalysys-client-main-module_main" />
 </module>

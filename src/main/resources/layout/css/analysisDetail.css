@@ -10,7 +10,8 @@
 
 /** 탭 상단 */
 #topTabPane.tab-pane:top>.tab-header-area {
-	-fx-padding:4 5 0 5;
+	-fx-padding:0 5 0 -4;
+	-fx-background-color : transparent;
 }
 
 /** 탭 상단 배경 */
@@ -18,26 +19,27 @@
 	-fx-background-color: transparent;
 	-fx-border-width:0;
 	-fx-background-insets: 0;
-	-fx-min-height: 68px;
-    -fx-pref-height: 68px;
-    -fx-max-height: 68px;
+	-fx-min-height: 45px;
+    -fx-pref-height: 45px;
+    -fx-max-height: 45px;
 }
 
 /** 탭메뉴 : 미선택 */
 #topTabPane.tab-pane:top>.tab-header-area>.headers-region {
 	-fx-alignment: bottom-center;
-	-fx-min-height: 68px;
-	-fx-pref-height: 68px;
-	-fx-max-height: 68px;
+	-fx-min-height: 45px;
+	-fx-pref-height: 45px;
+	-fx-max-height: 45px;
 }
+
 #topTabPane.tab-pane:top>.tab-header-area>.headers-region>.tab:top {
 	-fx-background-color: transparent;
 	-fx-background-insets: 0;
 	-fx-border-width:0;
 	-fx-padding:0 0 0 4;
-	-fx-min-height: 68px;
-    	-fx-pref-height: 68px;
-    	-fx-max-height: 68px;
+	-fx-min-height: 45px;
+    -fx-pref-height: 45px;
+    -fx-max-height: 45px;
 	-fx-focus-traversable: false;
 }
 
@@ -45,10 +47,10 @@
 #topTabPane.tab-pane:top>.tab-header-area>.headers-region>.tab:top>.tab-container {
 	-fx-background-color: transparent;
 	//linear-gradient(#fff, #e5e5e5);
-	-fx-border-color: #B8B7B5, #FFFFFF;
+	/*-fx-border-color: #B8B7B5, #FFFFFF;
 	-fx-border-radius: 0;
 	-fx-border-width:0 1 0 0, 0 1 0 0;
-	-fx-border-insets:0 1 0 0, 0 0 0 0;
+	-fx-border-insets:0 1 0 0, 0 0 0 0;*/
 	-fx-cursor:hand;
 }
 
@@ -56,11 +58,16 @@
 #topTabPane.tab-pane:top>.tab-header-area>.headers-region>.tab:top>.tab-container>.tab-label{
 	-fx-alignment: CENTER;
 	-fx-text-fill: #595757;
-	-fx-font-size:15px;
-	-fx-padding:0 25;
-	-fx-background-image : url('../images/sample_detail_menu_inactive.png');
-	-fx-background-repeat : no-repeat;
-	-fx-background-position : 0 3;
+	-fx-font-size:13px;
+	-fx-padding:0 30;
+	//-fx-background-image : url('../images/sample_detail_menu_inactive.png');
+	//-fx-background-repeat : no-repeat;
+	//-fx-background-position : 0 3;
+	-fx-background-color : white;
+	-fx-background-radius : 15;
+	-fx-border : 1;
+	-fx-border-color : black;
+	-fx-border-radius : 15;
 }
 
 /** 탭메뉴 : 선택 */
@@ -69,9 +76,9 @@
 	-fx-background-insets: 0;
 	-fx-border-width:0;
 	-fx-padding:0 0 0 4;
-	-fx-min-height: 68px;
-    -fx-pref-height: 68px;
-    -fx-max-height: 68px;
+	-fx-min-height: 45px;
+    -fx-pref-height: 45px;
+    -fx-max-height: 45px;
 	-fx-focus-traversable: false;
 }
 
@@ -82,22 +89,24 @@
 	/* top right bottom left  */
 	/* top-left top-right bottom-right bottom-left */
 	/* top right bottom left  */
-	-fx-border-color: #B8B7B5, #FFFFFF;
+	/*-fx-border-color: #B8B7B5, #FFFFFF;
 	-fx-border-width:0 1 0 0, 0 1 0 0;
-    -fx-border-insets:0 1 0 0, 0 0 0 0;
+    -fx-border-insets:0 1 0 0, 0 0 0 0;*/
 	-fx-cursor:hand;
 }
 
 /** 탭메뉴 라벨 : 선택 */
 #topTabPane.tab-pane:top>.tab-header-area>.headers-region>.tab:selected>.tab-container>.tab-label {
 	-fx-alignment: CENTER;
-	-fx-text-fill: #C20E20;
-	-fx-font-weight: bold;
-	-fx-font-size:15px;
-	-fx-padding:0 25;
-	-fx-background-image : url('../images/sample_detail_menu_active.png');
+	-fx-text-fill: #ffffff;
+	-fx-font-size:13px;
+	-fx-padding:0 30;
+	//-fx-background-image : url('../images/sample_detail_menu_active.png');
     -fx-background-repeat : no-repeat;
+    -fx-background-color : #8f9fb9;
     -fx-background-position : 0 3;
+    -fx-border : 1;
+    -fx-border-color : #8f9fb9;
 }
 
 /** 탭메뉴 닫기 버튼 : 선택 */
@@ -133,7 +142,7 @@
 }
 #filterArea #filterList VBox.PRE_FILTERED {
 	-fx-background-color:#7C878B;
-	-fx-background-radius:15;	
+	-fx-background-radius:15;
 	-fx-padding:2 3;
 	-fx-pref-width:80;
 	-fx-min-height:60;
@@ -142,7 +151,7 @@
 	-fx-cursor: hand;
 	-fx-border-radius:15;
 	-fx-border-width:0;
-	-fx-alignment:center;	
+	-fx-alignment:center;
 }
 #filterArea #filterList VBox.LOW_CONFIDENCE {
 	-fx-background-color:#7C878B;
@@ -250,7 +259,7 @@
 	-fx-font-size:10;
 	-fx-text-fill:white;
 	-fx-padding:3 0 0 0;
-	-fx-pref-height:15;	
+	-fx-pref-height:15;
 }
 #filterArea #filterList VBox .level_LOW_CONFIDENCE {
 	-fx-font-size:10;
@@ -623,6 +632,7 @@
 .pathogenic_review_checkbox {
 	-fx-spacing:5;
 	-fx-padding:10;
+	-fx-background-color : #FF0000;
 }
 .pathogenic_review_checkbox .check-box {
 	-fx-padding:5;
@@ -647,11 +657,11 @@
 }
 
 #addToReportCheckBox {
-	-fx-background-color:#FB4952;
+	/*-fx-background-color:#FB4952;*/
 }
 
 #addToGermlineReportCheckBox {
-	-fx-background-color:#FB4952;
+	/*-fx-background-color:#FB4952;*/
 }
 
 #setToFalseCheckBox {
@@ -683,7 +693,7 @@
 	-fx-background-color:#fff;
 	-fx-background-image:url('../images/icon_link_enable.png');
 	-fx-background-position:50% 80% ;
-	-fx-background-repeat:no-repeat ;		
+	-fx-background-repeat:no-repeat ;
 	-fx-background-radius:3;
 	-fx-border-radius:3;
 	-fx-border-color:#CACACA;
@@ -701,17 +711,20 @@
 }
 
 .fileDownloadButton {
-    -fx-background-color: #f3f3f3;
-    -fx-background-image: url('../images/file_download_icon_01.png');
-    -fx-background-size: 25 25;
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: center;
+    -fx-background-color: transparent;
+    -fx-graphic: url("../images/renewal/download_icon.png");
+    /*-fx-background-position :center;*/
     -fx-border-width : 0;
-    -fx-background-radius : 15;
-    -fx-pref-width : 90px;
-    -fx-pref-height : 60px;
+    -fx-pref-width : 24px;
+    -fx-pref-height : 24px;
     -fx-font-size : 10px;
     /*-fx-effect: null;*/
-    -fx-effect: innershadow( gaussian , rgba(0,0,0,0.5) , 4,0,0,0 );
-    -fx-text-fill : black;
+    -fx-text-fill : white;
+    -fx-background-radius : 0;
+}
+
+#sample_image_icon {
+    -fx-graphic: url("../images/renewal/samples_icon.png");
+    -fx-pref-width : 24;
+    -fx-pref-height : 24;
 }

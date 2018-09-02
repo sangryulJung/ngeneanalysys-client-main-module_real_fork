@@ -25,11 +25,4 @@ public enum UserTypeBit {
 	public int getAuth() {
 		return auth;
 	}
-
-	/**
-	 * @param auth the auth to set
-	 */
-	public void setAuth(int auth) {
-		this.auth = auth;
-	}
 }

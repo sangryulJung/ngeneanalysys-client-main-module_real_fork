@@ -24,6 +24,36 @@ public class AnalysisFile {
 
     private DateTime createdAt;
 
+    private Boolean checkItem = false;
+
+    /**
+     * @return isInput
+     */
+    public Boolean getInput() {
+        return isInput;
+    }
+
+    /**
+     * @param input
+     */
+    public void setInput(Boolean input) {
+        isInput = input;
+    }
+
+    /**
+     * @return checkItem
+     */
+    public Boolean getCheckItem() {
+        return checkItem;
+    }
+
+    /**
+     * @param checkItem
+     */
+    public void setCheckItem(Boolean checkItem) {
+        this.checkItem = checkItem;
+    }
+
     /**
      * @return id
      */

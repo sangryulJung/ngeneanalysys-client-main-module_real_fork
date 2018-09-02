@@ -37,24 +37,10 @@ public class PanelView extends Panel {
 
     @Override
     public String toString() {
-        return "Panel{" +
-                "id=" + getId() +
-                ", name='" + getName() + '\'' +
-                ", code='" + getCode() + '\'' +
-                ", target='" + getTarget() + '\'' +
-                ", analysisType='" + getAnalysisType() + '\'' +
-                ", libraryType='" + getLibraryType() + '\'' +
-                ", sampleSource='" + getSampleSource() + '\'' +
-                ", createdAt=" + getCreatedAt() +
-                ", updatedAt=" + getUpdatedAt() +
-                ", deletedAt=" + getDeletedAt() +
-                ", deleted=" + getDeleted() +
-                ", isDefault=" + getIsDefault() +
-                ", warningReadDepth=" + getVariantConfig().getWarningReadDepth() +
-                ", warningMAF=" + getVariantConfig().getWarningMAF() +
-                ", reportTemplateId=" + getReportTemplateId() +
-                ", memberGroupIds=" + memberGroupIds +
+        return "PanelView{" +
+                "memberGroupIds=" + memberGroupIds +
                 ", diseaseIds=" + diseaseIds +
+                ", virtualPanelSummaries=" + virtualPanelSummaries +
                 '}';
     }
 }

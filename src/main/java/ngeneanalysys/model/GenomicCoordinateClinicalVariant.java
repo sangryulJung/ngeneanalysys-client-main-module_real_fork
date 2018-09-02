@@ -16,8 +16,11 @@ public class GenomicCoordinateClinicalVariant {
     private String transcript;
     private String hgvsc;
     private String hgvsp;
+    private Integer startPosition;
+    private Integer endPosition;
     private String codingConsequence;
     private String clinicalVariantType;
+    private String clinVarExistence;
     private ClinicalEvidence therapeuticEvidence;
     private ClinicalEvidence prognosisEvidence;
     private ClinicalEvidence diagnosisEvidence;
@@ -25,6 +28,20 @@ public class GenomicCoordinateClinicalVariant {
     private DateTime updatedAt;
     private DateTime deletedAt;
     private Integer deleted;
+
+    /**
+     * @return clinVarExistence
+     */
+    public String getClinVarExistence() {
+        return clinVarExistence;
+    }
+
+    /**
+     * @param clinVarExistence
+     */
+    public void setClinVarExistence(String clinVarExistence) {
+        this.clinVarExistence = clinVarExistence;
+    }
 
     public Integer getId() {
         return id;
@@ -97,6 +114,14 @@ public class GenomicCoordinateClinicalVariant {
     public void setHgvsp(String hgvsp) {
         this.hgvsp = hgvsp;
     }
+
+    public Integer getStartPosition() { return startPosition; }
+
+    public void setStartPosition(Integer startPosition) { this.startPosition = startPosition; }
+
+    public Integer getEndPosition() { return endPosition; }
+
+    public void setEndPosition(Integer endPosition) { this.endPosition = endPosition; }
 
     public String getCodingConsequence() {
         return codingConsequence;

@@ -1,14 +1,13 @@
 package ngeneanalysys.controller.extend;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.stage.Stage;
 import ngeneanalysys.controller.MainController;
+import ngeneanalysys.controller.LoginController;
 import ngeneanalysys.model.LoginSession;
 
-import java.awt.event.ActionEvent;
-import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -20,7 +19,10 @@ public abstract class SubPaneController extends BaseStageController {
 
     /** 메인화면 컨트롤러 객체 */
     protected MainController mainController;
-
+    
+    /** 로그인화면 컨트롤러 객체 */
+    protected LoginController loginController;
+    
     /** 화면 컨트롤 관련 부모 화면에서 전달된 파라미터 정보 */
     protected Map<String,Object> paramMap;
 
@@ -30,7 +32,7 @@ public abstract class SubPaneController extends BaseStageController {
     /**
      * 메인 화면 컨트롤러 객체 세팅
      *
-     * @param mainController
+     * @param mainController mainController
      */
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
@@ -43,10 +45,18 @@ public abstract class SubPaneController extends BaseStageController {
     public MainController getMainController() {
         return mainController;
     }
+    
+    /**
+     * @return the LoginController
+     */
+    
+    public LoginController getLoginController() {
+        return loginController;
+    }
 
     /**
      * 파라미터 정보 삽입
-     * @param param
+     * @param param parameter
      */
     public void setParamMap(Map<String,Object> param) {
         this.paramMap = param;
@@ -61,7 +71,7 @@ public abstract class SubPaneController extends BaseStageController {
 
     /**
      * Dialog close
-     * @param event
+     * @param event actionEvent
      */
     @FXML
     public void closeDialog(ActionEvent event) {

@@ -103,8 +103,10 @@ public class ServerURLSettingController extends BaseStageController{
         });
         primaryStage.setMinWidth(610);
         primaryStage.setWidth(610);
+        primaryStage.setMaxWidth(610);
         primaryStage.setMinHeight(205);
         primaryStage.setHeight(205);
+        primaryStage.setMaxHeight(205);
         primaryStage.centerOnScreen();
         primaryStage.show();
 
@@ -112,6 +114,6 @@ public class ServerURLSettingController extends BaseStageController{
 
         if(!StringUtils.isEmpty(serverURL)) inputURL.setText(serverURL);
 
-        logger.info(String.format("start %s", primaryStage.getTitle()));
+        logger.debug(String.format("start %s", primaryStage.getTitle()));
     }
 }

@@ -1,0 +1,383 @@
+#tabMenuHBox .group-big {
+	-fx-min-width: 550;
+	-fx-max-width:550;
+}
+
+#tabMenuHBox .region-big {
+	-fx-background-color: #fff;
+	-fx-background-radius:0 0 0 0;
+	-fx-min-width:550;
+	-fx-max-width:550;
+	-fx-pref-height:35;
+    -fx-border-width: 0.5 0.5 0.5 0.5;
+    -fx-border-color : #d2d0d0;
+}
+
+#tabMenuHBox .label-big {
+	-fx-font-size: 14;
+	-fx-text-fill:#000000;
+	-fx-padding : 0 0 0 15;
+	-fx-alignment : center-left;
+	-fx-min-width:550;
+	-fx-max-width:550;
+	-fx-pref-height:35;
+}
+
+#tabMenuHBox #selectedMenu .region-big {
+	-fx-background-color: #a6b5cb;
+	/* top-left top-right bottom-right bottom-left */
+	-fx-background-radius:0;
+	-fx-border-width:0;
+    -fx-border-width: 0.5 0.5 0.5 0.5;
+    -fx-border-color : #d2d0d0;
+}
+
+#tabMenuHBox #selectedMenu .label-big {
+	-fx-font-size: 14;
+	-fx-padding : 0 0 0 15;
+	-fx-text-fill: #223654;
+	-fx-alignment: center-left;
+	-fx-label-padding : 0 0 0 0;
+}
+
+.btn_fold {
+    -fx-background-radius : 0;
+    -fx-background-color : #a8bbd9;
+    -fx-background-image:url('../images/renewal/white_left_arrow.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-radius : 0;
+    -fx-border-width : 0;
+}
+
+.btn_expand {
+    -fx-background-radius : 0;
+    -fx-background-color : #a8bbd9;
+    -fx-background-image:url('../images/renewal/white_right_arrow.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-radius : 0;
+    -fx-border-width : 0;
+}
+
+.right_btn_fold {
+    -fx-background-radius : 0;
+    -fx-background-color : #f2f5fa;
+    -fx-background-image:url('../images/renewal/skyblue_right_arrow.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-radius : 0;
+    -fx-border-width : 0;
+}
+
+.right_btn_expand {
+    -fx-background-radius : 0;
+    -fx-background-color : #a8bbd9;
+    -fx-background-image:url('../images/renewal/white_left_arrow.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-radius : 0;
+    -fx-border-width : 0;
+}
+
+#filterAddBtn {
+    -fx-background-color : transparent;
+    -fx-text-fill : #ffffff;
+    -fx-border-radius : 0;
+    -fx-pref-width : 130;
+    -fx-pref-height : 20;
+    -fx-border-color: #FFFFFF;
+    -fx-border-width:1;
+}
+
+#overviewAccordion .titled-pane > .title {
+    -fx-background-color : #f2f5fa;
+    -fx-pref-height : 26;
+}
+
+#overviewAccordion .titled-pane > .title > .label {
+    -fx-text-fill : #ffffff;
+}
+
+#overviewAccordion .titled-pane > .content {
+    -fx-background-color : transparent;
+    -fx-border-width  : 0;
+
+}
+
+#overviewAccordion .titled-pane > .title > .arrow-button {
+    -fx-background-radius : 0;
+}
+
+#overviewAccordion .titled-pane > .title > .arrow-button > .arrow {
+
+    /*-fx-background-image:url('../images/renewal/variant_view.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-insets: 0;
+    -fx-background-radius : 0;
+    -fx-pref-width : 16;
+    -fx-pref-height : 16;*/
+}
+
+.impactsLabel {
+    -fx-border-width: 1 1 1 0;
+    -fx-border-color : #d2d0d0;
+}
+
+.tier1Label {
+    -fx-border-width: 1 1 1 0;
+    -fx-border-color : #d2d0d0;
+    -fx-background-color : orange;
+    -fx-text-fill : #fff;
+}
+
+.tier2Label {
+    -fx-border-width: 1 1 1 0;
+    -fx-border-color : #d2d0d0;
+    -fx-background-color : green;
+    -fx-text-fill : #fff;
+}
+
+.filter_icon {
+    -fx-pref-width : 40;
+    -fx-pref-height : 40;
+    -fx-alignment : center;
+    -fx-background-color : #999999;
+    -fx-background-radius : 50;
+    -fx-font-size : 14;
+    -fx-text-fill : #FFFFFF;
+    -fx-text-alignment : center;
+    -fx-cursor : hand;
+}
+
+#excel_download_image {
+    -fx-cursor:hand;
+    -fx-graphic: url("../images/renewal/excel16_icon.png");
+    -fx-pref-width : 16;
+    -fx-pref-height : 16;
+    -fx-min-width : 16;
+    -fx-min-height : 16;
+    -fx-cursor:hand;
+}
+
+#csv_download_image {
+    -fx-cursor:hand;
+    -fx-graphic: url("../images/renewal/csv16_icon.png");
+    -fx-pref-width : 16;
+    -fx-pref-height : 16;
+    -fx-min-width : 16;
+    -fx-min-height : 16;
+    -fx-cursor:hand;
+}
+
+#filterComboBox {
+    -fx-background-color : #D9D9D9;
+    -fx-border-width : 0;
+    -fx-background-radius : 0;
+}
+
+#variantListTableView .btn_warn {
+	-fx-background-image:url('../images/renewal/icon_warn_small.png');
+	-fx-background-size:16;
+	-fx-background-repeat:no-repeat;
+	-fx-background-color:transparent;
+	-fx-background-insets:0;
+	-fx-border-width:0;
+	-fx-pref-width:16;
+	-fx-min-height:16;
+	-fx-pref-height:16;
+	-fx-max-height:16;
+	-fx-padding:1 0 0 0;
+}
+
+#variantListTableView .report_check {
+	-fx-background-color:#595959;
+	-fx-background-radius:15;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-pref-width:20;
+	-fx-text-alignment:center ;
+	-fx-alignment:center;
+}
+
+#variantListTableView .report_uncheck {
+	-fx-background-color:#FFFFFF;
+	-fx-background-radius:15;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#595959;
+	-fx-pref-width:20;
+	-fx-border-width : 1;
+	-fx-border-radius : 15;
+	-fx-border-color : #595959;
+	-fx-text-alignment:center;
+	-fx-alignment:center;
+}
+
+#variantListTableView .column-header > .label  {
+    -fx-content-display: graphic-only;
+}
+
+#variantListTableView {
+	-fx-background-color: #fff;
+ 	-fx-border-color:#000 #b1b1b1 #b1b1b1 #b1b1b1;
+ 	-fx-border-width:0;
+ 	-fx-padding:0;
+ 	-fx-font-size:13;
+}
+
+#variantListTableView:focused, .table-view .column-header-background, .table-view .column-header-background .label{
+	-fx-background-color: transparent;
+}
+
+#variantListTableView .column-header-background .nested-column-header .label{
+	-fx-text-fill:#fff;
+}
+
+#variantListTableView .column-header-background .filler {
+	-fx-background-color:#8F9FB9;
+	-fx-border-color:#000 #c3c3c3 #c3c3c3 #c3c3c3;
+	-fx-border-width:0 0 0 0;
+}
+
+#variantListTableView .column-header {
+	-fx-pref-height:30;
+	-fx-background-color:#8F9FB9;
+ 	-fx-border-color:#000 #F7F7F7 #F7F7F7 #F7F7F7;
+ 	-fx-border-width:0 1 0 0;
+}
+/*
+#variantListTableView .table-row-cell {
+	-fx-background-insets:0;
+	-fx-padding:0;
+	-fx-border-width:2 0 2 0;
+}
+
+#variantListTableView .table-row-cell:empty {
+}
+
+#variantListTableView .table-row-cell:hover{
+}
+
+#variantListTableView .table-row-cell:selected {
+	-fx-background:#87CEEB;
+}
+
+#variantListTableView .table-cell .label {
+	-fx-text-fill:#656565;
+}*/
+
+#variantListTableView:row-selection .column-header-background .nested-column-header .sub_column {
+	-fx-background-color:#cbd3d7;
+ 	-fx-border-color:#c3c3c3 #c3c3c3 #c3c3c3 #c3c3c3;
+ 	-fx-border-width:1 1 0 0;
+}
+
+//////////////////////////////////////////////////
+
+.custom-table {
+	-fx-background-color: #fff;
+ 	-fx-border-color:#000 #b1b1b1 #b1b1b1 #b1b1b1;
+ 	-fx-border-width:0;
+ 	-fx-padding:0;
+ 	-fx-font-size:13;
+}
+
+.custom-table:focused, .table-view .column-header-background, .table-view .column-header-background .label{
+	-fx-background-color: transparent;
+}
+
+.custom-table .column-header-background .nested-column-header .label{
+	-fx-text-fill:#fff;
+}
+
+.custom-table .column-header-background .filler {
+	-fx-background-color:#8F9FB9;
+	-fx-border-color:#000 #c3c3c3 #c3c3c3 #c3c3c3;
+	-fx-border-width:0 0 0 0;
+}
+
+.custom-table .column-header {
+	-fx-pref-height:30;
+	-fx-background-color:#8F9FB9;
+ 	-fx-border-color:#000 #F7F7F7 #F7F7F7 #F7F7F7;
+ 	-fx-border-width:0 1 0 0;
+}
+
+.custom-table .table-row-cell {
+	-fx-background-insets:0;
+	-fx-padding:0;
+	-fx-border-width:2 0 2 0;
+	
+}
+
+.custom-table .table-row-cell:empty {
+}
+
+.custom-table .table-row-cell:hover{
+}
+
+.custom-table .table-row-cell:selected {
+	-fx-background:#87CEEB;
+}
+
+.custom-table .table-cell .label {
+	-fx-text-fill:#656565;
+}
+
+.custom-table:row-selection .column-header-background .nested-column-header .sub_column {
+	-fx-background-color:#cbd3d7;
+ 	-fx-border-color:#c3c3c3 #c3c3c3 #c3c3c3 #c3c3c3;
+ 	-fx-border-width:1 1 0 0;
+}
+
+#tabMenuHBox .group-small {
+	-fx-min-width : 130;
+	-fx-max-width : 130;
+}
+
+#tabMenuHBox .region-small {
+	-fx-background-color: #fff;
+	-fx-background-radius:0 0 0 0;
+	-fx-min-width:130;
+	-fx-max-width:130;
+	-fx-pref-height:35;
+    -fx-border-width: 0.5 0.5 0.5 0.5;
+    -fx-border-color : #d2d0d0;
+}
+
+#tabMenuHBox .label-small {
+	-fx-font-size: 14;
+	-fx-text-fill:#000000;
+	-fx-padding : 0 0 0 15;
+	-fx-alignment : center-left;
+	-fx-min-width:130;
+	-fx-max-width:130;
+	-fx-pref-height:35;
+}
+
+#tabMenuHBox #selectedMenu .region-small {
+	-fx-background-color: #a6b5cb;
+	/* top-left top-right bottom-right bottom-left */
+	-fx-background-radius:0;
+	-fx-border-width:0;
+    -fx-border-width: 0.5 0.5 0.5 0.5;
+    -fx-border-color : #d2d0d0;
+}
+
+#tabMenuHBox #selectedMenu .label-small {
+	-fx-font-size: 14;
+	-fx-padding : 0 0 0 15;
+	-fx-text-fill: #223654;
+	-fx-alignment: center-left;
+	-fx-label-padding : 0 0 0 0;
+}
+
+.column-header.sort_icon {
+    -fx-background-image:url('../images/renewal/sort.png');
+    -fx-background-size : 12;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: right 3 center;
+}

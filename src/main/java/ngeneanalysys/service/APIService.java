@@ -17,10 +17,7 @@ import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 
 /**
@@ -85,6 +82,26 @@ public class APIService {
         if(headers != null && headers.size() > 0) headerMap.putAll(headers);
 
         return HttpClientUtil.get(connectURL, params, headerMap, isJsonRequest);
+    }
+
+    /**
+     *
+     * @param url
+     * @param params
+     * @param headers
+     * @param searchParam
+     * @return
+     * @throws WebAPIException
+     */
+    public HttpClientResponse get(String url, Map<String,Object> params, Map<String,Object> headers, Map<String, List<Object>> searchParam) throws WebAPIException {
+        logger.debug("APIService.get..[" + url + "]");
+        String connectURL = getConvertConnectURL(url);
+        //헤더정보 삽입
+        Map<String, Object> headerMap = getDefaultHeaders(true);
+
+        if(headers != null && headers.size() > 0) headerMap.putAll(headers);
+
+        return HttpClientUtil.get(connectURL, params, headerMap, searchParam);
     }
 
     /**
@@ -163,10 +180,8 @@ public class APIService {
 
             // 지정된 헤더 삽입 정보가 있는 경우 추가
             if(headerMap != null && headerMap.size() > 0) {
-                Iterator<String> keys = headerMap.keySet().iterator();
-                while (keys.hasNext()) {
-                    String key = keys.next();
-                    post.setHeader(key, headerMap.get(key).toString());
+                for (Map.Entry<String, Object> entry : headerMap.entrySet()) {
+                    post.setHeader(entry.getKey(), entry.getValue().toString());
                 }
             }
 
@@ -176,7 +191,7 @@ public class APIService {
 //			reqEntity.setChunked(false);
             post.setEntity(reqEntity);
 
-            logger.info("POST:" + post.getURI());
+            logger.debug("POST:" + post.getURI());
 
             httpclient = HttpClients.custom().setSSLSocketFactory(HttpClientUtil.getSSLSocketFactory()).build();
             try {
@@ -282,7 +297,7 @@ public class APIService {
     }
 
     public Map<String, Object> getDefaultHeaders(boolean tokenContain) {
-        logger.info("call getDefaultHeaders");
+        logger.debug("call getDefaultHeaders");
         Map<String,Object> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         if(tokenContain) {
@@ -294,7 +309,7 @@ public class APIService {
 
     public String getConvertConnectURL(String url) {
         String serverHost = config.getProperty(CommonConstants.DEFAULT_SERVER_HOST_KEY);
-        if(!StringUtils.isEmpty(serverHost) && config.getProperty(CommonConstants.DEFAULT_SERVER_HOST_KEY).endsWith("/")) {
+        if(StringUtils.isNotEmpty(serverHost) && config.getProperty(CommonConstants.DEFAULT_SERVER_HOST_KEY).endsWith("/")) {
             serverHost = serverHost.substring(0, serverHost.lastIndexOf('/'));
         }
         return (!url.startsWith("/")) ? serverHost + "/" + url : serverHost + url;

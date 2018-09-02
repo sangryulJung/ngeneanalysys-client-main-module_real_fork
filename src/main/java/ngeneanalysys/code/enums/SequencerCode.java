@@ -8,7 +8,8 @@ package ngeneanalysys.code.enums;
  */
 public enum SequencerCode {
 	MISEQ("Illumina MiSeq"),
-	MISEQ_DX("Illumina MiSeq Dx");
+	MISEQ_DX("Illumina MiSeqDx"),
+	NEXTSEQ_DX("Illumina NextSeq 550Dx");
 	
 	private String description;
 	
@@ -21,12 +22,5 @@ public enum SequencerCode {
 	 */
 	public String getDescription() {
 		return description;
-	}
-
-	/**
-	 * @param description the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
 	}
 }

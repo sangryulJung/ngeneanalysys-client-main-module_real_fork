@@ -2,14 +2,11 @@ package ngeneanalysys.util;
 
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.model.ReportTemplate;
-import ngeneanalysys.service.APIService;
-import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.apache.commons.io.FileUtils;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Jang
@@ -21,24 +18,24 @@ public class FileUtil {
     /**
      * FASTQ 파일 Pair명 추출
      *
-     * @param fileName
-     * @return
+     * @param fileName String
+     * @return String
      */
     public static String getFASTQFilePairName(String fileName) {
-        String pairName = "";
+        StringBuilder pairName = new StringBuilder();
         if (fileName.contains("_")) {
             String[] arr = fileName.split("_");
             int idx = 0;
             for (String name : arr) {
-                if (idx < arr.length - 2) {
+                if (idx < arr.length - 4) {
                     if (idx > 0)
-                        pairName += "_";
-                    pairName += name;
+                        pairName.append("_");
+                    pairName.append(name);
                 }
                 idx++;
             }
         }
-        return pairName;
+        return pairName.toString();
     }
 
     public static String saveVMFile(ReportTemplate reportTemplate) {
@@ -48,18 +45,20 @@ public class FileUtil {
         File folder = new File(folderPath);
         try {
             if (!folder.exists()) {
-                folder.mkdirs();
+                if(!folder.mkdirs()) {
+                    return "";
+                }
             } else {
                 FileUtils.cleanDirectory(folder);
             }
         } catch(IOException ioe) {
             ioe.printStackTrace();
+            return "";
         }
 
         File file = new File(path);
 
-        try(BufferedWriter fw = new BufferedWriter(new FileWriter(file, false))) {
-
+        try(BufferedWriter fw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, false), "UTF-8"))) {
             fw.write(reportTemplate.getContents());
             fw.flush();
         } catch (IOException ioe) {
@@ -67,5 +66,25 @@ public class FileUtil {
         }
 
         return file.getParentFile().getAbsolutePath();
+    }
+
+    public static Boolean isValidPairedFastqFiles(List<String> fileNames) {
+        if(fileNames.size() < 2 || fileNames.size() % 2 != 0){
+            return false;
+        }
+        List<String> sortedFileNames = fileNames.stream().sorted().collect(Collectors.toList());
+        for(int i = 0; i< sortedFileNames.size(); i += 2) {
+            int indexR1 = sortedFileNames.get(i).lastIndexOf("R1");
+            int indexR2 = sortedFileNames.get(i + 1).lastIndexOf("R2");
+            if(indexR1 == -1 || indexR2 == -1) {
+                return false;
+            }
+            String r1SampleName = getFASTQFilePairName(sortedFileNames.get(i));
+            String r2SampleName = getFASTQFilePairName(sortedFileNames.get(i + 1));
+            if(!r1SampleName.equals(r2SampleName)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

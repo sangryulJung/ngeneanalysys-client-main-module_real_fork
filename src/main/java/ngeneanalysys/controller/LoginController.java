@@ -1,16 +1,17 @@
-/**
- * 
- */
 package ngeneanalysys.controller;
 
 import javafx.fxml.FXML;
+import java.awt.Toolkit;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import org.apache.http.HttpStatus;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.BaseStageController;
 import ngeneanalysys.exceptions.WebAPIException;
@@ -21,7 +22,6 @@ import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
-import org.eclipse.jetty.http.HttpStatus;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -33,9 +33,25 @@ import java.util.Map;
  * @since 2017. 8. 1.
  *
  */
+
+
 public class LoginController extends BaseStageController {
+	
+	public void initialize(){
+		showCapLock();	
+	}
+
 	private static final Logger logger = LoggerUtil.getLogger();
 
+	@FXML
+	private Label CapsLock;
+	
+	@FXML
+	private GridPane contentsWrapper;
+	
+	@FXML
+	private Button loginBtn;
+	
 	/** 아이디 input 객체 */
 	@FXML
 	private TextField inputLoginID;
@@ -62,9 +78,32 @@ public class LoginController extends BaseStageController {
 
 	@FXML
 	public void checkValidateLoginID(KeyEvent ke) {
-		boolean vaild = validateLoginID();
-		if(ke.getCode().equals(KeyCode.ENTER) && vaild) {
+		boolean valid = validateLoginID();
+		if(ke.getCode().equals(KeyCode.ENTER) && valid) {
 			runLogin();
+		}
+	}
+	
+	@FXML
+	public void changeIdIcon(KeyEvent ke) {
+		if(inputLoginID.getText().isEmpty()) {
+			inputLoginID.setStyle("-fx-background-image:url('layout/images/renewal/login_user_icon.png')");
+		}else {
+			inputLoginID.setStyle("-fx-background-image:url('layout/images/renewal/login_user_icon_on.png')");
+		}		
+	}
+	
+	@FXML
+	public void changePwIcon(KeyEvent ke) {
+		if (Toolkit.getDefaultToolkit().getLockingKeyState(java.awt.event.KeyEvent.VK_CAPS_LOCK) ) {
+			CapsLock.setStyle("-fx-background-image:url('layout/images/renewal/upper_case_icon.png');-fx-background-repeat: no-repeat;-fx-background-position: center;");
+		}else {
+			CapsLock.setStyle("");
+		}
+		if(inputPassword.getText().isEmpty()) {
+			inputPassword.setStyle("-fx-background-image:url('layout/images/renewal/login_password_icon.png')");
+		}else {
+			inputPassword.setStyle("-fx-background-image:url('layout/images/renewal/login_password_icon_on.png')");
 		}
 	}
 	
@@ -115,18 +154,20 @@ public class LoginController extends BaseStageController {
 
 					mainApp.showMain();
 				} catch (WebAPIException wae){
-					if (wae.getResponse() != null && wae.getResponse().getStatus() == HttpStatus.BAD_REQUEST_400) {
+					if (wae.getResponse() != null && wae.getResponse().getStatus() == HttpStatus.SC_BAD_REQUEST) {
 						DialogUtil.warning(null, "The Username and Password do not match.", getMainApp().getPrimaryStage(), true);
 					} else {
 						DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(), getMainApp().getPrimaryStage(), true);
 					}
 				} catch (Exception e){
+					logger.error("Unknown Error", e);
 					DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
 				} finally {
 					progress.setVisible(false);
 				}
 			}
 		} catch (Exception e) {
+			logger.error("Unknown Error", e);
 			DialogUtil.error(null, "error!!!", mainApp.getPrimaryStage(), true);
 			logger.error(e.getMessage(), e);
 		}
@@ -142,8 +183,25 @@ public class LoginController extends BaseStageController {
 		}
 	}
 
+	private void showCapLock() {
+		if (Toolkit.getDefaultToolkit().getLockingKeyState(java.awt.event.KeyEvent.VK_CAPS_LOCK) ) {
+			CapsLock.setStyle("-fx-background-image:url('layout/images/renewal/upper_case_icon.png');-fx-background-repeat: no-repeat;-fx-background-position: center;");
+		}else {
+			CapsLock.setStyle("");
+		}
+	}
+	
 	@Override
 	public void show(Parent root) throws IOException {
+		Scene scene = new Scene(root);
+		scene.addEventFilter(KeyEvent.KEY_PRESSED,
+                event -> showCapLock());
+		scene.addEventFilter(MouseEvent.ANY,
+                event -> showCapLock());
+	    
+		scene.getFocusOwner();
+		scene.setFill(Color.TRANSPARENT);
+		
 		Stage primaryStage = this.mainApp.getPrimaryStage();
 
 		inputLoginID.focusedProperty().addListener((ov, t, t1) -> {
@@ -158,23 +216,24 @@ public class LoginController extends BaseStageController {
 
 		settingURLButton.setVisible(true);
 
-		Scene scene = new Scene(root);
-		scene.setFill(Color.TRANSPARENT);
 		primaryStage.setScene(scene);
+		
 		primaryStage.setTitle(CommonConstants.SYSTEM_NAME + " Login");
 
 		if(System.getProperty("os.name").toLowerCase().contains("window")) {
 			primaryStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
 		}
-
-		primaryStage.setMinWidth(600);
-		primaryStage.setWidth(600);
-		primaryStage.setMinHeight(520);
-		primaryStage.setHeight(520);
+		primaryStage.setMaximized(false);
+		primaryStage.setMinWidth(430);
+		primaryStage.setWidth(430);
+		primaryStage.setMaxWidth(430);
+		primaryStage.setMinHeight(410);
+		primaryStage.setHeight(410);
+		primaryStage.setMaxHeight(410);
 		primaryStage.setResizable(false);
 		primaryStage.centerOnScreen();
 		primaryStage.show();
-		logger.info(String.format("start %s", primaryStage.getTitle()));
+		logger.debug(String.format("start %s", primaryStage.getTitle()));
 
 		// 창 닫기 이벤트 바인딩
 		primaryStage.setOnCloseRequest(event -> {
@@ -185,12 +244,11 @@ public class LoginController extends BaseStageController {
 			primaryStage.close();
 		});
 
-
 	}
 
-	public boolean validateLoginID() {
+	private boolean validateLoginID() {
 		if (StringUtils.isEmpty(inputLoginID.getText())) {
-			labelLoginID.setText("Please Enter the Username");
+			labelLoginID.setText("Please enter the username");
 			labelLoginID.setVisible(true);
 			return false;
 		} else {
@@ -199,9 +257,10 @@ public class LoginController extends BaseStageController {
 		}
 		return true;
 	}
-	public boolean validatePassword() {
+
+	private boolean validatePassword() {
 		if (StringUtils.isEmpty(inputPassword.getText())) {
-			labelPassword.setText("Please Enter the Password");
+			labelPassword.setText("Please enter the password");
 			labelPassword.setVisible(true);
 			return false;
 		} else {
@@ -210,4 +269,23 @@ public class LoginController extends BaseStageController {
 		}
 		return true;
 	}
+	
+	//테마 로그인창 
+    public void applyLoginTheme(String theme) {
+    	logger.debug("Login theme:" + theme);
+    	
+    	if(theme.equalsIgnoreCase("default")) {
+    		contentsWrapper.setStyle("-fx-background-image:url('layout/images/renewal/main_background.png');");
+    	}else if(theme.equalsIgnoreCase("dark")) {
+    		contentsWrapper.setStyle("-fx-background-image:url('layout/images/renewal/main_background01.png');");
+    	}else if(theme.equalsIgnoreCase("red")) {
+    		contentsWrapper.setStyle("-fx-background-image:url('layout/images/renewal/main_background06.png');");
+    	}else if(theme.equalsIgnoreCase("ice")) {
+    		contentsWrapper.setStyle("-fx-background-image:url('layout/images/renewal/main_background02.png');");
+    	}else if(theme.equalsIgnoreCase("mountain")) {
+    		contentsWrapper.setStyle("-fx-background-image:url('layout/images/renewal/main_background10.png');");
+    	}else if(theme.equalsIgnoreCase("dna")) {
+    		contentsWrapper.setStyle("-fx-background-image:url('layout/images/renewal/main_background12.png');");
+    	}
+    }
 }
