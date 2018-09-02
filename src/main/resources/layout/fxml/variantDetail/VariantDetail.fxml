@@ -1,22 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="detailWarpper" hgap="20.0" maxHeight="1.7976931348623157E308" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailVariantDetailController">
-  <columnConstraints>
-    <ColumnConstraints halignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="171.0" />
-    <ColumnConstraints halignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="350.0" />
-      <ColumnConstraints halignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="240.0" />
-      <ColumnConstraints halignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="360.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" prefWidth="10.0" />
-  </columnConstraints>
-  <rowConstraints>
-    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="300.0" valignment="TOP" vgrow="ALWAYS" />
-  </rowConstraints>
-   <padding>
-      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-   </padding>
-</GridPane>
+<ScrollPane maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="800.0" style="-fx-background-color: #fff; -fx-background-radius: 0;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailVariantDetailController">
+    <content>
+        <GridPane fx:id="detailWarpper" hgap="20.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="240.0" style="-fx-background-color: #fff;">
+            <columnConstraints>
+                <ColumnConstraints halignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="171.0" />
+                <ColumnConstraints halignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="350.0" />
+                <ColumnConstraints halignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="240.0" />
+                <ColumnConstraints halignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="360.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefHeight="200.0" valignment="TOP" vgrow="ALWAYS" />
+            </rowConstraints>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+            <children>
+
+            </children>
+        </GridPane>
+    </content>
+</ScrollPane>
