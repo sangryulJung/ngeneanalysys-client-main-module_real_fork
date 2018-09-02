@@ -916,15 +916,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             logger.error("Unknown Error", e);
             DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
-
-        // 첫번째 탭 선택 처리
-        if(PipelineCode.HEME_ACCUTEST_DNA.getCode().equals(panel.getCode())
-                || PipelineCode.SOLID_ACCUTEST_DNA.getCode().equals(panel.getCode())
-                || PipelineCode.TST170_DNA.getCode().equals(panel.getCode())) {
-            overviewAccordion.setExpandedPane(interpretationTitledPane);
-        } else {
-            overviewAccordion.setExpandedPane(clinicalSignificantTitledPane);
-        }
+        overviewAccordion.setExpandedPane(variantDetailTitledPane);
         //setDetailTabActivationToggle(true);
     }
 

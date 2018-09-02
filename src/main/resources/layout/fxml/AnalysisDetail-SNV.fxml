@@ -309,9 +309,9 @@
                <children>
                   <Accordion fx:id="overviewAccordion">
                      <panes>
+                        <TitledPane fx:id="variantDetailTitledPane" animated="false" maxWidth="-Infinity" styleClass="font_size_15" text="Variant Detail" />
                         <TitledPane fx:id="interpretationTitledPane" animated="false" styleClass="font_size_15" text="Interpretation" />
                         <TitledPane fx:id="clinicalSignificantTitledPane" animated="false" maxWidth="-Infinity" styleClass="font_size_15" text="Clinical Significant" />
-                        <TitledPane fx:id="variantDetailTitledPane" animated="false" maxWidth="-Infinity" styleClass="font_size_15" text="Variant Detail" />
                         <TitledPane fx:id="statisticsTitledPane" animated="false" maxWidth="-Infinity" prefHeight="222.0" prefWidth="870.0" styleClass="font_size_15" text="Statistics" />
                         <TitledPane fx:id="interpretationLogsTitledPane" animated="false" maxWidth="-Infinity" styleClass="font_size_15" text="Interpretation Log" />
                      </panes>

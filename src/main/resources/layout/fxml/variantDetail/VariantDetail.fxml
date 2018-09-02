@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="detailWarpper" hgap="20.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="256.0" prefWidth="870.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailVariantDetailController">
+<GridPane fx:id="detailWarpper" hgap="50.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="256.0" prefWidth="870.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailVariantDetailController">
   <columnConstraints>
     <ColumnConstraints halignment="CENTER" minWidth="10.0" prefWidth="182.0" />
     <ColumnConstraints halignment="CENTER" maxWidth="300.0" minWidth="10.0" prefWidth="300.0" />
