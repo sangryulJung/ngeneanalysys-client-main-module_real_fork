@@ -68,5 +68,5 @@
     {"order":67,"columnName":"GERP++ RS","visible":false},
     {"order":68,"columnName":"LRT Prediction","visible":false},
     {"order":69,"columnName":"FATHMM Prediction","visible":false},
-    {"order":70,"columnName":"MutationAssessor Prediction","visible":false}
+    {"order":70,"columnName":"Mutation Assessor Prediction","visible":false}
 ]

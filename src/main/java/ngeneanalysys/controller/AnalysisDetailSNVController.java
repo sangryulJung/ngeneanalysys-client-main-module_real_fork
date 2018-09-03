@@ -170,9 +170,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     private final ListChangeListener<TableColumn<VariantAndInterpretationEvidence, ?>> tableColumnListChangeListener =
-            c -> saveColumnInfoToServer();
+            c -> Platform.runLater(this::saveColumnInfoToServer);
     private final ChangeListener<Boolean> tableColumnVisibilityChangeListener = (observable, oldValue, newValue) -> {
-        if(!oldValue.equals(newValue)) saveColumnInfoToServer();
+        if(!oldValue.equals(newValue)) Platform.runLater(this::saveColumnInfoToServer);
     };
     private ChangeListener<ComboBoxItem> filterComboBoxValuePropertyChangeListener = (ob, ov, nv) -> {
         if (!nv.equals(ov)) {
@@ -967,74 +967,68 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     public void showVariantList(int selectedIdx) {
-        Platform.runLater(() ->{
-            mainController.setMainMaskerPane(true);
+        mainController.setMainMaskerPane(true);
+        try {
+            headerCheckBox.setSelected(false);
+            compareColumnOrder();
+            int totalCount;
+
             try {
-                headerCheckBox.setSelected(false);
-                compareColumnOrder();
-                int totalCount;
+                // API 서버 조회
+                Map<String, Object> params = new HashMap<>();
 
-                try {
-                    // API 서버 조회
-                    Map<String, Object> params = new HashMap<>();
+                Map<String, List<Object>> sortAndSearchItem = new HashMap<>();
 
-                    Map<String, List<Object>> sortAndSearchItem = new HashMap<>();
+                setSortItem(sortAndSearchItem);
+                setFilterItem(sortAndSearchItem);
 
-                    setSortItem(sortAndSearchItem);
-                    setFilterItem(sortAndSearchItem);
+                HttpClientResponse response = apiService.get("/analysisResults/sampleSnpInDels/"+ sample.getId(), params,
+                        null, sortAndSearchItem);
+                PagedVariantAndInterpretationEvidence analysisResultVariantList =
+                        response.getObjectBeforeConvertResponseToJSON(PagedVariantAndInterpretationEvidence.class);
 
-                    HttpClientResponse response = apiService.get("/analysisResults/sampleSnpInDels/"+ sample.getId(), params,
-                            null, sortAndSearchItem);
-                    PagedVariantAndInterpretationEvidence analysisResultVariantList =
-                            response.getObjectBeforeConvertResponseToJSON(PagedVariantAndInterpretationEvidence.class);
+                List<VariantAndInterpretationEvidence> list = analysisResultVariantList.getResult();
+                totalCount = analysisResultVariantList.getCount();
 
-                    List<VariantAndInterpretationEvidence> list = analysisResultVariantList.getResult();
-                    totalCount = analysisResultVariantList.getCount();
+                searchCountLabel.setText(totalCount +"/");
 
-                    searchCountLabel.setText(totalCount +"/");
+                //totalVariantCountLabel.setText(sample.getAnalysisResultSummary().getAllVariantCount().toString());
+                ObservableList<VariantAndInterpretationEvidence> displayList = null;
 
-                    //totalVariantCountLabel.setText(sample.getAnalysisResultSummary().getAllVariantCount().toString());
-                    ObservableList<VariantAndInterpretationEvidence> displayList = null;
+                response = apiService.get("/analysisResults/sampleSummary/"+ sample.getId(), null, null, false);
 
-                    response = apiService.get("/analysisResults/sampleSummary/"+ sample.getId(), null, null, false);
+                sample.setAnalysisResultSummary(response.getObjectBeforeConvertResponseToJSON(AnalysisResultSummary.class));
+                reportedCountLabel.setText("(R : " + sample.getAnalysisResultSummary().getReportVariantCount() +")");
 
-                    sample.setAnalysisResultSummary(response.getObjectBeforeConvertResponseToJSON(AnalysisResultSummary.class));
-                    reportedCountLabel.setText("(R : " + sample.getAnalysisResultSummary().getReportVariantCount() +")");
-
-                    if (list != null && !list.isEmpty()) {
-                        displayList = FXCollections.observableArrayList(list);
-                    }
-
-                    // 리스트 삽입
-                    if (variantListTableView.getItems() != null && variantListTableView.getItems().size() > 0) {
-                        variantListTableView.getItems().clear();
-                    }
-                    variantListTableView.setItems(displayList);
-
-                    // 화면 출력
-                    if (displayList != null && displayList.size() > 0) {
-                        variantListTableView.getSelectionModel().select(selectedIdx);
-                        //showVariantDetail(displayList.get(selectedIdx));
-                    }
-                    setSNVTabName();
-                } catch (WebAPIException wae) {
-                    variantListTableView.setItems(null);
-                    DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
-                            getMainApp().getPrimaryStage(), true);
-                    wae.printStackTrace();
-                } catch (Exception e) {
-                    logger.error("Unknown Error", e);
-                    variantListTableView.setItems(null);
-                    DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+                if (list != null && !list.isEmpty()) {
+                    displayList = FXCollections.observableArrayList(list);
                 }
-            } finally {
-                mainController.setMainMaskerPane(false);
+
+                // 리스트 삽입
+                if (variantListTableView.getItems() != null && variantListTableView.getItems().size() > 0) {
+                    variantListTableView.getItems().clear();
+                }
+                variantListTableView.setItems(displayList);
+
+                // 화면 출력
+                if (displayList != null && displayList.size() > 0) {
+                    variantListTableView.getSelectionModel().select(selectedIdx);
+                    //showVariantDetail(displayList.get(selectedIdx));
+                }
+                setSNVTabName();
+            } catch (WebAPIException wae) {
+                variantListTableView.setItems(null);
+                DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+                        getMainApp().getPrimaryStage(), true);
+                wae.printStackTrace();
+            } catch (Exception e) {
+                logger.error("Unknown Error", e);
+                variantListTableView.setItems(null);
+                DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
             }
-
-        });
-
-
-
+        } finally {
+            mainController.setMainMaskerPane(false);
+        }
     }
 
     void comboBoxSetAll() {
@@ -1059,15 +1053,13 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     @FXML
     public void resetTableColumnOrder() {
-        mainController.setContentsMaskerPaneVisible(true);
-
-        deleteColumn();
-
-        removeColumnOrder(getColumnOrderType());
-
-        runColumnAction();
-
-        mainController.setContentsMaskerPaneVisible(false);
+        Platform.runLater(() -> {
+            mainController.setContentsMaskerPaneVisible(true);
+            deleteColumn();
+            removeColumnOrder(getColumnOrderType());
+            runColumnAction();
+            mainController.setContentsMaskerPaneVisible(false);
+        });
     }
 
     @FXML
@@ -1726,8 +1718,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         lrtPrediction.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getLrtPrediction()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> mutationAssessorPrediction = new TableColumn<>("MutationAssessor Prediction");
-        createTableHeader(mutationAssessorPrediction, "MutationAssessor Prediction", null,null, "mutationAssessorPrediction");
+        TableColumn<VariantAndInterpretationEvidence, String> mutationAssessorPrediction = new TableColumn<>("Mutation Assessor Prediction");
+        createTableHeader(mutationAssessorPrediction, "Mutation Assessor Prediction", null,null, "mutationAssessorPrediction");
         mutationAssessorPrediction.getStyleClass().clear();
         mutationAssessorPrediction.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getMutationAssessorPrediction()));

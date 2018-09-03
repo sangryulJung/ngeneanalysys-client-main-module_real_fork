@@ -38,7 +38,7 @@
     {"order":37,"columnName":"GERP++ RS","visible":false},
     {"order":38,"columnName":"LRT Prediction","visible":false},
     {"order":39,"columnName":"FATHMM Prediction","visible":false},
-    {"order":40,"columnName":"MutationAssessor Prediction","visible":false},
+    {"order":40,"columnName":"Mutation Assessor Prediction","visible":false},
     {"order":41,"columnName":"1KGP All","visible":true},
     {"order":42,"columnName":"1KGP African","visible":false},
     {"order":43,"columnName":"1KGP American","visible":false},
