@@ -9,7 +9,7 @@
 
 <VBox fx:id="mainVBox" alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" spacing="10.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../../css/variantDetail.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.DetailSubInfoController">
    <children>
-      <Label styleClass="title1" text="External Links" />
+      <Label styleClass="title1" text="EXTERNAL LINKS" />
       <ScrollPane VBox.vgrow="ALWAYS">
          <content>
             <GridPane fx:id="dbLinkGridPane" hgap="5.0" maxWidth="1.7976931348623157E308" minWidth="30.0">
