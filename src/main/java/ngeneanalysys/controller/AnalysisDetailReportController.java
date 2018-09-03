@@ -23,6 +23,7 @@ import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.model.render.DatepickerConverter;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.service.ExcelConvertReportInformationService;
 import ngeneanalysys.service.ImageService;
 import ngeneanalysys.service.PDFCreateService;
 import ngeneanalysys.task.ImageFileDownloadTask;
@@ -69,6 +70,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
     /** Velocity Util */
     private VelocityUtil velocityUtil = new VelocityUtil();
+
+    @FXML
+    private Label excelUploadBtn;
 
     @FXML
     private TextArea conclusionsTextArea;
@@ -137,6 +141,10 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
     private boolean reportData = false;
 
+    private File excelFile = null;
+
+    private Map<String, Object> variableList = null;
+
     @SuppressWarnings("unchecked")
     @Override
     public void show(Parent root) throws IOException {
@@ -187,7 +195,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     Map<String, Object> variableList = JsonUtil.fromJsonToMap(template.getCustomFields());
 
                     if (variableList != null && !variableList.isEmpty()) {
-
+                        this.variableList = variableList;
                         Set<String> keyList = variableList.keySet();
 
                         List<String> sortedKeyList = keyList.stream().sorted().collect(Collectors.toList());
@@ -262,6 +270,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
                     }
                 }
+            } else {
+                excelUploadBtn.setVisible(false);
             }
             if(sample.getSampleStatus().getReportStartedAt() != null) {
                 response = apiService.get("sampleReport/" + sample.getId(), null, null, false);
@@ -1088,22 +1098,33 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     createdCheck(created, file);
                     //convertPDFtoImage(file, sample.getName());
                 } else {
-                    for(int i = 0; i < customFieldGridPane.getChildren().size(); i++) {
-                        Object gridObject = customFieldGridPane.getChildren().get(i);
 
-                        if(gridObject instanceof TextField) {
-                            TextField textField = (TextField)gridObject;
-                            contentsMap.put(textField.getId(), textField.getText());
-                        } else if(gridObject instanceof DatePicker) {
-                            DatePicker datePicker = (DatePicker)gridObject;
-                            if(datePicker.getValue() != null) {
-                                contentsMap.put(datePicker.getId(), datePicker.getValue().toString());
-                            } else {
-                                contentsMap.put(datePicker.getId(), "");
+                    if(excelFile != null) {
+
+                        if(variableList != null && !variableList.isEmpty()) {
+                            ExcelConvertReportInformationService.convertExcelData(sample.getName(),
+                                    excelFile, contentsMap, variableList, mainController.getPrimaryStage());
+                        }
+
+                    } else {
+
+                        for (int i = 0; i < customFieldGridPane.getChildren().size(); i++) {
+                            Object gridObject = customFieldGridPane.getChildren().get(i);
+
+                            if (gridObject instanceof TextField) {
+                                TextField textField = (TextField) gridObject;
+                                contentsMap.put(textField.getId(), textField.getText());
+                            } else if (gridObject instanceof DatePicker) {
+                                DatePicker datePicker = (DatePicker) gridObject;
+                                if (datePicker.getValue() != null) {
+                                    contentsMap.put(datePicker.getId(), datePicker.getValue().toString());
+                                } else {
+                                    contentsMap.put(datePicker.getId(), "");
+                                }
+                            } else if (gridObject instanceof ComboBox) {
+                                ComboBox<String> comboBox = (ComboBox<String>) gridObject;
+                                contentsMap.put(comboBox.getId(), comboBox.getSelectionModel().getSelectedItem());
                             }
-                        } else if(gridObject instanceof ComboBox) {
-                            ComboBox<String> comboBox = (ComboBox<String>)gridObject;
-                            contentsMap.put(comboBox.getId(), comboBox.getSelectionModel().getSelectedItem());
                         }
                     }
 
@@ -1285,5 +1306,19 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             }
         }
         return null;
+    }
+
+    @FXML
+    private void excelUpload() {
+        FileChooser fileChooser = new FileChooser();
+
+            fileChooser.getExtensionFilters()
+                    .addAll(new FileChooser.ExtensionFilter("Microsoft Worksheet(*.xlsx, *.xls)", "*.xlsx", "*.xls"));
+        fileChooser.setTitle("format file");
+        File file = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
+
+        if(file != null) {
+            excelFile = file;
+        }
     }
 }

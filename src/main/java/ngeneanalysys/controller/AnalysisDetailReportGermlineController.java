@@ -21,6 +21,7 @@ import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.model.render.DatepickerConverter;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.service.ExcelConvertReportInformationService;
 import ngeneanalysys.service.PDFCreateService;
 import ngeneanalysys.task.ImageFileDownloadTask;
 import ngeneanalysys.task.JarDownloadTask;
@@ -59,6 +60,9 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
     /** Velocity Util */
     private VelocityUtil velocityUtil = new VelocityUtil();
+
+    @FXML
+    private Label excelUploadBtn;
 
     @FXML
     private TextArea conclusionsTextArea;
@@ -126,6 +130,9 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
     private boolean reportData = false;
 
+    private File excelFile = null;
+
+    private Map<String, Object> variableList = null;
 
     public void setTargetGenesList() {
         if(!targetGenesFlowPane.getChildren().isEmpty()) {
@@ -297,7 +304,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 Map<String, Object> variableList = JsonUtil.fromJsonToMap(template.getCustomFields());
 
                 if(variableList != null && !variableList.isEmpty()) {
-
+                    this.variableList = variableList;
                     Set<String> keyList = variableList.keySet();
 
                     List<String> sortedKeyList = keyList.stream().sorted().collect(Collectors.toList());
@@ -409,11 +416,16 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
         int rowIndex = 0;
         int colIndex = 0;
-
+        Map<String, Object> variableList = new HashMap<>();
         String[] displayNameList =  {"Test No", "Test Name", "Ordering Organization", "Ordering Physician", "Ordering Contact", "Patient Name",
                 "Patient Birthday", "Patient Gender", "Patient ID", "Specimen Draw Date", "Specimen Received Date"};
         String[] variableNameList =  {"manageNo", "inspectionItem", "clientOrganization", "clientName", "clientContact", "name",
                 "patientBirthday", "patientGender", "patientID", "DrawDate", "ReceivedDate"};
+
+        for(int i = 0; i < displayNameList.length ;i++) {
+            variableList.put(variableNameList[i], displayNameList[i]);
+        }
+        this.variableList = variableList;
 
         for(int i = 0; i < displayNameList.length ; i++) {
             String displayName = displayNameList[i];
@@ -779,23 +791,31 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                     }*/
                     contentsMap.put("reportingDate", org.apache.commons.lang3.time.DateFormatUtils.format(new Date(), "yyyy-MM-dd"));
                 }
+                if(excelFile != null) {
 
-                for(int i = 0; i < customFieldGridPane.getChildren().size(); i++) {
-                    Object gridObject = customFieldGridPane.getChildren().get(i);
+                    if(variableList != null && !variableList.isEmpty()) {
+                        ExcelConvertReportInformationService.convertExcelData(sample.getName(),
+                                excelFile, contentsMap, variableList, mainController.getPrimaryStage());
+                    }
 
-                    if(gridObject instanceof TextField) {
-                        TextField textField = (TextField)gridObject;
-                        contentsMap.put(textField.getId(), textField.getText());
-                    } else if(gridObject instanceof DatePicker) {
-                        DatePicker datePicker = (DatePicker)gridObject;
-                        if(datePicker.getValue() != null) {
-                            contentsMap.put(datePicker.getId(), datePicker.getValue().toString());
-                        } else {
-                            contentsMap.put(datePicker.getId(), "");
+                } else {
+                    for (int i = 0; i < customFieldGridPane.getChildren().size(); i++) {
+                        Object gridObject = customFieldGridPane.getChildren().get(i);
+
+                        if (gridObject instanceof TextField) {
+                            TextField textField = (TextField) gridObject;
+                            contentsMap.put(textField.getId(), textField.getText());
+                        } else if (gridObject instanceof DatePicker) {
+                            DatePicker datePicker = (DatePicker) gridObject;
+                            if (datePicker.getValue() != null) {
+                                contentsMap.put(datePicker.getId(), datePicker.getValue().toString());
+                            } else {
+                                contentsMap.put(datePicker.getId(), "");
+                            }
+                        } else if (gridObject instanceof ComboBox) {
+                            ComboBox<String> comboBox = (ComboBox<String>) gridObject;
+                            contentsMap.put(comboBox.getId(), comboBox.getSelectionModel().getSelectedItem());
                         }
-                    } else if(gridObject instanceof ComboBox) {
-                        ComboBox<String> comboBox = (ComboBox<String>)gridObject;
-                        contentsMap.put(comboBox.getId(), comboBox.getSelectionModel().getSelectedItem());
                     }
                 }
 
@@ -1053,5 +1073,19 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
             }
         }
         return null;
+    }
+
+    @FXML
+    private void excelUpload() {
+        FileChooser fileChooser = new FileChooser();
+
+        fileChooser.getExtensionFilters()
+                .addAll(new FileChooser.ExtensionFilter("Microsoft Worksheet(*.xlsx, *.xls)", "*.xlsx", "*.xls"));
+        fileChooser.setTitle("format file");
+        File file = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
+
+        if(file != null) {
+            excelFile = file;
+        }
     }
 }

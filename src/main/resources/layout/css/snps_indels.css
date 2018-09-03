@@ -338,3 +338,14 @@
 #targetGenesFlowPane > .text_color_blue {
     -fx-text-fill : #DB2856;
 }
+
+#excel_download_image {
+    -fx-cursor:hand;
+    -fx-graphic: url("../images/renewal/excel16_icon.png");
+    -fx-background-color : transparent;
+    -fx-pref-width : 16;
+    -fx-pref-height : 16;
+    -fx-min-width : 16;
+    -fx-min-height : 16;
+    -fx-cursor:hand;
+}
