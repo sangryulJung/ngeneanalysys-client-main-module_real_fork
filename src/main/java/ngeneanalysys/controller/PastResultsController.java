@@ -44,6 +44,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.util.Duration;
 
+import static ngeneanalysys.code.AnalysisJobStatusCode.*;
+
 /**
  * 분석자(실험자) Past Results (최근 완료 분석건) 화면 컨트롤러 Class
  * 
@@ -746,7 +748,7 @@ public class PastResultsController extends SubPaneController {
 
 		private void openSampleTab(final SampleView sample) {
 			if(sample.getSampleStatus().getStep().equalsIgnoreCase(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STEP_PIPELINE) &&
-					sample.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_COMPLETE)) {
+					sample.getSampleStatus().getStatus().equals(SAMPLE_ANALYSIS_STATUS_COMPLETE)) {
 				Map<String, Object> detailViewParamMap = new HashMap<>();
 				detailViewParamMap.put("id", sample.getId());
 
@@ -766,9 +768,12 @@ public class PastResultsController extends SubPaneController {
 			for(SampleView sampleView : sampleList) {
 				HBox itemHBox = new HBox();
 				itemHBox.setStyle(itemHBox.getStyle() + "-fx-cursor:hand;");
-				if((sampleView.getSampleStatus().getStep().equalsIgnoreCase(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STEP_PIPELINE) &&
-                        (sampleView.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_COMPLETE)
-                        || sampleView.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_FAIL)))) {
+				if((sampleView.getSampleStatus().getStep()
+						.equalsIgnoreCase(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STEP_PIPELINE) &&
+						(sampleView.getSampleStatus().getStatus()
+								.equals(SAMPLE_ANALYSIS_STATUS_COMPLETE)) ||
+						sampleView.getSampleStatus().getStatus()
+								.equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_FAIL))) {
 					itemHBox.setDisable(false);
 				} else {
 					itemHBox.setDisable(true);
@@ -838,9 +843,24 @@ public class PastResultsController extends SubPaneController {
 				labelSize(panel, 170., styleClass);
 				HBox variants = new HBox();
 				variants.getStyleClass().add("variant_hbox");
-				setVariantHBox(variants, sampleView);
-				variants.setPrefWidth(340);
-				variants.setSpacing(5);
+				if(sampleView.getSampleStatus().getStep().equals(SAMPLE_ANALYSIS_STEP_PIPELINE) &&
+						sampleView.getSampleStatus().getStatus().equals(SAMPLE_ANALYSIS_STATUS_COMPLETE)) {
+					setVariantHBox(variants, sampleView);
+					variants.setPrefWidth(340);
+					variants.setSpacing(5);
+				} else if (sampleView.getSampleStatus().getStep().equals(SAMPLE_ANALYSIS_STEP_PIPELINE) &&
+						sampleView.getSampleStatus().getStatus().equals(SAMPLE_ANALYSIS_STATUS_RUNNING)){
+					String statusMsg = (sampleView.getSampleStatus().getProgressPercentage() != null ?
+							sampleView.getSampleStatus().getProgressPercentage() + " %" :
+							"0 %") + " " +
+							(sampleView.getSampleStatus().getStatusMsg() != null ?
+							sampleView.getSampleStatus().getStatusMsg() :"");
+							Label statusMsgLabel = new Label(statusMsg);
+					variants.getChildren().add(statusMsgLabel);
+				} else if (sampleView.getSampleStatus().getStep().equals(SAMPLE_ANALYSIS_STEP_UPLOAD)){
+					Label uploadLabel = new Label("UPLOAD");
+					variants.getChildren().add(uploadLabel);
+				}
 				String qcValue = sampleView.getQcResult();
 				if(qcValue.equalsIgnoreCase("NONE")) qcValue = "";
 				Label qc = new Label(qcValue);
@@ -857,13 +877,12 @@ public class PastResultsController extends SubPaneController {
 
                 if(sampleView.getPanel().getName().contains("TruSight Tumor")) {
                     restart.setVisible(false);
-                } else {
-                	if(sampleView.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_FAIL)) {
-                		restart.setVisible(false);
-					} else {
-						restart.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showAlert(sampleView));
-					}
-                }
+                } else if (sampleView.getSampleStatus().getStep().equals(SAMPLE_ANALYSIS_STEP_PIPELINE) &&
+						sampleView.getSampleStatus().getStatus().equals(SAMPLE_ANALYSIS_STATUS_COMPLETE)) {
+					restart.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showAlert(sampleView));
+				} else {
+                	restart.setVisible(false);
+				}
 
 				itemHBox.getChildren().addAll(name, panel, statusHBox, variants, qc, restart);
 

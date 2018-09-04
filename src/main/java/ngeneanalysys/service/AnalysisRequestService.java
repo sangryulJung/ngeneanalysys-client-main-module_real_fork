@@ -5,11 +5,13 @@ import ngeneanalysys.task.FileUploadTask;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import ngeneanalysys.util.httpclient.HttpClientUtil;
+import ngeneanalysys.util.httpclient.ProgressFileBody;
 import ngeneanalysys.util.httpclient.ProgressInputStreamEntity;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.entity.EntityBuilder;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -77,17 +79,17 @@ public class AnalysisRequestService {
                 }
             }
 
-            // FileBody fileParam = new FileBody(file);
+            FileBody fileParam = new ProgressFileBody(file, task);
 
-            HttpEntity reqEntity = EntityBuilder.create()
-                    .setFile(file).build();
-            /*HttpEntity reqEntity = MultipartEntityBuilder.create()
+            //HttpEntity reqEntity = EntityBuilder.create()
+            //        .setFile(file).build();
+            HttpEntity reqEntity = MultipartEntityBuilder.create()
                     .addPart("file", fileParam)
-                    .build();*/
+                    .build();
 
-            HttpEntity progressInputStreamEntity = new ProgressInputStreamEntity(reqEntity.getContent(), file.length(), null, task);
+            //HttpEntity progressInputStreamEntity = new ProgressInputStreamEntity(reqEntity.getContent(), file.length(), null, task);
 
-            put.setEntity(progressInputStreamEntity);
+            put.setEntity(reqEntity);
 
             httpclient = HttpClients.custom().setSSLSocketFactory(HttpClientUtil.getSSLSocketFactory()).build();
             if(httpclient != null) response = httpclient.execute(put);
