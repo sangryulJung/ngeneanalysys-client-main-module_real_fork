@@ -92,9 +92,14 @@
     -fx-font-weight : 100;
 }
 
-.variant_hbox {
+.status_hbox {
     -fx-background-color : #FFFFFF;
     -fx-alignment : center;
+    -fx-pref-height : 30;
+}
+.variant_hbox {
+    -fx-background-color : #FFFFFF;
+    -fx-alignment : center-left;
     -fx-pref-height : 30;
 }
 
