@@ -65,7 +65,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
     private Button excelTemplateBtn;
 
     @FXML
-    private Label excelUploadBtn;
+    private Button excelUploadBtn;
 
     @FXML
     private TextArea conclusionsTextArea;
