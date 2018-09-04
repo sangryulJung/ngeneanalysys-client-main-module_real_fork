@@ -1,5 +1,6 @@
 package ngeneanalysys.controller.fragment;
 
+import impl.org.controlsfx.autocompletion.SuggestionProvider;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -28,6 +29,11 @@ import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.controlsfx.control.textfield.CustomTextField;
+import org.controlsfx.control.textfield.TextFields;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -124,6 +130,8 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
     private Panel panel;
 
+    private Diseases diseases;
+
     /**
      * @param analysisDetailSNVController AnalysisDetailSNVController
      */
@@ -186,21 +194,42 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         pastCasesDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDelEvidence()
                 != null ? DateFormatUtils.format(cellData.getValue().getSnpInDelEvidence().getCreatedAt().toDate(), "yyyy-MM-dd hh:mm:ss") : ""));
 
+        getDiseases();
         setEvidenceTable();
         setPastCases();
         setTier(selectedAnalysisResultVariant.getSnpInDel());
     }
 
-    class EditingCell extends TableCell<SnpInDelEvidence, String> {
-        private TextField textField = null;
+    private void getDiseases() {
+        try {
+            HttpClientResponse response = apiService.get("/diseases", null, null, false);
+            List<Diseases> diseasesList = (List<Diseases>)response.getMultiObjectBeforeConvertResponseToJSON(Diseases.class, false);
 
-        private EditingCell() {}
+            SampleView sample = (SampleView)getParamMap().get("sampleView");
+
+            Optional<Diseases> diseasesOptional = diseasesList.stream().filter(diseases ->
+                    diseases.getName().equalsIgnoreCase(sample.getDiseaseName())).findFirst();
+
+            if(diseasesOptional.isPresent()) {
+                this.diseases = diseasesOptional.get();
+            }
+        } catch (WebAPIException wea) {
+
+        }
+    }
+
+    class EditingCell extends TableCell<SnpInDelEvidence, String> {
+        private CustomTextField textField = null;
+        SuggestionProvider<String> provider = null;
+
+        private EditingCell() {
+            createTextField();
+        }
 
         @Override
         public void startEdit() {
             if(!isEmpty()) {
                 super.startEdit();
-                createTextField();
                 setGraphic(textField);
                 setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
                 textField.selectAll();
@@ -237,8 +266,45 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
         }
 
+        private void updateAutoCompletion(final String value, final CustomTextField textField) {
+
+            SnpInDelEvidence snpInDelEvidence = EditingCell.this.getTableView().getItems().get(
+                    EditingCell.this.getIndex());
+
+            try {
+                Map<String, Object> params = new HashMap<>();
+                params.put("diseaseId", diseases != null ? diseases.getId() : panel.getDefaultDiseaseId());
+                params.put("gene", selectedAnalysisResultVariant.getSnpInDel().getGenomicCoordinate().getGene());
+                params.put("keyword", value);
+                params.put("targetEvidence", snpInDelEvidence.getEvidenceType() + "EvidenceLevel" + snpInDelEvidence.getEvidenceLevel());
+                params.put("resultCount", 15);
+                HttpClientResponse response = apiService.get("/filter/evidence", params, null, false);
+                logger.debug(response.getContentString());
+                JSONParser jsonParser = new JSONParser();
+                JSONArray jsonArray = (JSONArray) jsonParser.parse(response.getContentString());
+                provider.clearSuggestions();
+                provider.addPossibleSuggestions(getAllData(jsonArray));
+            } catch (WebAPIException wae) {
+                wae.printStackTrace();
+            } catch (ParseException pe) {
+                pe.printStackTrace();
+            }
+
+        }
+
+        @SuppressWarnings("unchecked")
+        private Set<String> getAllData(JSONArray array) {
+            Set<String> data = new HashSet<>();
+            array.forEach(item -> data.add(item.toString()));
+            return data;
+        }
+
         private void createTextField() {
-            textField = new TextField(getString());
+            textField = new CustomTextField();
+            provider = SuggestionProvider.create(new HashSet<>());
+            TextFields.bindAutoCompletion(textField, provider).setVisibleRowCount(10);
+            textField.textProperty().addListener((ob, oValue, nValue) -> updateAutoCompletion(nValue, textField));
+            textField.setText(getString());
             textField.getStyleClass().add("txt_black");
             textField.setMinWidth(this.getWidth() - this.getGraphicTextGap() * 2);
             textField.setOnKeyPressed(t -> {

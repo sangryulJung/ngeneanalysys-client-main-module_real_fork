@@ -62,6 +62,9 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
     private VelocityUtil velocityUtil = new VelocityUtil();
 
     @FXML
+    private Button excelTemplateBtn;
+
+    @FXML
     private Label excelUploadBtn;
 
     @FXML
@@ -376,6 +379,9 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                         }
                     }
 
+                } else {
+                    excelUploadBtn.setVisible(false);
+                    excelTemplateBtn.setVisible(false);
                 }
             } else {
                 createdStandardBRCAColumn();
@@ -761,6 +767,8 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 String ngenebioLogo = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/ngenebio_logo_small.png"));
                 SecureRandom random = new SecureRandom();
                 Map<String,Object> contentsMap = new HashMap<>();
+                contentsMap.put("isDraft", isDraft);
+
                 contentsMap.put("panelName", panel.getName());
                 contentsMap.put("panelCode", panel.getCode());
                 contentsMap.put("sampleSource", sample.getSampleSource());
@@ -1073,6 +1081,22 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
             }
         }
         return null;
+    }
+
+    @FXML
+    private void createExcelTemplate() {
+        FileChooser fileChooser = new FileChooser();
+
+        fileChooser.getExtensionFilters()
+                .addAll(new FileChooser.ExtensionFilter("Microsoft Worksheet(*.xlsx)", "*.xlsx")
+                        ,new FileChooser.ExtensionFilter("Microsoft Worksheet(*.xls)", "*.xls"));
+        fileChooser.setTitle("format file");
+        fileChooser.setInitialFileName("excel template");
+        File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
+
+        if(file != null) {
+            ExcelConvertReportInformationService.createExcelTemplate(file, variableList, mainApp.getPrimaryStage());
+        }
     }
 
     @FXML

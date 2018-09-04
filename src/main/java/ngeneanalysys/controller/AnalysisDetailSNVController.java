@@ -1480,7 +1480,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         chr.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getChromosome()));
 
         TableColumn<VariantAndInterpretationEvidence, Integer> genomicCoordinate = new TableColumn<>("Start Position");
-        genomicCoordinate.setStyle("-fx-alignment : baseline-right;");
+        genomicCoordinate.setStyle(genomicCoordinate.getStyle() + "-fx-alignment : baseline-right;");
         createTableHeader(genomicCoordinate, "Start Position", "startPosition" ,null, "startPosition");
         genomicCoordinate.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getStartPosition()).asObject());
 
@@ -1672,7 +1672,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         TableColumn<VariantAndInterpretationEvidence, String> typeExtension = new TableColumn<>("Type Extension");
         createTableHeader(typeExtension, "Type Extension", "variantTypeExtension", 70., "variantTypeExtension");
-        typeExtension.getStyleClass().clear();
+        //typeExtension.getStyleClass().clear();
         typeExtension.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getVariantTypeExtension()));
 
         TableColumn<VariantAndInterpretationEvidence, String> exonBic = new TableColumn<>("Exon (BIC)");
@@ -1684,7 +1684,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         zigosity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getZygosity()));
 
         TableColumn<VariantAndInterpretationEvidence, String> siftPrediction = new TableColumn<>("SIFT Prediction");
-        createTableHeader(siftPrediction, "SIFT Prediction", null,null, "siftPrediction");
+        createTableHeader(siftPrediction, "SIFT Prediction", null,100., "siftPrediction");
         siftPrediction.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getSiftPrediction()));
 
@@ -1821,7 +1821,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         createTableHeader(enigma, "ENIGMA", null ,null, "enigma");
         enigma.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeEnigmaPathogenicity()));
 
-
 //        TableColumn<VariantAndInterpretationEvidence, String> refGenomeVer = new TableColumn<>("RefGenomeVer");
 //        createTableHeader(refGenomeVer, "RefGenomeVer", null ,null);
 //        refGenomeVer.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getRefGenomeVer()));
@@ -1862,8 +1861,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         runColumnAction();
 
     }
-
-
 
     private void compareColumnOrder() {
         mainController.setContentsMaskerPaneVisible(true);

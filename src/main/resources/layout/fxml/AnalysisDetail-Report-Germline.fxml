@@ -32,6 +32,11 @@
    <children>
       <HBox fx:id="workBtnBox" alignment="CENTER_RIGHT" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
          <children>
+            <Button fx:id="excelTemplateBtn" maxHeight="25.0" minHeight="25.0" mnemonicParsing="false" onAction="#createExcelTemplate" prefHeight="25.0" styleClass="submitBtn" text="Template Create">
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+            </Button>
             <Label id="excel_download_image" fx:id="excelUploadBtn" onMouseClicked="#excelUpload">
                <HBox.margin>
                   <Insets right="10.0" />

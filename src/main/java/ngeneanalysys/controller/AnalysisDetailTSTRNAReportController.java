@@ -68,6 +68,9 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
     private VelocityUtil velocityUtil = new VelocityUtil();
 
     @FXML
+    private Button excelTemplateBtn;
+
+    @FXML
     private Label excelUploadBtn;
 
     @FXML
@@ -269,6 +272,7 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
                 }
             } else {
                 excelUploadBtn.setVisible(false);
+                excelTemplateBtn.setVisible(false);
             }
             if(sample.getSampleStatus().getReportStartedAt() != null) {
                 response = apiService.get("sampleReport/" + sample.getId(), null, null, false);
@@ -955,6 +959,7 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
             if(file != null) {
 
                 Map<String, Object> contentsMap = contents();
+                contentsMap.put("isDraft", isDraft);
 
                 String draftImageStr = String.format("url('%s')", this.getClass().getClassLoader().getResource("layout/images/DRAFT.png"));
                 String ngenebioLogo = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/ngenebio_logo.png"));
@@ -1189,6 +1194,22 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
             }
         }
         return null;
+    }
+
+    @FXML
+    private void createExcelTemplate() {
+        FileChooser fileChooser = new FileChooser();
+
+        fileChooser.getExtensionFilters()
+                .addAll(new FileChooser.ExtensionFilter("Microsoft Worksheet(*.xlsx)", "*.xlsx")
+                        ,new FileChooser.ExtensionFilter("Microsoft Worksheet(*.xls)", "*.xls"));
+        fileChooser.setTitle("format file");
+        fileChooser.setInitialFileName("excel template");
+        File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
+
+        if(file != null) {
+            ExcelConvertReportInformationService.createExcelTemplate(file, variableList, mainApp.getPrimaryStage());
+        }
     }
 
     @FXML

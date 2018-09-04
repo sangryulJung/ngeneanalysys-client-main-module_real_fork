@@ -664,7 +664,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                     response = apiService.get("reportTemplate/" + reportTemplate.getId(), null, null, false);
 
                     ReportContents reportContents = response.getObjectBeforeConvertResponseToJSON(ReportContents.class);
-                    logger.info(reportContents.getReportTemplate().getCustomFields());
+                    logger.debug(reportContents.getReportTemplate().getCustomFields());
                     List<ReportImage> imageList = reportContents.getReportImages();
                     //이미지 리스트 설정
                     currentImageList.addAll(imageList);
