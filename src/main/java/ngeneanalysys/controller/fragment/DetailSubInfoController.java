@@ -13,6 +13,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import ngeneanalysys.code.constants.FXMLConstants;
+import ngeneanalysys.code.enums.AnalysisTypeCode;
 import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
@@ -26,6 +27,7 @@ import ngeneanalysys.util.StringUtils;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -79,27 +81,25 @@ public class DetailSubInfoController extends SubPaneController {
         alamutService.setMainController(getMainController());
 
         showDbLinkLisk();
-        // showPopulationFrequency();
-        //if(panel != null && panel.getAnalysisType().equalsIgnoreCase(AnalysisTypeCode.GERMLINE.getDescription())) {
-            showInSilicoPredictions();
-        //}
-
-
+        showPopulationFrequency();
+//        if(panel != null && panel.getAnalysisType().equalsIgnoreCase(AnalysisTypeCode.GERMLINE.getDescription())) {
+//            showInSilicoPredictions();
+//        }
     }
 
-    private void showInSilicoPredictions() {
-        try {
-            FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_IN_SILICO_PREDICTIONS);
-            Node node = loader.load();
-            InSilicoPredictionsController controller = loader.getController();
-            controller.setMainController(this.getMainController());
-            controller.setParamMap(paramMap);
-            controller.show((Parent) node);
-            mainVBox.getChildren().add(0, node);
-        } catch (Exception e) {
-            logger.debug(e.getMessage());
-        }
-    }
+//    private void showInSilicoPredictions() {
+//        try {
+//            FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_IN_SILICO_PREDICTIONS);
+//            Node node = loader.load();
+//            InSilicoPredictionsController controller = loader.getController();
+//            controller.setMainController(this.getMainController());
+//            controller.setParamMap(paramMap);
+//            controller.show((Parent) node);
+//            mainVBox.getChildren().add(0, node);
+//        } catch (Exception e) {
+//            logger.debug(e.getMessage());
+//        }
+//    }
 
     @SuppressWarnings("unchecked")
     @FXML
@@ -132,13 +132,13 @@ public class DetailSubInfoController extends SubPaneController {
                 dbLinkGridPane.getChildren().remove(2);
             }
         }
-        double rowHeight = 15.0;
+        double rowHeight = 20.0;
         // String[] germlineLink = {"exAC", "brcaExchange", "ncbi", "ucsc", "alamut"};
         // String[] somaticLink = {"dbSNP", "clinvar", "cosmic", "ncbi", "gnomes", "exAC", "gnomAD", "koEXID", "oncoKB", "ucsc"};
         Map<String, Object> variantInformationMap = returnResultsAfterSearch("variant_information");
         Map<String, Object> genomicCoordinateMap = returnResultsAfterSearch("genomic_coordinate");
 
-        String rsId = (variantInformationMap.containsKey("rs_id")) ? (String) variantInformationMap.get("rs_id") : null;
+        String rsId = selectedAnalysisResultVariant.getSnpInDel().getDbSNP().getDbSnpRsId(); // (variantInformationMap.containsKey("rs_id")) ? (String) variantInformationMap.get("rs_id") : null;
         String exacFormat = (variantInformationMap.containsKey("exac_format")) ? (String) variantInformationMap.get("exac_format") : null;
         String geneId = (variantInformationMap.containsKey("geneid")) ? (String) variantInformationMap.get("geneid") : null;
         Integer start = (variantInformationMap.containsKey("start")) ? (Integer) variantInformationMap.get("start") : null;
@@ -150,94 +150,68 @@ public class DetailSubInfoController extends SubPaneController {
 
         if (!StringUtils.isEmpty(rsId)) {
             dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
-            Label dbNameLabel = new Label("dbSNP");
-            dbNameLabel.getStyleClass().add("title1");
-            dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
-            Label dbContentLabel = createLinkLabel(rsId, "dbSNP");
-            dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+            Label dbContentLabel = createLinkLabel("dbSNP(" + rsId + ")", "dbSNP");
+            dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
         }
 
-        if (!StringUtils.isEmpty(rsId)) {
+        if (selectedAnalysisResultVariant.getSnpInDel().getPopulationFrequency().getG1000().getAll() != null &&
+                !StringUtils.isEmpty(rsId)) {
             dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
-            Label dbNameLabel = new Label("1000G");
-            dbNameLabel.getStyleClass().add("title1");
-            dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
-            Label dbContentLabel = createLinkLabel(rsId, "1000G");
-            dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+            Label dbContentLabel = createLinkLabel("1000G(" + rsId + ")", "1000G");
+            dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
         }
 
-        if (!StringUtils.isEmpty(rsId)) {
+        if (selectedAnalysisResultVariant.getSnpInDel().getPopulationFrequency().getKoreanExomInformationDatabase() != null &&
+                !StringUtils.isEmpty(rsId)) {
             dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
-            Label dbNameLabel = new Label("KoEXID");
-            dbNameLabel.getStyleClass().add("title1");
-            dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
-            Label dbContentLabel = createLinkLabel(rsId, "KoEXID");
-            dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+            Label dbContentLabel = createLinkLabel("KoEXID(" + rsId + ")", "KoEXID");
+            dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
         }
 
         if (!StringUtils.isEmpty(geneId)) {
             dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
-            Label dbNameLabel = new Label("NCBI");
-            dbNameLabel.getStyleClass().add("title1");
-            dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
-            Label dbContentLabel = createLinkLabel(geneId, "NCBI");
-            dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+            Label dbContentLabel = createLinkLabel("NCBI(" + geneId + ")", "NCBI");
+            dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
         }
-        if (!StringUtils.isEmpty(exacFormat)) {
+        if (selectedAnalysisResultVariant.getSnpInDel().getPopulationFrequency().getExac() != null &&
+                !StringUtils.isEmpty(exacFormat)) {
             dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
-            Label dbNameLabel = new Label("ExAC");
-            dbNameLabel.getStyleClass().add("title1");
-            dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
-            Label dbContentLabel = createLinkLabel(exacFormat, "ExAC");
-            dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+            Label dbContentLabel = createLinkLabel("ExAC(" + exacFormat + ")", "ExAC");
+            dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
         }
-        if (!StringUtils.isEmpty(exacFormat)) {
+        if (selectedAnalysisResultVariant.getSnpInDel().getPopulationFrequency().getGnomAD().getAll() != null &&
+                !StringUtils.isEmpty(exacFormat)) {
             dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
-            Label dbNameLabel = new Label("gnomAD");
-            dbNameLabel.getStyleClass().add("title1");
-            dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
-            Label dbContentLabel = createLinkLabel(exacFormat, "gnomAD");
-            dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+            Label dbContentLabel = createLinkLabel("gnomAD(" + exacFormat + ")", "gnomAD");
+            dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
         }
 
         if (start != null && end != null) {
             dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
-            Label dbNameLabel = new Label("UCSC");
-            dbNameLabel.getStyleClass().add("title1");
-            dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
-            Label dbContentLabel = createLinkLabel("View", "UCSC");
-            dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+            Label dbContentLabel = createLinkLabel("UCSC(" + start + "-" + end + ")", "UCSC");
+            dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
         }
 
         if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
             if (!StringUtils.isEmpty(selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getCosmic().getCosmicIds())) {
                 dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
-                Label dbNameLabel = new Label("COSMIC");
-                dbNameLabel.getStyleClass().add("title1");
-                dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
-                Label dbContentLabel = createLinkLabel(selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getCosmic().getCosmicIds(), "COSMIC");
-                dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+                Label dbContentLabel = createLinkLabel("COSMIC", "COSMIC");
+                dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
             }
 
         } else if(panel.getAnalysisType().equalsIgnoreCase("GERMLINE")) {
             if (!StringUtils.isEmpty(chromosome) && gPos != null && !panel.getCode().equalsIgnoreCase(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
                 dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
-                Label dbNameLabel = new Label("BRCA Exchange");
-                dbNameLabel.getStyleClass().add("title1");
-                dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
-                Label dbContentLabel = createLinkLabel("View", "BRCA Exchange");
-                dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+                Label dbContentLabel = createLinkLabel("BRCA Exchange", "BRCA Exchange");
+                dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
             }
             Map<String, Object> geneMap = returnResultsAfterSearch("gene");
             if (geneMap != null && !geneMap.isEmpty() && geneMap.containsKey("transcript")) {
                 Map<String, Map<String, String>> transcriptDataMap = (Map<String, Map<String, String>>) geneMap.get("transcript");
                 if (!transcriptDataMap.isEmpty()) {
                     dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
-                    Label dbNameLabel = new Label("ALAMUT");
-                    dbNameLabel.getStyleClass().add("title1");
-                    dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
-                    Label dbContentLabel = createLinkLabel("View", "ALAMUT");
-                    dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+                    Label dbContentLabel = createLinkLabel("ALAMUT", "ALAMUT");
+                    dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
                 }
             }
         }

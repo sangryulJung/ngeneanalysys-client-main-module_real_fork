@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
@@ -18,7 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="identificationArea" alignment="TOP_CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="272.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailVariantNomenclatureController">
+<VBox fx:id="identificationArea" alignment="TOP_CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="272.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailVariantNomenclatureController">
    <children>
       <HBox alignment="TOP_CENTER">
          <children>
@@ -155,7 +150,7 @@
             <Insets top="6.0" />
          </VBox.margin>
       </VBox>
-      <ScrollPane fx:id="transcriptDetailScrollBox" focusTraversable="false" prefHeight="90.0" prefWidth="283.0">
+      <ScrollPane fx:id="transcriptDetailScrollBox" focusTraversable="false" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="300.0">
          <content>
             <GridPane fx:id="transcriptDetailGrid" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="260.0">
                <columnConstraints>
