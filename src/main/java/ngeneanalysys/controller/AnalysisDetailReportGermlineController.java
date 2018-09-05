@@ -62,6 +62,9 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
     private VelocityUtil velocityUtil = new VelocityUtil();
 
     @FXML
+    private Label pathogenicityCountLabel;
+
+    @FXML
     private Button excelTemplateBtn;
 
     @FXML
@@ -523,6 +526,17 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
             likelyBenignList = settingPathogenicityList(list, "LB");
 
             benignList = settingPathogenicityList(list, "B");
+
+            pathogenicityCountLabel.setText("P : " + ((pathogenicList != null) ? pathogenicList
+                    .stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0) +
+                    ", LP : " + ((likelyPathgenicList != null) ? likelyPathgenicList
+                    .stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0) +
+                    ", US : " + ((uncertainSignificanceList != null) ? uncertainSignificanceList
+                    .stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0) +
+                    ", LB : " + ((likelyBenignList != null) ? likelyBenignList
+                    .stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0) +
+                    ", B : " + ((benignList != null) ? benignList
+                    .stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0));
 
             List<VariantAndInterpretationEvidence> tableList;
 

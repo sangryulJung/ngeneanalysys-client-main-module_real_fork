@@ -72,6 +72,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     private VelocityUtil velocityUtil = new VelocityUtil();
 
     @FXML
+    private Label tierCountLabel;
+
+    @FXML
     private Button excelTemplateBtn;
 
     @FXML
@@ -477,6 +480,15 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             tierThree = settingTierList(list, "T3");
 
             tierFour = settingTierList(list, "T4");
+
+            tierCountLabel.setText("Tier 1 : " + ((tierOne != null) ? tierOne
+                    .stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0) +
+                    ", Tier 2 : " + ((tierTwo != null) ? tierTwo
+                    .stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0) +
+                    ", Tier 3 : " + ((tierThree != null) ? tierThree
+                    .stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0) +
+                    ", Tier 4 : " + ((tierFour != null) ? tierFour
+                    .stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0));
 
             List<VariantAndInterpretationEvidence> tableList = new ArrayList<>();
 

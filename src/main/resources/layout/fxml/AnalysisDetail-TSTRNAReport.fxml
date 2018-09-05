@@ -81,6 +81,17 @@
                      <children>
                         <VBox fx:id="contentVBox" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="370.0" prefWidth="1120.0">
                            <children>
+                              <HBox maxHeight="25.0" minHeight="25.0" prefHeight="25.0" prefWidth="200.0" spacing="10.0">
+                                 <children>
+                                    <Label text="REPORTED VARIANT">
+                                       <styleClass>
+                                          <String fx:value="font_size_15" />
+                                          <String fx:value="font_gray" />
+                                       </styleClass>
+                                    </Label>
+                                    <Label fx:id="tierCountLabel" maxHeight="25.0" minHeight="25.0" prefHeight="25.0" />
+                                 </children>
+                              </HBox>
                               <GridPane>
                                 <columnConstraints>
                                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="12.0" prefWidth="100.0" />
@@ -98,15 +109,6 @@
                                     <Insets top="5.0" />
                                  </VBox.margin>
                               </GridPane>
-                              <Label text="REPORTED VARIANT">
-                                 <VBox.margin>
-                                    <Insets top="5.0" />
-                                 </VBox.margin>
-                                 <styleClass>
-                                    <String fx:value="font_size_15" />
-                                    <String fx:value="font_gray" />
-                                 </styleClass>
-                              </Label>
                               <TableView fx:id="variantsTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="1120.0" style="-fx-border-width: 0;" styleClass="txt_black">
                                 <columns>
                                     <TableColumn fx:id="tierColumn" prefWidth="75.0" styleClass="txt_black" text="Prediction" />

@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane id="excel" fx:id="mainGridPane" prefHeight="410.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailReportController">
+<GridPane id="excel" fx:id="mainGridPane" prefHeight="410.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailReportController">
    <columnConstraints>
       <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" prefWidth="405.0" />
       <ColumnConstraints />
@@ -56,15 +56,17 @@
                                     <Insets top="5.0" />
                                  </VBox.margin>
                               </GridPane>
-                              <Label text="REPORTED VARIANT">
-                                 <VBox.margin>
-                                    <Insets top="5.0" />
-                                 </VBox.margin>
-                                 <styleClass>
-                                    <String fx:value="font_size_15" />
-                                    <String fx:value="font_gray" />
-                                 </styleClass>
-                              </Label>
+                              <HBox maxHeight="25.0" minHeight="25.0" prefHeight="25.0" prefWidth="200.0" spacing="10.0">
+                                 <children>
+                                    <Label text="REPORTED VARIANT">
+                                       <styleClass>
+                                          <String fx:value="font_size_15" />
+                                          <String fx:value="font_gray" />
+                                       </styleClass>
+                                    </Label>
+                                    <Label fx:id="tierCountLabel" maxHeight="25.0" minHeight="25.0" prefHeight="25.0" />
+                                 </children>
+                              </HBox>
                               <TableView fx:id="variantsTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="1120.0" style="-fx-border-width: 0;" styleClass="txt_black" VBox.vgrow="ALWAYS">
                                 <columns>
                                     <TableColumn fx:id="tierColumn" prefWidth="75.0" styleClass="txt_black" text="Tier" />
