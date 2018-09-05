@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane fx:id="mainGridPane" prefHeight="410.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailReportGermlineController">
+<GridPane fx:id="mainGridPane" prefHeight="410.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailReportGermlineController">
    <columnConstraints>
       <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" prefWidth="405.0" />
       <ColumnConstraints />
@@ -63,7 +63,11 @@
                                           <String fx:value="font_gray" />
                                        </styleClass>
                                     </Label>
-                                    <Label fx:id="pathogenicityCountLabel" maxHeight="25.0" minHeight="25.0" prefHeight="25.0" />
+                                    <Label fx:id="pathogenicityCountLabel" maxHeight="25.0" minHeight="25.0" prefHeight="25.0" text="( Total: x, P: x, LP: x, US: x )">
+                                       <styleClass>
+                                          <String fx:value="font_size_15" />
+                                          <String fx:value="font_gray" />
+                                       </styleClass></Label>
                                  </children>
                               </HBox>
                               <TableView fx:id="variantsTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="1120.0" style="-fx-border-width: 0;" styleClass="txt_black">

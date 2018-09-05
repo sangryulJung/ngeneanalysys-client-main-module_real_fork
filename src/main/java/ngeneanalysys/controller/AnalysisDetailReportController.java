@@ -480,15 +480,17 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             tierThree = settingTierList(list, "T3");
 
             tierFour = settingTierList(list, "T4");
-
-            tierCountLabel.setText("Tier 1 : " + ((tierOne != null) ? tierOne
-                    .stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0) +
-                    ", Tier 2 : " + ((tierTwo != null) ? tierTwo
-                    .stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0) +
-                    ", Tier 3 : " + ((tierThree != null) ? tierThree
-                    .stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0) +
-                    ", Tier 4 : " + ((tierFour != null) ? tierFour
-                    .stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0));
+            long tier1Count = tierOne != null ? tierOne.stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0;
+            long tier2Count = tierTwo != null ? tierTwo.stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0;
+            long tier3Count = tierThree != null ? tierThree.stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0;
+            long tier4Count = tierFour != null ? tierFour.stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0;
+            tierCountLabel.setText("( Total: " + (tier1Count + tier2Count + tier3Count + tier4Count)
+                    + (tier1Count > 0 ? ", T1: " + tier1Count : "")
+                    + (tier2Count > 0 ? ", T2: " + tier2Count : "")
+                    + (tier3Count > 0 ? ", T3: " + tier3Count : "")
+                    + (tier4Count > 0 ? ", T4: " + tier4Count : "")
+                    + " )"
+            );
 
             List<VariantAndInterpretationEvidence> tableList = new ArrayList<>();
 

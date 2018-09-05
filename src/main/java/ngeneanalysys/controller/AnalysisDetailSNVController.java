@@ -1495,7 +1495,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                             VariantAndInterpretationEvidence evidence = this.getTableView().getItems().get(this.getIndex());
                             setText(item.toString());
                             if(evidence != null && StringUtils.isNotEmpty(evidence.getSnpInDel().getWarningReason())
-                                    && evidence.getSnpInDel().getWarningReason().contains("bi-allelic")) {
+                                    && evidence.getSnpInDel().getWarningReason().contains("consecutive_variants")) {
                                 setTextFill(Color.RED);
                             } else {
                                 setTextFill(Color.BLACK);

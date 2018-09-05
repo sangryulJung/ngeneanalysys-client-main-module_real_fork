@@ -526,17 +526,19 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
             likelyBenignList = settingPathogenicityList(list, "LB");
 
             benignList = settingPathogenicityList(list, "B");
-
-            pathogenicityCountLabel.setText("P : " + ((pathogenicList != null) ? pathogenicList
-                    .stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0) +
-                    ", LP : " + ((likelyPathgenicList != null) ? likelyPathgenicList
-                    .stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0) +
-                    ", US : " + ((uncertainSignificanceList != null) ? uncertainSignificanceList
-                    .stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0) +
-                    ", LB : " + ((likelyBenignList != null) ? likelyBenignList
-                    .stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0) +
-                    ", B : " + ((benignList != null) ? benignList
-                    .stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0));
+            long pCount = pathogenicList != null ? pathogenicList.stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0;
+            long lpCount = likelyPathgenicList != null ? likelyPathgenicList.stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0;
+            long usCount = uncertainSignificanceList != null ? uncertainSignificanceList.stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0;
+            long lbCount = likelyBenignList != null ? likelyBenignList.stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0;
+            long bCount = benignList != null ? benignList.stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0;
+            pathogenicityCountLabel.setText("( Total: " + (pCount + lpCount + usCount + lbCount + bCount)
+                    + (pCount > 0  ? ", P: " + pCount : "")
+                    + (lpCount > 0  ? ", LP: " + lpCount : "")
+                    + (usCount > 0  ? ", US: " + usCount : "")
+                    + (lbCount > 0  ? ", LB: " + lbCount : "")
+                    + (bCount > 0  ? ", B: " + bCount : "")
+                    + " )"
+            );
 
             List<VariantAndInterpretationEvidence> tableList;
 
