@@ -987,33 +987,22 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
                     createdCheck(created, file);
                     //convertPDFtoImage(file, sample.getName());
                 } else {
+                    for (int i = 0; i < customFieldGridPane.getChildren().size(); i++) {
+                        Object gridObject = customFieldGridPane.getChildren().get(i);
 
-                    if(excelFile != null) {
-
-                        if(variableList != null && !variableList.isEmpty()) {
-                            ExcelConvertReportInformationService.convertExcelData(sample.getName(),
-                                    excelFile, contentsMap, variableList, mainController.getPrimaryStage());
-                        }
-
-                    } else {
-
-                        for (int i = 0; i < customFieldGridPane.getChildren().size(); i++) {
-                            Object gridObject = customFieldGridPane.getChildren().get(i);
-
-                            if (gridObject instanceof TextField) {
-                                TextField textField = (TextField) gridObject;
-                                contentsMap.put(textField.getId(), textField.getText());
-                            } else if (gridObject instanceof DatePicker) {
-                                DatePicker datePicker = (DatePicker) gridObject;
-                                if (datePicker.getValue() != null) {
-                                    contentsMap.put(datePicker.getId(), datePicker.getValue().toString());
-                                } else {
-                                    contentsMap.put(datePicker.getId(), "");
-                                }
-                            } else if (gridObject instanceof ComboBox) {
-                                ComboBox<String> comboBox = (ComboBox<String>) gridObject;
-                                contentsMap.put(comboBox.getId(), comboBox.getSelectionModel().getSelectedItem());
+                        if (gridObject instanceof TextField) {
+                            TextField textField = (TextField) gridObject;
+                            contentsMap.put(textField.getId(), textField.getText());
+                        } else if (gridObject instanceof DatePicker) {
+                            DatePicker datePicker = (DatePicker) gridObject;
+                            if (datePicker.getValue() != null) {
+                                contentsMap.put(datePicker.getId(), datePicker.getValue().toString());
+                            } else {
+                                contentsMap.put(datePicker.getId(), "");
                             }
+                        } else if (gridObject instanceof ComboBox) {
+                            ComboBox<String> comboBox = (ComboBox<String>) gridObject;
+                            contentsMap.put(comboBox.getId(), comboBox.getSelectionModel().getSelectedItem());
                         }
                     }
 
@@ -1223,6 +1212,10 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
 
         if(file != null) {
             excelFile = file;
+            if(variableList != null && !variableList.isEmpty()) {
+                ExcelConvertReportInformationService.convertExcelData(sample.getName(),
+                        excelFile, customFieldGridPane, variableList, mainController.getPrimaryStage());
+            }
         }
     }
 }

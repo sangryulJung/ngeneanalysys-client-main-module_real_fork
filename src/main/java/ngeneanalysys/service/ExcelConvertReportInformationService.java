@@ -1,9 +1,15 @@
 package ngeneanalysys.service;
 
+import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -16,6 +22,7 @@ import org.slf4j.Logger;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -144,15 +151,15 @@ public class ExcelConvertReportInformationService {
         }
     }
 
-    public static void convertExcelData(String sampleName, File excelFile, Map<String, Object> contents,
+    public static void convertExcelData(String sampleName, File excelFile, GridPane customGridPane,
                                         Map<String, Object> variableList, Stage primaryStage) {
 
         if(excelFile != null) {
             try(FileInputStream fileInputStream = new FileInputStream(excelFile)) {
                 if(excelFile.getName().endsWith(".xls")) {
-                    xlsFileConvert(sampleName, fileInputStream, contents, variableList);
+                    xlsFileConvert(sampleName, fileInputStream, customGridPane, variableList);
                 } else if(excelFile.getName().endsWith(".xlsx")) {
-                    xlsxFileConvert(sampleName, fileInputStream, contents, variableList);
+                    xlsxFileConvert(sampleName, fileInputStream, customGridPane, variableList);
                 }
 
             } catch (FileNotFoundException fnfe) {
@@ -179,7 +186,7 @@ public class ExcelConvertReportInformationService {
         return "";
     }
 
-    private static void xlsFileConvert(String sampleName, FileInputStream fileInputStream, Map<String, Object> contents,
+    private static void xlsFileConvert(String sampleName, FileInputStream fileInputStream, GridPane customGridPane,
                                        Map<String, Object> variableList) throws IOException {
 
         HSSFWorkbook hssfWorkbook = new HSSFWorkbook(fileInputStream);
@@ -200,39 +207,26 @@ public class ExcelConvertReportInformationService {
                     displayNames.add(gethssfString(keyCell));
                 }
             } else {
-
-                boolean sampleSearchSuccess = false;
-
                 curRow = curSheet.getRow(rowIndex);
                 keyCell = curRow.getCell(0);
                 String sample = gethssfString(keyCell);
+
                 if(StringUtils.isNotEmpty(sample) && sample.equalsIgnoreCase(sampleName)) {
                     for(int colIndex = curRow.getFirstCellNum() + 1 ; colIndex < curRow.getLastCellNum(); colIndex++) {
                         String keyValue = searchDisplayName(variableList, displayNames.get(colIndex - 1));
                         if(StringUtils.isNotEmpty(keyValue)) {
                             valueCell = curRow.getCell(colIndex);
-                            contents.put(keyValue, gethssfString(valueCell));
+                            setGridItem(customGridPane, keyValue, gethssfString(valueCell));
                         }
                     }
-                    sampleSearchSuccess = true;
                     break;
                 }
-
-                if(!sampleSearchSuccess) {
-                    for(String displayName : displayNames) {
-                        String keyValue = searchDisplayName(variableList, displayName);
-                        if(StringUtils.isNotEmpty(keyValue)) {
-                            contents.put(keyValue, "");
-                        }
-                    }
-                }
-
             }
         }
 
     }
 
-    private static void xlsxFileConvert(String sampleName, FileInputStream fileInputStream, Map<String, Object> contents,
+    private static void xlsxFileConvert(String sampleName, FileInputStream fileInputStream, GridPane customGridPane,
                                         Map<String, Object> variableList) throws IOException {
         XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream);
         List<String> displayNames = new ArrayList<>();
@@ -256,26 +250,48 @@ public class ExcelConvertReportInformationService {
                 keyCell = curRow.getCell(0);
                 String sample = getXssfString(keyCell);
 
-                boolean sampleSearchSuccess = false;
-
                 if(StringUtils.isNotEmpty(sample) && sample.equalsIgnoreCase(sampleName)) {
                     for(int colIndex = curRow.getFirstCellNum() + 1 ; colIndex < curRow.getLastCellNum(); colIndex++) {
                         String keyValue = searchDisplayName(variableList, displayNames.get(colIndex - 1));
                         if(StringUtils.isNotEmpty(keyValue)) {
                             valueCell = curRow.getCell(colIndex);
-                            contents.put(keyValue, getXssfString(valueCell));
+                            setGridItem(customGridPane, keyValue, getXssfString(valueCell));
                         }
                     }
-                    sampleSearchSuccess = true;
                     break;
                 }
+            }
+        }
+    }
 
-                if(!sampleSearchSuccess) {
-                    for(String displayName : displayNames) {
-                        String keyValue = searchDisplayName(variableList, displayName);
-                        if(StringUtils.isNotEmpty(keyValue)) {
-                            contents.put(keyValue, "");
+    private static void setGridItem(GridPane customGridPane, String key, String value) {
+        for (int i = 0; i < customGridPane.getChildren().size(); i++) {
+            Object gridObject = customGridPane.getChildren().get(i);
+            if(((Node) gridObject).getId() != null && ((Node) gridObject).getId().equals(key)) {
+                if (gridObject instanceof TextField) {
+                    TextField textField = (TextField) gridObject;
+                    if(StringUtils.isNotEmpty(value)) {
+                        textField.setText(value);
+                    }
+                } else if (gridObject instanceof DatePicker) {
+                    DatePicker datePicker = (DatePicker) gridObject;
+                    if(StringUtils.isNotEmpty(value)) {
+                        String[] dateValue = value.split("-");
+                        if(dateValue.length == 3) {
+                            if(NumberUtils.isNumber(dateValue[0]) &&
+                                    NumberUtils.isNumber(dateValue[1]) &&
+                                    NumberUtils.isNumber(dateValue[2])) {
+                                Integer year = Integer.parseInt(dateValue[0]);
+                                Integer month = Integer.parseInt(dateValue[1]);
+                                Integer day = Integer.parseInt(dateValue[2]);
+                                datePicker.setValue(LocalDate.of(year, month, day));
+                            }
                         }
+                    }
+                } else if (gridObject instanceof ComboBox) {
+                    ComboBox<String> comboBox = (ComboBox<String>) gridObject;
+                    if(StringUtils.isNotEmpty(value)) {
+                        comboBox.getSelectionModel().select(value);
                     }
                 }
             }
