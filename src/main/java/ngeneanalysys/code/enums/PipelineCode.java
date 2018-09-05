@@ -152,6 +152,7 @@ public enum PipelineCode {
 				break;
 			default:
 		}
+		list.add("consecutive_variants");
 		return list;
 	}
 }
