@@ -823,7 +823,7 @@ public class PastResultsController extends SubPaneController {
 				labelSize(name, 180., styleClass);
 				HBox statusHBox = new HBox();
 				statusHBox.setPrefWidth(70);
-				statusHBox.getStyleClass().add("status_hbox");
+				statusHBox.getStyleClass().add("variant_hbox");
 				Label status = new Label(sampleView.getSampleStatus().getStatus().substring(0,1));
 				if(sampleView.getSampleStatus().getStatus().startsWith("C")) {
 					status.getStyleClass().addAll("label","run_complete_icon");
@@ -848,8 +848,8 @@ public class PastResultsController extends SubPaneController {
 				if(sampleView.getSampleStatus().getStep().equals(SAMPLE_ANALYSIS_STEP_PIPELINE) &&
 						sampleView.getSampleStatus().getStatus().equals(SAMPLE_ANALYSIS_STATUS_COMPLETE)) {
 					setVariantHBox(variants, sampleView);
-				} else if (sampleView.getSampleStatus().getStep().equals(SAMPLE_ANALYSIS_STEP_PIPELINE) &&
-						sampleView.getSampleStatus().getStatus().equals(SAMPLE_ANALYSIS_STATUS_RUNNING)){
+				} else if (sampleView.getSampleStatus().getStatus().equals(SAMPLE_ANALYSIS_STATUS_RUNNING) ||
+						sampleView.getSampleStatus().getStatus().equals(SAMPLE_ANALYSIS_STATUS_FAIL)){
 					String statusMsg = (sampleView.getSampleStatus().getProgressPercentage() != null ?
 							sampleView.getSampleStatus().getProgressPercentage() + " %" :
 							"0 %") + " " +
