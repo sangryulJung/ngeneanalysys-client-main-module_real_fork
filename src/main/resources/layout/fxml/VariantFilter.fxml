@@ -643,7 +643,7 @@
                   <Insets left="20.0" />
                </HBox.margin>
             </Label>
-            <TextField fx:id="filterNameTextField" maxHeight="31.0" prefHeight="31.0" prefWidth="136.0" promptText="Filter Name" />
+            <TextField fx:id="filterNameTextField" maxHeight="31.0" prefHeight="31.0" prefWidth="400.0" promptText="Filter Name" />
          </children>
          <GridPane.margin>
             <Insets left="10.0" top="10.0" />
