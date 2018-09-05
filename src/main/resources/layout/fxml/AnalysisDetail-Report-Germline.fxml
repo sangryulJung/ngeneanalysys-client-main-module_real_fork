@@ -105,6 +105,15 @@
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                  </columnConstraints>
                               </GridPane>
+                              <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                                 <children>
+                                    <Button fx:id="excelTemplateBtn" maxHeight="25.0" mnemonicParsing="false" onAction="#createExcelTemplate" styleClass="submitBtn" text="Sample Sheet Template" />
+                                    <Button fx:id="excelUploadBtn" onMouseClicked="#excelUpload" styleClass="submitBtn" text="Load Sample Sheet" />
+                                 </children>
+                                 <padding>
+                                    <Insets top="5.0" />
+                                 </padding>
+                              </HBox>
                               <HBox prefHeight="28.0" prefWidth="200.0">
                                  <children>
                                     <Label fx:id="conclusions11" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" text="TARGET GENES">
@@ -148,16 +157,6 @@
       </HBox>
       <HBox fx:id="workBtnBox" alignment="CENTER_RIGHT" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
          <children>
-            <Button fx:id="excelTemplateBtn" maxHeight="25.0" mnemonicParsing="false" onAction="#createExcelTemplate" styleClass="submitBtn" text="Extra data excel template">
-               <HBox.margin>
-                  <Insets right="10.0" />
-               </HBox.margin>
-            </Button>
-            <Button fx:id="excelUploadBtn" onMouseClicked="#excelUpload" styleClass="submitBtn" text="Load extra data from excel">
-               <HBox.margin>
-                  <Insets right="10.0" />
-               </HBox.margin>
-            </Button>
             <Label text="Gene Category">
                <HBox.margin>
                   <Insets right="10.0" />
@@ -182,6 +181,9 @@
                   <Insets bottom="3.0" />
                </HBox.margin></Button>
          </children>
+         <padding>
+            <Insets right="20.0" />
+         </padding>
       </HBox>
       <HBox fx:id="completeBtnBox" alignment="BOTTOM_RIGHT" layoutX="30.0" layoutY="508.0" visible="false" GridPane.rowIndex="1">
          <children>
