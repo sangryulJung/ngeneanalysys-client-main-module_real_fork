@@ -367,6 +367,8 @@ public class VariantFilterController extends SubPaneController {
 
     private CheckComboBox<String> warningCheckComboBox;
 
+    private String currentFilterName;
+
     /**
      * @param snvController AnalysisDetailSNVController
      */
@@ -490,7 +492,8 @@ public class VariantFilterController extends SubPaneController {
 
         filterNameComboBox.valueProperty().addListener((ob, oValue, nValue) -> {
             if(StringUtils.isNotEmpty(nValue)) {
-                setCurrentOption(filter.get(nValue));
+                currentFilterName = nValue;
+                setCurrentOption(filter.get(nValue), nValue);
             }
         });
 
@@ -754,11 +757,12 @@ public class VariantFilterController extends SubPaneController {
         setFormat(kohbraTextField);
     }
 
-    private void setCurrentOption(List<Object> currentFilter) {
-        filterNameTextField.setVisible(false);
+    private void setCurrentOption(List<Object> currentFilter, String filterName) {
+        //filterNameTextField.setVisible(false);
         newFilterNameLabel.setVisible(false);
         saveBtn.setDisable(false);
         resetFilterList();
+        filterNameTextField.setText(filterName);
         for(Object obj : currentFilter) {
             String option = obj.toString();
             if(obj.toString().contains(" ")) {
@@ -1013,8 +1017,7 @@ public class VariantFilterController extends SubPaneController {
 
     @FXML
     private void removeFilter() {
-        if(!filterNameTextField.isVisible()
-                && StringUtils.isNotEmpty(filterNameComboBox.getSelectionModel().getSelectedItem())) {
+        if(StringUtils.isNotEmpty(filterNameComboBox.getSelectionModel().getSelectedItem())) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             DialogUtil.setIcon(alert);
             String alertHeaderText = filterNameComboBox.getSelectionModel().getSelectedItem();
@@ -1052,6 +1055,7 @@ public class VariantFilterController extends SubPaneController {
                 } catch (WebAPIException wae) {
                     DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainApp.getPrimaryStage(), true);
                 }
+                filterNameTextField.setText("");
                 saveBtn.setDisable(true);
             } else {
                 alert.close();
@@ -1067,7 +1071,8 @@ public class VariantFilterController extends SubPaneController {
     @FXML
     public void addFilter() {
         filterNameComboBox.getSelectionModel().clearSelection();
-        filterNameTextField.setVisible(true);
+        //filterNameTextField.setVisible(true);
+        filterNameTextField.setText("");
         newFilterNameLabel.setVisible(true);
         saveBtn.setDisable(true);
         resetFilterList();
@@ -1089,22 +1094,22 @@ public class VariantFilterController extends SubPaneController {
             DialogUtil.alert("Warning", "No filtering elements found.", this.dialogStage, true);
             return;
         }
-
-        if(filterNameTextField.isVisible()) {
-            if(StringUtils.isEmpty(filterNameTextField.getText())) {
-                DialogUtil.alert("No filter name found", "Please enter a filter name", mainApp.getPrimaryStage(), true);
-                filterNameTextField.requestFocus();
-                return;
-            } else if("All".equalsIgnoreCase(filterNameTextField.getText())) {
-                DialogUtil.alert("Unavailable name", "Please edit the filter name", mainApp.getPrimaryStage(), true);
-                filterNameTextField.requestFocus();
-                return;
-            }
-            filterName = filterNameTextField.getText();
-        } else {
-            filterName = filterNameComboBox.getSelectionModel().getSelectedItem();
+        filterName = filterNameTextField.getText();
+        //if(filterNameTextField.isVisible()) {
+        if(StringUtils.isEmpty(filterName)) {
+            DialogUtil.alert("No filter name found", "Please enter a filter name", mainApp.getPrimaryStage(), true);
+            filterNameTextField.requestFocus();
+            return;
+        } else if("All".equalsIgnoreCase(filterName) || (StringUtils.isNotEmpty(this.currentFilterName) &&
+                !filterName.equals(currentFilterName) && filterNameComboBox.getItems().contains(filterName))) {
+            DialogUtil.alert("Unavailable name", "Please edit the filter name", mainApp.getPrimaryStage(), true);
+            filterNameTextField.requestFocus();
+            return;
         }
-
+        /*} else {
+            filterName = filterNameComboBox.getSelectionModel().getSelectedItem();
+        }*/
+        filter.remove(currentFilterName);
         filter.put(filterName, list);
 
         changeFilter();
@@ -1125,6 +1130,8 @@ public class VariantFilterController extends SubPaneController {
             } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
                 apiService.put("/member/memberOption/heredFilter", map, null, true);
             }
+            filterNameTextField.setText("");
+            currentFilterName = null;
         } catch (WebAPIException wae) {
             DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainApp.getPrimaryStage(), true);
         }

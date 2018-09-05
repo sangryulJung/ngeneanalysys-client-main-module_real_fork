@@ -1483,6 +1483,27 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         genomicCoordinate.setStyle(genomicCoordinate.getStyle() + "-fx-alignment : baseline-right;");
         createTableHeader(genomicCoordinate, "Start Position", "startPosition" ,null, "startPosition");
         genomicCoordinate.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getStartPosition()).asObject());
+        genomicCoordinate.setCellFactory(column ->
+                new TableCell<VariantAndInterpretationEvidence, Integer>() {
+                    @Override
+                    protected void updateItem(Integer item, boolean empty) {
+                        super.updateItem(item, empty);
+                        setStyle(getStyle() + "; -fx-alignment : baseline-right;");
+                        if(item == null || empty) {
+                            setText(null);
+                        } else {
+                            VariantAndInterpretationEvidence evidence = this.getTableView().getItems().get(this.getIndex());
+                            setText(item.toString());
+                            if(evidence != null && StringUtils.isNotEmpty(evidence.getSnpInDel().getWarningReason())
+                                    && evidence.getSnpInDel().getWarningReason().contains("bi-allelic")) {
+                                setTextFill(Color.RED);
+                            } else {
+                                setTextFill(Color.BLACK);
+                            }
+                        }
+                    }
+                }
+        );
 
         TableColumn<VariantAndInterpretationEvidence, String> ref = new TableColumn<>("Ref");
         createTableHeader(ref, "Ref", null ,null, "refSequence");

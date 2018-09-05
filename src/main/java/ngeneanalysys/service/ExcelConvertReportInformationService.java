@@ -157,9 +157,15 @@ public class ExcelConvertReportInformationService {
         if(excelFile != null) {
             try(FileInputStream fileInputStream = new FileInputStream(excelFile)) {
                 if(excelFile.getName().endsWith(".xls")) {
-                    xlsFileConvert(sampleName, fileInputStream, customGridPane, variableList);
+                    boolean success = xlsFileConvert(sampleName, fileInputStream, customGridPane, variableList);
+                    if(!success) {
+                        DialogUtil.alert("", "No matching samples found.", primaryStage, true);
+                    }
                 } else if(excelFile.getName().endsWith(".xlsx")) {
-                    xlsxFileConvert(sampleName, fileInputStream, customGridPane, variableList);
+                    boolean success = xlsxFileConvert(sampleName, fileInputStream, customGridPane, variableList);
+                    if(!success) {
+                        DialogUtil.alert("", "No matching samples found.", primaryStage, true);
+                    }
                 }
 
             } catch (FileNotFoundException fnfe) {
@@ -186,7 +192,7 @@ public class ExcelConvertReportInformationService {
         return "";
     }
 
-    private static void xlsFileConvert(String sampleName, FileInputStream fileInputStream, GridPane customGridPane,
+    private static boolean xlsFileConvert(String sampleName, FileInputStream fileInputStream, GridPane customGridPane,
                                        Map<String, Object> variableList) throws IOException {
 
         HSSFWorkbook hssfWorkbook = new HSSFWorkbook(fileInputStream);
@@ -219,14 +225,14 @@ public class ExcelConvertReportInformationService {
                             setGridItem(customGridPane, keyValue, gethssfString(valueCell));
                         }
                     }
-                    break;
+                    return true;
                 }
             }
         }
-
+        return false;
     }
 
-    private static void xlsxFileConvert(String sampleName, FileInputStream fileInputStream, GridPane customGridPane,
+    private static boolean xlsxFileConvert(String sampleName, FileInputStream fileInputStream, GridPane customGridPane,
                                         Map<String, Object> variableList) throws IOException {
         XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream);
         List<String> displayNames = new ArrayList<>();
@@ -258,10 +264,11 @@ public class ExcelConvertReportInformationService {
                             setGridItem(customGridPane, keyValue, getXssfString(valueCell));
                         }
                     }
-                    break;
+                    return true;
                 }
             }
         }
+        return false;
     }
 
     private static void setGridItem(GridPane customGridPane, String key, String value) {
@@ -277,15 +284,13 @@ public class ExcelConvertReportInformationService {
                     DatePicker datePicker = (DatePicker) gridObject;
                     if(StringUtils.isNotEmpty(value)) {
                         String[] dateValue = value.split("-");
-                        if(dateValue.length == 3) {
-                            if(NumberUtils.isNumber(dateValue[0]) &&
+                        if(dateValue.length == 3 && NumberUtils.isNumber(dateValue[0]) &&
                                     NumberUtils.isNumber(dateValue[1]) &&
                                     NumberUtils.isNumber(dateValue[2])) {
-                                Integer year = Integer.parseInt(dateValue[0]);
-                                Integer month = Integer.parseInt(dateValue[1]);
-                                Integer day = Integer.parseInt(dateValue[2]);
-                                datePicker.setValue(LocalDate.of(year, month, day));
-                            }
+                            Integer year = Integer.parseInt(dateValue[0]);
+                            Integer month = Integer.parseInt(dateValue[1]);
+                            Integer day = Integer.parseInt(dateValue[2]);
+                            datePicker.setValue(LocalDate.of(year, month, day));
                         }
                     }
                 } else if (gridObject instanceof ComboBox) {

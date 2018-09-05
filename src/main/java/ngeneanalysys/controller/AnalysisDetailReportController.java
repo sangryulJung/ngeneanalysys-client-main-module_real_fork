@@ -973,7 +973,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 .addAll(new FileChooser.ExtensionFilter("Microsoft Worksheet(*.xlsx)", "*.xlsx")
                 ,new FileChooser.ExtensionFilter("Microsoft Worksheet(*.xls)", "*.xls"));
         fileChooser.setTitle("format file");
-        fileChooser.setInitialFileName("excel template");
+        fileChooser.setInitialFileName("SampleSheet");
         File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
 
         if(file != null) {
