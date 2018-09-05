@@ -556,9 +556,10 @@ public class VariantFilterController extends SubPaneController {
         if(panel != null) {
             lowConfidenceCheckComboBox.getItems().addAll(PipelineCode.getLowConfidences(panel.getCode()));
             if (panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode()) ||
-                    panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
+                    panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
                 lowConfidenceCheckComboBox.getItems().addAll("homopolymer", "repeat_sequence", "lowcoverage_indel", "lowcoverage_snv");
             }
+            lowConfidenceCheckComboBox.getItems().add("consecutive_variants");
         }
 
         lowConfidenceCheckComboBox.setPrefWidth(150);
