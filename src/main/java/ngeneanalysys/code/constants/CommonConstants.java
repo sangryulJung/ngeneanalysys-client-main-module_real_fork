@@ -1,8 +1,5 @@
 package ngeneanalysys.code.constants;
 
-import ngeneanalysys.code.enums.AnalysisTypeCode;
-import ngeneanalysys.code.enums.LibraryTypeCode;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;

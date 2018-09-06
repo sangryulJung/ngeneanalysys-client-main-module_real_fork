@@ -295,37 +295,26 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
     private void addToReportBtn(CheckBox checkBox) {
         if(selectedAnalysisResultVariant != null) {
             String oldSymbol = selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport();
-            if (checkBox.isSelected()) {
-                try {
-                    FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
-                    Node node = loader.load();
-                    ExcludeReportDialogController excludeReportDialogController = loader.getController();
-                    excludeReportDialogController.setMainController(mainController);
-                    excludeReportDialogController.setParamMap(this.getParamMap());
-                    excludeReportDialogController.setSnvController(controller);
+            try {
+                FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
+                Node node = loader.load();
+                ExcludeReportDialogController excludeReportDialogController = loader.getController();
+                excludeReportDialogController.setMainController(mainController);
+                excludeReportDialogController.setParamMap(this.getParamMap());
+                excludeReportDialogController.setSnvController(controller);
+                if (checkBox.isSelected()) {
                     excludeReportDialogController.settingItem("Y", selectedAnalysisResultVariant, checkBox);
-                    excludeReportDialogController.show((Parent) node);
-                } catch (IOException ioe) {
-                    ioe.printStackTrace();
-                }
-                /*if(!oldSymbol.equals(selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport()))
-                    controller.showVariantList(controller.getCurrentPageIndex() + 1,0);*/
-            } else {
-                try {
-                    FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
-                    Node node = loader.load();
-                    ExcludeReportDialogController excludeReportDialogController = loader.getController();
-                    excludeReportDialogController.setMainController(mainController);
-                    excludeReportDialogController.setParamMap(this.getParamMap());
-                    excludeReportDialogController.setSnvController(controller);
+                    /*if(!oldSymbol.equals(selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport()))
+                        controller.showVariantList(controller.getCurrentPageIndex() + 1,0);*/
+                } else {
                     excludeReportDialogController.settingItem("N", selectedAnalysisResultVariant, checkBox);
-                    excludeReportDialogController.show((Parent) node);
-                } catch (IOException ioe) {
-                    ioe.printStackTrace();
+                    /*if(!oldSymbol.equals(selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport()))
+                        controller.showVariantList(controller.getCurrentPageIndex() + 1,0);*/
                 }
+                excludeReportDialogController.show((Parent) node);
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
             }
-            /*if(!oldSymbol.equals(selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport()))
-                controller.showVariantList(controller.getCurrentPageIndex() + 1,0);*/
         }
     }
 

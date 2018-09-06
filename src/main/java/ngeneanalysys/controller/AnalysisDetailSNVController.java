@@ -285,7 +285,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
     }
 
-    public void setCheckBoxFilter() {
+    private void setCheckBoxFilter() {
         levelACheckBox.selectedProperty().addListener((ob, ov, nv) -> {
             if(nv != null) showVariantList(0);
         });
@@ -1121,9 +1121,11 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         PopOverUtil.openFilterPopOver(viewAppliedFiltersLabel, filterList.get(comboBoxItem.getValue()));
     }
 
-    private void createTableHeader(TableColumn<VariantAndInterpretationEvidence, ?> column, String name, String sortName,
+    private void createTableHeader(TableColumn<VariantAndInterpretationEvidence, ?> column, String name, String tooltipName,
                                    Double size, String id) {
         Label label = new Label(name);
+
+        if(StringUtils.isNotEmpty(tooltipName)) label.setTooltip(new Tooltip(tooltipName));
         label.setPrefHeight(Double.MAX_VALUE);
         //column.setSortable(false);
 //        if(StringUtils.isNotEmpty(sortName)) {
@@ -1309,7 +1311,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         });
 
         TableColumn<VariantAndInterpretationEvidence, String> warn = new TableColumn<>("Warning");
-        createTableHeader(warn, "Warning", "hasWarning" ,55., "warningReason");
+        createTableHeader(warn, "Warning", "" ,55., "warningReason");
         warn.getStyleClass().add(centerStyleClass);
         warn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getHasWarning()));
         warn.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
@@ -1322,7 +1324,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 (AnalysisTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType()) &&
                         LibraryTypeCode.HYBRIDIZATION_CAPTURE.getDescription().equalsIgnoreCase(panel.getLibraryType()))) {
             TableColumn<VariantAndInterpretationEvidence, String> falsePositive = new TableColumn<>("False");
-            createTableHeader(falsePositive, "False", "isFalse",55., "falseReason");
+            createTableHeader(falsePositive, "False", "",55., "falseReason");
             falsePositive.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getIsFalse()));
             falsePositive.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
                 @Override
@@ -1370,7 +1372,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         report.setVisible(false);*/
 
         TableColumn<VariantAndInterpretationEvidence, String> reportTest = new TableColumn<>("Report");
-        createTableHeader(reportTest, "Report", "includedInReport" ,55. , "includedInReport");
+        createTableHeader(reportTest, "Report", "" ,55. , "includedInReport");
         reportTest.getStyleClass().add(centerStyleClass);
         reportTest.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getIncludedInReport()));
         reportTest.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
@@ -1412,7 +1414,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         });
 
         TableColumn<VariantAndInterpretationEvidence, String> gene = new TableColumn<>("Gene");
-        createTableHeader(gene, "Gene", "gene" ,null, "gene");
+        createTableHeader(gene, "Gene", "" ,null, "gene");
         gene.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
         gene.setCellFactory(column ->
             new TableCell<VariantAndInterpretationEvidence, String>() {
@@ -1448,7 +1450,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         TableColumn<VariantAndInterpretationEvidence, String> type = new TableColumn<>("Type");
         type.getStyleClass().add(centerStyleClass);
-        createTableHeader(type, "Type", "variantType" ,null, "variantType");
+        createTableHeader(type, "Type", "" ,null, "variantType");
         type.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getVariantType()));
 
         TableColumn<VariantAndInterpretationEvidence, String> codCons = new TableColumn<>("Consequence");
@@ -1475,12 +1477,12 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChangeSingleLetter()));
 
         TableColumn<VariantAndInterpretationEvidence, String> chr = new TableColumn<>("Chr");
-        createTableHeader(chr, "Chr", "chromosome" ,null, "chromosome");
+        createTableHeader(chr, "Chr", "" ,null, "chromosome");
         chr.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getChromosome()));
 
         TableColumn<VariantAndInterpretationEvidence, Integer> genomicCoordinate = new TableColumn<>("Start Position");
         genomicCoordinate.setStyle(genomicCoordinate.getStyle() + "-fx-alignment : baseline-right;");
-        createTableHeader(genomicCoordinate, "Start Position", "startPosition" ,null, "startPosition");
+        createTableHeader(genomicCoordinate, "Start Position", "" ,null, "startPosition");
         genomicCoordinate.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getStartPosition()).asObject());
         genomicCoordinate.setCellFactory(column ->
                 new TableCell<VariantAndInterpretationEvidence, Integer>() {
@@ -1514,21 +1516,21 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> fraction = new TableColumn<>("Fraction");
         fraction.setStyle(fraction.getStyle() + "-fx-alignment : baseline-right;");
-        createTableHeader(fraction, "Fraction", "alleleFraction" ,null, "alleleFraction");
+        createTableHeader(fraction, "Fraction", "" ,null, "alleleFraction");
         fraction.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()));
 
         TableColumn<VariantAndInterpretationEvidence, Integer> depth = new TableColumn<>("Depth");
         depth.setStyle(depth.getStyle() + "-fx-alignment : baseline-right;");
-        createTableHeader(depth, "Depth", "readDepth" ,null, "readDepth");
+        createTableHeader(depth, "Depth", "" ,null, "readDepth");
         depth.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getReadInfo().getReadDepth()).asObject());
 
         TableColumn<VariantAndInterpretationEvidence, Integer> refNum = new TableColumn<>("Ref Count");
         refNum.setStyle(refNum.getStyle() + "-fx-alignment : baseline-right;");
-        createTableHeader(refNum, "Ref Count", "refReadNum" ,null, "refReadNum");
+        createTableHeader(refNum, "Ref Count", "" ,null, "refReadNum");
         refNum.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getReadInfo().getRefReadNum()).asObject());
 
         TableColumn<VariantAndInterpretationEvidence, Integer> altNum = new TableColumn<>("Alt Count");
-        createTableHeader(altNum, "Alt Count", "altReadNum" ,null, "altReadNum");
+        createTableHeader(altNum, "Alt Count", "" ,null, "altReadNum");
         altNum.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getReadInfo().getAltReadNum()).asObject());
         altNum.setCellFactory(column ->
                 new TableCell<VariantAndInterpretationEvidence, Integer>() {
@@ -1583,102 +1585,102 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         clinVarTraitOMIM.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarTraitOMIM()));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000All = new TableColumn<>("1KGP All");
-        createTableHeader(g1000All, "1KGP All", null ,null, "g1000All");
+        createTableHeader(g1000All, "1KGP All", "1000 genomes : All" ,null, "g1000All");
         g1000All.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getG1000().getAll())));
         g1000All.setCellFactory(cell -> new PopTableCell("g1000.all"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000African = new TableColumn<>("1KGP African");
-        createTableHeader(g1000African, "1KGP African", null ,null, "g1000African");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000African = new TableColumn<>("1KGP AFR");
+        createTableHeader(g1000African, "1KGP AFR", "1000 genomes : African" ,null, "g1000African");
         g1000African.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getG1000().getAfrican())));
         g1000African.setCellFactory(cell -> new PopTableCell("g1000.african"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000American = new TableColumn<>("1KGP American");
-        createTableHeader(g1000American, "1KGP American", null ,null, "g1000American");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000American = new TableColumn<>("1KGP AMR");
+        createTableHeader(g1000American, "1KGP AMR", "1000 genomes : American" ,null, "g1000American");
         g1000American.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getG1000().getAmerican())));
         g1000American.setCellFactory(cell -> new PopTableCell("g1000.american"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000EastAsian = new TableColumn<>("1KGP East Asian");
-        createTableHeader(g1000EastAsian, "1KGP East Asian", null ,null, "g1000EastAsian");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000EastAsian = new TableColumn<>("1KGP EAS");
+        createTableHeader(g1000EastAsian, "1KGP EAS", "1000 genomes : East Asian" ,null, "g1000EastAsian");
         g1000EastAsian.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getG1000().getEastAsian())));
         g1000EastAsian.setCellFactory(cell -> new PopTableCell("g1000.eastAsian"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000European = new TableColumn<>("1KGP European");
-        createTableHeader(g1000European, "1KGP European", null ,null, "g1000European");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000European = new TableColumn<>("1KGP EUR");
+        createTableHeader(g1000European, "1KGP EUR", "1000 genomes : European" ,null, "g1000European");
         g1000European.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getG1000().getEuropean())));
         g1000European.setCellFactory(cell -> new PopTableCell("g1000.european"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000SouthAsian = new TableColumn<>("1KGP South Asian");
-        createTableHeader(g1000SouthAsian, "1KGP South Asian", null ,null, "g1000SouthAsian");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000SouthAsian = new TableColumn<>("1KGP SAS");
+        createTableHeader(g1000SouthAsian, "1KGP SAS", "1000 genomes : South Asian" ,null, "g1000SouthAsian");
         g1000SouthAsian.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getG1000().getSouthAsian())));
         g1000SouthAsian.setCellFactory(cell -> new PopTableCell("g1000.southAsian"));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> espAll = new TableColumn<>("ESP All");
-        createTableHeader(espAll, "ESP All", null ,null, "esp6500All");
+        createTableHeader(espAll, "ESP All", "Exome Sequencing Project : All" ,null, "esp6500All");
         espAll.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getEsp6500().getAll())));
         espAll.setCellFactory(cell -> new PopTableCell("esp6500.all"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> espaa = new TableColumn<>("ESP African American");
-        createTableHeader(espaa, "ESP African American", null ,null, "esp6500aa");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> espaa = new TableColumn<>("ESP AA");
+        createTableHeader(espaa, "ESP AA", "ESP : African American" ,null, "esp6500aa");
         espaa.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getEsp6500().getAa())));
         espaa.setCellFactory(cell -> new PopTableCell("esp6500.aa"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> espea = new TableColumn<>("ESP European American");
-        createTableHeader(espea, "ESP European American", null ,null, "esp6500ea");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> espea = new TableColumn<>("ESP EA");
+        createTableHeader(espea, "ESP EA", "ESP : European American" ,null, "esp6500ea");
         espea.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getEsp6500().getEa())));
         espea.setCellFactory(cell -> new PopTableCell("esp6500.ea"));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> exac = new TableColumn<>("ExAC");
-        createTableHeader(exac, "ExAC", null ,null, "exac");
+        createTableHeader(exac, "ExAC", "Exome Aggregation Consortium : All" ,null, "exac");
         exac.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getExac())));
         exac.setCellFactory(cell -> new PopTableCell("exac"));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadAll = new TableColumn<>("gnomAD All");
-        createTableHeader(gnomadAll, "gnomAD All", null, null, "gnomADall");
+        createTableHeader(gnomadAll, "gnomAD All", "gnomAD : All", null, "gnomADall");
         gnomadAll.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getAll())));
         gnomadAll.setCellFactory(cell -> new PopTableCell("gnomAD.all"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadAdmixedAmerican = new TableColumn<>("gnomAD Admixed American");
-        createTableHeader(gnomadAdmixedAmerican, "gnomAD Admixed American", null, null, "gnomADadmixedAmerican");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadAdmixedAmerican = new TableColumn<>("gnomAD AMR");
+        createTableHeader(gnomadAdmixedAmerican, "gnomAD AMR", "gnomAD : Admixed American", null, "gnomADadmixedAmerican");
         gnomadAdmixedAmerican.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getAdmixedAmerican())));
         gnomadAdmixedAmerican.setCellFactory(cell -> new PopTableCell("gnomAD.admixedAmerican"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadAfricanAfricanAmerican = new TableColumn<>("gnomAD African African American");
-        createTableHeader(gnomadAfricanAfricanAmerican, "gnomAD African African American", null, null, "gnomADafricanAfricanAmerican");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadAfricanAfricanAmerican = new TableColumn<>("gnomAD AFR");
+        createTableHeader(gnomadAfricanAfricanAmerican, "gnomAD AFR", "gnomAD : African, African American", null, "gnomADafricanAfricanAmerican");
         gnomadAfricanAfricanAmerican.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getAfricanAfricanAmerican())));
         gnomadAfricanAfricanAmerican.setCellFactory(cell -> new PopTableCell("gnomAD.africanAfricanAmerican"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadEastAsian = new TableColumn<>("gnomAD East Asian");
-        createTableHeader(gnomadEastAsian, "gnomAD East Asian", null, null, "gnomADeastAsian");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadEastAsian = new TableColumn<>("gnomAD EAS");
+        createTableHeader(gnomadEastAsian, "gnomAD EAS", "gnomAD : East Asian", null, "gnomADeastAsian");
         gnomadEastAsian.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getEastAsian())));
         gnomadEastAsian.setCellFactory(cell -> new PopTableCell("gnomAD.eastAsian"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadFinnish = new TableColumn<>("gnomAD Finnish");
-        createTableHeader(gnomadFinnish, "gnomAD Finnish", null, null, "gnomADfinnish");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadFinnish = new TableColumn<>("gnomAD FIN");
+        createTableHeader(gnomadFinnish, "gnomAD FIN", "gnomAD : Finnish", null, "gnomADfinnish");
         gnomadFinnish.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getFinnish())));
         gnomadFinnish.setCellFactory(cell -> new PopTableCell("gnomAD.finnish"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadNonFinnishEuropean = new TableColumn<>("gnomAD Non Finnish European");
-        createTableHeader(gnomadNonFinnishEuropean, "gnomAD Non Finnish European", null, null, "gnomADnonFinnishEuropean");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadNonFinnishEuropean = new TableColumn<>("gnomAD NFE");
+        createTableHeader(gnomadNonFinnishEuropean, "gnomAD NFE", "gnomAD : Non-Finnsh European", null, "gnomADnonFinnishEuropean");
         gnomadNonFinnishEuropean.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getNonFinnishEuropean())));
         gnomadNonFinnishEuropean.setCellFactory(cell -> new PopTableCell("gnomAD.nonFinnishEuropean"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadOthers = new TableColumn<>("gnomAD Others");
-        createTableHeader(gnomadOthers, "gnomAD Others", null, null, "gnomADothers");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadOthers = new TableColumn<>("gnomAD OTH");
+        createTableHeader(gnomadOthers, "gnomAD OTH", "gnomAD : Other", null, "gnomADothers");
         gnomadOthers.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getOthers())));
         gnomadOthers.setCellFactory(cell -> new PopTableCell("gnomAD.others"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadSouthAsian = new TableColumn<>("gnomAD South Asian");
-        createTableHeader(gnomadSouthAsian, "gnomAD South Asian", null, null, "gnomADsouthAsian");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadSouthAsian = new TableColumn<>("gnomAD SAS");
+        createTableHeader(gnomadSouthAsian, "gnomAD SAS", "gnomAD : South Asian", null, "gnomADsouthAsian");
         gnomadSouthAsian.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getSouthAsian())));
         gnomadSouthAsian.setCellFactory(cell -> new PopTableCell("gnomAD.southAsian"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> koreanReferenceDatabase = new TableColumn<>("Korean Reference Genome Database");
-        createTableHeader(koreanReferenceDatabase, "Korean Reference Genome Database", null ,null, "koreanReferenceGenomeDatabase");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> koreanReferenceDatabase = new TableColumn<>("KRGDB");
+        createTableHeader(koreanReferenceDatabase, "KRGDB", "Korean Reference Genome Database" ,null, "koreanReferenceGenomeDatabase");
         koreanReferenceDatabase.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getKoreanReferenceGenomeDatabase())));
         koreanReferenceDatabase.setCellFactory(cell -> new PopTableCell("koreanReferenceGenomeDatabase"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> koreanExomInformationDatabase = new TableColumn<>("Korean Exom Information Database");
-        createTableHeader(koreanExomInformationDatabase, "Korean Exom Information Database", null ,null, "koreanExomInformationDatabase");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> koreanExomInformationDatabase = new TableColumn<>("KoEXID");
+        createTableHeader(koreanExomInformationDatabase, "KoEXID", "Korean Exome Information Database" ,null, "koreanExomInformationDatabase");
         koreanExomInformationDatabase.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getKoreanExomInformationDatabase())));
         koreanExomInformationDatabase.setCellFactory(cell -> new PopTableCell("koreanExomInformationDatabase"));
 
