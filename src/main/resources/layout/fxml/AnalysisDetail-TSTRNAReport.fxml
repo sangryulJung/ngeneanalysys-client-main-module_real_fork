@@ -77,9 +77,9 @@
          <children>
             <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" minHeight="370.0" prefHeight="370.0" prefWidth="1137.0" HBox.hgrow="ALWAYS">
                <content>
-                  <Pane fx:id="mainContentsPane" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="370.0" prefWidth="1120.0">
+                  <Pane fx:id="mainContentsPane" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="387.0" prefWidth="1120.0">
                      <children>
-                        <VBox fx:id="contentVBox" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="370.0" prefWidth="1120.0">
+                        <VBox fx:id="contentVBox" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="387.0" prefWidth="1120.0">
                            <children>
                               <HBox maxHeight="25.0" minHeight="25.0" prefHeight="25.0" prefWidth="200.0" spacing="10.0">
                                  <children>

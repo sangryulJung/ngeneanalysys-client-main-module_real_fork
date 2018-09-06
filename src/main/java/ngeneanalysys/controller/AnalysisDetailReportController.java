@@ -366,9 +366,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
                     targetGenesFlowPane.getChildren().add(label);
                     if(targetGenesFlowPane.getChildren().size() % 15 == 1) {
-                        targetGenesFlowPane.setPrefHeight(targetGenesFlowPane.getPrefHeight() + 29);
-                        mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 29);
-                        contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 29);
+                        targetGenesFlowPane.setPrefHeight(targetGenesFlowPane.getPrefHeight() + 30);
+                        mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 30);
+                        contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 30);
                     }
                 }
             }

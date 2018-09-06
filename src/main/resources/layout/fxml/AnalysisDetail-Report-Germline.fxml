@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane fx:id="mainGridPane" prefHeight="410.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailReportGermlineController">
+<GridPane fx:id="mainGridPane" prefHeight="410.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailReportGermlineController">
    <columnConstraints>
       <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" prefWidth="405.0" />
       <ColumnConstraints />
@@ -34,9 +34,9 @@
          <children>
             <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" prefHeight="370.0" prefWidth="1137.0" HBox.hgrow="ALWAYS">
                <content>
-                  <Pane fx:id="mainContentsPane" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="370.0" prefWidth="1120.0">
+                  <Pane fx:id="mainContentsPane" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="428.0" prefWidth="1120.0">
                      <children>
-                        <VBox fx:id="contentVBox" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="370.0" prefWidth="1120.0">
+                        <VBox fx:id="contentVBox" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="428.0" prefWidth="1120.0">
                            <children>
                               <GridPane>
                                  <columnConstraints>
@@ -111,7 +111,7 @@
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                  </columnConstraints>
                               </GridPane>
-                              <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                              <HBox alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="200.0" spacing="10.0">
                                  <children>
                                     <Button fx:id="excelTemplateBtn" maxHeight="25.0" mnemonicParsing="false" onAction="#createExcelTemplate" styleClass="submitBtn" text="Sample Sheet Template" />
                                     <Button fx:id="excelUploadBtn" onMouseClicked="#excelUpload" styleClass="submitBtn" text="Load Sample Sheet" />

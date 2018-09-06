@@ -196,9 +196,9 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
                     targetGenesFlowPane.getChildren().add(label);
                     if(targetGenesFlowPane.getChildren().size() % 15 == 1) {
-                        targetGenesFlowPane.setPrefHeight(targetGenesFlowPane.getPrefHeight() + 28);
-                        mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 28);
-                        contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 28);
+                        targetGenesFlowPane.setPrefHeight(targetGenesFlowPane.getPrefHeight() + 30);
+                        mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 30);
+                        contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 30);
                     }
                 }
             }

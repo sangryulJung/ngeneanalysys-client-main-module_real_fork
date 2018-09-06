@@ -125,11 +125,11 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
                         Optional<Integer> maxTextLengthOptional = textLength.stream().max(Integer::compare);
                         maxTextLengthOptional.ifPresent(value -> {
                             if(value > 29) {
-                                transcriptDetailGrid.setPrefWidth(value * 9);
-                                geneSymbolTextField.setMinWidth(value * 9);
-                                hgvspTextField.setMinWidth(value * 9);
-                                hgvscTextField.setMinWidth(value * 9);
-                                grch37TextField.setMinWidth(value * 9);
+                                transcriptDetailGrid.setPrefWidth(value * 10);
+                                geneSymbolTextField.setMinWidth(value * 10);
+                                hgvspTextField.setMinWidth(value * 10);
+                                hgvscTextField.setMinWidth(value * 10);
+                                grch37TextField.setMinWidth(value * 10);
                                 transcriptDetailScrollBox.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
                                 transcriptDetailScrollBox.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
                             }

@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="identificationArea" alignment="TOP_CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="272.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailVariantNomenclatureController">
+<VBox fx:id="identificationArea" alignment="TOP_CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="272.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailVariantNomenclatureController">
    <children>
       <HBox alignment="TOP_CENTER">
          <children>
@@ -30,15 +30,12 @@
             <Label styleClass="title1" text="NOMENCLATURE" HBox.hgrow="ALWAYS" />
          </children>
          <VBox.margin>
-            <Insets />
+            <Insets bottom="3.0" />
          </VBox.margin>
-         <padding>
-            <Insets bottom="5.0" />
-         </padding>
       </HBox>
       <HBox alignment="CENTER" VBox.vgrow="NEVER">
          <VBox.margin>
-            <Insets top="8.0" />
+            <Insets top="3.0" />
          </VBox.margin>
          <children>
             <Label text="RefSeq Transcript : " HBox.hgrow="NEVER">
@@ -147,12 +144,12 @@
             </ScrollPane>
          </children>
          <VBox.margin>
-            <Insets top="6.0" />
+            <Insets top="3.0" />
          </VBox.margin>
       </VBox>
       <ScrollPane fx:id="transcriptDetailScrollBox" focusTraversable="false" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="300.0">
          <content>
-            <GridPane fx:id="transcriptDetailGrid" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="260.0">
+            <GridPane fx:id="transcriptDetailGrid" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="270.0">
                <columnConstraints>
                   <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="113.0" minWidth="-Infinity" prefWidth="95.0" />
                   <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="-Infinity" />
