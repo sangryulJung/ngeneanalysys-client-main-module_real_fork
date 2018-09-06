@@ -412,7 +412,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
     }
 
     public void createdStandardBRCAColumn() {
-        int gridPaneRowSize = 3;
+        int gridPaneRowSize = 4;
 
         for(int i = 0; i < gridPaneRowSize ; i++) {
             customFieldGridPane.setPrefHeight(customFieldGridPane.getPrefHeight() + 30);
@@ -577,7 +577,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         }
     }
 
-    public void tableCellUpdateFix(TableView<VariantAndInterpretationEvidence> tableView) {
+    private void tableCellUpdateFix(TableView<VariantAndInterpretationEvidence> tableView) {
         tableView.addEventFilter(ScrollEvent.ANY, scrollEvent -> {
             tableView.refresh();
             // close text box
@@ -585,7 +585,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         });
     }
 
-    public List<VariantAndInterpretationEvidence> settingPathogenicityList(List<VariantAndInterpretationEvidence> allTierList,
+    private List<VariantAndInterpretationEvidence> settingPathogenicityList(List<VariantAndInterpretationEvidence> allTierList,
                                                                            String pathogenicity) {
         if(!StringUtils.isEmpty(pathogenicity)) {
             return allTierList.stream().filter(item -> ((pathogenicity.equalsIgnoreCase(item.getSnpInDel().getExpertPathogenicity()) ||
@@ -597,7 +597,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         return null;
     }
 
-    public void settingReportData(String contents) {
+    private void settingReportData(String contents) {
 
         Map<String,Object> contentsMap = JsonUtil.fromJsonToMap(contents);
 
