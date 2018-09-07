@@ -1,5 +1,6 @@
 package ngeneanalysys.controller.fragment;
 
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -635,7 +636,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            controller.showVariantList(0);
+            Platform.runLater(() -> controller.showVariantList(0));
         }
     }
 

@@ -135,7 +135,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                 setGraphic(hBox);
             }
         });
-        setDisplayItem();
+        Platform.runLater(this::setDisplayItem);
     }
 
     private void createEvidenceLabel(List<SnpInDelEvidence> interpretation, HBox hBox, String evidenceLevel) {
