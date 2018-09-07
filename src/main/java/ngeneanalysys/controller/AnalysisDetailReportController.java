@@ -1,5 +1,6 @@
 package ngeneanalysys.controller;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
@@ -303,7 +304,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             if(!t1.equals(t)) setTargetGenesList();
         });
 
-        setTargetGenesList();
+        Platform.runLater(this::setTargetGenesList);
 
     }
 

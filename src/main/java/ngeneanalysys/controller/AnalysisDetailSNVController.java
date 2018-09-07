@@ -928,7 +928,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
             showDetailTab();
             if(panel.getAnalysisType().equalsIgnoreCase(AnalysisTypeCode.SOMATIC.getDescription())) {
-                //showPredictionAndInterpretation();
                 overviewAccordion.getPanes().remove(clinicalSignificantTitledPane);
             } else {
                 overviewAccordion.getPanes().remove(interpretationTitledPane);
@@ -1750,12 +1749,14 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         gerpNrScore.getStyleClass().clear();
         gerpNrScore.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getGerpNrScore()));
+        gerpNrScore.setCellFactory(cell -> new GERPTableCell());
 
         TableColumn<VariantAndInterpretationEvidence, String> gerpRsScore = new TableColumn<>("GERP++ RS");
         createTableHeader(gerpRsScore, "GERP++ RS", null,null, "gerpRsScore");
         gerpRsScore.getStyleClass().clear();
         gerpRsScore.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getGerpRsScore()));
+        gerpRsScore.setCellFactory(cell -> new GERPTableCell());
 
         TableColumn<VariantAndInterpretationEvidence, String> fathmmPrediction = new TableColumn<>("FATHMM Prediction");
         createTableHeader(fathmmPrediction, "FATHMM Prediction", null,null, "fathmmPrediction");
@@ -2111,6 +2112,32 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
     }
 
+    public class GERPTableCell extends TableCell<VariantAndInterpretationEvidence, String> {
+
+        public GERPTableCell() {   }
+
+        @Override
+        protected void updateItem(String item, boolean empty) {
+            super.updateItem(item, empty);
+            if(item == null || empty) {
+                setText(null);
+                setTooltip(null);
+            } else if(StringUtils.isNotEmpty(item)){
+                try {
+                    DecimalFormat df = new DecimalFormat();
+                    df.setMinimumFractionDigits(2);
+                    df.setMaximumFractionDigits(2);
+                    setText(df.format(new BigDecimal(item)));
+                    setTooltip(new Tooltip(item));
+                } catch (Exception e) {
+                    setText(item);
+                    setTooltip(null);
+                }
+
+            }
+        }
+    }
+
     public class PopTableCell extends TableCell<VariantAndInterpretationEvidence, BigDecimal> {
         String type;
 
@@ -2125,6 +2152,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             setStyle(this.getStyle()+";-fx-alignment:baseline-right; -fx-padding: 0 10 0 0;");
             if(item == null || empty) {
                 setText(null);
+                setTooltip(null);
             } else {
                 DecimalFormat df = new DecimalFormat();
                 df.setMinimumFractionDigits(3);

@@ -1,6 +1,7 @@
 package ngeneanalysys.controller.fragment;
 
 import impl.org.controlsfx.autocompletion.SuggestionProvider;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -194,10 +195,13 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         pastCasesDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDelEvidence()
                 != null ? DateFormatUtils.format(cellData.getValue().getSnpInDelEvidence().getCreatedAt().toDate(), "yyyy-MM-dd hh:mm:ss") : ""));
 
-        getDiseases();
-        setEvidenceTable();
-        setPastCases();
         setTier(selectedAnalysisResultVariant.getSnpInDel());
+
+        Platform.runLater(this::getDiseases);
+        Platform.runLater(this::setPastCases);
+        setEvidenceTable();
+
+
     }
 
     private void getDiseases() {

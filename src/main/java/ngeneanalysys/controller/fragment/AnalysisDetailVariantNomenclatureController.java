@@ -149,8 +149,6 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
                                 transcriptDetailScrollBox.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
                             }
                         });
-
-
                     }
                 }
             });
@@ -210,17 +208,19 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
 
 
         if(alt.length() > 21 && (textLength - displayLeft22Bp.length()) < alt.length()){
-            gridBox.setPrefWidth(alt.length() * 12);
-            sequenceCharsBox.setStyle("-fx-padding:-10 0 0 20;");
-            scrollBox.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+            setScrollBoxSize(alt.length());
         } else if(textLength > 31) {
-            gridBox.setPrefWidth(textLength * 12);
-            sequenceCharsBox.setStyle("-fx-padding:-10 0 0 20;");
-            scrollBox.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+            setScrollBoxSize(textLength);
         }
 
         transcriptAltLabel.setText(alt);
         transcriptAltTypeLabel.setText(transcriptAltType);
+    }
+
+    private void setScrollBoxSize(double size) {
+        gridBox.setPrefWidth(size * 12);
+        sequenceCharsBox.setStyle("-fx-padding:-10 0 0 20;");
+        scrollBox.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
     }
 
     private void setTextField(TextField textField, String text, List<Integer> textLength) {
