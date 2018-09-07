@@ -186,7 +186,7 @@
                         <String fx:value="font_size_10" />
                      </styleClass>
                   </TextField>
-                  <Label maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="15.0" text="HGVS Protein" GridPane.rowIndex="2">
+                  <Label maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="15.0" text="Protein" GridPane.rowIndex="2">
                      <styleClass>
                         <String fx:value="txt_gray_656565" />
                         <String fx:value="font_size_10" />
