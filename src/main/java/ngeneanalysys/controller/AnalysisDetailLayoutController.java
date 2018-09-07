@@ -263,21 +263,20 @@ public class AnalysisDetailLayoutController extends SubPaneController {
      */
     private void executeReloadByTab(Tab tab) {
         // 보고서 탭인 경우 reported variant list 갱신함.
-
         if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_OVERVIEW_SOMATIC.name())) {
-            analysisDetailOverviewController.setDisplayItem();
+            Platform.runLater(() -> analysisDetailOverviewController.setDisplayItem());
         } else if (tab.getId().equals(AnalysisDetailTabMenuCode.TAB_OVERVIEW_GERMLINE.name())) {
-            analysisDetailOverviewGermlineController.setDisplayItem();
+            Platform.runLater(() -> analysisDetailOverviewGermlineController.setDisplayItem());
         } else if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_REPORT_SOMATIC.name())) {
             logger.debug("report tab reported variant list reload...");
-            analysisDetailReportController.setVariantsList();
+            Platform.runLater(() -> analysisDetailReportController.setVariantsList());
         } else if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_REPORT_GERMLINE.name())) {
             logger.debug("germline report tab reported variant list reload...");
-            analysisDetailReportGermlineController.setVariantsList();
+            Platform.runLater(() -> analysisDetailReportGermlineController.setVariantsList());
         } else if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_REPORT_TST_RNA.name())) {
-            tstrnaReportController.setVariantsList();
+            Platform.runLater(() -> tstrnaReportController.setVariantsList());
         } else if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_OVERVIEW_TST_RNA.name())) {
-            tstrnaOverviewController.setDisplayItem();
+            Platform.runLater(() -> tstrnaOverviewController.setDisplayItem());
         }
     }
 

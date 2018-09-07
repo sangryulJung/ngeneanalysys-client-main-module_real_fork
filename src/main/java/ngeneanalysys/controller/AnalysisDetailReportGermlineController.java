@@ -1,5 +1,6 @@
 package ngeneanalysys.controller;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
@@ -405,11 +406,11 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         }
 
         virtualPanelComboBox.getSelectionModel().selectedItemProperty().addListener((ov, t, t1) -> {
-            if(!t1.equals(t)) setVariantsList();
-            if(!t1.equals(t)) setTargetGenesList();
+            if(!t1.equals(t)) Platform.runLater(this::setVariantsList);
+            if(!t1.equals(t)) Platform.runLater(this::setTargetGenesList);
         });
 
-        setTargetGenesList();
+        Platform.runLater(this::setTargetGenesList);
     }
 
     private void createdStandardBRCAColumn() {
@@ -700,7 +701,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         boolean dataSave = saveData(null);
         if(dataSave){
             if(createPDF(true)) {
-                setVariantsList();
+                Platform.runLater(this::setVariantsList);
             }
         }
     }
@@ -740,7 +741,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                     // 최종 보고서 생성이 정상 처리된 경우 분석 샘플의 상태값 완료 처리.
                     if (createPDF(false)) {
                         //setComplete();
-                        setVariantsList();
+                        Platform.runLater(this::setVariantsList);
                     }
                 }
             }  catch (WebAPIException wae) {

@@ -316,27 +316,27 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     private void setCheckBoxFilter() {
         levelACheckBox.selectedProperty().addListener((ob, ov, nv) -> {
-            if(nv != null) showVariantList(0);
+            if(nv != null) Platform.runLater(() -> showVariantList(0));
         });
 
         levelBCheckBox.selectedProperty().addListener((ob, ov, nv) -> {
-            if(nv != null) showVariantList(0);
+            if(nv != null) Platform.runLater(() -> showVariantList(0));
         });
 
         levelCCheckBox.selectedProperty().addListener((ob, ov, nv) -> {
-            if(nv != null) showVariantList(0);
+            if(nv != null) Platform.runLater(() ->showVariantList(0));
         });
 
         levelDCheckBox.selectedProperty().addListener((ob, ov, nv) -> {
-            if(nv != null) showVariantList(0);
+            if(nv != null) Platform.runLater(() -> showVariantList(0));
         });
 
         levelECheckBox.selectedProperty().addListener((ob, ov, nv) -> {
-            if(nv != null) showVariantList(0);
+            if(nv != null) Platform.runLater(() -> showVariantList(0));
         });
 
         reportCheckBox.selectedProperty().addListener((ob, ov, nv) -> {
-            if(nv != null) showVariantList(0);
+            if(nv != null) Platform.runLater(() -> showVariantList(0));
         });
     }
 
@@ -475,7 +475,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 variantListTableView.setPrefWidth(wrapperWidth - filterWidth - 110);
             }
         });
-        showVariantList(0);
+        Platform.runLater(() -> showVariantList(0));
 
 //        snvWrapper.heightProperty().addListener((ob, ov, nv) -> {
 //            double wrapperHeight = (Double)nv;
@@ -631,7 +631,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     void refreshTable() {
-        showVariantList(0);
+        Platform.runLater(() -> showVariantList(0));
     }
 
     void setSNVTabName() {
@@ -810,7 +810,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     private void foldRight(){
         if(rFlag) {
-            showVariantList(0);
+            Platform.runLater(() -> showVariantList(0));
             rFlag = false;
         }
         double rightFoldedWidth = 50;
@@ -1076,7 +1076,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             sortMap.clear();
             sortMap.put(column, "ASC");
          }
-        showVariantList(0);
+        Platform.runLater(() -> showVariantList(0));
     }
 
     @FXML
@@ -1374,7 +1374,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             falsePositive.setVisible(false);
             showFalseVariantsCheckBox.addEventFilter(MouseEvent.MOUSE_CLICKED, ev -> {
                 falsePositive.setVisible(showFalseVariantsCheckBox.isSelected());
-                showVariantList(0);
+                Platform.runLater(() -> showVariantList(0));
             });
         } else {
             showFalseVariantsCheckBox.setVisible(false);

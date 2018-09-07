@@ -1,5 +1,6 @@
 package ngeneanalysys.controller;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
@@ -299,11 +300,13 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         }
 
         virtualPanelComboBox.getSelectionModel().selectedItemProperty().addListener((ov, t, t1) -> {
-            if(!t1.equals(t)) setVariantsList();
-            if(!t1.equals(t)) setTargetGenesList();
+            if(!t1.equals(t))
+                Platform.runLater(this::setVariantsList);
+            if(!t1.equals(t))
+                Platform.runLater(this::setTargetGenesList);
         });
 
-        setTargetGenesList();
+        Platform.runLater(this::setTargetGenesList);
 
     }
 
@@ -679,7 +682,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         boolean dataSave = saveData(null);
         if(dataSave){
             if(createPDF(true)) {
-                setVariantsList();
+                Platform.runLater(this::setVariantsList);
             }
         }
     }
@@ -718,7 +721,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 if (dataSave) {
                     // 최종 보고서 생성이 정상 처리된 경우 분석 샘플의 상태값 완료 처리.
                     if (createPDF(false)) {
-                        setVariantsList();
+                        Platform.runLater(this::setVariantsList);
                     }
                 }
 
