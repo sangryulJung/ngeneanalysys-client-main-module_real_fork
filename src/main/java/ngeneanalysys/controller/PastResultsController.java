@@ -856,7 +856,7 @@ public class PastResultsController extends SubPaneController {
 						sampleView.getSampleStatus().getStatus().equals(SAMPLE_ANALYSIS_STATUS_FAIL)){
 					String statusMsg = (sampleView.getSampleStatus().getProgressPercentage() != null ?
 							sampleView.getSampleStatus().getProgressPercentage() + " %" :
-							"0 %") + " " +
+							"") + " " +
 							(sampleView.getSampleStatus().getStatusMsg() != null ?
 							sampleView.getSampleStatus().getStatusMsg() :"");
 							Label statusMsgLabel = new Label(statusMsg);
