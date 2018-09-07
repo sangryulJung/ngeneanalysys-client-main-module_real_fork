@@ -598,6 +598,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
     }
 
+    @SuppressWarnings("unchecked")
     /**
      * 입력 정보 저장
      * @param user User

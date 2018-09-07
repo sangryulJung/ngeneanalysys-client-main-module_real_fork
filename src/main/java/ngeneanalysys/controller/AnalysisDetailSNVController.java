@@ -20,10 +20,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.constants.FXMLConstants;
@@ -149,6 +146,10 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     private AnalysisDetailVariantsController variantsController;
 
+    private AnalysisDetailInterpretationController interpretationController;
+
+    private AnalysisDetailVariantStatisticsController statisticsController;
+
     /** 현재 선택된 변이 정보 객체 */
     private VariantAndInterpretationEvidence selectedAnalysisResultVariant;
     /** 현재 선택된 변이 리스트 객체의 index */
@@ -259,6 +260,34 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
     }
 
+    private void setStatisticsContents() {
+        try {
+            // comment tab 화면 출력
+            if (statisticsTitledPane.getContent() == null) {
+                showVariantStatistics();
+            } else if(statisticsController != null) {
+                statisticsController.showVariantStatistics();
+            }
+        } catch (Exception e) {
+            logger.error("Unknown Error", e);
+            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+        }
+    }
+
+    private void setInterpretationContents() {
+        try {
+            // comment tab 화면 출력
+            if (interpretationTitledPane.getContent() == null) {
+                showPredictionAndInterpretation();
+            } else if(interpretationController != null) {
+                interpretationController.setPastCases();
+            }
+        } catch (Exception e) {
+            logger.error("Unknown Error", e);
+            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+        }
+    }
+
     private void setAccordionContents() {
 
         try {
@@ -357,7 +386,21 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
         eventRegistration();
 
-        interpretationLogsTitledPane.setOnMouseClicked(ev -> setAccordionContents());
+        interpretationLogsTitledPane.expandedProperty().addListener((obs, ov, nv) -> {
+            if(nv != null && nv) {
+                setAccordionContents();
+            }
+        });
+        interpretationTitledPane.expandedProperty().addListener((obs, ov, nv) -> {
+            if(nv != null && nv) {
+                setInterpretationContents();
+            }
+        });
+        statisticsTitledPane.expandedProperty().addListener((obs, ov, nv) -> {
+            if(nv != null && nv) {
+                setStatisticsContents();
+            }
+        });
 
         leftSizeButton.setOnMouseClicked(event -> {
             if(leftSizeButton.getStyleClass().contains("btn_fold")){
@@ -646,6 +689,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         viewAppliedFiltersLabel.setDisable(true);
     }
 
+    @SuppressWarnings("unchecked")
     private void setSomaticFilterList(String filterName) {
         Map<String, List<Object>> filter = (Map<String, List<Object>>)mainController.getBasicInformationMap().get(filterName);
         Set<String> keySet = filter.keySet();
@@ -662,6 +706,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         filterList = filter;
     }
 
+    @SuppressWarnings("unchecked")
     private void setGermlineFilterList(String filterName){
         Map<String, List<Object>> filter = (Map<String, List<Object>>)mainController.getBasicInformationMap().get(filterName);
         Set<String> keySet = filter.keySet();
@@ -789,6 +834,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_VARIANT_STATISTICS);
             Node node = loader.load();
             AnalysisDetailVariantStatisticsController variantStatisticsController = loader.getController();
+            this.statisticsController = variantStatisticsController;
             variantStatisticsController.setMainController(this.getMainController());
             variantStatisticsController.setParamMap(paramMap);
             variantStatisticsController.show((Parent) node);
@@ -820,6 +866,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_INTERPRETATION);
             Node node = loader.load();
             AnalysisDetailInterpretationController controller = loader.getController();
+            this.interpretationController = controller;
             controller.setMainController(this.getMainController());
             controller.setAnalysisDetailSNVController(this);
             controller.setParamMap(getParamMap());
@@ -861,11 +908,11 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         //setDetailTabActivationToggle(false);
         try {
             // Detail 데이터 API 요청
-            HttpClientResponse responseDetail = apiService.get(
-                    "/analysisResults/snpInDels/" + selectedAnalysisResultVariant.getSnpInDel().getId(), null, null, false);
+            //HttpClientResponse responseDetail = apiService.get(
+            //        "/analysisResults/snpInDels/" + selectedAnalysisResultVariant.getSnpInDel().getId(), null, null, false);
             // 상세 데이터 요청이 정상 요청된 경우 진행.
-            SnpInDel snpInDel
-                    = responseDetail.getObjectBeforeConvertResponseToJSON(SnpInDel.class);
+            //SnpInDel snpInDel
+            //        = responseDetail.getObjectBeforeConvertResponseToJSON(SnpInDel.class);
             // VariantAndInterpretationEvidence variantAndInterpretationEvidence = new VariantAndInterpretationEvidence();
 
             // variantAndInterpretationEvidence.setSnpInDel(snpInDel);
@@ -873,25 +920,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
             paramMap.put("variant", analysisResultVariant);
 
-            Platform.runLater(() -> {
-                try {
-                    HttpClientResponse response = apiService.get("/analysisResults/snpInDels/" + analysisResultVariant.getSnpInDel().getId() + "/snpInDelStatistics", null, null, false);
-                    VariantStatistics variantStatistics = response.getObjectBeforeConvertResponseToJSON(VariantStatistics.class);
-                    paramMap.put("variantStatistics", variantStatistics);
-
-                    showVariantStatistics();
-                } catch (WebAPIException wae) {
-                    DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
-                            getMainApp().getPrimaryStage(), true);
-                }
-            });
-
-
-            HttpClientResponse response = apiService.get("/analysisResults/snpInDels/" + analysisResultVariant.getSnpInDel().getId() + "/snpInDelTranscripts", null, null, false);
-            List<SnpInDelTranscript> snpInDelTranscripts = (List<SnpInDelTranscript>) response.getMultiObjectBeforeConvertResponseToJSON(SnpInDelTranscript.class, false);
-            paramMap.put("snpInDelTranscripts", snpInDelTranscripts);
-
-            response = apiService.get(
+            HttpClientResponse response = apiService.get(
                     "/analysisResults/snpInDels/" + analysisResultVariant.getSnpInDel().getId() + "/snpInDelExtraInfos", null, null, false);
 
             List<SnpInDelExtraInfo> item = (List<SnpInDelExtraInfo>)response.getMultiObjectBeforeConvertResponseToJSON(SnpInDelExtraInfo.class, false);
@@ -899,7 +928,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
             showDetailTab();
             if(panel.getAnalysisType().equalsIgnoreCase(AnalysisTypeCode.SOMATIC.getDescription())) {
-                showPredictionAndInterpretation();
+                //showPredictionAndInterpretation();
                 overviewAccordion.getPanes().remove(clinicalSignificantTitledPane);
             } else {
                 overviewAccordion.getPanes().remove(interpretationTitledPane);

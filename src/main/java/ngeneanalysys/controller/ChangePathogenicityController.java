@@ -50,7 +50,7 @@ public class ChangePathogenicityController extends SubPaneController {
     private AnalysisDetailSNVController snvController;
 
     /**
-     * @param snvController
+     * @param snvController AnalysisDetailSNVController
      */
     public void setSnvController(AnalysisDetailSNVController snvController) {
         this.snvController = snvController;
@@ -127,7 +127,7 @@ public class ChangePathogenicityController extends SubPaneController {
     }
 
     private String getCurrentPathogenicity() {
-        String currentPathogenicity = null;
+        String currentPathogenicity;
         if(!StringUtils.isEmpty(selectedItem.getSnpInDel().getExpertPathogenicity())) {
             currentPathogenicity = selectedItem.getSnpInDel().getExpertPathogenicity();
         } else {

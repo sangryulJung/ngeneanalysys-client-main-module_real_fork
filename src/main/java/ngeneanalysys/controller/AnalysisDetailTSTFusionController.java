@@ -137,7 +137,6 @@ public class AnalysisDetailTSTFusionController extends AnalysisDetailCommonContr
 
             fusionTableView.setItems(FXCollections.observableArrayList(fusion.getResult()));
 
-
         } catch (WebAPIException wae) {
             wae.printStackTrace();
         }

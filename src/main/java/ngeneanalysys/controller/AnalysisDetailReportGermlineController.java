@@ -140,7 +140,8 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
     private Map<String, Object> variableList = null;
 
-    public void setTargetGenesList() {
+    @SuppressWarnings("unchecked")
+    private void setTargetGenesList() {
         if(!targetGenesFlowPane.getChildren().isEmpty()) {
             mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() - targetGenesFlowPane.getPrefHeight());
             contentVBox.setPrefHeight(contentVBox.getPrefHeight() - targetGenesFlowPane.getPrefHeight());
@@ -260,7 +261,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         return filteringList;
     }
 
-
+    @SuppressWarnings("unchecked")
     @Override
     public void show(Parent root) throws IOException {
         logger.debug("show..");
@@ -411,7 +412,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         setTargetGenesList();
     }
 
-    public void createdStandardBRCAColumn() {
+    private void createdStandardBRCAColumn() {
         int gridPaneRowSize = 4;
 
         for(int i = 0; i < gridPaneRowSize ; i++) {
@@ -597,6 +598,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         return null;
     }
 
+    @SuppressWarnings("unchecked")
     private void settingReportData(String contents) {
 
         Map<String,Object> contentsMap = JsonUtil.fromJsonToMap(contents);
@@ -881,10 +883,8 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 if(!StringUtils.isEmpty(conclusionsTextArea.getText())) {
                     conclusionLineList = new ArrayList<>();
                     String[] lines = conclusionsTextArea.getText().split("\n");
-                    if(lines != null && lines.length > 0) {
-                        for (String line : lines) {
-                            conclusionLineList.add(line);
-                        }
+                    if(lines.length > 0) {
+                        conclusionLineList.addAll(Arrays.asList(lines));
                     } else {
                         conclusionLineList.add(conclusionsTextArea.getText());
                     }
@@ -1031,7 +1031,8 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         return created;
     }
 
-    public void createWordFile(URL[] jarUrls, File file , Map<String, Object> contentsMap, String reportCreationErrorMsg) {
+    @SuppressWarnings("unchecked")
+    private void createWordFile(URL[] jarUrls, File file , Map<String, Object> contentsMap, String reportCreationErrorMsg) {
         try (URLClassLoader classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader())) {
 
             Thread.currentThread().setContextClassLoader(classLoader);

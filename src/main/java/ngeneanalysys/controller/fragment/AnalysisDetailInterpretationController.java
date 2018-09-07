@@ -549,7 +549,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     }
 
     @SuppressWarnings("unchecked")
-    private void setPastCases() {
+    public void setPastCases() {
         if(pastCasesTableView.getItems() != null && !pastCasesTableView.getItems().isEmpty()) {
             pastCasesTableView.getItems().removeAll(pastCasesTableView.getItems());
         }
@@ -725,6 +725,4 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         evidenceTableView.getItems().remove(snpInDelEvidence);
         if(evidenceTableView.getItems().isEmpty()) saveBtn.setDisable(true);
     }
-
-
 }

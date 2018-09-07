@@ -71,7 +71,7 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
     /**
      * @return detailContents
      */
-    public BorderPane getDetailContents() {
+    BorderPane getDetailContents() {
         return detailContents;
     }
 
@@ -89,7 +89,7 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
 
     }
 
-    public void setSNVTabName(String text) {
+    void setSNVTabName(String text) {
         if(snvLabel != null) {
             if (StringUtils.isNotEmpty(text)) {
                 snvLabel.setText("SNV/Indel : " + text);

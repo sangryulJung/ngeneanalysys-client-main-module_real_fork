@@ -1,5 +1,6 @@
 package ngeneanalysys.controller.fragment;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -9,10 +10,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import ngeneanalysys.controller.extend.SubPaneController;
+import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.SnpInDelTranscript;
 import ngeneanalysys.model.VariantAndInterpretationEvidence;
+import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
+import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -71,14 +75,25 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
     @Override
     public void show(Parent root) throws IOException {
         variant = (VariantAndInterpretationEvidence)paramMap.get("variant");
-        showVariantIdentification();
+        Platform.runLater(this::showVariantIdentification);
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<SnpInDelTranscript> getTranscript() {
+        try {
+            APIService apiService = APIService.getInstance();
+            HttpClientResponse response = apiService.get("/analysisResults/snpInDels/" + variant.getSnpInDel().getId() + "/snpInDelTranscripts", null, null, false);
+            return (List<SnpInDelTranscript>) response.getMultiObjectBeforeConvertResponseToJSON(SnpInDelTranscript.class, false);
+        } catch (WebAPIException wae) {
+            return null;
+        }
     }
     /**
      * Variant Nomenclature 값 설정 및 화면 출력
      */
     @SuppressWarnings("unchecked")
     private void showVariantIdentification() {
-        List<SnpInDelTranscript> transcriptDataList = (List<SnpInDelTranscript>) paramMap.get("snpInDelTranscripts");
+        List<SnpInDelTranscript> transcriptDataList = getTranscript();
 
         String ref = variant.getSnpInDel().getSnpInDelExpression().getRefSequence();
         String alt = variant.getSnpInDel().getSnpInDelExpression().getAltSequence();
@@ -208,7 +223,7 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
         transcriptAltTypeLabel.setText(transcriptAltType);
     }
 
-    public void setTextField(TextField textField, String text, List<Integer> textLength) {
+    private void setTextField(TextField textField, String text, List<Integer> textLength) {
         textField.setText(text); //Gene Symbol
         if(!StringUtils.isEmpty(text)) {
             textField.setTooltip(new Tooltip(text));
@@ -216,7 +231,7 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
         }
     }
 
-    public int getTranscriptComboBoxSelectedIndex() {
+    int getTranscriptComboBoxSelectedIndex() {
         return transcriptComboBox.getSelectionModel().getSelectedIndex();
     }
 
