@@ -849,6 +849,9 @@ public class PastResultsController extends SubPaneController {
 				if(sampleView.getSampleStatus().getStep().equals(SAMPLE_ANALYSIS_STEP_PIPELINE) &&
 						sampleView.getSampleStatus().getStatus().equals(SAMPLE_ANALYSIS_STATUS_COMPLETE)) {
 					setVariantHBox(variants, sampleView);
+				} else if (sampleView.getSampleStatus().getStep().equals(SAMPLE_ANALYSIS_STEP_UPLOAD)){
+					Label uploadLabel = new Label("UPLOAD");
+					variants.getChildren().add(uploadLabel);
 				} else if (sampleView.getSampleStatus().getStatus().equals(SAMPLE_ANALYSIS_STATUS_RUNNING) ||
 						sampleView.getSampleStatus().getStatus().equals(SAMPLE_ANALYSIS_STATUS_FAIL)){
 					String statusMsg = (sampleView.getSampleStatus().getProgressPercentage() != null ?
@@ -858,9 +861,6 @@ public class PastResultsController extends SubPaneController {
 							sampleView.getSampleStatus().getStatusMsg() :"");
 							Label statusMsgLabel = new Label(statusMsg);
 					variants.getChildren().add(statusMsgLabel);
-				} else if (sampleView.getSampleStatus().getStep().equals(SAMPLE_ANALYSIS_STEP_UPLOAD)){
-					Label uploadLabel = new Label("UPLOAD");
-					variants.getChildren().add(uploadLabel);
 				}
 				String qcValue = sampleView.getQcResult();
 				if(qcValue.equalsIgnoreCase("NONE")) qcValue = "";
