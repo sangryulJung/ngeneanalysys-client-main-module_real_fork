@@ -21,7 +21,7 @@
                   <RowConstraints maxHeight="15.0" minHeight="15.0" prefHeight="15.0" />
                </rowConstraints>
                <children>
-                  <Label onMouseClicked="#showIGV" style="-fx-cursor: hand;" styleClass="title1" text="IGV" />
+                  <Label onMouseClicked="#showIGV" style="-fx-cursor: hand;" styleClass="title2" text="IGV" />
                </children>
                <padding>
                   <Insets left="50.0" />
