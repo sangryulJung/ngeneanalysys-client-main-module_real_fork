@@ -171,4 +171,6 @@ public class FXMLConstants {
 	public static final String RUN_RAW_DATA_DOWNLOAD = "/layout/fxml/RunRawDataDownload.fxml";
 
 	public static final String RAW_DATA_DOWNLOAD_TASK = "/layout/fxml/AnalysisSampleDownloadProgressTask.fxml";
+
+	public static final String WORK_PROGRESS = "/layout/fxml/WorkProgress.fxml";
 }

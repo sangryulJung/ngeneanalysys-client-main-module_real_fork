@@ -345,7 +345,6 @@ public class DetailSubInfoController extends SubPaneController {
     @FXML
     public void showIGV() {
         String sampleId = sample.getId().toString();
-        String variantId = selectedAnalysisResultVariant.getSnpInDel().getId().toString();
         String gene = selectedAnalysisResultVariant.getSnpInDel().getGenomicCoordinate().getGene();
         String locus = String.format("%s:%,d-%,d",
                 selectedAnalysisResultVariant.getSnpInDel().getGenomicCoordinate().getChromosome(),
@@ -355,7 +354,7 @@ public class DetailSubInfoController extends SubPaneController {
         String humanGenomeVersion = (refGenome.contains("hg19")) ? "hg19" : "hg18";
 
         try {
-            loadIGV(sampleId, sample.getName(), variantId, gene, locus, humanGenomeVersion);
+            loadIGV(sampleId, sample.getName(), gene, locus, humanGenomeVersion);
         } catch (WebAPIException wae) {
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
@@ -382,13 +381,12 @@ public class DetailSubInfoController extends SubPaneController {
      * IGV 실행 및 데이터 로드
      * @param sampleId String
      * @param sampleName String
-     * @param variantId String
      * @param gene String
      * @param locus String
      * @param genome String
      */
-    public void loadIGV(String sampleId, String sampleName, String variantId, String gene, String locus, String genome) throws Exception {
-        igvService.load(sampleId, sampleName, variantId, gene, locus, genome);
+    public void loadIGV(String sampleId, String sampleName, String gene, String locus, String genome) throws Exception {
+        igvService.load(sampleId, sampleName, gene, locus, genome);
     }
 
     /**

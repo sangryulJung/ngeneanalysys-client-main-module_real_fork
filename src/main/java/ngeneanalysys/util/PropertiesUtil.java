@@ -112,10 +112,8 @@ public class PropertiesUtil {
 				String key = (String) entry.getKey();
 				String value = (String) entry.getValue();
 				// 설정값이 존재하는 경우 추가
-				if(StringUtils.isNotEmpty(value)) {
-					if (config != null) {
-						config.setProperty(key, value);
-					}
+				if(StringUtils.isNotEmpty(value) && config != null) {
+					config.setProperty(key, value);
 				}
 			}
 		} catch (Exception e) {

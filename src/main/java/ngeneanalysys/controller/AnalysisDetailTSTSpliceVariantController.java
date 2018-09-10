@@ -71,10 +71,6 @@ public class AnalysisDetailTSTSpliceVariantController extends AnalysisDetailComm
     @FXML
     private TableColumn<SpliceVariant, String> antTableColumn;
 
-    private APIService apiService;
-
-    private SampleView sample;
-
     private AnalysisDetailVariantsController variantsController;
 
     /**
@@ -103,8 +99,8 @@ public class AnalysisDetailTSTSpliceVariantController extends AnalysisDetailComm
         intergenicTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getIntergenic()));
         antTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAnt()));
 
-        apiService = APIService.getInstance();
-        this.sample = (SampleView)paramMap.get("sampleView");
+        APIService apiService = APIService.getInstance();
+        SampleView sample = (SampleView)paramMap.get("sampleView");
 
         try {
             HttpClientResponse response = apiService

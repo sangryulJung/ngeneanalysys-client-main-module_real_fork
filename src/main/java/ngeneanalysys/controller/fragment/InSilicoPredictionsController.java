@@ -35,19 +35,17 @@ public class InSilicoPredictionsController extends SubPaneController {
     @FXML
     private Canvas mtCanvas;
 
-    private Panel panel;
-
     @Override
     public void show(Parent root) throws IOException {
-        panel = (Panel)paramMap.get("panel");
+        Panel panel = (Panel)paramMap.get("panel");
         if(panel != null && panel.getAnalysisType().equalsIgnoreCase(AnalysisTypeCode.SOMATIC.getDescription())) {
           polyphenCanvas.setVisible(false);
         }
         showInSilicoPredictions();
     }
 
-
-    public Map<String, Object> returnResultsAfterSearch(String key) {
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> returnResultsAfterSearch(String key) {
         List<SnpInDelExtraInfo> detail = (List<SnpInDelExtraInfo>)paramMap.get("detail");
 
         Optional<SnpInDelExtraInfo> populationFrequency = detail.stream().filter(item
@@ -62,7 +60,7 @@ public class InSilicoPredictionsController extends SubPaneController {
      * @param level
      * @return
      */
-    public double convertRadarItemPercentageByLevelForPathogenic(String level) {
+    private double convertRadarItemPercentageByLevelForPathogenic(String level) {
         if(StringUtils.isEmpty(level)) {
             return -1d;
         } else if("1".equals(level)) {
@@ -86,7 +84,8 @@ public class InSilicoPredictionsController extends SubPaneController {
         return (String) obj;
     }
 
-    public void showInSilicoPredictions () {
+    @SuppressWarnings("unchecked")
+    private void showInSilicoPredictions () {
         Map<String,Object> inSilicoPredictionMap = returnResultsAfterSearch("in_silico_prediction");
         Map<String,Object> siftMap = (inSilicoPredictionMap != null && inSilicoPredictionMap.containsKey("SIFT")) ? (Map<String,Object>) inSilicoPredictionMap.get("SIFT") : null;
         Map<String,Object> polyphenMap = (inSilicoPredictionMap != null && inSilicoPredictionMap.containsKey("PolyPhen2")) ? (Map<String,Object>) inSilicoPredictionMap.get("PolyPhen2") : null;

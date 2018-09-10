@@ -336,34 +336,4 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
             DialogUtil.alert("QC ERROR", e.getMessage(), this.getMainApp().getPrimaryStage(), true);
         }
     }
-
-    //qcList에서 해당 qc 결과를 반환
-    private String findQCResult(List<SampleQC> qcList, String qc) {
-        String result = "none";
-
-        if(qcList != null && !qcList.isEmpty()) {
-            Optional<SampleQC> findQC = qcList.stream().filter(sampleQC -> sampleQC.getQcType().equalsIgnoreCase(qc)).findFirst();
-            if(findQC.isPresent() && !StringUtils.isEmpty(findQC.get().getQcResult())) {
-                result = findQC.get().getQcResult();
-            }
-        }
-
-        return result;
-    }
-
-    //qcList에서 해당 qc 결과를 반환
-    private String findQCTooltipString(List<SampleQC> qcList, String qc) {
-        String result = "";
-
-        if(qcList != null && !qcList.isEmpty()) {
-            Optional<SampleQC> findQC = qcList.stream().filter(sampleQC -> sampleQC.getQcType().equalsIgnoreCase(qc)).findFirst();
-            if(findQC.isPresent()) {
-                result = findQC.get().getQcDescription() + " " + findQC.get().getQcThreshold() + System.lineSeparator()
-                        + "Value : " + findQC.get().getQcValue().stripTrailingZeros().toPlainString() + findQC.get().getQcUnit();
-            }
-        }
-
-        return result;
-    }
-
 }

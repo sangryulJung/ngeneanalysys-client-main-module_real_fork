@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -85,7 +86,7 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
             HttpClientResponse response = apiService.get("/analysisResults/snpInDels/" + variant.getSnpInDel().getId() + "/snpInDelTranscripts", null, null, false);
             return (List<SnpInDelTranscript>) response.getMultiObjectBeforeConvertResponseToJSON(SnpInDelTranscript.class, false);
         } catch (WebAPIException wae) {
-            return null;
+            return Collections.emptyList();
         }
     }
     /**
@@ -158,7 +159,7 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
         }
 
         // 레퍼런스 앞문자열 끝에서부터 9글자만 출력함.
-        int displayLeft22Bplength = 9;
+        //int displayLeft22Bplength = 9;
         String displayLeft22Bp = left22Bp;
         /*if(!StringUtils.isEmpty(left22Bp) && left22Bp.length() > displayLeft22Bplength) {
             for(int i = 0; i < left22Bp.length(); i++) {
@@ -169,7 +170,7 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
         }*/
 
         // 레퍼런스 뒷문자열 9글자만 출력 : 레퍼런스 문자열이 1보다 큰 경우 1보다 늘어난 숫자만큼 출력 문자열 수 가감함.
-        int displayRight22BpLength = 9;
+        //int displayRight22BpLength = 9;
         String displayRight22Bp = right22Bp;
         // 처음부터 지정글자수까지 출력
         /*if(!StringUtils.isEmpty(right22Bp) && right22Bp.length() > displayRight22BpLength) {

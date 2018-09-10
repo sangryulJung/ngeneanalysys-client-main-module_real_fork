@@ -119,7 +119,6 @@ public class RawDataDownloadProgressTaskController extends SubPaneController {
 	public void show(Parent root) throws IOException {
 		this.analysisRequestService = AnalysisRequestService.getInstance();
 
-		boolean isWorkStart = false;
 		this.progressIndicator.setProgress(new ProgressBar().getProgress());
 
 		this.task = new RawDataDownloadTask(this, info.getRunSampleView(),	info.getFolder(), info.getType());

@@ -1,8 +1,6 @@
 package ngeneanalysys.util.httpclient;
 
 import ngeneanalysys.task.FileUploadTask;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.util.Args;
 

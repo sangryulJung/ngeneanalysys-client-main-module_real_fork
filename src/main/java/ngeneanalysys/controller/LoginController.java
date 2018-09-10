@@ -44,7 +44,7 @@ public class LoginController extends BaseStageController {
 	private static final Logger logger = LoggerUtil.getLogger();
 
 	@FXML
-	private Label CapsLock;
+	private Label capsLock;
 	
 	@FXML
 	private GridPane contentsWrapper;
@@ -96,9 +96,9 @@ public class LoginController extends BaseStageController {
 	@FXML
 	public void changePwIcon(KeyEvent ke) {
 		if (Toolkit.getDefaultToolkit().getLockingKeyState(java.awt.event.KeyEvent.VK_CAPS_LOCK) ) {
-			CapsLock.setStyle("-fx-background-image:url('layout/images/renewal/upper_case_icon.png');-fx-background-repeat: no-repeat;-fx-background-position: center;");
+			capsLock.setStyle("-fx-background-image:url('layout/images/renewal/upper_case_icon.png');-fx-background-repeat: no-repeat;-fx-background-position: center;");
 		}else {
-			CapsLock.setStyle("");
+			capsLock.setStyle("");
 		}
 		if(inputPassword.getText().isEmpty()) {
 			inputPassword.setStyle("-fx-background-image:url('layout/images/renewal/login_password_icon.png')");
@@ -185,9 +185,9 @@ public class LoginController extends BaseStageController {
 
 	private void showCapLock() {
 		if (Toolkit.getDefaultToolkit().getLockingKeyState(java.awt.event.KeyEvent.VK_CAPS_LOCK) ) {
-			CapsLock.setStyle("-fx-background-image:url('layout/images/renewal/upper_case_icon.png');-fx-background-repeat: no-repeat;-fx-background-position: center;");
+			capsLock.setStyle("-fx-background-image:url('layout/images/renewal/upper_case_icon.png');-fx-background-repeat: no-repeat;-fx-background-position: center;");
 		}else {
-			CapsLock.setStyle("");
+			capsLock.setStyle("");
 		}
 	}
 	

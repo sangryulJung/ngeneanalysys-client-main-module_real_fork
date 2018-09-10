@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.stage.FileChooser;
 import ngeneanalysys.MainApp;
+import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.WorkProgressController;
 import ngeneanalysys.model.SampleView;
 import ngeneanalysys.task.ExportInterpretationDataTask;
@@ -42,7 +43,7 @@ public class WorksheetUtil {
 				Task<Void> task = new ExportInterpretationDataTask(mainApp, fileType, file, params);
 				Thread exportDataThread = new Thread(task);
 				WorkProgressController<Void> workProgressController = new WorkProgressController<>(mainApp, "Export variant List", task);
-				FXMLLoader loader = mainApp.load("/layout/fxml/WorkProgress.fxml");
+				FXMLLoader loader = mainApp.load(FXMLConstants.WORK_PROGRESS);
 				loader.setController(workProgressController);
 				Node root = loader.load();
 				workProgressController.show((Parent) root);
@@ -78,7 +79,7 @@ public class WorksheetUtil {
 				Task<Void> task = new ExportVariantDataTask(mainApp, fileType, file, filterList, params, sample.getId());
 				Thread exportDataThread = new Thread(task);
 				WorkProgressController<Void> workProgressController = new WorkProgressController<>(mainApp, "Export variant List", task);
-				FXMLLoader loader = mainApp.load("/layout/fxml/WorkProgress.fxml");
+				FXMLLoader loader = mainApp.load(FXMLConstants.WORK_PROGRESS);
 				loader.setController(workProgressController);
 				Node root = loader.load();
 				workProgressController.show((Parent) root);
@@ -106,7 +107,7 @@ public class WorksheetUtil {
 				Task<Void> task = new ExportVariantDataTask(mainApp, file, searchParams, params);
 				Thread exportDataThread = new Thread(task);
 				WorkProgressController<Void> workProgressController = new WorkProgressController<>(mainApp, "Export variant List", task);
-				FXMLLoader loader = mainApp.load("/layout/fxml/WorkProgress.fxml");
+				FXMLLoader loader = mainApp.load(FXMLConstants.WORK_PROGRESS);
 				loader.setController(workProgressController);
 				Node root = loader.load();
 				workProgressController.show((Parent) root);

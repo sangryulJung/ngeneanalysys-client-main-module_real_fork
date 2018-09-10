@@ -272,7 +272,7 @@ public class PopOverUtil {
         } else if(option.contains("lt:")) {
             operator = "< ";
         }
-        return operator + option.substring(option.indexOf(":") + 1);
+        return operator + option.substring(option.indexOf(':') + 1);
     }
 
     private static void setKeyValue(String key, String value, VBox box) {

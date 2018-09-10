@@ -422,29 +422,23 @@ public class VariantFilterController extends SubPaneController {
 
         setPathogenicity();
 
-        startFractionTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("[0-9]*")) startFractionTextField.setText(oldValue);
-        });
+        startFractionTextField.textProperty().addListener((observable, oldValue, newValue) ->
+            integerCheck(startFractionTextField, oldValue, newValue));
 
-        endFractionTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("[0-9]*")) endFractionTextField.setText(oldValue);
-        });
+        endFractionTextField.textProperty().addListener((observable, oldValue, newValue) ->
+            integerCheck(endFractionTextField, oldValue, newValue));
 
-        depthCountTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("[0-9]*")) depthCountTextField.setText(oldValue);
-        });
+        depthCountTextField.textProperty().addListener((observable, oldValue, newValue) ->
+            integerCheck(depthCountTextField, oldValue, newValue));
 
-        altCountTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("[0-9]*")) altCountTextField.setText(oldValue);
-        });
+        altCountTextField.textProperty().addListener((observable, oldValue, newValue) ->
+            integerCheck(altCountTextField, oldValue, newValue));
 
-        depthEndCountTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("[0-9]*")) depthEndCountTextField.setText(oldValue);
-        });
+        depthEndCountTextField.textProperty().addListener((observable, oldValue, newValue) ->
+            integerCheck(depthEndCountTextField, oldValue, newValue));
 
-        altEndCountTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("[0-9]*")) altEndCountTextField.setText(oldValue);
-        });
+        altEndCountTextField.textProperty().addListener((observable, oldValue, newValue) ->
+            integerCheck(altEndCountTextField, oldValue, newValue));
 
         startFractionTextField.focusedProperty().addListener((ol, ov, nv) -> {
             if(!nv && checkNotEmptyTextField(startFractionTextField, endFractionTextField)
@@ -513,6 +507,10 @@ public class VariantFilterController extends SubPaneController {
         Scene scene = new Scene(root);
         dialogStage.setScene(scene);
         dialogStage.showAndWait();
+    }
+
+    private void integerCheck(TextField textField, String oValue, String nValue) {
+        if (!nValue.matches("[0-9]*")) textField.setText(oValue);
     }
 
     private boolean checkNotEmptyTextField(TextField textField1, TextField textField2) {
@@ -959,7 +957,7 @@ public class VariantFilterController extends SubPaneController {
     }
 
     private void setFeqTextField(String option, TextField textField) {
-        textField.setText(option.substring(option.indexOf(":") + 1));
+        textField.setText(option.substring(option.indexOf(':') + 1));
     }
 
     private void codingConsequenceCheck(String option) {

@@ -608,7 +608,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 igvService.setMainController(getMainController());
 
                 String sampleId = sample.getId().toString();
-                String variantId = variant.getSnpInDel().getId().toString();
                 String gene = variant.getSnpInDel().getGenomicCoordinate().getGene();
                 String locus = String.format("%s:%,d-%,d",
                         variant.getSnpInDel().getGenomicCoordinate().getChromosome(),
@@ -618,7 +617,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 String humanGenomeVersion = (refGenome.contains("hg19")) ? "hg19" : "hg18";
 
                 try {
-                    igvService.load(sampleId, sample.getName(), variantId, gene, locus , humanGenomeVersion);
+                    igvService.load(sampleId, sample.getName(), gene, locus , humanGenomeVersion);
                 } catch (WebAPIException wae) {
                     DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                             getMainApp().getPrimaryStage(), true);

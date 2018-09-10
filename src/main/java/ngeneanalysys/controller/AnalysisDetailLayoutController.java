@@ -61,9 +61,6 @@ public class AnalysisDetailLayoutController extends SubPaneController {
     @FXML
     private TabPane topTabPane;
 
-    /** 현재 샘플의 고유 아아디 */
-    private Integer sampleId;
-
     private SampleView sampleView;
 
     private Panel panel;
@@ -96,7 +93,7 @@ public class AnalysisDetailLayoutController extends SubPaneController {
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
 
-        sampleId = (int) getParamMap().get("id");
+        Integer sampleId = (int) getParamMap().get("id");
         Platform.runLater(() -> {
         try {
             HttpClientResponse response = apiService.get("samples/" + sampleId, null, null, true);

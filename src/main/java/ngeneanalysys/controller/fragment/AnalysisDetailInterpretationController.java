@@ -204,6 +204,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
     }
 
+    @SuppressWarnings("unchecked")
     private void getDiseases() {
         try {
             HttpClientResponse response = apiService.get("/diseases", null, null, false);
@@ -211,14 +212,13 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
             SampleView sample = (SampleView)getParamMap().get("sampleView");
 
-            Optional<Diseases> diseasesOptional = diseasesList.stream().filter(diseases ->
-                    diseases.getName().equalsIgnoreCase(sample.getDiseaseName())).findFirst();
+            Optional<Diseases> diseasesOptional = diseasesList.stream().filter(disease ->
+                    disease.getName().equalsIgnoreCase(sample.getDiseaseName())).findFirst();
 
-            if(diseasesOptional.isPresent()) {
-                this.diseases = diseasesOptional.get();
-            }
-        } catch (WebAPIException wea) {
+            diseasesOptional.ifPresent(item -> this.diseases = item);
 
+        } catch (WebAPIException wae) {
+            DialogUtil.error("Server communication error", wae.getMessage(), mainApp.getPrimaryStage(), true);
         }
     }
 
@@ -270,7 +270,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
         }
 
-        private void updateAutoCompletion(final String value, final CustomTextField textField) {
+        private void updateAutoCompletion(final String value) {
 
             SnpInDelEvidence snpInDelEvidence = EditingCell.this.getTableView().getItems().get(
                     EditingCell.this.getIndex());
@@ -289,9 +289,9 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                 provider.clearSuggestions();
                 provider.addPossibleSuggestions(getAllData(jsonArray));
             } catch (WebAPIException wae) {
-                wae.printStackTrace();
+                DialogUtil.error("Server communication error", wae.getMessage(), mainApp.getPrimaryStage(), true);
             } catch (ParseException pe) {
-                pe.printStackTrace();
+                logger.debug(pe.getMessage());
             }
 
         }
@@ -307,7 +307,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
             textField = new CustomTextField();
             provider = SuggestionProvider.create(new HashSet<>());
             TextFields.bindAutoCompletion(textField, provider).setVisibleRowCount(10);
-            textField.textProperty().addListener((ob, oValue, nValue) -> updateAutoCompletion(nValue, textField));
+            textField.textProperty().addListener((ob, oValue, nValue) -> updateAutoCompletion(nValue));
             textField.setText(getString());
             textField.getStyleClass().add("txt_black");
             textField.setMinWidth(this.getWidth() - this.getGraphicTextGap() * 2);
@@ -585,7 +585,6 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
     private void addToReportBtn(CheckBox checkBox) {
         if(selectedAnalysisResultVariant != null) {
-            String oldSymbol = selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport();
             String symbol = "N";
             if (checkBox.isSelected()) {
                 symbol = "Y";
@@ -609,8 +608,8 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         }
     }
 
-    public void checkBoxSetting(CheckBox checkBox, String Symbol) {
-        if("Y".equals(Symbol)) {
+    public void checkBoxSetting(CheckBox checkBox, String symbol) {
+        if("Y".equals(symbol)) {
             checkBox.setSelected(true);
         } else {
             checkBox.setSelected(false);

@@ -58,10 +58,6 @@ public class AnalysisDetailTSTPublishedFusionController extends AnalysisDetailCo
     @FXML
     private TableColumn<PublishedFusion, String> filterTableColumn;
 
-    private APIService apiService;
-
-    private SampleView sample;
-
     private AnalysisDetailVariantsController variantsController;
 
     /**
@@ -75,9 +71,9 @@ public class AnalysisDetailTSTPublishedFusionController extends AnalysisDetailCo
     public void show(Parent root) throws IOException {
         logger.debug("published fusion view");
 
-        this.apiService = APIService.getInstance();
+        APIService apiService = APIService.getInstance();
 
-        this.sample = (SampleView)paramMap.get("sampleView");
+        SampleView sample = (SampleView)paramMap.get("sampleView");
 
         fusionGeneTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFusionGene()));
         mitelmanIdsTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getMitelmanIds()));

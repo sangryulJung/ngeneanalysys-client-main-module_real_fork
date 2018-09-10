@@ -49,7 +49,7 @@ public class PDFCreateService {
     /**
      * 환경 체크
      * 	- FOP 관련 설정 XML 및 폰트 파일들이 .ngenebio_analysys_gui 경로 하위에 복사되어 있는지 체크
-     * @return
+     * @return boolean
      */
     public boolean checkEnvironment() {
         if(!fopConfXML.exists()) return false;
@@ -70,7 +70,7 @@ public class PDFCreateService {
      * @see
      * 'FOP Library를 사용하여 PDF 생성 시 설정파일과 폰트파일들이 jar파일 내에 존재하는 경우 파일을 정상적으로 불러올수 없어 특정 경로에 복사하여 사용함.
      */
-    public void copyFopConfig() throws Exception {
+    private void copyFopConfig() throws Exception {
         logger.debug("copy fop config files..");
         ResourceUtil resourceUtil = new ResourceUtil();
 

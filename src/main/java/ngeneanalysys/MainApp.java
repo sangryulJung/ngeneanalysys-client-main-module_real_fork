@@ -38,9 +38,6 @@ public class MainApp extends Application {
 	// Properties Config
 	protected Properties config;
 	
-	// Resource Util
-	//protected ResourceUtil resourceUtil = new ResourceUtil();
-	
 	// 메인 Stage
 	private Stage primaryStage;
 
@@ -106,11 +103,6 @@ public class MainApp extends Application {
 	 */
 	public FXMLLoader load(String fxmlPath) {
 		return FXMLLoadUtil.load(fxmlPath);
-	}
-
-	
-	private boolean checkExistsDatabasePathAndCreate() {
-		return false;
 	}
 	
 	private boolean isProxyServerRunning() {
@@ -183,9 +175,6 @@ public class MainApp extends Application {
 		logger.debug(String.format("# already running application : %s", isAlreadyRunning));
 		
 		if(!isAlreadyRunning) {
-			boolean checkDB = checkExistsDatabasePathAndCreate();
-			logger.debug("check local db : " + checkDB);
-
 			config = PropertiesService.getInstance().getConfig();
 			logger.debug(String.format("application name : %s", getProperty("application.name")));
 		}

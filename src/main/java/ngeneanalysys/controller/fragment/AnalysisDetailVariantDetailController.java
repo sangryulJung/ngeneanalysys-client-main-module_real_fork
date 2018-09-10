@@ -25,12 +25,11 @@ public class AnalysisDetailVariantDetailController extends SubPaneController {
     private GridPane detailWarpper;
 
     private AnalysisDetailVariantNomenclatureController analysisDetailVariantNomenclatureController;
-    private Panel panel;
 
     @Override
     public void show(Parent root) throws IOException {
         logger.debug("variant detail view");
-        panel = (Panel)paramMap.get("panel");
+        Panel panel = (Panel)paramMap.get("panel");
         if(!detailWarpper.getChildren().isEmpty()) detailWarpper.getChildren().removeAll(detailWarpper.getChildren());
         showReadDepth();
         showVariantNomenclature();
@@ -51,7 +50,7 @@ public class AnalysisDetailVariantDetailController extends SubPaneController {
             controller.show((Parent) node);
             detailWarpper.add(node, 2, 0);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.debug(e.getMessage());
         }
     }
 
@@ -65,7 +64,7 @@ public class AnalysisDetailVariantDetailController extends SubPaneController {
             controller.show((Parent) node);
             detailWarpper.add(node, 0, 0);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.debug(e.getMessage());
         }
     }
     private void showVariantNomenclature() {
@@ -79,7 +78,7 @@ public class AnalysisDetailVariantDetailController extends SubPaneController {
             analysisDetailVariantNomenclatureController = controller;
             detailWarpper.add(node, 1, 0);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.debug(e.getMessage());
         }
     }
     private void showInSilicoPredictions() {
