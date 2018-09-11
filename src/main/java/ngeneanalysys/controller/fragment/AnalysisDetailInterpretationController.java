@@ -613,7 +613,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         }
     }
 
-    public void checkBoxSetting(CheckBox checkBox, String symbol) {
+    private void checkBoxSetting(CheckBox checkBox, String symbol) {
         if("Y".equals(symbol)) {
             checkBox.setSelected(true);
         } else {

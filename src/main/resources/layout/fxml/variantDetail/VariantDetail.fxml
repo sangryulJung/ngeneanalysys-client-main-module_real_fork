@@ -8,7 +8,7 @@
 
 <ScrollPane maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="800.0" style="-fx-background-color: #fff; -fx-background-radius: 0;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.AnalysisDetailVariantDetailController">
     <content>
-        <GridPane fx:id="detailWarpper" hgap="40.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="240.0" style="-fx-background-color: #fff;">
+        <GridPane fx:id="detailWrapper" hgap="40.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="240.0" style="-fx-background-color: #fff;">
             <columnConstraints>
                 <ColumnConstraints halignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="171.0" />
                 <ColumnConstraints halignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="300.0" />

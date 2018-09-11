@@ -173,6 +173,7 @@ public class HomeController extends SubPaneController{
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void setToolsAndDatabase() {
         databaseVersionVBox.getChildren().removeAll(databaseVersionVBox.getChildren());
         try {
