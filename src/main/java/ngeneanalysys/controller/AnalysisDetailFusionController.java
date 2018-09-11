@@ -21,9 +21,6 @@ import java.io.IOException;
 public class AnalysisDetailFusionController extends AnalysisDetailCommonController {
     private static Logger logger = LoggerUtil.getLogger();
 
-    /** API 서버 통신 서비스 */
-    private APIService apiService;
-
     /** 작업 Dialog Window Stage Object */
     private Stage currentStage;
 
@@ -31,7 +28,7 @@ public class AnalysisDetailFusionController extends AnalysisDetailCommonControll
     @Override
     public void show(Parent root) throws IOException {
         logger.debug("show Fusion");
-        apiService = APIService.getInstance();
+        APIService apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
 
         currentStage = new Stage();

@@ -10,6 +10,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ngeneanalysys.code.constants.CommonConstants;
+import ngeneanalysys.code.enums.AnalysisTypeCode;
 import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
@@ -673,7 +674,7 @@ public class VariantFilterController extends SubPaneController {
     }
 
     private void setPathogenicity() {
-        if("SOMATIC".equalsIgnoreCase(panel.getAnalysisType())) {
+        if(AnalysisTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             caseLabel.setText("Tier");
             caseECheckBox.setVisible(false);
             caseACheckBox.setText("Tier1");
@@ -1202,7 +1203,7 @@ public class VariantFilterController extends SubPaneController {
             setFrequency(list, exacTextField.getText(), exacComboBox.getSelectionModel().getSelectedItem().getValue(), "exac");
         }
 
-        if("somatic".equalsIgnoreCase(panel.getAnalysisType())) {
+        if(AnalysisTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType())) {
             if (StringUtils.isNotEmpty(gnomADAllTextField.getText())) {
                 setFrequency(list, gnomADAllTextField.getText(), gnomADAllComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADall");
             }
@@ -1321,7 +1322,7 @@ public class VariantFilterController extends SubPaneController {
 
     private void variantTabSave(List<Object> list) {
 
-        if("SOMATIC".equalsIgnoreCase(panel.getAnalysisType())) {
+        if(AnalysisTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType())) {
             if(caseACheckBox.isSelected()) {
                 list.add("tier T1");
             }

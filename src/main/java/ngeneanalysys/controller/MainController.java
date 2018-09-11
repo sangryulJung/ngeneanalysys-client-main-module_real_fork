@@ -377,7 +377,7 @@ public class MainController extends BaseStageController {
 
         Optional<ButtonType> result = alert.showAndWait();
 
-        if(result.get() == ButtonType.OK) {
+        if(result.isPresent() && result.get() == ButtonType.OK) {
             isClose = true;
         }
 
@@ -474,12 +474,6 @@ public class MainController extends BaseStageController {
         basicInformationMap.put(filterName, somaticFilter);
     }*/
 
-    private List<Object> setStandardFilter(String key, String value) {
-        List<Object> list = new ArrayList<>();
-        list.add(key + " " + value);
-        return list;
-    }
-
     /**
      * 상단 사용자 메뉴 설정 : 사용자 권한에 따른 메뉴 출력
      * @param role String
@@ -556,10 +550,9 @@ public class MainController extends BaseStageController {
     /**
      * 상단 메뉴 추가
      * @param menu TopMenu
-     * @param addPositionIdx int
      * @param isDisplay boolean
      */
-    void addTopMenu(TopMenu menu, int addPositionIdx, boolean isDisplay) {
+    void addTopMenu(TopMenu menu, boolean isDisplay) {
         // 중복 체크
         boolean isAdded = false;
         int addedMenuIdx = 0;
@@ -637,17 +630,17 @@ public class MainController extends BaseStageController {
             }
             sampleMenu = newTopMenus;
 
-            if(currentSampleId == null) {
-
-            } else if(sampleMenu.length == 0) {
-                currentSampleId = null;
-                showTopMenuContents(1);
-            } else {
-                if(removeIdx > 0) {
-                    currentSampleId = sampleMenu[removeIdx - 1].getId();
-                    showSampleDetail(sampleMenu[removeIdx - 1]);
+            if(currentSampleId != null) {
+                if (sampleMenu.length == 0) {
+                    currentSampleId = null;
+                    showTopMenuContents(1);
                 } else {
-                    showSampleDetail(sampleMenu[removeIdx]);
+                    if (removeIdx > 0) {
+                        currentSampleId = sampleMenu[removeIdx - 1].getId();
+                        showSampleDetail(sampleMenu[removeIdx - 1]);
+                    } else {
+                        showSampleDetail(sampleMenu[removeIdx]);
+                    }
                 }
             }
             if(sampleMenu == null || sampleMenu.length == 0) {

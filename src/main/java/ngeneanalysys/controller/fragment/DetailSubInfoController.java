@@ -13,6 +13,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import ngeneanalysys.code.constants.FXMLConstants;
+import ngeneanalysys.code.enums.AnalysisTypeCode;
 import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
@@ -190,7 +191,7 @@ public class DetailSubInfoController extends SubPaneController {
             dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
         }
 
-        if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
+        if(AnalysisTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType())) {
             if (!StringUtils.isEmpty(selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getCosmic().getCosmicIds())) {
                 dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
                 Label dbContentLabel = createLinkLabel("COSMIC", "COSMIC");
@@ -276,7 +277,7 @@ public class DetailSubInfoController extends SubPaneController {
                     + endPlus;
 
             openBrowser(fullUrlUCSC);
-        } else if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
+        } else if(AnalysisTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType())) {
             if("COSMIC".equalsIgnoreCase(item)) {
                 String cosmicId = selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getCosmic().getCosmicIds().replaceAll("COSM", "");
                 if (cosmicId.contains("|")) {
