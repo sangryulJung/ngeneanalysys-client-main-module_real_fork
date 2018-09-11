@@ -825,13 +825,7 @@ public class MainController extends BaseStageController {
                 softwareVersionController.setMainController(this);
                 softwareVersionController.setConfig(this.config);
                 softwareVersionController.show((Parent) root);
-            } /*else if(menuId.equals(SystemMenuCode.PUBLIC_DATABASES.name())) {
-                loader = mainApp.load(FXMLConstants.SYSTEM_MENU_PUBLIC_DATABASES);
-                Node root = loader.load();
-                SystemMenuPublicDatabasesController publicDatabasesController = loader.getController();
-                publicDatabasesController.setMainController(this);
-                publicDatabasesController.show((Parent) root);
-            }*/
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

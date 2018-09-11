@@ -79,9 +79,6 @@ public class AnalysisDetailLayoutController extends SubPaneController {
 
     private AnalysisDetailTSTRNAOverviewController tstrnaOverviewController;
 
-    /** API 서버 통신 서비스 */
-    private APIService apiService;
-
     @FXML
     private Button rawDataDownload;
 
@@ -90,7 +87,7 @@ public class AnalysisDetailLayoutController extends SubPaneController {
     public void show(Parent root) throws IOException {
         mainController.setContentsMaskerPaneVisible(true);
         logger.debug("show..");
-        apiService = APIService.getInstance();
+        APIService apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
 
         Integer sampleId = (int) getParamMap().get("id");
