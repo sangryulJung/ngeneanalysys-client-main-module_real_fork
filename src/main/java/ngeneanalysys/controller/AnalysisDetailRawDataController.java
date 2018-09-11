@@ -240,24 +240,6 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
     }
 
     /**
-     * 필터 선택 표시
-     * @param tag String
-     */
-    public void setOnSelectedFilter(String tag) {
-        if(filterList.getChildren() != null && filterList.getChildren().size() > 0) {
-            for (Node node : filterList.getChildren()) {
-                VBox box = (VBox) node;
-                // 선택 속성 클래스 삭제
-                box.getStyleClass().remove("selected");
-                if(box.getId().equals(tag)) {
-                    // 선택 속성 클래스 추가
-                    box.getStyleClass().add("selected");
-                }
-            }
-        }
-    }
-
-    /**
      * 목록 화면 출력
      * @param tag String
      */

@@ -144,6 +144,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
 
     private File wordCreatorJar;
 
+    @SuppressWarnings("unchecked")
     @Override
     public void show(Parent root) throws IOException {
         logger.debug("system manager report template init");
@@ -172,19 +173,21 @@ public class SystemManagerReportTemplateController extends SubPaneController{
         editReportTemplateTableColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
         editReportTemplateTableColumn.setCellFactory(param -> new ReportTemplateModifyButton());
 
+        String dateFormat = "yyyy-MM-dd";
+
         createdAtTableColumn.setCellValueFactory(item -> new SimpleStringProperty(DateFormatUtils.format(
-                item.getValue().getCreatedAt().toDate(), "yyyy-MM-dd")));
+                item.getValue().getCreatedAt().toDate(), dateFormat)));
         updatedAtTableColumn.setCellValueFactory(item -> {
             if (item.getValue().getUpdatedAt() != null )
                 return new SimpleStringProperty(DateFormatUtils.format(
-                        item.getValue().getUpdatedAt().toDate(), "yyyy-MM-dd"));
+                        item.getValue().getUpdatedAt().toDate(), dateFormat));
             else
                 return new SimpleStringProperty("");
         });
         deletedAtTableColumn.setCellValueFactory(item -> {
             if (item.getValue().getDeletedAt() != null )
                 return new SimpleStringProperty(DateFormatUtils.format(
-                        item.getValue().getDeletedAt().toDate(), "yyyy-MM-dd"));
+                        item.getValue().getDeletedAt().toDate(), dateFormat));
             else
                 return new SimpleStringProperty("");
         });
@@ -199,7 +202,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
         setDisabledItem(true);
 
         variableListComboBox.getSelectionModel().selectedIndexProperty().addListener((ov, oldIdx, newIdx) -> {
-            if (oldIdx != newIdx) {
+            if (!oldIdx.equals(newIdx)) {
                 Map<String, String> item = (Map<String, String>) variableList.get(variableListComboBox.getSelectionModel().getSelectedItem());
 
                 if(item != null) {
@@ -236,7 +239,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
         });
     }
 
-    public void setReportTableList(int page) {
+    void setReportTableList(int page) {
 
         int totalCount = 0;
         int limit = 17;

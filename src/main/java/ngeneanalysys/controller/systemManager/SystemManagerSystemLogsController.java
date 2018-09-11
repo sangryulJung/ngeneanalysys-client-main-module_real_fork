@@ -78,7 +78,7 @@ public class SystemManagerSystemLogsController extends SubPaneController {
         });
     }
 
-    public Map<String, Object> getLogSearchParam() {
+    private Map<String, Object> getLogSearchParam() {
 
 
         return new HashMap<>();

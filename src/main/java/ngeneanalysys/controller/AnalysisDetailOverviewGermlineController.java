@@ -172,13 +172,6 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
                 });
 
                 pGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
-
-                List<SnpInDelEvidence> snpInDelInterpretations = new ArrayList<>();
-                pathogenicList.forEach(item -> {
-                    if (ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences()) != null)
-                        snpInDelInterpretations.add(ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences()));
-                });
-
             }
 
             if(likelyPathogenic != null) {
@@ -192,12 +185,6 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
                 });
 
                 lpGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
-
-                List<SnpInDelEvidence> snpInDelInterpretations = new ArrayList<>();
-                likelyPathogenic.forEach(item -> {
-                    if (ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences()) != null)
-                        snpInDelInterpretations.add(ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences()));
-                });
             }
 
             if(uncertainSignificance != null) {
@@ -211,12 +198,6 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
                 });
 
                 usGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
-
-                List<SnpInDelEvidence> snpInDelInterpretations = new ArrayList<>();
-                uncertainSignificance.forEach(item -> {
-                    if (ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences()) != null)
-                        snpInDelInterpretations.add(ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences()));
-                });
             }
 
             if(likelyBenign != null) {
@@ -229,12 +210,6 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
                 });
 
                 lbGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
-
-                List<SnpInDelEvidence> snpInDelInterpretations = new ArrayList<>();
-                likelyBenign.forEach(item -> {
-                    if (ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences()) != null)
-                        snpInDelInterpretations.add(ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences()));
-                });
             }
 
             if(benign != null) {
@@ -247,12 +222,6 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
                 });
 
                 bGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
-
-                List<SnpInDelEvidence> snpInDelInterpretations = new ArrayList<>();
-                benign.forEach(item -> {
-                    if (ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences()) != null)
-                        snpInDelInterpretations.add(ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences()));
-                });
             }
 
         } catch (Exception e) {

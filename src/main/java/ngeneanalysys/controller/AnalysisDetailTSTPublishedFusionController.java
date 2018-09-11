@@ -63,7 +63,7 @@ public class AnalysisDetailTSTPublishedFusionController extends AnalysisDetailCo
     /**
      * @param variantsController AnalysisDetailVariantsController
      */
-    public void setVariantsController(AnalysisDetailVariantsController variantsController) {
+    void setVariantsController(AnalysisDetailVariantsController variantsController) {
         this.variantsController = variantsController;
     }
 

@@ -18,6 +18,8 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class ConvertUtil {
 
+	private ConvertUtil() {}
+
 	/**
 	 * 숫자 문자열 지정 형식 문자열로 변환
 	 * @param format

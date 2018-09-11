@@ -93,7 +93,7 @@ public class AnalysisDetailTSTFusionController extends AnalysisDetailCommonContr
     /**
      * @param variantsController AnalysisDetailVariantsController
      */
-    public void setVariantsController(AnalysisDetailVariantsController variantsController) {
+    void setVariantsController(AnalysisDetailVariantsController variantsController) {
         this.variantsController = variantsController;
     }
 

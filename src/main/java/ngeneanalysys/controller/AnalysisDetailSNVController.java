@@ -885,7 +885,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             Node node = loader.load();
             memoController = loader.getController();
             memoController.setMainController(this.getMainController());
-            memoController.setAnalysisDetailSNVController(this);
             memoController.show((Parent) node);
             memoController.displayList(memoList);
             interpretationLogsTitledPane.setContent(node);

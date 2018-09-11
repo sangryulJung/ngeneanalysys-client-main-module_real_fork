@@ -667,7 +667,7 @@ public class SystemManagerPanelController extends SubPaneController {
                 diseaseCheckComboBox.getCheckModel().getCheckedItems().addListener(new ListChangeListener<ComboBoxItem>() {
                     @Override
                     public void onChanged(Change<? extends ComboBoxItem> c) {
-                        List<ComboBoxItem> selectedItem = diseaseCheckComboBox.getCheckModel().getCheckedItems().stream().collect(Collectors.toList());
+                        List<ComboBoxItem> selectedItem = new ArrayList<>(diseaseCheckComboBox.getCheckModel().getCheckedItems());
                         if(defaultDiseaseComboBox.getItems().isEmpty()) {
                             defaultDiseaseComboBox.getItems().addAll(selectedItem);
                         } else {
@@ -759,7 +759,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
         if(!frequencyDBCheckComboBox.getCheckModel().getCheckedItems().isEmpty()) {
             final StringBuilder value = new StringBuilder();
-            frequencyDBCheckComboBox.getCheckModel().getCheckedItems().forEach(item -> value.append(item.getValue() + ","));
+            frequencyDBCheckComboBox.getCheckModel().getCheckedItems().forEach(item -> value.append(item.getValue()).append(","));
             value.deleteCharAt(value.length() - 1);
             variantFilter.setPopulationFrequencyDBs(value.toString());
         }
@@ -777,7 +777,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
         if(!lowConfidenceCheckComboBox.getCheckModel().getCheckedItems().isEmpty()) {
             final StringBuilder value = new StringBuilder();
-            lowConfidenceCheckComboBox.getCheckModel().getCheckedItems().forEach(item -> value.append(item + ","));
+            lowConfidenceCheckComboBox.getCheckModel().getCheckedItems().forEach(item -> value.append(item ).append(","));
             value.deleteCharAt(value.length() - 1);
             variantFilter.setLowConfidenceFilter(value.toString());
         }
@@ -900,14 +900,14 @@ public class SystemManagerPanelController extends SubPaneController {
             StringBuilder groupString = new StringBuilder();
             ObservableList<ComboBoxItem> checkedGroupList =  groupCheckComboBox.getCheckModel().getCheckedItems();
             for(ComboBoxItem  group : checkedGroupList) {
-                groupString.append(group.getText() + " ");
+                groupString.append(group.getText()).append(" ");
             }
 
             //panel에서 선택할 수 있는 질병을 지정함
             StringBuilder diseaseList = new StringBuilder();
             ObservableList<ComboBoxItem> checkedDiseaseList =  diseaseCheckComboBox.getCheckModel().getCheckedItems();
             for(ComboBoxItem  disease : checkedDiseaseList) {
-                diseaseList.append(disease.getText() + " ");
+                diseaseList.append(disease.getText()).append(" ");
             }
 
             params.put("memberGroupIds", groupString.toString());
@@ -1137,7 +1137,7 @@ public class SystemManagerPanelController extends SubPaneController {
         uniformity02PercentageTextField.setDisable(condition);
     }
 
-    public void deletePanel(Integer panelId) {
+    private void deletePanel(Integer panelId) {
         try {
             apiService.delete("admin/panels/" + panelId);
 
@@ -1176,19 +1176,12 @@ public class SystemManagerPanelController extends SubPaneController {
         }
     }
 
-    private void selectPipelineComboBox(String code) {
-        Optional<ComboBoxItem> comboBoxItem = pipelineComboBox.getItems().stream()
-                .filter(item -> item.getValue().equals(code)).findFirst();
-
-        comboBoxItem.ifPresent(item -> pipelineComboBox.getSelectionModel().select(item));
-    }
-
     private class PanelModifyButton extends TableCell<PanelView, Boolean> {
         HBox box = null;
         final ImageView img1 = new ImageView(resourceUtil.getImage("/layout/images/modify.png", 18, 18));
         final ImageView img2 = new ImageView(resourceUtil.getImage("/layout/images/delete.png", 18, 18));
 
-        public PanelModifyButton() {
+        private PanelModifyButton() {
 
             img1.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 Panel panel = PanelModifyButton.this.getTableView().getItems().get(
@@ -1292,7 +1285,7 @@ public class SystemManagerPanelController extends SubPaneController {
                     for (int i = 0; i < groupCheckComboBox.getItems().size(); i++) {
                         ComboBoxItem item = groupCheckComboBox.getCheckModel().getItem(i);
                         if (groupIds != null && !groupIds.isEmpty() &&
-                                groupIds.stream().filter(id -> id.equals(Integer.parseInt(item.getValue()))).findFirst().isPresent())
+                                groupIds.stream().anyMatch(id -> id.equals(Integer.parseInt(item.getValue()))))
                             groupCheckComboBox.getCheckModel().check(item);
                     }
 
@@ -1300,7 +1293,7 @@ public class SystemManagerPanelController extends SubPaneController {
                     for (int i = 0; i < diseaseCheckComboBox.getItems().size(); i++) {
                         ComboBoxItem item = diseaseCheckComboBox.getCheckModel().getItem(i);
                         if (diseaseIds != null && !diseaseIds.isEmpty() &&
-                                diseaseIds.stream().filter(id -> id.equals(Integer.parseInt(item.getValue()))).findFirst().isPresent())
+                                diseaseIds.stream().anyMatch(id -> id.equals(Integer.parseInt(item.getValue()))))
                             diseaseCheckComboBox.getCheckModel().check(item);
                     }
 
@@ -1322,7 +1315,6 @@ public class SystemManagerPanelController extends SubPaneController {
             img2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 DialogUtil.setIcon(alert);
-                String alertHeaderText = "";
                 String alertContentText = "Are you sure to delete this panel?";
 
                 alert.setTitle("Confirmation Dialog");
@@ -1369,6 +1361,14 @@ public class SystemManagerPanelController extends SubPaneController {
             setGraphic(box);
 
         }
+
+        private void selectPipelineComboBox(String code) {
+            Optional<ComboBoxItem> comboBoxItem = pipelineComboBox.getItems().stream()
+                    .filter(item -> item.getValue().equals(code)).findFirst();
+
+            comboBoxItem.ifPresent(item -> pipelineComboBox.getSelectionModel().select(item));
+        }
+
     }
 
     private class VirtualPanelButton extends TableCell<PanelView, Boolean> {
@@ -1376,7 +1376,7 @@ public class SystemManagerPanelController extends SubPaneController {
         ComboBox<ComboBoxItem> comboBox = new ComboBox<>();
         final ImageView img = new ImageView(resourceUtil.getImage("/layout/images/modify.png", 18, 18));
 
-        public VirtualPanelButton() {
+        private VirtualPanelButton() {
 
             img.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 Panel panel = VirtualPanelButton.this.getTableView().getItems().get(
@@ -1490,7 +1490,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
         }
 
-        public void showRemoveDialog(ComboBoxItem item) {
+        private void showRemoveDialog(ComboBoxItem item) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             DialogUtil.setIcon(alert);
             alert.setTitle("Confirmation Dialog");
@@ -1498,7 +1498,7 @@ public class SystemManagerPanelController extends SubPaneController {
             alert.setContentText("Are you ok with this?");
 
             Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.OK){
+            if (result.isPresent() && result.get() == ButtonType.OK){
                 try {
                     apiService.delete("admin/virtualPanels/" + item.getValue());
 

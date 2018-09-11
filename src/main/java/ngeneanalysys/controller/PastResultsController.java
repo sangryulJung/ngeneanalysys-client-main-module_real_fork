@@ -1058,7 +1058,7 @@ public class PastResultsController extends SubPaneController {
 			if (runSampleView.getRun().getCreatedAt() != null)
 				submitDateLabel.setText(format.format(runSampleView.getRun().getCreatedAt().toDate()));
 			if (runSampleView.getRun().getCompletedAt() != null)
-			finishDateLabel.setText(format.format(runSampleView.getRun().getCompletedAt().toDate()));
+				finishDateLabel.setText(format.format(runSampleView.getRun().getCompletedAt().toDate()));
 			downloadLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
 				try {
 					FXMLLoader fxmlLoader = FXMLLoadUtil.load(FXMLConstants.RUN_RAW_DATA_DOWNLOAD);
