@@ -218,7 +218,7 @@ public class DetailSubInfoController extends SubPaneController {
     }
 
     @SuppressWarnings("unchecked")
-    public void showBrowser(String item) {
+    private void showBrowser(String item) {
         Map<String, Object> variantInformationMap = returnResultsAfterSearch("variant_information");
         Map<String, Object> genomicCoordinateMap = returnResultsAfterSearch("genomic_coordinate");
 
@@ -314,7 +314,7 @@ public class DetailSubInfoController extends SubPaneController {
             } else if("ALAMUT".equalsIgnoreCase(item)) {
                 Map<String, Object> geneMap = returnResultsAfterSearch("gene");
                 Map<String, Map<String, String>> transcriptDataMap = (Map<String, Map<String, String>>) geneMap.get("transcript");
-                if (!transcriptDataMap.isEmpty() && transcriptDataMap.size() > 0) {
+                if (transcriptDataMap != null && !transcriptDataMap.isEmpty()) {
                     int selectedIdx = this.analysisDetailVariantNomenclatureController.getTranscriptComboBoxSelectedIndex();
                     logger.debug(String.format("selected transcript combobox idx : %s", selectedIdx));
                     Map<String, String> map = transcriptDataMap.get(String.valueOf(selectedIdx));

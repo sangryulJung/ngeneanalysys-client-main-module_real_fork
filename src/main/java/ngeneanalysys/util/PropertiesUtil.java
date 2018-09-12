@@ -67,13 +67,13 @@ public class PropertiesUtil {
 	 * @param map Map<String,String>
 	 */
 	public static void saveProperties(File propertiesFile, Map<String,String> map) {
-		
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(propertiesFile), "UTF-8"))){
+		String encoding = "UTF-8";
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(propertiesFile), encoding))){
 			// 기존 설정 파일 내용
 			String fileContent = FileUtils.readFileToString(propertiesFile);
 			
 			if(StringUtils.isEmpty(fileContent)) {
-				FileUtils.write(propertiesFile, "", "UTF-8");
+				FileUtils.write(propertiesFile, "", encoding);
 			}	
 			Properties properties = new Properties();
 			properties.load(reader);
@@ -82,7 +82,7 @@ public class PropertiesUtil {
 				properties.setProperty(entry.getKey(), entry.getValue());
 			}
 				
-			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(propertiesFile, false), "UTF-8"));
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(propertiesFile, false), encoding));
 			properties.store(writer, "Update Settings");
 			writer.close();
 		} catch (UnsupportedEncodingException e) {

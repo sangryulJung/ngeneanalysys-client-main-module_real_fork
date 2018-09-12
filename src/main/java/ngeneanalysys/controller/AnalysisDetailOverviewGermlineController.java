@@ -264,7 +264,6 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
         dataQCResultGridPane.add(hBox, col, 0);
 
         Label qcResultLabel = new Label(sampleQC.getQcResult().toUpperCase());
-        //qcResultLabel.setTooltip(new Tooltip(sampleQC.getQcValue() + sampleQC.getQcUnit()));
 
         dataQCResultGridPane.add(qcResultLabel, col, 1);
         GridPane.setValignment(qcResultLabel, VPos.CENTER);

@@ -87,9 +87,9 @@ public class PopOverUtil {
         box.getStyleClass().add("acmg_content_box");
 
         scrollPane.setContent(box);
-
-        String[] results = acmg.containsKey("rules") ? ((String)acmg.get("rules")).split(",") : null;
-        String rulesText = acmg.containsKey("rules") ? "(" + acmg.get("rules") + ")" : null;
+        String key = "rules";
+        String[] results = acmg.containsKey(key) ? ((String)acmg.get(key)).split(",") : null;
+        String rulesText = acmg.containsKey(key) ? "(" + acmg.get(key) + ")" : null;
 
         Label reason = new Label();
         String pathogenicity = acmg.containsKey("pathogenicity") ? (String)acmg.get("pathogenicity") : null;
@@ -306,13 +306,6 @@ public class PopOverUtil {
                 value = "MNP";
             }
             createHBox(keyValue, value, box);
-            /*if(value.equalsIgnoreCase("snp")) {
-                createHBox(keyValue, "snv", box);
-            } else if(value.equalsIgnoreCase("ins")) {
-                createHBox(keyValue, "ins", box);
-            } else if(value.equalsIgnoreCase("del")) {
-                createHBox(keyValue, "del", box);
-            }*/
         } else if(key.equalsIgnoreCase("g1000All")) {
             createHBox("1KGP All",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("g1000African")) {

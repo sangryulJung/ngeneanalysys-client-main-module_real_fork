@@ -31,11 +31,8 @@ public class DialogUtil {
 			alert.initOwner(ownerStage);
 		}
 		
-		String title = null;
-		
-	/*	if(alterType == AlertType.INFORMATION) {
-			title = "INFORMATION";
-		} else */
+		String title;
+
 		if(alterType == AlertType.WARNING) {
 			title = "WARNING";
 		} else if(alterType == AlertType.ERROR) {
@@ -51,11 +48,6 @@ public class DialogUtil {
 		if(StringUtils.isEmpty(contentText)) {
 			alert.setContentText("Unknown message.");
 		} else {
-			/*if(contentText.length() > 100) {
-				alert.setContentText(contentText.substring(0, 100));
-			} else {
-				alert.setContentText(contentText);
-			}*/
 			alert.setContentText(contentText);
 		}
 		
