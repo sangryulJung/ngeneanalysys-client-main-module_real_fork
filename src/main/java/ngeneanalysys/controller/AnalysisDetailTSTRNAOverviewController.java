@@ -156,8 +156,8 @@ public class AnalysisDetailTSTRNAOverviewController extends AnalysisDetailCommon
 
     private List<VariantAndInterpretationEvidence> settingTierList(List<VariantAndInterpretationEvidence> allTierList, String tier) {
         if(!StringUtils.isEmpty(tier)) {
-            return allTierList.stream().filter(item -> ((tier.equalsIgnoreCase(item.getSnpInDel().getExpertTier()) ||
-                    (StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && tier.equalsIgnoreCase(item.getSnpInDel().getSwTier())))))
+            return allTierList.stream().filter(item -> (tier.equalsIgnoreCase(item.getSnpInDel().getExpertTier()) ||
+                    (StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && tier.equalsIgnoreCase(item.getSnpInDel().getSwTier()))))
                     .collect(Collectors.toList());
         }
 
@@ -205,19 +205,6 @@ public class AnalysisDetailTSTRNAOverviewController extends AnalysisDetailCommon
                 });
 
                 tierOneGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
-
-                List<SnpInDelEvidence> snpInDelInterpretations = new ArrayList<>();
-                tierOne.forEach(item -> {
-                    SnpInDelEvidence snpInDelEvidence = ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences());
-                    if (snpInDelEvidence != null) {
-                        snpInDelInterpretations.add(snpInDelEvidence);
-                    }
-
-                });
-
-                //long count = snpInDelInterpretations.size();
-                //long count = countTherapeutic(snpInDelInterpretations);
-                //tierOneTherapeuticLabel.setText(String.valueOf(count));
             }
 
             if(tierTwo != null) {
@@ -231,18 +218,6 @@ public class AnalysisDetailTSTRNAOverviewController extends AnalysisDetailCommon
                 });
 
                 tierTwoGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
-
-                List<SnpInDelEvidence> snpInDelInterpretations = new ArrayList<>();
-                tierTwo.forEach(item -> {
-                    SnpInDelEvidence snpInDelEvidence = ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences());
-                    if (snpInDelEvidence != null) {
-                        snpInDelInterpretations.add(snpInDelEvidence);
-                    }
-
-                });
-
-                //long count = countTherapeutic(snpInDelInterpretations);
-                //tierTwoTherapeuticLabel.setText(String.valueOf(count));
             }
 
             if(tierThree != null) {

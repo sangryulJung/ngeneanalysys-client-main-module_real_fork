@@ -389,7 +389,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
     }
 
     /** 그룹 삭제 */
-    public void deleteGroup(Integer id) {
+    private void deleteGroup(Integer id) {
         try {
             apiService.delete("/admin/memberGroups/"+id);
             groupListTable.getItems().clear();
@@ -403,7 +403,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
         }
     }
 
-    public void groupControllerInit(String type, UserGroup group) {
+    private void groupControllerInit(String type, UserGroup group) {
         try {
             FXMLLoader loader = null;
             loader = mainApp.load(FXMLConstants.GROUP_ADD);
@@ -419,7 +419,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
     }
 
     @SuppressWarnings("unchecked")
-    public void groupNameComboBoxCreate() {
+    private void groupNameComboBoxCreate() {
         searchGroupName.setConverter(new ComboBoxConverter());
         searchGroupName.getItems().add(new ComboBoxItem());
 
@@ -455,7 +455,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
         final ImageView img1 = new ImageView(resourceUtil.getImage("/layout/images/modify.png", 18, 18));
         final ImageView img2 = new ImageView(resourceUtil.getImage("/layout/images/delete.png", 18, 18));
 
-        public UserGroupButton() {
+        private UserGroupButton() {
 
             img1.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 UserGroup group = UserGroupButton.this.getTableView().getItems().get(
@@ -483,7 +483,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
                 alert.setContentText(alertContentText);
                 logger.debug(group.getId() + " : present id");
                 Optional<ButtonType> result = alert.showAndWait();
-                if(result.get() == ButtonType.OK) {
+                if(result.isPresent() && result.get() == ButtonType.OK) {
                     deleteGroup(group.getId());
                 } else {
                     logger.debug(result.get() + " : button select");
@@ -537,7 +537,6 @@ public class SystemManagerUserAccountController extends SubPaneController{
             img2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 DialogUtil.setIcon(alert);
-                String alertHeaderText = "";
                 String alertContentText = "Are you sure to delete this user?";
 
                 alert.setTitle("Confirmation Dialog");
@@ -547,7 +546,7 @@ public class SystemManagerUserAccountController extends SubPaneController{
                 alert.setContentText(alertContentText);
                 logger.debug(user.getId() + " : present id");
                 Optional<ButtonType> result = alert.showAndWait();
-                if(result.get() == ButtonType.OK) {
+                if(result.isPresent() && result.get() == ButtonType.OK) {
                     deleteUser(user.getId());
                 } else {
                     logger.debug(result.get() + " : button select");

@@ -111,7 +111,6 @@ public class HomeController extends SubPaneController{
             }
         });
 
-        //getMainController().getPrimaryStage().setMaxWidth(1000);
         this.mainController.getMainFrame().setCenter(root);
 
         initRunListLayout();
@@ -174,6 +173,7 @@ public class HomeController extends SubPaneController{
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void setToolsAndDatabase() {
         databaseVersionVBox.getChildren().removeAll(databaseVersionVBox.getChildren());
         try {

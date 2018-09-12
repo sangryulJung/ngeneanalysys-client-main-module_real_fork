@@ -13,6 +13,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import ngeneanalysys.code.constants.FXMLConstants;
+import ngeneanalysys.code.enums.AnalysisTypeCode;
 import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
@@ -204,7 +205,7 @@ public class DetailSubInfoController extends SubPaneController {
             dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
         }
 
-        if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
+        if(AnalysisTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType())) {
             if (!StringUtils.isEmpty(selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getCosmic().getCosmicIds())) {
                 dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
                 Label dbContentLabel = createLinkLabel("COSMIC", "COSMIC");
@@ -236,7 +237,7 @@ public class DetailSubInfoController extends SubPaneController {
     }
 
     @SuppressWarnings("unchecked")
-    public void showBrowser(String item) {
+    private void showBrowser(String item) {
         Map<String, Object> variantInformationMap = returnResultsAfterSearch("variant_information");
         Map<String, Object> genomicCoordinateMap = returnResultsAfterSearch("genomic_coordinate");
 
@@ -295,7 +296,7 @@ public class DetailSubInfoController extends SubPaneController {
                     + endPlus;
 
             openBrowser(fullUrlUCSC);
-        } else if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
+        } else if(AnalysisTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType())) {
             if("COSMIC".equalsIgnoreCase(item)) {
                 String cosmicId = selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getCosmic().getCosmicIds().replaceAll("COSM", "");
                 if (cosmicId.contains("|")) {
@@ -332,7 +333,7 @@ public class DetailSubInfoController extends SubPaneController {
             } else if("ALAMUT".equalsIgnoreCase(item)) {
                 Map<String, Object> geneMap = returnResultsAfterSearch("gene");
                 Map<String, Map<String, String>> transcriptDataMap = (Map<String, Map<String, String>>) geneMap.get("transcript");
-                if (!transcriptDataMap.isEmpty() && transcriptDataMap.size() > 0) {
+                if (transcriptDataMap != null && !transcriptDataMap.isEmpty()) {
                     int selectedIdx = this.analysisDetailVariantNomenclatureController.getTranscriptComboBoxSelectedIndex();
                     logger.debug(String.format("selected transcript combobox idx : %s", selectedIdx));
                     Map<String, String> map = transcriptDataMap.get(String.valueOf(selectedIdx));
@@ -364,7 +365,6 @@ public class DetailSubInfoController extends SubPaneController {
     @FXML
     public void showIGV() {
         String sampleId = sample.getId().toString();
-        String variantId = selectedAnalysisResultVariant.getSnpInDel().getId().toString();
         String gene = selectedAnalysisResultVariant.getSnpInDel().getGenomicCoordinate().getGene();
         String locus = String.format("%s:%,d-%,d",
                 selectedAnalysisResultVariant.getSnpInDel().getGenomicCoordinate().getChromosome(),
@@ -374,7 +374,7 @@ public class DetailSubInfoController extends SubPaneController {
         String humanGenomeVersion = (refGenome.contains("hg19")) ? "hg19" : "hg18";
 
         try {
-            loadIGV(sampleId, sample.getName(), variantId, gene, locus, humanGenomeVersion);
+            loadIGV(sampleId, sample.getName(), gene, locus, humanGenomeVersion);
         } catch (WebAPIException wae) {
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
@@ -401,13 +401,12 @@ public class DetailSubInfoController extends SubPaneController {
      * IGV 실행 및 데이터 로드
      * @param sampleId String
      * @param sampleName String
-     * @param variantId String
      * @param gene String
      * @param locus String
      * @param genome String
      */
-    public void loadIGV(String sampleId, String sampleName, String variantId, String gene, String locus, String genome) throws Exception {
-        igvService.load(sampleId, sampleName, variantId, gene, locus, genome);
+    public void loadIGV(String sampleId, String sampleName, String gene, String locus, String genome) throws Exception {
+        igvService.load(sampleId, sampleName, gene, locus, genome);
     }
 
     /**

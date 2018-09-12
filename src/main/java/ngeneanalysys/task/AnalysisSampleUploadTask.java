@@ -9,7 +9,6 @@ import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.AnalysisRequestService;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.LoginSessionUtil;
 import org.slf4j.Logger;
 
 import java.io.File;
@@ -35,13 +34,8 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
 
     /** 현재 업로드 중인 요청 그룹 아이디 */
     private Integer currentUploadGroupId;
-    private Integer currentUploadGroupServerId;
     /** 현재 업로드 중인 요청 그룹명 */
     private String currentUploadGroupRefName;
-    /** 현재 업로드 중인 분석 샘플 파일의 인덱스 [Local DB] */
-    private Integer currentUploadSampleFileId;
-    /** 현재 업로드 중인 분석 샘플 파일의 진행률 */
-    private double currentUploadSampleFileProgress;
 
     private boolean taskStatus = true;
 
@@ -55,26 +49,24 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
 
     @Override
     public void updateProgress(long workDone, long max) {
-        long total = getNumberOfWork() * 100;
+        long total = getNumberOfWork() * 100L;
         long complete = (long)(((double)getCompleteWorkCount() + (workDone / (double)max)) * 100);
         updateMessage(String.valueOf(getCompleteWorkCount()));
         try {
-            Platform.runLater(() -> {
-                this.analysisSampleUploadProgressTaskController.updateTotalCount(String.valueOf(getNumberOfWork()));
-            });
+            Platform.runLater(() ->
+                this.analysisSampleUploadProgressTaskController.updateTotalCount(String.valueOf(getNumberOfWork())));
         } catch (Exception e) {
             e.printStackTrace();
         }
         super.updateProgress(complete, total);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected Void call() throws Exception {
         logger.debug("start upload task...");
 
         try {
-
-            String loginId = LoginSessionUtil.getAccessLoginId();
 
             List<AnalysisFile> fileDataList = (List<AnalysisFile>) analysisSampleUploadProgressTaskController.getParamMap().get("fileMap");
 

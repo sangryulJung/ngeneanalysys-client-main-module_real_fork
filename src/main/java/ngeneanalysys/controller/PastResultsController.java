@@ -18,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import ngeneanalysys.code.constants.FXMLConstants;
+import ngeneanalysys.code.enums.AnalysisTypeCode;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedPanel;
 import ngeneanalysys.model.paged.PagedRunSampleView;
@@ -759,7 +760,7 @@ public class PastResultsController extends SubPaneController {
 				menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_LAYOUT);
 				menu.setParamMap(detailViewParamMap);
 				menu.setStaticMenu(false);
-				mainController.addTopMenu(menu, 2, true);
+				mainController.addTopMenu(menu, true);
 			} else if(sample.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_FAIL)) {
 				DialogUtil.alert("Error message", sample.getSampleStatus().getStatusMsg(), mainController.getPrimaryStage(), true);
 			}
@@ -958,7 +959,7 @@ public class PastResultsController extends SubPaneController {
 								lv4Icon, lv4Value,
 								lv5Icon, lv5Value);
 
-			} else if (sample.getPanel().getAnalysisType().equalsIgnoreCase("SOMATIC")) {
+			} else if (AnalysisTypeCode.SOMATIC.getDescription().equals(sample.getPanel().getAnalysisType())) {
 				Label lv1Icon = createIconLabel("T1", "lv_i_icon");
 				Label lv1Value = createValueLabel(summary.getLevel1VariantCount().toString(), countLabelStyleClass,
 						countLabelStyle);
@@ -1057,7 +1058,7 @@ public class PastResultsController extends SubPaneController {
 			if (runSampleView.getRun().getCreatedAt() != null)
 				submitDateLabel.setText(format.format(runSampleView.getRun().getCreatedAt().toDate()));
 			if (runSampleView.getRun().getCompletedAt() != null)
-			finishDateLabel.setText(format.format(runSampleView.getRun().getCompletedAt().toDate()));
+				finishDateLabel.setText(format.format(runSampleView.getRun().getCompletedAt().toDate()));
 			downloadLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
 				try {
 					FXMLLoader fxmlLoader = FXMLLoadUtil.load(FXMLConstants.RUN_RAW_DATA_DOWNLOAD);

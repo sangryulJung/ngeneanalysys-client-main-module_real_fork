@@ -62,7 +62,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     @FXML
     private Label reportedCountLabel;
 
-   @FXML
+    @FXML
     private CheckBox levelACheckBox;
     @FXML
     private CheckBox levelBCheckBox;
@@ -280,7 +280,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             if (interpretationTitledPane.getContent() == null) {
                 showPredictionAndInterpretation();
             } else if(interpretationController != null) {
-                interpretationController.setPastCases();
+                interpretationController.contentRefresh();
             }
         } catch (Exception e) {
             logger.error("Unknown Error", e);
@@ -370,7 +370,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
             this.filterList = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("heredFilter");
         }
-        if("SOMATIC".equalsIgnoreCase(panel.getAnalysisType())) {
+        if(AnalysisTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             levelACheckBox.setText("T1");
             levelBCheckBox.setText("T2");
             levelCCheckBox.setText("T3");
@@ -538,7 +538,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             }
         });
 
-        if("SOMATIC".equalsIgnoreCase(panel.getAnalysisType())) {
+        if(AnalysisTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             changeTierButton.setCursor(Cursor.HAND);
             changeTierButton.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
                 List<VariantAndInterpretationEvidence> selectList = getSelectedItemList();
@@ -608,7 +608,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 igvService.setMainController(getMainController());
 
                 String sampleId = sample.getId().toString();
-                String variantId = variant.getSnpInDel().getId().toString();
                 String gene = variant.getSnpInDel().getGenomicCoordinate().getGene();
                 String locus = String.format("%s:%,d-%,d",
                         variant.getSnpInDel().getGenomicCoordinate().getChromosome(),
@@ -618,7 +617,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 String humanGenomeVersion = (refGenome.contains("hg19")) ? "hg19" : "hg18";
 
                 try {
-                    igvService.load(sampleId, sample.getName(), variantId, gene, locus , humanGenomeVersion);
+                    igvService.load(sampleId, sample.getName(), gene, locus , humanGenomeVersion);
                 } catch (WebAPIException wae) {
                     DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                             getMainApp().getPrimaryStage(), true);
@@ -641,7 +640,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             String title;
             String conSeq = StringUtils.isNotEmpty(variant.getSnpInDel().getSnpInDelExpression().getCodingConsequence()) ?
                     variant.getSnpInDel().getSnpInDelExpression().getCodingConsequence().split(";")[0] : "";
-            if (panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
+            if (AnalysisTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType())) {
                 title = variant.getSnpInDel().getGenomicCoordinate().getGene() + " "
                         + conSeq + " "
                         + variant.getSnpInDel().getSnpInDelExpression().getTranscriptAccession() + " "
@@ -886,7 +885,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             Node node = loader.load();
             memoController = loader.getController();
             memoController.setMainController(this.getMainController());
-            memoController.setAnalysisDetailSNVController(this);
             memoController.show((Parent) node);
             memoController.displayList(memoList);
             interpretationLogsTitledPane.setContent(node);

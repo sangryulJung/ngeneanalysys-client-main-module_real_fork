@@ -75,7 +75,7 @@ public class RawDataDownloadTask extends FileUploadTask<Void> {
 
     @Override
     public void updateProgress(long workDone, long max) {
-        long total = getNumberOfWork() * 100;
+        long total = getNumberOfWork() * 100L;
         long complete = (long)(((double)getCompleteWorkCount() + (workDone / (double)max)) * 100);
         updateMessage(String.valueOf(getCompleteWorkCount()));
         try {

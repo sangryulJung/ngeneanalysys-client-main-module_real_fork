@@ -191,7 +191,7 @@ public class ExportVariantDataTask extends Task<Void> {
 			alert.setContentText("Do you want to check the " + fileType + " document?");
 
 			Optional<ButtonType> result = alert.showAndWait();
-			if (result.get() == ButtonType.OK) {
+			if (result.isPresent() && result.get() == ButtonType.OK) {
 				this.mainApp.getHostServices().showDocument(file.toURI().toURL().toExternalForm());
 			} else {
 				alert.close();

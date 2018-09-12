@@ -208,12 +208,12 @@ public class ServerDirectoryViewController extends BaseStageController {
     }
 
     private String getPathRemoveRoot(TreeItem<ServerFile> item) {
-        StringBuffer path = new StringBuffer();
+        StringBuilder path = new StringBuilder();
 
         TreeItem<ServerFile> current = item;
         while (current != null && current != serverItemTreeView.getRoot()) {
             if (path.toString().equalsIgnoreCase("")) {
-                path = new StringBuffer(current.getValue().getName());
+                path.append(current.getValue().getName());
             } else {
                 path.insert(0, current.getValue().getName() + "/");
             }

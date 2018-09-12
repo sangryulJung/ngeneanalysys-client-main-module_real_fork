@@ -295,7 +295,6 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
 
     private void addToReportBtn(CheckBox checkBox) {
         if(selectedAnalysisResultVariant != null) {
-            String oldSymbol = selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport();
             try {
                 FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
                 Node node = loader.load();

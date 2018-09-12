@@ -83,7 +83,6 @@ public class SnpInDelExpression {
      * @return variantType
      */
     public String getVariantType() {
-    	//System.out.println(variantType);
     	if (variantType.equals("snp") || variantType.equals("snv")) {
     		return "SNV";
     	}else if(variantType.equals("ins")) {

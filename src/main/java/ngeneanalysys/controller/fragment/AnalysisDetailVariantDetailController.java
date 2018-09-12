@@ -22,16 +22,15 @@ public class AnalysisDetailVariantDetailController extends SubPaneController {
     private static Logger logger = LoggerUtil.getLogger();
 
     @FXML
-    private GridPane detailWarpper;
+    private GridPane detailWrapper;
 
     private AnalysisDetailVariantNomenclatureController analysisDetailVariantNomenclatureController;
-    private Panel panel;
 
     @Override
     public void show(Parent root) throws IOException {
         logger.debug("variant detail view");
-        panel = (Panel)paramMap.get("panel");
-        if(!detailWarpper.getChildren().isEmpty()) detailWarpper.getChildren().removeAll(detailWarpper.getChildren());
+        Panel panel = (Panel)paramMap.get("panel");
+        if(!detailWrapper.getChildren().isEmpty()) detailWrapper.getChildren().removeAll(detailWrapper.getChildren());
         showReadDepth();
         showVariantNomenclature();
         showDetailSub();
@@ -49,9 +48,9 @@ public class AnalysisDetailVariantDetailController extends SubPaneController {
             controller.setParamMap(paramMap);
             controller.setAnalysisDetailVariantNomenclatureController(analysisDetailVariantNomenclatureController);
             controller.show((Parent) node);
-            detailWarpper.add(node, 2, 0);
+            detailWrapper.add(node, 2, 0);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.debug(e.getMessage());
         }
     }
 
@@ -63,9 +62,9 @@ public class AnalysisDetailVariantDetailController extends SubPaneController {
             controller.setMainController(this.getMainController());
             controller.setParamMap(paramMap);
             controller.show((Parent) node);
-            detailWarpper.add(node, 0, 0);
+            detailWrapper.add(node, 0, 0);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.debug(e.getMessage());
         }
     }
     private void showVariantNomenclature() {
@@ -77,9 +76,9 @@ public class AnalysisDetailVariantDetailController extends SubPaneController {
             controller.setParamMap(paramMap);
             controller.show((Parent) node);
             analysisDetailVariantNomenclatureController = controller;
-            detailWarpper.add(node, 1, 0);
+            detailWrapper.add(node, 1, 0);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.debug(e.getMessage());
         }
     }
     private void showInSilicoPredictions() {
@@ -90,7 +89,7 @@ public class AnalysisDetailVariantDetailController extends SubPaneController {
             controller.setMainController(this.getMainController());
             controller.setParamMap(paramMap);
             controller.show((Parent) node);
-            detailWarpper.add(node, 3, 0);
+            detailWrapper.add(node, 3, 0);
         } catch (Exception e) {
             logger.debug(e.getMessage());
         }
