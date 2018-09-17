@@ -31,7 +31,7 @@
          <children>
             <HBox alignment="BOTTOM_RIGHT" minWidth="870.0" prefHeight="26.0" prefWidth="870.0">
                <children>
-                  <Button fx:id="resetTableColumn" onAction="#resetTableColumnOrder" prefHeight="16.0" prefWidth="110.0" styleClass="submitBtn" text="Reset Colums">
+                  <Button fx:id="resetTableColumn" onAction="#resetTableColumnOrder" prefHeight="16.0" prefWidth="110.0" styleClass="submitBtn" text="Reset Columns">
                      <padding>
                         <Insets left="10.0" right="10.0" />
                      </padding>
