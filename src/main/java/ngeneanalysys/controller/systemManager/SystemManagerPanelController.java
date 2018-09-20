@@ -849,7 +849,11 @@ public class SystemManagerPanelController extends SubPaneController {
 
         if(file != null) {
             String panelName = panelNameTextField.getText();
-            if(pipelineComboBox.getSelectionModel().getSelectedItem() == null) return;
+            if(pipelineComboBox.getSelectionModel().getSelectedItem() == null) {
+                DialogUtil.alert("not setting pipeline code" ,"Set the pipeline code.",
+                        mainApp.getPrimaryStage(), true);
+                return;
+            }
             String code = pipelineComboBox.getSelectionModel().getSelectedItem().getValue();
 
             Map<String,Object> params = new HashMap<>();

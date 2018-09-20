@@ -879,7 +879,8 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 model.put("ngenebioLogo", ngenebioLogo);
                 model.put("contents", contentsMap);
 
-                if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+                if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())
+                        || panel.getCode().equals(PipelineCode.HERED_ACCUTEST_CNV_DNA.getCode())) {
 
                     HttpClientResponse response = apiService.get("/analysisResults/sampleQCs/" + sample.getId(), null,
                             null, false);

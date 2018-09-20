@@ -53,21 +53,27 @@ public class PanelTextFileSaveService {
             for(int i = 0; i < viewList.length ; i++) {
                 if(viewList[i].equals("variantFilter")) {
                     VariantFilter variantFilter = (VariantFilter)panelMap.get(viewList[i]);
-                    out.write("Essential Genes" + " : " + returnStringText(variantFilter.getEssentialGenes()));
+                    out.write("Essential Genes : " + returnStringText(variantFilter.getEssentialGenes()));
                     out.newLine();
-                    out.write("InDel MRD" + " : " + returnStringText(variantFilter.getInDelMinReadDepth()));
+                    out.write("InDel MRD : " + returnStringText(variantFilter.getInDelMinReadDepth()));
                     out.newLine();
-                    out.write("InDel MAF" + " : " + returnStringText(variantFilter.getInDelMinAlleleFraction()));
+                    out.write("InDel MAF : " + returnStringText(variantFilter.getInDelMinAlleleFraction()));
                     out.newLine();
-                    out.write("InDel MAC" + " : " + returnStringText(variantFilter.getInDelMinAlternateCount()));
+                    out.write("InDel MAC : " + returnStringText(variantFilter.getInDelMinAlternateCount()));
                     out.newLine();
-                    out.write("SNV MRD" + " : " + returnStringText(variantFilter.getSnvMinReadDepth()));
+                    out.write("SNV MRD : " + returnStringText(variantFilter.getSnvMinReadDepth()));
                     out.newLine();
-                    out.write("Low Confidence" + " : " + returnStringText(variantFilter.getLowConfidenceFilter()));
+                    out.write("SNV MAC : " + returnStringText(variantFilter.getSnvMinAlternateCount()));
                     out.newLine();
-                    out.write("Population Frequency DBs" + " : " + returnStringText(variantFilter.getPopulationFrequencyDBs()));
+                    out.write("SNV MAF : " + returnStringText(variantFilter.getSnvMinAlleleFraction()));
                     out.newLine();
-                    out.write("Frequency Threshold" + " : " + returnStringText(variantFilter.getPopulationFrequency()));
+                    out.write("Homopolymer & Repeat sequence MAF : " + returnStringText(variantFilter.getLowConfidenceMinAlleleFraction()));
+                    out.newLine();
+                    out.write("Low Confidence : " + returnStringText(variantFilter.getLowConfidenceFilter()));
+                    out.newLine();
+                    out.write("Population Frequency DBs : " + returnStringText(variantFilter.getPopulationFrequencyDBs()));
+                    out.newLine();
+                    out.write("Frequency Threshold : " + returnStringText(variantFilter.getPopulationFrequency()));
                     out.newLine();
                 } else if(viewList[i].equals("qcPassConfig")) {
                     QCPassConfig qcPassConfig = (QCPassConfig)panelMap.get(viewList[i]);

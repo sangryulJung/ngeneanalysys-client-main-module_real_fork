@@ -212,7 +212,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
         if(panel.getCode().equalsIgnoreCase(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
                 panel.getCode().equalsIgnoreCase(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode()) ||
-                panel.getCode().equalsIgnoreCase(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+                panel.getCode().equalsIgnoreCase(PipelineCode.HERED_ACCUTEST_DNA.getCode()) ||
+                panel.getCode().equalsIgnoreCase(PipelineCode.HERED_ACCUTEST_CNV_DNA.getCode())) {
             checkBoxCheck(levelACheckBox, filterList, "pathogenicity P");
             checkBoxCheck(levelBCheckBox, filterList, "pathogenicity LP");
             checkBoxCheck(levelCCheckBox, filterList, "pathogenicity US");
@@ -325,7 +326,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         sample = (SampleView)paramMap.get("sampleView");
         panel = (Panel)paramMap.get("panel");
-        if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
+        if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())
+                || panel.getCode().equals(PipelineCode.HEME_ACCUTEST_CNV_DNA.getCode())) {
             this.filterList = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("hemeFilter");
         } else if(panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
             this.filterList = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("solidFilter");
@@ -334,7 +336,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
                 panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
             this.filterList = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("brcaFilter");
-        } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+        } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())
+                || panel.getCode().equals(PipelineCode.HERED_ACCUTEST_CNV_DNA.getCode())) {
             this.filterList = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("heredFilter");
         }
         if(AnalysisTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
@@ -637,20 +640,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         filterComboBox.setConverter(new ComboBoxConverter());
         filterComboBox.getItems().removeAll(filterComboBox.getItems());
         filterComboBox.getItems().add(new ComboBoxItem("All", "All"));
-        /*if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode()) ||
-                panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode()) ||
-                panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
-            filterComboBox.getItems().add(new ComboBoxItem("Tier 1", "Tier I"));
-            filterComboBox.getItems().add(new ComboBoxItem("Tier 2", "Tier II"));
-            filterComboBox.getItems().add(new ComboBoxItem("Tier 3", "Tier III"));
-            filterComboBox.getItems().add(new ComboBoxItem("Tier 4", "Tier IV"));
-        } else {
-            filterComboBox.getItems().add(new ComboBoxItem("Pathogenic", "Pathogenic"));
-            filterComboBox.getItems().add(new ComboBoxItem("Likely Pathogenic", "Likely Pathogenic"));
-            filterComboBox.getItems().add(new ComboBoxItem("Uncertain Significance", "Uncertain Significance"));
-            filterComboBox.getItems().add(new ComboBoxItem("Likely Benign", "Likely Benign"));
-            filterComboBox.getItems().add(new ComboBoxItem("Benign", "Benign"));
-        }*/
         filterComboBox.getSelectionModel().select(0);
         viewAppliedFiltersLabel.setDisable(true);
     }
@@ -691,7 +680,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     private void setFilterList() {
         filterComboBox.hide();
         String currentFilterName = filterComboBox.getSelectionModel().getSelectedItem().getText();
-        if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
+        if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())
+                || panel.getCode().equals(PipelineCode.HEME_ACCUTEST_CNV_DNA.getCode())) {
             setSomaticFilterList("hemeFilter");
         } else if (panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
             setSomaticFilterList("solidFilter");
@@ -700,7 +690,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
                 panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
             setGermlineFilterList("brcaFilter");
-        } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+        } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())
+                || panel.getCode().equals(PipelineCode.HERED_ACCUTEST_CNV_DNA.getCode())) {
             setGermlineFilterList("heredFilter");
         }
 
@@ -1234,30 +1225,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                     || o1.equals(VariantLevelCode.TIER_FOUR.getAlias())) {
                 return o1.compareTo(o2);
             } else {
-                String o1Level;
-                String o2Level;
-                if (o1.equals(VariantLevelCode.PREDICTION_A.getAlias())) {
-                    o1Level = VariantLevelCode.PREDICTION_A.getCode();
-                } else if (o1.equals(VariantLevelCode.PREDICTION_B.getAlias())) {
-                    o1Level = VariantLevelCode.PREDICTION_B.getCode();
-                } else if (o1.equals(VariantLevelCode.PREDICTION_C.getAlias())) {
-                    o1Level = VariantLevelCode.PREDICTION_C.getCode();
-                } else if (o1.equals(VariantLevelCode.PREDICTION_D.getAlias())) {
-                    o1Level = VariantLevelCode.PREDICTION_D.getCode();
-                } else {
-                    o1Level = VariantLevelCode.PREDICTION_E.getCode();
-                }
-                if (o2.equals(VariantLevelCode.PREDICTION_A.getAlias())) {
-                    o2Level = VariantLevelCode.PREDICTION_A.getCode();
-                } else if (o2.equals(VariantLevelCode.PREDICTION_B.getAlias())) {
-                    o2Level = VariantLevelCode.PREDICTION_B.getCode();
-                } else if (o2.equals(VariantLevelCode.PREDICTION_C.getAlias())) {
-                    o2Level = VariantLevelCode.PREDICTION_C.getCode();
-                } else if (o2.equals(VariantLevelCode.PREDICTION_D.getAlias())) {
-                    o2Level = VariantLevelCode.PREDICTION_D.getCode();
-                } else {
-                    o2Level = VariantLevelCode.PREDICTION_E.getCode();
-                }
+                String o1Level = VariantLevelCode.getPathogenicityCodeFromAlias(o1);
+                String o2Level  = VariantLevelCode.getPathogenicityCodeFromAlias(o2);
                 return o1Level.compareTo(o2Level);
             }
         });
@@ -1898,7 +1867,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         if(response != null && response.getStatus() == 200) {
             if(StringUtils.isEmpty(response.getContentString())) {
                 String str = "";
-                if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
+                if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())
+                        || panel.getCode().equals(PipelineCode.HEME_ACCUTEST_CNV_DNA.getCode())) {
                     str = PropertiesUtil.getJsonString(CommonConstants.BASE_HEME_COLUMN_ORDER_PATH);
                 } else if(panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
                     str = PropertiesUtil.getJsonString(CommonConstants.BASE_SOLID_COLUMN_ORDER_PATH);
@@ -1907,7 +1877,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode())
                         || panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
                     str = PropertiesUtil.getJsonString(CommonConstants.BASE_BRCA_COLUMN_ORDER_PATH);
-                } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+                } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())
+                        || panel.getCode().equals(PipelineCode.HERED_ACCUTEST_CNV_DNA.getCode())) {
                     str = PropertiesUtil.getJsonString(CommonConstants.BASE_HERED_COLUMN_ORDER_PATH);
                 }
 
@@ -1933,7 +1904,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     private void runColumnAction() {
-        if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
+        if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())
+                || panel.getCode().equals(PipelineCode.HEME_ACCUTEST_CNV_DNA.getCode())) {
             putTableColumn("hemeColumnOrder", CommonConstants.BASE_HEME_COLUMN_ORDER_PATH);
         } else if(panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
             putTableColumn("solidColumnOrder", CommonConstants.BASE_SOLID_COLUMN_ORDER_PATH);
@@ -1942,7 +1914,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode())
                 || panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
             putTableColumn("brcaColumnOrder", CommonConstants.BASE_BRCA_COLUMN_ORDER_PATH);
-        } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+        } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())
+                || panel.getCode().equals(PipelineCode.HERED_ACCUTEST_CNV_DNA.getCode())) {
             putTableColumn("heredColumnOrder", CommonConstants.BASE_HERED_COLUMN_ORDER_PATH);
         }
         variantListTableView.getColumns().addListener(tableColumnListChangeListener);
@@ -2007,7 +1980,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     private String getColumnOrderType() {
         String columnOrderType = "";
-        if (panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
+        if (panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())
+                || panel.getCode().equals(PipelineCode.HEME_ACCUTEST_CNV_DNA.getCode())) {
             columnOrderType = "hemeColumnOrder";
         } else if (panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
             columnOrderType = "solidColumnOrder";
@@ -2016,7 +1990,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
                 panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
             columnOrderType = "brcaColumnOrder";
-        } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+        } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())
+                || panel.getCode().equals(PipelineCode.HERED_ACCUTEST_CNV_DNA.getCode())) {
             columnOrderType = "heredColumnOrder";
         }
 

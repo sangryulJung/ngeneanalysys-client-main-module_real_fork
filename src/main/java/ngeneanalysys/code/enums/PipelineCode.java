@@ -60,8 +60,8 @@ public enum PipelineCode {
 	}
 	/**
 	 * 지정 시퀀서 장비에 해당하는 패널 키트 목록 반환
-	 * @param pipelineCode
-	 * @return
+	 * @param pipelineCode String
+	 * @return List<SampleSourceCode>
 	 */
 	public static List<SampleSourceCode> getSampleSource(String pipelineCode) {
 		List<SampleSourceCode> list = new ArrayList<>();
@@ -72,6 +72,7 @@ public enum PipelineCode {
 				list.add(SampleSourceCode.FFPE);
 				break;
 			case CommonConstants.HEME_ACCUTEST_DNA_PIPELINE:
+			case CommonConstants.HEME_ACCUTEST_DNA_CNV_PIPELINE:
 				list.add(SampleSourceCode.BLOOD);
 				list.add(SampleSourceCode.BLOODCRYO);
 				list.add(SampleSourceCode.BONEMARROW);
@@ -93,6 +94,7 @@ public enum PipelineCode {
 				list.add(SampleSourceCode.FFPE);
 				break;
 			case CommonConstants.HERED_ACCUTEST_PIPELINE:
+			case CommonConstants.HERED_ACCUTEST_CNV_PIPELINE:
 				list.add(SampleSourceCode.BLOOD);
 				break;
 			default:
@@ -124,6 +126,12 @@ public enum PipelineCode {
 			case CommonConstants.HERED_ACCUTEST_PIPELINE:
 				returnPipeline = HERED_ACCUTEST_DNA;
 				break;
+			case CommonConstants.HERED_ACCUTEST_CNV_PIPELINE:
+				returnPipeline = HERED_ACCUTEST_CNV_DNA;
+				break;
+			case CommonConstants.HEME_ACCUTEST_DNA_CNV_PIPELINE:
+				returnPipeline = HEME_ACCUTEST_CNV_DNA;
+				break;
 			default:
 				returnPipeline = null;
 		}
@@ -134,6 +142,7 @@ public enum PipelineCode {
 		List<String> list = new ArrayList<>();
 		switch (pipelineCode) {
 			case CommonConstants.HEME_ACCUTEST_DNA_PIPELINE:
+			case CommonConstants.HEME_ACCUTEST_DNA_CNV_PIPELINE:
 			case CommonConstants.SOLID_ACCUTEST_DNA_PIPELINE:
 				list.add("mapping_quality");
 				list.add("strand_artifact");
@@ -146,6 +155,7 @@ public enum PipelineCode {
 				list.add("t_lod");
 				break;
 			case CommonConstants.HERED_ACCUTEST_PIPELINE:
+			case CommonConstants.HERED_ACCUTEST_CNV_PIPELINE:
 				list.add("homopolymer");
 				list.add("repeat_sequence");
 				list.add("sequencing_error");
