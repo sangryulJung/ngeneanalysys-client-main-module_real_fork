@@ -17,6 +17,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import ngeneanalysys.code.UserTypeCode;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.AnalysisTypeCode;
 import ngeneanalysys.model.*;
@@ -168,7 +169,7 @@ public class PastResultsController extends SubPaneController {
 					try {
 						Map<String,Object> params = new HashMap<>();
 						LoginSession loginSession = LoginSessionUtil.getCurrentLoginSession();
-						if(loginSession.getRole().equalsIgnoreCase("ADMIN")) {
+						if(loginSession.getRole().equalsIgnoreCase(UserTypeCode.USER_TYPE_ADMIN)) {
 							params.put("skipOtherGroup", "false");
 						} else {
 							params.put("skipOtherGroup", "true");

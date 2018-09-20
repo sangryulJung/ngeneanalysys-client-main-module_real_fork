@@ -225,7 +225,6 @@ public class SystemMenuSettingController extends SubPaneController {
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), "UTF-8"))){
                 Properties properties = new Properties();
                 properties.load(reader);
-                reader.close();
                 for (Map.Entry<Object, Object> entry : properties.entrySet()) {
                     String key = (String) entry.getKey();
                     String value = (String) entry.getValue();

@@ -82,7 +82,7 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
             updateCurrentUploadGroupInfo();
 
             for (AnalysisFile fileData : fileDataList) {
-                fileList.stream().forEach(file -> {
+                fileList.forEach(file -> {
 
                     if (this.analysisSampleUploadProgressTaskController.isStop) {
                        return;

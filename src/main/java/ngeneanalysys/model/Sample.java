@@ -42,6 +42,8 @@ public class Sample {
     @JsonProperty("pipelineVersionId")
     private Integer pipelineVersionId;
 
+    private Boolean isControl;
+
     @JsonProperty("createdAt")
     private DateTime createdAt;
 
@@ -269,6 +271,20 @@ public class Sample {
         this.deleted = deleted;
     }
 
+    /**
+     * @return isControl
+     */
+    public Boolean getIsControl() {
+        return isControl;
+    }
+
+    /**
+     * @param isControl
+     */
+    public void setIsControl(Boolean isControl) {
+        this.isControl = isControl;
+    }
+
     @Override
     public String toString() {
         return "Sample{" +
@@ -282,7 +298,8 @@ public class Sample {
                 ", qcResult='" + qcResult + '\'' +
                 ", inputFType='" + inputFType + '\'' +
                 ", sampleStatus=" + sampleStatus +
-                ", pipelineVersionId='" + pipelineVersionId + '\'' +
+                ", pipelineVersionId=" + pipelineVersionId +
+                ", isControl='" + isControl + '\'' +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", deletedAt=" + deletedAt +

@@ -215,29 +215,11 @@ public class SampleUploadController extends BaseStageController{
             }
         });
 
-        nextSeqDxRadioButton.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
-            if(sampleUploadScreenFirstController != null) {
-                sampleUploadScreenFirstController.localFastqFilesRadioButton.setDisable(true);
-                sampleUploadScreenFirstController.serverFastqFilesRadioButton.setDisable(true);
-                sampleUploadScreenFirstController.serverRunFolderRadioButton.setDisable(false);
-            }
-        });
+        nextSeqDxRadioButton.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> uploadBtnActive(false));
 
-        sequencerMiSeqDXRadioButton.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
-            if(sampleUploadScreenFirstController != null) {
-                sampleUploadScreenFirstController.localFastqFilesRadioButton.setDisable(false);
-                sampleUploadScreenFirstController.serverFastqFilesRadioButton.setDisable(false);
-                sampleUploadScreenFirstController.serverRunFolderRadioButton.setDisable(true);
-            }
-        });
+        sequencerMiSeqDXRadioButton.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> uploadBtnActive(true));
 
-        sequencerMiSeqRadioButton.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
-            if(sampleUploadScreenFirstController != null) {
-                sampleUploadScreenFirstController.localFastqFilesRadioButton.setDisable(false);
-                sampleUploadScreenFirstController.serverFastqFilesRadioButton.setDisable(false);
-                sampleUploadScreenFirstController.serverRunFolderRadioButton.setDisable(true);
-            }
-        });
+        sequencerMiSeqRadioButton.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> uploadBtnActive(true));
 
         contentWrapper.getChildren().add(maskerPane);
         maskerPane.setPrefHeight(contentWrapper.getPrefHeight());
@@ -251,6 +233,14 @@ public class SampleUploadController extends BaseStageController{
         }
         currentStage.setScene(scene);
         currentStage.showAndWait();
+    }
+
+    private void uploadBtnActive(boolean serverRunFolder) {
+        if(sampleUploadScreenFirstController != null) {
+            sampleUploadScreenFirstController.localFastqFilesRadioButton.setDisable(!serverRunFolder);
+            sampleUploadScreenFirstController.serverFastqFilesRadioButton.setDisable(!serverRunFolder);
+            sampleUploadScreenFirstController.serverRunFolderRadioButton.setDisable(serverRunFolder);
+        }
     }
 
     private void runInfoEdit() {

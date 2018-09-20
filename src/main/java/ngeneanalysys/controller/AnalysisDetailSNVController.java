@@ -195,69 +195,36 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         this.variantsController = variantsController;
     }
 
+    private void checkBoxCheck(CheckBox checkBox, List<Object> filterList, String value) {
+        if(checkBox.isSelected() && !filterList.contains(value)) {
+            filterList.add(value);
+        }
+    }
+
     private void defaultFilterAction(Map<String, List<Object>> list) {
+        String key = "search";
         List<Object> filterList;
-        if(list.containsKey("search")) {
-            filterList = list.get("search");
+        if(list.containsKey(key)) {
+            filterList = list.get(key);
         } else {
             filterList = new ArrayList<>();
-            list.put("search", filterList);
+            list.put(key, filterList);
         }
         if(panel.getCode().equalsIgnoreCase(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
                 panel.getCode().equalsIgnoreCase(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode()) ||
                 panel.getCode().equalsIgnoreCase(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
-            if(levelACheckBox.isSelected()) {
-                if(!filterList.contains("pathogenicity P")) {
-                    filterList.add("pathogenicity P");
-                }
-            }
-            if(levelBCheckBox.isSelected()) {
-                if(!filterList.contains("pathogenicity LP")) {
-                    filterList.add("pathogenicity LP");
-                }
-            }
-            if(levelCCheckBox.isSelected()) {
-                if(!filterList.contains("pathogenicity US")) {
-                    filterList.add("pathogenicity US");
-                }
-            }
-            if(levelDCheckBox.isSelected()) {
-                if(!filterList.contains("pathogenicity LP")) {
-                    filterList.add("pathogenicity LP");
-                }
-            }
-            if(levelECheckBox.isSelected()) {
-                if(!filterList.contains("pathogenicity B")) {
-                    filterList.add("pathogenicity B");
-                }
-            }
+            checkBoxCheck(levelACheckBox, filterList, "pathogenicity P");
+            checkBoxCheck(levelBCheckBox, filterList, "pathogenicity LP");
+            checkBoxCheck(levelCCheckBox, filterList, "pathogenicity US");
+            checkBoxCheck(levelDCheckBox, filterList, "pathogenicity LB");
+            checkBoxCheck(levelECheckBox, filterList, "pathogenicity B");
         } else {
-            if(levelACheckBox.isSelected()) {
-                if(!filterList.contains("pathogenicity T1")) {
-                    filterList.add("tier T1");
-                }
-            }
-            if(levelBCheckBox.isSelected()) {
-                if(!filterList.contains("pathogenicity T2")) {
-                    filterList.add("tier T2");
-                }
-            }
-            if(levelCCheckBox.isSelected()) {
-                if(!filterList.contains("pathogenicity T3")) {
-                    filterList.add("tier T3");
-                }
-            }
-            if(levelDCheckBox.isSelected()) {
-                if(!filterList.contains("pathogenicity T4")) {
-                    filterList.add("tier T4");
-                }
-            }
+            checkBoxCheck(levelACheckBox, filterList, "tier T1");
+            checkBoxCheck(levelBCheckBox, filterList, "tier T2");
+            checkBoxCheck(levelCCheckBox, filterList, "tier T3");
+            checkBoxCheck(levelDCheckBox, filterList, "tier T4");
         }
-        if(reportCheckBox.isSelected()) {
-            if(!filterList.contains("includedInReport Y")) {
-                filterList.add("includedInReport Y");
-            }
-        }
+        checkBoxCheck(reportCheckBox, filterList, "includedInReport Y");
     }
 
     private void setStatisticsContents() {
@@ -1447,7 +1414,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 @Override
                 protected void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty);
-                    getStyleClass().add(centerStyleClass);
+                    //getStyleClass().add(centerStyleClass);
                     if(item == null || empty) {
                         setText(null);
                     } else {
@@ -1475,12 +1442,12 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         proteinAccession.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getProteinAccession()));
 
         TableColumn<VariantAndInterpretationEvidence, String> type = new TableColumn<>("Type");
-        type.getStyleClass().add(centerStyleClass);
+        //type.getStyleClass().add(centerStyleClass);
         createTableHeader(type, "Type", "" ,null, "variantType");
         type.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getVariantType()));
 
         TableColumn<VariantAndInterpretationEvidence, String> codCons = new TableColumn<>("Consequence");
-        codCons.getStyleClass().add(centerStyleClass);
+        //codCons.getStyleClass().add(centerStyleClass);
         createTableHeader(codCons, "Consequence", null ,140., "codingConsequence");
         codCons.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getCodingConsequence()));
 

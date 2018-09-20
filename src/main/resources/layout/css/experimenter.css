@@ -85,7 +85,7 @@
 }
 
 .count_label {
-    -fx-pref-width : 35;
+    -fx-pref-width : 32;
     -fx-alignment : center-left;
     -fx-pref-height : 18;
     /*-fx-font-family: "Noto Sans CJK KR Regular";*/

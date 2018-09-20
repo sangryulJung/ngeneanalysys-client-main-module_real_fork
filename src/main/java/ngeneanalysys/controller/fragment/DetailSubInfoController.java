@@ -275,8 +275,8 @@ public class DetailSubInfoController extends SubPaneController {
         } else if("UCSC".equalsIgnoreCase(item)) {
             Integer start = (variantInformationMap.containsKey("start")) ? (Integer) variantInformationMap.get("start") : null;
             Integer end = (variantInformationMap.containsKey("stop")) ? (Integer) variantInformationMap.get("stop") : null;
-            StringBuilder insertStart = new StringBuilder(start.toString());
-            StringBuilder insertEnd = new StringBuilder(end.toString());
+            StringBuilder insertStart = new StringBuilder(start != null ? start.toString() : "");
+            StringBuilder insertEnd = new StringBuilder(end != null ? end.toString() : "");
             int startLength = insertStart.length();
             int endLength = insertEnd.length();
             for (int i = 1; i < startLength; i++) {
@@ -285,6 +285,8 @@ public class DetailSubInfoController extends SubPaneController {
             for (int i = 1; i < endLength; i++) {
                 if (i % 3 == 0) insertEnd.insert(endLength - i, ",");
             }
+            if(start == null) start = 0;
+            if(end == null) end = 0;
             Integer startMinus = start - 30;
             Integer endPlus = end + 30;
             String fullUrlUCSC = "http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&highlight=hg19."
@@ -385,7 +387,7 @@ public class DetailSubInfoController extends SubPaneController {
 
     }
 
-    public Label createLinkLabel(final String title, final String link) {
+    private Label createLinkLabel(final String title, final String link) {
         Label label = new Label();
         label.setText(title);
         label.getStyleClass().add("title1");
@@ -405,7 +407,7 @@ public class DetailSubInfoController extends SubPaneController {
      * @param locus String
      * @param genome String
      */
-    public void loadIGV(String sampleId, String sampleName, String gene, String locus, String genome) throws Exception {
+    private void loadIGV(String sampleId, String sampleName, String gene, String locus, String genome) throws Exception {
         igvService.load(sampleId, sampleName, gene, locus, genome);
     }
 
@@ -416,11 +418,12 @@ public class DetailSubInfoController extends SubPaneController {
      * @param sampleId String
      * @param bamFileName String
      */
-    public void loadAlamut(String transcript, String cDNA, String sampleId, String bamFileName) {
+    private void loadAlamut(String transcript, String cDNA, String sampleId, String bamFileName) {
         alamutService.call(transcript, cDNA, sampleId, bamFileName);
     }
 
-    public Map<String, Object> returnResultsAfterSearch(String key) {
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> returnResultsAfterSearch(String key) {
         List<SnpInDelExtraInfo> detail = (List<SnpInDelExtraInfo>)paramMap.get("detail");
 
         if(detail != null && !detail.isEmpty()) {

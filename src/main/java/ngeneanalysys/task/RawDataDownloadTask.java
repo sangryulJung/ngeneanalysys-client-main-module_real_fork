@@ -41,13 +41,8 @@ public class RawDataDownloadTask extends FileUploadTask<Void> {
 
     /** 현재 업로드 중인 요청 그룹 아이디 */
     private Integer currentDownloadGroupId;
-    private Integer currentUploadGroupServerId;
     /** 현재 업로드 중인 요청 그룹명 */
     private String currentDownloadGroupRefName;
-    /** 현재 업로드 중인 분석 샘플 파일의 인덱스 [Local DB] */
-    private Integer currentUploadSampleFileId;
-    /** 현재 업로드 중인 분석 샘플 파일의 진행률 */
-    private double currentUploadSampleFileProgress;
 
     private RunSampleView runSampleView;
 
@@ -62,7 +57,6 @@ public class RawDataDownloadTask extends FileUploadTask<Void> {
     public RawDataDownloadTask(RawDataDownloadProgressTaskController controller,
                                RunSampleView runSampleView, File folder, List<String> type) {
         super(runSampleView.getSampleViews().size());
-        System.out.println(runSampleView.getSampleViews().size());
         this.runSampleView = runSampleView;
         this.folder = folder;
         this.type = type;
@@ -105,7 +99,7 @@ public class RawDataDownloadTask extends FileUploadTask<Void> {
 
                 if(type == null || type.isEmpty()) break;
 
-                    try {
+                try {
                     Map<String,Object> paramMap = new HashMap<>();
                     paramMap.put("sampleId", sampleView.getId());
                     HttpClientResponse response = apiService.get("/analysisFiles", paramMap, null, false);
@@ -118,10 +112,10 @@ public class RawDataDownloadTask extends FileUploadTask<Void> {
                                 .filter(file -> file.getFileType().equalsIgnoreCase(singleType)).collect(Collectors.toList()));
                     }
 
-                    if(analysisFiles != null) {
+                    if(!analysisFiles.isEmpty()) {
                         final long size = analysisFiles.stream().mapToLong(AnalysisFile::getSize).sum();
                         final List<Long> completeSize = new ArrayList<>();
-                        analysisFiles.stream().forEach(file -> {
+                        analysisFiles.forEach(file -> {
 
                             if (this.controller.isStop) {
                                 return;

@@ -27,6 +27,13 @@ public class Panel {
     private Integer reportTemplateId;
 
     /**
+     * @param code
+     */
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    /**
      * @return canonicalTranscripts
      */
     public String getCanonicalTranscripts() {

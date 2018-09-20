@@ -204,21 +204,12 @@ public class SystemManagerNewsAndTipsController extends SubPaneController {
         setDisabledItem(false);
     }
 
-    public void deleteNewsAndTips(int noticeId) {
-        try {
-            apiService.delete("admin/notices/" + noticeId);
-        } catch (WebAPIException wae) {
-            DialogUtil.error(wae.getHeaderText(), wae.getMessage(), mainController.getPrimaryStage(), true);
-        }
-
-    }
-
     private class NewsAndTipsModifyButton extends TableCell<NoticeView, Boolean> {
         HBox box = null;
         final ImageView img1 = new ImageView(resourceUtil.getImage("/layout/images/modify.png", 18, 18));
         final ImageView img2 = new ImageView(resourceUtil.getImage("/layout/images/delete.png", 18, 18));
 
-        public NewsAndTipsModifyButton() {
+        private NewsAndTipsModifyButton() {
 
             img1.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 NoticeView notice = NewsAndTipsModifyButton.this.getTableView().getItems().get(
@@ -235,7 +226,6 @@ public class SystemManagerNewsAndTipsController extends SubPaneController {
             img2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 DialogUtil.setIcon(alert);
-                String alertHeaderText = "";
                 String alertContentText = "Are you sure to delete this notice?";
 
                 alert.setTitle("Confirmation Dialog");
@@ -245,7 +235,7 @@ public class SystemManagerNewsAndTipsController extends SubPaneController {
                 alert.setContentText(alertContentText);
                 logger.debug(notice.getId() + " : present id");
                 Optional<ButtonType> result = alert.showAndWait();
-                if(result.get() == ButtonType.OK) {
+                if(result.isPresent() && result.get() == ButtonType.OK) {
                     deleteNewsAndTips(notice.getId());
                 } else {
                     logger.debug(result.get() + " : button select");
@@ -281,6 +271,14 @@ public class SystemManagerNewsAndTipsController extends SubPaneController {
 
             setGraphic(box);
 
+        }
+
+        private void deleteNewsAndTips(int noticeId) {
+            try {
+                apiService.delete("admin/notices/" + noticeId);
+            } catch (WebAPIException wae) {
+                DialogUtil.error(wae.getHeaderText(), wae.getMessage(), mainController.getPrimaryStage(), true);
+            }
         }
     }
 

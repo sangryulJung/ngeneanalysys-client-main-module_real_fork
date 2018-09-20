@@ -628,10 +628,9 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
     /**
      * 입력 정보 저장
-     * @param user User
      * @return boolean
      */
-    private boolean saveData(User user) {
+    private boolean saveData() {
 
         String conclusionsText = conclusionsTextArea.getText();
 
@@ -669,8 +668,10 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
             logger.debug("sample report status : " + response.getStatus());
         } catch (WebAPIException wae) {
             wae.printStackTrace();
+            return false;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
 
         return true;
@@ -687,7 +688,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
         Optional<ButtonType> result = alert.showAndWait();
         if(result.isPresent() && result.get() == ButtonType.OK) {
-            boolean dataSave = saveData(null);
+            boolean dataSave = saveData();
             if(dataSave) {
                 DialogUtil.alert("Save Success", "Input data is successfully saved.", getMainController().getPrimaryStage(), false);
             }
@@ -698,7 +699,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
     @FXML
     public void createPDFAsDraft() {
-        boolean dataSave = saveData(null);
+        boolean dataSave = saveData();
         if(dataSave){
             if(createPDF(true)) {
                 Platform.runLater(this::setVariantsList);
@@ -708,8 +709,6 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
     @FXML
     public void createPDFAsFinal() {
-        User user;
-
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         DialogUtil.setIcon(alert);
         alert.initOwner(getMainController().getPrimaryStage());
@@ -720,23 +719,8 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         Optional<ButtonType> result = alert.showAndWait();
         if(result.isPresent() && result.get() == ButtonType.OK) {
             try {
-                HttpClientResponse response = apiService.get("/member", null,
-                        null, false);
-                user = response.getObjectBeforeConvertResponseToJSON(User.class);
-                // 소속기관, 연락처 정보 존재 확인
-                /*if (!StringUtils.isEmpty(user.getOrganization()) && !StringUtils.isEmpty(user.getPhone())) {
-                    boolean dataSave = saveData(user);
-                    if (dataSave) {
-                        // 최종 보고서 생성이 정상 처리된 경우 분석 샘플의 상태값 완료 처리.
-                        if (createPDF(false)) {
-                            setComplete();
-                        }
-                    }
-                } else {
-                    DialogUtil.warning("Empty Reviewer Information",
-                            "Please Input a Reviewer Information. [Menu > Edit]", getMainApp().getPrimaryStage(), true);
-                }*/
-                boolean dataSave = saveData(user);
+
+                boolean dataSave = saveData();
                 if (dataSave) {
                     // 최종 보고서 생성이 정상 처리된 경우 분석 샘플의 상태값 완료 처리.
                     if (createPDF(false)) {
@@ -744,10 +728,6 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                         Platform.runLater(this::setVariantsList);
                     }
                 }
-            }  catch (WebAPIException wae) {
-                logger.error("web api exception", wae);
-                DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
-                        getMainApp().getPrimaryStage(), true);
             } catch (Exception e) {
                 logger.error("Unknown Error", e);
                 DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);

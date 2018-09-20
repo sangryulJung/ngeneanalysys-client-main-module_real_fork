@@ -52,7 +52,6 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * @author Jang
@@ -276,9 +275,11 @@ public class SystemManagerPanelController extends SubPaneController {
                     if(pipelineCode.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
                             pipelineCode.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
                         setBRCADefault();
-                    } else if(pipelineCode.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+                    } else if(pipelineCode.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode()) ||
+                            pipelineCode.getCode().equals(PipelineCode.HERED_ACCUTEST_CNV_DNA.getCode())) {
                         setHeredDefault();
-                    } else if(pipelineCode.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
+                    } else if(pipelineCode.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode()) ||
+                            pipelineCode.getCode().equals(PipelineCode.HEME_ACCUTEST_CNV_DNA.getCode())) {
                         setHemeDefault();
                     } else if(pipelineCode.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
                         setSolidDefault();
@@ -503,6 +504,10 @@ public class SystemManagerPanelController extends SubPaneController {
     }
 
     void setPanelList(int page) {
+        if(panelListTable.getItems() != null) {
+            panelListTable.getItems().removeAll(panelListTable.getItems());
+            panelListTable.refresh();
+        }
 
         int totalCount = 0;
         int limit = 11;
@@ -1385,7 +1390,7 @@ public class SystemManagerPanelController extends SubPaneController {
                     VirtualPanelEditController controller;
                     FXMLLoader loader = mainApp.load(FXMLConstants.VIRTUAL_PANEL_EDIT);
                     Node pane = loader.load();
-                    logger.debug("try virtual Panel edit..A");
+                    logger.debug("try virtual Panel edit..");
                     controller = loader.getController();
                     controller.setComboBox(this.comboBox);
                     controller.setPanelId(panel.getId());

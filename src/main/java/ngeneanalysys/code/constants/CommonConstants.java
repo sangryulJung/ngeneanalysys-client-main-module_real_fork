@@ -113,13 +113,15 @@ public class CommonConstants {
 
 	public static final String EHCACHE_PATH =  "/config/ehcache.xml";
 
-	public static final String BRCA_ACCUTEST_DNA_PIPELINE ="BRCAaccuTest_DNA_Pipeline";
-	public static final String BRCA_ACCUTEST_PLUS_DNA_PIPELINE ="BRCAaccuTest_PLUS_DNA_Pipeline";
-	public static final String HEME_ACCUTEST_DNA_PIPELINE ="HEMEaccuTest_DNA_Pipeline";
-	public static final String SOLID_ACCUTEST_DNA_PIPELINE ="SOLIDaccuTest_DNA_Pipeline";
-	public static final String TST170_DNA_PIPELINE ="TST170_DNA_Pipeline";
-	public static final String TST170_RNA_PIPELINE ="TST170_RNA_Pipeline";
-	public static final String HERED_ACCUTEST_PIPELINE ="HEREDaccuTest_DNA_Pipeline";
-	public static final String ANALYSIS_TARGET_DNA ="DNA";
-	public static final String ANALYSIS_TARGET_RNA ="RNA";
+	public static final String BRCA_ACCUTEST_DNA_PIPELINE = "BRCAaccuTest_DNA_Pipeline";
+	public static final String BRCA_ACCUTEST_PLUS_DNA_PIPELINE = "BRCAaccuTest_PLUS_DNA_Pipeline";
+	public static final String HEME_ACCUTEST_DNA_PIPELINE = "HEMEaccuTest_DNA_Pipeline";
+	public static final String HEME_ACCUTEST_DNA_CNV_PIPELINE = "HEMEaccuTest_DNA_CNV_Pipeline";
+	public static final String SOLID_ACCUTEST_DNA_PIPELINE = "SOLIDaccuTest_DNA_CNV_Pipeline";
+	public static final String TST170_DNA_PIPELINE = "TST170_DNA_Pipeline";
+	public static final String TST170_RNA_PIPELINE = "TST170_RNA_Pipeline";
+	public static final String HERED_ACCUTEST_PIPELINE = "HEREDaccuTest_DNA_Pipeline";
+	public static final String HERED_ACCUTEST_CNV_PIPELINE = "HEREDaccuTest_DNA_CNV_Pipeline";
+	public static final String ANALYSIS_TARGET_DNA = "DNA";
+	public static final String ANALYSIS_TARGET_RNA = "RNA";
 }
