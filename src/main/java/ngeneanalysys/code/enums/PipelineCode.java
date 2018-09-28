@@ -92,6 +92,7 @@ public enum PipelineCode {
 				list.add(SampleSourceCode.ETC);
 				break;
 			case CommonConstants.SOLID_ACCUTEST_DNA_PIPELINE:
+			case CommonConstants.SOLID_ACCUTEST_DNA_CNV_PIPELINE:
 				list.add(SampleSourceCode.FFPE);
 				break;
 			case CommonConstants.HERED_ACCUTEST_PIPELINE:
@@ -133,6 +134,9 @@ public enum PipelineCode {
 			case CommonConstants.HEME_ACCUTEST_DNA_CNV_PIPELINE:
 				returnPipeline = HEME_ACCUTEST_CNV_DNA;
 				break;
+			case CommonConstants.SOLID_ACCUTEST_DNA_CNV_PIPELINE:
+				returnPipeline = SOLID_ACCUTEST_CNV_DNA;
+				break;
 			default:
 				returnPipeline = null;
 		}
@@ -145,6 +149,7 @@ public enum PipelineCode {
 			case CommonConstants.HEME_ACCUTEST_DNA_PIPELINE:
 			case CommonConstants.HEME_ACCUTEST_DNA_CNV_PIPELINE:
 			case CommonConstants.SOLID_ACCUTEST_DNA_PIPELINE:
+			case CommonConstants.SOLID_ACCUTEST_DNA_CNV_PIPELINE:
 				list.add("mapping_quality");
 				list.add("strand_artifact");
 				list.add("panel_of_normal");
