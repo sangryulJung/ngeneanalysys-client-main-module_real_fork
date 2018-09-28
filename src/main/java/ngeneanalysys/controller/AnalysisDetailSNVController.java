@@ -1037,32 +1037,34 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     @FXML
     public void resetTableColumnOrder() {
         Platform.runLater(() -> {
-            mainController.setContentsMaskerPaneVisible(true);
+            //mainController.setContentsMaskerPaneVisible(true);
             deleteColumn();
             removeColumnOrder(getColumnOrderType());
             runColumnAction();
-            mainController.setContentsMaskerPaneVisible(false);
+            //mainController.setContentsMaskerPaneVisible(false);
+            if(showFalseVariantsCheckBox.isVisible() && showFalseVariantsCheckBox.isSelected()) {
+                showFalseVariantsCheckBox.setSelected(false);
+            }
         });
     }
 
     @FXML
     public void excelDownload() {
-        Map<String, Object> params = new HashMap<>();
-        Map<String, List<Object>> filterList = new HashMap<>();
-        setFilterItem(filterList);
-        params.put("exportFields", getExportFields());
-        WorksheetUtil worksheetUtil = new WorksheetUtil();
-        worksheetUtil.exportSampleData("EXCEL", filterList, params, this.getMainApp(), sample);
+        fileDownload("EXCEL");
     }
 
     @FXML
     public void csvDownload() {
+        fileDownload("CSV");
+    }
+
+    private void fileDownload(String fileType) {
         Map<String, Object> params = new HashMap<>();
         Map<String, List<Object>> filterList = new HashMap<>();
         setFilterItem(filterList);
         params.put("exportFields", getExportFields());
         WorksheetUtil worksheetUtil = new WorksheetUtil();
-        worksheetUtil.exportSampleData("CSV", filterList, params, this.getMainApp(), sample);
+        worksheetUtil.exportSampleData(fileType, filterList, params, this.getMainApp(), sample);
     }
 
     private String getExportFields() {
@@ -1193,14 +1195,16 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         //checkBoxColumn.impl_setReorderable(false); 컬럼 이동 방지 코드
         checkBoxColumn.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue() != null ));
         checkBoxColumn.setCellFactory(param -> new BooleanCell());
+        double predictionColumnSize = 90d;
         String columnName = "Pathogenicity";
         String filterPredictionName = "pathogenicity";
         if(panel.getAnalysisType().equals(AnalysisTypeCode.SOMATIC.getDescription())) {
+            predictionColumnSize = 50d;
             columnName = "Tier";
             filterPredictionName = "tier";
         }
         TableColumn<VariantAndInterpretationEvidence, String> predictionColumn = new TableColumn<>(columnName);
-        createTableHeader(predictionColumn, columnName, filterPredictionName ,70d, columnName.toLowerCase());
+        createTableHeader(predictionColumn, columnName, filterPredictionName , predictionColumnSize, columnName.toLowerCase());
         if (panel.getAnalysisType().equals(AnalysisTypeCode.SOMATIC.getDescription())) {
             predictionColumn.setCellValueFactory(cellData ->
                     new SimpleStringProperty(
@@ -1907,7 +1911,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())
                 || panel.getCode().equals(PipelineCode.HEME_ACCUTEST_CNV_DNA.getCode())) {
             putTableColumn("hemeColumnOrder", CommonConstants.BASE_HEME_COLUMN_ORDER_PATH);
-        } else if(panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
+        } else if(panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())
+                || panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_CNV_DNA.getCode())) {
             putTableColumn("solidColumnOrder", CommonConstants.BASE_SOLID_COLUMN_ORDER_PATH);
         } else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
             putTableColumn("tstDNAColumnOrder", CommonConstants.BASE_TSTDNA_COLUMN_ORDER_PATH);

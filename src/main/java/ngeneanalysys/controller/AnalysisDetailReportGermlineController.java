@@ -78,9 +78,6 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
     private TableView<VariantAndInterpretationEvidence> variantsTable;
 
     @FXML
-    private TableColumn<VariantAndInterpretationEvidence, String> predictionColumn;
-
-    @FXML
     private TableColumn<VariantAndInterpretationEvidence, String> pathogenicityColumn;
 
     @FXML
@@ -742,6 +739,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
     }
 
+    @SuppressWarnings("unchecked")
     private boolean createPDF(boolean isDraft) {
         boolean created = true;
         String reportCreationErrorMsg = "An error occurred during the creation of the report document.";
@@ -850,7 +848,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                     contentsMap.put("isExistBRCA2", "Y");
                 }
 
-                if(list != null && !list.isEmpty()) {
+                if(!list.isEmpty()) {
                     for(VariantAndInterpretationEvidence variant : list){
                         variant.getSnpInDel().getSnpInDelExpression().setTranscript(ConvertUtil.insertTextAtFixedPosition(variant.getSnpInDel().getSnpInDelExpression().getTranscriptAccession(), 15, "\n"));
                         variant.getSnpInDel().getSnpInDelExpression().setNtChange(ConvertUtil.insertTextAtFixedPosition(variant.getSnpInDel().getSnpInDelExpression().getNtChange(), 15, "\n"));

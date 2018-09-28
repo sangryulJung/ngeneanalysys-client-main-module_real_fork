@@ -112,7 +112,8 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 	/**
 	 * 화면 출력 및 Task 실행
 	 */
-	@SuppressWarnings("static-access")
+
+	@SuppressWarnings({"static-access", "unchecked"})
 	@Override
 	public void show(Parent root) throws IOException {
 		this.analysisRequestService = AnalysisRequestService.getInstance();

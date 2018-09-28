@@ -45,7 +45,7 @@ public class ExcludeReportDialogController extends SubPaneController {
     private Stage dialogStage;
 
     /**
-     * @param snvController
+     * @param snvController AnalysisDetailSNVController
      */
     public void setSnvController(AnalysisDetailSNVController snvController) {
         this.snvController = snvController;

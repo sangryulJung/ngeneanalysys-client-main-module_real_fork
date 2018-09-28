@@ -24,7 +24,6 @@ public class AnalysisDetailFusionController extends AnalysisDetailCommonControll
     /** 작업 Dialog Window Stage Object */
     private Stage currentStage;
 
-
     @Override
     public void show(Parent root) throws IOException {
         logger.debug("show Fusion");
@@ -58,6 +57,5 @@ public class AnalysisDetailFusionController extends AnalysisDetailCommonControll
     public void saveCSV() {
 
     }
-
 
 }

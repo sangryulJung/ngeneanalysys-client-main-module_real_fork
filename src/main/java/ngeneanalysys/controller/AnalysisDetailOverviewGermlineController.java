@@ -96,19 +96,6 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
     @FXML
     private TableColumn<VariantAndInterpretationEvidence, String> aaChangeColumn;
 
-    @FXML
-    private Label roiCoverageLabel;
-
-    @FXML
-    private Label coverageUniformityLabel;
-
-    @FXML
-    private Label roiCoverageQCLabel;
-
-    @FXML
-    private Label coverageUniQCLabel;
-
-
     /** API 서버 통신 서비스 */
     private APIService apiService;
 

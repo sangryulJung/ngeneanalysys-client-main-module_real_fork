@@ -310,11 +310,12 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
                 }
 
                 if(currentShowFrameId != null) {
+                    String snvWrapper = "snvWrapper";
                     if (!currentShowFrameId.equals(detailContents.getCenter().getId())) {
-                        if (currentShowFrameId.equals("snvWrapper") && !detailContents.getCenter().getId().equals("snvWrapper")) {
+                        if (currentShowFrameId.equals(snvWrapper) && !detailContents.getCenter().getId().equals(snvWrapper)) {
                             snvLabel.setText("SNV/Indel");
                             snvLabel.getStyleClass().add("bold");
-                        } else if (!currentShowFrameId.equals("snvWrapper") && detailContents.getCenter().getId().equals("snvWrapper")) {
+                        } else if (!currentShowFrameId.equals(snvWrapper) && detailContents.getCenter().getId().equals(snvWrapper)) {
                             snvController.setSNVTabName();
                         }
                     }
