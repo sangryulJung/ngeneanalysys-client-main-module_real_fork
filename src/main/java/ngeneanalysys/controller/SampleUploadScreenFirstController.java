@@ -830,7 +830,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 .equals(PipelineCode.HERED_ACCUTEST_CNV_DNA.getCode()));
 
         boolean isSolidInclude = sampleArrayList.stream().anyMatch(sample -> sample.getPanel().getCode()
-                .equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode()));
+                .equals(PipelineCode.SOLID_ACCUTEST_CNV_DNA.getCode()));
 
         //heme_cnv, hered_cnv, solid_cnv 중 하나가 존재한다면 해당 Run은 동일한 패널을 사용해야함
         if((isHemeInclude || isHeredInclude || isSolidInclude) && size > 1) {

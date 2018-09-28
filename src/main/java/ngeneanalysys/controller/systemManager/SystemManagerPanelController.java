@@ -281,7 +281,8 @@ public class SystemManagerPanelController extends SubPaneController {
                     } else if(pipelineCode.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode()) ||
                             pipelineCode.getCode().equals(PipelineCode.HEME_ACCUTEST_CNV_DNA.getCode())) {
                         setHemeDefault();
-                    } else if(pipelineCode.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
+                    } else if(pipelineCode.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode()) ||
+                            pipelineCode.getCode().equals(PipelineCode.SOLID_ACCUTEST_CNV_DNA.getCode())) {
                         setSolidDefault();
                     }
 

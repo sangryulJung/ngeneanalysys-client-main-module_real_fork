@@ -535,7 +535,8 @@ public class VariantFilterController extends SubPaneController {
             if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())
                     || panel.getCode().equals(PipelineCode.HEME_ACCUTEST_CNV_DNA.getCode())
                     || panel.getCode().equals(PipelineCode.TST170_DNA.getCode())
-                    || panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
+                    || panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())
+                    || panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_CNV_DNA.getCode())) {
                 warningCheckComboBox.getCheckModel().checkAll();
                 warningCheckComboBox.getCheckModel().clearCheck("t_lod");
             } else if (panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())
@@ -558,7 +559,8 @@ public class VariantFilterController extends SubPaneController {
             lowConfidenceCheckComboBox.getItems().addAll(PipelineCode.getLowConfidences(panel.getCode()));
             if (panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode()) ||
                     panel.getCode().equals(PipelineCode.HEME_ACCUTEST_CNV_DNA.getCode()) ||
-                    panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
+                    panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode()) ||
+                    panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_CNV_DNA.getCode())) {
                 lowConfidenceCheckComboBox.getItems().addAll("homopolymer", "repeat_sequence", "lowcoverage_indel", "lowcoverage_snv");
             }
             lowConfidenceCheckComboBox.getItems().add("consecutive_variants");
@@ -1033,7 +1035,8 @@ public class VariantFilterController extends SubPaneController {
                     if (panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode()) ||
                             panel.getCode().equals(PipelineCode.HEME_ACCUTEST_CNV_DNA.getCode())) {
                         apiService.put("/member/memberOption/hemeFilter", map, null, true);
-                    } else if (panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
+                    } else if (panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode()) ||
+                            panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_CNV_DNA.getCode())) {
                         apiService.put("/member/memberOption/solidFilter", map, null, true);
                     } else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
                         apiService.put("/member/memberOption/tstDNAFilter", map, null, true);
@@ -1114,7 +1117,8 @@ public class VariantFilterController extends SubPaneController {
             if (panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode()) ||
                     panel.getCode().equals(PipelineCode.HEME_ACCUTEST_CNV_DNA.getCode())) {
                 apiService.put("/member/memberOption/hemeFilter", map, null, true);
-            } else if (panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
+            } else if (panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode()) ||
+                    panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_CNV_DNA.getCode())) {
                 apiService.put("/member/memberOption/solidFilter", map, null, true);
             } else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
                 apiService.put("/member/memberOption/tstDNAFilter", map, null, true);
