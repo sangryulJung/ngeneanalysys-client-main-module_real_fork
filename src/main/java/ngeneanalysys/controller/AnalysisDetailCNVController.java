@@ -6,9 +6,11 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.CNV;
+import ngeneanalysys.model.Panel;
 import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.paged.PagedCNV;
 import ngeneanalysys.service.APIService;
@@ -49,6 +51,15 @@ public class AnalysisDetailCNVController extends AnalysisDetailCommonController 
 
     @Override
     public void show(Parent root) throws IOException {
+
+        Panel panel = (Panel)paramMap.get("panel");
+
+        if(panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_CNV_DNA.getCode())) {
+            TableColumn<CNV, String> tierColumn = new TableColumn<>("Tier");
+            tierColumn.setPrefWidth(60);
+            tierColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTier()));
+            cnvTableView.getColumns().add(tierColumn);
+        }
 
         apiService = APIService.getInstance();
 

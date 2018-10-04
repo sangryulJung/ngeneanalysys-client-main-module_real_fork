@@ -10,6 +10,14 @@ public class CNV {
     private Integer sampleId;
     private String gene;
     private BigDecimal cnvValue;
+    private String tier;
+
+    /**
+     * @return tier
+     */
+    public String getTier() {
+        return tier;
+    }
 
     /**
      * @return sampleId
