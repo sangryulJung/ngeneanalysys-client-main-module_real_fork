@@ -11,6 +11,14 @@ public class CNV {
     private String gene;
     private BigDecimal cnvValue;
     private String tier;
+    private String includedInReport;
+
+    /**
+     * @return includedInReport
+     */
+    public String getIncludedInReport() {
+        return includedInReport;
+    }
 
     /**
      * @return tier
