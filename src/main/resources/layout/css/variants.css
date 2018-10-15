@@ -381,3 +381,28 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: right 3 center;
 }
+
+#cnvTableView .report_check {
+	-fx-background-color:#595959;
+	-fx-background-radius:15;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-pref-width:20;
+	-fx-text-alignment:center ;
+	-fx-alignment:center;
+}
+
+#cnvTableView .report_uncheck {
+	-fx-background-color:#FFFFFF;
+	-fx-background-radius:15;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#595959;
+	-fx-pref-width:20;
+	-fx-border-width : 1;
+	-fx-border-radius : 15;
+	-fx-border-color : #595959;
+	-fx-text-alignment:center;
+	-fx-alignment:center;
+}

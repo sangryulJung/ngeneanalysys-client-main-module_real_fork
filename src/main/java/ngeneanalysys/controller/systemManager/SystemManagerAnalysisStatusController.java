@@ -369,7 +369,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
         UpdateButtonCreate() {
             img.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 Run run = UpdateButtonCreate.this.getTableView().getItems().get(UpdateButtonCreate.this.getIndex());
-                if (AnalysisJobStatusCode.JOB_RUN_GROUP_FAIL.equals(run.getRunStatus().getStatus())) {
+                //if (AnalysisJobStatusCode.JOB_RUN_GROUP_FAIL.equals(run.getRunStatus().getStatus())) {
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     DialogUtil.setIcon(alert);
                     String alertContentText = "Are you sure to restart this run?";
@@ -383,7 +383,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
                     } else {
                         alert.close();
                     }
-                } else {
+                /*} else {
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     DialogUtil.setIcon(alert);
                     String alertContentText = "Only the failed analysis can be restarted.";
@@ -392,7 +392,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
                     alert.setHeaderText(run.getName());
                     alert.setContentText(alertContentText);
                     alert.showAndWait();
-                }
+                }*/
             });
 
         }
