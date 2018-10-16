@@ -19,6 +19,8 @@ public enum PipelineCode {
 	HERED_ACCUTEST_DNA(CommonConstants.HERED_ACCUTEST_PIPELINE, "HEREDaccuTest DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.HYBRIDIZATION_CAPTURE, CommonConstants.ANALYSIS_TARGET_DNA),
 	HERED_ACCUTEST_CNV_DNA(CommonConstants.HERED_ACCUTEST_CNV_PIPELINE, "HEREDaccuTest CNV DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.HYBRIDIZATION_CAPTURE, CommonConstants.ANALYSIS_TARGET_DNA),
 	BRCA_ACCUTEST_PLUS_DNA(CommonConstants.BRCA_ACCUTEST_PLUS_DNA_PIPELINE, "BRCAaccuTest PLUS DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
+	BRCA_ACCUTEST_PLUS_CMC_DNA(CommonConstants.BRCA_ACCUTEST_PLUS_DNA_CMC_PIPELINE, "BRCAaccuTest PLUS CMC DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
+	BRCA_ACCUTEST_PLUS_MLPA_DNA(CommonConstants.BRCA_ACCUTEST_PLUS_DNA_MLPA_PIPELINE, "BRCAaccuTest PLUS MLPA DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
 	BRCA_ACCUTEST_DNA(CommonConstants.BRCA_ACCUTEST_DNA_PIPELINE, "BRCAaccuTest DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
 	TST170_DNA(CommonConstants.TST170_DNA_PIPELINE, "TruSight Tumor 170 DNA", AnalysisTypeCode.SOMATIC, LibraryTypeCode.HYBRIDIZATION_CAPTURE, CommonConstants.ANALYSIS_TARGET_DNA),
 	TST170_RNA(CommonConstants.TST170_RNA_PIPELINE, "TruSight Tumor 170 RNA", AnalysisTypeCode.SOMATIC, LibraryTypeCode.HYBRIDIZATION_CAPTURE, CommonConstants.ANALYSIS_TARGET_RNA);
@@ -69,6 +71,8 @@ public enum PipelineCode {
 		switch (pipelineCode) {
 			case CommonConstants.BRCA_ACCUTEST_DNA_PIPELINE:
 			case CommonConstants.BRCA_ACCUTEST_PLUS_DNA_PIPELINE:
+			case CommonConstants.BRCA_ACCUTEST_PLUS_DNA_MLPA_PIPELINE:
+			case CommonConstants.BRCA_ACCUTEST_PLUS_DNA_CMC_PIPELINE:
 				list.add(SampleSourceCode.BLOOD);
 				list.add(SampleSourceCode.FFPE);
 				break;
@@ -112,6 +116,12 @@ public enum PipelineCode {
 				break;
 			case CommonConstants.BRCA_ACCUTEST_PLUS_DNA_PIPELINE:
 				returnPipeline = BRCA_ACCUTEST_PLUS_DNA;
+				break;
+			case CommonConstants.BRCA_ACCUTEST_PLUS_DNA_CMC_PIPELINE:
+				returnPipeline = BRCA_ACCUTEST_PLUS_CMC_DNA;
+				break;
+			case CommonConstants.BRCA_ACCUTEST_PLUS_DNA_MLPA_PIPELINE:
+				returnPipeline = BRCA_ACCUTEST_PLUS_MLPA_DNA;
 				break;
 			case CommonConstants.HEME_ACCUTEST_DNA_PIPELINE:
 				returnPipeline = HEME_ACCUTEST_DNA;

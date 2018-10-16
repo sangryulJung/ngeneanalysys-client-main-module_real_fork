@@ -26,7 +26,6 @@ import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -64,7 +63,7 @@ public class AnalysisDetailCNVController extends AnalysisDetailCommonController 
     public void show(Parent root) throws IOException {
 
         Panel panel = (Panel)paramMap.get("panel");
-        SampleView sample = (SampleView)paramMap.get("sample");
+        SampleView sample = (SampleView)paramMap.get("sampleView");
 
         if(panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_CNV_DNA.getCode())) {
             TableColumn<CNV, String> tierColumn = new TableColumn<>("Tier");

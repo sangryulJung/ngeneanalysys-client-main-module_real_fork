@@ -51,6 +51,8 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
 
     private AnalysisDetailCNVController cnvController;
 
+    private AnalysisDetailBrcaCNVController brcaCNVController;
+
     private AnalysisDetailTSTCNVController tstCNVController;
 
     private AnalysisDetailTSTFusionController tstFusionController;
@@ -101,18 +103,31 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
         }
     }
 
-    private boolean checkCNV() {
+    private boolean checkSomaticCNV() {
         SampleView sample = (SampleView)paramMap.get("sampleView");
 
         try {
             HttpClientResponse response = apiService.get("/analysisResults/cnv/" + sample.getId(), null, null, null);
             PagedCNV pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedCNV.class);
-            if(pagedCNV.getCount() > 0) {
+            if (pagedCNV.getCount() > 0) {
                 return true;
             }
         } catch (WebAPIException wae) {
             return false;
         }
+
+        return false;
+    }
+
+    private boolean checkBrcaCNV() {
+        SampleView sample = (SampleView)paramMap.get("sampleView");
+        //TODO BRCA CNV Check
+        if(sample.getPanel().getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_CMC_DNA.getCode()) ||
+                sample.getPanel().getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_MLPA_DNA.getCode())
+                ||sample.getPanel().getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
+            return true;
+        }
+
         return false;
     }
 
@@ -130,13 +145,23 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
                 menu.setStaticMenu(true);
                 topMenus[1] = menu;
             } else {
-                if(checkCNV()) {
+                if(checkSomaticCNV()) {
                     topMenus = new TopMenu[2];
                     topMenuContent = new Node[topMenus.length];
                     menu = new TopMenu();
                     menu.setMenuName("CNV");
                     menu.setParamMap(getParamMap());
                     menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_CNV);
+                    menu.setDisplayOrder(1);
+                    menu.setStaticMenu(true);
+                    topMenus[1] = menu;
+                } else if(checkBrcaCNV()) {
+                    topMenus = new TopMenu[2];
+                    topMenuContent = new Node[topMenus.length];
+                    menu = new TopMenu();
+                    menu.setMenuName("CNV");
+                    menu.setParamMap(getParamMap());
+                    menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_BRCA_CNV);
                     menu.setDisplayOrder(1);
                     menu.setStaticMenu(true);
                     topMenus[1] = menu;
@@ -300,6 +325,13 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
                             cnvController.setVariantsController(this);
                             cnvController.setParamMap(menu.getParamMap());
                             cnvController.show((Parent) node);
+                            break;
+                        case FXMLConstants.ANALYSIS_DETAIL_BRCA_CNV:
+                            brcaCNVController = loader.getController();
+                            brcaCNVController.setMainController(this.getMainController());
+                            brcaCNVController.setVariantsController(this);
+                            brcaCNVController.setParamMap(menu.getParamMap());
+                            brcaCNVController.show((Parent) node);
                             break;
                         default:
                             break;

@@ -85,6 +85,9 @@ public class FXMLConstants {
 	public static final String ANALYSIS_DETAIL_CNV = "/layout/fxml/AnalysisDetail-CNV.fxml";
 
 	/** 분석 상세 > Variants 화면 */
+	public static final String ANALYSIS_DETAIL_BRCA_CNV = "/layout/fxml/AnalysisDetail-BRCA-CNV.fxml";
+
+	/** 분석 상세 > Variants 화면 */
 	public static final String ANALYSIS_DETAIL_TST_CNV = "/layout/fxml/AnalysisDetail-TST-CNV.fxml";
 
 	/** 분석 상세 > Variants 화면 */
