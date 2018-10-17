@@ -910,7 +910,7 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
         startPosTextField.setText("");
         endPosTextField.setText("");
         condingConsTextField.setText("");
-        typeTableColumn.setText("");
+        variantTypeTextField.setText("");
 
         setInterpretationList(currentPageIndex + 1);
     }
