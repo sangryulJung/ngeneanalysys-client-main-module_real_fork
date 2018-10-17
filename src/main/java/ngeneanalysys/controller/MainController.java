@@ -222,7 +222,7 @@ public class MainController extends BaseStageController {
         contentsMaskerPane.setVisible(false);
 
         primaryStage.setOnCloseRequest(event -> {
-            /*if(!progressTaskContentArea.getChildren().isEmpty()) {
+            if(!progressTaskContentArea.getChildren().isEmpty()) {
                 String alertContentText = "The job is running. Are you sure you want to quit?";
 
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -232,15 +232,15 @@ public class MainController extends BaseStageController {
 
                 Optional<ButtonType> result = alert.showAndWait();
 
-                if(result.get() == ButtonType.CANCEL) {
+                if(result.isPresent() && result.get() == ButtonType.CANCEL) {
                     event.consume();
                 } else {
                     closeEvent(event);
                 }
             } else {
                 closeEvent(event);
-            }*/
-            closeEvent(event);
+            }
+            //closeEvent(event);
         });
 
         //로그인 사용자 세션

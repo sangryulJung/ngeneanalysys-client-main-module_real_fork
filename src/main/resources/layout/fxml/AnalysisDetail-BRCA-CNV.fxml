@@ -39,61 +39,61 @@
         </columns>
       </TableView>
       <Label text="All" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-      <HBox fx:id="brca1ExonBox" alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="1020.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+      <HBox fx:id="brca1ExonBox" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="100.0" prefWidth="1020.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
          <children>
-            <VBox maxHeight="0.0" maxWidth="1.7976931348623157E308" minHeight="0.1" minWidth="-Infinity" prefHeight="0.0" prefWidth="60.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" maxWidth="1.7976931348623157E308" minHeight="0.1" minWidth="-Infinity" prefHeight="0.0" prefWidth="60.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" maxWidth="1.7976931348623157E308" minHeight="0.1" minWidth="-Infinity" prefHeight="0.0" prefWidth="55.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" maxWidth="1.7976931348623157E308" minHeight="0.1" minWidth="-Infinity" prefHeight="0.0" prefWidth="55.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
          </children>
          <GridPane.margin>
             <Insets />
@@ -101,61 +101,61 @@
       </HBox>
       <HBox fx:id="brca2ExonBox" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
          <children>
-            <VBox maxHeight="0.0" maxWidth="1.7976931348623157E308" minHeight="0.1" prefHeight="0.0" prefWidth="40.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" maxWidth="1.7976931348623157E308" minHeight="0.1" prefHeight="0.0" prefWidth="40.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
-            <VBox maxHeight="0.0" maxWidth="1.7976931348623157E308" minHeight="0.1" prefHeight="0.0" prefWidth="40.0" style="-fx-border-color: black;" />
+            <VBox maxHeight="0.0" maxWidth="1.7976931348623157E308" minHeight="0.1" prefHeight="0.0" prefWidth="40.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
    </children>

@@ -216,8 +216,7 @@ public class DetailSubInfoController extends SubPaneController {
 
         } else if(panel.getAnalysisType().equalsIgnoreCase("GERMLINE")) {
             if (!StringUtils.isEmpty(chromosome) && gPos != null
-                    && (!panel.getCode().equalsIgnoreCase(PipelineCode.HERED_ACCUTEST_DNA.getCode())
-                        || (!panel.getCode().equalsIgnoreCase(PipelineCode.HERED_ACCUTEST_CNV_DNA.getCode())))) {
+                    && !PipelineCode.isHeredPipeline(panel.getCode())) {
                 dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
                 Label dbContentLabel = createLinkLabel("BRCA Exchange", "BRCA Exchange");
                 dbContentLabel.getStyleClass().add("title2");

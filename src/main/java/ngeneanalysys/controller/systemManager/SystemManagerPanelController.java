@@ -277,17 +277,13 @@ public class SystemManagerPanelController extends SubPaneController {
                     panelInfoLabel.setText("Analysis Type : " + pipelineCode.getAnalysisType() + ", Library Type : "
                             + pipelineCode.getLibraryType() + ", Analysis Target : " + pipelineCode.getAnalysisTarget());
 
-                    if(pipelineCode.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
-                            pipelineCode.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
+                    if(PipelineCode.isBRCAPipeline(pipelineCode.getCode())) {
                         setBRCADefault();
-                    } else if(pipelineCode.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode()) ||
-                            pipelineCode.getCode().equals(PipelineCode.HERED_ACCUTEST_CNV_DNA.getCode())) {
+                    } else if(PipelineCode.isHeredPipeline(pipelineCode.getCode())) {
                         setHeredDefault();
-                    } else if(pipelineCode.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode()) ||
-                            pipelineCode.getCode().equals(PipelineCode.HEME_ACCUTEST_CNV_DNA.getCode())) {
+                    } else if(PipelineCode.isHemePipeline(pipelineCode.getCode())) {
                         setHemeDefault();
-                    } else if(pipelineCode.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode()) ||
-                            pipelineCode.getCode().equals(PipelineCode.SOLID_ACCUTEST_CNV_DNA.getCode())) {
+                    } else if(PipelineCode.isSolidPipeline(pipelineCode.getCode())) {
                         setSolidDefault();
                     } else {
                         setTST170Default();

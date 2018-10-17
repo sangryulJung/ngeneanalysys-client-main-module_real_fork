@@ -532,15 +532,12 @@ public class VariantFilterController extends SubPaneController {
     @FXML
     public void setDefaultLowConfidence() {
         if(warningCheckComboBox != null) {
-            if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())
-                    || panel.getCode().equals(PipelineCode.HEME_ACCUTEST_CNV_DNA.getCode())
+            if(PipelineCode.isHemePipeline(panel.getCode())
                     || panel.getCode().equals(PipelineCode.TST170_DNA.getCode())
-                    || panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())
-                    || panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_CNV_DNA.getCode())) {
+                    || PipelineCode.isSolidPipeline(panel.getCode())) {
                 warningCheckComboBox.getCheckModel().checkAll();
                 warningCheckComboBox.getCheckModel().clearCheck("t_lod");
-            } else if (panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())
-                    || panel.getCode().equals(PipelineCode.HERED_ACCUTEST_CNV_DNA.getCode())) {
+            } else if (PipelineCode.isHeredPipeline(panel.getCode())) {
                 warningCheckComboBox.getCheckModel().checkAll();
             }
         }
@@ -557,10 +554,7 @@ public class VariantFilterController extends SubPaneController {
         CheckComboBox<String> lowConfidenceCheckComboBox = new CheckComboBox<>();
         if(panel != null) {
             lowConfidenceCheckComboBox.getItems().addAll(PipelineCode.getLowConfidences(panel.getCode()));
-            if (panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode()) ||
-                    panel.getCode().equals(PipelineCode.HEME_ACCUTEST_CNV_DNA.getCode()) ||
-                    panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode()) ||
-                    panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_CNV_DNA.getCode())) {
+            if (PipelineCode.isHemePipeline(panel.getCode()) || PipelineCode.isSolidPipeline(panel.getCode())) {
                 lowConfidenceCheckComboBox.getItems().addAll("homopolymer", "repeat_sequence", "lowcoverage_indel", "lowcoverage_snv");
             }
             lowConfidenceCheckComboBox.getItems().add("consecutive_variants");
@@ -694,12 +688,10 @@ public class VariantFilterController extends SubPaneController {
             caseDCheckBox.setText("LB(Likely Benign)");
             caseECheckBox.setText("B(Benign)");
 
-            if(panel.getCode().equalsIgnoreCase(PipelineCode.HERED_ACCUTEST_DNA.getCode())
-                    || panel.getCode().equalsIgnoreCase(PipelineCode.HERED_ACCUTEST_CNV_DNA.getCode())) {
+            if(PipelineCode.isHeredPipeline(panel.getCode())) {
                 kohbraComboBox.setDisable(true);
                 kohbraTextField.setDisable(true);
-            } else if(panel.getCode().equalsIgnoreCase(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
-                    panel.getCode().equalsIgnoreCase(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())){
+            } else if(PipelineCode.isBRCAPipeline(panel.getCode())){
                 gnomADaaaComboBox.setDisable(true);
                 gnomADaaaTextField.setDisable(true);
                 gnomADAllComboBox.setDisable(true);
@@ -719,12 +711,8 @@ public class VariantFilterController extends SubPaneController {
             }
         }
 
-        if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
-                panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode()) ||
-                panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode()) ||
-                panel.getCode().equals(PipelineCode.HERED_ACCUTEST_CNV_DNA.getCode())) {
-            if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode())
-                    || panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) warningHBox.setDisable(true);
+        if(PipelineCode.isBRCAPipeline(panel.getCode()) || PipelineCode.isHeredPipeline(panel.getCode())) {
+            if(PipelineCode.isBRCAPipeline(panel.getCode())) warningHBox.setDisable(true);
             cosmicidCheckBox.setDisable(true);
             cosmicOccurrenceComboBox.setDisable(true);
         }
@@ -1032,19 +1020,15 @@ public class VariantFilterController extends SubPaneController {
                 Map<String, Object> map = new HashMap<>();
                 map.put("value", valueJsonString);
                 try {
-                    if (panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode()) ||
-                            panel.getCode().equals(PipelineCode.HEME_ACCUTEST_CNV_DNA.getCode())) {
+                    if (PipelineCode.isHemePipeline(panel.getCode())) {
                         apiService.put("/member/memberOption/hemeFilter", map, null, true);
-                    } else if (panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode()) ||
-                            panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_CNV_DNA.getCode())) {
+                    } else if (PipelineCode.isSolidPipeline(panel.getCode())) {
                         apiService.put("/member/memberOption/solidFilter", map, null, true);
                     } else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
                         apiService.put("/member/memberOption/tstDNAFilter", map, null, true);
-                    } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
-                            panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
+                    } else if(PipelineCode.isBRCAPipeline(panel.getCode())) {
                         apiService.put("/member/memberOption/brcaFilter", map, null, true);
-                    } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode()) ||
-                            panel.getCode().equals(PipelineCode.HERED_ACCUTEST_CNV_DNA.getCode())) {
+                    } else if(PipelineCode.isHeredPipeline(panel.getCode())) {
                         apiService.put("/member/memberOption/heredFilter", map, null, true);
                     }
 
@@ -1114,19 +1098,15 @@ public class VariantFilterController extends SubPaneController {
         Map<String, Object> map = new HashMap<>();
         map.put("value", gg);
         try {
-            if (panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode()) ||
-                    panel.getCode().equals(PipelineCode.HEME_ACCUTEST_CNV_DNA.getCode())) {
+            if (PipelineCode.isHemePipeline(panel.getCode())) {
                 apiService.put("/member/memberOption/hemeFilter", map, null, true);
-            } else if (panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode()) ||
-                    panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_CNV_DNA.getCode())) {
+            } else if (PipelineCode.isSolidPipeline(panel.getCode())) {
                 apiService.put("/member/memberOption/solidFilter", map, null, true);
             } else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
                 apiService.put("/member/memberOption/tstDNAFilter", map, null, true);
-            } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
-                    panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
+            } else if(PipelineCode.isBRCAPipeline(panel.getCode())) {
                 apiService.put("/member/memberOption/brcaFilter", map, null, true);
-            } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode()) ||
-                    panel.getCode().equals(PipelineCode.HERED_ACCUTEST_CNV_DNA.getCode())) {
+            } else if(PipelineCode.isHeredPipeline(panel.getCode())) {
                 apiService.put("/member/memberOption/heredFilter", map, null, true);
             }
             filterNameTextField.setText("");
@@ -1140,22 +1120,19 @@ public class VariantFilterController extends SubPaneController {
     }
 
     private void changeFilter() {
-        if (panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode()) ||
-                panel.getCode().equals(PipelineCode.HEME_ACCUTEST_CNV_DNA.getCode())) {
+        if (PipelineCode.isHemePipeline(panel.getCode())) {
             mainController.getBasicInformationMap().remove("hemeFilter");
             mainController.getBasicInformationMap().put("hemeFilter", filter);
-        } else if (panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
+        } else if (PipelineCode.isSolidPipeline(panel.getCode())) {
             mainController.getBasicInformationMap().remove("solidFilter");
             mainController.getBasicInformationMap().put("solidFilter", filter);
         } else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
             mainController.getBasicInformationMap().remove("tstDNAFilter");
             mainController.getBasicInformationMap().put("tstDNAFilter", filter);
-        } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
-                panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
+        } else if(PipelineCode.isBRCAPipeline(panel.getCode())) {
             mainController.getBasicInformationMap().remove("brcaFilter");
             mainController.getBasicInformationMap().put("brcaFilter", filter);
-        } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode()) ||
-                panel.getCode().equals(PipelineCode.HERED_ACCUTEST_CNV_DNA.getCode())) {
+        } else if(PipelineCode.isHeredPipeline(panel.getCode())) {
             mainController.getBasicInformationMap().remove("heredFilter");
             mainController.getBasicInformationMap().put("heredFilter", filter);
         }

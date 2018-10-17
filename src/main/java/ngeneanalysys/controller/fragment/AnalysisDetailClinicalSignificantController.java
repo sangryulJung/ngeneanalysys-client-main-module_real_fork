@@ -477,8 +477,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                 frequencyValue[5] * 100);
         frequenciesRadarGraph.display();
         Panel panel = (Panel)paramMap.get("panel");
-        if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())
-                || panel.getCode().equals(PipelineCode.HERED_ACCUTEST_CNV_DNA.getCode())) {
+        if(PipelineCode.isHeredPipeline(panel.getCode())) {
             deleteClinicalSignificantItem();
         }
     }

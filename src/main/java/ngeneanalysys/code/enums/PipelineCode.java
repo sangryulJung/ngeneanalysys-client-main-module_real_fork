@@ -1,6 +1,7 @@
 package ngeneanalysys.code.enums;
 
 import ngeneanalysys.code.constants.CommonConstants;
+import ngeneanalysys.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -181,5 +182,27 @@ public enum PipelineCode {
 			default:
 		}
 		return list;
+	}
+
+	public static boolean isBRCAPipeline(String code) {
+		return StringUtils.isNotEmpty(code) && (code.equals(BRCA_ACCUTEST_DNA.getCode())
+				|| code.equals(BRCA_ACCUTEST_PLUS_DNA.getCode())
+				|| code.equals(BRCA_ACCUTEST_PLUS_CMC_DNA.getCode())
+				|| code.equals(BRCA_ACCUTEST_PLUS_MLPA_DNA.getCode()));
+	}
+
+	public static boolean isHeredPipeline(String code) {
+		return StringUtils.isNotEmpty(code) && (code.equals(HERED_ACCUTEST_DNA.getCode())
+				|| code.equals(HERED_ACCUTEST_CNV_DNA.getCode()));
+	}
+
+	public static boolean isHemePipeline(String code) {
+		return StringUtils.isNotEmpty(code) && (code.equals(HEME_ACCUTEST_CNV_DNA.getCode())
+				|| code.equals(HEME_ACCUTEST_DNA.getCode()));
+	}
+
+	public static boolean isSolidPipeline(String code) {
+		return StringUtils.isNotEmpty(code) && (code.equals(SOLID_ACCUTEST_DNA.getCode())
+				|| code.equals(SOLID_ACCUTEST_CNV_DNA.getCode()));
 	}
 }
