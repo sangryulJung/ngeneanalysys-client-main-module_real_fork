@@ -428,6 +428,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
         roiCoveragePercentageTextField.setText("");
         roiCoveragePercentageTextField.setDisable(true);
+        if(bedFile == null) panelSaveButton.setDisable(true);
     }
 
     private void setHemeDefault() {
@@ -467,6 +468,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
         roiCoveragePercentageTextField.setText("");
         roiCoveragePercentageTextField.setDisable(true);
+        if(bedFile == null) panelSaveButton.setDisable(true);
     }
 
     private void setSolidDefault() {
@@ -507,11 +509,16 @@ public class SystemManagerPanelController extends SubPaneController {
 
         roiCoveragePercentageTextField.setText("");
         roiCoveragePercentageTextField.setDisable(true);
+        if(bedFile == null) panelSaveButton.setDisable(true);
     }
 
     private void setBRCADefault() {
-        canonicalTranscriptTextArea.setText("");
-        canonicalTranscriptTextArea.setDisable(false);
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("BRCA1").append("\t").append("NM_007294").append("\n").append("BRCA2").append("\t").append("NM_000059");
+
+        canonicalTranscriptTextArea.setText(stringBuilder.toString());
+        canonicalTranscriptTextArea.setDisable(true);
 
         warningReadDepthTextField.setText("");
         warningReadDepthTextField.setDisable(true);
@@ -564,6 +571,8 @@ public class SystemManagerPanelController extends SubPaneController {
         uniformity02PercentageTextField.setDisable(true);
         mappingQuality60PercentageTextField.setText("");
         mappingQuality60PercentageTextField.setDisable(true);
+        saveTextFile.setDisable(false);
+        bedFile = null;
 
     }
 
@@ -1027,7 +1036,8 @@ public class SystemManagerPanelController extends SubPaneController {
         String code = pipelineComboBox.getSelectionModel().getSelectedItem().getValue();
 
         if(StringUtils.isNotEmpty(code)) {
-            if(bedFile == null && panelId == 0) return;
+            if(((!PipelineCode.isBRCAPipeline(code) && bedFile == null) ||
+                PipelineCode.isBRCAPipeline(code)) && panelId == 0) return;
 
             if(defaultSampleSourceComboBox.getSelectionModel().getSelectedItem() == null) {
                 defaultSampleSourceComboBox.requestFocus();
@@ -1125,22 +1135,28 @@ public class SystemManagerPanelController extends SubPaneController {
                     panelId = 0; //패널을 수정했으므로 초기화
                 }
 
-                Task task = new BedFileUploadTask(panel.getId(), bedFile);
+                if(!PipelineCode.isBRCAPipeline(code) && bedFile != null) {
+                    Task task = new BedFileUploadTask(panel.getId(), bedFile);
 
-                Thread thread = new Thread(task);
-                thread.setDaemon(true);
-                thread.start();
+                    Thread thread = new Thread(task);
+                    thread.setDaemon(true);
+                    thread.start();
 
-                task.setOnSucceeded(ev -> {
-                    try {
-                        setPanelList(1);
-                        setDisabledItem(true);
-                        panelSaveButton.setDisable(true);
-                    } catch (Exception e) {
-                        logger.error("panel list refresh fail.", e);
-                    }
+                    task.setOnSucceeded(ev -> {
+                        try {
+                            setPanelList(1);
+                            setDisabledItem(true);
+                            panelSaveButton.setDisable(true);
+                        } catch (Exception e) {
+                            logger.error("panel list refresh fail.", e);
+                        }
 
-                });
+                    });
+                } else {
+                    setPanelList(1);
+                    setDisabledItem(true);
+                    panelSaveButton.setDisable(true);
+                }
 
             } catch (WebAPIException wae) {
                 wae.printStackTrace();
