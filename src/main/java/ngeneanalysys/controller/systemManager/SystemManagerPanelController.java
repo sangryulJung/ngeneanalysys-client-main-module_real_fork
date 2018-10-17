@@ -1036,8 +1036,7 @@ public class SystemManagerPanelController extends SubPaneController {
         String code = pipelineComboBox.getSelectionModel().getSelectedItem().getValue();
 
         if(StringUtils.isNotEmpty(code)) {
-            if(((!PipelineCode.isBRCAPipeline(code) && bedFile == null) ||
-                PipelineCode.isBRCAPipeline(code)) && panelId == 0) return;
+            if((!PipelineCode.isBRCAPipeline(code) && bedFile == null) && panelId == 0) return;
 
             if(defaultSampleSourceComboBox.getSelectionModel().getSelectedItem() == null) {
                 defaultSampleSourceComboBox.requestFocus();
