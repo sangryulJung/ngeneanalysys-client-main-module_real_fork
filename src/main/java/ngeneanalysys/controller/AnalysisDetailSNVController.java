@@ -1986,18 +1986,20 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     private void addAColumnToTable(List<TableColumnInfo> columnInfos) {
-        columnInfos.sort(Comparator.comparing(TableColumnInfo::getOrder));
-
-        for(TableColumnInfo info : columnInfos) {
-            if(columnMap.containsKey(info.getColumnName())) {
+        List<TableColumnInfo> cols = columnInfos.stream()
+                .filter(item -> columnMap.containsKey(item.getColumnName()))
+                .sorted(Comparator.comparing(TableColumnInfo::getOrder)).collect(Collectors.toList());
+        for(TableColumnInfo info : cols) {
                 columnMap.get(info.getColumnName()).visibleProperty()
                         .removeListener(tableColumnVisibilityChangeListener);
                 columnMap.get(info.getColumnName()).setVisible(info.isVisible());
                 columnMap.get(info.getColumnName()).visibleProperty()
                         .addListener(tableColumnVisibilityChangeListener);
-                variantListTableView.getColumns().add(columnMap.get(info.getColumnName()));
-            }
         }
+        ArrayList tableColumns = cols.stream()
+                .map(item -> columnMap.get(item.getColumnName()))
+                .collect(Collectors.toCollection(ArrayList::new));
+        variantListTableView.getColumns().addAll(tableColumns);
         logger.debug("Column Count = " + variantListTableView.getColumns().size());
     }
 
