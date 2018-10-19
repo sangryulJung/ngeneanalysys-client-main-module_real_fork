@@ -1659,8 +1659,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         createTableHeader(exonBic, "Exon (BIC)", null ,null, "exonNumBic");
         exonBic.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getExonNumBic()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> zigosity = new TableColumn<>("Zigosity");
-        createTableHeader(zigosity, "Zigosity", null, null, "zygosity");
+        TableColumn<VariantAndInterpretationEvidence, String> zigosity = new TableColumn<>("Zygosity");
+        createTableHeader(zigosity, "Zygosity", null, null, "zygosity");
         zigosity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getZygosity()));
 
         TableColumn<VariantAndInterpretationEvidence, String> siftPrediction = new TableColumn<>("SIFT Prediction");

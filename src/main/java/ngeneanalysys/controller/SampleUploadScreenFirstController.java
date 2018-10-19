@@ -768,6 +768,8 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 break;
             }
             sample.setSampleSource(sampleSource.getSelectionModel().getSelectedItem());
+
+            if(sampleIsControlList.get(i).isVisible()) sample.setIsControl(sampleIsControlList.get(i).isSelected());
         }
 
         return ok;
@@ -832,9 +834,24 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         boolean isSolidInclude = sampleArrayList.stream().anyMatch(sample -> sample.getPanel().getCode()
                 .equals(PipelineCode.SOLID_ACCUTEST_CNV_DNA.getCode()));
 
+        boolean isBrcaCMCInclude = sampleArrayList.stream().anyMatch(sample -> sample.getPanel().getCode()
+                .equals(PipelineCode.BRCA_ACCUTEST_PLUS_CMC_DNA.getCode()));
+
+        boolean isBrcaMLPAInclude = sampleArrayList.stream().anyMatch(sample -> sample.getPanel().getCode()
+                .equals(PipelineCode.BRCA_ACCUTEST_PLUS_MLPA_DNA.getCode()));
+
         //heme_cnv, hered_cnv, solid_cnv 중 하나가 존재한다면 해당 Run은 동일한 패널을 사용해야함
-        if((isHemeInclude || isHeredInclude || isSolidInclude) && size > 1) {
-            DialogUtil.alert("check panel setting", "check panel setting", sampleUploadController.getCurrentStage(), true);
+        if((isHemeInclude || isHeredInclude || isSolidInclude || isBrcaCMCInclude || isBrcaMLPAInclude)
+                && size > 1) {
+            DialogUtil.warning("check panel setting", "check panel setting",
+                    sampleUploadController.getCurrentStage(), true);
+            return;
+        }
+
+        if((isHemeInclude || isHeredInclude || isSolidInclude || isBrcaCMCInclude || isBrcaMLPAInclude)
+                && size == 1 && sampleArrayList.size() == 1) {
+            DialogUtil.warning("Warning", "CNV panels require two or more samples.",
+                    sampleUploadController.getCurrentStage(), true);
             return;
         }
 
@@ -928,6 +945,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         params.put("name", sample.getName());
         params.put("panelId", sample.getPanel().getId());
         params.put("isControl", sample.getIsControl());
+        params.put("code", sample.getPanel().getCode());
         params.put("diseaseId", sample.getPanel().getDefaultDiseaseId());
         params.put("sampleSource", sample.getSampleSource());
         params.put("inputFType", "FASTQ.GZ");

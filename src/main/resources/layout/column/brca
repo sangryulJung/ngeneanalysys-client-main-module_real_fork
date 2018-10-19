@@ -24,7 +24,7 @@
     {"order":23,"columnName":"Exon (BIC)","visible":true},
     {"order":24,"columnName":"dbSNP ID","visible":true},
     {"order":25,"columnName":"dbSNP Common ID","visible":false},
-    {"order":26,"columnName":"Zigosity","visible":true},
+    {"order":26,"columnName":"Zygosity","visible":true},
     {"order":27,"columnName":"ClinVar Accession","visible":true},
     {"order":28,"columnName":"ClinVar Class","visible":true},
     {"order":29,"columnName":"ClinVar Review Status","visible":true},
