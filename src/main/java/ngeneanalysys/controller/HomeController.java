@@ -71,7 +71,10 @@ public class HomeController extends SubPaneController{
     private Label dateLabel;
 
     @FXML
-    private Label noticeContentsLabel;
+    private Label noticeTitleLabel;
+
+    @FXML
+    private TextArea noticeContentsTextArea;
 
     @FXML
     private ToggleGroup newsTipGroup;
@@ -286,7 +289,8 @@ public class HomeController extends SubPaneController{
 
         dateLabel.setText(DateFormatUtils.format(
                 noticeView.getCreatedAt().toDate(), "yyyy-MM-dd"));
-        noticeContentsLabel.setText(noticeView.getTitle() + "\n" + noticeView.getContents());
+        noticeTitleLabel.setText(noticeView.getTitle());
+        noticeContentsTextArea.setText(noticeView.getContents());
         return true;
     }
 
