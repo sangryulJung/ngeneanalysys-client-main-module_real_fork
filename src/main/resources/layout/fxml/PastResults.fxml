@@ -68,7 +68,7 @@
                   <String fx:value="header" />
                   <String fx:value="regular" />
                </styleClass></Label>
-            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Sequencer" GridPane.columnIndex="1">
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Instrument" GridPane.columnIndex="1">
                <styleClass>
                   <String fx:value="header" />
                   <String fx:value="regular" />
