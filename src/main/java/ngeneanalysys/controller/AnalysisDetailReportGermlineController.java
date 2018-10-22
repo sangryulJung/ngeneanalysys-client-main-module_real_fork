@@ -721,7 +721,6 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 if (dataSave) {
                     // 최종 보고서 생성이 정상 처리된 경우 분석 샘플의 상태값 완료 처리.
                     if (createPDF(false)) {
-                        //setComplete();
                         Platform.runLater(this::setVariantsList);
                     }
                 }

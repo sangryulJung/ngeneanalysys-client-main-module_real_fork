@@ -442,17 +442,10 @@ public class HomeController extends SubPaneController{
             startDateHBox = createHBox(startDateLabel, "Start : ");
             finishDateLabel = new Label();
             finishDateHBox = createHBox(finishDateLabel, "Finished : ");
-            /*completeLabel = new Label();
-            completeHBox = createHBox(completeLabel, "Complete : ");
-            queuedLabel = new Label();
-            queuedHBox = createHBox(queuedLabel, "Queued : ");
-            runningLabel = new Label();
-            runningHBox = createHBox(runningLabel, "Running : ");
-            failedLabel = new Label();
-            failedHBox = createHBox(failedLabel, "Failed : ");*/
+
             completeLabel = new Label();
             failedLabel = new Label();
-            completeHBox = createHBox(completeLabel, "Complete : ", failedLabel, "Failed : ");
+            completeHBox = createHBox(completeLabel, "Completed : ", failedLabel, "Failed : ");
             runningLabel = new Label();
             queuedLabel = new Label();
             queuedHBox = createHBox(runningLabel, "Running : ", queuedLabel, "Queued : ");

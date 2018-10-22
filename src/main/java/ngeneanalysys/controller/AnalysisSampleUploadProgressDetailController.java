@@ -166,7 +166,7 @@ public class AnalysisSampleUploadProgressDetailController extends BaseStageContr
                 }
                 statusLabel.setText("[" + progressPercent + "%]");
             } else {
-                statusLabel.setText("[Complete]");
+                statusLabel.setText("[Completed]");
                 // 완료된 경우 진행바 제거
                 hbox.getChildren().remove(1);
             }
