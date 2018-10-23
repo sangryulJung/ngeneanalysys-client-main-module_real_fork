@@ -78,7 +78,7 @@
                   <String fx:value="header" />
                   <String fx:value="regular" />
                </styleClass></Label>
-            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Finished Date" GridPane.columnIndex="3">
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Finish Date" GridPane.columnIndex="3">
                <styleClass>
                   <String fx:value="header" />
                   <String fx:value="regular" />

@@ -441,7 +441,7 @@ public class HomeController extends SubPaneController{
             startDateLabel = new Label();
             startDateHBox = createHBox(startDateLabel, "Start : ");
             finishDateLabel = new Label();
-            finishDateHBox = createHBox(finishDateLabel, "Finished : ");
+            finishDateHBox = createHBox(finishDateLabel, "Finish : ");
 
             completeLabel = new Label();
             failedLabel = new Label();

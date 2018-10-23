@@ -177,7 +177,7 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
 
                 if(this.taskStatus) {
                     // 완료 메시지 출력
-                    DialogUtil.alert("Analysis Request Upload Finished", "The analysis request has been completed.", this.analysisSampleUploadProgressTaskController.getMainController().getPrimaryStage(), false);
+                    DialogUtil.alert("Analysis Request Upload Finish", "The analysis request has been completed.", this.analysisSampleUploadProgressTaskController.getMainController().getPrimaryStage(), false);
                 } else {
                     // 오류 발생시 실패 메시지 출력
                     DialogUtil.error("Upload Failed", String.format("[%s] %s", this.msgDialogHeader, this.msgDialogContent), analysisSampleUploadProgressTaskController.getMainController().getPrimaryStage(), false);
