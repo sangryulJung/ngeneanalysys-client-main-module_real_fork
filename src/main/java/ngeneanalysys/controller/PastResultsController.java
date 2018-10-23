@@ -725,11 +725,11 @@ public class PastResultsController extends SubPaneController {
 			HBox titleBox = new HBox();
 			String styleClass = "sample_list_label";
 			Label name = new Label("Sample");
-			labelSize(name, 180., styleClass);
+			labelSize(name, 180., "sample_list_label_left");
 			Label status = new Label("Status");
 			labelSize(status, 70., styleClass);
 			Label panel = new Label("Panel");
-			labelSize(panel, 170., styleClass);
+			labelSize(panel, 170., "sample_list_label_left");
 			Label variants = new Label("Variant");
 			labelSize(variants, 340., styleClass);
 			Label qc = new Label("QC");
@@ -821,8 +821,9 @@ public class PastResultsController extends SubPaneController {
 
 					}
 				});*/
-				String styleClass = null;
+				String styleClass = "result_sample_name";
 				Label name = new Label(sampleView.getName());
+				name.setTooltip(new Tooltip(sampleView.getName()));
 				labelSize(name, 180., styleClass);
 				HBox statusHBox = new HBox();
 				statusHBox.setPrefWidth(70);
@@ -843,6 +844,7 @@ public class PastResultsController extends SubPaneController {
 				}
 				statusHBox.getChildren().add(status);
 				Label panel = new Label(sampleView.getPanel().getName());
+				panel.setTooltip(new Tooltip(sampleView.getPanel().getName()));
 				labelSize(panel, 170., styleClass);
 				HBox variants = new HBox();
 				variants.getStyleClass().add("variant_hbox");
@@ -867,7 +869,7 @@ public class PastResultsController extends SubPaneController {
 				String qcValue = sampleView.getQcResult();
 				if(qcValue.equalsIgnoreCase("NONE")) qcValue = "";
 				Label qc = new Label(qcValue);
-				labelSize(qc, 78., styleClass);
+				labelSize(qc, 78., null);
 
 				Label restart = new Label();
 				labelSize(restart, 20., "sample_restart_button");

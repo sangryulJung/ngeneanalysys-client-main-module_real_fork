@@ -39,6 +39,13 @@
     -fx-text-fill : #000000;
 }
 
+.sample_list_label_left {
+    -fx-background-color : #f7f7f7;
+    -fx-text-fill : #000000;
+    -fx-alignment : center-left;
+    -fx-padding: 0 10 0 10;
+}
+
 .lv_i_icon {
     -fx-background-radius : 20;
     -fx-pref-width : 25;
@@ -94,7 +101,7 @@
 
 .variant_hbox {
     -fx-background-color : #FFFFFF;
-    -fx-alignment : center-left;
+    -fx-alignment : center;
     -fx-pref-height : 30;
 }
 
@@ -253,4 +260,8 @@
     -fx-pref-height : 16;
     -fx-min-width : 16;
     -fx-min-height : 16;
+}
+.result_sample_name {
+    -fx-alignment: center-left;
+    -fx-padding: 0 10 0 10;
 }
