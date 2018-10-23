@@ -1037,6 +1037,7 @@ public class PastResultsController extends SubPaneController {
 			setLabelStyle(finishDateLabel);
 			this.add(downloadLabel, 4, 0);
 			setLabelStyle(downloadLabel);
+			downloadLabel.setTooltip(new Tooltip("Raw data download (bai, bam, vcf, fastq.gz)"));
 			downloadLabel.getStyleClass().add("fileDownloadButton");
 
 			this.setPrefHeight(35);
