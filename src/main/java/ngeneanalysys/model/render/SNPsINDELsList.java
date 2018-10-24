@@ -1,15 +1,9 @@
 package ngeneanalysys.model.render;
 
-import java.util.Map;
-import java.util.Set;
-
 import javafx.scene.input.MouseEvent;
-import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.model.Panel;
-import ngeneanalysys.util.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.WordUtils;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.PopOver.ArrowLocation;
 
@@ -44,79 +38,16 @@ public class SNPsINDELsList {
 			Label label = new Label("< Empty Warning Reason >");
 			box.getChildren().add(label);
 		} else {
-			/*box.setAlignment(Pos.BOTTOM_LEFT);
-			Map<String,String> map = JsonUtil.fromJsonToMap(jsonStr.replace("'", "\""));
-			Set<Map.Entry<String, String>> mapKey = map.entrySet();
-			int currentIndex = 1;
-			for(Map.Entry<String, String> entry : mapKey) {
-				//if(key.toUpperCase().equals("WARNING")) continue;
-
-				if (panel.getName().equals(CommonConstants.TST_170_DNA) ||
-						entry.getKey().equalsIgnoreCase("low_variant_coverage_depth") ||
-						entry.getKey().equalsIgnoreCase("low_variant_fraction") ||
-						entry.getKey().equalsIgnoreCase("homopolymer_region") ||
-						entry.getKey().equalsIgnoreCase("soft_clipped_amplicon") ||
-						entry.getKey().equalsIgnoreCase("primer_deletion") ||
-						entry.getKey().equalsIgnoreCase("low_read_depth") ||
-						entry.getKey().equalsIgnoreCase("low_allele_fraction") ||
-						entry.getKey().equalsIgnoreCase("low_confidence")) {
-
-					String warningString = map.getOrDefault(entry.getKey(), "N/A");
-					String titleString = "* " + WordUtils.capitalize(entry.getKey().replaceAll("_", " ")) + " : ";
-					HBox hbox = getWarningReasonItemBox(titleString, warningString, panel);
-					box.getChildren().add(hbox);
-					if (mapKey.size() > currentIndex) box.setMargin(hbox, new Insets(5, 0, 0, 0));
-					currentIndex++;
-				}
-			}*/
 			box.setAlignment(Pos.BOTTOM_LEFT);
 			String[] list = jsonStr.split(",");
 			int currentIndex = 0;
 			for(String item : list) {
 				currentIndex++;
-//				if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode()) ||
-//						item.contains("low_variant_coverage_depth") ||
-//						item.contains("low_variant_fraction") ||
-//						item.contains("homopolymer_region") ||
-//						item.contains("soft_clipped_amplicon") ||
-//						item.contains("primer_deletion") ||
-//						item.contains("low_read_depth") ||
-//						item.contains("low_allele_fraction") ||
-//						item.contains("low_confidence")) {
-//					String[] splitItem = item.split(":");
+				HBox hbox = getWarningReasonItemBox(item, "NONE" , panel);
+				box.getChildren().add(hbox);
 
-					//String titleString = "* " + WordUtils.capitalize(splitItem[0].replaceAll("_", " ")) + " : ";
-					HBox hbox = getWarningReasonItemBox(item, "NONE" , panel);
-					box.getChildren().add(hbox);
-
-					if (list.length > currentIndex) box.setMargin(hbox, new Insets(5, 0, 0, 0));
-
-				//}
+				if (list.length > currentIndex) box.setMargin(hbox, new Insets(5, 0, 0, 0));
 			}
-
-			/*if(map != null && !map.isEmpty() && map.size() > 0) {
-				String lowVariantCoverageDepth = map.get("low_variant_coverage_depth");
-				String lowVariantFraction = map.get("low_variant_fraction");				
-				String homopolymerRegion = map.get("homopolymer_region");
-				String softClippedRegion = map.get("soft_clipped_amplicon");
-				String primerDeletionRegion = map.get("primer_deletion");
-				
-				HBox lowVariantCoverageDepthBox = getWarningReasonItemBox("* Low Variant Coverage Depth : ", lowVariantCoverageDepth == null ? "N/A" : lowVariantCoverageDepth );
-				HBox lowVariantFractionBox = getWarningReasonItemBox("* Low Variant Fraction : ", lowVariantFraction == null ? "N/A" : lowVariantFraction);
-				HBox homopolymerRegionBox = getWarningReasonItemBox("* Homopolymer Region : ", homopolymerRegion == null ? "N/A" : homopolymerRegion);
-				HBox softClippedRegionBox = getWarningReasonItemBox("* Soft Clipped Region : ", softClippedRegion == null ? "N/A" : softClippedRegion);				
-				HBox primerDeletionRegionBox = getWarningReasonItemBox("* Primer Deletion Region : ", primerDeletionRegion == null ? "N/A" : primerDeletionRegion);
-				
-				box.getChildren().add(lowVariantCoverageDepthBox);
-				box.getChildren().add(lowVariantFractionBox);
-				box.getChildren().add(homopolymerRegionBox);
-				box.getChildren().add(softClippedRegionBox);
-				box.getChildren().add(primerDeletionRegionBox);
-				box.setMargin(lowVariantFractionBox, new Insets(5, 0, 0, 0));
-				box.setMargin(softClippedRegionBox, new Insets(5, 0, 0, 0));
-				box.setMargin(homopolymerRegionBox, new Insets(5, 0, 0, 0));
-				box.setMargin(primerDeletionRegionBox, new Insets(5, 0, 0, 0));
-			}*/
 		}
 		
 		button.setOnAction(event -> {

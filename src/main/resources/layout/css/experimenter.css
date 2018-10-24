@@ -265,3 +265,19 @@
     -fx-alignment: center-left;
     -fx-padding: 0 10 0 10;
 }
+
+.brca_cnv_deletion {
+    -fx-background-color : #FF0000;
+}
+
+.brca_cnv_deletion .label{
+    -fx-text-fill : #FFFFFF;
+}
+
+.brca_cnv_duplication {
+    -fx-background-color : #0000FF;
+}
+
+.brca_cnv_duplication .label{
+    -fx-text-fill : #FFFFFF;
+}

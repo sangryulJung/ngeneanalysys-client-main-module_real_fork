@@ -573,7 +573,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         if(!sampleNameTextFieldList.isEmpty() && sampleNameTextFieldList.size() > row) {
             if(!panelComboBoxList.get(row).isDisable()) panelSetting(panelComboBoxList.get(row));
             standardDataGridPane.addRow(row, sampleNameTextFieldList.get(row), panelComboBoxList.get(row)
-                    , sampleSourceComboBoxList.get(row), diseaseComboBoxList.get(row));
+                    , sampleSourceComboBoxList.get(row), diseaseComboBoxList.get(row), sampleIsControlList.get(row));
             return;
         }
         String textStyle = "-fx-text-inner-color: black; -fx-border-width: 0;";

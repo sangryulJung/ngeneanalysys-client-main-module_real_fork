@@ -181,18 +181,18 @@ public class SNPsINDELsOverviewRadarGraph {
 			Double[] points5 = getPoint5(idx5);
 			
 			Double[] points = points0;
-			points = (Double[]) ArrayUtils.add(points, points1[0]);
-			points = (Double[]) ArrayUtils.add(points, points1[1]);
-			points = (Double[]) ArrayUtils.add(points, points2[0]);
-			points = (Double[]) ArrayUtils.add(points, points2[1]);
-			points = (Double[]) ArrayUtils.add(points, points3[0]);
-			points = (Double[]) ArrayUtils.add(points, points3[1]);
-			points = (Double[]) ArrayUtils.add(points, points4[0]);
-			points = (Double[]) ArrayUtils.add(points, points4[1]);
-			points = (Double[]) ArrayUtils.add(points, points5[0]);
-			points = (Double[]) ArrayUtils.add(points, points5[1]);
-			points = (Double[]) ArrayUtils.add(points, points0[0]);
-			points = (Double[]) ArrayUtils.add(points, points0[1]);
+			points = ArrayUtils.add(points, points1[0]);
+			points = ArrayUtils.add(points, points1[1]);
+			points = ArrayUtils.add(points, points2[0]);
+			points = ArrayUtils.add(points, points2[1]);
+			points = ArrayUtils.add(points, points3[0]);
+			points = ArrayUtils.add(points, points3[1]);
+			points = ArrayUtils.add(points, points4[0]);
+			points = ArrayUtils.add(points, points4[1]);
+			points = ArrayUtils.add(points, points5[0]);
+			points = ArrayUtils.add(points, points5[1]);
+			points = ArrayUtils.add(points, points0[0]);
+			points = ArrayUtils.add(points, points0[1]);
 			
 			polyline.getPoints().setAll(points);
 			box.setPadding(getPolylineMargin(polyline));

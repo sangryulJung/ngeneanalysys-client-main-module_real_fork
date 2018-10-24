@@ -142,7 +142,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     private SampleView sample = null;
     private Panel panel = null;
-    private Map<String, String> sortMap = new HashMap<>();
+    //private Map<String, String> sortMap = new HashMap<>();
 
     private AnalysisDetailVariantsController variantsController;
 
@@ -442,32 +442,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         });
         Platform.runLater(() -> showVariantList(0));
 
-//        snvWrapper.heightProperty().addListener((ob, ov, nv) -> {
-//            double wrapperHeight = (Double)nv;
-//
-//            if(wrapperHeight > 450) {
-//                changeTitledPaneTextSize("font_size_15", "font_size_15");
-//            } else {
-//                changeTitledPaneTextSize("font_size_15", "font_size_15");
-//            }
-//        });
-
-    }
-
-    private void changeTitledPaneTextSize(String currentStyle, String changeStyle) {
-        if(interpretationTitledPane != null) {
-            interpretationTitledPane.getStyleClass().remove(currentStyle);
-            interpretationTitledPane.getStyleClass().add(changeStyle);
-        } else {
-            clinicalSignificantTitledPane.getStyleClass().remove(currentStyle);
-            clinicalSignificantTitledPane.getStyleClass().add(changeStyle);
-        }
-        variantDetailTitledPane.getStyleClass().remove(currentStyle);
-        variantDetailTitledPane.getStyleClass().add(changeStyle);
-        statisticsTitledPane.getStyleClass().remove(currentStyle);
-        statisticsTitledPane.getStyleClass().add(changeStyle);
-        interpretationLogsTitledPane.getStyleClass().remove(currentStyle);
-        interpretationLogsTitledPane.getStyleClass().add(changeStyle);
     }
 
     private List<VariantAndInterpretationEvidence> getSelectedItemList() {
@@ -911,14 +885,14 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
     }
 
-    private void setSortItem(Map<String, List<Object>> list) {
+    /*private void setSortItem(Map<String, List<Object>> list) {
         Set<Map.Entry<String, String>> entrySet = sortMap.entrySet();
         List<Object> sortList = new ArrayList<>();
         for(Map.Entry<String, String> entry : entrySet) {
             sortList.add(entry.getKey() + " " + entry.getValue());
         }
         if(!sortList.isEmpty()) list.put("sort", sortList);
-    }
+    }*/
 
     private void setFilterItem(Map<String, List<Object>> list) {
         ComboBoxItem comboBoxItem = filterComboBox.getSelectionModel().getSelectedItem();
@@ -954,7 +928,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
                 Map<String, List<Object>> sortAndSearchItem = new HashMap<>();
 
-                setSortItem(sortAndSearchItem);
+                //setSortItem(sortAndSearchItem);
                 setFilterItem(sortAndSearchItem);
 
                 HttpClientResponse response = apiService.get("/analysisResults/sampleSnpInDels/"+ sample.getId(), params,
@@ -1010,7 +984,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         filterComboBox.getSelectionModel().selectFirst();
     }
 
-    private void sortTable(String column) {
+    /*private void sortTable(String column) {
         if(sortMap.size() == 1 && sortMap.containsKey(column)) {
             if(sortMap.get(column).equalsIgnoreCase("ASC")) {
                 sortMap.put(column, "DESC");
@@ -1024,7 +998,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             sortMap.put(column, "ASC");
          }
         Platform.runLater(() -> showVariantList(0));
-    }
+    }*/
 
     @FXML
     public void resetTableColumnOrder() {
@@ -1060,18 +1034,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     private String getExportFields() {
-//        StringBuilder stringBuilder = new StringBuilder();
-
         return variantListTableView.getColumns().stream().filter(TableColumn::isVisible).filter(c -> c.getId() != null)
                 .map(TableColumn::getId).collect(Collectors.joining(","));
-//                .forEach(column -> {
-//            if(StringUtils.isNotEmpty(column.getId()) && column.isVisible()) {
-//                stringBuilder.append("," + column.getId());
-//            }
-//        });
-
-//        stringBuilder.deleteCharAt(0);
-//        return stringBuilder.toString();
     }
 
     @FXML
@@ -1105,15 +1069,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         if(StringUtils.isNotEmpty(tooltipName)) label.setTooltip(new Tooltip(tooltipName));
         label.setPrefHeight(Double.MAX_VALUE);
-        //column.setSortable(false);
-//        if(StringUtils.isNotEmpty(sortName)) {
-//            //column.getStyleClass().add("sort_icon");
-//            label.setOnMouseClicked(e -> {
-//                if(e.getButton() == MouseButton.PRIMARY) {
-//                    sortTable(sortName);
-//                }
-//            });
-//        }
         column.setGraphic(label);
 
         if(id != null) column.setId(id);
@@ -1126,33 +1081,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         columnMap.put(name, column);
     }
 
-    /*private void createTableHeader(TableColumn<VariantAndInterpretationEvidence, ?> column, String name, String sortName, Double size) {
-        column.setText(name);
-
-
-        if(StringUtils.isEmpty(sortName)) {
-            column.setSortable(false);
-        } else {
-            column.setComparator((v1, v2) -> 0);
-            column.sortTypeProperty().addListener((ob, ov, nv) -> {
-                sortMap.clear();
-                if(nv.name().equals("ASCENDING")) {
-                    sortMap.put(sortName, "ASC");
-                } else if(nv.name().equals("DESCENDING")) {
-                    sortMap.put(sortName, "DESC");
-                }
-                showVariantList(currentPageIndex + 1, 0);
-            });
-            //label.setOnMouseClicked(e -> sortTable(sortName));
-
-        }
-
-        if(size != null) column.setPrefWidth(size);
-
-        variantListTableView.getColumns().add(column);
-    }*/
-
-    private void createCheckBoxTableHeader(TableColumn<VariantAndInterpretationEvidence, ?> column, Double size) {
+    private void createCheckBoxTableHeader(TableColumn<VariantAndInterpretationEvidence, ?> column) {
         HBox hBox = new HBox();
         hBox.setPrefHeight(Double.MAX_VALUE);
         hBox.setAlignment(Pos.CENTER);
@@ -1173,7 +1102,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         column.widthProperty().addListener((ob, ov, nv) -> hBox.setMinWidth(column.getWidth()));
         column.setResizable(false);
 
-        if(size != null) column.setPrefWidth(size);
+        column.setPrefWidth(50d);
 
         variantListTableView.getColumns().add(column);
     }
@@ -1183,7 +1112,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         String centerStyleClass = "alignment_center";
 
         TableColumn<VariantAndInterpretationEvidence, Boolean> checkBoxColumn = new TableColumn<>("");
-        createCheckBoxTableHeader(checkBoxColumn, 50d);
+        createCheckBoxTableHeader(checkBoxColumn);
         //checkBoxColumn.impl_setReorderable(false); 컬럼 이동 방지 코드
         checkBoxColumn.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue() != null ));
         checkBoxColumn.setCellFactory(param -> new BooleanCell());
@@ -1310,25 +1239,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             falsePositiveButton.setVisible(false);
         }
 
-
-        /*TableColumn<VariantAndInterpretationEvidence, String> report = new TableColumn<>("Report");
-        createTableHeader(report, "Report", "includedInReport" ,55., "includedInReport");
-        report.getStyleClass().add(centerStyleClass);
-        report.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getIncludedInReport()));
-        report.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
-            @Override
-            public void updateItem(String item, boolean empty) {
-                Label label = null;
-                if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
-                    label = new Label("R");
-                    label.getStyleClass().remove("label");
-                    label.getStyleClass().add("report_check");
-                }
-                setGraphic(label);
-            }
-        });
-        report.setVisible(false);*/
-
         TableColumn<VariantAndInterpretationEvidence, String> reportTest = new TableColumn<>("Report");
         createTableHeader(reportTest, "Report", "" ,55. , "includedInReport");
         reportTest.getStyleClass().add(centerStyleClass);
@@ -1379,7 +1289,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 @Override
                 protected void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty);
-                    //getStyleClass().add(centerStyleClass);
                     if(item == null || empty) {
                         setText(null);
                     } else {
@@ -1407,12 +1316,10 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         proteinAccession.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getProteinAccession()));
 
         TableColumn<VariantAndInterpretationEvidence, String> type = new TableColumn<>("Type");
-        //type.getStyleClass().add(centerStyleClass);
         createTableHeader(type, "Type", "" ,null, "variantType");
         type.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getVariantType()));
 
         TableColumn<VariantAndInterpretationEvidence, String> codCons = new TableColumn<>("Consequence");
-        //codCons.getStyleClass().add(centerStyleClass);
         createTableHeader(codCons, "Consequence", null ,140., "codingConsequence");
         codCons.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getCodingConsequence()));
 
@@ -1652,7 +1559,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         TableColumn<VariantAndInterpretationEvidence, String> typeExtension = new TableColumn<>("Type Extension");
         createTableHeader(typeExtension, "Type Extension", "variantTypeExtension", 70., "variantTypeExtension");
-        //typeExtension.getStyleClass().clear();
         typeExtension.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getVariantTypeExtension()));
 
         TableColumn<VariantAndInterpretationEvidence, String> exonBic = new TableColumn<>("Exon (BIC)");
@@ -1802,27 +1708,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         TableColumn<VariantAndInterpretationEvidence, String> enigma = new TableColumn<>("ENIGMA");
         createTableHeader(enigma, "ENIGMA", null ,null, "enigma");
         enigma.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeEnigmaPathogenicity()));
-
-//        TableColumn<VariantAndInterpretationEvidence, String> refGenomeVer = new TableColumn<>("RefGenomeVer");
-//        createTableHeader(refGenomeVer, "RefGenomeVer", null ,null);
-//        refGenomeVer.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getRefGenomeVer()));
-//        refGenomeVer.setVisible(false);
-
-//        TableColumn<VariantAndInterpretationEvidence, String> leftSequence = new TableColumn<>("LeftSequence");
-//        createTableHeader(leftSequence, "LeftSequence", null ,null);
-//        leftSequence.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getLeftSequence()));
-//        leftSequence.setVisible(false);
-//
-//        TableColumn<VariantAndInterpretationEvidence, String> rightSequence = new TableColumn<>("RightSequence");
-//        createTableHeader(rightSequence, "RightSequence", null ,null);
-//        rightSequence.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getRightSequence()));
-//        rightSequence.setVisible(false);
-
-
-        /*TableColumn<VariantAndInterpretationEvidence, Integer> variantNum = new TableColumn<>("VariantNum");
-        createTableHeader(variantNum, "VariantNum", null ,null);
-        variantNum.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getVariantNum()).asObject());
-        variantNum.setVisible(false);*/
 
         variantListTableView.getStyleClass().clear();
         variantListTableView.getStyleClass().add("table-view");
@@ -2003,6 +1888,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         logger.debug("Column Count = " + variantListTableView.getColumns().size());
     }
 
+    @SuppressWarnings("unchecked")
     private void setDefaultTableColumnOrder(String path) {
         String str = PropertiesUtil.getJsonString(path);
 
@@ -2041,7 +1927,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
     }
 
-    public class GERPTableCell extends TableCell<VariantAndInterpretationEvidence, String> {
+    public static class GERPTableCell extends TableCell<VariantAndInterpretationEvidence, String> {
 
         public GERPTableCell() {   }
 
@@ -2070,7 +1956,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     public class PopTableCell extends TableCell<VariantAndInterpretationEvidence, BigDecimal> {
         String type;
 
-        public PopTableCell(String type) {
+        private PopTableCell(String type) {
             this.type = type;
             //this.setStyle(this.getStyle()+"; -fx-alignment:baseline-right; -fx-padding: 0 10 0 0;");
         }
@@ -2105,7 +1991,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
     }
 
-    public abstract class LockedTableCell<T, S> extends TableCell<T, S> {
+    private abstract class LockedTableCell<T, S> extends TableCell<T, S> {
 
         {
 

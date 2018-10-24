@@ -118,12 +118,12 @@ public class SystemMenuSettingController extends SubPaneController {
         for (String second : CommonConstants.AUTO_REFRESH_SECOND_PERIOD) {
             autoRefreshPeriodComboBox.getItems().add(second + " second");
         }
+
         autoRefreshPeriodComboBox.setValue(config.getProperty("analysis.job.auto.refresh.period"));
         
         // 윈도우 테마 콤보박스 아이템 삽입
-        for (String theme : CommonConstants.WINDOW_THEME) {
-            windowTheme.getItems().add(theme);
-        }
+        windowTheme.getItems().addAll(CommonConstants.WINDOW_THEME);
+
         windowTheme.setValue(config.getProperty("window.theme"));
         //System.out.println(windowTheme.getValue());
 
