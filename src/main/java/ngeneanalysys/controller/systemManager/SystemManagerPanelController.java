@@ -1181,6 +1181,7 @@ public class SystemManagerPanelController extends SubPaneController {
         }
         bedFile = null;
         panelSaveButton.setDisable(true);
+        clinVarDrugResponseCheckBox.setSelected(false);
         groupCheckComboBox.getCheckModel().clearChecks();
         diseaseCheckComboBox.getCheckModel().clearChecks();
         defaultDiseaseComboBox.getSelectionModel().clearSelection();
@@ -1246,6 +1247,7 @@ public class SystemManagerPanelController extends SubPaneController {
         defaultSampleSourceComboBox.setDisable(condition);
         mappingQuality60PercentageTextField.setDisable(condition);
         uniformity02PercentageTextField.setDisable(condition);
+        clinVarDrugResponseCheckBox.setDisable(condition);
     }
 
     @FXML

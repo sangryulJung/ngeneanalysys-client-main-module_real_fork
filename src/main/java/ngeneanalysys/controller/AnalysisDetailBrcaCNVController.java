@@ -69,11 +69,6 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         this.variantsController = variantsController;
     }
 
-    private String cutBigDecimal(BigDecimal bigDecimal) {
-        if(!bigDecimal.toString().contains(".")) return bigDecimal.toString();
-        return bigDecimal.toString().substring(0, bigDecimal.toString().indexOf('.') + 4);
-    }
-
     @Override
     public void show(Parent root) throws IOException {
         logger.debug("BRCA cnv view...");
@@ -99,6 +94,11 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         setList();
         brca1RadioButton.selectedProperty().setValue(true);
         variantsController.getDetailContents().setCenter(root);
+    }
+
+    private String cutBigDecimal(BigDecimal bigDecimal) {
+        if(!bigDecimal.toString().contains(".")) return bigDecimal.toString();
+        return bigDecimal.toString().substring(0, bigDecimal.toString().indexOf('.') + 4);
     }
 
     public void setList() {
@@ -136,7 +136,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         return new ArrayList<>();
     }
 
-    private Map<String, List<BrcaCNV>>groupingExon(List<BrcaCNV> list) {
+    private Map<String, List<BrcaCNV>> groupingExon(List<BrcaCNV> list) {
         return list.stream().collect(Collectors.groupingBy(BrcaCNV::getExon));
     }
 

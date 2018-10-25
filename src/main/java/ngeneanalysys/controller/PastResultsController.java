@@ -80,17 +80,6 @@ public class PastResultsController extends SubPaneController {
 	@FXML
 	private ScrollPane mainContentsScrollPane;
 
-	@FXML
-	private Label totalCountLabel;
-	@FXML
-	private Label queueLabel;
-	@FXML
-	private Label runningLabel;
-	@FXML
-	private Label completeLabel;
-	@FXML
-	private Label failLabel;
-
 	/** API Service */
 	private APIService apiService;
 	
@@ -105,7 +94,7 @@ public class PastResultsController extends SubPaneController {
 
 	private Map<String, String> searchOption = new HashMap<>();
 
-	SuggestionProvider<String> provider = null;
+	private SuggestionProvider<String> provider = null;
 
 	private void setSearchOption() {
 		searchOption.put("SAMPLE","sampleName");
@@ -180,7 +169,8 @@ public class PastResultsController extends SubPaneController {
 						List<Panel> panels = pagedPanel.getResult();
 						List<Panel> filterPanel = null;
 						if (StringUtils.isEmpty(textField.getText())) {
-							filterPanel = panels.stream().filter(panel -> panel.getName().contains(textField.getText())).collect(Collectors.toList());
+							filterPanel = panels.stream().filter(panel -> panel.getName().contains(textField.getText()))
+									.collect(Collectors.toList());
 						} else {
 							filterPanel = panels;
 						}
@@ -223,7 +213,8 @@ public class PastResultsController extends SubPaneController {
 		searchComboBox.getSelectionModel().select(0);
 	}
 
-	private void compareDate(DatePicker leftDate, DatePicker rightDate, boolean firstDateReset , String titleText, String contentText) {
+	private void compareDate(DatePicker leftDate, DatePicker rightDate, boolean firstDateReset , String titleText,
+							 String contentText) {
 		if(leftDate.getValue() != null && rightDate.getValue() != null) {
 			int leftDateInt = Integer.parseInt(leftDate.getValue().toString().replace("-", ""));
 			int rightDateInt = Integer.parseInt(rightDate.getValue().toString().replace("-", ""));
@@ -315,7 +306,7 @@ public class PastResultsController extends SubPaneController {
 	/**
 	 * 자동 새로고침 일시정지
 	 */
-	public void pauseAutoRefresh() {
+	void pauseAutoRefresh() {
 		boolean isAutoRefreshOn = "true".equals(config.getProperty("analysis.job.auto.refresh"));
 		// 기능 실행중인 상태인 경우 실행
 		if(autoRefreshTimeline != null && isAutoRefreshOn) {
@@ -332,7 +323,7 @@ public class PastResultsController extends SubPaneController {
 	/**
 	 * 자동 새로고침 시작
 	 */
-	public void resumeAutoRefresh() {
+	void resumeAutoRefresh() {
 		boolean isAutoRefreshOn = "true".equals(config.getProperty("analysis.job.auto.refresh"));
         int refreshPeriodSecond = (Integer.parseInt(config.getProperty("analysis.job.auto.refresh.period")) * 1000) - 1;
 		// 기능 실행중인 상태인 경우 실행
@@ -383,16 +374,11 @@ public class PastResultsController extends SubPaneController {
 				PagedRunSampleView searchedSamples = response
 						.getObjectBeforeConvertResponseToJSON(PagedRunSampleView.class);
 
-				/*totalCountLabel.setText(searchedSamples.getSampleAnalysisJobCount().getRunCount().toString());
-				queueLabel.setText(searchedSamples.getSampleAnalysisJobCount().getQueuedSampleCount().toString());
-				runningLabel.setText(searchedSamples.getSampleAnalysisJobCount().getRunningSampleCount().toString());
-				completeLabel.setText(searchedSamples.getSampleAnalysisJobCount().getCompletedSampleCount().toString());
-				failLabel.setText(searchedSamples.getSampleAnalysisJobCount().getFailedSampleCount().toString());*/
-
 				List<RunSampleView> list = null;
 				if (searchedSamples != null) {
 					totalCount = searchedSamples.getCount();
-					list = searchedSamples.getResult().stream().sorted((a, b) -> Integer.compare(b.getRun().getId(), a.getRun().getId())).collect(Collectors.toList());
+					list = searchedSamples.getResult().stream().sorted((a, b) ->
+							Integer.compare(b.getRun().getId(), a.getRun().getId())).collect(Collectors.toList());
 				}
 				int pageCount = 0;
 				if (totalCount > 0) {
@@ -416,8 +402,6 @@ public class PastResultsController extends SubPaneController {
 				paginationList.setVisible(false);
 			}
 		} catch (WebAPIException wae) {
-			// DialogUtil.error(null, "Running and Recent Samples Search
-			// Error.", getMainApp().getPrimaryStage(),true);
 			DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
 					getMainApp().getPrimaryStage(), false);
 		} catch (Exception e) {
@@ -432,12 +416,11 @@ public class PastResultsController extends SubPaneController {
 	private Map<String, Object> getSearchParam() {
 		Map<String, Object> param = new HashMap<>();
 		param.put("format", "json");
-		/*param.put("step", AnalysisJobStatusCode.JOB_RUN_GROUP_PIPELINE);
-		param.put("status", AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_COMPLETE);*/
 
 		if(oneItem) {
 			final CustomTextField textField = (CustomTextField)filterSearchArea.getChildren().get(0);
-			param.put("search", searchOption.get(searchComboBox.getSelectionModel().getSelectedItem().getText()) + " " + textField.getText());
+			param.put("search", searchOption.get(searchComboBox.getSelectionModel().getSelectedItem().getText())
+					+ " " + textField.getText());
 		}
 
 		/* End 검색 항목 설정 */
@@ -557,11 +540,12 @@ public class PastResultsController extends SubPaneController {
 
 	private void addDateLabel(final String startDate, final String endDate, final HBox hBox) {
 		Label startLabel = new Label(startDate);
-		startLabel.setStyle(startLabel.getStyle() + "-fx-text-fill : #FFFFFF;");
+		String textFill = "-fx-text-fill : #FFFFFF;";
+		startLabel.setStyle(startLabel.getStyle() + textFill);
 		Label label = new Label(" ~ ");
-		label.setStyle(label.getStyle() + "-fx-text-fill : #FFFFFF;");
+		label.setStyle(label.getStyle() + textFill);
 		Label endLabel = new Label(endDate);
-		endLabel.setStyle(endLabel.getStyle() + "-fx-text-fill : #FFFFFF;");
+		endLabel.setStyle(endLabel.getStyle() + textFill);
 		if(startDate != null && endDate != null) {
 			hBox.getChildren().addAll(startLabel, label, endLabel);
 		} else if(startDate != null) {
@@ -660,12 +644,14 @@ public class PastResultsController extends SubPaneController {
 				String id = "";
 				if(!StringUtils.isEmpty(minCreateAt)) {
 					// 로컬 타임 표준시로 변환
-					id = "gt:"+startDate.getValue().atTime(0, 0, 0).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+					id = "gt:"+startDate.getValue().atTime(0, 0, 0)
+							.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 				}
 				// Submitted [end]
 				if(!StringUtils.isEmpty(maxCreateAt)) {
 					// 로컬 타임 표준시로 변환
-					long endMilli= endDate.getValue().atTime(23, 59, 59).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+					long endMilli= endDate.getValue().atTime(23, 59, 59)
+							.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 					if(StringUtils.isEmpty(id)) {
 						id = "lt:"+endMilli;
 					} else {

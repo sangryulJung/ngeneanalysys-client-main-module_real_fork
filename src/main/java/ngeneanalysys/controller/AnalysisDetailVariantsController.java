@@ -17,6 +17,7 @@ import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.Panel;
 import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.TopMenu;
+import ngeneanalysys.model.paged.PagedBrcaCNV;
 import ngeneanalysys.model.paged.PagedCNV;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
@@ -121,10 +122,19 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
 
     private boolean checkBrcaCNV() {
         SampleView sample = (SampleView)paramMap.get("sampleView");
-        //TODO BRCA CNV Check
+
         if(sample.getPanel().getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_CMC_DNA.getCode()) ||
-                sample.getPanel().getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_MLPA_DNA.getCode())
-                ||sample.getPanel().getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
+                sample.getPanel().getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_MLPA_DNA.getCode())) {
+            try {
+                HttpClientResponse response = apiService.get("/analysisResults/brcaCnv/" + sample.getId(), null, null, null);
+                PagedBrcaCNV pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedBrcaCNV.class);
+                if (pagedCNV.getCount() > 0) {
+                    return true;
+                }
+            } catch (WebAPIException wae) {
+                return false;
+            }
+
             return true;
         }
 

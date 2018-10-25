@@ -128,14 +128,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
             String[] item2 = o2.replaceAll(",", "").split(" ");
             BigDecimal value1 = returnData(item1[0] ,item1[1]);
             BigDecimal value2 = returnData(item2[0] ,item2[1]);
-
-            if(value1.longValue() > value2.longValue()) {
-                return 1;
-            } else if(value1.longValue() < value2.longValue()) {
-                return -1;
-            }
-
-            return 0;
+            return value1.compareTo(value2);
         });
 
         getAnalysisFiles();
@@ -322,7 +315,9 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
                             });
                         } catch (Exception e) {
                             logger.error("download cancel failed!!");
-                            DialogUtil.error("Failed File Download Cancel.", "An error occurred during the canceling bedFile download.", getMainController().getPrimaryStage(), false);
+                            DialogUtil.error("Failed File Download Cancel.",
+                                    "An error occurred during the canceling bedFile download.",
+                                    getMainController().getPrimaryStage(), false);
                         }
                     }
                 });
@@ -344,14 +339,16 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
                 downloadThread.start();
             }
         } catch (Exception e) {
-            DialogUtil.error("Save Fail.", "An error occurred during the download.", getMainController().getPrimaryStage(), false);
+            DialogUtil.error("Save Fail.", "An error occurred during the download.",
+                    getMainController().getPrimaryStage(), false);
             e.printStackTrace();
         }
     }
 
     @FXML
     public void fileDelete() {
-        List<AnalysisFile> files = rawListTableView.getItems().stream().filter(AnalysisFile::getCheckItem).collect(Collectors.toList());
+        List<AnalysisFile> files = rawListTableView.getItems().stream().filter(AnalysisFile::getCheckItem)
+                .collect(Collectors.toList());
 
         if(!files.isEmpty()) {
             for(AnalysisFile analysisFile : files) {

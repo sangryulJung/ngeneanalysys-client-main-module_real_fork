@@ -338,12 +338,12 @@
             </HBox>
          </children>
       </HBox>
-      <RadioButton fx:id="brca1RadioButton" mnemonicParsing="false" text="BRCA1" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+      <RadioButton fx:id="brca1RadioButton" mnemonicParsing="false" text="BRCA1" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
          <toggleGroup>
             <ToggleGroup fx:id="brcaToggleGroup" />
          </toggleGroup>
       </RadioButton>
-      <RadioButton fx:id="brca2RadioButton" mnemonicParsing="false" text="BRCA2" toggleGroup="$brcaToggleGroup" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+      <RadioButton fx:id="brca2RadioButton" mnemonicParsing="false" text="BRCA2" toggleGroup="$brcaToggleGroup" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
    </children>
    <stylesheets>
       <URL value="@../css/common.css" />
