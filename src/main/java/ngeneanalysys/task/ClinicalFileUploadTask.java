@@ -22,8 +22,6 @@ public class ClinicalFileUploadTask extends Task {
 
     private ClinicalVariantFileService clinicalVariantFileService;
 
-    private int panelId;
-
     private File bedFile;
 
     /** 진행상태 박스 id */
@@ -31,7 +29,6 @@ public class ClinicalFileUploadTask extends Task {
 
     public ClinicalFileUploadTask(File bedFile) {
         clinicalVariantFileService = ClinicalVariantFileService.getInstance();
-        this.panelId = panelId;
         this.bedFile = bedFile;
     }
 

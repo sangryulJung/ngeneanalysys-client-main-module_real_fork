@@ -29,7 +29,4 @@ public class CatalogueOfSomaticMutationsInCancer {
     public String getCosmicOccurrence() {
         return cosmicOccurrence;
     }
-
-    /*cosmicCount : Option[String], cosmicIds : Option[String],
-                                               cosmicOccurrence : Option[String]*/
 }

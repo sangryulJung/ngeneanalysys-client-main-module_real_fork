@@ -32,7 +32,7 @@
         <columns>
           <TableColumn fx:id="exonTableColumn" prefWidth="75.0" styleClass="alignment_center" text="Exon" />
           <TableColumn fx:id="ampliconTableColumn" prefWidth="120.0" styleClass="alignment_center" text="Amplicon" />
-            <TableColumn fx:id="referenceRatioTableColumn" prefWidth="130.0" styleClass="alignment_center" text="Reference Ratio" />
+            <TableColumn fx:id="referenceRatioTableColumn" prefWidth="130.0" styleClass="alignment_center" text="Reference Range" />
             <TableColumn fx:id="cnvValueTableColumn" styleClass="alignment_center" text="CNV Value" />
             <TableColumn fx:id="predictionTableColumn" prefWidth="90.0" styleClass="alignment_center" text="Prediction" />
         </columns>
@@ -42,7 +42,7 @@
             <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                <children>
                   <Label text="5'" />
-                  <VBox maxHeight="0.0" maxWidth="1.7976931348623157E308" minHeight="0.1" prefHeight="0.0" prefWidth="52.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
+                  <VBox maxHeight="0.0" maxWidth="1.7976931348623157E308" minHeight="0.1" prefHeight="0.0" prefWidth="55.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
             <HBox fx:id="brca1_utr" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
@@ -161,7 +161,7 @@
                </children></HBox>
             <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                <children>
-                  <VBox maxHeight="0.0" maxWidth="1.7976931348623157E308" minHeight="0.1" prefHeight="0.0" prefWidth="52.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
+                  <VBox maxHeight="0.0" maxWidth="1.7976931348623157E308" minHeight="0.1" prefHeight="0.0" prefWidth="160.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
                   <Label text="3'" />
                </children>
             </HBox>

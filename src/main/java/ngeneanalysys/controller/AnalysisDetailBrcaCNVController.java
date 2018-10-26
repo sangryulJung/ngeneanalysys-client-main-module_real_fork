@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -62,6 +63,8 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
 
     private List<BrcaCNV> brcaCNVList;
 
+    private DecimalFormat decimalFormat = new DecimalFormat("0.###");
+
     /**
      * @param variantsController AnalysisDetailVariantsController
      */
@@ -97,8 +100,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     }
 
     private String cutBigDecimal(BigDecimal bigDecimal) {
-        if(!bigDecimal.toString().contains(".")) return bigDecimal.toString();
-        return bigDecimal.toString().substring(0, bigDecimal.toString().indexOf('.') + 4);
+        return decimalFormat.format(bigDecimal.setScale(3, BigDecimal.ROUND_HALF_UP));
     }
 
     public void setList() {

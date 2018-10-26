@@ -16,6 +16,7 @@ import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
+import ngeneanalysys.model.paged.PagedBrcaCNV;
 import ngeneanalysys.model.paged.PagedVariantAndInterpretationEvidence;
 import ngeneanalysys.model.paged.PagedVirtualPanel;
 import ngeneanalysys.model.render.ComboBoxConverter;
@@ -868,6 +869,28 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                     }
                 }
                 contentsMap.put("conclusion", conclusionLineList);
+
+                if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_CMC_DNA.getCode()) ||
+                        panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_MLPA_DNA.getCode())) {
+                    Map<String, Object> analysisFileMap = new HashMap<>();
+                    analysisFileMap.put("sampleId", sample.getId());
+                    HttpClientResponse response = apiService.get("/analysisFiles", analysisFileMap, null, false);
+                    AnalysisFileList analysisFileList = response.getObjectBeforeConvertResponseToJSON(AnalysisFileList.class);
+
+                    List<AnalysisFile> analysisFiles = analysisFileList.getResult();
+
+                    Optional<AnalysisFile> optionalAnalysisFile = analysisFiles.stream()
+                            .filter(item -> item.getName().contains("cnv_plot.png")).findFirst();
+
+                    if (optionalAnalysisFile.isPresent()) {
+                        contentsMap.put("cnvImagePath", optionalAnalysisFile.get().getName());
+                        FileUtil.downloadCNVImage(optionalAnalysisFile.get());
+                    }
+
+                    response = apiService.get("/analysisResults/brcaCnv/" + sample.getId(), null, null, null);
+                    PagedBrcaCNV pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedBrcaCNV.class);
+                    contentsMap.put("cnvList", pagedCNV.getResult());
+                }
 
                 Map<String,Object> model = new HashMap<>();
                 model.put("isDraft", isDraft);

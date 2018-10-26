@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import javafx.scene.Node;
 import ngeneanalysys.controller.extend.SubPaneController;
-import ngeneanalysys.service.AnalysisRequestService;
 import ngeneanalysys.task.AnalysisSampleUploadTask;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
@@ -62,9 +61,6 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 	@FXML
 	public ProgressIndicator progressIndicator;
 
-	/** 분석 요청 서비스 */
-	private AnalysisRequestService analysisRequestService;
-
 	/** progress task object */
 	private Task<?> task;
 	/** running progress task thread  */
@@ -116,8 +112,6 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 	@SuppressWarnings({"static-access", "unchecked"})
 	@Override
 	public void show(Parent root) throws IOException {
-		this.analysisRequestService = AnalysisRequestService.getInstance();
-
 		node = root;
 
 		boolean isWorkStart = false;

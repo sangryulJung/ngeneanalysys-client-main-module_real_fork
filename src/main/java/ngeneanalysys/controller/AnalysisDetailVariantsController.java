@@ -96,11 +96,10 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
         if(snvLabel != null) {
             if (StringUtils.isNotEmpty(text)) {
                 snvLabel.setText("SNV/Indel : " + text);
-                snvLabel.getStyleClass().add("bold");
             } else {
                 snvLabel.setText("SNV/Indel");
-                snvLabel.getStyleClass().add("bold");
             }
+            snvLabel.getStyleClass().add("bold");
         }
     }
 
@@ -134,7 +133,6 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
             } catch (WebAPIException wae) {
                 return false;
             }
-
             return true;
         }
 

@@ -496,7 +496,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             }
 
             if(StringUtils.isEmpty(sample.getSampleSource()) && sampleSource.getSelectionModel().getSelectedItem() != null) {
-                //sampleSource.getSelectionModel().select(0);
                 sampleSource.getSelectionModel().clearSelection();
             } else {
                 sampleSource.getSelectionModel().select(sample.getSampleSource());
@@ -520,7 +519,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
                         if(allFile.size() == 1) {
                             AnalysisFile analysisFile = allFile.get(0);
-                            // Map<String, Object> file = new HashMap<>();
                             AnalysisFile failedAnalysisFile = new AnalysisFile();
                             String r1 = "_R1_0";
                             String r2 = "_R2_0";
@@ -601,8 +599,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         disease.setStyle("-fx-border-width: 0;");
         disease.setCursor(Cursor.HAND);
         diseaseComboBoxList.add(disease);
-        //settingDiseaseComboBox(panels.get(0).getId(), row);
-        //diseasesSetting(disease);
 
         ComboBox<PanelComboBoxItem> panel  = new ComboBox<>();
         panel.setMaxWidth(200);
@@ -898,10 +894,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 for(Sample sample : samples) {
                     postAnalysisFilesData(sample);
                 }
-            /*for (Sample sample : sampleArrayList) {
-                sample.setRunId(run.getId());
-                sampleUpload(sample);
-            }*/
 
                 if((uploadFileData != null && !uploadFileData.isEmpty()) &&
                         (uploadFileList != null && !uploadFileList.isEmpty())) {

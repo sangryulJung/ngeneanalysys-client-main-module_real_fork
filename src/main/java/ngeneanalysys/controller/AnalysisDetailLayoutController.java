@@ -175,7 +175,6 @@ public class AnalysisDetailLayoutController extends SubPaneController {
         if (idx == 0)
             setTabContent(tab);
         topTabPane.getTabs().add(tab);
-        //topTabPane.setStyle("-fx-font-family: Noto Sans KR Bold");
     }
 
     /**

@@ -18,7 +18,6 @@ import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.CNV;
 import ngeneanalysys.model.Panel;
 import ngeneanalysys.model.SampleView;
-import ngeneanalysys.model.VariantAndInterpretationEvidence;
 import ngeneanalysys.model.paged.PagedCNV;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;

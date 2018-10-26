@@ -406,7 +406,6 @@ public class MainController extends BaseStageController {
         } catch (WebAPIException wae) {
             somaticFilter = new HashMap<>();
         } finally {
-            //setDefaultSomaticFilter(somaticFilter, "hemeFilter");
             basicInformationMap.put("hemeFilter", somaticFilter);
         }
 
@@ -416,7 +415,6 @@ public class MainController extends BaseStageController {
         } catch (WebAPIException wae) {
             somaticFilter = new HashMap<>();
         } finally {
-            //setDefaultSomaticFilter(somaticFilter, "solidFilter");
             basicInformationMap.put("solidFilter", somaticFilter);
         }
 
@@ -426,7 +424,6 @@ public class MainController extends BaseStageController {
         } catch (WebAPIException wae) {
             somaticFilter = new HashMap<>();
         } finally {
-            //setDefaultSomaticFilter(somaticFilter, "tstDNAFilter");
             basicInformationMap.put("tstDNAFilter", somaticFilter);
         }
 
@@ -440,7 +437,6 @@ public class MainController extends BaseStageController {
         } catch (WebAPIException wae) {
             germlineFilter = new HashMap<>();
         } finally {
-            //setDefaultGermlineFilter(germlineFilter, "brcaFilter");
             basicInformationMap.put("brcaFilter", germlineFilter);
         }
 
@@ -452,27 +448,9 @@ public class MainController extends BaseStageController {
         } catch (WebAPIException wae) {
             germlineFilter = new HashMap<>();
         } finally {
-            //setDefaultGermlineFilter(germlineFilter, "heredFilter");
             basicInformationMap.put("heredFilter", germlineFilter);
         }
     }
-
-    /*private void setDefaultGermlineFilter(Map<String, List<Object>> germlineFilter, String filterName) {
-        germlineFilter.put("Pathogenic", setStandardFilter("pathogenicity", "P"));
-        germlineFilter.put("Likely Pathogenic", setStandardFilter("pathogenicity", "LP"));
-        germlineFilter.put("Uncertain Significance", setStandardFilter("pathogenicity", "US"));
-        germlineFilter.put("Likely Benign", setStandardFilter("pathogenicity", "LB"));
-        germlineFilter.put("Benign", setStandardFilter("pathogenicity", "B"));
-        basicInformationMap.put(filterName, germlineFilter);
-    }
-
-    private void setDefaultSomaticFilter(Map<String, List<Object>> somaticFilter, String filterName) {
-        somaticFilter.put("Tier 1", setStandardFilter("tier", "T1"));
-        somaticFilter.put("Tier 2", setStandardFilter("tier", "T2"));
-        somaticFilter.put("Tier 3", setStandardFilter("tier", "T3"));
-        somaticFilter.put("Tier 4", setStandardFilter("tier", "T4"));
-        basicInformationMap.put(filterName, somaticFilter);
-    }*/
 
     /**
      * 상단 사용자 메뉴 설정 : 사용자 권한에 따른 메뉴 출력
@@ -925,13 +903,6 @@ public class MainController extends BaseStageController {
                 this.analysisSampleUploadProgressTaskController = loader.getController();
                 this.analysisSampleUploadProgressTaskController.setMainController(this);
                 Map<String, Object> param = uploadListQueue.poll();
-            /*if (uploadFileData != null && !uploadFileData.isEmpty()) {
-                Map<String, Object> param = new HashMap<>();
-                param.put("fileMap", uploadFileData);
-                param.put("fileList", fileList);
-                param.put("run", run);
-                this.analysisSampleUploadProgressTaskController.setParamMap(param);
-            }*/
                 this.analysisSampleUploadProgressTaskController.setParamMap(param);
                 this.analysisSampleUploadProgressTaskController.show(box);
             } catch (IOException e) {

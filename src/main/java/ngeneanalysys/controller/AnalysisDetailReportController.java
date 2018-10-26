@@ -595,7 +595,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 }
             } else if(gridObject instanceof ComboBox) {
                 ComboBox comboBox = (ComboBox)gridObject;
-                if(contentsMap.containsKey(comboBox.getId())) comboBox.getSelectionModel().select((String)contentsMap.get(comboBox.getId()));
+                if(contentsMap.containsKey(comboBox.getId())) comboBox.getSelectionModel().select(contentsMap.get(comboBox.getId()));
             }
         }
 
@@ -947,7 +947,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
             if(optionalAnalysisFile.isPresent()) {
                 contentsMap.put("cnvImagePath", optionalAnalysisFile.get().getName());
-                downloadCNVImage(optionalAnalysisFile.get());
+                FileUtil.downloadCNVImage(optionalAnalysisFile.get());
             }
 
             try {
@@ -977,80 +977,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         if(file != null) {
             ExcelConvertReportInformationService.createExcelTemplate(file, variableList, mainApp.getPrimaryStage());
         }
-    }
-
-    private String downloadCNVImage(AnalysisFile analysisFile) {
-        CloseableHttpClient httpclient = null;
-        CloseableHttpResponse response = null;
-
-        String tempPath = CommonConstants.BASE_FULL_PATH  + File.separator + "temp";
-        File tempFile = new File(tempPath);
-
-        if(!tempFile.exists()) {
-            tempFile.mkdirs();
-        }
-
-        String downloadUrl = "/analysisFiles/" + analysisFile.getSampleId() + "/" + analysisFile.getName();
-        String path = CommonConstants.BASE_FULL_PATH  + File.separator + "temp" +
-                File.separator + analysisFile.getName();
-
-        File file = new File(path);
-
-        OutputStream os = null;
-        try {
-            String connectURL = apiService.getConvertConnectURL(downloadUrl);
-
-            // 헤더 삽입 정보 설정
-            Map<String,Object> headerMap = apiService.getDefaultHeaders(true);
-
-            HttpGet get = new HttpGet(connectURL);
-            logger.debug("GET:" + get.getURI());
-
-            // 지정된 헤더 삽입 정보가 있는 경우 추가
-            if(headerMap != null && headerMap.size() > 0) {
-                for (Map.Entry<String, Object> entry : headerMap.entrySet()) {
-                    get.setHeader(entry.getKey(), entry.getValue().toString());
-                }
-            }
-
-            httpclient = HttpClients.custom().setSSLSocketFactory(HttpClientUtil.getSSLSocketFactory()).build();
-            if (httpclient != null)
-                response = httpclient.execute(get);
-            if (response == null){
-                logger.error("httpclient response is null");
-                throw new NullPointerException();
-            }
-            int status = response.getStatusLine().getStatusCode();
-
-            if(status >= 200 && status < 300) {
-                HttpEntity entity = response.getEntity();
-                InputStream content = entity.getContent();
-
-                os = Files.newOutputStream(Paths.get(file.toURI()));
-
-                byte[] buf = new byte[8192];
-                int n;
-                while ((n = content.read(buf)) > 0) {
-                    os.write(buf, 0, n);
-                }
-                content.close();
-                os.flush();
-                if (httpclient != null) httpclient.close();
-                if (response != null) response.close();
-            }
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-        } finally {
-            if(os != null) {
-                try {
-                    os.close();
-                } catch (Exception e) {
-                    logger.error(e.getMessage());
-                }
-            }
-        }
-
-        return path;
     }
 
     private boolean createPDF(boolean isDraft) {

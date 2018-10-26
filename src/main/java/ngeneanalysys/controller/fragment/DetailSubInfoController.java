@@ -392,7 +392,6 @@ public class DetailSubInfoController extends SubPaneController {
         Label label = new Label();
         label.setText(title);
         label.getStyleClass().add("title1");
-        //label.setStyle(label.getStyle() + "-fx-text-fill : #FF0000;");
         label.setCursor(Cursor.HAND);
         label.setOnMouseClicked(event -> showBrowser(link));
 

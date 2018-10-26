@@ -57,8 +57,8 @@ public class InSilicoPredictionsController extends SubPaneController {
 
     /**
      * Pathgenic Radar 차트 레벨에 따른 출력 퍼센트로 변환 반환
-     * @param level
-     * @return
+     * @param level String
+     * @return double
      */
     private double convertRadarItemPercentageByLevelForPathogenic(String level) {
         if(StringUtils.isEmpty(level)) {

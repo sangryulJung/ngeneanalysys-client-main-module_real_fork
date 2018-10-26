@@ -143,8 +143,6 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                             break;
                          default:
                     }
-                    //label.setCursor(Cursor.HAND);
-                    //addClickEvent("PREDICTION", label);
                 } else {
                     label.getStyleClass().add("prediction_none");
                 }
@@ -304,12 +302,8 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                 excludeReportDialogController.setSnvController(controller);
                 if (checkBox.isSelected()) {
                     excludeReportDialogController.settingItem("Y", selectedAnalysisResultVariant, checkBox);
-                    /*if(!oldSymbol.equals(selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport()))
-                        controller.showVariantList(controller.getCurrentPageIndex() + 1,0);*/
                 } else {
                     excludeReportDialogController.settingItem("N", selectedAnalysisResultVariant, checkBox);
-                    /*if(!oldSymbol.equals(selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport()))
-                        controller.showVariantList(controller.getCurrentPageIndex() + 1,0);*/
                 }
                 excludeReportDialogController.show((Parent) node);
             } catch (IOException ioe) {
@@ -503,17 +497,18 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
     @SuppressWarnings("unchecked")
     private double getPopulationFrequencyByParam(String orgKey, String location) {
         double percentage = -1d;
+        String alleleFrequency = "allele_frequency";
         Map<String,Object> populationFrequencyMap = returnResultsAfterSearch("population_frequency");
         if(!populationFrequencyMap.isEmpty() && populationFrequencyMap.containsKey(orgKey)) {
             Map<String,Object> orgMap = (Map<String,Object>) populationFrequencyMap.get(orgKey);
             if(!orgMap.isEmpty() && orgMap.containsKey(location)) {
                 Map<String,Object> locationMap = (Map<String,Object>) orgMap.get(location);
-                if(!locationMap.isEmpty() && locationMap.containsKey("allele_frequency")) {
-                    if(!StringUtils.isEmpty(locationMap.get("allele_frequency").toString())) {
-                        if(locationMap.get("allele_frequency") instanceof String) {
-                            percentage = Double.parseDouble((String)locationMap.get("allele_frequency"));
-                        } else if(locationMap.get("allele_frequency") instanceof Double){
-                            percentage = (double) locationMap.get("allele_frequency");
+                if(!locationMap.isEmpty() && locationMap.containsKey(alleleFrequency)) {
+                    if(!StringUtils.isEmpty(locationMap.get(alleleFrequency).toString())) {
+                        if(locationMap.get(alleleFrequency) instanceof String) {
+                            percentage = Double.parseDouble((String)locationMap.get(alleleFrequency));
+                        } else if(locationMap.get(alleleFrequency) instanceof Double){
+                            percentage = (double) locationMap.get(alleleFrequency);
                         }
                     }
                 }
@@ -572,19 +567,14 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                 child.getStyleClass().removeAll(child.getStyleClass());
                 if (((Label)child).getText().equals("P") && level  == 5) {
                     child.getStyleClass().add("prediction_A");
-                    //addClickEvent(text, child);
                 } else if(((Label)child).getText().equals("LP") && level == 4) {
                     child.getStyleClass().add("prediction_B");
-                    //addClickEvent(text, child);
                 } else if(((Label)child).getText().equals("US") && level == 3) {
                     child.getStyleClass().add("prediction_C");
-                    //addClickEvent(text, child);
                 } else if(((Label)child).getText().equals("LB") && level == 2) {
                     child.getStyleClass().add("prediction_D");
-                    //addClickEvent(text, child);
                 } else if(((Label)child).getText().equals("B") && level == 1) {
                     child.getStyleClass().add("prediction_E");
-                    //addClickEvent(text, child);
                 } else if(((Label)child).getText().equals(text)) {
                     child.getStyleClass().add("clinical_significant_pathogenicity_label");
                 } else {

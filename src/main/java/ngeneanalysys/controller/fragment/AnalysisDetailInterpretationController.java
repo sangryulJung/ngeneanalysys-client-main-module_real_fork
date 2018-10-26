@@ -146,9 +146,6 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         apiService = APIService.getInstance();
         panel = (Panel)getParamMap().get("panel");
 
-        //selectedAnalysisResultVariant = (VariantAndInterpretationEvidence)paramMap.get("variant");
-
-        //if(StringUtils.isEmpty(selectedAnalysisResultVariant.getSnpInDel().getExpertTier())) arrow.setVisible(false);
         addToReportCheckBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> addToReportBtn(addToReportCheckBox ));
 
         evidenceTableView.addEventFilter(ScrollEvent.ANY, scrollEvent -> {
@@ -399,7 +396,6 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                     if(StringUtils.isNotEmpty(t) && !t.equals(t1)) {
                         evidenceTableView.refresh();
                     }
-                    //evidenceTableView.refresh();
                 }
             });
         }
@@ -607,9 +603,6 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
             } catch (IOException ioe) {
                 ioe.printStackTrace();
             }
-
-            /*if(!oldSymbol.equals(selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport()))
-                analysisDetailSNVController.showVariantList(analysisDetailSNVController.getCurrentPageIndex() + 1, 0);*/
         }
     }
 
@@ -626,28 +619,19 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         logger.debug("+++++++++++++++");
         logger.debug(userTierLabel.getText()+" "+tier+" "+userTier);
         if(userTier == 2 && tier != null) {arrow.setVisible(true);}
-        //else {arrow.setVisible(true);}
-        //if(label == userTierLabel) arrow.setVisible(true);
 
         label.getStyleClass().removeAll(label.getStyleClass());
         if(StringUtils.isNotEmpty(tier)) {
-            if (tier.equalsIgnoreCase("T1")) {
+            if ("T1".equalsIgnoreCase(tier)) {
                 label.setText("Tier 1");
-                label.getStyleClass().add("tier_full");
-                //label.getStyleClass().add("tier_one");
-            } else if (tier.equalsIgnoreCase("T2")) {
+            } else if ("T2".equalsIgnoreCase(tier)) {
                 label.setText("Tier 2");
-                label.getStyleClass().add("tier_full");
-                //label.getStyleClass().add("tier_two");
-            } else if (tier.equalsIgnoreCase("T3")) {
+            } else if ("T3".equalsIgnoreCase(tier)) {
                 label.setText("Tier 3");
-                label.getStyleClass().add("tier_full");
-                //label.getStyleClass().add("tier_three");
-            } else if (tier.equalsIgnoreCase("T4")) {
+            } else if ("T4".equalsIgnoreCase(tier)) {
                 label.setText("Tier 4");
-                label.getStyleClass().add("tier_full");
-                //label.getStyleClass().add("tier_four");
             }
+            label.getStyleClass().add("tier_full");
         }
     }
 

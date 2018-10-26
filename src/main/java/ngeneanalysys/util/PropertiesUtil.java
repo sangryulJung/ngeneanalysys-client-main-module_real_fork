@@ -53,6 +53,8 @@ public class PropertiesUtil {
 				for (String line; (line = reader.readLine()) != null;) {
 					stringBuilder.append(line);
 				}
+
+				reader.close();
 				return stringBuilder.toString();
 			}
 		} catch (Exception e) {
