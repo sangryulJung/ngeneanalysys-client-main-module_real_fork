@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Accordion?>
@@ -22,10 +28,11 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="470.0" prefWidth="1200.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.systemManager.SystemManagerPanelController">
+<AnchorPane prefHeight="470.0" prefWidth="1200.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.systemManager.SystemManagerPanelController">
    <stylesheets>
       <URL value="@../../css/common.css" />
       <URL value="@../../css/experimenter.css" />
+      <URL value="@../../css/request.css" />
    </stylesheets>
    <children>
       <HBox prefHeight="502.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -83,6 +90,71 @@
                               </AnchorPane>
                         </content>
                       </TitledPane>
+                        <TitledPane fx:id="cnvForBRCAaccuTestTitledPanel" animated="false" text="CNV for BRCAaccuTest Series Panel">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <GridPane AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="289.0" minWidth="10.0" prefWidth="282.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="322.0" minWidth="10.0" prefWidth="287.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="136.99999237060547" minHeight="10.0" prefHeight="136.99999237060547" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <Label text="Amplicon Copy Number Prediction Algorithm" GridPane.columnSpan="2" />
+                                          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                             <children>
+                                                <Region maxWidth="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="14.0" />
+                                                <Label text="Cut-off Level:" />
+                                                <TextField prefWidth="60.0" text="0.15" />
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                             <children>
+                                                <TextField prefWidth="60.0" text="0.15" />
+                                                <Label text="\%" />
+                                             </children>
+                                          </HBox>
+                                          <Separator prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+                                          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.rowIndex="1">
+                                             <children>
+                                                <RadioButton fx:id="distributionACNPAlgorithmRadioButton" mnemonicParsing="false" text="Distribution">
+                                                   <toggleGroup>
+                                                      <ToggleGroup fx:id="ampliconCopyNumberPredictionAlgorihtmToggleGroup" />
+                                                   </toggleGroup>
+                                                </RadioButton>
+                                                <Label styleClass="help_tooltip">
+                                                   <tooltip>
+                                                      <Tooltip text="fdsafjdsaklfjdksal" />
+                                                   </tooltip>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                             <children>
+                                                <RadioButton mnemonicParsing="false" text="Simple Cut-off" toggleGroup="$ampliconCopyNumberPredictionAlgorihtmToggleGroup" />
+                                                <Label styleClass="help_tooltip" />
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.rowIndex="4">
+                                             <children>
+                                                <Label text="Exon Copy Number Prediction Threshold" />
+                                                <Label styleClass="help_tooltip" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </GridPane>
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </TitledPane>
                       <TitledPane animated="false" text="Canonical Transcripts">
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
