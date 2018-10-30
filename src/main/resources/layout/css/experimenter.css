@@ -267,7 +267,11 @@
 }
 
 .brca_cnv_deletion {
-    -fx-background-color : #FF0000;
+    /*-fx-background-color : #FF0000;*/
+    -fx-background-color: transparent;
+    -fx-background-image : url("../images/renewal/arrow-red.png");
+    -fx-background-repeat:no-repeat;
+    -fx-background-position : -1 -12;
 }
 
 .brca_cnv_deletion .label{
@@ -275,9 +279,106 @@
 }
 
 .brca_cnv_duplication {
-    -fx-background-color : #0000FF;
+    /*-fx-background-color : #0000FF;*/
+    -fx-background-color: transparent;
+    -fx-background-image : url("../images/renewal/arrow-blue.png");
+    -fx-background-repeat:no-repeat;
+    -fx-background-position : -1 0;
 }
 
 .brca_cnv_duplication .label{
     -fx-text-fill : #FFFFFF;
+}
+
+.down_button {
+    -fx-background-color: transparent;
+    -fx-background-image : url("../images/btn_move_down_on.png");
+    -fx-background-repeat:no-repeat;
+    -fx-background-position : center;
+    -fx-pref-width : 28;
+    -fx-pref-height : 8;
+    -fx-min-width : 28;
+    -fx-min-height : 8;
+    -fx-max-width : 28;
+    -fx-max-height : 8;
+}
+
+.box_border_style_dotted {
+    -fx-border-width : 0.5;
+    -fx-border-color : black;
+    -fx-border-style : segments(2, 2, 2, 2)  line-cap round;
+}
+
+.box_border_style {
+    -fx-border-width : 0.5;
+    -fx-border-color : black;
+}
+
+.box_border_none_target {
+    -fx-background-color : #cccccc;
+}
+
+.cnvTable .report_check {
+	-fx-background-color:#595959;
+	-fx-background-radius:15;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#fff;
+	-fx-pref-width:20;
+	-fx-text-alignment:center ;
+	-fx-alignment:center;
+}
+
+.cnvTable .report_uncheck {
+	-fx-background-color:#FFFFFF;
+	-fx-background-radius:15;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	-fx-text-fill:#595959;
+	-fx-pref-width:20;
+	-fx-border-width : 1;
+	-fx-border-radius : 15;
+	-fx-border-color : #595959;
+	-fx-text-alignment:center;
+	-fx-alignment:center;
+}
+
+/*.cnvTable .column-header > .label  {
+    -fx-content-display: graphic-only;
+}*/
+
+.cnvTable {
+	-fx-background-color: #fff;
+ 	-fx-border-color:#000 #b1b1b1 #b1b1b1 #b1b1b1;
+ 	-fx-border-width:0;
+ 	-fx-padding:0;
+ 	-fx-font-size:13;
+}
+
+.cnvTable, .table-view .column-header-background, .table-view .column-header-background .label{
+	-fx-background-color: transparent;
+}
+
+.cnvTable .column-header-background .nested-column-header .label{
+	-fx-text-fill:#fff;
+}
+
+.cnvTable .column-header-background .filler {
+	-fx-background-color:#8F9FB9;
+	-fx-border-color:#000 #c3c3c3 #c3c3c3 #c3c3c3;
+	-fx-border-width:0 0 0 0;
+}
+
+.cnvTable .column-header {
+	-fx-pref-height:30;
+	-fx-background-color:#8F9FB9;
+ 	-fx-border-color:#000 #F7F7F7 #F7F7F7 #F7F7F7;
+ 	-fx-border-width:0 1 0 0;
+}
+
+
+.cnvTable:row-selection .column-header-background .nested-column-header .sub_column {
+	-fx-background-color:#cbd3d7;
+ 	-fx-border-color:#c3c3c3 #c3c3c3 #c3c3c3 #c3c3c3;
+ 	-fx-border-width:1 1 0 0;
 }

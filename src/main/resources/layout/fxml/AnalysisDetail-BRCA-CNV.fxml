@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import java.net.URL?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableColumn?>
@@ -21,329 +23,639 @@
   </columnConstraints>
   <rowConstraints>
     <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="35.0" minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="35.0" minHeight="30.0" prefHeight="35.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <TableView fx:id="cnvTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4">
-        <columns>
-          <TableColumn fx:id="exonTableColumn" prefWidth="75.0" styleClass="alignment_center" text="Exon" />
-          <TableColumn fx:id="ampliconTableColumn" prefWidth="120.0" styleClass="alignment_center" text="Amplicon" />
-            <TableColumn fx:id="referenceRatioTableColumn" prefWidth="130.0" styleClass="alignment_center" text="Reference Range" />
-            <TableColumn fx:id="cnvValueTableColumn" styleClass="alignment_center" text="CNV Value" />
-            <TableColumn fx:id="predictionTableColumn" prefWidth="90.0" styleClass="alignment_center" text="Prediction" />
-        </columns>
-      </TableView>
+      <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="200.0" minWidth="-Infinity" spacing="20.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="6">
+         <children>
+            <TableView fx:id="exonTableView" maxWidth="1.7976931348623157E308" minHeight="200.0" minWidth="-Infinity" prefHeight="200.0" prefWidth="550.0" styleClass="cnvTable" HBox.hgrow="ALWAYS">
+              <columns>
+                <TableColumn fx:id="exonCNVTableColumn" prefWidth="60.0" text="CNV" />
+                <TableColumn fx:id="exonReportTableColumn" prefWidth="60.0" text="Report" />
+                  <TableColumn fx:id="exonExonTableColumn" prefWidth="75.0" text="Exon" />
+                  <TableColumn fx:id="exonDomainTableColumn" prefWidth="60.0" text="Domain" />
+                  <TableColumn fx:id="exonCopyNumberTableColumn" prefWidth="100.0" text="Copy Number" />
+                  <TableColumn fx:id="exonAmpliconRatioTableColumn" prefWidth="110.0" text="Amplicon Ratio" />
+              </columns>
+            </TableView>
+            <TableView fx:id="cnvTableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="200.0" minWidth="-Infinity" prefHeight="200.0" prefWidth="550.0" styleClass="cnvTable" HBox.hgrow="ALWAYS">
+              <columns>
+                <TableColumn fx:id="ampliconTableColumn" prefWidth="120.0" styleClass="alignment_center" text="Amplicon" />
+                  <TableColumn fx:id="referenceRatioTableColumn" prefWidth="130.0" styleClass="alignment_center" text="Reference Range" />
+                  <TableColumn fx:id="referenceDepthTableColumn" prefWidth="110.0" styleClass="alignment_center" text="Reference Depth" />
+                  <TableColumn fx:id="sampleRatioTableColumn" prefWidth="90.0" styleClass="alignment_center" text="Sample Ratio" />
+                  <TableColumn fx:id="copyNumberTableColumn" prefWidth="90.0" styleClass="alignment_center" text="Copy Number" />
+              </columns>
+            </TableView>
+         </children>
+      </HBox>
       <HBox fx:id="brca1ExonBox" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
          <children>
             <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                <children>
                   <Label text="5'" />
-                  <VBox maxHeight="0.0" maxWidth="1.7976931348623157E308" minHeight="0.1" prefHeight="0.0" prefWidth="55.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
+                  <VBox maxHeight="0.0" maxWidth="1.7976931348623157E308" minHeight="0.1" minWidth="-Infinity" prefHeight="0.0" prefWidth="48.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
-            <HBox fx:id="brca1_utr" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
+            <HBox fx:id="brca1_exon232" alignment="CENTER" maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="32.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
+               <children>
+                  <Label HBox.hgrow="ALWAYS" />
+               </children>
+               <HBox.margin>
+                  <Insets left="-1.0" right="-1.0" />
+               </HBox.margin>
+            </HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="brca1_utr" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" styleClass="box_border_style_dotted">
                <children>
                   <Label text="UTR" />
-               </children></HBox>
+               </children>
+            </HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca1_exon2" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
+            <HBox fx:id="brca1_exon2" alignment="CENTER_LEFT" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0">
                <children>
-                  <Label text="2" />
+                  <HBox prefHeight="100.0" prefWidth="10.0" styleClass="box_border_style_dotted" />
+                  <Label alignment="TOP_CENTER" minHeight="20.0" prefWidth="20.0" styleClass="box_border_style" text="2">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets></Label>
                </children></HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca1_exon3" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="3" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="3" />
                </children></HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
+            <HBox alignment="CENTER" maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="32.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
+               <HBox.margin>
+                  <Insets left="-1.0" right="-1.0" />
+               </HBox.margin>
+            </HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca1_exon5" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="5" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="5" />
                </children></HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca1_exon6" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="6" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="6" />
                </children></HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca1_exon7" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="7" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="7" />
                </children></HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca1_exon8" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="8" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="8" />
                </children></HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca1_exon9" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="9" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="9" />
                </children></HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca1_exon10" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="10" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="10" />
                </children></HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca1_exon11" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="11" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="11" />
                </children></HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca1_exon12" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="12" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="12" />
                </children></HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca1_exon13" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="13" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="13" />
                </children></HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca1_exon14" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="14" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="14" />
                </children></HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca1_exon15" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="15" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="15" />
                </children></HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca1_exon16" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="16" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="16" />
                </children></HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca1_exon17" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="17" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="17" />
                </children></HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca1_exon18" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="18" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="18" />
                </children></HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca1_exon19" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="19" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="19" />
                </children></HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca1_exon20" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="20" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="20" />
                </children></HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca1_exon21" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="21" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="21" />
                </children></HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca1_exon22" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="22" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="22" />
                </children></HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca1_exon23" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="23" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="23" />
                </children></HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca1_exon24" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
+            <HBox fx:id="brca1_exon24" alignment="CENTER_RIGHT" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="24" />
+                  <Label alignment="CENTER" prefWidth="20.0" text="24" />
+                  <HBox prefHeight="100.0" prefWidth="10.0">
+                     <HBox.margin>
+                        <Insets bottom="-1.0" right="-1.0" top="-1.0" />
+                     </HBox.margin>
+                     <styleClass>
+                        <String fx:value="box_border_style_dotted" />
+                        <String fx:value="box_border_none_target" />
+                     </styleClass>
+                  </HBox>
                </children></HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
+            <HBox alignment="CENTER" maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="32.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
+               <HBox.margin>
+                  <Insets left="-1.0" right="-1.0" />
+               </HBox.margin>
+            </HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
+            <HBox alignment="CENTER" maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="32.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
+               <HBox.margin>
+                  <Insets left="-1.0" right="-1.0" />
+               </HBox.margin>
+            </HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
+            <HBox alignment="CENTER" maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="32.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
+               <HBox.margin>
+                  <Insets left="-1.0" right="-1.0" />
+               </HBox.margin>
+            </HBox>
             <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                <children>
-                  <VBox maxHeight="0.0" maxWidth="1.7976931348623157E308" minHeight="0.1" prefHeight="0.0" prefWidth="160.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
+                  <VBox maxHeight="0.0" maxWidth="1.7976931348623157E308" minHeight="0.1" minWidth="-Infinity" prefHeight="0.0" prefWidth="25.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
                   <Label text="3'" />
                </children>
             </HBox>
          </children>
       </HBox>
-      <HBox fx:id="brca2ExonBox" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="100.0" prefWidth="1020.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+      <HBox fx:id="brca2ExonBox" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="100.0" prefWidth="1020.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
          <children>
             <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                <children>
                   <Label text="5'" />
-                  <VBox maxHeight="0.0" maxWidth="1.7976931348623157E308" minHeight="0.1" minWidth="-Infinity" prefHeight="0.0" prefWidth="55.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
+                  <VBox maxHeight="0.0" maxWidth="1.7976931348623157E308" minHeight="0.1" minWidth="-Infinity" prefHeight="0.0" prefWidth="48.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
-            <HBox fx:id="brca2_exon2" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
+            <HBox alignment="CENTER" maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="32.0" style="-fx-border-color: black;">
+               <HBox.margin>
+                  <Insets left="-1.0" right="-1.0" />
+               </HBox.margin>
+            </HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="brca2_exon271" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0">
+               <styleClass>
+                  <String fx:value="box_border_style_dotted" />
+                  <String fx:value="box_border_none_target" />
+               </styleClass></HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="brca2_exon2" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0">
                <children>
-                  <Label text="2" />
+                  <HBox prefHeight="100.0" prefWidth="10.0">
+                     <styleClass>
+                        <String fx:value="box_border_style_dotted" />
+                        <String fx:value="box_border_none_target" />
+                     </styleClass></HBox>
+                  <Label alignment="CENTER" minHeight="20.0" prefHeight="20.0" prefWidth="20.0" styleClass="box_border_style" text="2" />
                </children>
             </HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca2_exon3" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="3" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="3" />
                </children>
             </HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca2_exon4" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="4" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="4" />
                </children>
             </HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca2_exon5" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="5" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="5" />
                </children>
             </HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca2_exon6" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="6" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="6" />
                </children>
             </HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca2_exon7" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="7" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="7" />
                </children>
             </HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca2_exon8" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="8" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="8" />
                </children>
             </HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca2_exon9" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="9" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="9" />
                </children>
             </HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca2_exon10" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="10" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="10" />
                </children>
             </HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca2_exon11" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="11" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="11" />
                </children>
             </HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca2_exon12" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="12" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="12" />
                </children>
             </HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca2_exon13" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="13" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="13" />
                </children>
             </HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca2_exon14" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="14" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="14" />
                </children>
             </HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca2_exon15" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="15" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="15" />
                </children>
             </HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca2_exon16" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="16" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="16" />
                </children>
             </HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca2_exon17" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="17" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="17" />
                </children>
             </HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca2_exon18" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="18" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="18" />
                </children>
             </HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca2_exon19" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="19" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="19" />
                </children>
             </HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca2_exon20" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="20" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="20" />
                </children>
             </HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca2_exon21" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="21" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="21" />
                </children>
             </HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca2_exon22" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="22" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="22" />
                </children>
             </HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca2_exon23" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="23" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="23" />
                </children>
             </HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca2_exon24" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="24" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="24" />
                </children>
             </HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca2_exon25" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="25" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="25" />
                </children>
             </HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca2_exon26" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="26" />
+                  <Label alignment="CENTER" prefWidth="30.0" text="26" />
                </children>
             </HBox>
             <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca2_exon27" alignment="CENTER" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
+            <HBox fx:id="brca2_exon27" alignment="CENTER_RIGHT" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
-                  <Label text="27" />
+                  <Label alignment="CENTER" prefWidth="20.0" text="27" />
+                  <HBox prefHeight="100.0" prefWidth="10.0">
+                     <HBox.margin>
+                        <Insets bottom="-1.0" right="-1.0" top="-1.0" />
+                     </HBox.margin>
+                     <styleClass>
+                        <String fx:value="box_border_style_dotted" />
+                        <String fx:value="box_border_none_target" />
+                     </styleClass>
+                  </HBox>
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                <children>
-                  <VBox maxHeight="0.0" maxWidth="1.7976931348623157E308" minHeight="0.1" minWidth="-Infinity" prefHeight="0.0" prefWidth="55.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
+                  <VBox maxHeight="0.0" maxWidth="1.7976931348623157E308" minHeight="0.1" minWidth="-Infinity" prefHeight="0.0" prefWidth="25.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
                   <Label text="3'" />
                </children>
             </HBox>
          </children>
       </HBox>
-      <RadioButton fx:id="brca1RadioButton" mnemonicParsing="false" text="BRCA1" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-         <toggleGroup>
-            <ToggleGroup fx:id="brcaToggleGroup" />
-         </toggleGroup>
-      </RadioButton>
-      <RadioButton fx:id="brca2RadioButton" mnemonicParsing="false" text="BRCA2" toggleGroup="$brcaToggleGroup" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+      <VBox GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+         <children>
+            <RadioButton fx:id="brca1RadioButton" mnemonicParsing="false" text="BRCA1">
+               <toggleGroup>
+                  <ToggleGroup fx:id="brcaToggleGroup" />
+               </toggleGroup>
+            </RadioButton>
+            <Label styleClass="font_size_11" text="(NM_007294.3)" />
+         </children>
+      </VBox>
+      <VBox GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+         <children>
+            <RadioButton fx:id="brca2RadioButton" mnemonicParsing="false" text="BRCA2" toggleGroup="$brcaToggleGroup" />
+            <Label styleClass="font_size_11" text="(NM_000059.3)" />
+         </children>
+      </VBox>
+      <GridPane GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5">
+        <columnConstraints>
+          <ColumnConstraints hgrow="ALWAYS" minWidth="550.0" prefWidth="550.0" />
+          <ColumnConstraints maxWidth="0.0" minWidth="20.0" prefWidth="20.0" />
+            <ColumnConstraints hgrow="ALWAYS" minWidth="550.0" prefWidth="550.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Label fx:id="cnvExonLabel" text="CNV EXON INFORMATION" />
+                  <HBox maxWidth="1.7976931348623157E308" prefHeight="100.0" HBox.hgrow="ALWAYS" />
+                  <Label text="Label" />
+                  <Label text="Label" />
+                  <Label text="Label" />
+               </children>
+            </HBox>
+            <Label fx:id="cnvDetailLabel" text="CNV DETAIL INFORMATION" GridPane.columnIndex="2" />
+         </children>
+      </GridPane>
+      <GridPane GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label text="Summary" />
+            <Label styleClass="excel_download_image" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
+         </children>
+      </GridPane>
+      <HBox fx:id="brca1ExonBox1" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="10.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+         <children>
+            <HBox alignment="CENTER_RIGHT" prefWidth="58.0" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="brca1_exon2311" alignment="CENTER" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="30.0">
+               <children>
+                  <Label styleClass="font_size_10" />
+               </children>
+            </HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="brca1_utr1" alignment="CENTER" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="30.0">
+               <children>
+                  <Label styleClass="font_size_10" text="UTR" />
+               </children>
+            </HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="brca1_exon21" alignment="CENTER" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="30.0">
+               <children>
+                  <Label styleClass="font_size_10" text="2" />
+               </children>
+            </HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="brca1_exon31" alignment="CENTER" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="30.0">
+               <children>
+                  <Label styleClass="font_size_10" text="3" />
+               </children>
+            </HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="brca1_exon51" alignment="CENTER" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="30.0">
+               <children>
+                  <Label styleClass="font_size_10" text="4" />
+               </children>
+            </HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="brca1_exon61" alignment="CENTER" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="30.0">
+               <children>
+                  <Label styleClass="font_size_10" text="5" />
+               </children>
+            </HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="brca1_exon71" alignment="CENTER" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="30.0">
+               <children>
+                  <Label styleClass="font_size_10" text="6" />
+               </children>
+            </HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="brca1_exon81" alignment="CENTER" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="30.0">
+               <children>
+                  <Label styleClass="font_size_10" text="7" />
+               </children>
+            </HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="brca1_exon91" alignment="CENTER" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="30.0">
+               <children>
+                  <Label styleClass="font_size_10" text="8" />
+               </children>
+            </HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="brca1_exon101" alignment="CENTER" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="30.0">
+               <children>
+                  <Label styleClass="font_size_10" text="9" />
+               </children>
+            </HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="brca1_exon111" alignment="CENTER" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="30.0">
+               <children>
+                  <Label styleClass="font_size_10" text="10" />
+               </children>
+            </HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="brca1_exon121" alignment="CENTER" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="30.0">
+               <children>
+                  <Label styleClass="font_size_10" text="11" />
+               </children>
+            </HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="brca1_exon131" alignment="CENTER" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="30.0">
+               <children>
+                  <Label styleClass="font_size_10" text="12" />
+               </children>
+            </HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="brca1_exon141" alignment="CENTER" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="30.0">
+               <children>
+                  <Label styleClass="font_size_10" text="13" />
+               </children>
+            </HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="brca1_exon151" alignment="CENTER" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="30.0">
+               <children>
+                  <Label styleClass="font_size_10" text="14" />
+               </children>
+            </HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="brca1_exon161" alignment="CENTER" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="30.0">
+               <children>
+                  <Label styleClass="font_size_10" text="15" />
+               </children>
+            </HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="brca1_exon171" alignment="CENTER" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="30.0">
+               <children>
+                  <Label styleClass="font_size_10" text="16" />
+               </children>
+            </HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="brca1_exon181" alignment="CENTER" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="30.0">
+               <children>
+                  <Label styleClass="font_size_10" text="17" />
+               </children>
+            </HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="brca1_exon191" alignment="CENTER" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="30.0">
+               <children>
+                  <Label styleClass="font_size_10" text="18" />
+               </children>
+            </HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="brca1_exon201" alignment="CENTER" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="30.0">
+               <children>
+                  <Label styleClass="font_size_10" text="19" />
+               </children>
+            </HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="brca1_exon211" alignment="CENTER" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="30.0">
+               <children>
+                  <Label styleClass="font_size_10" text="20" />
+               </children>
+            </HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="brca1_exon221" alignment="CENTER" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="30.0">
+               <children>
+                  <Label styleClass="font_size_10" text="21" />
+               </children>
+            </HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="brca1_exon231" alignment="CENTER" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="30.0">
+               <children>
+                  <Label styleClass="font_size_10" text="22" />
+               </children>
+            </HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="brca1_exon241" alignment="CENTER" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="30.0">
+               <children>
+                  <Label styleClass="font_size_10" text="23" />
+               </children>
+            </HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="brca1_exon2411" alignment="CENTER" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="30.0">
+               <children>
+                  <Label styleClass="font_size_10" text="24" />
+               </children>
+            </HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="brca1_exon2412" alignment="CENTER" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="30.0">
+               <children>
+                  <Label styleClass="font_size_10" text="25" />
+               </children>
+            </HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="brca1_exon2413" alignment="CENTER" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="30.0">
+               <children>
+                  <Label styleClass="font_size_10" text="26" />
+               </children>
+            </HBox>
+            <VBox maxHeight="0.0" minHeight="0.1" prefHeight="0.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="brca1_exon2414" alignment="CENTER" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="30.0">
+               <children>
+                  <Label styleClass="font_size_10" text="27" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefWidth="36.0" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
    </children>
    <stylesheets>
       <URL value="@../css/common.css" />
