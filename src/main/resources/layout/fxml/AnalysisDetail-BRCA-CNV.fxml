@@ -3,6 +3,7 @@
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableColumn?>
@@ -462,9 +463,18 @@
                <children>
                   <Label fx:id="cnvExonLabel" text="CNV EXON INFORMATION" />
                   <HBox maxWidth="1.7976931348623157E308" prefHeight="100.0" HBox.hgrow="ALWAYS" />
-                  <Label text="Label" />
-                  <Label text="Label" />
-                  <Label text="Label" />
+                  <Label alignment="CENTER" onMouseClicked="#doExonDeletion" styleClass="cnv_deletion" text="Del">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></Label>
+                  <Label alignment="CENTER" onMouseClicked="#doExonDuplication" styleClass="cnv_duplication" text="Dup">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></Label>
+                  <Label onMouseClicked="#doCnvReport" styleClass="report_check" text="R">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></Label>
                </children>
             </HBox>
             <Label fx:id="cnvDetailLabel" text="CNV DETAIL INFORMATION" GridPane.columnIndex="2" />

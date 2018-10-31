@@ -1,12 +1,20 @@
 package ngeneanalysys.controller;
 
+import com.sun.javafx.scene.control.skin.TableHeaderRow;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import ngeneanalysys.code.enums.BrcaCNVCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.BrcaCNV;
@@ -17,6 +25,7 @@ import ngeneanalysys.model.paged.PagedBrcaCNVExon;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
+import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
@@ -32,6 +41,8 @@ import java.util.stream.Collectors;
  */
 public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonController {
     private static Logger logger = LoggerUtil.getLogger();
+
+    private CheckBox headerCheckBox;
 
     @FXML
     private HBox brca1ExonBox;
@@ -59,7 +70,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     @FXML
     private TableColumn<BrcaCNVExon, String> exonDomainTableColumn;
     @FXML
-    private TableColumn<BrcaCNVExon, String> exonCopyNumberTableColumn;
+    private TableColumn<BrcaCNVExon, Integer> exonCopyNumberTableColumn;
     @FXML
     private TableColumn<BrcaCNVExon, String> exonAmpliconRatioTableColumn;
 
@@ -129,9 +140,104 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                 cutBigDecimal(item.getValue().getNormalRangeMin()) + " - " +
                         cutBigDecimal(item.getValue().getNormalRangeMax())));
 
+        brcaExonTableInit();
+
         setList();
         brca1RadioButton.selectedProperty().setValue(true);
         variantsController.getDetailContents().setCenter(root);
+
+    }
+
+    private void brcaExonTableInit() {
+        TableColumn<BrcaCNVExon, Boolean> checkBoxColumn = new TableColumn<>("");
+        createCheckBoxTableHeader(checkBoxColumn);
+        //checkBoxColumn.impl_setReorderable(false); 컬럼 이동 방지 코드
+        checkBoxColumn.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue() != null ));
+        checkBoxColumn.setCellFactory(param -> new BooleanCell());
+
+        exonCNVTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCnv()));
+        exonCNVTableColumn.setCellFactory(param -> new TableCell<BrcaCNVExon, String>() {
+            @Override
+            public void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if(empty) {
+                    setGraphic(null);
+                } else {
+                    BrcaCNVExon brcaCNVExon = getTableView().getItems().get(getIndex());
+
+                    String value = BrcaCNVCode.findInitial(brcaCNVExon.getCnv());
+                    String code = "cnv_" + brcaCNVExon.getCnv();
+
+                    Label label = null;
+                    if(!"NONE".equals(code)) {
+                        label = new Label(value);
+                        label.getStyleClass().clear();
+                        exonCNVTableColumn.getStyleClass().add("alignment_center");
+                        label.getStyleClass().add(code);
+                    }
+                    setGraphic(label);
+                }
+            }
+        });
+
+        exonReportTableColumn.getStyleClass().add("alignment_center");
+        exonReportTableColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getIncludedInReport()));
+        exonReportTableColumn.setCellFactory(param -> new TableCell<BrcaCNVExon, String>() {
+            @Override
+            public void updateItem(String item, boolean empty) {
+                if(StringUtils.isEmpty(item) || empty) {
+                    setGraphic(null);
+                    return;
+                }
+                BrcaCNVExon brcaCNVExon = getTableView().getItems().get(getIndex());
+                Label label = new Label();
+                label.getStyleClass().remove("label");
+                if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
+                    label.setText("R");
+                    label.getStyleClass().add("report_check");
+                } else {
+                    label.getStyleClass().add("report_uncheck");
+                }
+                label.setCursor(Cursor.HAND);
+                label.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
+                    try {
+                        Map<String, Object> params = new HashMap<>();
+                        params.put("sampleId", brcaCNVExon.getId());
+                        params.put("snpInDelIds", brcaCNVExon.getId().toString());
+                        params.put("comment", "N/A");
+                        if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
+                            params.put("includeInReport", "N");
+                        } else {
+                            params.put("includeInReport", "Y");
+                        }
+                        apiService.put("analysisResults/brcaCnvExon/updateIncludeInReport", params, null, true);
+                        exonTableView.refresh();
+                    } catch (WebAPIException wae) {
+                        wae.printStackTrace();
+                    }
+                });
+                setGraphic(label);
+            }
+        });
+        exonExonTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getExon()));
+        exonDomainTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDomain()));
+        exonCopyNumberTableColumn.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getCopyNumber()));
+        exonAmpliconRatioTableColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getAmpliconRatio()));
+
+        exonTableView.skinProperty().addListener((obs, oldSkin, newSkin) -> {
+            final TableHeaderRow header = (TableHeaderRow) exonTableView.lookup("TableHeaderRow");
+            header.reorderingProperty().addListener((o, oldVal, newVal) -> {
+                ObservableList columns = exonTableView.getColumns();
+
+                // If the first columns is not in the first index change it
+                if (columns.indexOf(checkBoxColumn) != 0) {
+                    columns.remove(checkBoxColumn);
+                    columns.add(0, checkBoxColumn);
+                }
+            });
+        });
     }
 
     private String cutBigDecimal(BigDecimal bigDecimal) {
@@ -262,4 +368,72 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         }
     }
 
+    private void createCheckBoxTableHeader(TableColumn<BrcaCNVExon, ?> column) {
+        HBox hBox = new HBox();
+        hBox.setPrefHeight(Double.MAX_VALUE);
+        hBox.setAlignment(Pos.CENTER);
+        CheckBox box = new CheckBox();
+        headerCheckBox = box;
+        hBox.getChildren().add(box);
+        column.setStyle("-fx-alignment : center");
+        column.setSortable(false);
+        column.setGraphic(box);
+
+        box.selectedProperty().addListener((observable, ov, nv) -> {
+            if(exonTableView.getItems() != null) {
+                exonTableView.getItems().forEach(item -> item.setCheckItem(nv));
+                exonTableView.refresh();
+            }
+        });
+
+        column.widthProperty().addListener((ob, ov, nv) -> hBox.setMinWidth(column.getWidth()));
+        column.setResizable(false);
+
+        column.setPrefWidth(50d);
+
+        exonTableView.getColumns().add(0, column);
+    }
+
+    class BooleanCell extends TableCell<BrcaCNVExon, Boolean> {
+        private CheckBox checkBox = new CheckBox();
+        private BooleanCell() {
+            checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+                BrcaCNVExon brcaCNVExon = BooleanCell.this.getTableView().getItems().get(
+                        BooleanCell.this.getIndex());
+                brcaCNVExon.setCheckItem(newValue);
+                checkBox.setSelected(newValue);
+
+            });
+        }
+
+        @Override
+        public void updateItem(Boolean item, boolean empty) {
+            super.updateItem(item, empty);
+            if(empty) {
+                setGraphic(null);
+                return;
+            }
+            this.setStyle(this.getStyle() + "; -fx-background-color : white;");
+            BrcaCNVExon brcaCNVExon = BooleanCell.this.getTableView().getItems().get(
+                    BooleanCell.this.getIndex());
+            checkBox.setSelected(brcaCNVExon.getCheckItem());
+
+            setGraphic(checkBox);
+        }
+    }
+
+    @FXML
+    public void doExonDeletion() {
+        //TODO
+    }
+
+    @FXML
+    public void doExonDuplication() {
+        //TODO
+    }
+
+    @FXML
+    public void doCnvReport() {
+        //TODO
+    }
 }

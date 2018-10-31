@@ -17,6 +17,13 @@ public class BrcaCNVExon {
     private String ampliconRatio;
 
     /**
+     * @param checkItem
+     */
+    public void setCheckItem(Boolean checkItem) {
+        this.checkItem = checkItem;
+    }
+
+    /**
      * @return id
      */
     public Integer getId() {

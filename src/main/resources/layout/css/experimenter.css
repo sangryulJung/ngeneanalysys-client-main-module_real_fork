@@ -318,7 +318,7 @@
     -fx-background-color : #cccccc;
 }
 
-.cnvTable .report_check {
+.report_check {
 	-fx-background-color:#595959;
 	-fx-background-radius:15;
 	-fx-font-size:12;
@@ -329,7 +329,7 @@
 	-fx-alignment:center;
 }
 
-.cnvTable .report_uncheck {
+.report_uncheck {
 	-fx-background-color:#FFFFFF;
 	-fx-background-radius:15;
 	-fx-font-size:12;
@@ -381,4 +381,38 @@
 	-fx-background-color:#cbd3d7;
  	-fx-border-color:#c3c3c3 #c3c3c3 #c3c3c3 #c3c3c3;
  	-fx-border-width:1 1 0 0;
+}
+
+.cnv_duplication {
+	-fx-background-color:#1F2D87;
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-background-insets:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:10;
+	-fx-text-fill:#fff;
+	-fx-padding:0;
+	-fx-min-width:20;
+	-fx-pref-width:20;
+	-fx-max-width:20;
+	-fx-min-height:20;
+	-fx-pref-height:20;
+	-fx-max-height:20;
+}
+
+.cnv_deletion {
+	-fx-background-color:#70ACF5;
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-background-insets:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:10;
+	-fx-text-fill:#fff;
+	-fx-padding:0;
+	-fx-min-width:20;
+	-fx-pref-width:20;
+	-fx-max-width:20;
+	-fx-min-height:20;
+	-fx-pref-height:20;
+	-fx-max-height:20;
 }
