@@ -10,6 +10,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -392,7 +393,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 expandRight();
             }
         });
-
+        variantListTableView.setTableMenuButtonVisible(false);
         // 목록 클릭 시 변이 상세정보 출력 이벤트 바인딩
         variantListTableView.setRowFactory(tv -> {
             TableRow<VariantAndInterpretationEvidence> row = new TableRow<>();
@@ -917,36 +918,45 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     public void showVariantList(int selectedIdx) {
         mainController.setMainMaskerPane(true);
-        try {
-            headerCheckBox.setSelected(false);
-            compareColumnOrder();
-            int totalCount;
 
-            try {
-                // API 서버 조회
-                Map<String, Object> params = new HashMap<>();
+        headerCheckBox.setSelected(false);
+        compareColumnOrder();
 
-                Map<String, List<Object>> sortAndSearchItem = new HashMap<>();
+        // API 서버 조회
+        Map<String, Object> params = new HashMap<>();
+        Map<String, List<Object>> sortAndSearchItem = new HashMap<>();
 
-                //setSortItem(sortAndSearchItem);
-                setFilterItem(sortAndSearchItem);
-
-                HttpClientResponse response = apiService.get("/analysisResults/sampleSnpInDels/"+ sample.getId(), params,
+        //setSortItem(sortAndSearchItem);
+        setFilterItem(sortAndSearchItem);
+        Task<Void> task = new Task<Void>() {
+            private HttpClientResponse response1;
+            private HttpClientResponse response2;
+            private PagedVariantAndInterpretationEvidence analysisResultVariantList;
+            private List<VariantAndInterpretationEvidence> list;
+            private int totalCount;
+            @Override
+            protected Void call() throws Exception {
+                response1 = apiService.get("/analysisResults/sampleSnpInDels/"+ sample.getId(), params,
                         null, sortAndSearchItem);
-                PagedVariantAndInterpretationEvidence analysisResultVariantList =
-                        response.getObjectBeforeConvertResponseToJSON(PagedVariantAndInterpretationEvidence.class);
+                analysisResultVariantList =
+                        response1.getObjectBeforeConvertResponseToJSON(PagedVariantAndInterpretationEvidence.class);
 
-                List<VariantAndInterpretationEvidence> list = analysisResultVariantList.getResult();
+                list = analysisResultVariantList.getResult();
                 totalCount = analysisResultVariantList.getCount();
 
+                response2 = apiService.get("/analysisResults/sampleSummary/"+ sample.getId(), null, null, false);
+
+                sample.setAnalysisResultSummary(response2.getObjectBeforeConvertResponseToJSON(AnalysisResultSummary.class));
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
                 searchCountLabel.setText(totalCount +"/");
 
                 //totalVariantCountLabel.setText(sample.getAnalysisResultSummary().getAllVariantCount().toString());
                 ObservableList<VariantAndInterpretationEvidence> displayList = null;
-
-                response = apiService.get("/analysisResults/sampleSummary/"+ sample.getId(), null, null, false);
-
-                sample.setAnalysisResultSummary(response.getObjectBeforeConvertResponseToJSON(AnalysisResultSummary.class));
                 reportedCountLabel.setText("(R : " + sample.getAnalysisResultSummary().getReportVariantCount() +")");
 
                 if (list != null && !list.isEmpty()) {
@@ -965,19 +975,30 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                     //showVariantDetail(displayList.get(selectedIdx));
                 }
                 setSNVTabName();
-            } catch (WebAPIException wae) {
-                variantListTableView.setItems(null);
-                DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
-                        getMainApp().getPrimaryStage(), true);
-                wae.printStackTrace();
-            } catch (Exception e) {
-                logger.error("Unknown Error", e);
-                variantListTableView.setItems(null);
-                DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+                mainController.setMainMaskerPane(false);
             }
-        } finally {
-            mainController.setMainMaskerPane(false);
-        }
+
+            @Override
+            protected void failed() {
+                super.failed();
+                try {
+                    throw new Exception(getException());
+                } catch (WebAPIException wae) {
+                    variantListTableView.setItems(null);
+                    DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+                            getMainApp().getPrimaryStage(), true);
+                    wae.printStackTrace();
+                } catch (Exception e) {
+                    logger.error("Unknown Error", e);
+                    variantListTableView.setItems(null);
+                    DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+                } finally {
+                    mainController.setMainMaskerPane(false);
+                }
+            }
+        };
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
     void comboBoxSetAll() {
@@ -1003,14 +1024,11 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     @FXML
     public void resetTableColumnOrder() {
         Platform.runLater(() -> {
-            //mainController.setContentsMaskerPaneVisible(true);
+            mainController.setContentsMaskerPaneVisible(true);
             deleteColumn();
             removeColumnOrder(getColumnOrderType());
             runColumnAction();
-            //mainController.setContentsMaskerPaneVisible(false);
-            if(showFalseVariantsCheckBox.isVisible() && showFalseVariantsCheckBox.isSelected()) {
-                showFalseVariantsCheckBox.setSelected(false);
-            }
+            mainController.setContentsMaskerPaneVisible(false);
         });
     }
 
@@ -1229,14 +1247,14 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                     setGraphic(label);
                 }
             });
-            falsePositive.setVisible(false);
+            //falsePositive.setVisible(false);
             showFalseVariantsCheckBox.addEventFilter(MouseEvent.MOUSE_CLICKED, ev -> {
                 falsePositive.setVisible(showFalseVariantsCheckBox.isSelected());
                 Platform.runLater(() -> showVariantList(0));
             });
         } else {
             showFalseVariantsCheckBox.setVisible(false);
-            falsePositiveButton.setVisible(false);
+            //falsePositiveButton.setVisible(false);
         }
 
         TableColumn<VariantAndInterpretationEvidence, String> reportTest = new TableColumn<>("Report");
@@ -1818,11 +1836,28 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         logger.debug(columnString);
         Map<String, Object> map = new HashMap<>();
         map.put("value", columnString);
-        try {
-            apiService.put("/member/memberOption/" + getColumnOrderType(), map, null, true);
-        } catch (WebAPIException wae) {
-            logger.error(wae.getMessage());
-        }
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                apiService.put("/member/memberOption/" + getColumnOrderType(), map, null, true);
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                maskerPane.setVisible(false);
+            }
+
+            @Override
+            protected void failed() {
+                super.failed();
+                maskerPane.setVisible(false);
+            }
+        };
+        maskerPane.setVisible(true);
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
     private void putTableColumn(String key, String path) {
@@ -1874,13 +1909,13 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         List<TableColumnInfo> cols = columnInfos.stream()
                 .filter(item -> columnMap.containsKey(item.getColumnName()))
                 .sorted(Comparator.comparing(TableColumnInfo::getOrder)).collect(Collectors.toList());
-        for(TableColumnInfo info : cols) {
-                columnMap.get(info.getColumnName()).visibleProperty()
-                        .removeListener(tableColumnVisibilityChangeListener);
-                columnMap.get(info.getColumnName()).setVisible(info.isVisible());
-                columnMap.get(info.getColumnName()).visibleProperty()
-                        .addListener(tableColumnVisibilityChangeListener);
-        }
+//        for(TableColumnInfo info : cols) {
+//                columnMap.get(info.getColumnName()).visibleProperty()
+//                        .removeListener(tableColumnVisibilityChangeListener);
+//                columnMap.get(info.getColumnName()).setVisible(info.isVisible());
+//                columnMap.get(info.getColumnName()).visibleProperty()
+//                        .addListener(tableColumnVisibilityChangeListener);
+//        }
         ArrayList tableColumns = cols.stream()
                 .map(item -> columnMap.get(item.getColumnName()))
                 .collect(Collectors.toCollection(ArrayList::new));
