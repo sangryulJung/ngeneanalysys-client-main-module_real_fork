@@ -26,6 +26,15 @@ public class Panel {
 
     private Integer reportTemplateId;
 
+    private CNVConfigBRCAaccuTest cnvConfigBRCAaccuTest;
+
+    /**
+     * @return cnvConfigBRCAaccuTest
+     */
+    public CNVConfigBRCAaccuTest getCnvConfigBRCAaccuTest() {
+        return cnvConfigBRCAaccuTest;
+    }
+
     /**
      * @param code
      */

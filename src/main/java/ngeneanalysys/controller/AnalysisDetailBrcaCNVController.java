@@ -81,11 +81,11 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     @FXML
     private TableColumn<BrcaCNV, String> referenceRatioTableColumn;
     @FXML
-    private TableColumn<BrcaCNV, String> referenceDepthTableColumn;
+    private TableColumn<BrcaCNV, Integer> referenceDepthTableColumn;
     @FXML
-    private TableColumn<BrcaCNV, String> sampleRatioTableColumn;
+    private TableColumn<BrcaCNV, Integer> sampleRatioTableColumn;
     @FXML
-    private TableColumn<BrcaCNV, String> copyNumberTableColumn;
+    private TableColumn<BrcaCNV, Integer> copyNumberTableColumn;
 
     private APIService apiService;
 
@@ -139,6 +139,8 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         referenceRatioTableColumn.setCellValueFactory(item -> new SimpleStringProperty(
                 cutBigDecimal(item.getValue().getNormalRangeMin()) + " - " +
                         cutBigDecimal(item.getValue().getNormalRangeMax())));
+        referenceDepthTableColumn.setCellValueFactory(item ->
+                new SimpleObjectProperty<>(item.getValue().getReferenceMeanDepth()));
 
         brcaExonTableInit();
 

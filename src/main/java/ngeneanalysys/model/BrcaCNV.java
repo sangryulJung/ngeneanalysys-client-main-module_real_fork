@@ -15,6 +15,15 @@ public class BrcaCNV {
     private BigDecimal normalRangeMax;
     private BigDecimal cnvValue;
     private String prediction;
+    private BigDecimal rawRangeMin;
+    private BigDecimal rawRangeMax;
+    private BigDecimal distributionRangeMin;
+    private BigDecimal distributionRangeMax;
+    private Integer referenceMeanDepth;
+    private Integer referenceMedianDepth;
+    private Integer sampleDepth;
+    private BigDecimal sampleRatio;
+    private Integer distributionPrediction;
 
     /**
      * @return sampleId
@@ -70,6 +79,69 @@ public class BrcaCNV {
      */
     public String getPrediction() {
         return prediction;
+    }
+
+    /**
+     * @return rawRangeMin
+     */
+    public BigDecimal getRawRangeMin() {
+        return rawRangeMin;
+    }
+
+    /**
+     * @return rawRangeMax
+     */
+    public BigDecimal getRawRangeMax() {
+        return rawRangeMax;
+    }
+
+    /**
+     * @return distributionRangeMin
+     */
+    public BigDecimal getDistributionRangeMin() {
+        return distributionRangeMin;
+    }
+
+    /**
+     * @return distributionRangeMax
+     */
+    public BigDecimal getDistributionRangeMax() {
+        return distributionRangeMax;
+    }
+
+    /**
+     * @return referenceMeanDepth
+     */
+    public Integer getReferenceMeanDepth() {
+        return referenceMeanDepth;
+    }
+
+    /**
+     * @return referenceMedianDepth
+     */
+    public Integer getReferenceMedianDepth() {
+        return referenceMedianDepth;
+    }
+
+    /**
+     * @return sampleDepth
+     */
+    public Integer getSampleDepth() {
+        return sampleDepth;
+    }
+
+    /**
+     * @return sampleRatio
+     */
+    public BigDecimal getSampleRatio() {
+        return sampleRatio;
+    }
+
+    /**
+     * @return distributionPrediction
+     */
+    public Integer getDistributionPrediction() {
+        return distributionPrediction;
     }
 }
 
