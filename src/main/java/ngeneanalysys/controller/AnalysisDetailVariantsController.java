@@ -133,7 +133,6 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
             } catch (WebAPIException wae) {
                 return false;
             }
-            return true;
         }
 
         return false;

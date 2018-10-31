@@ -5,7 +5,7 @@ package ngeneanalysys.model;
  * @since 2018-10-30
  */
 public class BrcaCNVExon {
-    private Boolean checkItem;
+    private Boolean checkItem = false;
     private Integer id;
     private Integer sampleId;
     private String gene;

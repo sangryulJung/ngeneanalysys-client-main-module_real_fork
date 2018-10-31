@@ -83,7 +83,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     @FXML
     private TableColumn<BrcaCNV, Integer> referenceDepthTableColumn;
     @FXML
-    private TableColumn<BrcaCNV, Integer> sampleRatioTableColumn;
+    private TableColumn<BrcaCNV, BigDecimal> sampleRatioTableColumn;
     @FXML
     private TableColumn<BrcaCNV, Integer> copyNumberTableColumn;
 
@@ -137,15 +137,19 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
 
         ampliconTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getAmplicon()));
         referenceRatioTableColumn.setCellValueFactory(item -> new SimpleStringProperty(
-                cutBigDecimal(item.getValue().getNormalRangeMin()) + " - " +
-                        cutBigDecimal(item.getValue().getNormalRangeMax())));
+                cutBigDecimal(item.getValue().getDistributionRangeMin()) + " - " +
+                        cutBigDecimal(item.getValue().getDistributionRangeMax())));
         referenceDepthTableColumn.setCellValueFactory(item ->
                 new SimpleObjectProperty<>(item.getValue().getReferenceMeanDepth()));
+        sampleRatioTableColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getSampleRatio()));
+        copyNumberTableColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getDistributionPrediction()));
 
         brcaExonTableInit();
 
         setList();
         brca1RadioButton.selectedProperty().setValue(true);
+        exonTableView.getSelectionModel().select(0);
+        setBrcaTableView("BRCA1", "5'UTR");
         variantsController.getDetailContents().setCenter(root);
 
     }
@@ -266,14 +270,14 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     }
 
     private void setBrcaExonTableView(final String gene) {
-        if(cnvTableView.getItems() != null) {
-            cnvTableView.getItems().removeAll(cnvTableView.getItems());
-            cnvTableView.refresh();
+        if(exonTableView.getItems() != null) {
+            exonTableView.getItems().removeAll(exonTableView.getItems());
         }
 
         List<BrcaCNVExon> list = getBrcaCNVExon(gene);
 
         if(!list.isEmpty()) exonTableView.getItems().addAll(list);
+        exonTableView.refresh();
     }
 
     private void setBrcaTableView(final String gene, final String exon) {
@@ -327,8 +331,8 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     }
 
     private void calcExonPlot(List<BrcaCNV> cnvs, String key, HBox box, final String boxId) {
-        long duplicationCount = cnvs.stream().filter(cnv -> cnv.getPrediction().equals("Duplication")).count();
-        long deletionCount = cnvs.stream().filter(cnv -> cnv.getPrediction().equals("Deletion")).count();
+        long duplicationCount = cnvs.stream().filter(cnv -> cnv.getDistributionPrediction().equals(3)).count();
+        long deletionCount = cnvs.stream().filter(cnv -> cnv.getDistributionPrediction().equals(1)).count();
         long totalCount = cnvs.size();
 
         if(compareCount(deletionCount, totalCount)) {

@@ -11,10 +11,6 @@ public class BrcaCNV {
     private String gene;
     private String exon;
     private String amplicon;
-    private BigDecimal normalRangeMin;
-    private BigDecimal normalRangeMax;
-    private BigDecimal cnvValue;
-    private String prediction;
     private BigDecimal rawRangeMin;
     private BigDecimal rawRangeMax;
     private BigDecimal distributionRangeMin;
@@ -24,6 +20,14 @@ public class BrcaCNV {
     private Integer sampleDepth;
     private BigDecimal sampleRatio;
     private Integer distributionPrediction;
+    private Integer rawPrediction;
+
+    /**
+     * @return rawPrediction
+     */
+    public Integer getRawPrediction() {
+        return rawPrediction;
+    }
 
     /**
      * @return sampleId
@@ -51,34 +55,6 @@ public class BrcaCNV {
      */
     public String getAmplicon() {
         return amplicon;
-    }
-
-    /**
-     * @return normalRangeMin
-     */
-    public BigDecimal getNormalRangeMin() {
-        return normalRangeMin;
-    }
-
-    /**
-     * @return normalRangeMax
-     */
-    public BigDecimal getNormalRangeMax() {
-        return normalRangeMax;
-    }
-
-    /**
-     * @return cnvValue
-     */
-    public BigDecimal getCnvValue() {
-        return cnvValue;
-    }
-
-    /**
-     * @return prediction
-     */
-    public String getPrediction() {
-        return prediction;
     }
 
     /**

@@ -1,5 +1,7 @@
 package ngeneanalysys.code.enums;
 
+import ngeneanalysys.util.StringUtils;
+
 /**
  * @author Jang
  * @since 2018-10-31
@@ -31,7 +33,9 @@ public enum BrcaCNVCode {
     }
 
     public static String findInitial(String code) {
-        if(code.equals(DELETION.code)) {
+        if(StringUtils.isEmpty(code)) {
+            return "";
+        } else if(code.equals(DELETION.code)) {
             return DELETION.initial;
         } else if(code.equals(DUPLICATION.code)) {
             return DUPLICATION.initial;
