@@ -14,7 +14,9 @@ public class BrcaCNVExon {
     private String includedInReport;
     private String domain;
     private Integer copyNumber;
-    private String ampliconRatio;
+    private Integer copyNumberOneAmpliconCount;
+    private Integer copyNumberTwoAmpliconCount;
+    private Integer copyNumberThreeAmpliconCount;
 
     /**
      * @param checkItem
@@ -86,10 +88,15 @@ public class BrcaCNVExon {
         return copyNumber;
     }
 
-    /**
-     * @return ampliconRatio
-     */
-    public String getAmpliconRatio() {
-        return ampliconRatio;
+    public Integer getCopyNumberOneAmpliconCount() {
+        return copyNumberOneAmpliconCount;
+    }
+
+    public Integer getCopyNumberTwoAmpliconCount() {
+        return copyNumberTwoAmpliconCount;
+    }
+
+    public Integer getCopyNumberThreeAmpliconCount() {
+        return copyNumberThreeAmpliconCount;
     }
 }

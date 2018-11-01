@@ -1,6 +1,6 @@
 package ngeneanalysys.model.paged;
 
-import ngeneanalysys.model.BrcaCNV;
+import ngeneanalysys.model.BrcaCNVAmplicon;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class PagedBrcaCNV {
     private Integer count;
-    private List<BrcaCNV> result;
+    private List<BrcaCNVAmplicon> result;
 
     /**
      * @return count
@@ -22,7 +22,7 @@ public class PagedBrcaCNV {
     /**
      * @return result
      */
-    public List<BrcaCNV> getResult() {
+    public List<BrcaCNVAmplicon> getResult() {
         return result;
     }
 }

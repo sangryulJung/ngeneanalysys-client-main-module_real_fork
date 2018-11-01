@@ -23,6 +23,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import ngeneanalysys.code.constants.FXMLConstants;
+import ngeneanalysys.code.enums.BrcaAmpliconCopyNumberPredictionAlgorithmCode;
 import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.code.enums.SampleSourceCode;
 import ngeneanalysys.controller.VirtualPanelEditController;
@@ -175,6 +176,18 @@ public class SystemManagerPanelController extends SubPaneController {
     private TableColumn<PanelView, Boolean> virtualPanelColumn;
 
     @FXML
+    private TitledPane cnvForBRCAaccuTestTitledPane;
+    @FXML
+    private RadioButton distributionAmpliconCnpAlgorithmRadioButton;
+    @FXML
+    private RadioButton simpleCutoffAmpliconCnpAlgorithmRadioButton;
+    @FXML
+    private TextField brcaCnvAmpliconCnDuplicationCutoffTextField;
+    @FXML
+    private TextField brcaCnvAmpliconCnDeletionCutoffTextField;
+    @FXML
+    private TextField exonCnpThresholdTextField;
+    @FXML
     private TextField essentialGenesTextField;
 
     @FXML
@@ -225,6 +238,8 @@ public class SystemManagerPanelController extends SubPaneController {
     private File bedFile = null;
 
     private int panelId = 0;
+    private final double simpleCutoffDuplicationDefault = 0.2d;
+    private final double simpleCutoffDeletionDefault = 0.25d;
 
     @Override
     public void show(Parent root) throws IOException {
@@ -254,7 +269,20 @@ public class SystemManagerPanelController extends SubPaneController {
         warningReadDepthTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             if(!newValue.matches("[0-9]*")) warningReadDepthTextField.setText(oldValue);
         });
-
+        brcaCnvAmpliconCnDuplicationCutoffTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(!newValue.matches("[0-9]*\\.?[0-9]+")) brcaCnvAmpliconCnDuplicationCutoffTextField.setText(oldValue);
+        });
+        brcaCnvAmpliconCnDeletionCutoffTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(!newValue.matches("[0-9]*\\.?[0-9]+")) brcaCnvAmpliconCnDeletionCutoffTextField.setText(oldValue);
+        });
+        distributionAmpliconCnpAlgorithmRadioButton.setOnMouseClicked(e -> {
+            brcaCnvAmpliconCnDuplicationCutoffTextField.setDisable(true);
+            brcaCnvAmpliconCnDeletionCutoffTextField.setDisable(true);
+        });
+        simpleCutoffAmpliconCnpAlgorithmRadioButton.setOnMouseClicked(e -> {
+            brcaCnvAmpliconCnDuplicationCutoffTextField.setDisable(false);
+            brcaCnvAmpliconCnDeletionCutoffTextField.setDisable(false);
+        });
         pipelineComboBox.setConverter(new ComboBoxConverter());
         pipelineComboBox.getItems().add(new ComboBoxItem());
         for(PipelineCode pipelineCode : PipelineCode.values()) {
@@ -331,7 +359,7 @@ public class SystemManagerPanelController extends SubPaneController {
     }
 
     private void setTST170Default() {
-
+        cnvForBRCAaccuTestTitledPane.setDisable(true);
         warningMAFTextField.setText("");
         warningReadDepthTextField.setText("");
         indelMinAlleleFractionTextField.setText("");
@@ -393,7 +421,7 @@ public class SystemManagerPanelController extends SubPaneController {
     private void setHeredDefault() {
         canonicalTranscriptTextArea.setText("");
         canonicalTranscriptTextArea.setDisable(false);
-
+        cnvForBRCAaccuTestTitledPane.setDisable(true);
         warningMAFTextField.setText("30");
         warningMAFTextField.setDisable(false);
         warningReadDepthTextField.setText("");
@@ -434,7 +462,7 @@ public class SystemManagerPanelController extends SubPaneController {
     private void setHemeDefault() {
         canonicalTranscriptTextArea.setText("");
         canonicalTranscriptTextArea.setDisable(false);
-
+        cnvForBRCAaccuTestTitledPane.setDisable(true);
         warningMAFTextField.setText("5.0");
         warningMAFTextField.setDisable(false);
         warningReadDepthTextField.setText("100");
@@ -474,7 +502,7 @@ public class SystemManagerPanelController extends SubPaneController {
     private void setSolidDefault() {
         canonicalTranscriptTextArea.setText("");
         canonicalTranscriptTextArea.setDisable(false);
-
+        cnvForBRCAaccuTestTitledPane.setDisable(true);
         warningMAFTextField.setText("5.0");
         warningMAFTextField.setDisable(false);
         warningReadDepthTextField.setText("100");
@@ -513,12 +541,13 @@ public class SystemManagerPanelController extends SubPaneController {
     }
 
     private void setBRCADefault() {
-
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("BRCA1").append("\t").append("NM_007294").append("\n").append("BRCA2").append("\t").append("NM_000059");
-
-        canonicalTranscriptTextArea.setText(stringBuilder.toString());
+        canonicalTranscriptTextArea.setText("BRCA1\tNM_007294\nBRCA2\tNM_000059");
         canonicalTranscriptTextArea.setDisable(true);
+        cnvForBRCAaccuTestTitledPane.setDisable(false);
+        distributionAmpliconCnpAlgorithmRadioButton.setSelected(true);
+        brcaCnvAmpliconCnDuplicationCutoffTextField.setText(String.valueOf(simpleCutoffDuplicationDefault));
+        brcaCnvAmpliconCnDeletionCutoffTextField.setText(String.valueOf(simpleCutoffDeletionDefault));
+        exonCnpThresholdTextField.setText("80");
 
         warningReadDepthTextField.setText("");
         warningReadDepthTextField.setDisable(true);
@@ -1054,7 +1083,29 @@ public class SystemManagerPanelController extends SubPaneController {
                 params.put("analysisType", pipelineCode.getAnalysisType());
                 params.put("libraryType", pipelineCode.getLibraryType());
             }
-
+            CNVConfigBRCAaccuTest cnvConfigBRCAaccuTest = new CNVConfigBRCAaccuTest();
+            if(!cnvForBRCAaccuTestTitledPane.isDisable()) {
+                if(distributionAmpliconCnpAlgorithmRadioButton.isSelected()) {
+                    cnvConfigBRCAaccuTest.setAmpliconCopyNumberPredictionAlgorithm(
+                            BrcaAmpliconCopyNumberPredictionAlgorithmCode.DISTRIBUTION.getCode());
+                } else {
+                    cnvConfigBRCAaccuTest.setAmpliconCopyNumberPredictionAlgorithm(
+                            BrcaAmpliconCopyNumberPredictionAlgorithmCode.SIMPLE_CUTOFF.getCode());
+                }
+                if (StringUtils.isNotEmpty(brcaCnvAmpliconCnDuplicationCutoffTextField.getText())) {
+                    cnvConfigBRCAaccuTest.setSimpleCutoffDulplicationValue(
+                            Double.valueOf(brcaCnvAmpliconCnDuplicationCutoffTextField.getText()));
+                }
+                if (StringUtils.isNotEmpty(brcaCnvAmpliconCnDeletionCutoffTextField.getText())) {
+                    cnvConfigBRCAaccuTest.setSimpleCutoffDeletionValue(
+                            Double.valueOf(brcaCnvAmpliconCnDeletionCutoffTextField.getText()));
+                }
+                if (StringUtils.isNotEmpty(exonCnpThresholdTextField.getText())) {
+                    cnvConfigBRCAaccuTest.setExonCopyNumberPredictionThreshold(
+                            Integer.valueOf(exonCnpThresholdTextField.getText()));
+                }
+            }
+            params.put("cnvConfigBRCAaccuTest", cnvConfigBRCAaccuTest);
             if(StringUtils.isNotEmpty(warningReadDepthTextField.getText())) {
                 params.put("warningReadDepth", Integer.parseInt(warningReadDepthTextField.getText()));
             }
@@ -1214,6 +1265,7 @@ public class SystemManagerPanelController extends SubPaneController {
     void setDisabledItem(boolean condition) {
         resetItem();
         saveTextFile.setDisable(condition);
+        cnvForBRCAaccuTestTitledPane.setDisable(condition);
         warningReadDepthTextField.setDisable(condition);
         warningMAFTextField.setDisable(condition);
         panelNameTextField.setDisable(condition);
@@ -1287,8 +1339,6 @@ public class SystemManagerPanelController extends SubPaneController {
                 try {
                     response = apiService.get("admin/panels/" + panel.getId(), null, null, false);
                     panelDetail = response.getObjectBeforeConvertResponseToJSON(PanelView.class);
-                } catch (WebAPIException wae) {
-                    wae.printStackTrace();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1311,7 +1361,26 @@ public class SystemManagerPanelController extends SubPaneController {
                     warningReadDepthTextField.setDisable(false);
                     warningReadDepthTextField.setText(panel.getWarningReadDepth().toString());
                 }
-
+                CNVConfigBRCAaccuTest cnvConfigBRCAaccuTest = new CNVConfigBRCAaccuTest();
+                if(cnvConfigBRCAaccuTest.getAmpliconCopyNumberPredictionAlgorithm() != null &&
+                        BrcaAmpliconCopyNumberPredictionAlgorithmCode.SIMPLE_CUTOFF.getCode().equals(
+                                cnvConfigBRCAaccuTest.getAmpliconCopyNumberPredictionAlgorithm())) {
+                    simpleCutoffAmpliconCnpAlgorithmRadioButton.setSelected(true);
+                } else {
+                    distributionAmpliconCnpAlgorithmRadioButton.setSelected(true);
+                }
+                if(cnvConfigBRCAaccuTest.getSimpleCutoffDulplicationValue() != null) {
+                    brcaCnvAmpliconCnDuplicationCutoffTextField.setText(
+                            cnvConfigBRCAaccuTest.getSimpleCutoffDulplicationValue().toString());
+                } else {
+                    brcaCnvAmpliconCnDuplicationCutoffTextField.setText(String.valueOf(simpleCutoffDuplicationDefault));
+                }
+                if(cnvConfigBRCAaccuTest.getSimpleCutoffDeletionValue() != null) {
+                    brcaCnvAmpliconCnDeletionCutoffTextField.setText(
+                            cnvConfigBRCAaccuTest.getSimpleCutoffDeletionValue().toString());
+                } else {
+                    brcaCnvAmpliconCnDeletionCutoffTextField.setText(String.valueOf(simpleCutoffDeletionDefault));
+                }
                 VariantFilter variantFilter = panel.getVariantFilter();
                 if(variantFilter.getInDelMinAlleleFraction() != null)
                     indelMinAlleleFractionTextField.setText(variantFilter.getInDelMinAlleleFraction().toString());

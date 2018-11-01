@@ -6,7 +6,7 @@ import java.math.BigDecimal;
  * @author Jang
  * @since 2018-10-22
  */
-public class BrcaCNV {
+public class BrcaCNVAmplicon {
     private Integer sampleId;
     private String gene;
     private String exon;

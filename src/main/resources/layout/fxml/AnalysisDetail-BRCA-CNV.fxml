@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
@@ -15,7 +21,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane fx:id="brcaCNVView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailBrcaCNVController">
+<GridPane fx:id="brcaCNVView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailBrcaCNVController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="20.0" prefWidth="20.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" />
@@ -42,7 +48,9 @@
                   <TableColumn fx:id="exonExonTableColumn" prefWidth="75.0" text="Exon" />
                   <TableColumn fx:id="exonDomainTableColumn" prefWidth="60.0" text="Domain" />
                   <TableColumn fx:id="exonCopyNumberTableColumn" prefWidth="100.0" text="Copy Number" />
-                  <TableColumn fx:id="exonAmpliconRatioTableColumn" prefWidth="110.0" text="Amplicon Ratio" />
+                  <TableColumn fx:id="exonCopyNumberOneAmpliconCountTableColumn" prefWidth="110.0" text="Del" />
+                  <TableColumn fx:id="exonCopyNumberTwoAmpliconCountTableColumn1" prefWidth="110.0" text="Nor" />
+                  <TableColumn fx:id="exonCopyNumberThreeAmpliconCountTableColumn2" prefWidth="110.0" text="Dup" />
               </columns>
             </TableView>
             <TableView fx:id="cnvTableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="200.0" minWidth="-Infinity" prefHeight="200.0" prefWidth="550.0" styleClass="cnvTable" HBox.hgrow="ALWAYS">
