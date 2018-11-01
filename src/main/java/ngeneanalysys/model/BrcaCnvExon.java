@@ -4,7 +4,7 @@ package ngeneanalysys.model;
  * @author Jang
  * @since 2018-10-30
  */
-public class BrcaCNVExon {
+public class BrcaCnvExon {
     private Boolean checkItem = false;
     private Integer id;
     private Integer sampleId;

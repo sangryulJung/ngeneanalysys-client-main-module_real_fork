@@ -3,22 +3,19 @@ package ngeneanalysys.controller;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
-import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import ngeneanalysys.code.enums.AnalysisTypeCode;
 import ngeneanalysys.code.enums.PipelineCode;
-import ngeneanalysys.code.enums.PredictionTypeCode;
 import ngeneanalysys.code.enums.VariantLevelCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
-import ngeneanalysys.model.CNV;
+import ngeneanalysys.model.Cnv;
 import ngeneanalysys.model.Panel;
 import ngeneanalysys.model.SampleView;
-import ngeneanalysys.model.paged.PagedCNV;
+import ngeneanalysys.model.paged.PagedCnv;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
@@ -27,9 +24,7 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Jang
@@ -41,13 +36,13 @@ public class AnalysisDetailCNVController extends AnalysisDetailCommonController 
     private APIService apiService;
 
     @FXML
-    private TableView<CNV> cnvTableView;
+    private TableView<Cnv> cnvTableView;
 
     @FXML
-    private TableColumn<CNV, String> geneTableColumn;
+    private TableColumn<Cnv, String> geneTableColumn;
 
     @FXML
-    private TableColumn<CNV, BigDecimal> valueTableColumn;
+    private TableColumn<Cnv, BigDecimal> valueTableColumn;
 
     private AnalysisDetailVariantsController variantsController;
 
@@ -65,10 +60,10 @@ public class AnalysisDetailCNVController extends AnalysisDetailCommonController 
         SampleView sample = (SampleView)paramMap.get("sampleView");
 
         if(panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_CNV_DNA.getCode())) {
-            TableColumn<CNV, String> tierColumn = new TableColumn<>("Tier");
+            TableColumn<Cnv, String> tierColumn = new TableColumn<>("Tier");
             tierColumn.setPrefWidth(60);
             tierColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTier()));
-            tierColumn.setCellFactory(param -> new TableCell<CNV, String>() {
+            tierColumn.setCellFactory(param -> new TableCell<Cnv, String>() {
                 @Override
                 public void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty);
@@ -76,7 +71,7 @@ public class AnalysisDetailCNVController extends AnalysisDetailCommonController 
                         setGraphic(null);
                     } else {
 
-                        CNV variant = getTableView().getItems().get(getIndex());
+                        Cnv variant = getTableView().getItems().get(getIndex());
 
                         String value = "";
                         String code = "NONE";
@@ -97,17 +92,17 @@ public class AnalysisDetailCNVController extends AnalysisDetailCommonController 
                 }
             });
 
-            TableColumn<CNV, String> reportColumn = new TableColumn<>("Report");
+            TableColumn<Cnv, String> reportColumn = new TableColumn<>("Report");
             reportColumn.getStyleClass().add("alignment_center");
             reportColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getIncludedInReport()));
-            reportColumn.setCellFactory(param -> new TableCell<CNV, String>() {
+            reportColumn.setCellFactory(param -> new TableCell<Cnv, String>() {
                 @Override
                 public void updateItem(String item, boolean empty) {
                     if(StringUtils.isEmpty(item) || empty) {
                         setGraphic(null);
                         return;
                     }
-                    CNV variant = getTableView().getItems().get(getIndex());
+                    Cnv variant = getTableView().getItems().get(getIndex());
                     Label label = new Label();
                     label.getStyleClass().remove("label");
                     if(StringUtils.isNotEmpty(item) && "Y".equals(item)) {
@@ -160,10 +155,10 @@ public class AnalysisDetailCNVController extends AnalysisDetailCommonController 
         try {
             HttpClientResponse response = apiService.get("/analysisResults/cnv/" + sample.getId(), null, null, null);
 
-            PagedCNV pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedCNV.class);
+            PagedCnv pagedCnv = response.getObjectBeforeConvertResponseToJSON(PagedCnv.class);
 
-            if(pagedCNV.getResult() != null && !pagedCNV.getResult().isEmpty()) {
-                List<CNV> result = pagedCNV.getResult();
+            if(pagedCnv.getResult() != null && !pagedCnv.getResult().isEmpty()) {
+                List<Cnv> result = pagedCnv.getResult();
                 cnvTableView.getItems().addAll(result);
             }
 

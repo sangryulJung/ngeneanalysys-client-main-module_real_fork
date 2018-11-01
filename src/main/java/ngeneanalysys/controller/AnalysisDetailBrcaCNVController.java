@@ -3,7 +3,6 @@ package ngeneanalysys.controller;
 import com.sun.javafx.scene.control.skin.TableHeaderRow;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
@@ -18,8 +17,8 @@ import javafx.scene.layout.HBox;
 import ngeneanalysys.code.enums.BrcaCNVCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
-import ngeneanalysys.model.BrcaCNVAmplicon;
-import ngeneanalysys.model.BrcaCNVExon;
+import ngeneanalysys.model.BrcaCnvAmplicon;
+import ngeneanalysys.model.BrcaCnvExon;
 import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.paged.PagedBrcaCNV;
 import ngeneanalysys.model.paged.PagedBrcaCNVExon;
@@ -34,7 +33,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.*;
-import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 /**
@@ -62,43 +60,43 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     private Label cnvDetailLabel;
 
     @FXML
-    private TableView<BrcaCNVExon> exonTableView;
+    private TableView<BrcaCnvExon> exonTableView;
     @FXML
-    private TableColumn<BrcaCNVExon, String> exonCNVTableColumn;
+    private TableColumn<BrcaCnvExon, String> exonCNVTableColumn;
     @FXML
-    private TableColumn<BrcaCNVExon, String> exonReportTableColumn;
+    private TableColumn<BrcaCnvExon, String> exonReportTableColumn;
     @FXML
-    private TableColumn<BrcaCNVExon, String> exonExonTableColumn;
+    private TableColumn<BrcaCnvExon, String> exonExonTableColumn;
     @FXML
-    private TableColumn<BrcaCNVExon, String> exonDomainTableColumn;
+    private TableColumn<BrcaCnvExon, String> exonDomainTableColumn;
     @FXML
-    private TableColumn<BrcaCNVExon, Integer> exonCopyNumberTableColumn;
+    private TableColumn<BrcaCnvExon, Integer> exonCopyNumberTableColumn;
     @FXML
-    private TableColumn<BrcaCNVExon, Integer> exonCopyNumberOneAmpliconCountTableColumn;
+    private TableColumn<BrcaCnvExon, Integer> exonCopyNumberOneAmpliconCountTableColumn;
     @FXML
-    private TableColumn<BrcaCNVExon, Integer> exonCopyNumberTwoAmpliconCountTableColumn;
+    private TableColumn<BrcaCnvExon, Integer> exonCopyNumberTwoAmpliconCountTableColumn;
     @FXML
-    private TableColumn<BrcaCNVExon, Integer> exonCopyNumberThreeAmpliconCountTableColumn;
+    private TableColumn<BrcaCnvExon, Integer> exonCopyNumberThreeAmpliconCountTableColumn;
     @FXML
-    private TableView<BrcaCNVAmplicon> cnvTableView;
+    private TableView<BrcaCnvAmplicon> cnvTableView;
     @FXML
-    private TableColumn<BrcaCNVAmplicon, String> ampliconTableColumn;
+    private TableColumn<BrcaCnvAmplicon, String> ampliconTableColumn;
     @FXML
-    private TableColumn<BrcaCNVAmplicon, String> referenceRatioTableColumn;
+    private TableColumn<BrcaCnvAmplicon, String> referenceRatioTableColumn;
     @FXML
-    private TableColumn<BrcaCNVAmplicon, Integer> referenceDepthTableColumn;
+    private TableColumn<BrcaCnvAmplicon, Integer> referenceDepthTableColumn;
     @FXML
-    private TableColumn<BrcaCNVAmplicon, BigDecimal> sampleRatioTableColumn;
+    private TableColumn<BrcaCnvAmplicon, BigDecimal> sampleRatioTableColumn;
     @FXML
-    private TableColumn<BrcaCNVAmplicon, Integer> copyNumberTableColumn;
+    private TableColumn<BrcaCnvAmplicon, Integer> copyNumberTableColumn;
 
     private APIService apiService;
 
     private AnalysisDetailVariantsController variantsController;
 
-    private List<BrcaCNVAmplicon> brcaCNVAmpliconList;
+    private List<BrcaCnvAmplicon> brcaCnvAmpliconList;
 
-    private List<BrcaCNVExon> brcaCNVExonList;
+    private List<BrcaCnvExon> brcaCnvExonList;
 
     private DecimalFormat decimalFormat = new DecimalFormat("0.###");
 
@@ -129,10 +127,10 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         });
 
         exonTableView.setRowFactory(tv -> {
-            TableRow<BrcaCNVExon> row = new TableRow<>();
+            TableRow<BrcaCnvExon> row = new TableRow<>();
             row.setOnMouseClicked(e -> {
                 if(e.getClickCount() == 1) {
-                    BrcaCNVExon brcaExonCNV = exonTableView.getSelectionModel().getSelectedItem();
+                    BrcaCnvExon brcaExonCNV = exonTableView.getSelectionModel().getSelectedItem();
                     cnvDetailLabel.setText("CNV DETAIL INFORMATION (" + brcaExonCNV.getExon().toUpperCase() + ")");
                     setBrcaTableView(brcaExonCNV.getGene(), brcaExonCNV.getExon());
                 }
@@ -160,21 +158,21 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     }
 
     private void brcaExonTableInit() {
-        TableColumn<BrcaCNVExon, Boolean> checkBoxColumn = new TableColumn<>("");
+        TableColumn<BrcaCnvExon, Boolean> checkBoxColumn = new TableColumn<>("");
         createCheckBoxTableHeader(checkBoxColumn);
         //checkBoxColumn.impl_setReorderable(false); 컬럼 이동 방지 코드
         checkBoxColumn.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue() != null ));
         checkBoxColumn.setCellFactory(param -> new BooleanCell());
 
         exonCNVTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCnv()));
-        exonCNVTableColumn.setCellFactory(param -> new TableCell<BrcaCNVExon, String>() {
+        exonCNVTableColumn.setCellFactory(param -> new TableCell<BrcaCnvExon, String>() {
             @Override
             public void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
                 if(empty) {
                     setGraphic(null);
                 } else {
-                    BrcaCNVExon brcaCNVExon = getTableView().getItems().get(getIndex());
+                    BrcaCnvExon brcaCNVExon = getTableView().getItems().get(getIndex());
 
                     String value = BrcaCNVCode.findInitial(brcaCNVExon.getCnv());
                     String code = "cnv_" + brcaCNVExon.getCnv();
@@ -193,14 +191,14 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
 
         exonReportTableColumn.getStyleClass().add("alignment_center");
         exonReportTableColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getIncludedInReport()));
-        exonReportTableColumn.setCellFactory(param -> new TableCell<BrcaCNVExon, String>() {
+        exonReportTableColumn.setCellFactory(param -> new TableCell<BrcaCnvExon, String>() {
             @Override
             public void updateItem(String item, boolean empty) {
                 if(StringUtils.isEmpty(item) || empty) {
                     setGraphic(null);
                     return;
                 }
-                BrcaCNVExon brcaCNVExon = getTableView().getItems().get(getIndex());
+                BrcaCnvExon brcaCNVExon = getTableView().getItems().get(getIndex());
                 Label label = new Label();
                 label.getStyleClass().remove("label");
                 if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
@@ -260,11 +258,11 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         try {
             HttpClientResponse response = apiService.get("/analysisResults/brcaCnv/" + sample.getId(), null, null, false);
             PagedBrcaCNV pagedBrcaCNV = response.getObjectBeforeConvertResponseToJSON(PagedBrcaCNV.class);
-            brcaCNVAmpliconList = pagedBrcaCNV.getResult();
+            brcaCnvAmpliconList = pagedBrcaCNV.getResult();
 
             response = apiService.get("/analysisResults/brcaCnvExon/" + sample.getId(), null, null, false);
             PagedBrcaCNVExon pagedBrcaCNVExon = response.getObjectBeforeConvertResponseToJSON(PagedBrcaCNVExon.class);
-            brcaCNVExonList = pagedBrcaCNVExon.getResult();
+            brcaCnvExonList = pagedBrcaCNVExon.getResult();
 
             Platform.runLater(() -> setBrcaCNVPlot("BRCA1"));
             Platform.runLater(() -> setBrcaCNVPlot("BRCA2"));
@@ -278,7 +276,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
             exonTableView.getItems().removeAll(exonTableView.getItems());
         }
 
-        List<BrcaCNVExon> list = getBrcaCNVExon(gene);
+        List<BrcaCnvExon> list = getBrcaCNVExon(gene);
 
         if(!list.isEmpty()) exonTableView.getItems().addAll(list);
         exonTableView.refresh();
@@ -290,14 +288,14 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
             cnvTableView.refresh();
         }
 
-        List<BrcaCNVAmplicon> list = getBrcaCNV(gene, exon);
+        List<BrcaCnvAmplicon> list = getBrcaCNV(gene, exon);
 
         if(!list.isEmpty()) cnvTableView.getItems().addAll(list);
     }
 
-    private List<BrcaCNVExon> getBrcaCNVExon(final String gene) {
-        if(brcaCNVExonList != null && !brcaCNVExonList.isEmpty()) {
-            List<BrcaCNVExon> list = brcaCNVExonList.stream().filter(item -> gene.equals(item.getGene()))
+    private List<BrcaCnvExon> getBrcaCNVExon(final String gene) {
+        if(brcaCnvExonList != null && !brcaCnvExonList.isEmpty()) {
+            List<BrcaCnvExon> list = brcaCnvExonList.stream().filter(item -> gene.equals(item.getGene()))
                     .collect(Collectors.toList());
 
             if(!list.isEmpty()) return list;
@@ -305,9 +303,9 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         return new ArrayList<>();
     }
 
-    private List<BrcaCNVAmplicon> getBrcaCNV(final String gene) {
-        if(brcaCNVAmpliconList != null && !brcaCNVAmpliconList.isEmpty()) {
-            List<BrcaCNVAmplicon> list = brcaCNVAmpliconList.stream().filter(item -> gene.equals(item.getGene()))
+    private List<BrcaCnvAmplicon> getBrcaCNV(final String gene) {
+        if(brcaCnvAmpliconList != null && !brcaCnvAmpliconList.isEmpty()) {
+            List<BrcaCnvAmplicon> list = brcaCnvAmpliconList.stream().filter(item -> gene.equals(item.getGene()))
                     .collect(Collectors.toList());
 
             if(!list.isEmpty()) return list;
@@ -315,9 +313,9 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         return new ArrayList<>();
     }
 
-    private List<BrcaCNVAmplicon> getBrcaCNV(final String gene, final String exon) {
-        if(brcaCNVAmpliconList != null && !brcaCNVAmpliconList.isEmpty()) {
-            List<BrcaCNVAmplicon> list = brcaCNVAmpliconList.stream().filter(item -> gene.equals(item.getGene()))
+    private List<BrcaCnvAmplicon> getBrcaCNV(final String gene, final String exon) {
+        if(brcaCnvAmpliconList != null && !brcaCnvAmpliconList.isEmpty()) {
+            List<BrcaCnvAmplicon> list = brcaCnvAmpliconList.stream().filter(item -> gene.equals(item.getGene()))
                     .filter(item -> exon.equalsIgnoreCase(item.getExon()))
                     .collect(Collectors.toList());
 
@@ -326,15 +324,15 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         return new ArrayList<>();
     }
 
-    private Map<String, List<BrcaCNVAmplicon>> groupingExon(List<BrcaCNVAmplicon> list) {
-        return list.stream().collect(Collectors.groupingBy(BrcaCNVAmplicon::getExon));
+    private Map<String, List<BrcaCnvAmplicon>> groupingExon(List<BrcaCnvAmplicon> list) {
+        return list.stream().collect(Collectors.groupingBy(BrcaCnvAmplicon::getExon));
     }
 
     private boolean compareCount(long numerator, long denominator) {
         return ((double)numerator / denominator) >= 0.8;
     }
 
-    private void calcExonPlot(List<BrcaCNVAmplicon> cnvs, String key, HBox box, final String boxId) {
+    private void calcExonPlot(List<BrcaCnvAmplicon> cnvs, String key, HBox box, final String boxId) {
         long duplicationCount = cnvs.stream().filter(cnv -> cnv.getDistributionPrediction().equals(3)).count();
         long deletionCount = cnvs.stream().filter(cnv -> cnv.getDistributionPrediction().equals(1)).count();
         long totalCount = cnvs.size();
@@ -354,9 +352,9 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     }
 
     private void setBrcaCNVPlot(String gene) {
-        List<BrcaCNVAmplicon> brcaCNVAmpliconList = getBrcaCNV(gene);
-        if(!brcaCNVAmpliconList.isEmpty()) {
-            Map<String, List<BrcaCNVAmplicon>> cnvGroup = groupingExon(brcaCNVAmpliconList);
+        List<BrcaCnvAmplicon> brcaCnvAmpliconList = getBrcaCNV(gene);
+        if(!brcaCnvAmpliconList.isEmpty()) {
+            Map<String, List<BrcaCnvAmplicon>> cnvGroup = groupingExon(brcaCnvAmpliconList);
 
             Set<String> cnvKey = cnvGroup.keySet();
             HBox box;
@@ -378,7 +376,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         }
     }
 
-    private void createCheckBoxTableHeader(TableColumn<BrcaCNVExon, ?> column) {
+    private void createCheckBoxTableHeader(TableColumn<BrcaCnvExon, ?> column) {
         HBox hBox = new HBox();
         hBox.setPrefHeight(Double.MAX_VALUE);
         hBox.setAlignment(Pos.CENTER);
@@ -404,11 +402,11 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         exonTableView.getColumns().add(0, column);
     }
 
-    class BooleanCell extends TableCell<BrcaCNVExon, Boolean> {
+    class BooleanCell extends TableCell<BrcaCnvExon, Boolean> {
         private CheckBox checkBox = new CheckBox();
         private BooleanCell() {
             checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-                BrcaCNVExon brcaCNVExon = BooleanCell.this.getTableView().getItems().get(
+                BrcaCnvExon brcaCNVExon = BooleanCell.this.getTableView().getItems().get(
                         BooleanCell.this.getIndex());
                 brcaCNVExon.setCheckItem(newValue);
                 checkBox.setSelected(newValue);
@@ -424,7 +422,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                 return;
             }
             this.setStyle(this.getStyle() + "; -fx-background-color : white;");
-            BrcaCNVExon brcaCNVExon = BooleanCell.this.getTableView().getItems().get(
+            BrcaCnvExon brcaCNVExon = BooleanCell.this.getTableView().getItems().get(
                     BooleanCell.this.getIndex());
             checkBox.setSelected(brcaCNVExon.getCheckItem());
 

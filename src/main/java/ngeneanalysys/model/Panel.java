@@ -26,12 +26,12 @@ public class Panel {
 
     private Integer reportTemplateId;
 
-    private CNVConfigBRCAaccuTest cnvConfigBRCAaccuTest;
+    private CnvConfigBrcaAccuTest cnvConfigBRCAaccuTest;
 
     /**
      * @return cnvConfigBRCAaccuTest
      */
-    public CNVConfigBRCAaccuTest getCnvConfigBRCAaccuTest() {
+    public CnvConfigBrcaAccuTest getCnvConfigBRCAaccuTest() {
         return cnvConfigBRCAaccuTest;
     }
 

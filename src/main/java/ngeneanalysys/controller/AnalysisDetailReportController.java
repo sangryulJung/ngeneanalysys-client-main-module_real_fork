@@ -17,7 +17,7 @@ import ngeneanalysys.code.enums.SequencerCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
-import ngeneanalysys.model.paged.PagedCNV;
+import ngeneanalysys.model.paged.PagedCnv;
 import ngeneanalysys.model.paged.PagedVariantAndInterpretationEvidence;
 import ngeneanalysys.model.paged.PagedVirtualPanel;
 import ngeneanalysys.model.render.ComboBoxConverter;
@@ -31,13 +31,7 @@ import ngeneanalysys.task.ImageFileDownloadTask;
 import ngeneanalysys.task.JarDownloadTask;
 import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
-import ngeneanalysys.util.httpclient.HttpClientUtil;
 import org.apache.commons.io.FileUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 
 import java.io.*;
@@ -46,8 +40,6 @@ import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -952,7 +944,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
             try {
                 response = apiService.get("/analysisResults/cnv/" + sample.getId(), null, null, null);
-                PagedCNV pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedCNV.class);
+                PagedCnv pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedCnv.class);
                 contentsMap.put("cnvList", pagedCNV.getResult());
 
             } catch (WebAPIException wae) {

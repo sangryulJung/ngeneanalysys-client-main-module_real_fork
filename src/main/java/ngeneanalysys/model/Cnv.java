@@ -6,7 +6,7 @@ import java.math.BigDecimal;
  * @author Jang
  * @since 2018-05-23
  */
-public class CNV {
+public class Cnv {
     private Integer sampleId;
     private String gene;
     private BigDecimal cnvValue;

@@ -4,7 +4,7 @@ package ngeneanalysys.model;
  * @author Jang
  * @since 2018-10-31
  */
-public class CNVConfigBRCAaccuTest {
+public class CnvConfigBrcaAccuTest {
     private String ampliconCopyNumberPredictionAlgorithm;
     private Double simpleCutoffDulplicationValue;
     private Double simpleCutoffDeletionValue;

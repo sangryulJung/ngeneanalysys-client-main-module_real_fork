@@ -18,7 +18,7 @@ import ngeneanalysys.model.Panel;
 import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.TopMenu;
 import ngeneanalysys.model.paged.PagedBrcaCNV;
-import ngeneanalysys.model.paged.PagedCNV;
+import ngeneanalysys.model.paged.PagedCnv;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
@@ -108,7 +108,7 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
 
         try {
             HttpClientResponse response = apiService.get("/analysisResults/cnv/" + sample.getId(), null, null, null);
-            PagedCNV pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedCNV.class);
+            PagedCnv pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedCnv.class);
             if (pagedCNV.getCount() > 0) {
                 return true;
             }

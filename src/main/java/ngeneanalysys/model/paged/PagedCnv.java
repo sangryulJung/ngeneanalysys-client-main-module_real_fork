@@ -1,6 +1,6 @@
 package ngeneanalysys.model.paged;
 
-import ngeneanalysys.model.CNV;
+import ngeneanalysys.model.Cnv;
 
 import java.util.List;
 
@@ -8,9 +8,9 @@ import java.util.List;
  * @author Jang
  * @since 2018-05-23
  */
-public class PagedCNV {
+public class PagedCnv {
     private Integer count;
-    private List<CNV> result;
+    private List<Cnv> result;
 
     /**
      * @return count
@@ -22,7 +22,7 @@ public class PagedCNV {
     /**
      * @return result
      */
-    public List<CNV> getResult() {
+    public List<Cnv> getResult() {
         return result;
     }
 }
