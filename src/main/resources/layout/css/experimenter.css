@@ -266,27 +266,27 @@
     -fx-padding: 0 10 0 10;
 }
 
-.brca_cnv_deletion {
+.brca_cnv_1 {
     /*-fx-background-color : #FF0000;*/
     -fx-background-color: transparent;
     -fx-background-image : url("../images/renewal/arrow-red.png");
     -fx-background-repeat:no-repeat;
-    -fx-background-position : -1 -12;
+    //-fx-background-position : -1 -12;
 }
 
-.brca_cnv_deletion .label{
+.brca_cnv_1 .label{
     -fx-text-fill : #FFFFFF;
 }
 
-.brca_cnv_duplication {
+.brca_cnv_3 {
     /*-fx-background-color : #0000FF;*/
     -fx-background-color: transparent;
     -fx-background-image : url("../images/renewal/arrow-blue.png");
     -fx-background-repeat:no-repeat;
-    -fx-background-position : -1 0;
+    //-fx-background-position : -1 0;
 }
 
-.brca_cnv_duplication .label{
+.brca_cnv_3 .label{
     -fx-text-fill : #FFFFFF;
 }
 

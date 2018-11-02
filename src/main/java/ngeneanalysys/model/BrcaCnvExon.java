@@ -14,6 +14,7 @@ public class BrcaCnvExon {
     private String includedInReport;
     private String domain;
     private Integer copyNumber;
+    private Integer totalAmpliconCount;
     private Integer copyNumberOneAmpliconCount;
     private Integer copyNumberTwoAmpliconCount;
     private Integer copyNumberThreeAmpliconCount;
@@ -86,6 +87,10 @@ public class BrcaCnvExon {
      */
     public Integer getCopyNumber() {
         return copyNumber;
+    }
+
+    public Integer getTotalAmpliconCount() {
+        return totalAmpliconCount;
     }
 
     public Integer getCopyNumberOneAmpliconCount() {
