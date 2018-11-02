@@ -267,11 +267,11 @@
 }
 
 .brca_cnv_1 {
-    /*-fx-background-color : #FF0000;*/
-    -fx-background-color: transparent;
+    -fx-background-color : #F04978;
+    /*-fx-background-color: transparent;
     -fx-background-image : url("../images/renewal/arrow-red.png");
     -fx-background-repeat:no-repeat;
-    //-fx-background-position : -1 -12;
+    //-fx-background-position : -1 -12;*/
 }
 
 .brca_cnv_1 .label{
@@ -279,11 +279,11 @@
 }
 
 .brca_cnv_3 {
-    /*-fx-background-color : #0000FF;*/
-    -fx-background-color: transparent;
+    -fx-background-color : #2D70E8;
+    /*-fx-background-color: transparent;
     -fx-background-image : url("../images/renewal/arrow-blue.png");
     -fx-background-repeat:no-repeat;
-    //-fx-background-position : -1 0;
+    //-fx-background-position : -1 0;*/
 }
 
 .brca_cnv_3 .label{
@@ -384,7 +384,7 @@
 }
 
 .cnv_duplication {
-	-fx-background-color:#1F2D87;
+	-fx-background-color:#2D70E8;
 	-fx-border-width:0;
 	-fx-background-radius:2;
 	-fx-background-insets:0;
@@ -398,10 +398,12 @@
 	-fx-min-height:20;
 	-fx-pref-height:20;
 	-fx-max-height:20;
+	-fx-text-alignment:center;
+    -fx-alignment:center;
 }
 
-.cnv_deletion {
-	-fx-background-color:#70ACF5;
+.cnv_normal {
+	-fx-background-color:lightgray;
 	-fx-border-width:0;
 	-fx-background-radius:2;
 	-fx-background-insets:0;
@@ -415,4 +417,24 @@
 	-fx-min-height:20;
 	-fx-pref-height:20;
 	-fx-max-height:20;
+	-fx-text-alignment:center;
+    -fx-alignment:center;
+}
+.cnv_deletion {
+	-fx-background-color:#F04978;
+	-fx-border-width:0;
+	-fx-background-radius:2;
+	-fx-background-insets:0;
+	-fx-text-fill:#fff;
+	-fx-font-size:10;
+	-fx-text-fill:#fff;
+	-fx-padding:0;
+	-fx-min-width:20;
+	-fx-pref-width:20;
+	-fx-max-width:20;
+	-fx-min-height:20;
+	-fx-pref-height:20;
+	-fx-max-height:20;
+	-fx-text-alignment:center;
+    -fx-alignment:center;
 }

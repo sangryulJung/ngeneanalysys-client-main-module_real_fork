@@ -8,11 +8,9 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import ngeneanalysys.code.enums.BrcaAmpliconCopyNumberPredictionAlgorithmCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
@@ -23,7 +21,6 @@ import ngeneanalysys.model.paged.PagedBrcaCNVExon;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
@@ -84,7 +81,9 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     @FXML
     private TableColumn<BrcaCnvAmplicon, String> ampliconReferenceRatioTableColumn;
     @FXML
-    private TableColumn<BrcaCnvAmplicon, Integer> ampliconReferenceDepthTableColumn;
+    private TableColumn<BrcaCnvAmplicon, Integer> ampliconReferenceMeanDepthTableColumn;
+    @FXML
+    private TableColumn<BrcaCnvAmplicon, Integer> ampliconReferenceMedianDepthTableColumn;
     @FXML
     private TableColumn<BrcaCnvAmplicon, BigDecimal> ampliconSampleRatioTableColumn;
     @FXML
@@ -144,9 +143,12 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         ampliconReferenceRatioTableColumn.setCellValueFactory(item -> new SimpleStringProperty(
                 String.format("%.02f", item.getValue().getDistributionRangeMin()) + " - " +
                         String.format("%.02f", item.getValue().getDistributionRangeMax())));
-        ampliconReferenceDepthTableColumn.setCellValueFactory(item ->
+        ampliconReferenceMeanDepthTableColumn.setCellValueFactory(item ->
                 new SimpleObjectProperty<>(item.getValue().getReferenceMeanDepth()));
+        ampliconReferenceMedianDepthTableColumn.setCellValueFactory(item ->
+                new SimpleObjectProperty<>(item.getValue().getReferenceMedianDepth()));
         ampliconSampleRatioTableColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getSampleRatio()));
+        ampliconCopyNumberTableColumn.setText("Copy\nNumber");
         if (BrcaAmpliconCopyNumberPredictionAlgorithmCode.DISTRIBUTION.getCode()
                 .equals(panel.getCnvConfigBRCAaccuTest().getAmpliconCopyNumberPredictionAlgorithm())) {
             ampliconCopyNumberTableColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getDistributionPrediction()));
@@ -171,47 +173,90 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         //checkBoxColumn.impl_setReorderable(false); 컬럼 이동 방지 코드
         checkBoxColumn.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue() != null ));
         checkBoxColumn.setCellFactory(param -> new BooleanCell());
-        exonReportTableColumn.getStyleClass().add("alignment_center");
-        exonReportTableColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getIncludedInReport()));
-        exonReportTableColumn.setCellFactory(param -> new TableCell<BrcaCnvExon, String>() {
+//        exonReportTableColumn.getStyleClass().add("alignment_center");
+//        exonReportTableColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getIncludedInReport()));
+//        exonReportTableColumn.setCellFactory(param -> new TableCell<BrcaCnvExon, String>() {
+//            @Override
+//            public void updateItem(String item, boolean empty) {
+//                if(StringUtils.isEmpty(item) || empty) {
+//                    setGraphic(null);
+//                    return;
+//                }
+//                BrcaCnvExon brcaCNVExon = getTableView().getItems().get(getIndex());
+//                Label label = new Label();
+//                label.getStyleClass().remove("label");
+//                if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
+//                    label.setText("R");
+//                    label.getStyleClass().add("report_check");
+//                } else {
+//                    label.getStyleClass().add("report_uncheck");
+//                }
+//                label.setCursor(Cursor.HAND);
+//                label.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
+//                    try {
+//                        Map<String, Object> params = new HashMap<>();
+//                        params.put("sampleId", brcaCNVExon.getId());
+//                        params.put("snpInDelIds", brcaCNVExon.getId().toString());
+//                        params.put("comment", "N/A");
+//                        if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
+//                            params.put("includeInReport", "N");
+//                        } else {
+//                            params.put("includeInReport", "Y");
+//                        }
+//                        apiService.put("analysisResults/brcaCnvExon/updateIncludeInReport", params, null, true);
+//                        exonTableView.refresh();
+//                    } catch (WebAPIException wae) {
+//                        wae.printStackTrace();
+//                    }
+//                });
+//                setGraphic(label);
+//            }
+//        });
+        exonCopyNumberTableColumn.setText("Copy\nNumber");
+        exonCopyNumberTableColumn.getStyleClass().add("alignment_center");
+        exonCopyNumberTableColumn.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getCopyNumber()));
+        exonCopyNumberTableColumn.setCellFactory(param -> new TableCell<BrcaCnvExon, Integer>() {
             @Override
-            public void updateItem(String item, boolean empty) {
-                if(StringUtils.isEmpty(item) || empty) {
+            public void updateItem(Integer item, boolean empty) {
+                if(item == null || empty) {
                     setGraphic(null);
                     return;
                 }
-                BrcaCnvExon brcaCNVExon = getTableView().getItems().get(getIndex());
-                Label label = new Label();
+                //BrcaCnvExon brcaCNVExon = getTableView().getItems().get(getIndex());
+                Label label = new Label(item.toString());
                 label.getStyleClass().remove("label");
-                if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
-                    label.setText("R");
-                    label.getStyleClass().add("report_check");
+                if (item == 2) {
+                    label.getStyleClass().add("cnv_normal");
+                } else if(item == 3) {
+                    label.getStyleClass().add("cnv_duplication");
+                } else if(item == 1) {
+                    label.getStyleClass().add("cnv_deletion");
                 } else {
-                    label.getStyleClass().add("report_uncheck");
+                    setGraphic(null);
+                    return;
                 }
-                label.setCursor(Cursor.HAND);
-                label.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
-                    try {
-                        Map<String, Object> params = new HashMap<>();
-                        params.put("sampleId", brcaCNVExon.getId());
-                        params.put("snpInDelIds", brcaCNVExon.getId().toString());
-                        params.put("comment", "N/A");
-                        if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
-                            params.put("includeInReport", "N");
-                        } else {
-                            params.put("includeInReport", "Y");
-                        }
-                        apiService.put("analysisResults/brcaCnvExon/updateIncludeInReport", params, null, true);
-                        exonTableView.refresh();
-                    } catch (WebAPIException wae) {
-                        wae.printStackTrace();
-                    }
-                });
+//                label.setCursor(Cursor.HAND);
+//                label.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
+//                    try {
+//                        Map<String, Object> params = new HashMap<>();
+//                        params.put("sampleId", brcaCNVExon.getId());
+//                        params.put("snpInDelIds", brcaCNVExon.getId().toString());
+//                        params.put("comment", "N/A");
+//                        if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
+//                            params.put("includeInReport", "N");
+//                        } else {
+//                            params.put("includeInReport", "Y");
+//                        }
+//                        apiService.put("analysisResults/brcaCnvExon/updateIncludeInReport", params, null, true);
+//                        exonTableView.refresh();
+//                    } catch (WebAPIException wae) {
+//                        wae.printStackTrace();
+//                    }
+//                });
                 setGraphic(label);
             }
         });
-        exonCopyNumberTableColumn.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getCopyNumber()));
         exonExonTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getExon()));
         exonDomainTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDomain()));
         exonCopyNumberOneAmpliconCountTableColumn.setCellValueFactory(cellData ->
@@ -321,14 +366,22 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
             }
 
             for (BrcaCnvExon exon : brcaCnvExonList) {
-                String exonObjId = exon.getExon().contains("UTR") ? boxId + "utr" : boxId + exon.getExon();
+                String exonObjId = "5'UTR".equals(exon.getExon()) ? boxId + "utr5" : boxId + exon.getExon();
                 Optional<Node> optionalNode = box.getChildren().stream()
                         .filter(obj -> obj.getId() != null && obj.getId().equals(exonObjId)).findFirst();
-                if(exon.getCopyNumber() == 1) {
-                    optionalNode.ifPresent(node -> node.getStyleClass().add("brca_cnv_1"));
-                } else if(exon.getCopyNumber() == 3) {
-                    optionalNode.ifPresent(node -> node.getStyleClass().add("brca_cnv_3"));
-                }
+
+                optionalNode.ifPresent(node -> {
+                    if(exon.getCopyNumber() == 1) {
+                        node.getStyleClass().add("brca_cnv_1");
+                    } else if(exon.getCopyNumber() == 3) {
+                        node.getStyleClass().add("brca_cnv_3");
+                    }
+                    for(Node tempNode : ((HBox)node).getChildren()) {
+                        if(tempNode instanceof Label) {
+                            ((Label)tempNode).setText(exon.getCopyNumber().toString());
+                        }
+                    }
+                });
             }
         }
     }
