@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
@@ -21,7 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane fx:id="brcaCNVView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailBrcaCNVController">
+<GridPane fx:id="brcaCNVView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailBrcaCNVController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="20.0" prefWidth="20.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" />
@@ -45,6 +39,7 @@
               <columns>
                   <TableColumn fx:id="exonExonTableColumn" maxWidth="80.0" minWidth="-Infinity" text="Exon" />
                   <TableColumn fx:id="exonCopyNumberTableColumn" maxWidth="80.0" minWidth="-Infinity" text="Copy Number" />
+                  <TableColumn fx:id="exonDomainTableColumn" maxWidth="80.0" minWidth="-Infinity" text="Domain" />
                   <TableColumn maxWidth="150.0" minWidth="-Infinity" prefWidth="150.0" text="Amplicon">
                      <columns>
                         <TableColumn fx:id="exonCopyNumberOneAmpliconCountTableColumn" maxWidth="30.0" minWidth="-Infinity" prefWidth="30.0" styleClass="alignment_center_right" text="1" />
@@ -53,13 +48,12 @@
                         <TableColumn fx:id="exonCopyNumberTotalAmpliconCountTableColumn" maxWidth="50.0" minWidth="-Infinity" prefWidth="50.0" styleClass="alignment_center_right" text="Total" />
                      </columns>
                   </TableColumn>
-                  <TableColumn fx:id="exonDomainTableColumn" maxWidth="150.0" minWidth="-Infinity" prefWidth="150.0" text="Domain" />
               </columns>
             </TableView>
             <TableView fx:id="cnvAmpliconTableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="200.0" minWidth="-Infinity" prefHeight="200.0" prefWidth="550.0" styleClass="cnvTable" HBox.hgrow="ALWAYS">
               <columns>
                 <TableColumn fx:id="ampliconNameTableColumn" prefWidth="120.0" styleClass="alignment_center" text="Amplicon" />
-                  <TableColumn prefWidth="120.0" styleClass="alignment_center" text="Reference">
+                  <TableColumn maxWidth="30.0" prefWidth="120.0" styleClass="alignment_center" text="Reference">
                      <columns>
                         <TableColumn fx:id="ampliconReferenceRatioTableColumn" prefWidth="130.0" styleClass="alignment_center" text="Range" />
                         <TableColumn fx:id="ampliconReferenceMeanDepthTableColumn" prefWidth="110.0" styleClass="alignment_center_right" text="Mean Depth" />
@@ -68,10 +62,11 @@
                   </TableColumn>
                   <TableColumn prefWidth="90.0" styleClass="alignment_center" text="Sample Ratio">
                      <columns>
+                        <TableColumn fx:id="ampliconSampleDepthTableColumn" maxWidth="80.0" minWidth="-Infinity" styleClass="alignment_center_left" text="Depth" />
                         <TableColumn fx:id="ampliconSampleRatioTableColumn" maxWidth="80.0" minWidth="-Infinity" styleClass="alignment_center_left" text="Ratio" />
-                        <TableColumn fx:id="ampliconCopyNumberTableColumn" maxWidth="80.0" minWidth="-Infinity" styleClass="alignment_center" text="Copy Number" />
                      </columns>
                   </TableColumn>
+                  <TableColumn fx:id="ampliconCopyNumberTableColumn" maxWidth="80.0" minWidth="-Infinity" styleClass="alignment_center" text="Copy Number" />
               </columns>
             </TableView>
          </children>
@@ -188,7 +183,10 @@
                   <Label alignment="CENTER" prefWidth="30.0" />
                </children></HBox>
             <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca1_exon20" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;" />
+            <HBox fx:id="brca1_exon20" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
+               <children>
+                  <Label alignment="CENTER" prefWidth="30.0" />
+               </children></HBox>
             <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca1_exon21" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <children>
@@ -452,11 +450,11 @@
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></Label>
-                  <Label alignment="CENTER" onMouseClicked="#doExonDuplication" styleClass="cnv_duplication" text="Dup">
+                  <Label onMouseClicked="#doCnvReport" styleClass="cnv_normal" text="2">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></Label>
-                  <Label onMouseClicked="#doCnvReport" styleClass="report_check" text="R">
+                  <Label alignment="CENTER" onMouseClicked="#doExonDuplication" styleClass="cnv_duplication" text="3">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></Label>
@@ -475,7 +473,7 @@
          </rowConstraints>
          <children>
             <Label text="Summary" />
-            <Label styleClass="excel_download_image" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
+            <Label onMouseClicked="#exportExcel" styleClass="excel_download_image" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
          </children>
       </GridPane>
       <HBox fx:id="brca1ExonBox1" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="10.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">

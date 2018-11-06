@@ -121,4 +121,34 @@ public class WorksheetUtil {
 					mainApp.getPrimaryStage(), false);
 		}
 	}
+
+
+	public void exportBrcaCnvData(MainApp mainApp, SampleView sample){
+		try {
+			// Show save file dialog
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.getExtensionFilters()
+					.addAll(new FileChooser.ExtensionFilter("Microsoft Worksheet(*.xlsx)", "*.xlsx"));
+
+			fileChooser.setTitle("export BRCA CNV to EXCEL format file");
+			File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
+			if (file != null) {
+				Task<Void> task = new ExportVariantDataTask(mainApp, file, true, sample.getId());
+				Thread exportDataThread = new Thread(task);
+				WorkProgressController<Void> workProgressController = new WorkProgressController<>(mainApp, "Export CNV List", task);
+				FXMLLoader loader = mainApp.load(FXMLConstants.WORK_PROGRESS);
+				loader.setController(workProgressController);
+				Node root = loader.load();
+				workProgressController.show((Parent) root);
+				exportDataThread.start();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			DialogUtil.error("Save Fail.",
+					"An error occurred during the creation of the EXCEL document."
+							+ e.getMessage(),
+					mainApp.getPrimaryStage(), false);
+		}
+	}
+
 }

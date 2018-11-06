@@ -21,6 +21,7 @@ import ngeneanalysys.model.paged.PagedBrcaCNVExon;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
+import ngeneanalysys.util.WorksheetUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
@@ -88,6 +89,8 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     private TableColumn<BrcaCnvAmplicon, BigDecimal> ampliconSampleRatioTableColumn;
     @FXML
     private TableColumn<BrcaCnvAmplicon, Integer> ampliconCopyNumberTableColumn;
+    @FXML
+    private TableColumn<BrcaCnvAmplicon, Integer> ampliconSampleDepthTableColumn;
 
     private APIService apiService;
 
@@ -132,7 +135,6 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
             row.setOnMouseClicked(e -> {
                 if(e.getClickCount() == 1) {
                     BrcaCnvExon brcaExonCNV = exonTableView.getSelectionModel().getSelectedItem();
-                    cnvDetailLabel.setText("CNV DETAIL INFORMATION (" + brcaExonCNV.getExon().toUpperCase() + ")");
                     setBrcaTableView(brcaExonCNV.getGene(), brcaExonCNV.getExon());
                 }
             });
@@ -140,9 +142,24 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         });
 
         ampliconNameTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getAmplicon()));
-        ampliconReferenceRatioTableColumn.setCellValueFactory(item -> new SimpleStringProperty(
-                String.format("%.02f", item.getValue().getDistributionRangeMin()) + " - " +
-                        String.format("%.02f", item.getValue().getDistributionRangeMax())));
+        ampliconReferenceRatioTableColumn.setCellValueFactory(item -> {
+            if(BrcaAmpliconCopyNumberPredictionAlgorithmCode.DISTRIBUTION.getCode()
+                    .equals(panel.getCnvConfigBRCAaccuTest().getAmpliconCopyNumberPredictionAlgorithm())) {
+                return new SimpleStringProperty(
+                        String.format("%.02f", item.getValue().getDistributionRangeMin()) + " - " +
+                                String.format("%.02f", item.getValue().getDistributionRangeMax()));
+            } else {
+                BigDecimal del = panel.getCnvConfigBRCAaccuTest().getSimpleCutoffDeletionValue() != null ?
+                        new BigDecimal(panel.getCnvConfigBRCAaccuTest().getSimpleCutoffDeletionValue()) : new BigDecimal(0);
+
+                BigDecimal dup = panel.getCnvConfigBRCAaccuTest().getSimpleCutoffDulplicationValue() != null ?
+                        new BigDecimal(panel.getCnvConfigBRCAaccuTest().getSimpleCutoffDulplicationValue()) : new BigDecimal(0);
+
+                return new SimpleStringProperty(
+                        String.format("%.02f", item.getValue().getRawRangeMin().subtract(del)) + " - " +
+                                String.format("%.02f", item.getValue().getRawRangeMax().add(dup)));
+            }
+        });
         ampliconReferenceMeanDepthTableColumn.setCellValueFactory(item ->
                 new SimpleObjectProperty<>(item.getValue().getReferenceMeanDepth()));
         ampliconReferenceMedianDepthTableColumn.setCellValueFactory(item ->
@@ -155,6 +172,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         } else {
             ampliconCopyNumberTableColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getRawPrediction()));
         }
+        ampliconSampleDepthTableColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getSampleDepth()));
 
 
         brcaExonTableInit();
@@ -291,7 +309,19 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
 
             response = apiService.get("/analysisResults/brcaCnvExon/" + sample.getId(), null, null, false);
             PagedBrcaCNVExon pagedBrcaCNVExon = response.getObjectBeforeConvertResponseToJSON(PagedBrcaCNVExon.class);
-            brcaCnvExonList = pagedBrcaCNVExon.getResult();
+            brcaCnvExonList = pagedBrcaCNVExon.getResult().stream().sorted((a, b) ->
+            {
+                if(a.getExon().startsWith("exon") && b.getExon().startsWith("exon")) {
+                    int intA = Integer.parseInt(a.getExon().replaceAll("exon", ""));
+                    int intB = Integer.parseInt(b.getExon().replaceAll("exon", ""));
+                    return Integer.compare(intA, intB);
+                } else if(a.getExon().startsWith("UTR")) {
+                    return 1;
+                } else if(b.getExon().startsWith("UTR")) {
+                    return -1;
+                }
+                return 1;
+            }).collect(Collectors.toList());
 
             Platform.runLater(() -> setBrcaCnvPlot("BRCA1"));
             Platform.runLater(() -> setBrcaCnvPlot("BRCA2"));
@@ -312,6 +342,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     }
 
     private void setBrcaTableView(final String gene, final String exon) {
+        cnvDetailLabel.setText("CNV DETAIL INFORMATION (" + exon.toUpperCase() + ")");
         if(cnvAmpliconTableView.getItems() != null) {
             cnvAmpliconTableView.getItems().removeAll(cnvAmpliconTableView.getItems());
             cnvAmpliconTableView.refresh();
@@ -375,6 +406,8 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                         node.getStyleClass().add("brca_cnv_1");
                     } else if(exon.getCopyNumber() == 3) {
                         node.getStyleClass().add("brca_cnv_3");
+                    } else {
+                        node.getStyleClass().removeAll("brca_cnv_3", "brca_cnv_1");
                     }
                     for(Node tempNode : ((HBox)node).getChildren()) {
                         if(tempNode instanceof Label) {
@@ -440,18 +473,58 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         }
     }
 
+    private void changeCopyNumber(Integer value) {
+        try {
+            Map<String, Object> params = new HashMap<>();
+            params.put("sampleId", sample.getId());
+            params.put("brcaCnvExonIds", getExportFields());
+            params.put("comment", "N/A");
+            params.put("cnv", value);
+            apiService.put("analysisResults/brcaCnvExon/updateCnv", params, null, true);
+            setList();
+            String gene = exonTableView.getItems().get(0).getGene();
+            String exon = exonTableView.getItems().get(0).getExon();
+            setBrcaExonTableView(gene);
+            setBrcaTableView(gene, exon);
+        } catch (WebAPIException wae) {
+            wae.printStackTrace();
+        }
+    }
+
+    private List<BrcaCnvExon> getSelectedItemList() {
+        if(exonTableView.getItems() == null) {
+            return new ArrayList<>();
+        }
+        return exonTableView.getItems().stream().filter(BrcaCnvExon::getCheckItem)
+                .collect(Collectors.toList());
+    }
+
+    private String getExportFields() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        getSelectedItemList().forEach(item -> stringBuilder.append(item.getId()).append(","));
+        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+        return stringBuilder.toString();
+    }
+
     @FXML
     public void doExonDeletion() {
-        //TODO
+        changeCopyNumber(1);
     }
 
     @FXML
     public void doExonDuplication() {
-        //TODO
+        changeCopyNumber(3);
     }
 
     @FXML
     public void doCnvReport() {
-        //TODO
+        changeCopyNumber(2);
+    }
+
+    @FXML
+    public void exportExcel() {
+        WorksheetUtil worksheetUtil = new WorksheetUtil();
+        worksheetUtil.exportBrcaCnvData(this.getMainApp(), sample);
     }
 }
