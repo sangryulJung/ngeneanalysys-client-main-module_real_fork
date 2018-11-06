@@ -5,6 +5,7 @@ import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,6 +35,8 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.lang.ref.SoftReference;
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
@@ -82,8 +85,6 @@ public class HomeController extends SubPaneController{
     @FXML
     private VBox databaseVersionVBox;
 
-    private List<NoticeView> noticeList = null;
-
     /** API Service */
     private APIService apiService;
     /** Timer */
@@ -106,12 +107,8 @@ public class HomeController extends SubPaneController{
         newsTipGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             logger.debug("init");
             if(newValue == null) return;
-
-            if(!noticeLabelSetting(newsTipGroup.getToggles().indexOf(newValue))) {
-                newsTipGroup.selectToggle(oldValue);
-            } else {
-                newsTipGroup.selectToggle(newValue);
-            }
+            if(oldValue != null && oldValue != newValue)
+                setNoticeArea(newsTipGroup.getToggles().indexOf(newValue));
         });
 
         this.mainController.getMainFrame().setCenter(root);
@@ -248,73 +245,116 @@ public class HomeController extends SubPaneController{
     }
 
 
-    private void setNoticeArea() {
-        try {
-            Map<String, Object> params = new HashMap<>();
+    private void setNoticeArea(int index) {
+        WeakReference<Task<Void>> task = new WeakReference<>(new Task<Void>() {
+            HttpClientResponse response = null;
+            List<NoticeView> noticeList = null;
+            @Override
+            protected Void call() throws Exception {
+                Map<String, Object> params = new HashMap<>();
 
-            params.put("limit", 5);
-            params.put("offset", 0);
+                params.put("limit", 5);
+                params.put("offset", 0);
 
-            HttpClientResponse response = apiService.get("/notices", params, null, false);
+                response = apiService.get("/notices", params, null, false);
 
-             noticeList =response.getObjectBeforeConvertResponseToJSON(PagedNotice.class).getResult();
+                noticeList = response.getObjectBeforeConvertResponseToJSON(PagedNotice.class).getResult();
+                return null;
+            }
 
-             if(toggleGroupHBox.getChildren() != null && !toggleGroupHBox.getChildren().isEmpty()) {
-                 toggleGroupHBox.getChildren().clear();
-                 newsTipGroup.getToggles().clear();
-             }
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                if(toggleGroupHBox.getChildren() != null && !toggleGroupHBox.getChildren().isEmpty()) {
+                    toggleGroupHBox.getChildren().clear();
+                    newsTipGroup.getToggles().clear();
+                }
 
-             if(noticeList != null && !noticeList.isEmpty()) {
+                if(noticeList != null && !noticeList.isEmpty() && index >= 0 && index < noticeList.size()) {
 
-                 for(int i = 0 ; i < noticeList.size(); i++) {
-                     RadioButton radioButton = new RadioButton();
-                     radioButton.setToggleGroup(newsTipGroup);
-                     toggleGroupHBox.getChildren().add(radioButton);
-                 }
+                    for(int i = 0; i < noticeList.size(); i++) {
+                        RadioButton radioButton = new RadioButton();
+                        radioButton.setToggleGroup(newsTipGroup);
+                        toggleGroupHBox.getChildren().add(radioButton);
+                    }
+                    //noticeTitleLabel.setText(noticeView.getTitle());
 
-                noticeLabelSetting(0);
-                newsTipGroup.selectToggle(newsTipGroup.getToggles().get(0));
-             }
+                    dateLabel.setText(DateFormatUtils.format(noticeList.get(index).getCreatedAt().toDate(), "yyyy-MM-dd"));
+                    noticeTitleLabel.setText(noticeList.get(index).getTitle());
+                    noticeContentsTextArea.setText(noticeList.get(index).getContents());
 
-        } catch (WebAPIException wae) {
-            wae.printStackTrace();
-        }
+                    newsTipGroup.selectToggle(newsTipGroup.getToggles().get(index));
+                }
+            }
 
+            @Override
+            protected void failed() {
+                super.failed();
+                getException().printStackTrace();
+            }
+        });
+        WeakReference<Thread> thread = new WeakReference<>(new Thread(task.get()));
+        Objects.requireNonNull(thread.get()).start();
     }
 
-    private boolean noticeLabelSetting(int index) {
-        if(noticeList == null || index > noticeList.size() -1) return false;
-        NoticeView noticeView = noticeList.get(index);
-        //noticeTitleLabel.setText(noticeView.getTitle());
-
-        dateLabel.setText(DateFormatUtils.format(
-                noticeView.getCreatedAt().toDate(), "yyyy-MM-dd"));
-        noticeTitleLabel.setText(noticeView.getTitle());
-        noticeContentsTextArea.setText(noticeView.getContents());
-        return true;
-    }
+//    private boolean noticeLabelSetting(int index) {
+//        if(noticeList == null || index > noticeList.size() -1) return false;
+//        NoticeView noticeView = noticeList.get(index);
+//        //noticeTitleLabel.setText(noticeView.getTitle());
+//
+//        dateLabel.setText(DateFormatUtils.format(
+//                noticeView.getCreatedAt().toDate(), "yyyy-MM-dd"));
+//        noticeTitleLabel.setText(noticeView.getTitle());
+//        noticeContentsTextArea.setText(noticeView.getContents());
+//        return true;
+//    }
 
     private void hddCheck() {
-        try {
-            HttpClientResponse response = apiService.get("/storageUsage", null, null, false);
+        WeakReference<Task<Void>> task = new WeakReference<>(new Task<Void>() {
+            HttpClientResponse response;
+            StorageUsage storageUsage;
+            double value;
+            int totalCount;
+            double usageSample;
+            String textLabel;
+            String label;
+            @Override
+            protected Void call() throws Exception {
+                response = apiService.get("/storageUsage", null, null, false);
 
-            StorageUsage storageUsage = response.getObjectBeforeConvertResponseToJSON(StorageUsage.class);
-            double value = (double)(storageUsage.getTotalSpace() - storageUsage.getFreeSpace()) / storageUsage.getTotalSpace();
-            String textLabel = ConvertUtil.convertFileSizeFormat(storageUsage.getFreeSpace()) + " / " + ConvertUtil.convertFileSizeFormat(storageUsage.getTotalSpace());
-            AnimationTimer hddStatusTier = new HddStatusTimer(hddCanvas.getGraphicsContext2D(), value, "Free Space",
-                    textLabel, 1);
-            hddStatusTier.start();
+                storageUsage = response.getObjectBeforeConvertResponseToJSON(StorageUsage.class);
+                value = (double)(storageUsage.getTotalSpace() -  storageUsage.getFreeSpace())
+                        / storageUsage.getTotalSpace();
+                totalCount = (int)(storageUsage.getAvailableSampleCount() + storageUsage.getCurrentSampleCount());
+                usageSample = (double)(storageUsage.getCurrentSampleCount()) / totalCount;
+                textLabel = ConvertUtil.convertFileSizeFormat(storageUsage.getFreeSpace()) + " / " + ConvertUtil.convertFileSizeFormat(storageUsage.getTotalSpace());
+                label = storageUsage.getAvailableSampleCount() + " / " + totalCount + " Samples";
+                return null;
+            }
 
-            int totalCount = (int)(storageUsage.getAvailableSampleCount() + storageUsage.getCurrentSampleCount());
-            double usageSample = (double)(storageUsage.getCurrentSampleCount()) / totalCount;
-            String label = storageUsage.getAvailableSampleCount() + " / " + totalCount + " Samples";
-            AnimationTimer availableTier = new HddStatusTimer(availableCanvas.getGraphicsContext2D(), usageSample, "Available",
-                    label, 1);
-            availableTier.start();
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                Platform.runLater(() ->{
+                    AnimationTimer hddStatusTier = new HddStatusTimer(hddCanvas.getGraphicsContext2D(), value, "Free Space",
+                            textLabel, 1);
+                    hddStatusTier.start();
+                    if(storageUsage!= null) {
+                        AnimationTimer availableTier = new HddStatusTimer(availableCanvas.getGraphicsContext2D(), usageSample, "Available",
+                                label, 1);
+                        availableTier.start();
+                    }
+                });
+            }
 
-        } catch (WebAPIException wae) {
-            wae.printStackTrace();
-        }
+            @Override
+            protected void failed() {
+                super.failed();
+                getException().printStackTrace();
+            }
+        });
+        WeakReference<Thread> thread = new WeakReference<>(new Thread(task.get()));
+        Objects.requireNonNull(thread.get()).start();
     }
 
     private void showRunList() {
@@ -322,8 +362,8 @@ public class HomeController extends SubPaneController{
         if(autoRefreshTimeline != null)
             logger.debug("cycle time : " + autoRefreshTimeline.getCycleDuration());
 
-        Platform.runLater(this::hddCheck);
-        Platform.runLater(this::setNoticeArea);
+        hddCheck();
+        setNoticeArea(0);
         Platform.runLater(this::setToolsAndDatabase);
         final int maxRunNumberOfPage = 4;
         CompletableFuture<PagedRun> getPagedRun = new CompletableFuture<>();
