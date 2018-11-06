@@ -44,6 +44,7 @@ import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.*;
@@ -932,7 +933,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             private HttpClientResponse response1;
             private HttpClientResponse response2;
             private PagedVariantAndInterpretationEvidence analysisResultVariantList;
-            private List<VariantAndInterpretationEvidence> list;
+            private WeakReference<List<VariantAndInterpretationEvidence>> list;
             private int totalCount;
             @Override
             protected Void call() throws Exception {
@@ -941,7 +942,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 analysisResultVariantList =
                         response1.getObjectBeforeConvertResponseToJSON(PagedVariantAndInterpretationEvidence.class);
 
-                list = analysisResultVariantList.getResult();
+                list = new WeakReference<>(analysisResultVariantList.getResult());
                 totalCount = analysisResultVariantList.getCount();
 
                 response2 = apiService.get("/analysisResults/sampleSummary/"+ sample.getId(), null, null, false);
@@ -956,21 +957,21 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 searchCountLabel.setText(totalCount +"/");
 
                 //totalVariantCountLabel.setText(sample.getAnalysisResultSummary().getAllVariantCount().toString());
-                ObservableList<VariantAndInterpretationEvidence> displayList = null;
+                WeakReference<ObservableList<VariantAndInterpretationEvidence>> displayList = null;
                 reportedCountLabel.setText("(R : " + sample.getAnalysisResultSummary().getReportVariantCount() +")");
 
-                if (list != null && !list.isEmpty()) {
-                    displayList = FXCollections.observableArrayList(list);
+                if (list.get() != null && !list.get().isEmpty()) {
+                    displayList = new WeakReference<>(FXCollections.observableArrayList(list.get()));
                 }
 
                 // 리스트 삽입
                 if (variantListTableView.getItems() != null && variantListTableView.getItems().size() > 0) {
                     variantListTableView.getItems().clear();
                 }
-                variantListTableView.setItems(displayList);
+                variantListTableView.setItems(displayList.get());
 
                 // 화면 출력
-                if (displayList != null && displayList.size() > 0) {
+                if (displayList.get() != null && displayList.get().size() > 0) {
                     variantListTableView.getSelectionModel().select(selectedIdx);
                     //showVariantDetail(displayList.get(selectedIdx));
                 }
