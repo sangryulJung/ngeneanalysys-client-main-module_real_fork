@@ -291,19 +291,14 @@ public class PastResultsController extends SubPaneController {
 
 			if(autoRefreshTimeline == null) {
 				autoRefreshTimeline = new Timeline(new KeyFrame(Duration.millis(refreshPeriodSecond),
-						ae -> {
-					setList(paginationList.getCurrentPageIndex() + 1);
-						}							));
+						ae -> setList(paginationList.getCurrentPageIndex() + 1)));
 				autoRefreshTimeline.setCycleCount(Animation.INDEFINITE);
 			} else {
 				logger.debug(String.format("[%s] timeline restart", this.getClass().getName()));
 				autoRefreshTimeline.stop();
 				autoRefreshTimeline.getKeyFrames().removeAll(autoRefreshTimeline.getKeyFrames());
 				autoRefreshTimeline.getKeyFrames().add(new KeyFrame(Duration.millis(refreshPeriodSecond),
-						ae -> {
-							setList(paginationList.getCurrentPageIndex() + 1);
-						}
-								));
+						ae -> setList(paginationList.getCurrentPageIndex() + 1)));
 			}
 
 			autoRefreshTimeline.play();
