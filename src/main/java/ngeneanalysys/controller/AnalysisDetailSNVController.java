@@ -1083,10 +1083,28 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         PopOverUtil.openFilterPopOver(viewAppliedFiltersLabel, filterList.get(comboBoxItem.getValue()));
     }
 
-    private void createTableHeader(TableColumn<VariantAndInterpretationEvidence, ?> column, String name, String tooltipName,
+    private void   createTableHeader(TableColumn<VariantAndInterpretationEvidence, ?> column, String name, String tooltipName,
                                    Double size, String id) {
         Label label = new Label(name);
+        ContextMenu contextMenu = new ContextMenu();
+        contextMenu.getStyleClass().add("font_size_11");
+        MenuItem moveToEndMenuItem = new MenuItem("Move to end");
+        MenuItem moveToFrontMenuItem = new MenuItem("Move to front");
+        contextMenu.getItems().add(moveToEndMenuItem);
+        contextMenu.getItems().add(new SeparatorMenuItem());
+        contextMenu.getItems().add(moveToFrontMenuItem);
 
+        moveToEndMenuItem.setOnAction(e -> {
+            variantListTableView.getColumns().remove(column);
+            variantListTableView.getColumns().add(column);
+        });
+        moveToFrontMenuItem.setOnAction(e -> {
+            variantListTableView.getColumns().remove(column);
+            variantListTableView.getColumns().add(1, column);
+        });
+
+
+        label.setContextMenu(contextMenu);
         if(StringUtils.isNotEmpty(tooltipName)) label.setTooltip(new Tooltip(tooltipName));
         label.setPrefHeight(Double.MAX_VALUE);
         column.setGraphic(label);
@@ -1939,6 +1957,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     class BooleanCell extends LockedTableCell<VariantAndInterpretationEvidence, Boolean> {
         private CheckBox checkBox = new CheckBox();
         private BooleanCell() {
+            super(true);
             checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
                 VariantAndInterpretationEvidence evidence = BooleanCell.this.getTableView().getItems().get(
                         BooleanCell.this.getIndex());
@@ -2029,34 +2048,25 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     private abstract class LockedTableCell<T, S> extends TableCell<T, S> {
-
-        {
-
-            Platform.runLater(() -> {
-
-                ScrollBar sc = (ScrollBar) getTableView().queryAccessibleAttribute(AccessibleAttribute.HORIZONTAL_SCROLLBAR);
-
-                TableHeaderRow thr = (TableHeaderRow) getTableView().queryAccessibleAttribute(AccessibleAttribute.HEADER);
-
-                Region headerNode = thr.getColumnHeaderFor(this.getTableColumn());
-
-                sc.valueProperty().addListener((ob, o, n) -> {
-
-                    double doubleValue = n.doubleValue();
-
-                    headerNode.setTranslateX(doubleValue);
-
-                    headerNode.toFront();
-
-                    this.setTranslateX(doubleValue);
-
-                    this.toFront();
-
-                });
-
-            });
-
+        private ChangeListener<Number> getNumberChangeListener(Region headerNode) {
+            return (ob, o, n) -> {
+                double doubleValue = n.doubleValue();
+                headerNode.setTranslateX(doubleValue);
+                headerNode.toFront();
+                this.setTranslateX(doubleValue);
+                this.toFront();
+            };
         }
 
+        LockedTableCell(boolean lockEnabled) {
+            if (lockEnabled) {
+                Platform.runLater(() -> {
+                    ScrollBar sc = (ScrollBar) getTableView().queryAccessibleAttribute(AccessibleAttribute.HORIZONTAL_SCROLLBAR);
+                    TableHeaderRow thr = (TableHeaderRow) getTableView().queryAccessibleAttribute(AccessibleAttribute.HEADER);
+                    Region headerNode = thr.getColumnHeaderFor(this.getTableColumn());
+                    sc.valueProperty().addListener(getNumberChangeListener(headerNode));
+                });
+            }
+        }
     }
 }
