@@ -44,7 +44,6 @@ import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.*;
@@ -930,19 +929,21 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         //setSortItem(sortAndSearchItem);
         setFilterItem(sortAndSearchItem);
         Task<Void> task = new Task<Void>() {
-            private HttpClientResponse response1;
-            private HttpClientResponse response2;
+
             private PagedVariantAndInterpretationEvidence analysisResultVariantList;
-            private WeakReference<List<VariantAndInterpretationEvidence>> list;
+            private List<VariantAndInterpretationEvidence> list;
             private int totalCount;
+
             @Override
             protected Void call() throws Exception {
+                HttpClientResponse response1;
+                HttpClientResponse response2;
                 response1 = apiService.get("/analysisResults/sampleSnpInDels/"+ sample.getId(), params,
                         null, sortAndSearchItem);
                 analysisResultVariantList =
                         response1.getObjectBeforeConvertResponseToJSON(PagedVariantAndInterpretationEvidence.class);
 
-                list = new WeakReference<>(analysisResultVariantList.getResult());
+                list = analysisResultVariantList.getResult();
                 totalCount = analysisResultVariantList.getCount();
 
                 response2 = apiService.get("/analysisResults/sampleSummary/"+ sample.getId(), null, null, false);
@@ -959,20 +960,20 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                     searchCountLabel.setText(totalCount +"/");
 
                     //totalVariantCountLabel.setText(sample.getAnalysisResultSummary().getAllVariantCount().toString());
-                    WeakReference<ObservableList<VariantAndInterpretationEvidence>> displayList = null;
+                    ObservableList<VariantAndInterpretationEvidence> displayList = null;
                     reportedCountLabel.setText("(R : " + sample.getAnalysisResultSummary().getReportVariantCount() +")");
 
-                    if (list.get() != null && !Objects.requireNonNull(list.get()).isEmpty()) {
-                        displayList = new WeakReference<>(FXCollections.observableArrayList(list.get()));
+                    if (list != null && !list.isEmpty()) {
+                        displayList = FXCollections.observableArrayList(list);
                     }
                     // 리스트 삽입
                     if (variantListTableView.getItems() != null && variantListTableView.getItems().size() > 0) {
                         variantListTableView.getItems().clear();
                     }
-                    variantListTableView.setItems(Objects.requireNonNull(displayList).get());
+                    variantListTableView.setItems(displayList);
 
                     // 화면 출력
-                    if (displayList.get() != null && Objects.requireNonNull(displayList.get()).size() > 0) {
+                    if (displayList != null && displayList.size() > 0) {
                         variantListTableView.getSelectionModel().select(selectedIdx);
                         //showVariantDetail(displayList.get(selectedIdx));
                     }

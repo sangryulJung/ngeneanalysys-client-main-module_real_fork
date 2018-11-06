@@ -246,11 +246,12 @@ public class HomeController extends SubPaneController{
 
 
     private void setNoticeArea(int index) {
-        WeakReference<Task<Void>> task = new WeakReference<>(new Task<Void>() {
-            HttpClientResponse response = null;
+        Task<Void> task = new Task<Void>() {
+
             List<NoticeView> noticeList = null;
             @Override
             protected Void call() throws Exception {
+                HttpClientResponse response;
                 Map<String, Object> params = new HashMap<>();
 
                 params.put("limit", 5);
@@ -292,9 +293,9 @@ public class HomeController extends SubPaneController{
                 super.failed();
                 getException().printStackTrace();
             }
-        });
-        WeakReference<Thread> thread = new WeakReference<>(new Thread(task.get()));
-        Objects.requireNonNull(thread.get()).start();
+        };
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
 //    private boolean noticeLabelSetting(int index) {
@@ -310,16 +311,18 @@ public class HomeController extends SubPaneController{
 //    }
 
     private void hddCheck() {
-        WeakReference<Task<Void>> task = new WeakReference<>(new Task<Void>() {
-            HttpClientResponse response;
+        Task<Void> task = new Task<Void>() {
+
             StorageUsage storageUsage;
             double value;
             int totalCount;
             double usageSample;
             String textLabel;
             String label;
+
             @Override
             protected Void call() throws Exception {
+                HttpClientResponse response;
                 response = apiService.get("/storageUsage", null, null, false);
 
                 storageUsage = response.getObjectBeforeConvertResponseToJSON(StorageUsage.class);
@@ -352,9 +355,9 @@ public class HomeController extends SubPaneController{
                 super.failed();
                 getException().printStackTrace();
             }
-        });
-        WeakReference<Thread> thread = new WeakReference<>(new Thread(task.get()));
-        Objects.requireNonNull(thread.get()).start();
+        };
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
     private void showRunList() {
@@ -364,7 +367,7 @@ public class HomeController extends SubPaneController{
 
         hddCheck();
         setNoticeArea(0);
-        Platform.runLater(this::setToolsAndDatabase);
+        setToolsAndDatabase();
         final int maxRunNumberOfPage = 4;
         CompletableFuture<PagedRun> getPagedRun = new CompletableFuture<>();
         CompletableFuture.supplyAsync(() -> {

@@ -1,7 +1,6 @@
 package ngeneanalysys.controller;
 
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.util.*;
@@ -169,25 +168,19 @@ public class PastResultsController extends SubPaneController {
 						} else {
 							params.put("skipOtherGroup", "true");
 						}
-						WeakReference<HttpClientResponse> response = new WeakReference<>(
-								apiService.get("/panels", params, null, false));
+						HttpClientResponse response = apiService.get("/panels", params, null, false);
 
-						WeakReference<PagedPanel> pagedPanel = new WeakReference<>(
-								Objects.requireNonNull(
-										response.get()).getObjectBeforeConvertResponseToJSON(PagedPanel.class));
-						WeakReference<List<Panel>> panels = new WeakReference<>(
-								Objects.requireNonNull(pagedPanel.get()).getResult());
-						WeakReference<List<Panel>> filterPanel = null;
+						PagedPanel pagedPanel = response.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
+						List<Panel> panels = pagedPanel.getResult();
+						List<Panel> filterPanel = null;
 						if (StringUtils.isEmpty(textField.getText())) {
-							filterPanel = new WeakReference<>(
-									Objects.requireNonNull(panels.get())
-											.stream().filter(panel -> panel.getName().contains(textField.getText()))
-											.collect(Collectors.toList()));
+							filterPanel = panels.stream()
+									.filter(panel -> panel.getName().contains(textField.getText()))
+									.collect(Collectors.toList());
 						} else {
 							filterPanel = panels;
 						}
-						TextFields.bindAutoCompletion(textField, getAllPanel(
-								Objects.requireNonNull(filterPanel.get()))).setVisibleRowCount(10);
+						TextFields.bindAutoCompletion(textField, getAllPanel(filterPanel)).setVisibleRowCount(10);
 					} catch (WebAPIException wae) {
 						logger.debug(wae.getMessage());
 					}
@@ -196,7 +189,6 @@ public class PastResultsController extends SubPaneController {
 					provider = SuggestionProvider.create(new HashSet<>());
 					TextFields.bindAutoCompletion(textField, provider).setVisibleRowCount(10);
 					textField.textProperty().addListener((ob, oValue, nValue) -> updateAutoCompletion(nValue, textField));
-
 				}
 
 				textField.setPrefWidth(Double.MAX_VALUE);
@@ -249,11 +241,10 @@ public class PastResultsController extends SubPaneController {
 				params.put("target", searchComboBox.getSelectionModel().getSelectedItem().getText().toLowerCase());
 				params.put("keyword", textField.getText());
 				params.put("resultCount", 15);
-				WeakReference<HttpClientResponse> response = new WeakReference<>(
-						apiService.get("/filter", params, null, false));
-				logger.debug(Objects.requireNonNull(response.get()).getContentString());
+				HttpClientResponse response = apiService.get("/filter", params, null, false);
+				logger.debug(response.getContentString());
 				JSONParser jsonParser = new JSONParser();
-				JSONArray jsonArray = (JSONArray) jsonParser.parse(Objects.requireNonNull(response.get()).getContentString());
+				JSONArray jsonArray = (JSONArray) jsonParser.parse(response.getContentString());
 				provider.clearSuggestions();
 				provider.addPossibleSuggestions(getAllData(jsonArray));
 			} catch (WebAPIException wae) {
@@ -371,15 +362,16 @@ public class PastResultsController extends SubPaneController {
 			logger.debug(String.format("auto refresh timeline status : %s", autoRefreshTimeline.getStatus()));
 		}
 		maskerPane.setVisible(true);
-		WeakReference<Task<Void>> task = new WeakReference<>(new Task<Void>() {
-			private WeakReference<HttpClientResponse> response = null;
-			private WeakReference<PagedRunSampleView> searchedSamples = null;
-			private WeakReference<List<RunSampleView>> list = null;
+		Task<Void> task = new Task<Void>() {
+
+			private PagedRunSampleView searchedSamples = null;
+			private List<RunSampleView> list = null;
 			private int totalCount = 0;
 			private int pageCount = 0;
 
 			@Override
 			protected Void call() throws Exception {
+				HttpClientResponse response;
 				// 조회 시작 index
 				int offset = (page - 1) * itemCountPerPage;
 
@@ -387,22 +379,15 @@ public class PastResultsController extends SubPaneController {
 				Map<String, List<Object>> subParams = getSubSearchParam();
 				param.put("limit", itemCountPerPage);
 				param.put("offset", offset);
-				response = new WeakReference<>(apiService.get("/searchSamples", param, null, subParams));
+				response = apiService.get("/searchSamples", param, null, subParams);
 
-				if (response.get() != null) {
-					searchedSamples = new WeakReference<>(
-							Objects.requireNonNull(response.get())
-									.getObjectBeforeConvertResponseToJSON(PagedRunSampleView.class));
-					if (searchedSamples.get() != null) {
-						totalCount = Objects.requireNonNull(searchedSamples.get()).getCount();
-						list = new WeakReference<>(
-								Objects.requireNonNull(
-										searchedSamples.get()
-								).getResult().stream().sorted(
-										(a, b) -> Integer.compare(
-												b.getRun().getId(), a.getRun().getId()
-										)
-								).collect(Collectors.toList()));
+				if (response != null) {
+					searchedSamples = response.getObjectBeforeConvertResponseToJSON(PagedRunSampleView.class);
+					if (searchedSamples != null) {
+						totalCount = searchedSamples.getCount();
+						list = searchedSamples.getResult().stream()
+								.sorted((a, b) -> Integer.compare(b.getRun().getId(), a.getRun().getId()))
+								.collect(Collectors.toList());
 					}
 				}
 				return null;
@@ -413,23 +398,19 @@ public class PastResultsController extends SubPaneController {
 				super.succeeded();
 				Platform.runLater(() -> {
 					maskerPane.setVisible(false);
-					if(response != null) {
-						if (totalCount > 0) {
-							paginationList.setCurrentPageIndex(page - 1);
-							pageCount = totalCount / itemCountPerPage;
-							if (totalCount % itemCountPerPage > 0) {
-								pageCount++;
-							}
+					if (totalCount > 0) {
+						paginationList.setCurrentPageIndex(page - 1);
+						pageCount = totalCount / itemCountPerPage;
+						if (totalCount % itemCountPerPage > 0) {
+							pageCount++;
 						}
-						logger.debug(String.format("total count : %s, page count : %s", totalCount, pageCount));
+					}
+					logger.debug(String.format("total count : %s, page count : %s", totalCount, pageCount));
 
-						renderSampleList(Objects.requireNonNull(list).get());
-						if (pageCount > 0) {
-							paginationList.setVisible(true);
-							paginationList.setPageCount(pageCount);
-						} else {
-							paginationList.setVisible(false);
-						}
+					renderSampleList(list);
+					if (pageCount > 0) {
+						paginationList.setVisible(true);
+						paginationList.setPageCount(pageCount);
 					} else {
 						paginationList.setVisible(false);
 					}
@@ -450,9 +431,9 @@ public class PastResultsController extends SubPaneController {
 					e.printStackTrace();
 				}
 			}
-		});
-		WeakReference<Thread> thread = new WeakReference<>(new Thread(task.get()));
-		Objects.requireNonNull(thread.get()).start();
+		};
+		Thread thread = new Thread(task);
+		thread.start();
 	}
 
 	private Map<String, Object> getSearchParam() {
