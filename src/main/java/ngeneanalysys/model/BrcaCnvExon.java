@@ -14,6 +14,7 @@ public class BrcaCnvExon {
     private String includedInReport;
     private String domain;
     private Integer copyNumber;
+    private Integer expertCopyNumber;
     private Integer totalAmpliconCount;
     private Integer copyNumberOneAmpliconCount;
     private Integer copyNumberTwoAmpliconCount;
@@ -24,6 +25,13 @@ public class BrcaCnvExon {
      */
     public void setCheckItem(Boolean checkItem) {
         this.checkItem = checkItem;
+    }
+
+    /**
+     * @return expertCopyNumber
+     */
+    public Integer getExpertCopyNumber() {
+        return expertCopyNumber;
     }
 
     /**

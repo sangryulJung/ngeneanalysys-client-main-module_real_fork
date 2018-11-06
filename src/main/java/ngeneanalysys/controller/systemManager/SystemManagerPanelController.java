@@ -1361,25 +1361,28 @@ public class SystemManagerPanelController extends SubPaneController {
                     warningReadDepthTextField.setDisable(false);
                     warningReadDepthTextField.setText(panel.getWarningReadDepth().toString());
                 }
-                CnvConfigBrcaAccuTest cnvConfigBRCAaccuTest = new CnvConfigBrcaAccuTest();
-                if(cnvConfigBRCAaccuTest.getAmpliconCopyNumberPredictionAlgorithm() != null &&
-                        BrcaAmpliconCopyNumberPredictionAlgorithmCode.SIMPLE_CUTOFF.getCode().equals(
-                                cnvConfigBRCAaccuTest.getAmpliconCopyNumberPredictionAlgorithm())) {
-                    simpleCutoffAmpliconCnpAlgorithmRadioButton.setSelected(true);
-                } else {
-                    distributionAmpliconCnpAlgorithmRadioButton.setSelected(true);
-                }
-                if(cnvConfigBRCAaccuTest.getSimpleCutoffDulplicationValue() != null) {
-                    brcaCnvAmpliconCnDuplicationCutoffTextField.setText(
-                            cnvConfigBRCAaccuTest.getSimpleCutoffDulplicationValue().toString());
-                } else {
-                    brcaCnvAmpliconCnDuplicationCutoffTextField.setText(String.valueOf(simpleCutoffDuplicationDefault));
-                }
-                if(cnvConfigBRCAaccuTest.getSimpleCutoffDeletionValue() != null) {
-                    brcaCnvAmpliconCnDeletionCutoffTextField.setText(
-                            cnvConfigBRCAaccuTest.getSimpleCutoffDeletionValue().toString());
-                } else {
-                    brcaCnvAmpliconCnDeletionCutoffTextField.setText(String.valueOf(simpleCutoffDeletionDefault));
+                if(PipelineCode.BRCA_ACCUTEST_PLUS_CMC_DNA.getCode().equals(panel.getCode()) ||
+                        PipelineCode.BRCA_ACCUTEST_PLUS_MLPA_DNA.getCode().equals(panel.getCode())) {
+                    CnvConfigBrcaAccuTest cnvConfigBRCAaccuTest = panel.getCnvConfigBRCAaccuTest();
+                    if (cnvConfigBRCAaccuTest.getAmpliconCopyNumberPredictionAlgorithm() != null &&
+                            BrcaAmpliconCopyNumberPredictionAlgorithmCode.SIMPLE_CUTOFF.getCode().equals(
+                                    cnvConfigBRCAaccuTest.getAmpliconCopyNumberPredictionAlgorithm())) {
+                        simpleCutoffAmpliconCnpAlgorithmRadioButton.setSelected(true);
+                    } else {
+                        distributionAmpliconCnpAlgorithmRadioButton.setSelected(true);
+                    }
+                    if (cnvConfigBRCAaccuTest.getSimpleCutoffDulplicationValue() != null) {
+                        brcaCnvAmpliconCnDuplicationCutoffTextField.setText(
+                                cnvConfigBRCAaccuTest.getSimpleCutoffDulplicationValue().toString());
+                    } else {
+                        brcaCnvAmpliconCnDuplicationCutoffTextField.setText(String.valueOf(simpleCutoffDuplicationDefault));
+                    }
+                    if (cnvConfigBRCAaccuTest.getSimpleCutoffDeletionValue() != null) {
+                        brcaCnvAmpliconCnDeletionCutoffTextField.setText(
+                                cnvConfigBRCAaccuTest.getSimpleCutoffDeletionValue().toString());
+                    } else {
+                        brcaCnvAmpliconCnDeletionCutoffTextField.setText(String.valueOf(simpleCutoffDeletionDefault));
+                    }
                 }
                 VariantFilter variantFilter = panel.getVariantFilter();
                 if(variantFilter.getInDelMinAlleleFraction() != null)

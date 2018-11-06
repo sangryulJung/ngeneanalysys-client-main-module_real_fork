@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -21,6 +22,7 @@ import ngeneanalysys.model.paged.PagedBrcaCNVExon;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
+import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.WorksheetUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
@@ -57,10 +59,6 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
 
     @FXML
     private TableView<BrcaCnvExon> exonTableView;
-    @FXML
-    private TableColumn<BrcaCnvExon, String> exonCNVTableColumn;
-    @FXML
-    private TableColumn<BrcaCnvExon, String> exonReportTableColumn;
     @FXML
     private TableColumn<BrcaCnvExon, String> exonExonTableColumn;
     @FXML
@@ -118,14 +116,12 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         panel = sample.getPanel();
         brca1RadioButton.selectedProperty().addListener((ob, ov, nv) -> {
             if(nv) {
-                cnvExonLabel.setText("CNV EXON INFORMATION (BRCA1)");
                 setBrcaExonTableView("BRCA1");
             }
         });
 
         brca2RadioButton.selectedProperty().addListener((ob, ov, nv) -> {
             if(nv) {
-                cnvExonLabel.setText("CNV EXON INFORMATION (BRCA2)");
                 setBrcaExonTableView("BRCA2");
             }
         });
@@ -149,15 +145,9 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                         String.format("%.02f", item.getValue().getDistributionRangeMin()) + " - " +
                                 String.format("%.02f", item.getValue().getDistributionRangeMax()));
             } else {
-                BigDecimal del = panel.getCnvConfigBRCAaccuTest().getSimpleCutoffDeletionValue() != null ?
-                        new BigDecimal(panel.getCnvConfigBRCAaccuTest().getSimpleCutoffDeletionValue()) : new BigDecimal(0);
-
-                BigDecimal dup = panel.getCnvConfigBRCAaccuTest().getSimpleCutoffDulplicationValue() != null ?
-                        new BigDecimal(panel.getCnvConfigBRCAaccuTest().getSimpleCutoffDulplicationValue()) : new BigDecimal(0);
-
                 return new SimpleStringProperty(
-                        String.format("%.02f", item.getValue().getRawRangeMin().subtract(del)) + " - " +
-                                String.format("%.02f", item.getValue().getRawRangeMax().add(dup)));
+                        String.format("%.02f", item.getValue().getRawRangeMin()) + " - " +
+                                String.format("%.02f", item.getValue().getRawRangeMax()));
             }
         });
         ampliconReferenceMeanDepthTableColumn.setCellValueFactory(item ->
@@ -331,6 +321,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     }
 
     private void setBrcaExonTableView(final String gene) {
+        cnvExonLabel.setText("CNV EXON INFORMATION (" + gene.toUpperCase() + ")");
         if(exonTableView.getItems() != null) {
             exonTableView.getItems().removeAll(exonTableView.getItems());
         }
@@ -526,5 +517,37 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     public void exportExcel() {
         WorksheetUtil worksheetUtil = new WorksheetUtil();
         worksheetUtil.exportBrcaCnvData(this.getMainApp(), sample);
+    }
+
+    private void setTableView(final String gene, final String exon) {
+        if(gene.equalsIgnoreCase("BRCA1")) {
+            brca1RadioButton.selectedProperty().setValue(true);
+        } else {
+            brca2RadioButton.selectedProperty().setValue(true);
+        }
+
+        Optional<BrcaCnvExon> optional = exonTableView.getItems().stream()
+                .filter(item -> item.getExon().equalsIgnoreCase(exon)).findFirst();
+        optional.ifPresent(brcaCnvExon -> {
+            exonTableView.getSelectionModel().select(brcaCnvExon);
+            exonTableView.scrollTo(brcaCnvExon);
+        });
+
+        setBrcaTableView(gene, exon);
+    }
+
+    @FXML
+    public void exon_plot_click(Event e) {
+        Node obj = (Node)e.getSource();
+        String gene = obj.getId().split("_")[0].toUpperCase();
+        String exon = getExonName(obj.getId().split("_")[1]);
+        setTableView(gene, exon);
+    }
+
+    private String getExonName(String split) {
+        if(StringUtils.isEmpty(split)) {
+            return "";
+        }
+        return split.contains("utr") ? "5'UTR" : split.toUpperCase();
     }
 }

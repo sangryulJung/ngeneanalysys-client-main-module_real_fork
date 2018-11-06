@@ -1,7 +1,5 @@
 package ngeneanalysys.code.enums;
 
-import ngeneanalysys.util.StringUtils;
-
 /**
  * @author Jang
  * @since 2018-10-31
