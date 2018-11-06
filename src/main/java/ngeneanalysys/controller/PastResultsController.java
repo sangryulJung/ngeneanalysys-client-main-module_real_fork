@@ -98,6 +98,7 @@ public class PastResultsController extends SubPaneController {
 
 	private SuggestionProvider<String> provider = null;
 
+	private int pageIndex = -1;
 	private void setSearchOption() {
 		searchOption.put("SAMPLE","sampleName");
 		searchOption.put("RUN","runName");
@@ -128,8 +129,11 @@ public class PastResultsController extends SubPaneController {
 
 		// 페이지 이동 이벤트 바인딩
 		paginationList.setPageFactory(pageIndex -> {
-			mainContentsScrollPane.setVvalue(0);
-			Platform.runLater(() -> setList(pageIndex + 1));
+			if (pageIndex != this.pageIndex) {
+				this.pageIndex = pageIndex;
+				mainContentsScrollPane.setVvalue(0);
+				setList(pageIndex + 1);
+			}
 			return new VBox();
 		});
 
@@ -287,14 +291,19 @@ public class PastResultsController extends SubPaneController {
 
 			if(autoRefreshTimeline == null) {
 				autoRefreshTimeline = new Timeline(new KeyFrame(Duration.millis(refreshPeriodSecond),
-						ae -> Platform.runLater(() -> setList(paginationList.getCurrentPageIndex() + 1))));
+						ae -> {
+					setList(paginationList.getCurrentPageIndex() + 1);
+						}							));
 				autoRefreshTimeline.setCycleCount(Animation.INDEFINITE);
 			} else {
 				logger.debug(String.format("[%s] timeline restart", this.getClass().getName()));
 				autoRefreshTimeline.stop();
 				autoRefreshTimeline.getKeyFrames().removeAll(autoRefreshTimeline.getKeyFrames());
 				autoRefreshTimeline.getKeyFrames().add(new KeyFrame(Duration.millis(refreshPeriodSecond),
-						ae -> Platform.runLater(() -> setList(paginationList.getCurrentPageIndex() + 1))));
+						ae -> {
+							setList(paginationList.getCurrentPageIndex() + 1);
+						}
+								));
 			}
 
 			autoRefreshTimeline.play();
@@ -354,7 +363,7 @@ public class PastResultsController extends SubPaneController {
 	 */
 	@FXML
 	private void refreshList() {
-		Platform.runLater(() -> setList(paginationList.getCurrentPageIndex() + 1));
+		setList(paginationList.getCurrentPageIndex() + 1);
 	}
 
 	/**
@@ -535,7 +544,7 @@ public class PastResultsController extends SubPaneController {
 	public void search() {
 		oneItem = false;
 		addSearchArea();
-		Platform.runLater(() -> setList(1));
+		setList(1);
 	}
 
 	private VBox createFilterVBox() {
@@ -569,7 +578,7 @@ public class PastResultsController extends SubPaneController {
 			} else {
 				flowPane.getChildren().remove(hBox);
 			}
-			Platform.runLater(() -> setList(1));
+			setList(1);
 		});
 		xLabel.getStyleClass().add("remove_btn");
 
@@ -739,10 +748,10 @@ public class PastResultsController extends SubPaneController {
 	@FXML
 	public void resetSearchForm() {
 		searchListVBox.getChildren().removeAll(searchListVBox.getChildren());
-		Platform.runLater(() -> setList(1));
+		setList(1);
 	}
 
-	class SampleInfoVBox extends VBox {
+	private class SampleInfoVBox extends VBox {
 		private SampleInfoVBox() {
 			this.setPrefWidth(810);
 			this.setMaxWidth(Double.MAX_VALUE);
