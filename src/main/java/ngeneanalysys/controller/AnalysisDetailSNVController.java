@@ -954,29 +954,30 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             @Override
             protected void succeeded() {
                 super.succeeded();
-                searchCountLabel.setText(totalCount +"/");
+                Platform.runLater(() -> {
+                    mainController.setMainMaskerPane(false);
+                    searchCountLabel.setText(totalCount +"/");
 
-                //totalVariantCountLabel.setText(sample.getAnalysisResultSummary().getAllVariantCount().toString());
-                WeakReference<ObservableList<VariantAndInterpretationEvidence>> displayList = null;
-                reportedCountLabel.setText("(R : " + sample.getAnalysisResultSummary().getReportVariantCount() +")");
+                    //totalVariantCountLabel.setText(sample.getAnalysisResultSummary().getAllVariantCount().toString());
+                    WeakReference<ObservableList<VariantAndInterpretationEvidence>> displayList = null;
+                    reportedCountLabel.setText("(R : " + sample.getAnalysisResultSummary().getReportVariantCount() +")");
 
-                if (list.get() != null && !list.get().isEmpty()) {
-                    displayList = new WeakReference<>(FXCollections.observableArrayList(list.get()));
-                }
+                    if (list.get() != null && !Objects.requireNonNull(list.get()).isEmpty()) {
+                        displayList = new WeakReference<>(FXCollections.observableArrayList(list.get()));
+                    }
+                    // 리스트 삽입
+                    if (variantListTableView.getItems() != null && variantListTableView.getItems().size() > 0) {
+                        variantListTableView.getItems().clear();
+                    }
+                    variantListTableView.setItems(Objects.requireNonNull(displayList).get());
 
-                // 리스트 삽입
-                if (variantListTableView.getItems() != null && variantListTableView.getItems().size() > 0) {
-                    variantListTableView.getItems().clear();
-                }
-                variantListTableView.setItems(displayList.get());
-
-                // 화면 출력
-                if (displayList.get() != null && displayList.get().size() > 0) {
-                    variantListTableView.getSelectionModel().select(selectedIdx);
-                    //showVariantDetail(displayList.get(selectedIdx));
-                }
-                setSNVTabName();
-                mainController.setMainMaskerPane(false);
+                    // 화면 출력
+                    if (displayList.get() != null && Objects.requireNonNull(displayList.get()).size() > 0) {
+                        variantListTableView.getSelectionModel().select(selectedIdx);
+                        //showVariantDetail(displayList.get(selectedIdx));
+                    }
+                    setSNVTabName();
+                });
             }
 
             @Override

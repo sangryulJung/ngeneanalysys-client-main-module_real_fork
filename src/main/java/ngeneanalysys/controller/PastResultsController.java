@@ -1,6 +1,7 @@
 package ngeneanalysys.controller;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.util.*;
@@ -8,6 +9,7 @@ import java.util.stream.Collectors;
 
 import impl.org.controlsfx.autocompletion.SuggestionProvider;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -163,18 +165,25 @@ public class PastResultsController extends SubPaneController {
 						} else {
 							params.put("skipOtherGroup", "true");
 						}
-						HttpClientResponse response = apiService.get("/panels", params, null, false);
+						WeakReference<HttpClientResponse> response = new WeakReference<>(
+								apiService.get("/panels", params, null, false));
 
-						PagedPanel pagedPanel = response.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
-						List<Panel> panels = pagedPanel.getResult();
-						List<Panel> filterPanel = null;
+						WeakReference<PagedPanel> pagedPanel = new WeakReference<>(
+								Objects.requireNonNull(
+										response.get()).getObjectBeforeConvertResponseToJSON(PagedPanel.class));
+						WeakReference<List<Panel>> panels = new WeakReference<>(
+								Objects.requireNonNull(pagedPanel.get()).getResult());
+						WeakReference<List<Panel>> filterPanel = null;
 						if (StringUtils.isEmpty(textField.getText())) {
-							filterPanel = panels.stream().filter(panel -> panel.getName().contains(textField.getText()))
-									.collect(Collectors.toList());
+							filterPanel = new WeakReference<>(
+									Objects.requireNonNull(panels.get())
+											.stream().filter(panel -> panel.getName().contains(textField.getText()))
+											.collect(Collectors.toList()));
 						} else {
 							filterPanel = panels;
 						}
-						TextFields.bindAutoCompletion(textField, getAllPanel(filterPanel)).setVisibleRowCount(10);
+						TextFields.bindAutoCompletion(textField, getAllPanel(
+								Objects.requireNonNull(filterPanel.get()))).setVisibleRowCount(10);
 					} catch (WebAPIException wae) {
 						logger.debug(wae.getMessage());
 					}
@@ -236,10 +245,11 @@ public class PastResultsController extends SubPaneController {
 				params.put("target", searchComboBox.getSelectionModel().getSelectedItem().getText().toLowerCase());
 				params.put("keyword", textField.getText());
 				params.put("resultCount", 15);
-				HttpClientResponse response = apiService.get("/filter", params, null, false);
-				logger.debug(response.getContentString());
+				WeakReference<HttpClientResponse> response = new WeakReference<>(
+						apiService.get("/filter", params, null, false));
+				logger.debug(Objects.requireNonNull(response.get()).getContentString());
 				JSONParser jsonParser = new JSONParser();
-				JSONArray jsonArray = (JSONArray) jsonParser.parse(response.getContentString());
+				JSONArray jsonArray = (JSONArray) jsonParser.parse(Objects.requireNonNull(response.get()).getContentString());
 				provider.clearSuggestions();
 				provider.addPossibleSuggestions(getAllData(jsonArray));
 			} catch (WebAPIException wae) {
@@ -357,60 +367,88 @@ public class PastResultsController extends SubPaneController {
 			logger.debug(String.format("auto refresh timeline status : %s", autoRefreshTimeline.getStatus()));
 		}
 		maskerPane.setVisible(true);
-		
-		int totalCount = 0;
-		// 조회 시작 index
-		int offset = (page - 1) * itemCountPerPage;
+		WeakReference<Task<Void>> task = new WeakReference<>(new Task<Void>() {
+			private WeakReference<HttpClientResponse> response = null;
+			private WeakReference<PagedRunSampleView> searchedSamples = null;
+			private WeakReference<List<RunSampleView>> list = null;
+			private int totalCount = 0;
+			private int pageCount = 0;
 
-		Map<String, Object> param = getSearchParam();
-		Map<String, List<Object>> subParams = getSubSearchParam();
-		param.put("limit", itemCountPerPage);
-		param.put("offset", offset);
-		
-		try {
-			HttpClientResponse response = apiService.get("/searchSamples", param, null, subParams);
+			@Override
+			protected Void call() throws Exception {
+				// 조회 시작 index
+				int offset = (page - 1) * itemCountPerPage;
 
-			if (response != null) {
-				PagedRunSampleView searchedSamples = response
-						.getObjectBeforeConvertResponseToJSON(PagedRunSampleView.class);
+				Map<String, Object> param = getSearchParam();
+				Map<String, List<Object>> subParams = getSubSearchParam();
+				param.put("limit", itemCountPerPage);
+				param.put("offset", offset);
+				response = new WeakReference<>(apiService.get("/searchSamples", param, null, subParams));
 
-				List<RunSampleView> list = null;
-				if (searchedSamples != null) {
-					totalCount = searchedSamples.getCount();
-					list = searchedSamples.getResult().stream().sorted((a, b) ->
-							Integer.compare(b.getRun().getId(), a.getRun().getId())).collect(Collectors.toList());
-				}
-				int pageCount = 0;
-				if (totalCount > 0) {
-					paginationList.setCurrentPageIndex(page - 1);
-					pageCount = totalCount / itemCountPerPage;
-					if (totalCount % itemCountPerPage > 0) {
-						pageCount++;
+				if (response.get() != null) {
+					searchedSamples = new WeakReference<>(
+							Objects.requireNonNull(response.get())
+									.getObjectBeforeConvertResponseToJSON(PagedRunSampleView.class));
+					if (searchedSamples.get() != null) {
+						totalCount = Objects.requireNonNull(searchedSamples.get()).getCount();
+						list = new WeakReference<>(
+								Objects.requireNonNull(
+										searchedSamples.get()
+								).getResult().stream().sorted(
+										(a, b) -> Integer.compare(
+												b.getRun().getId(), a.getRun().getId()
+										)
+								).collect(Collectors.toList()));
 					}
 				}
-				logger.debug(String.format("total count : %s, page count : %s", totalCount, pageCount));
-
-				renderSampleList(list);
-				if (pageCount > 0) {
-					paginationList.setVisible(true);
-					paginationList.setPageCount(pageCount);
-				} else {
-					paginationList.setVisible(false);
-				}
-
-			} else {
-				paginationList.setVisible(false);
+				return null;
 			}
-		} catch (WebAPIException wae) {
-			DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
-					getMainApp().getPrimaryStage(), false);
-		} catch (Exception e) {
-			logger.error("Unknown Error", e);
-			DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(),
-					false);
-			e.printStackTrace();
-		}
-		maskerPane.setVisible(false);
+
+			@Override
+			protected void succeeded() {
+				super.succeeded();
+				Platform.runLater(() -> {
+					maskerPane.setVisible(false);
+					if(response != null) {
+						if (totalCount > 0) {
+							paginationList.setCurrentPageIndex(page - 1);
+							pageCount = totalCount / itemCountPerPage;
+							if (totalCount % itemCountPerPage > 0) {
+								pageCount++;
+							}
+						}
+						logger.debug(String.format("total count : %s, page count : %s", totalCount, pageCount));
+
+						renderSampleList(Objects.requireNonNull(list).get());
+						if (pageCount > 0) {
+							paginationList.setVisible(true);
+							paginationList.setPageCount(pageCount);
+						} else {
+							paginationList.setVisible(false);
+						}
+					} else {
+						paginationList.setVisible(false);
+					}
+				});
+			}
+
+			@Override
+			protected void failed() {
+				super.failed();
+				maskerPane.setVisible(false);
+				Exception e = new Exception(getException());
+				if (e instanceof WebAPIException) {
+					DialogUtil.generalShow(((WebAPIException)e).getAlertType(), ((WebAPIException)e).getHeaderText(),
+							((WebAPIException)e).getContents(),	getMainApp().getPrimaryStage(), false);
+				} else {
+					logger.error("Unknown Error", e);
+					DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), false);
+					e.printStackTrace();
+				}
+			}
+		});
+		WeakReference<Thread> thread = new WeakReference<>(new Thread(task.get()));
+		Objects.requireNonNull(thread.get()).start();
 	}
 
 	private Map<String, Object> getSearchParam() {
