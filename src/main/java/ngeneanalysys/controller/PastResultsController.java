@@ -98,7 +98,7 @@ public class PastResultsController extends SubPaneController {
 
 	private SuggestionProvider<String> provider = null;
 
-	private int pageIndex = -1;
+	private int currentPageIndex = -1;
 	private void setSearchOption() {
 		searchOption.put("SAMPLE","sampleName");
 		searchOption.put("RUN","runName");
@@ -129,8 +129,8 @@ public class PastResultsController extends SubPaneController {
 
 		// 페이지 이동 이벤트 바인딩
 		paginationList.setPageFactory(pageIndex -> {
-			if (pageIndex != this.pageIndex) {
-				this.pageIndex = pageIndex;
+			if (pageIndex != this.currentPageIndex) {
+				this.currentPageIndex = pageIndex;
 				mainContentsScrollPane.setVvalue(0);
 				setList(pageIndex + 1);
 			}
